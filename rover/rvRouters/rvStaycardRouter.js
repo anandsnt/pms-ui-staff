@@ -289,16 +289,20 @@ angular.module('stayCardModule', [])
                 room_type: '',
                 clickedButton: '',
                 upgrade_available: '', 
-                cannot_move_room: ''
+                cannot_move_room: '',
+                roomTypeId: ''
             },
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
                 roomsList: function (RVRoomAssignmentSrv, $stateParams) {
+                    var params = {
+                        reservation_id: $stateParams.reservation_id,
+                        page: 1,
+                        per_page: 5,
+                        room_types_ids: [$stateParams.roomTypeId]
+                    };
 
-                    var params = {};
-
-                    params.reservation_id = $stateParams.reservation_id;
                     // params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
