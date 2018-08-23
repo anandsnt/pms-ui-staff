@@ -46,7 +46,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
                     }],
                     "hotelLoyaltyProgram": [],
                     "selected_loyalty": null,
-                    "use_hlp": false,
+                    "use_hlp": true,
                     "use_ffp": true
                 };
 
@@ -96,7 +96,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
             spyOn($scope, '$emit');
             $scope.loyaltyMode = 'ADD_NEW_FF_LOYALTY';
             $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
-            expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
+            expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
         });
         it('On navigating back from ADD_NEW_LOYALTY, change loyaltyMode to SELECT_LOYALTY', function() {
             spyOn($scope, '$emit');
@@ -209,11 +209,6 @@ describe('zsCheckinLoyaltyCtrl', function() {
             $timeout.verifyNoPendingTasks();
             expect($scope.pageData.viewableItems.length).toEqual(3);
         });
-    });
-
-    it('On clicking Add new loyalty, change loyaltyMode to ADD_NEW_LOYALTY', function() {
-        $scope.addNewLoyalty();
-        expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
     });
 
     it('On clicking Add new Frequent Flyer loyalty, change loyaltyMode to ADD_NEW_FF_LOYALTY', function() {

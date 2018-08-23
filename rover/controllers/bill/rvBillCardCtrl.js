@@ -35,7 +35,10 @@ sntRover.controller('RVbillCardController',
 
 
 	BaseCtrl.call(this, $scope);
-	var that = this;
+	var that = this,
+		DEFAULT_BILL_LAYOUT = 1,
+		DEFAULT_LOCALE = 'en';
+
 
 	// set a back button on header
 	$rootScope.setPrevState = {
@@ -2206,6 +2209,21 @@ sntRover.controller('RVbillCardController',
 			$scope.findNextBillToReview();
 		}
 	};
+	/**
+	* function Genarate Print Params when review process
+	* to proceed checkout
+	* @return {Object}
+	*/
+	var getDefaultPrintParams = function() {
+		var printParams = {};
+		
+			printParams.bill_layout = DEFAULT_BILL_LAYOUT;
+			printParams.locale = DEFAULT_LOCALE;
+			printParams.reservation_id = $scope.reservationBillData.reservation_id;
+			printParams.bill_number = $scope.currentActiveBill + 1;
+
+		return printParams;
+	};
 
 	// To handle review button click
 	$scope.clickedReviewButton = function(index) {
@@ -2218,8 +2236,10 @@ sntRover.controller('RVbillCardController',
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
 			isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
 			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
+			
 
-		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
+		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {			
+			$scope.clickedPrint(getDefaultPrintParams());
 
 			// CICO-49105 : Calling blackbox API in review process if :
 			// 1. Blackbox enabled.
@@ -2769,7 +2789,7 @@ sntRover.controller('RVbillCardController',
 		$scope.callAPI(RVBillCardSrv.fetchGuestLanguages, options);
 	};
 
-	$scope.moveToNextBillAfterSuccessPaymentDuringCheckout = function() {
+	$scope.moveToNextBillAfterSuccessPaymentDuringCheckout = function() {			
 			isDuringCheckoutPayment = false;
 			$scope.reservationBillData = reservationBillData;
 		 	$scope.calculateBillDaysWidth();
@@ -2783,11 +2803,12 @@ sntRover.controller('RVbillCardController',
 			if (($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === 0.00 || $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00") && $scope.isViaReviewProcess) {
 				// If last bill - continue checkout..Else proceed Review process.
 				if (billCount === $scope.currentActiveBill + 1) {
-					$scope.clickedCompleteCheckout();
+					$scope.clickedPrint(getDefaultPrintParams());					
+					$scope.clickedCompleteCheckout();					
 				}
 				else {
 					$scope.clickedReviewButton(parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].bill_number) - 1);
-				}
+				}				
 			}
 			else if (reservationStatus === 'CHECKEDOUT' && ($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === 0.00 || $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00") && isBlackBoxEnabled) {
 				// CICO-49105 : For CHECKED OUT (WITH BALANCE)
