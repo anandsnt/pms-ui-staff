@@ -6,12 +6,15 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	'zsEventConstants',
 	'$timeout',
 	'$translate',
-	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate) {
+	'zsGeneralSrv',
+	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate, zsGeneralSrv) {
 		
 		var lcoAddonList = [];
 
 		$scope.selectedLcoAddonId = '';
 		$scope.selectedAddon = {};
+		$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
+
 		var navigateToTermsPage = function() {
 
 			var stateParams = {
@@ -64,54 +67,20 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 		var setPageNumberDetails = function() {
 			$scope.$emit('hideLoader');
-			if ($scope.addonsList.length <= 6) {
-				// if 6 or less upgrades are available
-				$scope.pageStartingIndex = 1;
-				$scope.pageEndingIndex = $scope.addonsList.length;
-				$scope.viewableAddons = angular.copy($scope.addonsList);
-				if ($scope.addonsList.length === 1) {
-					$scope.addonSelected = $scope.addonsList[0];
-				}
-			} else {
-				// if multiple pages (each containing 6 items) are present and user navigates
-				// using next and previous buttons
-				$scope.pageStartingIndex = 1 + 6 * ($scope.pageNumber - 1);
-				// ending index can depend upon the no of items
-				if ($scope.pageNumber * 6 < $scope.addonsList.length) {
-					$scope.pageEndingIndex = $scope.pageNumber * 6;
-				} else {
-					$scope.pageEndingIndex = $scope.addonsList.length;
-				}
-				// set viewable room list - 6 items at a time
-				$scope.viewableAddons = [];
+			var itemsPerPage = 6;
 
-				for (var index = -1; index < 5; index++) {
-					if (!_.isUndefined($scope.addonsList[$scope.pageStartingIndex + index])) {
-						$scope.viewableAddons.push($scope.addonsList[$scope.pageStartingIndex + index]);
-					}
-				}
-			}
-			// enable/disable next previous
-			$scope.disableNextButton = ($scope.pageEndingIndex === $scope.addonsList.length);
-			$scope.disablePreviousButton = $scope.pageStartingIndex === 1;
-			// set the height for container
+			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.addonsList, itemsPerPage, $scope.pageData.pageNumber);
+			// once the addons list is set, reset height of the container
 			$('#upgrades').css({
 				"height": "calc(100% - 230px)"
 			});
 		};
 
-		$scope.viewNextPage = function() {
-			$scope.disableNextButton = true;
+		$scope.paginationAction = function(disableButtonFlag, isNextPage) {
+			disableButtonFlag = true;
+			$scope.$emit('showLoader');
 			$timeout(function() {
-				$scope.pageNumber++;
-				setPageNumberDetails();
-			}, 200);
-		};
-
-		$scope.viewPreviousPage = function() {
-			$scope.disablePreviousButton = true;
-			$timeout(function() {
-				$scope.pageNumber--;
+				$scope.pageData.pageNumber = isNextPage ? ++$scope.pageData.pageNumber : --$scope.pageData.pageNumber;
 				setPageNumberDetails();
 			}, 200);
 		};
@@ -211,7 +180,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 
 		$scope.isOneLcoAdded = function() {
-			var lcoAddon = _.find($scope.viewableAddons, function(addon) {
+			var lcoAddon = _.find($scope.pageData.viewableItems, function(addon) {
 				return addon.isLco;
 			});
 			var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon) {
@@ -579,8 +548,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 				findSelectedLanguageId();
 			}
-			
-
 		}());
 	}
 ]);

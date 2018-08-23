@@ -345,9 +345,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		// check if navigator is iPad
         var ipadOrIphone = function() {
-            if ((navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) !== true) {
+            if ((navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null ||
+                navigator.userAgent.match(/Android/i) !== null) !== true) {
                 return false;
-            } else if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i)) {
+            } else if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Android/i)) {
                 return true;
             }
         };
