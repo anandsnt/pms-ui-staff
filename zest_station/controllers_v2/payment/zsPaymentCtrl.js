@@ -1,6 +1,9 @@
 angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$filter', 'zsGeneralSrv', '$timeout', '$controller', '$rootScope',
     function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $filter, zsGeneralSrv, $timeout, $controller, $rootScope) {
 
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+        });
         $scope.hotelConfig = {
             'emvTimeout': $rootScope.emvTimeout
         };
@@ -27,6 +30,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.paymentFailure = true;
             $scope.screenMode.value = 'PAYMENT_FAILED';
             $scope.$emit('PAYMENT_FAILED');
+            $scope.$emit('CANCEL_EMV_ACTIONS');
             runDigestCycle();
         };
 

@@ -63,7 +63,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'east-london': 'The East London Hotel',
             'farmers-daughter': 'Farmers Daughter',
             'park-james': 'Park James Hotel',
-            'annapolis': 'Hotel Annapolis'
+            'annapolis': 'Hotel Annapolis',
+            'origin': 'Origins Red Rocks'
         };
 
         this.isThemeConfigured = function(theme) {
