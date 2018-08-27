@@ -87,6 +87,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var onClickBack = function() {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
             $state.go('zest_station.checkInReservationDetails', $stateParams);
         };
 
