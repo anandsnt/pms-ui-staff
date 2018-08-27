@@ -99,30 +99,8 @@ sntRover.controller('RVroomAssignmentController', [
 		var currentSelectedRoomType = $scope.roomType;
 
 		$scope.currentRoomTypeId = (_.find($scope.roomTypes, {type: $scope.roomType})).id;
-
-		getFilteredRooms(1);
-
-		// $scope.filteredRooms = [];// Emptying rooms on search
-		// $scope.rooms = [];// CICO-23077
-
-		// angular.forEach($scope.allRooms, function(value, key) {
-		// 	if (value.room_type_code === currentSelectedRoomType) {
-		// 		$scope.filteredRooms.push(value);
-		// 		$scope.rooms.push(value);
-		// 	}
-		// });
-  //       // CICO-44286
-  //       $scope.filteredRooms = _.sortBy($scope.filteredRooms, function (room) {
-  //                                   return room.room_number.toUpperCase();
-  //                               });
-		// $scope.setSelectedFiltersList();
-		// $scope.setRoomsListWithPredefinedFilters();
-		// $scope.applyFilterToRooms();
-		// setTimeout(function() {
-		// 	$scope.refreshScroller('roomlist');
-		// 	},
-		// 1000);
-
+		$scope.isSearchActive = false;
+		getRoomsByRoomType(1);
 	};
 
 	$scope.getCurrentRoomType = function() {
@@ -134,56 +112,21 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 	};
 
+	// Search for rooms having the query text irrespective of the room type
 	$scope.searchRoom = function() {
-		// var allAllowedRooms = [];
-
-		// allAllowedRooms = angular.copy($scope.allRooms);
-
 		$scope.searchText = $scope.searchText.toUpperCase();
 
 		if ($scope.searchText !== '' ) {
 			if (($rootScope.isSingleDigitSearch && $scope.searchText.length >= 1) || (!$rootScope.isSingleDigitSearch && $scope.searchText.length >= 2)) {
-				doSearch( $scope.searchText );
-				//isRoomSearchAllowed = true;
+				$scope.isSearchActive = true;
+				doSearch(1);
 			}
+		} else {
+			$scope.filteredRooms = [];
+			$scope.isSearchActive = false;
+			getRoomsByRoomType(1);
 		}
 
-
-		// if ($scope.searchText !== '') {
-		// 		var isRoomSearchAllowed = false;
-
-		// 		if (($rootScope.isSingleDigitSearch && $scope.searchText.length >= 1) || (!$rootScope.isSingleDigitSearch && $scope.searchText.length >= 3)) {
-		// 			$scope.filteredRooms = [];
-		// 			isRoomSearchAllowed = true;
-		// 		}
-		// 	} else {
-		// 		$scope.filteredRooms = [];
-		// 	}
-
-		// angular.forEach(allAllowedRooms, function(value, key) {
-		// 		if (isRoomSearchAllowed) {
-		// 			// convert room number to uppercase since search text is uppercase CICO-33111
-		// 			roomNum = value.room_number.toUpperCase();
-
-		// 			if (roomNum.indexOf($scope.searchText) !== -1) {
-		// 				$scope.filteredRooms.push(value);
-		// 			}
-		// 		}
-
-		// 	else {
-		// 		if (value.room_type_code === $scope.roomType) {
-		// 			$scope.filteredRooms.push(value);
-		// 		}
-		// 		$scope.setSelectedFiltersList();
-		// 		$scope.setRoomsListWithPredefinedFilters();
-		// 		$scope.applyFilterToRooms();
-		// 	}
-
-		// });
-		// setTimeout(function() {
-		// 	$scope.refreshScroller('roomlist');
-		// 	},
-		// 1000);
 	};
 
 	$scope.moveInHouseRooms = function() {
@@ -648,12 +591,7 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.$on('roomFeaturesUpdated', function(event, data) {
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
-			getFilteredRooms(1);
-			//$scope.applyFilterToRooms();
-			// setTimeout(function() {
-			// 	$scope.refreshScroller('roomlist');
-			// 	},
-			// 1000);
+			getRoomsByRoomType(1);
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
@@ -806,30 +744,7 @@ sntRover.controller('RVroomAssignmentController', [
 		group.group_name = "predefined";
 		group.multiple_allowed = true;
 		group.items = [];
-		// CICO-9063 we should not show Not Ready and Due Out filter if future reservation
-		// if ($scope.reservationData.reservation_card.reservation_status !== 'RESERVED') {
-		// 	var item1 = {};
-
-		// 	item1.id = -100;
-		// 	item1.name = $filter('translate')('INCLUDE_NOTREADY_LABEL');
-		// 	item1.selected = false;
-		// 	var item2 = {};
-
-		// 	item2.id = -101;
-		// 	item2.name = $filter('translate')('INCLUDE_DUEOUT_LABEL');
-		// 	item2.selected = false;
-		// }
-
-		// var item3 = {};
-
-		// item3.id = -102;
-		// item3.name = $filter('translate')('INCLUDE_PREASSIGNED_LABEL');
-		// item3.selected = false;
-		// var item4 = {};
-
-		// item4.id = -103;
-		// item4.name = $filter('translate')('INCLUDE_CLEAN_LABEL');
-		// item4.selected = false;
+		
 		// CICO-9063 we should not show Not Ready and Due Out filter if future reservation
 		if ($scope.reservationData.reservation_card.reservation_status !== 'RESERVED') {
 			group.items.push(PRE_DEFINED_FILTERS.includeNotReady);
@@ -845,74 +760,74 @@ sntRover.controller('RVroomAssignmentController', [
 	/**
 	* function to prepare the filtered room list
 	*/
-	$scope.applyFilterToRooms = function() {
-		$scope.filteredRooms = [];
-		var roomsWithInitialFilters = [],
-		roomIdsInSelectedFloor,
-		rooms = $scope.filteredRooms,
-		selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
-		selectedFiltersList = $scope.selectedFiltersList;
+	// $scope.applyFilterToRooms = function() {
+	// 	$scope.filteredRooms = [];
+	// 	var roomsWithInitialFilters = [],
+	// 	roomIdsInSelectedFloor,
+	// 	rooms = $scope.filteredRooms,
+	// 	selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
+	// 	selectedFiltersList = $scope.selectedFiltersList;
 
-		// calculating room ids of selected floors in case any floor is selected.
-		if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
-				roomIdsInSelectedFloor = $scope.getRoomIdsInSelectedFloor();
-			}
+	// 	// calculating room ids of selected floors in case any floor is selected.
+	// 	if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
+	// 			roomIdsInSelectedFloor = $scope.getRoomIdsInSelectedFloor();
+	// 		}
 
-		// Iterating each room for filter.
-		rooms.forEach(function (room) {
-			var isRoomIncluded = false;
-			var isReady = room.room_status === "READY";
-			var isVacant = room.fo_status === "VACANT";
-			var isPreassigned = room.is_preassigned;
-			var isLocked = room.donot_move_room;
+	// 	// Iterating each room for filter.
+	// 	rooms.forEach(function (room) {
+	// 		var isRoomIncluded = false;
+	// 		var isReady = room.room_status === "READY";
+	// 		var isVacant = room.fo_status === "VACANT";
+	// 		var isPreassigned = room.is_preassigned;
+	// 		var isLocked = room.donot_move_room;
 
-			// Checking whether the room is to be displyed.
-			if (isReady && isVacant && !isPreassigned && !isLocked) {
-				if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
-					isRoomIncluded = true;
-				} else if (room.checkin_inspected_only === "false") {
-					isRoomIncluded = true;
-				}
-			}
+	// 		// Checking whether the room is to be displyed.
+	// 		if (isReady && isVacant && !isPreassigned && !isLocked) {
+	// 			if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
+	// 				isRoomIncluded = true;
+	// 			} else if (room.checkin_inspected_only === "false") {
+	// 				isRoomIncluded = true;
+	// 			}
+	// 		}
 
-			// CICO-9063, CICO-30640 show rooms regardless of hk status (excluded ooo) for future reservations.
-			if ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' && !room.is_preassigned) {
-				isRoomIncluded = true;
-			}
+	// 		// CICO-9063, CICO-30640 show rooms regardless of hk status (excluded ooo) for future reservations.
+	// 		if ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' && !room.is_preassigned) {
+	// 			isRoomIncluded = true;
+	// 		}
 
-			// Checking whether any of  predefined Filter condition satisfies
-			selectedPredefinedFiltersList.forEach(function(filter) {
-				if (room.room_features.indexOf(filter) !== -1) {
-					isRoomIncluded = true;
-				}
-			});
-			// Checking whether any of Filter condition satisfies
-			selectedFiltersList.forEach(function(filter) {
-				if (room.room_features.indexOf(filter) !== -1) {
-					isRoomIncluded = isRoomIncluded && true;
-				} else {
-					isRoomIncluded = isRoomIncluded && false;
-				}
-			});
-			// Checking Whether the Room to be displyed.
-			if (isRoomIncluded) {
-				// If floor filter applied, checking whether the room belongs to selected Floor.
-				if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
-					if (roomIdsInSelectedFloor.indexOf(room.room_id) !== -1) {
-						$scope.filteredRooms.push(room);
-						}
-				} else {
-				// If No floor filter applied,Directly pushed.
-					$scope.filteredRooms.push(room);
-				}
-                // CICO-44286
-                $scope.filteredRooms = _.sortBy($scope.filteredRooms, function (room) {
-                                            return room.room_number.toUpperCase();
-                                        });
-			}
+	// 		// Checking whether any of  predefined Filter condition satisfies
+	// 		selectedPredefinedFiltersList.forEach(function(filter) {
+	// 			if (room.room_features.indexOf(filter) !== -1) {
+	// 				isRoomIncluded = true;
+	// 			}
+	// 		});
+	// 		// Checking whether any of Filter condition satisfies
+	// 		selectedFiltersList.forEach(function(filter) {
+	// 			if (room.room_features.indexOf(filter) !== -1) {
+	// 				isRoomIncluded = isRoomIncluded && true;
+	// 			} else {
+	// 				isRoomIncluded = isRoomIncluded && false;
+	// 			}
+	// 		});
+	// 		// Checking Whether the Room to be displyed.
+	// 		if (isRoomIncluded) {
+	// 			// If floor filter applied, checking whether the room belongs to selected Floor.
+	// 			if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
+	// 				if (roomIdsInSelectedFloor.indexOf(room.room_id) !== -1) {
+	// 					$scope.filteredRooms.push(room);
+	// 					}
+	// 			} else {
+	// 			// If No floor filter applied,Directly pushed.
+	// 				$scope.filteredRooms.push(room);
+	// 			}
+ //                // CICO-44286
+ //                $scope.filteredRooms = _.sortBy($scope.filteredRooms, function (room) {
+ //                                            return room.room_number.toUpperCase();
+ //                                        });
+	// 		}
 
-		});
-	};
+	// 	});
+	// };
 	/**
 	* function to prepare the array of room ids of selected floors.
 	*/
@@ -932,7 +847,7 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.setSelectedFiltersList = function() {
 		$scope.selectedFiltersList = [];
 		$scope.selectedPredefinedFiltersList = [];
-		var length = $scope.roomFeatures[0].items.length,
+		var length = $scope.roomFeatures.length && $scope.roomFeatures[0].items.length,
 		roomFeatures = $scope.roomFeatures;
 
 		for (var j = 0; j < length; j++) {
@@ -955,32 +870,6 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.isRoomListEmpty = function() {
 		return ($scope.filteredRooms.length === 0);
 	};
-	/**
-	* function to add ids for predefined filters checking the corresponding status
-	*/
-	// $scope.setRoomsListWithPredefinedFilters = function() {
-	// 	for (var i = 0; i < $scope.rooms.length; i++) {
-	// 		if ($scope.rooms[i].room_status === "NOTREADY" && $scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status !== "CLEAN" && $scope.rooms[i].room_ready_status !== "INSPECTED") {
-	// 			$scope.rooms[i].room_features.push(-100);
-	// 		}
-	// 		if ($scope.rooms[i].fo_status === "DUEOUT")
-	// 		{
-	// 			$scope.rooms[i].room_features.push(-101);
-	// 		}
-	// 		if ($scope.rooms[i].is_preassigned) {
-	// 			$scope.rooms[i].room_features.push(-102);
-	// 		}
-	// 		// CICO-34005: show locked rooms only if this filter is on.
-	// 		// even if it is shown user will not be able to assign
-	// 		if ($scope.rooms[i].donot_move_room) {
-	// 			$scope.rooms[i].room_features.push(-102);
-	// 		}
-	// 		if ($scope.rooms[i].fo_status === "VACANT" && $scope.rooms[i].room_ready_status === "CLEAN" && $scope.rooms[i].checkin_inspected_only === "true")
-	// 		{
-	// 			$scope.rooms[i].room_features.push(-103);
-	// 		}
-	// 	}
-	// };
 
 	/**
 	 * Get the request params for fetching the available rooms
@@ -988,11 +877,11 @@ sntRover.controller('RVroomAssignmentController', [
 	 * @return {Object} requestParams - contains the params required for the API call
 	 */
 	var getRequestParams = function( pageNo, isSearch ) {
-			var requestParams = {};
-
-			requestParams.per_page = ROOMS_LISTING_PAGE_SIZE;
-			requestParams.page = pageNo;
-			requestParams.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+			var requestParams = {
+				per_page: ROOMS_LISTING_PAGE_SIZE,
+				page_no: pageNo,
+				reservation_id: $scope.reservationData.reservation_card.reservation_id 	
+			};
 
 			if ( isSearch ) {
 				requestParams.query = $scope.searchText;
@@ -1039,8 +928,8 @@ sntRover.controller('RVroomAssignmentController', [
 			$scope.filteredRooms = [];
 		},
 		// Search rooms for the given query string
-		doSearch = function() {
-			var params = getRequestParams(1, true);
+		doSearch = function( pageNo ) {
+			var params = getRequestParams(pageNo, true);
 
 			$scope.callAPI(RVRoomAssignmentSrv.searchRooms, {
                 params: params,
@@ -1050,7 +939,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 		},
 		// Get filtered rooms based on the room type selected
-	    getFilteredRooms = function( pageNo ) {
+	    getRoomsByRoomType = function( pageNo ) {
 			var params = getRequestParams(pageNo, false);
 
 			$scope.callAPI(RVRoomAssignmentSrv.getRoomsByRoomType, {
@@ -1059,12 +948,20 @@ sntRover.controller('RVroomAssignmentController', [
                 onFailure: onRoomFetchFailure
             });
 			
+		},
+		// Load the room listing data from the API response
+		loadAPIData = function( pageNo ) {
+			if ( $scope.isSearchActive ) {
+				doSearch( pageNo );
+			} else {
+				getRoomsByRoomType( pageNo );
+			}
 		},		
 		// Initialize the pagination control
 	    initPagination = function() {
 			$scope.paginationConfig = {
 	            id: 'roomsList',
-	            api: getFilteredRooms,
+	            api: loadAPIData,
 	            perPage: ROOMS_LISTING_PAGE_SIZE
 	        };
 		},
@@ -1074,12 +971,14 @@ sntRover.controller('RVroomAssignmentController', [
               $scope.$broadcast('updatePagination', 'roomsList');
         	}, 50);
 		},
+		// Refresh scroller
 		refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('roomlist');
 			}, 50);
 		};
 	$scope.init = function() {
+		console.log(roomsList.rooms);
 
 		$scope.roomTypes = roomPreferences.room_types;
 
@@ -1091,22 +990,13 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 
 		$scope.roomFeatures = roomPreferences.room_features;
-		//$scope.allRooms = roomsList.rooms;// $scope.allRooms - CICO-23077
-		//$scope.rooms = roomsList.rooms;//[];// CICO-23077
 		$scope.filteredRooms = roomsList.rooms;
-
-		// angular.forEach($scope.allRooms, function(value, key) {
-		// 	if (value.room_type_code === $stateParams.room_type) {
-		// 		$scope.rooms.push(value);
-		// 	}
-		// });
+		
 		$scope.floors = roomPreferences.floors.floor_details;
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.addPredefinedFilters();
 		$scope.setSelectedFiltersList();
-		$scope.reservation_occupancy = roomsList.reservation_occupancy;
-		//scope.setRoomsListWithPredefinedFilters();
-		//$scope.applyFilterToRooms();
+		$scope.reservation_occupancy = roomsList.reservation_occupancy;		
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.assignedRoom = "";
 		oldRoomType = $scope.roomType = $stateParams.room_type;
@@ -1121,16 +1011,17 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.totalCount = roomsList.total_count;
 		refreshScroller();
 		refreshPagination();
+		$scope.isSearchActive = false;
 	};
 	$scope.init();
 	/**
 	* function to handle floor filter.
 	*/
-	$scope.applyFloorFilter = function(floorFilterData) {
-		$scope.floorFilterData = floorFilterData;
-		$scope.setSelectedFiltersList();
-		$scope.applyFilterToRooms();
-	};
+	// $scope.applyFloorFilter = function(floorFilterData) {
+	// 	$scope.floorFilterData = floorFilterData;
+	// 	$scope.setSelectedFiltersList();
+	// 	$scope.applyFilterToRooms();
+	// };
 	/**
 	* function to determine whether to show unassignroom
 	*/

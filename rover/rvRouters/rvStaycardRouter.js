@@ -298,7 +298,7 @@ angular.module('stayCardModule', [])
                 roomsList: function (RVRoomAssignmentSrv, $stateParams) {
                     var params = {
                         reservation_id: $stateParams.reservation_id,
-                        page: 1,
+                        page_no: 1,
                         per_page: 10,
                         room_types_ids: [$stateParams.roomTypeId]
                     };

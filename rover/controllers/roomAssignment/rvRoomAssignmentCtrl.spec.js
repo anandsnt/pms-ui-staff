@@ -12,6 +12,9 @@ describe("RVroomAssignmentController", function() {
 				floor_details: []
 			},
 			room_features: []
+		},
+		roomsList = {
+			rooms: []
 		};
 
 	describe("Room types available for assignment in the case of group reservations", function() {
@@ -44,7 +47,7 @@ describe("RVroomAssignmentController", function() {
 			$controller("RVroomAssignmentController", {
 				$scope: $scope,
 				roomPreferences: roomPreferences,
-				roomsList: [],
+				roomsList: roomsList,
 				roomUpgrades: []
 
 			});
@@ -53,7 +56,7 @@ describe("RVroomAssignmentController", function() {
 		it("Should show suite rooms as well for group reservations in the room assignment screen", function() {
 			// We are actually testing init(), but this would be invoked during controller initialization
 			// So no need to invoke it again
-			expect($scope.roomTypes.length).toBe(56);
+			expect($scope.roomTypes.length).toBe(roomPreferences.room_types.length)
 		});
 
 	});   
@@ -85,7 +88,7 @@ describe("RVroomAssignmentController", function() {
 			$controller("RVroomAssignmentController", {
 				$scope: $scope,
 				roomPreferences: roomPreferences,
-				roomsList: [],
+				roomsList: roomsList,
 				roomUpgrades: []
 
 			});
@@ -95,7 +98,7 @@ describe("RVroomAssignmentController", function() {
 						
 			// We are actually testing init(), but this would be invoked during controller initialization
 			// So no need to invoke it again
-			expect($scope.roomTypes.length).toBe(29);
+			expect($scope.roomTypes.length).toBe(29)
 		});
 
 	});  
@@ -119,18 +122,26 @@ describe("RVroomAssignmentController", function() {
 						}
 					},
 					'reservation_card': {                    
-					}                
+					} ,
+					'roomFeatures': [
+						{
+							'items': []	
+						}
+					],
+					'filteredRooms': []
 				};
 
+				
+
 				angular.extend($scope, reservationDataSample);
-				$scope.$parent.reservation = reservationDataSample;
+				$scope.$parent.reservation = reservationDataSample;						
 				
 			});
 
 			$controller("RVroomAssignmentController", {
 				$scope: $scope,
 				roomPreferences: roomPreferences,
-				roomsList: [],
+				roomsList: roomsList,
 				roomUpgrades: []
 
 			});
@@ -139,8 +150,8 @@ describe("RVroomAssignmentController", function() {
 		it("Should show suite rooms as well for all normal reservations in the room assignment screen", function() {
 			
 			// We are actually testing init(), but this would be invoked during controller initialization
-			// So no need to invoke it again		
-			expect($scope.roomTypes.length).toBe(56);
+			// So no need to invoke it again
+			expect($scope.roomTypes.length).toBe(roomPreferences.room_types.length);
 		});
 
 	});    

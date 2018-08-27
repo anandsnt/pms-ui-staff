@@ -25,20 +25,20 @@ sntRover.controller('RVRoomFiltersController', ['$scope', '$state', '$stateParam
 		if ($scope.data.selectedFloor !== '')
 		{
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			var floorFilterdata = {
-				"isNoFloorSelected": $scope.data.isNoFloorSelected,
-				"selectedFloorId": $scope.data.selectedFloor
-			};
+			// var floorFilterdata = {
+			// 	"isNoFloorSelected": $scope.data.isNoFloorSelected,
+			// 	"selectedFloorId": $scope.data.selectedFloor
+			// };
 
-			$scope.$parent.applyFloorFilter(floorFilterdata);
+			//$scope.$parent.applyFloorFilter(floorFilterdata);
 		} else {
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
-			var floorFilterdata = {
-				"isNoFloorSelected": $scope.data.isNoFloorSelected,
-				"selectedFloorId": ''
-			};
+			// var floorFilterdata = {
+			// 	"isNoFloorSelected": $scope.data.isNoFloorSelected,
+			// 	"selectedFloorId": ''
+			// };
 
-			$scope.$parent.applyFloorFilter(floorFilterdata);
+			//$scope.$parent.applyFloorFilter(floorFilterdata);
 		}
 	};
 	/**
