@@ -24,6 +24,8 @@ sntRover.controller('RVroomAssignmentController', [
 		scope: $scope
 	};
 
+	var self = this;
+
 	const PRE_DEFINED_FILTERS = {
 			includeNotReady: {
 				id: -100,
@@ -65,7 +67,7 @@ sntRover.controller('RVroomAssignmentController', [
 	var selectedRoomObject = null;
 
 	$scope.errorMessage = '';
-	$scope.searchText = '';
+	
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 
 	$scope.setTitle(title);
@@ -100,7 +102,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 		$scope.currentRoomTypeId = (_.find($scope.roomTypes, {type: $scope.roomType})).id;
 		$scope.isSearchActive = false;
-		getRoomsByRoomType(1);
+		self.getRoomsByRoomType(1);
 	};
 
 	$scope.getCurrentRoomType = function() {
@@ -119,12 +121,13 @@ sntRover.controller('RVroomAssignmentController', [
 		if ($scope.searchText !== '' ) {
 			if (($rootScope.isSingleDigitSearch && $scope.searchText.length >= 1) || (!$rootScope.isSingleDigitSearch && $scope.searchText.length >= 2)) {
 				$scope.isSearchActive = true;
-				doSearch(1);
+				self.resetFilters();
+				self.doSearch(1);
 			}
 		} else {
 			$scope.filteredRooms = [];
 			$scope.isSearchActive = false;
-			getRoomsByRoomType(1);
+			self.getRoomsByRoomType(1);
 		}
 
 	};
@@ -591,7 +594,7 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.$on('roomFeaturesUpdated', function(event, data) {
 			$scope.roomFeatures = data;
 			$scope.setSelectedFiltersList();
-			getRoomsByRoomType(1);
+			self.getRoomsByRoomType(1);
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
@@ -876,7 +879,7 @@ sntRover.controller('RVroomAssignmentController', [
 	 * @param {Number} pageNo - current page no
 	 * @return {Object} requestParams - contains the params required for the API call
 	 */
-	var getRequestParams = function( pageNo, isSearch ) {
+	self.getRequestParams = function( pageNo, isSearch ) {
 			var requestParams = {
 				per_page: ROOMS_LISTING_PAGE_SIZE,
 				page_no: pageNo,
@@ -887,98 +890,105 @@ sntRover.controller('RVroomAssignmentController', [
 				requestParams.query = $scope.searchText;
 			} else {
 				requestParams.room_type_ids = [$scope.currentRoomTypeId];
+				requestParams.floor_id = $scope.selectedFloorId;
+
+				_.each($scope.selectedPredefinedFiltersList, function( filterId ) {
+					switch (filterId) {
+						case PRE_DEFINED_FILTERS.includeNotReady.id:
+							 requestParams[PRE_DEFINED_FILTERS.includeNotReady.param] = true;
+							 break;
+						case PRE_DEFINED_FILTERS.includeDueOut.id:
+							 requestParams[PRE_DEFINED_FILTERS.includeDueOut.param] = true;
+							 break;
+						case PRE_DEFINED_FILTERS.includePreassigned.id:
+							 requestParams[PRE_DEFINED_FILTERS.includePreassigned.param] = true;
+							 break;
+						case PRE_DEFINED_FILTERS.includeClean.id:
+							 requestParams[PRE_DEFINED_FILTERS.includeClean.param] = true;
+							 break;
+					}				
+				});
+
+				requestParams.selected_room_features = [];
+
+				_.each($scope.selectedFiltersList, function( filterId ) {				
+					requestParams.selected_room_features.push(filterId);				
+				});
 			}			
 
-			_.each($scope.selectedPredefinedFiltersList, function( filterId ) {
-				switch (filterId) {
-					case PRE_DEFINED_FILTERS.includeNotReady.id:
-						 requestParams[PRE_DEFINED_FILTERS.includeNotReady.param] = true;
-						 break;
-					case PRE_DEFINED_FILTERS.includeDueOut.id:
-						 requestParams[PRE_DEFINED_FILTERS.includeDueOut.param] = true;
-						 break;
-					case PRE_DEFINED_FILTERS.includePreassigned.id:
-						 requestParams[PRE_DEFINED_FILTERS.includePreassigned.param] = true;
-						 break;
-					case PRE_DEFINED_FILTERS.includeClean.id:
-						 requestParams[PRE_DEFINED_FILTERS.includeClean.param] = true;
-						 break;
-				}				
-			});
-
-			requestParams.selected_room_features = [];
-
-			_.each($scope.selectedFiltersList, function( filterId ) {				
-					requestParams.selected_room_features.push(filterId);				
-			});
-
 			return requestParams;
-
 		},
 		// Rooms list fetch success processing
-		onRoomsFetchSuccess = function (response) {			
+		self.onRoomsFetchSuccess = function (response) {			
 			$scope.filteredRooms = response.rooms;
 			$scope.reservation_occupancy = response.reservation_occupancy;			
 			$scope.totalCount = response.total_count;
-			refreshScroller();
-			refreshPagination();
+			self.refreshScroller();
+			self.refreshPagination();
 		},
 		// Room fetch failure callback
-		onRoomFetchFailure = function ( error) {
+		self.onRoomFetchFailure = function ( error) {
 			$scope.filteredRooms = [];
 		},
 		// Search rooms for the given query string
-		doSearch = function( pageNo ) {
-			var params = getRequestParams(pageNo, true);
+		self.doSearch = function( pageNo ) {
+			var params = self.getRequestParams(pageNo, true);
 
 			$scope.callAPI(RVRoomAssignmentSrv.searchRooms, {
                 params: params,
-                onSuccess: onRoomsFetchSuccess,
-                onFailure: onRoomFetchFailure
+                onSuccess: self.onRoomsFetchSuccess,
+                onFailure: self.onRoomFetchFailure
             });
 
 		},
 		// Get filtered rooms based on the room type selected
-	    getRoomsByRoomType = function( pageNo ) {
-			var params = getRequestParams(pageNo, false);
+	    self.getRoomsByRoomType = function( pageNo ) {
+			var params = self.getRequestParams(pageNo, false);
 
 			$scope.callAPI(RVRoomAssignmentSrv.getRoomsByRoomType, {
                 params: params,
-                onSuccess: onRoomsFetchSuccess,
-                onFailure: onRoomFetchFailure
+                onSuccess: self.onRoomsFetchSuccess,
+                onFailure: self.onRoomFetchFailure
             });
 			
 		},
 		// Load the room listing data from the API response
-		loadAPIData = function( pageNo ) {
+		self.loadAPIData = function( pageNo ) {
 			if ( $scope.isSearchActive ) {
-				doSearch( pageNo );
+				self.doSearch( pageNo );
 			} else {
-				getRoomsByRoomType( pageNo );
+				self.getRoomsByRoomType( pageNo );
 			}
 		},		
 		// Initialize the pagination control
-	    initPagination = function() {
+	    self.initPagination = function() {
 			$scope.paginationConfig = {
 	            id: 'roomsList',
-	            api: loadAPIData,
+	            api: self.loadAPIData,
 	            perPage: ROOMS_LISTING_PAGE_SIZE
 	        };
 		},
 		// Refresh pagination
-		refreshPagination = function() {
+		self.refreshPagination = function() {
 			$timeout(function () {
               $scope.$broadcast('updatePagination', 'roomsList');
         	}, 50);
 		},
 		// Refresh scroller
-		refreshScroller = function() {
+		self.refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller('roomlist');
 			}, 50);
+		},
+		// Reset filters
+		self.resetFilters = function () {
+			_.each($scope.roomFeatures, function (roomFeature) {
+				_.each( roomFeature.items, function (item) {
+					item.selected = false;
+				});
+			});
 		};
-	$scope.init = function() {
-		console.log(roomsList.rooms);
+	$scope.init = function() {	
 
 		$scope.roomTypes = roomPreferences.room_types;
 
@@ -1007,21 +1017,27 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.roomTransfer.oldRoomType = $scope.reservationData.reservation_card.room_type_description;
 
 		$scope.currentRoomTypeId = $stateParams.roomTypeId || '';
-		initPagination();
+		self.initPagination();
 		$scope.totalCount = roomsList.total_count;
-		refreshScroller();
-		refreshPagination();
+		self.refreshScroller();
+		self.refreshPagination();
 		$scope.isSearchActive = false;
+		$scope.searchText = '';
 	};
 	$scope.init();
+
 	/**
 	* function to handle floor filter.
 	*/
-	// $scope.applyFloorFilter = function(floorFilterData) {
-	// 	$scope.floorFilterData = floorFilterData;
-	// 	$scope.setSelectedFiltersList();
-	// 	$scope.applyFilterToRooms();
-	// };
+	$scope.applyFloorFilter = function(floorFilterData) {
+		$scope.floorFilterData = floorFilterData;
+
+		if (floorFilterData.selectedFloorId) {
+			$scope.selectedFloorId = floorFilterData.selectedFloorId;
+		} else {
+			$scope.selectedFloorId = '';
+		}		
+	};
 	/**
 	* function to determine whether to show unassignroom
 	*/
