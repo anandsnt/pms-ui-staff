@@ -417,6 +417,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.wsCCSwipeUrl = data.cc_swipe_listening_url;
                 $scope.zestStationData.wsCCSwipePort = data.cc_swipe_listening_port;
                 configureSwipeSettings();
+                getAdminWorkStations();
                 // create a websocket obj
                 $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             };
@@ -1825,7 +1826,7 @@ sntZestStation.controller('zsRootCtrl', [
             // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
-            getAdminWorkStations();
+            // getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
 
             $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
