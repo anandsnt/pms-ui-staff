@@ -5,7 +5,7 @@ describe('Filter: sntCurrency', function() {
 			currencySymbol: '$',
 			currencyFormat: '1,222,00'
 		};
-		
+
 	beforeEach(function () {
         module('sntRover');
     });
@@ -18,15 +18,54 @@ describe('Filter: sntCurrency', function() {
         });
     });
 
-
-
 	it('Test currencyFormat = 1,222,00 ', function() {
 
-		var input = 123456789.12345,
+		var input = 1234567890.12345,
 			result = '';
 
 		result = $filter('sntCurrency')(input, that);
 
-		expect(result).toBe('<span class="currency">$</span> 123,456,789');
+		expect(result).toBe('<span class="currency">$</span> 1,234,567,890,12');
+	});
+
+	it('Test currencyFormat = 1,222.00 ', function() {
+
+		var input = 1234567890.12345,
+			result = '';
+
+		result = $filter('sntCurrency')(input, that);
+
+		expect(result).toBe('<span class="currency">$</span> 1,234,567,890.12');
+	});
+
+	it('Test currencyFormat = 1.222 ', function() {
+
+		var input = 1234567890.12345,
+			result = '';
+
+		result = $filter('sntCurrency')(input, that);
+
+		expect(result).toBe('<span class="currency">$</span> 1.234.567.890');
+	});
+	
+	it('Test currencyFormat = 1,222 ', function() {
+
+		var input = 1234567890.12345,
+			result = '';
+
+		result = $filter('sntCurrency')(input, that);
+
+		expect(result).toBe('<span class="currency">$</span> 1,234,567,890');
+	});
+
+	it('Test isWithoutSymbol = true and currencyFormat = 1,222,00 ', function() {
+
+		var input = 1234567890.12345,
+			isWithoutSymbol = true,
+			result = '';
+
+		result = $filter('sntCurrency')(input, that, isWithoutSymbol);
+
+		expect(result).toBe('1,234,567,890,12');
 	});
 });
