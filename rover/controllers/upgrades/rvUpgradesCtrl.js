@@ -9,7 +9,6 @@ angular.module('sntRover').controller('RVUpgradesController',
 	  '$filter',
 	  'ngDialog',
 	  '$timeout',
-	  //'roomsList',
 	function($scope, $rootScope, $state, $stateParams, RVUpgradesSrv, RVReservationCardSrv, $sce, $filter, ngDialog, $timeout) {
 
 		BaseCtrl.call(this, $scope);
@@ -100,9 +99,6 @@ angular.module('sntRover').controller('RVUpgradesController',
 			var successCallbackgetAllUpgrades = function(data) {
 				// changes as per CICO-33405 - implemented same as in RVUpgradesCtrl - room assignment screen - CICO-29824
 				_.each(data.upsell_mapping, function(roomType) {
-					//var roomsInRoomType  = _.where(roomsList.rooms, {"room_type_id": roomType.upgrade_room_type_id_int});
-
-						//roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
 					var roomToUpgrade = data.room_for_room_type[roomType.upgrade_room_type_id_int];
 
 					if (roomToUpgrade) {

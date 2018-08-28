@@ -4,13 +4,7 @@ angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv',
 		var deferred = $q.defer();
 		var url =  '/staff/rooms/get_rooms';
 
-		RVBaseWebSrv.postJSON(url, param).then(function(data) {
-			var start = (param.page - 1) * param.per_page,
-			    end = start + param.per_page;
-
-			data.totalCount =  data.rooms.length;   
-			data.rooms = data.rooms.slice(start, end);
-
+		RVBaseWebSrv.postJSON(url, param).then(function(data) {		
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);

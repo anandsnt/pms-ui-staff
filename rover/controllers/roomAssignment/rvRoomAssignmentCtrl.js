@@ -98,8 +98,6 @@ sntRover.controller('RVroomAssignmentController', [
 	*/
 	$scope.getRooms = function() {
 		$scope.searchText = '';
-		var currentSelectedRoomType = $scope.roomType;
-
 		$scope.currentRoomTypeId = (_.find($scope.roomTypes, {type: $scope.roomType})).id;
 		$scope.isSearchActive = false;
 		self.getRoomsByRoomType(1);
@@ -115,7 +113,7 @@ sntRover.controller('RVroomAssignmentController', [
 	};
 
 	// Search for rooms having the query text irrespective of the room type
-	$scope.searchRoom = function() {
+	$scope.searchRoom = _.debounce(function() {
 		$scope.searchText = $scope.searchText.toUpperCase();
 
 		if ($scope.searchText !== '' ) {
@@ -130,7 +128,7 @@ sntRover.controller('RVroomAssignmentController', [
 			self.getRoomsByRoomType(1);
 		}
 
-	};
+	}, 1000);
 
 	$scope.moveInHouseRooms = function() {
 		$scope.selectedRoomType = $scope.getCurrentRoomType();
@@ -927,7 +925,7 @@ sntRover.controller('RVroomAssignmentController', [
 			self.refreshPagination();
 		},
 		// Room fetch failure callback
-		self.onRoomFetchFailure = function ( error) {
+		self.onRoomFetchFailure = function () {
 			$scope.filteredRooms = [];
 		},
 		// Search rooms for the given query string
@@ -988,8 +986,8 @@ sntRover.controller('RVroomAssignmentController', [
 				});
 			});
 		};
-	$scope.init = function() {	
 
+	$scope.init = function() {	
 		$scope.roomTypes = roomPreferences.room_types;
 
 		// CICO-54354 - Exclude suite room types for allotment reservations in room assignment screen as its not implemented
@@ -1073,8 +1071,9 @@ sntRover.controller('RVroomAssignmentController', [
 		$scope.closeDialog();
 	};
 
+	// Checks whether pagination should be shown or not
 	$scope.shouldShowPagination = function() {
 		return $scope.totalCount > ROOMS_LISTING_PAGE_SIZE;
-	}
+	};
 
 }]);

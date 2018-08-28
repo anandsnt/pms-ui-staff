@@ -31,7 +31,7 @@
                             <span class="icons icon-clear-search">Clear query</span>
                         </button>
                         <button type="submit" name="submit" class="icons icon-search">Search</button>
-                        <input class="query" placeholder="Search Room" type="search" autocomplete="off" ng-model="searchText" rv-delay-textbox delay="1000" function-to-fire="searchRoom">
+                        <input class="query" placeholder="Search Room" type="search" autocomplete="off" ng-model="searchText" ng-change="searchRoom()">
                     </div>
 					<div class="select">
 						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox" ng-options="roomTypeInfo.type as roomTypeInfo.description for roomTypeInfo in roomTypes">

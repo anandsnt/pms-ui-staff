@@ -122,7 +122,7 @@ describe("RVroomAssignmentController", function() {
 						}
 					},
 					'reservation_card': {                    
-					} ,
+					},
 					'roomFeatures': [
 						{
 							'items': []	
@@ -130,8 +130,6 @@ describe("RVroomAssignmentController", function() {
 					],
 					'filteredRooms': []
 				};
-
-				
 
 				angular.extend($scope, reservationDataSample);
 				$scope.$parent.reservation = reservationDataSample;						
