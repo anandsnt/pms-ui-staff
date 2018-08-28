@@ -11,7 +11,7 @@ module.exports = function(config) {
             './lib/js/angular-ui-router.min.js',
             './lib/js/angular-mocks.js',
             './directives/activityIndicator/**/*.js',
-            './sntCurrency/*.js',
+            './sntCurrency/*.js'
         ],
         browsers: ['ChromeHeadlessNoSandbox'],
         customLaunchers: {
