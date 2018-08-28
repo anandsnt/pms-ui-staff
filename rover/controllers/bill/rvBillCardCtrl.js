@@ -2049,7 +2049,7 @@ sntRover.controller('RVbillCardController',
 			$scope.checkoutInProgress = false;
 			return;
 		}
-
+		$scope.clickedPrint(getDefaultPrintParams());
 		var isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
 			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
 
@@ -2803,7 +2803,6 @@ sntRover.controller('RVbillCardController',
 			if (($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === 0.00 || $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00") && $scope.isViaReviewProcess) {
 				// If last bill - continue checkout..Else proceed Review process.
 				if (billCount === $scope.currentActiveBill + 1) {
-					$scope.clickedPrint(getDefaultPrintParams());					
 					$scope.clickedCompleteCheckout();					
 				}
 				else {
