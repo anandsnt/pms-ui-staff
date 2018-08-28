@@ -7,10 +7,6 @@ describe('Filter: sntCurrency', function() {
 		};
 
 	beforeEach(function () {
-        module('sntRover');
-    });
-
-	beforeEach(function () {
         module('sntCurrencyFilter');
         inject(function (_$filter_, _sntCurrency_ ) {
 			$filter = _$filter_;
