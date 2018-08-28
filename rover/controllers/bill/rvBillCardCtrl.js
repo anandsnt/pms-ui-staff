@@ -2049,7 +2049,6 @@ sntRover.controller('RVbillCardController',
 			$scope.checkoutInProgress = false;
 			return;
 		}
-		$scope.clickedPrint(getDefaultPrintParams());
 		var isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
 			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
 
@@ -2109,6 +2108,7 @@ sntRover.controller('RVbillCardController',
 				"opted_bills_for_email": optedBillForEmail
 			};
 			
+			$scope.clickedPrint(getDefaultPrintParams());
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
@@ -2168,7 +2168,8 @@ sntRover.controller('RVbillCardController',
 				"signature": signatureBase64Data,
 				"opted_bills_for_email": optedBillForEmail
 			};
-
+			
+			$scope.clickedPrint(getDefaultPrintParams());
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
