@@ -1878,7 +1878,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
             
-            if ($scope.isIpad) {
+            if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,
                     // leave app_version null and autoIpadKeyboardEnabled to false
