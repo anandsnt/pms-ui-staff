@@ -53,7 +53,8 @@ sntRover.controller('RVroomAssignmentController', [
 			}
 
 		},
-		ROOMS_LISTING_PAGE_SIZE = 10;
+		ROOMS_LISTING_PAGE_SIZE = 10,
+		ROOM_LIST_SCROLLER = 'roomlist';
 
 	BaseCtrl.call(this, $scope);
 
@@ -73,7 +74,7 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.setTitle(title);
 
 	setTimeout(function() {
-				$scope.refreshScroller('roomlist');
+				$scope.refreshScroller(ROOM_LIST_SCROLLER);
 				$scope.refreshScroller('filterlist');
 				},
 			3000);
@@ -583,7 +584,7 @@ sntRover.controller('RVroomAssignmentController', [
 	*/
 	var scrollerOptions = { preventDefault: false};
 
-  	$scope.setScroller('roomlist', scrollerOptions);
+  	$scope.setScroller(ROOM_LIST_SCROLLER, scrollerOptions);
   	$scope.setScroller('filterlist', scrollerOptions);
 
 	/**
@@ -924,6 +925,9 @@ sntRover.controller('RVroomAssignmentController', [
 			$scope.reservation_occupancy = response.reservation_occupancy;			
 			$scope.totalCount = response.total_count;
 			self.refreshScroller();
+			if ($scope.myScroll.hasOwnProperty(ROOM_LIST_SCROLLER) ) {
+				$scope.myScroll[ROOM_LIST_SCROLLER].scrollTo(0, 0, 100);
+			}
 			self.refreshPagination();
 		},
 		// Room fetch failure callback
@@ -977,7 +981,7 @@ sntRover.controller('RVroomAssignmentController', [
 		// Refresh scroller
 		self.refreshScroller = function() {
 			$timeout(function() {
-				$scope.refreshScroller('roomlist');
+				$scope.refreshScroller(ROOM_LIST_SCROLLER);
 			}, 50);
 		},
 		// Reset filters
