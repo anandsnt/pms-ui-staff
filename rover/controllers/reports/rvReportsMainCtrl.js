@@ -144,7 +144,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     date: $scope.reportInboxPageState.returnDate
                 });
             } else {
-                $state.go('rover.reports.dashboard', { refresh: false });
+                // This is for handling the case when user navigate back from the other states back to report state
+                // eg: For arrival report, the user can navigate to staycard and come back again to report details screen
+                // In such case, the report list should be processed again to set the flags and so
+                var shouldRefresh = $scope.shouldProcessReportList ? $scope.shouldProcessReportList : false;
+
+                $state.go('rover.reports.dashboard', { refresh: shouldRefresh});
+
+                $scope.shouldProcessReportList = false;
             }
         };
 
@@ -450,10 +457,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (!angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj)) {
                     item.chosenDueInArrivals = false;
                 }
+                // CICO-56206
+                if (item.fromDate > item.untilDate) {
+                    item.untilDate = item.fromDate;
+                }
             }
             if (item.title === reportNames['DEPARTURE']) {
                 if (!angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj)) {
                     item.chosenDueOutDepartures = false;
+                }
+
+                // CICO-56206
+                if (item.fromDate > item.untilDate) {
+                    item.untilDate = item.fromDate;
                 }
             }
         };
@@ -2843,6 +2859,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (transitionParams.report) {
                 $scope.selectedReport = transitionParams.report;
                 $scope.genReport(true, transitionParams.page);
+                // CICO-55905 - Report list should be processed again to set the flags once comming back from other unreleated states
+                $scope.shouldProcessReportList = true;
             }
 
         })();

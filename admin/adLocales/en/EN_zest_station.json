@@ -42,7 +42,7 @@
 "STATION_REMOVE_FILE" :"Remove File",
 "USE_V1_SCAN": "Use V1 lib for passport scan",
 
-"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"Prompt to Scan Guest ID(s) During Check-In and Pickup Keys",
+"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"During Check-In and Pickup Keys - SAMSOTECH",
 
 "ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
 "BOOKING_URL":"Booking Engine URL",
@@ -158,7 +158,9 @@
 "STAFF_NOTIFICATION_SOUND": "Staff notification sound",
 "ROOM_PIN_PREFIX_TEXT": "Room PIN text",
 "RE_VERIFY_IDS": "Re-Verify ID",
-"ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY": "Always require staff to verify ID during the key pick up"
+"ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY": "Always require staff to verify ID during the key pick up",
+
+"ADD_LOYALTY_PGMS": "Add Loyalty Programs"
 
 
 
