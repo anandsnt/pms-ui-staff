@@ -3193,7 +3193,7 @@ sntRover.controller('RVbillCardController',
 			var obj = {};
 
 			obj.billId = bill.bill_id;
-			obj.isOptedForEmail = (index === 0);
+			obj.isOptedForEmail = ( index === 0 && $scope.reservationBillData.is_email_enabled_on_checkout );
 			$scope.emailOptedStatusList.push(obj);
 		});
 
