@@ -235,10 +235,9 @@
                 </ul>
             </div>
         </div>
-        <form class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
-            <div class="wrapper">
-                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <div id="set-payment" class="payment-form for-reservation" ng-if="!!reservationData.reservationId">
+        <div class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
+            <div class="wrapper" ng-class="{'reservation-summary-scroll-fix': shouldIncludeScrollFixClass}">                
+                <div id="set-payment" class="payment-form" ng-if="!!reservationData.reservationId">
                     <snt-payment
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
@@ -272,8 +271,10 @@
                                 ng-disabled="isContinueDisabled()" ng-click="clickedContinueButton()">Continue
                         </button>
                     </div>
+                    
+
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </section>

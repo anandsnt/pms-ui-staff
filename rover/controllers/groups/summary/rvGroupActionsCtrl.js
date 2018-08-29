@@ -1,5 +1,5 @@
-sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv', 'dateFilter',
-    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv, dateFilter) {
+sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvGroupActionsSrv', 'rvUtilSrv', 'dateFilter', 'rvPermissionSrv', 'rvActionTasksSrv',
+    function($scope, $filter, $rootScope, ngDialog, rvGroupActionsSrv, rvUtilSrv, dateFilter, rvPermissionSrv, rvActionTasksSrv) {
 
         /*
          *To save the reservation note and update the ui accordingly
@@ -1322,9 +1322,178 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
         // Close the active dialog
         $scope.closeDialog = function() {
             ngDialog.close();
-        };     
+        };
 
+        /**
+         * Update the selected action with the edited data
+         * @param {Object} params holding the updated action details
+         * @return {void}
+         */
+        var updateSelectedAction = function(params) {
 
+                var onSuccess = function() {
+                    // switch back to selected
+                    $scope.actionSelected = 'selected';
+                    $scope.lastSelectedItemId = params.action_task.id;
+                    $scope.refreshActionList();
+                    $scope.clearAssignSection();
+                };
+                var onFailure = function(data) {
+                    // show failed msg, so user can try again-?
+                    if (data[0]) {
+                        $scope.errorMessage = 'Internal Error Occured';
+                    }
+                    $scope.$parent.$emit('hideLoader');
+                };
+
+                $scope.invokeApi(rvGroupActionsSrv.updateNewAction, params, onSuccess, onFailure);
+           
+        };
+        
+        // Get the action status info
+        $scope.getActionStatusInfo = function(action) {
+            var status = action.action_status;
+
+            if (status === 'delete') {
+                status = 'Delete Action?';
+            } else if (action.over_due && status !== 'COMPLETED') {
+                status = 'OVERDUE';
+            }
+
+            return status;
+        };
+
+        // Checks whether edit/complete btn should be shown or not
+        $scope.shouldShowEditAndCompleteBtns = function(action) {            
+            return ['UNASSIGNED', 'ASSIGNED'].indexOf(action.action_status) > -1 ;
+        };
+
+        // Checks whether the delete action btn should be shown or not
+        $scope.shouldShowDeleteBtn = function(action) {            
+            return ['UNASSIGNED', 'ASSIGNED', 'COMPLETED'].indexOf(action.action_status) > -1 ;
+        };
+
+        // Prepare the edit action screen
+        $scope.prepareEditAction = function(action) {
+            $scope.actionSelected = 'edit';
+            var assignedTo = action.assigned_to,
+                department = '';
+
+            if (assignedTo && assignedTo.id) {                
+                department = _.findWhere($scope.departments, { value: assignedTo.id + "" });
+            }
+
+            $scope.newAction = {
+                department: department,
+                time_due: action.due_at_time,
+                date_due: action.due_at_date,
+                hasDate: true,
+                notes: action.description,
+                actionId: action.id
+            };
+        };
+
+        // Get the params required for updating an action
+        var getUpdateRequestParams = function() {            
+            var params = {
+                'group_id': $scope.groupConfigData.summary.group_id,
+                'action_task': {
+                    'id': $scope.newAction.actionId
+                }
+            };            
+
+            if ($scope.newAction.department) {
+               params.assigned_to = $scope.newAction.department.value;               
+            } else {
+              params.assigned_to = '';  
+            }
+
+            if ($scope.newAction.date_due) {
+                var dateObj = $scope.newAction.dueDateObj;
+
+                if (!dateObj) {
+                    var dateParts = $scope.newAction.date_due.split('-');
+                    
+                    dateObj = getTZIndependentDateFromDayMonthYear(dateParts[0], dateParts[1], dateParts[2]);
+                }
+
+                params.due_at = $filter('date')(dateObj, $rootScope.dateFormatForAPI) +
+                    ($scope.newAction.time_due ? "T" + $scope.newAction.time_due + ":00" : "");
+            }
+
+            if ($scope.newAction.notes) {
+                params.action_task.description = $scope.newAction.notes;
+            }
+
+            return params;
+        };
+
+        // Handler for the update action
+        $scope.handleActionUpdate = function() {
+            var params = getUpdateRequestParams();
+
+            updateSelectedAction(params);
+        };
+
+        // Cancel the action edit operation
+        $scope.cancel = function() {
+            $scope.actionSelected = 'selected';
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToEditAction = function() {
+            return rvPermissionSrv.getPermissionValue('EDIT_ACTION');
+        };
+
+        // Prepare delete Action
+        $scope.prepareDeletAction = function() {
+            $scope.selectedAction.originalStatus = $scope.selectedAction.action_status;
+            $scope.selectedAction.action_status = 'delete';
+        };
+
+        // Delete action
+        $scope.deleteAction = function() {
+          var onSuccess = function() {                    
+                    $scope.fetchActionsList();
+                    $scope.refreshScroller("rvActionListScroller");
+                    $scope.$emit("SET_ACTIONS_COUNT", {deletedActionStatus: $scope.selectedAction.action_status});
+                },
+                onFailure = function(data) {
+                    // show failed msg, so user can try again-?
+                    if (data[0]) {
+                        $scope.errorMessage = 'Internal Error Occured';
+                    }                    
+                };
+            var apiConfig = {
+                params: $scope.selectedAction.id,
+                onSuccess: onSuccess,
+                onFailure: onFailure
+            };
+
+            $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToDeleteAction = function() {
+            return rvPermissionSrv.getPermissionValue('DELETE_ACTION');
+        };
+
+        // Cancel delete operation
+        $scope.cancelDelete = function() {
+            $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
+        };
+
+        // Get action status based class name
+        $scope.getActionStatusClass = function(action) {
+            var status = action.action_status;
+
+            if (status === 'delete') {
+                status = action.originalStatus;
+            }
+
+            return status;
+        };
+        
         init();
     }
 ]);

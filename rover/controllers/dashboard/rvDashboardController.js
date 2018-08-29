@@ -173,6 +173,20 @@ sntRover.controller('RVdashboardController',
                     } else {
                         
                         $rootScope.workstation_id = data.id;
+                        if (($rootScope.hotelPaymentConfig.paymentGateway === 'MLI' && $rootScope.hotelPaymentConfig.isEMVEnabled) ||
+                            $rootScope.hotelPaymentConfig.paymentGateway === 'sixpayments') {
+                            var options = {
+                                params: {
+                                    'hotel_id': $scope.hotelDetails.userHotelsData.current_hotel_id
+                                },
+                                'loader': 'none',
+                                'failureCallBack': function() {
+                                    // do nothing
+                                }
+                            };
+
+                            $scope.callAPI(RVWorkstationSrv.cancelEMVActions, options);
+                        }
                         setInfrasecDetails();
                         $scope.$emit('hideLoader');
                     }

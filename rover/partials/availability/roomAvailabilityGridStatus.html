@@ -114,8 +114,9 @@
 				<tr class="italic" ng-class="{'hide-row': !toggleStatusOf.availableRooms, 'different': data.additionalData.roomTypeNames[$index].is_suite}" ng-repeat="roomTypeWiseDetail in data.additionalData.roomTypeWiseDetails track by $index">
 					<th scope="row" ng-bind="data.additionalData.roomTypeNames[$index].name"></th>
 
-					<td ng-repeat="roomType in roomTypeWiseDetail track by $index">
-						<div class="inner" ng-bind="roomType.availability" ng-class="{ 'unavailable': 0 >= roomType.availability, 'warning': 5 >= roomType.availability}"></div>
+					<td ng-repeat="roomType in roomTypeWiseDetail track by $index">						
+						<button type="button" class="button white" ng-class="{ 'unavailable': roomType.availability <= 0, 'warning': roomType.availability > 0 && roomType.availability <= 5}" ng-click="navigateToCreateReservation(roomType, data.dates, $index)">{{roomType.availability}}</button>
+						
 					</td>
 				</tr>
 			</tbody>

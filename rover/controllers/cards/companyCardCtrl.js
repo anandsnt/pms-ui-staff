@@ -49,6 +49,9 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 			}
+			if (tabToSwitch === 'cc-activity-log') {
+				$scope.$broadcast("activityLogTabActive");
+			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
