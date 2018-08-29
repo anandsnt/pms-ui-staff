@@ -3487,6 +3487,7 @@
                                     vertical-align: top;
 
                                     &.details { 
+                                        text-transform: uppercase;
                                         color: @grey3; 
 
                                         strong {
@@ -3494,6 +3495,7 @@
                                             font-weight: 400;
                                             color: @textColor;
                                             margin-right: 10px;
+                                            display: inline-block;
 
                                             &:after {
                                                 content: "|";
@@ -3506,16 +3508,16 @@
                                             &:last-child {
                                                 &:after { .hide; }
                                             }
-                                        }                             
-                                    }
-                                }
+                                        }
 
-                                .old { 
-                                    text-decoration: line-through;
+                                        .old { 
+                                            text-decoration: line-through;
 
-                                    strong {
-                                        color: @grey3;
-                                        &:after { .show; }
+                                            strong {
+                                                color: @grey3;
+                                                &:after { .show; }
+                                            }
+                                        }                           
                                     }
                                 }
                             }
