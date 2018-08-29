@@ -8,13 +8,14 @@
 sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
-    '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
+    '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
     'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller',
     function($scope,
 		zsEventConstants,
 		$state,
 		zsGeneralSrv,
+        zsPaymentSrv,
 		$rootScope,
 		ngDialog,
 		$sce,
@@ -173,6 +174,7 @@ sntZestStation.controller('zsRootCtrl', [
             var currentState = $state.current.name;
 
             $scope.trackEvent(currentState, 'clicked_close_button');
+            $scope.$broadcast('CLICKED_ON_CANCEL_BUTTON');
             $state.go('zest_station.home');
             if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
                 $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
@@ -415,6 +417,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.wsCCSwipeUrl = data.cc_swipe_listening_url;
                 $scope.zestStationData.wsCCSwipePort = data.cc_swipe_listening_port;
                 configureSwipeSettings();
+                getAdminWorkStations();
                 // create a websocket obj
                 $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             };
@@ -1347,6 +1350,23 @@ sntZestStation.controller('zsRootCtrl', [
         }
         storage.setItem(refreshedKey, 'false');
 
+        var cancelEmvActions = function() {
+            if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
+                $scope.zestStationData.paymentGateway === 'sixpayments') {
+                var options = {
+                    params: {
+                        'hotel_id': $scope.zestStationData.hotel_id
+                    },
+                    'loader': 'none',
+                    'failureCallBack': function() {
+                        // do nothing
+                    }
+                };
+
+                $scope.callAPI(zsPaymentSrv.cancelEMVActions, options);
+            }
+        };
+        $scope.$on('CANCEL_EMV_ACTIONS', cancelEmvActions);
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -1411,6 +1431,7 @@ sntZestStation.controller('zsRootCtrl', [
                 } else {
                     return;
                 }
+                cancelEmvActions();
             }
         };
 		/**
@@ -1775,7 +1796,7 @@ sntZestStation.controller('zsRootCtrl', [
                 setupLanguageTranslations();
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
-            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard       
+            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.view_scanned_guest_id;// _active is to View from StayCard       
             $scope.zestStationData.v1GuestIDScanning =  $scope.zestStationData.scanner_use_v1_lib ? 'true' : false;
 
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
@@ -1805,7 +1826,7 @@ sntZestStation.controller('zsRootCtrl', [
             // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
-            getAdminWorkStations();
+            // getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
 
             $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
@@ -1858,7 +1879,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
             
-            if ($scope.isIpad) {
+            if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,
                     // leave app_version null and autoIpadKeyboardEnabled to false

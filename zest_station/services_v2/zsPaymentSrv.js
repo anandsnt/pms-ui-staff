@@ -11,6 +11,12 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
 
         var paymentData = null;
 
+        this.cancelEMVActions = function(params) {
+            var url = '/api/cc/emv_cancel';
+
+            return zsBaseWebSrv.postJSON(url, params);
+        };
+
         this.setPaymentData = function (data) {
             paymentData = angular.copy(data);
         };
@@ -172,18 +178,6 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
 
 
         this.authorizeCC = function(postData) {
-            // send is_emv_request = true, to init sixpay device and capture card
-            // var deferred = $q.defer();
-            // var url = '/api/cc/authorize';
-            // zsBaseWebSrv.postJSON(url, postData).then(function(data) {
-            //     deferred.resolve(data);
-            // }, function(data) {
-            //     deferred.reject(data);
-            // });
-            // return deferred.promise;
-            // 
-            
-            // for emv actions we need a timer
             var timeStampInSeconds = 0;
             var incrementTimer = function() {
                 timeStampInSeconds++;
@@ -192,21 +186,22 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
 
             var deferred = $q.defer();
             var url = '/api/cc/authorize';
+
             var pollToTerminal = function(async_callback_url) {
-                // we will continously communicate with the terminal till 
+                // we will continously communicate with the terminal till
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= $rootScope.emvTimeout) {
-                    var errors = ["Request timed out. Unable to process the transaction"];
+                    var errors = ['Request timed out. Unable to process the transaction'];
 
                     clearInterval(refreshIntervalId);
                     deferred.reject(errors);
                 } else {
                     zsBaseWebSrv.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
                         // if the request is still not proccesed
-                        if ((!!data.status && data.status === 'processing_not_completed') || data === "null") {
+                        if (!!data.status && data.status === 'processing_not_completed' || data === 'null') {
                             // is this same URL ?
                             setTimeout(function() {
-                                console.info("POLLING::-> for emv terminal response");
+                                console.info('POLLING::-> for emv terminal response');
                                 pollToTerminal(async_callback_url);
                             }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
@@ -223,7 +218,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                     });
                 }
             };
-           
+
 
             zsBaseWebSrv.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
                 // if connect to emv terminal is neeeded
