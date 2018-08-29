@@ -654,12 +654,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/snapshotSetup/subGroupMapping'
     });
 
-    $stateProvider.state('admin.guestIdSetup', {
-        templateUrl: '/assets/partials/guestIdSetup/adGuestIDSetup.html',
-        controller: 'ADGuestIDSetup',
-        url: '/guestIdSetup'
-    });
-
     $stateProvider.state('admin.monitorScreen', {
         templateUrl: '/assets/partials/interfaces/Monitor/adInterfaceMonitor.html',
         controller: 'ADInterfaceMonitorCtrl',

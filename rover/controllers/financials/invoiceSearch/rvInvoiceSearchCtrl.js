@@ -166,7 +166,7 @@ sntRover.controller('RVInvoiceSearchController',
 						if ( sntapp.cordovaLoaded ) {
 							cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
 						}
-					}, 200);
+					}, 1000);
 
 					/*
 					*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -179,7 +179,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 						// remove the orientation after similar delay
 						removePrintOrientation();
-					}, 200);
+					}, 1000);
 
 				},
 				printDataFailureCallback = function(errorData) {
