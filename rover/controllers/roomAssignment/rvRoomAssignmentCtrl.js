@@ -590,9 +590,11 @@ sntRover.controller('RVroomAssignmentController', [
 	* Listener to update the room list when the filters changes
 	*/
 	$scope.$on('roomFeaturesUpdated', function(event, data) {
-			$scope.roomFeatures = data;
-			$scope.setSelectedFiltersList();
-			self.getRoomsByRoomType(1);
+		$scope.isSearchActive = false;
+		$scope.searchText = '';
+		$scope.roomFeatures = data;
+		$scope.setSelectedFiltersList();
+		self.getRoomsByRoomType(1);
 	});
 	/**
 	* Listener to update the reservation details on upgrade selection
