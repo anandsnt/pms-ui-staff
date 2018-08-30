@@ -10,9 +10,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		$scope.isEmptyObject = isEmptyObject;
 
-		$scope.hasPermissionForCommissionUpdate = function() {
-			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
-		};
+        $scope.hasPermissionToEditCommission = rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') &&
+            $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDOUT';
 
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
@@ -96,14 +95,14 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 					"id": $scope.reservationParentData.reservationId,
 					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
 				},				
-				successCallBackOfUpdate = function(data) {
-					$scope.errorMessage = data;
+				successCallBackOfUpdate = function(response) {
 					if (!$scope.additionalDetails.isTaxExemptEnabled) {
 						$scope.additionalDetails.taxExemptType = '';
 					}
+					$scope.reservationData.reservation_card.balance_amount = response.data.current_balance;
 				},
-				failureCallBackOfUpdate = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
+				failureCallBackOfUpdate = function(response) {
+					$scope.errorMessage = response.errors;
 				};
 
 			if ($scope.additionalDetails.isTaxExemptEnabled) {
@@ -133,6 +132,35 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				$scope.updateTaxExemptData();
 			}			
 		};
+
+		/*
+		 * Toggle commission
+		 */
+		$scope.toggleCommission = function() {
+            $scope.reservationData.reservation_card.commission_details.is_on = !$scope.reservationData.reservation_card.commission_details.is_on;
+            $scope.updateCommissionFromStaycard();
+        };
+
+        /*
+         * Save commission details
+         */
+        $scope.updateCommissionFromStaycard = function() {
+            var params = $scope.reservationData.reservation_card.commission_details;
+
+            params.reservationId = $scope.reservationParentData.reservationId;
+
+            var	options = {
+                params: params,
+                successCallBack: function(data) {
+                    $scope.reservationData.reservation_card.commission_details = data.commission_details;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                }
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.updateCommission, options);
+        };
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;

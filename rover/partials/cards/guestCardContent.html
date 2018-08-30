@@ -17,6 +17,9 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
+            <li ng-class="{'ui-tabs-active': current == 'activity-log'}" click-touch="guestCardTabSwitch('activity-log')">
+                <a>Activity Log</a>
+            </li>
             <li ng-if="isStandAlone" ng-class="{'ui-tabs-active': current == 'notes'}" ng-click="guestCardTabSwitch('notes')">
                 <a id="guest-credit">Notes</a>
             </li>             
@@ -30,6 +33,8 @@
         <span ng-include="'/assets/partials/guestCard/guestCardPayment.html'"></span>
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
+        <!-- Guest Card Tab 5 Activity Log-->
+        <span ng-show="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-if="current == 'notes' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardNotes.html'"></span>
     </div>
