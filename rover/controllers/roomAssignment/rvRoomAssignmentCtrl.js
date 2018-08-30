@@ -755,7 +755,7 @@ sntRover.controller('RVroomAssignmentController', [
 			group.items.push(PRE_DEFINED_FILTERS.includeDueOut);
 		}
 		group.items.push(PRE_DEFINED_FILTERS.includePreassigned);
-		if ($scope.filteredRooms.length > 0 && $scope.filteredRooms[0].checkin_inspected_only === "true") {
+		if ($scope.filteredRooms[0].checkin_inspected_only === "true") {
 			group.items.push(PRE_DEFINED_FILTERS.includeClean);
 		}
 		$scope.roomFeatures.splice(0, 0, group);
