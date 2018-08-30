@@ -755,7 +755,7 @@ sntRover.controller('RVroomAssignmentController', [
 			group.items.push(PRE_DEFINED_FILTERS.includeDueOut);
 		}
 		group.items.push(PRE_DEFINED_FILTERS.includePreassigned);
-		if ($scope.filteredRooms[0].checkin_inspected_only === "true") {
+		if ($scope.checkInInspectedOnly) {
 			group.items.push(PRE_DEFINED_FILTERS.includeClean);
 		}
 		$scope.roomFeatures.splice(0, 0, group);
@@ -924,6 +924,7 @@ sntRover.controller('RVroomAssignmentController', [
 			$scope.filteredRooms = response.rooms;
 			$scope.reservation_occupancy = response.reservation_occupancy;			
 			$scope.totalCount = response.total_count;
+			$scope.checkInInspectedOnly = response.checkin_inspected_only;
 			self.refreshScroller();
 			if ($scope.myScroll.hasOwnProperty(ROOM_LIST_SCROLLER) ) {
 				$scope.myScroll[ROOM_LIST_SCROLLER].scrollTo(0, 0, 100);
@@ -1008,6 +1009,7 @@ sntRover.controller('RVroomAssignmentController', [
 		
 		$scope.floors = roomPreferences.floors.floor_details;
 		$scope.reservationData = $scope.$parent.reservation;
+		$scope.checkInInspectedOnly = roomsList.checkin_inspected_only;
 		$scope.addPredefinedFilters();
 		$scope.setSelectedFiltersList();
 		$scope.reservation_occupancy = roomsList.reservation_occupancy;		
@@ -1022,7 +1024,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 		$scope.currentRoomTypeId = $stateParams.roomTypeId || '';
 		self.initPagination();
-		$scope.totalCount = roomsList.total_count;
+		$scope.totalCount = roomsList.total_count;		
 		self.refreshScroller();
 		self.refreshPagination();
 		$scope.isSearchActive = false;
