@@ -208,10 +208,6 @@ admin.controller('ADAppCtrl', [
                                 menuIndex: 'cards'
                             },
                             {
-                                title: 'MENU_DISTRIBUTION_MANAGER',
-                                action: ''
-                            },
-                            {
                                 title: 'MENU_SELL_LIMITS',
                                 action: 'rover.overbooking',
                                 actionParams: {

@@ -15,11 +15,6 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             }));
         };
 
-
-        $scope.$on('RESET_TIMER', function() {
-            $scope.resetTime();
-        });
-
         $scope.reTryCardSwipe = function() {
             if ($scope.screenMode.isUsingExistingCardPayment) {
                 $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
@@ -35,6 +30,8 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.screenMode.paymentAction = 'PAY_AMOUNT';
             var paymentParams = zsPaymentSrv.getPaymentData();
 
+            $scope.balanceDueForDisplay = paymentParams.amount;
+            paymentParams.amount = paymentParams.amount.replace (/,/g, "");
             $scope.balanceDue = parseFloat(paymentParams.amount);
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;

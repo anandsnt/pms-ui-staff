@@ -46,7 +46,9 @@ module.exports = {
             'freehand-la': [themeCSSRoot + 'freehand-la.less'],
             'east-london': [themeCSSRoot + 'east-london.less'],
             'farmers-daughter': [themeCSSRoot + 'farmers-daughter.less'],
-            'park-james': [themeCSSRoot + 'park-james.less']
+            'park-james': [themeCSSRoot + 'park-james.less'],
+            'annapolis': [themeCSSRoot + 'annapolis.less'],
+            'origin': [themeCSSRoot + 'origin.less']
         };
     }
 };
