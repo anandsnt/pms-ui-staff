@@ -149,6 +149,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		var delayedExec = function(after, fn) {
 
 			var timer;
+			
 			return function() {
 				scrollCount += 1;
 				timer && clearTimeout(timer);
