@@ -114,7 +114,7 @@
 
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn), 'no-options': !isStandAlone}"  div-touch-move-stop-propogate > <!-- Add class "has-pagination" if pagination will exist on tablets -->
-    <ul class="search-results" ng-hide="uiTotalCount == 0" on-scroll="incrementScrollCount()" on-scroll-complete="resetScrollCount()">
+    <ul class="search-results" ng-hide="uiTotalCount == 0">
         <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
             <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ netTotalCount }}</strong> items</p>
             <p class="pull-msg" ng-show="!disablePrevBtn">Pull down to load previous page</p>
