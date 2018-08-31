@@ -99,14 +99,21 @@
 
             &.with-button {
                 input,
+                .select,
                 .button {
                     .pull-left;
                 }
 
-                input {
-                    width: auto;
+                input,
+                .select {
                     max-width: 50%;
                     margin-right: 10px;
+                }
+
+                input { width: auto; }
+
+                select {
+                    width: 200px;
                 }
             }
 
