@@ -1212,6 +1212,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.socketOperator.EjectKeyCard();
             }
         });
+
+        $scope.$on('CAPTURE_KEY_CARD', function() {
+            if ($scope.zestStationData.keyCardInserted) {
+                $scope.socketOperator.CaptureKeyCard();
+            }
+        });
 		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  ends here
