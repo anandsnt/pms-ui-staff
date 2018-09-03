@@ -301,7 +301,7 @@ angular.module('stayCardModule', [])
                         page_no: 1,
                         per_page: 10,
                         room_types_ids: [$stateParams.roomTypeId],
-                        include_user_preferences: true
+                        use_default_guest_preferences: true
                     };
 
                     // params.room_type = $stateParams.room_type;
