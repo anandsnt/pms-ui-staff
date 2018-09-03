@@ -175,10 +175,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 'is_kiosk': true
             };
             var checkOutSuccess = function () {
-                if ($scope.zestStationData.keyCardInserted) {
-                    $scope.zestStationData.keyCaptureDone = true;
-                    $scope.socketOperator.CaptureKeyCard();
-                }
+                $scope.$emit('CAPTURE_KEY_CARD');
                 var guest_bill = $scope.zestStationData.guest_bill;
 
                 // guest_bill.email refers to update email not the send email
