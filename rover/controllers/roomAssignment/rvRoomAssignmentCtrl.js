@@ -889,6 +889,11 @@ sntRover.controller('RVroomAssignmentController', [
 
 			if ( isSearch ) {
 				requestParams.query = $scope.searchText;
+				requestParams[PRE_DEFINED_FILTERS.includeNotReady.param] = true;
+				requestParams[PRE_DEFINED_FILTERS.includeDueOut.param] = true;
+				requestParams[PRE_DEFINED_FILTERS.includePreassigned.param] = true;
+				requestParams[PRE_DEFINED_FILTERS.includeClean.param] = true;
+				
 			} else {
 				requestParams.room_type_ids = [$scope.currentRoomTypeId];
 				requestParams.floor_id = $scope.selectedFloorId;
