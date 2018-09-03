@@ -6,13 +6,13 @@
 			
                     <option value="" data-id="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
                     <optgroup ng-if="$parent.reservationData.use_ffp" label="{{::('FREEQUENT_FLYER_LABEL'|translate)}}"></optgroup>
-                        <option ng-if="$parent.reservationData.use_ffp" value="{{::frequentflyer.id}}" ng-repeat="frequentflyer in ::$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram" ng-selected="selectedLoyaltyID==frequentflyer.id">
+                        <option ng-if="$parent.reservationData.use_ffp" value="{{::frequentflyer.id}}" ng-repeat="frequentflyer in $parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram" ng-selected="selectedLoyaltyID == frequentflyer.id">
                                  {{::frequentflyer.membership_type}}
                                  {{::frequentflyer.membership_card_number}}
                         </option>
 
                     <optgroup ng-if="$parent.reservationData.use_hlp"  label="{{::('HOTEL_LOYALTY_LABEL'|translate)}}"></optgroup>
-                        <option ng-if="$parent.reservationData.use_hlp" value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in $parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram" ng-selected="selectedLoyaltyID==hotelloyalty.id">
+                        <option ng-if="$parent.reservationData.use_hlp" value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in $parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram" ng-selected="selectedLoyaltyID == hotelloyalty.id">
                                 {{hotelloyalty.membership_type}}
                                 {{hotelloyalty.membership_card_number}}
                         </option>
