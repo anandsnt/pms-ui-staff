@@ -1977,7 +1977,7 @@ sntRover.controller('RVbillCardController',
 		// Prompt for AR account
 		if ($scope.reservationBillData.bills[index].credit_card_details.payment_type === "DB" && $scope.reservationBillData.bills[index].ar_number === null && $rootScope.isStandAlone) {
 
-			if ($scope.reservationBillData.account_id === null || typeof $scope.reservationBillData.account_id === 'undefined') {
+			if ($scope.reservationBillData.bills[index].account_id === null || typeof $scope.reservationBillData.bills[index].account_id === 'undefined') {
 				$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
 			} 
 			else {
@@ -3193,7 +3193,7 @@ sntRover.controller('RVbillCardController',
 			var obj = {};
 
 			obj.billId = bill.bill_id;
-			obj.isOptedForEmail = (index === 0);
+			obj.isOptedForEmail = ( index === 0 && $scope.reservationBillData.is_email_enabled_on_checkout );
 			$scope.emailOptedStatusList.push(obj);
 		});
 

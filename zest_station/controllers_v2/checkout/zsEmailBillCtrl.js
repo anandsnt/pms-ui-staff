@@ -143,10 +143,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
                 'is_kiosk': true
             };
             var checkOutSuccess = function() {
-                if ($scope.zestStationData.keyCardInserted) {
-                    $scope.zestStationData.keyCaptureDone = true;
-                    $scope.socketOperator.CaptureKeyCard();
-                };
+                $scope.$emit('CAPTURE_KEY_CARD');
                 if ($scope.zestStationData.guest_bill.print) { // go to print nav
                     $scope.stateParamsForNextState = {
                         email_sent: 'true'

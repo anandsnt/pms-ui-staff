@@ -8,7 +8,8 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv, ngDialog ) {
     
     BaseCtrl.call(this, $scope);
-    var that = this;
+    var that = this,
+		CONST_INTERVAL = 1000;
     
     // Refresh scroller.
     var refreshScroll = function() {
@@ -115,7 +116,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				refreshScroll();
 				$timeout(function () {
 					$scope.$broadcast('updatePagination', 'ACTIVITY_LOG');
-				}, 1000);
+				}, CONST_INTERVAL );
 			},
 			failureCallBack: function( errorMessage ) {
 				$scope.errorMessage = errorMessage;
@@ -179,8 +180,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 
 	// Refresh the scroller when the tab is active.
     var listener =  $scope.$on('activityLogTabActive', function() {
-		that.loadAPIData();
-		that.fetchFilterData();
+		$timeout(function() {
+			that.loadAPIData();
+			that.fetchFilterData();
+		}, CONST_INTERVAL );
     });
 
 	/**
