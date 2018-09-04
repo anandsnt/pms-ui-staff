@@ -1,5 +1,10 @@
 angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
+	var self = this;
+
+	// Holds the cached response for available rooms API
+	this.cachedRoomsResponse = {};
+
 	this.getRooms = function(param) {
 		var deferred = $q.defer();
 		var url =  '/staff/rooms/get_rooms';
@@ -62,30 +67,54 @@ angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv',
 		return deferred.promise;
 
 	};
-	// Search rooms based on the query string
-	this.searchRooms = function( param ) {
-		var deferred = $q.defer();
-		var url =  'api/rooms/search';
 
-		RVBaseWebSrv.postJSON(url, param).then(function(data) {	
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
+	// Perform pagination on the given data
+	this.getPaginatedResult  = function (response, pageNo, perPage) {
+		var start = ( pageNo - 1 ) * perPage,
+			end = start + perPage,
+			data = JSON.parse(JSON.stringify(response));
+
+		data.rooms = !_.isEmpty(data.rooms) ? data.rooms.slice(start, end) : data.rooms;
+		return data;
+	};
+	// Search rooms based on the query string
+	this.searchRooms = function( params ) {
+		var deferred = $q.defer(),
+		    url =  'api/rooms/search';
+
+		if (params.page_no === 1) {
+			RVBaseWebSrv.postJSON(url, params).then(function(data) {	
+				self.cachedRoomsResponse = JSON.parse(JSON.stringify(data));
+				deferred.resolve(self.getPaginatedResult(data, params.page_no, params.per_page));
+
+			}, function(data) {
+				self.cachedRoomsResponse = {};
+				deferred.reject(data);
+			});
+		} else {
+			deferred.resolve(self.getPaginatedResult(self.cachedRoomsResponse, params.page_no, params.per_page));
+		}
+		
 		return deferred.promise;
 
 	};
 	// Get rooms belonging to a given room type
-	this.getRoomsByRoomType = function(param) {
-		var deferred = $q.defer();
-		var url =  '/api/rooms/retrieve_available_rooms';
+	this.getRoomsByRoomType = function( params ) {
+		var deferred = $q.defer(),
+		    url =  '/api/rooms/retrieve_available_rooms';
 
-		RVBaseWebSrv.postJSON(url, param).then(function(data) {		
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
+		if (params.page_no === 1) {
+			RVBaseWebSrv.postJSON(url, params).then(function(data) {		
+				self.cachedRoomsResponse = JSON.parse(JSON.stringify(data));
+				deferred.resolve(self.getPaginatedResult(data, params.page_no, params.per_page));
+			}, function(data) {
+				self.cachedRoomsResponse = {};
+				deferred.reject(data);
+			});
+		} else {			
+			deferred.resolve(self.getPaginatedResult(self.cachedRoomsResponse, params.page_no, params.per_page));
+		}
+		
 		return deferred.promise;
-
 	};
 }]);
