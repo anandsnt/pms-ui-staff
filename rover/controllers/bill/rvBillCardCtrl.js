@@ -35,9 +35,7 @@ sntRover.controller('RVbillCardController',
 
 
 	BaseCtrl.call(this, $scope);
-	var that = this,
-		DEFAULT_BILL_LAYOUT = 1,
-		DEFAULT_LOCALE = 'en';
+	var that = this;
 
 
 	// set a back button on header
@@ -2108,7 +2106,6 @@ sntRover.controller('RVbillCardController',
 				"opted_bills_for_email": optedBillForEmail
 			};
 			
-			$scope.clickedPrint(getDefaultPrintParams());
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
@@ -2169,7 +2166,6 @@ sntRover.controller('RVbillCardController',
 				"opted_bills_for_email": optedBillForEmail
 			};
 			
-			$scope.clickedPrint(getDefaultPrintParams());
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
@@ -2210,22 +2206,6 @@ sntRover.controller('RVbillCardController',
 			$scope.findNextBillToReview();
 		}
 	};
-	/**
-	* function Genarate Print Params when review process
-	* to proceed checkout
-	* @return {Object}
-	*/
-	var getDefaultPrintParams = function() {
-		var printParams = {};
-		
-			printParams.bill_layout = DEFAULT_BILL_LAYOUT;
-			printParams.locale = DEFAULT_LOCALE;
-			printParams.reservation_id = $scope.reservationBillData.reservation_id;
-			printParams.bill_number = $scope.currentActiveBill + 1;
-
-		return printParams;
-	};
-
 	// To handle review button click
 	$scope.clickedReviewButton = function(index) {
 		// To check for ar account details in case of direct bills
@@ -2240,8 +2220,6 @@ sntRover.controller('RVbillCardController',
 			
 
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {			
-			$scope.clickedPrint(getDefaultPrintParams());
-
 			// CICO-49105 : Calling blackbox API in review process if :
 			// 1. Blackbox enabled.
 			// 2. There should be payment exist in the bill.
