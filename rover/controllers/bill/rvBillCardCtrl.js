@@ -630,13 +630,13 @@ sntRover.controller('RVbillCardController',
 	$scope.getBillData = function(billIndex) {
 		
 		var getBillDataSuccess = function(data) {
+			$scope.reservationBillData.bills[billIndex] = data;
 			if (callGenerateFolioNumberApiAfterSuccessfullTransferCharge) {
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false;
 				that.callGenerateFolioNumberApiNotActiveBill(toBillIndex);
 				toBillIndex = '';
 
-			} else {
-				$scope.reservationBillData.bills[billIndex] = data;
+			} else {				
 				setBillValue(billIndex);
 				$scope.setActiveBill(billIndex);
 				$scope.setupReviewStatusArray();
