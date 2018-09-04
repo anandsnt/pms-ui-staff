@@ -2651,6 +2651,7 @@ sntRover.controller('RVbillCardController',
 			// CICO-9569 to solve the hotel logo issue
 			$("header .logo").addClass('logo-hide');
 			$("header .h2").addClass('text-hide');
+			$("body #loading").html("");// CICO-56119
 
 		    // add the orientation
 		    addPrintOrientation();
@@ -2680,6 +2681,7 @@ sntRover.controller('RVbillCardController',
 					// remove the orientation after similar delay
 			    	removePrintOrientation();
 			    	$scope.printBillCardActive = false;
+			    	$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
 			    }, 1000);
 		    }, 300);
 		};

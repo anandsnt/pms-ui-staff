@@ -61,6 +61,13 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 } else {
                     $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(index, 1);
                 }
+                var selectedLoyalty = $scope.selectedLoyalty;
+
+                // CICO-56459 Remove the selection when the selected FFP/HLP is deleted from guest card
+                if ( selectedLoyalty && ( id === selectedLoyalty.id ) ) {
+                   $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = null; 
+                   $scope.selectedLoyaltyID = '';
+                }                
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
             $scope.isLoyaltySelected();
         });
