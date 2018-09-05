@@ -1,0 +1,29 @@
+<section id="main" role="main" class="centered">
+    <div id="content">
+        <h1>
+            <span data-ng-bind-html="getTagValue('LOYALTY_ERROR_MSG_1')" editable-text="LOYALTY_ERROR_MSG_1"></span>
+        </h1>
+        <h3>
+            {{ errorMessage }}
+        </h3>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='addNewLoyalty()'>
+                        <ng-include src="icons.url.loyalty"></ng-include>
+                    </button>
+                    <span data-ng-bind-html="getTagValue('TRY_AGAIN')" editable-text="TRY_AGAIN"></span>
+                </li>
+                <li class="break">
+                    <span data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='skipLoyalties()'>
+                        <ng-include src="icons.url.loyalty"></ng-include>
+                    </button>
+                    <span data-ng-bind-html="getTagValue('SKIP_LOYALTY')" editable-text="SKIP_LOYALTY"></span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

@@ -48,7 +48,8 @@ module.exports = {
             'farmers-daughter': [themeCSSRoot + 'farmers-daughter.less'],
             'park-james': [themeCSSRoot + 'park-james.less'],
             'annapolis': [themeCSSRoot + 'annapolis.less'],
-            'origin': [themeCSSRoot + 'origin.less']
+            'origin': [themeCSSRoot + 'origin.less'],
+            'kinney': [themeCSSRoot + 'kinney.less']
         };
     }
 };
