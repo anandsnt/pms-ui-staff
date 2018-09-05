@@ -27,7 +27,13 @@
             <rv-textbox value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Contact Phone" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.fax" inputtype="tel" label="Fax" placeholder = "Enter Contact Fax" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="{{contactInformation.emailStyleClass}}" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
-            <rv-textbox value="contactInformation.e_invoice_address" ng-if="roverObj.isAnyInterfaceEnabled" label="E-Invoice Address" placeholder = "Enter E-Invoice Address"></rv-textbox>            
+            <div class="entry" ng-if="roverObj.isAnyInterfaceEnabled">
+                <label for="company-invoice-preference">E-Inovice preference</label>
+                <div class="select">
+                    <select ng-model="contactInformation.invoice_preference_id" name="company-invoice-preference" id="company-invoice-preference" ng-options="invoice_preference.id as invoice_preference.description for invoice_preference in contactInformation.invoice_preferences">                       
+                    </select>
+                </div>
+            </div>       
             <rv-textbox value="contactInformation.account_details.web_page" label="Web Page" placeholder = "Enter Web Page" styleclass="full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
 
             <div class="entry full-width" ng-hide="true">
