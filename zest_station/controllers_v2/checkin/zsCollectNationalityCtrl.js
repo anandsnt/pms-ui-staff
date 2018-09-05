@@ -40,7 +40,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
             }
 
             $scope.selectedCountry = {
-                'id': ''
+                'id': '',
+                'searchInput': ''
             };
 
             $scope.$emit('hideLoader');
@@ -72,11 +73,20 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
             } else {
                 $state.go('zest_station.checkInReservationSearch');
-
             }
 
-
         });
+
+        $scope.countrySelected = function(country) {
+            $scope.selectedCountry.id = country.id;
+            $scope.selectedCountry.searchInput = country.name;
+            $scope.hideNationsList = true;
+        };
+
+        $scope.inputFieldFocus = function() {
+            $scope.hideNationsList = false;
+            $scope.showOnScreenKeyboard('country-id', 'scroll-up');
+        };
 
         /**
          * [initializeMe description]
@@ -87,7 +97,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-
+            $scope.hideNationsList = false;
             $scope.init();
         }());
 
