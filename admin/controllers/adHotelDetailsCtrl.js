@@ -544,4 +544,13 @@ admin.controller('ADHotelDetailsCtrl', [
     	$scope.data.is_multi_property = true;
     	closeDialogue();
     };
+    $scope.clickedLegalSettings = function() {
+    	ngDialog.open({
+            template: '/assets/partials/hotel/adHotelLegalSettings.html',
+            className: '',
+            scope: $scope,
+            closeByDocument: false,
+            controller: 'adHotelLegalSettingsController'
+        });
+    };
 }]);
