@@ -745,7 +745,7 @@ sntRover.controller('RVbillCardController',
 
 		var currentActiveBill = $scope.reservationBillData.bills[billIndex];
 
-		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists, billIndex);
 		if (index) {
 			$scope.getBillData($scope.currentActiveBill);
 		}
@@ -1946,14 +1946,14 @@ sntRover.controller('RVbillCardController',
 	 * @param billId is the bill id
 	 * @param balanceAmount is the balance Amount
 	 */
-	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
+	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
 		$scope.shouldGenerateFolioNumber = false;
 		if (balanceAmount === "0.00" && ($scope.reservationBillData.reservation_status === "CHECKEDOUT" || $scope.reservationBillData.reservation_status === "NOSHOW") && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
-					$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
-					$scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+					$scope.reservationBillData.bills[billIndex].is_active = false;
+					$scope.reservationBillData.bills[billIndex].is_folio_number_exists = true;
 				},
 				paramsToService = {
 					'bill_id': billId
