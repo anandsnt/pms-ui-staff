@@ -21,6 +21,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
                 return $sce.trustAsHtml(val);
             };
         });
+
         $scope.countryListFocused = false;
         $scope.init = function() {
             $scope.countryList = [];
