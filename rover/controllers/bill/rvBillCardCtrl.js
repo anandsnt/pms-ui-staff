@@ -808,7 +808,7 @@ sntRover.controller('RVbillCardController',
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = true;
 				toBillIndex = parseInt(newBillValue) - 1;
 				$scope.getBillData(toBillIndex);
-			} else{
+			} else {
 				$scope.getBillData($scope.currentActiveBill);
 			}			
 		};
