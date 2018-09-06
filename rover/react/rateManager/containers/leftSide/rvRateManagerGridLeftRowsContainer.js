@@ -15,7 +15,7 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 			name: rate.name,
 			trClassName: ('cell rate ' + (((index + 1) === rates.length) ? 'last' : '')),
 			tdClassName: '',
-			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate')+((rate.is_company_card||rate.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
+			leftSpanClassName: 'name ' + (rate.based_on_rate_id && !rate.is_copied ? 'gray' : 'base-rate')+((rate.is_company_card||rate.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info ') + ((rate.is_locked) ? ' locked':''),
 			showIconBeforeText: !rate.based_on_rate_id,
 			iconClassBeforeText: !rate.based_on_rate_id ? 'base-rate-indicator': '',
 			textInIconArea: !rate.based_on_rate_id ? 'B' : '',
@@ -26,7 +26,8 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 			contractClass: rate.is_travel_agent?'travel-agent':'',
 			rightSpanClassName: 'icons icon-double-arrow rotate-right',
 			accountName: rate.account_name,
-			showIndicator :showIndicator
+			showIndicator: showIndicator,
+			isLocked: rate.is_locked
 		})
 	});
 

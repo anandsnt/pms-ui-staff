@@ -15,7 +15,8 @@ const RateManagerGridLeftRowComponent = ({
 	contractLabel,
 	contractClass,
 	accountName,
-	showIndicator
+	showIndicator,
+	isLocked
 }) => (
 	<tr className={trClassName} onTouchEnd={(e) => onClick(e, index) } onClick={(e) => onClick(e, index) }>
 		<td className={tdClassName}>
@@ -29,7 +30,7 @@ const RateManagerGridLeftRowComponent = ({
 			</span>                                
 			<span className={'contracted-rate-contract '+ contractClass}>{accountName}</span>
 			<span className={'contracted-rate-address '+ contractClass}>{address}</span>                              
-			<span className="icons icon-double-arrow rotate-right"></span>
+			{ isLocked ? (<span className='icons icon-room-lock'></span>):(<span className='icons icon-double-arrow rotate-right'></span>)}
             </a>
 		</td>
 	</tr>
