@@ -25,12 +25,12 @@ admin.controller('adHotelLegalSettingsController',
 		$scope.closeDialog = function() {
 			ngDialog.close();
 		};
-		var refreshScroll = function(name, reset) {
+		var refreshScroll = function(name) {
 			$scope.refreshScroller(name);
 		};
 
 		$timeout(function() {
-			refreshScroll('financialSettingsList')
+			refreshScroll('financialSettingsList');
 		}, 400);	
 }]);
 
