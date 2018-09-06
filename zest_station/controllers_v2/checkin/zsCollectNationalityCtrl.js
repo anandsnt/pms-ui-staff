@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
     '$state',
     'zsEventConstants',
     '$stateParams',
-    '$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv',
-    function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv) {
+    '$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv','$timeout',
+    function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv, $timeout) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -21,6 +21,12 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
                 return $sce.trustAsHtml(val);
             };
         });
+        
+        var refreshScroller = function() {
+            $timeout(function() {
+                $scope.refreshScroller('country-list');
+            }, 500);
+        };
 
         $scope.countryListFocused = false;
         $scope.init = function() {
@@ -87,6 +93,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
         $scope.inputFieldFocus = function() {
             $scope.hideNationsList = false;
             $scope.showOnScreenKeyboard('country-id', 'scroll-up');
+            refreshScroller();
         };
 
         /**
@@ -99,6 +106,16 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
             $scope.hideNationsList = false;
+
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false,
+                deceleration: 0.0001,
+                shrinkScrollbars: 'clip',
+                preventDefaultException: { tagName: /^(SPAN|LI)$/ }
+            };
+
+            $scope.setScroller('country-list', scrollerOptions);
             $scope.init();
         }());
 

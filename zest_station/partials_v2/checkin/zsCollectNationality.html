@@ -34,9 +34,9 @@
                     <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
-            <div ng-hide="hideNationsList" id="country-list" ng-iscroll="country-list" ng-iscroll-delay="100" ng-init="setScroll()" class="country-list pull-left station-terms scrollable fill-height">
-                <ul>
-                    <li ng-repeat="country in countryList | filter : selectedCountry.searchInput" click-touch="countrySelected(country)">{{ country.name }}</li>
+            <div ng-hide="hideNationsList" id="textual" ng-iscroll="country-list" ng-iscroll-delay="100" ng-init="setScroll()" class="country-list pull-left station-terms scrollable fill-height">
+                <ul class="wrapper">
+                    <li ng-repeat="country in countryList | filter : selectedCountry.searchInput" ng-click="countrySelected(country)">{{ country.name }}</li>
                     <li ng-show="(countryList | filter:selectedCountry.searchInput).length == 0" translate>NO_COUNTRY_MATCH</li>
                 </ul>
             </div>
