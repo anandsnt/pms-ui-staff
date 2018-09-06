@@ -3,7 +3,7 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
     '$state',
     'zsEventConstants',
     '$stateParams',
-    '$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv','$timeout',
+    '$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv', '$timeout',
     function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv, $timeout) {
 
         /** ********************************************************************************************
