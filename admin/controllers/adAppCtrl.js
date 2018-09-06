@@ -259,12 +259,21 @@ admin.controller('ADAppCtrl', [
                             action: 'rover.financials.commisions'
                         }]
                     }, {
-                        title: 'MENU_ACTIONS_MANAGER',
-                        action: 'rover.financials.commisions',
-                        iconClass: 'icon-actions',
-                        menuIndex: 'actionManager',
-                        submenu: []
-
+                        title: "MENU_ACTIONS",
+                        action: "",
+                        menuIndex: "actions",                
+                        submenu: [{
+                            title: "MENU_ACTIONS_MANAGER",
+                            action: "rover.actionsManager",
+                            menuIndex: "reports-inbox",
+                            iconClass: "icon-actions"
+                        },
+                        {
+                            title: "QUICKTEXT",
+                            action: "rover.quicktext",
+                            menuIndex: "new_report",
+                            hidden: $rootScope.isQuickTextEnabled
+                        }]
                     }, {
                         title: "MENU_REPORTS",              
                         action: "",
@@ -645,6 +654,8 @@ admin.controller('ADAppCtrl', [
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
             // CICO-51146
             $rootScope.isBackgroundReportsEnabled = data.background_report;
+            // CICO-55154
+            $rootScope.isQuickTextEnabled = data.is_quicktextenabled;
 
             // CICO-40544 - Now we have to enable menu in all standalone hotels
             // API not removing for now - Because if we need to disable it we can use the same param

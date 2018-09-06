@@ -56,6 +56,14 @@ angular.module('sntRover').service('rvMenuSrv',
     var shouldShowTaskManagementInHKMenu = function() {
     	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
     };
+    /**
+     * Decide whether the QuickText submenu is to be shown
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowQucikTextMenu = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_quicktextenabled;
+    };
 
 	/**
 	* utility the user role is 'Floor & Maintanance staff'
@@ -303,11 +311,21 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "invoiceSearch"
 		        }]
             }, {
-                title: "MENU_ACTIONS_MANAGER",
-                action: "rover.actionsManager",
-                menuIndex: "actionManager",
-                iconClass: "icon-actions",
-                submenu: []
+                title: "MENU_ACTIONS",
+                action: "",
+                menuIndex: "actions",                
+                submenu: [{
+		            title: "MENU_ACTIONS_MANAGER",
+		            action: "rover.actionsManager",
+		            menuIndex: "reports-inbox",
+		            iconClass: "icon-actions"
+		        },
+		        {
+		            title: "QUICKTEXT",
+		            action: "rover.quicktext",
+		            menuIndex: "new_report",
+		            hidden: !shouldShowQucikTextMenu()
+		        }]
             },
             {
 		        title: "MENU_REPORTS",		        
