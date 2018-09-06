@@ -26,9 +26,10 @@
         </form>
         <!--  -->
         <form method="post" class="form" ng-if="zestStationData.use_free_form_country_selection">
-            <div class="entry input">
-                <input type="text" placeholder="" ng-focus="inputFieldFocus()" click-touch="inputFieldFocus()" ng-model="selectedCountry.searchInput" enter-press="firstNameEntered()" ng-keydown="resetTime()" id="country-id" ng-change="inputFieldFocus()" touch-press/>
+            <div class="entry input" id="country-id-search">
+                <input type="text" placeholder="{{'TYPE_IN_OR_SCROLL_DOWN' | translate}}" ng-focus="inputFieldFocus()" click-touch="inputFieldFocus()" ng-model="selectedCountry.searchInput" enter-press="firstNameEntered()" ng-keydown="resetTime()" id="country-id" ng-change="inputFieldFocus()" touch-press/>
             </div>
+            <ng-include src="icons.url.clear_text" click-touch="clearNationality()"></ng-include>
             <div class="entry action">
                 <button type="button" class="button" click-touch="saveNationality();">
                     <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
@@ -41,8 +42,6 @@
                 </ul>
             </div>
         </form>
-
-
         </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
     </section>

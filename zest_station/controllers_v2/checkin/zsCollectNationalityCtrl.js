@@ -56,6 +56,9 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
 
         $scope.clearNationality = function() {
             $scope.selectedCountry.id = '';
+            $scope.selectedCountry.searchInput = '';
+            $scope.hideNationsList = false;
+            refreshScroller();
         };
 
         /**
