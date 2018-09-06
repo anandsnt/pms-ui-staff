@@ -27,14 +27,10 @@ admin.controller('adHotelLegalSettingsController',
 	 	};
 	 	var refreshScroll = function(name, reset) {
 	      $scope.refreshScroller(name);
-	      // /**/
-	      // if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
-	      //     $scope.myScroll[name].scrollTo(0, 0, 100);
-	      // }
 	    };
 
 	    $timeout(function() {
 	    	refreshScroll('financialSettingsList')
-	    }, 1000);	
+	    }, 400);	
 }]);
 
