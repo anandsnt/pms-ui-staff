@@ -7,17 +7,17 @@ admin.controller('adHotelLegalSettingsController',
 	 function($rootScope, $scope, ADHotelDetailsSrv, ngDialog, $timeout) {
 	 	$scope.activeTab = 'financials';
 	 	var scrollerOptions = {
-	        tap: true,
-	        preventDefault: false,
-	        showScrollbar: true
-	      };
+					tap: true,
+					preventDefault: false,
+					showScrollbar: true
+			};
 
-	    $scope.setScroller('financialSettingsList', scrollerOptions);
+			$scope.setScroller('financialSettingsList', scrollerOptions);
 	 	/*
 	 	 * clicked each tab
 	 	 */
 	 	$scope.clickedTabMenu = function(tabName) {
-	 		$scope.activeTab = tabName;
+			$scope.activeTab = tabName;
 	 	};
 	 	/*
 	 	 * close dialog
@@ -26,11 +26,11 @@ admin.controller('adHotelLegalSettingsController',
 	 		ngDialog.close();
 	 	};
 	 	var refreshScroll = function(name, reset) {
-	      $scope.refreshScroller(name);
-	    };
+			  $scope.refreshScroller(name);
+			};
 
-	    $timeout(function() {
-	    	refreshScroll('financialSettingsList')
-	    }, 400);	
+			$timeout(function() {
+				refreshScroll('financialSettingsList')
+			}, 400);	
 }]);
 
