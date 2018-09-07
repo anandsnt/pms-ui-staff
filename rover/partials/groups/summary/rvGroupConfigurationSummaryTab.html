@@ -119,8 +119,8 @@
              <!-- If TA is liked to this group, show commission toggle (L91-L119) -->
             <div class="entry commission margin">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
-                <div class="switch-button"> <!-- Add class 'on' when L94 is checked -->
-                    <input id="travel-agent-commission" value="{value}" type="checkbox" />
+                <div class="switch-button" ng-class="{'on': groupConfigData.commission_details.is_on}"> <!-- Add class 'on' when L94 is checked -->
+                    <input id="travel-agent-commission" ng-model="groupConfigData.commission_details.is_on" type="checkbox" />
                     <label class="data-off">
                         <span class="value">Off</span>
                         <span class="switch-icon">On</span>
@@ -131,16 +131,16 @@
                     </label>
                 </div>
                 <!-- Show L105-L111 only when commission is turned on: -->
-                <input value="{value}" type="text" />
-                <div class="select">
-                    <select name="travel-agent-commission-type">
+                <input ng-model="groupConfigData.commission_details.commission_value" type="text" ng-show="groupConfigData.commission_details.is_on"/>
+                <div class="select" ng-show="groupConfigData.commission_details.is_on">
+                    <select name="travel-agent-commission-type" ng-model="groupConfigData.commission_details.commission_type">
                         <option value="percentage">%</option>
                         <option value="value">{{currencySymbol}}</option>
                     </select>
                 </div>
                 <!-- Show L113-L118 only when commission is turned on & type is set to $ -->
-                <div class="select">
-                    <select>
+                <div class="select" ng-show="groupConfigData.commission_details.is_on">
+                    <select ng-model="groupConfigData.commission_details.commission">
                         <option value="night" translate>PER_NIGHT</option>
                         <option value="stay" translate>PER_STAY</option>
                     </select>
