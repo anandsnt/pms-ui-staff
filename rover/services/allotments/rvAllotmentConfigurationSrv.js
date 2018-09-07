@@ -317,7 +317,7 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 
 		this.searchTravelAgentCards = function(query) {
 			var deferred = $q.defer(),
-				url = 'api/accounts?account_type=TRAVELAGENT&query=' + query;
+				url = 'api/accounts?account_type=TRAVELAGENT&query=' + query + '&with_commissions=true';
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
