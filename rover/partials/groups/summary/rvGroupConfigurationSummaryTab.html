@@ -116,11 +116,11 @@
                 <label for="group-pickup" TRANSLATE>PICK_UP</label>
                 <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
-             <!-- If TA is liked to this group, show commission toggle (L91-L119) -->
-            <div class="entry commission margin">
+             <!-- If TA is liked to this group, show commission toggle  -->
+            <div class="entry commission margin" ng-show="groupConfigData.summary.travel_agent.name.length > 0">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
-                <div class="switch-button" ng-class="{'on': groupConfigData.commission_details.is_on}"> <!-- Add class 'on' when L94 is checked -->
-                    <input id="travel-agent-commission" ng-model="groupConfigData.commission_details.is_on" type="checkbox" />
+                <div class="switch-button" ng-class="{'on': groupConfigData.summary.commission_details.is_on}"> <!-- Add class 'on' when L94 is checked -->
+                    <input id="travel-agent-commission" ng-model="groupConfigData.summary.commission_details.is_on" type="checkbox" />
                     <label class="data-off">
                         <span class="value">Off</span>
                         <span class="switch-icon">On</span>
@@ -130,17 +130,17 @@
                         <span class="value">On</span>
                     </label>
                 </div>
-                <!-- Show L105-L111 only when commission is turned on: -->
-                <input ng-model="groupConfigData.commission_details.commission_value" type="text" ng-show="groupConfigData.commission_details.is_on"/>
-                <div class="select" ng-show="groupConfigData.commission_details.is_on">
-                    <select name="travel-agent-commission-type" ng-model="groupConfigData.commission_details.commission_type">
+                <!-- Show only when commission is turned on: -->
+                <input ng-model="groupConfigData.summary.commission_details.commission_value" type="text" ng-show="groupConfigData.summary.commission_details.is_on"/>
+                <div class="select" ng-show="groupConfigData.summary.commission_details.is_on">
+                    <select name="travel-agent-commission-type" ng-model="groupConfigData.summary.commission_details.commission_type">
                         <option value="percentage">%</option>
                         <option value="value">{{currencySymbol}}</option>
                     </select>
                 </div>
-                <!-- Show L113-L118 only when commission is turned on & type is set to $ -->
-                <div class="select" ng-show="groupConfigData.commission_details.is_on">
-                    <select ng-model="groupConfigData.commission_details.commission">
+                <!-- Show  only when commission is turned on & type is set to $ -->
+                <div class="select" ng-show="groupConfigData.summary.commission_details.is_on && groupConfigData.summary.commission_details.commission_type === 'value'">
+                    <select ng-model="groupConfigData.summary.commission_details.commission_value_option">
                         <option value="night" translate>PER_NIGHT</option>
                         <option value="stay" translate>PER_STAY</option>
                     </select>
