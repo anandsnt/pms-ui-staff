@@ -341,7 +341,7 @@ admin.controller('adExternalInterfaceCtrl',
             rate = {
               id: rates[i].id,
               rate_name: rates[i].name
-            }
+            };
             if (rate) {
                 $scope.rateSelection.push(rate);
             }
