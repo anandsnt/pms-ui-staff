@@ -340,8 +340,7 @@ admin.controller('adExternalInterfaceCtrl',
         for (var i in rates) {
             rate = {
               id: rates[i].id,
-              rate_name: rates[i].name,
-              rate_desc: rates[i].name
+              rate_name: rates[i].name
             }
             if (rate) {
                 $scope.rateSelection.push(rate);
