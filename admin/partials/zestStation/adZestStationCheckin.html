@@ -47,7 +47,7 @@
                     <h3><span translate>COLLECT_USER_NATIONALITY </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.check_in_collect_nationality" label="{{'COLLECT_USER_NATIONALITY'| translate}}" div-class="full-width"></ad-toggle-button>
-                <ad-form-sub-title title="COUNRTY_FILTER_INSTRUCTIONS"></ad-form-sub-title>
+                <ad-form-sub-title title="COUNRTY_FILTER_INSTRUCTIONS" hide="!zestSettings.check_in_collect_nationality"></ad-form-sub-title>
                 <ad-checkbox is-checked="zestSettings.kiosk_enforce_country_sort" 
                                 label="{{'ENFORCE_COUNTRY_SORT'| translate}}" 
                                 div-class="full-width" 
