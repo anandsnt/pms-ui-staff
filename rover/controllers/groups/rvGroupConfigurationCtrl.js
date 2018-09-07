@@ -1357,6 +1357,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     this.value = ui.item.label;
                     $scope.groupConfigData.summary.travel_agent.name = ui.item.label;
                     $scope.groupConfigData.summary.travel_agent.id = ui.item.value;
+                    $scope.groupConfigData.summary.commission_details.commission_type = "value"; // to change
                     if (!$scope.isInAddMode()) {
                         $scope.updateGroupSummary();
                     }

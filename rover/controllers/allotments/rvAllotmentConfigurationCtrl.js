@@ -471,6 +471,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     this.value = ui.item.label;
                     $scope.allotmentConfigData.summary.company.name = ui.item.label;
                     $scope.allotmentConfigData.summary.company.id = ui.item.value;
+                    $scope.allotmentConfigData.summary.commission_details.commission_type = "value"; // to change
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }
