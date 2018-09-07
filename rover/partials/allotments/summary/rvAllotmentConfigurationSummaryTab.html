@@ -94,6 +94,38 @@
                 <label for="allotment-pickup" TRANSLATE>PICK_UP</label>
                 <input id="allotment-pickup" ng-model="allotmentConfigData.summary.rooms_pickup" type="text" readonly />
             </div>
+
+            <!-- If TA is liked to this allotment, show commission toggle (L85-L113) -->
+            <div class="entry commission margin">
+                <label for="travel-agent-commission" translate>COMMISSION</label>
+                <div class="switch-button"> <!-- Add class 'on' when L88 is checked -->
+                    <input id="travel-agent-commission" value="{value}" type="checkbox" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+                <!-- Show L99-L105 only when commission is turned on: -->
+                <input value="{value}" type="text" />
+                <div class="select">
+                    <select name="travel-agent-commission-type">
+                        <option value="percentage">%</option>
+                        <option value="value">{{currencySymbol}}</option>
+                    </select>
+                </div>
+                <!-- Show L107-L112 only when commission is turned on & type is set to $ -->
+                <div class="select">
+                    <select>
+                        <option value="night" translate>PER_NIGHT</option>
+                        <option value="stay" translate>PER_STAY</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="entry full-width with-button">
                 <label for="allotment-rate" translate>RATE</label>
                 <div class="select">
