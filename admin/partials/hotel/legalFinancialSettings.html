@@ -1,8 +1,10 @@
 <span class="message h2">Financial Settings</span>
 <div class="scrollable" ng-iscroll="financialSettingsList" ng-iscroll-delay="100">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
     <table class="table-settings">
         <tbody>
-            <tr>
+            <tr ng-hide="true">
                 <td>Lock Bill</td>
                 <td>
                     <!-- remove .on when not active -->
@@ -13,7 +15,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr ng-hide="true">
                 <td>Show Folio Number on Bill</td>
                 <td>
                     <!-- remove .on when not active -->
@@ -24,7 +26,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr ng-hide="true">
                 <td>No Modify Invoice</td>
                 <td>
                     <!-- remove .on when not active -->
@@ -39,14 +41,14 @@
                 <td>No Reprint / Re-email Invoice</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button on">
+                    <div class="switch-button" ng-class="{'on' : legalSettings.financials.no_reprint_reemail_invoice}">
                         <!-- remove checked when not active-->
-                        <input name="no-reprint" id="no-reprint" value="no-reprint" type="checkbox" checked="">
+                        <input name="no-reprint" id="no-reprint" ng-model="legalSettings.financials.no_reprint_reemail_invoice" value="no-reprint" type="checkbox" >
                         <span class="switch-icon"></span>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr ng-hide="true">
                 <td>Void Bill</td>
                 <td>
                     <!-- remove .on when not active -->
@@ -57,7 +59,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr ng-hide="true">
                 <td>Folio Number Prefix</td>
                 <td>
                     <input type="text" placeholder="Enter Prefix"> 
@@ -68,5 +70,5 @@
 </div>
 <div class="actions">
     <button class="button blank" ng-click="closeDialog()">Cancel</button>
-    <button class="button green">Save Changes</button>
+    <button class="button green" ng-click="saveLegalSettings()">Save Changes</button>
 </div>
