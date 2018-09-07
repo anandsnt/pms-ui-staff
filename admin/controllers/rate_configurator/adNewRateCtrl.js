@@ -407,7 +407,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
         $scope.shouldShowAddNewDateRange = function() {
-            if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
+            if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE' || $scope.rateData.isLocked) {
                 return false;
             }
             if ($scope.rateData.based_on.is_copied && $scope.rateData.room_type_ids && $scope.rateData.room_type_ids.length > 0) {
