@@ -702,8 +702,7 @@
    "PLEASE_SELECT_ONE": "Please select one of the following",
    "CC_OPTIONS_HEADER": "Proceed or add new credit card",
    "ADD_NEW_CREDIT_CARD": "Add new Credit card",
-
-   "LOYALTY_ALREADY_PRESENT": "A Loyalty is already present",
+   
    "PROCEED_WITH_EXISTING_LOYALTY": "Proceed with existing Loyalty",
    "SELECT_LOYALTY_PROGRAM": "Select Loyalty Program",
    "NUMBER": "Number",
@@ -724,6 +723,10 @@
    "SELECT_EXISTING_PGM": "Select Existing",
    "ADD_NEW_LOYALTY": "Add New",
    "MEMBERSHIP_ALREADY_TAKEN": "Membership already taken",
-   "LOYALTY_GENERAL_ERROR": "Something went wrong"
-   
+   "LOYALTY_GENERAL_ERROR": "Something went wrong",
+
+   "NO_COUNTRY_MATCH": "No match found!",
+   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
+
+   "NEW_LOYALTY_PROGRAM_INSTRUCTIONS": "Select from programs offered by hotel"
 }
