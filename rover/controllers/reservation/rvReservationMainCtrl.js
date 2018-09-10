@@ -1125,13 +1125,17 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
                 });
 
-                var params = { 'reservation_id': $scope.reservationData.reservationId };
+                var params = { 'reservation_id': $scope.reservationData.reservationId },
+                    options = {
+                        params: params,
+                        successCallBack: openCancelPopup
+                    };
+
                 // Fetch Laungage data for cancellation
-                $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, openCancelPopup);                
+                $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options);               
             };
 
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
-
         };
 
         $scope.cancelReservation = function() {
