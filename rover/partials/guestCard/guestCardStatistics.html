@@ -1,0 +1,21 @@
+<!-- Guest Card Tab - Statistics -->
+<form method="post" id="gc-statistics" name="statistics" class="form card-tab card-statistics">
+    <div class="fullscreen-header">
+        <button type="button" data-fullscreen="close" class="button white icons icon-remove-10">Close fullscreen</button>
+        <div class="screen-info">
+            <strong class="info-heading">{Guest Name}</strong>
+            <span class="info-subheading">Statistics</span>
+        </div>
+        <div class="app-info">
+            <strong class="hotel">{Hotel Name}</strong>
+            <div class="user">
+                <span>{User}</span>
+                <em class="date">{Date}</em>
+            </div>
+        </div>
+    </div>
+    
+    <div include-replace ng-include="'/assets/partials/guestCard/guestCardStatisticsSummary.html'"></div>
+    <div include-replace ng-include="'/assets/partials/guestCard/guestCardStatisticsDetails.html'"></div>
+</form>
+

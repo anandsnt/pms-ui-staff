@@ -16,6 +16,10 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
+            <li>
+                <a href="#gc-statistics">Statistics</a>
+                <button type="button" class="button white icons icon-expand">Fullscreen</button>
+            </li>
             <li ng-class="{'ui-tabs-active': current == 'activity-log'}" click-touch="guestCardTabSwitch('activity-log')">
                 <a>Activity Log</a>
             </li>

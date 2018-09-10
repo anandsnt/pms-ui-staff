@@ -1,0 +1,108 @@
+<div class="statistics-summary">
+    <div class="sidebar">
+        <ul class="filters">
+            <li class="active">Summary</li>
+
+            <!-- When clicked hide statistics-summary and remove .hidden from statistics-details -->
+            <li>Details</li>
+        </ul>
+        <div class="sidebar-content">
+            <div class="row">Stays</div>
+            <div class="row">Nights</div>
+            <div class="row">Cancellations</div>
+            <div class="row">No Shows</div>
+            <div class="row">ADR</div>
+            <div class="row">Room Revenue</div>
+            <div class="row">Total Revenue</div>
+        </div>
+    </div>
+    <div class="statistics-data">
+        <div class="row row-head">
+            <div class="column">
+                <div class="select">
+                    <select>
+                        <option value="2017">Last Year (2017)</option>
+                        ... for each year data
+                    </select>
+                </div>
+            </div>
+            <div class="column white">
+                <strong>Year to date (2018)</strong>
+            </div>
+            <div class="column">
+                <strong>Total</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">{value}</div>
+            <div class="column white">
+                <!--
+                'stat-class':
+                    - 'red'   => if this years' value is lower than the compared year,
+                    - 'green' => if this years' value is greater than the compared year,
+                    - '' => if same
+
+                'stat-icon':
+                    - 'icons time check-out rotate-right' -> if this years' value is lower than the compared year
+                    - 'icons time check-in rotate-right' -> if this years' value is greater than the compared year,
+                    - 'neutral' => if same
+                -->
+                <div class="stat {stat-class}">
+                    <span class="{stat-icon}"></span>
+                    {stat}%
+                </div>
+                {years' value}
+            </div>
+            <div class="column">{total value}</div>
+        </div> 
+        ... repeat for Stays, Nights, Cancellations & No Shows
+
+        <div class="row">
+            <div class="column"><span class="currency">{currency}</span>{value}</div>
+            <div class="column white">
+                <!--
+                'stat-class':
+                    - 'red'   => if this years' value is lower than the compared year,
+                    - 'green' => if this years' value is greater than the compared year,
+                    - '' => if same
+
+                'stat-icon':
+                    - 'icons time check-out rotate-right' -> if this years' value is lower than the compared year
+                    - 'icons time check-in rotate-right' -> if this years' value is greater than the compared year,
+                    - 'neutral' => if same
+                -->
+                <div class="stat {stat-class}">
+                    <span class="{stat-icon}"></span>
+                    {stat}%
+                </div>
+                <span class="currency">{currency}</span>{years' value}
+            </div>
+            <div class="column"><span class="currency">{currency}</span>{total value}</div>
+        </div>
+        ... repeat ADR, Room Revenue
+
+        <!-- Total Revenue -->
+        <div class="row">
+            <div class="column"><strong><span class="currency">{currency}</span>{value}</strong></div>
+            <div class="column white">
+                <!--
+                'stat-class':
+                    - 'red'   => if this years' value is lower than the compared year,
+                    - 'green' => if this years' value is greater than the compared year,
+                    - '' => if same
+
+                'stat-icon':
+                    - 'icons time check-out rotate-right' -> if this years' value is lower than the compared year
+                    - 'icons time check-in rotate-right' -> if this years' value is greater than the compared year,
+                    - 'neutral' => if same
+                -->
+                <div class="stat {stat-class}">
+                    <span class="{stat-icon}"></span>
+                    {stat}%
+                </div>
+                <strong><span class="currency">{currency}</span>{years' value}</strong>
+            </div>
+            <div class="column"><strong><span class="currency">{currency}</span>{total value}</strong></div>
+        </div>
+    </div>
+</div>

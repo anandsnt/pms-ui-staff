@@ -1,0 +1,136 @@
+<div class="statistics-details hidden">
+    <div class="sidebar">
+        <ul class="filters">
+            <!-- When clicked hide statistics-details and remove .hidden from statistics-summary -->
+            <li>Summary</li>
+            <li class="active">Details</li>
+        </ul>
+        <div class="row row-head white">
+            <div class="select">
+                <select>
+                    <option value="2017">Last Year (2017)</option>
+                    ... repeat for each year
+                </select>
+            </div>
+        </div>
+        <div class="sidebar-content scrollable">
+            <div class="wrapper">
+
+                <!-- if we don't have data in the month add .no-data -->
+                <!-- if we click on it, add .open -->
+                <!-- add CSS => margin-bottom: {margin}px, where 'margin' is ( number of reservations * 70 ) + 30-->
+                <div class="row">
+                    <!-- If we have data in the month
+                        <span class="icons icon-double-arrow black"></span>
+                    -->
+                    {Month Name} {Year}
+                </div>
+                ... repeat for each month of the year
+            </div>
+        </div>
+    </div>
+    <div class="statistics-data">
+        <div class="row row-head">
+            <div class="column"><strong>Stays</strong></div>
+            <div class="column"><strong>Nights</strong></div>
+            <div class="column"><strong>Canc.</strong></div>
+            <div class="column"><strong>No Shows</strong></div>
+            <div class="column"><strong>ADR</strong></div>
+            <div class="column"><strong>Room Revenue</strong></div>
+            <div class="column"><strong>Total Revenue</strong></div>        
+        </div>
+        <div class="row row-head white">
+            <div class="column">{stays}</div>
+            <div class="column">{nights}</div>
+            <div class="column">{cancellations}</div>
+            <div class="column">{no shows}</div>
+            <div class="column">
+                <span class="currency">{currency}</span>
+                {adr}
+            </div>
+            <div class="column">
+                <span class="currency">{currency}</span>
+                {room revenue}
+            </div>
+            <div class="column">
+                <strong>
+                    <span class="currency">{currency}</span>
+                    {total revenue}
+                </strong>
+            </div>        
+        </div>
+        <div class="scrollable">
+            <div class="wrapper">
+                <div class="row">
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">{stays}</div>
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">{nights}</div>
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">{cancellations}</div>
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">{no shows}</div>
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">
+                        <span class="currency">{currency}</span>
+                        {adr}
+                    </div>
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">
+                        <span class="currency">{currency}</span>
+                        {room revenue}
+                    </div>
+                    <!-- if no data (0) then add .no-data -->
+                    <div class="column">
+                        <strong>
+                            <span class="currency">{currency}</span>
+                            {total revenue}
+                        </strong>
+                    </div>        
+                </div>
+                <!-- remove .hidden when clicked on the month's row-->
+                <div class="statistics-reservations hidden">                            
+                    <ul class="search-results">
+                        <li class="reservation transaction">
+                            <a class="faux-anchor" href="{stay-card}">
+                                <div class="data">
+                                    <!-- add .grey if we have no room/cancelled-->
+                                    <h2>
+                                        <span>{last name}</span>, <span>{first anme}</span>
+                                    </h2>
+                                    <span class="confirmation">
+                                        <span class="value">2987998</span>
+                                    </span>
+                                </div>
+                                <div class="guest-date arrival">
+                                    <span class="guest-status small-icon {guest-status}"></span>
+                                    <time datetime="2018-08-21T12:00:00">
+                                        <span class="date">08-21-2018</span>
+                                        <span class="time">6:00 PM</span>
+                                    </time>
+                                </div>
+                                <div class="guest-date departure">
+                                    <span class="guest-status small-icon {guest-status}"></span>
+                                    <time datetime="2018-08-28T12:00:00">
+                                        <span class="date">08-28-2018</span>
+                                        <span class="time">3:00 PM</span>
+                                    </time>
+                                </div>
+                                <div class="guest-data rate">
+                                    <strong>{currency}{ADR}</strong>
+                                    <span>{Rate}</span>
+                                </div>
+                                <div class="guest-data room">
+                                    <!-- if N/A, add .no-number -->
+                                    <strong>{ Room Number | N/A }</strong>
+                                    <span>{Room Type}</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                ... repeat L64 - L131 for each row (month)
+            </div>
+        </div>
+    </div>
+</div>
