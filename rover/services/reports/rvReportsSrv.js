@@ -87,6 +87,10 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'YESTERDAY',
                 'TODAY',
                 'DATE'
+             ],
+             'Clairvoix Stays Export': [
+             	'YESTERDAY',
+             	'ALL'
              ]
 
         };
