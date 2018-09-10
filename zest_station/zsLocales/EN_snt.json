@@ -724,9 +724,8 @@
    "ADD_NEW_LOYALTY": "Add New",
    "MEMBERSHIP_ALREADY_TAKEN": "Membership already taken",
    "LOYALTY_GENERAL_ERROR": "Something went wrong",
+   "NEW_LOYALTY_PROGRAM_INSTRUCTIONS": "Select from programs offered by hotel",
 
    "NO_COUNTRY_MATCH": "No match found!",
-   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
-
-   "NEW_LOYALTY_PROGRAM_INSTRUCTIONS": "Select from programs offered by hotel"
+   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down"
 }
