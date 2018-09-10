@@ -131,11 +131,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.showFormatBillPopup = function(parentIndex, billIndex) {
 			$scope.billNo = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].bill_no;
-			// if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
-			// 	$scope.isSettledBill = !$scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_control_code_exist;
-			// } else {
-			// 	$scope.isSettledBill = true;
-			// }			
+	
 			$scope.isInformationalInvoice = false;
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$scope.invoiceSearchFlags.isClickedReservation = true;
