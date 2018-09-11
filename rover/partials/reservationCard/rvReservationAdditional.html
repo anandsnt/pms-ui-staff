@@ -63,9 +63,10 @@
                     </select>
                 </div>
                 <div class="select" ng-show="reservationData.reservation_card.commission_details.is_on && reservationData.reservation_card.commission_details.commission_type === 'amount'">
-                    <select ng-model="reservationData.reservation_card.commission_details.post_type">
-                        <option value="night" translate>PER_NIGHT</option>
-                        <option value="stay" translate>PER_STAY</option>
+                    <select ng-model="reservationData.reservation_card.commission_details.post_type"
+                            ng-change="updateCommissionFromStaycard()">
+                        <option value="STAY" translate>PER_NIGHT</option>
+                        <option value="NIGHT" translate>PER_STAY</option>
                     </select>
                 </div>
             </div>
