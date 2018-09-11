@@ -1,17 +1,13 @@
 describe('adHotelLegalSettingsController', function() {
 
     var $controller,
-        $scope = {},
-        ADHotelDetailsSrv,
-        $q;
+        $scope = {};
 
     beforeEach(function() {
         module('admin');
         inject(function (_$controller_, _$rootScope_, _ADHotelDetailsSrv_, _$q_ ) {
             $controller = _$controller_;
-            $scope = _$rootScope_.$new();
-            ADHotelDetailsSrv = _ADHotelDetailsSrv_;
-            $q = _$q_;
+            $scope = _$rootScope_.$new();            
         });       
         angular.extend($scope, {
             'setScroller': function() {
