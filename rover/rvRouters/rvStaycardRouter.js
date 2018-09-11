@@ -343,14 +343,6 @@ angular.module('stayCardModule', [])
             },
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
-            // resolve: {
-            //     roomsList: function (RVRoomAssignmentSrv, $stateParams) {
-            //         var params = {};
-
-            //         params.reservation_id = $stateParams.reservation_id;
-            //         return RVRoomAssignmentSrv.getRooms(params);
-            //     }
-            // },
             lazyLoad: function ($transition$) {
                 return $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
