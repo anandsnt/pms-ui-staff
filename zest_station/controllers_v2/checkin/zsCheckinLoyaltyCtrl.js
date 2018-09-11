@@ -55,6 +55,12 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.existingLoyalty = _.find($scope.existingLoyaltyPgms, function(loyalty) {
 					return response.selected_loyalty === loyalty.id;
 				});
+
+				if ($scope.existingLoyalty) {
+					$scope.existingLoyaltyPgms = _.filter($scope.existingLoyaltyPgms, function(loyalty) {
+						return loyalty.id !== $scope.existingLoyalty.id;
+					});
+				}
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
 			};
 			
