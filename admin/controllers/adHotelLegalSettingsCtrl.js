@@ -5,6 +5,7 @@ admin.controller('adHotelLegalSettingsController',
 	'ngDialog',
 	'$timeout', 
 	function($rootScope, $scope, ADHotelDetailsSrv, ngDialog, $timeout) {
+		BaseCtrl.call(this, $scope);
 		$scope.activeTab = 'financials';
 		var scrollerOptions = {
 				tap: true,
@@ -29,8 +30,45 @@ admin.controller('adHotelLegalSettingsController',
 			$scope.refreshScroller(name);
 		};
 
-		$timeout(function() {
-			refreshScroll('financialSettingsList');
-		}, 400);	
+		/*
+		 * update legal settings
+		 */
+		$scope.saveLegalSettings = function() {
+			var options = {
+				params: {
+					'hotel_id': $scope.data.id,
+					'data': $scope.legalSettings
+				},
+				successCallBack: function() {
+					$scope.successMessage = "Saved Succesfully!";
+				}
+			};
+
+			$scope.callAPI(ADHotelDetailsSrv.updateFinancialLegalSettings, options);
+		};
+		$scope.clearErrorMessage = function() {
+			$scope.successMessage = "";
+			$scope.errorMessage = "";
+		};
+		/*
+		 * Initial loading
+		 */
+		$scope.init = function() {
+			$timeout(function() {
+				refreshScroll('financialSettingsList');
+			}, 400);
+
+			var options = {
+				params: {
+					'hotel_id': $scope.data.id
+				},
+				successCallBack: function(response) {
+					$scope.legalSettings = response.data;
+				}
+			};
+
+			$scope.callAPI(ADHotelDetailsSrv.getFinancialLegalSettings, options);
+		};
+		$scope.init();
 }]);
 

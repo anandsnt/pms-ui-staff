@@ -74,7 +74,7 @@
                             <div class="balance" ng-class="{'text-red': invoiceReservationData.bills[0].balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
                             </div>
-                            <button type="button" class="button with-icon only-icon blue" ng-click="showFormatBillPopup($index, 0)"> <!-- Clicking this opens {../modals/format-bill.html} -->
+                            <button type="button" class="button with-icon only-icon" ng-class="getInvoiceButtonClass($index, 0)" ng-click="showFormatBillPopup($index, 0)"> <!-- Clicking this opens {../modals/format-bill.html} -->
                                 <span class="icons icon-invoice"></span>
                             
                             </button>
@@ -118,7 +118,7 @@
                             <div class="balance" ng-class="{'text-red': bill.balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo}}
                             </div>
-                            <button type="button" class="button with-icon only-icon blue" ng-click="showFormatBillPopup($parent.$index, $index)" > <!-- Clicking this opensss {../modals/format-bill.html} -->
+                            <button type="button" class="button with-icon only-icon blue" ng-click="showFormatBillPopup($parent.$index, $index)" ng-class="getInvoiceButtonClass($parent.$index, $index)"> <!-- Clicking this opensss {../modals/format-bill.html} -->
                                 <span class="icons icon-invoice"></span>                            
                             </button>
                         </div>
