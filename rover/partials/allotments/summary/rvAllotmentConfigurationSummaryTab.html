@@ -117,7 +117,7 @@
                     </select>
                 </div>
                 <!-- Show only when commission is turned on & type is set to $ -->
-                <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on && allotmentConfigData.summary.commission_details.type === 'value'">
+                <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on && allotmentConfigData.summary.commission_details.type === 'amount'">
                     <select ng-model="allotmentConfigData.summary.commission_details.commission_type">
                         <option value="NIGHT" translate>PER_NIGHT</option>
                         <option value="STAY" translate>PER_STAY</option>
