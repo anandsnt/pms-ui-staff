@@ -113,14 +113,14 @@
                 <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on">
                     <select name="travel-agent-commission-type" ng-model="allotmentConfigData.summary.commission_details.type">
                         <option value="percentage">%</option>
-                        <option value="value">{{currencySymbol}}</option>
+                        <option value="amount">{{currencySymbol}}</option>
                     </select>
                 </div>
                 <!-- Show only when commission is turned on & type is set to $ -->
                 <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on && allotmentConfigData.summary.commission_details.type === 'value'">
-                    <select ng-model="allotmentConfigData.summary.commission_details.post_type">
-                        <option value="night" translate>PER_NIGHT</option>
-                        <option value="stay" translate>PER_STAY</option>
+                    <select ng-model="allotmentConfigData.summary.commission_details.commission_type">
+                        <option value="NIGHT" translate>PER_NIGHT</option>
+                        <option value="STAY" translate>PER_STAY</option>
                     </select>
                 </div>
             </div>
