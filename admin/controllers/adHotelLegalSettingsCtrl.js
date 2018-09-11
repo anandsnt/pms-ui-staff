@@ -39,7 +39,7 @@ admin.controller('adHotelLegalSettingsController',
 					'data': $scope.legalSettings
 				},
 				successCallBack: function() {
-				   $scope.successMessage = "Saved Succesfully!";
+					$scope.successMessage = "Saved Succesfully!";
 				}
 			};
 
@@ -62,7 +62,7 @@ admin.controller('adHotelLegalSettingsController',
 					'hotel_id': $scope.data.id
 				},
 				successCallBack: function(response) {
-				   $scope.legalSettings = response.data;
+					$scope.legalSettings = response.data;
 				}
 			};
 
