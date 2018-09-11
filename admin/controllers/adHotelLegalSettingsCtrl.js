@@ -28,21 +28,22 @@ admin.controller('adHotelLegalSettingsController',
 		var refreshScroll = function(name) {
 			$scope.refreshScroller(name);
 		};
+
 		/*
 		 * update legal settings
 		 */
 		$scope.saveLegalSettings = function() {
 			var options = {
-                params: {
-                	'hotel_id': $scope.data.id,
-                	'data': $scope.legalSettings
-                },
-                successCallBack: function(response) {
-                   $scope.successMessage = "Saved Succesfully!";
-                }
-            };
+				params: {
+					'hotel_id': $scope.data.id,
+					'data': $scope.legalSettings
+				},
+				successCallBack: function() {
+				   $scope.successMessage = "Saved Succesfully!";
+				}
+			};
 
-            $scope.callAPI(ADHotelDetailsSrv.updateFinancialLegalSettings, options);
+			$scope.callAPI(ADHotelDetailsSrv.updateFinancialLegalSettings, options);
 		};
 		$scope.clearErrorMessage = function() {
 			$scope.successMessage = "";
@@ -57,15 +58,15 @@ admin.controller('adHotelLegalSettingsController',
 			}, 400);
 
 			var options = {
-                params: {
-                	'hotel_id': $scope.data.id
-                },
-                successCallBack: function(response) {
-                   $scope.legalSettings = response.data;
-                }
-            };
+				params: {
+					'hotel_id': $scope.data.id
+				},
+				successCallBack: function(response) {
+				   $scope.legalSettings = response.data;
+				}
+			};
 
-            $scope.callAPI(ADHotelDetailsSrv.getFinancialLegalSettings, options);
+			$scope.callAPI(ADHotelDetailsSrv.getFinancialLegalSettings, options);
 		};
 		$scope.init();
 }]);

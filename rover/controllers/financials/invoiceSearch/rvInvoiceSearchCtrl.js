@@ -98,7 +98,7 @@ sntRover.controller('RVInvoiceSearchController',
 		/*
 	     * Function to get invoice button class
 	     */
-	    $scope.getInvoiceButtonClass = function(parentIndex, billIndex) {
+		$scope.getInvoiceButtonClass = function(parentIndex, billIndex) {
 
 			var invoiceButtonClass = "blue";
 
@@ -108,11 +108,11 @@ sntRover.controller('RVInvoiceSearchController',
 				}
 			}
 			return invoiceButtonClass;
-	    };
-	    /*
+		};
+		/*
 	     * Function to get invoice button class
 	     */
-	    $scope.isInvoiceButtonDisabled = function() {
+		$scope.isInvoiceButtonDisabled = function(parentIndex, billIndex) {
 
 			var isDisabledInvoice = false;
 
@@ -122,7 +122,7 @@ sntRover.controller('RVInvoiceSearchController',
 				}
 			}
 			return isDisabledInvoice;
-	    };
+		};
 		
 		/*
 		 * Opens the popup which have the option to choose the bill layout while print/email
