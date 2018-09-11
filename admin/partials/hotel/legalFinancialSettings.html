@@ -26,13 +26,13 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-hide="true">
+            <tr>
                 <td>No Modify Invoice</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button on">
+                    <div class="switch-button" ng-class="{'on' : legalSettings.financials.no_modify_invoice}">
                         <!-- remove checked when not active-->
-                        <input name="no-modify" id="no-modify" value="no-modify" type="checkbox" checked="">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.financials.no_modify_invoice" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
