@@ -489,7 +489,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Reservations': true,
                 'Rooms': true,
                 'Future Reservations': true,
-                'Journal Export': true
+                'Journal Export': true,
+                'Clairvoix Stays Export': true
             };
 
             var forRunOnceOnly = {
@@ -501,7 +502,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Last Week Reservations': true,
                 'Past Reservations - Monthly': true,
                 'Nationality Statistics': true,
-                'Commissions': true
+                'Commissions': true,
+                'Clairvoix Stays Export': true
             };
 
             var forWeekly = {
