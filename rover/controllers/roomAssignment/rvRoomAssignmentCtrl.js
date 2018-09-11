@@ -760,78 +760,7 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 		$scope.roomFeatures.splice(0, 0, group);
 	};
-
-	/**
-	* function to prepare the filtered room list
-	*/
-	// $scope.applyFilterToRooms = function() {
-	// 	$scope.filteredRooms = [];
-	// 	var roomsWithInitialFilters = [],
-	// 	roomIdsInSelectedFloor,
-	// 	rooms = $scope.filteredRooms,
-	// 	selectedPredefinedFiltersList = $scope.selectedPredefinedFiltersList,
-	// 	selectedFiltersList = $scope.selectedFiltersList;
-
-	// 	// calculating room ids of selected floors in case any floor is selected.
-	// 	if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
-	// 			roomIdsInSelectedFloor = $scope.getRoomIdsInSelectedFloor();
-	// 		}
-
-	// 	// Iterating each room for filter.
-	// 	rooms.forEach(function (room) {
-	// 		var isRoomIncluded = false;
-	// 		var isReady = room.room_status === "READY";
-	// 		var isVacant = room.fo_status === "VACANT";
-	// 		var isPreassigned = room.is_preassigned;
-	// 		var isLocked = room.donot_move_room;
-
-	// 		// Checking whether the room is to be displyed.
-	// 		if (isReady && isVacant && !isPreassigned && !isLocked) {
-	// 			if (room.checkin_inspected_only === "true" && room.room_ready_status === "INSPECTED") {
-	// 				isRoomIncluded = true;
-	// 			} else if (room.checkin_inspected_only === "false") {
-	// 				isRoomIncluded = true;
-	// 			}
-	// 		}
-
-	// 		// CICO-9063, CICO-30640 show rooms regardless of hk status (excluded ooo) for future reservations.
-	// 		if ($scope.reservationData.reservation_card.reservation_status === 'RESERVED' && !room.is_preassigned) {
-	// 			isRoomIncluded = true;
-	// 		}
-
-	// 		// Checking whether any of  predefined Filter condition satisfies
-	// 		selectedPredefinedFiltersList.forEach(function(filter) {
-	// 			if (room.room_features.indexOf(filter) !== -1) {
-	// 				isRoomIncluded = true;
-	// 			}
-	// 		});
-	// 		// Checking whether any of Filter condition satisfies
-	// 		selectedFiltersList.forEach(function(filter) {
-	// 			if (room.room_features.indexOf(filter) !== -1) {
-	// 				isRoomIncluded = isRoomIncluded && true;
-	// 			} else {
-	// 				isRoomIncluded = isRoomIncluded && false;
-	// 			}
-	// 		});
-	// 		// Checking Whether the Room to be displyed.
-	// 		if (isRoomIncluded) {
-	// 			// If floor filter applied, checking whether the room belongs to selected Floor.
-	// 			if ($scope.floorFilterData && !$scope.floorFilterData.isNoFloorSelected) {
-	// 				if (roomIdsInSelectedFloor.indexOf(room.room_id) !== -1) {
-	// 					$scope.filteredRooms.push(room);
-	// 					}
-	// 			} else {
-	// 			// If No floor filter applied,Directly pushed.
-	// 				$scope.filteredRooms.push(room);
-	// 			}
- //                // CICO-44286
- //                $scope.filteredRooms = _.sortBy($scope.filteredRooms, function (room) {
- //                                            return room.room_number.toUpperCase();
- //                                        });
-	// 		}
-
-	// 	});
-	// };
+	
 	/**
 	* function to prepare the array of room ids of selected floors.
 	*/
