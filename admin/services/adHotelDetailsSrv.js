@@ -175,7 +175,7 @@ admin.service('ADHotelDetailsSrv', [
 	 */
 	that.updateFinancialLegalSettings = function(params) {
 		var deferred = $q.defer(),
-			url = '/admin/hotels/' + params.hotel_id + '/save_legal_settings';
+			url = '/admin/hotels/' + params.hotel_id + '/legal_settings';
 
         ADBaseWebSrvV2.putJSON(url, params.data).then(function(data) {
 		    deferred.resolve(data);
