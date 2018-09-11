@@ -1,3 +1,4 @@
+
 "EDIT": "Edit",
 "ALL": "All",
 "ADD":"Add",
@@ -175,7 +176,5 @@
 "SETTINGS_HAVE_BEEN_SAVED": "Success! Settings have been saved",
 "STAFF_ID": "STAFF ID",
 "COMMON_AREA": "COMMON AREA",
+"AUTO_CHARGE_DEPOSIT": "Auto Charge Deposit",
 "PASS_LEVEL_NUMBERS": "Pass Level Numbers Seperated By (;)"
-
-
-
