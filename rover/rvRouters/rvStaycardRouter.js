@@ -299,7 +299,7 @@ angular.module('stayCardModule', [])
                     var params = {
                         reservation_id: $stateParams.reservation_id,
                         page_no: 1,
-                        per_page: 10,
+                        per_page: 25,
                         room_types_ids: [$stateParams.roomTypeId],
                         use_default_guest_preferences: true
                     };

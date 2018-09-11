@@ -53,7 +53,7 @@ sntRover.controller('RVroomAssignmentController', [
 			}
 
 		},
-		ROOMS_LISTING_PAGE_SIZE = 10,
+		ROOMS_LISTING_PAGE_SIZE = 25,
 		ROOM_LIST_SCROLLER = 'roomlist';
 
 	BaseCtrl.call(this, $scope);
