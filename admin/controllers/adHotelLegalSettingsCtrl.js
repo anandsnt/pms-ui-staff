@@ -5,6 +5,7 @@ admin.controller('adHotelLegalSettingsController',
 	'ngDialog',
 	'$timeout', 
 	function($rootScope, $scope, ADHotelDetailsSrv, ngDialog, $timeout) {
+		BaseCtrl.call(this, $scope);
 		$scope.activeTab = 'financials';
 		var scrollerOptions = {
 				tap: true,
