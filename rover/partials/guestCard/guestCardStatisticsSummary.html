@@ -1,10 +1,8 @@
-<div class="statistics-summary">
+<div class="statistics-summary" ng-show="activeView === 'summary'">
     <div class="sidebar">
         <ul class="filters">
-            <li class="active">Summary</li>
-
-            <!-- When clicked hide statistics-summary and remove .hidden from statistics-details -->
-            <li>Details</li>
+            <li ng-click="setActiveView('summary')" ng-class="{'active': activeView === 'summary'}">Summary</li>
+            <li ng-click="setActiveView('details')" ng-class="{'active': activeView === 'details'}">Details</li>
         </ul>
         <div class="sidebar-content">
             <div class="row">Stays</div>
@@ -22,7 +20,10 @@
                 <div class="select">
                     <select>
                         <option value="2017">Last Year (2017)</option>
-                        ... for each year data
+                        <option value="2016">2016</option>
+                        <option value="2016">2015</option>
+                        <option value="2016">2014</option>
+                        <option value="2016">2013</option>
                     </select>
                 </div>
             </div>
@@ -34,75 +35,84 @@
             </div>
         </div>
         <div class="row">
-            <div class="column">{value}</div>
-            <div class="column white">
-                <!--
-                'stat-class':
-                    - 'red'   => if this years' value is lower than the compared year,
-                    - 'green' => if this years' value is greater than the compared year,
-                    - '' => if same
-
-                'stat-icon':
-                    - 'icons time check-out rotate-right' -> if this years' value is lower than the compared year
-                    - 'icons time check-in rotate-right' -> if this years' value is greater than the compared year,
-                    - 'neutral' => if same
-                -->
-                <div class="stat {stat-class}">
-                    <span class="{stat-icon}"></span>
-                    {stat}%
+            <div class="column">{{statistics.summary.stay_count.annual}}</div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.stay_count.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.stay_count.change_percent)}}"></span>
+                    {{statistics.summary.stay_count.change_percent}}%
                 </div>
-                {years' value}
+                {{absVal(statistics.summary.stay_count.ytd)}}
             </div>
-            <div class="column">{total value}</div>
+            <div class="column">{{statistics.summary.stay_count.total}}</div>
         </div> 
-        ... repeat for Stays, Nights, Cancellations & No Shows
+        <div class="row">
+            <div class="column">{{statistics.summary.nights_count.annual}}</div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.nights_count.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.nights_count.change_percent)}}"></span>
+                    {{absVal(statistics.summary.nights_count.change_percent)}}%
+                </div>
+                {{statistics.summary.nights_count.ytd}}
+            </div>
+            <div class="column">{{statistics.summary.nights_count.total}}</div>
+        </div> 
+        <div class="row">
+            <div class="column">{{statistics.summary.cancellation_count.annual}}</div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.cancellation_count.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.cancellation_count.change_percent)}}"></span>
+                    {{absVal(statistics.summary.cancellation_count.change_percent)}}%
+                </div>
+                {{statistics.summary.cancellation_count.ytd}}
+            </div>
+            <div class="column">{{statistics.summary.cancellation_count.total}}</div>
+        </div> 
+        <div class="row">
+            <div class="column">{{statistics.summary.no_show_count.annual}}</div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.no_show_count.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.no_show_count.change_percent)}}"></span>
+                    {{absVal(statistics.summary.no_show_count.change_percent)}}%
+                </div>
+                {{statistics.summary.no_show_count.ytd}}
+            </div>
+            <div class="column">{{statistics.summary.no_show_count.total}}</div>
+        </div>
 
         <div class="row">
-            <div class="column"><span class="currency">{currency}</span>{value}</div>
-            <div class="column white">
-                <!--
-                'stat-class':
-                    - 'red'   => if this years' value is lower than the compared year,
-                    - 'green' => if this years' value is greater than the compared year,
-                    - '' => if same
-
-                'stat-icon':
-                    - 'icons time check-out rotate-right' -> if this years' value is lower than the compared year
-                    - 'icons time check-in rotate-right' -> if this years' value is greater than the compared year,
-                    - 'neutral' => if same
-                -->
-                <div class="stat {stat-class}">
-                    <span class="{stat-icon}"></span>
-                    {stat}%
+            <div class="column"><span ng-bind-html="statistics.summary.adr.annual | sntCurrency:this"></span></div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.adr.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.adr.change_percent)}}"></span>
+                    {{absVal(statistics.summary.adr.ytd)}}%
                 </div>
-                <span class="currency">{currency}</span>{years' value}
+                <span ng-bind-html="statistics.summary.adr.ytd | sntCurrency:this"></span>                
             </div>
-            <div class="column"><span class="currency">{currency}</span>{total value}</div>
-        </div>
-        ... repeat ADR, Room Revenue
+            <div class="column"><span ng-bind-html="statistics.summary.adr.total | sntCurrency:this"></span></div>
+        </div> 
+        <div class="row">
+            <div class="column"><span ng-bind-html="statistics.summary.room_revenue.annual | sntCurrency:this"></span></div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.room_revenue.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.room_revenue.change_percent)}}"></span>
+                    {{absVal(statistics.summary.room_revenue.ytd)}}%
+                </div>
+                <span ng-bind-html="statistics.summary.room_revenue.ytd | sntCurrency:this"></span>                 
+            </div>
+            <div class="column"><span ng-bind-html="statistics.summary.room_revenue.total | sntCurrency:this"></span></div>
+        </div>       
 
         <!-- Total Revenue -->
         <div class="row">
-            <div class="column"><strong><span class="currency">{currency}</span>{value}</strong></div>
-            <div class="column white">
-                <!--
-                'stat-class':
-                    - 'red'   => if this years' value is lower than the compared year,
-                    - 'green' => if this years' value is greater than the compared year,
-                    - '' => if same
-
-                'stat-icon':
-                    - 'icons time check-out rotate-right' -> if this years' value is lower than the compared year
-                    - 'icons time check-in rotate-right' -> if this years' value is greater than the compared year,
-                    - 'neutral' => if same
-                -->
-                <div class="stat {stat-class}">
-                    <span class="{stat-icon}"></span>
-                    {stat}%
+            <div class="column"><strong><span ng-bind-html="statistics.summary.total_revenue.annual | sntCurrency:this"></span></strong></div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.total_revenue.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.total_revenue.change_percent)}}"></span>
+                    {{absVal(statistics.summary.total_revenue.ytd)}}%
                 </div>
-                <strong><span class="currency">{currency}</span>{years' value}</strong>
+                <strong><span ng-bind-html="statistics.summary.total_revenue.ytd | sntCurrency:this"></span></strong>
             </div>
-            <div class="column"><strong><span class="currency">{currency}</span>{total value}</strong></div>
+            <div class="column"><strong><span ng-bind-html="statistics.summary.total_revenue.total | sntCurrency:this"></span></strong></div>
         </div>
     </div>
 </div>

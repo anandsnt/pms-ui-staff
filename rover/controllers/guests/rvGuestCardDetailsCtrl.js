@@ -107,6 +107,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
             else if (tab === 'activity-log') {
                 $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            } else if (tab === 'guest-statistics') {
+               $scope.$broadcast('LOAD_GUEST_STATISTICS'); 
             }
             
             if (!$scope.viewState.isAddNewCard) {
