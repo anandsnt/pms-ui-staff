@@ -3,15 +3,18 @@ angular.module('documentTouchMovePrevent', []).directive('documentTouchMovePreve
 
         link: function(scope, element) {
             var isIpad = navigator.userAgent.match(/iPad/i) !== null,
+            hasTouch = 'ontouchstart' in window,
             url = window.location.href;
 
             // CICO-36654 fix for touch events not getting detected iPad.
             window.touchmovepreventdefault = function(event) {
-                event.preventDefault();
+                if(isIpad || event.target.hasAttribute("iscroll-target") 
+                    || url.indexOf("/admin/h/") == -1)
+                    event.preventDefault();
             };
             if (isIpad) {
                 document.addEventListener('touchmove', touchmovepreventdefault);
-            } else if (url.indexOf("/admin/h/") == -1) {
+            } else if (hasTouch){
                 document.addEventListener('touchmove', touchmovepreventdefault, {passive: false});
             }
         }
