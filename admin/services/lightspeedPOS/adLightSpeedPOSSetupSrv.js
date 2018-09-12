@@ -138,11 +138,11 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
-        service.fetchChargeCodeMapings = function () {
+        service.fetchChargeCodeMapings = function (params) {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/lightspeed/charge_code_mappings.json';
 
-            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

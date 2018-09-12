@@ -15,23 +15,31 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         }
     };
 
-    var formParamsForChargeCodes = function() {
+    var formParamsForExternalMappings = function() {
+        var charge_code_id = $scope.data.selectedChargeCode.value;
+        var selectedProducts = $scope.mappedProducts.map(function (product) {
+            return { name: product.name, sku: product.sku, id: product.id };
+        });
         if($scope.lightspeed.floors_enabled) {
             return {
-                        is_no_pagination: true,
-                        floor_id: $scope.data.selectedFloor.id,
-                        company_id: $scope.data.selectedRestaurant.company_id 
-                    };
+                      charge_code_id: charge_code_id,
+                      selected_products: selectedProducts,
+                      floor_id: $scope.data.selectedFloor.id,
+                      company_id: $scope.data.selectedRestaurant.company_id
+                   };
         } else {
             return {
-                        is_no_pagination: true
+                      charge_code_id: charge_code_id,
+                      selected_products: selectedProducts
                     };
         }
     };
 
     $scope.fetchChargeCodes = function() {
         $scope.callAPI(ADChargeCodesSrv.fetch, {
-            params: formParamsForChargeCodes(),
+            params: {
+              is_no_pagination: true
+            },
             successCallBack: function successCallBack(response) {
                 $scope.data.selectedChargeCode = response.charge_codes[0];
                 $scope.data.filteredProduct = '';
@@ -90,6 +98,10 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
 
     var fetchChargeCodeMapings = function() {
         $scope.callAPI(adLightSpeedPOSSetupSrv.fetchChargeCodeMapings, {
+            params: $scope.lightspeed.floors_enabled ? {
+                        floor_id: $scope.data.selectedFloor.id,
+                        company_id: $scope.data.selectedRestaurant.company_id
+                        } : {},
             successCallBack: function successCallBack(response) {
                 $scope.chargeCodeMapings = response;
                 $scope.filterMappedAndNonMappedProducts();
@@ -121,18 +133,8 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     };
 
     $scope.saveExternalMappings = function () {
-        var charge_code_id = $scope.data.selectedChargeCode.value;
-        var selectedProducts = $scope.mappedProducts.map(function (product) {
-            return { name: product.name, sku: product.sku, id: product.id };
-        });
-
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveChargeCodeMapings, {
-            params: {
-                charge_code_id: charge_code_id,
-                selected_products: selectedProducts,
-                floor_id: $scope.data.selectedFloor.id,
-                company_id: $scope.data.selectedRestaurant.company_id
-            },
+            params: formParamsForExternalMappings(),
             successCallBack: function successCallBack() {
                 fetchChargeCodeMapings();
             },
