@@ -66,9 +66,7 @@ angular.module('sntRover').controller('RVUpgradesCtrl', ['$scope', '$state', '$s
 		   CICO-29824: only READY rooms should be shown that are VACANT/NOT RESERVED
 		 */
 		_.each(data.upsell_mapping, function(roomType) {
-			var roomsInRoomType  = _.where($scope.allRooms, {"room_type_id": roomType.upgrade_room_type_id_int});
-
-				roomToUpgrade	 = _.filter(roomsInRoomType, isRoomReadyToAssign)[0];
+			var roomToUpgrade = data.room_for_room_type[roomType.upgrade_room_type_id_int];
 
 			if (roomToUpgrade) {
 				roomType.upgrade_room_number = roomToUpgrade.room_number;
