@@ -7,7 +7,7 @@ sntRover.controller('RVQuickTextController',
         BaseCtrl.call(this, $scope);
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
         var init = function() {
-            $scope.iframe_endpoint = $sce.trustAsResourceUrl(quicktextdata.iframe_endpoint);
+            $scope.iframeEndpoint = $sce.trustAsResourceUrl(quicktextdata.iframe_endpoint);
         };
         // -------------------------------------------------------------------------------------------------------------- B. Scope Variables
         init();

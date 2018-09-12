@@ -2,8 +2,8 @@ angular.module('sntRover').service('rvQuickTextSrv', ['$q', 'BaseWebSrvV2', 'rvU
     function ($q, BaseWebSrvV2, rvUtilSrv) {
 
     this.fetchQuickTextData = function (data) {
-        var deferred = $q.defer();
-        var url = "/api/interface/quicktext.json";
+        var deferred = $q.defer(),
+            url = "/api/interface/quicktext.json";
 
         deferred.resolve(data);
         BaseWebSrvV2.getJSON(url).then(function (data) {
