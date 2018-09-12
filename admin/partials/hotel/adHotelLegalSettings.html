@@ -1,0 +1,40 @@
+<div id="modal" class="modal-show" role="dialog">
+	<form method="post" class="modal-content legal-settings">		
+		<div class="content-left">
+			<ul>
+				<!-- Add .active when viewing the screen -->
+				<!-- {icon-status}: 
+					- icon-action -> when inactive (or in progress)
+					- icon-success -> when success/activated
+				-->
+				<li ng-class="{'active': activeTab === 'financials'}" ng-click="clickedTabMenu('financials')">Financials</li>
+				<li ng-class="{'active': activeTab === 'reports'}" ng-click="clickedTabMenu('reports')">Reports</li>
+				<li ng-class="{'active': activeTab === 'reservations'}" ng-click="clickedTabMenu('reservations')">Reservations</li>
+				<li ng-class="{'active': activeTab === 'luhn'}" ng-click="clickedTabMenu('luhn')"><span class="icons icon-action"></span>Luhn Algorithm</li>
+				<li ng-class="{'active': activeTab === 'control'}" ng-click="clickedTabMenu('control')"><span class="icons icon-success"></span>Control Number</li>
+			</ul>
+		</div>
+		<div class="content-right">
+			<!-- Financial Settings -->
+			<!-- hide when not active screen (add .hidden) -->
+			<div class="content" ng-show="activeTab === 'financials'">
+				<div ng-include="'/assets/partials/hotel/legalFinancialSettings.html'"></div>
+			</div>
+			<!-- Reports -->
+			<div class="content hidden" ng-show="activeTab === 'reports'">
+				<div ng-include="'/assets/partials/hotel/legalFinancialSettings.html'"></div>
+			</div>
+			<!-- Reservations -->
+			<div class="content hidden" ng-show="activeTab === 'reservations'">
+				<div ng-include="'/assets/partials/hotel/legalFinancialSettings.html'"></div>
+			</div>
+			<!-- Luhn Algorithm -->
+			<div class="content" ng-show="activeTab === 'luhn'">
+				<div ng-include="'/assets/partials/hotel/legalLuhnSettings.html'"></div>
+			</div>
+			<div class="content" ng-show="activeTab === 'control'">
+				<div ng-include="'/assets/partials/hotel/legalControlSettings.html'"></div>
+			</div>
+		</div>
+	</form>
+</div>
