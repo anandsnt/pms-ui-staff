@@ -7,12 +7,32 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     $scope.products = [];
 
     var initialize = function initialize() {
+        $scope.data = {};
+        if($scope.lightspeed.floors_enabled) {
+            fetchRestaurants();
+        } else {
+            $scope.fetchChargeCodes();
+        }
+    };
+
+    var formParamsForChargeCodes = function() {
+        if($scope.lightspeed.floors_enabled) {
+            return {
+                        is_no_pagination: true,
+                        floor_id: $scope.data.selectedFloor.id,
+                        company_id: $scope.data.selectedRestaurant.company_id 
+                    };
+        } else {
+            return {
+                        is_no_pagination: true
+                    };
+        }
+    };
+
+    $scope.fetchChargeCodes = function() {
         $scope.callAPI(ADChargeCodesSrv.fetch, {
-            params: {
-                is_no_pagination: true
-            },
+            params: formParamsForChargeCodes(),
             successCallBack: function successCallBack(response) {
-                $scope.data = {};
                 $scope.data.selectedChargeCode = response.charge_codes[0];
                 $scope.data.filteredProduct = '';
                 $scope.chargeCodes = response.charge_codes;
@@ -24,8 +44,40 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         });
     };
 
-    var fetchProducts = function fetchProducts() {
+    var fetchRestaurants = function() {
+        $scope.callAPI(adLightSpeedPOSSetupSrv.fetchRestaurants, {
+            successCallBack: function successCallBack(response) {
+                $scope.data.selectedRestaurant = response[0];
+                $scope.restaurants = response;
+                $scope.fetchFloors();
+            },
+            failureCallBack: function failureCallBack() {
+                $scope.errorMessage = ['Error while retrieving products list.'];
+            }
+        });
+    };
+
+    $scope.fetchFloors = function() {
+        $scope.callAPI(adLightSpeedPOSSetupSrv.fetchFloors, {
+            params: {
+                        'id': $scope.data.selectedRestaurant.id
+                    },
+            successCallBack: function successCallBack(response) {
+                $scope.data.selectedFloor = response.status[0];
+                $scope.floors = response.status;
+                $scope.fetchChargeCodes()
+            },
+            failureCallBack: function failureCallBack() {
+                $scope.errorMessage = ['Error while retrieving products list.'];
+            }
+        });
+    };
+
+    var fetchProducts = function() {
         $scope.callAPI(adLightSpeedPOSSetupSrv.fetchProducts, {
+            params: $scope.lightspeed.floors_enabled ? {
+                        restaurant_id: $scope.data.selectedRestaurant.id
+                        } : {},
             successCallBack: function successCallBack(response) {
                 $scope.products = response;
                 fetchChargeCodeMapings();
@@ -36,7 +88,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         });
     };
 
-    var fetchChargeCodeMapings = function fetchChargeCodeMapings() {
+    var fetchChargeCodeMapings = function() {
         $scope.callAPI(adLightSpeedPOSSetupSrv.fetchChargeCodeMapings, {
             successCallBack: function successCallBack(response) {
                 $scope.chargeCodeMapings = response;
@@ -77,7 +129,9 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveChargeCodeMapings, {
             params: {
                 charge_code_id: charge_code_id,
-                selected_products: selectedProducts
+                selected_products: selectedProducts,
+                floor_id: $scope.data.selectedFloor.id,
+                company_id: $scope.data.selectedRestaurant.company_id
             },
             successCallBack: function successCallBack() {
                 fetchChargeCodeMapings();
