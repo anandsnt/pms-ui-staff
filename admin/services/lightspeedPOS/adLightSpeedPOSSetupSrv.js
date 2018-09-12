@@ -114,7 +114,7 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
         service.fetchFloors = function(params) {
             var deferred = $q.defer(),
-                url = 'api/hotel_settings/lightspeed/'+params.id+'/floors.json';
+                url = 'api/hotel_settings/lightspeed/' + params.id + '/floors.json';
 
             ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
                 deferred.resolve(data);

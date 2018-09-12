@@ -8,7 +8,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
 
     var initialize = function initialize() {
         $scope.data = {};
-        if($scope.lightspeed.floors_enabled) {
+        if ($scope.lightspeed.floors_enabled) {
             fetchRestaurants();
         } else {
             $scope.fetchChargeCodes();
@@ -18,21 +18,24 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     var formParamsForExternalMappings = function() {
         var charge_code_id = $scope.data.selectedChargeCode.value;
         var selectedProducts = $scope.mappedProducts.map(function (product) {
-            return { name: product.name, sku: product.sku, id: product.id };
+            return { name: product.name,
+sku: product.sku,
+id: product.id };
         });
-        if($scope.lightspeed.floors_enabled) {
+
+        if ($scope.lightspeed.floors_enabled) {
             return {
                       charge_code_id: charge_code_id,
                       selected_products: selectedProducts,
                       floor_id: $scope.data.selectedFloor.id,
                       company_id: $scope.data.selectedRestaurant.company_id
                    };
-        } else {
+        } 
             return {
                       charge_code_id: charge_code_id,
                       selected_products: selectedProducts
                     };
-        }
+        
     };
 
     $scope.fetchChargeCodes = function() {
@@ -73,7 +76,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
             successCallBack: function successCallBack(response) {
                 $scope.data.selectedFloor = response.status[0];
                 $scope.floors = response.status;
-                $scope.fetchChargeCodes()
+                $scope.fetchChargeCodes();
             },
             failureCallBack: function failureCallBack() {
                 $scope.errorMessage = ['Error while retrieving products list.'];
