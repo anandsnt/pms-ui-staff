@@ -17,7 +17,7 @@ admin.controller('ADResyncRatesCtrl', [
 		var refreshScroll = function() {
 			setTimeout(function() {
 				$scope.refreshScroller('resyncRateScroll');
-			},500);
+			}, 500);
 		};
 
 		/*	
