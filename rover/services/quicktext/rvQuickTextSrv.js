@@ -1,5 +1,5 @@
-angular.module('sntRover').service('rvQuickTextSrv', ['$q', 'BaseWebSrvV2', 'rvUtilSrv',
-    function ($q, BaseWebSrvV2, rvUtilSrv) {
+angular.module('sntRover').service('rvQuickTextSrv', ['$q', 'BaseWebSrvV2', 
+    function ($q, BaseWebSrvV2) {
 
     this.fetchQuickTextData = function (data) {
         var deferred = $q.defer(),

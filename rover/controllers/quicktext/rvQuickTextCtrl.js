@@ -9,6 +9,7 @@ sntRover.controller('RVQuickTextController',
         var init = function() {
             $scope.iframeEndpoint = $sce.trustAsResourceUrl(quicktextdata.iframe_endpoint);
         };
+        
         // -------------------------------------------------------------------------------------------------------------- B. Scope Variables
         init();
     }

@@ -317,13 +317,13 @@ angular.module('sntRover').service('rvMenuSrv',
                 submenu: [{
 		            title: "MENU_ACTIONS_MANAGER",
 		            action: "rover.actionsManager",
-		            menuIndex: "reports-inbox",
+		            menuIndex: "ractionManager",
 		            iconClass: "icon-actions"
 		        },
 		        {
 		            title: "QUICKTEXT",
 		            action: "rover.quicktext",
-		            menuIndex: "new_report",
+		            menuIndex: "QuickText",
 		            hidden: !shouldShowQucikTextMenu()
 		        }]
             },

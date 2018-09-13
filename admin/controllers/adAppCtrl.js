@@ -271,7 +271,7 @@ admin.controller('ADAppCtrl', [
                         {
                             title: "QUICKTEXT",
                             action: "rover.quicktext",
-                            menuIndex: "new_report",
+                            menuIndex: "QuickText",
                             hidden: $rootScope.isQuickTextEnabled
                         }]
                     }, {
