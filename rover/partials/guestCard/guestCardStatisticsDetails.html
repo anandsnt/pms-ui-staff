@@ -16,7 +16,7 @@
                     </select>
                 </div>
             </div>
-            <div class="sidebar-content scrollable">
+            <div class="sidebar-content scrollable" ng-iscroll="sidebarScroller">
                 <div class="wrapper">
                     <!-- if we don't have data in the month add .no-data -->
                     <!-- if we click on it, add .open -->
@@ -55,7 +55,7 @@
                     </strong>
                 </div>
             </div>
-            <div class="scrollable">
+            <div class="scrollable" ng-iscroll="monthlyDataScroller">
                 <div class="wrapper">
                     <span ng-repeat="monthlyData in statistics.details.monthly_data track by $index">
                     <div class="row" >
@@ -97,14 +97,14 @@
                                 </span>
                             </div>
                             <div class="guest-date arrival">
-                                <span class="guest-status small-icon {{reservation.reservation_status}}"></span>
+                                <span class="guest-status small-icon {{getReservationClass(reservation.reservation_status)}}"></span>
                                 <time datetime="">
                                     <span class="date">{{reservation.arrival_date| date : dateFormat}}</span>
                                     <span class="time">{{reservation.arrival_time}}</span>
                                 </time>
                             </div>
                             <div class="guest-date departure">
-                                <span class="guest-status small-icon {{reservation.reservation_status}}"></span>
+                                <span class="guest-status small-icon {{getReservationClass(reservation.reservation_status)}}"></span>
                                 <time datetime="">
                                     <span class="date">{{reservation.departure_date| date : dateFormat}}</span>
                                     <span class="time">{{reservation.departure_time}}</span>
