@@ -265,7 +265,7 @@ admin.controller('ADAppCtrl', [
                         submenu: [{
                             title: "MENU_ACTIONS_MANAGER",
                             action: "rover.actionsManager",
-                            menuIndex: "reports-inbox",
+                            menuIndex: "actionsManager",
                             iconClass: "icon-actions"
                         },
                         {
