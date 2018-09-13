@@ -91,7 +91,7 @@ id: product.id };
                         } : {},
             successCallBack: function successCallBack(response) {
                 $scope.products = response;
-                fetchChargeCodeMapings();
+                $scope.fetchChargeCodeMapings();
             },
             failureCallBack: function failureCallBack() {
                 $scope.errorMessage = ['Error while retrieving products list.'];
@@ -99,7 +99,7 @@ id: product.id };
         });
     };
 
-    var fetchChargeCodeMapings = function() {
+    $scope.fetchChargeCodeMapings = function() {
         $scope.callAPI(adLightSpeedPOSSetupSrv.fetchChargeCodeMapings, {
             params: $scope.lightspeed.floors_enabled ? {
                         floor_id: $scope.data.selectedFloor.id,
@@ -139,7 +139,7 @@ id: product.id };
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveChargeCodeMapings, {
             params: formParamsForExternalMappings(),
             successCallBack: function successCallBack() {
-                fetchChargeCodeMapings();
+                $scope.fetchChargeCodeMapings();
             },
             failureCallBack: function failureCallBack() {
                 $scope.errorMessage = ['Error while saving external mappings'];
