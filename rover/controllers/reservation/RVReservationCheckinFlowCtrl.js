@@ -299,7 +299,8 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                         'room_type': $scope.reservationBillData.room_type,
                         'clickedButton': 'checkinButton',
                         'upgrade_available': $scope.reservationBillData.is_upsell_available &&
-                        (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN')
+                        (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
+                        "roomTypeId": $scope.reservation.reservation_card.room_type_id
                     });
 
                     return false;
