@@ -38,6 +38,14 @@
                 width: 120px;
             }
         }
+
+        &.no-folio {
+            li {
+                &.guest-details {
+                    .calc-width(100, 220);
+                }
+            }
+        }
     }
 
     .invoice-list-content {
@@ -57,6 +65,18 @@
 
         &.no-pagination {
             .calc-height( 100, 80 );
+        }
+
+        &.no-folio {
+            .search-results {
+                li {
+                    &:not(.no-content).invoice-item {
+                        .bill {
+                            grid-template-columns: 30px calc(~'100% - 370px') 270px 40px;
+                        }
+                    }
+                }
+            }
         }
     }
 
