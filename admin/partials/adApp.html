@@ -7,10 +7,11 @@
 	<div id="content" class="tabs float"  role="main" data-tabs="dashboard-tabs">	
 
 	   <!-- Dashboard tabs navigation -->
-	   <div id="tabs-menu" ng-iscroll="tabs_menu"  ng-iscroll-delay="500">
+	   <!-- We need to add "iscroll-target as an attribute for the descentants of iscroll containers for admin for fixing the scroll conflicts in touch devices" -->
+	   	<div id="tabs-menu" ng-iscroll="tabs_menu"  ng-iscroll-delay="500">
 	   	
 		   <ul style="width: 100%;">
-		      <li ng-repeat="menu in data.menus" ng-class="{'ui-state-default ui-corner-top ui-tabs-active ui-state-active': $index==selectedIndex}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
+		      <li ng-repeat="menu in data.menus" ng-class="{'ui-state-default ui-corner-top ui-tabs-active ui-state-active': $index==selectedIndex}"><a iscroll-target ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
 		   </ul>
 		</div>
 		<span ng-click="closeDrawer()"><div ui-view></div></span>

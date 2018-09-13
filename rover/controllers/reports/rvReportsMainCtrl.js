@@ -457,10 +457,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (!angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj)) {
                     item.chosenDueInArrivals = false;
                 }
+                // CICO-56206
+                if (item.fromDate > item.untilDate) {
+                    item.untilDate = item.fromDate;
+                }
             }
             if (item.title === reportNames['DEPARTURE']) {
                 if (!angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj)) {
                     item.chosenDueOutDepartures = false;
+                }
+
+                // CICO-56206
+                if (item.fromDate > item.untilDate) {
+                    item.untilDate = item.fromDate;
                 }
             }
         };
