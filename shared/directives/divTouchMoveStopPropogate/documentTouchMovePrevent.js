@@ -2,15 +2,17 @@ angular.module('divTouchMoveStopPropogate', []).directive('divTouchMoveStopPropo
   return {
 
     link: function(scope, element) {
-    	var hasTouch = 'ontouchstart' in window,
-        isIpad = navigator.userAgent.match(/iPad/i) !== null;
+        var hasTouch = 'ontouchstart' in window,
+            isIpad = navigator.userAgent.match(/iPad/i) !== null;
+
         // CICO-36654 fix for touch events not getting detected iPad.
         window.touchmovestoppropogate = function(event) {
             event.stopPropagation();
         };
-    	if (isIpad) {
-	      element.on('touchmove',window.touchmovestoppropogate);
-	    } else if (hasTouch) {
+        if (isIpad) {
+            element.on('touchmove',window.touchmovestoppropogate);
+        }
+        else if (hasTouch) {
             element.on('touchmove',window.touchmovestoppropogate, {passive: false} );
         }
     }
