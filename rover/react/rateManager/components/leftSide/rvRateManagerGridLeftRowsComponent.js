@@ -21,7 +21,8 @@ const RateManagerGridLeftRowsComponent = ({ leftListingData, onItemClick, onItem
 					showRightSpan = {item.showRightSpan}
 					rightSpanClassName = {item.rightSpanClassName}
 					accountName={item.accountName}
-					showIndicator={item.showIndicator}/>
+					showIndicator={item.showIndicator}
+					isLocked={item.isLocked}/>
 			)			
 		}
 	</tbody>

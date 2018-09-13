@@ -806,6 +806,11 @@ angular.module('sntRover')
             $scope.roomTypeAndPrices = dialogData.roomTypesAndPrices;
 
             $scope.contentMiddleMode = 'ROOM_TYPE_PRICE_LISTING';
+
+            if (dialogData.restrictionData[0].is_locked) {
+                $scope.isLocked = true;
+                $scope.headerNoticeOnRight = 'Locked due to rate update';
+            }
         };
 
         /**
@@ -1137,6 +1142,8 @@ angular.module('sntRover')
             $scope.isPastDate = new tzIndependentDate($scope.ngDialogData.date) < new tzIndependentDate($rootScope.businessDate);
 
             $scope.header = '';
+
+            $scope.isLocked = false;
 
             $scope.headerBottomLeftLabel = '';
 
