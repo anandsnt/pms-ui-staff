@@ -460,7 +460,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                                     value: each.id,
                                     address: each.account_address,
                                     type: each.account_type,
-                                    commission_type: each.commission_details ? each.commission_details.type : 'amount'
+                                    commission_details: each.commission_details || {}
                                 };
                                 list.push(entry);
                             });
@@ -472,7 +472,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                     this.value = ui.item.label;
                     $scope.allotmentConfigData.summary.company.name = ui.item.label;
                     $scope.allotmentConfigData.summary.company.id = ui.item.value;
-                    $scope.allotmentConfigData.summary.commission_details.type = ui.item.commission_type;
+                    $scope.allotmentConfigData.summary.commission_details = ui.item.commission_details;
                     if (!$scope.isInAddMode()) {
                         $scope.updateAllotmentSummary(true);
                     }

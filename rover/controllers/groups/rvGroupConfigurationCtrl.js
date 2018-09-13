@@ -1346,7 +1346,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                     value: each.id,
                                     address: each.account_address,
                                     type: each.account_type,
-                                    commission_type: each.commission_details ? each.commission_details.type : 'amount'
+                                    commission_details: each.commission_details || {}
                                 };
                                 list.push(entry);
                             });
@@ -1358,7 +1358,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     this.value = ui.item.label;
                     $scope.groupConfigData.summary.travel_agent.name = ui.item.label;
                     $scope.groupConfigData.summary.travel_agent.id = ui.item.value;
-                    $scope.groupConfigData.summary.commission_details.type = ui.item.commission_type;
+                    $scope.groupConfigData.summary.commission_details = ui.item.commission_details;
                     if (!$scope.isInAddMode()) {
                         $scope.updateGroupSummary();
                     }
