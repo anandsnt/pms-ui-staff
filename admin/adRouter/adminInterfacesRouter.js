@@ -64,6 +64,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.quicktext', {
+        templateUrl: '/assets/partials/interfaces/QuickText/adQuickTextSetup.html',
+        controller: 'adQuickTextSetupCtrl',
+        url: '/quicktext/setup',
+        resolve: {
+            quicktextSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('quicktext');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.lightspeedPosSetup', {
         templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
         controller: 'adLightSpeedPOSSetupCtrl',

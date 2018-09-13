@@ -50,7 +50,9 @@
 "OK":"Ok",
 "DELETE":"Delete",
 "MENU_ACCOUNTS": "Accounts",
+"MENU_ACTIONS":"Actions",
 "MENU_ACTIONS_MANAGER":"Actions Manager",
+"QUICKTEXT":"Quicktext",
 "TITLE_HOTEL_ADMIN": "Hotel Admin",
 "MENU_GUESTS": "Guests",
 
