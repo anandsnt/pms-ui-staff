@@ -418,4 +418,19 @@ angular.module('stayCardModule', [])
                     .fetchAssets(['rover.actionsManager', 'directives']);
             }
         });
+        
+        $stateProvider.state('rover.quicktext', {
+            url: '/quicktext',
+            templateUrl: '/assets/partials/quicktext/rvQuickText.html',
+            controller: 'RVQuickTextController',
+            resolve: {
+                quicktextdata: function (rvQuickTextSrv) {
+                    return rvQuickTextSrv.fetchQuickTextData();
+                }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.quicktext', 'directives']);
+            }
+        });
     });

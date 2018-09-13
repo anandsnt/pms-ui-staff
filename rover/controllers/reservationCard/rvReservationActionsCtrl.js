@@ -306,7 +306,8 @@ sntRover.controller('reservationActionsController', [
                             "room_type": $scope.reservationData.reservation_card.room_type_code,
                             "clickedButton": "checkinButton",
                             "upgrade_available": isUpgradeAvaiable,
-                            "cannot_move_room": cannotMoveState
+                            "cannot_move_room": cannotMoveState,
+                            "roomTypeId": $scope.reservationData.reservation_card.room_type_id
                     });
                 };
                 $scope.goToBillCard = function() {

@@ -128,7 +128,8 @@ sntRover.controller('roverController', [
         $rootScope.roverObj = {
             isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
             hasActivatedFolioNumber: hotelDetails.has_activate_folio_number,
-            noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice
+            noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
+            noModifyInvoice: hotelDetails.no_modify_invoice
         };
         /*
          * hotel Details
