@@ -302,9 +302,23 @@ angular.module('sntRover').controller('reservationRoomStatus',
 			gotToDiaryInEditMode ();
 		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
+			$state.go("rover.reservation.staycard.roomassignment", {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                room_type: $scope.reservationData.reservation_card.room_type_code,
+                clickedButton: "roomButton",
+                upgrade_available: isUpgradeAvaiable,
+                cannot_move_room: cannotMoveState,
+                roomTypeId: $scope.reservationData.reservation_card.room_type_id
+            });
 		} else if ($scope.reservationData.reservation_card.reservation_status === "CHECKEDIN" && $rootScope.isStandAlone) { // As part of CICO-27631 added Check for overlay hotels
-			$state.go("rover.reservation.staycard.roomassignment", {reservation_id: $scope.reservationData.reservation_card.reservation_id, room_type: $scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton", "upgrade_available": isUpgradeAvaiable, "cannot_move_room": cannotMoveState});
+			$state.go("rover.reservation.staycard.roomassignment", {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                room_type: $scope.reservationData.reservation_card.room_type_code,
+                clickedButton: "roomButton",
+                upgrade_available: isUpgradeAvaiable,
+                cannot_move_room: cannotMoveState,
+                roomTypeId: $scope.reservationData.reservation_card.room_type_id
+            });
 		}
 
 	};

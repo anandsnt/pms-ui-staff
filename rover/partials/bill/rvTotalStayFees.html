@@ -14,7 +14,7 @@
 		{{ 'PAY' | translate }}
 	</button>
 	<!-- Open format bill popup -->
-    <button type="button" class="button with-icon blue" ng-click="showFormatBillPopup(reservationBillData.bills[currentActiveBill].bill_number)">
+    <button type="button" class="button with-icon" ng-class="getInvoiceButtonClass();" ng-disabled="isInvoiceButtonDisabled()" ng-click="showFormatBillPopup(reservationBillData.bills[currentActiveBill].bill_number)">
         <span class="icons icon-invoice"></span>
         Invoice
     </button>

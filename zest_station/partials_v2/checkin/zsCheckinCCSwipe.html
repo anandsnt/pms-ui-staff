@@ -42,14 +42,12 @@
                     <span>
                         <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
                     </span>
-                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
 
                 <li ng-show='zestStationData.waitingForSwipe && icmp' touch-press='continue()'>
                    <div class="margin-adj">
                         <div ng-include="icons.url.creditcard_icmp"></div>
                     </div>
-                    <div class="ng-hide" ng-include="'assets/partials/kiosk/zsSixPayIframe.html'"></div>
                 </li>
                 
                 <li ng-show='(swipeTimeout || swipeError) && !zestStationData.waitingForSwipe'>

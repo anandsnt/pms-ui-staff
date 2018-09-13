@@ -33,7 +33,7 @@
             .search {
                 padding-bottom: 10px;
                 margin: 0 10px 10px 0;
-                border-bottom: 1px solid rgba(0,0,0,.1);
+                box-shadow: 0 1px 0 rgba(0,0,0,.1);
                 .float;
 
                 .button {
@@ -246,6 +246,19 @@
                         }
                     }
                 }
+
+                &.with-pagination {
+                    .calc-height(100, 120);
+                }
+            }
+
+            /* Pagination ***/
+            .numbers-pagination {
+                left: 10px;
+                padding: 10px 0;
+                background: transparent;
+                box-shadow: 0 -1px 0 rgba(0,0,0,.1);
+                .calc-width(100, 30);
             }
         }
 

@@ -1,0 +1,39 @@
+<!--
+    {icon-status}: 
+        - icon-action -> when inactive
+        - icon-action-progress -> when in progress (activating)
+        - icon-success -> when success/activated
+    
+    {status-color}:
+        - '' (empty) -> when inactive
+        - green -> when active
+        - orange -> when activating
+    {status-text}:
+        - Inactive
+        - Active
+        - Activating...
+-->
+<span class="message h2">Luhn Algorithm</span>
+<div class="content-status">
+    <span class="icons icon-action"></span>
+    <h3 class="status-text">Inactive</h3>
+</div>
+<table class="table-settings no-border">
+    <tr>
+        <td>Algorithm Type</td>
+        <td>
+            <div class="select">
+                <select class="placeholder">
+                    <option value="MOD01">MOD10</option>
+                    ... repeat for each option
+                </select>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="actions">
+    <button class="button blank" ng-click="closeDialog()">Cancel</button>
+    <!-- show when inactive--> 
+    <button class="button green">Activate</button>
+    
+</div>
