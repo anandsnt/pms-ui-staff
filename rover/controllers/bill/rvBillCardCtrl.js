@@ -745,6 +745,7 @@ sntRover.controller('RVbillCardController',
 
 		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists, billIndex);
 		if (index) {
+			callGenerateFolioNumberApiAfterLoadingCurrentBill =  true;
 			$scope.getBillData($scope.currentActiveBill);
 		}
 	};
