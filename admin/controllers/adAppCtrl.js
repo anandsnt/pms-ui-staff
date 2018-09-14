@@ -261,6 +261,7 @@ admin.controller('ADAppCtrl', [
                     }, {
                         title: "MENU_ACTIONS",
                         action: "",
+                        iconClass: "icon-actions",
                         menuIndex: "actions",                
                         submenu: [{
                             title: "MENU_ACTIONS_MANAGER",
