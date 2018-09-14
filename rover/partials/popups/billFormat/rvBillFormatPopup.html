@@ -58,12 +58,12 @@
 
         <div class="actions">
             <!-- Remove class .blue and add class .grey if there is no email, also add attribute 'disabled' if there is no email -->
-            <button type="button" class="button with-icon" ng-click="emailBill()" ng-class="{'grey' : !data.to_address, 'blue' : 'data.to_address'}" ng-disabled="!data.to_address">
-                <span class="icons icon-email" ></span>
+            <button type="button" class="button with-icon" ng-click="emailBill()" ng-class="getEmailButtonClass()" ng-disabled="isEmailButtonDisabled()">
+                <span class="icons icon-email"></span>
                  Email
             </button>
-            <button type="button" class="button with-icon blue" ng-click="clickedPrintBill()">
-                <span class="icons icon-print"></span>
+            <button type="button" class="button with-icon" ng-class="getPrintButtonClass()" ng-click="clickedPrintBill()" ng-disabled="isPrintButtonDisabled()">
+                <span class="icons icon-print" ></span>
                 Print
             </button>
             <button type="button" class="button blank inline" ng-click="closeDialog()">Cancel</button>

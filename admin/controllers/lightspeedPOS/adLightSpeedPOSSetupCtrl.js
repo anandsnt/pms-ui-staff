@@ -35,6 +35,10 @@ angular.module('admin').controller('adLightSpeedPOSSetupCtrl',
                 $scope.lightspeed.enabled = !$scope.lightspeed.enabled;
             };
 
+            $scope.toggleFloorEnabled = function() {
+                 $scope.lightspeed.floors_enabled = !$scope.lightspeed.floors_enabled;
+            };
+
             $scope.saveLightSpeedPOSSetup = function(cb) {
                 var params = {
                     lightspeed: _.omit(dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
