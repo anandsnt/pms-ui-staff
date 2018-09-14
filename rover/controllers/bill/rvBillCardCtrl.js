@@ -286,7 +286,7 @@ sntRover.controller('RVbillCardController',
 	$scope.signaturePluginOptions = {
         'width': screenWidth - 60,
         'decor-color': 'transparent',
-        'height': '100%'
+        'height': '320px'
 	};
 
 	if ($scope.clickedButton === "checkoutButton") {
