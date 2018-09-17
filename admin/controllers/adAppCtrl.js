@@ -261,6 +261,7 @@ admin.controller('ADAppCtrl', [
                     }, {
                         title: "MENU_ACTIONS",
                         action: "",
+                        iconClass: "icon-actions",
                         menuIndex: "actions",                
                         submenu: [{
                             title: "MENU_ACTIONS_MANAGER",
@@ -272,7 +273,7 @@ admin.controller('ADAppCtrl', [
                             title: "QUICKTEXT",
                             action: "rover.quicktext",
                             menuIndex: "QuickText",
-                            hidden: $rootScope.isQuickTextEnabled
+                            hidden: !$rootScope.isQuickTextEnabled
                         }]
                     }, {
                         title: "MENU_REPORTS",              

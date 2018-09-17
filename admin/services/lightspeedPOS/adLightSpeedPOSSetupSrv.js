@@ -99,9 +99,22 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
-        service.fetchProducts = function() {
+        service.fetchProducts = function(params) {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/lightspeed/products.json';
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.fetchFloors = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/lightspeed/' + params.id + '/floors.json';
 
             ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
                 deferred.resolve(data);
@@ -112,11 +125,24 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
-        service.fetchChargeCodeMapings = function () {
+        service.fetchRestaurants = function() {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/restaurants.json';
+
+            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.fetchChargeCodeMapings = function (params) {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/lightspeed/charge_code_mappings.json';
 
-            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

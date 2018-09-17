@@ -285,7 +285,8 @@ sntRover.controller('RVbillCardController',
 
 	$scope.signaturePluginOptions = {
         'width': screenWidth - 60,
-        'decor-color': 'transparent'
+        'decor-color': 'transparent',
+        'height': '320px'
 	};
 
 	if ($scope.clickedButton === "checkoutButton") {
@@ -745,6 +746,7 @@ sntRover.controller('RVbillCardController',
 
 		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists, billIndex);
 		if (index) {
+			callGenerateFolioNumberApiAfterLoadingCurrentBill =  true;
 			$scope.getBillData($scope.currentActiveBill);
 		}
 	};
@@ -1812,7 +1814,8 @@ sntRover.controller('RVbillCardController',
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"room_type": $scope.reservationBillData.room_type,
 				"clickedButton": "checkinButton",
-				"upgrade_available": isUpgradeAvaiable
+				"upgrade_available": isUpgradeAvaiable,
+				"roomTypeId": $scope.reservation.reservation_card.room_type_id
 			});
 			return false;
 		}

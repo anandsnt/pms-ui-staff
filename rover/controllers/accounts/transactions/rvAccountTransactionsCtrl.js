@@ -853,7 +853,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedPrint = function(requestParams) {
-				printBillCard(requestParams);
+			$scope.closeDialog();
+			printBillCard(requestParams);
 		};
 
 		var printBillCard = function(requestParams) {
