@@ -320,6 +320,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
 
         var refreshSummaryDataAfterUpdate = false;
         var onAllotmentUpdateSuccess = function(data) {
+            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
             // client controllers should get an infromation whether updation was success
             $scope.$broadcast("UPDATED_ALLOTMENT_INFO", angular.copy($scope.allotmentConfigData.summary));
             $scope.allotmentSummaryMemento = angular.copy($scope.allotmentConfigData.summary);

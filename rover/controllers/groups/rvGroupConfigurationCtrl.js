@@ -1176,6 +1176,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
+                        $scope.groupConfigData.summary.commission_details = data.commission_details;
                         updateGroupSummaryInProgress =  false;
                         // client controllers should get an infromation whether updation was success
                         $scope.$broadcast("UPDATED_GROUP_INFO", angular.copy($scope.groupConfigData.summary));
