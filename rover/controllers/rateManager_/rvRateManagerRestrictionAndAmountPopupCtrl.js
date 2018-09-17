@@ -927,6 +927,7 @@ angular.module('sntRover')
             }
 
             $scope.contentMiddleMode = 'MULTIPLE_ROOM_TYPE_CHOOSE_RATE';
+
         };
 
         const initializeSingleRateRestrictionAndAmountMiddlePane = () => {
@@ -1005,6 +1006,11 @@ angular.module('sntRover')
                    $scope.headerNoticeOnRight = (!$scope.headerNoticeOnRight) ? headerToAdd :
                                 $scope.headerNoticeOnRight + ', ' + headerToAdd;
                 }
+            }
+
+            if (dialogData.rate.is_locked) {
+                $scope.isLocked = true;
+                $scope.headerNoticeOnRight = 'Locked due to rate update';
             }
         };
 
