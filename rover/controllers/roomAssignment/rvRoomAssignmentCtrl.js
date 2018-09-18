@@ -26,7 +26,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 	var self = this;
 
-	const PRE_DEFINED_FILTERS = {
+	var PRE_DEFINED_FILTERS = {
 			includeNotReady: {
 				id: -100,
 				name: $filter('translate')('INCLUDE_NOTREADY_LABEL'),
