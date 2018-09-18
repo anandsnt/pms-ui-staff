@@ -1,0 +1,242 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #ddc396;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           #5a1c2d;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @black;
+    }
+
+}
+
+.logo-svg{
+    background-image: url("../css/themes/hubert/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 354px;
+    height: 85px;
+    background-position: center; 
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#hubert {
+
+    #header {
+        height: 145px;
+        background: #5a1c2d;
+
+        .icons {
+            fill: white;
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    input,
+    select {
+        background: @inputBackground;
+        color: @white;
+    }
+
+    .button {
+        &.transparent {
+            color: @white;
+        }
+    }
+    
+    #logo {
+        padding-top: 0px;
+
+        .logo {
+            width: auto;
+            height: 85px;
+        }
+    }
+
+    #options {
+        
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+
+        li {
+            .option {
+                .icons {
+                    fill: #5a1c2d;
+                }
+            }
+
+            &.radio-option {
+                input[type=radio]:not(:checked) + .button {
+                    .icons {
+                        fill: @black;
+                    }
+                }
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background: rgba(0,0,0,0.5);
+                color: @brandColor;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: @black;
+        }
+    } 
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: rgba(0,0,0,0.05);
+
+                .add-on-content {
+                    background: rgba(0,0,0,0.05);
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+
+        #options {
+            li {
+                .option{
+                    &.not-selected {
+                        color: rgba(0,0,0,0.5);
+                    }
+                }
+
+                .amount {
+                    color: @black;
+                }
+            }
+        }
+
+        .add-on-content {
+            .price {
+                strong { color: @black; }
+            }
+            .action {
+                .button {
+                    &.transparent { color: @black }
+                    &.text-red {color: @red;}
+                }
+            }
+        }
+    }
+
+    #textual {
+        background: #ececec;
+        
+        #rate li {
+            &.total {
+                color: @black;
+            }
+        }
+
+        &:before,
+        &:after {
+            background: #ececec;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #upgrade {
+        .upgrade-price {
+            background: @black;
+            color: @brandColor;
+        }
+    }
+
+    .upgrade-list {
+        &.upgrade-list-v2 {
+            .button { color: @black; }
+        }
+    }
+}
