@@ -15,12 +15,12 @@
          <text data-ng-bind-html="getTagValue('CC_SWIPE_TIMEOUT_SUB')" editable-text="CC_SWIPE_TIMEOUT_SUB"></text>
       </h2>
         <nav id="options" role="nav">
-            <div class='uploaded-key-image' id="keys" ng-show="waitingForSwipe && zestStationData.cc_payment_image.length > 0">
-              <img src="{{zestStationData.cc_payment_image}}">
+            <div class='uploaded-key-image' id="keys" ng-show="waitingForSwipe && zestStationData.cc_auth_image.length > 0">
+              <img src="{{zestStationData.cc_auth_image}}">
             </div>
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='waitingForSwipe && zestStationData.cc_payment_image.length === 0'>
+                <li ng-show='waitingForSwipe && zestStationData.cc_auth_image.length === 0'>
                   <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
                   <img src="/assets/zest_station/css/icons/default/magtek.png" alt="" class="device-image device-magtek">
                 </li>

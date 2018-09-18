@@ -115,7 +115,7 @@
             <img src="{{zestStationData.key_create_file_uploaded}}">
         </div>
         <div id="keys" ng-if="icmp && zestStationData.key_create_file_uploaded.length === 0" class="icmp-key-image">
-            <div ng-include="zestStationData.key_create_file_uploaded_icmp"></div>
+            <div ng-include="zestStationData.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
             <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_TWO')" editable-text="MAKE_KEY_TEXT_TWO"></text>
