@@ -251,6 +251,12 @@
                 </div>
                 <ad-image-upload image-file="zestSettings.key_create_file_uploaded" label="{{'KEY_CREATION_IMAGE' | translate}}" div-class="full-width"></ad-image-upload>
 
+                <ad-image-upload image-file="zestSettings.cc_image" label="{{'SWIPE_CC_FOR_AUTH' | translate}}" div-class="full-width" hide="!mliAndCBAEnabled"></ad-image-upload>
+
+                <ad-image-upload image-file="zestSettings.cba_image" label="{{'SWIPE_CC_FOR_PAYMENT' | translate}}" div-class="full-width" hide="!mliAndCBAEnabled"></ad-image-upload>
+
+                <ad-image-upload image-file="zestSettings.key_confirmation_image" label="{{'KEY_CONFIRMATION_IMG' | translate}}" div-class="full-width" hide="!mliAndCBAEnabled"></ad-image-upload>
+
             </fieldset>
 
             <div class="actions float">

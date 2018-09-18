@@ -159,7 +159,11 @@
 "FILE_ATTACHED":"File Attached",
 "CHOOSE_FILE":"Choose File...",
 "ATTACH_FILE":"Attach File",
-"REMOVE_FILE" :"Remove File"
+"REMOVE_FILE" :"Remove File",
+
+"SWIPE_CC_FOR_AUTH": "Swipe CC for Authorization",
+"SWIPE_CC_FOR_PAYMENT": "Swipe CC for Payment",
+"KEY_CONFIRMATION_IMG": "Key confirmation image"
 
 
 

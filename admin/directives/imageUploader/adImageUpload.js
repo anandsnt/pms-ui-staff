@@ -8,7 +8,8 @@ admin.directive('adImageUpload', function($timeout) {
             label: '@label',
             required: '@required',
             id: '@id',
-            divClass: '@divClass'
+            divClass: '@divClass',
+            hide: '=hide'
         },
         templateUrl: '/assets/directives/imageUploader/adImageUpload.html',
         controller: function($scope) {

@@ -1,4 +1,4 @@
-<div class="entry {{divClass}}">
+<div class="entry {{divClass}}" ng-hide="hide">
     <label>{{label}}</label>
     <div class="file-upload" ng-class="{'with-remove-file-area':hasImageFileUpdatedOrUploading()}" ng-mouseenter="onTogglePreview(false)" ng-mouseleave="onTogglePreview(true)">
         <span class="input" ng-show="hasImageFileUpdatedOrUploading()">{{'FILE_ATTACHED' | translate}}</span>
