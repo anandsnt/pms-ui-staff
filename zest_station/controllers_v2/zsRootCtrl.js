@@ -357,28 +357,6 @@ sntZestStation.controller('zsRootCtrl', [
 
         var iphoneOrIpad = ipadOrIphone();
 
-        var listenForOptionSelectionByKeyboard = function() {
-
-            $('body').on('keydown', function(event) {
-                if ($scope.zestStationData.editorModeEnabled === 'false') {
-                    if (event.keyCode === 49 || event.keyCode === 50 || event.keyCode === 51) {// press enter while holding shift, adds a line break
-                        var option;
-
-                        if (event.keyCode === 49) {
-                            option = 1;
-                        }
-                        if (event.keyCode === 50) {
-                            option = 2;
-                        }
-                        if (event.keyCode === 51) {
-                            option = 3;
-                        }
-                        $scope.$broadcast('KEY_INPUT_OPTION', option);
-                    }
-                }
-            });
-        };
-
 		// $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
         $scope.isIpad = iphoneOrIpad;
 		/**
@@ -1875,7 +1853,6 @@ sntZestStation.controller('zsRootCtrl', [
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
-            listenForOptionSelectionByKeyboard();
             $scope.cardReader = new CardOperation();
             
             // reset number of keys to be made
