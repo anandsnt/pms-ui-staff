@@ -72,7 +72,7 @@
                         <!-- Invoice Info -->
                         <div class="invoice-info" >
                             <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].invoice_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].invoice_no}}</div>
-                            <div class="number" ng-if="roverObj.hasActivatedFolioNumber" ng-bind-html="escapeNull(invoiceReservationData.bills[0].folio_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].folio_no}}</div>
+                            <div class="number" ng-if="roverObj.hasActivatedFolioNumber" ng-bind-html="escapeNull(invoiceReservationData.bills[0].folio_number)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].folio_number}}</div>
                             <div class="balance" ng-class="{'text-red': invoiceReservationData.bills[0].balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
                             </div>
