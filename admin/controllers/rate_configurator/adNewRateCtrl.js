@@ -309,7 +309,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.currency_code_id = data.currency_code_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
             $scope.rateData.is_global_contract = data.is_global_contract;
-            $scope.rateData.isLocked = data.is_locked;
 
             manipulateAdditionalDetails(data);
 
@@ -407,7 +406,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
         $scope.shouldShowAddNewDateRange = function() {
-            if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE' || $scope.rateData.isLocked) {
+            if ($scope.rateMenu === 'ADD_NEW_DATE_RANGE') {
                 return false;
             }
             if ($scope.rateData.based_on.is_copied && $scope.rateData.room_type_ids && $scope.rateData.room_type_ids.length > 0) {

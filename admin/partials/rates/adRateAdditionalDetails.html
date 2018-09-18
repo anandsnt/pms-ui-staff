@@ -21,7 +21,7 @@
         </div>
     </div>
 	 <!-- <fieldset class="holder full-width"> -->
-	<fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+	<fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract}">
         <div class="entry has-datepicker margin">
             <label for="endDate"> end date &nbsp;<span  class="rate_end_date_desc">(overrides date range)</span>
             </label>
@@ -86,7 +86,7 @@
             </div>
         </div>
  	</fieldset>
- 	<fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+ 	<fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
  		<ad-toggle-button is-checked="rateData.is_discount_allowed_on" label="DISCOUNT ALLOWED"></ad-toggle-button>
  		<ad-toggle-button is-checked="rateData.is_suppress_rate_on" label="SUPPRESS RATE"></ad-toggle-button>
         <div ng-hide='isEmpty(rateData.commission_details)'>

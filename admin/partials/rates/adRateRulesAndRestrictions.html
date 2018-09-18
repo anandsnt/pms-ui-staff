@@ -10,7 +10,7 @@
 	</div>
 </div>
 <!-- Expanded View for hourly -->
-<div ng-if="detailsMenu ==='rulesAndRestrictions' && rateData.is_hourly_rate" class="form_add_new_rate" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked }">
+<div ng-if="detailsMenu ==='rulesAndRestrictions' && rateData.is_hourly_rate" class="form_add_new_rate" ng-class="{'overlay' : rateData.is_global_contract }">
 	<fieldset class="holder left" ng-show="depositRequiredActivated">
 		<div class="entry full-width rates_deposit_requirements" >
 			<label>deposit requirements</label>
@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	<!-- <fieldset class="holder full-width"> -->
-	<fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+	<fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract}">
 		<div class="entry full-width">
 			<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "min. advanced booking" placeholder = "Enter Number of Days" ng-show="minAdvancedBookingActivated"></ad-textbox>
 			<ad-textbox inputtype="text" value="rateData.max_advanced_booking" label = "max. advanced booking" placeholder = "Enter Number of Days" ng-show="maxAdvancedBookingActivated" ></ad-textbox>
@@ -54,7 +54,7 @@
 		</div>
 		<!-- TODO :  part of future functionality <ad-checkbox is-checked="rateData.use_rate_levels" label="Use Rate Levels" div-class="full-width"></ad-checkbox> -->
 	</fieldset>
-	<fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+	<fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
 		<div class="entry full-width rates_deposit_requirements" ng-show="depositRequiredActivated">
 			<label>deposit requirements</label>
 			<div class="select">
