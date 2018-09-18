@@ -1085,6 +1085,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if (ifMandatoryValuesEntered()) {
                     var onGroupSaveSuccess = function(data) {
                             $scope.groupConfigData.summary.group_id = data.group_id;
+                            $scope.groupConfigData.summary.commission_details = data.commission_details;
                             $state.go('rover.groups.config', {
                                 id: data.group_id
                             });

@@ -278,6 +278,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
         };
         var onAllotmentSaveSuccess = function(data) {
             $scope.allotmentConfigData.summary.allotment_id = data.allotment_id;
+            $scope.allotmentConfigData.summary.commission_details = data.commission_details;
             $state.go('rover.allotments.config', {
                 id: data.allotment_id
             });
