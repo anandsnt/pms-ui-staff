@@ -6,11 +6,9 @@
                 <h2>Edit Rate <span>{{ rateData.name }}</span></h2>
             </div>
             <a class="action back" ng-click="backToRates($event)">Back to rates</a>
-            <span ng-if="rateData.isLocked" class="icons icon-lock"></span>
         </div>
     </header>
     <section class="content-scroll">
-        <div ng-if="rateData.isLocked" class="notice text-center">Locked due to rate update</div>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <table class="grid">
             <!-- Render Rate Details View -->
