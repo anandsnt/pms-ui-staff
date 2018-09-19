@@ -109,7 +109,7 @@
                     </label>
                 </div>
                 <!-- Show only when commission is turned on: -->
-                <input ng-model="allotmentConfigData.commission_details.summary.value" type="text" ng-show="allotmentConfigData.summary.commission_details.is_on" type="text" />
+                <input ng-model="allotmentConfigData.summary.commission_details.value" type="text" ng-show="allotmentConfigData.summary.commission_details.is_on" type="text" />
                 <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on">
                     <select name="travel-agent-commission-type" ng-model="allotmentConfigData.summary.commission_details.type">
                         <option value="percentage">%</option>
