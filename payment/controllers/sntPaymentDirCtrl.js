@@ -1,8 +1,8 @@
 angular.module('sntPay').controller('sntPaymentController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', '$location', 'PAYMENT_CONFIG',
-        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity', 'rvPermissionSrv',
+        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity',
         function ($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
-                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity, rvPermissionSrv) {
+                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
@@ -684,14 +684,10 @@ angular.module('sntPay').controller('sntPaymentController',
                                     'ar_type': 'company'
                                 });
                             } else {
-                                console.log(rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT'))
-                                console.log("create AR")
-                                if ((rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT')) {
-                                    promptCreateAR({
-                                        account_id: data.company_id,
-                                        is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
-                                    });
-                                }                                
+                                promptCreateAR({
+                                    account_id: data.company_id,
+                                    is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                                });
                             }
                         } else if (data.travel_agent_present) {
                             if (data.travel_agent_ar_attached) {
@@ -699,7 +695,6 @@ angular.module('sntPay').controller('sntPaymentController',
                                     'ar_type': 'travel_agent'
                                 });
                             } else {
-                                 console.log("create AR 2")
                                 promptCreateAR({
                                     account_id: data.travel_agent_id,
                                     is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers

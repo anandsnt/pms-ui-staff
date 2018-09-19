@@ -571,16 +571,26 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			sntActivity.start("SHOW_PAYMENT_MODEL");
 			jsMappings.fetchAssets(['addBillingInfo', 'directives'])
 			.then(function() {
-				sntActivity.stop("SHOW_PAYMENT_MODEL");
-				$scope.passData = getPassData();
-				ngDialog.open({
-					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
-					className: '',
-					controller: 'RVAccountsTransactionsPaymentCtrl',
-					closeByDocument: false,
-					scope: $scope
-				});
-				$scope.paymentModalOpened = true;
+					sntActivity.stop("SHOW_PAYMENT_MODEL");
+					$scope.passData = getPassData();
+					if (rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT')) {
+						ngDialog.open({
+						template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
+						className: '',
+						controller: 'RVAccountsTransactionsPaymentCtrl',
+						closeByDocument: false,
+						scope: $scope
+					});
+					$scope.paymentModalOpened = true;
+				} else {
+					$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
+					ngDialog.open({
+						template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+						controller: 'RVAccountReceivableMessagePopupCtrl',
+						className: '',
+						scope: $scope
+					});
+				}				
 			});
 		};
 
