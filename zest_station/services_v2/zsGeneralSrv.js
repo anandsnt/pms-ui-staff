@@ -65,7 +65,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'park-james': 'Park James Hotel',
             'annapolis': 'Hotel Annapolis',
             'origin': 'Origins Red Rocks',
-            'kinney': 'The Kinney Slo'
+            'kinney': 'The Kinney Slo',
+            'hubert': 'Hotel Hubert'
         };
 
         this.isThemeConfigured = function(theme) {
