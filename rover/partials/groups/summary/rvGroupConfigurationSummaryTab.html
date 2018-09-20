@@ -117,7 +117,7 @@
                 <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
              <!-- If TA is liked to this group, show commission toggle  -->
-            <div class="entry commission margin" ng-show="groupConfigData.summary.travel_agent.name.length > 0">
+            <div class="entry commission margin" ng-show="groupConfigData.summary.group_id && groupConfigData.summary.travel_agent.id">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
                 <div class="switch-button" ng-class="{'on': groupConfigData.summary.commission_details.is_on}"> <!-- Add class 'on' when L94 is checked -->
                     <input id="travel-agent-commission" ng-model="groupConfigData.summary.commission_details.is_on" type="checkbox" />

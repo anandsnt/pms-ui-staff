@@ -95,7 +95,7 @@
                 <input id="allotment-pickup" ng-model="allotmentConfigData.summary.rooms_pickup" type="text" readonly />
             </div>
             <!-- If TA is liked to this allotment, show commission toggle -->
-            <div class="entry commission margin" ng-show="allotmentConfigData.summary.travel_agent.name.length > 0">
+            <div class="entry commission margin" ng-show="allotmentConfigData.summary.allotment_id && allotmentConfigData.summary.travel_agent.id">
                 <label for="travel-agent-commission" translate>COMMISSION</label>
                 <div class="switch-button" ng-class="{'on': allotmentConfigData.summary.commission_details.is_on}"> <!-- Add class 'on' when L88 is checked -->
                     <input id="travel-agent-commission" ng-model="allotmentConfigData.summary.commission_details.is_on" type="checkbox" />
