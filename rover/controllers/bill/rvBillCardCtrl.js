@@ -2858,12 +2858,12 @@ sntRover.controller('RVbillCardController',
 			// CICO-56584
 			var isBillDataMissing = false;
 
-			for (var i=0; i < (data.bill_number - 1) ; i++) {
+			for (var i = 0 ; i < (data.bill_number - 1) ; i++) {
 				if (!$scope.reservationBillData.bills[i]) {
 					isBillDataMissing = true;
 				}
 			}
-			if(isBillDataMissing) {
+			if (isBillDataMissing) {
 
 				var fetchSuccessCallback = function(reservationBillDataFetched) {
 						$scope.reservationBillData.bills = reservationBillDataFetched.bills;
