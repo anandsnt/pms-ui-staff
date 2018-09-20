@@ -1,0 +1,57 @@
+<div class="form-title full-width">
+    <h3>{{'LS_PAYMENT_MAPPINGS' | translate}}</h3>
+</div>
+<div class="data-holder">
+    <div class="entry has-sortable">
+        <label>Posting Accounts</label>
+        <div class="select">
+            <select ng-model="data.selectedPostingAccount"
+                    ng-options="postingAccount.posting_accounts_name for postingAccount in postingAccounts"
+                    ng-change="filterMappedAndNonMappedPaymentTypes()">
+            </select>
+        </div>
+    </div>
+    <div class="entry has-sortable pull-right">
+        <label>&nbsp;</label>
+        <input type="text" placeholder="Filter Payment Types"  ng-model="data.filteredPaymentType" ng-change="filterNonMappedPaymentTypes()" />
+    </div>
+    <fieldset class="holder full-width">
+        <div class="entry has-sortable">
+            <label>Mapped Payment Types</label>
+            <ul id="mapped-paymentTypes" data-placeholder="Place Here The Mapped paymentTypes"
+                class="boxes sortable empty short-list" data-drop="true"
+                jqyoui-droppable="{multiple:true}" ng-model="mappedPaymentTypes"
+                data-jqyoui-options="{accept: '.non-mapped-PaymentTypes'}">
+                <li ng-repeat="paymentType in mappedPaymentTypes"
+                    ng-model="mappedPaymentTypes" data-drag="true"
+                    data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                    jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                    class='mapped-paymentTypes li-draggable'
+                    style="border: 1px solid green">
+                    <span class="icons icon-handle"> </span>{{paymentType.name}} - {{paymentType.restaurant_name}}
+                </li>
+            </ul>
+        </div>
+        <div class="entry has-sortable pull-right">
+            <label>Available Payment Types To Be Mapped</label>
+            <ul id="non-mapped-paymentTypes" data-placeholder="Non Mapped PaymentTypes"
+                class="boxes sortable empty short-list" data-drop="true"
+                jqyoui-droppable="{multiple:true}" ng-model="nonMappedPaymentTypes"
+                data-jqyoui-options="{accept: '.mapped-paymentTypes'}">
+                <li ng-repeat="paymentType in nonMappedPaymentTypes"
+                    ng-model="nonMappedPaymentTypes" data-drag="true"
+                    data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                    jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                    class='non-mapped-paymentTypes li-draggable'
+                    style="border: 1px solid red">
+                    <span class="icons icon-handle"> </span>{{paymentType.name}} - {{paymentType.restaurant_name}}
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+    <div>
+        <button class='button blue' ng-click="savePaymentTypeExternalMappings()">
+            Save Mappings
+        </button>
+    </div>
+</div>
