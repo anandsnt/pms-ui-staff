@@ -758,11 +758,14 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
         $scope.saveSuccessCallback = function(data) {
             $scope.$parent.$emit('hideLoader');
-            $scope.reservationBillData.bills[data.bill_number - 1] = {
-                bill_id: data.id,
-                bill_number: data.bill_number,
-                total_amount: 0
-            };
+            if ($scope.reservationBillData) {
+                $scope.reservationBillData.bills[data.bill_number - 1] = {
+                    bill_id: data.id,
+                    bill_number: data.bill_number,
+                    total_amount: 0
+                };
+            }
+
             if (data.tax_exempt_warning) {
                 var message = [];
 
