@@ -757,6 +757,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     var saveRouteAPICall = function() {
 
         $scope.saveSuccessCallback = function(data) {
+            $scope.$parent.$emit('hideLoader');
             $scope.reservationBillData.bills[data.bill_number - 1] = {
                 bill_id: data.id,
                 bill_number: data.bill_number,
@@ -769,7 +770,6 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.$emit('displayErrorMessage', message);
             }
             
-            $scope.$parent.$emit('hideLoader');
             if (data.has_crossed_credit_limit) {
                 showLimitExceedPopup();
             }
