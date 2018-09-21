@@ -66,6 +66,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if (data.data) {
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
+                    $scope.isReservationDetailsFetched = true;
                     if ($scope.zestStationData.kiosk_prevent_non_cc_guests && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
                         $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                         $state.go('zest_station.noCCPresentForCheckin');
@@ -105,7 +106,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var checkIfRoomUpgradeIsPresent = function() {
             var fetchCompleted = function(data) {
                 $scope.selectedReservation.is_upsell_available = data.is_upsell_available;
-                $scope.isReservationDetailsFetched = true;
             };
 
             if ($scope.usingFakeReservation()) {
