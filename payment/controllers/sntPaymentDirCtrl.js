@@ -1,8 +1,8 @@
 angular.module('sntPay').controller('sntPaymentController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', '$location', 'PAYMENT_CONFIG',
-        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity',
+        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity', 'rvPermissionSrv',
         function ($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
-                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity) {
+                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity, rvPermissionSrv) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
@@ -684,10 +684,22 @@ angular.module('sntPay').controller('sntPaymentController',
                                     'ar_type': 'company'
                                 });
                             } else {
-                                promptCreateAR({
-                                    account_id: data.company_id,
-                                    is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
-                                });
+
+                                if (rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT')) {
+                                    promptCreateAR({
+                                        account_id: data.company_id,
+                                        is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                                    });
+                                } else {
+                                    $scope.account_id = data.company_id;
+                                    ngDialog.open({
+                                        template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+                                        controller: 'RVAccountReceivableMessagePopupCtrl',
+                                        className: '',
+                                        scope: $scope
+                                    });
+                                }   
+
                             }
                         } else if (data.travel_agent_present) {
                             if (data.travel_agent_ar_attached) {
