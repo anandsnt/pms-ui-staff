@@ -46,9 +46,7 @@
     // end of analytic code
 </script>
 
-<div ng-show="hasLoader" id="loading">
-    <div id="loading-spinner"></div>
-</div>
+<activity-indicator></activity-indicator>
 
 <div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
     {{zestStationData.workstationOooReason}}
