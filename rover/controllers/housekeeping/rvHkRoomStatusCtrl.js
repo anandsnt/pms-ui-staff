@@ -449,6 +449,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					// remove keyMirror
 					$scope.multiRoomAction.indexes[_key] = undefined;
 					delete $scope.multiRoomAction.indexes[_key];
+					$scope.multiRoomAction.allChosen = false;
 				}
 
 				if ( !$scope.multiRoomAction.rooms.length ) {
