@@ -154,7 +154,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         /*
          * toogle different rate view
          */
-        $scope.$on("changeMenu", function(e, value) {
+        var listener = $scope.$on("changeMenu", function(e, value) {
             $scope.changeMenu(value);
             if ( value === 'Details' ) {
                 $scope.$broadcast('INIT_RATE_DETAILS');
@@ -463,5 +463,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * init call
          */
         $scope.init();
+        $scope.$on('$destroy', listener );
     }
 ]);
