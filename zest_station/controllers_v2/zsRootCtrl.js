@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller', 'sntActivity',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -34,7 +34,8 @@ sntZestStation.controller('zsRootCtrl', [
         $window,
         languages,
         defaultTranslations,
-        $controller
+        $controller,
+        sntActivity
         ) {
 
         // in order to prevent url change or fresh url entering with states
@@ -78,11 +79,19 @@ sntZestStation.controller('zsRootCtrl', [
 		 * @return {undefined}
 		 */
         $scope.$on(zsEventConstants.SHOW_LOADER, function() {
-            $scope.hasLoader = true;
+            $rootScope.hasLoader = true;
         });
         $scope.$on(zsEventConstants.HIDE_LOADER, function() {
-            $scope.hasLoader = false;
+            $rootScope.hasLoader = false;
         });
+
+        $scope.startActivity = function (activity) {
+            sntActivity.start(activity);
+        };
+
+        $scope.stopActivity = function (activity) {
+            sntActivity.stop(activity);
+        };
 
 
         $scope.callBlurEventForIpad = function() {
