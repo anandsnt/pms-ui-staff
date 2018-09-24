@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog', 'sntActivity',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog, sntActivity) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -263,10 +263,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	};
 
-	$scope.showLoader = function() {
-		$scope.$emit('showLoader');
-	};
-
 	$scope.editRatesClicked = function(rateId, index) {
 		// If PMS connected, we show an inline edit screen for rates.
 		// Only rate name and description should be editable.
@@ -284,10 +280,9 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		// If standalone PMS, then the rate configurator wizard should be appeared.
 		} else {
-			$scope.showLoader();
+			sntActivity.start('LOAD_RATE_DETAILS');
 			$state.go('admin.rateDetails', {rateId: rateId});
 		}
-
 	};
 
 	$scope.openCsvUploadPopup = function() {
