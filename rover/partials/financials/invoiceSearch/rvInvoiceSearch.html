@@ -19,13 +19,13 @@
 <rv-pagination ng-show="totalResultCount > invoiceSearchPagination.perPage" page-options="invoiceSearchPagination" page-data="totalResultCount"></rv-pagination>
 <!-- Search Results -->
 <section id="find-invoices" class="content" role="main" ng-hide="invoiceSearchFlags.showFindInvoice">
-    <ul class="invoice-list-header">
+    <ul class="invoice-list-header" ng-class="{'no-folio': !roverObj.hasActivatedFolioNumber}">
         <li class="guest-details">Details</li>
         <li class="number">Invoice No.</li>
         <li class="number" ng-if="roverObj.hasActivatedFolioNumber">Folio No.</li>
         <li class="balance">Balance</li>
     </ul>
-    <div class="invoice-list-content scrollable" ng-iscroll="invoice-list"> <!-- Hook iScroll here -->
+    <div class="invoice-list-content scrollable" ng-class="{'no-folio': !roverObj.hasActivatedFolioNumber}" ng-iscroll="invoice-list"> <!-- Hook iScroll here -->
         <div class="wrapper">
             <ul class="search-results">
                 <li class="invoice-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results">
@@ -72,7 +72,7 @@
                         <!-- Invoice Info -->
                         <div class="invoice-info" >
                             <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].invoice_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].invoice_no}}</div>
-                            <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].folio_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].folio_no}}</div>
+                            <div class="number" ng-if="roverObj.hasActivatedFolioNumber" ng-bind-html="escapeNull(invoiceReservationData.bills[0].folio_number)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].folio_number}}</div>
                             <div class="balance" ng-class="{'text-red': invoiceReservationData.bills[0].balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
                             </div>
@@ -139,7 +139,7 @@
     <div class="info">
         <span class="icon-no-content icon-cards"></span>
         <strong class="h1">Find Invoice</strong>
-    <span class="h2">Search by <strong ng-if="roverObj.hasActivatedFolioNumber">Invoice or Folio No</strong><strong ng-if="!roverObj.hasActivatedFolioNumber">Folio No</strong>, <strong>Account / Guestname</strong> or <strong>Balance Amount</strong></span>
+    <span class="h2">Search by <strong ng-if="roverObj.hasActivatedFolioNumber">Invoice or Folio No</strong><strong ng-if="!roverObj.hasActivatedFolioNumber">Invoice No</strong>, <strong>Account / Guestname</strong> or <strong>Balance Amount</strong></span>
     </div>
 </div>
 

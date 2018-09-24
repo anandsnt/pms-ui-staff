@@ -49,7 +49,8 @@ module.exports = {
             'park-james': [themeCSSRoot + 'park-james.less'],
             'annapolis': [themeCSSRoot + 'annapolis.less'],
             'origin': [themeCSSRoot + 'origin.less'],
-            'kinney': [themeCSSRoot + 'kinney.less']
+            'kinney': [themeCSSRoot + 'kinney.less'],
+            'hubert': [themeCSSRoot + 'hubert.less']
         };
     }
 };
