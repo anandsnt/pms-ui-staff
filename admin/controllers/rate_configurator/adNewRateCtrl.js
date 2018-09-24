@@ -88,8 +88,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!!$scope.rateData.based_on.id) {
                 fetchBasedOnRateDetails();
             }
+            sntActivity.stop('LOAD_RATE_DETAILS');
         };
-
 
         var fetchCommissionDetails = function() {
             var fetchCommissionDetailsSuccess = function(data) {
@@ -156,6 +156,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          */
         $scope.$on("changeMenu", function(e, value) {
             $scope.changeMenu(value);
+            if ( value === 'Details' ) {
+                $scope.$broadcast('INIT_RATE_DETAILS');
+            }
+            else if ( value === 'Room types') {
+                $scope.$broadcast('INIT_ROOM_TYPES');
+            }
+            else if ( value === 'Promotions') {
+                $scope.$broadcast('INIT_PROMOTIONS');
+            }
         });
 
         /*
