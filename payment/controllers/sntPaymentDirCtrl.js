@@ -707,10 +707,21 @@ angular.module('sntPay').controller('sntPaymentController',
                                     'ar_type': 'travel_agent'
                                 });
                             } else {
-                                promptCreateAR({
-                                    account_id: data.travel_agent_id,
-                                    is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
-                                });
+
+                                if (rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT')) {
+                                    promptCreateAR({
+                                        account_id: data.travel_agent_id,
+                                        is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                                    });
+                                } else {
+                                    $scope.account_id = data.travel_agent_id;
+                                    ngDialog.open({
+                                        template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+                                        controller: 'RVAccountReceivableMessagePopupCtrl',
+                                        className: '',
+                                        scope: $scope
+                                    });
+                                }                                 
                             }
                         } else {
                             $scope.errorMessage = [$filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT')];
