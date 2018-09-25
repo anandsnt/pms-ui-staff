@@ -854,7 +854,14 @@ angular.module('sntPay').controller('sntPaymentController',
                     feeInfo,
                     usingChipAndPin = isEMVEnabled && !$scope.payment.isManualEntryInsideIFrame;
 
-                if (!$scope.hotelConfig.isStandAlone) {
+                // For overlays we are not handling Fees from our side except for CBA payment type
+                if (!$scope.hotelConfig.isStandAlone && $scope.selectedPaymentType !== 'CBA') {
+                    $scope.feeData = {
+                        calculatedFee: "0.00",
+                        totalOfValueAndFee: "0.00",
+                        showFee: false,
+                        feeChargeCode: ""
+                    };
                     return;
                 }
                 selectedPaymentType = _.find($scope.paymentTypes, {
