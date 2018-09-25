@@ -267,7 +267,7 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
     
     $scope.init();
     // CICO-56662
-    var listener = $scope.$on('INIT_ROOM_TYPES', function(){
+    var listener = $scope.$on('INIT_ROOM_TYPES', function() {
         $scope.fetchAllRoomTypes();
     });
 
