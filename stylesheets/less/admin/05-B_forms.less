@@ -2014,13 +2014,36 @@
                 }
             }
 
+            .switch-text {
+                position: absolute;
+                top: 0;
+                color: white;
+                text-shadow: none;
+                text-transform: uppercase;
+                font-size: 12px;
+                height: 100%;
+                line-height: 25px;
+                .hide();
+            }
+
             &.red:not(.on) {
                 .gradient(@redEnd, @redStart);
+            }
+
+            &:not(.on) {
+                .switch-text.off{
+                    right: 5px;
+                    .show();
+                }
             }
 
             &.on {
                 .gradient(@greenEnd, @greenStart);
                 .switch-icon { left: 34px; }
+                .switch-text.on {
+                    left: 5px;
+                    .show();
+                }
             }
         }
 
