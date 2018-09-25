@@ -11,7 +11,7 @@
             <h3><span>Rate</span> Details </h3>
             <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
         </div>
-        <fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+        <fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract}">
             <div></div>
             <div class="entry full-width">
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
@@ -55,7 +55,7 @@
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">
-                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit || rateData.isLocked}">
+                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit}">
                             <input  id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
                             <label class="data-off">
                                 <span class="value">Based</span>
@@ -68,14 +68,14 @@
                         </div>
                     </div>
                     <div class="full-width">
-                        <div class="entry margin" ng-class="{'overlay': is_edit || rateData.isLocked}">
+                        <div class="entry margin" ng-class="{'overlay': is_edit}">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn || rateData.isLocked}">
+                        <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn}">
                             <div class="select white select-col col1-3">
                                 <select class="placeholder" ng-model="rateData.based_on.value_sign">
                                                 <option value="+">+</option>
@@ -96,15 +96,15 @@
                     </div>
                 </div>
             </div>
-
-            <div class="entry full-width" ng-show='is_edit'>
+            <!-- ng-hide added CICO-57726 -->
+            <div class="entry full-width" ng-show='is_edit' ng-hide="true">
                 <button type="button" class="button" ng-class="{'blue':rateData.id !== null, 'grey': rateData.id === null }" ng-disabled="rateData.id === null" ng-click="clickedSyncButton()" translate>SYNC</button>
                 <span ng-if="rateData.id && rateData.last_sync_status && rateData.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{rateData.last_sync_at}}</span>
                 <span ng-if="rateData.id && !rateData.last_sync_status && rateData.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{rateData.last_sync_at}}</span>                                  
             </div>
 
         </fieldset>
-        <fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+        <fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
             <div class="entry" ng-show="!isHourlyRatesEnabled() && isStandAlone" ng-hide="!isStandAlone || isHourlyRatesEnabled()">
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>
@@ -117,7 +117,7 @@
             </div>
         </fieldset>
         <!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->
-        <fieldset class="holder left" ng-show="hidePromotionFreeFormEntry" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+        <fieldset class="holder left" ng-show="hidePromotionFreeFormEntry" ng-class="{'overlay' : rateData.is_global_contract}">
             <ad-textbox inputtype="text" value="rateData.promotion_code" label="Promotions Code" placeholder="Enter Promotional Code" required="no"></ad-textbox>
         </fieldset>
         <div ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'"></div>
@@ -128,10 +128,10 @@
         <button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
             Cancel
         </button>
-        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid(), 'overlay' : rateData.is_global_contract || rateData.isLocked }">
+        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid(), 'overlay' : rateData.is_global_contract}">
             Step 2 - Select Room Types
         </button>
-        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()), 'overlay' : rateData.is_global_contract || rateData.isLocked }">
+        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()), 'overlay' : rateData.is_global_contract}">
             Save
         </button>
     </div>

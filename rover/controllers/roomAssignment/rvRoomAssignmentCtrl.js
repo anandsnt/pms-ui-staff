@@ -26,7 +26,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 	var self = this;
 
-	const PRE_DEFINED_FILTERS = {
+	var PRE_DEFINED_FILTERS = {
 			includeNotReady: {
 				id: -100,
 				name: $filter('translate')('INCLUDE_NOTREADY_LABEL'),
@@ -68,7 +68,7 @@ sntRover.controller('RVroomAssignmentController', [
 	var selectedRoomObject = null;
 
 	$scope.errorMessage = '';
-	
+
 	var title = $filter('translate')('ROOM_ASSIGNMENT_TITLE');
 
 	$scope.setTitle(title);
@@ -194,7 +194,7 @@ sntRover.controller('RVroomAssignmentController', [
 						className: 'ngdialog-theme-default',
 						scope: $scope
 					});
-				} else {					
+				} else {
 					ngDialog.open({
 						template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
 						controller: 'RVOverBookRoomDialogController',
@@ -695,7 +695,7 @@ sntRover.controller('RVroomAssignmentController', [
 							reservationRoomStatusClass = ' room-green';
 							break;
 						case "CLEAN":
-							if (checkinInspectedOnly === "true") {
+							if (checkinInspectedOnly) {
 								reservationRoomStatusClass = ' room-orange';
 								break;
 							} else {
@@ -748,7 +748,7 @@ sntRover.controller('RVroomAssignmentController', [
 		group.group_name = "predefined";
 		group.multiple_allowed = true;
 		group.items = [];
-		
+
 		// CICO-9063 we should not show Not Ready and Due Out filter if future reservation
 		if ($scope.reservationData.reservation_card.reservation_status !== 'RESERVED') {
 			group.items.push(PRE_DEFINED_FILTERS.includeNotReady);
@@ -760,7 +760,7 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 		$scope.roomFeatures.splice(0, 0, group);
 	};
-	
+
 	/**
 	* function to prepare the array of room ids of selected floors.
 	*/
@@ -813,7 +813,7 @@ sntRover.controller('RVroomAssignmentController', [
 			var requestParams = {
 				per_page: ROOMS_LISTING_PAGE_SIZE,
 				page_no: pageNo,
-				reservation_id: $scope.reservationData.reservation_card.reservation_id 	
+				reservation_id: $scope.reservationData.reservation_card.reservation_id
 			};
 
 			if ( isSearch ) {
@@ -822,7 +822,7 @@ sntRover.controller('RVroomAssignmentController', [
 				requestParams[PRE_DEFINED_FILTERS.includeDueOut.param] = true;
 				requestParams[PRE_DEFINED_FILTERS.includePreassigned.param] = true;
 				requestParams[PRE_DEFINED_FILTERS.includeClean.param] = true;
-				
+
 			} else {
 				requestParams.room_type_ids = [$scope.currentRoomTypeId];
 				requestParams.floor_id = $scope.selectedFloorId;
@@ -841,22 +841,22 @@ sntRover.controller('RVroomAssignmentController', [
 						case PRE_DEFINED_FILTERS.includeClean.id:
 							 requestParams[PRE_DEFINED_FILTERS.includeClean.param] = true;
 							 break;
-					}				
+					}
 				});
 
 				requestParams.selected_room_features = [];
 
-				_.each($scope.selectedFiltersList, function( filterId ) {				
-					requestParams.selected_room_features.push(filterId);				
+				_.each($scope.selectedFiltersList, function( filterId ) {
+					requestParams.selected_room_features.push(filterId);
 				});
-			}			
+			}
 
 			return requestParams;
 		},
 		// Rooms list fetch success processing
-		self.onRoomsFetchSuccess = function (response) {			
+		self.onRoomsFetchSuccess = function (response) {
 			$scope.filteredRooms = response.rooms;
-			$scope.reservation_occupancy = response.reservation_occupancy;			
+			$scope.reservation_occupancy = response.reservation_occupancy;
 			$scope.totalCount = response.total_count;
 			$scope.checkInInspectedOnly = response.checkin_inspected_only;
 			self.refreshScroller();
@@ -889,7 +889,7 @@ sntRover.controller('RVroomAssignmentController', [
                 onSuccess: self.onRoomsFetchSuccess,
                 onFailure: self.onRoomFetchFailure
             });
-			
+
 		},
 		// Load the room listing data from the API response
 		self.loadAPIData = function( pageNo ) {
@@ -898,7 +898,7 @@ sntRover.controller('RVroomAssignmentController', [
 			} else {
 				self.getRoomsByRoomType( pageNo );
 			}
-		},		
+		},
 		// Initialize the pagination control
 	    self.initPagination = function() {
 			$scope.paginationConfig = {
@@ -928,7 +928,7 @@ sntRover.controller('RVroomAssignmentController', [
 			});
 		};
 
-	$scope.init = function() {	
+	$scope.init = function() {
 		$scope.roomTypes = roomPreferences.room_types;
 
 		// CICO-54354 - Exclude suite room types for allotment reservations in room assignment screen as its not implemented
@@ -940,13 +940,13 @@ sntRover.controller('RVroomAssignmentController', [
 
 		$scope.roomFeatures = roomPreferences.room_features;
 		$scope.filteredRooms = roomsList.rooms;
-		
+
 		$scope.floors = roomPreferences.floors.floor_details;
 		$scope.reservationData = $scope.$parent.reservation;
 		$scope.checkInInspectedOnly = roomsList.checkin_inspected_only;
 		$scope.addPredefinedFilters();
 		$scope.setSelectedFiltersList();
-		$scope.reservation_occupancy = roomsList.reservation_occupancy;		
+		$scope.reservation_occupancy = roomsList.reservation_occupancy;
 		$scope.clickedButton = $stateParams.clickedButton;
 		$scope.assignedRoom = "";
 		oldRoomType = $scope.roomType = $stateParams.room_type;
@@ -958,7 +958,7 @@ sntRover.controller('RVroomAssignmentController', [
 
 		$scope.currentRoomTypeId = $stateParams.roomTypeId || '';
 		self.initPagination();
-		$scope.totalCount = roomsList.total_count;		
+		$scope.totalCount = roomsList.total_count;
 		self.refreshScroller();
 		self.refreshPagination();
 		$scope.isSearchActive = false;
@@ -976,7 +976,7 @@ sntRover.controller('RVroomAssignmentController', [
 			$scope.selectedFloorId = floorFilterData.selectedFloorId;
 		} else {
 			$scope.selectedFloorId = '';
-		}		
+		}
 	};
 	/**
 	* function to determine whether to show unassignroom
