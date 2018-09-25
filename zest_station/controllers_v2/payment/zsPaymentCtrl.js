@@ -14,8 +14,38 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'isUsingExistingCardPayment': false,
             'paymentAction': '', // can be add card (ADD_CARD) or pay (PAY_AMOUNT),
             'paymentSuccess': false,
-            'paymentFailure': false
+            'paymentFailure': false,
+            'paymentTypeFetchCompleted': false,
+            'totalAmountPlusFees': 0
         };
+
+        $scope.$on("FETCH_PAYMENT_TYPES", function(event, data) {
+            $scope.callAPI(zsPaymentSrv.fetchAvailablePaymentTyes, {
+                params: {},
+                'successCallBack': function(paymentTypes) {
+                    var selectedPaymentType = _.find(paymentTypes, {
+                        name: data.paymentTypeName
+                    });
+                    var feeInfo = (selectedPaymentType &&
+                        selectedPaymentType.charge_code &&
+                        selectedPaymentType.charge_code.fees_information) || {};
+                    var amountDetails = sntPaymentSrv.calculateFee(data.amountToPay, feeInfo);
+                    var paymentParams = zsPaymentSrv.getPaymentData();
+
+                    if (amountDetails.showFees) {
+                        paymentParams.total_value_plus_fees = amountDetails.totalOfValueAndFee;
+                        paymentParams.fees_amount = amountDetails.calculatedFee;
+                        paymentParams.fees_charge_code_id = amountDetails.feeChargeCode;
+                        $scope.screenMode.totalAmountPlusFees = amountDetails.totalOfValueAndFee;
+                    } else {
+                        $scope.screenMode.totalAmountPlusFees = amountDetails.defaultAmount;
+                    }
+
+                    zsPaymentSrv.setPaymentData(paymentParams);
+                    $scope.screenMode.paymentTypeFetchCompleted = true;
+                }
+            });
+        });
 
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
@@ -45,7 +75,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$emit('showLoader');
             $scope.screenMode.errorMessage = '';
             $scope.screenMode.paymentInProgress = true;
-            $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
+
+            var paymentParams = zsPaymentSrv.getSubmitPaymentParams();
+
+            $scope.$broadcast('INITIATE_CBA_PAYMENT', paymentParams);
         };
 
         var setErrorMessageBasedOnResponse = function(errorMessage) {
