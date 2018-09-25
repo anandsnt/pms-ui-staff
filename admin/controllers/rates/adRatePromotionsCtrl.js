@@ -98,7 +98,7 @@ admin.controller('ADRatePromotionsCtrl', [
 		};
 
 		// CICO-56662
-		var listener = $scope.$on('INIT_PROMOTIONS', function(){
+		var listener = $scope.$on('INIT_PROMOTIONS', function() {
 			$scope.initRatePromotions();
 		});
 
