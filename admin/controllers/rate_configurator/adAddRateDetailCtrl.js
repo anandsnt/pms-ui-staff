@@ -473,7 +473,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.callAPI(ADReservationToolsSrv.reSyncRates, options);
         };
         // CICO-56662
-        var listener = $scope.$on('INIT_RATE_DETAILS', function(){
+        var listener = $scope.$on('INIT_RATE_DETAILS', function() {
             $scope.init();
         });
 
