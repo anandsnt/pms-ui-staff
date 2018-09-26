@@ -315,9 +315,13 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         {
             clickedBlockRoomType.isComponentDownArrowEnabled = true;
         }
-
     };
 
+    /*
+     *  Save Sorted list with API call
+     *  @param {string} [ room type id ]
+     *  @param {number} [ position value ]
+     */
     var saveSortedList = function(id, position) {
         var options = {
             params: {
