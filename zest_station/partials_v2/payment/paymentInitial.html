@@ -42,7 +42,7 @@
             <div id="balance">
                 <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;
                 <span ng-hide="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
-                <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }} = {{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+                <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }} ({{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }})</span>
             </span>
             </div>
             <nav id="options" role="nav" class="options-menu">
