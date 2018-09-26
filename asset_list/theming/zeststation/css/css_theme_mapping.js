@@ -50,7 +50,8 @@ module.exports = {
             'annapolis': [themeCSSRoot + 'annapolis.less'],
             'origin': [themeCSSRoot + 'origin.less'],
             'kinney': [themeCSSRoot + 'kinney.less'],
-            'hubert': [themeCSSRoot + 'hubert.less']
+            'hubert': [themeCSSRoot + 'hubert.less'],
+            'de-blend': [themeCSSRoot + 'de-blend.less']
         };
     }
 };
