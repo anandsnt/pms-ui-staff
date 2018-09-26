@@ -170,6 +170,11 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         var fetchSuccess = function(data) {
             $scope.$emit('hideLoader');
             $scope.zestSettings = data;
+
+            $scope.zestSettings.configurable_images.key_success_image = $scope.zestSettings.configurable_images.key_success_image || '';
+            $scope.zestSettings.configurable_images.cc_auth_image = $scope.zestSettings.configurable_images.cc_auth_image || '';
+            $scope.zestSettings.configurable_images.cc_payment_image = $scope.zestSettings.configurable_images.cc_payment_image || '';
+
             fetchZestStationData();
         };
 
@@ -195,6 +200,19 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
             $scope.zestSettings.key_create_file_uploaded = 'false';
         }
+
+        var apiParams  = angular.copy($scope.zestSettings);
+
+        if (!$scope.zestSettings.configurable_images.key_success_image) {
+            delete apiParams.configurable_images.key_success_image
+        }
+        if (!$scope.zestSettings.configurable_images.cc_auth_image) {
+            delete apiParams.configurable_images.cc_auth_image
+        }
+        if (!$scope.zestSettings.configurable_images.cc_payment_image) {
+            delete apiParams.configurable_images.cc_payment_image
+        }
+
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = $filter('translate')('SETTINGS_HAVE_BEEN_SAVED');
@@ -205,7 +223,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         setUpTranslationFilesStatus();
 
         var dataToSend = {
-            'kiosk': $scope.zestSettings
+            'kiosk': apiParams
         };
 
         $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
