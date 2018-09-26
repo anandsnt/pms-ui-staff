@@ -51,7 +51,8 @@ module.exports = {
             'origin': [themeCSSRoot + 'origin.less'],
             'kinney': [themeCSSRoot + 'kinney.less'],
             'hubert': [themeCSSRoot + 'hubert.less'],
-            'de-blend': [themeCSSRoot + 'de-blend.less']
+            'de-blend': [themeCSSRoot + 'de-blend.less'],
+            'anthony': [themeCSSRoot + 'anthony.less']
         };
     }
 };
