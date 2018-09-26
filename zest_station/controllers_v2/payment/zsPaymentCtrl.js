@@ -43,6 +43,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
                     zsPaymentSrv.setPaymentData(paymentParams);
                     $scope.screenMode.paymentTypeFetchCompleted = true;
+
+                    $scope.$emit('FETCH_PAYMENT_TYPES_COMPLETED');
                 }
             });
         });
@@ -261,7 +263,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'is_emv_request': true,
                     'reservation_id': $scope.reservation_id.toString(),
                     'add_to_guest_card': false,
-                    'amount': $scope.balanceDue,
+                    'amount': $scope.screenMode.totalAmountPlusFees,
                     'bill_number': 1,
                     'payment_type': 'CC'
                 };
@@ -278,7 +280,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'is_emv_request': false,
                     'reservation_id': $scope.reservation_id,
                     'add_to_guest_card': false,
-                    'amount': $scope.balanceDue,
+                    'amount': $scope.screenMode.totalAmountPlusFees,
                     'bill_number': 1,
                     'payment_type': 'CC',
                     'payment_type_id': $scope.cardDetails.id
@@ -359,7 +361,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "card_expiry": cardExpiry,
                         "credit_card": swipedCardData.RVCardReadCardType,
                         "is_emv_request": false,
-                        "amount": $scope.balanceDue,
+                        "amount": $scope.screenMode.totalAmountPlusFees,
                         "bill_number": 1
                     };
 
