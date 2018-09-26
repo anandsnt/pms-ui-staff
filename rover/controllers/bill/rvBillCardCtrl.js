@@ -89,7 +89,9 @@ sntRover.controller('RVbillCardController',
 	
 	var isAlreadyShownPleaseSwipeForCheckingIn = false,
 		isDuringCheckoutPayment = false,
-		callGenerateFolioNumberApiAfterLoadingCurrentBill = false;
+		callGenerateFolioNumberApiAfterLoadingCurrentBill = false,
+		callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false,
+		toBillIndex =  '';
 
 	// Scope variable to set active bill
 	$scope.currentActiveBill = 0;
@@ -283,7 +285,8 @@ sntRover.controller('RVbillCardController',
 
 	$scope.signaturePluginOptions = {
         'width': screenWidth - 60,
-        'decor-color': 'transparent'
+        'decor-color': 'transparent',
+        'height': '320px'
 	};
 
 	if ($scope.clickedButton === "checkoutButton") {
@@ -626,7 +629,13 @@ sntRover.controller('RVbillCardController',
 	$scope.getBillData = function(billIndex) {
 		
 		var getBillDataSuccess = function(data) {
-				$scope.reservationBillData.bills[billIndex] = data;
+			$scope.reservationBillData.bills[billIndex] = data;
+			if (callGenerateFolioNumberApiAfterSuccessfullTransferCharge) {
+				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false;
+				that.callGenerateFolioNumberApi(toBillIndex);
+				toBillIndex = '';
+
+			} else {				
 				setBillValue(billIndex);
 				$scope.setActiveBill(billIndex);
 				$scope.setupReviewStatusArray();
@@ -636,6 +645,7 @@ sntRover.controller('RVbillCardController',
 				if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
 					that.callGenerateFolioNumberApi();
 				}
+			}	
 				
 			},
 			dataToSend = {
@@ -728,11 +738,16 @@ sntRover.controller('RVbillCardController',
 	/* 
 	 * Set up the data to generate folio number
 	 */
-	that.callGenerateFolioNumberApi = function() {
+	that.callGenerateFolioNumberApi = function(index) {
 		callGenerateFolioNumberApiAfterLoadingCurrentBill =  false;
-		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+		var billIndex = (index) ? index : $scope.currentActiveBill;
 
-		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+		var currentActiveBill = $scope.reservationBillData.bills[billIndex];
+
+		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists, billIndex);
+		if (index) {
+			$scope.getBillData($scope.currentActiveBill);
+		}
 	};
 
 	/*
@@ -789,9 +804,12 @@ sntRover.controller('RVbillCardController',
 
 	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
 				callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
-			}
-
-			$scope.getBillData($scope.currentActiveBill);
+				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = true;
+				toBillIndex = parseInt(newBillValue) - 1;
+				$scope.getBillData(toBillIndex);
+			} else {
+				$scope.getBillData($scope.currentActiveBill);
+			}			
 		};
 
 		/*
@@ -1795,7 +1813,8 @@ sntRover.controller('RVbillCardController',
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"room_type": $scope.reservationBillData.room_type,
 				"clickedButton": "checkinButton",
-				"upgrade_available": isUpgradeAvaiable
+				"upgrade_available": isUpgradeAvaiable,
+				"roomTypeId": $scope.reservation.reservation_card.room_type_id
 			});
 			return false;
 		}
@@ -1927,14 +1946,14 @@ sntRover.controller('RVbillCardController',
 	 * @param billId is the bill id
 	 * @param balanceAmount is the balance Amount
 	 */
-	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
+	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
 		$scope.shouldGenerateFolioNumber = false;
 		if (balanceAmount === "0.00" && ($scope.reservationBillData.reservation_status === "CHECKEDOUT" || $scope.reservationBillData.reservation_status === "NOSHOW") && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
-					$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
-					$scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+					$scope.reservationBillData.bills[billIndex].is_active = false;
+					$scope.reservationBillData.bills[billIndex].is_folio_number_exists = true;
 				},
 				paramsToService = {
 					'bill_id': billId
@@ -1975,7 +1994,7 @@ sntRover.controller('RVbillCardController',
 		// Prompt for AR account
 		if ($scope.reservationBillData.bills[index].credit_card_details.payment_type === "DB" && $scope.reservationBillData.bills[index].ar_number === null && $rootScope.isStandAlone) {
 
-			if ($scope.reservationBillData.account_id === null || typeof $scope.reservationBillData.account_id === 'undefined') {
+			if ($scope.reservationBillData.bills[index].account_id === null || typeof $scope.reservationBillData.bills[index].account_id === 'undefined') {
 				$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
 			} 
 			else {
@@ -2583,6 +2602,7 @@ sntRover.controller('RVbillCardController',
 			$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 			$scope.status = "success";
 			$scope.showEmailSentStatusPopup();
+			$scope.reloadCurrentActiveBill();
 		};
 		var sendEmailFailureCallback = function(errorData) {
 			$scope.$emit('hideLoader');
@@ -2629,6 +2649,7 @@ sntRover.controller('RVbillCardController',
 			// CICO-9569 to solve the hotel logo issue
 			$("header .logo").addClass('logo-hide');
 			$("header .h2").addClass('text-hide');
+			$("body #loading").html("");// CICO-56119
 
 		    // add the orientation
 		    addPrintOrientation();
@@ -2658,8 +2679,10 @@ sntRover.controller('RVbillCardController',
 					// remove the orientation after similar delay
 			    	removePrintOrientation();
 			    	$scope.printBillCardActive = false;
+			    	$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
 			    }, 1000);
 		    }, 300);
+		    $scope.reloadCurrentActiveBill();
 		};
 
 		var printDataFailureCallback = function(errorData) {
@@ -3000,12 +3023,43 @@ sntRover.controller('RVbillCardController',
     	$scope.billNo = billNo;
     	$scope.isInformationalInvoice = false;
     	$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
+    	$scope.isEmailedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once;
+    	$scope.isPrintedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once;
+    	$scope.isFolioNumberExists = $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists;
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
     		controller: 'rvBillFormatPopupCtrl',
     		className: '',
     		scope: $scope
     	});
+    };
+    /*
+     * Function to get invoice button class
+     */
+    $scope.getInvoiceButtonClass = function() {
+
+		var invoiceButtonClass = "blue";
+
+		if (!$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists && $scope.roverObj.noReprintReEmailInvoice) {
+			if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once && $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once) {
+				invoiceButtonClass = "grey";
+			}
+		}
+		return invoiceButtonClass;
+    };
+    /*
+     * Function to get invoice button class
+     */
+    $scope.isInvoiceButtonDisabled = function() {
+
+		var isDisabledInvoice = false;
+
+		if (!$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists && $scope.roverObj.noReprintReEmailInvoice) {
+			if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once && $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once) {
+				isDisabledInvoice = true;
+			}
+		}
+		return isDisabledInvoice;
     };
 
     $scope.showEmailSentStatusPopup = function(status) {

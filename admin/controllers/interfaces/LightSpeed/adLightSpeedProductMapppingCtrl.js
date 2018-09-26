@@ -7,12 +7,43 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     $scope.products = [];
 
     var initialize = function initialize() {
+        $scope.data = {};
+        if ($scope.lightspeed.floors_enabled) {
+            fetchRestaurants();
+        } else {
+            $scope.fetchChargeCodes();
+        }
+    };
+
+    var formParamsForExternalMappings = function() {
+        var charge_code_id = $scope.data.selectedChargeCode.value;
+        var selectedProducts = $scope.mappedProducts.map(function (product) {
+            return { name: product.name,
+sku: product.sku,
+id: product.id };
+        });
+
+        if ($scope.lightspeed.floors_enabled) {
+            return {
+                      charge_code_id: charge_code_id,
+                      selected_products: selectedProducts,
+                      floor_id: $scope.data.selectedFloor.id,
+                      company_id: $scope.data.selectedRestaurant.company_id
+                   };
+        } 
+            return {
+                      charge_code_id: charge_code_id,
+                      selected_products: selectedProducts
+                    };
+        
+    };
+
+    $scope.fetchChargeCodes = function() {
         $scope.callAPI(ADChargeCodesSrv.fetch, {
             params: {
-                is_no_pagination: true
+              is_no_pagination: true
             },
             successCallBack: function successCallBack(response) {
-                $scope.data = {};
                 $scope.data.selectedChargeCode = response.charge_codes[0];
                 $scope.data.filteredProduct = '';
                 $scope.chargeCodes = response.charge_codes;
@@ -24,11 +55,12 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         });
     };
 
-    var fetchProducts = function fetchProducts() {
-        $scope.callAPI(adLightSpeedPOSSetupSrv.fetchProducts, {
+    var fetchRestaurants = function() {
+        $scope.callAPI(adLightSpeedPOSSetupSrv.fetchRestaurants, {
             successCallBack: function successCallBack(response) {
-                $scope.products = response;
-                fetchChargeCodeMapings();
+                $scope.data.selectedRestaurant = response[0];
+                $scope.restaurants = response;
+                $scope.fetchFloors();
             },
             failureCallBack: function failureCallBack() {
                 $scope.errorMessage = ['Error while retrieving products list.'];
@@ -36,8 +68,43 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         });
     };
 
-    var fetchChargeCodeMapings = function fetchChargeCodeMapings() {
+    $scope.fetchFloors = function() {
+        $scope.callAPI(adLightSpeedPOSSetupSrv.fetchFloors, {
+            params: {
+                        'id': $scope.data.selectedRestaurant.id
+                    },
+            successCallBack: function successCallBack(response) {
+                $scope.data.selectedFloor = response.status[0];
+                $scope.floors = response.status;
+                $scope.fetchChargeCodes();
+            },
+            failureCallBack: function failureCallBack() {
+                $scope.errorMessage = ['Error while retrieving products list.'];
+            }
+        });
+    };
+
+    var fetchProducts = function() {
+        $scope.callAPI(adLightSpeedPOSSetupSrv.fetchProducts, {
+            params: $scope.lightspeed.floors_enabled ? {
+                        restaurant_id: $scope.data.selectedRestaurant.id
+                        } : {},
+            successCallBack: function successCallBack(response) {
+                $scope.products = response;
+                $scope.fetchChargeCodeMapings();
+            },
+            failureCallBack: function failureCallBack() {
+                $scope.errorMessage = ['Error while retrieving products list.'];
+            }
+        });
+    };
+
+    $scope.fetchChargeCodeMapings = function() {
         $scope.callAPI(adLightSpeedPOSSetupSrv.fetchChargeCodeMapings, {
+            params: $scope.lightspeed.floors_enabled ? {
+                        floor_id: $scope.data.selectedFloor.id,
+                        company_id: $scope.data.selectedRestaurant.company_id
+                        } : {},
             successCallBack: function successCallBack(response) {
                 $scope.chargeCodeMapings = response;
                 $scope.filterMappedAndNonMappedProducts();
@@ -69,18 +136,10 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     };
 
     $scope.saveExternalMappings = function () {
-        var charge_code_id = $scope.data.selectedChargeCode.value;
-        var selectedProducts = $scope.mappedProducts.map(function (product) {
-            return { name: product.name, sku: product.sku, id: product.id };
-        });
-
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveChargeCodeMapings, {
-            params: {
-                charge_code_id: charge_code_id,
-                selected_products: selectedProducts
-            },
+            params: formParamsForExternalMappings(),
             successCallBack: function successCallBack() {
-                fetchChargeCodeMapings();
+                $scope.fetchChargeCodeMapings();
             },
             failureCallBack: function failureCallBack() {
                 $scope.errorMessage = ['Error while saving external mappings'];

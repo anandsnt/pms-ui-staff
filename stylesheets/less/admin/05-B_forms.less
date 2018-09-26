@@ -99,19 +99,32 @@
 
             &.with-button {
                 input,
+                .select,
                 .button {
                     .pull-left;
                 }
 
-                input {
-                    width: auto;
+                input,
+                .select {
                     max-width: 50%;
                     margin-right: 10px;
+                }
+
+                input { width: auto; }
+
+                select {
+                    width: 200px;
                 }
             }
 
             &.only-button {
                 padding-top: 24px;
+
+                .notice {
+                    display: inline-block;
+                    .calc-width(100,80);
+                    .pull-right;
+                }
             }
 
             &.rel {
@@ -477,6 +490,10 @@
                 #border-radius > .rounded();
                 .show;
 
+                &.disabled {
+                    > * { opacity: 0.6; }
+                }
+
                 input { background: @white; }
                 .select {
                     &.white {
@@ -758,6 +775,8 @@
                     line-height: 1.1;
                     padding: 10px 10px 10px 40px;
                     width: 100%;
+                    margin: 0;
+                    position: relative;
                     #border-radius > .rounded(0px);
                     .box-shadow(0 1px 0 rgba(0,0,0,.15));
                     .flex(center);
@@ -769,6 +788,17 @@
                     }
 
                     &:last-child { .box-shadow(none); }
+
+                    &.locked {
+                        .text { color: @red; }
+                        .icon-lock {
+                            position: absolute;
+                            right: 10px;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                        }
+                    }
                 }
 
                 .scrollable {
@@ -2015,6 +2045,11 @@
         }
 
         &.single { margin-top: 5px; }
+
+        &.centered {
+            margin: 0 auto;
+            display: block;
+        }
 
         &.activation {
             top: 5px;

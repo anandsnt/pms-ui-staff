@@ -26,7 +26,7 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 			contractClass: rate.is_travel_agent?'travel-agent':'',
 			rightSpanClassName: 'icons icon-double-arrow rotate-right',
 			accountName: rate.account_name,
-			showIndicator :showIndicator
+			showIndicator: showIndicator
 		})
 	});
 

@@ -72,7 +72,7 @@ sntRover.controller('reservationDetailsController',
 		// CICO-38714 / CICO-41313 - Set the Guest ID Permission flag and check if each guest has an id scanned or not
 		// set to false if the hotel admin switch is turned off
 
-		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
    		$scope.guestIDsAvailable = [];
    		

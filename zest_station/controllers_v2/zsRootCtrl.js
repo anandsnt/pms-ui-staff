@@ -1212,6 +1212,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.socketOperator.EjectKeyCard();
             }
         });
+
+        $scope.$on('CAPTURE_KEY_CARD', function() {
+            if ($scope.zestStationData.keyCardInserted) {
+                $scope.socketOperator.CaptureKeyCard();
+            }
+        });
 		/** ******************************************************************************
 		 *  Websocket actions related to keycard lookup
 		 *  ends here
@@ -1796,7 +1802,7 @@ sntZestStation.controller('zsRootCtrl', [
                 setupLanguageTranslations();
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
-            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard       
+            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.view_scanned_guest_id;// _active is to View from StayCard       
             $scope.zestStationData.v1GuestIDScanning =  $scope.zestStationData.scanner_use_v1_lib ? 'true' : false;
 
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
@@ -1879,7 +1885,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
             
-            if ($scope.isIpad) {
+            if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,
                     // leave app_version null and autoIpadKeyboardEnabled to false

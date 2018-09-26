@@ -56,6 +56,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
             } else if (data.is_checked_out) {
                 $scope.zestStationData.keyCardInserted = true;
                 $scope.alreadyCheckedOut = true;
+                $scope.$emit('CAPTURE_KEY_CARD');
             } else {
                 $scope.zestStationData.keyCardInserted = true;
                 var stateParams = {
@@ -176,7 +177,6 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
         };
 
         $scope.alreadyCheckedOutActions = function() {
-            $scope.$emit('EJECT_KEYCARD');
             $state.go('zest_station.home');
         };
     }
