@@ -16,7 +16,8 @@ angular.module('admin').controller('adLightSpeedPaymentMapppingCtrl', ['$scope',
             return { name: paymentType.name,
                      id: paymentType.id };
         });
-        return {  posting_account_id: $scope.data.selectedPostingAccount.posting_account_id,
+
+        return { posting_account_id: $scope.data.selectedPostingAccount.posting_account_id,
                   selected_payment_types: selectedPaymentTypes
        };
     };
