@@ -12,8 +12,6 @@ module.exports = {
                 roverRoot + "services/reservation/rvReservationSummarySrv.js",
                 roverRoot + "controllers/nightlyDiary/**/*.js",
                 roverRoot + 'redux/nightlyDiary/**/*.js',
-                roverRoot + 'react/nightlyDiary/components/**/*.js',
-                roverRoot + 'react/nightlyDiary/containers/**/*.js',
                 roverRoot + 'react/nightlyDiary/**/**/*.js',
 
                 // Eliminate all spec files
