@@ -161,11 +161,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         var listener = $scope.$on("changeMenu", function(e, value, initialLoad) {
             
             if ( initialLoad ) {
-                initialAPIcalls();
                 return;
             }
             $scope.changeMenu(value);
             if ( value === 'Details' ) {
+                initialAPIcalls();
                 $scope.$broadcast('INIT_RATE_DETAILS');
             }
             else if ( value === 'Room types') {
