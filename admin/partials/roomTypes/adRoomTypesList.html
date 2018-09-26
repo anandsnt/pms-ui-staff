@@ -38,8 +38,25 @@
 	                </th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr ng-repeat="room_types in $data" >
+
+				<tbody ui-sortable="sortableOptions" ng-model="$data" ng-if="isStandAlone">
+					<tr ng-repeat="room_types in $data">
+						<td ng-click="editRoomTypeDetails($index,room_types.id)" ng-hide="currentClickedElement == $index" >
+							<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
+						</td>
+						<td class="text-left" ng-hide="currentClickedElement == $index" >
+							{{room_types.code}}
+						</td>
+						<td ng-hide="currentClickedElement == $index|| !isStandAlone">
+							<a class="icons icon-delete large-icon" ng-click="deleteRoomTypes(room_types.id)" ></a>
+						</td>
+						<td colspan="3" ng-include="getTemplateUrl($index, room_types.id)" ng-show="currentClickedElement == $index">
+						</td>
+					</tr>
+				</tbody>
+
+				<tbody ng-if="!isStandAlone">
+					<tr ng-repeat="room_types in $data">
 						<td ng-click="editRoomTypeDetails($index,room_types.id)" ng-hide="currentClickedElement == $index" >
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
 						</td>

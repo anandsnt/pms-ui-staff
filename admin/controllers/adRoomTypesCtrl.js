@@ -318,6 +318,32 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
     };
 
+    var saveSortedList = function(id, position) {
+        var options = {
+            params: {
+                'room_type_id': id,
+                'sequence_number': position
+            },
+            successCallBack: $scope.listRoomTypes
+        };
+
+        $scope.callAPI(ADRoomTypesSrv.saveComponentOrder, options);
+    };
+
+    // save new order
+    var saveNewPosition = function(id, position, prevPosition) {
+        _.isUndefined(position) ? "" : saveSortedList(id, position + 1);
+    };
+
+    // Sorting logic
+    $scope.sortableOptions = {
+        stop: function(e, ui) {
+            if (ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex !== null) {
+                saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
+            }
+        }
+    };
+
 	init();
 
 }]);
