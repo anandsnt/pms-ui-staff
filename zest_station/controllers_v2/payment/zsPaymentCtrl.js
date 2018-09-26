@@ -16,7 +16,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'paymentSuccess': false,
             'paymentFailure': false,
             'paymentTypeFetchCompleted': false,
-            'totalAmountPlusFees': 0
+            'totalAmountPlusFees': 0,
+            'showFees': false,
+            'amountDue': 0,
+            'totalFees': 0
         };
 
         $scope.$on("FETCH_PAYMENT_TYPES", function(event, data) {
@@ -33,10 +36,16 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     var paymentParams = zsPaymentSrv.getPaymentData();
 
                     if (amountDetails.showFees) {
+                        // for resetting service data
                         paymentParams.total_value_plus_fees = amountDetails.totalOfValueAndFee;
                         paymentParams.fees_amount = amountDetails.calculatedFee;
                         paymentParams.fees_charge_code_id = amountDetails.feeChargeCode;
+
+                        // for diplaying
+                        $scope.screenMode.showFees = true;
                         $scope.screenMode.totalAmountPlusFees = amountDetails.totalOfValueAndFee;
+                        $scope.screenMode.amountDue = amountDetails.defaultAmount;
+                        $scope.screenMode.totalFees = amountDetails.calculatedFee;
                     } else {
                         $scope.screenMode.totalAmountPlusFees = amountDetails.defaultAmount;
                     }

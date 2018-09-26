@@ -69,7 +69,8 @@
       </h1>
       <h2 ng-if='!swipeError'>
          <text data-ng-bind-html="getTagValue('DEPOSIT_REMAIN_SUB')" editable-text="DEPOSIT_REMAIN_SUB"></text>
-         {{ zestStationData.currencySymbol }}{{ screenMode.totalAmountPlusFees }}
+         <span ng-hide="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+        <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }} = {{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
       </h2>
       <h2 ng-if='!swipeError'>
          <text data-ng-bind-html="getTagValue('DEPOSIT_REMAIN_SUB_SUB')" editable-text="DEPOSIT_REMAIN_SUB_SUB"></text>

@@ -724,6 +724,7 @@
    "SELECT_EXISTING_PGM": "Select Existing",
    "ADD_NEW_LOYALTY": "Add New",
    "MEMBERSHIP_ALREADY_TAKEN": "Membership already taken",
-   "LOYALTY_GENERAL_ERROR": "Something went wrong"
+   "LOYALTY_GENERAL_ERROR": "Something went wrong",
+   "FEES": "FEES"
    
 }

@@ -40,7 +40,10 @@
         <div id="content" ng-show="!isCBAPayment || screenMode.paymentTypeFetchCompleted">
             <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;
+                <span ng-hide="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+                <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }} = {{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+            </span>
             </div>
             <nav id="options" role="nav" class="options-menu">
                 <ul role="menu">
