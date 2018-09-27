@@ -161,7 +161,9 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	};
 
     	if ($scope.isAddMode) {
-            data.sequence_number = $scope.data.room_types.length + 1;
+            if ( $rootScope.isStandAlone ) {
+                data.sequence_number = $scope.data.room_types.length + 1;
+            }
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data, addSuccessCallbackSave);
     	}
       	else {
