@@ -215,7 +215,6 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             if (!$scope.isAddMode) {
                 $scope.editRoomTypes(index, id);
             }
-
         };
 
         $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '', successCallbackGetAvailableRoomTypesForSuite);
@@ -254,7 +253,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 	$scope.sortByName = function() {
 		if ($scope.currentClickedElement === -1) {
-		$scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+            var sortByValue = $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc';
+
+            if ( $rootScope.isStandAlone ) {
+                saveSortedList( sortByValue );
+            }
+            else {
+                $scope.tableParams.sorting({'name': sortByValue });
+            }
 		}
 	};
 	$scope.sortByCode = function() {
@@ -322,14 +328,20 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
      *  @param {string} [ room type id ]
      *  @param {number} [ position value ]
      */
-    var saveSortedList = function(id, position) {
+    var saveSortedList = function(id, position, sortByValue) {
         var options = {
             params: {
-                'room_type_id': id,
-                'sequence_number': position
+                'room_type_id': id
             },
             successCallBack: $scope.listRoomTypes
         };
+
+        if ( sortByValue ) {
+            options.params.sort_by = sortByValue;
+        }
+        else {
+            options.params.sequence_number = position;
+        }
 
         $scope.callAPI(ADRoomTypesSrv.saveComponentOrder, options);
     };
