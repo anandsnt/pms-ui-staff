@@ -195,22 +195,20 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveSettings = function() {
-        // /handling for the api for now, api has some issue with the default image setting back to snt logo...
-        // api dev should resolve this at some point
-        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
-            $scope.zestSettings.key_create_file_uploaded = 'false';
-        }
 
         var apiParams  = angular.copy($scope.zestSettings);
 
+        if (!$scope.zestSettings.configurable_images.key_create_file_uploaded) {
+            apiParams.configurable_images.key_create_file_uploaded = "false";
+        }
         if (!$scope.zestSettings.configurable_images.key_success_image) {
-            delete apiParams.configurable_images.key_success_image
+            apiParams.configurable_images.key_success_image = "false";
         }
         if (!$scope.zestSettings.configurable_images.cc_auth_image) {
-            delete apiParams.configurable_images.cc_auth_image
+            apiParams.configurable_images.cc_auth_image = "false";
         }
         if (!$scope.zestSettings.configurable_images.cc_payment_image) {
-            delete apiParams.configurable_images.cc_payment_image
+            apiParams.configurable_images.cc_payment_image = "false";
         }
 
         var saveSuccess = function() {
