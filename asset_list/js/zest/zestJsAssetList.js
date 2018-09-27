@@ -54,7 +54,7 @@ module.exports = {
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
                     sharedRoot + 'directives/activityIndicator/**/*.js',
 					jsLibRoot + 'date.js',
-                	sharedRoot + 'cordova.js',
+                	// sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
 					zestRoot + 'zsUtils.js',
 					zestRoot + 'zsWebSocketActions.js',

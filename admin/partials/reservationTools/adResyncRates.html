@@ -18,17 +18,19 @@
 							<button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
 							<input ng-change="searchQuery()" ng-model="textInQueryBox" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
 						</div>
-						<label ng-repeat="item in rateListResult track by $index" class="radio" ng-class="{'checked': item.id === selectedRateObj.id }">
-							<span class="icon-form icon-radio" ng-class="{'checked': item.id === selectedRateObj.id }"></span>
-							<input ng-click="clickedEachRate($index)" name="resync_rate" ng-checked="item.id === selectedRateObj.id" value="{{item.id}}" type="radio">
-							<span class="text">{{item.name}}</span>
-						</label>
-						
+						<div class="scrollable small" ng-show="textInQueryBox.length > 2" ng-iscroll="resyncRateScroll"  ng-iscroll-delay="500">
+							<div class="wrapper">
+								<label ng-repeat="item in rateListResult track by $index" class="radio" ng-class="{'checked': item.id === selectedRateObj.id}">
+									<span class="icon-form icon-radio" ng-class="{'checked': item.id === selectedRateObj.id }"></span>
+									<input ng-click="clickedEachRate($index)" name="resync_rate" ng-checked="item.id === selectedRateObj.id" value="{{item.id}}" type="radio">
+									<span class="text">{{item.name}}</span>
+								</label>
+							</div>
+						</div>
 					</div> 
 				</div>
 				<div class="entry only-button">
-					<button type="button" class="button" ng-class="{'blue':selectedRateObj.id !== null, 'grey': selectedRateObj.id === null }" ng-disabled="selectedRateObj.id === null" ng-click="clickedSyncButton()" translate>SYNC</button>
-
+					<button type="button" class="button" ng-class="{'blue':selectedRateObj.id !== null, 'grey': (selectedRateObj.id === null )}" ng-disabled="(selectedRateObj.id === null)" ng-click="clickedSyncButton()" translate>SYNC</button>
 					<span ng-if="selectedRateObj.id && selectedRateObj.last_sync_status && selectedRateObj.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{selectedRateObj.last_sync_at}}</span>
 					<span ng-if="selectedRateObj.id && !selectedRateObj.last_sync_status && selectedRateObj.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{selectedRateObj.last_sync_at}}</span>
 				</div>

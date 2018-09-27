@@ -43,4 +43,6 @@
 "SNT_HELP_DESK": "StayNTouch Help desk",
 "SNT_HELP_DESK_LINK": "https://stayntouch.freshdesk.com/support/home",
 "ROOM_PIN_TEXT": "Room PIN text",
-"HIDE_KEY_ICON": "Hide key icon"
+"HIDE_KEY_ICON": "Hide key icon",
+"PREFIX_TEXT": "Phone Number Pre-Fix",
+"PHONE_NUMBER": "Phone Number"

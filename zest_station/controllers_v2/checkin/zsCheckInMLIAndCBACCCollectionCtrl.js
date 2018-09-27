@@ -25,8 +25,11 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 		// Collect deposit if applicable
 		if (stateParams.mode === 'DEPOSIT') {
 			$scope.screenMode.paymentAction = 'PAY_AMOUNT';
-			$scope.depositAmount = stateParams.deposit_amount;
 			$scope.screenMode.value = 'DEPOSIT';
+			$scope.$emit("FETCH_PAYMENT_TYPES", {
+				paymentTypeName: 'CBA',
+				amountToPay: stateParams.deposit_amount
+			});
 		} else {
 			// action type for determining which process to be done in zsPaymentCtrl
 			$scope.screenMode.paymentAction = 'ADD_CARD';

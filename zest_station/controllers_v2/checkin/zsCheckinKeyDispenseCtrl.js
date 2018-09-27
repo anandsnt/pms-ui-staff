@@ -61,6 +61,10 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             }
         }());
 
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
+            $scope.$emit('EJECT_KEYCARD');
+        });
+
         $scope.guestDetails = {
             "guestEmail": $stateParams.email
         };

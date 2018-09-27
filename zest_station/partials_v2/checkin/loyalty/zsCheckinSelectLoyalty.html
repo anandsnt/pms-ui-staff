@@ -4,11 +4,31 @@
         </h1>
         <nav id="options" role="nav">
             <ul role="menu">
-                <li ng-if="existingLoyaltyPgms.length > 0 ">
+                <li ng-show="existingLoyalty.id">
+                    <button type="button" class="button option" touch-press='skipLoyalties()'>
+                        <ng-include src="icons.url.loyalty"></ng-include>
+                    </button>
+                    <span data-ng-bind-html="getTagValue('PROCEED_WITH_EXISTING_LOYALTY')" editable-text="PROCEED_WITH_EXISTING_LOYALTY">
+                    </span>
+                    <!-- If Only 1 membership is attached, show details immediately (no levels for FFP): -->
+                     <p class="cc-details">
+                        <strong>{{ existingLoyalty.membership_type }}</strong>
+                        <br>
+                        <span>{{ 'NUMBER' | translate }}: </span> {{existingLoyalty.membership_card_number}}
+                        <br>
+                        <span ng-show="existingLoyalty.membership_level">Level: </span> {{existingLoyalty.membership_level}}
+                    </p>
+                </li>
+                <li class="break" ng-show="existingLoyalty.id">
+                    <span data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></span>
+                </li>
+                <li ng-show="existingLoyaltyPgms.length > 0">
                     <button type="button" class="button option" touch-press='selectExistingLoyalty()'>
                         <ng-include src="icons.url.loyalty"></ng-include>
                     </button>
-                    <span data-ng-bind-html="getTagValue('SELECT_EXISTING_PGM')" editable-text="SELECT_EXISTING_PGM">
+                    <span ng-hide="existingLoyalty.id" data-ng-bind-html="getTagValue('SELECT_EXISTING_PGM')" editable-text="SELECT_EXISTING_PGM">
+                    </span>
+                    <span ng-show="existingLoyalty.id" data-ng-bind-html="getTagValue('UPDATE_EXISTING_PGM')" editable-text="UPDATE_EXISTING_PGM">
                     </span>
                     <!-- If Only 1 membership is attached, show details immediately (no levels for FFP): -->
                     <p class="cc-details" ng-show="existingLoyaltyPgms.length === 1">
@@ -19,7 +39,7 @@
                         <span ng-show="existingLoyaltyPgms[0].membership_level">Level: </span> {{existingLoyaltyPgms[0].membership_level}}
                     </p>
                 </li>
-                <li class="break" ng-if="existingLoyaltyPgms.length > 0 ">
+                <li class="break" ng-show="existingLoyaltyPgms.length > 0">
                     <span data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></span>
                 </li>
                 <li>

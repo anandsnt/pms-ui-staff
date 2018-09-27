@@ -214,7 +214,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
                 }
             });
 
-            options = {
+            var options = {
                 params: {
                     'configurable_images': imageApiParams
                 },
