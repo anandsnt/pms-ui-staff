@@ -43,10 +43,10 @@
                 <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDueForDisplay}}</span>
             </div>
             <nav id="options" role="nav" class="options-menu">
-                <div class='uploaded-key-image' id="keys" ng-if="zestStationData.cc_payment_image.length > 0">
-                    <img src="{{zestStationData.cc_payment_image}}">
+                <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+                    <img src="{{zestImages.cc_payment_image}}">
                 </div>
-                <ul role="menu" ng-if="zestStationData.cc_payment_image.length === 0">
+                <ul role="menu" ng-if="zestImages.cc_payment_image.length === 0">
                     <li>
                         <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
                             <div ng-include="icons.url.creditcard"></div>

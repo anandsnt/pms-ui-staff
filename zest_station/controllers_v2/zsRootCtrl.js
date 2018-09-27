@@ -9,7 +9,7 @@ sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
     '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
-    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
+    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations', 'configurableImagesData',
     'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller',
     function($scope,
 		zsEventConstants,
@@ -24,6 +24,7 @@ sntZestStation.controller('zsRootCtrl', [
 		zsHotelDetailsSrv,
 		cssMappings,
         hotelTranslations,
+        configurableImagesData,
 		zestStationSettings,
 		$timeout,
 		zsModeConstants,
@@ -39,6 +40,14 @@ sntZestStation.controller('zsRootCtrl', [
 
         // in order to prevent url change or fresh url entering with states
         BaseCtrl.call(this, $scope);
+
+        $scope.zestImages = configurableImagesData.configurable_images || {};
+        // set degfault as ''
+        _.each(Object.keys($scope.zestImages), function(key) {
+            if (!$scope.zestImages[key]) {
+                $scope.zestImages[key] = '';
+            }
+        });
 
         $scope.cssMappings = cssMappings;
         $scope.inElectron = false;
