@@ -199,16 +199,16 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         var apiParams  = angular.copy($scope.zestSettings);
 
         if (!$scope.zestSettings.configurable_images.key_create_file_uploaded) {
-            apiParams.configurable_images.key_create_file_uploaded = "false";
+            apiParams.configurable_images.key_create_file_uploaded = "";
         }
         if (!$scope.zestSettings.configurable_images.key_success_image) {
-            apiParams.configurable_images.key_success_image = "false";
+            apiParams.configurable_images.key_success_image = "";
         }
         if (!$scope.zestSettings.configurable_images.cc_auth_image) {
-            apiParams.configurable_images.cc_auth_image = "false";
+            apiParams.configurable_images.cc_auth_image = "";
         }
         if (!$scope.zestSettings.configurable_images.cc_payment_image) {
-            apiParams.configurable_images.cc_payment_image = "false";
+            apiParams.configurable_images.cc_payment_image = "";
         }
 
         var saveSuccess = function() {
