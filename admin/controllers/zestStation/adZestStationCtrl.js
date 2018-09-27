@@ -3,6 +3,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.data = {};
     $scope.configurableImages = configurableImagesData.configurable_images;
+    
     var zestLanguageDataCopy = {};
 
     $scope.uploadedIcon = {
@@ -171,11 +172,6 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         var fetchSuccess = function(data) {
             $scope.$emit('hideLoader');
             $scope.zestSettings = data;
-
-            $scope.zestSettings.configurable_images.key_success_image = $scope.zestSettings.configurable_images.key_success_image || '';
-            $scope.zestSettings.configurable_images.cc_auth_image = $scope.zestSettings.configurable_images.cc_auth_image || '';
-            $scope.zestSettings.configurable_images.cc_payment_image = $scope.zestSettings.configurable_images.cc_payment_image || '';
-
             fetchZestStationData();
         };
 
