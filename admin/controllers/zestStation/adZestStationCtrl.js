@@ -198,18 +198,13 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         var apiParams  = angular.copy($scope.zestSettings);
 
-        if (!$scope.zestSettings.configurable_images.key_create_file_uploaded) {
-            apiParams.configurable_images.key_create_file_uploaded = "";
-        }
-        if (!$scope.zestSettings.configurable_images.key_success_image) {
-            apiParams.configurable_images.key_success_image = "";
-        }
-        if (!$scope.zestSettings.configurable_images.cc_auth_image) {
-            apiParams.configurable_images.cc_auth_image = "";
-        }
-        if (!$scope.zestSettings.configurable_images.cc_payment_image) {
-            apiParams.configurable_images.cc_payment_image = "";
-        }
+        apiParams.configurable_images = apiParams.configurable_images || {};
+        
+        _.each(Object.keys(apiParams.configurable_images), function(key) {
+            if (!apiParams.configurable_images[key]) {
+                apiParams.configurable_images[key] = "";
+            }
+        });
 
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
