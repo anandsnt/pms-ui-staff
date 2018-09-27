@@ -67,7 +67,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'origin': 'Origins Red Rocks',
             'kinney': 'The Kinney Slo',
             'hubert': 'Hotel Hubert',
-            'de-blend': '2L De Blend'
+            'de-blend': '2L De Blend',
+            'anthony': 'The Anthony'
         };
 
         this.isThemeConfigured = function(theme) {
