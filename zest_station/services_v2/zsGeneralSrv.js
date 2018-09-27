@@ -66,7 +66,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'annapolis': 'Hotel Annapolis',
             'origin': 'Origins Red Rocks',
             'kinney': 'The Kinney Slo',
-            'hubert': 'Hotel Hubert'
+            'hubert': 'Hotel Hubert',
+            'de-blend': '2L De Blend',
+            'anthony': 'The Anthony'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -614,7 +616,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-         this.fetchDefaultTranslations = function() {
+        this.fetchDefaultTranslations = function() {
             var deferred = $q.defer(),
                 url = 'zest_station/fetch_default_translations';
 
