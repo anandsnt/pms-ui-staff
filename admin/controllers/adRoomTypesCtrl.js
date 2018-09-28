@@ -340,7 +340,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             options.params.sort_dir = sortByValue === 'asc';
         }
         else {
-            options.params.room_type_id = id;
+            options.params.id = id;
             options.params.sequence_number = position;
         }
 
