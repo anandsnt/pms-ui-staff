@@ -353,8 +353,22 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         _.isUndefined(position) ? "" : saveSortedList(id, position + 1);
     };
 
+    // to fix shrinking of width
+    var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+            $(this).width($(this).width());
+        });
+        return ui;
+    };
+
     // Sorting logic
     $scope.sortableOptions = {
+        helper: fixHelper,
+        start: function() {
+            $timeout(function() {
+                $scope.currentClickedElement = -1;
+            }, 1000);
+        },
         stop: function(e, ui) {
             if (ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex !== null) {
                 saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
