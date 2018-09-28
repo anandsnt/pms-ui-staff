@@ -156,12 +156,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
     		$scope.is_image_deleted = false;
-    		$scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id});
+    		$scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id, 'sequence_number': data.sequence_number });
     		$scope.tableParams.reload();
     	};
 
-
     	if ($scope.isAddMode) {
+            if ( $rootScope.isStandAlone ) {
+                data.sequence_number = $scope.data.room_types.length + 1;
+            }
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data, addSuccessCallbackSave);
     	}
       	else {
@@ -215,7 +217,6 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             if (!$scope.isAddMode) {
                 $scope.editRoomTypes(index, id);
             }
-
         };
 
         $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '', successCallbackGetAvailableRoomTypesForSuite);
@@ -254,7 +255,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 	$scope.sortByName = function() {
 		if ($scope.currentClickedElement === -1) {
-		$scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+            var sortByValue = $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc';
+
+            if ( $rootScope.isStandAlone ) {
+                saveSortedList( null, null, sortByValue );
+            }
+            else {
+                $scope.tableParams.sorting({'name': sortByValue });
+            }
 		}
 	};
 	$scope.sortByCode = function() {
@@ -315,7 +323,56 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         {
             clickedBlockRoomType.isComponentDownArrowEnabled = true;
         }
+    };
 
+    /*
+     *  Save Sorted list with API call
+     *  @param {string} [ room type id ]
+     *  @param {number} [ position value ]
+     */
+    var saveSortedList = function(id, position, sortByValue) {
+        var options = {
+            params: {},
+            successCallBack: $scope.listRoomTypes
+        };
+
+        if ( sortByValue ) {
+            options.params.sort_dir = sortByValue === 'asc';
+        }
+        else {
+            options.params.room_type_id = id;
+            options.params.sequence_number = position;
+        }
+
+        $scope.callAPI(ADRoomTypesSrv.saveComponentOrder, options);
+    };
+
+    // save new order
+    var saveNewPosition = function(id, position, prevPosition) {
+        _.isUndefined(position) ? "" : saveSortedList(id, position + 1);
+    };
+
+    // to fix shrinking of width
+    var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+            $(this).width($(this).width());
+        });
+        return ui;
+    };
+
+    // Sorting logic
+    $scope.sortableOptions = {
+        helper: fixHelper,
+        start: function() {
+            $timeout(function() {
+                $scope.currentClickedElement = -1;
+            }, 1000);
+        },
+        stop: function(e, ui) {
+            if (ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex !== null) {
+                saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
+            }
+        }
     };
 
 	init();
