@@ -63,7 +63,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                     user_id: param.id,
                     nationality_id: $scope.guestCardData.nationality_id,
                     address: {
-                    	country_id: $scope.guestCardData.contactInfo.address.country_id
+                    	country_id: ($scope.guestCardData.contactInfo.address !== undefined) ? $scope.guestCardData.contactInfo.address.country_id : ''
                     } 
                 });
 
