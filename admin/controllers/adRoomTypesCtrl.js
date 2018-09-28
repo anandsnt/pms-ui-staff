@@ -258,7 +258,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             var sortByValue = $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc';
 
             if ( $rootScope.isStandAlone ) {
-                saveSortedList( sortByValue );
+                saveSortedList( null, null, sortByValue );
             }
             else {
                 $scope.tableParams.sorting({'name': sortByValue });
@@ -332,16 +332,15 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
      */
     var saveSortedList = function(id, position, sortByValue) {
         var options = {
-            params: {
-                'room_type_id': id
-            },
+            params: {},
             successCallBack: $scope.listRoomTypes
         };
 
         if ( sortByValue ) {
-            options.params.sort_by = sortByValue;
+            options.params.sort_dir = sortByValue === 'asc';
         }
         else {
+            options.params.room_type_id = id;
             options.params.sequence_number = position;
         }
 
