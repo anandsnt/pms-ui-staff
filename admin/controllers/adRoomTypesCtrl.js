@@ -15,6 +15,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	}
     	// To list room types
     	$scope.listRoomTypes();
+        $scope.isAscending = false;
 	};
 
    /*
@@ -255,13 +256,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 	$scope.sortByName = function() {
 		if ($scope.currentClickedElement === -1) {
+            $scope.isAscending = !$scope.isAscending;
             var sortByValue = $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc';
 
             if ( $rootScope.isStandAlone ) {
-                saveSortedList( null, null, sortByValue );
+                saveSortedList( null, null, true );
             }
             else {
-                $scope.tableParams.sorting({'name': sortByValue });
+                $scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
             }
 		}
 	};
@@ -337,7 +339,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         };
 
         if ( sortByValue ) {
-            options.params.sort_dir = sortByValue === 'asc';
+            options.params.sort_dir = $scope.isAscending;
         }
         else {
             options.params.room_type_id = id;
