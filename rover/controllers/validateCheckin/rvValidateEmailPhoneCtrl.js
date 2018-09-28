@@ -287,7 +287,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
      * Enable submit button based on data
      */
     $scope.shouldEnableSubmitButton = function() {
-        if ($rootScope.roverObj.forceCountryAtCheckin && $rootScope.roverObj.forceNationalityAtCheckin){
+        if ($rootScope.roverObj.forceCountryAtCheckin && $rootScope.roverObj.forceNationalityAtCheckin) {
             return $scope.guestCardData.contactInfo.nationality_id && $scope.guestCardData.contactInfo.address.country_id;
         } else if ($rootScope.roverObj.forceCountryAtCheckin) {
             return $scope.guestCardData.contactInfo.address.country_id;

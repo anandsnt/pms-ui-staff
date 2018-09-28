@@ -10,6 +10,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			"mobile": data.mobile,
 			"nationality_id": data.nationality_id
 		};
+		
 		dataToPost.address = {};
 		if (data.address) {
 			dataToPost.address.country_id = data.address.country_id;

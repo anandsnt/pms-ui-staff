@@ -131,7 +131,7 @@ sntRover.controller('roverController', [
             noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
             noModifyInvoice: hotelDetails.no_modify_invoice,
             forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
-            forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin,
+            forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin
         };
         /*
          * hotel Details

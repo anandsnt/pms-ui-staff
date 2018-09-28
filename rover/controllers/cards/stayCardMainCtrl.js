@@ -67,8 +67,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                     } 
                 });
 
-
-
                 // Timeout to allow the RVGuestCardCtrl(app/assets/rover/controllers/cards/guestCardControl.js) to initiate
                 $timeout(function() {
                     $scope.$broadcast('loyaltyLevelAvailable', $scope.reservationData.guest.membership_type);
