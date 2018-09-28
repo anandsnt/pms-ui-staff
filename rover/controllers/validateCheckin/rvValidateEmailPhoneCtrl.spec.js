@@ -2,8 +2,7 @@ describe('RVValidateEmailPhoneCtrl', function () {
 
     var $controller,
         $scope,
-        $rootScope,
-        rvValidateEmailPhoneCtrl
+        $rootScope;
 
         describe('variable initalizations', function () {
 
@@ -27,7 +26,7 @@ describe('RVValidateEmailPhoneCtrl', function () {
                 });
 
 
-                rvValidateEmailPhoneCtrl = $controller('RVValidateEmailPhoneCtrl', {
+                $controller('RVValidateEmailPhoneCtrl', {
                     $scope: $scope
                 });
 
