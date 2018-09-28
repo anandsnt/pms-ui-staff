@@ -579,8 +579,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					controller: 'RVAccountsTransactionsPaymentCtrl',
 					closeByDocument: false,
 					scope: $scope
-				});
-				$scope.paymentModalOpened = true;
+				});			
 			});
 		};
 

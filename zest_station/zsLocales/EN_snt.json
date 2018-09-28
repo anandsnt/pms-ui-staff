@@ -728,5 +728,8 @@
    "NEW_LOYALTY_PROGRAM_INSTRUCTIONS": "Select from programs offered by hotel",
 
    "NO_COUNTRY_MATCH": "No match found!",
-   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down"
+   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
+
+   "FEES": "FEES"
+   
 }

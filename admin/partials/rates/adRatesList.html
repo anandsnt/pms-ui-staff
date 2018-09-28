@@ -53,7 +53,7 @@
 					<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
 						<td data-title="'Name'" sortable="'rate'" header-class="width-25" ng-hide="currentClickedElement == $index">
 							<a class="edit-data" ng-click="editRatesClicked(rate.id, $index)" >
-								<strong ng-class="{'red': rate.is_locked }"> {{rate.name}}</strong>
+								<strong> {{rate.name}}</strong>
 							</a>
 						</td>
 
@@ -76,8 +76,7 @@
 							</span>
 						</td>
 						<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
-							<span ng-if="rate.is_locked" class="icons icon-lock"></span>
-							<div ng-hide="rate.is_locked" class="entry" ng-class="{'overlay' : rate.is_global_contract}" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
+							<div class="entry" ng-class="{'overlay' : rate.is_global_contract}" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
 								<div class="switch-button single" ng-class="{'on': rate.status}">
 									<input type="checkbox"  ng-checked="rate.status">
 									<span class="switch-icon"></span>

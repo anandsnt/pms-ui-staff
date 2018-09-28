@@ -13,7 +13,7 @@
 					Promotions
 				</h3>
             </div>
-            <div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+            <div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract}">
                 <label class="center_align"><em class="rate_roomtype_text">Available Promotions</em></label>
                 <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="state.availablePromotions" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
                     <li ng-repeat="promotion in state.availablePromotions" data-drag="true" ng-model="state.availablePromotions" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="non-assigned-room-types li-draggable" ng-click="toggleAvailablePromotion($index)" ng-class='{selected: state.selectedAvailablePromotion === $index}'>
@@ -22,7 +22,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="entry movers rates_mover" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+            <div class="entry movers rates_mover" ng-class="{'overlay' : rateData.is_global_contract}">
                 <div class="top_mover">
                     <span class="icons icon-mover-right to-target" data-type="target" ng-click="linkSelectedPromotion()" ng-class="{active: state.selectedAvailablePromotion > -1}" data-type="source">unassign room(s)</span>
                     <span class="icons icon-mover-left to-source" data-type="source" ng-click="unlinkSelectedPromotion()" ng-class="{active: state.selectedAssignedPromotion > -1}">Assign room(s)</span>
@@ -39,7 +39,7 @@
             <div class="entry has-sortable">
                 <label class="center_align">
                     <span class="assigned_room_text">Assigned Promotions</span></label>
-                <ul ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}" class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="state.assignedPromotions" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
+                <ul ng-class="{'overlay' : rateData.is_global_contract}" class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true" ng-model="state.assignedPromotions" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.non-assigned-room-types'}">
                     <li ng-repeat="promotion in state.assignedPromotions" ng-click="toggleAssignedPromotion($index)" ng-class='{selected: state.selectedAssignedPromotion === $index}' class="assigned-room-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" ng-model="state.assignedPromotions" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
                         <span class="icons icon-handle"></span>
                         <span class="icons icon-handle"></span> {{promotion.name}}
@@ -49,7 +49,7 @@
         </fieldset>
         <div class="actions float">
             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelMenu()">Cancel</button>            
-            <button type="button" id="send-email" class="button green" ng-click="saveRatePromotions()" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+            <button type="button" id="send-email" class="button green" ng-click="saveRatePromotions()" ng-class="{'overlay' : rateData.is_global_contract}">
                 Save
             </button>
         </div>
