@@ -60,7 +60,11 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                     avatar: $scope.reservationData.guest.image,
                     address: $scope.reservationData.guest.address,
                     notes_count: $scope.reservationData.guest.notes_count,
-                    user_id: param.id
+                    user_id: param.id,
+                    nationality_id: $scope.guestCardData.nationality_id,
+                    address: {
+                    	country_id: ($scope.guestCardData.contactInfo.address !== undefined) ? $scope.guestCardData.contactInfo.address.country_id : ''
+                    } 
                 });
 
                 // Timeout to allow the RVGuestCardCtrl(app/assets/rover/controllers/cards/guestCardControl.js) to initiate
