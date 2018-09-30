@@ -1690,89 +1690,22 @@ sntRover.controller('reservationDetailsController',
 
  		var guest = getUserPassportInfo(responseData, guest_id);
  		if (guest !== null) {
-	     	$scope.guestIdData = angular.copy(guestData);
-	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
-
-	     	// Set data FROM GuestID (ie. passport)
-	     	$scope.guestIdData.first_name = guest.first_name;
-	     	$scope.guestIdData.last_name = guest.last_name;
-
-	     	$scope.guestIdData.idType = guest.identityType;
-	     	$scope.guestIdData.dob = guest.date_of_birth;
-
-	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
-	     	$scope.guestIdData.nationality = guest.nationality;
-
-	     	$scope.guestIdData.docID = guest.document_number;
-	     	$scope.guestIdData.docExpiry = guest.expiration_date;
-	     	$scope.guestIdData.displayMode = 'FRONT_SIDE';
-	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
-	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
-	 		// END SETTING DATA FROM GUEST ID
-	 		$scope.guestIdData.signature = guest.signature;
-	 		
+ 			guest.back_image_data = "";
+ 			guest.isManualUpload = true;
+			if (guest.isManualUpload) {
+				guest.first_name = guestData.first_name;
+				guest.last_name = guestData.last_name;
+			}
+	     	$scope.guestIdData = angular.copy(guest);
 
 	     	ngDialog.open({
-				template: '/assets/partials/guestId/guestId.html',
+				template: '/assets/partials/guestId/rvGuestId.html',
 				className: 'guest-id-dialog',
+				controller: 'rvGuestIdScanCtrl',
 				scope: $scope
 			});
  		}
 
      };
-
-	var buildGuestInfo = function() {
-		var firstName = _.isEmpty($scope.guestIdData.first_name) ? '' : $scope.guestIdData.first_name;
-		var lastName = _.isEmpty($scope.guestIdData.last_name) ? '' : $scope.guestIdData.last_name;
-		var docExpiry = _.isEmpty($scope.guestIdData.docExpiry) ? '' : $scope.guestIdData.docExpiry;
-		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\r\n" +
-			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
-			$filter('translate')('DOB') + ": " + $scope.guestIdData.dob + "\r\n" +
-			$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\r\n" +
-			$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.docID + "\r\n" +
-			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
-
-		return guestInfo;
-	};
-
-	$scope.dowloadDocumnetDetails = function() {
-		var zip = new JSZip();
-		var fileNamePrefix;
-		
-		if (_.isEmpty($scope.guestIdData.last_name)) {
-			fileNamePrefix = $scope.guestIdData.first_name;
-		} else if (_.isEmpty($scope.guestIdData.first_name)) {
-			fileNamePrefix = $scope.guestIdData.last_name;
-		} else if (_.isEmpty($scope.guestIdData.first_name) && _.isEmpty($scope.guestIdData.last_name)) {
-			fileNamePrefix = 'document';
-		} else {
-			fileNamePrefix = $scope.guestIdData.first_name + '-' + $scope.guestIdData.last_name;
-		}
-		// Add the guest details to a txt file
-		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo());
-		// Add a file to the directory, in this case an image with data URI as contents
-		zip.file(fileNamePrefix + "-ID.png", $scope.guestIdData.imgFrontSrc.split(',')[1], {
-			base64: true
-		});
-		// download backside if present
-		if ($scope.guestIdData.twoSidedDoc) {
-			zip.file(fileNamePrefix + "-ID-back-side.png", $scope.guestIdData.imgBackSrc.split(',')[1], {
-				base64: true
-			});
-		}
-		// Download signature
-		zip.file(fileNamePrefix + "-signature.png", $scope.guestIdData.signature.split(',')[1], {
-			base64: true
-		});
-
-
-		zip.generateAsync({
-				type: "blob"
-			})
-			.then(function(blob) {
-				saveAs(blob, fileNamePrefix + ".zip");
-			});
-
-	};
 
 }]);
