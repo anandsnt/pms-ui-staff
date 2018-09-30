@@ -50,6 +50,19 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			});
 		};
 
+		$scope.uploadFrontImage = function (){
+			$('#front-image-upload').click();
+		};
+		$scope.uploadBackImage = function (){
+			$('#back-image-upload').click();
+		};
+		$scope.frontImageChange = function(){
+			console.log($scope.guestIdData.front_image_data);
+		};
+		$scope.backImageChange = function(){
+			console.log($scope.guestIdData.back_image_data);
+		};
+
 		var buildGuestInfo = function() {
 			var firstName = _.isEmpty($scope.guestIdData.first_name) ? '' : $scope.guestIdData.first_name;
 			var lastName = _.isEmpty($scope.guestIdData.last_name) ? '' : $scope.guestIdData.last_name;

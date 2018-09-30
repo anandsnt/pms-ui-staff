@@ -94,9 +94,10 @@
                     <div class="guest-info" ng-class="{'missing' : guestIdData.front_image_data.length === 0}">
                         <!-- if Data show this -->
                         <img src="{{ guestIdData.front_image_data }}">
+                        <input type="file" id="front-image-upload" accept="image/*"ng-model="guestIdData.front_image_data" accept="*" app-filereader style="display: none;" ng-change="frontImageChange()"/>
                         <div class="document-actions" ng-show="guestIdData.front_image_data.length > 0">
                             <!-- <button type="button" class="button white green-text">Re-Scan</button> -->
-                            <button type="button" class="button white blue-text">Re-Upload</button>
+                            <button type="button" class="button white blue-text" ng-click="uploadFrontImage()">Re-Upload</button>
                             <!-- <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()">Download</button> -->
                             <button type="button" class="button white red-text">Delete</button>
                         </div>
@@ -107,7 +108,8 @@
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.front_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.front_image_data.length === 0">No image</h3>
                         <p ng-show="guestIdData.front_image_data.length === 0">Scan a document or upload a file from your device</p>
-                        <button type="button" class="button white green-text" ng-show="guestIdData.front_image_data.length === 0">Scan Document</button>
+                        <button type="button" class="button white green-text" ng-click="uploadFrontImage()" 
+                        ng-show="guestIdData.front_image_data.length === 0">Scan Document</button>
                         <button type="button" class="button white blue-text" ng-show="guestIdData.front_image_data.length === 0">Upload Image</button>
                     </div>
                 </div>
@@ -119,9 +121,11 @@
                     <div class="guest-info " ng-class="{'missing' : guestIdData.back_image_data.length === 0}">
                         <!-- if Data show this -->
                         <img src="{{ guestIdData.back_image_data }}">
+                        <input type="file" id="back-image-upload" accept="image/*"ng-model="guestIdData.back_image_data" accept="*" app-filereader style="display: none;" ng-change="backImageChange()"
+                        />
                         <div class="document-actions" ng-show="guestIdData.back_image_data.length > 0">
                             <!-- <button type="button" class="button white green-text">Re-Scan</button> -->
-                            <button type="button" class="button white blue-text">Re-Upload</button>
+                            <button type="button" class="button white blue-text" ng-click="uploadBackImage()">Re-Upload</button>
                        <!--      <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()">Download</button> -->
                             <button type="button" class="button white red-text">Delete</button>
                         </div>
@@ -132,7 +136,8 @@
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.back_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.back_image_data.length === 0">No image</h3>
                         <p ng-show="guestIdData.back_image_data.length === 0">Scan a document or upload a file from your device</p>
-                        <button type="button" class="button white green-text" ng-show="guestIdData.back_image_data.length === 0">Scan Document</button>
+                        <button type="button" class="button white green-text" ng-click="uploadBackImage()"
+                        ng-show="guestIdData.back_image_data.length === 0">Scan Document</button>
                         <button type="button" class="button white blue-text" ng-show="guestIdData.back_image_data.length === 0">Upload Image</button>
                     </div>
                 </div>
