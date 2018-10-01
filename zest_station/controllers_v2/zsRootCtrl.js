@@ -9,7 +9,7 @@ sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
     '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
-    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations', 'configurableImagesData'
+    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations', 'configurableImagesData', 
     'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller', 'sntActivity',
     function($scope,
 		zsEventConstants,
