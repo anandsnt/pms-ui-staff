@@ -94,6 +94,37 @@
                 <label for="allotment-pickup" TRANSLATE>PICK_UP</label>
                 <input id="allotment-pickup" ng-model="allotmentConfigData.summary.rooms_pickup" type="text" readonly />
             </div>
+            <!-- If TA is liked to this allotment, show commission toggle -->
+            <div class="entry commission margin" ng-show="allotmentConfigData.summary.allotment_id && allotmentConfigData.summary.travel_agent.id">
+                <label for="travel-agent-commission" translate>COMMISSION</label>
+                <div class="switch-button" ng-class="{'on': allotmentConfigData.summary.commission_details.is_on}"> <!-- Add class 'on' when L88 is checked -->
+                    <input id="travel-agent-commission" ng-model="allotmentConfigData.summary.commission_details.is_on" type="checkbox" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+                <!-- Show only when commission is turned on: -->
+                <input ng-model="allotmentConfigData.summary.commission_details.value" type="text" ng-show="allotmentConfigData.summary.commission_details.is_on" type="text" />
+                <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on">
+                    <select name="travel-agent-commission-type" ng-model="allotmentConfigData.summary.commission_details.type">
+                        <option value="percent">%</option>
+                        <option value="amount">{{currencySymbol}}</option>
+                    </select>
+                </div>
+                <!-- Show only when commission is turned on & type is set to $ -->
+                <div class="select" ng-show="allotmentConfigData.summary.commission_details.is_on && allotmentConfigData.summary.commission_details.type === 'amount'">
+                    <select ng-model="allotmentConfigData.summary.commission_details.commission_type">
+                        <option value="NIGHT" translate>PER_NIGHT</option>
+                        <option value="STAY" translate>PER_STAY</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="entry full-width with-button">
                 <label for="allotment-rate" translate>RATE</label>
                 <div class="select">
