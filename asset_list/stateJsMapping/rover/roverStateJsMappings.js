@@ -134,8 +134,9 @@ module.exports = {
 			},
 			'rover.guestcarddetails': {
 				filename: roverJsListRoot + 'guestCardDetailsJsAssetList.js',
+                modules: true,
 				babelify: true
-			}			
+			}
 		};
 	}
 };

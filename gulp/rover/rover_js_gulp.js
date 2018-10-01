@@ -13,8 +13,16 @@ module.exports = function(gulp, $, options) {
 	    onError  				= options.onError,
 	    runSequence 			= require('run-sequence'),
 	    roverGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'StateJsMappings/' + generated + 'rover/',
-		roverGenFile 			= roverGenDir + generated + 'roverStateJsMappings.json';
+		roverGenFile 			= roverGenDir + generated + 'roverStateJsMappings.json'
 
+
+    const b2v = require('buffer-to-vinyl');
+    const browserify = require('browserify');
+    const source = require('vinyl-source-stream');
+    const buffer = require('vinyl-buffer');
+    const transform = require('vinyl-transform');
+    const through2 = require('through2');
+    const tsify = require('tsify');
 
 	//Be careful: PRODUCTION
 	gulp.task('create-statemapping-and-inject-rover-js-production', function(){
@@ -22,7 +30,7 @@ module.exports = function(gulp, $, options) {
 	    	mkdirp = require('mkdirp'),
 			fs = require('fs'),
 			edit = require('gulp-json-editor');
-		
+
 		mkdirp(roverGenDir, function (err) {
 		    if (err) console.error('rover JS mapping directory failed!! (' + err + ')');
 	    	fs.writeFile(roverGenFile, JSON.stringify(extendedMappings), function(err) {
@@ -36,15 +44,15 @@ module.exports = function(gulp, $, options) {
 		        .pipe($.rev.manifest())
 		        .pipe(edit(function(manifest){
 		        	gulp.src('../../public' + extendedMappings['rover.dashboard'][0])
-		        	.pipe($.replace(/\/assets\/asset_list\/____generatedStateJsMappings\/____generatedrover\/____generatedroverStateJsMappings.json/g , 
+		        	.pipe($.replace(/\/assets\/asset_list\/____generatedStateJsMappings\/____generatedrover\/____generatedroverStateJsMappings.json/g ,
 		        		URL_APPENDER + '/' + manifest[Object.keys(manifest)[0]]))
 		        	.pipe(gulp.dest(DEST_ROOT_PATH), { overwrite: true });
 
 		        	console.log('rover JS  mapping file created (' + manifest[Object.keys(manifest)[0]] + ')');
 		        	return {};
 		        }));
-			    
-			}); 
+
+			});
 		});
 
 	    return gulp.src(ROVER_HTML_FILE)
@@ -73,6 +81,19 @@ module.exports = function(gulp, $, options) {
 				fileName 			= state.replace(/\./g, "-")+".min.js";
 
 			var nonMinifiedStream = gulp.src(nonMinifiedFiles);
+
+            if (stateMappingList[state].modules) {
+                nonMinifiedStream = nonMinifiedStream.
+                    pipe(through2.obj((file, enc, next) => {
+                        browserify(file.path).
+                            plugin(tsify).
+                            bundle((err, res) => {
+                                file.contents = res;
+                                next(null, file);
+                            });
+                    }));
+            }
+
 			if (stateMappingList[state].babelify) {
 				nonMinifiedStream = nonMinifiedStream.pipe($.babel());
 			}
@@ -93,7 +114,7 @@ module.exports = function(gulp, $, options) {
 			    	.pipe($.jsvalidate())
 					.on('error', onError)
 			    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
-			
+
 			return stream(minifiedStream, nonMinifiedStream)
 				.on('error', onError)
 		        .pipe($.concat(fileName))
@@ -121,7 +142,7 @@ module.exports = function(gulp, $, options) {
 
 		delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
-		
+
 		for (state in stateMappingList){
 			delete require.cache[require.resolve(stateMappingList[state].filename)];
 			combinedList 	= require(stateMappingList[state].filename).getList();
@@ -138,7 +159,7 @@ module.exports = function(gulp, $, options) {
 			        return console.error('rover JS mapping file failed!! (' + err + ')');
 			    }
 			    console.log('rover JS mapping file created (' + roverGenFile + ')');
-			}); 
+			});
 		});
 	});
 
@@ -154,7 +175,20 @@ module.exports = function(gulp, $, options) {
 			}
 		};
 
-		return gulp.src(fileList, {base: '.'})
+        var fileStream = gulp.src(fileList);
+
+        if (stateMappingList[state].modules) {
+            fileStream = fileStream.
+                pipe(through2.obj((file, enc, next) => {
+                    browserify(file.path).
+                        bundle((err, res) => {
+                            file.contents = res;
+                            next(null, file);
+                        });
+                }));
+        }
+
+		return fileStream
 			.pipe($.babel())
 			.on('error', options.silentErrorShowing)
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
@@ -180,7 +214,7 @@ module.exports = function(gulp, $, options) {
 	});
 
 	//JS - END
-	
+
 	gulp.task('rover-watch-js-files', function(){
 		var paths = [],
 			glob = require('glob-all'),
@@ -201,7 +235,7 @@ module.exports = function(gulp, $, options) {
             $.onChangeJSinDev(file.path);
         });
 	});
-	
+
 	gulp.task('copy-cordova-assets', function(){
 		return gulp.src(['shared/cordova.js', 'shared/cordova/**/*.js'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
@@ -210,7 +244,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('rover-copy-js-files', function(){
 		var fileList = [];
-		
+
 		delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 
