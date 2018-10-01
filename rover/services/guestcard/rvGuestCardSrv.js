@@ -22,6 +22,38 @@ angular.module('sntRover').service('RVGuestCardsSrv',
             });
             return deferred.promise;
         };
+
+        var _countryList = [];
+
+        this.fetchNationsList = function() {
+            var deferred = $q.defer();
+            var url = '/ui/country_list';
+
+            if (_countryList.length) {
+                deferred.resolve(_countryList);
+            } else {
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    _countryList = data;
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+
+            return deferred.promise;
+        };
+
+        this.uploadGuestId = function(params) {
+            var url = '/ui/country_list';
+
+            return RVBaseWebSrvV2.getJSON(url, params);
+        };
+
+        this.saveGuestIdDetails = function() {
+            var url = '/ui/country_list';
+
+            return RVBaseWebSrvV2.getJSON(url, params);
+        };
         
     }
 ]);

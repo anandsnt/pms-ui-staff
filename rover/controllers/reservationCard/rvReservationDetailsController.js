@@ -1690,9 +1690,10 @@ sntRover.controller('reservationDetailsController',
 
  		var guest = getUserPassportInfo(responseData, guest_id);
  		if (guest !== null) {
- 			guest.back_image_data = "";
- 			guest.isManualUpload = true;
-			if (guest.isManualUpload) {
+ 			guest.is_manualy_uploaded = true;
+
+ 			guest.guest_id = guest_id;
+			if (guest.is_manualy_uploaded) {
 				guest.first_name = guestData.first_name;
 				guest.last_name = guestData.last_name;
 			}

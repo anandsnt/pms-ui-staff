@@ -2,10 +2,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'$rootScope',
 	'$filter',
 	'ngDialog',
-	'RVCompanyCardSrv',
-	function($scope, $rootScope, $filter, ngDialog, RVCompanyCardSrv) {
+	'RVGuestCardsSrv',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv) {
 
-		$scope.callAPI(RVCompanyCardSrv.fetchCountryList, {
+		BaseCtrl.call(this, $scope);
+
+		$scope.callAPI(RVGuestCardsSrv.fetchNationsList, {
 			params: {},
 			successCallBack: function(response) {
 				$scope.countyList = response;
@@ -20,7 +22,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			changeMonth: true,
 			maxDate: tzIndependentDate($rootScope.businessDate),
 			yearRange: "-100:+0",
-			onSelect: function(dateText, inst) {
+			onSelect: function() {
 				dobDialog.close();
 			}
 		};
@@ -37,7 +39,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			changeYear: true,
 			changeMonth: true,
 			yearRange: "-10:+50",
-			onSelect: function(dateText, inst) {
+			onSelect: function() {
 				expirationDateDialog.close();
 			}
 		};
@@ -53,14 +55,52 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		$scope.uploadFrontImage = function (){
 			$('#front-image-upload').click();
 		};
+
 		$scope.uploadBackImage = function (){
 			$('#back-image-upload').click();
 		};
-		$scope.frontImageChange = function(){
-			console.log($scope.guestIdData.front_image_data);
+
+		var uploadIdImage = function (apiParams) {
+			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
+				params: apiParams
+			});
 		};
-		$scope.backImageChange = function(){
-			console.log($scope.guestIdData.back_image_data);
+
+		$scope.frontImageChange = function() {
+			var apiParams = {
+				'is_manual_upload': true,
+				'is_front_image': true,
+				'image': $scope.guestIdData.front_image_data,
+				'guest_id': $scope.guestIdData.guest_id
+			};
+
+			uploadIdImage(apiParams);
+		};
+
+		$scope.backImageChange = function() {
+			var apiParams = {
+				'is_manual_upload': true,
+				'is_front_image': false,
+				'image': $scope.guestIdData.back_image_data,
+				'guest_id': $scope.guestIdData.guest_id
+			};
+			
+			uploadIdImage(apiParams);
+		};
+
+		$scope.saveGuestIdDetails = function () {
+			var apiParams = {
+				'last_name': $scope.guestIdData.last_name,
+				'first_name': $scope.guestIdData.first_name,
+				'dob': $scope.guestIdData.date_of_birth,
+				'nationality_id': $scope.guestIdData.nationality_id,
+				'document_number': $scope.guestIdData.document_number,
+				'expiration_date': $scope.guestIdData.expiration_date
+			};
+
+			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
+				params: apiParams
+			});
 		};
 
 		var buildGuestInfo = function() {
@@ -97,7 +137,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				base64: true
 			});
 			// download backside if present
-			if ($scope.guestIdData.twoSidedDoc) {
+			if ($scope.guestIdData.back_image_data && $scope.guestIdData.back_image_data.length > 0) {
 				zip.file(fileNamePrefix + "-ID-back-side.png", $scope.guestIdData.back_image_data.split(',')[1], {
 					base64: true
 				});

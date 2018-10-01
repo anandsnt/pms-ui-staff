@@ -17,7 +17,7 @@
                     {{ guestIdData.first_name }}
                 </li>
                 <!-- DOB -->
-                <li ng-if="guestIdData.isManualUpload">
+                <li ng-if="guestIdData.is_manualy_uploaded">
                     <span>Date of Birth (mm-dd-yyyy):</span>
                     <div class="entry has-datepicker">
                         <!-- <button class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button> -->
@@ -25,56 +25,58 @@
                         ng-click="openDobCalendar()">
                     </div> 
                 </li>
-                <li ng-if="!guestIdData.isManualUpload">
+                <li ng-if="!guestIdData.is_manualy_uploaded">
                     <span>Date of Birth:</span>
                     {{ guestIdData.date_of_birth }} 
                 </li>
                 <!-- NATIONALITY -->
-                <li ng-if="guestIdData.isManualUpload">
+                <li ng-if="guestIdData.is_manualy_uploaded">
                     <span>Nationality:</span>
                      <div class="entry">
                         <div class="select">
-                            <select class="placeholder">
+                            <select class="placeholder" ng-model="guestIdData.nationality_id">
                                 <option value="">Select a Nationality</option>
                                 <option ng-repeat="country in countyList" value="{{ country.id }}">{{ country.value }}</option>
                             </select>
                         </div>
                     </div>
                 </li>
-                <li ng-if="!guestIdData.isManualUpload">
+                <li ng-if="!guestIdData.is_manualy_uploaded">
                     <span>Nationality:</span>
                     {{ guestIdData.nationality }}
                 </li>
                 <!-- ID NUMBER -->
-                <li ng-if="guestIdData.isManualUpload">
+                <li ng-if="guestIdData.is_manualy_uploaded">
                     <span>ID Number:</span>
                     <div class="entry">
                         <input type="text" placeholder="" ng-model="guestIdData.document_number">
                     </div>
                 </li>
-                <li ng-if="!guestIdData.isManualUpload">
+                <li ng-if="!guestIdData.is_manualy_uploaded">
                     <span>ID Number:</span>
                     {{ guestIdData.document_number }}
                 </li>
                 <!-- EXPIRY DATE -->
-                <li ng-if="guestIdData.isManualUpload">
+                <li ng-if="guestIdData.is_manualy_uploaded">
                     <span>Expiry (mm-dd-yyyy):</span>
-                    <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiration_date"
+                    <div class="entry has-datepicker">
+                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiration_date"
                         ng-click="openExpiryCalendar()">
+                    </div>
                 </li>
-                <li ng-if="!guestIdData.isManualUpload">
+                <li ng-if="!guestIdData.is_manualy_uploaded">
                     <span>Expiry:</span>
                     {{ guestIdData.expiration_date }}
                 </li>
 
                 <!-- If signed after scan, show signature at end of the list -->
-                <li ng-if="!guestIdData.isManualUpload && guestIdData.signature.length > 0">
+                <li ng-if="!guestIdData.is_manualy_uploaded && guestIdData.signature.length > 0">
                     <span>Signature</span>
                     <img src="{{ guestIdData.signature }}" alt="" />
                 </li>
 
-                <li ng-if="guestIdData.isManualUpload">
-                    <button type="button" class="button green">Save</button>
+                <li ng-if="guestIdData.is_manualy_uploaded">
+                    <button type="button" class="button green" ng-click="saveGuestIdDetails()">Save</button>
                 </li>
             </ul>
         </div>

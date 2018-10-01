@@ -236,9 +236,14 @@
                         <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{::guestData.primary_guest_details.first_name}}" readonly />
                         <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
                         <button class="button with-icon white green-text" click-touch='showScannedGuestID(true, guestData.primary_guest_details)'
-                            ng-if='!hideGuestId(guestData.primary_guest_details, true) && guestIdAdminEnabled'
+                            ng-if='!hideGuestId(guestData.primary_guest_details, true)'
                             ng-class='{"overlay":!hasGuestIDPermission}'>
                             <span class="icons icon-identity-card"></span>
+                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+
+                        <button class="button with-icon white grey-text" ng-if='hideGuestId(guestData.primary_guest_details, true)' disabled>
+                            <span class="icons icon-identity-card-grey"></span>
                              {{'GUEST_ID_BUTTON' |translate}}
                         </button>
                     </div>
@@ -258,6 +263,11 @@
                             ng-class='{"overlay":!hasGuestIDPermission}'>
                             <span class="icons icon-identity-card"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+
+                        <button class="button with-icon white grey-text" ng-if='hideGuestId(guestData.primary_guest_details)' disabled>
+                            <span class="icons icon-identity-card-grey"></span>
+                             {{'GUEST_ID_BUTTON' |translate}}
                         </button>
                     </div>
 
