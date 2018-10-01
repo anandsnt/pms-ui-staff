@@ -1643,70 +1643,59 @@ sntRover.controller('reservationDetailsController',
        $scope.showOverBookingAlert = !$scope.showOverBookingAlert;
      }
 
-     $scope.hideGuestId = function(guest, isPrimary) {
-     	if (isPrimary) {
-     		guest = {
-     			'id': $scope.reservationParentData.guest.id
-     		}
-     	}
-     	var has_guest_id_scanned = false;
+	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
- 		if ($scope.guestIDsAvailable.indexOf(guest.id) !== -1) {
- 			has_guest_id_scanned = true;
- 		}
-     	return (!has_guest_id_scanned || !$scope.guestIdAdminEnabled);
-     }
-     /*
-      * show the guest id / passport when clicked "guest id" button from manage additional guests view
-      */
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
+		var guestIdIndex = $scope.guestIDsAvailable.indexOf(guestId);
 
+		return guestId && guestIdIndex !== -1;
 
-      var getUserPassportInfo = function(guestResponseData, guest_id) {
+	};
+     
+	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
-     		for (var i in guestResponseData) {
-     			if (guestResponseData[i].guest_id === guest_id) {
-     				return guestResponseData[i];
-     			}
-     		}
-     		return null;
-      }
+		$scope.$emit('hideLoader');
+		guestData = guestData ? guestData : {};
 
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
+		var guestData = _.find($scope.guestIdReponseData, function(guestIdData){
+			return guestIdData.guest_id === guestId;
+		});
+		
+		if (guestDocData) {
+			guestDocData.is_manual_upload = true;
+			guestDocData.guest_id = guestId;
 
-     $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
-     	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
-     	// CICO-38714
-     	// TODO: link with proper HTML once complete from design team
-     	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
-
-        $scope.$emit('hideLoader');
- 		var responseData = $scope.guestIdReponseData,
- 		 	guest_id;
-
- 		if (isPrimaryGuest) {
- 			guest_id = $scope.reservationParentData.guest.id;
- 		} else {
- 			guest_id = guestData.id;
- 		}
-
- 		var guest = getUserPassportInfo(responseData, guest_id);
- 		if (guest !== null) {
- 			guest.is_manualy_uploaded = true;
-
- 			guest.guest_id = guest_id;
-			if (guest.is_manualy_uploaded) {
-				guest.first_name = guestData.first_name;
-				guest.last_name = guestData.last_name;
+			// for manualy uploading IDs use first name and last name in reservation
+			if (guestDocData.is_manual_upload) {
+				guestDocData.first_name = guestData.first_name;
+				guestDocData.last_name = guestData.last_name;
 			}
-	     	$scope.guestIdData = angular.copy(guest);
 
-	     	ngDialog.open({
-				template: '/assets/partials/guestId/rvGuestId.html',
-				className: 'guest-id-dialog',
-				controller: 'rvGuestIdScanCtrl',
-				scope: $scope
-			});
- 		}
+			$scope.guestIdData = angular.copy(guestDocData);
+		} else {
+			$scope.guestIdData = {
+				'last_name': '',
+				'first_name': '',
+				'date_of_birth': '',
+				'nationality_id': '',
+				'document_number': '',
+				'expiration_date': '',
+				'guest_id': '',
+				'back_image_data': '',
+				'front_image_data': '',
+				'signature': '',
+				'is_manual_upload': true
+			}
+		}
 
-     };
+		ngDialog.open({
+			template: '/assets/partials/guestId/rvGuestId.html',
+			className: 'guest-id-dialog',
+			controller: 'rvGuestIdScanCtrl',
+			scope: $scope
+		});
+
+	};
 
 }]);
