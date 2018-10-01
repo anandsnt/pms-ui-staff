@@ -251,18 +251,11 @@ sntRover.controller('reservationActionsController', [
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null
                             ) && (
-                                $scope.guestCardData.contactInfo.email === '' ||
-                                $scope.guestCardData.contactInfo.phone === '' ||
-                                $scope.guestCardData.contactInfo.mobile === '' ||
-                                $scope.guestCardData.contactInfo.email === null ||
-                                $scope.guestCardData.contactInfo.phone === null ||
-                                $scope.guestCardData.contactInfo.mobile === null || 
-                                $scope.guestCardData.contactInfo.nationality_id === undefined || 
-                                $scope.guestCardData.contactInfo.nationality_id === "" || 
-                                $scope.guestCardData.contactInfo.nationality_id === null || 
-                                $scope.guestCardData.contactInfo.address.country_id === undefined || 
-                                $scope.guestCardData.contactInfo.address.country_id === "" || 
-                                $scope.guestCardData.contactInfo.address.country_id === null
+                            	_.isEmpty($scope.guestCardData.contactInfo.email) || 
+                            	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
+                            	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
+                            	_.isEmpty($scope.guestCardData.contactInfo.nationality_id) || 
+                            	_.isEmpty($scope.guestCardData.contactInfo.address.country_id)
                             )
                         ) {
                         return true;
