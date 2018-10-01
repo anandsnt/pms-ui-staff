@@ -23,6 +23,7 @@ module.exports = function(gulp, $, options) {
     const transform = require('vinyl-transform');
     const through2 = require('through2');
     const tsify = require('tsify');
+    const path = require('path');
 
 	//Be careful: PRODUCTION
 	gulp.task('create-statemapping-and-inject-rover-js-production', function(){
@@ -133,7 +134,7 @@ module.exports = function(gulp, $, options) {
 	});
 
 
-	gulp.task('rover-generate-mapping-list-dev', ['rover-copy-js-files'], function(){
+	gulp.task('rover-generate-mapping-list-dev', function(){
 		var glob 		= require('glob-all'),
 			fileList 	= [],
 			fs 			= require('fs'),
@@ -163,37 +164,47 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
-	gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev'], function(){
-		delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
-		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
-		var fileList = [];
-		for (state in stateMappingList) {
-			delete require.cache[require.resolve(stateMappingList[state].filename)];
-			var combinedList = require(stateMappingList[state].filename).getList();
-			if (stateMappingList[state].babelify) {
-				fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
-			}
-		};
+    gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev'], function() {
+        delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
+        stateMappingList = require(ROVER_JS_MAPPING_FILE).
+            getStateMappingList();
 
-        var fileStream = gulp.src(fileList);
+        const es = require('event-stream'),
+            stream = require('merge-stream');
 
-        if (stateMappingList[state].modules) {
-            fileStream = fileStream.
-                pipe(through2.obj((file, enc, next) => {
-                    browserify(file.path).
-                        bundle((err, res) => {
-                            file.contents = res;
-                            next(null, file);
-                        });
-                }));
-        }
+        var tasks = Object.keys(stateMappingList).
+            map(state => {
+                var mappingList = require(stateMappingList[state].filename).
+                        getList(),
+                    nonMinifiedFiles = mappingList.nonMinifiedFiles,
+                    minifiedFiles = mappingList.minifiedFiles,
+                    minifiedStream = gulp.src(minifiedFiles, {base: '.'}),
+                    nonMinifiedStream = gulp.src(nonMinifiedFiles, {base: '.'});
 
-		return fileStream
-			.pipe($.babel())
-			.on('error', options.silentErrorShowing)
-			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+                if (stateMappingList[state].modules) {
+                    nonMinifiedStream = nonMinifiedStream.
+                        pipe(through2.obj((file, enc, next) => {
+                            browserify(file.path).
+                                plugin(tsify).
+                                bundle((err, res) => {
+                                    file.contents = res;
+                                    next(null, file);
+                                });
+                        }));
+                }
 
-	});
+                if (stateMappingList[state].babelify) {
+                    nonMinifiedStream = nonMinifiedStream.pipe($.babel());
+                }
+
+                return stream(nonMinifiedStream, minifiedStream).
+                    on('error', options.silentErrorShowing).
+                    pipe(gulp.dest(DEST_ROOT_PATH, {overwrite: true}));
+            });
+
+        return es.merge(tasks);
+    });
+
 
 	gulp.task('build-rover-js-dev', ['rover-babelify-dev'], function(){
 		//since extendedMappings contains /assets/ and that is not a valid before gulp.src
@@ -215,7 +226,18 @@ module.exports = function(gulp, $, options) {
 
 	//JS - END
 
-	gulp.task('rover-watch-js-files', function(){
+    gulp.task('watch-modules', function() {
+        gulp.watch('rover/modules/snt/**/*.ts').
+            on('change', file => {
+                let dirName = path.dirname(path.relative('rover/modules/snt',file.path)),
+                    fileName = path.basename(file.path, '.ts'),
+                    filePath = path.resolve('rover', dirName, fileName) + '.js';
+
+                $.onChangeJSinDev(filePath);
+            });
+    });
+
+	gulp.task('rover-watch-js-files', ['watch-modules'], function(){
 		var paths = [],
 			glob = require('glob-all'),
 			combinedList = [];
@@ -240,7 +262,6 @@ module.exports = function(gulp, $, options) {
 		return gulp.src(['shared/cordova.js', 'shared/cordova/**/*.js'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
-
 
 	gulp.task('rover-copy-js-files', function(){
 		var fileList = [];

@@ -1,2 +1,2 @@
 angular.module('sntRover').
-    service('RVLikesSrv', ['$q', 'RVBaseWebSrv', '$http', require('../../modules/snt/guestLikes.service').LikesSrv]);
+    service('RVLikesSrv', ['$q', 'RVBaseWebSrv', '$http', require('../../modules/snt/services/likes/rvLikesSrv').LikesSrv]);
