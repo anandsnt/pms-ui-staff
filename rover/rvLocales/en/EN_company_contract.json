@@ -10,12 +10,14 @@
     "FIND_CARDS":"FIND CARDS",
 
     "COMAPNY_INFO": "Company Info",
+    "TA_INFO": "Travel Agent Info",
     "COUNTRY": "Country",
     "SELECT_COUNTRY": "Select country",
     "COMAPNY_LOGO": "Company logo",
     "CHOOSE_FILE": "Choose file",
     "PREVIEW_NOT_AVAILABLE": "Preview not available",
     "EXTENDED_COMPANY_DETAILS": "Extended Company Details",
+    "EXTENDED_TA_DETAILS": "Extended Travel Agent Details",
     "PRIMARY_CONTACT_DETAILS": "Primary Contact Details",
 
     "SELECT_CONTRACT": "Select contract",
