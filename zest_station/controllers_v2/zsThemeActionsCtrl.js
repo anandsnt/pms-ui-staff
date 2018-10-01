@@ -20,6 +20,9 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.zestStationData.scan_passport_file_uploaded = '';
             }
 
+            // TODO: delete $scope.zestStationData.key_create_file_uploaded after the migration in in place
+            $scope.zestImages.key_create_file_uploaded = $scope.zestImages.key_create_file_uploaded ? $scope.zestImages.key_create_file_uploaded : $scope.zestStationData.key_create_file_uploaded;
+
             $scope.icons = {
                 url: {
                     active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
@@ -47,7 +50,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     moon: iconBasePath + '/moon.svg',
                     qr: iconBasePath + '/qr-scan.svg',
                     qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
-                    createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
+                    createkey: iconBasePath + $scope.zestImages.key_create_file_uploaded,
                     logo: iconBasePath + '/print_logo.svg',
                     watch: iconBasePath + '/watch.svg',
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
@@ -60,7 +63,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     user_with_id: iconBasePath + '/user-id.svg',
                     user_without_id: iconBasePath + '/user.svg',
                     location: iconBasePath + '/location.svg',
-                    loyalty: iconBasePath + '/loyalty.svg'
+                    loyalty: iconBasePath + '/loyalty.svg',
+                    clear_text: commonIconsPath + '/clear-text.svg'
                 }
             };
 

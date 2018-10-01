@@ -14,8 +14,49 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'isUsingExistingCardPayment': false,
             'paymentAction': '', // can be add card (ADD_CARD) or pay (PAY_AMOUNT),
             'paymentSuccess': false,
-            'paymentFailure': false
+            'paymentFailure': false,
+            'paymentTypeFetchCompleted': false,
+            'totalAmountPlusFees': 0,
+            'showFees': false,
+            'amountDue': 0,
+            'totalFees': 0
         };
+
+        $scope.$on("FETCH_PAYMENT_TYPES", function(event, data) {
+            $scope.callAPI(zsPaymentSrv.fetchAvailablePaymentTyes, {
+                params: {},
+                'successCallBack': function(paymentTypes) {
+                    var selectedPaymentType = _.find(paymentTypes, {
+                        name: data.paymentTypeName
+                    });
+                    var feeInfo = (selectedPaymentType &&
+                        selectedPaymentType.charge_code &&
+                        selectedPaymentType.charge_code.fees_information) || {};
+                    var amountDetails = sntPaymentSrv.calculateFee(data.amountToPay, feeInfo);
+                    var paymentParams = zsPaymentSrv.getPaymentData();
+
+                    if (amountDetails.showFees) {
+                        // for resetting service data
+                        paymentParams.total_value_plus_fees = amountDetails.totalOfValueAndFee;
+                        paymentParams.fees_amount = amountDetails.calculatedFee;
+                        paymentParams.fees_charge_code_id = amountDetails.feeChargeCode;
+
+                        // for diplaying
+                        $scope.screenMode.showFees = true;
+                        $scope.screenMode.totalAmountPlusFees = amountDetails.totalOfValueAndFee;
+                        $scope.screenMode.amountDue = amountDetails.defaultAmount;
+                        $scope.screenMode.totalFees = amountDetails.calculatedFee;
+                    } else {
+                        $scope.screenMode.totalAmountPlusFees = amountDetails.defaultAmount;
+                    }
+
+                    zsPaymentSrv.setPaymentData(paymentParams);
+                    $scope.screenMode.paymentTypeFetchCompleted = true;
+
+                    $scope.$emit('FETCH_PAYMENT_TYPES_COMPLETED');
+                }
+            });
+        });
 
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
@@ -45,7 +86,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$emit('showLoader');
             $scope.screenMode.errorMessage = '';
             $scope.screenMode.paymentInProgress = true;
-            $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
+
+            var paymentParams = zsPaymentSrv.getSubmitPaymentParams();
+
+            $scope.$broadcast('INITIATE_CBA_PAYMENT', paymentParams);
         };
 
         var setErrorMessageBasedOnResponse = function(errorMessage) {
@@ -228,7 +272,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'is_emv_request': true,
                     'reservation_id': $scope.reservation_id.toString(),
                     'add_to_guest_card': false,
-                    'amount': $scope.balanceDue,
+                    'amount': $scope.screenMode.totalAmountPlusFees,
                     'bill_number': 1,
                     'payment_type': 'CC'
                 };
@@ -245,7 +289,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'is_emv_request': false,
                     'reservation_id': $scope.reservation_id,
                     'add_to_guest_card': false,
-                    'amount': $scope.balanceDue,
+                    'amount': $scope.screenMode.totalAmountPlusFees,
                     'bill_number': 1,
                     'payment_type': 'CC',
                     'payment_type_id': $scope.cardDetails.id
@@ -326,7 +370,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "card_expiry": cardExpiry,
                         "credit_card": swipedCardData.RVCardReadCardType,
                         "is_emv_request": false,
-                        "amount": $scope.balanceDue,
+                        "amount": $scope.screenMode.totalAmountPlusFees,
                         "bill_number": 1
                     };
 

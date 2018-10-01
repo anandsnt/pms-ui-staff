@@ -1,4 +1,4 @@
-admin.directive('adImageUpload', function($timeout) {
+admin.directive('adImageUpload', function() {
 
     return {
         restrict: 'E',
