@@ -25,6 +25,9 @@
                     </select>
                 </div>
             </div>
+            <div class="entry" ng-show="additionalDetails.isTaxExemptEnabled"> <!-- Remove class 'hidden' when L11 is checked -->
+                <textarea rows="4" ng-model="additionalDetails.taxExemptRefText" placeholder="Tax Exempt Reference (200 chars.)"></textarea>
+            </div>
         </div>
 
         <!-- If TA is attached and commission is turned on: -->
