@@ -22,7 +22,6 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     */
 	$scope.listRoomTypes = function() {
 		var successCallbackFetch = function(data) {
-			$scope.$emit('hideLoader');
             $scope.data = {};
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
@@ -59,9 +58,13 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             if ( !$rootScope.isStandAlone ) {
                 $scope.tableParams.sorting({'name': 'asc'});
             }
-		};
+		},
+        options = {
+            params: {},
+            successCallBack: successCallbackFetch
+        };
 
-		$scope.invokeApi(ADRoomTypesSrv.fetch, {}, successCallbackFetch);
+		$scope.callAPI(ADRoomTypesSrv.fetch, options);
 	};
 	 /*
     * To fetch list of room classes
