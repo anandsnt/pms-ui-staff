@@ -45,11 +45,17 @@ angular.module('sntRover').service('RVGuestCardsSrv',
 
         this.uploadGuestId = function(params) {
             var url = '/ui/country_list';
-            
+
             return RVBaseWebSrvV2.getJSON(url);
         };
 
         this.saveGuestIdDetails = function() {
+            var url = '/ui/country_list';
+
+            return RVBaseWebSrvV2.getJSON(url);
+        };
+
+        this.deleteGuestId = function() {
             var url = '/ui/country_list';
 
             return RVBaseWebSrvV2.getJSON(url);

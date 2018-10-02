@@ -25,11 +25,12 @@ sntRover.controller('reservationDetailsController',
 	'RVReservationPackageSrv',
 	'transitions',
 	'taxExempts',
+	'sntActivity',
 	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
              reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
              RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
              RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
-             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts) {
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts, sntActivity) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -254,17 +255,19 @@ sntRover.controller('reservationDetailsController',
 						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);
 					}
 				}
+				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var failureCallBack = function() {
      			$scope.$emit('hideLoader');
-				console.warn('unable to fetch guest ids: ', arguments);
+				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 
+			sntActivity.start('GUEST_ID_FETCH');
 			$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
 
 		};

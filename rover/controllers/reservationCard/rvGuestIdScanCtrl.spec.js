@@ -45,30 +45,36 @@ describe('rvGuestIdScanCtrl', function() {
         expect(spyEvent).toHaveBeenTriggered();
     });
 
-    describe('on Image change', function() {
-        beforeEach(function() {
-            spyOn(RVGuestCardsSrv, 'uploadGuestId')
-                .and
-                .callFake(function() {
-                    var deferred = $q.defer();
 
-                    deferred.resolve({});
-                    return deferred.promise;
-                });
-        });
+    it('On image change, call API to save image', function() {
+        spyOn(RVGuestCardsSrv, 'uploadGuestId')
+            .and
+            .callFake(function() {
+                var deferred = $q.defer();
 
-        it('On front image change, call API to save image', function() {
-            $scope.frontImageChange();
-            expect(RVGuestCardsSrv.uploadGuestId)
-                .toHaveBeenCalled();
-        });
-
-        it('On front image change, call API to save image', function() {
-            $scope.backImageChange();
-            expect(RVGuestCardsSrv.uploadGuestId)
-                .toHaveBeenCalled();
-        });
+                deferred.resolve({});
+                return deferred.promise;
+            });
+        $scope.ImageChange();
+        expect(RVGuestCardsSrv.uploadGuestId)
+            .toHaveBeenCalled();
     });
+
+    it('On delete image change, call API to delete image', function() {
+        spyOn(RVGuestCardsSrv, 'deleteGuestId')
+            .and
+            .callFake(function() {
+                var deferred = $q.defer();
+
+                deferred.resolve({});
+                return deferred.promise;
+            });
+        $scope.deleteImage('front-image');
+        $scope.$digest();
+        expect(RVGuestCardsSrv.deleteGuestId)
+            .toHaveBeenCalled();
+    });
+
 
     it('On clicking save on left panel, call API to save', function() {
 

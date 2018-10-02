@@ -21,7 +21,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 			ngDialog.close();
 		};
-		
+
 		var dobDialog,
 			expirationDateDialog;
 
@@ -72,33 +72,45 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			isIDChanged = true;
 		};
 
-		var uploadIdImage = function (apiParams) {
+		$scope.ImageChange = function(imageType) {
+			var apiParams = {
+				'is_manual_upload': true,
+				'is_front_image': imageType === 'front-image',
+				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
+				'guest_id': $scope.guestIdData.guest_id
+			};
+
 			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
 				params: apiParams,
 				successCallBack: markIDDetailsHasChanged
 			});
 		};
 
-		$scope.frontImageChange = function() {
+		$scope.deleteImage = function(imageType) {
 			var apiParams = {
-				'is_manual_upload': true,
-				'is_front_image': true,
-				'image': $scope.guestIdData.front_image_data,
+				'is_front_image': imageType === 'front-image',
 				'guest_id': $scope.guestIdData.guest_id
 			};
-
-			uploadIdImage(apiParams);
-		};
-
-		$scope.backImageChange = function() {
-			var apiParams = {
-				'is_manual_upload': true,
-				'is_front_image': false,
-				'image': $scope.guestIdData.back_image_data,
-				'guest_id': $scope.guestIdData.guest_id
+			var deleteSuccessCallback = function() {
+				if (imageType === 'front-image') {
+					$scope.guestIdData.last_name = "";
+					$scope.guestIdData.first_name = "";
+					$scope.guestIdData.date_of_birth = "";
+					$scope.guestIdData.nationality_id = "";
+					$scope.guestIdData.document_number = "";
+					$scope.guestIdData.expiration_date = "";
+					$scope.guestIdData.signature = "";
+					$scope.guestIdData.is_manual_upload = true;
+					$scope.guestIdData.front_image_data = "";
+				} else {
+					$scope.guestIdData.back_image_data = "";
+				}
 			};
-			
-			uploadIdImage(apiParams);
+				
+			$scope.callAPI(RVGuestCardsSrv.deleteGuestId, {
+				params: apiParams,
+				successCallBack: deleteSuccessCallback
+			});
 		};
 
 		$scope.saveGuestIdDetails = function () {
