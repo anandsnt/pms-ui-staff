@@ -6,7 +6,7 @@
 
     <div class="modal-body">
         <div class="content-left">
-            <h2 class="message">Guest ID Details</h2>
+            <h2 class="message">ID Details</h2>
             <ul class="details">
                 <li>
                     <span>Last Name:</span>
@@ -80,9 +80,9 @@
             </ul>
         </div>
         <div class="content-right">
-            <div class="guest-documents">
+            <div class="guest-documents" style="margin-bottom: 50px;">
                 <div class="guest-document">
-                    <h2 class="message">Guest ID Front</h2>
+                    <h2 class="message">ID Front</h2>
                     <!--
                         'text':
                          - Scanned {DD-MM-YYYY HH:MM AM/PM} (if scanned)
@@ -102,9 +102,6 @@
                             <!-- <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()">Download</button> -->
                             <button type="button" class="button white red-text">Delete</button>
                         </div>
-                        <div class="document-actions" ng-show="guestIdData.front_image_data.length > 0" style="grid-template-columns:100%;margin-top: 10px;">
-                            <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()">Download</button>
-                        </div>
                         <!-- if no data then this -->
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.front_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.front_image_data.length === 0">No image</h3>
@@ -115,7 +112,7 @@
                     </div>
                 </div>
                 <div class="guest-document">
-                    <h2 class="message">Guest ID Back</h2>
+                    <h2 class="message">ID Back</h2>
                     <p class="text"></p>
 
                     <!-- Add .missing if no data -->
@@ -130,9 +127,6 @@
                        <!--      <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()">Download</button> -->
                             <button type="button" class="button white red-text">Delete</button>
                         </div>
-                        <div class="document-actions" ng-show="guestIdData.back_image_data.length > 0" style="grid-template-columns:100%;margin-top: 10px;">
-                            <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()">Download</button>
-                        </div>
                         <!-- if no data then this -->
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.back_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.back_image_data.length === 0">No image</h3>
@@ -144,7 +138,9 @@
                 </div>
             </div>
 
-            <button class="button blank" ng-click='closeGuestIdModal()'>Close the Window</button>
+            
+            <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" style="width: 30%; margin: 0 auto;" ng-show="guestIdData.front_image_data.length > 0">Download</button>
+            <button class="button blank" ng-click='closeGuestIdModal()' style="width: 30%; margin: 0 auto;">Exit</button>
         </div>
     </div>
 </div>

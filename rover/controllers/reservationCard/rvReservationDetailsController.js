@@ -1665,12 +1665,6 @@ sntRover.controller('reservationDetailsController',
 			guestDocData.is_manual_upload = true;
 			guestDocData.guest_id = guestId;
 
-			// for manualy uploading IDs use first name and last name in reservation
-			if (guestDocData.is_manual_upload) {
-				guestDocData.first_name = guestData.first_name;
-				guestDocData.last_name = guestData.last_name;
-			}
-
 			$scope.guestIdData = angular.copy(guestDocData);
 		} else {
 			$scope.guestIdData = {
@@ -1687,6 +1681,13 @@ sntRover.controller('reservationDetailsController',
 				'is_manual_upload': true
 			}
 		}
+
+		// for manualy uploading IDs use first name and last name in reservation
+		if ($scope.guestIdData.is_manual_upload) {
+			$scope.guestIdData.first_name = guestData.first_name;
+			$scope.guestIdData.last_name = guestData.last_name;
+		}
+
 
 		ngDialog.open({
 			template: '/assets/partials/guestId/rvGuestId.html',
