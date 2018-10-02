@@ -253,6 +253,8 @@ admin.controller('adExternalInterfaceCtrl',
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchRoomTypes, {}, fetchRoomTypesSuccess);
 
+      $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSourceCodes, {}, fetchSourceCodeSuccess);
+
         $scope.setRefreshTime();
       }
     };
@@ -304,6 +306,13 @@ admin.controller('adExternalInterfaceCtrl',
     var fetchRoomTypesSuccess = function(data) {
         if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect') {
             $scope.roomTypes = data.room_types;
+        }
+    };
+
+    $scope.sourceCodes = [];
+    var fetchSourceCodeSuccess = function(data) {
+        if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect') {
+            $scope.sourceCodes = data.sources;
         }
     };
 
