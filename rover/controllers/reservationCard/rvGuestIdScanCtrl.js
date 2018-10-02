@@ -6,6 +6,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv) {
 
 		BaseCtrl.call(this, $scope);
+		var isIDChanged = false;
 
 		$scope.callAPI(RVGuestCardsSrv.fetchNationsList, {
 			params: {},
@@ -14,6 +15,13 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 		});
 
+		$scope.closeGuestIdModal = function() {
+			if (isIDChanged) {
+				$scope.$emit('ON_GUEST_ID_POPUP_CLOSE');
+			}
+			ngDialog.close();
+		};
+		
 		var dobDialog,
 			expirationDateDialog;
 
@@ -60,9 +68,14 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$('#back-image-upload').click();
 		};
 
+		var markIDDetailsHasChanged = function () {
+			isIDChanged = true;
+		};
+
 		var uploadIdImage = function (apiParams) {
 			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
-				params: apiParams
+				params: apiParams,
+				successCallBack: markIDDetailsHasChanged
 			});
 		};
 
@@ -99,7 +112,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			};
 
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
-				params: apiParams
+				params: apiParams,
+				successCallBack: markIDDetailsHasChanged
 			});
 		};
 

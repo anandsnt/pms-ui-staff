@@ -239,13 +239,12 @@ sntRover.controller('reservationDetailsController',
 			}
 		};
 
-		$scope.fetchedGuestIDs = false;
+
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
 				$scope.guestIdReponseData = response;
      			$scope.$emit('hideLoader');
 
-				$scope.fetchedGuestIDs = true;
 				var guestOnReservation,
 					reservation_card = $scope.reservationData.reservation_card;
 
@@ -266,11 +265,9 @@ sntRover.controller('reservationDetailsController',
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 
-			if (!$scope.fetchedGuestIDs) {
-				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
-			}
-		}
+			$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
+
+		};
 
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
@@ -1658,11 +1655,13 @@ sntRover.controller('reservationDetailsController',
 		guestData = guestData ? guestData : {};
 
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
-		var guestData = _.find($scope.guestIdReponseData, function(guestIdData){
+		var guestDocData = _.find($scope.guestIdReponseData, function(guestIdData){
 			return guestIdData.guest_id === guestId;
 		});
-		
-		if (guestDocData) {
+
+		if (!$scope.hasGuestIDPermission) {
+			return;
+		} else if (guestDocData) {
 			guestDocData.is_manual_upload = true;
 			guestDocData.guest_id = guestId;
 
@@ -1697,5 +1696,9 @@ sntRover.controller('reservationDetailsController',
 		});
 
 	};
+
+	$scope.$on('ON_GUEST_ID_POPUP_CLOSE', function() {
+		fetchGuestIDs();
+	});
 
 }]);
