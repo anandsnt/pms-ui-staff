@@ -100,6 +100,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 					"tax_exempt_ref_text": $scope.additionalDetails.isTaxExemptEnabled ? $scope.additionalDetails.taxExemptRefText : ""
 				},				
 				successCallBackOfUpdate = function(response) {
+					if (response.errors && response.errors.length > 0) {
+						$scope.errorMessage = response.errors;
+					}
 					if (!$scope.additionalDetails.isTaxExemptEnabled) {
 						$scope.additionalDetails.taxExemptType = '';
 					}
