@@ -93,14 +93,6 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			};
 			var deleteSuccessCallback = function() {
 				if (imageType === 'front-image') {
-					$scope.guestIdData.last_name = "";
-					$scope.guestIdData.first_name = "";
-					$scope.guestIdData.date_of_birth = "";
-					$scope.guestIdData.nationality_id = "";
-					$scope.guestIdData.document_number = "";
-					$scope.guestIdData.expiration_date = "";
-					$scope.guestIdData.signature = "";
-					$scope.guestIdData.is_manual_upload = true;
 					$scope.guestIdData.front_image_data = "";
 				} else {
 					$scope.guestIdData.back_image_data = "";
