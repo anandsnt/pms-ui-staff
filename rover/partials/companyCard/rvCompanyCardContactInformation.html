@@ -75,18 +75,15 @@
                         <option value="amount">{{currencySymbol}}</option>
                     </select>
                 </div>
-            </div>
-            <div class="entry" ng-show="contactInformation.commission_details.is_on">
-                    <label ng-show="contactInformation.commission_details.type === 'amount'" translate>PER_STAY_OR_PER_NIGHT</label>
-                    <div class="select" ng-show="contactInformation.commission_details.type === 'amount'">
-                        <select class="styled" value="contactInformation.commission_details.commission_type" ng-model="contactInformation.commission_details.commission_type" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
-                            <option value="perStay" translate>PER_STAY</option>
-                            <option value="perNight" translate>PER_NIGHT</option>
-                        </select>
-                    </div>
+                <div class="select" ng-show="contactInformation.commission_details.is_on && contactInformation.commission_details.type === 'amount'">
+                    <select class="styled" value="contactInformation.commission_details.commission_type" ng-model="contactInformation.commission_details.commission_type" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
+                        <option value="perStay" translate>PER_STAY</option>
+                        <option value="perNight" translate>PER_NIGHT</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="entry commission" ng-show="contactInformation.commission_details.is_on">
+            <div class="entry radio-check margin" ng-show="contactInformation.commission_details.is_on">
                 <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_prepaid}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_prepaid }"></span>
                     <input type="checkbox"  name="opt-in" id="opt-in" ng-model="contactInformation.commission_details.is_prepaid" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">

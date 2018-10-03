@@ -31,11 +31,14 @@
         <h2 ng-show="!authAfterDeposit && zestStationData.waitingForSwipe && payingDeposit">
             <text data-ng-bind-html="getTagValue('RES_AUTH_DEPOSIT_SUB')" editable-text="RES_AUTH_DEPOSIT_SUB"></text>
         </h2>
-        
+    
         <nav id="options" role="nav">
+            <div class='uploaded-key-image' id="keys" ng-show="zestStationData.waitingForSwipe && zestImages.cc_payment_image.length > 0">
+                <img src="{{zestImages.cc_payment_image}}">
+            </div>
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='zestStationData.waitingForSwipe && !icmp' touch-press='continue()'>
+                <li ng-show='zestStationData.waitingForSwipe && !icmp && zestImages.cc_payment_image.length === 0' touch-press='continue()'>
                     <button type="button" class="button option">
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
@@ -44,7 +47,7 @@
                     </span>
                 </li>
 
-                <li ng-show='zestStationData.waitingForSwipe && icmp' touch-press='continue()'>
+                <li ng-show='zestStationData.waitingForSwipe && icmp && zestImages.cc_payment_image.length === 0' touch-press='continue()'>
                    <div class="margin-adj">
                         <div ng-include="icons.url.creditcard_icmp"></div>
                     </div>
