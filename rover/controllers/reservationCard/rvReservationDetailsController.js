@@ -1655,9 +1655,7 @@ sntRover.controller('reservationDetailsController',
 		if (!$scope.hasGuestIDPermission) {
 			return;
 		} else if (guestDocData) {
-			guestDocData.is_manual_upload = true;
 			guestDocData.guest_id = guestId;
-
 			$scope.guestIdData = angular.copy(guestDocData);
 		} else {
 			$scope.guestIdData = {

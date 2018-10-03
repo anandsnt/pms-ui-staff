@@ -72,6 +72,14 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			isIDDetailsChanged = true;
 		};
 
+		var resetLeftPanel = function () {
+			$scope.guestIdData.date_of_birth = "";
+			$scope.guestIdData.nationality_id = "";
+			$scope.guestIdData.document_number = "";
+			$scope.guestIdData.expiration_date = "";
+			$scope.saveGuestIdDetails();
+		};
+
 		$scope.ImageChange = function(imageType) {
 			var apiParams = {
 				'is_manual_upload': true,
@@ -79,10 +87,17 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
 				'guest_id': $scope.guestIdData.guest_id
 			};
+			var ImageChangesuccessCallBack = function() {
+				markIDDetailsHasChanged();
+				$scope.guestIdData.is_manual_upload = true;
+				if (imageType === 'front-image') {
+					resetLeftPanel();
+				}
+			};
 
 			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
 				params: apiParams,
-				successCallBack: markIDDetailsHasChanged
+				successCallBack: ImageChangesuccessCallBack
 			});
 		};
 
@@ -94,9 +109,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			var deleteSuccessCallback = function() {
 				if (imageType === 'front-image') {
 					$scope.guestIdData.front_image_data = "";
+					resetLeftPanel();
 				} else {
 					$scope.guestIdData.back_image_data = "";
 				}
+				$scope.guestIdData.is_manual_upload = true;
 				markIDDetailsHasChanged();
 			};
 				

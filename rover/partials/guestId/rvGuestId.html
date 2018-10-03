@@ -17,7 +17,7 @@
                     {{ guestIdData.first_name }}
                 </li>
                 <!-- DOB -->
-                <li ng-if="guestIdData.is_manual_upload">
+                <li ng-show="guestIdData.is_manual_upload">
                     <span>{{ 'ID_DOB' | translate}}:</span>
                     <div class="entry has-datepicker">
                         <!-- <button class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button> -->
@@ -25,12 +25,12 @@
                         ng-click="openDobCalendar()">
                     </div> 
                 </li>
-                <li ng-if="!guestIdData.is_manual_upload">
+                <li ng-hide="guestIdData.is_manual_upload">
                     <span>{{ 'ID_DOB' | translate}}:</span>
                     {{ guestIdData.date_of_birth }} 
                 </li>
                 <!-- NATIONALITY -->
-                <li ng-if="guestIdData.is_manual_upload">
+                <li ng-show="guestIdData.is_manual_upload">
                     <span>{{ 'ID_NATIONALITY' | translate}}:</span>
                      <div class="entry">
                         <div class="select">
@@ -41,29 +41,29 @@
                         </div>
                     </div>
                 </li>
-                <li ng-if="!guestIdData.is_manual_upload">
+                <li ng-hide="guestIdData.is_manual_upload">
                     <span>{{ 'ID_NATIONALITY' | translate}}:</span>
                     {{ guestIdData.nationality }}
                 </li>
                 <!-- ID NUMBER -->
-                <li ng-if="guestIdData.is_manual_upload">
+                <li ng-show="guestIdData.is_manual_upload">
                     <span>{{ 'ID_NUMBER' | translate}}:</span>
                     <div class="entry">
                         <input type="text" placeholder="" ng-model="guestIdData.document_number">
                     </div>
                 </li>
-                <li ng-if="!guestIdData.is_manual_upload">
+                <li ng-hide="guestIdData.is_manual_upload">
                     <span>{{ 'ID_NUMBER' | translate}}:</span>
                     {{ guestIdData.document_number }}
                 </li>
                 <!-- EXPIRY DATE -->
-                <li ng-if="guestIdData.is_manual_upload">
+                <li ng-show="guestIdData.is_manual_upload">
                     <span>{{ 'ID_EXPIRY' | translate}}:</span>
                     <div class="entry has-datepicker">
                         <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiration_date"
                         ng-click="openExpiryCalendar()">
                 </li>
-                <li ng-if="!guestIdData.is_manual_upload">
+                <li ng-hide="guestIdData.is_manual_upload">
                     <span>{{ 'ID_EXPIRY' | translate}}:</span>
                     {{ guestIdData.expiration_date }}
                 </li>
@@ -74,7 +74,7 @@
                     <img src="{{ guestIdData.signature }}" alt="" />
                 </li>
 
-                <li ng-if="guestIdData.is_manual_upload">
+                <li ng-show="guestIdData.is_manual_upload">
                     <button type="button" class="button green" ng-click="saveGuestIdDetails()" translate>SAVE</button>
                 </li>
             </ul>
