@@ -106,9 +106,14 @@
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.front_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.front_image_data.length === 0" translate>NO_IMAGE</h3>
                         <p ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
-                        <button type="button" class="button white green-text" ng-click="uploadFrontImage()" 
-                        ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID</button>
-                        <button type="button" class="button white blue-text" ng-show="guestIdData.front_image_data.length === 0" translate>UPLOAD_IMAGE</button>
+                        <!-- <button type="button" class="button white green-text" 
+                        ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID</button> -->
+                        <button type="button" 
+                                class="button white blue-text" 
+                                ng-show="guestIdData.front_image_data.length === 0" 
+                                ng-click="uploadFrontImage()"
+                                translate>UPLOAD_IMAGE
+                        </button>
                     </div>
                 </div>
                 <div class="guest-document">
@@ -131,9 +136,14 @@
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.back_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.back_image_data.length === 0" translate>NO_IMAGE</h3>
                         <p ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
-                        <button type="button" class="button white green-text" ng-click="uploadBackImage()"
-                        ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID</button>
-                        <button type="button" class="button white blue-text" ng-show="guestIdData.back_image_data.length === 0" translate>UPLOAD_IMAGE</button>
+                        <!-- <button type="button" class="button white green-text"
+                        ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID</button> -->
+                        <button type="button" 
+                                class="button white blue-text" 
+                                ng-show="guestIdData.back_image_data.length === 0" 
+                                ng-click="uploadBackImage()"translate
+                                >UPLOAD_IMAGE
+                        </button>
                     </div>
                 </div>
             </div>

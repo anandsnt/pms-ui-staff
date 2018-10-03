@@ -75,7 +75,6 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
-   		$scope.guestIDsAvailable = [];
    		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
@@ -240,26 +239,14 @@ sntRover.controller('reservationDetailsController',
 			}
 		};
 
-
+		var guestIdList;
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
-				$scope.guestIdReponseData = response;
-     			$scope.$emit('hideLoader');
-
-				var guestOnReservation,
-					reservation_card = $scope.reservationData.reservation_card;
-
-				for (var i in response) {
-					guestOnReservation = response[i];
-					if (guestOnReservation.guest_id !== null && !$scope.guestIDsAvailable[guestOnReservation.guest_id]) {
-						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);
-					}
-				}
+				guestIdList = response;
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var failureCallBack = function() {
-     			$scope.$emit('hideLoader');
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -1643,12 +1630,17 @@ sntRover.controller('reservationDetailsController',
        $scope.showOverBookingAlert = !$scope.showOverBookingAlert;
      }
 
+    var retrieveGuestDocDetails = function (guestId) {
+    	return _.find(guestIdList, function(guestIdData){
+			return guestIdData.guest_id === guestId;
+		});
+    };
+
 	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
-		var guestIdIndex = $scope.guestIDsAvailable.indexOf(guestId);
 
-		return guestId && guestIdIndex !== -1;
+		return retrieveGuestDocDetails(guestId);
 
 	};
      
@@ -1658,9 +1650,7 @@ sntRover.controller('reservationDetailsController',
 		guestData = guestData ? guestData : {};
 
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
-		var guestDocData = _.find($scope.guestIdReponseData, function(guestIdData){
-			return guestIdData.guest_id === guestId;
-		});
+		var guestDocData = retrieveGuestDocDetails(guestId);
 
 		if (!$scope.hasGuestIDPermission) {
 			return;
