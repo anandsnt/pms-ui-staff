@@ -129,9 +129,9 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
      * Fetch the hotels source codes
      */
     this.fetchSourceCodes = function() {
-    	var params = {
-    		is_active: true
-    	};
+        var params = {
+            is_active: true
+        };
 
         return ADBaseWebSrvV2.getJSON('/api/sources.json', params);
     };
