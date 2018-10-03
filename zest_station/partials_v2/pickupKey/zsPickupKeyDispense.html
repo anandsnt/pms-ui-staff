@@ -138,7 +138,7 @@
         <div id="room" class='success-key' ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
-        <div class='uploaded-key-image' id="keys" ng-if="zestImages.key_success_image.length > 0">
+        <div class='uploaded-key-image' id="keys" style="margin-top: 20px;" ng-if="zestImages.key_success_image.length > 0">
             <img src="{{zestImages.key_success_image}}">
         </div>
         <button type="button" class="button done-btn" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
