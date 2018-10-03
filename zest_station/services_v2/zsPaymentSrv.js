@@ -260,7 +260,8 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
             "RVCardReadTrack2": "D791C3A38FF3FAC1B241D97DBB717B826E4D356163B374BA2CC5CF156510DCD50FF6997EFF06B6B4",
             "RVCardReadTrack2KSN": "9012080B2ACA76000878",
             "RVCardReadTrack3": "",
-            "RVCardReadTrack3KSN": "9012080B2ACA76000878"
+            "RVCardReadTrack3KSN": "9012080B2ACA76000878",
+            "token": "9012080B2ACA76000878"
         };
 
         this.chipAndPinGetToken = function(postData) {
