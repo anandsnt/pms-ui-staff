@@ -6,7 +6,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv) {
 
 		BaseCtrl.call(this, $scope);
-		var isIDChanged = false;
+		var isIDDetailsChanged = false;
 
 		$scope.callAPI(RVGuestCardsSrv.fetchNationsList, {
 			params: {},
@@ -16,7 +16,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		});
 
 		$scope.closeGuestIdModal = function() {
-			if (isIDChanged) {
+			if (isIDDetailsChanged) {
 				$scope.$emit('ON_GUEST_ID_POPUP_CLOSE');
 			}
 			ngDialog.close();
@@ -69,7 +69,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		var markIDDetailsHasChanged = function () {
-			isIDChanged = true;
+			isIDDetailsChanged = true;
 		};
 
 		$scope.ImageChange = function(imageType) {
@@ -97,6 +97,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				} else {
 					$scope.guestIdData.back_image_data = "";
 				}
+				markIDDetailsHasChanged();
 			};
 				
 			$scope.callAPI(RVGuestCardsSrv.deleteGuestId, {
@@ -137,6 +138,13 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.dowloadDocumnetDetails = function() {
 			var zip = new JSZip();
+			var createImageFile = function(image, imageFileName) {
+				if (image && image.length > 0) {
+					zip.file(imageFileName, image.split(',')[1], {
+						base64: true
+					});
+				}
+			};
 			var fileNamePrefix;
 
 			if (_.isEmpty($scope.guestIdData.last_name)) {
@@ -150,20 +158,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 			// Add the guest details to a txt file
 			zip.file(fileNamePrefix + "-info.txt", buildGuestInfo());
-			// Add a file to the directory, in this case an image with data URI as contents
-			zip.file(fileNamePrefix + "-ID.png", $scope.guestIdData.front_image_data.split(',')[1], {
-				base64: true
-			});
-			// download backside if present
-			if ($scope.guestIdData.back_image_data && $scope.guestIdData.back_image_data.length > 0) {
-				zip.file(fileNamePrefix + "-ID-back-side.png", $scope.guestIdData.back_image_data.split(',')[1], {
-					base64: true
-				});
-			}
-			// Download signature
-			zip.file(fileNamePrefix + "-signature.png", $scope.guestIdData.signature.split(',')[1], {
-				base64: true
-			});
+
+			createImageFile($scope.guestIdData.front_image_data, fileNamePrefix + "-ID.png");
+			createImageFile($scope.guestIdData.back_image_data, fileNamePrefix + "-ID-back-side.png");
+			createImageFile($scope.guestIdData.signature, fileNamePrefix + "-signature.png");
 
 			zip.generateAsync({
 					type: "blob"
