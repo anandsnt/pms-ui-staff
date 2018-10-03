@@ -84,7 +84,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			var apiParams = {
 				'is_front_image': imageType === 'front-image',
 				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
-				'guest_id': $scope.guestIdData.guest_id
+				'guest_id': $scope.guestIdData.guest_id,
+				'reservation_id': $scope.reservationData.reservation_card.reservation_id
 			};
 			var ImageChangesuccessCallBack = function() {
 				markIDDetailsHasChanged();
@@ -102,7 +103,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		$scope.deleteImage = function(imageType) {
 			var apiParams = {
 				'is_front_image': imageType === 'front-image',
-				'guest_id': $scope.guestIdData.guest_id
+				'guest_id': $scope.guestIdData.guest_id,
+				'reservation_id': $scope.reservationData.reservation_card.reservation_id
 			};
 			var deleteSuccessCallback = function() {
 				if (imageType === 'front-image') {
@@ -127,7 +129,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				'dob': $scope.guestIdData.date_of_birth,
 				'nationality_id': $scope.guestIdData.nationality_id,
 				'document_number': $scope.guestIdData.document_number,
-				'expiration_date': $scope.guestIdData.expiration_date
+				'expiration_date': $scope.guestIdData.expiration_date,
+				'reservation_id': $scope.reservationData.reservation_card.reservation_id
 			};
 
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {

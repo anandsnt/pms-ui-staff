@@ -44,21 +44,21 @@ angular.module('sntRover').service('RVGuestCardsSrv',
         };
 
         this.uploadGuestId = function(params) {
-            var url = '/ui/country_list';
+            var url = '/api/guest_identity/'+ params.reservation_id +'/save_id_image';
 
-            return RVBaseWebSrvV2.getJSON(url);
+            return RVBaseWebSrvV2.postJSON(url, params);
         };
 
-        this.saveGuestIdDetails = function() {
-            var url = '/ui/country_list';
+        this.saveGuestIdDetails = function(params) {
+            var url = '/api/guest_identity/'+ params.reservation_id +'/save_id_details';
 
-            return RVBaseWebSrvV2.getJSON(url);
+            return RVBaseWebSrvV2.postJSON(url, params);
         };
 
-        this.deleteGuestId = function() {
-            var url = '/ui/country_list';
+        this.deleteGuestId = function(params) {
+            var url = '/api/guest_identity/'+ params.reservation_id;
 
-            return RVBaseWebSrvV2.getJSON(url);
+            return RVBaseWebSrvV2.deleteJSON(url);
         };
         
     }
