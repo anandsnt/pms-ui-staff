@@ -102,12 +102,6 @@ describe('rvGuestIdScanCtrl', function() {
         expect(ngDialog.open).toHaveBeenCalled();
     });
 
-    it('On clicking download image, download the images and text info', function() {
-        spyOn(JSZip.prototype, "generateAsync").and.callThrough();
-        $scope.dowloadDocumnetDetails();
-        expect(JSZip.prototype.generateAsync).toHaveBeenCalled();
-    });
-
     it('On clicking close popup, close ngDialog', function() {
         spyOn(ngDialog, "close");
         $scope.closeGuestIdModal();

@@ -4,7 +4,7 @@
 "ID_DOB": "Date of Birth (mm-dd-yyyy)",
 "ID_NATIONALITY": "Nationality",
 "ID_NUMBER": "ID Number",
-"ID_EXPIRY": "Expiry",
+"ID_EXPIRY": "Expiry (mm-dd-yyyy)",
 "ID_SIGNATURE": "Signature",
 "ID_FRONT": "ID Front",
 "ID_BACK": "ID Back",

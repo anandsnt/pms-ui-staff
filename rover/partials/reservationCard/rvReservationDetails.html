@@ -243,6 +243,9 @@
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guestData.primary_guest_details, true)}"></span>
                              {{'GUEST_ID_BUTTON' |translate}}
                         </button>
+                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
+                        </button>
                     </div>
 
                     <label for="acc1-first-name" ng-show="showAccompanyingGuestLabel()">Accompanying Guests</label>
@@ -264,6 +267,9 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                         <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
                         </button>
                     </div>
 
@@ -288,6 +294,9 @@
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
                         </button>
+                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
+                        </button>
                     </div>
 
                     <!-- Infant Guest -->
@@ -311,6 +320,9 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
                         </button>
                     </div>
 

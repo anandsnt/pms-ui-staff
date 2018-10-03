@@ -82,14 +82,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.ImageChange = function(imageType) {
 			var apiParams = {
-				'is_manual_upload': true,
 				'is_front_image': imageType === 'front-image',
 				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
 				'guest_id': $scope.guestIdData.guest_id
 			};
 			var ImageChangesuccessCallBack = function() {
 				markIDDetailsHasChanged();
-				$scope.guestIdData.is_manual_upload = true;
 				if (imageType === 'front-image') {
 					resetLeftPanel();
 				}
@@ -113,7 +111,6 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				} else {
 					$scope.guestIdData.back_image_data = "";
 				}
-				$scope.guestIdData.is_manual_upload = true;
 				markIDDetailsHasChanged();
 			};
 				
@@ -138,56 +135,5 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				successCallBack: markIDDetailsHasChanged
 			});
 		};
-
-		var buildGuestInfo = function() {
-			var firstName = _.isEmpty($scope.guestIdData.first_name) ? '' : $scope.guestIdData.first_name;
-			var lastName = _.isEmpty($scope.guestIdData.last_name) ? '' : $scope.guestIdData.last_name;
-			var docExpiry = _.isEmpty($scope.guestIdData.expiration_date) ? '' : $scope.guestIdData.expiration_date;
-			var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\r\n" +
-				$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
-				$filter('translate')('DOB') + ": " + $scope.guestIdData.date_of_birth + "\r\n" +
-				$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\r\n" +
-				$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.document_number + "\r\n" +
-				$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
-
-			return guestInfo;
-		};
-
-		$scope.dowloadDocumnetDetails = function() {
-			var zip = new JSZip();
-			var createImageFile = function(image, imageFileName) {
-				if (image && image.length > 0) {
-					zip.file(imageFileName, image.split(',')[1], {
-						base64: true
-					});
-				}
-			};
-			var fileNamePrefix;
-
-			if (_.isEmpty($scope.guestIdData.last_name)) {
-				fileNamePrefix = $scope.guestIdData.first_name;
-			} else if (_.isEmpty($scope.guestIdData.first_name)) {
-				fileNamePrefix = $scope.guestIdData.last_name;
-			} else if (_.isEmpty($scope.guestIdData.first_name) && _.isEmpty($scope.guestIdData.last_name)) {
-				fileNamePrefix = 'document';
-			} else {
-				fileNamePrefix = $scope.guestIdData.first_name + '-' + $scope.guestIdData.last_name;
-			}
-			// Add the guest details to a txt file
-			zip.file(fileNamePrefix + "-info.txt", buildGuestInfo());
-
-			createImageFile($scope.guestIdData.front_image_data, fileNamePrefix + "-ID.png");
-			createImageFile($scope.guestIdData.back_image_data, fileNamePrefix + "-ID-back-side.png");
-			createImageFile($scope.guestIdData.signature, fileNamePrefix + "-signature.png");
-
-			zip.generateAsync({
-					type: "blob"
-				})
-				.then(function(blob) {
-					saveAs(blob, fileNamePrefix + ".zip");
-				});
-
-		};
-
 	}
 ]);

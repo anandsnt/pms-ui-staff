@@ -9,29 +9,25 @@
             <h2 class="message" translate>ID_DETAILS</h2>
             <ul class="details">
                 <li>
-                    <span>{{ 'ID_LAST_NAME' | translate }}:</span>
+                    <span>{{ 'ID_LAST_NAME' | translate }}</span>
                     {{ guestIdData.last_name }}
                 </li>
                 <li>
-                    <span>{{ 'ID_FIRST_NAME' | translate}}:</span>
+                    <span>{{ 'ID_FIRST_NAME' | translate}}</span>
                     {{ guestIdData.first_name }}
                 </li>
                 <!-- DOB -->
-                <li ng-show="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_DOB' | translate}}:</span>
+                <li>
+                    <span>{{ 'ID_DOB' | translate}}</span>
                     <div class="entry has-datepicker">
                         <!-- <button class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button> -->
                         <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.date_of_birth"
                         ng-click="openDobCalendar()">
                     </div> 
                 </li>
-                <li ng-hide="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_DOB' | translate}}:</span>
-                    {{ guestIdData.date_of_birth }} 
-                </li>
                 <!-- NATIONALITY -->
-                <li ng-show="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_NATIONALITY' | translate}}:</span>
+                <li>
+                    <span>{{ 'ID_NATIONALITY' | translate}}</span>
                      <div class="entry">
                         <div class="select">
                             <select class="placeholder" ng-model="guestIdData.nationality_id">
@@ -41,41 +37,25 @@
                         </div>
                     </div>
                 </li>
-                <li ng-hide="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_NATIONALITY' | translate}}:</span>
-                    {{ guestIdData.nationality }}
-                </li>
                 <!-- ID NUMBER -->
-                <li ng-show="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_NUMBER' | translate}}:</span>
+                <li>
+                    <span>{{ 'ID_NUMBER' | translate}}</span>
                     <div class="entry">
                         <input type="text" placeholder="" ng-model="guestIdData.document_number">
                     </div>
                 </li>
-                <li ng-hide="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_NUMBER' | translate}}:</span>
-                    {{ guestIdData.document_number }}
-                </li>
                 <!-- EXPIRY DATE -->
-                <li ng-show="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_EXPIRY' | translate}}:</span>
+                <li>
+                    <span>{{ 'ID_EXPIRY' | translate}}</span>
                     <div class="entry has-datepicker">
                         <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiration_date"
                         ng-click="openExpiryCalendar()">
                 </li>
-                <li ng-hide="guestIdData.is_manual_upload">
-                    <span>{{ 'ID_EXPIRY' | translate}}:</span>
-                    {{ guestIdData.expiration_date }}
-                </li>
 
                 <!-- If signed after scan, show signature at end of the list -->
-                <li ng-if="!guestIdData.is_manual_upload && guestIdData.signature.length > 0">
-                    <span>{{ 'ID_SIGNATURE' | translate}}:</span>
-                    <img src="{{ guestIdData.signature }}" alt="" />
-                </li>
-
-                <li ng-show="guestIdData.is_manual_upload">
-                    <button type="button" class="button green" ng-click="saveGuestIdDetails()" translate>SAVE</button>
+                <li ng-if="guestIdData.signature.length > 0">
+                    <span>{{ 'ID_SIGNATURE' | translate}}</span>
+                    <img src="{{ guestIdData.signature }}" alt="" style="background: #fff"/>
                 </li>
             </ul>
         </div>
@@ -148,9 +128,15 @@
                 </div>
             </div>
 
-            
-            <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" style="width: 30%; margin: 0 auto;" translate>ID_DOWNLOAD</button>
-            <button class="button blank" ng-click='closeGuestIdModal()' style="width: 30%; margin: 0 auto;" translate>EXIT</button>
+            <button type="button" 
+                    class="button green" 
+                    ng-click="saveGuestIdDetails()" 
+                    style="width: 20%;margin: 0 auto;bottom: 30;position: fixed;left: calc(50%);"
+                    translate>
+                    SAVE
+            </button>
+          <!--   <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" style="width: 30%; margin: 0 auto;" translate>ID_DOWNLOAD</button>
+            <button class="button blank" ng-click='closeGuestIdModal()' style="width: 30%; margin: 0 auto;" translate>EXIT</button> -->
         </div>
     </div>
 </div>

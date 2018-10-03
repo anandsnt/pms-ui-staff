@@ -25,7 +25,6 @@ module.exports = function(config) {
             '../shared/lib/js/iscroll.js',
             '../shared/lib/js/ng-iscroll.js',
             '../shared/lib/js/ngDialog.min.js',
-            '../shared/lib/js/jsZip/jszip.min.js',
             '../shared/lib/js/fastclick/fastclick.min.js',
             '../shared/lib/js/moment.min.js',
             '../shared/lib/js/date.js',

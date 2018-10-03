@@ -1693,4 +1693,60 @@ sntRover.controller('reservationDetailsController',
 		fetchGuestIDs();
 	});
 
+	var buildGuestInfo = function(guestDocData) {
+		var firstName = _.isEmpty(guestDocData.first_name) ? '' : guestDocData.first_name;
+		var lastName = _.isEmpty(guestDocData.last_name) ? '' : guestDocData.last_name;
+		var docExpiry = _.isEmpty(guestDocData.expiration_date) ? '' : guestDocData.expiration_date;
+		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\r\n" +
+			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
+			$filter('translate')('DOB') + ": " + guestDocData.date_of_birth + "\r\n" +
+			$filter('translate')('NATIONALITY') + ": " + guestDocData.nationality + "\r\n" +
+			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n" +
+			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
+
+		return guestInfo;
+	};
+
+	$scope.dowloadDocumnetDetails = function (guestData, isPrimaryGuest) {
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
+		var guestDocData = retrieveGuestDocDetails(guestId);
+
+		guestDocData.first_name = guestDocData.first_name ? guestDocData.first_name : guestData.first_name;
+		guestDocData.last_name = guestDocData.last_name ? guestDocData.last_name : guestData.last_name;
+
+		var zip = new JSZip();
+		var createImageFile = function(image, imageFileName) {
+			if (image && image.length > 0) {
+				zip.file(imageFileName, image.split(',')[1], {
+					base64: true
+				});
+			}
+		};
+		var fileNamePrefix;
+
+		if (_.isEmpty(guestDocData.last_name)) {
+			fileNamePrefix = guestDocData.first_name;
+		} else if (_.isEmpty(guestDocData.first_name)) {
+			fileNamePrefix = guestDocData.last_name;
+		} else if (_.isEmpty(guestDocData.first_name) && _.isEmpty(guestDocData.last_name)) {
+			fileNamePrefix = 'document';
+		} else {
+			fileNamePrefix = guestDocData.first_name + '-' + guestDocData.last_name;
+		}
+		// Add the guest details to a txt file
+		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo(guestDocData));
+
+		createImageFile(guestDocData.front_image_data, fileNamePrefix + "-ID.png");
+		createImageFile(guestDocData.back_image_data, fileNamePrefix + "-ID-back-side.png");
+		createImageFile(guestDocData.signature, fileNamePrefix + "-signature.png");
+
+		zip.generateAsync({
+				type: "blob"
+			})
+			.then(function(blob) {
+				saveAs(blob, fileNamePrefix + ".zip");
+			});
+
+	};
+
 }]);
