@@ -898,38 +898,39 @@
                         }
 
                         &.commission {
-                            .float;
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px 80px 60px calc(~'100% - 290px');;
+                            grid-column-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button,
+                            input,
+                            .select {
+                                grid-row: 2;
+                            }
 
                             .switch-button {
-                                margin-right: 10px;
                                 height: 40px;
-                                .calc-width(45, 10);
-                                .pull-left;
 
-                                input[type="checkbox"] { 
+                                input[type="checkbox"] {
                                     line-height: 40px;
                                     height: 40px;
-                                }   
+                                }
 
                                 .data-off,
                                 .data-on {
                                     line-height: 30px;
                                     height: 30px;
-                                }   
+                                }
                             }
 
-                            input[type="text"] { 
-                                margin-right: 10px;
-                                .calc-width(30, 10);
-                                .pull-left;
+                            .select {
+                                height: 40px;
                             }
-
-                            .select { 
-                                .size(40px, 25%);
-                                .pull-left;
-                            }
-
-                            .checkbox { width: 100%; }
                         }
 
                         &.tax-exempt {

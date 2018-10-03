@@ -313,7 +313,8 @@ angular.module('sntRover').service('rvMenuSrv',
             }, {
                 title: "MENU_ACTIONS",
                 action: "",
-                menuIndex: "actions",                
+                iconClass: "icon-actions",
+                menuIndex: "actions",
                 submenu: [{
 		            title: "MENU_ACTIONS_MANAGER",
 		            action: "rover.actionsManager",
