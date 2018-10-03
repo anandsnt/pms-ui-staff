@@ -94,10 +94,11 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		 * Update tax exempt data for a reservation
 		 */
 		$scope.updateTaxExemptData = function() {
+			$scope.additionalDetails.taxExemptRefText = $scope.additionalDetails.isTaxExemptEnabled ? $scope.additionalDetails.taxExemptRefText : "";
 			var paramsToApi = {
 					"id": $scope.reservationParentData.reservationId,
 					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled,
-					"tax_exempt_ref_text": $scope.additionalDetails.isTaxExemptEnabled ? $scope.additionalDetails.taxExemptRefText : ""
+					"tax_exempt_ref_text": $scope.additionalDetails.taxExemptRefText
 				},				
 				successCallBackOfUpdate = function(response) {
 					if (!$scope.additionalDetails.isTaxExemptEnabled) {
