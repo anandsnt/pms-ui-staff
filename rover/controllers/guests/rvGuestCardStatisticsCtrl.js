@@ -19,7 +19,10 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                         $scope.statistics.summary = {};
                     },
                     requestConfig = {
-                        params: {},
+                        params: {
+                            year: 2016,
+                            guestId: $scope.guestID
+                        },
                         onSuccess: onStatisticsFetchSuccess,
                         onFailure: onStatistcsFetchFailure
                     };
@@ -37,7 +40,10 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                         $scope.statistics.details = [];
                     },
                     requestConfig = {
-                        params: {},
+                        params: {
+                            year: 2016,
+                            guestId: $scope.guestID
+                        },
                         onSuccess : onStatisticsDetailsFetchSuccess,
                         onFailure: onStatistcsDetailsFetchFailure
                     };
@@ -175,6 +181,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 summary: {},
                 details: []
             };
+            $scope.guestID = $scope.guestCardData.userId;
             setScroller();
             setListeners();
             destroyListeners();
