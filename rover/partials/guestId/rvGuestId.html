@@ -60,6 +60,19 @@
             </ul>
         </div>
         <div class="content-right">
+            <div style="margin-bottom: 10px;">
+                <div class="select" style="width: 30%;margin: 0 auto;">
+                <select class="placeholder" ng-model="guestIdData.document_type">
+                    <option value="">Select document type</option>
+                    <option value="Identification Card">ID card</option>
+                    <option value="Passport">Passport</option>
+                    <!-- <option value="License">License</option> -->
+                </select>
+                </div>
+            </div>
+
+
+
             <div class="guest-documents" style="margin-bottom: 50px;">
                 <div class="guest-document">
                     <h2 class="message" translate>ID_FRONT</h2>
@@ -131,7 +144,7 @@
             <button type="button" 
                     class="button green" 
                     ng-click="saveGuestIdDetails()" 
-                    style="width: 20%;margin: 0 auto;bottom: 30;position: fixed;left: calc(50%);"
+                    style="width: 20%;margin: 0 auto;bottom: 10;position: fixed;left: calc(50%);"
                     translate>
                     SAVE
             </button>
