@@ -6,7 +6,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true,
 			isTaxExemptEnabled: $scope.reservationData.reservation_card.tax_exempt,
-			taxExemptType: $scope.reservationData.reservation_card.tax_exempt_type.id
+			taxExemptType: $scope.reservationData.reservation_card.tax_exempt_type.id,
+			taxExemptRefText: $scope.reservationData.reservation_card.tax_exempt_ref_text
 		};
 		$scope.isEmptyObject = isEmptyObject;
 
@@ -95,7 +96,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$scope.updateTaxExemptData = function() {
 			var paramsToApi = {
 					"id": $scope.reservationParentData.reservationId,
-					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
+					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled,
+					"tax_exempt_ref_text": $scope.additionalDetails.isTaxExemptEnabled ? $scope.additionalDetails.taxExemptRefText : ""
 				},				
 				successCallBackOfUpdate = function(response) {
 					if (!$scope.additionalDetails.isTaxExemptEnabled) {
@@ -122,8 +124,15 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 					successCallBack: successCallBackOfUpdate,
 					failureCallBack: failureCallBackOfUpdate
 				};
-
-			$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
+			// Condition added - onblur of ref text this method invoked.
+			// At that time make sure tax exempt type added
+			if ($scope.additionalDetails.isTaxExemptEnabled) {
+				if ($scope.additionalDetails.taxExemptType) {
+					$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
+				}
+			} else {
+				$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
+			}
 		};
 		/*
 		 * Toggle action tax exempt
