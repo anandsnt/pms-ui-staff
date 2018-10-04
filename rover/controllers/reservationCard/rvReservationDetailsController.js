@@ -244,7 +244,7 @@ sntRover.controller('reservationDetailsController',
 			var successCallBack = function(response) {
 				guestIdList = response;
 				console.log(response);
-				
+
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -1633,9 +1633,11 @@ sntRover.controller('reservationDetailsController',
      }
 
     var retrieveGuestDocDetails = function (guestId) {
-    	return _.find(guestIdList, function(guestIdData){
+    	var guestIdInfo = _.find(guestIdList, function(guestIdData){
 			return guestIdData.guest_id === guestId;
 		});
+		
+    	return guestIdInfo;
     };
 
 	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
