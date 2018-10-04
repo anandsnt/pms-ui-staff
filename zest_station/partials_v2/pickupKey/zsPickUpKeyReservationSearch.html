@@ -210,7 +210,10 @@
     <!-- hide below content when payment is in progress -->
     <div id="content">
         <h1><text data-ng-bind-html="getTagValue('ADD_NEW_CREDIT_CARD')" editable-text="ADD_NEW_CREDIT_CARD"></h1>
-        <nav id="options" role="nav" class="options-menu">
+        <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+             <img src="{{zestImages.cc_payment_image}}">
+        </div>
+        <nav id="options" role="nav" class="options-menu" ng-if="zestImages.cc_payment_image.length ===  0">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
