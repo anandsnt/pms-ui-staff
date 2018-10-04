@@ -82,7 +82,6 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.nationality_id = "";
 			$scope.guestIdData.document_number = "";
 			$scope.guestIdData.expiration_date = "";
-			$scope.saveGuestIdDetails();
 		};
 
 		var generalFailureCallBack = function () {
@@ -109,6 +108,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				markIDDetailsHasChanged();
 				if (imageType === 'front-image') {
 					resetLeftPanel();
+					$scope.saveGuestIdDetails();
 				}
 			};
 
