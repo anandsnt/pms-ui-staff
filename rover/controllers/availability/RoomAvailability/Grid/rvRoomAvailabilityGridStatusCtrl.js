@@ -194,7 +194,7 @@ angular.module('sntRover')
                 'availableRooms',
                 rvAvailabilitySrv.getRoomsAvailability,
                 function() {
-                    return isSectionOpen('availableRooms') || hasRoomTypeWiseDetails();
+                    return isSectionOpen('availableRooms');
                 }
             );
 
@@ -202,7 +202,7 @@ angular.module('sntRover')
                 'roomsSold',
                 rvAvailabilitySrv.getOccupancyCount,
                 function() {
-                    return isSectionOpen('roomsSold') || hasSoldRooms();
+                    return isSectionOpen('roomsSold');
                 }
             );
 
