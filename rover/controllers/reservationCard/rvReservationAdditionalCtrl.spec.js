@@ -73,7 +73,7 @@ describe('rvReservationAdditionalController', function () {
                 $scope.updateTaxExemptData();
 
                 expect(RVReservationSummarySrv.saveTaxExempt).toHaveBeenCalled();
-                expect($scope.additionalDetails.taxExemptRefText)
+                
             });
 
             // =======================

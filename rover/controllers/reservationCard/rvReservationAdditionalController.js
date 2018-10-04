@@ -107,7 +107,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 				successCallBackOfUpdate = function(response) {
 				
 					$scope.isUpdateDone = false;
-					console.log("success==="+$scope.isUpdateDone)
+
 					if (response.errors && response.errors.length > 0) {
 						$scope.errorMessage = response.errors;
 					}
@@ -136,6 +136,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 					successCallBack: successCallBackOfUpdate,
 					failureCallBack: failureCallBackOfUpdate
 				};
+				
 			// Condition added - onblur of ref text this method invoked.
 			// At that time make sure tax exempt type added
 			if ($scope.additionalDetails.isTaxExemptEnabled) {
