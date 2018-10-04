@@ -9,7 +9,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		var isIDDetailsChanged = false;
 
 		if ($scope.guestIdData.document_type && $scope.guestIdData.document_type.length > 0) {
-			$scope.guestIdData.document_type = $scope.guestIdData.document_type.toUpperCase():
+			$scope.guestIdData.document_type = $scope.guestIdData.document_type.toUpperCase();
 		}
 
 		$scope.callAPI(RVGuestCardsSrv.fetchNationsList, {
