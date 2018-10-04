@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="entry" ng-show="additionalDetails.isTaxExemptEnabled"> <!-- Remove class 'hidden' when L11 is checked -->
-                <textarea rows="4" ng-blur="updateTaxExemptData()" ng-keydown="typingReferenceText()" ng-keyup="doUpdateTaxExemptData()" ng-model="additionalDetails.taxExemptRefText" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}"></textarea>
+                <textarea rows="4" ng-keydown="typingReferenceText()" ng-keyup="doUpdateTaxExemptData()" ng-model="additionalDetails.taxExemptRefText" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}"></textarea>
             </div>
         </div>
 
