@@ -29,6 +29,11 @@ describe('rvGuestIdScanCtrl', function() {
             'back_image_data': 'xxxxxx',
             'signature': ''
         };
+        $scope.reservationData = {
+            'reservation_card': {
+                reservation_id: 122
+            }
+        };
     });
 
     it('On clicking upload front image button, trigger click on the hidden input field', function() {
