@@ -23,7 +23,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		var dobDialog,
-			expirationDateDialog;
+			expirationDateDialog,
+			errorPopup;
 
 		$scope.dateOfBirthdateOptions = {
 			changeYear: true,
@@ -80,6 +81,18 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.saveGuestIdDetails();
 		};
 
+		var generalFailureCallBack = function () {
+			errorPopup = ngDialog.open({
+				template: '/assets/partials/guestId/rvGuestIDDetailsErrorPopup.html',
+				className: 'single-date-picker',
+				scope: $scope
+			});
+		};
+
+		$scope.closeErrorPopup = function() {
+			errorPopup.close();
+		};
+
 		$scope.ImageChange = function(imageType) {
 			var apiParams = {
 				'is_front_image': imageType === 'front-image',
@@ -97,7 +110,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
 				params: apiParams,
-				successCallBack: ImageChangesuccessCallBack
+				successCallBack: ImageChangesuccessCallBack,
+				failureCallBack: generalFailureCallBack
 			});
 		};
 
@@ -119,7 +133,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				
 			$scope.callAPI(RVGuestCardsSrv.deleteGuestId, {
 				params: apiParams,
-				successCallBack: deleteSuccessCallback
+				successCallBack: deleteSuccessCallback,
+				failureCallBack: generalFailureCallBack
 			});
 		};
 
@@ -128,7 +143,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				'guest_id': $scope.guestIdData.guest_id,
 				'last_name': $scope.guestIdData.last_name,
 				'first_name': $scope.guestIdData.first_name,
-				'dob': $scope.guestIdData.date_of_birth,
+				'date_of_birth': $scope.guestIdData.date_of_birth,
 				'nationality_id': $scope.guestIdData.nationality_id,
 				'document_number': $scope.guestIdData.document_number,
 				'expiration_date': $scope.guestIdData.expiration_date,
@@ -138,7 +153,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
-				successCallBack: markIDDetailsHasChanged
+				successCallBack: markIDDetailsHasChanged,
+				failureCallBack: generalFailureCallBack
 			});
 		};
 	}
