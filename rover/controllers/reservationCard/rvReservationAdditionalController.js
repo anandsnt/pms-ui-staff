@@ -94,6 +94,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
 		};
+
 		/*
 		 * Update tax exempt data for a reservation
 		 */
@@ -105,6 +106,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 					"tax_exempt_ref_text": $scope.additionalDetails.taxExemptRefText
 				},				
 				successCallBackOfUpdate = function(response) {
+				
+					$scope.isUpdateDone = false;
+					console.log("success==="+$scope.isUpdateDone)
 					if (response.errors && response.errors.length > 0) {
 						$scope.errorMessage = response.errors;
 					}
@@ -114,6 +118,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 					$scope.reservationData.reservation_card.balance_amount = response.data.current_balance;
 				},
 				failureCallBackOfUpdate = function(response) {
+					$scope.isUpdateDone = false;
 					$scope.errorMessage = response.errors;
 				};
 
@@ -142,29 +147,13 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 				$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
 			}
 		};
-		var isDoneTypingTaxExemptReferenceText = false,
-			timeInterval = 3000,
-			isUpdateDone = false;
 
 		/*
-		 * on Key up wait for 5 seconds if the user typing or not and then invoke update API
+		 * on ng change wait for 5 seconds if the user typing or not and then invoke update API
 		 */	
-		$scope.doUpdateTaxExemptData = function () {
-			isDoneTypingTaxExemptReferenceText = true;			
-			isUpdateDone = false;
-			$timeout(function() {
-				if (isDoneTypingTaxExemptReferenceText && !isUpdateDone) {
-					isUpdateDone = true;
-					$scope.updateTaxExemptData();
-				}
-			}, 5000);			
-		};
-		/*
-		 * on Key down wait started typing
-		 */
-		$scope.typingReferenceText = function() {
-			isDoneTypingTaxExemptReferenceText = false;			
-		};
+		$scope.doUpdateTaxExemptData = _.debounce(function () {
+			$scope.updateTaxExemptData();		
+		}, 5000);
 		/*
 		 * Toggle action tax exempt
 		 */
