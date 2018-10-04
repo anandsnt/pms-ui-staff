@@ -52,7 +52,8 @@ module.exports = {
             'kinney': [themeCSSRoot + 'kinney.less'],
             'hubert': [themeCSSRoot + 'hubert.less'],
             'de-blend': [themeCSSRoot + 'de-blend.less'],
-            'anthony': [themeCSSRoot + 'anthony.less']
+            'anthony': [themeCSSRoot + 'anthony.less'],
+            'stewart': [themeCSSRoot + 'stewart.less']
         };
     }
 };
