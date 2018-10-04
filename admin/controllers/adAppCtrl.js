@@ -681,6 +681,8 @@ admin.controller('ADAppCtrl', [
 
 			$rootScope.mliEmvEnabled = data.mli_emv_enabled && data.payment_gateway === 'MLI';
 
+            $rootScope.mliAndCBAEnabled = data.payment_gateway === 'MLI' && data.mli_cba_enabled;
+
 			setupLeftMenu();
 
 		};
