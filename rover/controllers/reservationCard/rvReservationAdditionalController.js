@@ -1,5 +1,9 @@
-sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope', 'RVReservationSummarySrv', 'rvPermissionSrv',
-	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv) {
+sntRover.controller('rvReservationAdditionalController', ['$rootScope', 
+	'$scope', 
+	'RVReservationSummarySrv', 
+	'rvPermissionSrv',
+	'$timeout',
+	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv, $timeout) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.additionalDetails = {
@@ -137,6 +141,29 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			} else {
 				$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
 			}
+		};
+		var isDoneTypingTaxExemptReferenceText = false,
+			timeInterval = 3000,
+			isUpdateDone = false;
+
+		/*
+		 * on Key up wait for 5 seconds if the user typing or not and then invoke update API
+		 */	
+		$scope.doUpdateTaxExemptData = function () {
+			isDoneTypingTaxExemptReferenceText = true;			
+			isUpdateDone = false;
+			$timeout(function() {
+				if (isDoneTypingTaxExemptReferenceText && !isUpdateDone) {
+					isUpdateDone = true;
+					$scope.updateTaxExemptData();
+				}
+			}, 5000);			
+		};
+		/*
+		 * on Key down wait started typing
+		 */
+		$scope.typingReferenceText = function() {
+			isDoneTypingTaxExemptReferenceText = false;			
 		};
 		/*
 		 * Toggle action tax exempt
