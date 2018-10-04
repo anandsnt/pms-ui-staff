@@ -37,6 +37,7 @@ module.exports = {
                     controllerRoot + "validateCheckin/**/**.js",
                     controllerRoot + "guestCardBaseCtrl.js",
                     controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",
+                    controllerRoot + "rvGuestCompanyTravelAgentStatisticsCtrl.js",
 
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
@@ -61,6 +62,7 @@ module.exports = {
                     servicesRoot + "nightlyDiary/**/*.js",
                     servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",
                     servicesRoot + "roomAssignment/rvUpgradesSrv.js",
+                    servicesRoot + 'guestcard/rvGuestCardSrv.js',				    
 
                     // Eliminate all spec files
                     '!**/*.spec.js'
