@@ -99,7 +99,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
 				'guest_id': $scope.guestIdData.guest_id,
 				'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'Identification Card'// TODO
+				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
 			};
 			var ImageChangesuccessCallBack = function() {
 				markIDDetailsHasChanged();
@@ -111,7 +111,15 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
 				params: apiParams,
 				successCallBack: ImageChangesuccessCallBack,
-				failureCallBack: generalFailureCallBack
+				failureCallBack: function() {
+					generalFailureCallBack();
+					// delete the image
+					if (imageType === 'front-image') {
+						$scope.guestIdData.front_image_data = '';
+					} else {
+						$scope.guestIdData.back_image_data = '';
+					}
+				}
 			});
 		};
 
@@ -148,7 +156,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				'document_number': $scope.guestIdData.document_number,
 				'expiration_date': $scope.guestIdData.expiration_date,
 				'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'Identification Card' // TOFO
+				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
 			};
 
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
