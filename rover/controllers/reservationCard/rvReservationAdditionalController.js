@@ -2,8 +2,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 	'$scope', 
 	'RVReservationSummarySrv', 
 	'rvPermissionSrv',
-	'$timeout',
-	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv, $timeout) {
+	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.additionalDetails = {
