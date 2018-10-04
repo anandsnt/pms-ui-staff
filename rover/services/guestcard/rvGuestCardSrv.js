@@ -56,7 +56,7 @@ angular.module('sntRover').service('RVGuestCardsSrv',
         };
 
         this.deleteGuestId = function(params) {
-            var url = '/api/guest_identity/'+ params.reservation_id;
+            var url = '/api/guest_identity/' + params.guest_id + '?is_front_image=' + params.is_front_image;
 
             return RVBaseWebSrvV2.deleteJSON(url);
         };

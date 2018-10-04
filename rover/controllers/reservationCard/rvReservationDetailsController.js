@@ -243,6 +243,8 @@ sntRover.controller('reservationDetailsController',
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
 				guestIdList = response;
+				console.log(response);
+				
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
