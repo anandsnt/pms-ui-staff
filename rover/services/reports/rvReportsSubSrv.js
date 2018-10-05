@@ -568,6 +568,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchTaxExemptTypes = function() {
+            return callApi({
+                name: 'taxExempts',
+                method: 'getJSON',
+                url: 'api/tax_exempt_types',
+                resKey: 'results'
+            });
+        };
+
         service.getChargeCodes = function(params) {
             return callApi({
                 method: 'getJSON',

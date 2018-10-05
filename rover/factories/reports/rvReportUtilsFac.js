@@ -407,17 +407,17 @@ angular.module('reportsModule')
                     );
                     break;
 
-                case reportNames['TAX_EXEMPT']:
-                    report['filters'].push({
-                        'value': "GROUP_CODE",
-                        'description': "Group Code"
-                    }
-                    , {
-                        'value': "TAX_EXEMPT_TYPE",
-                        'description': "Include Tax Exempt"
-                    }
-                    );
-                    break;
+                // case reportNames['TAX_EXEMPT']:
+                //     report['filters'].push({
+                //         'value': "GROUP_CODE",
+                //         'description': "Group Code"
+                //     }
+                //     , {
+                //         'value': "TAX_EXEMPT_TYPE",
+                //         'description': "Include Tax Exempt"
+                //     }
+                //     );
+                //     break;
 
                 default:
                     // no op
@@ -910,7 +910,9 @@ angular.module('reportsModule')
                     // requested++;
                     fillAgingBalance();
                 } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
-                    fillTaxExemptTypes();
+                    requested++;
+                    reportsSubSrv.fetchTaxExemptTypes()
+                        .then( fillTaxExemptTypes );
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchAccounts()
@@ -1249,25 +1251,59 @@ angular.module('reportsModule')
                 });
             }
 
-            function fillTaxExemptTypes() {
+            function fillTaxExemptTypes(data) {
+                
               var foundFilter;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'TAX_EXEMPT_TYPE' });
-                    if ( !! foundFilter ) {
+                    if ( !! foundFilter ) { 
                         foundFilter['filled'] = true;
                         report.hasIncludeTaxExempts = {
-                            data: $rootScope.taxExemptTypes,
+                            data: data,
                             options: {
-                                hasSearch: false,
+                                hasSearch: true,
                                 selectAll: true,
-                                key: 'name',
-                                defaultValue: 'Select Tax Exempt Types'
+                                key: 'name'
                             }
                         };
                     }
                 });
-            }            
+                completed++;
+                checkAllCompleted();
+            }    
+
+
+
+            // function fillDepartments(data) {
+            //     var foundFilter,
+            //         customData;
+
+            //         _.each(data, function(departmentData) {
+            //           departmentData.id = departmentData.value;
+            //         });
+
+            //     _.each(reportList, function(report) {
+            //         foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' });
+            //         if ( !! foundFilter ) {
+            //             foundFilter['filled'] = true;
+
+            //             report.hasDepartments = {
+            //                 data: angular.copy( data ),
+            //                 options: {
+            //                     hasSearch: false,
+            //                     selectAll: true,
+            //                     key: 'name',
+            //                     defaultValue: 'Select Department'
+            //                 }
+            //             };
+            //         }
+            //     });
+
+            //     completed++;
+            //     checkAllCompleted();
+            // }
+
 
             function fillAgingBalance() {
                 var  customData = [
