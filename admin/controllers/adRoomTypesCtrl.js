@@ -20,7 +20,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
    /*
     * To fetch list of room types
     */
-	$scope.listRoomTypes = function() {
+	$scope.listRoomTypes = function( isAfterNameSort ) {
 		var successCallbackFetch = function(data) {
             $scope.data = {};
 			$scope.data = data;
@@ -57,6 +57,11 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
              */
             if ( !$rootScope.isStandAlone ) {
                 $scope.tableParams.sorting({'name': 'asc'});
+            }
+            // For StandAlone property - order the table value after the name sort action.
+            if ( $rootScope.isStandAlone && isAfterNameSort ) {
+                $scope.tableParams.sorting({'name': !$scope.isAscending ? 'desc' : 'asc'});
+                $scope.isAscending = !$scope.isAscending;
             }
 		},
         options = {
@@ -368,8 +373,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             params: {}
         },
         successCallBackOfSort = function() {
-            $scope.isAscending = !$scope.isAscending;
-            $scope.listRoomTypes();
+            $scope.listRoomTypes(isSortByName);
         };
 
         if ( isSortByName ) {
