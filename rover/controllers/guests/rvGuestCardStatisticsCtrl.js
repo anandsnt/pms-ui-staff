@@ -36,7 +36,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                         $scope.activeView = 'details';
                         refreshScroller();
                     },
-                    onStatistcsDetailsFetchFailure = function(error) {
+                    onStatistcsDetailsFetchFailure = function() {
                         $scope.statistics.details = [];
                     },
                     requestConfig = {
@@ -44,7 +44,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                             year: 2016,
                             guestId: $scope.guestID
                         },
-                        onSuccess : onStatisticsDetailsFetchSuccess,
+                        onSuccess: onStatisticsDetailsFetchSuccess,
                         onFailure: onStatistcsDetailsFetchFailure
                     };
 
@@ -172,7 +172,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             refreshScroller = function() {
                 $scope.refreshScroller(SIDEBAR_SCROLLER);
                 $scope.refreshScroller(MONTHLY_DATA_SCROLLER);
-            };
+            }
 
         // Initialize the controller
         var init = function() {

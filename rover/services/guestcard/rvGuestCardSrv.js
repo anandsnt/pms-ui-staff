@@ -346,11 +346,17 @@ angular.module('sntRover').service('RVGuestCardsSrv',
         //return deferred.promise;
       };
 
-      this.fetchGuestCardStatisticsDetails = function () {
+      this.fetchGuestCardStatisticsDetails = function (params) {
         var deferred = $q.defer(),
-          url = '/api/guest_details/statistics_details';
+          url = '/api/guest_details/' + params.guestId + '/statistics_detailed';
+        
+        delete params.guestId;
 
-        deferred.resolve(statisticsDetails);
+        RVBaseWebSrvV2.getJSON(url, params).then(function (data) {
+          deferred.resolve(data);
+        }, function (data) {
+          deferred.reject(data);
+        });
         return deferred.promise;
       };
 

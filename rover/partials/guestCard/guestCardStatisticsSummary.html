@@ -46,13 +46,13 @@
             <div class="column">{{statistics.summary.stay_count.total}}</div>
         </div> 
         <div class="row">
-            <div class="column">{{statistics.summary.nights_count.annual}}</div>
+            <div class="column">{{statistics.summary.night_count.annual}}</div>
             <div class="column white">                
-                <div class="stat {{getStatusClass(statistics.summary.nights_count.change_percent)}}">
-                    <span class="{{getStatusIconClass(statistics.summary.nights_count.change_percent)}}"></span>
-                    {{absVal(statistics.summary.nights_count.change_percent)}}%
+                <div class="stat {{getStatusClass(statistics.summary.night_count.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.night_count.change_percent)}}"></span>
+                    {{absVal(statistics.summary.night_count.change_percent)}}%
                 </div>
-                {{statistics.summary.nights_count.ytd}}
+                {{statistics.summary.night_count.ytd}}
             </div>
             <div class="column">{{statistics.summary.nights_count.total}}</div>
         </div> 
