@@ -1164,7 +1164,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
 
                 }
-            } else if (response.Command === 'cmd_device_uid' && response.ResponseCode === 0) {
+            } else if (response.Command === 'cmd_device_uid' && response.ResponseCode === 0 && response.Message) {
                 fetchDeviceDetails(response.Message);
             }
         };
