@@ -290,20 +290,32 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         }
 	};
 
-	$scope.deleteRoomTypes = function(roomtype_id) {
+	$scope.deleteRoomTypes = function( roomtype_id ) {
 		var successCallBack = function() {
-			$scope.$emit('hideLoader');
-			// actualIndex holds the index of clicked element in $scope.data.room_types
-            var actualIndex = $scope.data.room_types.map(function(x) {
-                return x.id;
-            }).indexOf(roomtype_id);
+            if ( !$rootScope.isStandAlone ) {
+			    // actualIndex holds the index of clicked element in $scope.data.room_types
+                var actualIndex = $scope.data.room_types.map(function(x) {
+                    return x.id;
+                }).indexOf(roomtype_id);
 
-      		$scope.data.room_types.splice(actualIndex, 1);
-			$scope.tableParams.page(1);
-			$scope.tableParams.reload();
+      		    $scope.data.room_types.splice(actualIndex, 1);
+			    $scope.tableParams.page(1);
+			    $scope.tableParams.reload();
+            }
+            else {
+                // Reload list for StandAlone properties..
+                $scope.listRoomTypes();
+            }
 		};
+        
+        var options = {
+            params: {
+                'roomtype_id': roomtype_id
+            },
+            successCallBack: successCallBack
+        };
 
-	   $scope.invokeApi(ADRoomTypesSrv.deleteRoomTypes, {'roomtype_id': roomtype_id}, successCallBack);
+	   $scope.callAPI(ADRoomTypesSrv.deleteRoomTypes, options);
 	};
 
     $scope.incrementBlockedRoomTypesCount = function(roomTypeId) {
@@ -356,9 +368,8 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             params: {}
         },
         successCallBackOfSort = function() {
-            $scope.tableParams.sorting({'name': !$scope.isAscending ? 'desc' : 'asc'});
-            $scope.tableParams.reload();
             $scope.isAscending = !$scope.isAscending;
+            $scope.listRoomTypes();
         };
 
         if ( isSortByName ) {
