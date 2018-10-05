@@ -62,6 +62,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             if ( $rootScope.isStandAlone && isAfterNameSort ) {
                 $scope.tableParams.sorting({'name': !$scope.isAscending ? 'desc' : 'asc'});
                 $scope.isAscending = !$scope.isAscending;
+                $scope.tableParams.reload();
             }
 		},
         options = {
@@ -175,8 +176,13 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
     		$scope.is_image_deleted = false;
-    		$scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id, 'sequence_number': data.sequence_number });
-    		$scope.tableParams.reload();
+            if ( !$rootScope.isStandAlone ) {
+    		    $scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id, 'sequence_number': data.sequence_number });
+            }
+            else {
+                $scope.listRoomTypes();
+            }
+            $scope.tableParams.reload();
     	};
 
     	if ($scope.isAddMode) {
