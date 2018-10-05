@@ -25,15 +25,15 @@
 						</select>
 	                </div>
 	            </div>
-	            <div class="entry"  ng-show="showMobile">
+	            <div class="entry"  ng-if="showMobile">
 	                <label>Mobile</label>
 	                <input type="tel" placeholder="Enter Number" ng-model="saveData.mobile">
 	            </div>
-	            <div class="entry" ng-show="showPhone">
+	            <div class="entry" ng-if="showPhone">
 	                <label>Phone</label>
 	                <input type="tel" placeholder="Enter Number" ng-model="saveData.phone">
 	            </div>
-	            <div class="entry" ng-show="showEmail">
+	            <div class="entry" ng-if="showEmail">
 	                <label>E-mail</label>
 	                <input type="email" placeholder="Enter E-mail Address" ng-model="saveData.email">
 	            </div>
