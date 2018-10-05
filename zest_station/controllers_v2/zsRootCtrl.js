@@ -1031,11 +1031,11 @@ sntZestStation.controller('zsRootCtrl', [
             var options = {
 
                 params: {
-                    device_uid: deviceId,
+                    device_uid: deviceId
                 },
                 successCallBack: function(response) {
                     if (response && response.is_logging_enabled) {
-                        $scop.socketOperator.enableDeviceLogging();
+                        $scope.socketOperator.enableDeviceLogging();
                     }
                 },
                 'loader': 'none'

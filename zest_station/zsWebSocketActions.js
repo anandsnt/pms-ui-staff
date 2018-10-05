@@ -61,11 +61,11 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send(jsonstring);
     };
 
-    this.fetchDeviceId = function(Command) {
+    this.fetchDeviceId = function() {
         that.ws.send('{"Command" : "cmd_device_uid"}');
     };
 
-    this.enableDeviceLogging = function(Command) {
+    this.enableDeviceLogging = function() {
         that.ws.send('{"Command" : "cmd_enable_debug_log"}');
     };
 
