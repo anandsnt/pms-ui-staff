@@ -18,17 +18,12 @@
         <div class="row row-head">
             <div class="column">
                 <div class="select">
-                    <select>
-                        <option value="2017">Last Year (2017)</option>
-                        <option value="2016">2016</option>
-                        <option value="2016">2015</option>
-                        <option value="2016">2014</option>
-                        <option value="2016">2013</option>
+                    <select ng-options="year.value as year.name for year in yearOptions" ng-model="filterData.selectedYear" ng-change="onChangeYear()">                        
                     </select>
                 </div>
             </div>
             <div class="column white">
-                <strong>Year to date (2018)</strong>
+                <strong>Year to date ({{ filterData.selectedYear + 1 }})</strong>
             </div>
             <div class="column">
                 <strong>Total</strong>

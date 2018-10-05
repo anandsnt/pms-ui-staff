@@ -1,7 +1,8 @@
 angular.module('sntRover').controller("RVGuestCardStatisticsController", [
     '$scope',
+    '$rootScope',
     'RVGuestCardsSrv',
-    function ($scope, RVGuestCardsSrv) {
+    function ($scope, $rootScope, RVGuestCardsSrv) {
         BaseCtrl.call(this, $scope);
 
         const SIDEBAR_SCROLLER = 'sidebarScroller';
@@ -20,7 +21,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                     },
                     requestConfig = {
                         params: {
-                            year: 2016,
+                            year: $scope.filterData.selectedYear,
                             guestId: $scope.guestID
                         },
                         onSuccess: onStatisticsFetchSuccess,
@@ -41,7 +42,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                     },
                     requestConfig = {
                         params: {
-                            year: 2016,
+                            year: $scope.filterData.selectedYear,
                             guestId: $scope.guestID
                         },
                         onSuccess: onStatisticsDetailsFetchSuccess,
@@ -93,6 +94,8 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
         // Set statistics tab active view - summary | details
         $scope.setActiveView = function( view ) {
+            $scope.activeView = view;
+
             if ( view === 'details') {
                 loadStatisticsDetails();
             } else {
@@ -158,6 +161,14 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             return styleClass;
         };
 
+        $scope.onChangeYear = function() {
+            if ($scope.activeView === 'summary') {
+                loadStatisticsSummary();
+            } else {
+                loadStatisticsDetails();
+            }
+        };
+
         // Set the two scrollers in the screen
         var setScroller = function() {            
                 var scrollerOptions = {
@@ -172,7 +183,29 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             refreshScroller = function() {
                 $scope.refreshScroller(SIDEBAR_SCROLLER);
                 $scope.refreshScroller(MONTHLY_DATA_SCROLLER);
-            }
+            },
+            // Get the current year
+            getCurrentYear = function() {
+                var businessDate = tzIndependentDate($rootScope.businessDate),
+                    currentYear = businessDate.getFullYear();
+
+                return currentYear;
+            },
+            // create the year dropdown options
+            populateYearDropDown = function() {
+                var startYear = $scope.guestCardData.contactInfo.first_stay_year,                    
+                    currentYear = getCurrentYear();
+
+                $scope.yearOptions = [];
+
+                for (var i = currentYear - 1; i >= startYear; i--) {
+                    $scope.yearOptions.push({
+                       name: i === currentYear - 1 ? 'Last Year (' + i + ')' : i,
+                       value: i
+                    });
+                }
+
+            };
 
         // Initialize the controller
         var init = function() {
@@ -182,9 +215,13 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 details: []
             };
             $scope.guestID = $scope.guestCardData.userId;
+            populateYearDropDown();
             setScroller();
             setListeners();
             destroyListeners();
+            $scope.filterData = {
+                selectedYear: getCurrentYear() - 1
+            };
 
         };
 
