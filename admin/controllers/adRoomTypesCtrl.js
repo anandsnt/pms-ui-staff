@@ -357,6 +357,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         },
         successCallBackOfSort = function() {
             $scope.tableParams.sorting({'name': !$scope.isAscending ? 'desc' : 'asc'});
+            $scope.tableParams.reload();
             $scope.isAscending = !$scope.isAscending;
         };
 
