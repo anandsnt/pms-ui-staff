@@ -14,7 +14,7 @@
 			<span id="new-form-holder" class="grid" ng-if="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>
 			<table id="brands" class="grid" ng-table="tableParams" template-pagination="">
 				<thead>
-					<tr>
+					<tr ng-if="!isStandAlone">
 		           		<th width="45%" ng-class="{
 		           			'sortable': currentClickedElement == -1,
 		                    'sort-asc': tableParams.isSortBy('name', 'asc'),
@@ -37,7 +37,33 @@
 		                    	<span >Room Code</span>
 		                    </div>
 		                </th>
-		                <th width="15%" class="text-center-important" ng-show="isStandAlone">
+		                <th width="15%" class="text-center-important">
+		                </th>
+					</tr>
+					<tr ng-if="isStandAlone">
+		           		<th width="45%" ng-class="{
+		           			'sortable': currentClickedElement == -1,
+		                    'sort-asc': isAscendingByName,
+		                    'sort-desc': !isAscendingByName
+		                  	}"
+		                    ng-click="sortByNameStandAlone()" rowspan="2">
+		                    <div>
+		                    	<i class="glyphicon glyphicon-user"></i> 
+		                    	<span >Room Type</span>
+		                    </div>
+		                </th>
+		                <th width="40%" ng-class="{
+		                	'sortable': currentClickedElement == -1,
+		                    'sort-asc': isAscendingByCode,
+		                    'sort-desc': !isAscendingByCode
+		                  	}"
+		                    ng-click="sortByCodeStandAlone()" rowspan="2">
+		                    <div>
+		                    	<i class="glyphicon glyphicon-user"></i> 
+		                    	<span >Room Code</span>
+		                    </div>
+		                </th>
+		                <th width="15%" class="text-center-important">
 		                	<div>
 		                		<span>Delete</span>
 		                	</div>
@@ -45,8 +71,8 @@
 					</tr>
 				</thead>
 
-				<tbody ui-sortable="sortableOptions" ng-model="$data" ng-if="isStandAlone">
-					<tr ng-repeat="room_types in $data">
+				<tbody ui-sortable="sortableOptions" ng-model="data.room_types" ng-if="isStandAlone">
+					<tr ng-repeat="room_types in data.room_types">
 						<td ng-click="editRoomTypeDetails($index,room_types.id)" ng-hide="currentClickedElement == $index">
 							<a data-item="3" data-colspan="2" class="edit-data-inline">
 								{{room_types.name}}
