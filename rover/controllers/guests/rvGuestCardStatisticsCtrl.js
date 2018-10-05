@@ -97,8 +97,12 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             $scope.activeView = view;
 
             if ( view === 'details') {
+                $scope.filterData.selectedYear =  getCurrentYear();
+                populateYearDropDown();
                 loadStatisticsDetails();
             } else {
+                $scope.filterData.selectedYear =  getCurrentYear() - 1;
+                populateYearDropDown();
                 loadStatisticsSummary();
             }
         };
@@ -194,13 +198,31 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             // create the year dropdown options
             populateYearDropDown = function() {
                 var startYear = $scope.guestCardData.contactInfo.first_stay_year,                    
-                    currentYear = getCurrentYear();
+                    currentYear = getCurrentYear(),
+                    endYear,
+                    name = '';
 
                 $scope.yearOptions = [];
 
-                for (var i = currentYear - 1; i >= startYear; i--) {
+                if ($scope.activeView === 'summary') {
+                    endYear = getCurrentYear() - 1;
+                } else {
+                    endYear = getCurrentYear();
+                }
+
+                for (var i = endYear; i >= startYear; i--) {
+                    if (i === endYear) {
+                        if ($scope.activeView === 'summary') {
+                            name = 'Last Year (' + i + ')';
+                        } else {
+                            name = 'Year To Date (' + i + ')';
+                        }
+
+                    } else {
+                        name = i;
+                    }
                     $scope.yearOptions.push({
-                       name: i === currentYear - 1 ? 'Last Year (' + i + ')' : i,
+                       name: name,
                        value: i
                     });
                 }
@@ -220,8 +242,8 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             setListeners();
             destroyListeners();
             $scope.filterData = {
-                selectedYear: getCurrentYear() - 1
-            };
+                selectedYear: getCurrentYear() - 1  
+            };            
 
         };
 

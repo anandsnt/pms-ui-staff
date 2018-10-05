@@ -7,13 +7,7 @@
             </ul>
             <div class="row row-head white">
                 <div class="select">
-                    <select>
-                        <option value="2017">Last Year (2017)</option>
-                        <option value="2016">2016</option>
-                        <option value="2016">2015</option>
-                        <option value="2016">2014</option>
-                        <option value="2016">2013</option>
-                    </select>
+                    <select ng-options="year.value as year.name for year in yearOptions" ng-model="filterData.selectedYear" ng-change="onChangeYear()">
                 </div>
             </div>
             <div class="sidebar-content scrollable" ng-iscroll="sidebarScroller">
