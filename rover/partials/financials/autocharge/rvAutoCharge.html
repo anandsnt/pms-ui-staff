@@ -1,0 +1,130 @@
+<form method="get" action="" id="automatic-payments-search-form" class="search-form has-dates has-option automatic-payments" role="search">
+
+    <!-- Date -->
+    <div class="entry date has-datepicker">
+        <label for="automatic-payments-date">Due Date</label>
+        <input id="automatic-payments-date" type="text" class="datepicker hasDatepicker" value="10-02-2018" data-today="false" readonly="">
+    </div>
+
+    <!-- Status -->
+    <div class="entry status">
+        <div class="select">
+            <label for="automatic-payments-status">Status</label>
+            <select id="automatic-payments-status">
+                <option value="all" selected="">All Deposit Reservations</option>
+                <option value="approved">Approved Transactions</option>
+                <option value="declined">Declined Transactions</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Process -->
+    <div class="entry process hidden"> <!-- Show only when some reservations are selected -->
+        <button class="button green">Process Selected</button>
+    </div>
+
+    <!-- Print -->
+    <button id="print-automatic-payments" type="button" class="button blue with-icon only-icon print">
+        <span class="icons icon-print"></span>
+        Print
+    </button>
+
+    <!-- Tabs -->
+    <ul class="filters">
+        <li class="active">
+            <strong>Deposits</strong>
+            {currency}{amount}
+        </li>
+        <li>
+            <strong>EOD Check Out</strong>
+            {currency}{amount}
+        </li>
+    </ul>
+</form>
+
+<!-- Pagination -->
+{_shared/pagination.html}
+
+<!-- Content -->
+<section id="automatic-payments" class="content automatic-payments-content" role="main">
+
+    <!-- Header -->
+    <ul class="grid-header with-checkbox"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+        <li class="cell-checkbox"> <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
+            <label class="checkbox">
+                <span class="icon-form icon-checkbox"></span>
+                <input id="select-all" type="checkbox" value="{value}">
+            </label>
+        </li>
+        <li class="cell-reservation">Reservation</li>
+        <li class="cell-date">Arrival Date</li>
+        <li class="cell-card">Card Details</li>
+        <li class="cell-cost">Stay Cost</li>
+        <li class="cell-deposit">Deposit Paid</li>
+    </ul>
+
+    <!-- Reservations -->
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination with-checkboxes"> <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
+        <div class="wrapper">
+            <ul class="search-results">
+                <li class="reservation autopayment-item with-checkbox"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+                    <div class="cell-checkbox"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
+                        <label class="checkbox">
+                            <span class="icon-form icon-checkbox"></span>
+                            <input id="{reservationID}" type="checkbox" value="{value}">
+                        </label>
+                    </div>
+                    <a href="{link}">
+                        <div class="cell-reservation">
+                            <figure class="guest-image">
+                                <img src="{image or avatar}" alt="">
+                            </figure>
+                            <h2>{Lastname}, {Firstname}</h2>
+                            <div class="info">
+                                <span class="label">Conf.</span>
+                                <span class="value">{Confirmation No.}</span>
+                            </div>
+                        </div>
+                        <div class="cell-date">
+                            <span class="guest-status check-in"></span>
+                            <span class="date">{Arrival Date}</span>
+                        </div>
+                        <div class="cell-card">
+                            <figure class="card-logo">
+                                <img src="{cc logo}" alt="">
+                            </figure>
+                            <div class="info">
+                                <span class="label">No.</span>
+                                <span class="value">{Last 4 digits}</span>
+                            </div>
+                            <div class="info">
+                                <span class="label">Code</span>
+                                <span class="value">{Auth Code}</span>
+                            </div>
+                        </div>
+                        <div class="cell-cost">
+                            {Total Stay Cost}
+                        </div>
+                        <div class="cell-deposit color-{'green' if approved, 'red' if declined}">
+                            {Deposit Paid or '0.00' when declined}
+                            <!-- If transaction is declined, show deposit due:
+                            <div class="deposit-due">{Deposit Due}</div> -->
+                        </div>
+                    </a>
+                </li>
+                ... repeat L90-L134 for every reservation
+            </ul>
+        </div>
+
+
+        <!-- IF THERE's NOTHING TO SHOW, REPLACE L88-L137 with this
+        <div class="no-content">
+             <div class="info">
+                <span class="icon-no-content icon-alert"></span>
+                <strong class="h1 alert">Deposit Auto-Charge is being processed.</strong>
+                <span class="h2">Please check back at a later time.</span>
+            </div>
+        </div> -->
+    </div>
+
+</section>
