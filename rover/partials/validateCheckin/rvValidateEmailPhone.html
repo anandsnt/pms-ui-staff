@@ -42,7 +42,7 @@
 	    <div class="actions">
 	        <button class="button blank" ng-click="closeDialog()" ng-show="showNationality || showCountry">Cancel</button>
 	        <button class="button blank" ng-click="ignoreAndGoToCheckin()" ng-show="!showNationality && !showCountry" translate>IGNORE_AND_GOTO_CHECKIN</button>
-	        <button class="button" ng-class="{'green': shouldEnableSubmitButton(), 'grey': !shouldEnableSubmitButton()}" ng-disable="!shouldEnableSubmitButton()" ng-click="submitAndGoToCheckin()">Submit</button>
+	        <button class="button" ng-class="{'green': shouldEnableSubmitButton(), 'grey': !shouldEnableSubmitButton()}" ng-disable="!(shouldEnableSubmitButton())" ng-click="submitAndGoToCheckin()">Submit</button>
 	    </div>
 	</div>
 </div>
