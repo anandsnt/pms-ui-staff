@@ -14,55 +14,48 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	}
     	// To list room types
     	$scope.listRoomTypes();
-        $scope.isAscending = true;
+        $scope.isAscendingByName = true;
+        $scope.isAscendingByCode = true;
 	};
 
    /*
     * To fetch list of room types
     */
-	$scope.listRoomTypes = function( isAfterNameSort ) {
+	$scope.listRoomTypes = function() {
 		var successCallbackFetch = function(data) {
-            $scope.data = {};
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
-
-            /**
-             *  For StandAlone properties -
-             *  As per CICO-7161 : We need to handle Sort By Name + Sort By position via Drag and Drop.
-             *  thus removing the attribute for default sorting ( by name ).
-             */
-            $scope.tableParams = new ngTableParams(
-                {
-                    page: 1,        // show first page
-                    count: 10000    // count per page - Need to change when on pagination implemntation
-                }, 
-                {
-                    total: $scope.data.room_types.length, // length of data
-                    getData: function($defer, params) {
-                        // use build-in angular filter
-                        var orderedData = params.sorting() ?
-                                            $filter('orderBy')($scope.data.room_types, params.orderBy()) :
-                                            $scope.data.room_types;
-
-                        $scope.orderedData =  orderedData;
-
-                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                }
-            );
 
             /**
              *  For Overlay properties -
              *  Keeping sort by name in ASC order initially.
              */
             if ( !$rootScope.isStandAlone ) {
-                $scope.tableParams.sorting({'name': 'asc'});
-            }
-            // For StandAlone property - order the table value after the name sort action.
-            if ( $rootScope.isStandAlone && isAfterNameSort ) {
-                $scope.tableParams.sorting({'name': !$scope.isAscending ? 'desc' : 'asc'});
-                $scope.isAscending = !$scope.isAscending;
-                $scope.tableParams.reload();
+                /**
+                 *  For StandAlone properties -
+                 *  As per CICO-7161 : We need to handle Sort By Name + Sort By position via Drag and Drop.
+                 *  thus removing the attribute for default sorting ( by name ).
+                 */
+                $scope.tableParams = new ngTableParams(
+                    {
+                        page: 1,        // show first page
+                        count: 10000,   // count per page - Need to change when on pagination implemntation
+                        sorting: {'name': 'asc'}
+                    }, 
+                    {
+                        total: $scope.data.room_types.length, // length of data
+                        getData: function($defer, params) {
+                            // use build-in angular filter
+                            var orderedData = params.sorting() ?
+                                                $filter('orderBy')($scope.data.room_types, params.orderBy()) :
+                                                $scope.data.room_types;
+
+                            $scope.orderedData =  orderedData;
+
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        }
+                    }
+                );
             }
 		},
         options = {
@@ -178,11 +171,11 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     		$scope.is_image_deleted = false;
             if ( !$rootScope.isStandAlone ) {
     		    $scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id, 'sequence_number': data.sequence_number });
+                $scope.tableParams.reload();
             }
             else {
                 $scope.listRoomTypes();
             }
-            $scope.tableParams.reload();
     	};
 
     	if ($scope.isAddMode) {
@@ -279,20 +272,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 	};
     /**
      *  Sort By Name - UI filter - ngTable for overlay Hotels
-     *  API call + UI filter - ngTable for standalone Hotels
      */
 	$scope.sortByName = function() {
 		if ($scope.currentClickedElement === -1) {
-            if ( $rootScope.isStandAlone ) {
-                saveSortedList( null, null, true );
-            }
-            else {
-                $scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
-            }
+            $scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 		}
 	};
     /**
-     *  Sort By Code - ngTable
+     *  Sort By Code - ngTable -for overlay hotels.
      *  UI filter
      */
 	$scope.sortByCode = function() {
@@ -379,13 +366,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             params: {}
         },
         successCallBackOfSort = function() {
-            $scope.listRoomTypes(isSortByName);
+            $scope.listRoomTypes();
+            $scope.isAscendingByName = !$scope.isAscendingByName;
         };
 
         if ( isSortByName ) {
             // Only for Standalone Hotels : Save the sort order
             // sortByValue set true only for Standalone.
-            options.params.sort_dir = $scope.isAscending;
+            options.params.sort_dir = $scope.isAscendingByName;
             options.successCallBack = successCallBackOfSort;
         }
         else {
@@ -422,6 +410,24 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             if (ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex !== null) {
                 saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
             }
+        }
+    };
+    // Sort by code for standalone property
+    $scope.sortByCodeStandAlone = function() {
+        if ($scope.currentClickedElement === -1) {
+            if ( $scope.isAscendingByCode ) {
+                $scope.data.room_types = _.sortBy($scope.data.room_types,'code');
+            }
+            else {
+                $scope.data.room_types = _.sortBy($scope.data.room_types,'code').reverse();
+            }
+            $scope.isAscendingByCode = !$scope.isAscendingByCode;
+        }
+    };
+    // Sort by Name for standalone property
+    $scope.sortByNameStandAlone = function() {
+        if ($scope.currentClickedElement === -1) {
+            saveSortedList( null, null, true );
         }
     };
 
