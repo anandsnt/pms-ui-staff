@@ -24,7 +24,7 @@
     </div>
 
     <!-- Print -->
-    <button id="print-automatic-payments" type="button" class="button blue with-icon only-icon print">
+    <button id="print-automatic-payments" type="button" ng-click="clickedPrint()" class="button blue with-icon only-icon print">
         <span class="icons icon-print"></span>
         Print
     </button>
@@ -43,8 +43,7 @@
 </form>
 
 <!-- Pagination -->
-{_shared/pagination.html}
-
+<rv-pagination page-options="autoChargePAginationObject" page-data="autoCharges"></rv-pagination>
 <!-- Content -->
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
