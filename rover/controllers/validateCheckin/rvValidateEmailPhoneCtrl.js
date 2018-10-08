@@ -76,7 +76,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
             $scope.guestCardData.contactInfo.nationality_id = $scope.saveData.nationality_id;
         }
         if (showCountry) {
-            $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.country_id;
+            $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
         }
 		$scope.$emit('hideLoader');
 		ngDialog.close();
