@@ -1,17 +1,21 @@
 <div class="entry {{divClass}}" ng-hide="hide">
-    <label>{{label}}</label>
-    <div class="file-upload" ng-class="{'with-remove-file-area':hasImageFileUpdatedOrUploading()}" ng-mouseenter="onTogglePreview(false)" ng-mouseleave="onTogglePreview(true)">
-        <span class="input" ng-show="hasImageFileUpdatedOrUploading()">{{'FILE_ATTACHED' | translate}}</span>
-        <span class="input" ng-hide="hasImageFileUpdatedOrUploading()">{{'CHOOSE_FILE' | translate}}</span>
-        <input type="file" ng-model="imageFile" accept="*" app-filereader />
-        <button type="button" class="button brand-colors">
-            {{'ATTACH_FILE' | translate}}
+    <label> 
+        {{ label }}
+    </label>
+    <div class="file-upload with-preview logo-preview">
+        <span class="input" ng-show="hasImageFileUpdatedOrUploading()" translate>
+            FILE_ATTACHED
+        </span>
+        <span class="input" ng-hide="hasImageFileUpdatedOrUploading()" translate>
+            CHOOSE_FILE
+        </span>
+        <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="hasImageFileUpdatedOrUploading()" ng-click="removeUploadedFile()"></a>
+        <input type="file" ng-model="imageFile" accept="image/*" app-filereader />
+        <button type="button" class="button brand-colors" translate>
+            ATTACH_FILE
         </button>
     </div>
-    <div>
-        <img class='upload-image-preview' ng-show="!hidePreview && hasImageFileUpdatedOrUploading()" src="{{imageFile}}">
-    </div>
-    <button ng-show="hasImageFileUpdatedOrUploading()" type="button" class="button brand-colors with-remove-file" ng-click="removeUploadedFile()">
-        {{'REMOVE_FILE' | translate}}
-    </button>
+    <span class="file-preview logo-preview"> 
+        <img ng-src="{{ imageFile }}" alt="" ng-show="imageFile" >
+    </span>
 </div>

@@ -1146,19 +1146,50 @@
 
                 /* Tax Exempt ***/
                 &.item-tax-exempt {
+                    margin-right: 0;
+                    width: 100%;
+
                     .entry {
-                        .float;
+                        display: grid;
+                        grid-template-columns: 120px calc(~'100% - 130px');
+                        grid-column-gap: 10px;
+                        grid-row-gap: 10px;
 
                         .switch-button { 
-                            margin-right: 10px;
-                            .calc-width(100, 160);
-                            .pull-left;
+                            width: 100%;
                         }
 
+                        input,
                         .select {
-                            .size(50px, 150px);
-                            .pull-left;
+                            height: 50px;
                         }
+
+                        textarea {
+                            grid-column: span 2;
+                        }
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+            }
+
+            .block-grid {
+                display: grid;
+                grid-template-columns: calc(~'50% - 10px') calc(~'50% - 10px');
+                grid-column-gap: 20px;
+
+                .block-item {
+                    margin-right: 0;
+
+                    &.additional-detail {
+                        width: 100%;
+                    }
+
+                    &.item-commission,
+                    &.item-tax-exempt {
+                        grid-column: span 2;
                     }
                 }
             }
