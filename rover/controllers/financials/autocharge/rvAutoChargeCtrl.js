@@ -86,33 +86,42 @@ sntRover.controller('RVAutoChargeController',
                 $scope.closeDialog();
                 that.printBill();
             };
-            var fetchAutoCharge = function() {
+            $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
-                    date: '02/02/2017',
-                    hotel_id: 80
+                    page_no: pageNo || 1,
+                    status: $scope.filters.status,
+                    due_date: $scope.filters.due_date
                 };
 
                 var options = {
                     params: params,
                     successCallBack: function(response) {
-                        $scope.autoCharges = response.data;
+                        $scope.autoChargesData = response;
+                        $scope.totalCount = response.length;
+                        $timeout(function () {
+                            $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
+                        }, 100 );
                     }
                 };
 
                 $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
-            }
+            };
 
             $scope.autoChargePAginationObject = {
                 id: 'AUTO_CHARGE',
-                api: [ fetchAutoCharge, 'AUTO_CHARGE' ],
+                api: $scope.fetchAutoCharge,
                 perPage: 25
             };
-
             /*
              * Initialization
              */
             that.init = () => {
+                $scope.filters = {
+                    status: "ALL",
+                    due_date: '02/02/2017'
+                };
                 $scope.setTitleAndHeading();
+                $scope.fetchAutoCharge();
             };
 
             that.init();

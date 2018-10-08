@@ -10,10 +10,10 @@
     <div class="entry status">
         <div class="select">
             <label for="automatic-payments-status">Status</label>
-            <select id="automatic-payments-status">
-                <option value="all" selected="">All Deposit Reservations</option>
-                <option value="approved">Approved Transactions</option>
-                <option value="declined">Declined Transactions</option>
+            <select id="automatic-payments-status" ng-model="filters.status" ng-change="fetchAutoCharge()">
+                <option value="ALL">All Deposit Reservations</option>
+                <option value="APPROVED">Approved Transactions</option>
+                <option value="DECLINED">Declined Transactions</option>
             </select>
         </div>
     </div>
@@ -43,12 +43,12 @@
 </form>
 
 <!-- Pagination -->
-<rv-pagination page-options="autoChargePAginationObject" page-data="autoCharges"></rv-pagination>
+<rv-pagination page-options="autoChargePAginationObject" page-data="totalCount"></rv-pagination>
 <!-- Content -->
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
     <!-- Header -->
-    <ul class="grid-header with-checkbox"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+    <ul class="grid-header with-checkbox" ng-show="totalCount !== 0"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
         <li class="cell-checkbox"> <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
             <label class="checkbox">
                 <span class="icon-form icon-checkbox"></span>
@@ -64,7 +64,7 @@
 
     <!-- Reservations -->
     <div id="automatic-payments-content" class="grid-content scrollable with-pagination with-checkboxes"> <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
-        <div class="wrapper">
+        <div class="wrapper" ng-show="totalCount !== 0">
             <ul class="search-results">
                 <li class="reservation autopayment-item with-checkbox"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
                     <div class="cell-checkbox"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
@@ -116,14 +116,14 @@
         </div>
 
 
-        <!-- IF THERE's NOTHING TO SHOW, REPLACE L88-L137 with this
-        <div class="no-content">
+        <!--IF THERE's NOTHING TO SHOW, REPLACE L88-L137 with this-->
+        <div class="no-content" ng-show="totalCount == 0">
              <div class="info">
                 <span class="icon-no-content icon-alert"></span>
                 <strong class="h1 alert">Deposit Auto-Charge is being processed.</strong>
                 <span class="h2">Please check back at a later time.</span>
             </div>
-        </div> -->
+        </div>
     </div>
 
 </section>
