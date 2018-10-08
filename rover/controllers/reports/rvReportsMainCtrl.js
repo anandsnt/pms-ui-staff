@@ -223,7 +223,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_51: false,
             item_52: false,
             item_53: false,
-            item_54: false
+            item_54: false,
+            item_55: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1304,7 +1305,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
                     $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
                 }
-            }            
+            }   
+
+            if ( report.hasShowVatWithRates ) {
+                key         = reportParams['SHOW_VAT_WITH_RATES'];
+                params[key] = report.show_vat_with_rates;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['show_vat_with_rates'] = report.show_vat_with_rates;
+                }
+            }         
 
             // include CICO filter
             if (!!report.hasCicoFilter) {

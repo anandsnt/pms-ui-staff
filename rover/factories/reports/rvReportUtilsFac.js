@@ -43,7 +43,8 @@ angular.module('reportsModule')
             'chosenIncludeGroup',
             'hasMinRoomNights',
             'hasMinRevenue',
-            'showActionables'
+            'showActionables',
+            'show_vat_with_rates'
         ];
 
         /**
@@ -407,17 +408,13 @@ angular.module('reportsModule')
                     );
                     break;
 
-                // case reportNames['TAX_EXEMPT']:
-                //     report['filters'].push({
-                //         'value': "GROUP_CODE",
-                //         'description': "Group Code"
-                //     }
-                //     , {
-                //         'value': "TAX_EXEMPT_TYPE",
-                //         'description': "Include Tax Exempt"
-                //     }
-                //     );
-                //     break;
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "SHOW_VAT_WITH_RATES",
+                        'description': "VAT"
+                    }
+                    );
+                    break;
 
                 default:
                     // no op
@@ -645,6 +642,10 @@ angular.module('reportsModule')
 
                 if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
                     report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
+                }
+
+                if (filter.value === 'SHOW_VAT_WITH_RATES') {
+                    report['hasShowVatWithRates'] = filter;
                 }
 
                 if (filter.value === 'VAT_YEAR') {

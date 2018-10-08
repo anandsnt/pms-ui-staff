@@ -37,6 +37,14 @@
         Cards Without Tax ID
     </label>
 </div>
+<div class="entry date-range" ng-show="uiChosenReport.hasShowVatWithRates">
+    <label>VAT</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.show_vat_with_rates}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.show_vat_with_rates}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.show_vat_with_rates">
+        SHOW VAT WITH RATES
+    </label>
+</div>
 <!-- YEARLY VAT END-->
 <div class="entry date-range" ng-show="uiChosenReport.hasDepositDateFilter">
     <label>{{ uiChosenReport.hasDepositDateFilter.description }} <span>(From)</span></label>
