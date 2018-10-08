@@ -386,7 +386,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     };
 
     // save new order
-    var saveNewPosition = function(id, position, prevPosition) {
+    var saveNewPosition = function(id, position) {
         _.isUndefined(position) ? "" : saveSortedList(id, position + 1);
     };
 
@@ -416,10 +416,10 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     $scope.sortByCodeStandAlone = function() {
         if ($scope.currentClickedElement === -1) {
             if ( $scope.isAscendingByCode ) {
-                $scope.data.room_types = _.sortBy($scope.data.room_types,'code');
+                $scope.data.room_types = _.sortBy($scope.data.room_types, 'code');
             }
             else {
-                $scope.data.room_types = _.sortBy($scope.data.room_types,'code').reverse();
+                $scope.data.room_types = _.sortBy($scope.data.room_types, 'code').reverse();
             }
             $scope.isAscendingByCode = !$scope.isAscendingByCode;
         }
