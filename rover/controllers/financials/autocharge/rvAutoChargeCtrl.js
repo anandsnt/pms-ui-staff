@@ -7,7 +7,8 @@ sntRover.controller('RVAutoChargeController',
         '$filter',
         'RVBillCardSrv',
         '$window',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window) {
+        'rvUtilSrv',
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, util) {
 
             BaseCtrl.call(this, $scope);
 
@@ -26,7 +27,7 @@ sntRover.controller('RVAutoChargeController',
             };
 
             // To refresh the scroll
-            const refreshScroll = function() {
+            var refreshScroll = function() {
                 $timeout(function() {
                     $scope.refreshScroller('grid-content');
                 }, 1000);
@@ -96,16 +97,34 @@ sntRover.controller('RVAutoChargeController',
                 var options = {
                     params: params,
                     successCallBack: function(response) {
-                        $scope.autoChargesData = response;
+                        $scope.autoCharges = response;
                         $scope.totalCount = response.length;
                         $timeout(function () {
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
+                            refreshScroll();
                         }, 100 );
                     }
                 };
 
                 $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
             };
+            var commonDateOptions = {
+                dateFormat: $rootScope.jqDateFormat,
+                changeYear: true,
+                changeMonth: true,
+                yearRange: '-10:',
+                maxDate: tzIndependentDate($rootScope.businessDate)
+            };
+            var dueDateChoosed = function(date) {
+                $scope.filters.due_date = date;
+                $scope.due_date = date;
+                $scope.fetchAutoCharge();
+            };
+
+            $scope.dueDateOptions = _.extend({
+                onSelect: dueDateChoosed
+            }, commonDateOptions);
+
 
             $scope.autoChargePAginationObject = {
                 id: 'AUTO_CHARGE',
@@ -117,10 +136,10 @@ sntRover.controller('RVAutoChargeController',
              */
             that.init = () => {
                 $scope.filters = {
-                    status: "ALL",
-                    due_date: '02/02/2017'
+                    status: 'ALL',
+                    due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
                 };
-                $scope.setTitleAndHeading();
+                // $scope.setTitleAndHeading();
                 $scope.fetchAutoCharge();
             };
 

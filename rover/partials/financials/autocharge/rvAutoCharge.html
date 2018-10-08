@@ -3,7 +3,8 @@
     <!-- Date -->
     <div class="entry date has-datepicker">
         <label for="automatic-payments-date">Due Date</label>
-        <input id="automatic-payments-date" type="text" class="datepicker hasDatepicker" value="10-02-2018" data-today="false" readonly="">
+        <input name="automatic-payments-date"  id="automatic-payments-date" class="datepicker" readonly type="text" ui-date="dueDateOptions" value="{{filters.due_date}}" listen-this="filters.due_date" />
+
     </div>
 
     <!-- Status -->
@@ -24,7 +25,7 @@
     </div>
 
     <!-- Print -->
-    <button id="print-automatic-payments" type="button" ng-click="clickedPrint()" class="button blue with-icon only-icon print">
+    <button id="print-automatic-payments" type="button" ng-click="clickedPrint()" ng-show="totalCount !== 0" class="button blue with-icon only-icon print">
         <span class="icons icon-print"></span>
         Print
     </button>
@@ -35,10 +36,10 @@
             <strong>Deposits</strong>
             {currency}{amount}
         </li>
-        <li>
-            <strong>EOD Check Out</strong>
-            {currency}{amount}
-        </li>
+        <!--<li>-->
+            <!--<strong>EOD Check Out</strong>-->
+            <!--{currency}{amount}-->
+        <!--</li>-->
     </ul>
 </form>
 
@@ -48,8 +49,8 @@
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
     <!-- Header -->
-    <ul class="grid-header with-checkbox" ng-show="totalCount !== 0"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-        <li class="cell-checkbox"> <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
+    <ul class="grid-header" ng-show="totalCount !== 0" ng-class="{'with-checkbox' : filters.status !='APPROVED'}"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+        <li class="cell-checkbox" ng-show="filters.status =='APPROVED'"> <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
             <label class="checkbox">
                 <span class="icon-form icon-checkbox"></span>
                 <input id="select-all" type="checkbox" value="{value}">
@@ -63,11 +64,11 @@
     </ul>
 
     <!-- Reservations -->
-    <div id="automatic-payments-content" class="grid-content scrollable with-pagination with-checkboxes"> <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-class="{'with-checkbox' : filters.status !='APPROVED'}"> <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
         <div class="wrapper" ng-show="totalCount !== 0">
             <ul class="search-results">
-                <li class="reservation autopayment-item with-checkbox"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-                    <div class="cell-checkbox"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
+                <li class="reservation autopayment-item" ng-class="{'with-checkbox' : autoCharge.status !='APPROVED'}" ng-repeat="autoCharge in autoCharges"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+                    <div class="cell-checkbox" ng-show="filters.status =='APPROVED'"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
                         <label class="checkbox">
                             <span class="icon-form icon-checkbox"></span>
                             <input id="{reservationID}" type="checkbox" value="{value}">
@@ -76,42 +77,40 @@
                     <a href="{link}">
                         <div class="cell-reservation">
                             <figure class="guest-image">
-                                <img src="{image or avatar}" alt="">
+                                <img src="{{autoCharge.avatar}}" alt="">
                             </figure>
-                            <h2>{Lastname}, {Firstname}</h2>
+                            <h2>{{autoCharge.name}}</h2>
                             <div class="info">
                                 <span class="label">Conf.</span>
-                                <span class="value">{Confirmation No.}</span>
+                                <span class="value">{{autoCharge.name}}</span>
                             </div>
                         </div>
                         <div class="cell-date">
                             <span class="guest-status check-in"></span>
-                            <span class="date">{Arrival Date}</span>
+                            <span class="date">{{autoCharge.arrival_date}}</span>
                         </div>
                         <div class="cell-card">
                             <figure class="card-logo">
-                                <img src="{cc logo}" alt="">
+                                <img ng-src="/assets/images/{{autoCharge.card_details.card_code}}.png"alt="">
                             </figure>
                             <div class="info">
                                 <span class="label">No.</span>
-                                <span class="value">{Last 4 digits}</span>
+                                <span class="value">{{autoCharge.card_details.number}}</span>
                             </div>
                             <div class="info">
                                 <span class="label">Code</span>
-                                <span class="value">{Auth Code}</span>
+                                <span class="value">{{autoCharge.card_details.auth_code}}</span>
                             </div>
                         </div>
                         <div class="cell-cost">
-                            {Total Stay Cost}
+                            {{autoCharge.stay_cost}}{{currencySymbol}}
                         </div>
-                        <div class="cell-deposit color-{'green' if approved, 'red' if declined}">
-                            {Deposit Paid or '0.00' when declined}
-                            <!-- If transaction is declined, show deposit due:
-                            <div class="deposit-due">{Deposit Due}</div> -->
+                        <div class="cell-deposit" ng-class="{'color-green' : autoCharge.status =='APPROVED', 'color-red' : autoCharge.status =='DECLINED'}">
+                            {{autoCharge.deposit_paid}}{{currencySymbol}}
+                            <div class="deposit-due" ng-show="autoCharge.status =='DECLINED'">{{autoCharge.deposit_paid}}{{currencySymbol}}</div>
                         </div>
                     </a>
                 </li>
-                ... repeat L90-L134 for every reservation
             </ul>
         </div>
 
