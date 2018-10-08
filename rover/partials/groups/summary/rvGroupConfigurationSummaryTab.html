@@ -141,8 +141,8 @@
                 <!-- Show  only when commission is turned on & type is set to $ -->
                 <div class="select" ng-show="groupConfigData.summary.commission_details.is_on && groupConfigData.summary.commission_details.type === 'amount'">
                     <select ng-model="groupConfigData.summary.commission_details.commission_type">
-                        <option value="NIGHT" translate>PER_NIGHT</option>
-                        <option value="STAY" translate>PER_STAY</option>
+                        <option value="NIGHT" translate>PER_STAY</option>
+                        <option value="STAY" translate>PER_NIGHT</option>
                     </select>
                 </div>
             </div>
@@ -187,6 +187,7 @@
                             ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
                     </select>
                 </div>
+                <textarea rows="4" ng-show="groupConfigData.summary.is_tax_exempt" ng-model="groupConfigData.summary.tax_exempt_ref_text" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}" maxlength="200"></textarea>
             </div>
 
             <!-- Notes -->

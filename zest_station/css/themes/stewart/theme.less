@@ -48,6 +48,15 @@
 
 /* 4. LAYOUT
 ==========================================================*/
+    .logo-svg{
+        background-image: url("../css/themes/stewart/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        background-position: center;
+        margin-top: 5%;
+        height: 120px;
+    }
     #stewart {
 
         #header {
@@ -63,6 +72,9 @@
         #main {
             #calc > #height > .remove(100%, 125px);
             top: 125px;
+            &.centered {
+                padding-top: 0;
+            }
         }
         .entry.input {
             .icons {
