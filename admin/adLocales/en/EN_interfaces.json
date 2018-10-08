@@ -106,4 +106,5 @@
   "TAX_CHARGE_CODE_12": "Tax Charge Code 12%",
   "TAX_CHARGE_CODE_21": "Tax Charge Code 21%",
   "EXPORT": "Export",
-  "quicktext_SETUP_HEADER": "Quicktext Setup"
+  "quicktext_SETUP_HEADER": "Quicktext Setup",
+  "DEFAULT_SOURCE_CODE": "Default Source Code"
