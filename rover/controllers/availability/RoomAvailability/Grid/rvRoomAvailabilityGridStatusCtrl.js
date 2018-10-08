@@ -71,14 +71,6 @@ angular.module('sntRover')
                 return hasAdditionalData() && !! $scope.data.additionalData.bestAvailabilityRate;
             };
 
-            var hasRoomTypeWiseDetails = function () {
-                return hasAdditionalData() && !! $scope.data.additionalData.roomTypeWiseDetails;
-            };
-
-            var hasSoldRooms = function () {
-                return hasAdditionalData() && !! $scope.data.additionalData.adultsChildrenCounts;
-            };
-
             /** 
              * This is a higher order function that will generate funtion for the purpose
              * 
