@@ -2,30 +2,25 @@ sntRover.controller('RVAutoChargeController',
     ['$scope',
         '$rootScope',
         '$timeout',
-        'RVInvoiceSearchSrv',
+        'RVAutoChargeSrv',
         'ngDialog',
         '$filter',
         'RVBillCardSrv',
         '$window',
-        'rvAccountTransactionsSrv',
-        'rvAccountsConfigurationSrv',
-        function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, $filter, RVBillCardSrv, $window, rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window) {
 
             BaseCtrl.call(this, $scope);
 
-            const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
-                that = this,
-                PER_PAGE = 10;
+            const scrollOptions = {preventDefaultException: { tagName: /^(INPUT|LI)$/ },
+                    preventDefault: false},
+                that = this;
 
-            $scope.currentActivePage = 1;
-
-            $scope.setScroller('invoice-list', scrollOptions);
+            $scope.setScroller('grid-content', scrollOptions);
             /**
              * function to set Headinng
              * @return - {None}
              */
             $scope.setTitleAndHeading = function(title) {
-
                 $scope.setTitle(title);
                 $scope.$parent.heading = title;
             };
@@ -33,14 +28,14 @@ sntRover.controller('RVAutoChargeController',
             // To refresh the scroll
             const refreshScroll = function() {
                 $timeout(function() {
-                    $scope.refreshScroller('invoice-list');
+                    $scope.refreshScroller('grid-content');
                 }, 1000);
             };
 
 
             // add the print orientation before printing
             var addPrintOrientation = function() {
-                $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+                $( 'head' ).append( '<style id=\'print-orientation\'>@page { size: portrait; }</style>' );
             };
 
             // add the print orientation after printing
@@ -49,73 +44,68 @@ sntRover.controller('RVAutoChargeController',
             };
 
             // print the page
-            that.printBill = function(data) {
-                var printDataFetchSuccess = function(successData) {
-                        if ($scope.invoiceSearchFlags.isClickedReservation) {
-                            $scope.printData = successData;
-                        } else {
-                            $scope.printData = successData.data;
-                        }
+            that.printBill = function() {
+                // CICO-9569 to solve the hotel logo issue
+                $('header .logo').addClass('logo-hide');
+                $('header .h2').addClass('text-hide');
 
-                        $scope.errorMessage = "";
+                // add the orientation
+                addPrintOrientation();
 
-                        // CICO-9569 to solve the hotel logo issue
-                        $("header .logo").addClass('logo-hide');
-                        $("header .h2").addClass('text-hide');
+                /*
+                *	======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+                    /*
+                    *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
 
-                        // add the orientation
-                        addPrintOrientation();
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 1000);
 
-                        /*
-                        *	======[ READY TO PRINT ]======
-                        */
-                        // this will show the popup with full bill
-                        $timeout(function() {
-                            /*
-                            *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                            */
+                /*
+                *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
 
-                            $window.print();
-                            if ( sntapp.cordovaLoaded ) {
-                                cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-                            }
-                        }, 1000);
+                $timeout(function() {
+                    // CICO-9569 to solve the hotel logo issue
+                    $('header .logo').removeClass('logo-hide');
+                    $('header .h2').addClass('text-hide');
 
-                        /*
-                        *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-                        */
-
-                        $timeout(function() {
-                            // CICO-9569 to solve the hotel logo issue
-                            $("header .logo").removeClass('logo-hide');
-                            $("header .h2").addClass('text-hide');
-
-                            // remove the orientation after similar delay
-                            removePrintOrientation();
-                            $scope.searchInvoice($scope.currentActivePage);
-                        }, 1000);
-
-                    },
-                    printDataFailureCallback = function(errorData) {
-                        $scope.errorMessage = errorData;
-                    },
-                    options = {
-                        params: data,
-                        successCallBack: printDataFetchSuccess,
-                        failureCallBack: printDataFailureCallback
-                    };
-
-                if ($scope.invoiceSearchFlags.isClickedReservation) {
-                    $scope.callAPI(RVBillCardSrv.fetchBillPrintData, options);
-                } else {
-                    $scope.callAPI(rvAccountTransactionsSrv.fetchAccountBillsForPrint, options);
-                }
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 1000);
             };
 
             // print bill
-            $scope.clickedPrint = function(requestData) {
+            $scope.clickedPrint = function() {
                 $scope.closeDialog();
-                that.printBill(requestData);
+                that.printBill();
+            };
+            var fetchAutoCharge = function() {
+                var params = {
+                    date: '02/02/2017',
+                    hotel_id: 80
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: function(response) {
+                        $scope.autoCharges = response.data;
+                    }
+                };
+
+                $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
+            }
+
+            $scope.autoChargePAginationObject = {
+                id: 'AUTO_CHARGE',
+                api: [ fetchAutoCharge, 'AUTO_CHARGE' ],
+                perPage: 25
             };
 
             /*
