@@ -7,42 +7,75 @@ sntRover.controller('RVAutoChargeController',
         '$filter',
         'RVBillCardSrv',
         '$window',
-        'rvUtilSrv',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, util) {
+        '$state',
+        '$stateParams',
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $state, $stateParams) {
 
             BaseCtrl.call(this, $scope);
 
-            const scrollOptions = {preventDefaultException: { tagName: /^(INPUT|LI)$/ },
-                    preventDefault: false},
-                that = this;
+            var that = this,
+                commonDateOptions = {
+                    dateFormat: $rootScope.jqDateFormat,
+                    changeYear: true,
+                    changeMonth: true,
+                    yearRange: '-10:',
+                    maxDate: tzIndependentDate($rootScope.businessDate)
+                },
+                /*
+                 * function handle date changes event and Calls API
+                 * @return - {None}
+                 */
+                dueDateChoosed = function(date) {
+                    $scope.filters.due_date = date;
+                    $scope.due_date = date;
+                    $scope.fetchAutoCharge();
+                },
+                // add the print orientation before printing
+                addPrintOrientation = function() {
+                    $( 'head' ).append( '<style id=\'print-orientation\'>@page { size: portrait; }</style>' );
+                },
+                // add the print orientation after printing
+                removePrintOrientation = function() {
+                    $( '#print-orientation' ).remove();
+                },
+                // To refresh the scroll
+                refreshScroll = function() {
+                    $timeout(function() {
+                        $scope.refreshScroller('grid-content');
+                    }, 1000);
+                },
+                /*
+                 * function Configure Pagination Settings
+                 * @return - {None}
+                 */
+                setPaginationConfig = function() {
+                    $scope.paginationConfig = {
+                        id: 'AUTO_CHARGE',
+                        api: $scope.fetchAutoCharge,
+                        perPage: 25
+                    };
+                },
+                /*
+                 * function Confidure DatePicker settings
+                 * @return - {None}
+                 */
+                setDueDateOptions = function () {
+                    $scope.dueDateOptions = _.extend({
+                        onSelect: dueDateChoosed
+                    }, commonDateOptions);
+                },
+                /*
+                 * function Confidure scroller settings
+                 * @return - {None}
+                 */
+                setScrollerOptions = function() {
+                    var scrollOptions = {
+                        preventDefaultException: { tagName: /^(INPUT|LI)$/ },
+                        preventDefault: false
+                    };
 
-            $scope.setScroller('grid-content', scrollOptions);
-            /**
-             * function to set Headinng
-             * @return - {None}
-             */
-            $scope.setTitleAndHeading = function(title) {
-                $scope.setTitle(title);
-                $scope.$parent.heading = title;
-            };
-
-            // To refresh the scroll
-            var refreshScroll = function() {
-                $timeout(function() {
-                    $scope.refreshScroller('grid-content');
-                }, 1000);
-            };
-
-
-            // add the print orientation before printing
-            var addPrintOrientation = function() {
-                $( 'head' ).append( '<style id=\'print-orientation\'>@page { size: portrait; }</style>' );
-            };
-
-            // add the print orientation after printing
-            var removePrintOrientation = function() {
-                $( '#print-orientation' ).remove();
-            };
+                    $scope.setScroller('grid-content', scrollOptions);
+                };
 
             // print the page
             that.printBill = function() {
@@ -82,11 +115,31 @@ sntRover.controller('RVAutoChargeController',
                 }, 1000);
             };
 
+            /*
+             * function to set Headinng
+             * @return - {None}
+             */
+            $scope.setTitleAndHeading = function(title) {
+                $scope.setTitle(title);
+                $scope.$parent.heading = title;
+            };
             // print bill
             $scope.clickedPrint = function() {
                 $scope.closeDialog();
                 that.printBill();
             };
+            /*
+             * function Navigate to Reservation Details screen
+             * @return - {None}
+             */
+            $scope.goToStayCard = function(reservation_id, confirmation_no) {
+                $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                    'id': reservation_id,
+                    'confirmationId': confirmation_no,
+                    'isrefresh': true,
+                    'isFromAutoCharge': true});
+            };
+            // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
                     page_no: pageNo || 1,
@@ -108,29 +161,6 @@ sntRover.controller('RVAutoChargeController',
 
                 $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
             };
-            var commonDateOptions = {
-                dateFormat: $rootScope.jqDateFormat,
-                changeYear: true,
-                changeMonth: true,
-                yearRange: '-10:',
-                maxDate: tzIndependentDate($rootScope.businessDate)
-            };
-            var dueDateChoosed = function(date) {
-                $scope.filters.due_date = date;
-                $scope.due_date = date;
-                $scope.fetchAutoCharge();
-            };
-
-            $scope.dueDateOptions = _.extend({
-                onSelect: dueDateChoosed
-            }, commonDateOptions);
-
-
-            $scope.autoChargePAginationObject = {
-                id: 'AUTO_CHARGE',
-                api: $scope.fetchAutoCharge,
-                perPage: 25
-            };
             /*
              * Initialization
              */
@@ -139,6 +169,9 @@ sntRover.controller('RVAutoChargeController',
                     status: 'ALL',
                     due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
                 };
+                setScrollerOptions();
+                setPaginationConfig();
+                setDueDateOptions();
                 // $scope.setTitleAndHeading();
                 $scope.fetchAutoCharge();
             };
