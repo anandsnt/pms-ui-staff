@@ -34,7 +34,7 @@
     <ul class="filters">
         <li class="active">
             <strong>Deposits</strong>
-            {currency}{amount}
+            {{currencySymbol}}{amount}
         </li>
         <!--<li>-->
             <!--<strong>EOD Check Out</strong>-->
@@ -44,7 +44,7 @@
 </form>
 
 <!-- Pagination -->
-<rv-pagination page-options="autoChargePAginationObject" page-data="totalCount"></rv-pagination>
+<rv-pagination page-options="paginationConfig" page-data="totalCount"></rv-pagination>
 <!-- Content -->
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
