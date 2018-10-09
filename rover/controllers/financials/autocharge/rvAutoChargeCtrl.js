@@ -41,7 +41,7 @@ sntRover.controller('RVAutoChargeController',
                 // To refresh the scroll
                 refreshScroll = function() {
                     $timeout(function() {
-                        $scope.refreshScroller('grid-content');
+                        $scope.refreshScroller('chargeScroller');
                     }, 1000);
                 },
                 /*
@@ -74,7 +74,7 @@ sntRover.controller('RVAutoChargeController',
                         preventDefault: false
                     };
 
-                    $scope.setScroller('grid-content', scrollOptions);
+                    $scope.setScroller('chargeScroller', scrollOptions);
                 };
 
             // print the page
@@ -144,14 +144,16 @@ sntRover.controller('RVAutoChargeController',
                 var params = {
                     page_no: pageNo || 1,
                     status: $scope.filters.status,
-                    due_date: $scope.filters.due_date
+                    due_date: $scope.filters.due_date,
+                    per_page: $scope.paginationConfig.perPage
                 };
 
                 var options = {
                     params: params,
                     successCallBack: function(response) {
-                        $scope.autoCharges = response;
-                        $scope.totalCount = response.length;
+                        $scope.autoCharges = response.details;
+                        $scope.totalCount = response.total_count;
+                        $scope.totalDeposite = response.total_deposit;
                         $timeout(function () {
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
                             refreshScroll();
