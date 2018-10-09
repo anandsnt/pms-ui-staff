@@ -75,6 +75,16 @@ sntRover.controller('RVAutoChargeController',
                     };
 
                     $scope.setScroller('chargeScroller', scrollOptions);
+                },
+                /*
+                 * function to set Headinng
+                 * @return - {None}
+                 */
+                setTitleAndHeading = function() {
+                    var title = $filter('translate')('AUTO_CHARGE');
+
+                    $scope.setTitle(title);
+                    $scope.$parent.heading = title;
                 };
 
             // print the page
@@ -115,14 +125,7 @@ sntRover.controller('RVAutoChargeController',
                 }, 1000);
             };
 
-            /*
-             * function to set Headinng
-             * @return - {None}
-             */
-            $scope.setTitleAndHeading = function(title) {
-                $scope.setTitle(title);
-                $scope.$parent.heading = title;
-            };
+
             // print bill
             $scope.clickedPrint = function() {
                 $scope.closeDialog();
@@ -174,7 +177,7 @@ sntRover.controller('RVAutoChargeController',
                 setScrollerOptions();
                 setPaginationConfig();
                 setDueDateOptions();
-                // $scope.setTitleAndHeading();
+                setTitleAndHeading();
                 $scope.fetchAutoCharge();
             };
 
