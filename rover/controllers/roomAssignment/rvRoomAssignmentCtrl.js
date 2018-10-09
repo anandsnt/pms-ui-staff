@@ -926,6 +926,8 @@ sntRover.controller('RVroomAssignmentController', [
 					item.selected = false;
 				});
 			});
+			$scope.selectedPredefinedFiltersList = [];
+			$scope.selectedFiltersList = [];
 		};
 
 	$scope.init = function() {
