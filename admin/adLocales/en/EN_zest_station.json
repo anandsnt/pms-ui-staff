@@ -20,11 +20,6 @@
 "PRINT":"Print",
 "AUTO_PRINT":"Auto Print",
 
-"STATION_LANGUAGE_FILE_ATTACHED":"File Attached",
-"STATION_LANGUAGE_CHOOSE_FILE":"Choose File...",
-"STATION_LANGUAGE_ATTACH_FILE":"Attach File",
-
-
 "STATION_LANGUAGE_SUPPORT":"Language Support",
 "STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
 "STATION_LANGUAGE_DEFAULT":"Default Language",
@@ -39,7 +34,6 @@
 "STATION_LANGUAGE_CASTELLANO":"Castellano",
 
 "STATION_GUEST_ID_ACTIVATE" :"Guest ID Scan",
-"STATION_REMOVE_FILE" :"Remove File",
 "USE_V1_SCAN": "Use V1 lib for passport scan",
 
 "STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"During Check-In and Pickup Keys - SAMSOTECH",
@@ -160,7 +154,16 @@
 "RE_VERIFY_IDS": "Re-Verify ID",
 "ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY": "Always require staff to verify ID during the key pick up",
 
-"ADD_LOYALTY_PGMS": "Add Loyalty Programs"
+"ADD_LOYALTY_PGMS": "Add Loyalty Programs",
+"CONFIGURABLE_IMAGES": "Configurable Images",
+"FILE_ATTACHED":"File Attached",
+"CHOOSE_FILE":"Choose File...",
+"ATTACH_FILE":"Attach File",
+"REMOVE_FILE" :"Remove File",
+
+"SWIPE_CC_FOR_AUTH": "Swipe CC for Authorization",
+"SWIPE_CC_FOR_PAYMENT": "Swipe CC for Payment",
+"KEY_CONFIRMATION_IMG": "Key confirmation image"
 
 
 

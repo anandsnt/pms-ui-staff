@@ -1,7 +1,9 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', 'configurableImagesData', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv, configurableImagesData) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
+    $scope.configurableImages = configurableImagesData.configurable_images;
+    
     var zestLanguageDataCopy = {};
 
     $scope.uploadedIcon = {
@@ -190,11 +192,9 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     };
 
     $scope.saveSettings = function() {
-        // /handling for the api for now, api has some issue with the default image setting back to snt logo...
-        // api dev should resolve this at some point
-        if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
-            $scope.zestSettings.key_create_file_uploaded = 'false';
-        }
+
+        var apiParams  = angular.copy($scope.zestSettings);
+
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
             $scope.successMessage = $filter('translate')('SETTINGS_HAVE_BEEN_SAVED');
@@ -202,13 +202,36 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             angular.element(document.querySelector('.content-scroll')).scrollTop(0);
         };
 
+        var saveImages = function() {
+            $scope.configurableImages = $scope.configurableImages || {};
+
+            var imageApiParams = angular.copy($scope.configurableImages);
+
+            // pass '' for deleting image
+            _.each(Object.keys(imageApiParams), function(key) {
+                if (!imageApiParams[key]) {
+                    imageApiParams[key] = '';
+                }
+            });
+
+            var options = {
+                params: {
+                    'configurable_images': imageApiParams
+                },
+                successCallBack: saveSuccess
+            };
+
+            $scope.callAPI(ADZestStationSrv.saveImages, options);
+
+        };
+
         setUpTranslationFilesStatus();
 
         var dataToSend = {
-            'kiosk': $scope.zestSettings
+            'kiosk': apiParams
         };
 
-        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveSuccess);
+        $scope.invokeApi(ADZestStationSrv.save, dataToSend, saveImages);
     };
 
     $scope.closePrompt = function() {

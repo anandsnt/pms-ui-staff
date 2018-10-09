@@ -254,8 +254,12 @@ sntRover.controller('reservationActionsController', [
                             	_.isEmpty($scope.guestCardData.contactInfo.email) || 
                             	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
                             	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.nationality_id) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.address.country_id)
+                            	$scope.guestCardData.contactInfo.nationality_id === undefined || 
+                                $scope.guestCardData.contactInfo.nationality_id === "" || 
+                                $scope.guestCardData.contactInfo.nationality_id === null ||
+                                $scope.guestCardData.contactInfo.address.country_id === undefined || 
+                                $scope.guestCardData.contactInfo.address.country_id === "" || 
+                                $scope.guestCardData.contactInfo.address.country_id === null
                             )
                         ) {
                         return true;

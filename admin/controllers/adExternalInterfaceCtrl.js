@@ -252,6 +252,10 @@ admin.controller('adExternalInterfaceCtrl',
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchRoomTypes, {}, fetchRoomTypesSuccess);
+        // default source code is available only for Siteminder now.
+        if ($scope.interfaceName === 'Siteminder') {
+          $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSourceCodes, {}, fetchSourceCodeSuccess);
+        }
 
         $scope.setRefreshTime();
       }
@@ -305,6 +309,11 @@ admin.controller('adExternalInterfaceCtrl',
         if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect') {
             $scope.roomTypes = data.room_types;
         }
+    };
+
+    $scope.sourceCodes = [];
+    var fetchSourceCodeSuccess = function(data) {
+        $scope.sourceCodes = data.sources;
     };
 
     if ($scope.interfaceName !== 'Givex') {
