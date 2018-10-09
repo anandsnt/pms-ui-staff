@@ -1903,12 +1903,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         }
                     });
 
-                    // in case if all reservation status are selected
+                    // in case if all tax exempts are selected
                     if (changeAppliedFilter && report['hasIncludeTaxExempts']['data'].length === selected.length) {
-                        $scope.appliedFilter.tax_exempt_type_ids = ['All Tax Exempts'];
+                        $scope.appliedFilter.tax_exempt_type_ids = [];
+                        //params[key] = []; // If all tax exempts selected
                     }
                 }
-            }                      
+            }        
 
             // Include accounts
             if (report.hasOwnProperty('hasAccountSearch')) {
@@ -2113,7 +2114,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 params.rawData = _.extend(reportUtils.reduceObject(report), rawData);
                 params.appliedFilter = $scope.appliedFilter;
             }
-            
 
             return params;
         }

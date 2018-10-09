@@ -61,4 +61,87 @@
         </div>
     </div>
 
+
+
+
+     <div id="report-content" class="report-content grid scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper">
+            <table class="deposit-reports tax-exempt-report">
+                <thead>
+                    <tr>
+                        <th><span class="sort sorting-asc">Reservation</span></th>
+                        <th><span>Tax Exempt Type</span></th>
+                        <th><span>Stay Date</span></th>
+                        <th><span>Rate</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            Date Range from <span>{Range From}</span> to <span>{Range To}</span><br />
+                            Group Code {'<span>All</span>' or repeat '<span>Group Code</span>' for every selected}<br />
+                            Account Name/No. {'<span>All</span>' or repeat '<span>Account Name</span>' for every selected}<br />
+                            Tax Exempt Type {'<span>All</span>' or repeat '<span>Tax Exempt Type</span>' for every selected}
+                        </td>
+                        <td colspan="2">
+                            Business date <span>{Business Date}</span><br />
+                            User <span>{User}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <!-- EACH ROW REPRESENTS ONE STAY DATE -->
+                    <tr ng-repeat="eachRow in results"> <!-- Add class 'row-break' for last stay date of the reservation -->
+                        <td class="name" rowspan="{Total number of nights}">
+
+                            <!-- Guest Name -->
+                            <div class="info">
+                                <span class="guest-status small-icon {reservation-status}">{reservation-status}</span>
+                                <strong>{Guest Name}</strong>
+                                <em>{Confirmation #}</em>
+                            </div>
+
+                            <!-- Arrival & Departure Dates -->
+                            <div class="dates">
+                                <div class="date">
+                                    <span class="icons time check-in"></span>
+                                    <span>{Arrival Date}</span>
+                                </div>
+                                <div class="date">
+                                    <span class="icons time check-out"></span>
+                                    <span>{Departure Date}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- If part of Account / has Group Code -->
+                            <div class="guest-info">
+                                <strong>{Account Name} | <em>{Account No.}</em></strong>
+                                <!-- If has group code 
+                                <span class="icons icon-group">{Group Code}</span>
+                                -->
+                            </div>
+
+                            <!-- If it has reference:
+                            <span class="reference">{Tax Exempt Reference}</span>
+                            -->
+                        </td>
+
+                        <td class="tax-exempt" rowspan="{Number of nights this tax exempt type applies to}"> <!-- Add class 'break' if reservation has multiple tax exempt types and this is not the last one. LAST TAX EXEMPT TYPE NEVER HAS THAT CLASS APPLIED -->
+                            <strong>{Tax Exempt Type}</strong>
+                        </td>
+                        <td class="date">
+                            <strong>{Date}</strong>
+                            <span class="reference">{Day of week}</span>
+                        </td>
+                        <td class="rate">
+                            <strong>{currency}{rate}</strong>
+                            <span class="reference">{Rate Name}</span>
+                        </td>
+                    </tr>
+                    ... repeat L64-L107 for every stay date + check examples below on L119-L315 how it should look like in different scenarios
+                </tbody>
+            </table>            
+        </div>
+    </div>
+
     <rv-pagination  page-options="paginationConfig" page-data="totalCount"></rv-pagination>
