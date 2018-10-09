@@ -125,23 +125,12 @@ sntRover.controller('RVAutoChargeController',
                 }, 1000);
             };
 
-
             // print bill
             $scope.clickedPrint = function() {
                 $scope.closeDialog();
                 that.printBill();
             };
-            /*
-             * function Navigate to Reservation Details screen
-             * @return - {None}
-             */
-            $scope.goToStayCard = function(reservation_id, confirmation_no) {
-                $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-                    'id': reservation_id,
-                    'confirmationId': confirmation_no,
-                    'isrefresh': true,
-                    'isFromAutoCharge': true});
-            };
+
             // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
