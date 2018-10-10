@@ -144,6 +144,8 @@ sntRover.controller('RVAutoChargeController',
                         $scope.autoCharges = response.details;
                         $scope.totalCount = response.total_count;
                         $scope.totalDeposite = response.total_deposit;
+                        $scope.isAutoChargeProcessing = response.auto_charge_deposit_running;
+
                         $timeout(function () {
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
                             refreshScroll();
