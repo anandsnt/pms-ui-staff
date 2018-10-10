@@ -54,4 +54,9 @@ angular.module('FinancialsModule', [])
         templateUrl: '/assets/partials/financials/invoiceSearch/rvInvoiceSearch.html',
         controller: 'RVInvoiceSearchController'
     });
+    $stateProvider.state('rover.financials.autoCharge', {
+        url: '/autoCharge',
+        templateUrl: '/assets/partials/financials/autocharge/rvAutoCharge.html',
+        controller: 'RVAutoChargeController'
+    });
 });

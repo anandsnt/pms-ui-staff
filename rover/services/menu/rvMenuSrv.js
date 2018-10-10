@@ -309,7 +309,12 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_INVOICE_SEARCH",
 		            action: "rover.financials.invoiceSearch",
 		            menuIndex: "invoiceSearch"
-		        }]
+		        },
+                {
+                    title: "AUTO_CHARGE",
+                    action: "rover.financials.autoCharge",
+                    menuIndex: "autoCharge"
+                }]
             }, {
                 title: "MENU_ACTIONS",
                 action: "",
