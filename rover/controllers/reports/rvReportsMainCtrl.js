@@ -2199,12 +2199,31 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 return response;
             };
 
+            var responseForTaxExempt = function(response) {
+                _.each(response.results, function (item) {
+                    var previousTaxExemptTypeId = '',
+                        taxExemptTypes = [];
+                    _.each(item.dates), function(dateItem, dateIndex) {
+                        var currentTaxExemptTypeId = dateItem.tax_exempt_type_id;
+                        if (previousTaxExemptTypeId !== currentTaxExemptTypeId) {
+                            taxExemptTypes.push(dateItem.tax_exempt_type_name + "-" + dateItem.tax_exempt_type_id);
+                            previousTaxExemptTypeId = currentTaxExemptTypeId;
+                            item.dates[dateIndex - 1].is_last = true;
+                        }
+                    }
+                });
+            };
+
             // fill in data into seperate props
             var updateDS = function (response) {
                 if (chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
                     // Response modified to accomodate inside pagination
                     // For TA reservations
                     response = responseWithInsidePagination(response);
+                }
+                if (chosenReport.title === reportNames['TAX_EXEMPT']) {
+                    // Response modified to handle the different tax exempt types in each date
+                    response = responseForTaxExempt(response);
                 }
 
                 $scope.totals = response.totals || [];
