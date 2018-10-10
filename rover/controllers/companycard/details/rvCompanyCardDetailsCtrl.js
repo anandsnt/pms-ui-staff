@@ -187,6 +187,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-activity-log') {
 				$scope.$broadcast("activityLogTabActive");
 			}
+			if (tabToSwitch === 'statistics') {
+				$scope.$broadcast("LOAD_STATISTICS");
+			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
