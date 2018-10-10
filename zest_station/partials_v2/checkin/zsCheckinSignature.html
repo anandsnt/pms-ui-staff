@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main" ng-hide="mode === 'TIMED_OUT'" click-touch='resetTime()' ng-hide="hideSignatureFields">
+<section id="main" ng-class="{'centered': theme !== 'yotel'}" role="main" ng-hide="mode === 'TIMED_OUT'" click-touch='resetTime()' ng-hide="hideSignatureFields">
     <div id="content">
         <h1>
             <text data-ng-bind-html="getTagValue('SIGN_SCREEN')" editable-text="SIGN_SCREEN"></text>
