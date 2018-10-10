@@ -7,9 +7,7 @@ sntRover.controller('RVAutoChargeController',
         '$filter',
         'RVBillCardSrv',
         '$window',
-        '$state',
-        '$stateParams',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $state, $stateParams) {
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window) {
 
             BaseCtrl.call(this, $scope);
 

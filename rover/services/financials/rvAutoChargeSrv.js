@@ -1,8 +1,8 @@
 angular.module('sntRover').service('RVAutoChargeSrv',
     ['$http',
         '$q',
-        'BaseWebSrvV2',
-        function($http, $q, BaseWebSrvV2) {
+        'rvBaseWebSrvV2',
+        function($http, $q, RVBaseWebSrvV2) {
 
             var that = this;
             /*
@@ -12,15 +12,10 @@ angular.module('sntRover').service('RVAutoChargeSrv',
 
             that.fetchAutoCharge = function (params) {
 
-                var deferred = $q.defer();
                 var url = '/api/hotels/auto_charge_deposit_report';
 
-                BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                    deferred.resolve(data);
-                }, function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
+                return RVBaseWebSrvV2.getJSON(url, params);
+
             };
 
         }]);
