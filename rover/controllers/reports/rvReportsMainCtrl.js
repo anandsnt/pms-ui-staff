@@ -2202,16 +2202,38 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             var responseForTaxExempt = function(response) {
                 _.each(response.results, function (item) {
                     var previousTaxExemptTypeId = '',
-                        taxExemptTypes = [];
-                    _.each(item.dates), function(dateItem, dateIndex) {
+                        taxExemptTypes = [],
+                        rowSpanIndex = 0,
+                        prevRowSpanValueIndex = 0,
+                        k = 0;
+                    _.each(item.dates, function(dateItem, dateIndex) {
                         var currentTaxExemptTypeId = dateItem.tax_exempt_type_id;
+
                         if (previousTaxExemptTypeId !== currentTaxExemptTypeId) {
-                            taxExemptTypes.push(dateItem.tax_exempt_type_name + "-" + dateItem.tax_exempt_type_id);
-                            previousTaxExemptTypeId = currentTaxExemptTypeId;
-                            item.dates[dateIndex - 1].is_last = true;
+                            taxExemptTypes.push(dateItem.tax_exempt_type_id);
+                            previousTaxExemptTypeId = currentTaxExemptTypeId;                            
+                            
+                            prevRowSpanValueIndex = dateIndex;
+                            if (dateIndex !== 0) {
+                                item.dates[dateIndex].is_next = true;
+                                item.dates[rowSpanIndex].rowSpanValue = k;
+                                item.dates[rowSpanIndex].isRowSpanApplied = true;
+                                rowSpanIndex = dateIndex;
+                            }
+                            k = 1;
+                            
+                        } else {
+                            k++;
+                            item.dates[dateIndex].isRowSpanApplied = false;
                         }
-                    }
+                        if(item.dates.length === dateIndex+1) {
+                            item.dates[rowSpanIndex].rowSpanValue = k;
+                            item.dates[rowSpanIndex].isRowSpanApplied = true;
+                        }
+                    });
+                    item.totalTaxExempts = taxExemptTypes.length;
                 });
+                return response;
             };
 
             // fill in data into seperate props

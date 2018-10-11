@@ -5063,6 +5063,122 @@
         }
     }
 
+/* Automatic Payments       ==============================*/
+    #automatic-payments {
+
+        .cell-checkbox {
+            .hide();
+        }
+
+        .grid-header {
+            display: grid;
+            grid-template-columns: 35% 15% 22% 14% 14%;
+            background-color: @grey1;
+
+            li {
+                font-size: 8pt;
+                line-height: 1;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0;
+                padding: 4pt 4pt 4pt 0;
+
+                &.cell-reservation {
+                    padding-left: 4pt;
+                }
+            }
+
+            .cell-cost,
+            .cell-deposit {
+                text-align: right;
+            }
+        }
+
+        .grid-content {
+            .search-results {
+                li:not(.no-content) {
+                    &.autopayment-item {
+                        
+                        .info {
+                            font-size: 8pt;
+                            line-height: 1;
+                            #flexbox > .parent(row wrap, '', center, '');
+
+                            .label {
+                                font-size: 8pt;
+                                display: inline-block;
+                                float: none;
+                                margin-right: 3px;
+                            }
+
+                            .value {
+                                font-weight: 600;
+                            }
+                        }
+
+                        a {
+                            display: grid;
+                            grid-template-columns: 35% 15% 22% 14% 14%;
+                            background: transparent;
+                            padding: 0 4pt;
+
+                            &:before,
+                            &:after {
+                                .hide();
+                            }
+                        }
+
+                        [class*="cell-"] { 
+                            #flexbox > .parent(row wrap, '', center, '');
+                        }
+
+                        .cell-reservation {
+                            h2 {
+                                font-size: 9pt;
+                                width: 100%;
+                                .nowrap();
+                            }
+                        }
+
+                        .cell-card {
+
+                            .card-logo {
+                                margin-right: 4px;
+
+                                img {
+                                    .size(14px, auto);
+                                }
+                            }
+
+                            .info {
+                                width: 35%;
+                            }
+                        }
+
+                        .cell-cost,
+                        .cell-deposit {
+                            font-size: 9pt;
+                            #flexbox > .parent('', flex-end, '', '');
+                        }
+
+                        .cell-deposit {
+                            font-weight: 600;
+
+                            .deposit-due {
+                                font-size: 8pt;
+                                text-align: right;
+                                color: @grey3;
+                                text-transform: uppercase;
+                                width: 100%;
+                                .show();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

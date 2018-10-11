@@ -63,7 +63,7 @@
                             -->
                         </td>
 
-                        <td class="tax-exempt" rowspan="{{eachRow.dates.length}}"> <!-- Add class 'break' if reservation has multiple tax exempt types and this is not the last one. LAST TAX EXEMPT TYPE NEVER HAS THAT CLASS APPLIED -->
+                        <td class="tax-exempt" ng-class="{'break': eachRow.totalTaxExempts > 1}" rowspan="{{eachRow.dates[0].rowSpanValue}}"> <!-- Add class 'break' if reservation has multiple tax exempt types and this is not the last one. LAST TAX EXEMPT TYPE NEVER HAS THAT CLASS APPLIED -->
                             <strong>{{eachRow.dates[0].tax_exempt_type_name}}</strong>
                         </td>
                         <td class="date">
@@ -76,7 +76,12 @@
                         </td>
                     </tr>
 
-                    <tr ng-repeat="eachDate in eachRow.dates" ng-if="$index !== 0 && $index !== (eachRow.dates.length - 1) ">
+                    <tr ng-repeat="eachDate in eachRow.dates" ng-if="$index !== 0 && $index !== (eachRow.dates.length - 1) " >
+                        <td class="tax-exempt"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
+                            <strong>Mid Stay Break</strong>
+                            <span class="reference">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec diam at magna egestas </span>
+                        </td>
+
                         <td class="date">
                             <strong>{{eachDate.date}}</strong><span class="reference">{{eachDate.date | date:'EEEE'}}</span>
                         </td>
