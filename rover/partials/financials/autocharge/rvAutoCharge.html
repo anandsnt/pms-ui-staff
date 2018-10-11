@@ -49,8 +49,10 @@
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
     <!-- Header -->
-    <ul class="grid-header" ng-show="!isAutoChargeProcessing"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-        <li class="cell-checkbox ng-hide"> <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
+    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+        <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+        <li class="cell-checkbox ng-hide">
+            <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
             <label class="checkbox">
                 <span class="icon-form icon-checkbox"></span>
                 <input id="select-all" type="checkbox" value="{value}">
@@ -64,8 +66,9 @@
     </ul>
 
     <!-- Reservations -->
-    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller"> <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
-        <div class="wrapper" ng-show="totalCount !== 0">
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+        <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
+        <div class="wrapper">
             <ul class="search-results">
                 <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
                     <div class="cell-checkbox ng-hide"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
@@ -106,11 +109,11 @@
                             </div>
                         </div>
                         <div class="cell-cost">
-                            {{autoCharge.stay_cost}}{{currencySymbol}}
+                            {{currencySymbol}}{{autoCharge.stay_cost}}
                         </div>
                         <div class="cell-deposit" ng-class="{'color-green' : !autoCharge.is_declined, 'color-red' : autoCharge.is_declined}">
-                            {{autoCharge.deposit_paid}}{{currencySymbol}}
-                            <div class="deposit-due" ng-show="autoCharge.is_declined">{{autoCharge.deposit_paid}}{{currencySymbol}}</div>
+                            {{currencySymbol}}{{autoCharge.deposit_paid}}
+                            <div class="deposit-due" ng-show="autoCharge.is_declined">{{currencySymbol}}{{autoCharge.deposit_paid}}</div>
                         </div>
                     </a>
                 </li>
@@ -124,6 +127,16 @@
                 <span class="icon-no-content icon-alert"></span>
                 <strong class="h1 alert">Deposit Auto-Charge is being processed.</strong>
                 <span class="h2">Please check back at a later time.</span>
+            </div>
+        </div>
+        <!-- CASE 3: NO CONTENT - REPLACE L72-L138 with this-->
+        <div class="no-content" ng-show="!isAutoChargeProcessing && totalCount == 0">
+            <div class="info">
+                <span class="icon-no-content icon-reports"></span>
+                <strong class="h1">Nothing found</strong>
+                <span class="h2" ng-show="filters.status == 'ALL'">There are no transactions.</span>
+                <span class="h2" ng-show="filters.status == 'APPROVED'">There are no approved transactions.</span>
+                <span class="h2" ng-show="filters.status == 'DECLINED'">There are no declined transactions.</span>
             </div>
         </div>
     </div>
