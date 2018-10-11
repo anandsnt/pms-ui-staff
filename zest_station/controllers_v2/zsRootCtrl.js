@@ -1031,7 +1031,8 @@ sntZestStation.controller('zsRootCtrl', [
             var options = {
 
                 params: {
-                    device_uid: deviceId
+                    device_uid: deviceId,
+                    service_application_name: 'Zest station handler'
                 },
                 successCallBack: function(response) {
                     if (response && response.is_logging_enabled) {
