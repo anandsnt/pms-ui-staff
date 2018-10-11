@@ -10,11 +10,15 @@
             <ul class="details">
                 <li>
                     <span>{{ 'ID_LAST_NAME' | translate }}</span>
-                    {{ guestIdData.last_name }}
+                     <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.last_name">
+                    </div>
                 </li>
                 <li>
                     <span>{{ 'ID_FIRST_NAME' | translate}}</span>
-                    {{ guestIdData.first_name }}
+                     <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.first_name">
+                    </div>
                 </li>
                 <!-- DOB -->
                 <li>

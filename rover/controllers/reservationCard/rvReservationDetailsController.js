@@ -1677,13 +1677,6 @@ sntRover.controller('reservationDetailsController',
 			}
 		}
 
-		// for manualy uploading IDs use first name and last name in reservation
-		if ($scope.guestIdData.is_manual_upload) {
-			$scope.guestIdData.first_name = guestData.first_name;
-			$scope.guestIdData.last_name = guestData.last_name;
-		}
-
-
 		ngDialog.open({
 			template: '/assets/partials/guestId/rvGuestId.html',
 			className: 'guest-id-dialog',
