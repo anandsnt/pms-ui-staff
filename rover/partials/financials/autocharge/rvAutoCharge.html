@@ -70,7 +70,7 @@
         <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
                     <div class="cell-checkbox ng-hide"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
                         <label class="checkbox">
                             <span class="icon-form icon-checkbox"></span>
