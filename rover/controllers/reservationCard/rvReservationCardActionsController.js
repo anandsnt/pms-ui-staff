@@ -1479,7 +1479,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 var dateObj = $scope.newAction.dueDateObj;
 
                 if (!dateObj) {
-                    var spiltString = $scope.newAction.date_due.indexOf("/") == -1 ? "-" : "/";
+                    var spiltString = $scope.newAction.date_due.indexOf("/") === -1 ? "-" : "/";
                     var dateParts = $scope.newAction.date_due.split(spiltString);
                     dateObj = getTZIndependentDateFromDayMonthYear(dateParts[0], dateParts[1], dateParts[2]);
                 }
