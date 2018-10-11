@@ -7,12 +7,8 @@
         </ul>
         <div class="row row-head white">
             <div class="select">
-                <select>
-                    <option value="2017">Last Year (2017)</option>
-                    <option value="2016">2016</option>
-                    <option value="2016">2015</option>
-                    <option value="2016">2014</option>
-                    <option value="2016">2013</option>
+                <select ng-options="year.value as year.name for year in yearOptions" ng-model="filterData.selectedYear"
+                    ng-change="onChangeYear()">
                 </select>
             </div>
         </div>
@@ -21,7 +17,7 @@
                 <!-- if we don't have data in the month add .no-data -->
                 <!-- if we click on it, add .open -->
                 <!-- add CSS => margin-bottom: {margin}px, where 'margin' is ( number of reservations * 70 ) + 30-->
-                <div class="row" ng-repeat="monthlyData in statistics.details.monthly_data" ng-class="{'no-data': !monthlyData.data_available, 'open': monthlyData.isOpen}"
+                <div class="row" ng-repeat="monthlyData in statistics.details.monthly_data" ng-class="{'no-data': monthlyData.stay_count === 0, 'open': monthlyData.isOpen}"
                     ng-style="getStyleForExpandedView(monthlyData)" ng-click="showMonthlyReservations(monthlyData)">
                     <!-- If we have data in the month -->
                     <span class="icons icon-double-arrow black" ng-show="monthlyData.reservations.length > 0"></span>
@@ -70,15 +66,15 @@
                         <!-- if no data (0) then add .no-data -->
                         <div class="column" ng-class="{'no-data': monthlyData.no_show_count === 0}">{{monthlyData.no_show_count}}</div>
                         <!-- if no data (0) then add .no-data -->
-                        <div class="column">
+                        <div class="column" ng-class="{'no-data': monthlyData.adr === 0}">
                             <span ng-bind-html="monthlyData.adr | sntCurrency:this"></span>
                         </div>
                         <!-- if no data (0) then add .no-data -->
-                        <div class="column">
+                        <div class="column" ng-class="{'no-data': monthlyData.room_revenue === 0}">
                             <span ng-bind-html="monthlyData.room_revenue | sntCurrency:this"></span>
                         </div>
                         <!-- if no data (0) then add .no-data -->
-                        <div class="column">
+                        <div class="column" ng-class="{'no-data': monthlyData.total_revenue === 0}">
                             <strong>
                                 <span ng-bind-html="monthlyData.total_revenue | sntCurrency:this"></span>
                             </strong>
@@ -88,7 +84,7 @@
                     <div class="statistics-reservations" ng-class="{'hidden': !monthlyData.isOpen}">
                         <ul class="search-results">
                             <li class="reservation transaction" ng-repeat="reservation in monthlyData.reservations">
-                                <a class="faux-anchor" href="{stay-card}">
+                                <a class="faux-anchor" ng-click="navigateToStayCard(reservation)">
                                     <div class="data">
                                         <!-- add .grey if we have no room/cancelled-->
                                         <h2 ng-class="{'grey': reservation.is_cancelled || !reservation.room_no}">
@@ -113,8 +109,8 @@
                                         </time>
                                     </div>
                                     <div class="guest-data rate">
-                                        <strong>ADR</strong>
-                                        <span>{{reservation.adr}}</span>
+                                        <strong><span ng-bind-html="reservation.adr | sntCurrency:this"></span> ADR</strong>
+                                        <span>{{reservation.rate_name}}</span>
                                     </div>
                                     <div class="guest-data room">
                                         <!-- if N/A, add .no-number -->

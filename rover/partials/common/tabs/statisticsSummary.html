@@ -18,17 +18,12 @@
         <div class="row row-head">
             <div class="column">
                 <div class="select">
-                    <select>
-                        <option value="2017">Last Year (2017)</option>
-                        <option value="2016">2016</option>
-                        <option value="2016">2015</option>
-                        <option value="2016">2014</option>
-                        <option value="2016">2013</option>
+                    <select ng-options="year.value as year.name for year in yearOptions" ng-model="filterData.selectedYear" ng-change="onChangeYear()">                        
                     </select>
                 </div>
             </div>
             <div class="column white">
-                <strong>Year to date (2018)</strong>
+                <strong>Year to date ({{ filterData.selectedYear + 1 }})</strong>
             </div>
             <div class="column">
                 <strong>Total</strong>
@@ -36,7 +31,7 @@
         </div>
         <div class="row">
             <div class="column">{{statistics.summary.stay_count.annual}}</div>
-            <div class="column white">
+            <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.stay_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.stay_count.change_percent)}}"></span>
                     {{statistics.summary.stay_count.change_percent}}%
@@ -44,21 +39,21 @@
                 {{absVal(statistics.summary.stay_count.ytd)}}
             </div>
             <div class="column">{{statistics.summary.stay_count.total}}</div>
-        </div>
+        </div> 
         <div class="row">
-            <div class="column">{{statistics.summary.nights_count.annual}}</div>
-            <div class="column white">
-                <div class="stat {{getStatusClass(statistics.summary.nights_count.change_percent)}}">
-                    <span class="{{getStatusIconClass(statistics.summary.nights_count.change_percent)}}"></span>
-                    {{absVal(statistics.summary.nights_count.change_percent)}}%
+            <div class="column">{{statistics.summary.night_count.annual}}</div>
+            <div class="column white">                
+                <div class="stat {{getStatusClass(statistics.summary.night_count.change_percent)}}">
+                    <span class="{{getStatusIconClass(statistics.summary.night_count.change_percent)}}"></span>
+                    {{absVal(statistics.summary.night_count.change_percent)}}%
                 </div>
-                {{statistics.summary.nights_count.ytd}}
+                {{statistics.summary.night_count.ytd}}
             </div>
             <div class="column">{{statistics.summary.nights_count.total}}</div>
-        </div>
+        </div> 
         <div class="row">
             <div class="column">{{statistics.summary.cancellation_count.annual}}</div>
-            <div class="column white">
+            <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.cancellation_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.cancellation_count.change_percent)}}"></span>
                     {{absVal(statistics.summary.cancellation_count.change_percent)}}%
@@ -66,10 +61,10 @@
                 {{statistics.summary.cancellation_count.ytd}}
             </div>
             <div class="column">{{statistics.summary.cancellation_count.total}}</div>
-        </div>
+        </div> 
         <div class="row">
             <div class="column">{{statistics.summary.no_show_count.annual}}</div>
-            <div class="column white">
+            <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.no_show_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.no_show_count.change_percent)}}"></span>
                     {{absVal(statistics.summary.no_show_count.change_percent)}}%
@@ -81,31 +76,31 @@
 
         <div class="row">
             <div class="column"><span ng-bind-html="statistics.summary.adr.annual | sntCurrency:this"></span></div>
-            <div class="column white">
+            <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.adr.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.adr.change_percent)}}"></span>
                     {{absVal(statistics.summary.adr.ytd)}}%
                 </div>
-                <span ng-bind-html="statistics.summary.adr.ytd | sntCurrency:this"></span>
+                <span ng-bind-html="statistics.summary.adr.ytd | sntCurrency:this"></span>                
             </div>
             <div class="column"><span ng-bind-html="statistics.summary.adr.total | sntCurrency:this"></span></div>
-        </div>
+        </div> 
         <div class="row">
             <div class="column"><span ng-bind-html="statistics.summary.room_revenue.annual | sntCurrency:this"></span></div>
-            <div class="column white">
+            <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.room_revenue.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.room_revenue.change_percent)}}"></span>
-                    {{absVal(statistics.summary.room_revenue.ytd)}}%
+                    {{absVal(statistics.summary.room_revenue.change_percent)}}%
                 </div>
-                <span ng-bind-html="statistics.summary.room_revenue.ytd | sntCurrency:this"></span>
+                <span ng-bind-html="statistics.summary.room_revenue.ytd | sntCurrency:this"></span>                 
             </div>
             <div class="column"><span ng-bind-html="statistics.summary.room_revenue.total | sntCurrency:this"></span></div>
-        </div>
+        </div>       
 
         <!-- Total Revenue -->
         <div class="row">
             <div class="column"><strong><span ng-bind-html="statistics.summary.total_revenue.annual | sntCurrency:this"></span></strong></div>
-            <div class="column white">
+            <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.total_revenue.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.total_revenue.change_percent)}}"></span>
                     {{absVal(statistics.summary.total_revenue.ytd)}}%

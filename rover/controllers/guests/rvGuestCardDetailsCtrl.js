@@ -285,8 +285,14 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.loyaltyTabEnabled = false;
             $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
 
-            // Set contact tab as active by default
-            $scope.current = 'guest-contact';
+            // This is set when navigated to staycard from statistics details page
+            if ($stateParams.isBackToStatistics) {
+                $scope.current = 'guest-statistics';
+            } else {
+                // Set contact tab as active by default
+                $scope.current = 'guest-contact';
+            }
+            
 
             $scope.paymentData = {};
             setTitleAndHeading();

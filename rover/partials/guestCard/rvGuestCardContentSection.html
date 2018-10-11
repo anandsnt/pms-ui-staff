@@ -13,10 +13,10 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-credit'}" click-touch="guestCardTabSwitch('guest-credit')">
                 <a id="guest-credit">Credit Cards &amp; Payment</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-hide='!loyaltyTabEnabled' ng-show='loyaltyTabEnabled' >
+            <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-statistics'}" click-touch="guestCardTabSwitch('guest-statistics')">
+            <li ng-class="{'ui-tabs-active': current == 'guest-statistics'}" click-touch="guestCardTabSwitch('guest-statistics')" ng-if="isStandAlone && guestCardData.contactInfo.show_statistics">
                 <a href="#gc-statistics">Statistics</a>
                 <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>
             </li>
@@ -38,7 +38,7 @@
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
         <!-- Guest Card Tab 5 Statistics -->
-        <span ng-include="'/assets/partials/guestCard/guestCardStatistics.html'"></span>
+        <span ng-include="'/assets/partials/common/tabs/statistics.html'"></span>
         <!-- Guest Card Tab 6 Activity Log-->
         <span ng-show="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
         <!-- Guest Card Tab 7 Notes-->
