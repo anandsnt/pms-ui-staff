@@ -68,6 +68,8 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 				if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
 					var printer = (sntZestStation.selectedPrinter);
 
+					printer = $scope.zestStationData.zest_printer_option === 'RECEIPT' ? 'receipt_printer' : printer;
+
 					cordova.exec(
 						onPrintSuccess(), // print complete, should go to final screen
 						onPrintError(), // if print error, inform guest there was an error

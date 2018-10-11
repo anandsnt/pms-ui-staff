@@ -168,6 +168,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                         if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
                             var printer = sntZestStation.selectedPrinter;
 
+                            printer = $scope.zestStationData.zest_printer_option === 'RECEIPT' ? 'receipt_printer' : printer;
                             cordova.exec(function() {
                                 printSuccessActions();
                             }, function() {
