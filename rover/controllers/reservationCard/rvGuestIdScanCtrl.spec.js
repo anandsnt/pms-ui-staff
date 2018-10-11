@@ -19,16 +19,25 @@ describe('rvGuestIdScanCtrl', function() {
             ngDialog = _ngDialog_;
         });
 
+        $scope.guestIdData = {
+            'front_image_data': '',
+            'back_image_data': '',
+            'signature': '',
+            'guest_id': '',
+            'last_name': '',
+            'first_name': '',
+            'date_of_birth': '',
+            'nationality_id': '',
+            'document_number': '',
+            'expiration_date': '',
+            'reservation_id': '',
+            'document_type': ''
+        };
+
         $controller('rvGuestIdScanCtrl', {
             $scope: $scope
         });
-        $scope.guestIdData = {
-            'first_name': 'Peter',
-            'last_name': 'Pan',
-            'front_image_data': 'XXXXXX',
-            'back_image_data': 'xxxxxx',
-            'signature': ''
-        };
+    
         $scope.reservationData = {
             'reservation_card': {
                 reservation_id: 122
@@ -51,49 +60,6 @@ describe('rvGuestIdScanCtrl', function() {
     });
 
 
-    it('On image change, call API to save image', function() {
-        spyOn(RVGuestCardsSrv, 'uploadGuestId')
-            .and
-            .callFake(function() {
-                var deferred = $q.defer();
-
-                deferred.resolve({});
-                return deferred.promise;
-            });
-        $scope.ImageChange();
-        expect(RVGuestCardsSrv.uploadGuestId)
-            .toHaveBeenCalled();
-    });
-
-    it('On delete image change, call API to delete image', function() {
-        spyOn(RVGuestCardsSrv, 'deleteGuestId')
-            .and
-            .callFake(function() {
-                var deferred = $q.defer();
-
-                deferred.resolve({});
-                return deferred.promise;
-            });
-        $scope.deleteImage('front-image');
-        $scope.$digest();
-        expect(RVGuestCardsSrv.deleteGuestId)
-            .toHaveBeenCalled();
-    });
-
-
-    it('On clicking save on left panel, call API to save', function() {
-
-        spyOn(RVGuestCardsSrv, 'saveGuestIdDetails')
-            .and
-            .callFake(function() {
-                var deferred = $q.defer();
-
-                deferred.resolve({});
-                return deferred.promise;
-            });
-        $scope.saveGuestIdDetails();
-        expect(RVGuestCardsSrv.saveGuestIdDetails).toHaveBeenCalled();
-    });
 
     it('On clicking dob input field, open the calendar popup', function() {
         spyOn(ngDialog, 'open');

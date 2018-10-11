@@ -96,62 +96,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			errorPopup.close();
 		};
 
-		$scope.ImageChange = function(imageType) {
-			var apiParams = {
-				'is_front_image': imageType === 'front-image',
-				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
-				'guest_id': $scope.guestIdData.guest_id,
-				'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
-			};
-			var ImageChangesuccessCallBack = function() {
-				markIDDetailsHasChanged();
-				if (imageType === 'front-image') {
-					resetLeftPanel();
-					$scope.saveGuestIdDetails();
-				}
-			};
+		$scope.saveGuestIdDetails = function (action, imageType) {
 
-			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
-				params: apiParams,
-				successCallBack: ImageChangesuccessCallBack,
-				failureCallBack: function() {
-					generalFailureCallBack();
-					// delete the image
-					if (imageType === 'front-image') {
-						$scope.guestIdData.front_image_data = '';
-					} else {
-						$scope.guestIdData.back_image_data = '';
-					}
-				}
-			});
-		};
-
-		$scope.deleteImage = function(imageType) {
 			var apiParams = {
-				'is_front_image': imageType === 'front-image',
-				'guest_id': $scope.guestIdData.guest_id,
-				'reservation_id': $scope.reservationData.reservation_card.reservation_id
-			};
-			var deleteSuccessCallback = function() {
-				if (imageType === 'front-image') {
-					$scope.guestIdData.front_image_data = "";
-					resetLeftPanel();
-				} else {
-					$scope.guestIdData.back_image_data = "";
-				}
-				markIDDetailsHasChanged();
-			};
-				
-			$scope.callAPI(RVGuestCardsSrv.deleteGuestId, {
-				params: apiParams,
-				successCallBack: deleteSuccessCallback,
-				failureCallBack: generalFailureCallBack
-			});
-		};
-
-		$scope.saveGuestIdDetails = function () {
-			var apiParams = {
+				'front_image_data': $scope.guestIdData.front_image_data,
+				'back_image_data':$scope.guestIdData.back_image_data,
+				'signature':$scope.guestIdData.signature,
 				'guest_id': $scope.guestIdData.guest_id,
 				'last_name': $scope.guestIdData.last_name,
 				'first_name': $scope.guestIdData.first_name,
@@ -163,9 +113,48 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
 			};
 
+			if (action === 'DELETE') {
+				if (imageType === 'front-image') {
+					apiParams.front_image_data = "";
+				} else {
+					apiParams.back_image_data = "";
+				}
+			};
+
+			var saveSuccessCallBack;
+
+			if (action === 'DELETE') {
+				saveSuccessCallBack = function() {
+					if (imageType === 'front-image') {
+						$scope.guestIdData.front_image_data = "";
+					} else {
+						$scope.guestIdData.back_image_data = "";
+					}
+					markIDDetailsHasChanged();
+				}
+			} else {
+				saveSuccessCallBack = function() {
+					markIDDetailsHasChanged();
+
+					var idType = $scope.guestIdData.document_type && $scope.guestIdData.document_type === 'ID_CARD' ? 1 : 3;
+					var nationalityId = $scope.guestIdData.nationality_id ? parseInt($scope.guestIdData.nationality_id) : '';
+
+					if ($scope.guestIdData.is_primary_guest) {
+						var dataToUpdate = {
+							id_type: idType,
+							nationality_id: nationalityId,
+							id_number: $scope.guestIdData.document_number
+						};
+						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
+					}
+
+					$scope.closeGuestIdModal();
+				}
+			}
+
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
-				successCallBack: markIDDetailsHasChanged,
+				successCallBack: saveSuccessCallBack,
 				failureCallBack: generalFailureCallBack
 			});
 		};

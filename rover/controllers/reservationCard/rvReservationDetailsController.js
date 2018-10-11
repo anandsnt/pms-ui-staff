@@ -1660,6 +1660,7 @@ sntRover.controller('reservationDetailsController',
 			return;
 		} else if (guestDocData) {
 			guestDocData.guest_id = guestId;
+			guestDocData.is_primary_guest = isPrimaryGuest;
 			$scope.guestIdData = angular.copy(guestDocData);
 		} else {
 			$scope.guestIdData = {
@@ -1673,7 +1674,8 @@ sntRover.controller('reservationDetailsController',
 				'back_image_data': '',
 				'front_image_data': '',
 				'signature': '',
-				'is_manual_upload': true
+				'is_manual_upload': true,
+				'is_primary_guest': isPrimaryGuest
 			}
 		}
 
