@@ -1906,7 +1906,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all tax exempts are selected
                     if (changeAppliedFilter && report['hasIncludeTaxExempts']['data'].length === selected.length) {
                         $scope.appliedFilter.tax_exempt_type_ids = [];
-                        //params[key] = []; // If all tax exempts selected
+                        params[key] = []; // If all tax exempts selected
                     }
                 }
             }        
@@ -2204,16 +2204,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     var previousTaxExemptTypeId = '',
                         taxExemptTypes = [],
                         rowSpanIndex = 0,
-                        prevRowSpanValueIndex = 0,
                         k = 0;
+
                     _.each(item.dates, function(dateItem, dateIndex) {
                         var currentTaxExemptTypeId = dateItem.tax_exempt_type_id;
 
                         if (previousTaxExemptTypeId !== currentTaxExemptTypeId) {
                             taxExemptTypes.push(dateItem.tax_exempt_type_id);
                             previousTaxExemptTypeId = currentTaxExemptTypeId;                            
-                            
-                            prevRowSpanValueIndex = dateIndex;
                             if (dateIndex !== 0) {
                                 item.dates[dateIndex].is_next = true;
                                 item.dates[rowSpanIndex].rowSpanValue = k;
@@ -2226,7 +2224,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                             k++;
                             item.dates[dateIndex].isRowSpanApplied = false;
                         }
-                        if(item.dates.length === dateIndex+1) {
+                        if (item.dates.length === dateIndex + 1) {
                             item.dates[rowSpanIndex].rowSpanValue = k;
                             item.dates[rowSpanIndex].isRowSpanApplied = true;
                         }
