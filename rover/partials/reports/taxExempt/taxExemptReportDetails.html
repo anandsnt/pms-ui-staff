@@ -58,9 +58,9 @@
                                 <span class="icons icon-group" ng-if = "eachRow.group_code !== '' && eachRow.group_code !== null">{{eachRow.group_code}}</span>
                                 </div>
 
-                            <!-- If it has reference:
-                            <span class="reference">{Tax Exempt Reference}</span>
-                            -->
+                            <!-- If it has reference:-->
+                            <span class="reference" ng-if="eachRow.tax_exempt_reference !== ''">{{eachRow.tax_exempt_reference}}</span>
+                            
                         </td>
 
                         <td class="tax-exempt" ng-class="{'break': eachRow.totalTaxExempts > 1}" rowspan="{{eachRow.dates[0].rowSpanValue}}"> <!-- Add class 'break' if reservation has multiple tax exempt types and this is not the last one. LAST TAX EXEMPT TYPE NEVER HAS THAT CLASS APPLIED -->
@@ -78,8 +78,7 @@
 
                     <tr ng-repeat="eachDate in eachRow.dates" ng-if="$index !== 0 && $index !== (eachRow.dates.length - 1) " >
                         <td class="tax-exempt"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
-                            <strong>Mid Stay Break</strong>
-                            <span class="reference">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec diam at magna egestas </span>
+                            <strong>{{eachDate.tax_exempt_type_name}}</strong>                            
                         </td>
 
                         <td class="date">
@@ -96,9 +95,7 @@
                         <td class="rate">
                             <strong><span class="currency">{{currencySymbol}}</span>{{eachRow.dates[eachRow.dates.length - 1].rate_amount}}</strong><span class="reference">{{eachRow.dates[eachRow.dates.length - 1].rate_name}}</span>
                         </td>
-                    </tr>
-                    
-                    
+                    </tr>                    
                 </tbody>
             </table>            
         </div>
