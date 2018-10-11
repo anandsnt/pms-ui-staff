@@ -269,7 +269,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 } else {
                     applyStarTacStyles();   
                 }
-            } else if ($scope.zestStationData.zest_printer_option === 'RECEIPT' && theme === 'yotel') {
+            } else if ($scope.zestStationData.zest_printer_option === 'RECEIPT'  ) {
                 applyStylesForYotelReceipt();
             } else {
                 applyPrintMargin(); // zsUtils function

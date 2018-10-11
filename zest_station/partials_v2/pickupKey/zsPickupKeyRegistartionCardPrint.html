@@ -27,7 +27,7 @@
 <!-- print  -->
 <!-- hidden view for print action -->
 <!-- the logo need to be reworked in future -->
-<section id="registration-card" class="page-print" ng-hide="theme === 'yotel'">
+<section id="registration-card" class="page-print" ng-hide="theme === 'yotel' || zestStationData.zest_printer_option === 'RECEIPT'">
     <!-- Hotel logo  !this needs to be swappable between hotels-->
     <div id="logo" ng-hide="theme !== 'zoku'">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="logo" id="zoku-print-logo" x="0px" y="0px" viewBox="0 0 937.2 146.3" enable-background="new 0 0 937.2 146.3" xml:space="preserve">
@@ -52,7 +52,7 @@
     <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
     <p class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.reg_card_text)" style="width:80%; margin: 0 auto;"></p>
 </section>
-<div class="room page-print" ng-show="theme === 'yotel'">
+<div class="room page-print" ng-show="theme === 'yotel' || zestStationData.zest_printer_option === 'RECEIPT'">
     <section id="registration-card" class="page-print">
         <div class="logo">
             <div ng-include="icons.url.logo"></div>
