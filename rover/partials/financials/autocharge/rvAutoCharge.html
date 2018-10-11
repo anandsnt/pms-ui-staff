@@ -119,25 +119,23 @@
                 </li>
             </ul>
         </div>
-
-
-        <!--IF THERE's NOTHING TO SHOW, REPLACE L88-L137 with this-->
-        <div class="no-content" ng-show="isAutoChargeProcessing">
-             <div class="info">
-                <span class="icon-no-content icon-alert"></span>
-                <strong class="h1 alert">Deposit Auto-Charge is being processed.</strong>
-                <span class="h2">Please check back at a later time.</span>
-            </div>
+    </div>
+    <!--IF THERE's NOTHING TO SHOW, REPLACE L88-L137 with this-->
+    <div class="no-content" ng-show="isAutoChargeProcessing">
+        <div class="info">
+            <span class="icon-no-content icon-alert"></span>
+            <strong class="h1 alert">Deposit Auto-Charge is being processed.</strong>
+            <span class="h2">Please check back at a later time.</span>
         </div>
-        <!-- CASE 3: NO CONTENT - REPLACE L72-L138 with this-->
-        <div class="no-content" ng-show="!isAutoChargeProcessing && totalCount == 0">
-            <div class="info">
-                <span class="icon-no-content icon-reports"></span>
-                <strong class="h1">Nothing found</strong>
-                <span class="h2" ng-show="filters.status == 'ALL'">There are no transactions.</span>
-                <span class="h2" ng-show="filters.status == 'APPROVED'">There are no approved transactions.</span>
-                <span class="h2" ng-show="filters.status == 'DECLINED'">There are no declined transactions.</span>
-            </div>
+    </div>
+    <!-- CASE 3: NO CONTENT - REPLACE L72-L138 with this-->
+    <div class="no-content" ng-show="!isAutoChargeProcessing && totalCount == 0">
+        <div class="info">
+            <span class="icon-no-content icon-reports"></span>
+            <strong class="h1">Nothing found</strong>
+            <span class="h2" ng-show="filters.status == 'ALL'">There are no transactions.</span>
+            <span class="h2" ng-show="filters.status == 'APPROVED'">There are no approved transactions.</span>
+            <span class="h2" ng-show="filters.status == 'DECLINED'">There are no declined transactions.</span>
         </div>
     </div>
 
