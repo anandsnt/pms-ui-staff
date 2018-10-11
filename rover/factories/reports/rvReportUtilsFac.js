@@ -1274,38 +1274,6 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }    
 
-
-
-            // function fillDepartments(data) {
-            //     var foundFilter,
-            //         customData;
-
-            //         _.each(data, function(departmentData) {
-            //           departmentData.id = departmentData.value;
-            //         });
-
-            //     _.each(reportList, function(report) {
-            //         foundFilter = _.find(report['filters'], { value: 'INCLUDE_DEPARTMENTS' });
-            //         if ( !! foundFilter ) {
-            //             foundFilter['filled'] = true;
-
-            //             report.hasDepartments = {
-            //                 data: angular.copy( data ),
-            //                 options: {
-            //                     hasSearch: false,
-            //                     selectAll: true,
-            //                     key: 'name',
-            //                     defaultValue: 'Select Department'
-            //                 }
-            //             };
-            //         }
-            //     });
-
-            //     completed++;
-            //     checkAllCompleted();
-            // }
-
-
             function fillAgingBalance() {
                 var  customData = [
                                 {id: "0to30", status: "0-30 DAYS", selected: true},
