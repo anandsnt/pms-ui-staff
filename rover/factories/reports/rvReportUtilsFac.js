@@ -43,7 +43,8 @@ angular.module('reportsModule')
             'chosenIncludeGroup',
             'hasMinRoomNights',
             'hasMinRevenue',
-            'showActionables'
+            'showActionables',
+            'show_vat_with_rates'
         ];
 
         /**
@@ -409,12 +410,8 @@ angular.module('reportsModule')
 
                 case reportNames['TAX_EXEMPT']:
                     report['filters'].push({
-                        'value': "GROUP_CODE",
-                        'description': "Group Code"
-                    }
-                    , {
-                        'value': "TAX_EXEMPT_TYPE",
-                        'description': "Include Tax Exempt"
+                        'value': "SHOW_VAT_WITH_RATES",
+                        'description': "VAT"
                     }
                     );
                     break;
@@ -645,6 +642,10 @@ angular.module('reportsModule')
 
                 if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
                     report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
+                }
+
+                if (filter.value === 'SHOW_VAT_WITH_RATES') {
+                    report['hasShowVatWithRates'] = filter;
                 }
 
                 if (filter.value === 'VAT_YEAR') {
@@ -910,7 +911,9 @@ angular.module('reportsModule')
                     // requested++;
                     fillAgingBalance();
                 } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
-                    fillTaxExemptTypes();
+                    requested++;
+                    reportsSubSrv.fetchTaxExemptTypes()
+                        .then( fillTaxExemptTypes );
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchAccounts()
@@ -1249,25 +1252,27 @@ angular.module('reportsModule')
                 });
             }
 
-            function fillTaxExemptTypes() {
+            function fillTaxExemptTypes(data) {
+                
               var foundFilter;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'TAX_EXEMPT_TYPE' });
-                    if ( !! foundFilter ) {
+                    if ( !! foundFilter ) { 
                         foundFilter['filled'] = true;
                         report.hasIncludeTaxExempts = {
-                            data: $rootScope.taxExemptTypes,
+                            data: data,
                             options: {
-                                hasSearch: false,
+                                hasSearch: true,
                                 selectAll: true,
-                                key: 'name',
-                                defaultValue: 'Select Tax Exempt Types'
+                                key: 'name'
                             }
                         };
                     }
                 });
-            }            
+                completed++;
+                checkAllCompleted();
+            }    
 
             function fillAgingBalance() {
                 var  customData = [
