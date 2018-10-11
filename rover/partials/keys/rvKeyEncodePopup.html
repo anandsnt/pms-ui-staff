@@ -31,8 +31,8 @@
 	        <div class="actions">
 	            <button class="button blue" click-touch="sendEmailWithPincode();" ng-if="hasValidEmail && !!data.room_pin">Email</button>
 	            <button class="button blue" click-touch="printPinCode();" ng-if="!!data.room_pin">Print</button>
-                <button class="button blue" click-touch="generatePinCode();" ng-if="data.room_pin_interface ==='AXBASE3000' || data.room_pin_interface ==='CONCEPT4000'">Generate</button>
-	            <button class="button blank modal-close" click-touch="closeDialog();">Close Window</button>
+                <button class="button blue" click-touch="generatePinCode();" ng-if="data.room_pin_interface === 'AXBASE3000' || data.room_pin_interface === 'CONCEPT4000'">Generate</button>
+	            <button class="button blank modal-close" click-touch="closeDialog();" ng-if="data.room_pin_interface !== 'AXBASE3000' && data.room_pin_interface !== 'CONCEPT4000'">Close Window</button>
 	        </div>
     	</div>
 
