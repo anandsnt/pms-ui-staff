@@ -118,5 +118,6 @@ angular.module('reportsModule')
         "GROUP_COMPANY_TA_CARD": "group_company_ta_card",
         "GROUP_CODE": "group_code",
         "TAX_EXEMPT_TYPE": "tax_exempt_type_ids",
-        "TA_CC_CARD": "ta_cc_card"
+        "TA_CC_CARD": "ta_cc_card",
+        "SHOW_VAT_WITH_RATES": "show_vat_with_rates"
     });
