@@ -1476,13 +1476,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
               params.assigned_to = '';  
             }
 
-            if ($scope.newAction.date_due) {
+            if ($scope.newAction.dueDateObj) {
                 var dateObj = $scope.newAction.dueDateObj;
-
-                if (!dateObj) {
-                    var dateParts = $scope.newAction.date_due.split("-");
-                    dateObj = getTZIndependentDateFromDayMonthYear(dateParts[0], dateParts[1], dateParts[2]);
-                }
 
                 params.due_at = $filter('date')(dateObj, $rootScope.dateFormatForAPI) +
                     ($scope.newAction.time_due ? "T" + $scope.newAction.time_due + ":00" : "");
