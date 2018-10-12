@@ -9,4 +9,8 @@
 "checkin_completed": "CHECKIN SUCCESS / ROOM READY NOTIFICATION",
 "checkin_failed": "CHECKIN FAILED",
 "pre_checkin_success": "PRE CHECKIN SUCCESS",
-"pre_checkin_failure": "PRE CHECKIN FAILURE"
+"pre_checkin_failure": "PRE CHECKIN FAILURE",
+"edit_reservation": "EDIT RESERVATION",
+"update_inventory": "UPDATE INVENTORY",
+"new_group": "NEW GROUP",
+"edit_group": "EDIT GROUP"

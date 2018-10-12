@@ -1,0 +1,42 @@
+<section id="main" role="main">
+    <div id="content">
+        <h1 data-ng-bind-html="getTagValue('SELECT_LOYALTY_PROGRAM')" editable-text="SELECT_LOYALTY_PROGRAM">
+        </h1>
+        <div id="labels" class="loyalty">
+            <span class="label" translate>NUMBER</span>
+            <span class="label" translate>AIR_LINE_TYPE</span>
+            <span class="label" translate>LEVEL</span>
+        </div>
+        <ul id="selection" class="loyalty">
+            <li ng-repeat="loyalty in pageData.viewableItems"  touch-press='setLoyaltyForReservation(loyalty.id)'>
+                <div class="details">
+                    <strong class="number">{{ loyalty.membership_card_number }}</strong>
+                    <div class="type">{{ loyalty.membership_type }}</div>
+                    <div class="level">{{ loyalty.membership_level }}</div>
+                </div>
+            </li>
+        </ul>
+        <!-- If more than 3 programs, show pagination -->
+        <div id="actions" class="align-right">
+            <p class="text" style="margin-right: 10px;">{{ 'LOYALTY_FOOTER' | translate:paginationTranslationData}}</p>
+            <div class="button-group">
+                <!-- add 'disabled="disabled"' and .transparent if there is no previous page -->
+                 <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disablePreviousButton, false)" ng-hide="pageData.disablePreviousButton">
+                   <div ng-include="icons.url.left_arrow_icon"></div>
+                </button>
+                <!-- touchstart is not following ng-disable, so for now keeping two versions -->
+                <button type="button" class="button only-icon transparent" ng-show="pageData.disablePreviousButton" disabled="disabled">
+                   <div ng-include="icons.url.left_arrow_icon"></div>
+                </button>
+                <!-- add 'disabled="disabled"' if there is no next page -->
+                <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disableNextButton, true)" ng-hide="pageData.disableNextButton">
+                   <div ng-include="icons.url.right_arrow_icon"></div>
+                </button>
+                <!-- touchstart is not following ng-disable, so for now keeping two versions -->
+                <button type="button" class="button only-icon transparent" ng-show="pageData.disableNextButton" disabled="disabled">
+                   <div ng-include="icons.url.right_arrow_icon"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

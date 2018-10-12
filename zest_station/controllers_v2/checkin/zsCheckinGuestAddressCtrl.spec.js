@@ -5,11 +5,11 @@ describe('zsCheckinGuestAddressCtrl', function() {
         $rootScope,
         zsCheckinSrv,
         $controller,
+        zsEventConstants,
         $q;
 
     beforeEach(function () {
         module('sntZestStation', function ($provide) {
-            $provide.value('zsEventConstants', {});
             $provide.value('guestAddress', {
                 'postal_code': '20813',
                 'state': 'MD',
@@ -23,13 +23,14 @@ describe('zsCheckinGuestAddressCtrl', function() {
             }]);
         });
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$q_, _zsCheckinSrv_) {
+        inject(function(_$controller_, _$rootScope_, _$state_, _$q_, _zsCheckinSrv_, _zsEventConstants_) {
             $q = _$q_;
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
             $state = _$state_;
             $scope = $rootScope.$new();
             zsCheckinSrv = _zsCheckinSrv_;
+            zsEventConstants = _zsEventConstants_;
         });
         $controller('zsCheckinGuestAddressCtrl', {
             $scope: $scope
@@ -37,6 +38,9 @@ describe('zsCheckinGuestAddressCtrl', function() {
         $scope.focusInputField = function () {
             return false;
         };
+        zsCheckinSrv.setCheckInReservations([{
+            id: 123
+        }]);
     });
 
     it('On entering guest address collection with address on file, screen mode has to select address option', function () {
@@ -116,5 +120,35 @@ describe('zsCheckinGuestAddressCtrl', function() {
             expect($state.go)
                 .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
         });
+    });
+
+    describe('Back button actions', function() {
+
+        it('If current Mode is New Address and guest has a valid existing address, got to select Address screen', function() {
+            $scope.mode = "NEW_ADDRESS";
+            $scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
+            expect($scope.mode).toEqual('SELECT_ADDRESS');
+        });
+
+        it('On navigating back for a single reservation search, go to select reservation search screen', function() {
+            spyOn($state, 'go');
+            zsCheckinSrv.setCheckInReservations([{
+                id: 123
+            }]);
+            $scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
+            expect($state.go).toHaveBeenCalledWith('zest_station.checkInReservationSearch');
+        });
+
+        it('On navigating back for multiple reservation search, go to select reservation page', function() {
+            spyOn($state, 'go');
+            zsCheckinSrv.setCheckInReservations([{
+                id: 123
+            }, {
+                id: 124
+            }]);
+            $scope.$emit(zsEventConstants.CLICKED_ON_BACK_BUTTON);
+            expect($state.go).toHaveBeenCalledWith('zest_station.selectReservationForCheckIn');
+        });
+
     });
 });

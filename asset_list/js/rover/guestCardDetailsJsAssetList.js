@@ -19,6 +19,7 @@ module.exports = {
                     controllerRoot + "payment/**/**.js",                    
                     controllerRoot + "roverPayment/**/**.js", 
                     controllerRoot + "guestCardBaseCtrl.js",
+                    controllerRoot + 'guests/rvGuestCardStatisticsCtrl.js',
                     
                     servicesRoot + "payment/**/**.js",
                     servicesRoot + "likes/rvLikesSrv.js",                    
@@ -28,6 +29,7 @@ module.exports = {
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",                    
                     servicesRoot + "rvCompanyCardSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

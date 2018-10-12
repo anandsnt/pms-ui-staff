@@ -12,6 +12,14 @@ admin.controller('ADResyncRatesCtrl', [
 			$scope.rateListResult = [];
 		};
 
+		// Handle scroller
+		$scope.setScroller('resyncRateScroll', {});
+		var refreshScroll = function() {
+			setTimeout(function() {
+				$scope.refreshScroller('resyncRateScroll');
+			}, 500);
+		};
+
 		/*	
 		 *	Handle Sync button click.
 		 */
@@ -49,6 +57,7 @@ admin.controller('ADResyncRatesCtrl', [
 			var successCallback = function(data) {
 				$scope.rateListResult = [];
 				$scope.rateListResult = data.results;
+				refreshScroll();
 			},
 			failureCallback = function(errorMessage) {
 				$scope.errorMessage = errorMessage;

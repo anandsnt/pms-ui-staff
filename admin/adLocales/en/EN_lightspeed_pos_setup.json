@@ -14,4 +14,6 @@
 "RESTAURANT_NAME_PLACEHOLDER": "Enter Restaurant Name",
 "USERNAME_PLACEHOLDER": "Enter Username",
 "PASSWORD_PLACEHOLDER": "Enter password",
-"LS_PRODUCT_MAPPINGS": "Lighspeed Product Mappings"
+"LS_PRODUCT_MAPPINGS": "Lighspeed Product Mappings",
+"LS_PAYMENT_MAPPINGS": "Lighspeed Payment Mappings",
+"ENABLE_FLOORS":"Enable Floors"

@@ -2,10 +2,10 @@
     <!-- Select payment type -->
     <section id="main" role="main" ng-show="screenMode.value === 'SELECT_PAYMENT_METHOD'" class="centered">
         <div id="content">
-            <h1 ng-show="balanceDue > 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_PAY')" editable-text="HOW_WOULD_YOU_LIKE_TO_PAY"></text></h1>
-            <h1 ng-show="balanceDue < 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_REFUND')" editable-text="HOW_WOULD_YOU_LIKE_TO_REFUND"></text></h1>
+            <h1 ng-show="screenMode.totalAmountPlusFees > 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_PAY')" editable-text="HOW_WOULD_YOU_LIKE_TO_PAY"></text></h1>
+            <h1 ng-show="screenMode.totalAmountPlusFees < 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_REFUND')" editable-text="HOW_WOULD_YOU_LIKE_TO_REFUND"></text></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDueForDisplay}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
             </div>
             <nav id="options" role="nav" class="options-menu">
                 <ul role="menu">
@@ -37,13 +37,19 @@
     <!-- payment in progress -->
     <section id="main" role="main" ng-show="screenMode.value === 'PAYMENT_IN_PROGRESS'" class="centered">
         <!-- hide below content when payment is in progress -->
-        <div id="content">
+        <div id="content" ng-show="!isCBAPayment || screenMode.paymentTypeFetchCompleted">
             <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDueForDisplay}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;
+                <span ng-hide="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+                <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }} ({{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }})</span>
+            </span>
             </div>
             <nav id="options" role="nav" class="options-menu">
-                <ul role="menu">
+                <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+                    <img src="{{zestImages.cc_payment_image}}">
+                </div>
+                <ul role="menu" ng-if="zestImages.cc_payment_image.length === 0">
                     <li>
                         <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
                             <div ng-include="icons.url.creditcard"></div>

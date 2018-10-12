@@ -6,7 +6,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	'$filter',
 	'$timeout',
     '$q',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout, $q) {
+    '$state',
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout, $q, $state) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -166,4 +167,20 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	};
 
 	$scope.changedAvailabilityDataParams();
+
+	/**
+	 * Navigate to create reservation flow first page with the given params
+	 * @param {Object} roomTypeInfo - roomtypeinfo holding room type info
+	 * @param {Array}  dates - Array of dates for which the availability is shown
+	 * @param {Integer} selectedDateIdx index of the dates for which the room type is chosen
+	 * @return {void}
+	 */
+	$scope.navigateToCreateReservation = function(roomTypeInfo, dates, selectedDateIdx) {
+		$state.go('rover.reservation.search', {
+			selectedArrivalDate: dates[selectedDateIdx].date,
+			selectedRoomTypeId: roomTypeInfo.id
+		});
+		$scope.$emit('CLOSE_AVAILIBILTY_SLIDER');
+	};
+
 	}]);

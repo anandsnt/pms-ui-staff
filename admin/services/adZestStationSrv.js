@@ -50,4 +50,16 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
         return deferred.promise;
     };
 
+    this.saveImages = function(data) {
+        var url = '/api/hotel_settings/save_configurable_images';
+
+        return ADBaseWebSrvV2.postJSON(url, data);
+    };
+
+    this.getImages = function() {
+        var url = '/api/hotel_settings/configurable_images';
+
+        return ADBaseWebSrvV2.getJSON(url);
+    };
+
 }]);

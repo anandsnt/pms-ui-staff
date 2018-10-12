@@ -17,7 +17,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$interval',
             '$log',
             '$q',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q) {
+            'RVContactInfoSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1083,7 +1084,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
 
         var promptCancel = function(penalty, nights) {
-            var openCancelPopup = function() {
+            var openCancelPopup = function(data) {
+                $scope.languageData = data;
                 var passData = {
                     "reservationId": $scope.reservationData.reservationId,
                     "details": {
@@ -1122,11 +1124,18 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         $scope.creditCardTypes = item.values;
                     }
                 });
-                openCancelPopup();
+
+                var params = { 'reservation_id': $scope.reservationData.reservationId },
+                    options = {
+                        params: params,
+                        successCallBack: openCancelPopup
+                    };
+
+                // Fetch Laungage data for cancellation
+                $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options);               
             };
 
             $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, "", successCallback);
-
         };
 
         $scope.cancelReservation = function() {

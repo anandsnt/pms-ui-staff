@@ -72,7 +72,7 @@ sntRover.controller('reservationDetailsController',
 		// CICO-38714 / CICO-41313 - Set the Guest ID Permission flag and check if each guest has an id scanned or not
 		// set to false if the hotel admin switch is turned off
 
-		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
    		$scope.guestIDsAvailable = [];
    		
@@ -171,7 +171,17 @@ sntRover.controller('reservationDetailsController',
 					isBackFromStaycard: true
 				}
             };
-        } else {
+        } else if ($stateParams.isFromGuestStatistics) {			
+			$rootScope.setPrevState = {
+				title: 'Guest Statistics',
+				name: 'rover.guest.details',
+				param: {
+					guestId: $vault.get('guestId'),
+					isBackToStatistics: true					
+				}
+			};
+
+		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"
@@ -281,6 +291,9 @@ sntRover.controller('reservationDetailsController',
 
 		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
+		$scope.guestCardData.nationality_id = reservationListData.guest_details.nationality_id;
+		$scope.guestCardData.contactInfo.address = {};
+		$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
 
 		/**
 		 *	We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -1060,6 +1073,7 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
+                        $scope.routingInfo = response.data.routing_info;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1177,6 +1191,61 @@ sntRover.controller('reservationDetailsController',
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
+		/**
+         * Shows pop up to remind update the billing info
+         *  @params none
+         * @returns void
+         */
+        $scope.showBillingInformationPrompt = function() {
+            ngDialog.close();
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvShowBillingInformationPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+        /**
+         * Update the billing information when stay range changes if any billing info exist
+         * @params none
+         * @returns void
+         */
+        $scope.updateBillingInformation = function() {
+            var postParams = {
+                'from_date': $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+                'to_date': $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+                'reservation_id': $scope.reservationData.reservation_card.reservation_id
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.updateBillingInformation, {
+                params: postParams,
+                successCallBack: $scope.closeBillingInfoPopup
+            });
+        };
+        /**
+         * Handle click on staydate change confirm button
+         * @params none
+         * @returns void
+         */
+        $scope.clickedOnStayDateChangeConfirmButton = function() {
+            var routingInfo = $scope.routingInfo;
+
+            if (routingInfo.incoming_from_room || routingInfo.out_going_to_room
+                || routingInfo.out_going_to_comp_tra ) {
+                $scope.showBillingInformationPrompt();
+            } else {
+                $scope.closeBillingInfoPopup();
+            }
+        };
+        /**
+         * Close the dailoge and proceed to change stay date process.
+         * @params none
+         * @returns void
+         */
+        $scope.closeBillingInfoPopup = function() {
+            ngDialog.close();
+            $scope.changeStayDates();
+        };
 
 		$scope.changeStayDates = function(flags) {
 

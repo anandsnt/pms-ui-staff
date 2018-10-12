@@ -457,10 +457,19 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (!angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj)) {
                     item.chosenDueInArrivals = false;
                 }
+                // CICO-56206
+                if (item.fromDate > item.untilDate) {
+                    item.untilDate = item.fromDate;
+                }
             }
             if (item.title === reportNames['DEPARTURE']) {
                 if (!angular.equals(item.fromDate, dbObj) || !angular.equals(item.untilDate, dbObj)) {
                     item.chosenDueOutDepartures = false;
+                }
+
+                // CICO-56206
+                if (item.fromDate > item.untilDate) {
+                    item.untilDate = item.fromDate;
                 }
             }
         };
@@ -1552,12 +1561,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     key = reportParams['MARKET_IDS'];
                     params[key] = [];
                     /**/
-                    _.each(selected, function (market) {
-                        $scope.appliedFilter.market_ids.push(market);
+                    _.each(selected, function (market) {                        
                         params[key].push(market.value);
                         /**/
                         if (changeAppliedFilter) {
                             $scope.appliedFilter.markets.push(market.name);
+                            $scope.appliedFilter.market_ids.push(market);
                         }
                     });
 

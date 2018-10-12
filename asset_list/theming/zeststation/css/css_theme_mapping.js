@@ -47,7 +47,13 @@ module.exports = {
             'east-london': [themeCSSRoot + 'east-london.less'],
             'farmers-daughter': [themeCSSRoot + 'farmers-daughter.less'],
             'park-james': [themeCSSRoot + 'park-james.less'],
-            'annapolis': [themeCSSRoot + 'annapolis.less']
+            'annapolis': [themeCSSRoot + 'annapolis.less'],
+            'origin': [themeCSSRoot + 'origin.less'],
+            'kinney': [themeCSSRoot + 'kinney.less'],
+            'hubert': [themeCSSRoot + 'hubert.less'],
+            'de-blend': [themeCSSRoot + 'de-blend.less'],
+            'anthony': [themeCSSRoot + 'anthony.less'],
+            'stewart': [themeCSSRoot + 'stewart.less']
         };
     }
 };

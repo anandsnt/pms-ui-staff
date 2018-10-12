@@ -34,10 +34,10 @@
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('english')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('english')">{{'FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('english')">{{'CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.english_translations_file" accept="*" app-filereader emit-data="english_translations_file" />
-                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
+                            <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons " ng-click="downloadLang('en')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('english')" class="button download-arrow icons right editor" ng-click="editLang('en')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
@@ -50,10 +50,10 @@
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.French" label="{{ 'STATION_LANGUAGE_FRENCH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('french')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('french')">{{'FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('french')">{{'CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.french_translations_file" accept="*" app-filereader emit-data="french_translations_file" />
-                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
+                            <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('fr')" ng-show="hasFileUpdatedOrUploading('french')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('french')" class="button download-arrow icons right " ng-click="editLang('fr')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
@@ -66,10 +66,10 @@
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Spanish" label="{{ 'STATION_LANGUAGE_SPANISH' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('spanish')">{{'FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('spanish')">{{'CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.spanish_translations_file" accept="*" app-filereader emit-data="spanish_translations_file" />
-                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
+                            <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('es')" ng-show="hasFileUpdatedOrUploading('spanish')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('spanish')" class="button download-arrow icons right " ng-click="editLang('es')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
@@ -82,10 +82,10 @@
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.German" label="{{ 'STATION_LANGUAGE_GERMAN' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('german')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('german')">{{'FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('german')">{{'CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.german_translations_file" accept="*" app-filereader emit-data="german_translations_file" />
-                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
+                            <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('de')" ng-show="hasFileUpdatedOrUploading('german')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('german')" class="button download-arrow icons right " ng-click="editLang('de')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
@@ -98,10 +98,10 @@
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Italian" label="{{ 'STATION_LANGUAGE_ITALIAN' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('italian')">{{'FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('italian')">{{'CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.italian_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
-                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
+                            <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('it')" ng-show="hasFileUpdatedOrUploading('italian')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('italian')" class="button download-arrow icons right " ng-click="editLang('it')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
@@ -114,10 +114,10 @@
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.Castellano" label="{{ 'STATION_LANGUAGE_CASTELLANO' | translate}}"></ad-checkbox>
                     <div class="entry">
                         <div class="file-upload">
-                            <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                            <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
+                            <span class="input" ng-show="hasFileUpdatedOrUploading('castellano')">{{'FILE_ATTACHED' | translate}}</span>
+                            <span class="input" ng-show="!hasFileUpdatedOrUploading('castellano')">{{'CHOOSE_FILE' | translate}}</span>
                             <input type="file" ng-model="zestSettings.zest_lang.castellano_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
-                            <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
+                            <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('cl')" ng-show="hasFileUpdatedOrUploading('castellano')"></button>
                             <button type="button" ng-show="hasFileUpdatedOrUploading('castellano')" class="button download-arrow icons right " ng-click="editLang('cl')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
@@ -193,25 +193,6 @@
                     <ad-toggle-button is-hide="zestSettings.kiosk_key_creation_method != 'manual'" is-checked="zestSettings.kiosk_show_room_pin" label="{{'SHOW_PIN_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
 
                 </div>
-                <!-- Upload image for Key Creation In Progress Screen -->
-                <label translate>KEY_CREATION_IMAGE </label>
-                <div class="entry">
-                    <div class="file-upload" ng-class="{'with-remove-file-area':hasKeyImageFileUpdatedOrUploading('keyCreate')}" ng-mouseenter="uploadedIcon.preview_createkey = true" ng-mouseleave="uploadedIcon.preview_createkey = false">
-                        <span class="input" ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')">{{'STATION_LANGUAGE_FILE_ATTACHED' | translate}}</span>
-                        <span class="input" ng-show="!hasKeyImageFileUpdatedOrUploading('keyCreate')">{{'STATION_LANGUAGE_CHOOSE_FILE' | translate}}</span>
-                        <input type="file" ng-model="zestSettings.key_create_file_uploaded" accept="*" app-filereader emit-data="key_create_file_uploaded" />
-                        <button type="button" class="button brand-colors">
-                            {{'STATION_LANGUAGE_ATTACH_FILE' | translate}}
-                        </button>
-                    </div>
-                    <div>
-                        <img class='station-image-preview' ng-show="uploadedIcon.preview_createkey && hasKeyImageFileUpdatedOrUploading('keyCreate')" src="{{uploadedIcon.createkey}}">
-                    </div>
-                    <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = 'false'">
-                        {{'STATION_REMOVE_FILE' | translate}}
-                        
-                    </button>
-                </div>
             </fieldset>
             <fieldset class="holder left">
                 <div class="form-title full-width">
@@ -226,8 +207,7 @@
                     <h3><span translate>STATION_GUEST_ID_ACTIVATE</span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.scan_guest_id" label="{{'STATION_GUEST_ID_ACTIVATE_DESCRIPTION'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"></ad-toggle-button>
-                <ad-toggle-button is-checked="zestSettings.scanner_use_v1_lib" label="{{'USE_V1_SCAN'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"
-                is-hide="!zestSettings.scan_guest_id"></ad-toggle-button>
+                <ad-checkbox is-checked="zestSettings.view_scanned_guest_id" label="{{ 'VIEW_GUEST_ID' | translate}}" disabled="zestSettings.kiosk_manual_id_scan" is-hide="!zestSettings.scan_guest_id"></ad-checkbox>
                 <ad-toggle-button is-checked="zestSettings.kiosk_manual_id_scan" label="{{'MANUAL_ID_VERIFFICATION'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
                 <div class="entry full-width" ng-show="zestSettings.kiosk_manual_id_scan">
                     <label style="line-height: 1.5em" translate>ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID</label>
@@ -262,6 +242,20 @@
                     <h3><span translate>STAFF_NOTIFICATION_SOUND</span> </h3>
                 </div>
                  <ad-toggle-button is-checked="zestSettings.kiosk_staff_notification_sound" label="{{'STAFF_NOTIFICATION_SOUND'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
+            </fieldset>
+
+            <fieldset class="holder left">
+                <div class="form-title full-width">
+                    <h3><span translate>CONFIGURABLE_IMAGES</span> </h3>
+                </div>
+                <ad-image-upload image-file="configurableImages.key_create_file_uploaded" label="{{'KEY_CREATION_IMAGE' | translate}}" div-class="full-width"></ad-image-upload>
+
+                <ad-image-upload image-file="configurableImages.key_success_image" label="{{'KEY_CONFIRMATION_IMG' | translate}}" div-class="full-width"></ad-image-upload>
+
+                <ad-image-upload image-file="configurableImages.cc_auth_image" label="{{'SWIPE_CC_FOR_AUTH' | translate}}" div-class="full-width" hide="!mliAndCBAEnabled"></ad-image-upload>
+
+                <ad-image-upload image-file="configurableImages.cc_payment_image" label="{{'SWIPE_CC_FOR_PAYMENT' | translate}}" div-class="full-width"></ad-image-upload>
+
             </fieldset>
 
             <div class="actions float">

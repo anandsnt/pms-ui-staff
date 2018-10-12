@@ -251,12 +251,15 @@ sntRover.controller('reservationActionsController', [
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null
                             ) && (
-                                $scope.guestCardData.contactInfo.email === '' ||
-                                $scope.guestCardData.contactInfo.phone === '' ||
-                                $scope.guestCardData.contactInfo.mobile === '' ||
-                                $scope.guestCardData.contactInfo.email === null ||
-                                $scope.guestCardData.contactInfo.phone === null ||
-                                $scope.guestCardData.contactInfo.mobile === null
+                            	_.isEmpty($scope.guestCardData.contactInfo.email) || 
+                            	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
+                            	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
+                            	$scope.guestCardData.contactInfo.nationality_id === undefined || 
+                                $scope.guestCardData.contactInfo.nationality_id === "" || 
+                                $scope.guestCardData.contactInfo.nationality_id === null ||
+                                $scope.guestCardData.contactInfo.address.country_id === undefined || 
+                                $scope.guestCardData.contactInfo.address.country_id === "" || 
+                                $scope.guestCardData.contactInfo.address.country_id === null
                             )
                         ) {
                         return true;
@@ -296,17 +299,18 @@ sntRover.controller('reservationActionsController', [
 
                 $scope.goToRoomAssignment = function() {
                 	// check if roomupgrade is available
-                	var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-                	var isUpgradeAvaiable = ($scope.reservationData.reservation_card.is_upsell_available === "true") &&
-                							 (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
+					var reservationStatus = $scope.reservationData.reservation_card.reservation_status,
+						isUpgradeAvaiable = ($scope.reservationData.reservation_card.is_upsell_available === "true") &&
+											(reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
+						cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
 
-                        cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
                     $state.go("rover.reservation.staycard.roomassignment", {
                             "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                             "room_type": $scope.reservationData.reservation_card.room_type_code,
                             "clickedButton": "checkinButton",
                             "upgrade_available": isUpgradeAvaiable,
-                            "cannot_move_room": cannotMoveState
+                            "cannot_move_room": cannotMoveState,
+                            "roomTypeId": $scope.reservationData.reservation_card.room_type_id
                     });
                 };
                 $scope.goToBillCard = function() {

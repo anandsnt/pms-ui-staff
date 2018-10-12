@@ -701,5 +701,35 @@
    "CREDIT_CARD": "Credit card",
    "PLEASE_SELECT_ONE": "Please select one of the following",
    "CC_OPTIONS_HEADER": "Proceed or add new credit card",
-   "ADD_NEW_CREDIT_CARD": "Add new Credit card"
+   "ADD_NEW_CREDIT_CARD": "Add new Credit card",
+   
+   "PROCEED_WITH_EXISTING_LOYALTY": "Proceed with existing Loyalty",
+   "SELECT_LOYALTY_PROGRAM": "Select Loyalty Program",
+   "NUMBER": "Number",
+   "AIR_LINE_TYPE": "Airline / Type",
+   "LOYALTY_FOOTER": "Showing {{startingIndex}}-{{endingIndex}} of {{total}} programs",
+   "ENTER_FREQUENT_FLYER_PROGRAM_DETAILS": "Enter Frequent Flyer Program Details",
+   "SELECT_AIRLINE": "Select Airline",
+   "ENTER_HOTEL_LOYALTY_PROGRAM": "Enter Hotel Loyalty Program Details",
+   "SELECT_TYPE": "Select Type",
+   "SELECT_LEVEL": "Select Level",
+   "NEW_LOYALTY_PROGRAM": "New Loyalty Program",
+   "FREAQUENT_FLYER": "Frequent Flyer",
+   "HOTEL_LOYALTY": "Hotel Loyalty",
+   "SKIP_LOYALTY": "Skip Loyalty",
+   "LOYALTY_ERROR_MSG_1": "Sorry!..",
+   "NO_THANKS": "No Thanks",
+   "ADD_LOYALTY_PRGM": "Add Loyalty Program",
+   "SELECT_EXISTING_PGM": "Select Existing",
+   "ADD_NEW_LOYALTY": "Add New",
+   "MEMBERSHIP_ALREADY_TAKEN": "Membership already taken",
+   "LOYALTY_GENERAL_ERROR": "Something went wrong",
+   "UPDATE_EXISTING_PGM": "Update existing program",
+   "NEW_LOYALTY_PROGRAM_INSTRUCTIONS": "Select from programs offered by hotel",
+
+   "NO_COUNTRY_MATCH": "No match found!",
+   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
+
+   "FEES": "FEES"
+   
 }

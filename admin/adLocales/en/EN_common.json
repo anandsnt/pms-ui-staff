@@ -1,3 +1,4 @@
+
 "EDIT": "Edit",
 "ALL": "All",
 "ADD":"Add",
@@ -49,7 +50,9 @@
 "OK":"Ok",
 "DELETE":"Delete",
 "MENU_ACCOUNTS": "Accounts",
+"MENU_ACTIONS":"Actions",
 "MENU_ACTIONS_MANAGER":"Actions Manager",
+"QUICKTEXT":"Quicktext",
 "TITLE_HOTEL_ADMIN": "Hotel Admin",
 "MENU_GUESTS": "Guests",
 
@@ -173,7 +176,8 @@
 "MENU_SCHEDULE_REPORT_OR_EXPORT": "Schedule a Report/Export",
 
 "SETTINGS_HAVE_BEEN_SAVED": "Success! Settings have been saved",
-"STAFF_ID": "STAFF ID"
-
-
-
+"STAFF_ID": "STAFF ID",
+"COMMON_AREA": "COMMON AREA",
+"AUTO_CHARGE": "Auto Charge",
+"AUTO_CHARGE_DEPOSIT": "Auto Charge Deposit",
+"PASS_LEVEL_NUMBERS": "Pass Level Numbers Seperated By (;)"

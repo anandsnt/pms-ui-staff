@@ -21,7 +21,7 @@
 				<input type="text" ng-model="data.city" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-class="{'with-button': isAdminSnt}">
 				<label for="hotel-country"> Country <strong>*</strong> </label>
 				<div class="select">
 					<select convert-to-number ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
@@ -30,6 +30,7 @@
 
 					</select>
 				</div>
+				<button type="button" ng-show="isAdminSnt" class="button blue" ng-click="clickedLegalSettings()">Legal Settings</button>
 			</div>
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>

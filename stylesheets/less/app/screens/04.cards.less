@@ -898,85 +898,77 @@
                         }
 
                         &.commission {
-                            .float;
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px 80px 60px calc(~'100% - 290px');;
+                            grid-column-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button,
+                            input,
+                            .select {
+                                grid-row: 2;
+                            }
 
                             .switch-button {
-                                margin-right: 10px;
                                 height: 40px;
-                                .calc-width(45, 10);
-                                .pull-left;
 
-                                input[type="checkbox"] { 
+                                input[type="checkbox"] {
                                     line-height: 40px;
                                     height: 40px;
-                                }   
-
-                                .data-off,
-                                .data-on {
-                                    line-height: 30px;
-                                    height: 30px;
-                                }   
-                            }
-
-                            input[type="text"] { 
-                                margin-right: 10px;
-                                .calc-width(30, 10);
-                                .pull-left;
-                            }
-
-                            .select { 
-                                .size(40px, 25%);
-                                .pull-left;
-                            }
-
-                            .checkbox { width: 100%; }
-                        }
-
-                        &.tax-exempt {
-                            .float;
-
-                            .switch-button {
-                                .pull-left;
-                                .size(40px, 120px);
-
-                                input[type="checkbox"] { 
-                                    line-height: 40px;
-                                    .size(40px, 100%);
-                                }   
-
-                                .data-off,
-                                .data-on {
-                                    left: auto;
-                                    line-height: 30px;
-                                    height: 30px;
-
-                                    &.data-off { 
-                                        right: -100%;
-
-                                        .switch-icon { 
-                                            margin: 0 5px 0 0; 
-                                        }
-                                    }
-                                    
-                                    &.data-on { 
-                                        right: 0;
-
-                                        .switch-icon { 
-                                            margin: 0 0 0 5px; 
-                                        }
-                                    }
                                 }
 
-                                &.on {
-                                    .data-off { right: 0; }
-                                    .data-on { right: 100%; }
+                                .data-off,
+                                .data-on {
+                                    line-height: 30px;
+                                    height: 30px;
                                 }
                             }
 
                             .select {
-                                margin-left: 10px;
-                                width: 180px;
-                                .pull-left;
+                                height: 40px;
+                            }
+                        }
+
+                        &.tax-exempt {
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px calc(~'100% - 130px');;
+                            grid-column-gap: 10px;
+                            grid-row-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
+
+                            .switch-button {
+                                grid-row: 2;
+                                height: 40px;
+
+                                input[type="checkbox"] {
+                                    line-height: 40px;
+                                    height: 40px;
+                                }
+
+                                .data-off,
+                                .data-on {
+                                    line-height: 30px;
+                                    height: 30px;
+                                }
+                            }
+
+                            .select {
+                                grid-row: 2;
+                                height: 40px;
+                            }
+
+
+                            textarea {
+                                grid-row: 3;
+                                grid-column: span 2;
                             }
                         }
 
@@ -3384,7 +3376,6 @@
 
                 /* Activity Log ***/
                 &.activity-log {
-                    
                     .tab-header {
                         padding: 0;
                         overflow: visible;
@@ -3486,14 +3477,42 @@
                                     white-space: normal;
                                     overflow: visible;
                                     vertical-align: top;
-                                }
 
-                                .old { 
-                                    text-decoration: line-through;
+                                    &.details { 
+                                        text-transform: uppercase;
+                                        color: @grey3; 
 
-                                    strong {
-                                        color: @grey3;
-                                        &:after { .show; }
+                                        strong {
+                                            position: relative;
+                                            font-weight: 400;
+                                            color: @textColor;
+                                            margin-right: 10px;
+                                            display: inline-block;
+
+                                            &:after {
+                                                content: "|";
+                                                position: absolute;
+                                                top: -2px;
+                                                right: -6px;
+                                                color: @grey3;
+                                            }
+
+                                            &:last-child {
+                                                &:after { .hide; }
+                                            }
+                                        }
+
+                                        .old { 
+                                            text-decoration: line-through;
+                                            margin-right: 10px;
+
+                                            strong {
+                                                margin-right: 0;
+                                                text-decoration: line-through;
+                                                color: @grey3;
+                                                &:after { .show; }
+                                            }
+                                        }                           
                                     }
                                 }
                             }

@@ -1,0 +1,37 @@
+<section id="main" role="main" ng-show="loyaltyMode === ''">
+</section>
+
+
+<!-- SELECT PROGRAM -->
+<ng-include src="'/assets/partials_v2/checkin/loyalty/zsCheckinSelectLoyalty.html'" 
+			ng-show="loyaltyMode === 'SELECT_LOYALTY'">
+</ng-include>
+
+<!-- SELECT FROM EXISTING PROGRAMS -->
+<ng-include src="'/assets/partials_v2/checkin/loyalty/zsCheckinSelectExistingLoyalties.html'" 
+			ng-show="loyaltyMode === 'SELECT_FROM_MULTIPLE_LOYALTIES'">
+</ng-include>
+
+<!-- ADD NEW PROGRAM -->
+<ng-include 
+		src="'/assets/partials_v2/checkin/loyalty/zsCheckinAddNewLoyalties.html'" 
+		ng-show="loyaltyMode === 'ADD_NEW_LOYALTY'">
+</ng-include> 
+
+<!-- ADD NEW FF PROGRAM -->
+<ng-include 
+		src="'/assets/partials_v2/checkin/loyalty/zsCheckinAddFFLoyality.html'" 
+		ng-show="loyaltyMode === 'ADD_NEW_FF_LOYALTY'">
+</ng-include> 
+
+<!-- ADD NEW HOTEL PROGRAM -->
+<ng-include 
+		src="'/assets/partials_v2/checkin/loyalty/zsCheckinAddHotelLoyality.html'" 
+		ng-show="loyaltyMode === 'ADD_HOTEL_LOYALTY'">
+</ng-include> 
+
+<!-- ADD NEW PROGRAM FAILED-->
+<ng-include 
+		src="'/assets/partials_v2/checkin/loyalty/zsCheckinAddNewLoyaltyFailed.html'" 
+		ng-show="loyaltyMode === 'ADD_NEW_LOYALTY_FAILED'">
+</ng-include>

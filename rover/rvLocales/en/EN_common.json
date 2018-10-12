@@ -16,6 +16,7 @@
     "MENU_CREATE_RESERVATION" : "Create Reservation",
     "MENU_ROOM_ASSIGNMENT":"Room Assignment",
     "MENU_POST_CHARGES":"Post Charges",
+    "MENU_ACTIONS": "Actions",
     "MENU_ACTIONS_MANAGER":"Actions Manager",
     "MENU_CASHIER":"Cashier",
     "MENU_END_OF_DAY":"End of Day",
@@ -41,6 +42,7 @@
     "MENU_CC_TRANSACTIONS":"CC Transactions",
     "MENU_COMMISIONS":"Commissions",
     "MENU_REPORTS":"Reports",
+    "QUICKTEXT":"Quicktext",
     "MENU_GROUPS": "Groups",
     "MENU_CREATE_GROUP": "New Group",
     "MENU_MANAGE_GROUP": "Manage Groups",
@@ -52,6 +54,7 @@
     "MENU_NEW_REPORT": "New Report",
     "MENU_REPORTS_INBOX": "Reports Inbox",
     "MENU_SCHEDULE_REPORT_OR_EXPORT": "Schedule a Report/Export",
+    "MENU_ACTIONS":"Actions",
 
     "DUEIN_TITLE": "Checking In",
     "IN_HOUSE_TITLE": "In House",
@@ -87,4 +90,5 @@
     "DOB": "Date of Birth",
     "NATIONALITY": "Nationality",
     "ID_NUMBER": "ID Number",
-    "ID_EXPIRY": "ID Expiry"
+    "ID_EXPIRY": "ID Expiry",
+    "STATISTICS": "Statistics"

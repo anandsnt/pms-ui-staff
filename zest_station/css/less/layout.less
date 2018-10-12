@@ -1805,6 +1805,9 @@
     .uploaded-key-image{
         text-align: center;
         margin-bottom: 20px;
+        img {
+            max-height: 200px;
+        }
     }
     
    
@@ -2701,4 +2704,42 @@ div.jumper-box-li {
 
 #options.options-menu {
   margin-top: 45px !important;
+}
+
+
+/* Loyalty ***/
+#labels.loyalty {
+
+    .label {
+        width: 35%;
+
+        &:first-child {
+            width: 30%;
+        }
+    }
+}
+
+#selection.loyalty {
+
+    li {
+
+        .details {
+            padding: 30px 20px;
+            #flexbox > .parent('', flex-start, flex-start, '');
+        }
+
+        .number {
+            font-size: 21px;
+            line-height: 1;
+            font-weight: 600;
+            width: 30%;
+        }
+
+        .type,
+        .level {
+            width: 35%;                
+
+            span { .show; }
+        }
+    }
 }

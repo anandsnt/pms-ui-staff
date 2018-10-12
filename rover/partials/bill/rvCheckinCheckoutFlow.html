@@ -56,10 +56,11 @@
             <input type="checkbox" ng-click="toggleCheckoutWithoutSettlement()" ng-model="isCheckoutWithoutSettlement">
             {{ 'CHECK_OUT_WITHOUT_SETTLEMENT' | translate }}
         </label>
-        <label class="checkbox inline"> <!-- Add class 'single' if this is the only checkbox visible -->
+        <label class="checkbox inline" ng-if="reservationBillData.is_email_enabled_on_checkout"> <!-- Add class 'single' if this is the only checkbox visible -->
             <span class="icon-form icon-checkbox" ng-class="{ 'checked': emailOptedStatusList[currentActiveBill].isOptedForEmail }"></span>
             <input type="checkbox" ng-click="toggleOptedForEmail()">
-            Email Bill #{{currentActiveBill+1}} to Guest Email
+            <div ng-if="!reservationBillData.bills[currentActiveBill].is_account_attached">Email Bill #{{currentActiveBill+1}} to Guest Email</div>
+            <div ng-if="reservationBillData.bills[currentActiveBill].is_account_attached">Email Bill #{{currentActiveBill+1}} to Company/Travel Agent Email</div>
         </label>
         <!--
         CICO-9597 : While required_signature_at is not 'CHECKOUT',

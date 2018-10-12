@@ -96,8 +96,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="entry full-width" ng-show='is_edit'>
+            <!-- ng-hide added CICO-57726 -->
+            <div class="entry full-width" ng-show='is_edit' ng-hide="true">
                 <button type="button" class="button" ng-class="{'blue':rateData.id !== null, 'grey': rateData.id === null }" ng-disabled="rateData.id === null" ng-click="clickedSyncButton()" translate>SYNC</button>
                 <span ng-if="rateData.id && rateData.last_sync_status && rateData.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{rateData.last_sync_at}}</span>
                 <span ng-if="rateData.id && !rateData.last_sync_status && rateData.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{rateData.last_sync_at}}</span>                                  
@@ -128,10 +128,10 @@
         <button type="button" ng-click="cancelMenu()" class="button blank add-data-inline">
             Cancel
         </button>
-        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid(), 'overlay' : rateData.is_global_contract }">
+        <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid(), 'overlay' : rateData.is_global_contract}">
             Step 2 - Select Room Types
         </button>
-        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()), 'overlay' : rateData.is_global_contract }">
+        <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'green' : (rateData.id > 0 && isFormValid()), 'overlay' : rateData.is_global_contract}">
             Save
         </button>
     </div>

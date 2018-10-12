@@ -594,6 +594,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADInterfaceSubMenuCtrl',
         url: '/crmInterfaces'
     });
+    $stateProvider.state('admin.concierge', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/crmInterfaces'
+    });
 
     $stateProvider.state('admin.stationary', {
         templateUrl: '/assets/partials/stationary/adStationary.html',

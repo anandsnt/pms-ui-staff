@@ -66,5 +66,32 @@ describe('RVbillCardController', function () {
                 expect(RVbillCardController.generateFolioNumber).toHaveBeenCalled();               
             });
 
+            it('get invoice button class', function() {
+                $scope.roverObj.noReprintReEmailInvoice = true;
+                $scope.currentActiveBill = 0;
+
+                var color = $scope.getInvoiceButtonClass();
+
+                expect(color).toBe("grey");               
+            });
+
+            it('get invoice button class', function() {
+                $scope.roverObj.noReprintReEmailInvoice = false;
+                $scope.currentActiveBill = 0;
+
+                var color = $scope.getInvoiceButtonClass();
+
+                expect(color).toBe("blue");               
+            });
+
+            it('get invoice button enabled/disabled', function() {
+                $scope.roverObj.noReprintReEmailInvoice = true;
+                $scope.currentActiveBill = 0;
+
+                var isDisabled = $scope.isInvoiceButtonDisabled();
+
+                expect(isDisabled).toBe(true);               
+            });
+
         });    
 });

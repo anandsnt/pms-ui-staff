@@ -73,23 +73,22 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             focusDepartureDateField();
             $scope.resetTime();
         };
-        $scope.findByNoOfNights = function() {
-            $scope.trackEvent('NO_OF_NIGHTS', 'user_selected');
-            $scope.mode = 'NO_OF_NIGHTS_MODE';
-            $scope.focusInputField('no-of-nights');
+
+        var changeModeActions = function (eventName, newMode, inputField) {
+            $scope.trackEvent(eventName, 'user_selected');
+            $scope.mode = newMode;
+            $scope.focusInputField(inputField);
             $scope.resetTime();
+        };
+
+        $scope.findByNoOfNights = function() {
+            changeModeActions('NO_OF_NIGHTS', 'NO_OF_NIGHTS_MODE', 'no-of-nights');
         };
         $scope.findByEmail = function() {
-            $scope.trackEvent('EMAIL_ENTRY', 'user_selected');
-            $scope.mode = 'EMAIL_ENTRY_MODE';
-            $scope.focusInputField('guest-email');
-            $scope.resetTime();
+            changeModeActions('EMAIL_ENTRY', 'EMAIL_ENTRY_MODE', 'guest-email');
         };
         $scope.findByConfirmation = function() {
-            $scope.trackEvent('CONFIRM_NO', 'user_selected');
-            $scope.mode = 'CONFIRM_NO_MODE';
-            $scope.focusInputField('conf-number');
-            $scope.resetTime();
+            changeModeActions('CONFIRM_NO', 'CONFIRM_NO_MODE', 'conf-number');
         };
 
         $scope.showDatePicker = function() {
@@ -140,31 +139,24 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             
         };
 
+        var deleteUnwantedParams = function(params, unwantedKeys) {
+            _.each(unwantedKeys, function(unwantedKey) {
+                 delete params[unwantedKey];
+            });
+            return params;
+        };
 
         var SetUpSearchParams = function() {
             var params = angular.copy($scope.reservationParams);
 
             if ($scope.reservationParams.no_of_nights.length > 0) {
-                delete params.alt_confirmation_number;
-                delete params.email;
-                delete params.date;
+                params = deleteUnwantedParams(params, ['alt_confirmation_number', 'email', 'date']);
             } else if ($scope.reservationParams.alt_confirmation_number.length > 0) {
-                delete params.no_of_nights;
-                delete params.email;
-                delete params.date;
-            } else if ($scope.reservationParams.no_of_nights.length > 0) {
-                delete params.alt_confirmation_number;
-                delete params.email;
-                delete params.date;
+                params = deleteUnwantedParams(params, ['no_of_nights', 'email', 'date']);
             } else if ($scope.reservationParams.email.length > 0) {
-                delete params.alt_confirmation_number;
-                delete params.no_of_nights;
-                delete params.date;
-
+                params = deleteUnwantedParams(params, ['alt_confirmation_number', 'no_of_nights', 'date']);
             } else if ($scope.reservationParams.date.length > 0) {
-                delete params.alt_confirmation_number;
-                delete params.email;
-                delete params.no_of_nights;
+                params = deleteUnwantedParams(params, ['alt_confirmation_number', 'email', 'no_of_nights']);
                 params.dep_date = angular.copy(params.date);
                 delete params.date;
             } else {
@@ -173,14 +165,17 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             return params;
         };
 
+        var anyOftheRequireFieldsAreFilled = function() {
+            return ($scope.reservationParams.no_of_nights.length > 0 ||
+                $scope.reservationParams.alt_confirmation_number.length > 0 ||
+                $scope.reservationParams.email.length > 0 ||
+                $scope.reservationParams.date.length > 0);
+        };
+
         $scope.lastNameEntered = function() {
             $scope.hideKeyboardIfUp();
 			// if room is already entered, no need to enter again
-            if ($scope.reservationParams.no_of_nights.length > 0 ||
-				$scope.reservationParams.alt_confirmation_number.length > 0 ||
-				$scope.reservationParams.email.length > 0 ||
-				$scope.reservationParams.date.length > 0
-			) {
+            if (anyOftheRequireFieldsAreFilled()) {
                 if ($scope.zestStationData.kiosk_validate_first_name) {
                     $scope.mode = 'FIRST_NAME_ENTRY_MODE';
                     $scope.focusInputField('first-name');
@@ -203,11 +198,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
         $scope.firstNameEntered = function() {
             $scope.hideKeyboardIfUp();
 			// if room is already entered, no need to enter again
-            if ($scope.reservationParams.no_of_nights.length > 0 ||
-				$scope.reservationParams.alt_confirmation_number.length > 0 ||
-				$scope.reservationParams.email.length > 0 ||
-				$scope.reservationParams.date.length > 0
-			) {
+            if (anyOftheRequireFieldsAreFilled()) {
                 searchReservation(SetUpSearchParams());
             } else {
                 $scope.mode = $scope.reservationParams.first_name.length > 0 ? 'CHOOSE_OPTIONS' : $scope.mode;
@@ -216,57 +207,34 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             $scope.resetTime();
         };
 
-        $scope.noOfNightsEntered = function() {
-
+        var searchReservationActions = function(requiredParam, unwantedKeys) {
             $scope.hideKeyboardIfUp();
             var params = angular.copy($scope.reservationParams);
 
-            delete params.alt_confirmation_number;
-            delete params.email;
-            delete params.date;
-            if (params.no_of_nights === '') {
+            params = deleteUnwantedParams(params, unwantedKeys);
+            if (params[requiredParam] === '') {
                 return;
             }
             searchReservation(params);
             $scope.resetTime();
+        };
+
+        $scope.noOfNightsEntered = function() {
+            searchReservationActions('no_of_nights', ['alt_confirmation_number', 'email', 'date']);
         };
 
         $scope.confNumberEntered = function() {
-
-            $scope.hideKeyboardIfUp();
-            var params = angular.copy($scope.reservationParams);
-
-            delete params.no_of_nights;
-            delete params.email;
-            delete params.date;
-            if (params.alt_confirmation_number === '') {
-                return;
-            }
-            searchReservation(params);
-            $scope.resetTime();
+            searchReservationActions('alt_confirmation_number', ['no_of_nights', 'email', 'date']);
         };
         $scope.emailEntered = function() {
-
-            $scope.hideKeyboardIfUp();
-            var params = angular.copy($scope.reservationParams);
-
-            delete params.no_of_nights;
-            delete params.alt_confirmation_number;
-            delete params.date;
-            if (params.email === '') {
-                return;
-            }
-            searchReservation(params);
-            $scope.resetTime();
+            searchReservationActions('email', ['no_of_nights', 'alt_confirmation_number', 'date']);
         };
 
         $scope.dateEntered = function() {
             $scope.showDatePick = false;
             var params = angular.copy($scope.reservationParams);
 
-            delete params.no_of_nights;
-            delete params.alt_confirmation_number;
-            delete params.email;
+            params = deleteUnwantedParams(params, ['no_of_nights', 'alt_confirmation_number', 'email']);
             params.dep_date = angular.copy(params.date);
             delete params.date;
             if (params.dep_date === '') {
@@ -310,8 +278,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			// * have noticed multiple API calls that get date/time and there are inconsistencies
             $scope.zestStationData.bussinessDate = $scope.hotel_date.business_date;
 
-			 minDate = new Date($scope.zestStationData.bussinessDate.replace(/-/g, '/'));
-			 console.log(minDate);
+			var minDate = new Date($scope.zestStationData.bussinessDate.replace(/-/g, '/'));
+            
             $scope.dateOptions = {
                 dateFormat: $scope.zestStationData.hotelDateFormat,
                 yearRange: '0:+10',
@@ -374,58 +342,11 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                     $scope.mode = 'LAST_NAME_ENTRY';
                     $scope.focusInputField('last-name');
                 }, 100);
-				
             } else {
                 $scope.mode = 'LAST_NAME_ENTRY';
                 $scope.focusInputField('last-name');
             }
         };
-
-        $scope.$on('KEY_INPUT_OPTION', function(evt, option) {
-            if ($scope.mode !== 'CHOOSE_OPTIONS') {
-                return;
-            }
-            var optionsToChooseFrom;
-
-            var dateOn = $scope.zestStationData.checkin_screen.authentication_settings.departure_date, 
-                nightsOn = $scope.zestStationData.checkin_screen.authentication_settings.number_of_nights, 
-                emailOn = $scope.zestStationData.checkin_screen.authentication_settings.email,
-                confirmOn = $scope.zestStationData.checkin_screen.authentication_settings.confirmation;
-
-            if (option === 1) {
-                if (dateOn) {
-                    $scope.findByDate();
-                } else if (nightsOn) {
-                    $scope.findByNoOfNights();
-                } else if (emailOn) {
-                    $scope.findByEmail();
-                } else {
-                    $scope.findByConfirmation();
-                }
-            } else if (option === 2) {
-                if (dateOn && nightsOn) {
-                    $scope.findByNoOfNights();
-                } else if (dateOn || nightsOn && emailOn) {
-                    $scope.findByEmail();
-                } else if (dateOn || nightsOn && confirmOn) {
-                    $scope.findByConfirmation();
-                }
-
-            } else if (option === 3) {
-                if (dateOn && nightsOn && emailOn) {
-                    $scope.findByEmail();
-
-                } else if (dateOn && nightsOn && confirmOn) {
-                    $scope.findByConfirmation();
-
-                } else if (dateOn && !nightsOn && emailOn && confirmOn) {
-                    $scope.findByConfirmation();
-
-                } else if (!dateOn && nightsOn && emailOn && confirmOn) {
-                    $scope.findByConfirmation();
-                }
-            }
-        });
 
         var init = function() {
             $scope.hideKeyboardIfUp();
@@ -442,7 +363,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             $scope.mode = 'LAST_NAME_ENTRY';
             $scope.focusInputField('last-name');
             $scope.setScreenIcon('checkin');
-
         };
 
         init();

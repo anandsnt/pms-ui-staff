@@ -324,6 +324,8 @@ angular.module('sntRover').controller('guestCardController', [
             }
             else if (tab === 'activity-log') {
                 $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            } else if (tab === 'guest-statistics') {
+               $scope.$broadcast('LOAD_GUEST_STATISTICS'); 
             }
 
             $scope.$broadcast('REFRESHLIKESSCROLL');

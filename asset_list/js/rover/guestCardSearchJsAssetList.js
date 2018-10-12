@@ -4,7 +4,7 @@ module.exports = {
 		guestcardsearchJsAssets = {
 			minifiedFiles: [],
 			nonMinifiedFiles: [				
-				roverRoot + "controllers/guests/**/*.js",				
+				roverRoot + "controllers/guests/*.js",				
 				roverRoot + "services/guestcard/rvGuestCardSrv.js",
 				roverRoot + "services/guestcard/rvGuestCardActivityLogSrv.js",
 
