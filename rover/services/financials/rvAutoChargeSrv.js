@@ -21,7 +21,7 @@ angular.module('sntRover').service('RVAutoChargeSrv',
 
             that.fetchAutoCharge = function (params) {
 
-                that.setParams(params)
+                that.setParams(params);
 
                 var url = '/api/hotels/auto_charge_deposit_report';
 
