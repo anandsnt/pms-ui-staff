@@ -32,7 +32,7 @@
 
     <!-- Tabs -->
     <ul class="filters">
-        <li class="active">
+        <li class="active" ng-hide="filters.status == 'DECLINED'">
             <strong>Deposits</strong>
             {{currencySymbol}}{{totalDeposite}}
         </li>
@@ -79,8 +79,7 @@
                     </div>
                     <a ui-sref="rover.reservation.staycard.reservationcard.reservationdetails({
                         id: autoCharge.reservation_id,
-                        confirmationId: autoCharge.confirmation_no,
-                        isrefresh: 'true'})">
+                        confirmationId: autoCharge.confirmation_no})">
                         <div class="cell-reservation">
                             <figure class="guest-image">
                                 <img src="{{autoCharge.guest_avatar}}" alt="">
