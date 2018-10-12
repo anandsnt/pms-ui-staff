@@ -10,11 +10,15 @@
             <ul class="details">
                 <li>
                     <span>{{ 'ID_LAST_NAME' | translate }}</span>
-                    {{ guestIdData.last_name }}
+                     <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.last_name">
+                    </div>
                 </li>
                 <li>
                     <span>{{ 'ID_FIRST_NAME' | translate}}</span>
-                    {{ guestIdData.first_name }}
+                     <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.first_name">
+                    </div>
                 </li>
                 <!-- DOB -->
                 <li>
@@ -93,7 +97,7 @@
                             <!-- <button type="button" class="button white green-text">Re-Scan</button> -->
                             <button type="button" class="button white blue-text" ng-click="uploadFrontImage()" translate>RE_UPLOAD</button>
                             <!-- <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
-                            <button type="button" class="button white red-text" ng-click="deleteImage('front-image')" translate>DELETE</button>
+                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE', 'front-image')" translate>DELETE</button>
                         </div>
                         <!-- if no data then this -->
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.front_image_data.length === 0"></span>
@@ -123,7 +127,7 @@
                             <!-- <button type="button" class="button white green-text">Re-Scan</button> -->
                             <button type="button" class="button white blue-text" ng-click="uploadBackImage()" translate>RE_UPLOAD</button>
                        <!--      <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
-                            <button type="button" class="button white red-text" ng-click="deleteImage('back-image')" translate>DELETE</button>
+                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE','back-image')" translate>DELETE</button>
                         </div>
                         <!-- if no data then this -->
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.back_image_data.length === 0"></span>

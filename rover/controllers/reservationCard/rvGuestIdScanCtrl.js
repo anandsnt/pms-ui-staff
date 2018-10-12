@@ -65,26 +65,19 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			});
 		};
 
-		$scope.uploadFrontImage = function (){
+		$scope.uploadFrontImage = function() {
 			$('#front-image-upload').click();
 		};
 
-		$scope.uploadBackImage = function (){
+		$scope.uploadBackImage = function() {
 			$('#back-image-upload').click();
 		};
 
-		var markIDDetailsHasChanged = function () {
+		var markIDDetailsHasChanged = function() {
 			isIDDetailsChanged = true;
 		};
 
-		var resetLeftPanel = function () {
-			$scope.guestIdData.date_of_birth = "";
-			$scope.guestIdData.nationality_id = "";
-			$scope.guestIdData.document_number = "";
-			$scope.guestIdData.expiration_date = "";
-		};
-
-		var generalFailureCallBack = function () {
+		var generalFailureCallBack = function() {
 			errorPopup = ngDialog.open({
 				template: '/assets/partials/guestId/rvGuestIDDetailsErrorPopup.html',
 				className: 'single-date-picker',
@@ -96,76 +89,50 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			errorPopup.close();
 		};
 
-		$scope.ImageChange = function(imageType) {
-			var apiParams = {
-				'is_front_image': imageType === 'front-image',
-				'image': imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data,
-				'guest_id': $scope.guestIdData.guest_id,
-				'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
-			};
-			var ImageChangesuccessCallBack = function() {
-				markIDDetailsHasChanged();
-				if (imageType === 'front-image') {
-					resetLeftPanel();
-					$scope.saveGuestIdDetails();
-				}
+		$scope.saveGuestIdDetails = function(action, imageType) {
+
+			var apiParams = angular.copy($scope.guestIdData);
+
+			apiParams.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+			apiParams.document_type = $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD';
+
+			if (action === 'DELETE') {
+				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
+				apiParams.back_image_data = (imageType === 'back-image') ? '' : apiParams.back_image_data;
 			};
 
-			$scope.callAPI(RVGuestCardsSrv.uploadGuestId, {
-				params: apiParams,
-				successCallBack: ImageChangesuccessCallBack,
-				failureCallBack: function() {
-					generalFailureCallBack();
-					// delete the image
-					if (imageType === 'front-image') {
-						$scope.guestIdData.front_image_data = '';
-					} else {
-						$scope.guestIdData.back_image_data = '';
+			var saveSuccessCallBack;
+
+			if (action === 'DELETE') {
+				saveSuccessCallBack = function() {
+					$scope.guestIdData.front_image_data = (imageType === 'front-image') ? '' : $scope.guestIdData.front_image_data;
+					$scope.guestIdData.back_image_data = (imageType === 'back-image') ? '' : $scope.guestIdData.back_image_data;
+					markIDDetailsHasChanged();
+				}
+			} else {
+				saveSuccessCallBack = function() {
+					markIDDetailsHasChanged();
+
+					var idType = $scope.guestIdData.document_type && $scope.guestIdData.document_type === 'ID_CARD' ? 1 : 3;
+					var nationalityId = $scope.guestIdData.nationality_id ? parseInt($scope.guestIdData.nationality_id) : '';
+
+					if ($scope.guestIdData.is_primary_guest) {
+						var dataToUpdate = {
+							id_type: idType,
+							nationality_id: nationalityId,
+							id_number: $scope.guestIdData.document_number
+						};
+
+						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
-				}
-			});
-		};
 
-		$scope.deleteImage = function(imageType) {
-			var apiParams = {
-				'is_front_image': imageType === 'front-image',
-				'guest_id': $scope.guestIdData.guest_id,
-				'reservation_id': $scope.reservationData.reservation_card.reservation_id
-			};
-			var deleteSuccessCallback = function() {
-				if (imageType === 'front-image') {
-					$scope.guestIdData.front_image_data = "";
-					resetLeftPanel();
-				} else {
-					$scope.guestIdData.back_image_data = "";
+					$scope.closeGuestIdModal();
 				}
-				markIDDetailsHasChanged();
-			};
-				
-			$scope.callAPI(RVGuestCardsSrv.deleteGuestId, {
-				params: apiParams,
-				successCallBack: deleteSuccessCallback,
-				failureCallBack: generalFailureCallBack
-			});
-		};
-
-		$scope.saveGuestIdDetails = function () {
-			var apiParams = {
-				'guest_id': $scope.guestIdData.guest_id,
-				'last_name': $scope.guestIdData.last_name,
-				'first_name': $scope.guestIdData.first_name,
-				'date_of_birth': $scope.guestIdData.date_of_birth,
-				'nationality_id': $scope.guestIdData.nationality_id,
-				'document_number': $scope.guestIdData.document_number,
-				'expiration_date': $scope.guestIdData.expiration_date,
-				'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
-			};
+			}
 
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
-				successCallBack: markIDDetailsHasChanged,
+				successCallBack: saveSuccessCallBack,
 				failureCallBack: generalFailureCallBack
 			});
 		};

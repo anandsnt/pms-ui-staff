@@ -1637,26 +1637,28 @@ sntRover.controller('reservationDetailsController',
      /**
      * Toggle the overbooking alert section visibility
      */
-     $scope.toggleOverBookingAlert = function() {
-       $scope.showOverBookingAlert = !$scope.showOverBookingAlert;
-     }
+	$scope.toggleOverBookingAlert = function() {
+		$scope.showOverBookingAlert = !$scope.showOverBookingAlert;
+	}
 
-    var retrieveGuestDocDetails = function (guestId) {
-    	var guestIdInfo = _.find(guestIdList, function(guestIdData){
+	var retrieveGuestDocDetails = function(guestId) {
+		var guestIdInfo = _.find(guestIdList, function(guestIdData) {
 			return guestIdData.guest_id === guestId;
 		});
-		
-    	return guestIdInfo;
-    };
+
+		return guestIdInfo;
+	};
 
 	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
+		var uploadedIdDetails = retrieveGuestDocDetails(guestId);
+		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data;
 
-		return retrieveGuestDocDetails(guestId);
+		return isGuestIdUploaded;
 
 	};
-     
+
 	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
 		$scope.$emit('hideLoader');
@@ -1669,6 +1671,7 @@ sntRover.controller('reservationDetailsController',
 			return;
 		} else if (guestDocData) {
 			guestDocData.guest_id = guestId;
+			guestDocData.is_primary_guest = isPrimaryGuest;
 			$scope.guestIdData = angular.copy(guestDocData);
 		} else {
 			$scope.guestIdData = {
@@ -1682,16 +1685,10 @@ sntRover.controller('reservationDetailsController',
 				'back_image_data': '',
 				'front_image_data': '',
 				'signature': '',
-				'is_manual_upload': true
+				'is_manual_upload': true,
+				'is_primary_guest': isPrimaryGuest
 			}
 		}
-
-		// for manualy uploading IDs use first name and last name in reservation
-		if ($scope.guestIdData.is_manual_upload) {
-			$scope.guestIdData.first_name = guestData.first_name;
-			$scope.guestIdData.last_name = guestData.last_name;
-		}
-
 
 		ngDialog.open({
 			template: '/assets/partials/guestId/rvGuestId.html',
@@ -1720,7 +1717,7 @@ sntRover.controller('reservationDetailsController',
 		return guestInfo;
 	};
 
-	$scope.dowloadDocumnetDetails = function (guestData, isPrimaryGuest) {
+	$scope.dowloadDocumnetDetails = function(guestData, isPrimaryGuest) {
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
 		var guestDocData = retrieveGuestDocDetails(guestId);
 

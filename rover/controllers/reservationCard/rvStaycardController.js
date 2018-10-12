@@ -210,5 +210,12 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                     return viewStatus;
                 };
 
+        $scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {
+
+            $scope.guestCardData.contactInfo.id_type = data.id_type;
+            $scope.guestCardData.contactInfo.nationality_id = data.nationality_id;
+            $scope.guestCardData.contactInfo.id_number = data.id_number;
+        });
+
 	}
 ]);
