@@ -145,6 +145,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							nationality_id: nationalityId,
 							id_number: $scope.guestIdData.document_number
 						};
+						
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
