@@ -7,11 +7,13 @@ sntRover.controller('RVAutoChargeController',
         '$filter',
         'RVBillCardSrv',
         '$window',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window) {
+        '$stateParams',
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams) {
 
             BaseCtrl.call(this, $scope);
 
             var that = this,
+                isFromStayCard = $stateParams.isFromStayCard,
                 commonDateOptions = {
                     dateFormat: $rootScope.jqDateFormat,
                     changeYear: true,
@@ -83,6 +85,25 @@ sntRover.controller('RVAutoChargeController',
 
                     $scope.setTitle(title);
                     $scope.$parent.heading = title;
+                },
+                /*
+                 * function to filter params and call API
+                 * @return - {None}
+                 */
+                setParamsAndFetchAutoCharge = function() {
+                    if ( isFromStayCard ) {
+                        $scope.filters = {
+                            status: RVAutoChargeSrv.getParams().status,
+                            due_date: RVAutoChargeSrv.getParams().due_date
+                        };
+                        $scope.fetchAutoCharge(RVAutoChargeSrv.getParams().page_no);
+                    } else {
+                        $scope.filters = {
+                            status: 'ALL',
+                            due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
+                        };
+                        $scope.fetchAutoCharge();
+                    }
                 };
 
             // print the page
@@ -148,6 +169,7 @@ sntRover.controller('RVAutoChargeController',
 
                         $timeout(function () {
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
+                            $scope.$broadcast('updatePageNo', params.page_no);
                             refreshScroll();
                         }, 100 );
                     }
@@ -159,15 +181,12 @@ sntRover.controller('RVAutoChargeController',
              * Initialization
              */
             that.init = () => {
-                $scope.filters = {
-                    status: 'ALL',
-                    due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
-                };
+                $scope.filters = {};
                 setScrollerOptions();
                 setPaginationConfig();
                 setDueDateOptions();
                 setTitleAndHeading();
-                $scope.fetchAutoCharge();
+                setParamsAndFetchAutoCharge();
             };
 
             that.init();
