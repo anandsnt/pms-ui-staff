@@ -3,9 +3,18 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'$filter',
 	'ngDialog',
 	'RVGuestCardsSrv',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv) {
+	'dateFilter',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter) {
 
 		BaseCtrl.call(this, $scope);
+
+		var dateInHotelsFormat = function(date) {
+			return JSON.parse(JSON.stringify(dateFilter(new Date(date), $rootScope.dateFormat)));
+		};
+
+		$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
+		$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
+
 		var isIDDetailsChanged = false;
 
 		if ($scope.guestIdData.document_type && $scope.guestIdData.document_type.length > 0) {
@@ -36,6 +45,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			maxDate: tzIndependentDate($rootScope.businessDate),
 			yearRange: "-100:+0",
 			onSelect: function() {
+				$scope.guestIdData.dob_for_display =  dateInHotelsFormat($scope.guestIdData.date_of_birth);
 				dobDialog.close();
 			}
 		};
@@ -53,6 +63,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			changeMonth: true,
 			yearRange: "-10:+50",
 			onSelect: function() {
+				$scope.guestIdData.expiry_date_for_display =  dateInHotelsFormat($scope.guestIdData.expiration_date);
 				expirationDateDialog.close();
 			}
 		};
@@ -89,12 +100,25 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			errorPopup.close();
 		};
 
+		var formatDateForApi = function(date) {
+			// API expects date in format dd-mm-yyyyy
+			var dateComponents = date.split("-");
+
+			return dateComponents[1] + '-' + dateComponents[0] + '-' + dateComponents[2]
+		};
+
 		$scope.saveGuestIdDetails = function(action, imageType) {
 
 			var apiParams = angular.copy($scope.guestIdData);
 
 			apiParams.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 			apiParams.document_type = $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD';
+
+			apiParams.date_of_birth = apiParams.date_of_birth ? formatDateForApi(apiParams.date_of_birth) : '';
+			apiParams.expiration_date = apiParams.expiration_date ? formatDateForApi(apiParams.expiration_date) : '';
+			
+			delete apiParams.expiry_date_for_display;
+			delete apiParams.dob_for_display;
 
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
