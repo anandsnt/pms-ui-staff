@@ -77,13 +77,6 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			isIDDetailsChanged = true;
 		};
 
-		var resetLeftPanel = function () {
-			$scope.guestIdData.date_of_birth = "";
-			$scope.guestIdData.nationality_id = "";
-			$scope.guestIdData.document_number = "";
-			$scope.guestIdData.expiration_date = "";
-		};
-
 		var generalFailureCallBack = function () {
 			errorPopup = ngDialog.open({
 				template: '/assets/partials/guestId/rvGuestIDDetailsErrorPopup.html',
@@ -114,22 +107,16 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			};
 
 			if (action === 'DELETE') {
-				if (imageType === 'front-image') {
-					apiParams.front_image_data = "";
-				} else {
-					apiParams.back_image_data = "";
-				}
+				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
+				apiParams.back_image_data = (imageType === 'back-image') ? '' : apiParams.back_image_data;
 			};
 
 			var saveSuccessCallBack;
 
 			if (action === 'DELETE') {
 				saveSuccessCallBack = function() {
-					if (imageType === 'front-image') {
-						$scope.guestIdData.front_image_data = "";
-					} else {
-						$scope.guestIdData.back_image_data = "";
-					}
+					$scope.guestIdData.front_image_data = (imageType === 'front-image') ? '' : $scope.guestIdData.front_image_data;
+					$scope.guestIdData.back_image_data = (imageType === 'back-image') ? '' : $scope.guestIdData.back_image_data;
 					markIDDetailsHasChanged();
 				}
 			} else {
@@ -145,7 +132,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							nationality_id: nationalityId,
 							id_number: $scope.guestIdData.document_number
 						};
-						
+
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
