@@ -381,15 +381,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $log.log($scope.zestStationData);
             $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
 
-            zsPaymentSrv.setPaymentData({
-                amount: $scope.selectedReservation.reservation_details.deposit_amount,
-                reservation_id: $scope.selectedReservation.reservation_details.reservation_id,
-                workstation_id: $rootScope.workstation_id,
-                bill_id: $scope.selectedReservation.reservation_details.default_bill_id,
-                payment_method_used: $scope.selectedReservation.reservation_details.payment_method_used,
-                payment_details: $scope.selectedReservation.reservation_details.payment_details
-            });
-
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -478,6 +469,15 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $log.info('*goToEarlyCheckin: ', goToEarlyCheckin);
 
             var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
+
+            zsPaymentSrv.setPaymentData({
+                amount: $scope.selectedReservation.reservation_details.deposit_amount,
+                reservation_id: $scope.selectedReservation.reservation_details.reservation_id,
+                workstation_id: $rootScope.workstation_id,
+                bill_id: $scope.selectedReservation.reservation_details.default_bill_id,
+                payment_method_used: $scope.selectedReservation.reservation_details.payment_method_used,
+                payment_details: $scope.selectedReservation.reservation_details.payment_details
+            });
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);

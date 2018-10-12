@@ -45,7 +45,7 @@ describe('RVValidateEmailPhoneCtrl', function () {
 
                 var shouldEnableSubmitButtonStatus = $scope.shouldEnableSubmitButton();
 
-                expect(shouldEnableSubmitButtonStatus).toBe(15);
+                expect(shouldEnableSubmitButtonStatus).toBe(true);
 
             });
             // // ==========================
@@ -57,7 +57,7 @@ describe('RVValidateEmailPhoneCtrl', function () {
 
                 var shouldEnableSubmitButtonStatus = $scope.shouldEnableSubmitButton();
 
-                expect(shouldEnableSubmitButtonStatus).toBe(15);
+                expect(shouldEnableSubmitButtonStatus).toBe(true);
 
             });
              // // ==========================
@@ -69,7 +69,7 @@ describe('RVValidateEmailPhoneCtrl', function () {
 
                 var shouldEnableSubmitButtonStatus = $scope.shouldEnableSubmitButton();
 
-                expect(shouldEnableSubmitButtonStatus).toBe(12);
+                expect(shouldEnableSubmitButtonStatus).toBe(true);
 
             });
              // // ==========================

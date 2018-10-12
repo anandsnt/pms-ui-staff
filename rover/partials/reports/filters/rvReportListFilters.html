@@ -37,6 +37,7 @@
         Cards Without Tax ID
     </label>
 </div>
+
 <!-- YEARLY VAT END-->
 <div class="entry date-range" ng-show="uiChosenReport.hasDepositDateFilter">
     <label>{{ uiChosenReport.hasDepositDateFilter.description }} <span>(From)</span></label>
@@ -256,6 +257,15 @@
     <label>Group</label>
     <input class="icons icon-search" auto-complete auto-options="grpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Group" value="" autocomplete="off" ng-model="uiChosenReport.uiChosenIncludeGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeGroup', 'chosenIncludeGroup')">
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeGroup">
+</div>
+
+<div class="entry date-range" ng-show="uiChosenReport.hasShowVatWithRates">
+    <label>VAT</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.show_vat_with_rates}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.show_vat_with_rates}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.show_vat_with_rates">
+        SHOW VAT WITH RATES
+    </label>
 </div>
 
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"

@@ -94,6 +94,7 @@ sntRover.controller('reservationDetailsController',
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
 			}
+
 			$rootScope.setPrevState = {
 				title: 'GROUP DETAILS',
 				name: 'rover.groups.config',
@@ -102,7 +103,15 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "ROOMING"
 				}
 			};
-		} else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
+		}else if ($scope.previousState.name === 'rover.financials.autoCharge') {
+            $rootScope.setPrevState = {
+                title: 'AUTO CHARGE',
+                name: 'rover.financials.autoCharge',
+                param: {
+                    isFromStayCard: true
+                }
+            };
+        } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
 			}

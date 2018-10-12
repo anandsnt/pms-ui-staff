@@ -76,7 +76,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
             $scope.guestCardData.contactInfo.nationality_id = $scope.saveData.nationality_id;
         }
         if (showCountry) {
-            $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.country_id;
+            $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
         }
 		$scope.$emit('hideLoader');
 		ngDialog.close();
@@ -181,6 +181,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 
 	};
 	$scope.submitAndGoToCheckin = function() {
+        if ($scope.shouldEnableSubmitButton()) {
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 	        var isValidDataExist = false;
@@ -251,6 +252,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			} else {
                 $scope.errorMessage = ["Please fill the fields"];
             }
+        }
 	};
 	$scope.submitAndCheckinSuccessCallback = function() {
 		$scope.guestCardData.contactInfo.email = $scope.saveData.email;
@@ -288,11 +290,11 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
      */
     $scope.shouldEnableSubmitButton = function() {
         if ($rootScope.roverObj.forceCountryAtCheckin && $rootScope.roverObj.forceNationalityAtCheckin) {
-            return $scope.guestCardData.contactInfo.nationality_id && $scope.guestCardData.contactInfo.address.country_id;
+            return _.isFinite($scope.guestCardData.contactInfo.nationality_id) && _.isFinite($scope.guestCardData.contactInfo.address.country_id);
         } else if ($rootScope.roverObj.forceCountryAtCheckin) {
-            return $scope.guestCardData.contactInfo.address.country_id;
+            return _.isFinite($scope.guestCardData.contactInfo.address.country_id);
         } else if ($rootScope.roverObj.forceNationalityAtCheckin) {
-            return $scope.guestCardData.contactInfo.nationality_id;
+            return _.isFinite($scope.guestCardData.contactInfo.nationality_id);
         } else {
             return true;
         }        
