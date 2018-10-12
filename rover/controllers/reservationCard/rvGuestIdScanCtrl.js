@@ -116,7 +116,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 			apiParams.date_of_birth = apiParams.date_of_birth ? formatDateForApi(apiParams.date_of_birth) : '';
 			apiParams.expiration_date = apiParams.expiration_date ? formatDateForApi(apiParams.expiration_date) : '';
-			
+
 			delete apiParams.expiry_date_for_display;
 			delete apiParams.dob_for_display;
 
@@ -144,7 +144,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 						var dataToUpdate = {
 							id_type: idType,
 							nationality_id: nationalityId,
-							id_number: $scope.guestIdData.document_number
+							id_number: $scope.guestIdData.document_number,
+							birthday: $filter('date')(new Date($scope.guestIdData.date_of_birth), 'yyyy-MM-dd')
 						};
 
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
