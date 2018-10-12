@@ -123,6 +123,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
 				apiParams.back_image_data = (imageType === 'back-image') ? '' : apiParams.back_image_data;
+				apiParams.action_type = (imageType === 'front-image') ? 'Delete front image' : 'Delete back image';
 			};
 
 			var saveSuccessCallBack;
