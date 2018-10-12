@@ -9,8 +9,8 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
     function ($scope, $rootScope, RVGuestCardsSrv, $timeout, $vault, $state, $stateParams) {
         BaseCtrl.call(this, $scope);
 
-        const SIDEBAR_SCROLLER = 'sidebarScroller';
-        const MONTHLY_DATA_SCROLLER = 'monthlyDataScroller';
+        var SIDEBAR_SCROLLER = 'sidebarScroller',
+            MONTHLY_DATA_SCROLLER = 'monthlyDataScroller';
 
         var listeners = [];
 
@@ -112,6 +112,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             }
         };
 
+        // Get the class name based on the guest status
         $scope.getReservationClass = function(reservationStatus) {
             var className = '';
 
@@ -179,13 +180,8 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             }
         };
 
-        // Set the two scrollers in the screen
+        // Set up the two scrollers in the screen
         var setScroller = function() {            
-                var scrollerOptions = {
-                    tap: true,
-                    preventDefault: false                
-                };
-
                 $scope.setScroller(SIDEBAR_SCROLLER, {
                     'preventDefault': false,
                     'probeType': 3
@@ -213,7 +209,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 return currentYear;
             },
             // Set up scroll listeners for left and right pane
-            setupScrollListner = function() {
+            setUpScrollListner = function() {
                 $scope.myScroll[ SIDEBAR_SCROLLER ]
                     .on('scroll', function() {
                         $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
@@ -229,7 +225,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             // Check whether scroll is ready
             isScrollReady = function isScrollReady () {
                 if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
-                    setupScrollListner();
+                    setUpScrollListner();
                 } else {
                     $timeout(isScrollReady, 1000);
                 }
@@ -267,6 +263,8 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 }
 
             };
+        
+        // Calculates absolute value of a number
         $scope.absVal = function(val) {
             if ( val ) {
                 return Math.abs(val);
@@ -275,7 +273,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
         };
 
         // Navigate to staycard
-        $scope.navigateToStayCard = (reservation) => {
+        $scope.navigateToStayCard = function(reservation) {
             $vault.set('guestId', $scope.guestCardData.userId);
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation.reservation_id,

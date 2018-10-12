@@ -34,7 +34,7 @@
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.stay_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.stay_count.change_percent)}}"></span>
-                    {{statistics.summary.stay_count.change_percent}}%
+                    {{absVal(statistics.summary.stay_count.change_percent)}}%
                 </div>
                 {{absVal(statistics.summary.stay_count.ytd)}}
             </div>
@@ -79,7 +79,7 @@
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.adr.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.adr.change_percent)}}"></span>
-                    {{absVal(statistics.summary.adr.ytd)}}%
+                    {{absVal(statistics.summary.adr.change_percent)}}%
                 </div>
                 <span ng-bind-html="statistics.summary.adr.ytd | sntCurrency:this"></span>                
             </div>
@@ -96,14 +96,13 @@
             </div>
             <div class="column"><span ng-bind-html="statistics.summary.room_revenue.total | sntCurrency:this"></span></div>
         </div>       
-
-        <!-- Total Revenue -->
+        
         <div class="row">
             <div class="column"><strong><span ng-bind-html="statistics.summary.total_revenue.annual | sntCurrency:this"></span></strong></div>
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.total_revenue.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.total_revenue.change_percent)}}"></span>
-                    {{absVal(statistics.summary.total_revenue.ytd)}}%
+                    {{absVal(statistics.summary.total_revenue.change_percent)}}%
                 </div>
                 <strong><span ng-bind-html="statistics.summary.total_revenue.ytd | sntCurrency:this"></span></strong>
             </div>

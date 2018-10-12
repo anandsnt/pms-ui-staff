@@ -12,6 +12,18 @@ describe("RVGuestCardStatisticsController", function() {
             $scope = $rootScope.$new();
         });
 
+        $rootScope.businessDate = '2018-10-20';
+        
+        angular.extend($scope, {
+            guestCardData: {
+                userId: 10,
+                contactInfo: {
+                    first_stay_year: 2016 
+                }
+            },
+            myScroll: {}
+        });
+
         $controller("RVGuestCardStatisticsController", {
             $scope: $scope
         });
