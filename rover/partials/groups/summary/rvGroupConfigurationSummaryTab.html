@@ -187,7 +187,7 @@
                             ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
                     </select>
                 </div>
-                <textarea rows="4" ng-show="groupConfigData.summary.is_tax_exempt" ng-model="groupConfigData.summary.tax_exempt_ref_text" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}"></textarea>
+                <textarea rows="4" ng-show="groupConfigData.summary.is_tax_exempt" ng-model="groupConfigData.summary.tax_exempt_ref_text" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}" maxlength="200"></textarea>
             </div>
 
             <!-- Notes -->

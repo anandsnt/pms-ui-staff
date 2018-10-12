@@ -102,7 +102,16 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "ROOMING"
 				}
 			};
-		} else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
+		}else if ($scope.previousState.name === 'rover.financials.autoCharge') {
+            $rootScope.setPrevState = {
+                title: 'AUTO CHARGE',
+                name: 'rover.financials.autoCharge',
+                param: {
+                    status: 'ALL',
+                    due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
+                }
+            };
+        } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
 			}

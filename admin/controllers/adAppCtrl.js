@@ -257,6 +257,16 @@ admin.controller('ADAppCtrl', [
                         }, {
                             title: 'MENU_COMMISIONS',
                             action: 'rover.financials.commisions'
+                        },
+                        {
+                            title: "MENU_INVOICE_SEARCH",
+                            action: "rover.financials.invoiceSearch",
+                            menuIndex: "invoiceSearch"
+                        },
+                        {
+                            title: "AUTO_CHARGE",
+                            action: "rover.financials.autoCharge",
+                            menuIndex: "autoCharge"
                         }]
                     }, {
                         title: "MENU_ACTIONS",
