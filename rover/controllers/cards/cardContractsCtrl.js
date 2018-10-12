@@ -373,15 +373,14 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			};
 
 			ngDialog.close();
-
-			if ($stateParams.id === "add") {
-				var account_id = $scope.contactInformation.id;
+			var accountId = $scope.currentCard;
+			
+			if (accountId === "add") {
+				accountId = $scope.contactInformation.id;
 			}
-			else {
-				var account_id = $scope.currentCard;
-			}
+			
 			$scope.invokeApi(RVCompanyCardSrv.deleteContract,  {
-					"account_id": account_id,
+					"account_id": accountId,
 					"contract_id": $scope.contractSelected.id
 				}, deleteContractSuccessCallback, deleteContractFailureCallback);
 		};
