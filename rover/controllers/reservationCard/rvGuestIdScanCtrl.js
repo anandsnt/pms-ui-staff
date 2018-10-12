@@ -65,19 +65,19 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			});
 		};
 
-		$scope.uploadFrontImage = function (){
+		$scope.uploadFrontImage = function() {
 			$('#front-image-upload').click();
 		};
 
-		$scope.uploadBackImage = function (){
+		$scope.uploadBackImage = function() {
 			$('#back-image-upload').click();
 		};
 
-		var markIDDetailsHasChanged = function () {
+		var markIDDetailsHasChanged = function() {
 			isIDDetailsChanged = true;
 		};
 
-		var generalFailureCallBack = function () {
+		var generalFailureCallBack = function() {
 			errorPopup = ngDialog.open({
 				template: '/assets/partials/guestId/rvGuestIDDetailsErrorPopup.html',
 				className: 'single-date-picker',
@@ -89,22 +89,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			errorPopup.close();
 		};
 
-		$scope.saveGuestIdDetails = function (action, imageType) {
+		$scope.saveGuestIdDetails = function(action, imageType) {
 
-			var apiParams = {
-				'front_image_data': $scope.guestIdData.front_image_data,
-				'back_image_data':$scope.guestIdData.back_image_data,
-				'signature':$scope.guestIdData.signature,
-				'guest_id': $scope.guestIdData.guest_id,
-				'last_name': $scope.guestIdData.last_name,
-				'first_name': $scope.guestIdData.first_name,
-				'date_of_birth': $scope.guestIdData.date_of_birth,
-				'nationality_id': $scope.guestIdData.nationality_id,
-				'document_number': $scope.guestIdData.document_number,
-				'expiration_date': $scope.guestIdData.expiration_date,
-				'reservation_id': $scope.reservationData.reservation_card.reservation_id,
-				'document_type': $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD'
-			};
+			var apiParams = angular.copy($scope.guestIdData);
+
+			apiParams.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+			apiParams.document_type = $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD';
 
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
