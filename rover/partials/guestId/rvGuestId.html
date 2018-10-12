@@ -25,7 +25,7 @@
                     <span>{{ 'ID_DOB' | translate}}</span>
                     <div class="entry has-datepicker">
                         <!-- <button class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button> -->
-                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.date_of_birth"
+                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.dob_for_display"
                         ng-click="openDobCalendar()">
                     </div> 
                 </li>
@@ -52,7 +52,7 @@
                 <li>
                     <span>{{ 'ID_EXPIRY' | translate}}</span>
                     <div class="entry has-datepicker">
-                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiration_date"
+                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiry_date_for_display"
                         ng-click="openExpiryCalendar()">
                 </li>
 
