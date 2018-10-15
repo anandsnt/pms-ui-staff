@@ -94,6 +94,7 @@ sntRover.controller('reservationDetailsController',
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
 			}
+
 			$rootScope.setPrevState = {
 				title: 'GROUP DETAILS',
 				name: 'rover.groups.config',
@@ -107,8 +108,7 @@ sntRover.controller('reservationDetailsController',
                 title: 'AUTO CHARGE',
                 name: 'rover.financials.autoCharge',
                 param: {
-                    status: 'ALL',
-                    due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
+                    isFromStayCard: true
                 }
             };
         } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {

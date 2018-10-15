@@ -57,6 +57,9 @@ angular.module('FinancialsModule', [])
     $stateProvider.state('rover.financials.autoCharge', {
         url: '/autoCharge',
         templateUrl: '/assets/partials/financials/autocharge/rvAutoCharge.html',
-        controller: 'RVAutoChargeController'
+        controller: 'RVAutoChargeController',
+        params: {
+            isFromStayCard: null
+        }
     });
 });
