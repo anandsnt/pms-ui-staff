@@ -46,6 +46,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.cardTypeText = $filter('translate')('TRAVELAGENT');
 			$scope.dataIdHeader = "travel-agent-card-header";
 		}
+
 		$scope.setTitle ($scope.heading);
 
 		$scope.$on('ARTransactionSearchFilter', function(e, data) {
@@ -369,7 +370,18 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					isDisabledFields = true;
 				}
 			}
+
 			return isDisabledFields;
+		};
+
+		$scope.isUpdateEnabledForName = function() {
+			var contractedRates = RVCompanyCardSrv.getContractedRates(),
+				isUpdateEnabledForNameInCard = true;
+
+			if (contractedRates.current_contracts.length > 0 || contractedRates.future_contracts.length > 0 || contractedRates.history_contracts.length > 0) {
+				isUpdateEnabledForNameInCard = false;
+			}
+			return isUpdateEnabledForNameInCard;
 		};
 
 		var callCompanyCardServices = function() {
@@ -692,6 +704,5 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
             CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
             $scope.observeForSwipe();
         }
-
     }
 ]);

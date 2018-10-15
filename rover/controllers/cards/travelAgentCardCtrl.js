@@ -240,6 +240,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 					isDisabledFields = true;
 				}
 			}
+
 			return isDisabledFields;
 		};
 
