@@ -104,7 +104,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			// API expects date in format dd-mm-yyyyy
 			var dateComponents = date.split("-");
 
-			return dateComponents[1] + '-' + dateComponents[0] + '-' + dateComponents[2]
+			return dateComponents[1] + '-' + dateComponents[0] + '-' + dateComponents[2];
 		};
 
 		$scope.saveGuestIdDetails = function(action, imageType) {
@@ -124,7 +124,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
 				apiParams.back_image_data = (imageType === 'back-image') ? '' : apiParams.back_image_data;
 				apiParams.action_type = (imageType === 'front-image') ? 'Delete front image' : 'Delete back image';
-			};
+			}
 
 			var saveSuccessCallBack;
 
@@ -133,7 +133,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 					$scope.guestIdData.front_image_data = (imageType === 'front-image') ? '' : $scope.guestIdData.front_image_data;
 					$scope.guestIdData.back_image_data = (imageType === 'back-image') ? '' : $scope.guestIdData.back_image_data;
 					markIDDetailsHasChanged();
-				}
+				};
 			} else {
 				saveSuccessCallBack = function() {
 					markIDDetailsHasChanged();
@@ -153,7 +153,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 					}
 
 					$scope.closeGuestIdModal();
-				}
+				};
 			}
 
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {

@@ -48,6 +48,7 @@ describe('rvGuestIdScanCtrl', function() {
     it('On clicking upload front image button, trigger click on the hidden input field', function() {
         setFixtures("<input type='file' style='display: none;' id='front-image-upload' />");
         var spyEvent = spyOnEvent($('#front-image-upload'), 'click');
+
         $scope.uploadFrontImage();
         expect(spyEvent).toHaveBeenTriggered();
     });
@@ -55,6 +56,7 @@ describe('rvGuestIdScanCtrl', function() {
     it('On clicking upload back image button, trigger click on the hidden input field', function() {
         setFixtures("<input type='file' style='display: none;' id='back-image-upload' />");
         var spyEvent = spyOnEvent($('#back-image-upload'), 'click');
+        
         $scope.uploadBackImage();
         expect(spyEvent).toHaveBeenTriggered();
     });
