@@ -52,7 +52,5 @@ angular.module('sntRover').service('RVGuestCardsSrv',
             return RVBaseWebSrvV2.postJSON(url, params);
         };
 
-
-        
     }
 ]);
