@@ -113,8 +113,10 @@
         </div>
     </section>
     <!-- print starts here -->
-    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel' || zestStationData.zest_printer_option === 'RECEIPT'">
+    <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel' && zestStationData.zest_printer_option !== 'RECEIPT'">
     </div>
-    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel' || zestStationData.zest_printer_option === 'RECEIPT'">
+    <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    </div>
+    <div ng-include="'/assets/partials_v2/checkout/zsReceiptBillPrint.html'" ng-if="zestStationData.theme !== 'yotel' && zestStationData.zest_printer_option === 'RECEIPT'">
     </div>
 </div>

@@ -108,10 +108,13 @@
 <div class="room page-print" ng-show="theme === 'yotel' || zestStationData.zest_printer_option === 'RECEIPT'">
         <section id="registration-card" class="page-print">
         
-            <div class="logo">
+            <div class="logo" ng-show="theme === 'yotel'">
                 <div ng-include="icons.url.logo"></div>
             </div>
             <div class="content">
+                <div id="print-logo" ng-hide="theme === 'yotel'">
+                    <img src="{{ zestStationData.hotel_template_logo }}"/>
+                </div>
                 <!-- business date/time -->
               <!--   <span>{{'REGISTRATION_READY_PRINT_BUSINESS_DATE_LABEL' | translate}} {{currentDateTime | date:'dd-MMM yyyy HH:mm'}}</span>
                 <br>-->
