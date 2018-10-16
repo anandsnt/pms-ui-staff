@@ -119,6 +119,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 			delete apiParams.expiry_date_for_display;
 			delete apiParams.dob_for_display;
+            delete apiParams.nationality;
 
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
