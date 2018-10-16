@@ -1,8 +1,8 @@
 sntZestStation.controller('zsPrintBillCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate',
-    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate) {
+    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate', '$controller',
+    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate, $controller) {
 
         /** ******************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
@@ -13,6 +13,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
          *********************************************************************************/
 
         BaseCtrl.call(this, $scope);
+
+        if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+            $controller('zsReceiptPrintHelperCtrl', {
+                $scope: $scope
+            });
+        }
         /**
          *  general failure actions inside bill screen
          **/
@@ -112,6 +118,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
             try {
             // this will show the popup with full bill
                 $timeout(function() {
+                    var printString;
+
+                    if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                        printString = $scope.setUpStringForReceiptBill($scope.printData, $scope.zestStationData);
+                        console.log(printString);
+                    };
                 /*
                  * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                  */
@@ -132,12 +144,15 @@ sntZestStation.controller('zsPrintBillCtrl', [
                         // we will call websocket services to print
                             handleStarTacPrinterActions();
                         } else {
-                            $scope.$emit('PRINT_CURRENT_PAGE');
-                            setTimeout(function() {
-                                var printopted = 'true';
+                            $timeout(function() {
+                                $scope.$emit('PRINT_CURRENT_PAGE');
+                                $timeout(function() {
+                                    var printopted = 'true';
 
-                                nextPageActions(printopted);
-                            }, 100);
+                                    nextPageActions(printopted);
+                                }, 100);
+                            }, 500);
+                            
                         }
 
                     }
