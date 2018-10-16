@@ -103,6 +103,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
         /** end of contact information area */
         var contractRates = [];
+        
         this.fetchContractsList = function(data) {
             var deferred = $q.defer();
             var url = '/api/accounts/' + data.account_id + '/contracts';
