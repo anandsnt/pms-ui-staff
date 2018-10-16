@@ -384,8 +384,13 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			};
 
 			ngDialog.close();
+			var accountId = $stateParams.id;
+
+			if (accountId === "add") {
+				accountId = $scope.contactInformation.id;
+			}
 			$scope.invokeApi(RVCompanyCardSrv.deleteContract,  {
-					"account_id": $stateParams.id,
+					"account_id": accountId,
 					"contract_id": $scope.contractSelected.id
 				}, deleteContractSuccessCallback, deleteContractFailureCallback);
 		};

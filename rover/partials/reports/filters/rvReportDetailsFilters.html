@@ -648,10 +648,6 @@
                 options="chosenReport.hasIncludeTaxExempts.options"></multi-option-selection>
         </div>
 
-
-
-
-
         <!-- item_35: Min. Revenue -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasMinRevenue" ng-class="{'active': filterItemsToggle.item_35}" ng-click="toggleFilterItems('item_35')">
             <span class="title">Revenue</span>
@@ -796,6 +792,16 @@
             </label>
         </div>        
         <!-- YEARLY VAT END-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowVatWithRates" ng-class="{'active': filterItemsToggle.item_55}" ng-click="toggleFilterItems('item_55')">
+            <span class="title">VAT</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasShowVatWithRates" ng-class="{ 'hidden': !filterItemsToggle.item_55 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.show_vat_with_rates}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.show_vat_with_rates}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.show_vat_with_rates">
+                SHOW VAT WITH RATES
+            </label>
+        </div>  
 
 
         <!-- item_43: Completion Status -->
