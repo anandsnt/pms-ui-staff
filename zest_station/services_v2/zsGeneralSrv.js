@@ -69,7 +69,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'hubert': 'Hotel Hubert',
             'de-blend': '2L De Blend',
             'anthony': 'The Anthony',
-            'stewart': 'Stewart Aparthotel'
+            'stewart': 'Stewart Aparthotel',
+            'university-inn': 'University Inn'
         };
 
         this.isThemeConfigured = function(theme) {
