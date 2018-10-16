@@ -1442,7 +1442,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 order_id: filterValues.orderID,
                 'name_card_ids[]': _.pluck(filterValues.selectedCards, 'id'),
                 group_by: filterValues.groupBySelectedValue,
-                fetchRates: true,
+                fetchRates: !cachedRateList.length,
                 fetchCommonRestrictions
             };
 

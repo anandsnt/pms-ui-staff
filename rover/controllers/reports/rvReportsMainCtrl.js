@@ -1561,12 +1561,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     key = reportParams['MARKET_IDS'];
                     params[key] = [];
                     /**/
-                    _.each(selected, function (market) {
-                        $scope.appliedFilter.market_ids.push(market);
+                    _.each(selected, function (market) {                        
                         params[key].push(market.value);
                         /**/
                         if (changeAppliedFilter) {
                             $scope.appliedFilter.markets.push(market.name);
+                            $scope.appliedFilter.market_ids.push(market);
                         }
                     });
 

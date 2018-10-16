@@ -2,10 +2,10 @@ admin.controller('adQuickTextSetupCtrl', ['$scope', 'quicktextSetupValues', 'adI
     function($scope, quicktextSetupValues, adInterfacesCommonConfigSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interfaceIdentifier = 'QUICKTEXT';
+        $scope.interfaceIdentifier = 'quicktext';
 
         /**
-         * when clicked on check box to enable/disable GoMomentIvy
+         * when clicked on check box to enable/disable QuickText
          * @return {undefined}
          */
         $scope.toggleEnabled = function() {

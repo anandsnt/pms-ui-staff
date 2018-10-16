@@ -7152,9 +7152,14 @@
                             margin:0;
                             padding: 10px 20px;
                             min-height: 50px;
-                            border-bottom: 1px solid rgba(0,0,0,.1);
                             line-height: 1;
                             #flexbox > .parent(column, center, '', '' );
+
+                            img {
+                                margin-top: 5px;
+                                .size(auto, 100%);
+                            }
+
                             span {
                                 display: block;
                                 font-size: 14px;
@@ -7196,6 +7201,10 @@
                                         margin: 0 auto;
                                     }
                                 }
+                            }
+
+                            &:not(:last-child) {
+                                border-bottom: 1px solid rgba(0,0,0,.1);
                             }
                         }
 
@@ -8242,6 +8251,68 @@
                 #gms-iframe {
                     border: 0;
                     .square(100%);
+                }
+            }
+
+            /* Check In Data ***/
+            &.check-in-data {
+                width: 670px;
+
+                fieldset {
+                    padding-left: 200px;
+                    padding-top: 15px;
+                    position: relative;
+
+                    legend {
+                        display: block;
+                        padding-right: 40px;
+                        text-align: right;
+                        width: 200px;
+                        position: absolute;
+                        left: 0;
+                        top: 15px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                    }
+
+                    &:nth-of-type(2) {
+                        border-top: 1px solid rgba(0, 0, 0, 0.15);
+                    }
+
+                    &.hidden ~ fieldset { border: none; }
+                }
+
+                .entry {
+                    width: 48%;
+                    margin-bottom: 20px;
+
+                    &:nth-child(2n+2) {
+                        margin-left: 4%;
+                    }
+
+                    label {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .message {
+                    margin-bottom: 10px;
+                }
+
+                .required {
+                    color: @red;
+                }
+
+                .actions {
+                    padding-top: 10px;
+                    text-align: right;
+                    border-top: 1px solid rgba(0, 0, 0, 0.15);
+
+                    .button {
+                        width: auto;
+                        display: inline-block;
+                        padding: 0 40px;
+                    }
                 }
             }
         }

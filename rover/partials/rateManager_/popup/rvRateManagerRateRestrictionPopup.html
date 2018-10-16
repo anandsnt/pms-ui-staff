@@ -3,10 +3,7 @@
 	    <div class="modal-container">
 	        <div class="modal-header">
 	            <div class="modal-header-left">
-	            	<h2>
-	            		{{header}}
-	            		<span ng-if="isLocked" class="icons icon-diary-lock"></span>
-	            	</h2>
+	            	<h2>{{header}}</h2>
 	            	<em>{{headerBottomLeftLabel}}</em>
 	            	<em class="rate-name">{{headerBottomRightLabel}}</em>
 	            </div>
@@ -18,7 +15,7 @@
             	</div>
 	        </div>
 	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	        <div class="modal-body" ng-class="{'overlay': isLocked}">
+	        <div class="modal-body">
 	        	<div class="content-left">
                     <span
                     rv-include-template="/assets/partials/rateManager_/popup/left/rvRateManagerPopupLeftRestrictionList.html">
@@ -134,10 +131,7 @@
 
 			<div class="footer">
 	            <div class="actions">
-	                <button ng-if="isLocked" class="button blank" type="button" ng-click="closeDialog()">
-	                    Close Window
-	                </button>
-	               	<button ng-if="!isLocked" class="button blank" type="button" ng-click="closeDialog()">
+	            	<button class="button blank" type="button" ng-click="closeDialog()">
 	                    Cancel
 	                </button>
 	                <!-- remove class .hide if there is any override and rate is not a child or any other rule is applied. Please do review rules for overrides
@@ -147,7 +141,6 @@
 	                </button>
 
 	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button"
-	                		ng-hide="isLocked"
 	                		ng-disabled="isPastDate"
 	                		ng-class="{'grey' : isPastDate}">
 	                    Set

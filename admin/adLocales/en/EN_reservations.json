@@ -33,6 +33,8 @@
 "START_JOB": "Start Job",
 "REFRESH_STATUS": "Refresh Status",
 "FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
+"FORCE_NATIONALITY_AT_CHECKIN": "Force Nationality at Check in", 
+"FORCE_COUNTRY_AT_CHECKIN": "Force Country at Check in", 
 "SHOW_OVERBOOKING_ALERT" : "SHOW OVERBOOKING ALERT",
 "CC_TOPUP_AUTHORIZATION_RULE" : "CC Top Up Authorization Rule",
 "MAX_NUMBER_OF_NIGHTS" : "Max Number of Nights",

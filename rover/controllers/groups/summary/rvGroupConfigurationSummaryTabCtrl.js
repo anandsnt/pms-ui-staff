@@ -987,6 +987,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
+            $scope.groupConfigData.summary.commission_details = response.commission_details;
+            
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;

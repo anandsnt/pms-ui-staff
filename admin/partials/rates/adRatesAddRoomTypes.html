@@ -17,7 +17,7 @@
 					<span>Assign at least 1 room type</span>
 				</em>
 			</div>
-			<div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked }">
+			<div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract}">
 				<label class="center_align"><em class="rate_roomtype_text">Available Room Types</em></label>
 
 				<ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="nonAssignedroomTypes" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
@@ -38,7 +38,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="entry movers rates_mover" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+		<div class="entry movers rates_mover" ng-class="{'overlay' : rateData.is_global_contract}">
 			<span class="top_mover" >
 				<span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()"
 				ng-class="{active: selectedUnAssignedRoomIndex!=-1}" data-type="source">unassign room(s)</span>
@@ -56,7 +56,7 @@
 				
 			</span>
 		</div>
-		<div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract || rateData.isLocked}">
+		<div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract}">
 			<label class="center_align">
 				<span class="assigned_room_text">Assigned Room Types</span></label>
 				<ul class="boxes sortable ui-sortable short-list" 
@@ -80,10 +80,10 @@
 	</fieldset>
 	<div class="actions float">
 		<button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelMenu()">Cancel</button>
-		<button type="button" id="send-email" ng-hide="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'brand-colors' : anyRoomSelected(), 'overlay' : rateData.is_global_contract || rateData.isLocked}" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
+		<button type="button" id="send-email" ng-hide="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'brand-colors' : anyRoomSelected(), 'overlay' : rateData.is_global_contract}" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
 			Step 3 - Set date range
 		</button>
-		<button type="button" id="send-email" ng-show="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'green' : (rateData.id > 0 && anyRoomSelected()), 'overlay' : rateData.is_global_contract || rateData.isLocked}" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
+		<button type="button" id="send-email" ng-show="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'green' : (rateData.id > 0 && anyRoomSelected()), 'overlay' : rateData.is_global_contract}" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
 			Save
 		</button>
 	</div>

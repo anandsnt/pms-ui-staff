@@ -257,6 +257,16 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             
         };
 
+        // This is to update the stay count after reservation guest details api is resolved
+        // This is needed because there is no staycount in the guest details section in reservation details api response
+        // CICO-57790
+        var stayCountUpdateListener = $scope.$on('UPDATE_STAY_COUNT', function(event, data) {
+            initialGuestCardData.stayCount = data.stayCount;
+        });
+
+        // Destroy the listener
+        $scope.$on('$destroy', stayCountUpdateListener);
+
         /**
          * Get the style class for the contact info tab contents during print
          * @param {String} value - value of the input control
