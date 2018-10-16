@@ -8,7 +8,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     '$timeout',
     '$window',
     '$translate',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate) {
+    'zsReceiptPrintHelperSrv',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate, zsReceiptPrintHelperSrv) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id
@@ -16,7 +17,6 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
          ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
-
 
         /**
          * [clickedPrint description]
@@ -133,6 +133,12 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 try {
                     // this will show the popup with full bill
                     $timeout(function() {
+                        var printString;
+
+                        if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                            printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
+                            console.log(printString);
+                        };
                         /*
                          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */

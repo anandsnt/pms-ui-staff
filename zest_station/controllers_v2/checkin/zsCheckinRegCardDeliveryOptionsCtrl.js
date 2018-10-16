@@ -10,7 +10,8 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
     '$timeout',
     '$window',
     '$translate',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window, $translate) {
+    'zsReceiptPrintHelperSrv',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window, $translate, zsReceiptPrintHelperSrv) {
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
@@ -20,7 +21,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
-
 		/**
 		 * MODES IN THE SCREEN
 		 * 1.EMAIL_ENTRY_MODE
@@ -161,6 +161,12 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 try {
 				// this will show the popup with full bill
                     $timeout(function() {
+                        var printString;
+
+                        if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                            printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
+                            console.log(printString);
+                        };
 					/*
 					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 					 */
