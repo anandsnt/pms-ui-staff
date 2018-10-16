@@ -276,7 +276,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 					}, fetchContractsListSuccessCallback, fetchFailureCallback);
 				}
 			} else {
-				$scope.contractList.isAddMode = true;
+				$scope.AddNewButtonClicked();
 				$scope.$emit('hideLoader');
 			}
 		};
@@ -362,7 +362,6 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				$scope.contractList.current_contracts = [];
 				$scope.contractList.future_contracts = [];
 				$scope.contractList.history_contracts = [];
-				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
 			};

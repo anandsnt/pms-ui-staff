@@ -287,8 +287,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					"account_id": $stateParams.id
 				}, fetchContractsListSuccessCallback, fetchFailureCallback);
 			} else {
-				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
+				$scope.AddNewButtonClicked();
 			}
 		};
 
@@ -374,7 +374,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.current_contracts = [];
 				$scope.contractList.future_contracts = [];
 				$scope.contractList.history_contracts = [];
-				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
 			};
