@@ -331,6 +331,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.shouldShowCommissionsTab = function() {
 			return ($scope.account_type === 'TRAVELAGENT');
 		};
+		/*
+		 * is update enabled for company cards
+		 */
 		$scope.isUpdateEnabled = function(shouldCheckContracts) {
 			if ($scope.contactInformation.is_global_enabled === undefined) {
 				return;
@@ -373,7 +376,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 			return (shouldCheckContracts) ?  isDisabledFields || !$scope.isUpdateEnabledForName() : isDisabledFields;
 		};
-
+		/*
+		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
+		 */
 		$scope.isUpdateEnabledForName = function() {
 			var contractedRates = RVCompanyCardSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;

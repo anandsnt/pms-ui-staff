@@ -242,7 +242,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			}
 			return isDisabledFields;
 		};
-
+		/*
+		 * If contract rate exists then should not allow editing name of CC/TA - CICO-56441
+		 */
 		$scope.isUpdateEnabledForName = function() {
 			var contractedRates = RVCompanyCardSrv.getContractedRates(),
 				isUpdateEnabledForNameInCard = true;
