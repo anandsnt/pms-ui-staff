@@ -331,7 +331,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.shouldShowCommissionsTab = function() {
 			return ($scope.account_type === 'TRAVELAGENT');
 		};
-		$scope.isUpdateEnabled = function() {
+		$scope.isUpdateEnabled = function(shouldCheckContracts) {
 			if ($scope.contactInformation.is_global_enabled === undefined) {
 				return;
 			}
@@ -347,7 +347,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				}
 			}
 
-			return isDisabledFields;
+			return (shouldCheckContracts) ?  isDisabledFields || !$scope.isUpdateEnabledForName() : isDisabledFields;
 		};
 		/*
 		 * Added the same method in travel agent ctrl
@@ -355,7 +355,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * When we go to travel agent from staycard, controller is travelagentctrl
 		 * When we go to travel agent from revenue management, controller is this
 		 */
-		$scope.isUpdateEnabledForTravelAgent = function() {
+		$scope.isUpdateEnabledForTravelAgent = function(shouldCheckContracts) {
 			if ($scope.contactInformation.is_global_enabled === undefined) {
 				return;
 			}
@@ -371,7 +371,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				}
 			}
 
-			return isDisabledFields;
+			return (shouldCheckContracts) ?  isDisabledFields || !$scope.isUpdateEnabledForName() : isDisabledFields;
 		};
 
 		$scope.isUpdateEnabledForName = function() {

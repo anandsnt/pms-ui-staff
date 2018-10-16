@@ -91,56 +91,5 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
-
-		$scope.isUpdateEnabledForName = function() {
-
-			var contractedRates = RVCompanyCardSrv.getContractedRates(),
-				isUpdateEnabledForNameInCard = true;
-
-			if (contractedRates) {
-				if (contractedRates.current_contracts.length > 0 || contractedRates.future_contracts.length > 0 || contractedRates.history_contracts.length > 0) {
-					isUpdateEnabledForNameInCard = false;
-				}
-			}
-			
-			return isUpdateEnabledForNameInCard;
-		};
-
-		$scope.isUpdateEnabledForTravelAgent = function(shouldCheckContracts) {
-			if ($scope.contactInformation.is_global_enabled === undefined) {
-				return;
-			}
-			var isDisabledFields = false;
-
-			if ($scope.contactInformation.is_global_enabled) {
-				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-					isDisabledFields = true;
-				}
-			} else {
-				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
-					isDisabledFields = true;
-				}
-			}
-			return (shouldCheckContracts) ?  isDisabledFields || !$scope.isUpdateEnabledForName() : isDisabledFields;
-		};
-
-		$scope.isUpdateEnabled = function(shouldCheckContracts) {
-			if ($scope.contactInformation.is_global_enabled === undefined) {
-				return;
-			}
-			var isDisabledFields = false;
-			
-			if ($scope.contactInformation.is_global_enabled) {
-				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-					isDisabledFields = true;
-				}
-			} else {
-				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
-					isDisabledFields = true;
-				}
-			}
-
-			return (shouldCheckContracts) ?  isDisabledFields || !$scope.isUpdateEnabledForName() : isDisabledFields;
-		};
 	}
 ]);
