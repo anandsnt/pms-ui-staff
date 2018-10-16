@@ -362,9 +362,9 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				$scope.contractList.current_contracts = [];
 				$scope.contractList.future_contracts = [];
 				$scope.contractList.history_contracts = [];
+				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
-
 			};
 
 			var deleteContractFailureCallback = function(errorMessage) {

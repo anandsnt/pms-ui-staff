@@ -374,6 +374,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.current_contracts = [];
 				$scope.contractList.future_contracts = [];
 				$scope.contractList.history_contracts = [];
+				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
 			};
