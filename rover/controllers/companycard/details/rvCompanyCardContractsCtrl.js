@@ -287,8 +287,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					"account_id": $stateParams.id
 				}, fetchContractsListSuccessCallback, fetchFailureCallback);
 			} else {
+				$scope.contractList.isAddMode = true;
 				$scope.$emit('hideLoader');
-				$scope.AddNewButtonClicked();
 			}
 		};
 
@@ -369,6 +369,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.deleteContractConfirmed = function(event) {
 
 			event.stopPropagation();
+			var accountId = $stateParams.id;
+			
 			var deleteContractSuccessCallback = function() {
 				$scope.errorMessage = "";
 				$scope.contractList.current_contracts = [];
@@ -376,6 +378,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
+				if (accountId === "add") {
+					$scope.AddNewButtonClicked();
+				}
 			};
 
 			var deleteContractFailureCallback = function(errorMessage) {
@@ -384,8 +389,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			};
 
 			ngDialog.close();
-			var accountId = $stateParams.id;
-
 			if (accountId === "add") {
 				accountId = $scope.contactInformation.id;
 			}
