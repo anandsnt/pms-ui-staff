@@ -22,28 +22,28 @@ sntZestStation.controller('zsPrintBillCtrl', [
             $state.go('zest_station.speakToStaff');
         };
         var nextPageActions = function(printopted) {
-            // $scope.$emit('hideLoader');
-            // $scope.runDigestCycle();
-            // // for overlay the email collection is before print and for 
-            // // stand alone its after print bil
-            // if ($scope.zestStationData.guest_bill.email && $scope.zestStationData.is_standalone) {
-            //     if (!$scope.inDemoMode()) {
-            //         $scope.stateParamsForNextState.printopted = printopted;    
-            //     }
-            //     $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
-            // } else {
-            //     var stateParams = {};
+            $scope.$emit('hideLoader');
+            $scope.runDigestCycle();
+            // for overlay the email collection is before print and for 
+            // stand alone its after print bil
+            if ($scope.zestStationData.guest_bill.email && $scope.zestStationData.is_standalone) {
+                if (!$scope.inDemoMode()) {
+                    $scope.stateParamsForNextState.printopted = printopted;    
+                }
+                $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
+            } else {
+                var stateParams = {};
 
-            //     if (!$scope.inDemoMode()) {
-            //         stateParams = {
-            //             'printopted': printopted,
-            //             'email_sent': $scope.stateParamsForNextState.email_sent,
-            //             'email_failed': $scope.stateParamsForNextState.email_failed
-            //         };
-            //     }
+                if (!$scope.inDemoMode()) {
+                    stateParams = {
+                        'printopted': printopted,
+                        'email_sent': $scope.stateParamsForNextState.email_sent,
+                        'email_failed': $scope.stateParamsForNextState.email_failed
+                    };
+                }
 
-            //     $state.go('zest_station.reservationCheckedOut', stateParams);
-            // }
+                $state.go('zest_station.reservationCheckedOut', stateParams);
+            }
         };
         var printFailedActions = function(errorMessage) {
             $scope.$emit('hideLoader');
