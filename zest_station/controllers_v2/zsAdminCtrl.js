@@ -320,6 +320,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     }
                     $scope.cancelAdminSettings(true);
                 }
+
+                localStorage.setItem('snt_zs_printer', $scope.savedSettings.printer);
             };
             var failureCallBack = function() {
                 console.warn('unable to save workstation settings');
