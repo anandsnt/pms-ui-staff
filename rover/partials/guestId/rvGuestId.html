@@ -1,0 +1,160 @@
+<div role="dialog" id="modal" class="modal-show">
+    <div id="guest-id" class="modal-content form guest-id">
+    <button id="modal-close" type="button" class="modal-close" ng-click='closeGuestIdModal()'>
+        <span class="icons icon-close invert"></span>
+    </button>
+
+    <div class="modal-body">
+        <div class="content-left" style="padding-top: 20px;">
+            <h2 class="message" translate>ID_DETAILS</h2>
+            <ul class="details">
+                <li>
+                    <span>{{ 'ID_LAST_NAME' | translate }}</span>
+                     <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.last_name">
+                    </div>
+                </li>
+                <li>
+                    <span>{{ 'ID_FIRST_NAME' | translate}}</span>
+                     <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.first_name">
+                    </div>
+                </li>
+                <!-- DOB -->
+                <li>
+                    <span>{{ 'ID_DOB' | translate}}</span>
+                    <div class="entry has-datepicker">
+                        <!-- <button class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button> -->
+                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.dob_for_display"
+                        ng-click="openDobCalendar()">
+                    </div> 
+                </li>
+                <!-- NATIONALITY -->
+                <li>
+                    <span>{{ 'ID_NATIONALITY' | translate}}</span>
+                     <div class="entry">
+                        <div class="select">
+                            <select class="placeholder" ng-model="guestIdData.nationality_id">
+                                <option value="">Select a Nationality</option>
+                                <option ng-repeat="country in countyList" value="{{ country.id }}">{{ country.value }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <!-- ID NUMBER -->
+                <li>
+                    <span>{{ 'ID_NUMBER' | translate}}</span>
+                    <div class="entry">
+                        <input type="text" placeholder="" ng-model="guestIdData.document_number">
+                    </div>
+                </li>
+                <!-- EXPIRY DATE -->
+                <li>
+                    <span>{{ 'ID_EXPIRY' | translate}}</span>
+                    <div class="entry has-datepicker">
+                        <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiry_date_for_display"
+                        ng-click="openExpiryCalendar()">
+                </li>
+
+                <!-- If signed after scan, show signature at end of the list -->
+                <li ng-if="guestIdData.signature.length > 0">
+                    <span>{{ 'ID_SIGNATURE' | translate}}</span>
+                    <img src="{{ guestIdData.signature }}" alt="" style="background: #fff"/>
+                </li>
+            </ul>
+        </div>
+        <div class="content-right">
+            <div style="margin-bottom: 10px;">
+                <div class="select" style="width: 30%;margin: 0 auto;">
+                <select class="placeholder" ng-model="guestIdData.document_type">
+                    <option value="">Select document type</option>
+                    <option value="ID_CARD" translate>ID card</option>
+                    <option value="PASSPORT" translate>PASSPORT</option>
+                    <!-- <option value="License">License</option> -->
+                </select>
+                </div>
+            </div>
+
+
+
+            <div class="guest-documents" style="margin-bottom: 50px;">
+                <div class="guest-document">
+                    <h2 class="message" translate>ID_FRONT</h2>
+                    <!--
+                        'text':
+                         - Scanned {DD-MM-YYYY HH:MM AM/PM} (if scanned)
+                         - Uploaded {DD-MM-YYYY HH:MM AM/PM} (if uploaded)
+                         - Not Available (if no data)
+                     -->
+                    <p class="text"></p>
+
+                    <!-- Add .missing if no data -->
+                    <div class="guest-info" ng-class="{'missing' : guestIdData.front_image_data.length === 0}">
+                        <!-- if Data show this -->
+                        <img src="{{ guestIdData.front_image_data }}">
+                        <input type="file" id="front-image-upload" accept="image/*"ng-model="guestIdData.front_image_data" accept="*" app-filereader style="display: none;" ng-change="ImageChange('front-image')"/>
+                        <div class="document-actions" ng-show="guestIdData.front_image_data.length > 0">
+                            <!-- <button type="button" class="button white green-text">Re-Scan</button> -->
+                            <button type="button" class="button white blue-text" ng-click="uploadFrontImage()" translate>RE_UPLOAD</button>
+                            <!-- <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
+                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE', 'front-image')" translate>DELETE</button>
+                        </div>
+                        <!-- if no data then this -->
+                        <span class="icons icon-identity-card-missing" ng-show="guestIdData.front_image_data.length === 0"></span>
+                        <h3 ng-show="guestIdData.front_image_data.length === 0" translate>NO_IMAGE</h3>
+                        <p ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
+                        <!-- <button type="button" class="button white green-text" 
+                        ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID</button> -->
+                        <button type="button" 
+                                class="button white blue-text" 
+                                ng-show="guestIdData.front_image_data.length === 0" 
+                                ng-click="uploadFrontImage()"
+                                translate>UPLOAD_IMAGE
+                        </button>
+                    </div>
+                </div>
+                <div class="guest-document">
+                    <h2 class="message" translate>ID_BACK</h2>
+                    <p class="text"></p>
+
+                    <!-- Add .missing if no data -->
+                    <div class="guest-info " ng-class="{'missing' : guestIdData.back_image_data.length === 0}">
+                        <!-- if Data show this -->
+                        <img src="{{ guestIdData.back_image_data }}">
+                        <input type="file" id="back-image-upload" accept="image/*"ng-model="guestIdData.back_image_data" accept="*" app-filereader style="display: none;" ng-change="ImageChange('back-image')"
+                        />
+                        <div class="document-actions" ng-show="guestIdData.back_image_data.length > 0">
+                            <!-- <button type="button" class="button white green-text">Re-Scan</button> -->
+                            <button type="button" class="button white blue-text" ng-click="uploadBackImage()" translate>RE_UPLOAD</button>
+                       <!--      <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
+                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE','back-image')" translate>DELETE</button>
+                        </div>
+                        <!-- if no data then this -->
+                        <span class="icons icon-identity-card-missing" ng-show="guestIdData.back_image_data.length === 0"></span>
+                        <h3 ng-show="guestIdData.back_image_data.length === 0" translate>NO_IMAGE</h3>
+                        <p ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
+                        <!-- <button type="button" class="button white green-text"
+                        ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID</button> -->
+                        <button type="button" 
+                                class="button white blue-text" 
+                                ng-show="guestIdData.back_image_data.length === 0" 
+                                ng-click="uploadBackImage()"translate
+                                >UPLOAD_IMAGE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" 
+                    class="button green" 
+                    ng-click="saveGuestIdDetails()" 
+                    style="width: 20%;margin: 0 auto;bottom: 10;position: fixed;left: calc(50%);"
+                    translate>
+                    SAVE
+            </button>
+          <!--   <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" style="width: 30%; margin: 0 auto;" translate>ID_DOWNLOAD</button>
+            <button class="button blank" ng-click='closeGuestIdModal()' style="width: 30%; margin: 0 auto;" translate>EXIT</button> -->
+        </div>
+    </div>
+</div>
+<div>
