@@ -243,8 +243,8 @@
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guestData.primary_guest_details, true)}"></span>
                              {{'GUEST_ID_BUTTON' |translate}}
                         </button>
-                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
-                            <span class="icons icon-save"></span>
+                        <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)">
+                            <span class="icons icon-save"></span> Download
                         </button>
                     </div>
 
@@ -265,11 +265,11 @@
                                         "green-text": isGuestIdUploaded(guest), 
                                         "grey-text": !isGuestIdUploaded(guest)}'>
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
-                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}" style="left:10px !important; top:0 !important;"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
                         </button>
-                         <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
-                            <span class="icons icon-save"></span>
+                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
+                            <span class="icons icon-save"></span> Download
                         </button>
                     </div>
 
@@ -294,8 +294,8 @@
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
                         </button>
-                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
-                            <span class="icons icon-save"></span>
+                        <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
+                            <span class="icons icon-save"></span> Download
                         </button>
                     </div>
 
@@ -321,8 +321,8 @@
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
                         </button>
-                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
-                            <span class="icons icon-save"></span>
+                        <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
+                            <span class="icons icon-save"></span> Download
                         </button>
                     </div>
 
