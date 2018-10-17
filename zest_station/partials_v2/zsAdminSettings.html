@@ -247,6 +247,13 @@
                         Light OFF
                     </div>
                 </div>
+                <div class="entry with-label" ng-show="showDebugModeOption && isIpad && zestStationData.zest_printer_option === 'RECEIPT'">
+                    <label>Print Sample Reg. card</label>
+                    <label class='admin-label-description'></label>
+                    <div class="select button done-btn" type="button" touch-press="printSampleReceipt()">
+                        Print
+                    </div>
+                </div>
                 <div class="entry with-label" ng-show="showDebugModeOption">
                     <label>Test Double-Sided Scanning</label>
                     <label class='admin-label-description'>Click to
@@ -275,4 +282,17 @@
             Admin
         </button>
     </div>
+    <!-- Popup -->
+    <div class="popup" ng-class="{'open': showPrintErrorPopup}">
+        <div class="popup-content">
+            <h2 class="nocaps">
+                {{ printErrorMessage }}
+            </h2>
+            <button type="button" class="button idle-timeout-btn" click-touch='closePrintErrorPopup();'>
+                CLOSE
+            </button>
+        </div>
+    </div>
+
+    <div id="popup-overlay" ng-class="{'open': showPrintErrorPopup}"></div>
 </section>

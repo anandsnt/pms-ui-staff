@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -494,6 +494,26 @@ sntZestStation.controller('zsAdminCtrl', [
 
             $scope.zestStationData.connectedDeviceDetails.device_connection_state = 'refreshing...';
             $scope.cardReader.getConnectedDeviceDetails(callBacks);
+        };
+
+        $scope.showPrintErrorPopup = false;
+        $scope.printErrorMessage = "";
+
+        $scope.closePrintErrorPopup = function () {
+             $scope.showPrintErrorPopup = false;
+        };
+        $scope.printSampleReceipt = function() {
+            var printRegCardData = {
+                'room_number': '500'
+            };
+            var printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
+
+            var failureCallBack = function () {
+                $scope.printErrorMessage = 'Printer Not connected';
+                $scope.showPrintErrorPopup = true;
+            };
+            failureCallBack();
+            console.log(printString);
         };
 
         // initialize

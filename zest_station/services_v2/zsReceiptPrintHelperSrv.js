@@ -54,6 +54,26 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             });
         };
 
+        this.printerErrorCodeMappings = {
+            "SUCCESS": "Print Success",
+            "ERR_PARAM": "A",
+            "ERR_CONNECT": "B",
+            "ERR_TIMEOUT": "C",
+            "ERR_MEMORY": "D",
+            "ERR_ILLEGAL": "E",
+            "ERR_PROCESSING": "F",
+            "ERR_NOT_FOUND": "G",
+            "ERR_IN_USE": "H",
+            "ERR_TYPE_INVALID": "I",
+            "ERR_DISCONNECT": "J",
+            "ERR_ALREADY_OPENED": "K",
+            "ERR_ALREADY_USED": "L",
+            "ERR_BOX_COUNT_OVER": "M",
+            "ERR_BOXT_CLIENT_OVER": "N",
+            "ERR_UNSUPPORTED": "O",
+            "ERR_FAILURE": "P"
+        };
+
 
         this.setUpStringForReceiptBill = function(printData, zestStationData) {
             var fullString = ""; // for debugging
