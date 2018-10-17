@@ -511,15 +511,18 @@ sntZestStation.controller('zsAdminCtrl', [
             };
             var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
             var printFailedActions = function (errorData) {
-                $scope.printMessage = errorData ? errorData.RVErrorDesc : 'Print Error';
+                $scope.$emit('hideLoader');
+                $scope.printMessage = errorData ? 'Print Error:' + errorData.RVErrorDesc : 'Print Error';
                 $scope.showPrintMsgPopup = true;
             };
             var printSuccessActions = function () {
+                $scope.$emit('hideLoader');
                 $scope.printMessage = 'Print success';
                 $scope.showPrintMsgPopup = true;
             };
 
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
+                $scope.$emit('showLoader');
                 cordova.exec(printSuccessActions,
                          printFailedActions,
                         'RVCardPlugin',

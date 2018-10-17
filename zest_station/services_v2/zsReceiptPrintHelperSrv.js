@@ -95,7 +95,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             var hotelAddressString = "";
 
             _.each(hotelAddressComponent, function(component) {
-                hotelAddressString = component + "\n";
+                hotelAddressString = hotelAddressString + component + "\n";
             });
             if (hotelAddressString) {
                 addTextToReceiptArray(receiptPrinterParams.receipt, hotelAddressString);
