@@ -283,10 +283,10 @@
         </button>
     </div>
     <!-- Popup -->
-    <div class="popup" ng-class="{'open': showPrintErrorPopup}">
+    <div class="popup" ng-class="{'open': showPrintMsgPopup}">
         <div class="popup-content">
             <h2 class="nocaps">
-                {{ printErrorMessage }}
+                {{ printMessage }}
             </h2>
             <button type="button" class="button idle-timeout-btn" click-touch='closePrintErrorPopup();'>
                 CLOSE
@@ -294,5 +294,5 @@
         </div>
     </div>
 
-    <div id="popup-overlay" ng-class="{'open': showPrintErrorPopup}"></div>
+    <div id="popup-overlay" ng-class="{'open': showPrintMsgPopup}"></div>
 </section>

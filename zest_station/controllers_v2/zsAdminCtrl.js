@@ -498,11 +498,11 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.cardReader.getConnectedDeviceDetails(callBacks);
         };
 
-        $scope.showPrintErrorPopup = false;
-        $scope.printErrorMessage = "";
+        $scope.showPrintMsgPopup = false;
+        $scope.printMessage = "";
 
         $scope.closePrintErrorPopup = function () {
-             $scope.showPrintErrorPopup = false;
+             $scope.showPrintMsgPopup = false;
         };
         $scope.printSampleReceipt = function() {
             var printRegCardData = {
@@ -510,12 +510,12 @@ sntZestStation.controller('zsAdminCtrl', [
             };
             var printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
             var printFailedActions = function (error) {
-                $scope.printErrorMessage = error ? error : 'Print Error';
-                $scope.showPrintErrorPopup = true;
+                $scope.printMessage = error ? error : 'Print Error';
+                $scope.showPrintMsgPopup = true;
             };
             var printSuccessActions = function () {
-                $scope.printErrorMessage = 'Print success';
-                $scope.showPrintErrorPopup = true;
+                $scope.printMessage = 'Print success';
+                $scope.showPrintMsgPopup = true;
             };
 
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
