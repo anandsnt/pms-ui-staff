@@ -112,12 +112,12 @@ sntZestStation.controller('zsPrintBillCtrl', [
             try {
             // this will show the popup with full bill
                 $timeout(function() {
-                    var printString;
+                    var receiptPrinterParams;
 
                     if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
                         // Adding this condition here for easy debuging from browser in iPad mode
-                        printString = zsReceiptPrintHelperSrv.setUpStringForReceiptBill($scope.printData, $scope.zestStationData);
-                        $log.info(printString);
+                        receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptBill($scope.printData, $scope.zestStationData);
+                        $log.info(receiptPrinterParams);
                     }
                     var printSuccessActions = function () {
                         var printopted = 'true';
@@ -133,13 +133,13 @@ sntZestStation.controller('zsPrintBillCtrl', [
                                 printSuccessActions,
                                 printFailedActions,
                                 'RVCardPlugin',
-                                'printReceipt', ['filep', '1', 'receipt_printer', printString]);
+                                'printReceipt', ['filep', '1', 'receipt_printer', receiptPrinterParams]);
                         } else {
                             cordova.exec(
                                 printSuccessActions,
                                 printFailedActions,
                                 'RVCardPlugin',
-                                'printWebView', ['filep', '1', $scope.zestStationData.storedPrinter]);
+                                'printWebView', ['filep', '1', $scope.zestStationData.defaultPrinter]);
                         }
 
                     } else {

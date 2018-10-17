@@ -1341,7 +1341,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $log.warn(err);
             }        
             if (storedPrinter) {
-                $scope.zestStationData.storedPrinter = storedPrinter;
+                $scope.zestStationData.defaultPrinter = storedPrinter;
             }
         };
 

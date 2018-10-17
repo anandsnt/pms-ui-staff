@@ -66,14 +66,22 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 */
 			setTimeout(function() {
 				if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
-					var printer = (sntZestStation.selectedPrinter);
+					var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpOwsMessageForReceiptPrinter($scope.currentOwsMessage, $scope.zestStationData);
 
-					printer = $scope.zestStationData.zest_printer_option === 'RECEIPT' ? 'receipt_printer' : printer;
+					if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+						cordova.exec(
+							onPrintSuccess,
+							onPrintError,
+							'RVCardPlugin',
+							'printReceipt', ['filep', '1', 'receipt_printer', receiptPrinterParams]);
+					} else {
+						cordova.exec(
+							onPrintSuccess,
+							onPrintError,
+							'RVCardPlugin',
+							'printWebView', ['filep', '1', $scope.zestStationData.defaultPrinter]);
+					}
 
-					cordova.exec(
-						onPrintSuccess(), // print complete, should go to final screen
-						onPrintError(), // if print error, inform guest there was an error
-						'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
 				} else {
 					$window.print();
 				}

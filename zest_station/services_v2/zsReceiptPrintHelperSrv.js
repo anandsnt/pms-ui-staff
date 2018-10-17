@@ -254,5 +254,33 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             return receiptPrinterParams;
 
         };
+
+        this.setUpOwsMessageForReceiptPrinter = function(owsMsg, zestStationData) {
+            var fullString = ""; // for debugging
+            var receiptPrinterParams = {
+                'receipt': []
+            };
+
+            //  --------------------------------- HOTEL IMAGE --------------------------- //
+
+            receiptPrinterParams.receipt.push({
+                "type": "image",
+                "data": returnValidString(zestStationData.hotel_template_logo)
+            });
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+            fullString = fullString + returnValidString(zestStationData.hotel_template_logo) + "\n\n";
+
+            //  --------------------------------- ROOM NUMBER --------------------------- //
+
+            addTextToReceiptArray(receiptPrinterParams.receipt, owsMsg);
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+            fullString = fullString + owsMsg;
+            fullString = fullString + "\n\n";
+
+            $log.info(JSON.stringify(receiptPrinterParams));
+            $log.info(fullString);
+
+            return receiptPrinterParams;
+        };
     }
 ]);
