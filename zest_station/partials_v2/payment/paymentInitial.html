@@ -46,7 +46,10 @@
             </span>
             </div>
             <nav id="options" role="nav" class="options-menu">
-                <ul role="menu">
+                <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+                    <img src="{{zestImages.cc_payment_image}}">
+                </div>
+                <ul role="menu" ng-if="zestImages.cc_payment_image.length === 0">
                     <li>
                         <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
                             <div ng-include="icons.url.creditcard"></div>

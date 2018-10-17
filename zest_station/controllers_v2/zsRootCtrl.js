@@ -9,7 +9,7 @@ sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
     '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
-    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
+    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations', 'configurableImagesData', 
     'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller', 'sntActivity',
     function($scope,
 		zsEventConstants,
@@ -24,6 +24,7 @@ sntZestStation.controller('zsRootCtrl', [
 		zsHotelDetailsSrv,
 		cssMappings,
         hotelTranslations,
+        configurableImagesData,
 		zestStationSettings,
 		$timeout,
 		zsModeConstants,
@@ -40,6 +41,14 @@ sntZestStation.controller('zsRootCtrl', [
 
         // in order to prevent url change or fresh url entering with states
         BaseCtrl.call(this, $scope);
+
+        $scope.zestImages = configurableImagesData.configurable_images || {};
+        // set degfault as ''
+        _.each(Object.keys($scope.zestImages), function(key) {
+            if (!$scope.zestImages[key]) {
+                $scope.zestImages[key] = '';
+            }
+        });
 
         $scope.cssMappings = cssMappings;
         $scope.inElectron = false;
@@ -1018,6 +1027,23 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit('hideLoader');
         });
 
+        var fetchDeviceDetails = function(deviceId) {
+            var options = {
+
+                params: {
+                    device_uid: deviceId
+                },
+                successCallBack: function(response) {
+                    if (response && response.is_logging_enabled) {
+                        $scope.socketOperator.enableDeviceLogging();
+                    }
+                },
+                'loader': 'none'
+            };
+
+            $scope.callAPI(zsGeneralSrv.getDeviceDetails, options);
+        };
+
 
 		/** ******************************************************************************
 		 *   Websocket actions related to keycard lookup
@@ -1138,8 +1164,8 @@ sntZestStation.controller('zsRootCtrl', [
                     }
 
                 }
-
-
+            } else if (response.Command === 'cmd_device_uid' && response.ResponseCode === 0 && response.Message) {
+                fetchDeviceDetails(response.Message);
             }
         };
 
@@ -1155,7 +1181,7 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info('Websocket:-> socket connected');
             $scope.zestStationData.stationHandlerConnectedStatus = 'Connected';
             $scope.runDigestCycle();
-            
+            $scope.socketOperator.fetchDeviceId();
             $scope.$broadcast('SOCKET_CONNECTED');
             if ($state.current.name === 'zest_station.home' || $state.current.name === 'zest_station.outOfService') {
                 $timeout(function() {

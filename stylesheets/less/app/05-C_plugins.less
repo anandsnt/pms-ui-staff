@@ -7038,6 +7038,162 @@
                 }
             }
 
+            /* Guest Passport/ID Scan */
+            &.guest-id {
+                padding:0;
+                .square(100%);
+
+                @media screen and ( min-width:768px ){
+                   width: 945px;
+                }
+
+                #modal-close {
+                    background: @rcardTexture2;
+                }
+
+                .modal-body {
+                    height: 100%;
+                    #flexbox > .display();
+
+                    .content-left {
+                        width: 240px;
+                        padding-top: 40px;
+                        background: @rcardTexture2;
+
+                        .message {
+                            font-size: 18px;
+                            margin: 0 0 20px 0;
+                        }
+                    }
+
+                    .content-right {
+                        .calc-width(100, 240);
+                        padding: 40px 40px 20px 40px;
+                        .box-shadow(0 -2px 4px rgba(0,0,0,.3));
+
+                        .message { margin: 0 0 10px 0; }
+                        .text { padding: 0; margin: 0 0 25px 0; }
+
+                        .guest-documents {
+                            display: grid;
+                            grid-template-columns: calc(~'50% - 20px') calc(~'50% - 20px');
+                            grid-column-gap: 40px;
+                            margin-bottom: 20px;
+
+                            .guest-info {
+
+                                &.missing {
+                                    border: 2px dashed @grey2;
+                                    padding: 50px 35px;
+                                    #flexbox > .parent( column wrap, space-between, center, center );
+
+                                    .icons {
+                                        margin-bottom: 15px;
+                                    }
+
+                                    h3 {
+                                        font-size: 24px;
+                                        font-weight: 700;
+                                        color: @grey3;
+                                    }
+
+                                    p {
+                                        text-align: center;
+                                        font-size: 18px;
+                                        font-weight: 300;
+                                        margin-bottom: 20px;
+                                        color: @grey3;
+                                        line-height: 21px;
+                                    }
+
+                                    .button {
+                                       margin-bottom: 10px;
+                                    }
+                                }
+
+                                .document-actions {
+                                    display: grid;
+                                    grid-template-columns: calc(~'50% - 5px') calc(~'50% - 5px');
+                                    grid-column-gap: 10px;
+                                    grid-row-gap: 10px;
+                                }
+                            }
+                        }
+
+                        img {
+                            display: block;
+                            max-width: 100%;
+                            height: auto;
+                            margin-bottom: 20px;
+                        }
+                    }
+
+                    .details {
+
+                        li {
+                            margin:0;
+                            padding: 10px 20px;
+                            min-height: 50px;
+                            line-height: 1;
+                            #flexbox > .parent(column, center, '', '' );
+
+                            img {
+                                margin-top: 5px;
+                                .size(auto, 100%);
+                            }
+
+                            span {
+                                display: block;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                color: @grey3;
+                            }
+
+                            .entry {
+                                margin-top: 5px;
+                                margin-bottom: 0;
+                                float: none;
+
+                                &.expiry {
+                                    input {
+                                        width: 45%;
+
+                                        &:first-child {
+                                            margin-right: 10%;
+                                        }
+                                    }
+                                }
+
+                                .clear-query {
+                                    background: @white;
+                                    width: 35px;
+                                    height: 35px;
+                                    position: absolute;
+                                    right: 2px;
+                                    top: 4px;
+                                    .hide();
+
+                                    &.visible {
+                                        .show();
+                                    }
+
+                                    .icons {
+                                        background-color: rgba(0,0,0,0.1);
+                                        border-radius: 50%;
+                                        margin: 0 auto;
+                                    }
+                                }
+                            }
+
+                            &:not(:last-child) {
+                                border-bottom: 1px solid rgba(0,0,0,.1);
+                            }
+                        }
+
+                    }
+                }
+            }
+
             /* Device Status ***/
             &.device-status {
                 min-width: 340px;
@@ -8148,187 +8304,6 @@
     /* Guest Passport/ID Scan */
     .guest-id-dialog > .ngdialog-content{
         background: transparent !important;
-    }
-    .guest-id {
-        padding:0;
-        .square(100%);
-
-        padding: 7% 20% 7% 20%;
-        width: 100% !important;
-
-        .modal-close{
-            &.dark-title{
-                top: -10px;
-                left: -20px;
-                position: relative;
-                border-style: solid;
-                border-color: @gcard;
-                border-width: 4px;
-                border-radius: 1em;
-            }
-        }
-
-        @media screen and ( min-width:768px ){
-           width: 430px;
-           min-height: 500px;
-      
-        }
-
-        &.with-details {
-            @media screen and ( min-width:768px ){
-                width: 640px;
-            }
-            .modal-body {
-                background-color:@white;
-                .content-left {
-                    .show();
-                }
-                .content-right {
-                    .calc-width(100, 210);
-                }
-            }   
-        }
-
-        .modal-header {
-            margin-top:-24px;
-            background-color:@gcard;
-            color: white;
-            height: 85px;
-            padding: 20px;
-          
-            h2 {
-                font-size:30px;
-                font-weight: bold;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                line-height: .8;
-            }
-
-            em {
-                font-size:16px;
-            }
-
-            .button {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                line-height: 45px;
-                height: 45px;
-                width: auto;
-                max-width: 200px;
-                .nowrap();
-
-                &.with-icon {
-                    padding: 0 20px 0 50px;
-                    .icons {
-                        left: 20px;
-                        top: 12px;
-                        margin-left: 0;
-                    }
-                }
-            }
-        }
-
-        .modal-body {
-            .calc-height(100, 85);
-            min-height: 415px;
-            #flexbox > .display();
-
-            .content-left {
-                .hide();
-                width: 210px;
-                background-color: rgba(0, 0, 0, .1);
-            }
-
-            .content-right {
-                width: 100%; 
-                .box-shadow(0 -2px 4px rgba(0,0,0,.3));
-                padding: 30px 20px 10px 20px;
-                text-align: center;
-
-                img {
-                    max-width: 100%;
-                    height: auto;
-                }
-            }
-
-            .details {
-
-                li {
-                    margin:0;
-                    padding: 0px 20px;
-                    height: 50px;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-                    line-height: 1; 
-                    #flexbox > .parent(column, center, '', '' );
-                    span {
-                        display: block;
-                        font-size: 14px;
-                        text-transform: uppercase;
-                        color: @grey3;
-                    }
-                }
-
-            }
-
-            .guest-id-title,
-            .guest-id-desc {
-                text-transform: uppercase;
-            }
-
-            .guest-id-title {
-                font-weight: 600;
-                font-size: 24px;
-            }
-
-            .guest-id-desc {
-                color: @grey3;
-            }
-
-            .guest-id-switch {
-                width: 50%;
-                margin: 0 auto 20px auto;
-                #flexbox > .parent( row, flex-start, center, '');
-
-                li { 
-                    cursor: pointer; 
-                    font-size: 14px;
-                    line-height: 40px;
-                    text-align: center;
-                    color: @textColor; 
-                    text-transform: uppercase;
-                    width: 50%;
-                    margin:0;
-                    font-weight: 600;
-                    .clickable;
-                    #border-radius > .rounded(0);
-
-                    &:hover { 
-                        color: @logoPrimary; 
-                        .box-shadow();
-                    }
-
-                    &.active {
-                        cursor: default;
-                        color: @white;
-                         
-                        
-                        .gradient (@logoGradientStart, @logoGradientEnd);
-                    }
-
-                    &:first-child { 
-                        #border-radius > .left(); 
-                    }
-
-                    &:last-child { #border-radius > .right(); }
-
-                    &:not(:last-child) { 
-                        border-right: 1px solid #e5e5e5;
-                    }
-                }
-            }
-        }
     }
 
     /* SPL_CASE: Auto-close notice message inside post charge ***/

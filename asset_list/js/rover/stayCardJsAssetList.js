@@ -57,6 +57,7 @@ module.exports = {
                     servicesRoot + "bill/rvBillCardSrv.js",
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
                     servicesRoot + "guestcard/rvGuestCardActivityLogSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",
                     servicesRoot + "nightlyDiary/**/*.js",
                     servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",

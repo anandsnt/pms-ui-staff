@@ -1661,6 +1661,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.clickedTaxExemptToggle = function() {
             if (!$scope.groupConfigData.summary.is_tax_exempt) {
                 $scope.groupConfigData.summary.tax_exempt_type_id = '';
+                $scope.groupConfigData.summary.tax_exempt_ref_text = '';
             } else {
                 if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary.tax_exempt_type_id === undefined) {
                     $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;

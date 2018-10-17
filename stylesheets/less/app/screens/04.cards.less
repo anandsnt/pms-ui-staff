@@ -934,50 +934,41 @@
                         }
 
                         &.tax-exempt {
-                            .float;
+                            width: 100%;
+                            display: grid;
+                            grid-template-columns: 120px calc(~'100% - 130px');;
+                            grid-column-gap: 10px;
+                            grid-row-gap: 10px;
+
+                            label {
+                                grid-row: 1;
+                            }
 
                             .switch-button {
-                                .pull-left;
-                                .size(40px, 120px);
+                                grid-row: 2;
+                                height: 40px;
 
-                                input[type="checkbox"] { 
+                                input[type="checkbox"] {
                                     line-height: 40px;
-                                    .size(40px, 100%);
-                                }   
+                                    height: 40px;
+                                }
 
                                 .data-off,
                                 .data-on {
-                                    left: auto;
                                     line-height: 30px;
                                     height: 30px;
-
-                                    &.data-off { 
-                                        right: -100%;
-
-                                        .switch-icon { 
-                                            margin: 0 5px 0 0; 
-                                        }
-                                    }
-                                    
-                                    &.data-on { 
-                                        right: 0;
-
-                                        .switch-icon { 
-                                            margin: 0 0 0 5px; 
-                                        }
-                                    }
-                                }
-
-                                &.on {
-                                    .data-off { right: 0; }
-                                    .data-on { right: 100%; }
                                 }
                             }
 
                             .select {
-                                margin-left: 10px;
-                                width: 180px;
-                                .pull-left;
+                                grid-row: 2;
+                                height: 40px;
+                            }
+
+
+                            textarea {
+                                grid-row: 3;
+                                grid-column: span 2;
                             }
                         }
 

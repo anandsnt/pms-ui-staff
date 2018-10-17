@@ -105,7 +105,7 @@
 
                 <div class="entry" ng-show="rateData.commission_details.type === 'amount'">
                     <div class="select">
-                        <select class="placeholder" value="rateData.commission_details.commission_type" ng-model="rateData.commission_details.commission_type">
+                        <select class="placeholder" ng-init="rateData.commission_details.commission_type = rateData.commission_details.commission_type || 'perStay'" ng-model="rateData.commission_details.commission_type">
                             <option value="perStay" translate>PER_STAY</option>
                             <option value="perNight" translate>PER_NIGHT</option>
                         </select>

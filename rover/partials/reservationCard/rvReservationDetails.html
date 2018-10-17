@@ -224,7 +224,7 @@
             <!-- Accompany in guest card -->
             <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
-            <form method="post" name="manage-guests" id="manage-guests" class="form scrollable" ng-show="isStandAlone || guestIdAdminEnabled" ng-iscroll="accompanyGuestList" ng-iscroll-delay='1000'>
+            <form method="post" name="manage-guests" id="manage-guests" class="form scrollable" ng-iscroll="accompanyGuestList" ng-iscroll-delay='1000'>
                 <div class="wrapper accompany-guest-wrapper">
                     <div class="entry">
                         <figure class="guest-image">
@@ -236,10 +236,15 @@
                         <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{::guestData.primary_guest_details.first_name}}" readonly />
                         <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
                         <button class="button with-icon white green-text" click-touch='showScannedGuestID(true, guestData.primary_guest_details)'
-                            ng-if='!hideGuestId(guestData.primary_guest_details, true) && guestIdAdminEnabled'
-                            ng-class='{"overlay":!hasGuestIDPermission}'>
-                            <span class="icons icon-identity-card"></span>
+                            ng-class='{ "overlay":!hasGuestIDPermission, 
+                                        "green-text": isGuestIdUploaded(guestData.primary_guest_details, true), 
+                                        "grey-text": !isGuestIdUploaded(guestData.primary_guest_details, true)}'>
+                            <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guestData.primary_guest_details, true), 
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guestData.primary_guest_details, true)}"></span>
                              {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
                         </button>
                     </div>
 
@@ -253,11 +258,18 @@
                         </figure>
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails()" />
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
-                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
-                            ng-if='!hideGuestId(guest)'
-                            ng-class='{"overlay":!hasGuestIDPermission}'>
-                            <span class="icons icon-identity-card"></span>
+                        <button class="button with-icon white green-text" 
+                            click-touch='showScannedGuestID(false, guest)'
+                            ng-show="guest.id"
+                            ng-class='{ "overlay":!hasGuestIDPermission, 
+                                        "green-text": isGuestIdUploaded(guest), 
+                                        "grey-text": !isGuestIdUploaded(guest)}'>
+                            <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                         <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
                         </button>
                     </div>
 
@@ -274,10 +286,16 @@
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
                         <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
-                            ng-if='!hideGuestId(guest)'
-                            ng-class='{"overlay":!hasGuestIDPermission}'>
-                            <span class="icons icon-identity-card"></span>
+                            ng-show="guest.id"
+                            ng-class='{ "overlay":!hasGuestIDPermission, 
+                                        "green-text": isGuestIdUploaded(guest), 
+                                        "grey-text": !isGuestIdUploaded(guest)}'>
+                            <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
                         </button>
                     </div>
 
@@ -293,11 +311,18 @@
                         </figure>
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
                         <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
-                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
-                            ng-if='!hideGuestId(guest)'
-                            ng-class='{"overlay":!hasGuestIDPermission}'>
-                            <span class="icons icon-identity-card"></span>
+                        <button class="button with-icon white green-text" 
+                            click-touch='showScannedGuestID(false, guest)'
+                            ng-show="guest.id"
+                            ng-class='{ "overlay":!hasGuestIDPermission, 
+                                        "green-text": isGuestIdUploaded(guest), 
+                                        "grey-text": !isGuestIdUploaded(guest)}'>
+                            <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                        <button class="button purple with-icon ng-binding" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)" style="left: calc(100% + 120px);width: 40px;padding: 5px;">
+                            <span class="icons icon-save"></span>
                         </button>
                     </div>
 
