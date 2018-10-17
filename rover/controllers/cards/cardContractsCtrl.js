@@ -366,7 +366,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
-				if (accountId === "add") {
+				if ($scope.currentCard === "add") {
 					$scope.AddNewButtonClicked();
 				}
 			};
