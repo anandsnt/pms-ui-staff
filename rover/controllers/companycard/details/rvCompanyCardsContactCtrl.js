@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog', '$rootScope',
-	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog, $rootScope) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv', 'rvPermissionSrv', '$state', '$stateParams', 'ngDialog', '$rootScope',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, rvPermissionSrv, $state, $stateParams, ngDialog, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');
@@ -91,6 +91,5 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
-
 	}
 ]);

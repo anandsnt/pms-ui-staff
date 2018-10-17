@@ -9,7 +9,7 @@
 	    <fieldset>
 	        <legend>Guest Info</legend>
 	        <div class="fields">
-	            <div class="entry" ng-show="showNationality">
+	            <div class="entry" ng-if="showNationality && roverObj.forceNationalityAtCheckin">
 	                <label>Nationality <strong class="required">*</strong></label>
 	                <div class="select">
 	                    <select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id" class="placeholder">
@@ -17,7 +17,7 @@
 						</select>
 	                </div>
 	            </div>
-	            <div class="entry" ng-show="showCountry">
+	            <div class="entry" ng-if="showCountry && roverObj.forceCountryAtCheckin">
 	                <label>Country <strong class="required">*</strong></label>
 	                <div class="select">
 	                    <select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.address.country_id" class="placeholder">
@@ -25,15 +25,15 @@
 						</select>
 	                </div>
 	            </div>
-	            <div class="entry"  ng-show="showMobile">
+	            <div class="entry"  ng-if="showMobile">
 	                <label>Mobile</label>
 	                <input type="tel" placeholder="Enter Number" ng-model="saveData.mobile">
 	            </div>
-	            <div class="entry" ng-show="showPhone">
+	            <div class="entry" ng-if="showPhone">
 	                <label>Phone</label>
 	                <input type="tel" placeholder="Enter Number" ng-model="saveData.phone">
 	            </div>
-	            <div class="entry" ng-show="showEmail">
+	            <div class="entry" ng-if="showEmail">
 	                <label>E-mail</label>
 	                <input type="email" placeholder="Enter E-mail Address" ng-model="saveData.email">
 	            </div>
@@ -42,7 +42,7 @@
 	    <div class="actions">
 	        <button class="button blank" ng-click="closeDialog()" ng-show="showNationality || showCountry">Cancel</button>
 	        <button class="button blank" ng-click="ignoreAndGoToCheckin()" ng-show="!showNationality && !showCountry" translate>IGNORE_AND_GOTO_CHECKIN</button>
-	        <button class="button" ng-class="{'green': shouldEnableSubmitButton(), 'grey': !shouldEnableSubmitButton()}" ng-disable="!shouldEnableSubmitButton()" ng-click="submitAndGoToCheckin()">Submit</button>
+	        <button class="button" ng-class="{'green': shouldEnableSubmitButton(), 'grey': !shouldEnableSubmitButton()}" ng-disable="!(shouldEnableSubmitButton())" ng-click="submitAndGoToCheckin()">Submit</button>
 	    </div>
 	</div>
 </div>

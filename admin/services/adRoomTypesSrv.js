@@ -125,5 +125,25 @@ admin.service('ADRoomTypesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 			});
 			return deferred.promise;
 		};
+
+		/**
+	     * 	To update the order
+	     *	@param {object} - contains the key(s) :
+	     *		1. 'sort_dir' if sort by name.
+	     * 		2. 'room_type_id', 'sequence_number' if sort by drag & drop positions.
+	     *  @return {object} status/errors
+	     */
+		this.saveComponentOrder = function( params ) {
+
+			var deferred = $q.defer(),
+				url =  '/admin/room_types/assign_sequence';
+
+			ADBaseWebSrv.postJSON(url, params).then(function(data) {
+			    deferred.resolve(data);
+			}, function(data) {
+			    deferred.reject(data);
+			});
+			return deferred.promise;
+		};
 	}
 ]);
