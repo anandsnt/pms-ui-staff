@@ -137,7 +137,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                         var printString;
 
                         if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
-                            // Adding this condition here for easy debug from browser in iPad mode
+                            // Adding this condition here for easy debuging from browser in iPad mode
                             printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
                             $log.info(printString);
                         }
