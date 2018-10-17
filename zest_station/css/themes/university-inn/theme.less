@@ -1,0 +1,214 @@
+/* StayNTouch Zest Station Styles | University Inn Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #880203;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+
+.logo-svg{
+    background-image: url("../css/themes/university-inn/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 165px;
+    height: 110px;
+    background-position: center;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#university-inn {
+
+    #header {
+        height: 150px;
+
+        .button {
+            .icons {
+                fill: @black;
+            }
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 150px);
+        top: 150px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    button {
+        font-size: 1.3em;
+    }
+
+    input,
+    select {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        padding-top: 35px;
+
+        .logo {
+            width: auto;
+            height: 110px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: @black;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+        &:not(.selected) {
+            .add-on-content {
+                background: #f3f3f3;
+            }
+        }
+
+        .input-group {
+            input {
+                color: @brandColor;
+            }
+        }
+    }
+
+    #textual {
+        background: #f3f3f3; 
+
+        &:before,
+        &:after {
+            background: #f3f3f3;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #upgrade {
+        background: #f3f3f3;
+
+        .upgrade-price {
+            color: @white;
+            background: @brandColor;
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background: #f3f3f3;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+}

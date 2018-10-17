@@ -10,4 +10,9 @@
 "checkin_failed": "CHECKIN FAILED",
 "pre_checkin_success": "PRE CHECKIN SUCCESS",
 "pre_checkin_failure": "PRE CHECKIN FAILURE",
-"edit_reservation": "EDIT RESERVATION"
+"edit_reservation": "EDIT RESERVATION",
+"update_inventory": "UPDATE INVENTORY",
+"create_reservation": "NEW RESERVATION",
+"cancel_reservation": "CANCEL RESERVATION",
+"new_group": "NEW GROUP",
+"edit_group": "EDIT GROUP"

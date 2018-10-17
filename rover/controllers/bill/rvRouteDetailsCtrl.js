@@ -846,11 +846,14 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
          */
         var createBillSuccessCallback = function(data) {
             $scope.$emit('hideLoader');
-            $scope.reservationBillData.bills[data.bill_number - 1] = {
-                bill_id: data.id,
-                bill_number: data.bill_number,
-                total_amount: 0
-            };
+            if ($scope.reservationBillData) {
+                $scope.reservationBillData.bills[data.bill_number - 1] = {
+                    bill_id: data.id,
+                    bill_number: data.bill_number,
+                    total_amount: 0
+                };
+            }
+            
             $scope.selectedEntity.to_bill = data.id;
             $scope.bills[$scope.bills.length - 1].id = data.id;
             $scope.bills[$scope.bills.length - 1].bill_number = data.bill_number;

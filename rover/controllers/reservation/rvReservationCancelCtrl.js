@@ -267,7 +267,12 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					$state.reload($state.current.name);
+					// CICO-58191
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						id: $scope.reservationData.reservationId,
+						confirmationId: $scope.reservationData.confirmNum,
+						isrefresh: true
+					});
 				}
 
 				$scope.closeReservationCancelModal();
