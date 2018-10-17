@@ -54,26 +54,14 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             });
         };
 
-        this.printerErrorCodeMappings = {
-            "SUCCESS": "Print Success",
-            "ERR_PARAM": "A",
-            "ERR_CONNECT": "B",
-            "ERR_TIMEOUT": "C",
-            "ERR_MEMORY": "D",
-            "ERR_ILLEGAL": "E",
-            "ERR_PROCESSING": "F",
-            "ERR_NOT_FOUND": "G",
-            "ERR_IN_USE": "H",
-            "ERR_TYPE_INVALID": "I",
-            "ERR_DISCONNECT": "J",
-            "ERR_ALREADY_OPENED": "K",
-            "ERR_ALREADY_USED": "L",
-            "ERR_BOX_COUNT_OVER": "M",
-            "ERR_BOXT_CLIENT_OVER": "N",
-            "ERR_UNSUPPORTED": "O",
-            "ERR_FAILURE": "P"
-        };
+        var stripOfExtraDateString = function(dateString) {
+            var newString = dateString.length > 10 ? dateString.substring(0, 10) : dateString;
 
+            while (newString.length < 10) {
+                newString = ' ' + newString + ' ';
+            }
+            return newString;
+        };
 
         this.setUpStringForReceiptBill = function(printData, zestStationData) {
             var fullString = ""; // for debugging
@@ -115,7 +103,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             });
 
             fullString = fullString + $filter('translate')('INVOICE_HEADER');
-            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "3");
             fullString = fullString + "\n\n";
 
             //  --------------------------------- GUEST ADDRESS --------------------------- //
@@ -156,7 +144,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             _.each(printData.charge_details_list, function(chargeDetail) {
                 chargeDetailsString = chargeDetailsString + "\n" +
-                    chargeDetail.date + " " +
+                    stripOfExtraDateString(chargeDetail.date) + " " +
                     addExtraCharactersForDescripton(chargeDetail.description, 14) +
                     " " + prepandSpaceForAmount('', 9, zestStationData) +
                     "  " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData);
@@ -170,7 +158,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             _.each(printData.credit_details_list, function(creditDetail) {
                 creditDetailsString = creditDetailsString + "\n" +
-                    creditDetail.date + " " +
+                    stripOfExtraDateString(creditDetail.date) + " " +
                     addExtraCharactersForDescripton(creditDetail.description, 14) +
                     " " + prepandSpaceForAmount(creditDetail.amount, 9, zestStationData) +
                     "  " + prepandSpaceForAmount('', 9, zestStationData);
@@ -221,7 +209,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                     "text_size": "2"
                 }
             });
-            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "3");
             fullString = fullString + $filter('translate')('REGISTRATION_READY_PRINT_ROOM_NO') + "\n\n" + printRegCardData.room_number + "\n\n";
 
             //  -------------------------------- DEP DATE -------------------------------//
