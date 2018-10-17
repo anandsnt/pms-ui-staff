@@ -506,7 +506,8 @@ sntZestStation.controller('zsAdminCtrl', [
         };
         $scope.printSampleReceipt = function() {
             var printRegCardData = {
-                'room_number': '500'
+                'room_number': '500',
+                'dep_date': '10/10/2018'
             };
             var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
             var printFailedActions = function (errorData) {
