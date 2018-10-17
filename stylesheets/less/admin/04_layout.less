@@ -615,7 +615,32 @@ body { overflow: hidden; }
             &.with-shadow {
                 .box-shadow(1px 0px 0px rgba(0,0,0,0.1));
             }
-            &.restriction { width: 150px; }
+            &.restriction { 
+                width: 100px;
+
+                &.short {
+                    width: 80px;
+                }
+
+                &.medium {
+                    width: 120px;
+                }
+
+                &.wide {
+                    width: 130px;
+                }
+
+                .checkbox {
+                    width: 20px;
+                    height: 20px;
+                    margin: 0;
+                    .icon-form {
+                        &.icon-checkbox {
+                            &.checked { .gradient(@redEnd, @redStart); }
+                        }
+                    }
+                }
+            }
         }
 
         thead,
@@ -790,6 +815,37 @@ body { overflow: hidden; }
                             color: @grey3; 
 
                             &:hover { color: @logoPrimary; }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.unsubscription-list {
+            tr {
+                th {
+                    padding: 0 0 0 25px !important;
+                    font-size: 14px;
+                    text-align: left;
+                }
+
+                td,
+                th {
+                    &:not(:last-child) {
+                        border-right: 1px solid rgba(0,0,0,0.15);
+                    }
+
+                    .box-shadow( 1px 1px 0 rgba(0, 0, 0, 0.1) );
+                }
+
+                td {
+                    background: @grey1;
+                    height: 40px;
+                    line-height: 40px;
+
+                    &.red {
+                        em {
+                            color: @red;
                         }
                     }
                 }

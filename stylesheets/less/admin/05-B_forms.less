@@ -56,6 +56,36 @@
                 span { color: @grey3; }
             }
 
+            &.no-border {
+                border-bottom: 0;
+            }
+
+            &.with-search {
+                h3 { line-height: 40px; }
+            }
+
+            .search {
+                width: 220px;
+                position: relative;
+                float: right;
+
+                input {
+                    min-height: 40px!important;
+                    padding-left: 30px;
+                }
+
+                .icon-search {
+                    background-color: transparent;
+                    background-position: 5px -87px;
+                    height: 40px;
+                    position: absolute;
+                    text-indent: -9999px;
+                    width: 30px;
+                    top: 0;
+                    left: 5px;
+                }
+            }
+
             &.full-width { margin-bottom: 20px; }
         }
 
