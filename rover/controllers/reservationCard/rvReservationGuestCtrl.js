@@ -421,6 +421,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				// CICO-51935
 				if ($scope.guestCardData && $scope.guestCardData.contactInfo) {
 					$scope.guestCardData.contactInfo.stayCount = data.primary_guest_details && data.primary_guest_details.stay_count;
+
+					$rootScope.$broadcast('UPDATE_STAY_COUNT', {
+						stayCount: $scope.guestCardData.contactInfo.stayCount 
+					});
 				}				
 
                 $scope.accompanyingGuests = $scope.guestData.accompanying_guests_details ? groupAccompanyingGuestsByType($scope.guestData.accompanying_guests_details) : $scope.accompanyingGuests;

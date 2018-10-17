@@ -706,5 +706,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             };
         };
 
+        this.getImages = function() {
+            var url = '/api/hotel_settings/configurable_images';
+
+            return zsBaseWebSrv.getJSON(url);
+        };
+
     }
 ]);

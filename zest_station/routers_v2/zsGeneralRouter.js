@@ -56,6 +56,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				},
 				defaultTranslations: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchDefaultTranslations();
+				},
+				configurableImagesData: function(zsGeneralSrv) {
+					return zsGeneralSrv.getImages();
 				}
 			}
 		});

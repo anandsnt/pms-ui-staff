@@ -987,6 +987,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
+            $scope.groupConfigData.summary.commission_details = response.commission_details;
+            
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
@@ -1659,6 +1661,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.clickedTaxExemptToggle = function() {
             if (!$scope.groupConfigData.summary.is_tax_exempt) {
                 $scope.groupConfigData.summary.tax_exempt_type_id = '';
+                $scope.groupConfigData.summary.tax_exempt_ref_text = '';
             } else {
                 if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary.tax_exempt_type_id === undefined) {
                     $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;

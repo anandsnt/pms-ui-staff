@@ -17,7 +17,8 @@ var sntZestStation = angular.module('sntZestStation', [
     'enterPress',
     'clickTouch',
     'sntPay',
-    'sntPayConfig'
+    'sntPayConfig',
+    'sntActivityIndicator'
 ]);
 
 

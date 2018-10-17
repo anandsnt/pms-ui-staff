@@ -33,7 +33,10 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                     bill_number: 1,
                     is_split_payment: false,
                     payment_type: 'CC',
-                    workstation_id: paymentData.workstation_id
+                    workstation_id: paymentData.workstation_id,
+                    total_value_plus_fees: paymentData.total_value_plus_fees,
+                    fees_amount: paymentData.fees_amount,
+                    fees_charge_code_id: paymentData.fees_charge_code_id
                 },
                 reservation_id: paymentData.reservation
             };
@@ -324,6 +327,11 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
             return deferred.promise;
         };
 
+        this.fetchAvailablePaymentTyes = function() {
+            var url = '/staff/payments/addNewPayment.json';
+
+            return zsBaseWebSrv2.getJSON(url);
+        };
 
     }
 ]);

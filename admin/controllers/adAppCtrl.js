@@ -257,6 +257,16 @@ admin.controller('ADAppCtrl', [
                         }, {
                             title: 'MENU_COMMISIONS',
                             action: 'rover.financials.commisions'
+                        },
+                        {
+                            title: "MENU_INVOICE_SEARCH",
+                            action: "rover.financials.invoiceSearch",
+                            menuIndex: "invoiceSearch"
+                        },
+                        {
+                            title: "AUTO_CHARGE",
+                            action: "rover.financials.autoCharge",
+                            menuIndex: "autoCharge"
                         }]
                     }, {
                         title: "MENU_ACTIONS",
@@ -273,7 +283,7 @@ admin.controller('ADAppCtrl', [
                             title: "QUICKTEXT",
                             action: "rover.quicktext",
                             menuIndex: "QuickText",
-                            hidden: $rootScope.isQuickTextEnabled
+                            hidden: !$rootScope.isQuickTextEnabled
                         }]
                     }, {
                         title: "MENU_REPORTS",              
@@ -680,6 +690,8 @@ admin.controller('ADAppCtrl', [
 			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
 
 			$rootScope.mliEmvEnabled = data.mli_emv_enabled && data.payment_gateway === 'MLI';
+
+            $rootScope.mliAndCBAEnabled = data.payment_gateway === 'MLI' && data.mli_cba_enabled;
 
 			setupLeftMenu();
 

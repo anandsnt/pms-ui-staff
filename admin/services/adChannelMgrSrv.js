@@ -141,5 +141,9 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
                 return deferred.promise;
         };
 
+        this.fetchManagerDetails = function(data) {
+            return ADBaseWebSrvV2.getJSON('/api/channel_managers/' + data.id);
+        };
+
     }
 ]);
