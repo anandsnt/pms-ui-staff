@@ -184,7 +184,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                                     },
                                     'RVCardPlugin',
                                     'printReceipt',
-                                    ['filep', '1', 'receipt_printer', receiptPrinterParams]);
+                                    [ receiptPrinterParams ]);
                             } else {
                                 cordova.exec(
                                     printSuccessActions,

@@ -509,8 +509,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 'room_number': '500'
             };
             var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
-            var printFailedActions = function (error) {
-                $scope.printMessage = error ? error : 'Print Error';
+            var printFailedActions = function (errorData) {
+                $scope.printMessage = errorData ? errorData.RVErrorDesc : 'Print Error';
                 $scope.showPrintMsgPopup = true;
             };
             var printSuccessActions = function () {
@@ -522,9 +522,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 cordova.exec(printSuccessActions,
                          printFailedActions,
                         'RVCardPlugin',
-                        'printReceipt', ['filep', '1', 'RECEIPT', receiptPrinterParams]);
+                        'printReceipt', [ receiptPrinterParams ]);
             }
-
             $log.info(receiptPrinterParams);
         };
 
