@@ -149,9 +149,14 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                             if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
                                 cordova.exec(
                                     printSuccessActions,
-                                    printFailedActions,
+                                    function() {
+                                        // To ensure the error message from receipt printer is not recorded,
+                                        //  we will show our generic print error message
+                                        printFailedActions();
+                                    },
                                     'RVCardPlugin',
-                                    'printReceipt', ['filep', '1', 'receipt_printer', receiptPrinterParams]);
+                                    'printReceipt',
+                                    ['filep', '1', 'receipt_printer', receiptPrinterParams]);
                             } else {
                                 cordova.exec(
                                     printSuccessActions,
