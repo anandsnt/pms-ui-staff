@@ -124,6 +124,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
                         nextPageActions(printopted);
                     };
+                    
                 /*
                  * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                  */

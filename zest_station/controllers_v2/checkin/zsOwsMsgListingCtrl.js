@@ -2,8 +2,8 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 	'$scope',
 	'$state',
 	'zsEventConstants',
-	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window', 'zsUtilitySrv',
-	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window, zsUtilitySrv) {
+	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window', 'zsUtilitySrv', 'zsReceiptPrintHelperSrv',
+	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window, zsUtilitySrv, zsReceiptPrintHelperSrv) {
 
 		/** ********************************************************************************************
 		 **      Expected state params -----> guest_id    

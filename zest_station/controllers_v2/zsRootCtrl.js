@@ -1332,7 +1332,7 @@ sntZestStation.controller('zsRootCtrl', [
             return null;
         };
 
-        var getSelectedPrinterFromLocalStorage = function(id) {
+        var getSelectedPrinterFromLocalStorage = function() {
             var storedPrinter;
 
             try {
