@@ -117,7 +117,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
                         printString = zsReceiptPrintHelperSrv.setUpStringForReceiptBill($scope.printData, $scope.zestStationData);
                         console.log(printString);
-                    };
+                    }
                 /*
                  * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                  */

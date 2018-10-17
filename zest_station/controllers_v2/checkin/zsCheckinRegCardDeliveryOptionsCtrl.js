@@ -166,7 +166,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                         if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
                             printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
                             console.log(printString);
-                        };
+                        }
 					/*
 					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 					 */

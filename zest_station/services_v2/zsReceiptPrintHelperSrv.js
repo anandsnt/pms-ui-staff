@@ -1,11 +1,12 @@
 sntZestStation.service('zsReceiptPrintHelperSrv', [
     '$translate',
     '$filter',
-    function($translate, $filter) {
+    '$log',
+    function($translate, $filter, $log) {
 
-        var returnValueIfValid = function(value, addNewLine) {
+        var returnValidString = function(value, addNewLine) {
             if (value) {
-                return value = addNewLine ? value + "\n" : value;
+                return addNewLine ? value + "\n" : value;
             } else {
                 return '';
             }
@@ -13,7 +14,10 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
         var addExtraCharactersForDescripton = function(str, length) {
             str = str ? str : '';
-            if (str.length < 12){
+            // we need to keep the character length same.
+            // For smaller texts with length < 12  (length - 2) show full and then add ' ' afterwards
+            // For larger texts with length >= 12 (length - 2) delete last two characters and add '.'
+            if (str.length < length - 2) {
                 while (str.length < length) {
                     str = str + ' ';
                 }
@@ -23,11 +27,12 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                     str = str + '.';
                 }
             }
-            
+
             return str;
         };
 
         var prepandSpaceForAmount = function(str, length, zestStationData) {
+            // To keep the string length equal, prepand ' '
             str = str ? zestStationData.currency + str : '';
             while (str.length < length) {
                 str = ' ' + str;
@@ -35,47 +40,52 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             return str;
         };
 
+        var addTextToReceiptArray = function(array, text) {
+            array.push({
+                "type": "text",
+                "data": text
+            });
+        };
+
+        var addLinetoReceiptArray = function(array, noOfLines) {
+            array.push({
+                "type": "line",
+                "data": noOfLines
+            });
+        };
+
 
         this.setUpStringForReceiptBill = function(printData, zestStationData) {
-            var fullString = "";
+            var fullString = ""; // for debugging
             var receiptPrinterParams = {
                 'receipt': []
             };
-            // --------------------------------- HOTEL IMAGE --------------------------- //
+
+            //  --------------------------------- HOTEL LOGO IMAGE --------------------------- //
+
             receiptPrinterParams.receipt.push({
                 "type": "image",
-                "data": returnValueIfValid(zestStationData.hotel_template_logo)
+                "data": returnValidString(zestStationData.hotel_template_logo)
             });
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
 
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
+            //  --------------------------------- HOTEL ADDRESS --------------------------- //
 
-            // --------------------------------- HOTEL ADDRESS --------------------------- //
-            var hotelAddressComponent = returnValueIfValid(printData.hotel_address).split("<br>");
+            var hotelAddressComponent = returnValidString(printData.hotel_address).split("<br>");
             var hotelAddressString = "";
 
             _.each(hotelAddressComponent, function(component) {
                 hotelAddressString = component + "\n";
             });
-
             if (hotelAddressString) {
-                receiptPrinterParams.receipt.push({
-                    "type": "text",
-                    "data": hotelAddressString
-                });
+                addTextToReceiptArray(receiptPrinterParams.receipt, hotelAddressString);
             }
             fullString = fullString + hotelAddressString;
-
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
-
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + "\n\n";
 
-            // --------------------------------- INVOICE HEADER --------------------------- //
+            //  --------------------------------- INVOICE HEADER --------------------------- //
+
             receiptPrinterParams.receipt.push({
                 "type": "text",
                 "data": $filter('translate')('INVOICE_HEADER'),
@@ -85,141 +95,105 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             });
 
             fullString = fullString + $filter('translate')('INVOICE_HEADER');
-
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
-
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + "\n\n";
 
-            // --------------------------------- GUEST ADDRESS --------------------------- //
-            var guestAddress = returnValueIfValid(printData.guest_details.first_name) + " " + returnValueIfValid(printData.guest_details.last_name) + "\n" +
-                returnValueIfValid(printData.guest_details.street + " " + printData.guest_details.street2, true) +
-                returnValueIfValid(printData.guest_details.city, true) +
-                returnValueIfValid(printData.guest_details.state, true) +
-                returnValueIfValid(printData.guest_details.postal_code, true) +
-                returnValueIfValid(printData.guest_details.country_name);
+            //  --------------------------------- GUEST ADDRESS --------------------------- //
 
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": guestAddress
-            });
+            var guestAddress = returnValidString(printData.guest_details.first_name) + " " + returnValidString(printData.guest_details.last_name) + "\n" +
+                returnValidString(printData.guest_details.street + " " + printData.guest_details.street2, true) +
+                returnValidString(printData.guest_details.city, true) +
+                returnValidString(printData.guest_details.state, true) +
+                returnValidString(printData.guest_details.postal_code, true) +
+                returnValidString(printData.guest_details.country_name);
+
+            addTextToReceiptArray(receiptPrinterParams.receipt, guestAddress);
 
             fullString = fullString + guestAddress;
-
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + "\n\n";
 
-            // --------------------------------- ROOM INFO --------------------------- //
+            //  --------------------------------- ROOM INFO --------------------------- //
 
-            var roomInfoText = $filter('translate')('INVOICE_ROOM') + ": " + returnValueIfValid(printData.room_number, true) +
-                $filter('translate')('INVOICE_ARRIVAL') + ": " + returnValueIfValid(printData.arrival_date, true) +
-                $filter('translate')('INVOICE_DEPARTURE') + ": " + returnValueIfValid(printData.departure_date, true) +
-                $filter('translate')('GUESTS') + ": " + returnValueIfValid(printData.no_of_guests);
+            var roomInfoText = $filter('translate')('INVOICE_ROOM') + ": " + returnValidString(printData.room_number, true) +
+                $filter('translate')('INVOICE_ARRIVAL') + ": " + returnValidString(printData.arrival_date, true) +
+                $filter('translate')('INVOICE_DEPARTURE') + ": " + returnValidString(printData.departure_date, true) +
+                $filter('translate')('GUESTS') + ": " + returnValidString(printData.no_of_guests);
 
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": roomInfoText
-            });
+            addTextToReceiptArray(receiptPrinterParams.receipt, roomInfoText);
             fullString = fullString + roomInfoText;
 
-            var headerText = "\n------------------------------------------------\nDep date   Charge desc     Credit amt Charge amt\n------------------------------------------------\n"
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": headerText
-            });
+            var headerText = "\n------------------------------------------------\n"+
+                            "Dep date"+ "   " + "Charge desc"+"     "+"Credit amt"+" "+"Charge amt"+
+                            "\n------------------------------------------------\n";
 
+            addTextToReceiptArray(receiptPrinterParams.receipt, headerText);
             fullString = fullString + headerText;
 
-            // --------------------------------- CHARGE DETAILS --------------------------- //
+            //  --------------------------------- CHARGE DETAILS --------------------------- //
 
             var chargeDetailsString = "";
 
             _.each(printData.charge_details_list, function(chargeDetail) {
-                chargeDetailsString = chargeDetailsString + "\n" + chargeDetail.date + " " + addExtraCharactersForDescripton(chargeDetail.description, 14) + " " + prepandSpaceForAmount('', 9, zestStationData) + "  " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData);
+                chargeDetailsString = chargeDetailsString + "\n" +
+                    chargeDetail.date + " " +
+                    addExtraCharactersForDescripton(chargeDetail.description, 14) +
+                    " " + prepandSpaceForAmount('', 9, zestStationData) +
+                    "  " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData);
             });
-
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": chargeDetailsString
-            });
-
+            addTextToReceiptArray(receiptPrinterParams.receipt, chargeDetailsString);
             fullString = fullString + chargeDetailsString;
 
-            // --------------------------------- CREDIT DETAILS --------------------------- //
+            //  --------------------------------- CREDIT DETAILS --------------------------- //
 
             var creditDetailsString = "";
 
             _.each(printData.credit_details_list, function(creditDetail) {
-                creditDetailsString = creditDetailsString + "\n" + creditDetail.date + " " + addExtraCharactersForDescripton(creditDetail.description, 14) + " " + prepandSpaceForAmount(creditDetail.amount, 9, zestStationData) + "  " + prepandSpaceForAmount('', 9, zestStationData);
+                creditDetailsString = creditDetailsString + "\n" +
+                    creditDetail.date + " " +
+                    addExtraCharactersForDescripton(creditDetail.description, 14) +
+                    " " + prepandSpaceForAmount(creditDetail.amount, 9, zestStationData) +
+                    "  " + prepandSpaceForAmount('', 9, zestStationData);
             });
-
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": creditDetailsString
-            });
-
+            addTextToReceiptArray(receiptPrinterParams.receipt, creditDetailsString);
             fullString = fullString + creditDetailsString;
 
             var seperatorText = "\n------------------------------------------------\n";
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": seperatorText
-            });
 
+            addTextToReceiptArray(receiptPrinterParams.receipt, seperatorText);
             fullString = fullString + seperatorText;
 
-            // --------------------------------- TOTAL BALANCE --------------------------- //
+            //  --------------------------------- TOTAL BALANCE --------------------------- //
 
             var totalBalanceText = "\n" + $filter('translate')('INVOICE_TOTAL_BAL') + ": " + zestStationData.currency + printData.balance + "\n";
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": totalBalanceText
-            });
 
+            addTextToReceiptArray(receiptPrinterParams.receipt, totalBalanceText);
             fullString = fullString + totalBalanceText;
-
-            console.log(JSON.stringify(receiptPrinterParams));
-            console.log(fullString);
+            $log.info(JSON.stringify(receiptPrinterParams));
+            $log.info(fullString);
 
             return receiptPrinterParams;
         };
 
         this.setUpStringForReceiptRegCard = function(printRegCardData, zestStationData) {
-            var fullString = "";
+            var fullString = ""; // for debugging
             var receiptPrinterParams = {
                 'receipt': []
             };
 
-            // --------------------------------- HOTEL IMAGE --------------------------- //
+            //  --------------------------------- HOTEL IMAGE --------------------------- //
 
             receiptPrinterParams.receipt.push({
                 "type": "image",
-                "data": returnValueIfValid(zestStationData.hotel_template_logo)
+                "data": returnValidString(zestStationData.hotel_template_logo)
             });
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
+            fullString = fullString + returnValidString(zestStationData.hotel_template_logo) + "\n\n";
 
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
+            //  --------------------------------- ROOM NUMBER --------------------------- //
 
-            fullString = fullString + returnValueIfValid(zestStationData.hotel_template_logo) + "\n\n";
-
-            // --------------------------------- ROOM NUMBER --------------------------- //
-
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": $filter('translate')('REGISTRATION_READY_PRINT_ROOM_NO')
-            });
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
-
+            addTextToReceiptArray(receiptPrinterParams.receipt, $filter('translate')('REGISTRATION_READY_PRINT_ROOM_NO'));
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             receiptPrinterParams.receipt.push({
                 "type": "text",
                 "data": printRegCardData.room_number,
@@ -227,15 +201,10 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                     "text_size": "2"
                 }
             });
-
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
-
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + $filter('translate')('REGISTRATION_READY_PRINT_ROOM_NO') + "\n\n" + printRegCardData.room_number + "\n\n";
 
-            // -------------------------------- DEP DATE -------------------------------//
+            //  -------------------------------- DEP DATE -------------------------------//
 
             var depDateString;
 
@@ -244,47 +213,23 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             } else {
                 depDateString = $filter('translate')('REGISTRATION_READY_PRINT_DEPART_DATE') + printRegCardData.dep_date;
             }
-
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": depDateString
-            });
-
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
-
+            addTextToReceiptArray(receiptPrinterParams.receipt, depDateString);
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + depDateString + "\n\n";
 
             //--------------------------------- REG TEXT --------------------------------//
 
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": $filter('translate')('REGISTRATION_READY_PRINT_MSG_1')
-            });
-
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "2"
-            });
+            addTextToReceiptArray(receiptPrinterParams.receipt, $filter('translate')('REGISTRATION_READY_PRINT_MSG_1'));
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + $filter('translate')('REGISTRATION_READY_PRINT_MSG_1') + "\n\n";
 
             //--------------------------------- FOOTER TEXT --------------------------------//
 
-            receiptPrinterParams.receipt.push({
-                "type": "text",
-                "data": $filter('translate')('REGISTRATION_READY_PRINT_FOOTER')
-            });
-            receiptPrinterParams.receipt.push({
-                "type": "line",
-                "data": "1"
-            });
-
+            addTextToReceiptArray(receiptPrinterParams.receipt, $filter('translate')('REGISTRATION_READY_PRINT_FOOTER'));
+            addLinetoReceiptArray(receiptPrinterParams.receipt, "2");
             fullString = fullString + $filter('translate')('REGISTRATION_READY_PRINT_FOOTER') + "\n";
-
-            console.log(JSON.stringify(receiptPrinterParams));
-            console.log(fullString);
+            $log.info(JSON.stringify(receiptPrinterParams));
+            $log.info(fullString);
 
             return receiptPrinterParams;
 
