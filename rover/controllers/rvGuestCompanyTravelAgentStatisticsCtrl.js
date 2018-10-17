@@ -1,4 +1,4 @@
-angular.module('sntRover').controller("RVGuestCompanyTravelAgentStatisticsController", [
+angular.module('sntRover').controller("RVCompanyTravelAgentStatisticsController", [
     '$scope',
     'RVGuestCardsSrv',
     'RVCompanyCardSrv',
