@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -507,13 +507,23 @@ sntZestStation.controller('zsAdminCtrl', [
                 'room_number': '500'
             };
             var printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
-
-            var failureCallBack = function () {
-                $scope.printErrorMessage = 'Printer Not connected';
+            var printFailedActions = function (error) {
+                $scope.printErrorMessage = error ? error : 'Print Error';
                 $scope.showPrintErrorPopup = true;
             };
-            failureCallBack();
-            console.log(printString);
+            var printSuccessActions = function () {
+                $scope.printErrorMessage = 'Print success';
+                $scope.showPrintErrorPopup = true;
+            };
+
+            if ($scope.isIpad && typeof cordova !== typeof undefined) {
+                cordova.exec(printSuccessActions,
+                         printFailedActions,
+                        'RVCardPlugin',
+                        'printReceipt', ['filep', '1', 'RECEIPT', printString]);
+            }
+
+            $log.info(printString);
         };
 
         // initialize

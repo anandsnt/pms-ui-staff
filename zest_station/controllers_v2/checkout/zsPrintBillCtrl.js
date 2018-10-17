@@ -1,8 +1,8 @@
 sntZestStation.controller('zsPrintBillCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate', 'zsReceiptPrintHelperSrv',
-    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate, zsReceiptPrintHelperSrv) {
+    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate', 'zsReceiptPrintHelperSrv', '$log',
+    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate, zsReceiptPrintHelperSrv, $log) {
 
         /** ******************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
@@ -115,9 +115,15 @@ sntZestStation.controller('zsPrintBillCtrl', [
                     var printString;
 
                     if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                        // Adding this condition here for easy debug from browser in iPad mode
                         printString = zsReceiptPrintHelperSrv.setUpStringForReceiptBill($scope.printData, $scope.zestStationData);
-                        console.log(printString);
+                        $log.info(printString);
                     }
+                    var printSuccessActions = function () {
+                        var printopted = 'true';
+
+                        nextPageActions(printopted);
+                    };
                 /*
                  * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                  */
@@ -126,13 +132,20 @@ sntZestStation.controller('zsPrintBillCtrl', [
 
                         printer = $scope.zestStationData.zest_printer_option === 'RECEIPT' ? 'receipt_printer' : printer;
 
-                        cordova.exec(function(success) {
-                            var printopted = 'true';
+                        if (printer === 'receipt_printer') {
+                            cordova.exec(
+                                printSuccessActions,
+                                printFailedActions,
+                                'RVCardPlugin',
+                                'printReceipt', ['filep', '1', printer, printString]);
+                        } else {
+                            cordova.exec(
+                                printSuccessActions,
+                                printFailedActions,
+                                'RVCardPlugin',
+                                'printWebView', ['filep', '1', printer]);
+                        }
 
-                            nextPageActions(printopted);
-                        }, function(error) {
-                            printFailedActions();
-                        }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     } else {
                         if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
                         // we will call websocket services to print
@@ -141,9 +154,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                             $timeout(function() {
                                 $scope.$emit('PRINT_CURRENT_PAGE');
                                 $timeout(function() {
-                                    var printopted = 'true';
-
-                                    nextPageActions(printopted);
+                                    printSuccessActions();
                                 }, 100);
                             }, 500);
                             

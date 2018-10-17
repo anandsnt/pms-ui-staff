@@ -9,7 +9,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     '$window',
     '$translate',
     'zsReceiptPrintHelperSrv',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate, zsReceiptPrintHelperSrv) {
+    '$log',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate, zsReceiptPrintHelperSrv, $log) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id
@@ -136,8 +137,9 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                         var printString;
 
                         if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                            // Adding this condition here for easy debug from browser in iPad mode
                             printString = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
-                            console.log(printString);
+                            $log.info(printString);
                         }
                         /*
                          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
@@ -147,11 +149,20 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                             var printer = sntZestStation.selectedPrinter;
 
                             printer = $scope.zestStationData.zest_printer_option === 'RECEIPT' ? 'receipt_printer' : printer;
-                            cordova.exec(function() {
-                                printSuccessActions();
-                            }, function() {
-                                printFailedActions();
-                            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+
+                            if (printer === 'receipt_printer') {
+                                cordova.exec(
+                                    printSuccessActions,
+                                    printFailedActions,
+                                    'RVCardPlugin',
+                                    'printReceipt', ['filep', '1', printer, printString]);
+                            } else {
+                                cordova.exec(
+                                    printSuccessActions,
+                                    printFailedActions,
+                                    'RVCardPlugin',
+                                    'printWebView', ['filep', '1', printer]);
+                            }
                         } else {
                             if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
                                 // we will call websocket services to print
