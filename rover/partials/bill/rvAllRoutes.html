@@ -31,6 +31,11 @@
 			               <span class="label">{{getRouteType(route)}}</span>
 			               {{getCharges(route)}}
 			            </div>
+			             <div class="split">
+                            <!-- Show this icon if charges are split  -->
+                            <span class="icons icon-split-charge" ng-show="route.split_charge_by_50"></span>
+                           
+                        </div>
 			            <div class="bill" ng-hide="route.is_routed_to_different_reservation">
 			               <span class="label">Bill #</span>
 			               {{route.bill_no}}
