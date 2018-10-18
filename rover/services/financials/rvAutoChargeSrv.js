@@ -28,5 +28,15 @@ angular.module('sntRover').service('RVAutoChargeSrv',
                 return RVBaseWebSrvV2.getJSON(url, params);
 
             };
+            /*
+             * Service function to start autocharge process
+             * @return {object}
+             */
+            that.processAutoCharges = function (params) {
+                var url = '/api/reservations/re_process_auto_charge';
+
+                return RVBaseWebSrvV2.postJSON(url, params);
+
+            };
 
         }]);
