@@ -104,8 +104,63 @@ sntRover.controller('RVAutoChargeController',
                         };
                         $scope.fetchAutoCharge();
                     }
-                };
+                },
+                /*
+                 * function to set selection value
+                 * @return - [ObjList]
+                 */
+                processAutoChargeSelections = function (autoCharges, value) {
+                    return _.map(autoCharges, function(autoCharge) {
+                        return _.extend(autoCharge, {'isSelected': value});
+                    });
+                },
+                /*
+                 * function reset autocharge selction values
+                 * @return - none
+                 */
+                resetSelections = function () {
+                    $scope.isPartiallySelected = false;
+                    $scope.isAllSelected = false;
+                },
+                /*
+                 * function forms array of selected reservation ids
+                 * @return - [Integer]
+                 */
+                generateSelectedReservationIds = function () {
+                    var selectedReservationIds = [];
 
+                    _.map($scope.autoCharges,
+                        function(autoCharge) {
+                            if (autoCharge.isSelected) {
+                                selectedReservationIds.push(autoCharge.reservation_id);
+                            }
+                        });
+                    return selectedReservationIds;
+                };
+            /*
+             * function handle selection event for auto charge
+             * @return - noe
+             */
+            $scope.handleAutoChargeSelection = function (selection_type) {
+                var declinedAutoCharges = _.filter($scope.autoCharges,
+                    function(autoCharge) {
+                        return autoCharge.is_declined;
+                    });
+
+                if (selection_type === 'ALL') {
+                    $scope.autoCharges = processAutoChargeSelections($scope.autoCharges, $scope.isAllSelected);
+                    $scope.isPartiallySelected = false;
+                } else {
+                    $scope.isAllSelected = _.every(declinedAutoCharges,
+                        function(autoCharge) {
+                            return autoCharge.isSelected;
+                        });
+                    $scope.isPartiallySelected = _.some(declinedAutoCharges,
+                        function(autoCharge) {
+                            return autoCharge.isSelected;
+                        });
+                }
+            };
             // print the page
             that.printBill = function() {
                 // CICO-9569 to solve the hotel logo issue
@@ -149,7 +204,6 @@ sntRover.controller('RVAutoChargeController',
                 $scope.closeDialog();
                 that.printBill();
             };
-
             // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
@@ -162,10 +216,11 @@ sntRover.controller('RVAutoChargeController',
                 var options = {
                     params: params,
                     successCallBack: function(response) {
-                        $scope.autoCharges = response.details;
+                        resetSelections();
+                        $scope.autoCharges = processAutoChargeSelections(response.details, false);
                         $scope.totalCount = response.total_count;
                         $scope.totalDeposite = response.total_deposit;
-                        $scope.isAutoChargeProcessing = response.auto_charge_deposit_running;
+                        $scope.isAutoChargeProcessing = !!response.auto_charge_deposit_running;
 
                         $timeout(function () {
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
@@ -176,6 +231,21 @@ sntRover.controller('RVAutoChargeController',
                 };
 
                 $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
+            };
+            // Call Api to process declined charges
+            $scope.processSelectedAutoCharges = function() {
+                var params = {
+                        due_date: $scope.filters.due_date,
+                        reservations_ids: generateSelectedReservationIds()
+                    },
+                    options = {
+                        params: params,
+                        successCallBack: function() {
+                            $scope.fetchAutoCharge();
+                        }
+                    };
+
+                $scope.callAPI(RVAutoChargeSrv.processAutoCharges, options);
             };
             /*
              * Initialization

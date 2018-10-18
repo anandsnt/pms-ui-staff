@@ -3,7 +3,7 @@
     <!-- Date -->
     <div class="entry date has-datepicker">
         <label for="automatic-payments-date">Due Date</label>
-        <input name="automatic-payments-date"  id="automatic-payments-date" class="datepicker" readonly type="text" ui-date="dueDateOptions" value="{{filters.due_date}}" listen-this="filters.due_date" />
+        <input name="automatic-payments-date" id="automatic-payments-date" class="datepicker" readonly type="text" ui-date="dueDateOptions" value="{{filters.due_date}}" listen-this="filters.due_date" />
 
     </div>
 
@@ -20,25 +20,24 @@
     </div>
 
     <!-- Process -->
-    <div class="entry process hidden"> <!-- Show only when some reservations are selected -->
-        <button class="button green">Process Selected</button>
+    <div class="entry process" ng-show="isPartiallySelected || isAllSelected">
+        <!-- Show only when some reservations are selected -->
+        <button class="button green" ng-click="processSelectedAutoCharges()">Process Selected</button>
     </div>
 
     <!-- Print -->
     <button id="print-automatic-payments" type="button" ng-click="clickedPrint()" ng-show="totalCount !== 0" class="button blue with-icon only-icon print">
-        <span class="icons icon-print"></span>
-        Print
+        <span class="icons icon-print"></span> Print
     </button>
 
     <!-- Tabs -->
     <ul class="filters">
         <li class="active" ng-hide="filters.status == 'DECLINED'">
-            <strong>Deposits</strong>
-            {{currencySymbol}}{{totalDeposite}}
+            <strong>Deposits</strong> {{currencySymbol}}{{totalDeposite}}
         </li>
         <!--<li>-->
-            <!--<strong>EOD Check Out</strong>-->
-            <!--{currency}{amount}-->
+        <!--<strong>EOD Check Out</strong>-->
+        <!--{currency}{amount}-->
         <!--</li>-->
     </ul>
 </form>
@@ -49,13 +48,13 @@
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
     <!-- Header -->
-    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
         <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-        <li class="cell-checkbox ng-hide">
+        <li class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
             <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
             <label class="checkbox">
-                <span class="icon-form icon-checkbox"></span>
-                <input id="select-all" type="checkbox" value="{value}">
+                <span class="icon-form icon-checkbox" ng-class="{'semi-checked' :isPartiallySelected, 'checked': isAllSelected }"></span>
+                <input id="select-all" type="checkbox" ng-model="isAllSelected" ng-change="handleAutoChargeSelection('ALL')">
             </label>
         </li>
         <li class="cell-reservation">Reservation</li>
@@ -66,15 +65,17 @@
     </ul>
 
     <!-- Reservations -->
-    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-class="{'with-checkboxes' : filters.status !== 'APPROVED'}" ng-show="!isAutoChargeProcessing && totalCount !== 0">
         <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index"> <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-                    <div class="cell-checkbox ng-hide"><!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
-                        <label class="checkbox">
-                            <span class="icon-form icon-checkbox"></span>
-                            <input id="{{autoCharge.reservation_id}}" type="checkbox" >
+                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
+                    <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+                    <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
+                        <!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
+                        <label class="checkbox" ng-show="autoCharge.is_declined">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked' : autoCharge.isSelected}"></span>
+                            <input id="{{autoCharge.reservation_id}}" type="checkbox" ng-model="autoCharge.isSelected" ng-change="handleAutoChargeSelection()">
                         </label>
                     </div>
                     <a ui-sref="rover.reservation.staycard.reservationcard.reservationdetails({
@@ -96,7 +97,7 @@
                         </div>
                         <div class="cell-card">
                             <figure class="card-logo">
-                                <img ng-src="/assets/images/{{autoCharge.card_details.code}}.png"alt="">
+                                <img ng-src="/assets/images/{{autoCharge.card_details.code}}.png" alt="">
                             </figure>
                             <div class="info">
                                 <span class="label">No.</span>
