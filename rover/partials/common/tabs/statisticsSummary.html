@@ -34,44 +34,44 @@
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.stay_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.stay_count.change_percent)}}"></span>
-                    {{absVal(statistics.summary.stay_count.change_percent)}}%
+                    {{absVal(statistics.summary.stay_count.change_percent) | number: 2}}%
                 </div>
-                {{absVal(statistics.summary.stay_count.ytd)}}
+                {{absVal(statistics.summary.stay_count.ytd) | number: 2}}
             </div>
-            <div class="column">{{statistics.summary.stay_count.total}}</div>
+            <div class="column">{{statistics.summary.stay_count.total | number: 2}}</div>
         </div> 
         <div class="row">
             <div class="column">{{statistics.summary.night_count.annual}}</div>
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.night_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.night_count.change_percent)}}"></span>
-                    {{absVal(statistics.summary.night_count.change_percent)}}%
+                    {{absVal(statistics.summary.night_count.change_percent) | number: 2}}%
                 </div>
-                {{statistics.summary.night_count.ytd}}
+                {{statistics.summary.night_count.ytd | number: 2}}
             </div>
-            <div class="column">{{statistics.summary.nights_count.total}}</div>
+            <div class="column">{{statistics.summary.nights_count.total | number: 2}}</div>
         </div> 
         <div class="row">
             <div class="column">{{statistics.summary.cancellation_count.annual}}</div>
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.cancellation_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.cancellation_count.change_percent)}}"></span>
-                    {{absVal(statistics.summary.cancellation_count.change_percent)}}%
+                    {{absVal(statistics.summary.cancellation_count.change_percent) | number: 2}}%
                 </div>
-                {{statistics.summary.cancellation_count.ytd}}
+                {{statistics.summary.cancellation_count.ytd | number: 2}}
             </div>
-            <div class="column">{{statistics.summary.cancellation_count.total}}</div>
+            <div class="column">{{statistics.summary.cancellation_count.total | number: 2}}</div>
         </div> 
         <div class="row">
             <div class="column">{{statistics.summary.no_show_count.annual}}</div>
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.no_show_count.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.no_show_count.change_percent)}}"></span>
-                    {{absVal(statistics.summary.no_show_count.change_percent)}}%
+                    {{absVal(statistics.summary.no_show_count.change_percent) | number: 2}}%
                 </div>
-                {{statistics.summary.no_show_count.ytd}}
+                {{statistics.summary.no_show_count.ytd | number: 2}}
             </div>
-            <div class="column">{{statistics.summary.no_show_count.total}}</div>
+            <div class="column">{{statistics.summary.no_show_count.total | number: 2}}</div>
         </div>
 
         <div class="row">
@@ -79,9 +79,9 @@
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.adr.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.adr.change_percent)}}"></span>
-                    {{absVal(statistics.summary.adr.change_percent)}}%
+                    {{absVal(statistics.summary.adr.change_percent) | number: 2}}%
                 </div>
-                <span ng-bind-html="statistics.summary.adr.ytd | sntCurrency:this"></span>                
+                <span ng-bind-html="statistics.summary.adr.ytd | sntCurrency:this:true:2"></span>                
             </div>
             <div class="column"><span ng-bind-html="statistics.summary.adr.total | sntCurrency:this"></span></div>
         </div> 
@@ -90,7 +90,7 @@
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.room_revenue.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.room_revenue.change_percent)}}"></span>
-                    {{absVal(statistics.summary.room_revenue.change_percent)}}%
+                    {{absVal(statistics.summary.room_revenue.change_percent) | number: 2}}%
                 </div>
                 <span ng-bind-html="statistics.summary.room_revenue.ytd | sntCurrency:this"></span>                 
             </div>
@@ -102,7 +102,7 @@
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.total_revenue.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.total_revenue.change_percent)}}"></span>
-                    {{absVal(statistics.summary.total_revenue.change_percent)}}%
+                    {{absVal(statistics.summary.total_revenue.change_percent) | number: 2}}%
                 </div>
                 <strong><span ng-bind-html="statistics.summary.total_revenue.ytd | sntCurrency:this"></span></strong>
             </div>

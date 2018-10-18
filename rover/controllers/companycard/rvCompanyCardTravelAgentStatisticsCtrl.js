@@ -238,9 +238,13 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             setListeners = function() {
                 var statisticsTabActivateListener = $scope.$on('LOAD_STATISTICS', function() {
                                                         loadStatisticsSummary();
-                                                    });
+                                                    }),
+                    contactInfoUpdateListener = $scope.$on('UPDATE_CONTACT_INFO', function() {
+                                                    populateYearDropDown();
+                                                });
 
                 listeners.push(statisticsTabActivateListener);
+                listeners.push(contactInfoUpdateListener);
             },
             // Destroy the listeners
             destroyListeners = function() {
@@ -412,7 +416,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             },
             // create the year dropdown options
             populateYearDropDown = function() {
-                var startYear = $scope.guestCardData.contactInfo.first_stay_year,                    
+                var startYear = $scope.contactInformation.first_stay_year,                    
                     currentYear = getCurrentYear(),
                     endYear,
                     name = '';
@@ -443,6 +447,8 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 }
 
             };
+        
+        
         
         // Calculates absolute value of a number
         $scope.absVal = function(val) {
@@ -477,7 +483,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
 
             if ($stateParams.isBackToStatistics) {
                 $scope.setActiveView('summary');
-            }
+            }            
             populateYearDropDown();
             setScroller();
             isScrollReady();
