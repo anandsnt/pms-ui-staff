@@ -1,4 +1,4 @@
-admin.controller('ADCountrySortCtrl', ['$scope', '$rootScope', '$state','ADCountrySortSrv',
+admin.controller('ADCountrySortAndRestrictionCtrl', ['$scope', '$rootScope', '$state','ADCountrySortSrv',
 	function($scope, $rootScope, $state,ADCountrySortSrv) {
 
 		BaseCtrl.call(this, $scope);
@@ -155,7 +155,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', '$rootScope', '$state','ADCount
 			$scope.callAPI(ADCountrySortSrv.unsubscribeCountryFromList, options);
 		};
 
-		$scope.isAAllRestrictionSelectd = function(country) {
+		$scope.areAllRestrictionSelectd = function(country) {
 			return country.check_in && country.check_out && country.room_ready;
 		};
 
