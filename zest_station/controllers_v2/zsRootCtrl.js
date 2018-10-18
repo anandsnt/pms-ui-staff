@@ -1332,6 +1332,19 @@ sntZestStation.controller('zsRootCtrl', [
             return null;
         };
 
+        var getSelectedPrinterFromLocalStorage = function() {
+            var storedPrinter;
+
+            try {
+                storedPrinter = storage.getItem('snt_zs_printer');
+            } catch (err) {
+                $log.warn(err);
+            }        
+            if (storedPrinter) {
+                $scope.zestStationData.defaultPrinter = storedPrinter;
+            }
+        };
+
         $scope.getWorkStationSetting = function(id) {
             if (zsGeneralSrv.last_workstation_set.work_stations) {
                 for (var i in zsGeneralSrv.last_workstation_set.work_stations) {
@@ -1409,6 +1422,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.workstation = {
                     'selected': station
                 };
+                getSelectedPrinterFromLocalStorage();
 				// set work station id and status
                 $scope.zestStationData.workstationName = station.name;
                 $scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
