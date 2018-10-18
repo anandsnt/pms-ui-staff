@@ -157,6 +157,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                         "  " + prepandSpaceForAmount('', 9, zestStationData);
                 }
             });
+            fullDetailsString = fullDetailsString + "\n------------------------------------------------\n";
             addTextToReceiptArray(receiptPrinterParams.receipt, fullDetailsString);
             fullString = fullString + fullDetailsString;
 
