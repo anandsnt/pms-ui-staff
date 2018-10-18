@@ -3773,13 +3773,19 @@
                                 .search-results { padding: 20px; }
                                 .reservation {
                                     .faux-anchor {
-                                        background-position: 98% 50%;
-                                        background-image: @arrowRight;
-                                        background-repeat: no-repeat;
-                                        
-                                        @media @highdpi {
-                                            background-image: @arrowRight2x; 
-                                            background-size: 14px 14px;
+                                        &:not(.no-arrow) {
+                                            background-position: 98% 50%;
+                                            background-image: @arrowRight;
+                                            background-repeat: no-repeat;
+                                            
+                                            @media @highdpi {
+                                                background-image: @arrowRight2x; 
+                                                background-size: 14px 14px;
+                                            }
+                                        }
+
+                                        &.no-arrow {
+                                            cursor: default !important;
                                         }
                                     }
                                     .no-number,
