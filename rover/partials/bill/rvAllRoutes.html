@@ -2,9 +2,13 @@
         <div class="info" ng-show = "routes.length == 0">
             <strong class="h1" translate>ROUTES_EMPTY_MESSAGE</strong>
         </div>
-        <span class="h2 message bill-routing-header" ng-show = "routes.length > 0" translate>
-		  BILL_ROUTING_HEADER
-		</span>
+        <ul class="billing-list-header" ng-hide = "routes.length == 0">
+            <li class="name">Name</li>
+            <li class="group">Billing Group(s)</li>
+            <li class="split">Split Charge</li>
+            <li class="bill">Bill #</li>
+            <li class="delete">Delete</li>
+        </ul>
         <div id="routes" ng-iscroll='routes' ng-iscroll-delay='100' ng-show = "routes.length > 0" class="billing-list scrollable bill-routing-list">
 			   	<ul class="wrapper">
 			      
