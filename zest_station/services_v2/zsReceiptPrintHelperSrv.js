@@ -31,13 +31,29 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             return str;
         };
 
-        var prepandSpaceForAmount = function(str, length, zestStationData) {
-            // To keep the string length equal, prepand ' '
-            str = str ? zestStationData.currency + str : '';
-            while (str.length < length) {
-                str = ' ' + str;
+        var addZeroes = function(num) {
+            var value = Number(num);
+            var res = num.split(".");
+            if (res.length == 1 || (res[1].length < 3)) {
+                value = value.toFixed(2);
             }
-            return str;
+            return value
+        };
+
+        var prepandSpaceForAmount = function(str, length, zestStationData, amountSign) {
+
+            var amount = Math.abs(str);
+            var amountWithSign = (amountSign === "-") ? Math.abs(str) * Math.sign(str) * -1 : str;
+
+            var amountString = addZeroes(amountWithSign.toString());
+            while (amountString.length < length) {
+                amountString = ' ' + amountString;
+            }
+            if (amountSign === "-") {
+                amountString = Math.sign(str) === -1 ? amountString + " R" : amountString + " CR";
+            }
+            return amountString;
+
         };
 
         var addTextToReceiptArray = function(array, text) {
@@ -64,6 +80,8 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
         };
 
         this.setUpStringForReceiptBill = function(printData, zestStationData) {
+
+            console.log(printData);
             var fullString = ""; // for debugging
             var receiptPrinterParams = {
                 'receipt': []
@@ -132,7 +150,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             fullString = fullString + roomInfoText;
 
             var headerText = "\n------------------------------------------------\n"+
-                            "Dep date"+ "   " + "Charge desc"+"     "+"Credit amt"+" "+"Charge amt"+
+                            "Date   "+"Charge desc                "+"   "+"Amount(+"+zestStationData.currency +")"+
                             "\n------------------------------------------------\n";
 
             addTextToReceiptArray(receiptPrinterParams.receipt, headerText);
@@ -143,28 +161,24 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             var fullDetailsString = "";
 
             _.each(printData.full_charge_details_list, function(chargeDetail) {
-                if (chargeDetail.is_charge_details) {
+                var amountSign = chargeDetail.is_charge_details ? '+' : '-';
                     fullDetailsString = fullDetailsString + "\n" +
-                        stripOfExtraDateString(chargeDetail.date) + " " +
-                        addExtraCharactersForDescripton(chargeDetail.description, 14) +
-                        " " + prepandSpaceForAmount('', 9, zestStationData) +
-                        "  " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData);
-                } else {
-                    fullDetailsString = fullDetailsString + "\n" +
-                        stripOfExtraDateString(chargeDetail.date) + " " +
-                        addExtraCharactersForDescripton(chargeDetail.description, 14) +
-                        " " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData) +
-                        "  " + prepandSpaceForAmount('', 9, zestStationData);
-                }
+                       chargeDetail.date_in_day_month + " " +
+                        addExtraCharactersForDescripton(chargeDetail.description, 26) +
+                        "   " +prepandSpaceForAmount(chargeDetail.amount, 10, zestStationData, amountSign);
             });
+
             fullDetailsString = fullDetailsString + "\n------------------------------------------------\n";
             addTextToReceiptArray(receiptPrinterParams.receipt, fullDetailsString);
             fullString = fullString + fullDetailsString;
 
             //  --------------------------------- TOTAL BALANCE --------------------------- //
-
-            var totalBalanceText = "\n" + $filter('translate')('INVOICE_TOTAL_BAL') + ": " + zestStationData.currency + printData.balance + "\n";
-
+            var balanceText = $filter('translate')('INVOICE_TOTAL_BAL') + " " + zestStationData.currency + printData.balance;
+            while (balanceText.length < 40) {
+                balanceText = ' ' + balanceText;
+            }
+            var totalBalanceText = "\n*****" + balanceText;
+            totalBalanceText = totalBalanceText + "\n------------------------------------------------\n";
             addTextToReceiptArray(receiptPrinterParams.receipt, totalBalanceText);
             fullString = fullString + totalBalanceText;
             $log.info(JSON.stringify(receiptPrinterParams));
