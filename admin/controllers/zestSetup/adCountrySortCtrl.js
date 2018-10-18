@@ -12,9 +12,6 @@ admin.controller('ADCountrySortCtrl', ['$scope', '$rootScope', '$state','ADCount
 			mode: 'SORT',
 			countrySearch: ''
 		};
-		if (!$scope.$$phase) {
-			$scope.$digest();
-		}
 
 		$scope.changeModeToSortingList = function() {
 			$scope.screenData.mode = 'SORT';
