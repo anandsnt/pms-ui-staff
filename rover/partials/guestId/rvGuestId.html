@@ -64,30 +64,20 @@
             </ul>
         </div>
         <div class="content-right">
-            <div style="margin-bottom: 10px;">
-                <div class="select" style="width: 30%;margin: 0 auto;">
-                <select class="placeholder" ng-model="guestIdData.document_type">
+        
+            <div class="select document-type">
+                <select name="document-type" class="placeholder" ng-model="guestIdData.document_type">
                     <option value="">Select document type</option>
-                    <option value="ID_CARD" translate>ID card</option>
+                     <option value="ID_CARD" translate>ID card</option>
                     <option value="PASSPORT" translate>PASSPORT</option>
-                    <!-- <option value="License">License</option> -->
                 </select>
-                </div>
             </div>
 
 
 
-            <div class="guest-documents" style="margin-bottom: 50px;">
+            <div class="guest-documents">
                 <div class="guest-document">
                     <h2 class="message" translate>ID_FRONT</h2>
-                    <!--
-                        'text':
-                         - Scanned {DD-MM-YYYY HH:MM AM/PM} (if scanned)
-                         - Uploaded {DD-MM-YYYY HH:MM AM/PM} (if uploaded)
-                         - Not Available (if no data)
-                     -->
-                    <p class="text"></p>
-
                     <!-- Add .missing if no data -->
                     <div class="guest-info" ng-class="{'missing' : guestIdData.front_image_data.length === 0}">
                         <!-- if Data show this -->
@@ -115,8 +105,6 @@
                 </div>
                 <div class="guest-document">
                     <h2 class="message" translate>ID_BACK</h2>
-                    <p class="text"></p>
-
                     <!-- Add .missing if no data -->
                     <div class="guest-info " ng-class="{'missing' : guestIdData.back_image_data.length === 0}">
                         <!-- if Data show this -->
@@ -147,8 +135,7 @@
 
             <button type="button" 
                     class="button green" 
-                    ng-click="saveGuestIdDetails()" 
-                    style="width: 20%;margin: 0 auto;bottom: 10;position: fixed;left: calc(50%);"
+                    ng-click="saveGuestIdDetails()"
                     translate>
                     SAVE
             </button>
