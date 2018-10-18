@@ -138,38 +138,27 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             addTextToReceiptArray(receiptPrinterParams.receipt, headerText);
             fullString = fullString + headerText;
 
-            //  --------------------------------- CHARGE DETAILS --------------------------- //
+            //  --------------------------------- CHARGE & DETAILS --------------------------- //
 
-            var chargeDetailsString = "";
+            var fullDetailsString = "";
 
-            _.each(printData.charge_details_list, function(chargeDetail) {
-                chargeDetailsString = chargeDetailsString + "\n" +
-                    stripOfExtraDateString(chargeDetail.date) + " " +
-                    addExtraCharactersForDescripton(chargeDetail.description, 14) +
-                    " " + prepandSpaceForAmount('', 9, zestStationData) +
-                    "  " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData);
+            _.each(printData.full_charge_details_list, function(chargeDetail) {
+                if (chargeDetail.is_charge_details) {
+                    fullDetailsString = fullDetailsString + "\n" +
+                        stripOfExtraDateString(chargeDetail.date) + " " +
+                        addExtraCharactersForDescripton(chargeDetail.description, 14) +
+                        " " + prepandSpaceForAmount('', 9, zestStationData) +
+                        "  " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData);
+                } else {
+                    fullDetailsString = fullDetailsString + "\n" +
+                        stripOfExtraDateString(chargeDetail.date) + " " +
+                        addExtraCharactersForDescripton(chargeDetail.description, 14) +
+                        " " + prepandSpaceForAmount(chargeDetail.amount, 9, zestStationData) +
+                        "  " + prepandSpaceForAmount('', 9, zestStationData);
+                }
             });
-            addTextToReceiptArray(receiptPrinterParams.receipt, chargeDetailsString);
-            fullString = fullString + chargeDetailsString;
-
-            //  --------------------------------- CREDIT DETAILS --------------------------- //
-
-            var creditDetailsString = "";
-
-            _.each(printData.credit_details_list, function(creditDetail) {
-                creditDetailsString = creditDetailsString + "\n" +
-                    stripOfExtraDateString(creditDetail.date) + " " +
-                    addExtraCharactersForDescripton(creditDetail.description, 14) +
-                    " " + prepandSpaceForAmount(creditDetail.amount, 9, zestStationData) +
-                    "  " + prepandSpaceForAmount('', 9, zestStationData);
-            });
-            addTextToReceiptArray(receiptPrinterParams.receipt, creditDetailsString);
-            fullString = fullString + creditDetailsString;
-
-            var seperatorText = "\n------------------------------------------------\n";
-
-            addTextToReceiptArray(receiptPrinterParams.receipt, seperatorText);
-            fullString = fullString + seperatorText;
+            addTextToReceiptArray(receiptPrinterParams.receipt, fullDetailsString);
+            fullString = fullString + fullDetailsString;
 
             //  --------------------------------- TOTAL BALANCE --------------------------- //
 
