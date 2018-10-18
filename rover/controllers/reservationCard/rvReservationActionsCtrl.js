@@ -249,17 +249,15 @@ sntRover.controller('reservationActionsController', [
                     if (
                             (   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" ||
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null
+                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null ||
+                                $rootScope.roverObj.force_nationality_at_checkin ||
+                                $rootScope.roverObj.forceCountryAtCheckin
                             ) && (
                             	_.isEmpty($scope.guestCardData.contactInfo.email) || 
                             	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
                             	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
-                            	$scope.guestCardData.contactInfo.nationality_id === undefined || 
-                                $scope.guestCardData.contactInfo.nationality_id === "" || 
-                                $scope.guestCardData.contactInfo.nationality_id === null ||
-                                $scope.guestCardData.contactInfo.address.country_id === undefined || 
-                                $scope.guestCardData.contactInfo.address.country_id === "" || 
-                                $scope.guestCardData.contactInfo.address.country_id === null
+                            	(_.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
+                            	(_.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
                             )
                         ) {
                         return true;

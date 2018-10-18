@@ -235,15 +235,15 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 				}
 			}
 
-            if ($scope.showNationality) {
-                $scope.saveData.nationality_id = $scope.guestCardData.contactInfo.nationality_id;
+            if ($scope.showNationality && $rootScope.roverObj.force_nationality_at_checkin) {
+                $scope.saveData.nationality_id = $scope.guestCardData.contactInfo.nationality_id || "";
                 isValidDataExist = true;
             }
 
-            if ($scope.showCountry) {
+            if ($scope.showCountry && $rootScope.roverObj.forceCountryAtCheckin) {
                 $scope.saveData.address = {};
 
-                $scope.saveData.address.country_id = $scope.guestCardData.contactInfo.address.country_id;
+                $scope.saveData.address.country_id = $scope.guestCardData.contactInfo.address.country_id || "";
                 isValidDataExist = true;
             }
 
