@@ -38,6 +38,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             loadStatisticsDetails = function() {
                 var onStatisticsDetailsFetchSuccess = function(data) {
                         $scope.statistics.details = data;
+                        $scope.statistics.details.monthly_data = $scope.statistics.details.monthly_data.reverse();
                         refreshScroller();
                     },
                     onStatistcsDetailsFetchFailure = function() {

@@ -42,14 +42,14 @@
             <div class="column">{{statistics.details.summary.cancellation_count}}</div>
             <div class="column">{{statistics.details.summary.no_show_count}}</div>
             <div class="column">
-                <span ng-bind-html="statistics.details.summary.adr | sntCurrency:this"></span>
+                <span class="currency">{{currencySymbol}}</span>{{statistics.details.summary.adr | number: 2}}
             </div>
             <div class="column">
-                <span ng-bind-html="statistics.details.summary.room_revenue | sntCurrency:this"></span>
+                <span class="currency">{{currencySymbol}}</span>{{statistics.details.summary.room_revenue | number: 2}}
             </div>
             <div class="column">
                 <strong>
-                    <span ng-bind-html="statistics.details.summary.total_revenue | sntCurrency:this"></span>
+                    <span class="currency">{{currencySymbol}}</span>{{statistics.details.summary.total_revenue | number: 2}}
                 </strong>
             </div>
         </div>
@@ -67,16 +67,16 @@
                         <div class="column" ng-class="{'no-data': monthlyData.no_show_count === 0}">{{monthlyData.no_show_count}}</div>
                         <!-- if no data (0) then add .no-data -->
                         <div class="column" ng-class="{'no-data': monthlyData.adr === 0}">
-                            <span ng-bind-html="monthlyData.adr | sntCurrency:this"></span>
+                            <span class="currency">{{currencySymbol}}</span>{{monthlyData.adr | number: 2}}
                         </div>
                         <!-- if no data (0) then add .no-data -->
                         <div class="column" ng-class="{'no-data': monthlyData.room_revenue === 0}">
-                            <span ng-bind-html="monthlyData.room_revenue | sntCurrency:this"></span>
+                            <span class="currency">{{currencySymbol}}</span>{{monthlyData.room_revenue | number: 2}}
                         </div>
                         <!-- if no data (0) then add .no-data -->
                         <div class="column" ng-class="{'no-data': monthlyData.total_revenue === 0}">
                             <strong>
-                                <span ng-bind-html="monthlyData.total_revenue | sntCurrency:this"></span>
+                                <span class="currency">{{currencySymbol}}</span>{{monthlyData.total_revenue | number: 2}}
                             </strong>
                         </div>
                     </div>

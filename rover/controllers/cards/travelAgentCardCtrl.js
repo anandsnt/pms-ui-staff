@@ -47,7 +47,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
-			}
+			} else if (tabToSwitch === 'statistics') {
+				$scope.$broadcast("LOAD_STATISTICS");
+			} 
 			else if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("commissionsTabActive");
 			}

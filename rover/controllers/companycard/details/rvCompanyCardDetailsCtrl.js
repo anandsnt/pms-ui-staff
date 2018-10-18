@@ -238,10 +238,15 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (typeof($scope.contactInformation) === 'undefined') {
 				$scope.contactInformation = angular.copy($rootScope.prevStateBookmarkDataFromAR.contactInformation);
 			}
+
+			if ($stateParams.isBackToStatistics) {
+				$scope.currentSelectedTab = 'statistics';
+				$scope.$broadcast('LOAD_STATISTICS');
+			}
 			/*
 			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
 			*/
-			if ($scope.isArTabAvailable) {
+			else if ($scope.isArTabAvailable) {
 				$timeout(function() {
 					$scope.currentSelectedTab = 'cc-ar-transactions';
 					$scope.$broadcast('setgenerateNewAutoAr', true);
@@ -256,6 +261,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		if ($stateParams.isBackToTACommission) {
 			$scope.currentSelectedTab = 'cc-commissions';
 		}
+		
+		
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;

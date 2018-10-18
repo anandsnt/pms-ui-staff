@@ -166,7 +166,20 @@ sntRover.controller('reservationDetailsController',
             };
 
             
-        } else if ($scope.previousState.name === "rover.companycarddetails") {
+		} else if ($stateParams.isFromCardStatistics) {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'Statistics',
+				name: 'rover.companycarddetails',
+				param: {
+					id: $vault.get('cardId'),
+					type: $vault.get('type'),					
+					isBackToStatistics: true,
+					isBackFromStaycard: true
+				}
+			};
+
+		} else if ($scope.previousState.name === "rover.companycarddetails") {
 
             setNavigationBookMark();
             $rootScope.setPrevState = {
