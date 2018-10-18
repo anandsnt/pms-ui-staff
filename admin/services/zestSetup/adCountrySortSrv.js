@@ -3,7 +3,7 @@ admin.service('ADCountrySortSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
    /**
     * To fetch the country list
     * */
-	this.fetchCountries = function() {
+	this.fetchSortedCountries = function() {
 
 		var deferred = $q.defer();
 		var url = '/api/countries/sorted_list.json';
@@ -45,6 +45,18 @@ admin.service('ADCountrySortSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		    deferred.reject(data);
 		});
 		return deferred.promise;
+	};
+
+	this.fetchRestrictedCountriesList = function() {
+		var url = '/api/zest_country_restrictions.json';
+
+		return ADBaseWebSrvV2.getJSON(url);
+	};
+
+	this.unsubscribeCountryFromList = function(params) {
+		var url = '/api/zest_country_restrictions/'+ params.country_id;
+
+		return ADBaseWebSrvV2.putJSON(url, params);
 	};
 
 }]);

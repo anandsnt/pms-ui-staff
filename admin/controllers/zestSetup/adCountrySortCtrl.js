@@ -1,14 +1,33 @@
-admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
-	function($scope, ADCountrySortSrv) {
+admin.controller('ADCountrySortCtrl', ['$scope', '$rootScope', '$state','ADCountrySortSrv',
+	function($scope, $rootScope, $state,ADCountrySortSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.successMessage = '';
 		$scope.errorMessage = '';
 		$scope.listingMode = true;
 		$scope.countrySelected = "";
+		$scope.restrictedCountriesList = [];
+
+		$scope.screenData = {
+			mode: 'SORT',
+			countrySearch: ''
+		};
+		if (!$scope.$$phase) {
+			$scope.$digest();
+		}
+
+		$scope.changeModeToSortingList = function() {
+			$scope.screenData.mode = 'SORT';
+		};
+
+		$scope.changeModeToRestrictionList = function() {
+			$scope.screenData.mode = 'RESTRICTIONS';
+		};
+		/*  ************************************** SORTING ******************************************  */
+
 
 		// fetch country list with sorted and unsorted countries
-		var fetchCountryList = function() {
+		var fetchSortedCountryList = function() {
 			var onfetchCountriesSuccess = function(response) {
 				$scope.sortedCountries = response.sorted;
 				$scope.unSortedCountries = response.unsorted;
@@ -20,12 +39,8 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				successCallBack: onfetchCountriesSuccess
 			};
 
-			$scope.callAPI(ADCountrySortSrv.fetchCountries, options);
+			$scope.callAPI(ADCountrySortSrv.fetchSortedCountries, options);
 		};
-
-		var init = (function() {
-			fetchCountryList();
-		}());
 
 		// add new country to sort list
 		$scope.addCountryToSequence = function() {
@@ -33,7 +48,16 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 		};
 
 		$scope.backClicked = function() {
-			$scope.listingMode = true;
+			if ($scope.screenData.mode === 'SORT') {
+				if (!$scope.listingMode) {
+					$scope.listingMode = true;
+				} else {
+					$scope.goBack($rootScope, $state);
+				}
+			} else {
+				$scope.listingMode = true;
+				$scope.screenData.mode = 'SORT';
+			}
 		};
 
 		var saveSortedList = function(id, position) {
@@ -42,7 +66,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 					'country_id': id,
 					'position': position
 				},
-				successCallBack: fetchCountryList
+				successCallBack: fetchSortedCountryList
 			};
 
 			$scope.callAPI(ADCountrySortSrv.saveComponentOrder, options);
@@ -63,7 +87,7 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				params: {
 					'id': id
 				},
-				successCallBack: fetchCountryList
+				successCallBack: fetchSortedCountryList
 			};
 
 			$scope.callAPI(ADCountrySortSrv.deleteItem, options);
@@ -81,5 +105,70 @@ admin.controller('ADCountrySortCtrl', ['$scope', 'ADCountrySortSrv',
 				}
 			}
 		};
+
+		/*  ************************************** UNSUBSCRIBE ******************************************  */
+
+		var fetchRestrictedCountriesList = function() {
+			var onfetchCountriesListSuccess = function(response) {
+				$scope.restrictedCountriesList = response;
+			};
+			var options = {
+				params: {},
+				successCallBack: onfetchCountriesListSuccess
+			};
+
+			$scope.callAPI(ADCountrySortSrv.fetchRestrictedCountriesList, options);
+		};
+
+		$scope.toggleSubscription = function(country, type) {
+
+			var onUnsubsribeSuccess = function () {
+				country[type] = !country[type];
+			};
+			var params = angular.copy(country);
+			params[type] = !params[type];
+
+			var options = {
+				params: params,
+				successCallBack: onUnsubsribeSuccess
+			};
+
+			$scope.callAPI(ADCountrySortSrv.unsubscribeCountryFromList, options);
+			
+		};
+
+		$scope.toggleAllSubscription = function(country) {
+			var wasAllSelected = country.check_in && country.check_out && country.room_ready;
+			var onUnsubsribeSuccess = function () {
+				country.check_in = !wasAllSelected;
+				country.check_out = !wasAllSelected;
+				country.room_ready = !wasAllSelected;
+			};
+			var params = angular.copy(country);
+
+			params.check_in = !wasAllSelected;
+			params.check_out = !wasAllSelected;
+			params.room_ready = !wasAllSelected;
+			
+			var options = {
+				params: params,
+				successCallBack: onUnsubsribeSuccess
+			};
+
+			$scope.callAPI(ADCountrySortSrv.unsubscribeCountryFromList, options);
+		};
+
+		$scope.isAAllRestrictionSelectd = function(country) {
+			return country.check_in && country.check_out && country.room_ready;
+		};
+
+		$scope.isAnyRestrictionSelectd = function(country) {
+			return country.check_in || country.check_out || country.room_ready;
+		};
+
+		var init = (function() {
+			fetchSortedCountryList();
+			fetchRestrictedCountriesList();
+		}());
 	}
 ]);
