@@ -240,6 +240,16 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
+		var is_required_guest_details_empty = function() {
+			return (
+                        _.isEmpty($scope.guestCardData.contactInfo.email) || 
+                        _.isEmpty($scope.guestCardData.contactInfo.phone) || 
+                        _.isEmpty($scope.guestCardData.contactInfo.mobile) || 
+                        (_.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
+                        (_.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
+                    );
+		};
+
 
                 $scope.checkGuestInFromQueue  = function() {
                     $scope.initCheckInFlow();
@@ -252,13 +262,7 @@ sntRover.controller('reservationActionsController', [
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null ||
                                 $rootScope.roverObj.force_nationality_at_checkin ||
                                 $rootScope.roverObj.forceCountryAtCheckin
-                            ) && (
-                            	_.isEmpty($scope.guestCardData.contactInfo.email) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
-                            	(_.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
-                            	(_.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
-                            )
+                            ) && is_required_guest_details_empty()
                         ) {
                         return true;
                     } else return false;
