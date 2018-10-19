@@ -127,11 +127,13 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                 streetName = null;
             }
 
+            var postalCode = printData.guest_details.postal_code ? $filter('translate')('POSTAL_OR_ZIP_CODE') + ' ' + printData.guest_details.postal_code : null;
+
             var guestAddress = returnValidString(printData.guest_details.first_name) + " " + returnValidString(printData.guest_details.last_name) + "\n" +
                 returnValidString(streetName, true) +
                 returnValidString(printData.guest_details.city, true) +
                 returnValidString(printData.guest_details.state, true) +
-                returnValidString(printData.guest_details.postal_code, true) +
+                returnValidString(postalCode, true) +
                 returnValidString(printData.guest_details.country_name);
 
             addTextToReceiptArray(receiptPrinterParams.receipt, guestAddress);
