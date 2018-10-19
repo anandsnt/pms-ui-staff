@@ -44,8 +44,8 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             var amount = Math.abs(str);
             var amountWithSign = (amountSign === "-") ? Math.abs(str) * Math.sign(str) * -1 : str;
-
             var amountString = addZeroes(amountWithSign.toString());
+
             while (amountString.length < length) {
                 amountString = ' ' + amountString;
             }
@@ -152,6 +152,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             _.each(printData.full_charge_details_list, function(chargeDetail) {
                 var amountSign = chargeDetail.is_charge_details ? '+' : '-';
+                
                 fullDetailsString = fullDetailsString + "\n" +
                     chargeDetail.date_in_day_month + " " +
                     addExtraCharactersForDescripton(chargeDetail.description, 27) +
@@ -168,6 +169,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                 balanceText = ' ' + balanceText;
             }
             var totalBalanceText = "\n*****" + balanceText;
+
             totalBalanceText = totalBalanceText + "\n------------------------------------------------\n";
             addTextToReceiptArray(receiptPrinterParams.receipt, totalBalanceText);
             fullString = fullString + totalBalanceText;
