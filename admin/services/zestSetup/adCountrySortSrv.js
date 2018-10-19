@@ -54,7 +54,7 @@ admin.service('ADCountrySortSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	};
 
 	this.unsubscribeCountryFromList = function(params) {
-		var url = '/api/zest_country_restrictions/'+ params.country_id;
+		var url = '/api/zest_country_restrictions/' + params.country_id;
 
 		return ADBaseWebSrvV2.putJSON(url, params);
 	};

@@ -1,4 +1,4 @@
-admin.controller('ADCountrySortAndRestrictionCtrl', ['$scope', '$rootScope', '$state','ADCountrySortSrv',
+admin.controller('ADCountrySortAndRestrictionCtrl', ['$scope', '$rootScope', '$state', 'ADCountrySortSrv',
 	function($scope, $rootScope, $state,ADCountrySortSrv) {
 
 		BaseCtrl.call(this, $scope);
@@ -79,7 +79,7 @@ admin.controller('ADCountrySortAndRestrictionCtrl', ['$scope', '$rootScope', '$s
 		};
 
 		// delete a country from the sort list
-		$scope.deleteItem = function(id, $index) {
+		$scope.deleteItem = function(id) {
 			var options = {
 				params: {
 					'id': id
@@ -123,6 +123,7 @@ admin.controller('ADCountrySortAndRestrictionCtrl', ['$scope', '$rootScope', '$s
 				country[type] = !country[type];
 			};
 			var params = angular.copy(country);
+
 			params[type] = !params[type];
 
 			var options = {
