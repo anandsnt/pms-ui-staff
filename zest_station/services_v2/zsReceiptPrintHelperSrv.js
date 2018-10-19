@@ -69,16 +69,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                 "data": noOfLines
             });
         };
-
-        var stripOfExtraDateString = function(dateString) {
-            var newString = dateString.length > 10 ? dateString.substring(0, 10) : dateString;
-
-            while (newString.length < 10) {
-                newString = ' ' + newString + ' ';
-            }
-            return newString;
-        };
-
+        
         this.setUpStringForReceiptBill = function(printData, zestStationData) {
 
             console.log(printData);
