@@ -218,7 +218,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 updateCommissionSummary(commissionList);
             }
 
-            if ($scope.selectedCommissions.length === 0) {
+            // TODO: Adding the fix to solve the selection issue. The code above this comment needs to be revisisted
+            if ($scope.selectedCommissions.length === 0 && $scope.prePaidCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
             }            

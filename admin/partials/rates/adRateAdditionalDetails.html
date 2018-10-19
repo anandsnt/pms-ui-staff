@@ -94,7 +94,7 @@
             <ad-checkbox div-class="actions_margin_top" hide="{{!rateData.commission_details.is_on}}" is-checked="rateData.commission_details.is_prepaid" label="{{ 'PREPAID' | translate }}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
             <div class="entry full-width" ng-hide="!rateData.commission_details.is_on">
                 <div class=" select-col col1-3 actions_margin_top">
-                    <ad-textbox inputtype="text" value="rateData.commission_details.value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_details.value"></ad-textbox>
+                    <ad-textbox inputtype="text" value="rateData.commission_details.value" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_details.value"></ad-textbox>
                 </div>
                 <div class="select select-col col1-4">
                     <select class="styled" value="rateData.commission_details.type" ng-model="rateData.commission_details.type">
@@ -105,7 +105,7 @@
 
                 <div class="entry" ng-show="rateData.commission_details.type === 'amount'">
                     <div class="select">
-                        <select class="placeholder" value="rateData.commission_details.commission_type" ng-model="rateData.commission_details.commission_type">
+                        <select class="placeholder" ng-init="rateData.commission_details.commission_type = rateData.commission_details.commission_type || 'perStay'" ng-model="rateData.commission_details.commission_type">
                             <option value="perStay" translate>PER_STAY</option>
                             <option value="perNight" translate>PER_NIGHT</option>
                         </select>

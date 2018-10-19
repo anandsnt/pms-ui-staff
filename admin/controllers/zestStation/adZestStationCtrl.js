@@ -159,6 +159,12 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
         var fetchSuccess = function(data) {
             $scope.$emit('hideLoader');
+            // Rename the printter name
+            _.each(data.printer_options, function(printer) {
+                if (printer.value === 'RECEIPT') {
+                    printer.description = 'Receipt and Registration card';
+                }
+            });
             $scope.zestStationData = data;
             setupDefaultLanguageDropdown();
 
