@@ -115,9 +115,20 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             fullString = fullString + "\n\n";
 
             //  --------------------------------- GUEST ADDRESS --------------------------- //
+            var streetName;
+            
+            if (printData.guest_details.street && printData.guest_details.street2) {
+                streetName = printData.guest_details.street + " " + printData.guest_details.street2;
+            } else if (printData.guest_details.street && !printData.guest_details.street2) {
+                streetName = printData.guest_details.street;
+            } else if (!printData.guest_details.street && !printData.guest_details.street2) {
+                streetName = printData.guest_details.street2;
+            } else {
+                streetName = null;
+            }
 
             var guestAddress = returnValidString(printData.guest_details.first_name) + " " + returnValidString(printData.guest_details.last_name) + "\n" +
-                returnValidString(printData.guest_details.street + " " + printData.guest_details.street2, true) +
+                returnValidString(streetName, true) +
                 returnValidString(printData.guest_details.city, true) +
                 returnValidString(printData.guest_details.state, true) +
                 returnValidString(printData.guest_details.postal_code, true) +
