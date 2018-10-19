@@ -140,7 +140,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             fullString = fullString + roomInfoText;
 
             var headerText = "\n------------------------------------------------\n"+
-                            "Date  "+"Charge desc.               "+"   "+"Amount(+"+zestStationData.currency +")"+
+                            "Date  "+"Charge desc.               "+"   "+"Amount("+zestStationData.currency +")"+
                             "\n------------------------------------------------\n";
 
             addTextToReceiptArray(receiptPrinterParams.receipt, headerText);
