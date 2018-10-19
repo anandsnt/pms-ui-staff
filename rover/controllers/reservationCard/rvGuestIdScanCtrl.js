@@ -4,7 +4,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'ngDialog',
 	'RVGuestCardsSrv',
 	'dateFilter',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter) {
+	'$timeout',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -20,6 +21,17 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		if ($scope.guestIdData.document_type && $scope.guestIdData.document_type.length > 0) {
 			$scope.guestIdData.document_type = $scope.guestIdData.document_type.toUpperCase();
 		}
+
+		var scrollOptions = {
+			preventDefaultException: {
+				tagName: /^(INPUT|SELECT)$/
+			},
+			preventDefault: false
+		};
+
+		$scope.setScroller('id-details', scrollOptions);
+		$scope.refreshScroller('id-details');
+   
 
 		$scope.callAPI(RVGuestCardsSrv.fetchNationsList, {
 			params: {},
@@ -119,6 +131,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 			delete apiParams.expiry_date_for_display;
 			delete apiParams.dob_for_display;
+            delete apiParams.nationality;
 
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
