@@ -153,10 +153,10 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             _.each(printData.full_charge_details_list, function(chargeDetail) {
                 var amountSign = chargeDetail.is_charge_details ? '+' : '-';
-                    fullDetailsString = fullDetailsString + "\n" +
-                       chargeDetail.date_in_day_month + " " +
-                        addExtraCharactersForDescripton(chargeDetail.description, 26) +
-                        "   " +prepandSpaceForAmount(chargeDetail.amount, 10, zestStationData, amountSign);
+                fullDetailsString = fullDetailsString + "\n" +
+                    chargeDetail.date_in_day_month + " " +
+                    addExtraCharactersForDescripton(chargeDetail.description, 27) +
+                    "  " + prepandSpaceForAmount(chargeDetail.amount, 10, zestStationData, amountSign);
             });
 
             fullDetailsString = fullDetailsString + "\n------------------------------------------------\n";
