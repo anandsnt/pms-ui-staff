@@ -121,7 +121,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
                 streetName = printData.guest_details.street + " " + printData.guest_details.street2;
             } else if (printData.guest_details.street && !printData.guest_details.street2) {
                 streetName = printData.guest_details.street;
-            } else if (!printData.guest_details.street && !printData.guest_details.street2) {
+            } else if (!printData.guest_details.street && printData.guest_details.street2) {
                 streetName = printData.guest_details.street2;
             } else {
                 streetName = null;
