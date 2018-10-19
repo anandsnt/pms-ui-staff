@@ -34,15 +34,15 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
         var addZeroes = function(num) {
             var value = Number(num);
             var res = num.split(".");
-            if (res.length == 1 || (res[1].length < 3)) {
+
+            if (res.length === 1 || (res[1].length < 3)) {
                 value = value.toFixed(2);
             }
-            return value
+            return value;
         };
 
         var prepandSpaceForAmount = function(str, length, zestStationData, amountSign) {
 
-            var amount = Math.abs(str);
             var amountWithSign = (amountSign === "-") ? Math.abs(str) * Math.sign(str) * -1 : str;
             var amountString = addZeroes(amountWithSign.toString());
 
@@ -165,10 +165,11 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
 
             //  --------------------------------- TOTAL BALANCE --------------------------- //
             var balanceText = $filter('translate')('INVOICE_TOTAL_BAL') + " " + zestStationData.currency + printData.balance;
+            
             while (balanceText.length < 40) {
                 balanceText = ' ' + balanceText;
             }
-            var totalBalanceText = "\n*****" + balanceText;
+            var totalBalanceText = "*****" + balanceText;
 
             totalBalanceText = totalBalanceText + "\n------------------------------------------------\n";
             addTextToReceiptArray(receiptPrinterParams.receipt, totalBalanceText);
