@@ -164,7 +164,7 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
             fullString = fullString + fullDetailsString;
 
             //  --------------------------------- TOTAL BALANCE --------------------------- //
-            var balanceText = $filter('translate')('INVOICE_TOTAL_BAL') + " " + zestStationData.currency + printData.balance;
+            var balanceText = $filter('translate')('INVOICE_TOTAL_BAL') + " " + printData.balance;
             
             while (balanceText.length < 40) {
                 balanceText = ' ' + balanceText;
