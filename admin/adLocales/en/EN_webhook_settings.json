@@ -1,4 +1,3 @@
-
 "WEBHOOK_TYPE": "Delivery Type",
 "SELECTED_SUBSCRIPTIONS": "Selected Subscriptions",
 "generic": "Generic",
@@ -15,4 +14,7 @@
 "create_reservation": "NEW RESERVATION",
 "cancel_reservation": "CANCEL RESERVATION",
 "new_group": "NEW GROUP",
-"edit_group": "EDIT GROUP"
+"edit_group": "EDIT GROUP",
+"create_guest": "CREATE GUEST",
+"edit_guest": "EDIT GUEST",
+"anonymize_guest": "ANONYMIZE GUEST DATA"
