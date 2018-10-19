@@ -72,7 +72,6 @@ sntZestStation.service('zsReceiptPrintHelperSrv', [
         
         this.setUpStringForReceiptBill = function(printData, zestStationData) {
 
-            console.log(printData);
             var fullString = ""; // for debugging
             var receiptPrinterParams = {
                 'receipt': []
