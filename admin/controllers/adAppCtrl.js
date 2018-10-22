@@ -721,7 +721,7 @@ admin.controller('ADAppCtrl', [
             inDevEnvironment = true;
         }
         // add the menu or sub menu names you need to hide in production
-        var partiallyCompeletedMenuNames = ['Email Templates Settings'];
+        var partiallyCompeletedMenuNames = ['Email Templates Settings', 'TACS'];
 
         if (partiallyCompeletedMenuNames.length && !inDevEnvironment) {
             _.each(partiallyCompeletedMenuNames, function(partiallyCompeletedMenuName) {

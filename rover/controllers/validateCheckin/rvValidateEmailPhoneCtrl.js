@@ -236,14 +236,14 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			}
 
             if ($scope.showNationality) {
-                $scope.saveData.nationality_id = $scope.guestCardData.contactInfo.nationality_id || "";
+                $scope.saveData.nationality_id = $scope.guestCardData.contactInfo.nationality_id;
                 isValidDataExist = true;
             }
 
             if ($scope.showCountry) {
                 $scope.saveData.address = {};
 
-                $scope.saveData.address.country_id = $scope.guestCardData.contactInfo.address && $scope.guestCardData.contactInfo.address.country_id || "";
+                $scope.saveData.address.country_id = $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.country_id : "";
                 isValidDataExist = true;
             }
 

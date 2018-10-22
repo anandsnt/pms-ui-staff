@@ -14,6 +14,7 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
         'RVPaymentSrv',
     'RVContactInfoSrv',
+    'rvUtilSrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -28,7 +29,8 @@ sntRover.controller('reservationActionsController', [
 		$window,
 		RVReservationSummarySrv,
                 RVPaymentSrv,
-        RVContactInfoSrv) {
+        RVContactInfoSrv,
+        rvUtilSrv) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
@@ -240,28 +242,29 @@ sntRover.controller('reservationActionsController', [
 			});
 		};
 
-		var is_required_guest_details_empty = function() {
-			return (
-                        _.isEmpty($scope.guestCardData.contactInfo.email) || 
-                        _.isEmpty($scope.guestCardData.contactInfo.phone) || 
-                        _.isEmpty($scope.guestCardData.contactInfo.mobile) || 
-                        (_.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
-                        (_.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
-                    );
-		};
-
 
                 $scope.checkGuestInFromQueue  = function() {
                     $scope.initCheckInFlow();
                 };
 
+        var is_required_guest_details_empty = function() {
+			return (
+                        _.isEmpty($scope.guestCardData.contactInfo.email) ||       
+                        _.isEmpty($scope.guestCardData.contactInfo.phone) ||       
+                        _.isEmpty($scope.guestCardData.contactInfo.mobile) || 
+                        (rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
+                        (rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
+                    );
+		};
+
+
                 $scope.reservationMissingPhone = function() {
                     if (
                             (   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" ||
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null ||
-                                $rootScope.roverObj.force_nationality_at_checkin ||
-                                $rootScope.roverObj.forceCountryAtCheckin
+                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null || 
+                        		(rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
+                        		(rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
                             ) && is_required_guest_details_empty()
                         ) {
                         return true;

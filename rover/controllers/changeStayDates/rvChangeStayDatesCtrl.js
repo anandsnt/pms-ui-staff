@@ -208,20 +208,21 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			// CICO-7306 Flag setting whether need Authorization or not.
             $scope.requireAuthorization = data.require_cc_auth;
 
+            $scope.checkAvailabilityStatus();
+
 			// if restrictions exist for the rate / room / date combination
 			//					display the existing restriction
 			// Only for standalone. In pms connected, restrictions handled in server
 			// and will return not available status
             if ($rootScope.isStandAlone) {
-                if (data.restrictions.length > 0) {
+                if (data.restrictions.length > 0 && ( $scope.availabilityDetails.availability_status === 'room_available' || 
+                $scope.availabilityDetails.availability_status === 'room_type_available') ) {
                     $scope.rightSideReservationUpdates = 'RESTRICTION_EXISTS';
                     $scope.stayDetails.restrictions = data.restrictions;
                     $scope.refreshMyScroller();
                     return false;
                 }
             }
-
-            $scope.checkAvailabilityStatus();
 
         };
 

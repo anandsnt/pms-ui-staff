@@ -829,7 +829,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmedDBpayment) {
                     $scope.$emit('HIDE_BILL_PAYMENT_POPUP');
-                    confirmDirectBillPayment();
+                    confirmDirectBillPayment(params.postData);
                     return;
                 }
 

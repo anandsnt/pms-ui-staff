@@ -69,7 +69,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'hubert': 'Hotel Hubert',
             'de-blend': '2L De Blend',
             'anthony': 'The Anthony',
-            'stewart': 'Stewart Aparthotel'
+            'stewart': 'Stewart Aparthotel',
+            'university-inn': 'University Inn'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -710,6 +711,14 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/hotel_settings/configurable_images';
 
             return zsBaseWebSrv.getJSON(url);
+        };
+
+
+        this.getDeviceDetails = function(params) {
+
+            var url = "/api/notifications/device_details";
+
+            return zsBaseWebSrv.getJSON(url, params);
         };
 
     }
