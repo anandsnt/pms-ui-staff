@@ -1,8 +1,8 @@
 sntZestStation.controller('zsPrintBillCtrl', [
     '$scope',
     '$state',
-    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate',
-    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate) {
+    'zsCheckoutSrv', '$stateParams', '$window', '$timeout', '$filter', '$translate', 'zsReceiptPrintHelperSrv', '$log',
+    function($scope, $state, zsCheckoutSrv, $stateParams, $window, $timeout, $filter, $translate, zsReceiptPrintHelperSrv, $log) {
 
         /** ******************************************************************************
          **      This is not a sperate state. It's an ng-included ctrl inside 
@@ -112,30 +112,54 @@ sntZestStation.controller('zsPrintBillCtrl', [
             try {
             // this will show the popup with full bill
                 $timeout(function() {
+                    var receiptPrinterParams;
+
+                    if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                        // Adding this condition here for easy debuging from browser in iPad mode
+                        receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptBill($scope.printData, $scope.zestStationData);
+                        $log.info(receiptPrinterParams);
+                    }
+                    var printSuccessActions = function () {
+                        var printopted = 'true';
+
+                        nextPageActions(printopted);
+                    };
+
                 /*
                  * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                  */
                     if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
-                        var printer = sntZestStation.selectedPrinter;
+                        if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                            cordova.exec(
+                                printSuccessActions,
+                                function() {
+                                    // To ensure the error message from receipt printer is not recorded,
+                                    //  we will show our generic print error message
+                                    printFailedActions();
+                                },
+                                'RVCardPlugin',
+                                'printReceipt',
+                                [ receiptPrinterParams ]);
+                        } else {
+                            cordova.exec(
+                                printSuccessActions,
+                                printFailedActions,
+                                'RVCardPlugin',
+                                'printWebView', ['filep', '1', $scope.zestStationData.defaultPrinter]);
+                        }
 
-                        cordova.exec(function(success) {
-                            var printopted = 'true';
-
-                            nextPageActions(printopted);
-                        }, function(error) {
-                            printFailedActions();
-                        }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                     } else {
                         if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
                         // we will call websocket services to print
                             handleStarTacPrinterActions();
                         } else {
-                            $scope.$emit('PRINT_CURRENT_PAGE');
-                            setTimeout(function() {
-                                var printopted = 'true';
-
-                                nextPageActions(printopted);
-                            }, 100);
+                            $timeout(function() {
+                                $scope.$emit('PRINT_CURRENT_PAGE');
+                                $timeout(function() {
+                                    printSuccessActions();
+                                }, 100);
+                            }, 500);
+                            
                         }
 
                     }
