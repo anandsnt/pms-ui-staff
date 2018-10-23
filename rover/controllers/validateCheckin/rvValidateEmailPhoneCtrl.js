@@ -243,7 +243,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
             if ($scope.showCountry) {
                 $scope.saveData.address = {};
 
-                $scope.saveData.address.country_id = $scope.guestCardData.contactInfo.address.country_id;
+                $scope.saveData.address.country_id = $scope.guestCardData.contactInfo.address ? $scope.guestCardData.contactInfo.address.country_id : "";
                 isValidDataExist = true;
             }
 
