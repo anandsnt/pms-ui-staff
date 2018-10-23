@@ -21,8 +21,7 @@
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field ng-readonly="isUpdateEnabled()" />
-
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field ng-readonly="isUpdateEnabled() || !isUpdateEnabledForName()" />
                             </div>
                             <div class="switch-button global-flag toggle-display" ng-click="toggleGlobalButton()" ng-class="{'on': contactInformation.is_global_enabled, 'readonly': isGlobalToggleReadOnly}"> <!-- Add class 'on' when checked -->
                                 <input id="global-company-card" type="checkbox">
