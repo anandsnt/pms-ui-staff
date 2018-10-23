@@ -14,6 +14,7 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
         'RVPaymentSrv',
     'RVContactInfoSrv',
+    'rvUtilSrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -28,7 +29,8 @@ sntRover.controller('reservationActionsController', [
 		$window,
 		RVReservationSummarySrv,
                 RVPaymentSrv,
-        RVContactInfoSrv) {
+        RVContactInfoSrv,
+        rvUtilSrv) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
@@ -245,25 +247,22 @@ sntRover.controller('reservationActionsController', [
                     $scope.initCheckInFlow();
                 };
 
+        var is_required_contact_details = function() {
+			return (
+                        _.isEmpty($scope.guestCardData.contactInfo.email) ||       
+                        _.isEmpty($scope.guestCardData.contactInfo.phone) ||       
+                        _.isEmpty($scope.guestCardData.contactInfo.mobile) )
+                        && ( $scope.reservationData.reservation_card.is_disabled_email_phone_dialog !== "true" );
+		};
+
+		var is_required_country_and_nationality_details = function() {
+			return ( rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.forceNationalityAtCheckin )
+			       || ( rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin );
+		};
+
+
                 $scope.reservationMissingPhone = function() {
-                    if (
-                            (   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null
-                            ) && (
-                            	_.isEmpty($scope.guestCardData.contactInfo.email) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
-                            	$scope.guestCardData.contactInfo.nationality_id === undefined || 
-                                $scope.guestCardData.contactInfo.nationality_id === "" || 
-                                $scope.guestCardData.contactInfo.nationality_id === null ||
-                                $scope.guestCardData.contactInfo.address.country_id === undefined || 
-                                $scope.guestCardData.contactInfo.address.country_id === "" || 
-                                $scope.guestCardData.contactInfo.address.country_id === null
-                            )
-                        ) {
-                        return true;
-                    } else return false;
+                    return is_required_contact_details() || is_required_country_and_nationality_details();
                 };
 
 
