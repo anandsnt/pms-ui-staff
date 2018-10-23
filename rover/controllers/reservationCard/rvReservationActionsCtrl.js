@@ -247,11 +247,16 @@ sntRover.controller('reservationActionsController', [
                     $scope.initCheckInFlow();
                 };
 
-        var is_required_guest_details_empty = function() {
+        var is_required_contact_details = function() {
 			return (
                         _.isEmpty($scope.guestCardData.contactInfo.email) ||       
                         _.isEmpty($scope.guestCardData.contactInfo.phone) ||       
-                        _.isEmpty($scope.guestCardData.contactInfo.mobile) || 
+                        _.isEmpty($scope.guestCardData.contactInfo.mobile) )
+                        && ( $scope.reservationData.reservation_card.is_disabled_email_phone_dialog !== "true" );
+		};
+
+		var is_required_country_and_nationality_details = function() {
+			return (
                         (rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
                         (rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
                     );
@@ -259,16 +264,7 @@ sntRover.controller('reservationActionsController', [
 
 
                 $scope.reservationMissingPhone = function() {
-                    if (
-                            (   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null || 
-                        		(rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
-                        		(rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
-                            ) && is_required_guest_details_empty()
-                        ) {
-                        return true;
-                    } else return false;
+                    return is_required_contact_details() || is_required_country_and_nationality_details();
                 };
 
 
