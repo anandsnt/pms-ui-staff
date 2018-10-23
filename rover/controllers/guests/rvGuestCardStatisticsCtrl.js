@@ -275,6 +275,10 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
         // Navigate to staycard
         $scope.navigateToStayCard = function(reservation) {
+            if ($state.current.name !== 'rover.guest.details') {
+                return false;
+            }
+
             $vault.set('guestId', $scope.guestCardData.userId);
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation.reservation_id,
@@ -282,6 +286,16 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 isrefresh: true,
                 isFromGuestStatistics: true
             });
+        };
+
+        // Checks whether the navigation to the staycard should be shown or not in the details screen
+        $scope.shouldShowNavigation = function() {
+            var shouldHide = true;
+
+            if ($state.current.name === 'rover.guest.details') {
+                shouldHide = false;
+            }
+            return shouldHide;
         };
 
         // Initialize the controller
@@ -295,6 +309,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             $scope.filterData = {
                 selectedYear: getCurrentYear() - 1  
             };
+            $scope.currentYear = getCurrentYear();
 
             if ($stateParams.isBackToStatistics) {
                 $scope.setActiveView('summary');

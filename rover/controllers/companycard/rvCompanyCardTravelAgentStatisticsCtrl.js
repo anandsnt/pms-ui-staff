@@ -281,6 +281,10 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
 
         // Navigate to staycard
         $scope.navigateToStayCard = function(reservation) {
+            if ($state.current.name !== 'rover.companycarddetails') {
+                return false;
+            }
+
             $vault.set('cardId', $scope.accountId);
             $vault.set('type', $scope.contactInformation.account_details.account_type);
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
@@ -289,6 +293,16 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 isrefresh: true,
                 isFromCardStatistics: true
             });
+        };
+
+        // Checks whether the navigation to the staycard should be shown or not in the details screen
+        $scope.shouldShowNavigation = function() {
+            var shouldHide = true;
+
+            if ($state.current.name === 'rover.companycarddetails') {
+                shouldHide = false;
+            }
+            return shouldHide;
         };
 
         // Initialize the controller
