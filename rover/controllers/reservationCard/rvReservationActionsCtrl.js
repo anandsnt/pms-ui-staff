@@ -48,6 +48,8 @@ sntRover.controller('reservationActionsController', [
 		var departureDatePassedbusinessDate = (new Date($scope.reservationData.reservation_card.departure_date) >= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate);
 
 		$scope.showReverseCheckout = $scope.reservationData.reservation_card.reservation_status === "CHECKEDOUT" && departureDatePassedbusinessDate && rvPermissionSrv.getPermissionValue('REVERSE_CHECK_OUT') && $rootScope.isStandAlone && !$rootScope.isHourlyRateOn;
+		$scope.shouldShowDemographicsInValidationPopup = false;
+		$scope.shouldShowGuestInfoInValidationPopup = false;
 
 		$scope.reverseCheckout = function(reservationId, clickedButton) {
 			$state.go("rover.reservation.staycard.billcard", {
@@ -245,22 +247,36 @@ sntRover.controller('reservationActionsController', [
                     $scope.initCheckInFlow();
                 };
 
+                var reservationCheckinMissingDetails = function() {
+                	if (_.isEmpty($scope.guestCardData.contactInfo.email) || 
+		                	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
+		                	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
+		                	(_.isEmpty("" + $scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.forceNationalityAtCheckin) || 
+		                	(_.isEmpty("" + $scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)) {
+                		
+                		$scope.shouldShowGuestInfoInValidationPopup = true;
+                		return true;
+                	} else {
+                		return false;
+                	}
+                	// $scope.guestCardData.contactInfo.nationality_id === undefined || 
+                 //    $scope.guestCardData.contactInfo.nationality_id === "" || 
+                 //    $scope.guestCardData.contactInfo.nationality_id === null ||
+                 //    $scope.guestCardData.contactInfo.address.country_id === undefined || 
+                 //    $scope.guestCardData.contactInfo.address.country_id === "" || 
+                 //    $scope.guestCardData.contactInfo.address.country_id === null
+                };
+
                 $scope.reservationMissingPhone = function() {
                     if (
-                            (   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" ||
+                            ((   $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "false" ||
                                 $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === "" ||
-                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null
+                                $scope.reservationData.reservation_card.is_disabled_email_phone_dialog === null || 
+                                $rootScope.roverObj.forceNationalityAtCheckin ||
+                                $rootScope.roverObj.forceCountryAtCheckin
                             ) && (
-                            	_.isEmpty($scope.guestCardData.contactInfo.email) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.phone) || 
-                            	_.isEmpty($scope.guestCardData.contactInfo.mobile) || 
-                            	$scope.guestCardData.contactInfo.nationality_id === undefined || 
-                                $scope.guestCardData.contactInfo.nationality_id === "" || 
-                                $scope.guestCardData.contactInfo.nationality_id === null ||
-                                $scope.guestCardData.contactInfo.address.country_id === undefined || 
-                                $scope.guestCardData.contactInfo.address.country_id === "" || 
-                                $scope.guestCardData.contactInfo.address.country_id === null
-                            )
+                            	reservationCheckinMissingDetails()
+                            )) || ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics))
                         ) {
                         return true;
                     } else return false;
@@ -394,25 +410,32 @@ sntRover.controller('reservationActionsController', [
                 };
 
 		var startCheckin = function() {
-                    $rootScope.queuedCheckIn = $scope.reservationIsQueued();// pass to billcardctrl through here
-                    if ($scope.checkInFromQueued()) {
-                        $scope.checkGuestInFromQueue();
-                        return;
-                    } else {
+            $rootScope.queuedCheckIn = $scope.reservationIsQueued();// pass to billcardctrl through here
+            if ($scope.checkInFromQueued()) {
+                $scope.checkGuestInFromQueue();
+                return;
+            } else {
 
-			var afterRoomUpdate = function() {
-				if (!!$scope.guestCardData.userId) {
-					if ($scope.reservationMissingPhone()) {
-                                                $scope.$emit('showLoader');
-						$scope.validateEmailPhone();
+				var afterRoomUpdate = function() {
+					if (!!$scope.guestCardData.userId) {
+						if ($scope.reservationMissingPhone()) {
+	                        $scope.$emit('showLoader');
+	                        if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
+	                        	$scope.shouldShowDemographicsInValidationPopup = true;
+	                        	setDemographics();
+	                        } else {
+	                        	$scope.shouldShowDemographicsInValidationPopup = false;
+	                        }
+	                        
+							$scope.validateEmailPhone();
+						} else {
+	                        $scope.initCheckInFlow();
+						}
 					} else {
-                                            $scope.initCheckInFlow();
+						// Prompt user to add a Guest Card
+						$scope.promptCardAddition();
 					}
-				} else {
-					// Prompt user to add a Guest Card
-					$scope.promptCardAddition();
-				}
-			};
+				};
 
 			// NOTE: room_id is provided as string and number >.<, that why checking length/existance
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
@@ -570,13 +593,13 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.goToCheckin = function() {
 			// CICO-35186
-			if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
-				setDemographics();
-				showDemographicsPopup();
+			// if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
+			// 	setDemographics();
+			// 	showDemographicsPopup();
 				
-			} else {
+			// } else {
 				startCheckin();
-			}                    
+			// }                    
 		};
 		$scope.unAvailablePopup = function() {
 			ngDialog.open({
