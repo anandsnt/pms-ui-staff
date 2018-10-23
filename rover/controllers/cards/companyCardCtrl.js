@@ -153,6 +153,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
 			}
 			$scope.$broadcast("contactTabActive");
+			$scope.$broadcast("UPDATE_CONTACT_INFO");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);
