@@ -256,10 +256,8 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		var is_required_country_and_nationality_details = function() {
-			return (
-                        (rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.force_nationality_at_checkin) ||
-                        (rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin)
-                    );
+			return ( rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.nationality_id) && $rootScope.roverObj.forceNationalityAtCheckin )
+			       || ( rvUtilSrv.isEmpty($scope.guestCardData.contactInfo.address.country_id) && $rootScope.roverObj.forceCountryAtCheckin )
 		};
 
 
