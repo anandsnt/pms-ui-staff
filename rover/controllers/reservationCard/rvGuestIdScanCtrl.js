@@ -74,6 +74,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			changeYear: true,
 			changeMonth: true,
 			yearRange: "-10:+50",
+			defaultDate: new Date(),
 			onSelect: function() {
 				$scope.guestIdData.expiry_date_for_display =  dateInHotelsFormat($scope.guestIdData.expiration_date);
 				expirationDateDialog.close();
@@ -81,6 +82,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		$scope.openExpiryCalendar = function() {
+			// To solve isssue with initial date selection, 
+			// set current date as default and pass to API only if a selection is made
+			if (!$scope.guestIdData.expiration_date) {
+				$scope.guestIdData.expiration_date = $filter('date')(new Date(), 'mm-dd-yy');
+			}
 			expirationDateDialog = ngDialog.open({
 				template: '/assets/partials/guestId/rvGuestIDExpiryCalendar.html',
 				className: 'single-date-picker',
@@ -112,6 +118,16 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			errorPopup.close();
 		};
 
+		$scope.clearDob = function() {
+			$scope.guestIdData.dob_for_display = '';
+			$scope.guestIdData.date_of_birth = '';
+		};
+		
+		$scope.clearExpiryDate = function() {
+			$scope.guestIdData.expiry_date_for_display = '';
+			$scope.guestIdData.expiration_date = '';
+		};
+
 		var formatDateForApi = function(date) {
 			// API expects date in format dd-mm-yyyyy
 			var dateComponents = date.split("-");
@@ -127,7 +143,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			apiParams.document_type = $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD';
 
 			apiParams.date_of_birth = apiParams.date_of_birth ? formatDateForApi(apiParams.date_of_birth) : '';
-			apiParams.expiration_date = apiParams.expiration_date ? formatDateForApi(apiParams.expiration_date) : '';
+			apiParams.expiration_date = apiParams.expiration_date && apiParams.expiry_date_for_display ? formatDateForApi(apiParams.expiration_date) : '';
 
 			delete apiParams.expiry_date_for_display;
 			delete apiParams.dob_for_display;
