@@ -150,12 +150,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 
 			var isValidImage = result && (result === "image/png" ||
-										  result === "image/jpeg" ||
-										  result === "image/gif" ||
-										  result === "image/bmp" ||
-										  result === "image/webp" || 
-			                              result === "image/x-icon" ||
-			                              result ==="image/vnd.microsoft.icon");
+				result === "image/jpeg" ||
+				result === "image/gif" ||
+				result === "image/bmp" ||
+				result === "image/webp" ||
+				result === "image/x-icon" ||
+				result === "image/vnd.microsoft.icon");
 
 			return isValidImage;
 		};
