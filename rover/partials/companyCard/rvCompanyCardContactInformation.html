@@ -6,8 +6,8 @@
             <strong class="h3" ng-hide="account_type == 'TRAVELAGENT'" translate>COMAPNY_INFO</strong>
             <strong class="h3" ng-show="account_type == 'TRAVELAGENT'" translate>TA_INFO</strong>
 
-            <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_name" label="Company Name" placeholder = "Enter Company Name" styleclass="full-width" disabled="isUpdateEnabled()"></rv-textbox>
-            <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_name" label="Travel Agent Name" placeholder = "Enter Travel Agent Name" styleclass="full-width" disabled="isUpdateEnabledForTravelAgent()"></rv-textbox>
+            <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_name" label="Company Name" placeholder = "Enter Company Name" styleclass="full-width" disabled="isUpdateEnabled(true)"></rv-textbox>
+            <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_name" label="Travel Agent Name" placeholder = "Enter Travel Agent Name" styleclass="full-width" disabled="isUpdateEnabledForTravelAgent(true)" ></rv-textbox>
             <rv-textbox value="contactInformation.address_details.street1" label="Address" placeholder = "Enter Address Line 1" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.street2" placeholder = "Enter Address Line 2" styleclass="no-label" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.street3" placeholder = "Enter Address Line 3" styleclass="no-label full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>

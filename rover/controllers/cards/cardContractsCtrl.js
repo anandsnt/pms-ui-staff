@@ -357,6 +357,8 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.deleteContractConfirmed = function(event) {
 
 			event.stopPropagation();
+			var accountId = $scope.currentCard;
+			
 			var deleteContractSuccessCallback = function() {
 				$scope.errorMessage = "";
 				$scope.contractList.current_contracts = [];
@@ -364,7 +366,9 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
-
+				if ($scope.currentCard === "add") {
+					$scope.AddNewButtonClicked();
+				}
 			};
 
 			var deleteContractFailureCallback = function(errorMessage) {
@@ -373,8 +377,6 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			};
 
 			ngDialog.close();
-			var accountId = $scope.currentCard;
-			
 			if (accountId === "add") {
 				accountId = $scope.contactInformation.id;
 			}

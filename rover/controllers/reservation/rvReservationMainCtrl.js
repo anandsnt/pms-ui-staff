@@ -1196,27 +1196,41 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         };
 
         var showDepositPopup = function(deposit, isOutOfCancellationPeriod, penalty) {
-            $scope.DailogeState = {};
-            $scope.DailogeState.successMessage = '';
-            $scope.DailogeState.failureMessage = '';
-            ngDialog.open({
-                template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
-                controller: 'RVCancelReservationDepositController',
-                scope: $scope,
-                data: JSON.stringify({
-                    state: 'CONFIRM',
-                    cards: false,
-                    penalty: penalty,
-                    deposit: deposit,
-                    depositText: (function() {
-                        if (!isOutOfCancellationPeriod) {
-                            return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
-                        } else {
-                            return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
-                        }
-                    })()
-                })
-            });
+            var params = { 'reservation_id': $scope.reservationData.reservationId },
+                openDepositPopup = function(data) {
+                    $scope.languageData = data;
+
+                    $scope.DailogeState = {};
+                    $scope.DailogeState.successMessage = '';
+                    $scope.DailogeState.failureMessage = '';
+                    ngDialog.open({
+                        template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+                        controller: 'RVCancelReservationDepositController',
+                        scope: $scope,
+                        data: JSON.stringify({
+                            state: 'CONFIRM',
+                            cards: false,
+                            penalty: penalty,
+                            deposit: deposit,
+                            depositText: (function() {
+                                if (!isOutOfCancellationPeriod) {
+                                    return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
+                                } else {
+                                    return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
+                                }
+                            })()
+                        })
+                    });
+
+                },
+                options = {
+                    params: params,
+                    successCallBack: openDepositPopup
+                };
+
+            // Fetch Laungage data for cancellation
+            $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options); 
+            
         };
 
         var nextState = '';
