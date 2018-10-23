@@ -164,7 +164,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			var imageData = imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data;
 
 			if (!isTheImageValid(imageData)) {
-				$scope.guestIdData.errorMessage = imageType === 'front-image' ? 'Front side Image - Wrong file extension !' : 'Back side Image - Wrong file extension !';
+				$scope.guestIdData.errorMessage = imageType === 'front-image' ? 'Front side Image...wrong file type !' : 'Back side Image...wrong file type !';
 				$scope.guestIdData.front_image_data = imageType === 'front-image' ? '' : $scope.guestIdData.front_image_data;
 				$scope.guestIdData.back_image_data = imageType === 'back-image' ? '' : $scope.guestIdData.back_image_data;
 				generalFailureCallBack();
