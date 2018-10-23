@@ -15,6 +15,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
 		$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
+		$scope.guestIdData.errorMessage = "";
 
 		var isIDDetailsChanged = false;
 
@@ -115,6 +116,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		$scope.closeErrorPopup = function() {
+			$scope.guestIdData.errorMessage = "";
 			errorPopup.close();
 		};
 
@@ -122,7 +124,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.dob_for_display = '';
 			$scope.guestIdData.date_of_birth = '';
 		};
-		
+
 		$scope.clearExpiryDate = function() {
 			$scope.guestIdData.expiry_date_for_display = '';
 			$scope.guestIdData.expiration_date = '';
@@ -133,6 +135,40 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			var dateComponents = date.split("-");
 
 			return dateComponents[1] + '-' + dateComponents[0] + '-' + dateComponents[2];
+		};
+		var isTheImageValid = function(encoded) {
+			var result = null;
+
+			if (typeof encoded !== 'string') {
+				return result;
+			}
+
+			var mime = encoded.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+
+			if (mime && mime.length) {
+				result = mime[1];
+			}
+
+			var isValidImage = result && (result === "image/png" ||
+										  result === "image/jpeg" ||
+										  result === "image/gif" ||
+										  result === "image/bmp" ||
+										  result === "image/webp" || 
+			                              result === "image/x-icon" ||
+			                              result ==="image/vnd.microsoft.icon");
+
+			return isValidImage;
+		};
+
+		$scope.ImageChange = function(imageType) {
+			var imageData = imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data;
+
+			if (!isTheImageValid(imageData)) {
+				$scope.guestIdData.errorMessage = imageType === 'front-image' ? 'Front side Image - Wrong file extension !' : 'Back side Image - Wrong file extension !';
+				$scope.guestIdData.front_image_data = imageType === 'front-image' ? '' : $scope.guestIdData.front_image_data;
+				$scope.guestIdData.back_image_data = imageType === 'back-image' ? '' : $scope.guestIdData.back_image_data;
+				generalFailureCallBack();
+			}
 		};
 
 		$scope.saveGuestIdDetails = function(action, imageType) {
@@ -148,6 +184,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			delete apiParams.expiry_date_for_display;
 			delete apiParams.dob_for_display;
             delete apiParams.nationality;
+            delete guestIdData.errorMessage;
 
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;
