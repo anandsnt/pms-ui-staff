@@ -1,6 +1,9 @@
 <div role="dialog" id="modal" class="modal-show">
 	<div class="modal-content new-content form warning warning-modal">
-	  <div class="ows_error" translate>
+	  <div class="ows_error" ng-if="guestIdData.errorMessage" translate>
+	  	{{ guestIdData.errorMessage }}
+	  </div>
+	  <div class="ows_error" ng-if="!guestIdData.errorMessage" translate>
 	  	ID_DETAILS_UPDATION_ERROR
 	  </div>
 	  <div class="actions float">
