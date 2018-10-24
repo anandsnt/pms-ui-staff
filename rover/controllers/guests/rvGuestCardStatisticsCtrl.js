@@ -131,35 +131,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
         // create the year dropdown options
         var populateYearDropDown = function() {
-            var startYear = $scope.guestCardData.contactInfo.first_stay_year,                    
-                endYear,
-                name = '';
-    
-            $scope.yearOptions = [];
-    
-            if ($scope.activeView === 'summary') {
-                endYear = $scope.getCurrentYear() - 1;
-            } else {
-                endYear = $scope.getCurrentYear();
-            }
-    
-            for (var i = endYear; i >= startYear; i--) {
-                if (i === endYear) {
-                    if ($scope.activeView === 'summary') {
-                        name = 'LAST YEAR (' + i + ')';
-                    } else {
-                        name = 'YEAR TO DATE (' + i + ')';
-                    }
-    
-                } else {
-                    name = i;
-                }
-                $scope.yearOptions.push({
-                   name: name,
-                   value: i
-                });
-            }
-    
+            $scope.populateYearDropDown($scope.guestCardData.contactInfo.first_stay_year); 
         };
 
         // Initialize the controller

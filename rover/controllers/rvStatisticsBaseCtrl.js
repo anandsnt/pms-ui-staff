@@ -139,6 +139,37 @@ var StatisticsBaseCtrl = function ($scope, $rootScope, $timeout) {
             $timeout($scope.isScrollReady, 1000);
         }
     };
+
+    // Creates the year dropdown options
+    $scope.populateYearDropDown = function(startYear) {
+        var endYear,
+            name = '';
+
+        $scope.yearOptions = [];
+
+        if ($scope.activeView === 'summary') {
+            endYear = $scope.getCurrentYear() - 1;
+        } else {
+            endYear = $scope.getCurrentYear();
+        }
+
+        for (var i = endYear; i >= startYear; i--) {
+            if (i === endYear) {
+                if ($scope.activeView === 'summary') {
+                    name = 'LAST YEAR (' + i + ')';
+                } else {
+                    name = 'YEAR TO DATE (' + i + ')';
+                }
+
+            } else {
+                name = i;
+            }
+            $scope.yearOptions.push({
+                name: name,
+                value: i
+            });
+        }
+    };
     
 
-}
+};
