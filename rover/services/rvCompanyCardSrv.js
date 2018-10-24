@@ -587,6 +587,11 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
              return deffered.promise;
         };
 
+        /**
+         * Fetch CC/TA card statistics summary
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
         this.fetchCompanyTravelAgentStatisticsSummary = function (params) {
             var deferred = $q.defer(),
                 url = '/api/accounts/' + params.accountId + '/statistics?view=SUMMARY';
@@ -601,6 +606,11 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        /**
+         * Fetch CC/TA card statistics details
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
         this.fetchCompanyTravelAgentStatisticsDetails = function (params) {
             var deferred = $q.defer(),
                 url = '/api/accounts/' + params.accountId + '/statistics?view=DETAILED';

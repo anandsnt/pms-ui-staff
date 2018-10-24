@@ -292,7 +292,6 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                 // Set contact tab as active by default
                 $scope.current = 'guest-contact';
             }
-            
 
             $scope.paymentData = {};
             setTitleAndHeading();

@@ -22,7 +22,11 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return deferred.promise;
         };
 
-
+        /**
+         * Fetch guest card statistics summary
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
         this.fetchGuestCardStatisticsSummary = function (params) {
             var deferred = $q.defer(),
                 url = '/api/guest_details/' + params.guestId + '/statistics?view=SUMMARY';
@@ -37,6 +41,11 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Fetch guest card statistics details
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
         this.fetchGuestCardStatisticsDetails = function (params) {
             var deferred = $q.defer(),
                 url = '/api/guest_details/' + params.guestId + '/statistics?view=DETAILED';
@@ -70,7 +79,6 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
 
             return deferred.promise;
         };
-
 
         this.saveGuestIdDetails = function(params) {
             //var url = '/api/guest_identity/'+ params.reservation_id +'/save_id_details';

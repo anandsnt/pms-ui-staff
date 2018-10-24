@@ -95,7 +95,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             $scope.reloadScroller();
         };
 
-        
+        // Handles the year dropdown change
         $scope.onChangeYear = function() {
             if ($scope.activeView === 'summary') {
                 loadStatisticsSummary();
@@ -155,9 +155,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             $scope.isScrollReady();
             setListeners();
             destroyListeners();
-
         };
-
         init();
 
     }]);
