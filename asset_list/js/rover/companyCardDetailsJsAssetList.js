@@ -26,6 +26,7 @@ module.exports = {
 				'rover/controllers/contractedNightsCtrl.js',
 				'rover/controllers/rvCommissionsDatePickerController.js',
 				roverRoot + 'services/guestcard/rvGuestCardSrv.js',
+				roverRoot + 'controllers/rvStatisticsBaseCtrl.js',
 				roverRoot + 'controllers/companycard/rvCompanyCardTravelAgentStatisticsCtrl.js',				
 
                 // Eliminate all spec files

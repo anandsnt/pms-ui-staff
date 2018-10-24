@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="column white">
-                <strong>Year to date ({{ filterData.selectedYear + 1 }})</strong>
+                <strong>Year to date ({{ currentYear }})</strong>
             </div>
             <div class="column">
                 <strong>Total</strong>
@@ -49,7 +49,7 @@
                 </div>
                 {{statistics.summary.night_count.ytd | number: 2}}
             </div>
-            <div class="column">{{statistics.summary.nights_count.total | number: 2}}</div>
+            <div class="column">{{statistics.summary.night_count.total | number: 2}}</div>
         </div> 
         <div class="row">
             <div class="column">{{statistics.summary.cancellation_count.annual}}</div>
@@ -75,26 +75,26 @@
         </div>
 
         <div class="row">
-            <div class="column"><strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.annual | number: 2}}</strong></div>
+            <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.annual | number: 2}}</div>
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.adr.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.adr.change_percent)}}"></span>
                     {{absVal(statistics.summary.adr.change_percent) | number: 2}}%
                 </div>
-                <strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.ytd | number: 2}}</strong>
+                <span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.ytd | number: 2}}
             </div>
-            <div class="column"><strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.total | number: 2}}</strong></div>
+            <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.adr.total | number: 2}}</div>
         </div> 
         <div class="row">
-            <div class="column"><strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.annual | number: 2}}</strong></div>
+            <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.annual | number: 2}}</div>
             <div class="column white">                
                 <div class="stat {{getStatusClass(statistics.summary.room_revenue.change_percent)}}">
                     <span class="{{getStatusIconClass(statistics.summary.room_revenue.change_percent)}}"></span>
                     {{absVal(statistics.summary.room_revenue.change_percent) | number: 2}}%
                 </div>
-                <strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.ytd | number: 2}}</strong>
+                <span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.ytd | number: 2}}
             </div>
-            <div class="column"><strong><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.total | number: 2}}</strong></div>
+            <div class="column"><span class="currency">{{currencySymbol}}</span>{{statistics.summary.room_revenue.total | number: 2}}</div>
         </div>       
         
         <div class="row">

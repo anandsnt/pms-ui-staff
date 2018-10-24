@@ -157,6 +157,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			}
 
 			$scope.$broadcast("contactTabActive");
+			$scope.$broadcast("UPDATE_CONTACT_INFO");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);

@@ -169,7 +169,7 @@ sntRover.controller('reservationDetailsController',
 		} else if ($stateParams.isFromCardStatistics) {
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
-				title: 'Statistics',
+				title: 'Card Statistics',
 				name: 'rover.companycarddetails',
 				param: {
 					id: $vault.get('cardId'),

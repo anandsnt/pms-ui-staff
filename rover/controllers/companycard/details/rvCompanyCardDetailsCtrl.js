@@ -262,8 +262,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		if ($stateParams.isBackToTACommission) {
 			$scope.currentSelectedTab = 'cc-commissions';
 		}
-		
-		
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;

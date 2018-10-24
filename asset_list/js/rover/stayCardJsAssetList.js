@@ -37,6 +37,7 @@ module.exports = {
                     controllerRoot + "validateCheckin/**/**.js",
                     controllerRoot + "guestCardBaseCtrl.js",
                     controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",
+                    controllerRoot + 'rvStatisticsBaseCtrl.js',
                     controllerRoot + 'guests/rvGuestCardStatisticsCtrl.js',
                     controllerRoot + "rvGuestCompanyTravelAgentStatisticsCtrl.js",
 
