@@ -49,7 +49,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
         
         var _countryList = [];
 
