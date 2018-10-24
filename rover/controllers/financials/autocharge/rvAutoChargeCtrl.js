@@ -15,7 +15,7 @@ sntRover.controller('RVAutoChargeController',
             var that = this,
                 isFromStayCard = $stateParams.isFromStayCard,
                 commonDateOptions = {
-                    dateFormat: $rootScope.jqDateFormat,
+                    dateFormat: 'dd/mm/yy',
                     changeYear: true,
                     changeMonth: true,
                     yearRange: '-10:',
