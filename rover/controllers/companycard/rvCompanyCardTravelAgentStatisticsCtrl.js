@@ -170,6 +170,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             setListeners();
             destroyListeners();
         };
+        
         init();
 
     }]);

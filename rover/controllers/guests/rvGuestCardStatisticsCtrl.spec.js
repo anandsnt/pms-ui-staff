@@ -42,6 +42,7 @@ describe("RVGuestCardStatisticsController", function() {
             reservations: [1, 2, 3],
             isOpen: true
         };
+
         expect($scope.getStyleForExpandedView(monthlyData)['margin-bottom']).toEqual('240px');
     });
 
@@ -50,6 +51,7 @@ describe("RVGuestCardStatisticsController", function() {
             reservations: [1, 2, 3],
             isOpen: false
         };
+        
         expect($scope.getStyleForExpandedView(monthlyData)).toEqual({});
     });
 });

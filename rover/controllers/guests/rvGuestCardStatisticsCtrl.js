@@ -156,6 +156,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             setListeners();
             destroyListeners();
         };
+        
         init();
 
     }]);
