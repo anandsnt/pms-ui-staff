@@ -517,8 +517,7 @@ sntRover.controller('reservationActionsController', [
             if (showSegments() && $scope.otherData.segmentsIsForced && isValid) {
                 isValid = !!demographicsData.segment;
             }
-            console.log("---")
-            console.log(isValid)
+
             return isValid;
         };
 

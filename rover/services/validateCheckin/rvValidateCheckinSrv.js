@@ -52,7 +52,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 				"segment_id": data.segment_id
 			};
 
-            rvBaseWebSrvV2.putJSON(url, data).then(function(data) {
+            rvBaseWebSrvV2.putJSON(url, dataToPost).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
