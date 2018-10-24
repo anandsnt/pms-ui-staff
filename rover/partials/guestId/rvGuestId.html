@@ -27,8 +27,13 @@
                         <span>{{ 'ID_DOB' | translate}}</span>
                         <div class="entry has-datepicker">
                             <!-- <button class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button> -->
+                            <button ng-click="clearDob()" class="clear-query visible" ng-class="{'visible': guestIdData.dob_for_display && guestIdData.dob_for_display.length > 0 }" style="">
+                                <span class="icons icon-clear-search">
+                                    Clear query
+                                </span>
+                            </button>
                             <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.dob_for_display"
-                            ng-click="openDobCalendar()">
+                            ng-click="openDobCalendar()" readonly>
                         </div> 
                     </li>
                     <!-- NATIONALITY -->
@@ -54,8 +59,13 @@
                     <li>
                         <span>{{ 'ID_EXPIRY' | translate}}</span>
                         <div class="entry has-datepicker">
+                            <button ng-click="clearExpiryDate()" class="clear-query visible" ng-class="{'visible': guestIdData.expiry_date_for_display && guestIdData.expiry_date_for_display.length > 0 }" style="">
+                                <span class="icons icon-clear-search">
+                                    Clear query
+                                </span>
+                            </button>
                             <input name=""  placeholder="Set Date" class="datepicker hasDatepicker" ng-model="guestIdData.expiry_date_for_display"
-                            ng-click="openExpiryCalendar()">
+                            ng-click="openExpiryCalendar()" readonly>
                     </li>
 
                     <!-- If signed after scan, show signature at end of the list -->
