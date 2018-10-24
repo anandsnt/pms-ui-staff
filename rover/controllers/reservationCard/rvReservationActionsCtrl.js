@@ -263,17 +263,13 @@ sntRover.controller('reservationActionsController', [
 		};
 
 
-        $scope.reservationMissingPhone = function() {
-        	// console.log("---contact")
-        	// console.log(is_required_contact_details())
-        	// console.log(is_required_country_and_nationality_details())
-        	// console.log(validateDemographicsData ($scope.reservationParentData.demographics))
-        	// console.log("****************")
+        $scope.reservationMissingGuestDataOrDemographics = function() {
         	if (is_required_contact_details() || is_required_country_and_nationality_details()) {
         		$scope.shouldShowGuestInfoInValidationPopup = true;
         	}
-            var abcd = is_required_contact_details() || is_required_country_and_nationality_details() || ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics));
-            return abcd;
+            var isReservationMissingGuestDataOrDemographics = is_required_contact_details() || is_required_country_and_nationality_details() || ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics));
+            
+            return isReservationMissingGuestDataOrDemographics;
         };
 
 
@@ -412,10 +408,9 @@ sntRover.controller('reservationActionsController', [
 
 				var afterRoomUpdate = function() {
 					if (!!$scope.guestCardData.userId) {
-						// console.log("^^^^^^^^^^")
-						var hello = $scope.reservationMissingPhone();
-						console.log("$$$$$$$$$$$$")
-						console.log(hello)
+
+						var hello = $scope.reservationMissingGuestDataOrDemographics();
+	
 						if (hello) {
 	                        $scope.$emit('showLoader');
 	                        if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
@@ -439,7 +434,7 @@ sntRover.controller('reservationActionsController', [
 			var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
 
                         if (!hasRoom && $scope.putInQueueClicked) {
-                            if ($scope.reservationMissingPhone()) {
+                            if ($scope.reservationMissingGuestDataOrDemographics()) {
                                     $scope.$emit('showLoader');
                                     $scope.validateEmailPhone();
                                     return false;
@@ -592,14 +587,7 @@ sntRover.controller('reservationActionsController', [
 		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
-			// CICO-35186
-			// if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
-			// 	setDemographics();
-			// 	showDemographicsPopup();
-				
-			// } else {
-				startCheckin();
-			// }                    
+			startCheckin();
 		};
 		$scope.unAvailablePopup = function() {
 			ngDialog.open({
