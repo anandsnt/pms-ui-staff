@@ -188,6 +188,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (tabToSwitch === 'cc-activity-log') {
 				$scope.$broadcast("activityLogTabActive");
 			}
+			if (tabToSwitch === 'statistics') {
+				$scope.$broadcast("LOAD_STATISTICS");
+			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
@@ -236,10 +239,15 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (typeof($scope.contactInformation) === 'undefined') {
 				$scope.contactInformation = angular.copy($rootScope.prevStateBookmarkDataFromAR.contactInformation);
 			}
+
+			if ($stateParams.isBackToStatistics) {
+				$scope.currentSelectedTab = 'statistics';
+				$scope.$broadcast('LOAD_STATISTICS');
+			}
 			/*
 			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
 			*/
-			if ($scope.isArTabAvailable) {
+			else if ($scope.isArTabAvailable) {
 				$timeout(function() {
 					$scope.currentSelectedTab = 'cc-ar-transactions';
 					$scope.$broadcast('setgenerateNewAutoAr', true);
@@ -434,6 +442,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.contactInformation = data;
 			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
 			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
+			$scope.$broadcast('UPDATE_CONTACT_INFO');
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
 			}
