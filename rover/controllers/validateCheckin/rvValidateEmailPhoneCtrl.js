@@ -184,7 +184,8 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
         if ($scope.shouldEnableSubmitButton()) {
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
-	        var isValidDataExist = false;
+	        var isValidDataExist = false,
+                isValidDemographicsDataExist = false;
 
 			if ($scope.showEmail && $scope.showPhone && $scope.showMobile) {
 				$scope.saveData = $scope.saveData;
@@ -247,8 +248,35 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
                 isValidDataExist = true;
             }
 
+            $scope.saveData.reservationId = $scope.reservationParentData.reservationId;
+
+            if ($scope.reservationParentData.demographics.reservationType) {
+                $scope.saveData.reservation_type_id = $scope.reservationParentData.demographics.reservationType;
+                isValidDemographicsDataExist = true;
+            }
+
+            if ($scope.reservationParentData.demographics.source) {
+                $scope.saveData.source_id = $scope.reservationParentData.demographics.source;
+                isValidDemographicsDataExist = true;
+            }
+
+            if ($scope.reservationParentData.demographics.market) {
+                $scope.saveData.market_segment_id = $scope.reservationParentData.demographics.market;
+                isValidDemographicsDataExist = true;
+            }
+
+            if ($scope.reservationParentData.demographics.origin) {
+                $scope.saveData.booking_origin_id = $scope.reservationParentData.demographics.origin;
+                isValidDemographicsDataExist = true;
+            }
+
+            if ($scope.reservationParentData.demographics.segment) {
+                $scope.saveData.segment_id = $scope.reservationParentData.demographics.segment;
+                isValidDemographicsDataExist = true;
+            }
+
 			if (isValidDataExist) {  // CICO-15079 : Validation for phone/email data being blank.
-				$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
+				$scope.invokeApi(RVValidateCheckinSrv.saveGuestDataAndReservationDemographics, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
 			} else {
                 $scope.errorMessage = ["Please fill the fields"];
             }
@@ -265,7 +293,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			var unwantedKeys = ["phone"]; // remove unwanted keys for API
 
 			$scope.saveData = dclone($scope.saveData, unwantedKeys);
-			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
+			$scope.invokeApi(RVValidateCheckinSrv.saveGuestDataAndReservationDemographics, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
     /* 
      * close dialog box and reset values added
