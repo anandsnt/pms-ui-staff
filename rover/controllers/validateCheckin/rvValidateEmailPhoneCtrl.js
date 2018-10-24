@@ -184,8 +184,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
         if ($scope.shouldEnableSubmitButton()) {
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
-	        var isValidDataExist = false,
-                isValidDemographicsDataExist = false;
+	        var isValidDataExist = false;
 
 			if ($scope.showEmail && $scope.showPhone && $scope.showMobile) {
 				$scope.saveData = $scope.saveData;

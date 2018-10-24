@@ -409,10 +409,10 @@ sntRover.controller('reservationActionsController', [
 				var afterRoomUpdate = function() {
 					if (!!$scope.guestCardData.userId) {
 
-						var hello = $scope.reservationMissingGuestDataOrDemographics();
+						var isReservationMissingGuestDataOrDemographics = $scope.reservationMissingGuestDataOrDemographics();
 	
-						if (hello) {
-	                        $scope.$emit('showLoader');
+						if (isReservationMissingGuestDataOrDemographics) {
+	                        
 	                        if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
 	                        	$scope.shouldShowDemographicsInValidationPopup = true;
 	                        	setDemographics();
