@@ -140,7 +140,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			var result = null;
 
 			if (typeof encoded !== 'string') {
-				return result;
+				return false;
 			}
 
 			var mime = encoded.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
