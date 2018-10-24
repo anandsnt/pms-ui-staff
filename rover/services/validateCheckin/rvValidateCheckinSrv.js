@@ -14,7 +14,12 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			"guest_id": data.guest_id,
 			"phone": data.phone,
 			"mobile": data.mobile,
-			"nationality_id": data.nationality_id
+			"nationality_id": data.nationality_id,
+			"reservation_type_id": data.reservation_type_id,
+			"source_id": data.source_id,
+			"market_segment_id": data.market_segment_id,
+			"booking_origin_id": data.booking_origin_id,
+			"segment_id": data.segment_id
 		};
 		
 		dataToPost.address = {};
