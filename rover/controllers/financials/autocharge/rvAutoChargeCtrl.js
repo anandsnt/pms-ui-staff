@@ -137,6 +137,7 @@ sntRover.controller('RVAutoChargeController',
                         });
                     return selectedReservationIds;
                 };
+
             /*
              * function handle selection event for auto charge
              * @return - noe
