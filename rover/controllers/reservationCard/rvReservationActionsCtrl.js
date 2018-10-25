@@ -38,6 +38,8 @@ sntRover.controller('reservationActionsController', [
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
+		console.log("====")
+		console.log(JSON.stringify($scope.reservationParentData))
 
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied
