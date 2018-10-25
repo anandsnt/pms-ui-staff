@@ -89,7 +89,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
 
             if ( view === 'details') {
                 $scope.filterData.selectedYear =  $scope.getCurrentYear();
-                $scope.setScroller();
+                $scope.configureScroller();
                 $scope.isScrollReady();
                 populateYearDropDown();
                 loadStatisticsDetails();
@@ -165,12 +165,12 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 $scope.setActiveView('summary');
             }            
             populateYearDropDown();
-            $scope.setScroller();
+            $scope.configureScroller();
             $scope.isScrollReady();
             setListeners();
             destroyListeners();
         };
-        
+
         init();
 
     }]);
