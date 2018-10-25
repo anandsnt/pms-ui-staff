@@ -22,7 +22,13 @@
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" include-replace>
         </div>
 
-        <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
+        <!-- REACT APP :: Rooms list + Reservations list -->
         <div id="nightlyDiaryMain" class="grid-wrapper"></div>
+
+        <!-- Filter Bar -->
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'" include-replace></div>
+
+        <!-- Un-assigned Reservations list -->
+        <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryUnassignedList.html'" include-replace></div>
+
 </section>

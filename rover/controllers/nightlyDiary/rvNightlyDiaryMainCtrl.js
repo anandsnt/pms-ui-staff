@@ -11,6 +11,7 @@ angular.module('sntRover')
         '$timeout',
         'reservationsList',
         'RVNightlyDiarySrv',
+        'unassignedReservationList',
         function(
             $scope,
             $rootScope,
@@ -22,7 +23,8 @@ angular.module('sntRover')
             ngDialog,
             $timeout,
             reservationsList,
-            RVNightlyDiarySrv
+            RVNightlyDiarySrv,
+            unassignedReservationList
         ) {
 
 
@@ -76,6 +78,7 @@ angular.module('sntRover')
                     firstMonthDateList: [],
                     secondMonthDateList: [],
                     reservationsList: reservationsList,
+                    unassignedReservationList: unassignedReservationList,
                     hasOverlay: false,
                     isEditReservationMode: false,
                     showUnassignedPanel: false,
@@ -86,7 +89,8 @@ angular.module('sntRover')
                     isFromStayCard: false,
                     filterList: {},
                     hideRoomType: true,
-                    hideFloorList: true
+                    hideFloorList: true,
+                    isRightFilterActive: false
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -334,6 +338,13 @@ angular.module('sntRover')
                 $scope.diaryData.showFilterPanel = true;
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
+            });
+
+            /* Handle event emitted from child controllers.
+             * To toggle unassigned list and filter.
+             */
+            $scope.$on('TOGGLE_FILTER', function( event ) {
+                $scope.diaryData.isRightFilterActive = !$scope.diaryData.isRightFilterActive;
             });
 
             /*
