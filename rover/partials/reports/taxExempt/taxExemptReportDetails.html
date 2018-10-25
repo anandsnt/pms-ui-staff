@@ -24,7 +24,7 @@
                 </tfoot>
                 <tbody>
                     <!-- EACH ROW REPRESENTS ONE STAY DATE -->
-                    <tr ng-repeat-start="eachRow in results" ng-class="{'row-break': eachRow.total_nights <= 1}"> <!-- Add class 'row-break' for last stay date of the reservation -->
+                    <tr ng-repeat-start="eachRow in results" ng-class="{'row-break': eachRow.total_nights === 0}"> <!-- Add class 'row-break' for last stay date of the reservation -->
                         <td class="name" rowspan="{{eachRow.dates.length}}">
 
                             <!-- Guest Name -->
@@ -88,12 +88,15 @@
                             <strong><span class="currency">{{currencySymbol}}</span>{{eachDate.rate_amount}}</strong><span class="reference">{{eachDate.rate_name}}</span>
                         </td>
                     </tr>
-                    <tr ng-repeat-end  class="row-break" ng-if="eachRow.total_nights > 1">
+                    <tr ng-repeat-end  class="row-break" ng-if="eachRow.total_nights > 0">
+                        <td class="tax-exempt" rowspan="{{eachRow.dates[eachRow.dates.length - 1].rowSpanValue}}" ng-if="eachRow.dates[eachRow.dates.length - 1].is_next">
+                            <strong>{{eachRow.dates[eachRow.dates.length - 1].tax_exempt_type_name}}</strong>                            
+                        </td>
                         <td class="date">
                             <strong>{{eachRow.dates[eachRow.dates.length - 1].date}}</strong><span class="reference">{{eachRow.dates[eachRow.dates.length - 1].date | date:'EEEE'}}</span>
                         </td>
                         <td class="rate">
-                            <strong><span class="currency">{{currencySymbol}}</span>{{eachRow.dates[eachRow.dates.length - 1].rate_amount}}</strong><span class="reference">{{eachRow.dates[eachRow.dates.length - 1].rate_name}}</span>
+                            <strong><span class="currency"></span> - </strong><span class="reference"></span>
                         </td>
                     </tr>                    
                 </tbody>
