@@ -182,7 +182,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 angular.forEach(data.reservations, function(item) {
                     item.statusClass = item.arrival_date === businessDate ? 'check-in' : 'no-status';
                 });
-                deferred.resolve(data.reservations);
+                deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error);
             });

@@ -68,8 +68,6 @@ angular.module('sntRover')
                     numberOfDays: srvParams.no_of_days,
                     fromDate: srvParams.start_date,
                     toDate: '',
-                    roomFilterCount: 0,
-                    filterCount: 0,
                     paginationData: { perPage: 50,
                                         page: srvParams.page,
                                         totalCount: roomsList.total_count

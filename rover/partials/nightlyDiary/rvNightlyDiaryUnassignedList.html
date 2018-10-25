@@ -9,7 +9,7 @@
     </div>
     <div class="unassigned-list scrollable scroll-vertical">
         <div class="wrapper">
-            <div class="guest {{reservation.statusClass}}" ng-repeat="reservation in diaryData.unassignedReservationList" >
+            <div class="guest {{reservation.statusClass}}" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" >
                 <div class="data">
                     <strong class="name">{{reservation.last_name}} {{reservation.first_name}}</strong>
                     <span ng-if="reservation.is_vip" class="vip">VIP</span>
