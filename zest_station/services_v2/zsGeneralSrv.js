@@ -70,7 +70,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'de-blend': '2L De Blend',
             'anthony': 'The Anthony',
             'stewart': 'Stewart Aparthotel',
-            'university-inn': 'University Inn'
+            'university-inn': 'University Inn',
+            'cedar-court': 'Cedar Court Hotels'
         };
 
         this.isThemeConfigured = function(theme) {
