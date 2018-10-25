@@ -15,6 +15,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
 		$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
+		$scope.guestIdData.errorMessage = "";
 
 		var isIDDetailsChanged = false;
 
@@ -74,6 +75,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			changeYear: true,
 			changeMonth: true,
 			yearRange: "-10:+50",
+			defaultDate: new Date(),
 			onSelect: function() {
 				$scope.guestIdData.expiry_date_for_display =  dateInHotelsFormat($scope.guestIdData.expiration_date);
 				expirationDateDialog.close();
@@ -81,6 +83,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		$scope.openExpiryCalendar = function() {
+			// To solve isssue with initial date selection, 
+			// set current date as default and pass to API only if a selection is made
+			if (!$scope.guestIdData.expiration_date) {
+				$scope.guestIdData.expiration_date = $filter('date')(new Date(), 'mm-dd-yy');
+			}
 			expirationDateDialog = ngDialog.open({
 				template: '/assets/partials/guestId/rvGuestIDExpiryCalendar.html',
 				className: 'single-date-picker',
@@ -109,7 +116,18 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		$scope.closeErrorPopup = function() {
+			$scope.guestIdData.errorMessage = "";
 			errorPopup.close();
+		};
+
+		$scope.clearDob = function() {
+			$scope.guestIdData.dob_for_display = '';
+			$scope.guestIdData.date_of_birth = '';
+		};
+
+		$scope.clearExpiryDate = function() {
+			$scope.guestIdData.expiry_date_for_display = '';
+			$scope.guestIdData.expiration_date = '';
 		};
 
 		var formatDateForApi = function(date) {
@@ -117,6 +135,40 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			var dateComponents = date.split("-");
 
 			return dateComponents[1] + '-' + dateComponents[0] + '-' + dateComponents[2];
+		};
+		var isTheImageValid = function(encoded) {
+			var result = null;
+
+			if (typeof encoded !== 'string') {
+				return false;
+			}
+
+			var mime = encoded.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+
+			if (mime && mime.length) {
+				result = mime[1];
+			}
+
+			var isValidImage = result && (result === "image/png" ||
+				result === "image/jpeg" ||
+				result === "image/gif" ||
+				result === "image/bmp" ||
+				result === "image/webp" ||
+				result === "image/x-icon" ||
+				result === "image/vnd.microsoft.icon");
+
+			return isValidImage;
+		};
+
+		$scope.ImageChange = function(imageType) {
+			var imageData = imageType === 'front-image' ? $scope.guestIdData.front_image_data : $scope.guestIdData.back_image_data;
+
+			if (!isTheImageValid(imageData)) {
+				$scope.guestIdData.errorMessage = imageType === 'front-image' ? 'Front side Image...wrong file type!' : 'Back side Image...wrong file type!';
+				$scope.guestIdData.front_image_data = imageType === 'front-image' ? '' : $scope.guestIdData.front_image_data;
+				$scope.guestIdData.back_image_data = imageType === 'back-image' ? '' : $scope.guestIdData.back_image_data;
+				generalFailureCallBack();
+			}
 		};
 
 		$scope.saveGuestIdDetails = function(action, imageType) {
@@ -127,11 +179,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			apiParams.document_type = $scope.guestIdData.document_type ? $scope.guestIdData.document_type : 'ID_CARD';
 
 			apiParams.date_of_birth = apiParams.date_of_birth ? formatDateForApi(apiParams.date_of_birth) : '';
-			apiParams.expiration_date = apiParams.expiration_date ? formatDateForApi(apiParams.expiration_date) : '';
+			apiParams.expiration_date = apiParams.expiration_date && apiParams.expiry_date_for_display ? formatDateForApi(apiParams.expiration_date) : '';
 
 			delete apiParams.expiry_date_for_display;
 			delete apiParams.dob_for_display;
             delete apiParams.nationality;
+            delete apiParams.errorMessage;
 
 			if (action === 'DELETE') {
 				apiParams.front_image_data = (imageType === 'front-image') ? '' : apiParams.front_image_data;

@@ -229,7 +229,9 @@ angular.module('stayCardModule', [])
                 isFromCards: null,
                 isOnlineRoomMove: null,
                 isKeySystemAvailable: null,
-                isFromTACommission: null
+                isFromTACommission: null,
+                isFromGuestStatistics: null,
+                isFromCardStatistics: null
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {
