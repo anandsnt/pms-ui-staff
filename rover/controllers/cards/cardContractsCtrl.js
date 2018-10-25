@@ -268,7 +268,6 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
 		$scope.fetchContractsList = function () {
-
 			if ($stateParams.id !== "add") {
 				if (!!$scope.currentCard) {
 					$scope.invokeApi(RVCompanyCardSrv.fetchContractsList, {
@@ -367,7 +366,8 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
 				if ($scope.currentCard === "add") {
-					$scope.AddNewButtonClicked();
+					$scope.contractSelected.contract_code = "";
+					$scope.CancelAddNewContract();
 				}
 			};
 

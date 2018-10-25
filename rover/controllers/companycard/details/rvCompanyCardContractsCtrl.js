@@ -379,7 +379,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
 				if ($stateParams.id === "add") {
-					$scope.AddNewButtonClicked();
+					$scope.contractSelected.contract_code = "";
+					$scope.CancelAddNewContract();
 				}
 			};
 
