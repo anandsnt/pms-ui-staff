@@ -82,6 +82,7 @@ angular.module('sntRover')
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
+            $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
         };
 
         // Show calendar popup.
@@ -170,22 +171,12 @@ angular.module('sntRover')
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
-        // To toggle filter panel view.
-        $scope.togglePanelView = function() {
-            // if ($scope.diaryData.showFilterPanel) {
-            //     $scope.diaryData.showFilterPanel = false;
-            //     $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
-            // } else {
-            //     $scope.diaryData.showFilterPanel = true;
-            // }
-            $scope.diaryData.showFilterPanel = !$scope.diaryData.showFilterPanel;
-            $scope.diaryData.showUnassignedReservations = false;
-        };
-
-        // Handle click on unassigned filter button
-        $scope.toggleUnassignedReservations = function() {
-            $scope.diaryData.showUnassignedReservations = !$scope.diaryData.showUnassignedReservations;
-            $scope.diaryData.showFilterPanel = false;
+        // To toggle filter and unassigned list.
+        $scope.toggleFilter = function(activeTab) {
+            if($scope.diaryData.rightFilter !== activeTab){
+                $scope.diaryData.rightFilter = activeTab;
+                $scope.$emit('TOGGLE_FILTER');
+            }  
         };
 
         init();

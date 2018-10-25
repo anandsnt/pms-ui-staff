@@ -1,4 +1,4 @@
-<div class="diary-nightly-sidebar diary-nightly-unassigned"> <!-- Add class 'visible' to show -->
+<div class="diary-nightly-sidebar diary-nightly-unassigned" ng-class="{'visible': diaryData.rightFilter === 'UNASSIGNED_RESERVATION'}">
     <div class="sidebar-header">
         <h2>Unassigned</h2>
     </div>
@@ -9,16 +9,15 @@
     </div>
     <div class="unassigned-list scrollable scroll-vertical">
         <div class="wrapper">
-            <div class="guest {'check-in', 'pre-check-in' or 'no-status'}">
+            <div class="guest {{reservation.statusClass}}" ng-repeat="reservation in diaryData.unassignedReservationList" >
                 <div class="data">
-                    <strong class="name">{Lastname Firstname}</strong>
-                    <!-- If VIP, show: <span class="vip">VIP</span> -->
-                    <span class="room">{Room Type}</span>
+                    <strong class="name">{{reservation.last_name}} {{reservation.first_name}}</strong>
+                    <span ng-if="reservation.is_vip" class="vip">VIP</span>
+                    <span class="room">{{reservation.room_type_name}}</span>
                 </div>
-                <div class="arrival">{Arrival Date}</div>
-                <div class="nights">{No. of Nights}</div>
+                <div class="arrival">{{reservation.arrival_date}}</div>
+                <div class="nights">{{reservation.number_of_nights}}</div>
             </div>
-            ... repeat
         </div>
     </div>
 </div>

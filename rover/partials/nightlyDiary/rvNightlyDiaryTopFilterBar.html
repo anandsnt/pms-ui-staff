@@ -39,13 +39,13 @@
     </div>
 
     <!-- Show / Hide Filters -->
-    <div class="entry filters">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active': diaryData.showUnassignedReservations}" >
+    <div class="entry filters visible">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
             <span class="count">{{diaryData.roomFilterCount}}</span>
             <span class="icons icon-filter-room"></span>
         </button>
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active': diaryData.showFilterPanel}" ng-click="togglePanelView()">
-            <span class="count">{{diaryData.selectedRoomCount}}</span>
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER' }" ng-click="toggleFilter('RESERVATION_FILTER')">
+            <span class="count">{{diaryData.filterCount}}</span>
             <span class="icons icon-filter" ng-class="{'active': diaryData.showFilterPanel}"></span>
         </button>
     </div>
