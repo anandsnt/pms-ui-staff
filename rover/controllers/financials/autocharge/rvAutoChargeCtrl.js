@@ -95,8 +95,8 @@ sntRover.controller('RVAutoChargeController',
                  */
                 setParamsAndFetchAutoCharge = function() {
                     if ( isFromStayCard ) {
-                        $scope.filters = RVAutoChargeSrv.getParams().filters;
-                        $scope.due_date = RVAutoChargeSrv.getParams().due_date;
+                        $scope.filters = RVAutoChargeSrv.getStateData().filters;
+                        $scope.due_date = RVAutoChargeSrv.getStateData().due_date;
                         $scope.fetchAutoCharge($scope.filters.page_no);
                     } else {
                         $scope.filters = {
