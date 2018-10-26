@@ -24,7 +24,7 @@
     "COMMISSION_PREPAID" : "Prepaid",
     "COMMISSION_HOLD" : "Hold",
     "COMMISSION_UPDATE" : "Update",
-    "COMMISSION_TOTEL_REVENUE" : "Comm Revenue",
+    "COMMISSION_TOTEL_REVENUE" : "Revenue",
     "COMMISSION_TO_DATE" : "Paid",
     "COMMISSION_OWING" : "Owing",
     "COMMISSION_SELECT" : "Select",
