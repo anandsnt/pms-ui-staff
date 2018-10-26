@@ -97,7 +97,7 @@
                 </div>
             </div>
             <!-- ng-hide added CICO-57726 -->
-            <div class="entry full-width" ng-show='is_edit' ng-hide="true">
+            <div class="entry full-width hidden">
                 <button type="button" class="button" ng-class="{'blue':rateData.id !== null, 'grey': rateData.id === null }" ng-disabled="rateData.id === null" ng-click="clickedSyncButton()" translate>SYNC</button>
                 <span ng-if="rateData.id && rateData.last_sync_status && rateData.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{rateData.last_sync_at}}</span>
                 <span ng-if="rateData.id && !rateData.last_sync_status && rateData.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{rateData.last_sync_at}}</span>                                  
