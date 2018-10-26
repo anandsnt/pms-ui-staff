@@ -95,14 +95,14 @@
                                         </span>
                                     </div>
                                     <div class="guest-date arrival">
-                                        <span class="guest-status small-icon {{getReservationClass(reservation.reservation_status)}}"></span>
+                                        <span class="guest-status small-icon check-in"></span>
                                         <time datetime="">
                                             <span class="date">{{reservation.arrival_date| date : dateFormat}}</span>
                                             <span class="time">{{reservation.arrival_time}}</span>
                                         </time>
                                     </div>
                                     <div class="guest-date departure">
-                                        <span class="guest-status small-icon {{getReservationClass(reservation.reservation_status)}}"></span>
+                                        <span class="guest-status small-icon check-out"></span>
                                         <time datetime="">
                                             <span class="date">{{reservation.departure_date| date : dateFormat}}</span>
                                             <span class="time">{{reservation.departure_time}}</span>

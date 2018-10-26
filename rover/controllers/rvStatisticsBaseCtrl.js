@@ -27,40 +27,6 @@ var StatisticsBaseCtrl = function ($scope, $rootScope, $timeout) {
         return styleClass;
     };
 
-    // Get the class name based on the guest status
-    $scope.getReservationClass = function(reservationStatus) {
-        var className = '';
-
-        switch (reservationStatus.toUpperCase()) {
-            case "RESERVED":
-                className = 'arrival';
-                break;
-            case "CHECKING_IN":
-                className = 'check-in';
-                break;
-            case "CHECKEDIN":
-                className = 'inhouse';
-                break;
-            case "CHECKING_OUT":
-                className = 'check-out';
-                break;
-            case "CHECKEDOUT":
-                className = 'departed';
-                break;
-            case "CANCELED":
-                className = 'cancel';
-                break;
-            case "NOSHOW":
-            case "NOSHOW_CURRENT":
-                className = 'no-show';
-                break;
-            default:
-                className = '';
-                break;
-        }
-        return className;
-    };
-
     // Get style for statistics details expanded view
     $scope.getStyleForExpandedView = function( monthlyData ) {
         var styleClass = {};                    
