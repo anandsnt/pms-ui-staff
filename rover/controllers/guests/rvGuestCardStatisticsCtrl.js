@@ -37,7 +37,11 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 var onStatisticsDetailsFetchSuccess = function(data) {
                         $scope.statistics.details = data;
                         $scope.statistics.details.monthly_data = $scope.statistics.details.monthly_data.reverse();
-                        $scope.reloadScroller();
+                        $timeout(function() {
+                            $scope.reloadScroller();
+                            
+                        }, 500);
+                        $scope.isScrollReady();
                     },
                     onStatistcsDetailsFetchFailure = function() {
                         $scope.statistics.details = [];
@@ -59,7 +63,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                                                         loadStatisticsSummary();
                                                     }),
                     contactInfoUpdateListener = $scope.$on('UPDATE_CONTACT_INFO', function() {
-                                                    init();    
+                                                    setUpData();    
                                                 });
 
                 listeners.push(statisticsTabActivateListener);
@@ -73,13 +77,11 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             };
 
         // Set statistics tab active view - summary | details
-        $scope.setActiveView = function( view ) {
+        $scope.setActiveView = function(view, year) {
             $scope.activeView = view;
 
             if ( view === 'details') {
-                $scope.filterData.selectedYear =  $scope.getCurrentYear();
-                $scope.configureScroller();
-                $scope.isScrollReady();
+                $scope.filterData.selectedYear =  year || $scope.getCurrentYear();
                 populateYearDropDown();
                 loadStatisticsDetails();
             } else {
@@ -95,7 +97,10 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 return false;
             }
             monthlyData.isOpen = !monthlyData.isOpen;
-            $scope.reloadScroller();
+            $timeout(function() {
+                $scope.reloadScroller();
+                
+            }, 100);
         };
 
         // Handles the year dropdown change
@@ -114,6 +119,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             }
 
             $vault.set('guestId', $scope.guestCardData.userId);
+            $vault.set('selectedYear', $scope.filterData.selectedYear);
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation.reservation_id,
                 confirmationId: reservation.confirmation_no,
@@ -134,30 +140,36 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
         // create the year dropdown options
         var populateYearDropDown = function() {
-            $scope.populateYearDropDown($scope.guestCardData.contactInfo.first_stay_year); 
-        };
+                $scope.populateYearDropDown($scope.guestCardData.contactInfo.first_stay_year); 
+            },
+            // Set up the data required during initialization
+            setUpData = function() {
+                $scope.activeView = "summary";
+                $scope.statistics = {
+                    summary: {},
+                    details: []
+                };
+                $scope.guestID = $scope.guestCardData.userId;
+                $scope.filterData = {
+                    selectedYear: $scope.getCurrentYear() - 1  
+                };
+                $scope.currentYear = $scope.getCurrentYear();
+                populateYearDropDown();                
+            };
 
         // Initialize the controller
         var init = function() {
-            $scope.activeView = "summary";
-            $scope.statistics = {
-                summary: {},
-                details: []
-            };
-            $scope.guestID = $scope.guestCardData.userId;
-            $scope.filterData = {
-                selectedYear: $scope.getCurrentYear() - 1  
-            };
-            $scope.currentYear = $scope.getCurrentYear();
-
-            if ($stateParams.isBackToStatistics) {
-                $scope.setActiveView('summary');
-            }
-            populateYearDropDown();
+            setUpData();
             $scope.configureScroller();
             $scope.isScrollReady();
             setListeners();
             destroyListeners();
+
+            if ($stateParams.isBackToStatistics) {
+                $scope.filterData.selectedYear = $stateParams.selectedStatisticsYear ? $stateParams.selectedStatisticsYear : $scope.filterData.selectedYear;
+                $scope.setActiveView('details', $scope.filterData.selectedYear);
+            }
+            
         };
         
         init();

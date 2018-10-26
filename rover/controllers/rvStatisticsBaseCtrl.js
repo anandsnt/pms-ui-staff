@@ -48,12 +48,11 @@ var StatisticsBaseCtrl = function ($scope, $rootScope, $timeout) {
     };
 
     // Configure the left and right scroller
-    $scope.configureScroller = function() {            
+    $scope.configureScroller = function() { 
         $scope.setScroller(SIDEBAR_SCROLLER, {
             'preventDefault': false,
             'probeType': 3
         });
-
         $scope.setScroller(MONTHLY_DATA_SCROLLER, {
             'preventDefault': false,
             'probeType': 3,
@@ -63,10 +62,13 @@ var StatisticsBaseCtrl = function ($scope, $rootScope, $timeout) {
 
     // Refreshes the two scrollers in the screen
     $scope.reloadScroller = function() {
-        $timeout(function() {
-            $scope.refreshScroller(SIDEBAR_SCROLLER);
-            $scope.refreshScroller(MONTHLY_DATA_SCROLLER);
-        }, 200);                
+        if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
+            $scope.refreshScroller( SIDEBAR_SCROLLER );
+        }
+
+        if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
+            $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
+        }
     };
 
     // Get the current year

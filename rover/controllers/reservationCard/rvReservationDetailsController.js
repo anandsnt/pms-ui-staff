@@ -199,6 +199,7 @@ sntRover.controller('reservationDetailsController',
 				name: 'rover.guest.details',
 				param: {
 					guestId: $vault.get('guestId'),
+					selectedStatisticsYear: $vault.get('selectedYear'),
 					isBackToStatistics: true					
 				}
 			};

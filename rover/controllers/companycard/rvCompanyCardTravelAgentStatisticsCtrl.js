@@ -58,7 +58,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                                                         loadStatisticsSummary();
                                                     }),
                     contactInfoUpdateListener = $scope.$on('UPDATE_CONTACT_INFO', function() {
-                                                    init();    
+                                                    setUpData();    
                                                 });
 
                 listeners.push(statisticsTabActivateListener);
@@ -149,9 +149,8 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             return shouldHide;
         };
 
-
-        // Initialize the controller
-        var init = function() {
+        // Set up the data required during initialization
+        var setUpData = function() {
             $scope.activeView = "summary";
             $scope.statistics = {
                 summary: {},
@@ -164,12 +163,17 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
 
             $scope.currentYear = $scope.getCurrentYear();
 
-            if ($stateParams.isBackFromStaycard) {
-                $scope.setActiveView('summary');
-            }            
             populateYearDropDown();
             $scope.configureScroller();
             $scope.isScrollReady();
+        };
+
+        // Initialize the controller
+        var init = function() {
+            setUpData();
+            if ($stateParams.isBackFromStaycard) {
+                $scope.setActiveView('summary');
+            }            
             setListeners();
             destroyListeners();
         };
