@@ -4,7 +4,7 @@
         </div>
         <ul class="billing-list-header" ng-hide = "routes.length == 0">
             <li class="name">Name</li>
-            <li class="group">Billing Group(s)</li>
+            <li class="group">Billing Group(s) / Charge Code(s)</li>
             <li class="split">Split Charge</li>
             <li class="bill">Bill #</li>
             <li class="delete">Delete</li>
@@ -32,7 +32,6 @@
 	                    </div>
 	                    
 			            <div class="type">
-			               <span class="label">{{getRouteType(route)}}</span>
 			               {{getCharges(route)}}
 			            </div>
 			             <div class="split">
@@ -41,7 +40,7 @@
                            
                         </div>
 			            <div class="bill" ng-hide="route.is_routed_to_different_reservation">
-			               <span class="label">Bill #</span>
+			               <span class="label"></span>
 			               {{route.bill_no}}
 			            </div>
 			            <div class="bill" ng-show="route.is_routed_to_different_reservation">
