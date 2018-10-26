@@ -91,6 +91,9 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
         // Toggle the reservation list view displayed for a month
         $scope.showMonthlyReservations = function( monthlyData ) {
+            if (_.isEmpty(monthlyData.reservations)) {
+                return false;
+            }
             monthlyData.isOpen = !monthlyData.isOpen;
             $scope.reloadScroller();
         };
