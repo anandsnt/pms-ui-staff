@@ -315,4 +315,7 @@ BaseCtrl = function($scope) {
         }, 100);        
     };
 
+    // Absolute value of a number
+    $scope.absVal = Math.abs;
+
 };

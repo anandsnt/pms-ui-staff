@@ -3393,6 +3393,38 @@
                     }
                 }
 
+                .billing-list-header {
+                    padding: 20px 20px 0 20px;
+                    .float;
+
+                    li {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        margin: 0;
+                        color: @grey3;
+                        font-weight: 600;
+                        .show;
+                        .pull-left;
+
+                        &.name {
+                            padding-left: 20px;
+                            .calc-width( 100, 435 );
+                        }
+
+                        &.group {
+                            width: 160px;
+                        }
+
+                        &.split {
+                            width: 130px;
+                        }
+
+                        &.bill {
+                            width: 90px;
+                        }
+                    }
+                }
+
                 /* Entity details ***/
                 .billing-list,
                 .entity {
@@ -3509,27 +3541,27 @@
                 }
 
                 /* Name colors ***/
-                .guest { 
+                .guest {
                     h2 { color: @textColor; }
                 }
-                
-                .accompany { 
+
+                .accompany {
                     h2 { color: @grey3; }
                 }
-                
-                .company { 
+
+                .company {
                     h2 { color: @ccard; }
                 }
 
-                .travel-agent { 
+                .travel-agent {
                     h2 { color: @tacard; }
                 }
 
-                .group { 
+                .group {
                     h2 { color: @groupcard; }
                 }
 
-                .allotment { 
+                .allotment {
                     h2 { color: @allotmentcard; }
                 }
 
@@ -3537,38 +3569,43 @@
                 .billing-list {
                     position: absolute;
                     left: 0;
-                    top: 0; 
-                    .square(100%);
+                    top: 40px;
+                    width: 100%;
+                    .calc-height( 100, 40 );
+                    
+                    .iScrollVerticalScrollbar { top: 5px; }
 
-                    > .wrapper { padding: 20px; }
+                    > .wrapper { padding: 5px 20px 20px; }
 
                     li { position: relative; }
 
                     a {
                         color: @textColor;
-                        padding: 15px;
+                        padding: 15px 30px 15px 15px;
                         .float;
                         .clickable;
-                        .calc-width(100, 40);
+                        .calc-width(100, 80);
                     }
 
-                    h2 { 
+                    h2 {
                         font-size: 21px;
-                        width: 300px; 
+                        .calc-width( 100, 375 );
                     }
 
                     .data {
                         margin: 0 10px;
-                        .size(30px, 300px);
+                        height: 30px;
+                        .calc-width( 100, 375 );
                         .pull-left;
 
-                        h2 { 
+                        h2 {
                             margin: 0;
                             line-height: 18px;
+                            width: 100%;
                             float: none;
                         }
 
-                         
+
                         .location {
                             width: 100%;
                             display: inline-block;
@@ -3577,13 +3614,34 @@
                             line-height: 16px;
                             .nowrap();
 
-                             
-                        } 
+
+                        }
+                    }
+
+                    .type {
+                        font-size: 16px;
+                    }
+
+                    .bill {
+                        font-size: 20px;
+                        font-weight: 700;
+                    }
+
+                    .split {
+                        width: 130px;
+                        height: 30px;
+                        padding-left: 25px;
+                        padding-top: 10px;
+                        .pull-left;
+
+                        .icons {
+                            width: 20px;
+                            height: 15px;
+                        }
                     }
 
                     .type,
                     .bill {
-                        font-size: 18px;
                         line-height: 30px;
                         text-transform: uppercase;
                         white-space: nowrap;
@@ -3591,19 +3649,21 @@
                         text-overflow: ellipsis;
                         .pull-left;
 
-                        &.type { 
-                            width: 260px; 
-                            margin-right: 10px;
+                        &.type {
+                            width: 160px;
                         }
 
-                        &.bill { width: 70px; }
-                    }                   
+                        &.bill { width: 35px; text-align: right; }
+                    }
 
                     .icon-remove-40 {
                         position: absolute;
-                        top: 10px;
-                        right: -5px;
+                        top: 0;
+                        right: 0;
                         cursor: pointer;
+                        background-position: 20px -3740px;
+                        .clickable;
+                        .square(60px);
                     }
                 }
 
@@ -3619,16 +3679,16 @@
                         padding: 0 20px;
 
                         .icon-no-content {
-                            @media only screen and (min-width: 600px) { 
+                            @media only screen and (min-width: 600px) {
                                 background-size: 60px;
-                                .square(60px); 
+                                .square(60px);
 
                                 &.icon-cards { background-position: 0 -460px; }
                             }
                         }
 
                         .h1,
-                        .h2 { 
+                        .h2 {
                             line-height: 1.2;
                             margin: 0;
                         }
@@ -3665,7 +3725,7 @@
                             .size(30px, 200px);
                             .pull-left;
 
-                            h2 { 
+                            h2 {
                                 margin: 0;
                                 line-height: 18px;
                                 float: none;
@@ -3714,8 +3774,8 @@
                         .clickable;
                     }
 
-                    div.entity { 
-                        margin: 10px; 
+                    div.entity {
+                        margin: 10px;
                         .faux-clickable;
                     }
 
@@ -3730,13 +3790,29 @@
                         left: 0;
                         .calc-height(100, 120);
 
-                        > .wrapper { padding: 0 10px 20px 10px; }
-                        > .iScrollVerticalScrollbar { 
-                            top: 0; 
+                        > .wrapper { padding: 0 20px 20px 20px; }
+                        > .iScrollVerticalScrollbar {
+                            top: 0;
                             .iScrollIndicator { background: rgba(0,0,0,.1); }
                         }
 
-                        &.search { .calc-height(100, 190); }
+                        &.search { 
+                            .calc-height(100, 190);
+
+                            &.entities-list-cards {
+                                .calc-height(100, 220);
+                            }
+                        }
+
+                    }
+
+                    .search-filter {
+                        &.checkbox {
+                            position: absolute;
+                            bottom: 60px;
+                            left: 20px;
+                            margin: 0;
+                        }
                     }
 
                     #cancel-entity-search {
@@ -3753,13 +3829,14 @@
                         height: 100%;
 
                         > .wrapper { padding: 0 0 20px 0; }
-                        > .iScrollVerticalScrollbar { 
+                        > .iScrollVerticalScrollbar {
                             top: 0;
                             bottom: 0;
                             right: 2px;
 
                             .iScrollIndicator { background: rgba(0,0,0,.1); }
                         }
+
 
                         .entity {
                             &.travel-agent,
@@ -3769,6 +3846,7 @@
                                 }
                             }
                         }
+
 
                         .title {
                             position: relative;
@@ -3787,8 +3865,8 @@
                                 right: 10px;
                                 .square(30px);
 
-                                .icons { 
-                                    background-size: 90px; 
+                                .icons {
+                                    background-size: 90px;
                                     background-position: 3px -882px;
                                 }
                             }
@@ -3798,7 +3876,7 @@
                             padding: 20px;
                             .float;
 
-                            input { 
+                            input {
                                 font-size: 18px;
                                 font-weight: 600;
                                 .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
@@ -3833,17 +3911,17 @@
                                         #border-radius > .rounded(15px);
                                     }
 
-                                    &.visible { 
+                                    &.visible {
                                         visibility: visible;
 
-                                        .icons {    
-                                            .opacity(100); 
-                                            #fade > .in(); 
+                                        .icons {
+                                            .opacity(100);
+                                            #fade > .in();
                                         }
                                     }
 
                                     &:hover,
-                                    &.active { 
+                                    &.active {
                                         .icons { background-color: @logoPrimary; }
                                     }
                                 }
@@ -3875,6 +3953,11 @@
 
                                 &:first-child { margin-right: 20px; }
                             }
+
+                            .checkbox {
+                                font-size: 14px;
+                                text-transform: uppercase;
+                            }
                         }
 
                         .payment {
@@ -3886,10 +3969,10 @@
                             .float;
 
                             .card-logo {
-                                margin: 5px 20px 0 0;
+                                margin: 5px 10px 0 0;
                                 .pull-left;
                                 .size(20px, 40px);
-                             
+
                                 img { .size(auto, 100%); }
                             }
 
@@ -3915,10 +3998,10 @@
                                 margin-left: 5px;
                             }
 
-                            &.active { 
+                            &.active {
                                 padding-right: 30px;
                                 .faux-clickable;
-                                .opacity(100); 
+                                .opacity(100);
 
                                 .icons {
                                     position: absolute;
@@ -3943,15 +4026,15 @@
                         .payment-form {
                             padding: 10px 20px 0 20px;
 
-                            label { 
+                            label {
                                 font-size: 14px;
-                                text-transform: uppercase; 
+                                text-transform: uppercase;
 
-                                span { color: @grey3; } 
+                                span { color: @grey3; }
 
                                 &.data-off,
-                                &.data-on { 
-                                    font-size: 16px; 
+                                &.data-on {
+                                    font-size: 16px;
 
                                     .value { color: @white; }
                                 }
@@ -3960,8 +4043,8 @@
                             .entry { margin-bottom: 10px; }
 
                             .new-card {
-                                .entry { 
-                                    .pull-left; 
+                                .entry {
+                                    .pull-left;
 
                                     &.card-type,
                                     &.card-number,
@@ -3971,8 +4054,8 @@
                                         select { width: 100%; }
                                     }
 
-                                    &.card-action { 
-                                        margin-bottom: 30px; 
+                                    &.card-action {
+                                        margin-bottom: 30px;
 
                                         .button { margin-top: 26px; }
                                     }
@@ -3988,7 +4071,7 @@
                                     padding: 0 20px;
                                     clear: both;
                                 }
-                            }                           
+                            }
                         }
                     }
                 }
@@ -4003,8 +4086,8 @@
                     .h2 { margin: 30px 0; }
 
                     .list-toggle,
-                    .search-codes { 
-                        margin: 0 auto 20px auto; 
+                    .search-codes {
+                        margin: 0 auto 20px auto;
                         width: 310px;
                     }
 
@@ -4040,8 +4123,8 @@
                                 .calc-width(50, 5);
                                 .pull-left;
 
-                                .value { 
-                                    color: @textColor; 
+                                .value {
+                                    color: @textColor;
                                     margin-right: 5px;
                                 }
 
@@ -4066,18 +4149,18 @@
                         display: inline-block;
                         width: auto;
                     }
-                }  
+                }
 
                 &.add-card {
                     .content-wrapper {
                         .content-left { width: 100%; }
                         .content-right { #fade > .out(); }
                     }
-                } 
+                }
 
-                @media only screen and (min-height: 768px) { 
+                @media only screen and (min-height: 768px) {
                     height: 700px;
-                }       
+                }
             }
 
             /* New card ***/
@@ -7073,7 +7156,17 @@
 
                         .message { margin: 0 0 10px 0; }
                         .text { padding: 0; margin: 0 0 25px 0; }
+                        .document-type {
+                            max-width: 200px;
+                            margin: 0 auto 20px auto;
+                        }
 
+                        .button {
+                            &.green {
+                                width: 200px;
+                                margin: 0 auto;
+                            }
+                        }
                         .guest-documents {
                             display: grid;
                             grid-template-columns: calc(~'50% - 20px') calc(~'50% - 20px');
@@ -7081,6 +7174,13 @@
                             margin-bottom: 20px;
 
                             .guest-info {
+                                position: relative;
+
+                                .delete-document {
+                                    position: absolute;
+                                    top: -10px;
+                                    right: -10px;
+                                }
 
                                 &.missing {
                                     border: 2px dashed @grey2;
@@ -7123,6 +7223,7 @@
                         img {
                             display: block;
                             max-width: 100%;
+                            max-height: 300px;
                             height: auto;
                             margin-bottom: 20px;
                         }

@@ -250,14 +250,6 @@ angular.module('sntRover')
                         $scope.priceDetails[key + '_changing_value'] = '';
                     }
                     break;
-                case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
-                        $scope.priceDetails[key] = $scope.priceDetailsCopy[key];
-                    }
-                    else {
-                        $scope.priceDetails[key + '_changing_value'] = '';
-                    }
-                    break;
             }
             refreshScroller();
         };
