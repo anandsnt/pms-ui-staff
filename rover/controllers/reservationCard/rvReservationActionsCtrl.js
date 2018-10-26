@@ -38,7 +38,6 @@ sntRover.controller('reservationActionsController', [
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-
 		/*
 		 * The reverse checkout button is to be shown if all the following conditions are satisfied
 		 * -departure date <= busssiness date
