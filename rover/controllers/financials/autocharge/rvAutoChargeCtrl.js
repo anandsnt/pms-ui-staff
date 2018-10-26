@@ -100,7 +100,7 @@ sntRover.controller('RVAutoChargeController',
                     } else {
                         $scope.filters = {
                             status: 'ALL',
-                            due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
+                            due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'dd/mm/yy')
                         };
                         $scope.fetchAutoCharge();
                     }
