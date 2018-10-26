@@ -2,7 +2,7 @@ describe('reservationActionsController', function () {
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('reservationSampleData.json'),
-        reservationSampleData = fixtures['reservationSampleData.json']
+        reservationSampleData = fixtures['reservationSampleData.json'];
 
     var $controller,
         $scope,
