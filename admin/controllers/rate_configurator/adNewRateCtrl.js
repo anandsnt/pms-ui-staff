@@ -78,6 +78,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.existingAddonsIds = existingAddonsIds;
                 $scope.existingAddons = existingAddons;
             }
+            else {
+                setRateAdditionalDetails();
+            }
         };
 
         // Method to invoke initial API calls when edit a list.
