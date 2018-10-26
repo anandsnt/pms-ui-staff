@@ -124,6 +124,7 @@ angular.module('sntRover')
                 $scope.diaryData.numberOfDays = 21;
             }
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         /*
@@ -155,6 +156,7 @@ angular.module('sntRover')
 
             calculateFromDateAndToDate(isRightShift);
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         // To handle click on right date shift.
@@ -163,6 +165,7 @@ angular.module('sntRover')
 
             calculateFromDateAndToDate(isRightShift);
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         // To handle click on reset button.
