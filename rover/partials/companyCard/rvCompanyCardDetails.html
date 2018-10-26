@@ -66,6 +66,10 @@
                         <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                             <a translate>CONTRACTS</a>
                         </li>
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab === 'statistics'}" ng-click="switchTabTo($event, 'statistics')" >
+                            <a translate>STATISTICS</a>
+                            <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
+                        </li>
                         <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
                             <a translate>Notes</a>
                         </li>
@@ -95,12 +99,14 @@
                     <span ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></span>
                     <!-- Company Card Tab 2 Contract -->
                     <span ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></span>
-                    <!-- Company Card Tab 3 Commissions -->
+                    <!-- Guest Card Tab 3 Statistics -->
+                    <span ng-include="'/assets/partials/companyCard/rvCompanyCardTravelAgentStatistics.html'"></span>
+                    <!-- Company Card Tab 4 Commissions -->
                     <span ng-include="'/assets/partials/companyCard/rvCompanyCardCommissions.html'" ng-controller="companyCardCommissionsCtrl"></span>
 
-                    <!-- Company Card Tab 3 Ar accounts -->
+                    <!-- Company Card Tab 5 Ar accounts -->
                     <span ng-controller="companyCardArAccountCtrl" ng-include="'/assets/partials/companyCard/rvcompanyCardArAccount.html'" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable"></span>
-                    <!-- Company Card Tab 4 AR Transactions -->
+                    <!-- Company Card Tab 6 AR Transactions -->
                     <span ng-controller="RVCompanyCardArTransactionsMainCtrl" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArTransactionsMain.html'" ng-show="(contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable) && currentSelectedTab == 'cc-ar-transactions'"></span>
                     <!-- Company - Activity Log -->
                     <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>

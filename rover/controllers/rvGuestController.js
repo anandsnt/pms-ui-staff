@@ -324,6 +324,8 @@ angular.module('sntRover').controller('guestCardController', [
             }
             else if (tab === 'activity-log') {
                 $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            } else if (tab === 'guest-statistics') {
+               $scope.$broadcast('LOAD_GUEST_STATISTICS'); 
             }
 
             $scope.$broadcast('REFRESHLIKESSCROLL');
@@ -534,6 +536,8 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
                     successCallBack: function(data) {
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                        // Used in statistics ctrl for updating the contact info
+                        $scope.$broadcast('UPDATE_CONTACT_INFO');
                     },
                     failureCallBack: function(errorMessage) {
                         $scope.errorMessage = errorMessage;

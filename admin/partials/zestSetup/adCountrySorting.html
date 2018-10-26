@@ -72,7 +72,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="country in restrictedCountriesList | filter:screenData.countrySearch" ng-class="{'red': isAnyRestrictionSelectd(country)}">
+                        <tr ng-repeat="country in restrictedCountriesList | filter: {name: screenData.countrySearch}" ng-class="{'red': isAnyRestrictionSelectd(country)}">
                             <!-- Add .red if any restriction is checked -->
                             <!-- First row is not a country but instead it's:
                             <em>No Country Defined</em>

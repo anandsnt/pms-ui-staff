@@ -247,8 +247,30 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
                 isValidDataExist = true;
             }
 
+            $scope.saveData.reservationId = $scope.reservationParentData.reservationId;
+
+            if ($scope.reservationParentData.demographics.reservationType) {
+                $scope.saveData.reservation_type_id = $scope.reservationParentData.demographics.reservationType;
+            }
+
+            if ($scope.reservationParentData.demographics.source) {
+                $scope.saveData.source_id = $scope.reservationParentData.demographics.source;
+            }
+
+            if ($scope.reservationParentData.demographics.market) {
+                $scope.saveData.market_segment_id = $scope.reservationParentData.demographics.market;
+            }
+
+            if ($scope.reservationParentData.demographics.origin) {
+                $scope.saveData.booking_origin_id = $scope.reservationParentData.demographics.origin;
+            }
+
+            if ($scope.reservationParentData.demographics.segment) {
+                $scope.saveData.segment_id = $scope.reservationParentData.demographics.segment;
+            }
+
 			if (isValidDataExist) {  // CICO-15079 : Validation for phone/email data being blank.
-				$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
+				$scope.invokeApi(RVValidateCheckinSrv.saveGuestDataAndReservationDemographics, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
 			} else {
                 $scope.errorMessage = ["Please fill the fields"];
             }
@@ -265,7 +287,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 			var unwantedKeys = ["phone"]; // remove unwanted keys for API
 
 			$scope.saveData = dclone($scope.saveData, unwantedKeys);
-			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
+			$scope.invokeApi(RVValidateCheckinSrv.saveGuestDataAndReservationDemographics, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
     /* 
      * close dialog box and reset values added
