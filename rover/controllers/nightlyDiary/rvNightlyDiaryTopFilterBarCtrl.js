@@ -16,6 +16,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+        var listeners = {};
 
         /*
          * Utility method to shift date.
@@ -76,7 +77,6 @@ angular.module('sntRover')
         };
 
         var init = function() {
-
             $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($scope.diaryData.fromDate), 'yyyy-MM-dd');
             $scope.diaryData.toDate   = getDateShift( $scope.diaryData.fromDate, $scope.diaryData.numberOfDays, true, true);
             $scope.diaryData.firstMonthDateList = [];
@@ -95,7 +95,7 @@ angular.module('sntRover')
             });
         };
         // Catching event from date picker controller while date is changed.
-        $scope.$on('DATE_CHANGED', function () {
+        listeners['DATE_CHANGED'] = $scope.$on('DATE_CHANGED', function () {
             var isRightShift = true;
 
             if ($scope.diaryData.numberOfDays === 7) {
@@ -107,7 +107,7 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
-        $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
+        listeners['FETCH_COMPLETED_DATE_LIST_DATA'] = $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
             $scope.diaryData.hasMultipleMonth = checkDateRangeHaveMultipleMonths();
         });
 
@@ -184,4 +184,8 @@ angular.module('sntRover')
 
         init();
 
+        // destroying listeners
+        angular.forEach(listeners, function(listener) {
+            $scope.$on('$destroy', listener);
+        });
 }]);

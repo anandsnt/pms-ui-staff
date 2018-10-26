@@ -36,7 +36,8 @@ angular.module('sntRover')
                 document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                 document.addEventListener('touchmove', window.touchmovestoppropogate, false);
             });
-            var isFromStayCard = $stateParams.isFromStayCard === 'true';
+            var isFromStayCard = $stateParams.isFromStayCard === 'true',
+                listeners = {};
 
             /*
              * utility method Initiate controller
@@ -324,13 +325,13 @@ angular.module('sntRover')
             /*
              * Cancel button click edit bar
              */
-            $scope.$on("CANCEL_RESERVATION_EDITING", function() {
+            listeners['CANCEL_RESERVATION_EDITING'] = $scope.$on("CANCEL_RESERVATION_EDITING", function() {
                 cancelReservationEditing();
             });
             /*
              * Save button click edit bar
              */
-            $scope.$on("SAVE_RESERVATION_EDITING", function() {
+            listeners['SAVE_RESERVATION_EDITING'] = $scope.$on("SAVE_RESERVATION_EDITING", function() {
                 saveReservationEditing();
             });
 
@@ -338,7 +339,7 @@ angular.module('sntRover')
              * To update diary data - rooms & reservations according to changed date constraints.
              * @param {Number} RoomId - selected room id from search filters.
             */
-            $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
+            listeners['UPDATE_RESERVATIONLIST'] = $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
                 if (!!roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                 }
@@ -346,7 +347,7 @@ angular.module('sntRover')
                 fetchRoomListDataAndReservationListData(roomId);
             });
 
-            $scope.$on('UPDATE_UNASSIGNED_RESERVATIONLIST', function() {
+            listeners['UPDATE_UNASSIGNED_RESERVATIONLIST'] = $scope.$on('UPDATE_UNASSIGNED_RESERVATIONLIST', function() {
                 fetchUnassignedReservationList();
             });
 
@@ -354,7 +355,7 @@ angular.module('sntRover')
              * To refresh diary data - rooms & reservations.
              * @param {Number} RoomId - selected room id from search filters.
             */
-            $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
+            listeners['REFRESH_DIARY_ROOMS_AND_RESERVATIONS'] =  $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
                 $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                 $scope.diaryData.showFilterPanel = true;
                 cancelReservationEditing();
@@ -364,7 +365,7 @@ angular.module('sntRover')
             /* Handle event emitted from child controllers.
              * To toggle unassigned list and filter.
              */
-            $scope.$on('TOGGLE_FILTER', function( event ) {
+            listeners['TOGGLE_FILTER'] = $scope.$on('TOGGLE_FILTER', function( event ) {
                 $scope.diaryData.isRightFilterActive = !$scope.diaryData.isRightFilterActive;
             });
 
@@ -372,10 +373,15 @@ angular.module('sntRover')
              * Handle event emitted from child controller.
              * To refresh diary data - rooms and reservations after applying filter.
              */
-            $scope.$on('REFRESH_DIARY_SCREEN', function() {
+            listeners['REFRESH_DIARY_SCREEN'] = $scope.$on('REFRESH_DIARY_SCREEN', function() {
                 $scope.diaryData.paginationData.page = 1;
                 fetchRoomListDataAndReservationListData();
                 cancelReservationEditing();
+            });
+            
+            // destroying listeners
+            angular.forEach(listeners, function(listener) {
+                $scope.$on('$destroy', listener);
             });
 
             /**
