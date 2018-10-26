@@ -95,12 +95,9 @@ sntRover.controller('RVAutoChargeController',
                  */
                 setParamsAndFetchAutoCharge = function() {
                     if ( isFromStayCard ) {
-                        $scope.filters = {
-                            status: RVAutoChargeSrv.getParams().status,
-                            due_date: RVAutoChargeSrv.getParams().due_date
-                        };
-                        $scope.due_date = $filter('date')(tzIndependentDate( RVAutoChargeSrv.getParams().due_date ), $rootScope.dateFormat);
-                        $scope.fetchAutoCharge(RVAutoChargeSrv.getParams().page_no);
+                        $scope.filters = RVAutoChargeSrv.getParams().filters;
+                        $scope.due_date = RVAutoChargeSrv.getParams().due_date;
+                        $scope.fetchAutoCharge($scope.filters.page_no);
                     } else {
                         $scope.filters = {
                             status: 'ALL',
@@ -217,8 +214,13 @@ sntRover.controller('RVAutoChargeController',
                     status: $scope.filters.status,
                     due_date: $scope.filters.due_date,
                     per_page: $scope.paginationConfig.perPage
-                };
+                    },
+                    stateData = {
+                        filters: params,
+                        due_date: $scope.due_date
+                    };
 
+                RVAutoChargeSrv.setStateData(stateData);
                 var options = {
                     params: params,
                     successCallBack: function(response) {
