@@ -175,7 +175,8 @@ sntRover.controller('reservationDetailsController',
 					id: $vault.get('cardId'),
 					type: $vault.get('type'),					
 					isBackToStatistics: true,
-					isBackFromStaycard: true
+					isBackFromStaycard: true,
+					selectedStatisticsYear: $vault.get('selectedYear')
 				}
 			};
 
