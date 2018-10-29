@@ -12,7 +12,7 @@
                 </select>
             </div>
         </div>
-        <div class="sidebar-content scrollable" ng-iscroll="sidebarScroller">
+        <div class="sidebar-content scrollable" ng-iscroll="guest-sidebar-scroller">
             <div class="wrapper">
                 <!-- if we don't have data in the month add .no-data -->
                 <!-- if we click on it, add .open -->
@@ -53,7 +53,7 @@
                 </strong>
             </div>
         </div>
-        <div class="scrollable" ng-iscroll="monthlyDataScroller">
+        <div class="scrollable" ng-iscroll="guest-monthly-data-scroller">
             <div class="wrapper">
                 <span ng-repeat="monthlyData in statistics.details.monthly_data track by $index">
                     <div class="row">
