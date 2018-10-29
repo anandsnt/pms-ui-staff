@@ -9,7 +9,9 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
     function ($scope, $rootScope, RVGuestCardsSrv, $timeout, $vault, $state, $stateParams) {
         var listeners = [],
             SIDEBAR_SCROLLER = 'guest-sidebar-scroller',
-            MONTHLY_DATA_SCROLLER = 'guest-monthly-data-scroller';
+            MONTHLY_DATA_SCROLLER = 'guest-monthly-data-scroller',
+            SUMMARY_SIDEBAR_SCROLLER = 'guest-statistics-summary-sidebar-scroller',
+            SUMMARY_DATA_SCROLLER = 'guest-statistics-summary-data-scroller';
 
         BaseCtrl.call(this, $scope);
         StatisticsBaseCtrl.call(this, $scope, $rootScope);
@@ -99,9 +101,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 return false;
             }
             monthlyData.isOpen = !monthlyData.isOpen;
-            $timeout(function() {
-                reloadScroller();
-            }, 100);
+            reloadScroller();
         };
 
         // Handles the year dropdown change
@@ -167,16 +167,30 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                     'probeType': 3,
                     'scrollX': true
                 });
+
+                $scope.setScroller(SUMMARY_SIDEBAR_SCROLLER, {
+                    'preventDefault': false,
+                    'probeType': 3
+                });
+                $scope.setScroller(SUMMARY_DATA_SCROLLER, {
+                    'preventDefault': false,
+                    'probeType': 3,
+                    'scrollX': true
+                });
              },
             // Refreshes the two scrollers in the screen
             reloadScroller = function() {
-                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
-                    $scope.refreshScroller( SIDEBAR_SCROLLER );
-                }
-
-                if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
-                    $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
-                }
+                $timeout(function() {
+                    
+                    if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
+                        $scope.refreshScroller( SIDEBAR_SCROLLER );
+                    }
+    
+                    if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
+                        $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
+                    }
+                }, 200);
+                
             },
             // Set up scroll listeners for left and right pane
             setUpScrollListner = function() {
