@@ -54,7 +54,8 @@ module.exports = {
             'de-blend': [themeCSSRoot + 'de-blend.less'],
             'anthony': [themeCSSRoot + 'anthony.less'],
             'stewart': [themeCSSRoot + 'stewart.less'],
-            'university-inn': [themeCSSRoot + 'university-inn.less']
+            'university-inn': [themeCSSRoot + 'university-inn.less'],
+            'cedar-court': [themeCSSRoot + 'cedar-court.less']
         };
     }
 };

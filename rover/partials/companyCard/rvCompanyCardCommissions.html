@@ -101,7 +101,7 @@
         <!-- upto here -->
         <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
-            <li>{{'COMMISSION_TOTEL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue | number : 2}}</span></li>
+            <li>{{'COMMISSION_TOTEL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalCommissionableRevenue | number : 2}}</span></li>
             <li>{{'COMMISSION_TO_DATE' | translate}}<span class="value green">{{ currencySymbol }}{{commissionSummary.totalCommission | number : 2}}</span></li>
             <li>{{'COMMISSION_OWING' | translate}}<span class="value red">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission | number : 2}}</span></li>
             <li class="action no-margin">
@@ -180,7 +180,7 @@
                                 <h2>{{commissionDetail.guest_name}}</h2>
                                 <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                             </div>
-                            <div class="revenue">{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</div>
+                            <div class="revenue">{{ currencySymbol }}{{commissionDetail.commission_data.commissionable_revenue | number : 2}}</div>
                             
                             
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
