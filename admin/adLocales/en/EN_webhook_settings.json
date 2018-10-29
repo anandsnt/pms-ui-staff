@@ -17,4 +17,6 @@
 "edit_group": "EDIT GROUP",
 "create_guest": "CREATE GUEST",
 "edit_guest": "EDIT GUEST",
-"anonymize_guest": "ANONYMIZE GUEST DATA"
+"anonymize_guest": "ANONYMIZE GUEST DATA",
+"room_status": "ROOM STATUS",
+"room_status_service": "ROOM STATUS SERVICE"

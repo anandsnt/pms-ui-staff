@@ -166,7 +166,20 @@ sntRover.controller('reservationDetailsController',
             };
 
             
-        } else if ($scope.previousState.name === "rover.companycarddetails") {
+		} else if ($stateParams.isFromCardStatistics) {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'Card Statistics',
+				name: 'rover.companycarddetails',
+				param: {
+					id: $vault.get('cardId'),
+					type: $vault.get('type'),					
+					isBackToStatistics: true,
+					isBackFromStaycard: true
+				}
+			};
+
+		} else if ($scope.previousState.name === "rover.companycarddetails") {
 
             setNavigationBookMark();
             $rootScope.setPrevState = {
@@ -180,7 +193,17 @@ sntRover.controller('reservationDetailsController',
 					isBackFromStaycard: true
 				}
             };
-        } else {
+        } else if ($stateParams.isFromGuestStatistics) {			
+			$rootScope.setPrevState = {
+				title: 'Guest Statistics',
+				name: 'rover.guest.details',
+				param: {
+					guestId: $vault.get('guestId'),
+					isBackToStatistics: true					
+				}
+			};
+
+		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"

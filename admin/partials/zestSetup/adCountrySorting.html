@@ -1,12 +1,18 @@
 <section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
-    <header class="content-title float">
-        <h2 translate>COUNTRY_SORT</h2>
-        <a ng-click="goBackToPreviousState()" data-type="load-details" class="action back" ng-show="listingMode" translate>BACK_TO_ZEST_SETUP</a>
-        <a ng-click="backClicked()" data-type="load-details" class="action back" ng-hide="listingMode" translate>BACK</a>
-        <a class="action add" ng-click="addCountryToSequence()" ng-show="listingMode" translate>ADD</a>
+    <header class="content-title float as-in-pms">
+        <h2>Countries</h2>
+        <a class="action back" ng-click="backClicked()" translate>BACK_TO_ZEST_SETUP</a>
+        <a class="action add" ng-click="addCountryToSequence()" ng-show="listingMode && screenData.mode === 'SORT'" translate=>ADD</a>
+        <!-- Apply this HTML also on Countries List -->
+        <div class="actions float pull-right">
+            <!-- if active, add .orange, otherwise remove add .white -->
+            <button type="button" ng-click="changeModeToSortingList()" class="button add-data-inline toggle-tab" ng-class="{'orange': screenData.mode === 'SORT', 'white': screenData.mode === 'RESTRICTIONS'}">Sorted List</button>
+            <!-- if active, add .orange, otherwise remove add .white -->
+            <button type="button" ng-click="changeModeToRestrictionList()" class="button add-data-inline toggle-tab" ng-class="{'orange': screenData.mode === 'RESTRICTIONS', 'white': screenData.mode === 'SORT'}">Restrictions</button>
+        </div>
     </header>
     <!-- list mode -->
-    <section class="content-scroll" ng-show="listingMode">
+    <section class="content-scroll" ng-show="listingMode && screenData.mode === 'SORT'">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <ol ui-sortable="sortableOptions" ng-model="sortedCountries" class="cms-tree">
@@ -21,28 +27,91 @@
         </ol>
     </section>
     <!-- country add mode -->
-    <section class="content-scroll" ng-hide="listingMode">
+    <section class="content-scroll" ng-show="!listingMode && screenData.mode === 'SORT'">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <!--- form starts here -->
         <form style="overflow-y:auto;" class="form float inline-form">
             <fieldset class="holder left">
                 <div class="entry">
-                <label for="hotel-country"> Country <strong>*</strong> </label>
-                <div class="select">
-                    <select ng-model="countrySelected" name="hotel-country" id="hotel-country" class="placeholder">
-                        <option value=""> Country </option>
-                        <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected" disabled> {{country.name}} </option>
-                        <option value="" ng-show="sortedCountries.length > 0" disabled> ---------- </option>
-                        <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
-                    </select>
+                    <label for="hotel-country"> Country <strong>*</strong> </label>
+                    <div class="select">
+                        <select ng-model="countrySelected" name="hotel-country" id="hotel-country" class="placeholder">
+                            <option value=""> Country </option>
+                            <option ng-repeat="country in sortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected" disabled> {{country.name}} </option>
+                            <option value="" ng-show="sortedCountries.length > 0" disabled> ---------- </option>
+                            <option ng-repeat="country in unSortedCountries" value="{{country.id}}" ng-selected="country.id==countrySelected"> {{country.name}} </option>
+                        </select>
+                    </div>
                 </div>
-            </div>
             </fieldset>
             <div class="actions float">
                 <button type="button" ng-click="backClicked()" class="button blank add-data-inline actions_margin_top" translate="CANCEL"></button>
                 <button type="button" ng-click="saveCountry()" class="button green actions_margin_top" translate="SAVE_CHANGES"></button>
             </div>
+        </form>
+    </section>
+    <section class="content-scroll" ng-show="screenData.mode === 'RESTRICTIONS'">
+        <form class="form float">
+            <fieldset class="holder full-width holder_margin">
+                <div class="form-title no-border with-search">
+                    <h3><span>Unsubscribe</span> from receiving emails</h3>
+                    <div class="entry search">
+                        <span class="icons icon-search"></span>
+                        <input autocomplete="off" placeholder="Search Countries" type="text" ng-model="screenData.countrySearch">
+                    </div>
+                </div>
+                <table id="hotel-zest-countries" class="grid datatable unsubscription-list">
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            <th class="restriction">Check-in</th>
+                            <th class="restriction medium">Check-out</th>
+                            <th class="restriction wide">Room ready</th>
+                            <th class="restriction short">All</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="country in restrictedCountriesList | filter: {name: screenData.countrySearch}" ng-class="{'red': isAnyRestrictionSelectd(country)}">
+                            <!-- Add .red if any restriction is checked -->
+                            <!-- First row is not a country but instead it's:
+                            <em>No Country Defined</em>
+                        -->
+                            <td ng-show="country.country_id">
+                                {{ country.name }}
+                            </td>
+                            <td ng-hide="country.country_id">
+                                <em> {{ country.name }} </em>
+                            </td>
+                            <td class="restriction">
+                                <label class="checkbox inline" ng-click="toggleSubscription(country,'check_in')">
+                                    <span class="icon-form icon-checkbox" ng-class="{'checked': country.check_in }"></span>
+                                    <input type="checkbox" />
+                                </label>
+                            </td>
+                            <td class="restriction medium">
+                                <label class="checkbox inline" ng-click="toggleSubscription(country,'check_out')">
+                                    <span class="icon-form icon-checkbox" ng-class="{'checked': country.check_out }"></span>
+                                    <input type="checkbox" />
+                                </label>
+                            </td>
+                            <td class="restriction wide">
+                                <label class="checkbox inline" ng-click="toggleSubscription(country,'room_ready')">
+                                    <span class="icon-form icon-checkbox" ng-class="{'checked': country.room_ready }"></span>
+                                    <input type="checkbox" />
+                                </label>
+                            </td>
+                            <td class="restriction short">
+                                <!-- if this 'All' is checked, then check all other checkboxes also -->
+                                <label class="checkbox inline" ng-click="toggleAllSubscription(country)">
+                                    <span class="icon-form icon-checkbox" ng-class="{'checked': areAllRestrictionSelectd(country)}"></span>
+                                    <input type="checkbox" />
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
         </form>
     </section>
 </section>
