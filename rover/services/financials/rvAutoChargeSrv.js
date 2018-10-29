@@ -6,13 +6,13 @@ angular.module('sntRover').service('RVAutoChargeSrv',
 
             var that = this;
 
-            that.params = {};
-            that.getParams = function() {
-                return that.params;
+            that.stateData = {};
+            that.getStateData = function() {
+                return that.stateData;
             };
 
-            that.setParams = function(params) {
-                that.params = params;
+            that.setStateData = function(data) {
+                that.stateData = data;
             };
             /*
              * Service function to fetch Accounts Receivables
@@ -20,9 +20,6 @@ angular.module('sntRover').service('RVAutoChargeSrv',
              */
 
             that.fetchAutoCharge = function (params) {
-
-                that.setParams(params);
-
                 var url = '/api/hotels/auto_charge_deposit_report';
 
                 return RVBaseWebSrvV2.getJSON(url, params);
