@@ -77,7 +77,7 @@
                     </tr>
 
                     <tr ng-repeat="eachDate in eachRow.dates" ng-if="$index !== 0 && $index !== (eachRow.dates.length - 1) " >
-                        <td class="tax-exempt"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
+                        <td class="tax-exempt" ng-class="{'break': !eachDate.isLastTaxExemptType}"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
                             <strong>{{eachDate.tax_exempt_type_name}}</strong>                            
                         </td>
 
