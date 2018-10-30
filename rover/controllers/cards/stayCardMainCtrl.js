@@ -527,7 +527,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 				/* CICO-20270: Redirect to rooms and rates if contracted rate was previously selected
 				 * else reload staycard after detaching card */
-				if (response.contracted_rate_was_present && removedCard !== 'guest') {
+				if (response.contracted_rate_was_present) {
 					fetchExistingAddonsAndGotoRoomRates({
 						disableBackToStaycard: true
 					});

@@ -28,8 +28,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
                 isBackToTACommission: '',
                 fromDate: '',
                 toDate: '',
-                isBackToStatistics: null,
-                selectedStatisticsYear: null
+                isBackToStatistics: null
             },
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',
