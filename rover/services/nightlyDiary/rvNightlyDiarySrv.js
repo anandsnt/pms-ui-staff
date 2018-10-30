@@ -167,4 +167,26 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
 
             return deferred.promise;
         };
-    }]);
+
+        /*
+         * Fetch unassigned reservation lists
+         * @param {data} object
+         * return object
+         */
+        this.fetchUnassignedRoomList = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/unassigned_reservations',
+                businessDate = params.businessDate;
+
+            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+                angular.forEach(data.reservations, function(item) {
+                    item.statusClass = item.arrival_date === businessDate ? 'check-in' : 'no-status';
+                });
+                deferred.resolve(data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+    }
+]);

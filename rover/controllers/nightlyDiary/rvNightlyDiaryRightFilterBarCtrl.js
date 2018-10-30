@@ -112,9 +112,12 @@ angular.module('sntRover')
 				$scope.diaryData.selectedRoomCount = 0;
 			};
 
-			$scope.$on('RESET_RIGHT_FILTER_BAR', function() {
+			var listener = $scope.$on('RESET_RIGHT_FILTER_BAR', function() {
 				resetFilters();
 			});
 
 			initiate();
+			
+			// destroying listener
+			$scope.$on('$destroy', listener);
 }]);
