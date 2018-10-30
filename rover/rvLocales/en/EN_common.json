@@ -91,4 +91,5 @@
     "DOB": "Date of Birth",
     "NATIONALITY": "Nationality",
     "ID_NUMBER": "ID Number",
-    "ID_EXPIRY": "ID Expiry"
+    "ID_EXPIRY": "ID Expiry",
+    "STATISTICS": "Statistics"

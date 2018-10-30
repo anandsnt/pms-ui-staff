@@ -94,7 +94,7 @@
             <ad-checkbox div-class="actions_margin_top" hide="{{!rateData.commission_details.is_on}}" is-checked="rateData.commission_details.is_prepaid" label="{{ 'PREPAID' | translate }}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
             <div class="entry full-width" ng-hide="!rateData.commission_details.is_on">
                 <div class=" select-col col1-3 actions_margin_top">
-                    <ad-textbox inputtype="text" value="rateData.commission_details.value" styleclass="col1-3" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_details.value"></ad-textbox>
+                    <ad-textbox inputtype="text" value="rateData.commission_details.value" label="" placeholder="" style=" width: 66px;" ng-model="rateData.commission_details.value"></ad-textbox>
                 </div>
                 <div class="select select-col col1-4">
                     <select class="styled" value="rateData.commission_details.type" ng-model="rateData.commission_details.type">

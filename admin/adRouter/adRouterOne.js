@@ -167,7 +167,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 
 		$stateProvider.state('admin.zestSortedCountryList', {
 			templateUrl: '/assets/partials/zestSetup/adCountrySorting.html',
-			controller: 'ADCountrySortCtrl',
+			controller: 'ADCountrySortAndRestrictionCtrl',
 			url: '/countrySort'
 		});
 
