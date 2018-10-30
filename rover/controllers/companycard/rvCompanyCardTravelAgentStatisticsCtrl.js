@@ -7,12 +7,10 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
     '$state',
     '$stateParams',
     function ($scope, $rootScope, RVCompanyCardSrv, $timeout, $vault, $state, $stateParams) {
-        var listeners = [],
-            SIDEBAR_SCROLLER = 'cc-sidebar-scroller',
-            MONTHLY_DATA_SCROLLER = 'cc-monthly-data-scroller';
+        var listeners = [];
 
         BaseCtrl.call(this, $scope);
-        StatisticsBaseCtrl.call(this, $scope, $rootScope);        
+        StatisticsBaseCtrl.call(this, $scope, $rootScope, $timeout);        
 
         // Load the cc/ta statistics summary
         var loadStatisticsSummary = function() {
@@ -38,11 +36,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 var onStatisticsDetailsFetchSuccess = function(data) {
                         $scope.statistics.details = data;
                         $scope.statistics.details.monthly_data = $scope.statistics.details.monthly_data.reverse();
-                        $timeout(function() {
-                            reloadScroller();
-                            
-                        }, 500);
-                        isScrollReady();
+                        $scope.reloadScroller();
                     },
                     onStatistcsDetailsFetchFailure = function() {
                         $scope.statistics.details = {};
@@ -64,7 +58,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                                                         loadStatisticsSummary();
                                                     }),
                     contactInfoUpdateListener = $scope.$on('UPDATE_CONTACT_INFO', function() {
-                                                    setUpData();    
+                                                    init();    
                                                 });
 
                 listeners.push(statisticsTabActivateListener);
@@ -90,13 +84,13 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             };
 
         // Set statistics tab active view - summary | details
-        $scope.setActiveView = function(view, year) {
+        $scope.setActiveView = function( view ) {
             $scope.activeView = view;
 
             if ( view === 'details') {
-                $scope.filterData.selectedYear =  year || $scope.getCurrentYear();
-                configureScroller();
-                isScrollReady();
+                $scope.filterData.selectedYear =  $scope.getCurrentYear();
+                $scope.configureScroller();
+                $scope.isScrollReady();
                 populateYearDropDown();
                 loadStatisticsDetails();
             } else {
@@ -112,7 +106,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 return false;
             }
             monthlyData.isOpen = !monthlyData.isOpen;
-            reloadScroller();
+            $scope.reloadScroller();
         };
 
         // Processes the year change event
@@ -137,7 +131,6 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
 
             $vault.set('cardId', $scope.accountId);
             $vault.set('type', $scope.contactInformation.account_details.account_type);
-            $vault.set('selectedYear', $scope.filterData.selectedYear);
             $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
                 id: reservation.reservation_id,
                 confirmationId: reservation.confirmation_no,
@@ -156,78 +149,27 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             return shouldHide;
         };
 
-        // Set up the data required during initialization
-        var setUpData = function() {                
-                $scope.statistics = {
-                    summary: {},
-                    details: {}
-                };
-                $scope.accountId = getAccountId();
-                $scope.currentYear = $scope.getCurrentYear();
-
-                populateYearDropDown();
-                configureScroller();
-                isScrollReady();
-            },
-            // Configure the left and right scroller
-            configureScroller = function() { 
-                $scope.setScroller(SIDEBAR_SCROLLER, {
-                    'preventDefault': false,
-                    'probeType': 3
-                });
-                $scope.setScroller(MONTHLY_DATA_SCROLLER, {
-                    'preventDefault': false,
-                    'probeType': 3,
-                    'scrollX': true
-                });
-            },
-            // Refreshes the two scrollers in the screen
-            reloadScroller = function() {
-                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
-                    $scope.refreshScroller( SIDEBAR_SCROLLER );
-                }
-
-                if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
-                    $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
-                }
-            },
-            // Set up scroll listeners for left and right pane
-            setUpScrollListner = function() {
-                $scope.myScroll[ SIDEBAR_SCROLLER ]
-                    .on('scroll', function() {
-                        $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
-                            .scrollTo( 0, this.y );
-                    });
-
-                $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
-                    .on('scroll', function() {
-                        $scope.myScroll[ SIDEBAR_SCROLLER ]
-                            .scrollTo( 0, this.y );
-                    });
-            },
-            // Check whether scroll is ready
-            isScrollReady = function () {
-                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
-                    setUpScrollListner();
-                } else {
-                    $timeout(isScrollReady, 1000);
-                }
-            };
 
         // Initialize the controller
         var init = function() {
             $scope.activeView = "summary";
+            $scope.statistics = {
+                summary: {},
+                details: {}
+            };
+            $scope.accountId = getAccountId();
             $scope.filterData = {
                 selectedYear: $scope.getCurrentYear() - 1  
             };
-            setUpData();
-            if ($stateParams.isBackFromStaycard) {
-                $scope.filterData.selectedYear = $stateParams.selectedStatisticsYear ? $stateParams.selectedStatisticsYear : $scope.filterData.selectedYear;
-                $scope.setActiveView('details', $scope.filterData.selectedYear);
-            } else {
-                $scope.setActiveView('summary');
-            } 
 
+            $scope.currentYear = $scope.getCurrentYear();
+
+            if ($stateParams.isBackFromStaycard) {
+                $scope.setActiveView('summary');
+            }            
+            populateYearDropDown();
+            $scope.configureScroller();
+            $scope.isScrollReady();
             setListeners();
             destroyListeners();
         };

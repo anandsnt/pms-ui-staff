@@ -1,6 +1,8 @@
 
-var StatisticsBaseCtrl = function ($scope, $rootScope) {
-
+var StatisticsBaseCtrl = function ($scope, $rootScope, $timeout) {
+    var SIDEBAR_SCROLLER = 'sidebarScroller',
+        MONTHLY_DATA_SCROLLER = 'monthlyDataScroller';
+        
     // Get icon class based on the variance value
     $scope.getStatusIconClass = function( value ) {
         var iconClass = 'neutral';
@@ -45,12 +47,57 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
         return '';
     };
 
+    // Configure the left and right scroller
+    $scope.configureScroller = function() {            
+        $scope.setScroller(SIDEBAR_SCROLLER, {
+            'preventDefault': false,
+            'probeType': 3
+        });
+
+        $scope.setScroller(MONTHLY_DATA_SCROLLER, {
+            'preventDefault': false,
+            'probeType': 3,
+            'scrollX': true
+        });
+    };
+
+    // Refreshes the two scrollers in the screen
+    $scope.reloadScroller = function() {
+        $timeout(function() {
+            $scope.refreshScroller(SIDEBAR_SCROLLER);
+            $scope.refreshScroller(MONTHLY_DATA_SCROLLER);
+        }, 200);                
+    };
+
     // Get the current year
     $scope.getCurrentYear = function() {
         var businessDate = tzIndependentDate($rootScope.businessDate),
             currentYear = businessDate.getFullYear();
 
         return currentYear;
+    };
+
+    // Set up scroll listeners for left and right pane
+    $scope.setUpScrollListner = function() {
+        $scope.myScroll[ SIDEBAR_SCROLLER ]
+            .on('scroll', function() {
+                $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
+                    .scrollTo( 0, this.y );
+            });
+
+        $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
+            .on('scroll', function() {
+                $scope.myScroll[ SIDEBAR_SCROLLER ]
+                    .scrollTo( 0, this.y );
+            });
+    };
+    // Check whether scroll is ready
+    $scope.isScrollReady = function () {
+        if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
+            $scope.setUpScrollListner();
+        } else {
+            $timeout($scope.isScrollReady, 1000);
+        }
     };
 
     // Creates the year dropdown options

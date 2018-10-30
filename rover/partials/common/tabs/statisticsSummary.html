@@ -36,7 +36,7 @@
                     <span class="{{getStatusIconClass(statistics.summary.stay_count.change_percent)}}"></span>
                     {{absVal(statistics.summary.stay_count.change_percent) | number: 2}}%
                 </div>
-                {{statistics.summary.stay_count.ytd}}
+                {{absVal(statistics.summary.stay_count.ytd)}}
             </div>
             <div class="column">{{statistics.summary.stay_count.total}}</div>
         </div> 
