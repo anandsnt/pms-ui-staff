@@ -16,6 +16,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+        var listeners = {};
 
         /*
          * Utility method to shift date.
@@ -76,12 +77,12 @@ angular.module('sntRover')
         };
 
         var init = function() {
-
             $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($scope.diaryData.fromDate), 'yyyy-MM-dd');
             $scope.diaryData.toDate   = getDateShift( $scope.diaryData.fromDate, $scope.diaryData.numberOfDays, true, true);
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
+            $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
         };
 
         // Show calendar popup.
@@ -94,7 +95,7 @@ angular.module('sntRover')
             });
         };
         // Catching event from date picker controller while date is changed.
-        $scope.$on('DATE_CHANGED', function () {
+        listeners['DATE_CHANGED'] = $scope.$on('DATE_CHANGED', function () {
             var isRightShift = true;
 
             if ($scope.diaryData.numberOfDays === 7) {
@@ -106,7 +107,7 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
-        $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
+        listeners['FETCH_COMPLETED_DATE_LIST_DATA'] = $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
             $scope.diaryData.hasMultipleMonth = checkDateRangeHaveMultipleMonths();
         });
 
@@ -123,6 +124,7 @@ angular.module('sntRover')
                 $scope.diaryData.numberOfDays = 21;
             }
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         /*
@@ -154,6 +156,7 @@ angular.module('sntRover')
 
             calculateFromDateAndToDate(isRightShift);
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         // To handle click on right date shift.
@@ -162,6 +165,7 @@ angular.module('sntRover')
 
             calculateFromDateAndToDate(isRightShift);
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         // To handle click on reset button.
@@ -170,24 +174,18 @@ angular.module('sntRover')
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
         };
 
-        // To toggle filter panel view.
-        $scope.togglePanelView = function() {
-            // if ($scope.diaryData.showFilterPanel) {
-            //     $scope.diaryData.showFilterPanel = false;
-            //     $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
-            // } else {
-            //     $scope.diaryData.showFilterPanel = true;
-            // }
-            $scope.diaryData.showFilterPanel = !$scope.diaryData.showFilterPanel;
-            $scope.diaryData.showUnassignedReservations = false;
-        };
-
-        // Handle click on unassigned filter button
-        $scope.toggleUnassignedReservations = function() {
-            $scope.diaryData.showUnassignedReservations = !$scope.diaryData.showUnassignedReservations;
-            $scope.diaryData.showFilterPanel = false;
+        // To toggle filter and unassigned list.
+        $scope.toggleFilter = function(activeTab) {
+            if($scope.diaryData.rightFilter !== activeTab){
+                $scope.diaryData.rightFilter = activeTab;
+                $scope.$emit('TOGGLE_FILTER');
+            }  
         };
 
         init();
 
+        // destroying listeners
+        angular.forEach(listeners, function(listener) {
+            $scope.$on('$destroy', listener);
+        });
 }]);

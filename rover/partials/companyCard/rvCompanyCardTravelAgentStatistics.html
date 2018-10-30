@@ -1,8 +1,8 @@
 <!-- CC/TA Card Tab - Statistics -->
-<form method="post" id="gc-statistics" name="statistics" class="form card-tab card-statistics" ng-controller="RVCompanyCardTravelAgentStatisticsController" ng-if="currentSelectedTab === 'statistics'">
+<form method="post" id="gc-statistics" name="statistics" class="form card-tab card-statistics" ng-controller="RVCompanyCardTravelAgentStatisticsController" ng-show="currentSelectedTab === 'statistics'">
         <!--common header for fullscreen mode-->
         <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
         <div include-replace ng-include="'/assets/partials/common/tabs/statisticsSummary.html'" ></div>
-        <div include-replace ng-include="'/assets/partials/companyCard/rvCompanyCardTravelAgentStatisticsDetails.html'"></div>
+        <div include-replace ng-include="'/assets/partials/common/tabs/statisticsDetails.html'"></div>
     </form>
     
