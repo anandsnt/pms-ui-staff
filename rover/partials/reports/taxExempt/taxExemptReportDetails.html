@@ -38,11 +38,11 @@
                             <div class="dates">
                                 <div class="date">
                                     <span class="icons time check-in"></span>
-                                    <span>{{eachRow.arrival_date}}</span>
+                                    <span>{{eachRow.arrival_date | date:dateFormat}}</span>
                                 </div>
                                 <div class="date">
                                     <span class="icons time check-out"></span>
-                                    <span>{{eachRow.departure_date}}</span>
+                                    <span>{{eachRow.departure_date | date:dateFormat}}</span>
                                 </div>
                             </div>
                             
@@ -67,7 +67,7 @@
                             <strong>{{eachRow.dates[0].tax_exempt_type_name}}</strong>
                         </td>
                         <td class="date">
-                            <strong>{{eachRow.dates[0].date}}</strong>
+                            <strong>{{eachRow.dates[0].date | date:dateFormat}}</strong>
                             <span class="reference">{{eachRow.dates[0].date | date:'EEEE'}}</span>
                         </td>
                         <td class="rate">
@@ -77,12 +77,12 @@
                     </tr>
 
                     <tr ng-repeat="eachDate in eachRow.dates" ng-if="$index !== 0 && $index !== (eachRow.dates.length - 1) " >
-                        <td class="tax-exempt"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
+                        <td class="tax-exempt" ng-class="{'break': !eachDate.isLastTaxExemptType}"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
                             <strong>{{eachDate.tax_exempt_type_name}}</strong>                            
                         </td>
 
                         <td class="date">
-                            <strong>{{eachDate.date}}</strong><span class="reference">{{eachDate.date | date:'EEEE'}}</span>
+                            <strong>{{eachDate.date | date:dateFormat}}</strong><span class="reference">{{eachDate.date | date:'EEEE'}}</span>
                         </td>
                         <td class="rate">
                             <strong><span class="currency">{{currencySymbol}}</span>{{eachDate.rate_amount}}</strong><span class="reference">{{eachDate.rate_name}}</span>
@@ -93,7 +93,7 @@
                             <strong>{{eachRow.dates[eachRow.dates.length - 1].tax_exempt_type_name}}</strong>                            
                         </td>
                         <td class="date">
-                            <strong>{{eachRow.dates[eachRow.dates.length - 1].date}}</strong><span class="reference">{{eachRow.dates[eachRow.dates.length - 1].date | date:'EEEE'}}</span>
+                            <strong>{{eachRow.dates[eachRow.dates.length - 1].date | date:dateFormat}}</strong><span class="reference">{{eachRow.dates[eachRow.dates.length - 1].date | date:'EEEE'}}</span>
                         </td>
                         <td class="rate">
                             <strong><span class="currency"></span> - </strong><span class="reference"></span>
