@@ -173,22 +173,25 @@ sntRover.controller('companyCardCommissionsCtrl', [
         var updateCommissionSummary = function(commissionList) {
             var unpaidCommission = 0,
                 totalRevenue = 0,
-                totalCommission = 0;
+                paidCommission = 0;
 
             commissionList.forEach(function(commission) {
                 if (!isEmptyObject(commission.commission_data)) {
-                    if (commission.commission_data.paid_status == 'Unpaid') {
+                    if (commission.commission_data.paid_status === 'Unpaid' ||
+                        commission.commission_data.paid_status === 'On Hold') {
                         unpaidCommission += commission.commission_data.amount;
+                    } else {
+                        // count in Paid and Prepaid commission
+                        paidCommission += commission.commission_data.amount;
                     }
-                    totalCommission += commission.commission_data.amount;
                 }
 
-                totalRevenue += commission.reservation_revenue;
+                totalRevenue += commission.commissionable_revenue;
             });
 
             $scope.commissionSummary.totalUnpaidCommission = unpaidCommission;
             $scope.commissionSummary.totalRevenue = totalRevenue;
-            $scope.commissionSummary.totalCommission = totalCommission;
+            $scope.commissionSummary.totalCommission = paidCommission;
         };
 
     // Selecting individual record checkbox
