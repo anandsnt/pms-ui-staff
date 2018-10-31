@@ -97,6 +97,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.confirmImages = function() {
 		$scope.screenData.scanMode = screenModes.analysing_id_data;
 		sntIDCollectionSrv.getResults().then(function(response) {
+			$log.info(response);
 			$scope.screenData.scanMode = screenModes.final_id_results;
 			$scope.screenData.idDetails = response;
 			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});

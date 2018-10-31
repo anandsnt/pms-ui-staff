@@ -235,9 +235,15 @@
                         </div>
                      </div>
                      <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Nationality Code</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.nationality_code }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
                         <label for="staticEmail" class="col-sm-6 col-form-label">Doument class</label>
                         <div class="col-sm-6">
-                           {{ screenData.idDetails.document_class }}
+                           {{ screenData.idDetails.document_class_name }}
                         </div>
                      </div>
                      <div class="form-group row">
@@ -249,7 +255,7 @@
                      <div class="form-group row">
                         <label for="staticEmail" class="col-sm-6 col-form-label">ID expiry Date</label>
                         <div class="col-sm-6">
-                           {{ screenData.idDetails.expiry_date }}
+                           {{ screenData.idDetails.expiration_date }}
                         </div>
                      </div>
                   </form>
