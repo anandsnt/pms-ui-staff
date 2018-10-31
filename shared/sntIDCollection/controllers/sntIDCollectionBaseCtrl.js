@@ -99,7 +99,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		sntIDCollectionSrv.getResults().then(function(response) {
 			$log.info(response);
 			$scope.screenData.scanMode = screenModes.final_id_results;
-			$scope.screenData.idDetails = response;
+			$scope.screenData.idDetails = response.Fields;
+			$scope.screenData.idDetails.iDAuthenticationStatus = sntIDCollectionUtilsSrv.retrieveAuthenticationStatus(response.Result);
+			$scope.screenData.idDetails.expirationStatus = sntIDCollectionUtilsSrv.isIDExpired(response.Alerts) ? 'Expired' : 'Unexpired';
 			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
 		}, function(response) {
 			$log.error(response);

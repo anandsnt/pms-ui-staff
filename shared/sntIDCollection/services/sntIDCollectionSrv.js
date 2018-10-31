@@ -225,9 +225,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 			data: {},
 			headers: apiRequestHeader
 		}).then(function(response) {
-			var idResponse = response.data && response.data.Fields ? sntIDCollectionUtilsSrv.formatData(response.data.Fields) : {};
+			response.data.Fields = response.data.Fields ? sntIDCollectionUtilsSrv.formatData(response.data.Fields) : {};
 
-			deferred.resolve(idResponse);
+			deferred.resolve(response.data);
 		}, function(error) {
 			deferred.reject(error);
 		});

@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function() {
+angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($filter) {
 
 	var that = this;
 
@@ -95,5 +95,45 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function() 
 		var imageData = dataurl ? that.dataURLtoBlob(dataurl) : '';
 		
 		return imageData;
+	};
+
+	this.retrieveAuthenticationStatus = function(idAuthentication) {
+
+		var idAuthentication = null;
+
+		switch (idAuthentication) {
+			case 0:
+				idAuthentication = 'Unknown';
+				break;
+			case 1:
+				idAuthentication = 'Passed';
+				break;
+			case 2:
+				idAuthentication = 'Failed';
+				break;
+			case 3:
+				idAuthentication = 'Skipped';
+				break;
+			case 4:
+				idAuthentication = 'Caution';
+				break;
+			case 5:
+				idAuthentication = 'Attention';
+				break;
+			default:
+				idAuthentication = 'Unknown';
+				break;
+		}
+
+		return idAuthentication;
+	};
+
+	this.isIDExpired = function(alerts) {
+		var expirationAlert = $filter('filter')(alerts, {
+			Key: 'Document Expired'
+		}, true)[0];
+		var isDocumentExpired = expirationAlert ? (expirationAlert.Result === 4 || expirationAlert.Result === 5) : false;
+		
+		return isDocumentExpired;
 	};
 });
