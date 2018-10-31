@@ -85,4 +85,47 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
         }
     };
 
+    // Get style class based on reservation status
+    $scope.getReservationClass = function(reservation) {
+        var className = '', 
+            rStatus = reservation.reservation_status.toUpperCase();
+  
+        switch (rStatus) {
+          case 'RESERVED':
+            className = 'arrival';
+            break;
+  
+          case 'CHECKING_IN':
+            className = 'check-in';
+            break;
+  
+          case 'CHECKEDIN':
+            className = 'inhouse';
+            break;
+  
+          case 'CHECKING_OUT':
+            className = 'check-out';
+            break;
+  
+          case 'CHECKEDOUT':
+            className = 'departed';
+            break;
+  
+          case 'CANCELED':
+            className = 'cancel';
+            break;
+  
+          case 'NOSHOW':
+          case 'NOSHOW_CURRENT':
+            className = 'no-show';
+            break;
+  
+          default:
+            className = '';
+            break;
+        }
+  
+        return className;
+      };
+
 };

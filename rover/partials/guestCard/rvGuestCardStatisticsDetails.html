@@ -87,7 +87,7 @@
                                 <a class="faux-anchor" ng-click="navigateToStayCard(reservation)" ng-class="{'no-arrow': shouldShowNavigation()}">
                                     <div class="data">
                                         <!-- add .grey if we have no room/cancelled-->
-                                        <h2 ng-class="{'grey': reservation.is_cancelled || !reservation.room_no}">
+                                        <h2 ng-class="{'grey': reservation.is_cancelled || reservation.reservation_status === 'NOSHOW'}">
                                             <span>{{reservation.last_name}}</span>, <span>{{reservation.first_name}}</span>
                                         </h2>
                                         <span class="confirmation">
@@ -102,7 +102,7 @@
                                         </time>
                                     </div>
                                     <div class="guest-date departure">
-                                        <span class="guest-status small-icon check-out"></span>
+                                        <span class="guest-status small-icon {{getReservationClass(reservation)}}"></span>
                                         <time datetime="">
                                             <span class="date">{{reservation.departure_date| date : dateFormat}}</span>
                                             <span class="time">{{reservation.departure_time}}</span>
