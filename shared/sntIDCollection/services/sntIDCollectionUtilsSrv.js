@@ -41,8 +41,8 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function() 
 	this.formatData = function(fields) {
 		var formatedData = {};
 		var dateFormmater = function(val) {
-				return val ? moment(that.processDate(val)).utc().format('DD-MM-YYYY') : ''
-			};
+			return val ? moment(that.processDate(val)).utc().format('DD-MM-YYYY') : '';
+		};
 		var customFormatters = {
 			'Birth Date': dateFormmater,
 			'Expiration Date': dateFormmater
