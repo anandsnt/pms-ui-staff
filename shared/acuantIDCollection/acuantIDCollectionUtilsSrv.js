@@ -41,7 +41,7 @@ angular.module('acuantIDCollection').service('acuantIDCollectionUtilsSrv', funct
 	this.formatData = function(fields) {
 		var formatedData = {};
 
-		angular.forEach(fields, function(field, key) {
+		angular.forEach(fields, function(field) {
 			if (field.Key === 'Birth Date') {
 				formatedData.birth_date = field.Value ? moment(that.processDate(field.Value)).utc().format('DD-MM-YYYY') : '';
 			} else if (field.Key === 'Expiration Date') {
@@ -102,5 +102,5 @@ angular.module('acuantIDCollection').service('acuantIDCollectionUtilsSrv', funct
 		var imageData = dataurl ? that.dataURLtoBlob(dataurl) : '';
 		
 		return imageData;
-	}
+	};
 });

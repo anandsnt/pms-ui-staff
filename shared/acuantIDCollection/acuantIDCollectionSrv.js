@@ -53,7 +53,7 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 			}).then(function(response) {
 				validateSubscription(response.data);
 			}, function(error) {
-				deferred.reject(errorMessage);
+				deferred.reject(error);
 			});
 		} else {
 			deferred.reject(errorMessage);
@@ -134,8 +134,6 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 		return deferred.promise;
 	};
 
-
-
 	this.getImage = function(side) {
 		var deferred = $q.defer();
 
@@ -169,7 +167,7 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 		return deferred.promise;
 	};
 
-	this.getClassification = function(side) {
+	this.getClassification = function() {
 		var deferred = $q.defer();
 
 		$http({
@@ -177,7 +175,6 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 			url: acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Classification',
 			headers: apiRequestHeader
 		}).then(function(response) {
-			console.log(JSON.stringify(response.data.Type.Size)); /// 3 for passport
 			deferred.resolve(response.data);
 		}, function(error) {
 			deferred.reject(error);
@@ -239,7 +236,7 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 
 	this.deleteDocInstance = function() {
 		var deferred = $q.defer();
-		
+
 		$http({
 			method: 'DELETE',
 			url: acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID,

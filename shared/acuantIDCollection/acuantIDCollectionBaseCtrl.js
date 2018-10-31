@@ -10,6 +10,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 			needBackSideScan: false
 		};
 	};
+
 	resetSCreenData();
 
 	var getImageDetails = function() {
@@ -23,7 +24,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 					document.getElementById('back-side-image').src = base64String;
 				}
 			}
-			$scope.screenData.needBackSideScan = (response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3) ? false : true;
+			$scope.screenData.needBackSideScan = !(response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3);
 
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
 				$scope.screenData.scanMode = 'CONFIRM_ID_IMAGES';
@@ -31,6 +32,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 				$scope.screenData.scanMode = 'CONFIRM_FRON_IMAGE';
 			}
 		}, function(response) {
+			$log.error(response);
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? 'UPLOAD_FRONT_IMAGE_FAILED' : 'UPLOAD_BACK_IMAGE_FAILED';
 		});
 	};
@@ -39,14 +41,16 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 		acuantIDCollectionSrv.postBackImage($scope.screenData.backSideImage).then(function(response) {
 			getImageDetails();
 		}, function(response) {
+			$log.error(response);
 			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE_FAILED';
 		});
 	};
 
-	var postFrontImage = function(instanceID) {
+	var postFrontImage = function() {
 		acuantIDCollectionSrv.postFrontImage($scope.screenData.frontSideImage).then(function(response) {
 			getImageDetails();
 		}, function(response) {
+			$log.error(response);
 			$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE_FAILED';
 		});
 	};
@@ -57,6 +61,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 
 			postFrontImage(instanceID);
 		}, function(response) {
+			$log.error(response);
 			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE_FAILED';
 		});
 	};
@@ -65,10 +70,11 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 
 		var file = evt.target;
 		var reader = new FileReader();
-		
+
 		reader.onload = function(e) {
 			if (window.File && window.FileReader && window.FileList && window.Blob) {
 				var img = document.createElement('img');
+
 				img.src = e.target.result;
 				img.onload = function() {
 					var imageData = acuantIDCollectionUtilsSrv.resizeImage(img, file);
@@ -93,8 +99,9 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 		acuantIDCollectionSrv.getResults().then(function(response) {
 			$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 			$scope.screenData.idDetails = response;
-			acuantIDCollectionSrv.deleteDocInstance(instanceID).then(function(response) {}, function(response) {});
+			acuantIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
 		}, function(response) {
+			$log.error(response);
 			$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
 		});
 	};
@@ -126,8 +133,8 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 
 	$scope.startScanning = function() {
 		resetSCreenData();
-		$('#front-side-image').attr('src','');
-		$('#back-side-image').attr('src','');
+		$('#front-side-image').attr('src', '');
+		$('#back-side-image').attr('src', '');
 
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 	};
