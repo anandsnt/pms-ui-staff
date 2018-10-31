@@ -18,9 +18,12 @@
          .jumbotron p {
          font-size: 14px;
          }
+         .form-group .btn {
+            width: 100%;
+         }
       </style>
    </head>
-   <body ng-app="acuantIDCollection" ng-controller="acuantIDCollectionBaseCtrl">
+   <body ng-app="sntIDCollection" ng-controller="sntIDCollectionBaseCtrl">
       <nav class="navbar" style="background: #EFEFEF">
          <div class="container" style="text-align:center; padding: 40px 0px;">
             <img src="../../images/logo.png" class="rounded float-left" alt="..." style="max-width: 250px;">
@@ -98,7 +101,7 @@
             
          </div>
       </div>
-      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_FRON_IMAGE'">
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'">
          <div class="row content">
             
             <div class="col-md-12">
@@ -258,11 +261,11 @@
             <div class="col-md-4"></div>
          </div>
       </div>
-      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_FRON_IMAGE' || screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE' || screenData.scanMode == 'CONFIRM_ID_IMAGES'">
          <div class="row content">
             
             <div class="col-md-12">
-               <div class="jumbotron text-center" ng-show="screenData.scanMode == 'CONFIRM_FRON_IMAGE' || screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+               <div class="jumbotron text-center" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE' || screenData.scanMode == 'CONFIRM_ID_IMAGES'">
                   <p class="title">UPDATED FRONT IMAGE</p>
                   <img id="front-side-image" style="max-width: 300px;"/>
                </div>
@@ -277,10 +280,11 @@
       <script src="../lib/js/angular.min.js"></script>
       <script src="../lib/js/jquery.min.js"></script>
       <script src="../lib/js/moment.min.js"></script>
-      <script src="acuantIDCollectionApp.js"></script>
-      <script src="acuantIDCollectionUtilsSrv.js"></script>
-      <script src="acuantIDCollectionConstants.js"></script>
-      <script src="acuantIDCollectionSrv.js"></script>
-      <script src="acuantIDCollectionBaseCtrl.js"></script>
+      <script src="sntIDCollectionApp.js"></script>
+      <script src="services/sntIDCollectionUtilsSrv.js"></script>
+      <script src="constants/sntIDCollectionConstants.js"></script>
+      <script src="constants/sntIDCollectionScreenModeConstants.js"></script>
+      <script src="services/sntIDCollectionSrv.js"></script>
+      <script src="controllers/sntIDCollectionBaseCtrl.js"></script>
    </body>
 </html>

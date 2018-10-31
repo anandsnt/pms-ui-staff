@@ -1,6 +1,8 @@
-angular.module('acuantIDCollection', []);
+// Web services documentation - https://stayntouch.atlassian.net/wiki/spaces/ROV/pages/342262008/Acuant+ID+Collection+documentations
 
-angular.module('acuantIDCollection').directive('ngUploadChange', function() {
+angular.module('sntIDCollection', []);
+
+angular.module('sntIDCollection').directive('ngUploadChange', function() {
 	return {
 		scope: {
 			ngUploadChange: '&'

@@ -1,4 +1,4 @@
-angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($http, $q, $filter, acuantCredentials, acuantIDCollectionUtilsSrv) {
+angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, $q, $filter, acuantCredentials, sntIDCollectionUtilsSrv) {
 
 	var that = this;
 
@@ -143,7 +143,7 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 			headers: apiRequestHeader,
 			responseType: 'arraybuffer'
 		}).then(function(response) {
-			var base64String = acuantIDCollectionUtilsSrv.base64ArrayBuffer(response.data);
+			var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.data);
 
 			deferred.resolve(response.data);
 		}, function(error) {
@@ -225,7 +225,7 @@ angular.module('acuantIDCollection').service('acuantIDCollectionSrv', function($
 			data: {},
 			headers: apiRequestHeader
 		}).then(function(response) {
-			var idResponse = response.data && response.data.Fields ? acuantIDCollectionUtilsSrv.formatData(response.data.Fields) : {};
+			var idResponse = response.data && response.data.Fields ? sntIDCollectionUtilsSrv.formatData(response.data.Fields) : {};
 
 			deferred.resolve(idResponse);
 		}, function(error) {

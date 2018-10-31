@@ -1,22 +1,20 @@
-angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', function($scope, acuantIDCollectionSrv, acuantIDCollectionUtilsSrv, $log) {
+angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $log) {
 
-	var resetSCreenData = function() {
+	var resetScreenData = function() {
 		$scope.screenData = {
 			frontSideImage: '',
 			backSideImage: '',
 			imageSide: 0,
-			scanMode: 'VALIDATE_SUBSCRIPTION',
+			scanMode: screenModes.validate_subscription,
 			idDetails: {},
 			needBackSideScan: false
 		};
 	};
 
-	resetSCreenData();
-
 	var getImageDetails = function() {
-		acuantIDCollectionSrv.getImageDetails($scope.screenData.imageSide).then(function(response) {
+		sntIDCollectionSrv.getImageDetails($scope.screenData.imageSide).then(function(response) {
 			if (response.image) {
-				var base64String = acuantIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
+				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
 
 				if ($scope.screenData.imageSide === 0) {
 					document.getElementById('front-side-image').src = base64String;
@@ -27,44 +25,44 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 			$scope.screenData.needBackSideScan = !(response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3);
 
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
-				$scope.screenData.scanMode = 'CONFIRM_ID_IMAGES';
+				$scope.screenData.scanMode = screenModes.confirm_id_images;
 			} else {
-				$scope.screenData.scanMode = 'CONFIRM_FRON_IMAGE';
+				$scope.screenData.scanMode = screenModes.confirm_front_image;
 			}
 		}, function(response) {
 			$log.error(response);
-			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? 'UPLOAD_FRONT_IMAGE_FAILED' : 'UPLOAD_BACK_IMAGE_FAILED';
+			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
 		});
 	};
 
 	var postBackImage = function() {
-		acuantIDCollectionSrv.postBackImage($scope.screenData.backSideImage).then(function() {
+		sntIDCollectionSrv.postBackImage($scope.screenData.backSideImage).then(function() {
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
-			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE_FAILED';
+			$scope.screenData.scanMode = screenModes.upload_back_image_failed;
 		});
 	};
 
 	var postFrontImage = function() {
-		acuantIDCollectionSrv.postFrontImage($scope.screenData.frontSideImage).then(function() {
+		sntIDCollectionSrv.postFrontImage($scope.screenData.frontSideImage).then(function() {
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
-			$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE_FAILED';
+			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};
 
 	var getDocInstance = function() {
-		acuantIDCollectionSrv.getDocInstance().then(function(response) {
+		sntIDCollectionSrv.getDocInstance().then(function(response) {
 			if (response) {
 				postFrontImage();
 			} else {
-				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE_FAILED';
+				$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 			}
 		}, function(response) {
 			$log.error(response);
-			$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE_FAILED';
+			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};
 
@@ -79,7 +77,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 
 				img.src = e.target.result;
 				img.onload = function() {
-					var imageData = acuantIDCollectionUtilsSrv.resizeImage(img, file);
+					var imageData = sntIDCollectionUtilsSrv.resizeImage(img, file);
 
 					if (frontSideImage) {
 						getDocInstance();
@@ -97,32 +95,32 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 	};
 
 	$scope.confirmImages = function() {
-		$scope.screenData.scanMode = 'ANALYSING_ID_DATA';
-		acuantIDCollectionSrv.getResults().then(function(response) {
-			$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
+		$scope.screenData.scanMode = screenModes.analysing_id_data;
+		sntIDCollectionSrv.getResults().then(function(response) {
+			$scope.screenData.scanMode = screenModes.final_id_results;
 			$scope.screenData.idDetails = response;
-			acuantIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
+			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
 		}, function(response) {
 			$log.error(response);
-			$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
+			$scope.screenData.scanMode = screenModes.analysing_id_data_failed;
 		});
 	};
 
 	$scope.confirmFrontImage = function() {
 		$scope.screenData.imageSide = 1;
-		$scope.screenData.scanMode = $scope.screenData.needBackSideScan ? 'UPLOAD_BACK_IMAGE' : 'CONFIRM_ID_IMAGES';
+		$scope.screenData.scanMode = $scope.screenData.needBackSideScan ? screenModes.upload_back_image : screenModes.confirm_id_images;
 	};
 
 	$scope.frontImageChanged = function(evt) {
 		$scope.screenData.frontSideImage = '';
 		processImage(evt, true);
-		$scope.screenData.scanMode = 'ANALYSING_FRONT_IMAGE';
+		$scope.screenData.scanMode = screenModes.analysing_front_image;
 	};
 
 	$scope.backImageChanged = function(evt) {
 		$scope.screenData.backSideImage = '';
 		processImage(evt, false);
-		$scope.screenData.scanMode = 'ANALYSING_BACK_IMAGE';
+		$scope.screenData.scanMode = screenModes.analysing_back_image;
 	};
 
 	$scope.captureFrontImage = function() {
@@ -134,43 +132,23 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 	};
 
 	$scope.startScanning = function() {
-		resetSCreenData();
+		resetScreenData();
 		$('#front-side-image').attr('src', '');
 		$('#back-side-image').attr('src', '');
 
-		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+		$scope.screenData.scanMode = screenModes.upload_front_image;
 	};
 
 	$scope.validateSubsription = function() {
-		acuantIDCollectionSrv.validateCredentials().then(function() {
-			$scope.screenData.scanMode = 'VALID_ID_CREDENTIALS';
+		sntIDCollectionSrv.validateCredentials().then(function() {
+			$scope.screenData.scanMode = screenModes.valid_id_credentials;
 		}, function(response) {
-			$scope.screenData.scanMode = 'INVALID_ID_CREDENTIALS';
+			$scope.screenData.scanMode = screenModes.invalid_id_credentials;
 			$log.error(response);
 		});
 	};
+
+	(function() {
+		resetScreenData();
+	}());
 });
-
-
-/*  ********* SCREEN MODES **************
-
-VALIDATE_SUBSCRIPTION
-VALID_ID_CREDENTIALS
-INVALID_ID_CREDENTIALS
-
-UPLOAD_FRONT_IMAGE
-ANALYSING_FRONT_IMAGE
-UPLOAD_FRONT_IMAGE_FAILED
-CONFIRM_FRON_IMAGE
-
-UPLOAD_BACK_IMAGE
-ANALYSING_BACK_IMAGE
-UPLOAD_BACK_IMAGE_FAILED
-
-CONFIRM_ID_IMAGES
-ANALYSING_ID_DATA
-ANALYSING_ID_DATA_FAILED
-
-FINAL_ID_RESULT
-
-******************************************  */

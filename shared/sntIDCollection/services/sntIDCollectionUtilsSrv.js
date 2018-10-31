@@ -1,4 +1,4 @@
-angular.module('acuantIDCollection').service('acuantIDCollectionUtilsSrv', function() {
+angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function() {
 
 	var that = this;
 
@@ -40,28 +40,21 @@ angular.module('acuantIDCollection').service('acuantIDCollectionUtilsSrv', funct
 
 	this.formatData = function(fields) {
 		var formatedData = {};
+		var dateFormmater = function(val) {
+				return val ? moment(that.processDate(val)).utc().format('DD-MM-YYYY') : ''
+			};
+		var customFormatters = {
+			'Birth Date': dateFormmater,
+			'Expiration Date': dateFormmater
+		};
 
-		angular.forEach(fields, function(field) {
-			if (field.Key === 'Birth Date') {
-				formatedData.birth_date = field.Value ? moment(that.processDate(field.Value)).utc().format('DD-MM-YYYY') : '';
-			} else if (field.Key === 'Expiration Date') {
-				formatedData.expiry_date = field.Value ? moment(that.processDate(field.Value)).utc().format('DD-MM-YYYY') : '';
-			} else if (field.Key === 'Document Class Name') {
-				formatedData.document_class = field.Value;
-			} else if (field.Key === 'Document Number') {
-				formatedData.document_number = field.Value;
-			} else if (field.Key === 'Surname') {
-				formatedData.surname = field.Value;
-			} else if (field.Key === 'First Name') {
-				formatedData.first_name = field.Value;
-			} else if (field.Key === 'Full Name') {
-				formatedData.full_name = field.Value;
-			} else if (field.Key === 'Given Name') {
-				formatedData.given_name = field.Value;
-			} else if (field.Key === 'Nationality Code') {
-				formatedData.nationality_code = field.Value;
-			}
+		angular.forEach(fields, function({
+			Key,
+			Value
+		}) {
+			formatedData[Key.toLowerCase().split(' ').join('_')] = customFormatters[Key] ? customFormatters[Key](Value) : Value;
 		});
+
 		return formatedData;
 	};
 

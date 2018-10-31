@@ -1,4 +1,4 @@
-angular.module('acuantIDCollection').constant('acuantCredentials', {
+angular.module('sntIDCollection').constant('acuantCredentials', {
     username: "mubarak@stayntouch.com", // use your AssureID Connect username & password
 	password: "kuuj7rsk1dkbr3kn", // use your AssureID Connect username & password
 	assureIDConnectEndpoint: "https://services.assureid.net/", // set the AssureID Connect REST Endpoint URL address
