@@ -33,7 +33,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       // Calculates the disabled condition for each of the fields
       var calculateDisableCondition = function(field, value) {
         fieldsEnabled[field] = value;
-        for (key in fieldsEnabled) {
+        for (var key in fieldsEnabled) {
           if (key !== field) {
             fieldsEnabled[key] = !value;
           }
