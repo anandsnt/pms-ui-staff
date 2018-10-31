@@ -4,10 +4,10 @@ angular.module('sntIDCollection').constant('screenModes', {
 	valid_id_credentials: 'VALID_ID_CREDENTIALS',
 	invalid_id_credentials: 'INVALID_ID_CREDENTIALS',
 
-	'upload_front_image': 'UPLOAD_FRONT_IMAGE',
-	'analysing_front_image': 'ANALYSING_FRONT_IMAGE',
-	'upload_front_image_failed': 'UPLOAD_FRONT_IMAGE_FAILED',
-	'confirm_front_image': 'CONFIRM_FRONT_IMAGE',
+	upload_front_image: 'UPLOAD_FRONT_IMAGE',
+	analysing_front_image: 'ANALYSING_FRONT_IMAGE',
+	upload_front_image_failed: 'UPLOAD_FRONT_IMAGE_FAILED',
+	confirm_front_image: 'CONFIRM_FRONT_IMAGE',
 
 	upload_back_image: 'UPLOAD_BACK_IMAGE',
 	analysing_back_image: 'ANALYSING_BACK_IMAGE',
