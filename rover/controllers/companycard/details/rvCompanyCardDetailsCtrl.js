@@ -483,6 +483,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		// getting the contact information
 		var id = $stateParams.id;
+		$scope.shouldShowStatisticsTab = !!$stateParams.id;
 		// here we are following a bad practice for add screen,
 		// we assumes that id will be equal to "add" in case for add, other for edit
 
