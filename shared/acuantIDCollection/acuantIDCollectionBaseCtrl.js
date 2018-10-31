@@ -38,7 +38,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 	};
 
 	var postBackImage = function() {
-		acuantIDCollectionSrv.postBackImage($scope.screenData.backSideImage).then(function(response) {
+		acuantIDCollectionSrv.postBackImage($scope.screenData.backSideImage).then(function() {
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
@@ -47,7 +47,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 	};
 
 	var postFrontImage = function() {
-		acuantIDCollectionSrv.postFrontImage($scope.screenData.frontSideImage).then(function(response) {
+		acuantIDCollectionSrv.postFrontImage($scope.screenData.frontSideImage).then(function() {
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
@@ -57,12 +57,14 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 
 	var getDocInstance = function() {
 		acuantIDCollectionSrv.getDocInstance().then(function(response) {
-			instanceID = response;
-
-			postFrontImage(instanceID);
+			if (response) {
+				postFrontImage();
+			} else {
+				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE_FAILED';
+			}
 		}, function(response) {
 			$log.error(response);
-			$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE_FAILED';
+			$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE_FAILED';
 		});
 	};
 
@@ -140,7 +142,7 @@ angular.module('acuantIDCollection').controller('acuantIDCollectionBaseCtrl', fu
 	};
 
 	$scope.validateSubsription = function() {
-		acuantIDCollectionSrv.validateCredentials().then(function(response) {
+		acuantIDCollectionSrv.validateCredentials().then(function() {
 			$scope.screenData.scanMode = 'VALID_ID_CREDENTIALS';
 		}, function(response) {
 			$scope.screenData.scanMode = 'INVALID_ID_CREDENTIALS';
