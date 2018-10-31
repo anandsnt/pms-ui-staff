@@ -8,7 +8,7 @@ body {
 }
 
 body {
-  background-color: #000000;
+  background-color: #fff;
 }
 
 .back-text {
@@ -23,7 +23,7 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #dcd4d4;
+  color: #000;
 }
 
 input[type=text],
@@ -35,16 +35,17 @@ input[type=email] {
 }
 
 .sub-main-text {
-  color: #dcd4d4;
+  color: #000;
 }
 
 .header-bar {
-  background:#000000;
+  background:#fff;
 }
 
 .logo-image {
+  width: 100%;
   max-width: 100%;
-  margin: 4% auto 2%;
+  margin: 0 !important;
 }
 
 .template-text,
@@ -54,7 +55,7 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #ffffff !important;
+  color: #000 !important;
 }
 
 .view-bill {
@@ -66,7 +67,7 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #dcd4d4;
+  color: #000;
 }
 
 .btn,
@@ -113,7 +114,7 @@ input[type=email] {
 
 .no-thanks,
 .no-thanks:hover {
-  color: #ffffff;
+  color: #000;
   text-decoration: underline;
   text-transform: none;
 }
@@ -244,12 +245,6 @@ input[type=email] {
 .date-text {
   color: #fff;
 }
-
-.logo-image {
-  margin: 1% auto;
-  max-width: unset;
-}
-
 .res-details-heading,
 .res-details-heading:hover {
   color: #009c80;
@@ -262,8 +257,9 @@ input[type=email] {
 
 @media (max-width: 990px) {
   .logo-image {
-    margin: 9% auto 7%;
+    margin: 0 !important;
     max-width: unset;
+    width: 100%;
   }
   .back-to-checkout {
     display: none;
@@ -282,6 +278,9 @@ input[type=email] {
 }
 
 @media (max-width: 480px) {
+  .logo-image {
+    margin: 0 !important;
+  }
   .main-text {
     font-size: 11vw;
   }
@@ -293,9 +292,6 @@ input[type=email] {
   }
   .footer-text {
     font-size: 5.3vw;
-  }
-  .logo-image {
-    max-width: 181px;
   }
   .dual-button {
     font-size: 32px;
@@ -316,6 +312,6 @@ input{
 }
 
 .text-comment {
-  background: #fff !important;
-  color: #000 !important;
+  background: #000 !important;
+  color: #fff !important;
 }
