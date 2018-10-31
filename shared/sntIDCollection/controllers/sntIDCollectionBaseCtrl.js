@@ -10,6 +10,17 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			needBackSideScan: false
 		};
 	};
+	var domIDMappings;
+
+	$scope.setIDsForImageElements = function(domIDMapping) {
+		// Incase the image elements have different IDs in different places
+		domIDMappings = {
+			front_side_upload: domIDMapping ? domIDMapping.front_side_upload : 'front-image',
+			back_side_upload: domIDMapping ? domIDMapping.back_side_upload : 'back-image',
+			front_image_preview: domIDMapping ? domIDMapping.front_image_preview : 'front-side-image',
+			back_image_preview: domIDMapping ? domIDMapping.back_image_preview : 'back-side-image'
+		};
+	};
 
 	var getImageDetails = function() {
 		sntIDCollectionSrv.getImageDetails($scope.screenData.imageSide).then(function(response) {
@@ -17,9 +28,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.image);
 
 				if ($scope.screenData.imageSide === 0) {
-					document.getElementById('front-side-image').src = base64String;
+					$('#'+ domIDMappings.front_image_preview).attr('src', base64String);
 				} else {
-					document.getElementById('back-side-image').src = base64String;
+					$('#'+ domIDMappings.back_image_preview).attr('src', base64String);
 				}
 			}
 			$scope.screenData.needBackSideScan = !(response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3);
@@ -127,18 +138,17 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.captureFrontImage = function() {
-		$('#front-image').click();
+		$('#'+ domIDMappings.front_side_upload).click();
 	};
 
 	$scope.captureBackImage = function() {
-		$('#back-image').click();
+		$('#'+ domIDMappings.back_side_upload).click();
 	};
 
 	$scope.startScanning = function() {
 		resetScreenData();
-		$('#front-side-image').attr('src', '');
-		$('#back-side-image').attr('src', '');
-
+		$('#'+ domIDMappings.front_image_preview).attr('src', '');
+		$('#'+ domIDMappings.back_image_preview).attr('src', '');
 		$scope.screenData.scanMode = screenModes.upload_front_image;
 	};
 
@@ -153,5 +163,6 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	(function() {
 		resetScreenData();
+		$scope.setIDsForImageElements();
 	}());
 });
