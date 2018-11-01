@@ -67,7 +67,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
 
         $scope.isHourlyRatesEnabled = function () {
-            return !!$rootScope.isHourlyRatesEnabled;
+            return !!$rootScope.isHourlyRatesEnabled || !!$rootScope.hourlyRatesForDayUseEnabled;
         };
 
         $scope.isPromotional = function() {
