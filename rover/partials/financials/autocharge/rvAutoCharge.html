@@ -20,7 +20,7 @@
     </div>
 
     <!-- Process -->
-    <div class="entry process" ng-show="isPartiallySelected || isAllSelected">
+    <div class="entry process hidden" ng-show="isPartiallySelected || isAllSelected">
         <!-- Show only when some reservations are selected -->
         <button class="button green" ng-click="processSelectedAutoCharges()">Process Selected</button>
     </div>
@@ -48,9 +48,9 @@
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
     <!-- Header -->
-    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
+    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0">
         <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-        <li class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
+        <li class="cell-checkbox hidden" ng-show="filters.status !== 'APPROVED'">
             <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
             <label class="checkbox">
                 <span class="icon-form icon-checkbox" ng-class="{'semi-checked' :isPartiallySelected, 'checked': isAllSelected }"></span>
@@ -65,13 +65,13 @@
     </ul>
 
     <!-- Reservations -->
-    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-class="{'with-checkboxes' : filters.status !== 'APPROVED'}" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-show="!isAutoChargeProcessing && totalCount !== 0">
         <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
+                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index">
                     <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-                    <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
+                    <div class="cell-checkbox hidden" >
                         <!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
                         <label class="checkbox" ng-show="autoCharge.is_declined">
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : autoCharge.isSelected}"></span>
