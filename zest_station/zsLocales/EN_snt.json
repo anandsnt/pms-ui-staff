@@ -730,6 +730,7 @@
    "NO_COUNTRY_MATCH": "No match found!",
    "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
 
-   "FEES": "FEES"
+   "FEES": "FEES",
+   "CBA_PAYMENT_NOT_POSTED_MSG": "Payment error!. Retryng shortly"
    
 }

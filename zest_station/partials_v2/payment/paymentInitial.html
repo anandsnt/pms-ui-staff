@@ -105,6 +105,19 @@
                 </ul>
             </nav>
         </div>
+    </section>
+
+    <!-- payment failed -->
+    <section id="main" class="centered kiosk" role="main" ng-show="screenMode.value === 'RETRY_CBA_PAYMENT'">
+
+        <div id="content">
+            <h1>
+                 <text editable-text="CBA_PAYMENT_NOT_POSTED_MSG"> {{'CBA_PAYMENT_NOT_POSTED_MSG' |translate}}</text>
+            </h1>
+            <h1 style="font-size: 6em;">
+                {{screenMode.counter}}
+            </h1>
+        </div>
     </section> 
 
     <!-- Payment success -->

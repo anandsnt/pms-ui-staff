@@ -122,6 +122,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
          * @returns {undefined} undefined
          */
         $scope.initiateCBAlisteners = function () {
+            var cbaResponse,
+                cbaPaymentAttempt = 0;
+
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
                 showErrorMessage(errorMessage);
@@ -130,6 +133,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             });
 
             var listenerCBAPaymentSuccess = $scope.$on('CBA_PAYMENT_SUCCESS', function(event, response) {
+                cbaResponse = response;
+                cbaPaymentAttempt++;
+
                 var params = zsPaymentSrv.getSubmitPaymentParams();
 
 
@@ -150,9 +156,29 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         $scope.$emit('CBA_PAYMENT_COMPLETED');
                     },
                     function(errorMessage) {
-                        $log.warn(errorMessage);
-                        showErrorMessage(errorMessage);
-                        paymentFailureActions();
+                        if (cbaPaymentAttempt === 1) {
+                            $scope.screenMode.value = 'RETRY_CBA_PAYMENT';
+                            $scope.$emit('hideLoader');
+                            $scope.screenMode.paymentInProgress = false;
+                            $scope.screenMode.paymentSuccess = false;
+
+                            $scope.screenMode.counter = 0;
+                           
+                            $scope.onTimeout = function() {
+                                $scope.screenMode.counter++;
+                                mytimeout = $timeout($scope.onTimeout, 1000);
+                                if ($scope.screenMode.counter === 15) {
+                                    $timeout.cancel(mytimeout);
+                                    $scope.$emit('CBA_PAYMENT_SUCCESS', cbaResponse);
+                                }
+                            };
+                            var mytimeout = $timeout($scope.onTimeout, 1000);
+                            
+                        } else {
+                            $log.warn(errorMessage);
+                            showErrorMessage(errorMessage);
+                            paymentFailureActions();
+                        }
                     }
                 );
             });
