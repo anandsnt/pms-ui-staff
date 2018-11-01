@@ -449,6 +449,12 @@ sntRover.controller('companyCardCommissionsCtrl', [
             return type;
         };
 
+    $scope.recalculationValueChanged = function() {
+        if (Math.sign($scope.filterData.commssionRecalculationValue) !== 1) {
+            $scope.filterData.commssionRecalculationValue = '';
+        }
+    };
+
     // Handle recalculate button click
         $scope.clickedRecalculate = function() {
 
