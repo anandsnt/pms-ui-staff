@@ -10,7 +10,7 @@
             <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                 <a translate>CONTRACTS</a>
             </li>
-            <li ng-class="{'ui-tabs-active': currentSelectedTab === 'statistics'}" ng-click="switchTabTo($event, 'statistics')" ng-if="isStandAlone && contactInformation.show_statistics">
+            <li ng-class="{'ui-tabs-active': currentSelectedTab === 'statistics'}" ng-click="switchTabTo($event, 'statistics')" ng-if="isStandAlone && !isHourlyRateOn && contactInformation.show_statistics">
                 <a translate>STATISTICS</a>
                 <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
             </li>

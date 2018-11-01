@@ -16,7 +16,7 @@
             <li ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" click-touch="guestCardTabSwitch('guest-loyalty')" ng-show='loyaltyTabEnabled' >
                 <a id="guest-loyalty">Loyalty</a>
             </li>
-            <li ng-class="{'ui-tabs-active': current == 'guest-statistics'}" click-touch="guestCardTabSwitch('guest-statistics')" ng-if="isStandAlone && guestCardData.contactInfo.show_statistics && shouldShowStatisticsTab">
+            <li ng-class="{'ui-tabs-active': current == 'guest-statistics'}" click-touch="guestCardTabSwitch('guest-statistics')" ng-if="isStandAlone && !isHourlyRateOn && guestCardData.contactInfo.show_statistics && shouldShowStatisticsTab">
                 <a href="#gc-statistics">Statistics</a>
                 <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>
             </li>

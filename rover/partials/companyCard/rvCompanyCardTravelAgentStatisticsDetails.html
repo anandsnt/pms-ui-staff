@@ -109,7 +109,7 @@
                                         </time>
                                     </div>
                                     <div class="guest-data rate">
-                                        <strong><span ng-bind-html="reservation.adr | sntCurrency:this"></span> ADR</strong>
+                                        <strong><span class="currency">{{currencySymbol}}</span>{{reservation.adr | number: 2}} ADR</strong>
                                         <span>{{reservation.rate_name}}</span>
                                     </div>
                                     <div class="guest-data room">

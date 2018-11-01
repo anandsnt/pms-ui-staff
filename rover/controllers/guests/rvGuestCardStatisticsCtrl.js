@@ -22,7 +22,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                         $scope.statistics.summary = data;
                         $scope.activeView = 'summary';
                         $timeout(function() {
-                            reloadScroller();
+                            reloadScroller(true);
                             
                         }, 200);
                         isSummaryViewScrollReady();
@@ -47,7 +47,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                         $scope.statistics.details = data;
                         $scope.statistics.details.monthly_data = $scope.statistics.details.monthly_data.reverse();
                         $timeout(function() {
-                            reloadScroller();
+                            reloadScroller(true);
                             
                         }, 500);
                         isDetailedViewScrollReady();
@@ -188,19 +188,31 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 });
              },
             // Refreshes the two scrollers in the screen
-            reloadScroller = function() {
+            reloadScroller = function(shouldSrollToTop) {
                 $timeout(function() {
                     if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
                         $scope.refreshScroller( SIDEBAR_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[SIDEBAR_SCROLLER].scrollTo(0, 0, 100);
+                        }                        
                     }
                     if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
                         $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[MONTHLY_DATA_SCROLLER].scrollTo(0, 0, 100);
+                        }
                     }
                     if ( $scope.myScroll.hasOwnProperty(SUMMARY_SIDEBAR_SCROLLER) ) {
                         $scope.refreshScroller( SUMMARY_SIDEBAR_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[SUMMARY_SIDEBAR_SCROLLER].scrollTo(0, 0, 100);
+                        }
                     }
                     if ( $scope.myScroll.hasOwnProperty(SUMMARY_DATA_SCROLLER) ) {
                         $scope.refreshScroller( SUMMARY_DATA_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[SUMMARY_DATA_SCROLLER].scrollTo(0, 0, 100);
+                        }
                     }
                 }, 200);
                 
@@ -251,7 +263,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 } else {
                     $timeout(isSummaryViewScrollReady, 1000);
                 }
-            };
+            };            
 
         // Initialize the controller
         var init = function() {
