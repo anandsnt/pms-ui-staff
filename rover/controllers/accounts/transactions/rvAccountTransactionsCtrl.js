@@ -573,6 +573,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			.then(function() {
 				sntActivity.stop("SHOW_PAYMENT_MODEL");
 				$scope.passData = getPassData();
+				$scope.paymentModalOpened = true;
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
 					className: '',
