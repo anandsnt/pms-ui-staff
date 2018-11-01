@@ -59,9 +59,9 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
             name = '';
 
         $scope.yearOptions = [];
-        startYear = startYear === $scope.getCurrentYear() ? startYear - 1 : startYear;
 
         if ($scope.activeView === 'summary') {
+            startYear = startYear === $scope.getCurrentYear() ? startYear - 1 : startYear;
             endYear = $scope.getCurrentYear() - 1;
         } else {
             endYear = $scope.getCurrentYear();
