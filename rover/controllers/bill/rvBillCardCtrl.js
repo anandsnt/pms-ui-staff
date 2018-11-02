@@ -2446,7 +2446,6 @@ sntRover.controller('RVbillCardController',
 		var getAdvanceBillSuccessCallback = function(successData) {
 			ngDialog.close();
 			sntActivity.stop('GENERATE_ADVANCE_BILL');
-			$scope.init(successData);
 			var reservation = RVReservationCardSrv.getResrvationForConfirmationNumber($scope.reservationBillData.confirm_no);
 
 			reservation.reservation_card.balance_amount = successData.reservation_balance;
