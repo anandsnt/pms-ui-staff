@@ -1039,7 +1039,10 @@ sntZestStation.controller('zsRootCtrl', [
                         $scope.socketOperator.enableDeviceLogging();
                     }
                 },
-                'loader': 'none'
+                failureCallBack: function () {
+                  // Do nothing (Common API failure callback redirects station to the out of order state)
+                },
+                loader: 'none'
             };
 
             $scope.callAPI(zsGeneralSrv.getDeviceDetails, options);
