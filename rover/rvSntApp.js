@@ -30,7 +30,7 @@ var GlobalApp = function() {
 
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
-        } else if (browser === 'rv_native_android') {
+        } else if (browser === 'rv_native_android' || browser === 'rv_native_ios') {
             that.browser = 'rv_native';
             that.cordovaLoaded = true;
         } else {
