@@ -194,7 +194,7 @@
 				</fieldset>
 
 				<fieldset class="holder left" ng-if="isStandAlone">
-					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" is-hide="true"></ad-toggle-button>
+					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on"></ad-toggle-button>
 					<div class="entry" >
 						<label class="switch-label">Day Use</label>
 						<div class="switch-button single" ng-class="{ on: reservationSettingsData.day_use_enabled }" ng-click="toggleDayUse()">
