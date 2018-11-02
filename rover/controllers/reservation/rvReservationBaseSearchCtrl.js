@@ -296,13 +296,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.shouldShowHours = true;
                 $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, fetchCurrentTimeSucess);
-            } else if ($rootScope.hourlyRatesForDayUseEnabled) {
-                $scope.shouldShowToggle = true;
-                $scope.isNightsActive = true;
-                $scope.shouldShowNights = true;
-                $scope.shouldShowHours = false;
-                $scope.reservationData.resHours = $rootScope.minimumHourlyReservationPeriod;
-                $scope.invokeApi(RVReservationBaseSearchSrv.fetchCurrentTime, {}, fetchCurrentTimeSucess);
             } else {
                 $scope.isNightsActive = true;
                 $scope.shouldShowNights = true;
