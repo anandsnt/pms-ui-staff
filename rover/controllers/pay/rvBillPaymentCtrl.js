@@ -188,9 +188,11 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			defaultAmount =  currentBillTotalFees[0].balance_amount;
 		}
 
-		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
-		$scope.copyOfdefaultPaymentAmount      = parseFloat(defaultAmount).toFixed(2);
-		$scope.splitePaymentDetail["totalAmount"] = parseFloat(defaultAmount).toFixed(2);
+		var parsedAmount = parseFloat(defaultAmount).toFixed(2);
+
+		$scope.renderData.defaultPaymentAmount = parsedAmount;
+		$scope.copyOfdefaultPaymentAmount = parsedAmount;
+		$scope.splitePaymentDetail["totalAmount"] = parsedAmount;
 		$scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
 	};
 
