@@ -2239,7 +2239,7 @@ sntRover.controller('RVbillCardController',
 			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
 			
 
-		if ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement ) {
+		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {			
 			// CICO-49105 : Calling blackbox API in review process if :
 			// 1. Blackbox enabled.
 			// 2. There should be payment exist in the bill.
