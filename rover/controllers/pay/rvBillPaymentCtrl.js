@@ -170,6 +170,30 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			$scope.splitSelected = false;
 		}
 	};
+
+	/*
+	 * Method to set up the amount in payment screen
+	 */
+	var setUpDefaultAmountMethod = function () {
+		var currentBillTotalFees = $scope.billsArray[$scope.currentActiveBill].total_fees;
+		var defaultAmount = zeroAmount;
+
+		if (currentBillTotalFees.length <= 0 ) {
+			defaultAmount = zeroAmount;
+		}
+		else if (currentBillTotalFees[0].balance_amount === "SR") {
+			defaultAmount = currentBillTotalFees[0].masked_balance_amount;
+		}
+		else {
+			defaultAmount =  currentBillTotalFees[0].balance_amount;
+		}
+
+		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
+		$scope.copyOfdefaultPaymentAmount      = parseFloat(defaultAmount).toFixed(2);
+		$scope.splitePaymentDetail["totalAmount"] = parseFloat(defaultAmount).toFixed(2);
+		$scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
+	};
+
 	$scope.resetSplitPaymentDetail = function() {
 		$scope.splitBillEnabled = (typeof($scope.splitBillEnabled) === "undefined") ? false : !$scope.splitBillEnabled;
 		$scope.splitePaymentDetail = {
@@ -183,6 +207,9 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.paymentErrorMessage = '';
 		// reset value
 		if (!$scope.splitBillEnabled) {
+			if ($scope.billsArray) {
+				setUpDefaultAmountMethod();
+			}			
 			$scope.renderData.defaultPaymentAmount = angular.copy( $scope.copyOfdefaultPaymentAmount );
 			$scope.splitSelected = false;
 		}
@@ -232,7 +259,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservationId, $scope.cardsListSuccess);
 	};
 
-	$scope.init();
+	$scope.init();	
 
 	/*
 	* Initial screen - filled with deafult amount on bill
@@ -269,23 +296,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			}
 		}
 
-		var currentBillTotalFees = $scope.billsArray[$scope.currentActiveBill].total_fees;
-		var defaultAmount = zeroAmount;
-
-		if (currentBillTotalFees.length <= 0 ) {
-			defaultAmount = zeroAmount;
-		}
-		else if (currentBillTotalFees[0].balance_amount === "SR") {
-			defaultAmount = currentBillTotalFees[0].masked_balance_amount;
-		}
-		else {
-			defaultAmount =  currentBillTotalFees[0].balance_amount;
-		}
-
-		$scope.renderData.defaultPaymentAmount = parseFloat(defaultAmount).toFixed(2);
-		$scope.copyOfdefaultPaymentAmount      = parseFloat(defaultAmount).toFixed(2);
-		$scope.splitePaymentDetail["totalAmount"] = parseFloat(defaultAmount).toFixed(2);
-		$scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
+		setUpDefaultAmountMethod();
 
 
 		if ($scope.renderData.defaultPaymentAmount < 0 ) {
