@@ -138,7 +138,7 @@
         
         <ul class="search-results-header">
             <li class="action">
-                <label class="checkbox inline">
+                <label class="checkbox inline" ng-class="{'hidden' : filterData.paidStatus == 'Prepaid'}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : filterData.selectAll}"></span>
                     <input id="commisions-select" ng-model="filterData.selectAll" type="checkbox" ng-change="toggleSelection()" />
                 </label>
@@ -165,8 +165,9 @@
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
              
-                    <div class="faux-anchor">
-                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
+                    <div class="faux-anchor" ng-class="{ 'print-selected' : commissionDetail.is_checked, 'prepaid': commissionDetail.commission_data.paid_status == 'Prepaid'}">
+
+                        <label class="checkbox inline" ng-class="{'hidden' : commissionDetail.commission_data.paid_status == 'Prepaid'}" >
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                             <!-- add class "checked" when L56 checked -->
