@@ -2639,6 +2639,18 @@ sntRover.controller('RVbillCardController',
 		$( '#print-orientation' ).remove();
 	};
 
+	var billCardPrintCompleted = function() {
+							// CICO-9569 to solve the hotel logo issue
+		$("header .logo").removeClass('logo-hide');
+		$("header .h2").addClass('text-hide');
+
+		// remove the orientation after similar delay
+		removePrintOrientation();
+		$scope.printBillCardActive = false;
+		$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
+		$scope.reloadCurrentActiveBill();
+	};
+
 	// print the page
 	var printBill = function(data) {
 		var printDataFetchSuccess = function(successData) {
@@ -2661,30 +2673,20 @@ sntRover.controller('RVbillCardController',
 		    */
 		    // this will show the popup with full bill
 		    $timeout(function() {
-		    	/*
-		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-		    	*/
 
-		    	$window.print();
-		    	if ( sntapp.cordovaLoaded ) {
-		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		    	}
-		    	 /*
-			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			    */
-
-			    $timeout(function() {
-					// CICO-9569 to solve the hotel logo issue
-					$("header .logo").removeClass('logo-hide');
-					$("header .h2").addClass('text-hide');
-
-					// remove the orientation after similar delay
-			    	removePrintOrientation();
-			    	$scope.printBillCardActive = false;
-			    	$("body #loading").html('<div id="loading-spinner" ></div>');// CICO-56119
-			    }, 1000);
-		    }, 300);
-		    $scope.reloadCurrentActiveBill();
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(billCardPrintCompleted,
+						function(error) {
+							billCardPrintCompleted();
+						}, 'RVCardPlugin', 'printWebView', []);
+				}
+				else
+				{
+					window.print();
+					billCardPrintCompleted();
+				}
+			}, 100);
+		    
 		};
 
 		var printDataFailureCallback = function(errorData) {

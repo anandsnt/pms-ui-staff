@@ -80,6 +80,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
 		$scope.closeDrawer();
 	});
 
+  var printMode = "L";
     // Add the print orientation before printing
     var addPrintOrientation = function() {
         var orientation = 'portrait';
@@ -87,12 +88,15 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
         switch ( $scope.data.activeTab ) {
             case 0:
                 orientation = 'landscape';
+                printMode = "L";
                 break;
             case 1:
                 orientation = 'landscape';
+                printMode = "L";
                 break;
             default:
                 orientation = 'portrait';
+                printMode = "P";
                 break;
         }
 
@@ -100,7 +104,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
     };
 
     // Add the print orientation after printing
-    var removePrintOrientation = function() {
+    var ccTransactionsPrintCompleted = function() {
         $( '#print-orientation' ).remove();
     };
 
@@ -118,20 +122,18 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
             /*
              *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
              */
-
-            $window.print();
-
-            if ( sntapp.cordovaLoaded ) {
-                cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+            if (sntapp.cordovaLoaded) {
+              cordova.exec(ccTransactionsPrintCompleted,
+                function(error) {
+                  ccTransactionsPrintCompleted();
+                }, 'RVCardPlugin', 'printWebView', ['cc Transactions', '', '', printMode]);
             }
-        }, 100);
-
-        /*
-         *  ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-         */
-
-        // remove the orientation after similar delay
-        $timeout(removePrintOrientation, 100);
+            else
+            {
+              window.print();
+              ccTransactionsPrintCompleted();
+            }
+        }, 100);        
     };
 
 }]);

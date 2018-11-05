@@ -857,6 +857,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			printBillCard(requestParams);
 		};
 
+		var accountsPrintCompleted = function() { 
+        	$('.nav-bar').removeClass('no-print');
+			$('.cards-header').removeClass('no-print');
+			$('.card-tabs-nav').removeClass('no-print');
+			$scope.switchTabTo('TRANSACTIONS');
+        };
+
 		var printBillCard = function(requestParams) {
 
 			var printBillSuccess = function(response) {
@@ -871,19 +878,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				// this will show the popup with full report
 				$timeout(function() {
 
-					/*
-					 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-					 */
-
-					$window.print();
 					if (sntapp.cordovaLoaded) {
-						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+						cordova.exec(accountsPrintCompleted,
+							function(error) {
+								accountsPrintCompleted();
+							}, 'RVCardPlugin', 'printWebView', []);
+					}
+					else
+					{
+						window.print();
+						accountsPrintCompleted();
 					}
 
-					$('.nav-bar').removeClass('no-print');
-					$('.cards-header').removeClass('no-print');
-					$('.card-tabs-nav').removeClass('no-print');
-					$scope.switchTabTo('TRANSACTIONS');
 				}, 100);
 			};
 
