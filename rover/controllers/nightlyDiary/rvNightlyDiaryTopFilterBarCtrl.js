@@ -82,7 +82,7 @@ angular.module('sntRover')
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
-            $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
+            $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
 
         // Show calendar popup.
@@ -179,7 +179,10 @@ angular.module('sntRover')
             if($scope.diaryData.rightFilter !== activeTab){
                 $scope.diaryData.rightFilter = activeTab;
                 $scope.$emit('TOGGLE_FILTER');
-            }  
+            }
+            if (activeTab === 'UNASSIGNED_RESERVATION'){
+                $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+            }
         };
 
         init();
