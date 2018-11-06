@@ -89,7 +89,7 @@ angular.module('sntRover')
                     filterList: {},
                     hideRoomType: true,
                     hideFloorList: true,
-                    isRightFilterActive: false
+                    isRightFilterActive: true
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};

@@ -82,7 +82,7 @@ angular.module('sntRover')
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
-            $scope.diaryData.rightFilter = 'UNASSIGNED_RESERVATION';
+            $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
 
         // Show calendar popup.
