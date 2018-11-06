@@ -3,8 +3,8 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
         <span class="icons icon-popup-alert"></span>
-        <span class="h2 message" translate>COMPANY_CARD_DETACH_BILLING_INFO_WARNING</span>
-
+        <span class="h2 message" ng-hide="ngDialogData.showCommisionWarning" translate>COMPANY_CARD_DETACH_BILLING_INFO_WARNING</span>
+        <span class="h2 message" ng-show="ngDialogData.showCommisionWarning" translate>COMPANY_CARD_DETACH_BILLING_INFO_AND_COMMISSIONS_WARNING</span>
         <button type="button" class="button red"
             ng-click="deleteCard(ngDialogData.cardType,ngDialogData.cardId)">
             Detach Card

@@ -302,7 +302,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			$scope.query = '';
 			// Initial search param
-			$scope.isNonZero = true;
+			$scope.isNonZero = false;
 			$scope.status = 'OPEN';
 
 

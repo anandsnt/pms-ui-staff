@@ -46,10 +46,10 @@
         <h2>
             <text data-ng-bind-html="getTagValue('MAKE_KEY_MSG')" editable-text="MAKE_KEY_MSG"></text>
         </h2>
-        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
-            <img src="{{icons.url.createkey}}">
+         <div class='uploaded-key-image' id="keys" ng-if="zestImages.key_create_file_uploaded.length > 0">
+            <img src="{{zestImages.key_create_file_uploaded}}">
         </div>
-        <div id="keys" ng-show="icmp" class='icmp-key-image'>
+        <div id="keys" ng-if="icmp && zestImages.key_create_file_uploaded.length === 0" class="icmp-key-image">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
@@ -67,10 +67,10 @@
         <h2>
             <text data-ng-bind-html="getTagValue('MAKE_FIRST_KEY_SUB')" editable-text="MAKE_FIRST_KEY_SUB"></text>
         </h2>
-        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
-            <img src="{{icons.url.createkey}}">
+        <div class='uploaded-key-image' id="keys" ng-if="zestImages.key_create_file_uploaded.length > 0">
+            <img src="{{zestImages.key_create_file_uploaded}}">
         </div>
-        <div id="keys" ng-show="icmp" class='icmp-key-image'>
+        <div id="keys" ng-if="icmp && zestImages.key_create_file_uploaded.length === 0" class="icmp-key-image">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
@@ -88,10 +88,10 @@
         <h2>
             <text data-ng-bind-html="getTagValue('RETRY_CREATING_KEY_TWO')" editable-text="RETRY_CREATING_KEY_TWO"></text>
         </h2>
-        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
-            <img src="{{icons.url.createkey}}">
+        <div class='uploaded-key-image' id="keys" ng-if="zestImages.key_create_file_uploaded.length > 0">
+            <img src="{{zestImages.key_create_file_uploaded}}">
         </div>
-        <div id="keys" ng-show="icmp" class='icmp-key-image'>
+        <div id="keys" ng-if="icmp && zestImages.key_create_file_uploaded.length === 0" class="icmp-key-image">
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
@@ -111,11 +111,11 @@
         <h2>
             <text data-ng-bind-html="getTagValue('MADE_FIRST_KEY_MSG_SUB')" editable-text="MADE_FIRST_KEY_MSG_SUB"></text>
         </h2>
-        <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
-            <img src="{{icons.url.createkey}}">
+         <div class='uploaded-key-image' id="keys" ng-if="zestImages.key_create_file_uploaded.length > 0">
+            <img src="{{zestImages.key_create_file_uploaded}}">
         </div>
-        <div id="keys" ng-show="icmp" class='icmp-key-image'>
-            <div ng-include="icons.url.createkey_icmp"></div>
+        <div id="keys" ng-if="icmp && zestImages.key_create_file_uploaded.length === 0" class="icmp-key-image">
+            <div ng-include="zestStationData.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
             <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_TWO')" editable-text="MAKE_KEY_TEXT_TWO"></text>
@@ -137,6 +137,9 @@
         </h2>
         <div id="room" class='success-key' ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
+        </div>
+        <div class='uploaded-key-image' id="keys" style="margin-top: 20px;" ng-if="zestImages.key_success_image.length > 0">
+            <img src="{{zestImages.key_success_image}}">
         </div>
         <button type="button" class="button done-btn" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
             <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>

@@ -1,0 +1,35 @@
+<!-- main section starts here -->
+<div class="container">
+    <!-- email entry -->
+    <div class="row" ng-hide="emailUpdated">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container">
+            <form>
+                <div class="col-md-12 top-spacing section-container">
+                    <p class="main-text">Enter Your E-mail Address</p>
+                    <p class="sub-main-text">We use your e-mail address to send you your room number:</p>
+                </div>
+                <p class="sub-text pull-left margin-top-10">E-MAIL ADDRESS</p>
+                <input type="email" class="input-field padding-3" ng-model="guestDetails.email"></input>
+                <!--  submit button-->
+                <input type="submit" class="btn btn-template margin-top-10" ng-click="emailSubmitted()" value="Continue" />
+            </form>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    <!-- email updated -->
+    <div class="row" ng-show="emailUpdated">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
+            <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
+                <p class="main-text"> E-mail Address Updated</p>
+                <p class="sub-main-text"> We updated your Guest profile to include this e-mail address: {{guestDetails.email}}</p>
+            </div>
+            <a class="btn btn-template" ng-click="continueToPrecheckin()" value="Continue">Continue</a>
+            <a class="btn btn-template margin-top-10 grey-btn" ng-click="changeEmail()"> Change Email address</a>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

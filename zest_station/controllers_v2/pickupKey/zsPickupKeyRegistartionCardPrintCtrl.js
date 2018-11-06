@@ -137,7 +137,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */
 
-                        if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
+                        if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
                             var printer = sntZestStation.selectedPrinter;
 
                             cordova.exec(function() {
@@ -151,7 +151,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                                 handleStarTacPrinterActions();
                             } else {
 
-                                $window.print();
+                                $scope.$emit('PRINT_CURRENT_PAGE');
                                 setTimeout(function() {
                                     printSuccessActions();
                                 }, 100);

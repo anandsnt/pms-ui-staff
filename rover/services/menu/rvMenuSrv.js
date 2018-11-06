@@ -46,7 +46,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @return {Boolean}
     */
     var isConnected = function() {
-    	return (RVHotelDetailsSrv.hotelDetails.pms_type === null);
+    	return (RVHotelDetailsSrv.hotelDetails.pms_type !== null);
     };
     /**
      * Decide whether the task management submenu is to be shown in housekeeping menu
@@ -55,6 +55,14 @@ angular.module('sntRover').service('rvMenuSrv',
      */
     var shouldShowTaskManagementInHKMenu = function() {
     	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
+    };
+    /**
+     * Decide whether the QuickText submenu is to be shown
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowQucikTextMenu = function() {
+    	return RVHotelDetailsSrv.hotelDetails.is_quicktextenabled;
     };
 
 	/**
@@ -95,7 +103,8 @@ angular.module('sntRover').service('rvMenuSrv',
     	// we are processing on the menu list we have
 		_.each (menuList, function(menuItem) {
 			// if the menu is hi
-			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			var isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			
 			if (isMenuItemVisible) {
 				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
 				hasSubMenu = (subMenuCount > 0) ? true : false;
@@ -152,7 +161,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        submenu: [{
 		            title: "MENU_SEARCH_RESERVATIONS",
 		            action: "rover.search",
-		            menuIndex: "search"
+		            menuIndex: "reservationSearch"
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
@@ -176,6 +185,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_CASHIER",
 		            action: "rover.financials.journal({ id: 'CASHIER' })",
 		            menuIndex: "cashier"
+		        }, {
+		            title: "MENU_GUESTS",
+		            action: "rover.guest.search",
+		            menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",
 		            action: "rover.accounts.search",
@@ -244,9 +257,9 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.companycardsearch",
 		            menuIndex: "cards"
 		        }, {
-		            title: "MENU_DISTRIBUTION_MANAGER",
-		            action: "",
-		            menuIndex: "distribution_manager"
+		            title: "MENU_SELL_LIMITS",
+		            action: "rover.overbooking",
+		            menuIndex: "overbooking"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -292,20 +305,54 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_COMMISIONS",
 		            action: "rover.financials.commisions",
 		            menuIndex: "commisions"
-		        }]
+		        }, {
+		            title: "MENU_INVOICE_SEARCH",
+		            action: "rover.financials.invoiceSearch",
+		            menuIndex: "invoiceSearch"
+		        },
+                {
+                    title: "AUTO_CHARGE",
+                    action: "rover.financials.autoCharge",
+                    menuIndex: "autoCharge"
+                }]
             }, {
-                title: "MENU_ACTIONS_MANAGER",
-                action: "rover.actionsManager",
-                menuIndex: "actionManager",
+                title: "MENU_ACTIONS",
+                action: "",
                 iconClass: "icon-actions",
-                submenu: []
-            }, {
-		        title: "MENU_REPORTS",
-		        action: "rover.reports",
-		        menuIndex: "reports",
+                menuIndex: "actions",
+                submenu: [{
+		            title: "MENU_ACTIONS_MANAGER",
+		            action: "rover.actionsManager",
+		            menuIndex: "actionManager",
+		            iconClass: "icon-actions"
+		        },
+		        {
+		            title: "QUICKTEXT",
+		            action: "rover.quicktext",
+		            menuIndex: "QuickText",
+		            hidden: !shouldShowQucikTextMenu()
+		        }]
+            },
+            {
+		        title: "MENU_REPORTS",		        
+		        action: "",
 		        iconClass: "icon-reports",
-		        submenu: []
-		    }
+		        menuIndex: "reports",		        
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox",
+		            hidden: !$rootScope.isBackgroundReportsEnabled
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            }            
 		];
 
 		return processMenuList (menuList);
@@ -339,12 +386,25 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 			},
 			{
-				title: "MENU_REPORTS",
-				action: "rover.reports",
-				menuIndex: "reports",
-				iconClass: "icon-reports",
-				submenu: []
-			}
+		        title: "MENU_REPORTS",		        
+		        action: "",
+		        iconClass: "icon-reports",
+		        menuIndex: "reports",		        
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox",
+		            hidden: !$rootScope.isBackgroundReportsEnabled
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            }
 		];
 
 		return processMenuList (menu);
@@ -492,7 +552,8 @@ angular.module('sntRover').service('rvMenuSrv',
 			'accounts': ['ACCESS_ACCOUNTS'],
 
 			'changePassword': ['SETTINGS_CHANGE_PASSWORD_MENU'],
-			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
+			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN'],
+			'overbooking': ['OVERBOOKING_MENU']
 
 
 		};
@@ -577,6 +638,13 @@ angular.module('sntRover').service('rvMenuSrv',
 				returnValue = isNeighboursEnabled();
 				break;
 				// we display social lobby to only
+
+			// dont wanted to show on hourly enabled hotels
+			case 'overbooking':
+				var isSellLimitEnabled = ($rootScope.isPmsProductionEnv) ? $rootScope.isSellLimitEnabled : true;
+
+				returnValue = !isHourlyRateOn() && !isConnected() && isSellLimitEnabled;
+				break;
 
 			default:
         		break;

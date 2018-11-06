@@ -8,7 +8,12 @@ angular.module('adminZestStationRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.zestStationConfig', {
         templateUrl: '/assets/partials/zestStation/adZestStationCfg.html',
         controller: 'ADZestStationCtrl',
-        url: '/zestStationConfig'
+        url: '/zestStationConfig',
+        resolve: {
+            configurableImagesData: function(ADZestStationSrv) {
+                return ADZestStationSrv.getImages();
+            }
+        }
     });
     $stateProvider.state('admin.ZestStationCheckin', {
         templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',

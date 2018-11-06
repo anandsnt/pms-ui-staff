@@ -1,0 +1,82 @@
+<!-- Salutation -->
+<div class="group-holder" ng-class = "{'active': is_salutations_active}">
+    <div class="form-title has-toggle" ng-click = "is_salutations_active = !is_salutations_active"> <!-- Clicking this toggles class 'active' on L2 -->
+        <h3>Salutation</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+            
+            <h4>Salutation</h4>
+            <div class="entry full-width">
+                <label for="item-type"><span translate>GUEST_SALUTATION_TYPES</span></label>
+                <div class="boxes">
+                    <label class="radio" ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}">
+                        <span class="icon-form icon-radio " ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}"></span>
+                        <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_name" value="FIRST_NAME" />
+                        <span translate>BY_FIRST_NAME</span>
+                    </label>
+                    <label class="radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}">
+                        <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}"></span>
+                        <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_last_name" value="LAST_NAME" />
+                        <span translate>BY_LAST_NAME</span>
+                    </label>
+                    <label class="radio" ng-class = "{'checked': data.salutation_by=='BOTH'}">
+                        <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='BOTH'}"></span>
+                        <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_last_name" value="BOTH" />
+                       <span translate>BY_FIRST_LAST_NAME</span>
+                    </label>
+                    <label class="radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}">
+                        <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}"></span>
+                        <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_custom_text" value="CUSTOM" />
+                       <span translate>BY_CUSTOM_TEXT</span>
+                    </label>
+                    <div class="entry full-width" ng-show="data.salutation_by =='CUSTOM'">
+                        <label for="screen-id"><span translate>CUSTOM_SALUTATION</span></label>
+                        <input type="text" name="custom_text" ng-model="data.salutation_custom_text" id="item-name" placeholder="Enter salutation" value="{Item Name}" required />
+                    </div>
+                    <label class="radio" ng-class = "{'checked': data.salutation_by=='NONE'}">
+                        <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='NONE'}"></span>
+                        <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_none" value="NONE" />
+                       <span translate>NO_SALUTATION</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings</h4>
+            <div class="entry">
+                <label for="include-title" class="switch-label">Include Title</label>
+                <div class="switch-button" ng-class = "{'on': data.is_include_title}"> <!-- Add class 'on' when L40 is checked -->
+                    <input id="include-title" type="checkbox" ng-model="data.is_include_title"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hotel -->
+<div class="group-holder" ng-class = "{'active': is_hotel_picture_active}">
+    <div class="form-title has-toggle" ng-click = "is_hotel_picture_active = !is_hotel_picture_active"> <!-- Clicking this toggles class 'active' on L49 -->
+        <h3>Hotel Picture</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+            <h4>Hotel</h4>
+            <div class="entry full-width">
+                <label>Hotel Picture</label>
+                <div class="file-upload with-preview small-preview">
+                    <button type="button" class="icons icon-delete large-icon"></button>
+                    <span class="input">{{hotel_logo_file}}</span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_picture)" ng-click = "data.hotel_picture = 'false'"></a>
+                    <input type="file" accept="image/*" ng-model="data.hotel_picture" app-filereader> 
+                    <button type="button" class="button brand-colors">Choose file</button>
+                </div>
+                <span class="file-preview small-preview"> 
+                    <img src="{{data.hotel_picture}}" alt="" />
+                    <!-- If no image attached, use this instead: <em>No image attached.</em> -->
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

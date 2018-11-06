@@ -144,6 +144,24 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.currentView = view;
 			RVHkRoomStatusSrv.defaultViewState = view;
 		};
+		var scrollCount = 0;
+
+		var delayedExec = function(after, fn) {
+
+			var timer;
+			
+			return function() {
+				scrollCount += 1;
+				timer && clearTimeout(timer);
+				timer = setTimeout(fn, after);
+			};
+		};
+
+		var scrollStopper = delayedExec(500, function() {
+		    scrollCount = 0;
+		});
+
+		angular.element(document.querySelector('#rooms')).bind('scroll', scrollStopper);
 
 		$scope.toggleView = function() {
 			if ($scope.currentView === 'ROOMS') {
@@ -210,7 +228,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		// store the current room list scroll position
 		$scope.roomListItemClicked = function(room) {
-			localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+			$timeout(function() {
+				if (scrollCount === 0) {
+					localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+					$state.go("rover.housekeeping.roomDetails", {
+						id: room.id
+					});
+				}
+			}, 400);
 		};
 
 		$scope.showFilters = function() {
@@ -399,8 +424,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 		});
 
-		$scope.$on( '$destroy', allRendered );
-
+		$scope.$on( '$destroy', allRendered );		 
 
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
@@ -425,19 +449,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					// remove keyMirror
 					$scope.multiRoomAction.indexes[_key] = undefined;
 					delete $scope.multiRoomAction.indexes[_key];
+					$scope.multiRoomAction.allChosen = false;
 				}
 
 				if ( !$scope.multiRoomAction.rooms.length ) {
 					$scope.multiRoomAction.anyChosen = false;
 				}
 			}
-
-			// check if all rooms have been selected to make the 'All Selected' enabled in filters
-			if ( $scope.uiTotalCount === $scope.multiRoomAction.rooms.length ) {
-				$scope.multiRoomAction.allChosen = true;
-			} else {
-				$scope.multiRoomAction.allChosen = false;
-			}
+			
 		};
 
 		$scope.toggleRoomSelection = function() {
@@ -554,8 +573,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
 		$scope.shouldShowTimeSelector = function() {
+            var isInService = $scope.updateServiceData.room_service_status_id === 1;
 
-			return $rootScope.isHourlyRateOn;
+            return $rootScope.isHourlyRateOn && !isInService;
 		};
 
 		$scope.closeDialog = function() {
@@ -652,15 +672,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		};
-
-		/**
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowTimeSelector = function() {
-			// as per CICO-11840 we will show this for hourly hotels only
-			return $rootScope.isHourlyRateOn;
-		};
-
 
 		/**
 		 * Service Stauts update action

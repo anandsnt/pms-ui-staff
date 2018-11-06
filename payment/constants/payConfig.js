@@ -46,5 +46,12 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         },
         jsLibrary: null,
         partial: "/assets/partials/paySixPaymentPartial.html"
+    },
+    "CBA_AND_MLI": {
+        iFrameUrl: null,
+        jsLibrary: null,
+        partial: "/assets/partials/payCBAAndMLIPartial.html",
+        params: null,
+        disableCardSelection: null
     }
 }));

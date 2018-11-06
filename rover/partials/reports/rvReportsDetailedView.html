@@ -1,0 +1,40 @@
+<section id="report-details" class="content reports-wrapper" role="main">
+        <span>
+            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'" ng-if="!isBackgroundReportsEnabled"></div>
+
+            <div class="report-header" ng-show="showReportHeader">
+                <div ng-show="hasReportTotals && !hasNoResults" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
+
+                <ul class="totals legend" ng-if="isThisReport( 'GROUP_ROOMS_REPORT' )">
+                    <li><span class="icons icon-blocked"></span>Blocked<br>Rooms</li>
+                    <li><span class="icons icon-picked-up"></span>Picked Up<br>Rooms</li>
+                    <li><span class="icons icon-available"></span>Available<br>Rooms</li>
+                </ul>
+
+                <div class="actions">
+                    <div class="select" ng-if="HIDE_THIS_FEATURE">
+                        <select name="" id="">
+                            <option value="pdf">Save/E-mail as PDF</option>
+                            <option value="word">Save/E-mail as Word</option>
+                            <option value="excel">Save/E-mail as Excel</option>
+                        </select>
+                    </div>
+                    <button class="button with-icon only-icon blue" button="button" ng-click="emailReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-email"></span>
+                    </button>
+                    <button class="button with-icon only-icon blue" button="button" ng-if="showPrintOption" ng-click="fetchFullReport()"><span class="icons icon-print"></span>
+                    </button>
+                    <button class="button with-icon only-icon blue" button="button" ng-if="showPrintOptionForYearlyTax" ng-click="fetchFullYearlyTaxReport()"><span class="icons icon-print"></span>
+                    </button>
+                    <button ng-click="exportCSV()" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(chosenReport) && !hideExportOption"><span class="icons icon-save"></span>
+                    </button>
+
+                    <button class="button with-icon only-icon purple" button="button" ng-click="saveFullReport()" ng-if="HIDE_THIS_FEATURE"><span class="icons icon-save"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="report-header" ng-show="errorMessage.length" ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+            <span ng-hide="errorMessage.length" ng-include="detailsTemplateUrl"></span>
+        </span>
+</section>

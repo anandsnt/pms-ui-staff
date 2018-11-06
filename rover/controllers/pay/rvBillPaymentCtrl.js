@@ -374,11 +374,11 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	var paymentFinalDetails = {};
 
 	var processeRestOfPaymentOperations  = function() {
+		paymentFinalDetails.billNumber = $scope.renderData.billNumberSelected;
 		$scope.$emit('BILL_PAYMENT_SUCCESS', paymentFinalDetails);
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
-		paymentFinalDetails.billNumber = $scope.renderData.billNumberSelected;
 		if ($scope.newPaymentInfo.addToGuestCard) {
 			var cardCode = $scope.defaultPaymentTypeCard;
 			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;

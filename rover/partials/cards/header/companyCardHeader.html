@@ -7,7 +7,7 @@
         <form method="post" name="change-company-name" id="change-company-name">
             <div class="holder">
                 <div class="entry">
-                    <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
+                    <input ng-readonly="isUpdateEnabled()" name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
                 </div>
                 <div class="switch-button global-flag" ng-click="toggleGlobalButton()"  ng-class="{'on': contactInformation.is_global_enabled, 'readonly': isGlobalToggleReadOnly}"> <!-- Add class 'on' when checked -->
                     <input id="global-company-card" type="checkbox">
@@ -23,10 +23,10 @@
                 <span class="icons icon-notes" ng-show="contactInformation.account_notes_count > 0"></span>
             </div>
             <div class="holder data">
-                <input  name="cc-city" id="cc-city" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
-                <input  name="cc-state" id="cc-state" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
-                <input name="cc-phone" id="cc-phone" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
-                <input name="cc-email" id="cc-email" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
+                <input  name="cc-city" id="cc-city" ng-readonly="isUpdateEnabled()" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
+                <input  name="cc-state" ng-readonly="isUpdateEnabled()" id="cc-state" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
+                <input name="cc-phone" ng-readonly="isUpdateEnabled()" id="cc-phone" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
+                <input name="cc-email" ng-readonly="isUpdateEnabled()" id="cc-email" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
             </div>
         </form>
         <div class="card-actions" ng-show="viewState.isAddNewCard">

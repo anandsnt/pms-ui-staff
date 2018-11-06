@@ -51,6 +51,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			else if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("commissionsTabActive");
 			}
+			else if (tabToSwitch === 'cc-activity-log') {
+				$scope.$broadcast("activityLogTabActive");
+			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
@@ -256,7 +259,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
-			$scope.$emit("hideLoader");
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
@@ -298,12 +300,29 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
 			$scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
 		$scope.clickedSaveCard = function(cardType) {
+			// show commission warning popup if departure date has passed
+			if (cardType === 'travel_agent' && $scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate))) {
+				// show warning popup
+				ngDialog.open({
+					template: '/assets/partials/cards/popups/rvNewTACommissionsWarningPopup.html',
+					className: '',
+					closeByDocument: false,
+					closeByEscape: false,
+					scope: $scope
+				});
+			} else {
+				saveContactInformation($scope.contactInformation);
+			}
+		};
+
+		$scope.saveNewTACard = function ($event) {
+			$event.stopPropagation();
+			ngDialog.close();
 			saveContactInformation($scope.contactInformation);
 		};
 
@@ -320,25 +339,32 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-									delete dataToSend[key][subDictKey];
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
+				// CICO-49040 : Hadling passing blank string.
+				if (dataToSend.account_details.account_number === "") {
+					dataToSend.account_details.account_number = null;
+				}
+				// CICO-50810 : Hadling passing blank string.
+				if ( typeof dataToSend.primary_contact_details === 'undefined' ) {
+					dataToSend.primary_contact_details = {};
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				else if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $scope.account_type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: successCallbackOfContactSaveData,
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			}
 		};
 

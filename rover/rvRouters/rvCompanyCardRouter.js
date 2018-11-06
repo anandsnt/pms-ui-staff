@@ -2,11 +2,14 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
   // define module-specific routes here
      // company card search
         $stateProvider.state('rover.companycardsearch', {
-            url: '/cardsearch/:textInQueryBox',
+            url: '/cardsearch',
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
             controller: 'searchCompanyCardController',
+            params: {
+                textInQueryBox: ''
+            },
             resolve: {
-                comapanycardSearchAssets: function(jsMappings, mappingList) {
+                comapanycardSearchAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.companycardsearch', 'directives']);
                 }
             }
@@ -15,7 +18,17 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
 
         // company card details
         $stateProvider.state('rover.companycarddetails', {
-            url: '/companycard/:type/:id/:query/:isBackFromStaycard/:origin/:isBackToTACommission',
+            url: '/companycard',
+            params: {
+                type: '',
+                id: '',
+                query: '',
+                isBackFromStaycard: '',
+                origin: '',
+                isBackToTACommission: '',
+                fromDate: '',
+                toDate: ''
+            },
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',
             resolve: {

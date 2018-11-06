@@ -26,6 +26,7 @@
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
 "MANUAL_BLNC_CHARGE_CODE": "Manual Balance Charge code",
+"MANUAL_CREDIT_CHARGE_CODE": "Manual Credit Charge code",
 "SELECT_CALCULATION_RULE":"Select Calculation Rule",
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
@@ -36,4 +37,9 @@
 "PLACEHOLDER_FIRST_INVOICE_NO" : "Enter First Invoice Number",
 "PLACEHOLDER_INVOICE_NO_PREFIX" : "Enter Invoice Number Prefix",
 "EMPTY_INVOICE_NO_PREFIX" : "Invoice Number Prefix cannot be empty",
-"SELECT_PAYMENT_TYPE":"Select Payment Type"
+"SELECT_PAYMENT_TYPE":"Select Payment Type",
+"TAX_EXEMPTS": "Tax Exempts",
+"ADD_NEW_TAX_EXEMPT_TYPE":"Add New Tax Exempt Type",
+"BACK_TO_TAX_EXEMPT_TYPES":"Back to Tax Exempt Types",
+"SELECT_CHARGE_CODES": "Select Charge Codes",
+"DEFAULT_TAX_EXEMPT_TYPE": "Default Tax Exempt Type"

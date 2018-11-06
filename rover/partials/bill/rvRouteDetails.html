@@ -92,6 +92,7 @@
 					 class="payment-form"
 					 style="height: auto"
 					 ng-if = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null">
+
 					<snt-payment
 							hotel-config="hotelPaymentConfig"
 							workstation-id="{{workstation_id}}"
@@ -100,7 +101,7 @@
 							group-id="{{groupConfigData.summary.group_id}}"
 							allotment-id="{{allotmentConfigData.summary.allotment_id}}"
 							fetch-linked-cards="false"
-							bill-number="billNumber"
+							bill-number="billNumberOnAddCC"
 							payment-types="availablePaymentTypes"
 							selected-payment-type="selectedPayment"
 							selected-c-c="renderAddedPayment"
@@ -141,7 +142,7 @@
 		  {{'ROUTE_TO_BILL' | translate}}
 			<div class="select"> <!-- 'select-stand-alone' this class was removed as part of a fix. Need to verify-->
 				<select ng-model = "selectedEntity.to_bill" ng-disabled = "!selectedEntity.is_new" name="post-charge-to-bill" >
-					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills">{{bill.bill_number}}</option>
+					<option value="{{bill.id}}" ng-selected = "bill.id == selectedEntity.to_bill" ng-repeat = "bill in bills" ng-show="bill.is_active">{{bill.bill_number}}</option>
 					<!-- .. add options as needed -->
 				</select>
 			</div>

@@ -47,7 +47,7 @@
         </span>
 </div>
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
-<div class="entry full-width reference" ng-show="isDisplayRef">
+<div class="entry full-width reference" ng-hide="paymentAttempted && !isPaymentFailure">
     <label>Reference</label>
     <input ng-model="payment.referenceText" type="text" />
 </div>

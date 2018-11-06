@@ -1,0 +1,17 @@
+<!-- Timeline -->
+<div class="overbooking-timeline scrollable" ng-iscroll="overBookingDateScroll" ng-iscroll-delay="500">
+    <div class="wrapper">
+        <div class="row">
+            <div ng-repeat="eachDate in overBookingObj.overBookingGridData.dateRangeList track by $index" ng-class="{'weekend': eachDate.isWeekend}" class="cell day">
+                <span>{{eachDate.date|date:dayInWeek}}</span>
+                <strong>{{eachDate.date|date:shortMonthAndDate}}</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell" ng-click="clickedEditOverBookingCell( 'HOUSE', $index)" ng-repeat="cell in overBookingObj.overBookingGridData.houseSellLimits track by $index" ng-class="{'weekend': overBookingObj.overBookingGridData.dateRangeList[$index].isWeekend}">
+                <span ng-if="overBookingObj.isShowRoomsLeftToSell" class="rooms" ng-class="{'unavailable':cell.left_to_sell < 3 }">{{cell.left_to_sell}}</span>
+                <span class="limit">{{cell.sell_limit}}</span>
+            </div>
+        </div>
+    </div>
+</div>

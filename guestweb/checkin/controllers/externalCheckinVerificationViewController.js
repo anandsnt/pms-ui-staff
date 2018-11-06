@@ -158,7 +158,7 @@
 							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
 							$rootScope.reservationID 	= response.results[0].reservation_id;
 							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status === 'RESERVED') ? true : false;
-							$rootScope.isAutoCheckinOn 	= (response.is_auto_checkin === "true") && $rootScope.isPrecheckinOnly;
+							$rootScope.isAutoCheckinOn = (response.is_auto_checkin === "true" || response.is_sent_to_que === "true") && $rootScope.isPrecheckinOnly;
 							getToken(response);
 						}
 					}
@@ -222,7 +222,22 @@ sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies
 })();
 
 
-sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams',
- function($scope, $stateParams) {
- 	$scope.checkinAvailableDateAfter = $stateParams.date;
- }]);
+sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams', '$state',
+
+	function($scope, $stateParams, $state) {
+		$scope.checkinAvailableDateAfter = $stateParams.date;
+		$scope.goToFindReservation = function() {
+			$state.go('externalCheckinVerification');
+		};
+	}
+]);
+
+sntGuestWeb.controller('lateToCheckinController', ['$scope', '$state',
+
+	function($scope, $state) {
+
+		$scope.goToFindReservation = function() {
+			$state.go('externalCheckinVerification');
+		};
+	}
+]);

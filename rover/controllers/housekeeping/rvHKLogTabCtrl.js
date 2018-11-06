@@ -4,7 +4,8 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 	'RVHkRoomDetailsSrv',
 	'roomDetailsLogData',
 	'$filter',
-	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData, $filter) {
+	'$timeout',
+	function($scope, $rootScope, RVHkRoomDetailsSrv, roomDetailsLogData, $filter, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 		// set the previous state
@@ -17,130 +18,89 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 		$scope.setScroller('LOG_TAB_SCROLL');
 
 		var refreshScroll = function(goTop) {
-			$scope.refreshScroller('LOG_TAB_SCROLL');
-			goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
-		};
+				$scope.refreshScroller('LOG_TAB_SCROLL');
+				goTop && $scope.getScroller('LOG_TAB_SCROLL').scrollTo(0, 0);
+			},
+			// Configure page options for the directive
+			configurePagination = function () {
+				$scope.pageOptions = {
+					id: 'ROOM_LOG',
+					perPage: $scope.perPage,
+					api: updateLog
+				};
+			},
+			// Refresh the pagination controls after changing the results
+			refreshPagination = function () {
+				$timeout(function () {
+      				$scope.$broadcast('updatePagination', 'ROOM_LOG' );
+				}, 100 );
+			},
+			// Get total log count
+			getTotalResultCount = function (roomLogs) {
+				return roomLogs.total_count;
+			},
+			// Process room data
+			processRoomData = function () {
+				angular.forEach($scope.roomLogData, function(item, keyValue) {
+					item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
+					item.room_status = _.findWhere(item.details, {key: "room_status"});
+					item.service_status = _.findWhere(item.details, {key: "service_status"});
+					item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
+					item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
+				});
+			};
 
-		$scope.init = function() {
-			$scope.roomDetails = $scope.$parent.roomDetails;
-			$scope.$emit('hideLoader');
+		var init = function() {
+			$scope.perPage = 50;
+			$scope.roomDetails = $scope.$parent.roomDetails;			
+			configurePagination();
 			$scope.roomLogData = roomDetailsLogData.results;
-
-			angular.forEach($scope.roomLogData, function(item, keyValue) {
-				item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
-				item.room_status = _.findWhere(item.details, {key: "room_status"});
-				item.service_status = _.findWhere(item.details, {key: "service_status"});
-				item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
-				item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
-			});
-			// Paginaton
-	        $scope.totalResults = roomDetailsLogData.total_count;
-	        if ($scope.roomLogData.total_count === 0) {
-              $scope.start = 0;
-              $scope.end = 0;
-	        } else {
-	          $scope.start = 1;
-	          $scope.end = $scope.start + $scope.roomLogData.length - 1;
-	        }
+			processRoomData();			
+	        $scope.totalResultCount = getTotalResultCount(roomDetailsLogData);	        
 	        refreshScroll(false);
+	        refreshPagination();
 		};
 
-		$scope.updateLog = function() {
-	        var callback = function(data) {
+		/**
+		 * Fetches the log for the room actions
+		 * @param {Number} pageNo
+		 * @return {void}
+		 */
+		var updateLog = function(pageNo) {			
+			pageNo = pageNo || 1;					
 
+	        var onLogFetchSuccess = function(data) {
 	                $scope.roomLogData = data.results;
-	                angular.forEach($scope.roomLogData, function(item, keyValue) {
-						item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
-						item.room_status = _.findWhere(item.details, {key: "room_status"});
-						item.service_status = _.findWhere(item.details, {key: "service_status"});
-						item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
-						item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
-					});
-	                $scope.totalResults = roomDetailsLogData.total_count;
-	                if ($scope.nextAction) {
-	                    $scope.start = $scope.start + $scope.perPage;
-	                    $scope.nextAction = false;
-	                   // $scope.initSort();
-	                }
-	                if ($scope.prevAction) {
-	                    $scope.start = $scope.start - $scope.perPage;
-	                    $scope.prevAction = false;
-	                   // $scope.initSort();
-	                }
-	                $scope.end = $scope.start + $scope.roomLogData.length - 1;
-	                $scope.$emit('hideLoader');
+	                processRoomData();
+	                $scope.totalResultCount = getTotalResultCount(roomDetailsLogData); 
 
 	                refreshScroll(true);
-	        };
-	        var params = {
+	                refreshPagination();
+	        	},
+	        	params = {
 	                id: $scope.roomDetails.id,
-	                page: $scope.page,
+	                page: pageNo,
 	                per_page: $scope.perPage
-	        };
+	        	},
+	        	options = {
+	        		onSuccess: onLogFetchSuccess,
+	        		params: params
+	        	};	       
 
-	       // params['sort_order'] = $scope.sort_order;
-	        // params['sort_field'] = $scope.sort_field;
-
-	        $scope.invokeApi(RVHkRoomDetailsSrv.getRoomLog, params, callback);
+	        $scope.callAPI(RVHkRoomDetailsSrv.getRoomLog, options);
 	    };
 
 	    $scope.getRoomStatusClass = function(roomStatus) {
 	    	return roomStatus.toLowerCase();
 	    };
+	    
+	    init();
 
-	   /*
-	    * Pagination
-	    */
-	    $scope.initPaginationParams = function() {
-	        if ($scope.roomLogData.total_count === 0) {
-	             $scope.start = 0;
-	             $scope.end = 0;
-	        } else {
-		        $scope.start = 1;
-		        $scope.end = $scope.start + $scope.roomLogData.length - 1;
-	        }
-	        $scope.page = 1;
-	        $scope.perPage = 50;
-	        $scope.nextAction = false;
-	        $scope.prevAction = false;
-	    };
-
-	    $scope.loadNextSet = function() {
-	        $scope.page++;
-	        $scope.nextAction = true;
-	        $scope.prevAction = false;
-	        $scope.updateLog();
-	    };
-
-	    $scope.loadPrevSet = function() {
-	        $scope.page--;
-	        $scope.nextAction = false;
-	        $scope.prevAction = true;
-	        $scope.updateLog();
-	    };
-
-	    $scope.isNextButtonDisabled = function() {
-	        var isDisabled = false;
-
-	        if ($scope.end >= $scope.totalResults) {
-	            isDisabled = true;
-	        }
-	        return isDisabled;
-	    };
-
-	    $scope.isPrevButtonDisabled = function() {
-	        var isDisabled = false;
-
-	        if ($scope.page === 1) {
-	            isDisabled = true;
-	        }
-	        return isDisabled;
-	    };
-	    $scope.init();
-	    $scope.initPaginationParams();
-
-
-	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', $scope.updateLog);
+	    // Listener for activating the log tab
+	    var unSubscrbeOpenLog = $scope.$on('OPEN_LOG', function () {
+	    	configurePagination();
+	    	updateLog();
+	    });
 
 	    $scope.$on('$destroy', unSubscrbeOpenLog);
 	}

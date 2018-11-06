@@ -1,0 +1,197 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #d71c2e;
+    
+    @textColor:             @black;
+    @backgroundColor:       @white;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: @white;
+    @backgroundSize: '';
+    
+    @headerIconsColor:      @black;
+    @headerIconsActive:     @black;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #rydges {
+
+        .logo-svg{
+            background-image: url("../css/themes/rydges/logo.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 70px;
+            width: 336px;
+            margin-top: 5%;
+        }
+ 
+        #header {
+            height: 125px;
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 125px);
+            top: 125px;
+
+            &.centered {
+                padding-top: 100px;
+                #content {
+                    height: 100%;
+                }
+            }
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 0;
+
+            .logo {
+                width: auto;
+                height: 70px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    background-color: fade(@brandColor, 5);
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: #8b8b8b;
+            }
+        } 
+
+        .add-on-list {
+            li {
+
+                &:not(.selected){
+                    border-color: rgba(0,0,0,0.05);
+
+                    .add-on-content {
+                        background: rgba(0,0,0,0.05);
+                    }
+                }
+                
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @black;
+                }
+            }
+        }
+
+        #textual {
+            background: #ececec;
+             
+
+            &:before,
+            &:after {
+                background: #ececec;
+            }
+
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        input,
+        select,
+        .button:not(.ng-hide),
+        h1, 
+        h2,
+        #actions.pull-right p,
+        #selection li,
+        #labels .label,
+        #options li,
+        #balance .value,
+        #qr-code,
+        .ui-datepicker-calendar thead th,
+        .ui-datepicker-header,
+        #textual.reservation-details,
+        #textual.review-bill { 
+            text-transform: none;
+        }
+    }

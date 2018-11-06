@@ -30,19 +30,22 @@
 							<span>Entity Name</span>
 						</th>
 						<th>
-							<span>Payment method</span>
+							<span>Payment</span>
 						</th>
 						<th>
-							<span>Authorization Amount</span>
+							<span>Authorization</span>
+						</th>
+						<th class="rate">
+                            <span>Rate</span>
+                        </th>
+						<th>
+							<span>Balance</span>
 						</th>
 						<th>
-							<span>Balance on Bill</span>
+							<span>Projected</span>
 						</th>
 						<th>
-							<span>Projected Charges</span>
-						</th>
-						<th>
-							<span>Total Amount</span>
+							<span>Total</span>
 						</th>
 					</tr>
 				</thead>
@@ -52,6 +55,7 @@
 						<td class="entity-name">{{ bill.entity_name }}</td>
 						<td>{{ bill.payment_method }}</td>
 						<td class="amount"><span class="currency">{{ bill.authorization_amount | currency:currencySymbol:2 }}</span></td>
+						<td class="rate amount">{{item.rate}} / <span class="currency">{{ item.rate_amount | currency:currencySymbol:2 }}</span></td>
 						<td class="amount"><span class="currency">{{ bill.balance_on_bill | currency:currencySymbol:2 }}</span></td>
 						<td class="amount"><span class="currency">{{ bill.projected_charges | currency:currencySymbol:2 }}</span></td>
 						<td class="amount" ng-class="{'red': bill.total_amount > bill.authorization_amount, 'green': bill.total_amount <= bill.authorization_amount }"><span class="currency">{{ bill.total_amount | currency:currencySymbol:2 }}</span></td>
@@ -63,5 +67,5 @@
     </div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>

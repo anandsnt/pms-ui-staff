@@ -1,2 +1,7 @@
 	
-	"STATS_&_REPORTS_TITLE": "Stats & Reports"
+	"STATS_&_REPORTS_TITLE": "Stats & Reports",
+    "SCHEDULED_REPORTS_AND_EXPORTS": "Scheduled Reports/Exports",
+    "SCHEDULE_REPORT": "Schedule a Report",
+    "SCHEDULE_EXPORT": "Schedule an Export",
+    "SCHEDULED_REPORTS": "Scheduled Reports",
+    "SCHEDULED_EXPORTS": "Scheduled Exports"

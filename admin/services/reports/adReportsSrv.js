@@ -24,6 +24,13 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             canView: false,
             subTitle: "",
             title: "Client Usage"
+        }, {
+            key: "ENABLED_INTERFACES",
+            desc: "Enabled Interface",
+            canExport: true,
+            canView: false,
+            subTitle: "",
+            title: "Enabled Interfaces Per Hotel"
         }];
         /* -------------------------------------------------------------------------------------------------------------- 
                   Filters to reports must be mapped in the below Object if prefetching is required

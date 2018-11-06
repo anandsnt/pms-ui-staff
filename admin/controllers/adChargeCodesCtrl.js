@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
-    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog',
+    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog) {
 
         var CHARGE_CODE_TYPE_TAX = 1;
         var CHARGE_CODE_TYPE_PAYMENT = 2;
@@ -553,5 +553,38 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                 return true;
             };
         };
+
+	$scope.openCsvUploadPopup = function() {
+		$scope.csvData = {
+			'csv_file': ''
+		};
+		ngDialog.open({
+			template: '/assets/partials/popups/adCsvUploadPopUp.html',
+			className: 'ngdialog-theme-default1 modal-theme1',
+			closeByDocument: true,
+			scope: $scope
+		});
+	};
+
+	$scope.uploadCSVFile = function() {
+		var uploadCSVFileSuccess = function() {
+			$scope.successMessage = $filter('translate')('IMPORT_IS_IN_PROGRESS');
+			ngDialog.close();
+			$timeout(function() {
+				$scope.successMessage = "";
+			}, 10000);
+		};
+		var options = {
+			params: $scope.csvData,
+			onSuccess: uploadCSVFileSuccess,
+			onFailure: function(err) {
+				ngDialog.close();
+				$scope.errorMessage = err;
+			}
+		};
+
+		$scope.callAPI(ADChargeCodesSrv.uploadCSVFile, options);
+	};
+
 	}
 ]);

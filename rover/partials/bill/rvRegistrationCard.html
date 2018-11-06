@@ -5,7 +5,7 @@
                 <img ng-src="{{ printRegCardData.hotel_logo }}" alt="" />
                 <p>
                     {{ printRegCardData.hotel_name }} <br>
-                    {{ printRegCardData.street }}<br>                    
+                    {{ printRegCardData.street }}<br>
                     {{ printRegCardData.city }}, {{ printRegCardData.state }} {{printRegCardData.zipcode}}<br><br>
                     Ph: {{ printRegCardData.phone }}
                 </p>
@@ -14,17 +14,17 @@
                 <table class="name-addr">
                     <tr>
                         <td>
-                            <span>REGISTERED TO:</span>
+                            <span>{{ printRegCardData.translation.registered_to }}:</span>
                             <strong>{{ printRegCardData.guest_details.first_name }} {{ printRegCardData.guest_details.last_name }}</strong>
                             <strong>
                                 <label ng-if="printRegCardData.guest_details.street || printRegCardData.guest_details.city">
-                                    {{ printRegCardData.guest_details.street }} {{ printRegCardData.guest_details.city }}, 
+                                    {{ printRegCardData.guest_details.street }} {{ printRegCardData.guest_details.city }},
                                 </label>
                                 <label>{{ printRegCardData.guest_details.state }} {{ printRegCardData.guest_details.postal_code }}</label>
                             </strong>
                         </td>
                         <td ng-hide="!isStandAlone">
-                            <span>BILL TO:</span>
+                            <span>{{ printRegCardData.translation.bill_to }}:</span>
                             <strong>{{ printRegCardData.bill_to.name }}</strong>
                             <strong ng-if="printRegCardData.bill_to.street1 || printRegCardData.bill_to.street2">{{ printRegCardData.bill_to.street1 }} {{ printRegCardData.bill_to.street2 }}</strong>
                             <strong>
@@ -38,46 +38,46 @@
                 <table>
                     <tr>
                         <td>
-                            <span>ARRIVAL DATE:</span>
+                            <span>{{ printRegCardData.translation.arrival_date }}:</span>
                             <strong>{{ printRegCardData.arrival_date | date : dateFormat }}</strong>
                         </td>
                         <td>
-                            <span>DEPARTURE DATE:</span>
+                            <span>{{ printRegCardData.translation.departure_date }}:</span>
                             <strong>{{ printRegCardData.dep_date | date : dateFormat }}</strong>
                         </td>
                         <td>
-                            <span>CONFIRMATION:</span>
+                            <span>{{ printRegCardData.translation.confirmation_number }}:</span>
                             <strong>{{ printRegCardData.confirm_no }}</strong>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span>ARRIVAL TIME:</span>
+                            <span>{{ printRegCardData.translation.arrival_time }}:</span>
                             <strong>{{ printRegCardData.arrival_time }}</strong>
                             <span>&nbsp;</span>
                         </td>
                         <td>
-                            <span>DEPARTURE TIME:</span>
+                            <span>{{ printRegCardData.translation.departure_time }}:</span>
                             <strong>{{ printRegCardData.departure_time }}</strong>
                             <span>&nbsp;</span>
                         </td>
                         <td>
-                        	<span>ROOM:</span>
+                        	<span>{{ printRegCardData.translation.room_number }}:</span>
                         	<strong>{{ printRegCardData.room_number}}</strong>
                         	<span>&nbsp;</span>
                         </td>
                     </tr>
                     <tr ng-hide="!isStandAlone">
                         <td>
-                            <span>AMOUNT PAID:</span>
-                            <strong>{{ printRegCardData.amount_paid | currency:currencySymbol:2 }}</strong>
+                            <span ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation.amount_paid }}:</span>
+                            <strong ng-hide="printRegCardData.hide_rates">{{ printRegCardData.amount_paid | currency:currencySymbol:2 }}</strong>
                         </td>
                         <td>
-                            <span>PAYMENT:</span>
+                            <span>{{ printRegCardData.translation.payment }}:</span>
                             <strong>{{ printRegCardData.payment_type }}</strong>
                         </td>
                         <td>
-                            <span>ACCOUNT:</span>
+                            <span>{{ printRegCardData.translation.account }}:</span>
                             <strong>{{ printRegCardData.account }}</strong>
                         </td>
                     </tr>
@@ -85,11 +85,11 @@
                 <table ng-hide="!isStandAlone" class="rate-initial">
                     <tr>
                         <td ng-hide="printRegCardData.hide_rates">
-                            <span>AVERAGE DAILY RATE:</span>
+                            <span>{{ printRegCardData.translation.average_daily_rate }}:</span>
                             <strong>{{ printRegCardData.adr | currency:currencySymbol:2 }}</strong>
                         </td>
                         <td>
-                            <span>GUEST INITIALS:</span>
+                            <span>{{ printRegCardData.translation.guest_initials }}:</span>
                         </td>
                     </tr>
                 </table>
@@ -101,11 +101,11 @@
 <table ng-hide="!isStandAlone" class="bill-details">
     <thead>
         <tr>
-            <th>DATE</th>
-            <th ng-hide="printRegCardData.hide_rates">RATE</th>
-            <th ng-hide="printRegCardData.hide_rates">TAXES</th>
-            <th>ADD-ON</th>
-            <th ng-hide="printRegCardData.hide_rates" class="addon-price">ADD-ON PRICE</th>
+            <th>{{ printRegCardData.translation.date }}</th>
+            <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation.rate }}</th>
+            <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation["taxes_fees"] }}</th>
+            <th>{{ printRegCardData.translation.add_on }}</th>
+            <th ng-hide="printRegCardData.hide_rates" class="addon-price">{{ printRegCardData.translation.add_on_price }}</th>
         </tr>
     </thead>
     <tbody>
@@ -129,18 +129,48 @@
 <table class="guest-data-enter" ng-if="printRegCardData.is_show_vehiche_info">
     <tr>
         <td>
-            Guest DL/ID #
+            {{ printRegCardData.translation["guest_dl_id_no"] }}
         </td>
         <td class="details">
             <table>
                 <tr>
-                    <td>Vehicle Make</td>
-                    <td>Lic. Plate #</td>
-                    <td>Lic. Plate State/Prov.</td>
+                    <td>{{ printRegCardData.translation['vehicle_make'] }}</td>
+                    <td>{{ printRegCardData.translation['lic_plate_no'] }}</td>
+                    <td>{{ printRegCardData.translation['lic_plate_state_prov'] }}</td>
                 </tr>
             </table>
         </td>
     </tr>
+</table>
+
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td colspan="3">{{ printRegCardData.translation['address'] }}</td>
+        </tr>
+        <tr>
+            <td>{{ printRegCardData.translation['city'] }}</td>
+            <td>{{ printRegCardData.translation['state'] }}/{{ printRegCardData.translation['postal_code'] }}</td>
+            <td>{{ printRegCardData.translation['country'] }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td>{{ printRegCardData.translation['phone'] }}</td>
+            <td>{{ printRegCardData.translation['mobile'] }}</td>
+            <td>{{ printRegCardData.translation['email'] }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td>{{ printRegCardData.translation['id_type'] }}</td>
+            <td>{{ printRegCardData.translation['id_number'] }}</td>       
+        </tr>
+    </tbody>
 </table>
 
 <table class="terms-signature">
@@ -158,7 +188,7 @@
     <tr>
         <td>
             <span class="signature1">
-                Guest Signature
+                {{ printRegCardData.translation.guest_signature }}
             </span>
         </td>
     </tr>

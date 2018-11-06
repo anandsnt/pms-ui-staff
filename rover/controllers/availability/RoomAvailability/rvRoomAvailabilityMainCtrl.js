@@ -6,7 +6,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	'$filter',
 	'$timeout',
     '$q',
-	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout, $q) {
+    '$state',
+	function($scope, rvAvailabilitySrv, $rootScope, ngDialog, $filter, $timeout, $q, $state) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -37,7 +38,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	// default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
-
+	$scope.data.isIncludeOverbooking = false;
 
 	// To popup contract start date
 	$scope.clickedOnDatePicker = function() {
@@ -85,7 +86,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
 		var dataForWebservice = {
 			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
-			'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
+			'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI),
+			'is_include_overbooking': $scope.data.isIncludeOverbooking
 		};
 
 		return dataForWebservice;
@@ -157,6 +159,28 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		}, 0);
 
 	};
+	// Handle include overbooking button click
+	$scope.clickedIncludeOverbooking = function() {
+		$scope.data.isIncludeOverbooking = !$scope.data.isIncludeOverbooking;
+		$scope.$broadcast('INCLUDE_OVERBOOKING', $scope.data.isIncludeOverbooking);
+		$scope.changedAvailabilityDataParams();
+	};
 
 	$scope.changedAvailabilityDataParams();
+
+	/**
+	 * Navigate to create reservation flow first page with the given params
+	 * @param {Object} roomTypeInfo - roomtypeinfo holding room type info
+	 * @param {Array}  dates - Array of dates for which the availability is shown
+	 * @param {Integer} selectedDateIdx index of the dates for which the room type is chosen
+	 * @return {void}
+	 */
+	$scope.navigateToCreateReservation = function(roomTypeInfo, dates, selectedDateIdx) {
+		$state.go('rover.reservation.search', {
+			selectedArrivalDate: dates[selectedDateIdx].date,
+			selectedRoomTypeId: roomTypeInfo.id
+		});
+		$scope.$emit('CLOSE_AVAILIBILTY_SLIDER');
+	};
+
 	}]);

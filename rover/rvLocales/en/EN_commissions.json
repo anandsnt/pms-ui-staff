@@ -2,6 +2,7 @@
     "COMMISSION" : "Commission",
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
+    "COMMISSION_IS_PREPAID": "Commission Prepaid",
     "PER_STAY": "Per Stay",
     "PER_NIGHT": "Per Night",
     "PER_STAY_OR_PER_NIGHT" : "Per Stay/Per Night",
@@ -67,7 +68,12 @@
     "TACS_EXPORT": "Tacs Commission Export",
     "ADD_RECIPIENT": "ADD RECIPIENT",
     "NON_COMMISSIONABLE_BILLS": "Non-Commissionable Bills",
-    "SELECT_FILTERS_AND_APPLY": "Select filters and press 'Apply'"
+    "SELECT_FILTERS_AND_APPLY": "Select filters and press 'Apply'",
+    "EMAIL_PAYMENT_REPORT_SWITCH": "Email Payment Report",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter An Email",
+    "COMMISSIONS_REPORT_TITLE": "Commission Payment Report"
+
 
 
 

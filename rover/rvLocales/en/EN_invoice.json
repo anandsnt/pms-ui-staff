@@ -22,4 +22,7 @@
 "REF_NO:"			: "Reference No.: ",
 "TAX_ID:"			: "Tax ID: ",
 "AR_NUMBER:"		: "AR No.: ",
-"AR_NO:"            : "AR Number: "
+"AR_NO:"            : "AR Number: ",
+"FIND_INVOICE"      : "Find Invoice",
+"SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER": "Search by Invoice or Folio No., Account/Guest Name",
+"SEARCH_PLACE_HOLDER_WITHOUT_FOLIO_NUMBER": "Search by Invoice No., Account/Guest Name"

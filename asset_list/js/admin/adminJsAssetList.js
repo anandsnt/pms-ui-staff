@@ -26,7 +26,9 @@ module.exports = {
 				jsLibRoot + 'SyntaxHighlighter/shBrushXml.js',
 				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js',
 				jsLibRoot + 'treeview/ivh-treeview.min.js',
-				jsLibRoot + 'moment.min.js'
+				jsLibRoot + 'moment.min.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'sortable.js',				
@@ -44,6 +46,7 @@ module.exports = {
 				sharedRoot + 'directives/ngClassWithoutAnimation/*.js',
                 sharedRoot + 'directives/convertToNumber/*.js',
 				sharedRoot + 'directives/tooltip/qtip2.js',
+				sharedRoot + 'directives/touchPress/touchPress.js',
 				sharedRoot + 'baseCtrl.js',
 				sharedRoot + 'iBeaconOperations.js',
 				jsLibRoot + 'date.js',
@@ -59,6 +62,8 @@ module.exports = {
 				sharedRoot + 'directives/onScroll/onScroll.js',
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js',
 				adminRoot + 'constants/**/*.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};		
 		

@@ -29,6 +29,16 @@
                         <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
                             <text data-ng-bind-html="getTagValue('ADD_REMOVE_GUESTS')" editable-text="ADD_REMOVE_GUESTS"></text>
                         </button>
+                        <div id="payment" ng-show="selectedReservation.reservation_details.payment_method_used === 'CC'">
+                            <h4 data-ng-bind-html="getTagValue('PAYMENT_METHOD')" editable-text="PAYMENT_METHOD"></h4>
+                            <p>
+                                <strong>{{selectedReservation.reservation_details.payment_details.card_type_name}}</strong>
+                                <br>
+                                <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{selectedReservation.reservation_details.payment_details.card_number}}
+                                <br>
+                                <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span>  {{selectedReservation.reservation_details.payment_details.card_expiry}}
+                            </p>
+                        </div>
                     </div>
                     <ul id="rate" class="reservation-details">
                         <li >
@@ -98,7 +108,7 @@
                     <h4><label>
                         <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_HEADER')" editable-text="TERMS_CONDITIONS_HEADER"></text>
                     </label></h4>
-                    <div id="terms" data-ng-bind-html="trustAsHtml(zestStationData.hotelTermsAndConditions)"></div>
+                    <div id="terms" data-ng-bind-html="trustAsHtml(hotelTermsAndConditions)"></div>
                 </div>
             </div>
             <div id="actions" class="pull-right">
@@ -118,3 +128,7 @@
     </div>
 <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
+
+<div ng-if="zestStationData.add_loyalty_pgms">
+    <ng-include src="'/assets/partials_v2/checkin/loyalty/zsCheckinLoyaltyMain.html'" ng-show="mode === 'LOYALTY_PROGRAMS'" ng-controller="zsCheckinLoyaltyCtrl"></ng-include>
+</div>

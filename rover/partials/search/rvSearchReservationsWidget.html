@@ -1,7 +1,7 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
 	<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler><!--TODO: verify enable-adding -->
 	    <div class="entry search">
-	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
+	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
@@ -48,6 +48,7 @@
                        <img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true)}">
                         <!-- if it's accompanying guest, show this as well:
                         <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                        <span class="stay-count" ng-if="row.stay_count > 0 && isStandAlone">{{::row.stay_count}}</span>
                         <span class="vip" ng-show="row.vip==1">VIP</span>
                     </figure>
                     <div class="data">

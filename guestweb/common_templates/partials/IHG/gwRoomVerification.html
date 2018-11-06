@@ -1,0 +1,49 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-show="isFetching && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isFetching || netWorkError">
+        <div class="col-md-4"></div>
+        <!-- left side -->
+        <div class="col-md-4">
+            <div class="section-container">
+                <form>
+                    <p class="main-text">Ready to Check-out?</p>
+                    <p class="sub-main-text">To start, please enter your room number:</p>
+                    <p class="sub-main-text margin-10" ng-show ="(roomVerificationInstruction.length>0)">
+                        ({{roomVerificationInstruction}})
+                    </p>
+                    <p class="sub-text pull-left first-field">Room Number</p>
+                    <input type="text" class="input-field padding-3" ng-model="roomNumber"></input>
+                    <button type="submit" class="btn btn-template margin-top-20"  ng-click="continueButtonClicked()"> Continue</button>
+                <form>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>                   
+    </div>
+</div>

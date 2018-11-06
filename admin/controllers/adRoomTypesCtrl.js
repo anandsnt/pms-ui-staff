@@ -1,6 +1,5 @@
 admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTypesSrv', 'ngTableParams', '$filter', '$anchorScroll', '$timeout', '$location', function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location) {
 
-
 	var init = function() {
     	$scope.errorMessage = '';
     	BaseCtrl.call(this, $scope);
@@ -15,6 +14,8 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	}
     	// To list room types
     	$scope.listRoomTypes();
+        $scope.isAscendingByName = true;
+        $scope.isAscendingByCode = true;
 	};
 
    /*
@@ -22,32 +23,47 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     */
 	$scope.listRoomTypes = function() {
 		var successCallbackFetch = function(data) {
-			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
-			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
-		    $scope.tableParams = new ngTableParams({
-		        page: 1,            // show first page
-		        count: 10000,    // count per page - Need to change when on pagination implemntation
-		        sorting: {
-		            name: 'asc'     // initial sorting
-		        }
-		    }, {
-		        total: $scope.data.room_types.length, // length of data
-		        getData: function($defer, params) {
-		            // use build-in angular filter
-		            var orderedData = params.sorting() ?
-		                                $filter('orderBy')($scope.data.room_types, params.orderBy()) :
-		                                $scope.data.room_types;
 
-		            $scope.orderedData =  orderedData;
+            /**
+             *  For Overlay properties -
+             *  Keeping sort by name in ASC order initially.
+             */
+            if ( !$rootScope.isStandAlone ) {
+                /**
+                 *  For StandAlone properties -
+                 *  As per CICO-7161 : We need to handle Sort By Name + Sort By position via Drag and Drop.
+                 *  thus removing the attribute for default sorting ( by name ).
+                 */
+                $scope.tableParams = new ngTableParams(
+                    {
+                        page: 1,        // show first page
+                        count: 10000,   // count per page - Need to change when on pagination implemntation
+                        sorting: {'name': 'asc'}
+                    }, 
+                    {
+                        total: $scope.data.room_types.length, // length of data
+                        getData: function($defer, params) {
+                            // use build-in angular filter
+                            var orderedData = params.sorting() ?
+                                                $filter('orderBy')($scope.data.room_types, params.orderBy()) :
+                                                $scope.data.room_types;
 
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-		        }
-		    });
-		};
+                            $scope.orderedData =  orderedData;
 
-		$scope.invokeApi(ADRoomTypesSrv.fetch, {}, successCallbackFetch);
+                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                        }
+                    }
+                );
+            }
+		},
+        options = {
+            params: {},
+            successCallBack: successCallbackFetch
+        };
+
+		$scope.callAPI(ADRoomTypesSrv.fetch, options);
 	};
 	 /*
     * To fetch list of room classes
@@ -59,7 +75,6 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 
 		$scope.invokeApi(ADRoomTypesSrv.fetchRoomClasses, {}, successCallbackFetch);
 	};
-
 
    /*
     * To render edit room types screen
@@ -101,8 +116,6 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
                     value.isComponentDownArrowEnabled = (blockedRoomsCountObj.rooms_count > 0) ? true : false;
                 }
             });
-
-
 	 	};
 	 	var data = {"id": id };
 
@@ -156,12 +169,19 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     		$scope.$emit('hideLoader');
     		$scope.isAddMode = false;
     		$scope.is_image_deleted = false;
-    		$scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id});
-    		$scope.tableParams.reload();
+            if ( !$rootScope.isStandAlone ) {
+    		    $scope.data.room_types.push({'name': $scope.roomTypeData.room_type_name, 'code': $scope.roomTypeData.room_type_code, 'id': data.id, 'sequence_number': data.sequence_number });
+                $scope.tableParams.reload();
+            }
+            else {
+                $scope.listRoomTypes();
+            }
     	};
 
-
     	if ($scope.isAddMode) {
+            if ( $rootScope.isStandAlone ) {
+                data.sequence_number = $scope.data.room_types.length + 1;
+            }
     		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data, addSuccessCallbackSave);
     	}
       	else {
@@ -192,24 +212,13 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     */
 	$scope.importFromPms = function(event) {
 		event.stopPropagation();
-
-		$scope.successMessage = "Collecting rooms data from PMS and adding to Rover...";
-
-		var successCallbackImport = function(data) {
-	 		$scope.$emit('hideLoader');
-	 		$scope.listRoomTypes();
-	 		$scope.successMessage = "Completed!";
+        var successCallbackImport = function() {
+		    $scope.$emit('hideLoader');
+	 		$scope.successMessage = $filter('translate')('ROOM_IMPORT_IN_PROGESS');
 	 		$timeout(function() {
-		        $scope.successMessage = "";
-		    }, 1000);
-
+		        $scope.successMessage = '';
+		    }, 10000);
 	 	};
-	 	var errorCallbackImport = function(data) {
-	 		$scope.$emit('hideLoader');
-	 		$scope.successMessage = "";
-	 		$scope.errorMessage = data;
-	 	};
-
 
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '', successCallbackImport);
 	};
@@ -226,7 +235,6 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
             if (!$scope.isAddMode) {
                 $scope.editRoomTypes(index, id);
             }
-
         };
 
         $scope.invokeApi(ADRoomTypesSrv.fetchRoomTypesAvailableForSuite, '', successCallbackGetAvailableRoomTypesForSuite);
@@ -262,31 +270,50 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     	});
         $scope.fetchAvailableRoomTypesForSuite();
 	};
-
+    /**
+     *  Sort By Name - UI filter - ngTable for overlay Hotels
+     */
 	$scope.sortByName = function() {
 		if ($scope.currentClickedElement === -1) {
-		$scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
+            $scope.tableParams.sorting({'name': $scope.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'});
 		}
 	};
+    /**
+     *  Sort By Code - ngTable -for overlay hotels.
+     *  UI filter
+     */
 	$scope.sortByCode = function() {
 		if ($scope.currentClickedElement === -1) {
-		$scope.tableParams.sorting({'code': $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
-	}
+            $scope.tableParams.sorting({'code': $scope.tableParams.isSortBy('code', 'asc') ? 'desc' : 'asc'});
+        }
 	};
-	$scope.deleteRoomTypes = function(roomtype_id) {
+
+	$scope.deleteRoomTypes = function( roomtype_id ) {
 		var successCallBack = function() {
-			$scope.$emit('hideLoader');
-			// actualIndex holds the index of clicked element in $scope.data.room_types
-            var actualIndex = $scope.data.room_types.map(function(x) {
-                return x.id;
-            }).indexOf(roomtype_id);
+            if ( !$rootScope.isStandAlone ) {
+			    // actualIndex holds the index of clicked element in $scope.data.room_types
+                var actualIndex = $scope.data.room_types.map(function(x) {
+                    return x.id;
+                }).indexOf(roomtype_id);
 
-      		$scope.data.room_types.splice(actualIndex, 1);
-			$scope.tableParams.page(1);
-			$scope.tableParams.reload();
+      		    $scope.data.room_types.splice(actualIndex, 1);
+			    $scope.tableParams.page(1);
+			    $scope.tableParams.reload();
+            }
+            else {
+                // Reload list for StandAlone properties..
+                $scope.listRoomTypes();
+            }
 		};
+        
+        var options = {
+            params: {
+                'roomtype_id': roomtype_id
+            },
+            successCallBack: successCallBack
+        };
 
-	   $scope.invokeApi(ADRoomTypesSrv.deleteRoomTypes, {'roomtype_id': roomtype_id}, successCallBack);
+	   $scope.callAPI(ADRoomTypesSrv.deleteRoomTypes, options);
 	};
 
     $scope.incrementBlockedRoomTypesCount = function(roomTypeId) {
@@ -326,7 +353,82 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         {
             clickedBlockRoomType.isComponentDownArrowEnabled = true;
         }
+    };
 
+    /*
+     *  Save Sorted list with API call
+     *  @param {string} [ room type id - to save by position via Drag and Drop ]
+     *  @param {number} [ position value - to save by position via Drag and Drop ]
+     *  @param {Boolean | Undefined} [ SortByName flag - to save by sorting order via Name Sort click ]
+     */
+    var saveSortedList = function(id, position, isSortByName ) {
+        var options = {
+            params: {}
+        },
+        successCallBackOfSort = function() {
+            $scope.listRoomTypes();
+            $scope.isAscendingByName = !$scope.isAscendingByName;
+        };
+
+        if ( isSortByName ) {
+            // Only for Standalone Hotels : Save the sort order
+            // sortByValue set true only for Standalone.
+            options.params.sort_dir = $scope.isAscendingByName;
+            options.successCallBack = successCallBackOfSort;
+        }
+        else {
+            options.params.room_type_id = id;
+            options.params.sequence_number = position;
+            options.successCallBack = $scope.listRoomTypes;
+        }
+
+        $scope.callAPI(ADRoomTypesSrv.saveComponentOrder, options);
+    };
+
+    // save new order
+    var saveNewPosition = function(id, position) {
+        _.isUndefined(position) ? "" : saveSortedList(id, position + 1);
+    };
+
+    // to fix shrinking of width
+    var fixHelper = function(e, ui) {
+        ui.children().each(function() {
+            $(this).width($(this).width());
+        });
+        return ui;
+    };
+
+    // Sorting by postions logic for Drag and Drop.
+    $scope.sortableOptions = {
+        helper: fixHelper,
+        start: function() {
+            $timeout(function() {
+                $scope.currentClickedElement = -1;
+            }, 1000);
+        },
+        stop: function(e, ui) {
+            if (ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex !== null) {
+                saveNewPosition(ui.item.sortable.model.id, ui.item.sortable.dropindex, ui.item.sortable.index);
+            }
+        }
+    };
+    // Sort by code for standalone property
+    $scope.sortByCodeStandAlone = function() {
+        if ($scope.currentClickedElement === -1) {
+            if ( $scope.isAscendingByCode ) {
+                $scope.data.room_types = _.sortBy($scope.data.room_types, 'code');
+            }
+            else {
+                $scope.data.room_types = _.sortBy($scope.data.room_types, 'code').reverse();
+            }
+            $scope.isAscendingByCode = !$scope.isAscendingByCode;
+        }
+    };
+    // Sort by Name for standalone property
+    $scope.sortByNameStandAlone = function() {
+        if ($scope.currentClickedElement === -1) {
+            saveSortedList( null, null, true );
+        }
     };
 
 	init();

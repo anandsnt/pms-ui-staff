@@ -24,7 +24,7 @@ if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 500) { // 500- Internal Server Error
                 deferred.reject(['Internal server error occured']);
-            } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+            } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
             } else if (status === 401) { // 401- Unauthorized
                 // so lets redirect to login page
@@ -376,6 +376,7 @@ if (status === 406) { // 406- Network error
                 case "MLI":
                 case "CBA":
                 case "SHIJI":
+                case "CBA_AND_MLI":
                     break;
                 case "sixpayments":
                     var time = new Date().getTime(),
@@ -496,7 +497,7 @@ if (status === 406) { // 406- Network error
 
         service.checkARStatus = function(postingAccountId) {
             var deferred = $q.defer();
-            var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
+            var url = 'api/posting_accounts/' + postingAccountId + '/check_ar_account_attached';
 
             $http.get(url).then(response => {
                 deferred.resolve(response.data);
@@ -524,5 +525,26 @@ if (status === 406) { // 406- Network error
             return !!amount && !isNaN(Number(amount)) && Number(amount) !== 0;
         };
 
-    }
-]);
+        service.isAddCardAction = function(actoionType) {
+            let addCardActionTypes = ['ADD_PAYMENT_GUEST_CARD', 'ADD_PAYMENT_BILL', 'ADD_PAYMENT_STAY_CARD'];
+            
+            return _.contains(addCardActionTypes, actoionType);
+        };
+
+        service.sampleMLISwipedCardResponse = {
+            "cardType": "VA",
+            "cardNumber": "xxxx-xxxx-xxxx-0135",
+            "nameOnCard": "UAT USA/TEST CARD 19",
+            "cardExpiry": "1912",
+            "cardExpiryMonth": "12",
+            "cardExpiryYear": "19",
+            "et2": "",
+            "ksn": "FFFF987654165420000E",
+            "pan": "476173000000**35",
+            "etb": "DA9693715C1DC7B6183F830BF0713E9FE849D0275D30FFF2677F44FB34383B4BE8A2CE89D62D2CC138668CFB914C2D998602969CC58326B5BDD1585174A846FD90096C75903BA1907C4B820B3AE9441F317F21DBDB2CCE8327E24C56CE6866A39085467D0C4D15528B1240C8777B83634DEA58EFD3D90AA3",
+            "token": "8045832471460135",
+            "isEncrypted": true
+        };
+
+        service.mockCba = false;
+}]);

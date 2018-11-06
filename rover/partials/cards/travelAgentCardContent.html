@@ -22,6 +22,9 @@
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions','with-filters': isWithFilters }" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                 <a translate>AR_TRANSACTIONS</a>
             </li>
+            <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-activity-log'}" ng-click="switchTabTo($event, 'cc-activity-log')">
+                <a translate>ACTIVITY_LOG</a>
+            </li>
             <li class="with-filters" ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
                 <a translate>RESERVATIONS</a>
             </li>
@@ -37,6 +40,8 @@
         <span ng-controller="companyCardArAccountCtrl" ng-include="'/assets/partials/companyCard/rvcompanyCardArAccount.html'" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable"></span>
         <!-- Travel Agent - AR Transactions -->
         <span ng-controller="RVCompanyCardArTransactionsMainCtrl" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArTransactionsMain.html'" ng-show="(contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable) && currentSelectedTab == 'cc-ar-transactions'"></span>
+        <!-- Travel Agent - Activity Log -->
+        <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
         <!-- Travel Agent - Notes -->
         <span ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
         

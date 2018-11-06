@@ -592,6 +592,7 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+
 //retrieve month name from index
 function getMonthName(monthIndex){
     var monthName = new Array(12);
@@ -672,7 +673,7 @@ var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
     Object.keys(obj).forEach(function (key) {
         if ( obj[key] != null && typeof obj[key] === 'object') {
             return replaceValueWithinObject(obj[key], findStr, replaceObj);
-        } else if (obj[key] == findStr) {
+        } else if (obj[key] === findStr) {
             obj[key] = replaceObj;
         }
     });
@@ -688,4 +689,32 @@ var isObjectAllValuesEmpty = function (obj) {
         }
     });
     return ( emptyKeys.length == Object.keys(obj).length );
+};
+// Convert the given date object to timezone independent date
+var getTzIndependentDate = function(dateObj) {   
+
+    var r = dateObj.getTime();
+
+    if ( (dateObj.getHours() != 0) || (dateObj.getMinutes() != 0) ) {
+        r += dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    if ( dateObj.getTimezoneOffset() < 0 ) {
+        r -= dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    var adjustedDate = new Date(r)
+
+    if(adjustedDate.isOnDST()){
+        return new Date(r += Math.abs(dateObj.getDSTDifference()) * 60 * 1000);
+    }
+
+    return adjustedDate;
+};
+// Get timezone independent date for the given day, month and year
+var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
+    var d = new Date(year, month-1, day);
+
+    return getTzIndependentDate(d);
+
 };

@@ -9,7 +9,8 @@
             <snt-payment 
                 hotel-config="hotelPaymentConfig"
                 workstation-id = "{{workstation_id}}"
-                reservation-id="{{reservationId}}" 
+                reservation-id="{{reservationId}}"
+                bill-id="reservationData.reservation_card.default_bill_id"
                 bill-number="billNumber"
                 payment-types="passData.details.paymentTypes" 
                 selected-payment-type="paymentType"

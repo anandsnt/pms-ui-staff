@@ -44,7 +44,7 @@
 
 	        <div id="status-details" class="scrollable" ng-iscroll="room-service-status-update">
 	            <div class="wrapper room-service-status">
-	                <div id="dates" class="row" ng-if="updateServiceData.room_service_status_id != 1">
+	                <div id="dates" class="row">
                     <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
 	                    <div id="out-from" class="entry">
 	                        <label id="room-out-from-label" for="room-out-from">From
@@ -99,10 +99,6 @@
 	                        <textarea name="reason-comments" id="reason-comments" ng-model="updateServiceData.comments" rows="4"></textarea>
 	                    </div>
 	                </div>
-	                <div class="wrapper room-service-status in-service" ng-if="updateServiceData.room_service_status_id == 1" >
-            			<strong class="h2">In Service</strong>
-            			<span class="icon-no-content icon-ok"></span>
-        			</div>
 	        	</div>
 	        </div>
 

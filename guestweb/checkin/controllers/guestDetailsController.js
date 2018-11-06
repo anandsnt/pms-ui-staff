@@ -44,6 +44,7 @@
 			for (var day = 1; day <= 31; day++) {
 				$scope.days.push(day);
 			}
+			var alreadyPresentGuestDetails = {};
 			//fetch details
 			var fetchGuestDetails = function() {
 				$scope.isLoading = true;
@@ -55,6 +56,7 @@
 					$scope.guestDetails.day = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(8, 10)) : "";
 					$scope.guestDetails.month = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(5, 7)) : "";
 					$scope.guestDetails.year = ($scope.guestDetails.birthday !== null) ? parseInt($scope.guestDetails.birthday.substring(0, 4)) : "";
+					alreadyPresentGuestDetails = angular.copy($scope.guestDetails);
 				}, function() {
 					$rootScope.netWorkError = true;
 					$scope.isLoading = false;
@@ -115,28 +117,37 @@
 				}
 			};
 
+			var nextPageActions = function() {
+				$rootScope.isGuestAddressVerified = true;
+				// (for checkin now room has to be available)
+				if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || $rootScope.isUpgradeAvailableNow)) {
+					$state.go('checkinUpgrade');
+				} else {
+					if ($rootScope.isAutoCheckinOn) {
+						$state.go('checkinArrival');
+					} else {
+						$state.go('checkinKeys');
+					}
+				}
+			};
+
 			//post guest details
 			$scope.postGuestDetails = function() {
 				if ($scope.guestDetails.country && $scope.guestDetails.street && $scope.guestDetails.city && $scope.guestDetails.state && $scope.guestDetails.postal_code) {
-					$scope.isLoading = true;
-					var dataToSave = getDataToSave();
-					guestDetailsService.postGuestDetails(dataToSave).then(function() {
-						$scope.isLoading = false;
-						$rootScope.isGuestAddressVerified = true;
-						// (for checkin now room has to be available)
-						if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || $rootScope.isUpgradeAvailableNow)) {
-							$state.go('checkinUpgrade');
-						} else {
-							if ($rootScope.isAutoCheckinOn) {
-								$state.go('checkinArrival');
-							} else {
-								$state.go('checkinKeys');
-							}
-						}
-					}, function() {
-						$rootScope.netWorkError = true;
-						$scope.isLoading = false;
-					});
+					if (_.isMatch(alreadyPresentGuestDetails, angular.copy($scope.guestDetails))) {
+						// No change in guest details
+						nextPageActions();
+					} else {
+						$scope.isLoading = true;
+						var dataToSave = getDataToSave();
+						guestDetailsService.postGuestDetails(dataToSave).then(function() {
+							$scope.isLoading = false;
+							nextPageActions();
+						}, function() {
+							$rootScope.netWorkError = true;
+							$scope.isLoading = false;
+						});
+					}
 				} else {
 					$modal.open($scope.errorOpts);
 				}

@@ -1,0 +1,41 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()"><!-- Add new Item -->
+	<div id="add-new-item" data-view="ItemsDetailsView">
+		<header class="content-title float">
+			<h2 ng-show="!isAddMode">{{'EDIT' | translate}} <span></span></h2>
+			<h2 ng-show="isAddMode" translate>ADD_NEW_TAX_EXEMPT_TYPE</h2>
+			
+			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_TAX_EXEMPT_TYPES</a>			
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form name="item-details" method="post" class="form inline-form float">
+					<div class="form-title" >
+						<h3>
+							<span translate>ADD</span>
+						</h3>						
+					</div>
+					<br />
+					<ad-textbox inputtype="text" value="addData.name"
+				label = "Name" placeholder = "Enter name"
+				required="yes" styleclass="full-width"></ad-textbox>
+				<ad-checkbox is-checked="addData.is_default" label="{{ 'DEFAULT_TAX_EXEMPT_TYPE' | translate}}" div-class="full-width"></ad-checkbox>
+					<div class="entry full-width actions_margin_top">
+			            <div id="available-charge-codes" class="boxes col2">
+			                <ad-checkbox ng-repeat="chargeCode in chargeCodes"
+                             is-checked="chargeCode.is_selected"
+                             label="{{chargeCode.charge_code +' - ' + chargeCode.description}}"
+                             parent-label-class="room-likes" span-class="checkbox-background"
+                             on-click="selectedChargeCode(chargeCode.is_selected)"></ad-checkbox>
+			            </div>
+			        </div>
+				<div class="actions float">
+					<br />
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+
+					<button type="button" id="save" class="button green add-data-inline"  ng-click="saveTaxExempt()" translate>SAVE_CHANGES</button>
+
+				</div>
+			</form>
+		</section>
+	</div>
+</section>

@@ -27,7 +27,8 @@
 								<span ng-class="{'sort' : !!chosenReport.sortByOptions[$index],
 													'sorting-asc'  : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === true,
 													'sorting-desc' : !!chosenReport.sortByOptions[$index] && chosenReport.sortByOptions[$index]['sortDir'] === false
-												}" ng-click="sortResultBy(chosenReport.sortByOptions[$index])">{{ item }}</span>
+												}" ng-click="sortResultBy(chosenReport.sortByOptions[$index])" ng-if="!isBackgroundReportsEnabled">{{ item }}</span>
+								<span ng-if="isBackgroundReportsEnabled">{{ item }}</span>
 						</th>
 					</tr>
 				</thead>
@@ -44,5 +45,5 @@
 	</div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>

@@ -26,7 +26,7 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
         var deferred = $q.defer();
 
         if (typeof params === "undefined") {
-            params = "";
+            params = {};
         }
 
         var httpDict = {};
@@ -34,7 +34,10 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
         httpDict.url = url;
         httpDict.method = httpMethod;
         if (httpMethod === 'GET' || httpMethod === 'DELETE') {
-            httpDict.params = params;
+            httpDict.params = params || {};
+            if (typeof $rootScope.workstation_id !== 'undefined') {
+                httpDict.params.workstation_id = $rootScope.workstation_id;
+            }
         }
         else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
@@ -62,7 +65,7 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
             } else if (status === 422) { // 406- Network error
                 deferred.reject(response.data.errors);
             }
-            else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+            else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
             }
             else if (status === 500) { // 500- Internal Server Error

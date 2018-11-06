@@ -1,0 +1,50 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 section-container">
+            <p class="main-text">Early Check-in Alert</p>
+            <p class="sub-main-text">
+                You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). Please request a check-in time after {{earlyCheckinRestrictLimit}} to proceed with your check-in without a fee.
+            </p>
+            <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
+            <div class="row">
+                <div class="select-style eta-single">
+                    <select name="timepicker" id="timePicker" ng-model="arrivalTime">
+                        <option value="">select time</option>
+                        <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                    </select>
+                </div>
+            </div>
+            <!--  submit button-->
+            <button class="btn btn-template margin-top-20" ng-click="postStayDetails()">Continue</button>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

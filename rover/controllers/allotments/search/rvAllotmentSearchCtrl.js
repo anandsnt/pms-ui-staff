@@ -22,6 +22,8 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
         BaseCtrl.call(this, $scope);
 
+        var PAGINATION_ID = 'ALLOTMENT_LIST';
+
 
         /**
          * util function to check whether a string is empty
@@ -221,30 +223,33 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         };
 
         /**
-         * utility function to form API params for allotment search
-         * return {Object}
+         * Utility function to form API params for allotment search
+         * @param {Number} pageNo - current page no
+         * return {Object} params parameters based on the filter choosen
          */
-        var formAllotmentSearchParams = function() {
+        var formAllotmentSearchParams = function(pageNo) {
             var params = {
                 query: $scope.query,
                 from_date: $scope.fromDateForAPI !== '' ? $filter('date')($scope.fromDateForAPI, $rootScope.dateFormatForAPI) : '',
                 to_date: $scope.toDateForAPI !== '' ? $filter('date')($scope.toDateForAPI, $rootScope.dateFormatForAPI) : '',
                 per_page: $scope.perPage,
-                page: $scope.page
+                page: pageNo
             };
 
             return params;
         };
 
         /**
-         * to Search for allotment
-         * @return - None
+         * Search for allotments
+         * @param {Number} pageNo current page no
+         * @return {void}
          */
-        $scope.search = function() {
+        $scope.search = function(pageNo) {
             // am trying to search something, so we have to change the initial search helping screen if no rsults
             $scope.amFirstTimeHere = false;
+            pageNo = pageNo || 1;
 
-            var params = formAllotmentSearchParams();
+            var params = formAllotmentSearchParams(pageNo);
             var options = {
                 params: params,
                 successCallBack: successCallBackOfSearch,
@@ -260,14 +265,16 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {None}
          */
         var successCallBackOfSearch = function(data) {
-            // allotmentlist
-            $scope.allotmentList = data.allotments;
+                // allotmentlist
+                $scope.allotmentList = data.allotments;
 
-            // total result count
-            $scope.totalResultCount = data.total_count;
+                // total result count
+                $scope.totalResultCount = data.total_count;
 
-            refreshScrollers();
-        };
+                refreshScrollers();
+                $scope.refreshPagination(PAGINATION_ID);
+                
+            };
 
         /**
          * on success of search API
@@ -401,82 +408,14 @@ sntRover.controller('rvAllotmentSearchCtrl', [
         $scope.shouldShowNoResult = function() {
             return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
         };
-
-        /**
-         * should we disable next button
-         * @return {Boolean}
-         */
-        $scope.isNextButtonDisabled = function() {
-            return ($scope.end >= $scope.totalResultCount);
-        };
-
-        /**
-         * should we disable prev button
-         * @return {Boolean}
-         */
-        $scope.isPrevButtonDisabled = function() {
-            return ($scope.start === 1);
-        };
-
+        
         // just redirecting to allotment creation page
         $scope.gotoAddNewAllotment = function() {
             $state.go('rover.allotments.config', {
                 'id': "NEW_ALLOTMENT",
                 'newAllotmentName': $scope.query
             });
-        };
-
-        /**
-         * function to trgger on clicking the next button
-         * will call the search API after updating the current page
-         * return - None
-         */
-        $scope.loadPrevSet = function() {
-            var isAtEnd = ($scope.end === $scope.totalResultCount);
-
-            if (isAtEnd) {
-                // last diff will be diff from our normal diff
-                var lastDiff = ($scope.totalResultCount % $scope.perPage);
-
-                if (lastDiff === 0) {
-                    lastDiff = $scope.perPage;
-                }
-
-                $scope.start = $scope.start - $scope.perPage;
-                $scope.end = $scope.end - lastDiff;
-            } else {
-                $scope.start = $scope.start - $scope.perPage;
-                $scope.end = $scope.end - $scope.perPage;
-            }
-
-            // Decreasing the page param used for API calling
-            $scope.page--;
-
-            // yes we are calling the API
-            $scope.search();
-        };
-
-        /**
-         * function to trgger on clicking the next button
-         * will call the search API after updating the current page
-         * return - None
-         */
-        $scope.loadNextSet = function() {
-            $scope.start = $scope.start + $scope.perPage;
-            var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
-
-            if (willNextBeEnd) {
-                $scope.end = $scope.totalResultCount;
-            } else {
-                $scope.end = $scope.end + $scope.perPage;
-            }
-
-            // Increasing the page param used for API calling
-            $scope.page++;
-
-            // yes we are calling the API
-            $scope.search();
-        };
+        };                
 
         /**
          * Navigate to the allotment configuration state for editing the allotment
@@ -489,6 +428,14 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             });
         };
 
+        // Configuration pagination options for the directive
+        var configurePagination = function () {
+            $scope.pageOptions = {
+                id: PAGINATION_ID,
+                perPage: $scope.perPage,
+                api: $scope.search
+            };
+        };
 
         /**
          * function used to set initlial set of values
@@ -518,6 +465,10 @@ sntRover.controller('rvAllotmentSearchCtrl', [
 
             // pagination  & API things
             setInitialPaginationAndAPIThings();
+
+            configurePagination();
+
+            $scope.refreshPagination(PAGINATION_ID);
         }());
 
 

@@ -33,7 +33,7 @@ sntGuestWeb.controller('GwCheckoutLaterController', ['$scope', '$state', '$contr
 					$state.go('ccAddition', {
 						'fee': option.amount,
 						'message': "Late check-out fee",
-						'isFromCheckoutNow': false,
+						'isFrom': "CHECK_OUT_LATER",
 						'time': option.time,
 						'ap': option.ap,
 						'amount': option.amount

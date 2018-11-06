@@ -1640,6 +1640,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }, 300);
 
         });
+        $scope.shouldIncludeScrollFixClass = false; 
+        $scope.$on('PAYMENT_TYPE_CHANGED', function(e, paymentType) {
+            if (paymentType === "CC") {
+                $scope.shouldIncludeScrollFixClass = true; 
+            } else {
+                $scope.shouldIncludeScrollFixClass = false; 
+            }
+            $timeout(function() {
+                $scope.refreshScroller('paymentInfo');
+            }, 700);
+        }); 
 
         // Find guest type id by name
         var findGuestTypeId = function (type) {

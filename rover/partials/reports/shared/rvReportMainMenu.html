@@ -1,20 +1,15 @@
-<ul id="report-main-menu">
-    <li ng-class="{ 'active': reportViewStore.showingAllReport }"
-      ng-click="reportMainMenuChange(reportViewActions.SHOW_ALL_REPORT)">
-        <i class="icon-report icon-all-reports"></i>
-        <span class="title has-arrow next-view">View All Reports</span>
-    </li>
+<ul id="report-main-menu">    
     <li ng-class="{ 'active': reportViewStore.showingScheduledReports || reportViewStore.showingScheduleAReport }"
       ng-click="reportMainMenuChange(reportViewActions.SHOW_SCHEDULED_REPORTS)"
-      ng-show="shouldShowScheduleReport()">
+      ng-show="shouldShowScheduleReport()" class="has-arrow next-view">
         <i class="icon-report icon-schedule"></i>
-        <span class="title has-arrow next-view">Scheduled Reports</span>
+        <span class="title">Scheduled Reports</span>
     </li>
     <li ng-class="{ 'active': reportViewStore.showingExportReports || reportViewStore.showingExportAReport }"
       ng-click="reportMainMenuChange(reportViewActions.SHOW_EXPORT_REPORTS)"
-      ng-show="shouldShowExportReport()">
+      ng-show="shouldShowExportReport()" class="has-arrow next-view"  >
         <i class="icon-report icon-schedule"></i>
-        <span class="title has-arrow next-view">Scheduled Exports</span>
+        <span class="title">Scheduled Exports</span>
     </li>
     <!-- <li ng-class="{'active': selected}">
         <i class="icon-report icon-category"></i>

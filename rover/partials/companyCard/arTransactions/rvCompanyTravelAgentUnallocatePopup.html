@@ -17,7 +17,7 @@
 					<div class="faux-anchor">
 
 						<div class="data">
-							<h2>{{selectedUnAllocatedItem.from_bill.payment_type}}</h2>
+							<h2>{{selectedUnAllocatedItem.from_bill.invoice_name}}</h2>
 							<span class="invoice">Invoice #<span class="value">{{selectedUnAllocatedItem.from_bill.invoice_number}}</span></span>
 							<span class="confirmation">Ext #<span class="value">{{selectedUnAllocatedItem.from_bill.external_reference_number}}</span></span>
 						
@@ -26,8 +26,8 @@
 						<div class="guest-date arrival">
 							<span class="guest-status small-icon check-in">check-in</span>
 							<time datetime="{arrival-datetime}">
-								<span class="date">{{selectedUnAllocatedItem.from_bill.transaction_date | date : dateFormat}}</span>
-								<span class="time">{{selectedUnAllocatedItem.from_bill.transaction_time}}</span>
+								<span class="date">{{selectedUnAllocatedItem.from_bill.arrival_date | date : dateFormat}}</span>
+								<span class="time">{{selectedUnAllocatedItem.from_bill.arrival_time}}</span>
 							</time>
 						</div>
 

@@ -1,5 +1,5 @@
 (function() {
-	var checkinRoomUpgradeOptionsService = function($q, $http, $rootScope) {
+	var checkinRoomUpgradeOptionsService = function($q, $http, $rootScope, $window) {
 
 	var responseData = {};
 
@@ -24,15 +24,27 @@
 		return deferred.promise;
 	};
 
+	var sendGoogleAnalyticsEvents = function (params) {
+		if ($rootScope.trackingID && $rootScope.trackingID.length > 0) {
+			$window.ga('send', {
+				hitType: 'event',
+				eventCategory: params.eventCategory,
+				eventAction: params.eventAction,
+				eventLabel: params.eventLabel
+			});
+		}
+	};
+
 
 	return {
 		responseData: responseData,
-		fetch: fetch
+		fetch: fetch,
+		sendGoogleAnalyticsEvents: sendGoogleAnalyticsEvents
 	};
 };
 
 var dependencies = [
-'$q', '$http', '$rootScope',
+'$q', '$http', '$rootScope', '$window',
 checkinRoomUpgradeOptionsService
 ];
 

@@ -1,7 +1,7 @@
 module.exports = {	
 	getList : function() {
 		var sharedRoot 	= 'shared/',
-		jsLibRoot 		= sharedRoot + 'lib-legacy/js/',
+		jsLibRoot 		= sharedRoot + 'lib/js/',
 		guestwebroot 	= 'guestweb_v2/',
 		guestwebJSassets 	= {
 			minifiedFiles: [
@@ -14,18 +14,20 @@ module.exports = {
 				jsLibRoot + 'angular-sanitize.min.js'
 			],
 			nonMinifiedFiles: [
-				guestwebroot + 'utility/gw_util.js',
-				guestwebroot + 'utility/gw_theming_utility.js',
-				guestwebroot + 'gw_app.js',
-				guestwebroot + 'gw_app_config.js',
-				guestwebroot + 'routers/gw_main_app_router.js',
-				guestwebroot + 'routers/gw_app_router.js',
-				guestwebroot + 'routers/gw_checkin_router.js',
-				guestwebroot + 'routers/gw_checkout_router.js',
+				guestwebroot + 'utility/gwUtil.js',
+				guestwebroot + 'utility/gwThemingUtility.js',
+				guestwebroot + 'gwApp.js',
+				guestwebroot + 'gwAppConfig.js',
+				guestwebroot + 'routers/gwMainAppRouter.js',
+				guestwebroot + 'routers/gwAppRouter.js',
+				guestwebroot + 'routers/gwCheckinRouter.js',
+				guestwebroot + 'routers/gwCheckoutRouter.js',
 				guestwebroot + 'scripts/angular-pickdate.js',
 				guestwebroot + 'services/*.js',
 				guestwebroot + 'controllers/**/*.js',
-				guestwebroot + 'directives/**/*.js'
+				guestwebroot + 'directives/**/*.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]	
 		};
 		return guestwebJSassets;

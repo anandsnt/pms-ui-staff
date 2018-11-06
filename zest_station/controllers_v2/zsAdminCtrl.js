@@ -472,6 +472,30 @@ sntZestStation.controller('zsAdminCtrl', [
         };
 
         $scope.showDebugModeOption = false;
+
+        $scope.fetchDeviceStatus = function() {
+            var callBacks = {
+                'successCallBack': function(response) {
+                    if (response.length > 0) {
+                        $scope.zestStationData.connectedDeviceDetails = response[0];
+                        if (!response[0].device_connection_state) {
+                            $scope.zestStationData.connectedDeviceDetails.device_connection_state = response[0].device_connection_sate;
+                        }
+                    } else {
+                        $scope.zestStationData.connectedDeviceDetails.device_short_name = 'No Devices found';
+                        $scope.zestStationData.connectedDeviceDetails.device_connection_state = 'N/A';
+                    }
+                    $scope.runDigestCycle();
+                },
+                'failureCallBack': function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                }
+            };
+
+            $scope.zestStationData.connectedDeviceDetails.device_connection_state = 'refreshing...';
+            $scope.cardReader.getConnectedDeviceDetails(callBacks);
+        };
+
         // initialize
         (function() {
             var localDebugging = false, // change this if testing locally, be sure to make false if going up to dev/release/prod
@@ -515,6 +539,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.demoMobileKeyModeUserEmailOnFile = 'true';
                 $scope.zestStationData.thirdPartyMobileKey = 'false'; // TODO MOVE TO API SETTING
                 
+            }
+            if ($scope.isIpad) {
+                $scope.fetchDeviceStatus();
             }
 
         }());

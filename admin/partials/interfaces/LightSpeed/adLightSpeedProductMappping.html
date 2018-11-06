@@ -2,6 +2,25 @@
     <h3>{{'LS_PRODUCT_MAPPINGS' | translate}}</h3>
 </div>
 <div class="data-holder">
+    <div class="entry has-sortable" ng-if="lightspeed.floors_enabled">
+        <label>Restaurants</label>
+        <div class="select">
+            <select ng-model="data.selectedRestaurant"
+                    ng-options="restaurant.name for restaurant in restaurants"
+                    ng-change="fetchFloors()">
+                    
+            </select>
+        </div>
+    </div>
+    <div class="entry has-sortable pull-right" ng-if="lightspeed.floors_enabled">
+        <label>Floors</label>
+        <div class="select">
+            <select ng-model="data.selectedFloor"
+                    ng-options="floor.name for floor in floors"
+                    ng-change="fetchChargeCodeMapings()">
+            </select>
+        </div>
+    </div>
     <div class="entry has-sortable">
         <label>Charge Codes</label>
         <div class="select">

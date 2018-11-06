@@ -1,5 +1,5 @@
-	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv', '$rootScope',
-		function($q, $http, GwScreenMappingSrv, $rootScope) {
+	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv', '$rootScope', 'GWBaseWebSrv2',
+		function($q, $http, GwScreenMappingSrv, $rootScope, GWBaseWebSrv2) {
 
 
 			this.zestwebData = {};
@@ -59,27 +59,22 @@
 
 			this.fetchHotelDetailsFromUrl = function(url) {
 				var deferred = $q.defer();
+				
+				GWBaseWebSrv2.getJSON(url).then(function(response) {
+					var data = response.data;
 
-				/*
-				 * To fetch reservation and hotel data
-				 * @return {object} CMS details
-				 */
-				$http.get(url).then(function(res) {
-					var data = res.data;
-
-						if (data.status === "success") {
-							that.zestwebData = data.data;
+						if (response.status === "success") {
+							that.zestwebData = data;
 							deferred.resolve(that.zestwebData);
 						} else {
 							// when some thing is broken , need to redirect to error page with default theme
-							data.data.hotel_theme = "guestweb";
-							data.data.error_occured = true;
-							deferred.resolve(data.data);
+							data.hotel_theme = "guestweb";
+							data.error_occured = true;
+							deferred.resolve(data);
 						}
-
-					}, function() {
-						deferred.reject();
-					});
+				}, function(data) {
+					deferred.reject(data);
+				});
 				return deferred.promise;
 			};
 
@@ -165,7 +160,7 @@
 				that.zestwebData.termsAndConditions = zestwebData.terms_and_conditions;
 				that.zestwebData.isBirthdayVerified = false;
 
-				that.zestwebData.application = zestwebData.application;
+				that.zestwebData.application = zestwebData.application ? zestwebData.application : 'WEB';
 				that.zestwebData.urlSuffix = zestwebData.url_suffix;
 				that.zestwebData.collectCCOnCheckin = (zestwebData.checkin_collect_cc === "true") ? true : false;
 				that.zestwebData.isMLI = (zestwebData.payment_gateway = "MLI") ? true : false;
@@ -178,7 +173,12 @@
 				that.zestwebData.zestCheckinNoServiceMsg = zestwebData.zest_checkin_no_service_msg;
 
 				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
+				that.zestwebData.isAddonUpsellActive = zestwebData.addon_upsell_availability;
 
+				that.zestwebData.sellLcoAsAddons = zestwebData.is_sell_late_checkout_as_addon;
+
+				that.zestwebData.showedTermsAndConditions = false;
+				
 				// Params for zest mobile and desktop screens
 				if (zestwebData.hasOwnProperty('is_password_reset')) {
 					that.zestwebData.isPasswordResetView = zestwebData.is_password_reset = "true";

@@ -166,7 +166,8 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
 
-            newDay = newDate.getDate() + parseInt(dateOffset);
+            var newDay = newDate.getDate() + parseInt(dateOffset);
+            
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
         };
@@ -174,10 +175,8 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
 
-            arrivalDay = arrivalDate.getDate();
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
 
-            departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
             // to make sure that the number of

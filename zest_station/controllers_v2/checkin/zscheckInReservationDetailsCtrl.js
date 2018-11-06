@@ -7,7 +7,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     '$stateParams',
     '$log',
     '$timeout',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout) {
+    'zsPaymentSrv',
+    'sntActivity',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity) {
 
 
         // This controller is used for viewing reservation details 
@@ -44,6 +46,19 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var setSelectedReservation = function() {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
         };
+        var updateGuestList = function(accompayingGuests) {
+            var newGuestList = [];
+            var guestList = angular.copy($scope.selectedReservation.guest_details);
+            var primaryGuest = _.find(guestList, {
+                is_primary: true
+            });
+
+            newGuestList.push(primaryGuest);
+            newGuestList = newGuestList.concat(accompayingGuests);
+            $scope.selectedReservation.guest_details = newGuestList;
+            // reset details in service
+            zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+        };
 
         var fetchReservationDetails = function() {
             var onSuccessFetchReservationDetails = function(data) {
@@ -51,12 +66,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if (data.data) {
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
-                    if ($scope.isRateSuppressed()) {
-                        $scope.selectedReservation.reservation_details.balance = 0;
+                    $scope.isReservationDetailsFetched = true;
+                    if ($scope.zestStationData.kiosk_prevent_non_cc_guests && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
+                        $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+                        $state.go('zest_station.noCCPresentForCheckin');
                     }
-                    fetchAddons();
-                    setDisplayContentHeight(); // utils function
-                    refreshScroller();
+                    else {
+                        if ($scope.isRateSuppressed()) {
+                            $scope.selectedReservation.reservation_details.balance = 0;
+                        }
+                        if (!$scope.zestStationData.is_standalone) {
+                            // In overlay , the accomanying guest can be changed after import process
+                            // so we have to update the guest list with latest data after OPERA sync in reservation details API
+                            updateGuestList(data.data.reservation_card.accompaying_guests);
+                        }
+                        setDisplayContentHeight(); // utils function
+                        refreshScroller();
+                    }
                 } else {
                     // else some error occurred
                     generalError();   
@@ -71,8 +97,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     params: {
                         'id': $scope.selectedReservation.id
                     },
-                    'successCallBack': onSuccessFetchReservationDetails,
-                    'failureCallBack': onSuccessFetchReservationDetails
+                    'successCallBack': onSuccessFetchReservationDetails
                 });
             }
 
@@ -80,8 +105,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var checkIfRoomUpgradeIsPresent = function() {
             var fetchCompleted = function(data) {
-                $scope.selectedReservation.reservation_details.is_upsell_available = data.is_upsell_available;
-                $scope.isReservationDetailsFetched = true;
+                $scope.selectedReservation.is_upsell_available = data.is_upsell_available;
             };
 
             if ($scope.usingFakeReservation()) {
@@ -93,7 +117,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchRoomUpsellAvailability, {
                     params: {
-                        'id': $scope.selectedReservation.reservation_details.reservation_id
+                        'id': $scope.selectedReservation.id
                     },
                     'successCallBack': fetchCompleted
                 });
@@ -109,24 +133,18 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if ($scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone) {
                     $scope.$broadcast('FETCH_OWS_MESSAGES');
                 }
-                checkIfRoomUpgradeIsPresent();
             };
 
             if ($scope.usingFakeReservation()) {
-                $scope.$emit('showLoader');
-                $timeout(function() {
-                    checkIfRoomUpgradeIsPresent();
-                }, 500);
+                $scope.selectedReservation.addons = [];
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchAddonDetails, {
                     params: {
-                        'id': $scope.selectedReservation.reservation_details.reservation_id
+                        'id': $scope.selectedReservation.id
                     },
-                    'successCallBack': fetchCompleted,
-                    'failureCallBack': fetchCompleted
+                    'successCallBack': fetchCompleted
                 });
             }
-
         };
 
         $scope.isRateSuppressed = function() {
@@ -147,9 +165,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.zestStationData.session_conf = '';
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-
+            
+            if ($scope.mode === 'LOYALTY_PROGRAMS') {
+                $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
+            } else if ($scope.mode === 'TERMS_CONDITIONS') {
+                if ($scope.zestStationData.add_loyalty_pgms) {
+                    $scope.mode = 'LOYALTY_PROGRAMS';
+                    $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
+                } else {
+                    $scope.mode = 'RESERVATION_DETAILS';
+                }
+            }
+            else if ($stateParams.previousState === 'COLLECT_ADRESS') {
+                $scope.$emit('showLoader');
+                $state.go('zest_station.collectGuestAddress');
+            }
             // can't handle back from T&C for auto assign room, as the rooom status is not returned from API now.
-            if ($stateParams.pickup_key_mode) {
+            else if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });
@@ -161,6 +193,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             // what needs to be passed back to re-init search results
             //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
         };
+
+        $scope.$on('CHANGE_MODE_TO_RESERVATION_DETAILS', function() {
+            $scope.mode = 'RESERVATION_DETAILS';
+        });
         var initComplete = function() {
             // called after getting selectedReservation details
 
@@ -182,6 +218,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
+                fetchAddons();
+                checkIfRoomUpgradeIsPresent();
             } else {
                 setDisplayContentHeight(); // utils function
                 refreshScroller();
@@ -342,6 +380,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var initTermsPage = function() {
             $log.log($scope.zestStationData);
             $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
+
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -355,7 +394,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'balance_amount': $scope.selectedReservation.reservation_details.balance_amount,
                 'confirmation_number': $scope.selectedReservation.confirmation_number,
                 'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
-                'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
+                'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin,
+                'payment_method': $scope.selectedReservation.reservation_details.payment_method_used
             };
             // check if this page was invoked through pickupkey flow
 
@@ -378,6 +418,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }, 600);
         };
 
+        var nextPageModeActions = function() {
+            if ($scope.zestStationData.add_loyalty_pgms &&
+                $scope.mode !== 'LOYALTY_PROGRAMS' &&
+                ($scope.selectedReservation.reservation_details.loyalty_level.use_ffp || $scope.selectedReservation.reservation_details.loyalty_level.use_hlp)) {
+                $scope.mode = 'LOYALTY_PROGRAMS';
+                $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
+            } else if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                routeToNext();
+            } else {
+                showTermsAndCondition();
+            }
+        };
+
+        $scope.$on('NAVIGATE_FROM_LOYALTY_SCREEN', function() {
+            nextPageModeActions();
+        });
+
 
         var assignRoomToReseravtion = function() {
             var reservation_id = $scope.selectedReservation.id;
@@ -399,12 +456,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // will need to check and combine one later
                 // fixing for hotfix
                 $scope.selectedReservation.reservation_details.room_number = response.data.room_number;
-                if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                    routeToNext();
-                }
-                else {
-                    showTermsAndCondition();
-                }
+                nextPageModeActions();
             } else {
                 initRoomError();
             }
@@ -418,9 +470,18 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
 
+            zsPaymentSrv.setPaymentData({
+                amount: $scope.selectedReservation.reservation_details.deposit_amount,
+                reservation_id: $scope.selectedReservation.reservation_details.reservation_id,
+                workstation_id: $rootScope.workstation_id,
+                bill_id: $scope.selectedReservation.reservation_details.default_bill_id,
+                payment_method_used: $scope.selectedReservation.reservation_details.payment_method_used,
+                payment_details: $scope.selectedReservation.reservation_details.payment_details
+            });
+
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
+            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell');
             } else if ($scope.zestStationData.station_addon_upsell_active && !$scope.selectedReservation.skipAddon) {
                 $state.go('zest_station.addOnUpsell');
@@ -510,6 +571,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         $scope.agreeTerms = function() {
+            $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = true;
+            zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
             routeToNext();
         };
             
@@ -517,11 +580,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         $scope.onNextFromDetails = function() {
             if ($scope.usingFakeReservation()) {
                 $log.warn(':: usingFakeReservation ::');
-                if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                    routeToNext();
-                } else {
-                    showTermsAndCondition();
-                }
+                nextPageModeActions();
                 return;
             }
 
@@ -550,12 +609,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                     } else if (roomIsAssigned() && roomIsReady()) {
                         $log.info('room is assigned and ready, continuing');
-                        if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                            routeToNext();
-                        } else {
-                            showTermsAndCondition();
-                        }
-
+                        nextPageModeActions();
                     } else if (roomIsAssigned() && !roomIsReady()) {
                         $log.info('room assigned but not ready, show room error');
                         initRoomError();
@@ -564,11 +618,18 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
 
         };
+
+        var setTermsAndConditionsBasedOnSelectedLanguage = function() {
+            var hotelTranslations = $scope.retrieveTranslations();
+            
+            $scope.hotelTermsAndConditions = !_.isUndefined(hotelTranslations) ? hotelTranslations.terms_and_conditions : '';
+        };
         
 
         (function() {
             if ($stateParams.isQuickJump === 'true') {
                 if ($stateParams.quickJumpMode === 'TERMS_CONDITIONS') {
+                    setTermsAndConditionsBasedOnSelectedLanguage();
                     showTermsAndCondition();
                 } else {
                     // set some dummy data when quick jumping here
@@ -578,6 +639,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // init
                 // the data is service will be reset after the process from zscheckInReservationSearchCtrl
                 $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+                // set accepted_terms_and_conditions as false initially
+                if ($scope.selectedReservation.reservation_details) {
+                    $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = false;
+                }
+                setTermsAndConditionsBasedOnSelectedLanguage();
                 initComplete();
             }
         }());

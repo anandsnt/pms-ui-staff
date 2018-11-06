@@ -1,0 +1,1049 @@
+{
+  "isHourly": false,
+  "isValidDeposit": false,
+  "tabs": [
+    {
+      "roomTypeId": 808,
+      "roomCount": "1",
+      "numAdults": 1,
+      "numChildren": 0,
+      "numInfants": 0
+    }
+  ],
+  "arrivalDate": "2018-06-21",
+  "departureDate": "2018-06-22",
+  "midStay": false,
+  "stayDays": [
+    {
+      "date": "2018-06-21",
+      "dayOfWeek": "Thu",
+      "day": "21"
+    },
+    {
+      "date": "2018-06-22",
+      "dayOfWeek": "Fri",
+      "day": "22"
+    }
+  ],
+  "resHours": 1,
+  "checkinTime": {
+    "hh": "01",
+    "mm": "00",
+    "ampm": "PM"
+  },
+  "checkoutTime": {
+    "hh": "11",
+    "mm": "00",
+    "ampm": "AM"
+  },
+  "taxDetails": {},
+  "numNights": 1,
+  "roomCount": 1,
+  "rooms": [
+    {
+      "numAdults": 1,
+      "numChildren": 0,
+      "numInfants": 0,
+      "roomTypeId": 808,
+      "roomTypeName": "New Suite",
+      "rateId": [
+        1717
+      ],
+      "room_id": "",
+      "rateAvg": "180",
+      "rateTotal": "180",
+      "associatedAddonTotal": 0,
+      "addons": [],
+      "varyingOccupancy": false,
+      "stayDates": {
+        "2018-06-21": {
+          "guests": {
+            "adults": 1,
+            "children": 0,
+            "infants": 0
+          },
+          "rate": {
+            "id": 1717
+          },
+          "rateDetails": {
+            "actual_amount": "180.00",
+            "modified_amount": "180.00",
+            "is_discount_allowed": "true",
+            "is_suppressed": "false"
+          }
+        },
+        "2018-06-22": {
+          "guests": {
+            "adults": 1,
+            "children": 0,
+            "infants": 0
+          },
+          "rate": {
+            "id": 1717
+          },
+          "rateDetails": {
+            "actual_amount": "180.00",
+            "modified_amount": "180.00",
+            "is_discount_allowed": "true",
+            "is_suppressed": "false"
+          }
+        }
+      },
+      "isOccupancyCheckAlerted": false,
+      "demographics": {
+        "reservationType": 4,
+        "market": "",
+        "source": "",
+        "origin": "",
+        "segment": 2
+      },
+      "roomNumber": "",
+      "roomTypeDescription": "New Suite",
+      "is_package_exist": true,
+      "package_count": "2",
+      "accompanying_guest_details": []
+    }
+  ],
+  "totalTaxAmount": 0,
+  "totalStayCost": "180",
+  "totalTax": 0,
+  "guest": {
+    "id": 478920,
+    "firstName": "ragesh",
+    "lastName": "ak",
+    "email": "rahultoday@outlook1.com",
+    "city": "",
+    "loyaltyNumber": "",
+    "sendConfirmMailTo": "",
+    "is_vip": true,
+    "image": "https://localhost:3000/assets/images/avatar-male.png",
+    "phone": "123454",
+    "mobile": "97448177489234",
+    "notes_count": 1,
+    "membership_type": null,
+    "address": {
+      "city": "dsasdasd",
+      "state": "dadads fsg",
+      "phone": "123454"
+    }
+  },
+  "company": {
+    "id": "",
+    "name": "",
+    "corporateid": ""
+  },
+  "travelAgent": {
+    "id": "",
+    "name": "",
+    "iataNumber": ""
+  },
+  "paymentType": {
+    "type": {
+      "description": "Cash Payment",
+      "value": "CA"
+    },
+    "ccDetails": {
+      "number": "",
+      "expMonth": "",
+      "expYear": "",
+      "nameOnCard": ""
+    }
+  },
+  "demographics": {
+    "reservationType": 4,
+    "market": "",
+    "source": "",
+    "origin": "",
+    "segment": 2
+  },
+  "code": {
+    "id": "",
+    "type": "",
+    "discount": {}
+  },
+  "status": "CHECKING_IN",
+  "reservationId": 2310842,
+  "confirmNum": "108959",
+  "isSameCard": false,
+  "rateDetails": [],
+  "isRoomRateSuppressed": false,
+  "reservation_card": {},
+  "number_of_infants": 0,
+  "number_of_adults": 1,
+  "number_of_children": 0,
+  "member": {
+    "isSelected": false,
+    "value": ""
+  },
+  "guestMemberships": {
+    "hlp": [],
+    "ffp": []
+  },
+  "group": {
+    "id": "",
+    "name": "",
+    "company": "",
+    "travelAgent": ""
+  },
+  "allotment": {
+    "id": "",
+    "name": "",
+    "company": "",
+    "travelAgent": ""
+  },
+  "roomsMeta": {
+    "66": {
+      "id": 66,
+      "name": "Deluxe room",
+      "description": "Deluxe Room with large King Bed - modern decor, great city views. Separate lounge area & business corner.",
+      "code": "DLK",
+      "is_suite": false,
+      "max_occupancy": 1,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "90": {
+      "id": 90,
+      "name": "Loft",
+      "description": "Deluxe Room with large twin Beds - modern decor, great city views. Separate lounge area & business corner.",
+      "code": "DLT",
+      "is_suite": false,
+      "max_occupancy": 2,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "91": {
+      "id": 91,
+      "name": "Wall view",
+      "description": "Standard King Room City View\nThis room has extensive views over the city and faces southerly. Tea & Coffee making facilities, printer, minibar and small kitchenette.",
+      "code": "STK",
+      "is_suite": false,
+      "max_occupancy": 2,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "92": {
+      "id": 92,
+      "name": "Rijksmuseum view",
+      "description": "Standard Twin Room with park views. Very green and leafy outlook. Tea & Coffee, minibar, kitchenette, seating corner.",
+      "code": "STT",
+      "is_suite": false,
+      "max_occupancy": 22,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "93": {
+      "id": 93,
+      "name": "Loft XXL",
+      "description": "Large corner room, park & city views, walkin robe, separate lounge and business corner, 2 bedrooms.",
+      "code": "JS",
+      "is_suite": false,
+      "max_occupancy": 5,
+      "is_pseudo": false,
+      "level": 3
+    },
+    "94": {
+      "id": 94,
+      "name": "Suite1",
+      "description": "2 bedroom corner suite, large kitchenette, lounge, business corner, great views",
+      "code": "SUI",
+      "is_suite": false,
+      "max_occupancy": 6,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "97": {
+      "id": 97,
+      "name": "Loft XL",
+      "description": "",
+      "code": "FST",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 2
+    },
+    "120": {
+      "id": 120,
+      "name": "Superior King",
+      "description": "",
+      "code": "SK",
+      "is_suite": false,
+      "max_occupancy": 1,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "121": {
+      "id": 121,
+      "name": "Supérieure",
+      "description": "Queen",
+      "code": "QUEEN",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "227": {
+      "id": 227,
+      "name": "Superior Double",
+      "description": "Superior Double",
+      "code": "SD",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "232": {
+      "id": 232,
+      "name": "Bunk",
+      "description": "Bunk Room Typee",
+      "code": "ZBUNK",
+      "is_suite": false,
+      "max_occupancy": 5,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "233": {
+      "id": 233,
+      "name": "Test Suite",
+      "description": "Test Suite Room Type",
+      "code": "TSRT",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "355": {
+      "id": 355,
+      "name": "House Accounts",
+      "description": "House Accounts",
+      "code": "HA9000",
+      "is_suite": true,
+      "max_occupancy": 2,
+      "is_pseudo": false,
+      "level": null
+    },
+    "360": {
+      "id": 360,
+      "name": "Component/ Suite test",
+      "description": "",
+      "code": "Suite",
+      "is_suite": true,
+      "max_occupancy": 10,
+      "is_pseudo": false,
+      "level": null
+    },
+    "363": {
+      "id": 363,
+      "name": "susan's",
+      "description": "sss",
+      "code": "1234",
+      "is_suite": true,
+      "max_occupancy": 12,
+      "is_pseudo": false,
+      "level": null
+    },
+    "383": {
+      "id": 383,
+      "name": "Double Deluxe",
+      "description": "",
+      "code": "DD",
+      "is_suite": true,
+      "max_occupancy": 2,
+      "is_pseudo": false,
+      "level": null
+    },
+    "402": {
+      "id": 402,
+      "name": "Star RT",
+      "description": "",
+      "code": "SRT",
+      "is_suite": true,
+      "max_occupancy": 10,
+      "is_pseudo": false,
+      "level": null
+    },
+    "434": {
+      "id": 434,
+      "name": "demo suite room type",
+      "description": "demo suite room type description",
+      "code": "789",
+      "is_suite": true,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": null
+    },
+    "435": {
+      "id": 435,
+      "name": "S60 Availability suite room type",
+      "description": "S60 Availability suite room type",
+      "code": "678",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "438": {
+      "id": 438,
+      "name": "Opossums' Demo Suite 1",
+      "description": "Opossums' Demo Suite 1",
+      "code": "ODS1",
+      "is_suite": false,
+      "max_occupancy": 3,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "439": {
+      "id": 439,
+      "name": "SR demo third",
+      "description": "description",
+      "code": "SRTD",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "440": {
+      "id": 440,
+      "name": "Lucia Suite Room demo",
+      "description": "Lucia Suite Room demo",
+      "code": "Lucia",
+      "is_suite": true,
+      "max_occupancy": 6,
+      "is_pseudo": false,
+      "level": null
+    },
+    "445": {
+      "id": 445,
+      "name": "Kristine_Component Room Test",
+      "description": "",
+      "code": "Test_Kristine",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "452": {
+      "id": 452,
+      "name": "Suite",
+      "description": "",
+      "code": "2",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "470": {
+      "id": 470,
+      "name": "Test Regression",
+      "description": "Test Regression",
+      "code": "TR",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "473": {
+      "id": 473,
+      "name": "Shineeta Test",
+      "description": "Shineeta Test",
+      "code": "ST",
+      "is_suite": false,
+      "max_occupancy": 3,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "491": {
+      "id": 491,
+      "name": "overbook",
+      "description": "overbook",
+      "code": "overbook",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "502": {
+      "id": 502,
+      "name": "PCSUITE",
+      "description": "",
+      "code": "PCS",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "509": {
+      "id": 509,
+      "name": "Op Demo Suite",
+      "description": "Opossums' Demo Suite",
+      "code": "ODS",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "542": {
+      "id": 542,
+      "name": "test 001",
+      "description": "test 001",
+      "code": "test 001",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "583": {
+      "id": 583,
+      "name": "Bunk Suite",
+      "description": "",
+      "code": "Bunk Suite",
+      "is_suite": true,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": null
+    },
+    "584": {
+      "id": 584,
+      "name": "comp_one",
+      "description": "comp_one",
+      "code": "comp_one",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "585": {
+      "id": 585,
+      "name": "comp_two",
+      "description": "comp_two",
+      "code": "comp_two",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "586": {
+      "id": 586,
+      "name": "comp_suite",
+      "description": "comp_suite",
+      "code": "comp_suite",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "604": {
+      "id": 604,
+      "name": "Qwerty",
+      "description": "",
+      "code": "qas",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "605": {
+      "id": 605,
+      "name": "qwerty suite",
+      "description": "",
+      "code": "ff",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "611": {
+      "id": 611,
+      "name": "00_a",
+      "description": "00_a",
+      "code": "00_a",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "612": {
+      "id": 612,
+      "name": "00_b",
+      "description": "00_b",
+      "code": "00_b",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "613": {
+      "id": 613,
+      "name": "00_s",
+      "description": "00_s",
+      "code": "00_s",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "625": {
+      "id": 625,
+      "name": "Test",
+      "description": "",
+      "code": "test",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "628": {
+      "id": 628,
+      "name": "BB",
+      "description": "BB",
+      "code": "BB",
+      "is_suite": false,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "630": {
+      "id": 630,
+      "name": "Kristine",
+      "description": "",
+      "code": "Kristine",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "640": {
+      "id": 640,
+      "name": "clean_suite",
+      "description": "",
+      "code": "ts",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "778": {
+      "id": 778,
+      "name": "Testrm",
+      "description": "test",
+      "code": "test12222",
+      "is_suite": false,
+      "max_occupancy": 10,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "808": {
+      "id": 808,
+      "name": "New Suite",
+      "description": "New Suite",
+      "code": "NS",
+      "is_suite": true,
+      "max_occupancy": 3,
+      "is_pseudo": false,
+      "level": null
+    },
+    "822": {
+      "id": 822,
+      "name": "TEST HOUSEKEEPING ROOM TYPE",
+      "description": "TEST HOUSEKEEPING ROOM TYPE",
+      "code": "TSTHSEKPNG",
+      "is_suite": false,
+      "max_occupancy": 1,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "823": {
+      "id": 823,
+      "name": "TEST HOUSEKEEPING  SUITE",
+      "description": "",
+      "code": "THS",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "824": {
+      "id": 824,
+      "name": "SDSComponent1",
+      "description": "",
+      "code": "SDSC1",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "825": {
+      "id": 825,
+      "name": "SDSComponent2",
+      "description": "",
+      "code": "SDSC2",
+      "is_suite": false,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "826": {
+      "id": 826,
+      "name": "SDSuite",
+      "description": "",
+      "code": "SDS",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "827": {
+      "id": 827,
+      "name": "G1",
+      "description": "",
+      "code": "G1",
+      "is_suite": true,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": null
+    },
+    "828": {
+      "id": 828,
+      "name": "G4",
+      "description": "",
+      "code": "G4",
+      "is_suite": false,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "829": {
+      "id": 829,
+      "name": "Hulksuite",
+      "description": "",
+      "code": "4",
+      "is_suite": true,
+      "max_occupancy": null,
+      "is_pseudo": false,
+      "level": null
+    },
+    "830": {
+      "id": 830,
+      "name": "HulkComp1",
+      "description": "",
+      "code": "HulkComp1",
+      "is_suite": false,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "831": {
+      "id": 831,
+      "name": "Hulkcomp2",
+      "description": "",
+      "code": "Hulkcomp2",
+      "is_suite": false,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": 1
+    },
+    "1007": {
+      "id": 1007,
+      "name": "TEST Suit",
+      "description": "Test",
+      "code": "TSTS",
+      "is_suite": true,
+      "max_occupancy": 4,
+      "is_pseudo": false,
+      "level": null
+    }
+  },
+  "inHouse": false,
+  "is_modified": false,
+  "groupCompanyCardId": null,
+  "groupTravelAgentId": null,
+  "paymentMethods": [
+    {
+      "id": 3,
+      "name": "CA",
+      "description": "Cash Payment",
+      "is_display_reference": true,
+      "charge_code": {
+        "id": 7887,
+        "fees_information": {}
+      },
+      "values": []
+    },
+    {
+      "id": 4,
+      "name": "CK",
+      "description": "Check Payment",
+      "is_display_reference": true,
+      "charge_code": {
+        "id": 7888,
+        "fees_information": {}
+      },
+      "values": []
+    },
+    {
+      "id": 122,
+      "name": "CICO-38690-2",
+      "description": "Cico 38690 2",
+      "is_display_reference": true,
+      "charge_code": {
+        "id": 13221,
+        "fees_information": {}
+      },
+      "values": []
+    },
+    {
+      "id": 1,
+      "name": "CC",
+      "description": "Credit Card",
+      "is_display_reference": true,
+      "charge_code": {},
+      "values": [
+        {
+          "id": 31,
+          "cardname": "Credit Card Offline Rover",
+          "cardcode": "CCOFF",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7902,
+            "fees_information": {
+              "charge_code_id": 7900,
+              "amount_symbol": "percent",
+              "amount_sign": "+",
+              "amount": "3.0",
+              "minimum_amount_for_fees": null,
+              "description": "3% Credit Card Fee"
+            }
+          }
+        },
+        {
+          "id": 39,
+          "cardname": "Visa Debit",
+          "cardcode": "VDB",
+          "is_display_reference": true,
+          "charge_code": {}
+        },
+        {
+          "id": 67,
+          "cardname": "Ab",
+          "cardcode": "AB",
+          "is_display_reference": true,
+          "charge_code": {}
+        },
+        {
+          "id": 82,
+          "cardname": "Nicki's Credit Card",
+          "cardcode": "NCC",
+          "is_display_reference": true,
+          "charge_code": {}
+        },
+        {
+          "id": 108,
+          "cardname": "Sample Credit Card",
+          "cardcode": "SCC",
+          "is_display_reference": true,
+          "charge_code": {}
+        },
+        {
+          "id": 118,
+          "cardname": "Kristine's Visa",
+          "cardcode": "KVA",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7899,
+            "fees_information": {
+              "charge_code_id": 7900,
+              "amount_symbol": "percent",
+              "amount_sign": "+",
+              "amount": "3.0",
+              "minimum_amount_for_fees": null,
+              "description": "3% Credit Card Fee"
+            }
+          }
+        },
+        {
+          "id": 124,
+          "cardname": "Lucia Visa",
+          "cardcode": "Lucia Visa",
+          "is_display_reference": true,
+          "charge_code": {}
+        },
+        {
+          "id": 6,
+          "cardname": "American Express",
+          "cardcode": "AX",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7892,
+            "fees_information": {
+              "charge_code_id": 7900,
+              "amount_symbol": "percent",
+              "amount_sign": "+",
+              "amount": "3.0",
+              "minimum_amount_for_fees": null,
+              "description": "3% Credit Card Fee"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "cardname": "Diners Club",
+          "cardcode": "DC",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7896,
+            "fees_information": {}
+          }
+        },
+        {
+          "id": 4,
+          "cardname": "Discover",
+          "cardcode": "DS",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7895,
+            "fees_information": {
+              "charge_code_id": 7901,
+              "amount_symbol": "amount",
+              "amount_sign": "+",
+              "amount": "5.0",
+              "minimum_amount_for_fees": 10,
+              "description": "£5 Credit Card Fee"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "cardname": "Japan Credit Bureau",
+          "cardcode": "JCB",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7897,
+            "fees_information": {}
+          }
+        },
+        {
+          "id": 2,
+          "cardname": "Master Card",
+          "cardcode": "MC",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7894,
+            "fees_information": {
+              "charge_code_id": 7901,
+              "amount_symbol": "amount",
+              "amount_sign": "+",
+              "amount": "5.0",
+              "minimum_amount_for_fees": 10,
+              "description": "£5 Credit Card Fee"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "cardname": "UK Maestro",
+          "cardcode": "UM",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 13038,
+            "fees_information": {
+              "charge_code_id": 7901,
+              "amount_symbol": "amount",
+              "amount_sign": "+",
+              "amount": "5.0",
+              "minimum_amount_for_fees": 10,
+              "description": "£5 Credit Card Fee"
+            }
+          }
+        },
+        {
+          "id": 1,
+          "cardname": "Visa",
+          "cardcode": "VA",
+          "is_display_reference": true,
+          "charge_code": {
+            "id": 7893,
+            "fees_information": {
+              "charge_code_id": 7901,
+              "amount_symbol": "amount",
+              "amount_sign": "+",
+              "amount": "5.0",
+              "minimum_amount_for_fees": 10,
+              "description": "£5 Credit Card Fee"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "name": "CUSTOM",
+      "description": "CUSTOM",
+      "is_display_reference": true,
+      "charge_code": {},
+      "values": []
+    },
+    {
+      "id": 59,
+      "name": "GIFT_CARD",
+      "description": "Gift Card",
+      "is_display_reference": true,
+      "charge_code": {
+        "id": 12515,
+        "fees_information": {
+          "charge_code_id": 7901,
+          "amount_symbol": "amount",
+          "amount_sign": "+",
+          "amount": "5.0",
+          "minimum_amount_for_fees": 10,
+          "description": "£5 Credit Card Fee"
+        }
+      },
+      "values": []
+    },
+    {
+      "id": 133,
+      "name": "GC2",
+      "description": "Gift Card (Not Givex)",
+      "is_display_reference": true,
+      "charge_code": {},
+      "values": []
+    },
+    {
+      "id": 34,
+      "name": "NCA",
+      "description": "New Cash Payment",
+      "is_display_reference": true,
+      "charge_code": {
+        "id": 7907,
+        "fees_information": {
+          "charge_code_id": 7900,
+          "amount_symbol": "percent",
+          "amount_sign": "+",
+          "amount": "3.0",
+          "minimum_amount_for_fees": null,
+          "description": "3% Credit Card Fee"
+        }
+      },
+      "values": []
+    },
+    {
+      "id": 46,
+      "name": "PAYPAL",
+      "description": "Paypal",
+      "is_display_reference": true,
+      "charge_code": {
+        "id": 12307,
+        "fees_information": {
+          "charge_code_id": 7900,
+          "amount_symbol": "percent",
+          "amount_sign": "+",
+          "amount": "3.0",
+          "minimum_amount_for_fees": null,
+          "description": "3% Credit Card Fee"
+        }
+      },
+      "values": []
+    }
+  ],
+  "keepExistingRate": false
+}

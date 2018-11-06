@@ -72,7 +72,7 @@ sntZestStation.config(['$stateProvider',
         });
 		// checkout bill + checkout bill print
         $stateProvider.state('zest_station.checkoutReservationBill', {
-            url: '/checkoutReservationBill/:from/:reservation_id/:email/:guest_detail_id/:has_cc/:first_name/:last_name/:days_of_stay/:is_checked_out/:hours_of_stay/:isQuickJump/:quickJumpMode',
+            url: '/checkoutReservationBill/:from/:reservation_id/:email/:guest_detail_id/:has_cc/:first_name/:last_name/:days_of_stay/:is_checked_out/:hours_of_stay/:isQuickJump/:quickJumpMode/:dueBalancePaid',
             controller: 'zsReservationBillDetailsCtrl',
             templateUrl: '/assets/partials_v2/checkout/zsReservationBill.html',
             jumper: true,
@@ -82,6 +82,19 @@ sntZestStation.config(['$stateProvider',
             description: '',
             icon: 'checkout_search.png'
         });
+
+
+        $stateProvider.state('zest_station.payment', {
+            url: '/payment',
+            templateUrl: '/assets/partials_v2/payment/paymentInitial.html',
+            controller: 'zsCheckoutBalancePaymentCtrl',
+            jumper: true,
+            section: 'General',
+            label: '',
+            icon: 'home.png',
+            tags: ['']
+        });
+
 		// send emaill bill
         $stateProvider.state('zest_station.emailBill', {
             url: '/emailBill/:printopted/:reservation_id/:email/:guest_detail_id/:isQuickJump/:quickJumpMode',
@@ -114,6 +127,13 @@ sntZestStation.config(['$stateProvider',
             label: 'Check-Out Final',
             description: '',
             icon: 'checkout_final.png'
+        });
+
+
+        $stateProvider.state('zest_station.pickUpKeyReservationSearch', {
+            url: '/pickUpKeyReservationSearch',
+            templateUrl: '/assets/partials_v2/pickupKey/zsPickUpKeyReservationSearch.html',
+            controller: 'zsPickupKeyFindReservationCtrl'
         });
     }
 ]);

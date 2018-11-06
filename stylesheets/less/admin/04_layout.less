@@ -68,6 +68,28 @@ body { overflow: hidden; }
                 background: @background;
                 z-index: 999;
             }
+
+            .table-filters {
+                .pull-right;
+
+                .checkbox {
+                    background: white;
+                    padding: 10px 20px 10px 40px;
+                    margin: 0;
+                    .box-shadow();
+
+                    .icon-form {
+                        top: 10px;
+                        left: 10px;
+                    }
+                }
+
+                .entry {
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
+                }
+            }
         }
     }
 
@@ -458,6 +480,16 @@ body { overflow: hidden; }
             margin-left: 10px;
         }
 
+        .icons {
+            &.icon-lock {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto 0;
+            }
+        }
+
         .action {
             margin-top: 2px;
             font-size: 16px;
@@ -511,6 +543,22 @@ body { overflow: hidden; }
                 }
 
                 &:last-child { margin-right: 0; }
+            }
+
+            &.language {
+
+                label {
+                    text-transform: uppercase;
+                    font-size: 14px;
+                    line-height: 20px;
+                    margin: 10px 10px 0 0;
+                    .pull-left;
+                }
+
+                .select {
+                    width: 160px;
+                    .pull-left;
+                }
             }
         }
 
@@ -1310,6 +1358,47 @@ body { overflow: hidden; }
         }
     }
 }
+
+/* iScroll Scrollbar        ==============================*/
+    .iScrollVerticalScrollbar {
+        position: absolute;
+        width: 4px;
+        top: 10px;
+        right: 5px;
+        bottom: 10px;
+        z-index: 99;
+
+        .iScrollIndicator {
+            position: absolute;
+            width: 100%;
+            background: @logoGradientStart;
+            #border-radius > .rounded(4px);
+        }
+    }
+
+    .iScrollHorizontalScrollbar {
+        position: absolute;
+        height: 4px;
+        left: 5px;
+        right: 5px;
+        top: 10px;
+        z-index: 99;
+
+        .iScrollIndicator {
+            position: absolute;
+            height: 100%;
+            background: @logoGradientStart;
+            #border-radius > .rounded(4px);
+        }
+    }
+
+    /* 600px+               ==============================*/
+    @media only screen and (min-width: 600px) {
+        .iScrollVerticalScrollbar {
+            top: 20px;
+            bottom: 20px;
+        }
+    }
 
 
 

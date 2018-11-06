@@ -9,25 +9,28 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		});
 		var init = (function() {
 			var screenIdentifier = "TERMS_AND_CONDITIONS";
-
+			
+			GwWebSrv.zestwebData.showedTermsAndConditions = true;
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}());
 
 		$scope.termsAndConditions = GwWebSrv.zestwebData.termsAndConditions;
 
 		$scope.agreeClicked = function() {
-			if (GwWebSrv.zestwebData.guestPromptAddressOn) {
+			if (GwWebSrv.zestwebData.upgradesAvailable && !GwWebSrv.zestwebData.roomUpgraded) {
+				$state.go('roomUpgrade');
+			} else if (GwWebSrv.zestwebData.isAddonUpsellActive) {
+				$state.go('offerAddons');
+			} else if (GwWebSrv.zestwebData.guestAddressOn) {
 				$state.go('updateGuestDetails');
+			} else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
+				$state.go('etaUpdation');
+			} else {
+				$state.go('checkinFinal');
 			}
-			else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
-		      	$state.go('etaUpdation');
-		    }
-		    else {
-		       $state.go('checkinFinal');
-		    }
 		};
 		$scope.cancelClicked = function() {
-			// to do
+			location.href = "about:home";
 		};
 
 	}

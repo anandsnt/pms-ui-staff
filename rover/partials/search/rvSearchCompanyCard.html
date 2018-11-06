@@ -21,14 +21,16 @@
                  <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
                     <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type, query :textInQueryBox})">
-
                         <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+                            <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
                             <img ng-src="{{row.company_logo}}" alt="">
                         </figure>
 
                         <div ng-if="escapeNull(row.company_logo)==''">
-                            <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
-                            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
+                            <div class="guest-image icons"
+                                 ng-class="{'icon-company' : escapeNull(row.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(row.account_type)=='TRAVELAGENT'}">
+                                <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
+                            </div>
                         </div>
 
                         <div class="data" ng-class="{'no-address': escapeNull(row.account_address)===''}">

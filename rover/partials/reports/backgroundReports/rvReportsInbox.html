@@ -1,0 +1,141 @@
+<!-- Search -->
+<form class="search-form reports enable-adding inbox">
+    <button type="button" class="button white with-icon only-icon refresh" ng-click="refreshReportInbox()">
+        <span class="icons icon-reset"></span> Refresh
+    </button>
+    <div class="entry search">
+        <button type="button" class="clear-query" ng-class="{'visible': reportInboxData.filter.searchTerm.length}" ng-click="clearQuery()">
+            <!-- Add class "visible" to show -->
+            <span class="icons icon-clear-search" ng-click="clearQuery()">Clear query</span>
+        </button>
+        <button type="button" name="submit" class="icons icon-search">Search</button>
+        <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="reportInboxData.filter.searchTerm" ng-change="filterByQuery()">
+    </div>
+    <div class="entry report-requested">
+        <div class="select with-label">
+            <label for="report-requested">Report Requested</label>
+            <select id="report-requested" ng-change="refreshReportInbox()" ng-model="reportInboxData.filter.selectedDate">
+                <option ng-repeat="ddData in dateDropDown track by $index" value="{{ddData.value}}" >{{ddData.name}}</option>                
+            </select>
+        </div>
+    </div>
+    <div class="entry new">
+        <a class="add-new-button" ng-click="createNewReport()">+ New Report</a>
+    </div>
+</form>
+<section id="reports" class="content reports-wrapper" role="main">
+    <!-- Menu -->
+    <div ng-hide="true" id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></div>
+    <!-- Content -->
+    <div id="reports-dashboard" class="" ng-class="viewColClassName" ng-iscroll="FULL_REPORT_SCROLL" ng-show="shouldShowReportList()" >
+        <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
+        <div class="wrapper">
+            <div class="cols-wrapper">
+                <div class="report-col main-col no-print" ng-class="{'with-pagination': shouldShowPagination()}">
+                    <div class="report-item-header">                        
+                        <div class="data">
+                            Report Requested
+                            <div class="dates">
+                                <div class="date">
+                                    Date <span>(FROM)</span>
+                                </div>
+                                <div class="date">
+                                    Date <span>(TO)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">CSV/PRINT</div>
+                    </div>
+                    <!-- Add a scroll here-->
+                    <div class="scrollable report-inbox" ng-iscroll="report-inbox-scroller">
+                        <ul class="wrapper">
+                            <!-- Add .disabled if in progress or has an error-->
+                            <!-- add .expanded if expanded -->
+                            <li class="report-item inbox-item" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded, 'export-item': report.shouldShowExport && !report.shouldDisplayView }">
+                                <!-- On click, expand the report -->
+                                <div class="expand" ng-click="showReportDetails(report)" ng-if="!shouldDisableInboxItem(report)">
+                                    <!-- add .active if expanded -->
+                                    <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
+                                </div> 
+                                <div class="expand" ng-if="shouldDisableInboxItem(report)">
+                                    <!-- add .active if expanded -->
+                                    <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
+                                </div>                                
+            
+                <span class="status {{getColorCodeForReportStatus(report)}}" ng-show="shouldDisableInboxItem(report)">{{getRequestedReportStatus(report)}}</span>
+                
+                                <!-- On click, when not expanded, will go to the generated report screen-->
+                                <div class="report-item-wrapper" ng-click="showGeneratedReport(report)">
+                                    <!-- 'icon-class' -> Icon class from all-reports.html -->
+                                    <span class="{{report.reportIconCls}} icon-20w"></span>
+                                    <div class="data">
+                                        <div class="info">
+                                            <h2 ng-bind-html="escapeNull(report.name)|highlight:reportInboxData.filter.searchTerm:false"></h2>
+                                            <em>{{report.generated_date}}</em>
+                                        </div>
+                                        <div class="dates">
+                                            <div class="date">
+                                                <span>{{report.fromDate | date:dateFormat}}</span>
+                                            </div>
+                                            <div class="date">
+                                                <span>{{report.toDate | date:dateFormat}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="filters-grid">
+                                        <tbody>
+                                            <tr ng-repeat="(key, value) in report.filterDetails">
+                                                <th>{{key}}</th>
+                                                <td>{{value}}</td>
+                                            </tr>                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- If disabled, there are no actions -->
+                                <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
+                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)" ng-show="report.shouldDisplayView">Show</button>
+                                    <!-- If export exists -->
+                                    <button type="button" class="button with-icon purple" ng-show="report.shouldShowExport" ng-click="exportCSV(report)">
+                                        <span class="icons icon-save"></span>
+                                        <span class="text">Export</span>
+                                    </button>
+                                    <!-- if export does not exist -->
+                                    <span class="button with-icon" ng-show="!report.shouldShowExport">
+                        <span class="icons icon-export-unavailable"></span>
+                                    </span>
+                                    <!-- if print exists -->
+                                    <!-- this will put the report HTML inside the .only-print in dashboard.html -->
+                                    <!-- If this report has a print modal {report-date-range, report-print-options}, show that modal -->
+                                    <button type="button" class="button with-icon blue" ng-click="printReport(report)" ng-if="report.shouldDisplayView">
+                                        <span class="icons icon-print"></span>
+                                        <span class="text">Print</span>
+                                    </button>
+                                    <!-- if print does not exist -->
+                                    <span class="button with-icon" ng-show="!report.shouldDisplayView">
+                        <span class="icons icon-print-unavailable"></span>
+                                    </span>
+                                    <button type="button" class="button red" ng-hide="true">Delete</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- If there are no reports, replace L31-L70 with this: -->
+    <div class="no-content" ng-show="!shouldShowReportList()">
+        <div class="info">
+            <span class="icon-no-content icon-reports"></span>
+            <strong class="h1">Reports unavailable</strong>
+            <span class="h2">You have no report options configured</span>
+        </div>
+    </div>
+</section>
+
+<div class="only-print" ng-include="'/assets/partials/reports/rvReportsDetailedView.html'" ng-controller="RVReportDetailsCtrl" ng-if="viewStatus.showDetails">
+    
+</div>
+

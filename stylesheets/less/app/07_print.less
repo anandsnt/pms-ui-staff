@@ -4,7 +4,7 @@
         text-shadow: none !important;
         filter:none !important;
         -ms-filter: none !important;
-        -webkit-print-color-adjust:exact;
+        -webkit-print-color-adjust: exact;
     }
 
     @page { margin: 1cm; }
@@ -28,7 +28,10 @@
     .reservation-list,
     .search-form,
     .release-notes,
-    .fullscreen-header { display: none !important; }
+    .fullscreen-header,
+    .commissions-filters,
+    .overbooking-header { display: none !important; }
+    #find-invoices { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -668,6 +671,7 @@
             /* Rooms ***/
             &.room {
                 position: relative;
+                margin-right: 5px;
 
                 a,
                 .faux-anchor {
@@ -785,6 +789,15 @@
                     line-height: 12px;
                     background: @grey1;
                     color: @grey3;
+                    bottom: -2px;
+                    .square(12px);
+                }
+
+                .stay-count {
+                    font-size: 6pt;
+                    line-height: 12px;
+                    background: @grey1;
+                    color: @black;
                     bottom: -2px;
                     .square(12px);
                 }
@@ -1214,8 +1227,7 @@
                 .tab-header,
                 .search-results,
                 .billing-sidebar,
-                .no-content,
-                .billing-footer  { .hide; }
+                .billing-footer { .hide; }
 
                 .ar-statement {
                     display: block;
@@ -1242,12 +1254,12 @@
                         text-transform: uppercase;
                         background-color: @grey2;
                         padding:4pt 0;
-                        font-size: 5pt;
+                        font-size: 4pt;
+                        word-break: break-word;
 
                         &:last-child {
                             padding-right: 4pt;
                         }
-
 
                         &.charge-date,
                         &.charge-code,
@@ -1257,8 +1269,16 @@
 
                         /*Add space to Charge Amount and Amount Due*/
                         &:nth-child(5),
-                        &:nth-child(6){
+                        &:nth-child(6),
+                        &.charge-code,
+                        &.charge-date {
                             padding-right: 4pt;
+                        }
+
+                        &.charge-description {
+                            strong {
+                                font-weight: 700;
+                            }
                         }
                     }
 
@@ -1274,155 +1294,162 @@
                             padding-top:4pt;
                         }
 
+
                         tr {
                             td {
                                 border-bottom:1px solid @grey2;
                                 padding: 4pt 4pt 4pt 0;
 
                                 &.charge-description {
-                                    padding-right:8pt;
+                                    padding-right: 8pt;
                                     word-break: break-word;
-                                }
+                                } 
 
                                 &.amount-due {
                                     vertical-align: bottom;
-                                } 
-                            }
-                        }
-
-                        .charges-table-container {
-                            padding-right: 0;
-                        }
-                        .charges-table {
-                            tr td {
-                                &.charge-date,
-                                &.charge-code,
-                                &.charge-amount {
-                                    width: 45pt !important;
                                 }
                             }
-                            tr:last-child td {
-                                border-bottom: none;
-                            }
-                            tr:first-child td {
-                                padding-top: 0;
-                            }
                         }
                     }
 
-                    .statement-header {
-                        &:after {
-                            display: table;
-                            clear: both;
-                            content: '';
-                        }
+                    .charges-table-container {
+                        padding-right: 0;
                     }
 
-                    .statement-header-text {
-                        text-align:left;
-                    }
-
-                    .invoice-header {
-                        margin-top: 1.5cm;
-                        position: relative;
-
-                        img {
-                            position: absolute;
-                            height: 30px;
-                            top: -30px;
-                            right: 0;
-                        }
-                        h1 {
-                            font-size:18pt;
-                            font-weight: 600;
+                    .charges-table {
+                        tr td {
+                            &.charge-date,
+                            &.charge-code,
+                            &.charge-amount {
+                                width: 45pt !important;
+                            } 
                         }
 
-                        .statement-company-address {
-                            font-size:10pt;
-                            font-style: italic;
+                        tr:last-child td {
+                            border-bottom: none;
+                        }
+                        tr:first-child td {
+                            padding-top: 0;
                         }
                     }
+                }
 
-                    .guest-info {
-                        font-size: 9pt;
-                        width:50%;
-                        float:left;
+                .statement-header {
+                    &:after {
+                        display: table;
+                        clear: both;
+                        content: '';
+                    }
+                }
 
-                        img {
-                            .size(40px, auto);
-                        }
+                .invoice-header {
+                    margin-top: 1.5cm;
+                    position: relative;
+
+                    img {
+                        position: absolute;
+                        height: 30px;
+                        top: -30px;
+                        right: 0;
                     }
 
-                    .person td,
-                    .payment td {
-                        vertical-align: top;
-                        &.person-info {
-                            width: 3.5cm;
-                        }
-                        .name {
-                            font-size:11pt;
-                        }
+                    h1 {
+                        font-size:18pt;
+                        font-weight: 600;
+                    }
 
-                        .person-meta {
-                            margin-top:0.05cm;
+                    .statement-company-address {
+                        font-size:10pt;
+                        font-style: italic;
+                    }
+                }
+
+                .guest-info {
+                    font-size: 9pt;
+                    width:50%;
+                    float:left;
+
+                    img {
+                        .size(40px, auto);
+                    }
+                }
+
+                .person td,
+                .payment td {
+                    padding:5pt 0;
+                    vertical-align: top;
+
+                    &.person-info {
+                        width: 3.5cm;
+                    }
+
+                    .name {
+                        font-size:11pt;
+                    }
+
+                    .person-meta {
+                        margin-top:0.05cm;
+                        display: block;
+
+                        strong {
                             display: block;
-                            strong {
-                                display: block;
-                            }
+                        }
+                    }
+                }
+
+                .tax-breakdown {
+                    td,th {
+                        padding: 4pt;
+                        text-align: right;
+
+                        &:first-child {
+                            text-align: left;
+                            padding-left: 4pt;
                         }
                     }
 
-                    .tax-breakdown {
-                        td,th {
-                            padding: 4pt;
-                            text-align: right;
-
-                            &:first-child {
-                                text-align: left;
-                                padding-left: 4pt;
-                            }
-                        }
-
-                        tfoot td {
-                            background-color: @grey2;
-                            font-weight: bold;
-                        }
-
-                        .tax-description {
-                            width: 50%;
-
-                        }
+                    th {
+                        font-size: 8pt;
                     }
 
-                    .statement-info {
-                        width:50%;
-                        float:right;
-                        margin-bottom:0.5cm;
-
-                        &:after {
-                            display: table;
-                            content: '';
-                            clear: both;
-                        }
+                    tfoot td {
+                        background-color: @grey2;
+                        font-weight: bold;
                     }
 
-                    .statement-meta {
-                        width:50%;
-                        float:left;
-                        font-size:9pt;
-                        margin-bottom:0.1cm;
+                    .tax-description {
+                        width: 50%;
+                    }
+                }
 
-                        strong { display:block; }
+                .statement-info {
+                    width:50%;
+                    float:right;
+                    margin-bottom:0.5cm;
+
+                    &:after {
+                        display: table;
+                        content: '';
+                        clear: both;
+                    }
+                }
+
+                .statement-meta {
+                    width:50%;
+                    float:left;
+                    font-size:9pt;
+                    margin-bottom:0.1cm;
+
+                    strong { display:block; }
 
 
-                        &:nth-child(3) {
-                            clear: both;
-                        }
+                    &:nth-child(3) {
+                        clear: both;
+                    }
 
-                        &:nth-child(3),
-                        &:first-child{
-                            padding-right: 1em;
-                        }
+                    &:nth-child(3),
+                    &:first-child{
+                        padding-right: 1em;
                     }
                 }
             }
@@ -1808,6 +1835,27 @@
                                 }
                             }
                         }
+
+                        &[data-count] {
+                            position: relative;
+                            padding-right: 30px;
+
+                            &:before {
+                                content: attr(data-count);
+                                position: absolute;
+                                top: 5px;
+                                right: 10px;
+                                font-size: 10pt;
+                                line-height: 15pt;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                text-align: center;
+                                color: @black;
+                                background: @grey1;
+                                .square(14pt);
+                                #border-radius > .rounded(50%);
+                            }  
+                        }
                     }
 
                     &.row-break {
@@ -2033,6 +2081,50 @@
                                 height: auto;
 
                                 &[rowspan] { padding-right: 4pt; }
+                            }
+                        }
+                    }
+                }
+
+                &.tax-exempt-report {
+                    th,
+                    td {
+                        &.name { width: 200pt; }
+                        &.dates { width: 100pt; }
+                        &.account { width: 150pt; }
+                    }
+
+                    td {
+                        &.dates {
+                            .icons {
+                                &.time {
+                                    width: 20px;
+                                    height: 20px;
+                                    float: left;
+
+                                    &.check-in {
+                                        background-position: 0px 0px;
+                                    }
+
+                                    &.check-out {
+                                        background-position: 0px -20px;
+                                    }
+                                }
+                            }
+
+                            .date {
+                                clear: both;
+                                line-height: 20px;
+                            }
+                        }
+
+                        &.account {
+                            .icons {
+                                &.icon-group {
+                                    padding-left: 10pt;
+                                    line-height: 20px;
+                                    background-position: 0 -116px;
+                                }
                             }
                         }
                     }
@@ -2513,7 +2605,31 @@
                 border-collapse: collapse;
                 border-spacing: 0;
 
+                /* styles for commission summary print */ 
+                &.payment-report {
+                    thead {
+                        display: table-row-group;
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                &.confirm-no {
+                                    width: 75pt;
+                                }
+                            }    
+                        }
+                    }
+                }
+
                 thead {
+                    display: table-row-group;
                     tr {
                         th {
 
@@ -2568,7 +2684,7 @@
                 tbody {
                     tr {
                         td {
-                            border-bottom: 1px solid rgba(0,0,0,0.1);
+                            page-break-inside: avoid;
 
                             &.name {
 
@@ -2585,14 +2701,21 @@
                                 .guest-date {
                                     clear: both;
 
+                                    .guest-status { .hide(); }
+
                                     .date {
-                                        margin-top: 5pt;
+                                        margin-top: 0;
                                         display: block;
-                                        line-height: 20px;
+                                        line-height: 15px;
+
+                                        &:first-child { margin-top: 5pt; }
                                     }
 
                                     span {
                                         margin:0 2pt;
+
+                                        &:first-child { margin-left: 0pt; }
+                                        &:last-child { margin-right: 0pt; }
                                     }
                                 }
                             }
@@ -2608,23 +2731,43 @@
                             td {
                                  padding-left:0;
                             }
-                        }
+                        } 
                     }
                 }
 
                 tfoot {
-
-                    tr {
+                    display: table-row-group;
+                    tr { 
                         &.totals {
                             td {
                                 font-size: 14px;
                             }
                         }
+
                         &.pagination {
                             display: none;
                         }
                     }
 
+                }
+
+                /** For Financials > Commissions print */
+                &.payment-report {
+                    margin-bottom: 10pt;
+                    
+                    thead {
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+
+                                &.guest {
+                                    width: 300pt;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -2959,6 +3102,15 @@
                     color: @grey3;
                     margin-top: 4pt;
                 }
+
+                &.vat-report {
+                    font-weight: 600;
+
+                    li {
+                        text-align: right;
+                        width: 120px;
+                    }
+                }
             }
 
             .grid-footer {
@@ -3009,6 +3161,24 @@
                 }
 
                 &.title-3 { border-bottom: 1px solid @grey2; }
+
+                /* VAT Report ***/
+                &.vat-report {
+                    strong {
+                        .calc-width(100, 240);
+
+                        em {
+                            color: @grey3;
+                            font-weight: 400;
+                            padding-left: 8px;
+                        }
+                    }
+
+                    span:not(.currency) { 
+                        text-align: right;
+                        width: 120px; 
+                    }
+                }
             }
 
             .grid-content {
@@ -3044,9 +3214,26 @@
                                 white-space: normal;
                             }
                         }
+
+                        &.vat-revenue {
+                            text-align: right;
+                            width: 120px;
+                        }
                     }
 
                     &.pagination { .hide; }
+                }
+
+                &.vat-report {
+                    
+                    .number {
+                        width: 140px;
+                    }
+                    
+                    .revenue {
+                        text-align: right;
+                        width: 120px;
+                    }
                 }
             }
         }
@@ -3196,101 +3383,39 @@
             }
         }
 
-         &.print-commission-agent {
+        &.print-commission-agent {
+
+            .travel-agent-single-print {
+                .show();
+            }
 
             &.scrollable {
                 overflow: hidden;
             }
 
-            .travel-agent {
-                &:not(.printing) {
-                    .hide();
-                }
-
-                .button {
-                    .hide();
-                }
-            }
-
-            .travel-agent-print {
+            .travel-agent-print,
+            .wrapper {
                 .hide();
-            }
+            } 
         }
 
         &.print-commission-summary {
-            .commission-reports,
-            h2,
-            .iScrollVerticalScrollbar,
+
+            .travel-agent-single-print,
+            .travel-agent-print,
             .button {
                 .hide();
             }
 
-            // Fix bug with the scroll
             &.scrollable {
                 overflow: hidden;
             }
 
             .travel-agent {
+                margin-bottom: 20pt;
                 border-bottom: 1px solid @grey2;
-                &.last {
-                    border-bottom: 0
-                }
-            }
-            .grid-footer {
-                .show();
-            }
-            .travel-agent-print {
-                .float;
-                padding: 4pt 0;
 
-                .data {
-                    width: 40%;
-                    margin-top: 10px;
-                    .pull-left;
-
-                    h2 {
-                        .show();
-                        width:100%;
-                        line-height: 1;
-                        white-space: normal;
-                        margin-bottom: 6px;
-                        padding-right: 5px;
-                        display: block;
-                        font-size: 10pt
-
-                    }
-                }
-
-                .info-holder {
-                    .pull-right;
-                    width: 60%;
-                    margin:0;
-                    padding:0;
-
-                    li {
-
-                        margin-top: 5px;
-                        text-align: center;
-                        width: 50%;
-                        color: @grey3;
-                        .pull-left();
-
-                        strong {
-                            font-size: 15pt;
-                            line-height: 1.25em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @black;
-                            display: block;
-                        }
-
-                        span {
-                            font-size: 10pt;
-                            text-transform: uppercase;
-                        }
-
-                    }
-                }
+                &:last-child { margin-bottom: 10pt; }
             }
         }
     }
@@ -4288,6 +4413,10 @@
         .guest-data-enter {
             margin-bottom: 10pt;
 
+            &.fixed {
+                table-layout: fixed;
+            }
+
             td {
                 padding: 10pt;
                 border: 2pt solid #ebebeb;
@@ -4450,7 +4579,7 @@
         }
     }
 
-/* Commisions               =============================*/
+/* Commisions               ==============================*/
     .commissions-content {
         margin: 0 2cm;
 
@@ -4613,6 +4742,7 @@
             }
 
             .commission-details {
+                display: block !important;
                 th,
                 td {
                     &:first-child {
@@ -4632,7 +4762,432 @@
             }
         }
     }
-    
+
+/* Overbooking              ==============================*/
+    .overbooking-content {
+        #flexbox > .parent(row nowrap, '', '', '');
+
+        .row {
+            height: 18pt;
+            width: 100%;
+            box-shadow: inset 0 -1px 0 @grey2;
+            overflow: hidden;
+            #flexbox > .parent(row nowrap, '', '', '');
+        }
+
+        .cell {
+            line-height: 18pt;
+            text-align: right;
+            box-shadow: inset 1px 0 0 @grey2;
+            .size(18pt, 7.14%);
+            #flexbox > .parent(row nowrap, '', '', '');
+
+            .rooms {
+                font-size: 8pt;
+                font-style: italic;
+                color: @grey3;
+                display: none;
+
+                &.unavailable {
+                    color: @red;
+                }
+            }
+
+            .limit {
+                display: block;
+                padding: 0 8pt;
+                width: 100%;
+            }
+
+            &:last-child {
+                box-shadow: inset 1px 0 0 @grey2, inset -1px 0 0 @grey2;
+            }
+        }
+
+        .overbooking-timeline {
+            background-color: @grey1;
+            box-shadow: inset 0 -1px 0 @grey2, inset 0 1px 0 @grey2;
+            .size(44pt, 100%);
+            #flexbox > .parent(column wrap, space-between, '', '');
+
+            .wrapper {
+                padding: 5px;
+            }
+
+            .label {
+                margin-top: auto;
+                margin-left: auto;
+                font-weight: 600;
+                font-size: 8pt;
+                line-height: 22pt;
+                color: @textColor;
+            }
+
+            .row {
+                overflow: hidden;
+                .size(22pt, 100%);
+            }
+
+            .cell {
+                line-height: 22pt;
+                height: 22pt;
+
+                &.day {
+                    line-height: 1;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding: 4pt 6pt;
+                    flex-wrap: wrap;
+
+                    span {
+                        width: 100%;
+                        .show();
+                    }
+
+                    strong {
+                        font-weight: 600;
+                        width: 100%;
+                    }
+                }
+            }           
+
+            .limit {
+                font-size: 10pt;
+                font-weight: 600;
+            }
+        }
+
+        .overbooking-rooms {
+            width: 180px;
+            box-shadow: inset 1px 0 0 @grey2;
+
+            .row {
+                line-height: 1;
+                text-transform: uppercase;
+                text-align: right;
+                padding: 0 6pt;
+                #flexbox > .parent(column wrap, center, flex-end, '');
+            }
+        }
+
+        .overbooking-limits {
+            width: calc(~'100% - 180px');
+        }
+
+        /* Showing rooms left to sell ***/ 
+        &.showing-rooms {
+            .rooms {
+                display: block;
+                padding: 0 4pt 0 8pt;
+                width: 24pt;
+                box-shadow: inset -1px 0 0 @grey2;
+            }
+
+            .limit {
+                display: block;
+                padding-left: 4pt;
+                width: calc(~'100% - 24pt');
+            }
+        }
+    }
+
+/* Card Print               ==============================*/
+    .card-print {
+        .cards-wrapper {
+            .cards-header {
+                display: block !important;
+                height: auto;
+                margin-bottom: 20px;
+
+                .card-header {
+                    .float;
+
+                    .guest-image {
+                        .show;
+                        .pull-left;
+                        .square(40px);
+                        margin-right: 10px;
+
+                        .vip { .hide; }
+                    }
+
+                    form {
+                        .calc-width(100, 50);
+                        .pull-left;
+                        text-align: left;
+
+                        .status {
+                            display: inline-block;
+                            font-weight: inherit;
+                            font-size: inherit;
+                        }
+
+                        .name { font-size: 1.5em; font-weight: 600; }
+
+                        ul {
+                            li {
+                                display: inline-block;
+                                margin: 0 10px 0 0;
+                            }
+                        }
+
+                        .switch-button {
+                            vertical-align: middle;
+                            padding-left: 10px;
+                            margin-left: 10px;
+                            border-left: 1px solid rgba(0,0,0,0.1);
+                            width: auto;
+                            &.on { display: inline-block; }
+                            &:not(.on),
+                            .data-off,
+                            input { .hide; }
+
+                            .data-on { 
+                                .float;
+
+                                .value { .hide; }
+                                .switch-icon { 
+                                    .pull-left;
+                                    background: transparent;
+                                    border-radius: 0;
+                                    color: @black;
+                                    font-size: inherit;
+
+                                    &.vip {
+                                        font-weight: inherit;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .notice,
+        .card-tabs-nav { .hide; }
+
+        .card-tab { 
+            display: block !important; 
+            .float;
+
+            .entry {
+                width: 100%;
+                margin: 0;
+                .float;
+
+                /** Something in PMS that can't be removed? */
+                .check-block { display: inline-block; }
+
+                label { 
+                    display: inline-block;
+                    &:not(.checkbox):not(.radio) {
+                        width: 150px;
+                    }
+
+                    &.checkbox,
+                    &.radio {
+                        &:not(.checked),
+                        .icon-form,
+                        input { .hide; }
+
+                        float: none;
+
+                        &.checked {
+                            &.print-block { display: block !important; }
+                        }
+                    }
+                }
+
+                input,
+                .select {
+                    display: inline-block;
+                    vertical-align: middle;
+                    .calc-width(100,200);
+                }
+                
+                .select {
+                    &:after { .hide; }
+                }
+
+                .clear-value { .hide; }
+
+                input,
+                select,
+                label.checkbox,
+                label.radio {
+                    background: transparent;
+                    min-height: auto;
+                    height: auto;
+                    line-height: 18px;
+                    border:0;
+                    padding: 0;
+                    font-size: 14px;
+                    .box-shadow(none);
+                }
+            }
+
+            .holder,
+            .entry {
+                span {
+                    &.only-print { font-size: 14px; }
+                }
+            }
+
+            .h3 {
+                margin-bottom: 15px;
+                margin-top: 30px;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .active-item {
+                display: block;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(0,0,0,0.15);
+
+                &.item-loyalty {
+                    .value {
+                        &.code,
+                        &.number {
+                            margin-rigth: 40px;
+                        }
+
+                        &.code {
+                            width: 100px;
+                        }
+
+                        &.number {
+                            width: 150px;
+                        }
+                    }
+                }
+                .card-logo {
+                    margin: 0 40px 0 0;
+                }
+                .primary { .hide; }
+                
+            }
+            .add-new-button { .hide; }
+        }
+    }
+
+/* Automatic Payments       ==============================*/
+    #automatic-payments {
+
+        .cell-checkbox {
+            .hide();
+        }
+
+        .grid-header {
+            display: grid;
+            grid-template-columns: 35% 15% 22% 14% 14%;
+            background-color: @grey1;
+
+            li {
+                font-size: 8pt;
+                line-height: 1;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0;
+                padding: 4pt 4pt 4pt 0;
+
+                &.cell-reservation {
+                    padding-left: 4pt;
+                }
+            }
+
+            .cell-cost,
+            .cell-deposit {
+                text-align: right;
+            }
+        }
+
+        .grid-content {
+            .search-results {
+                li:not(.no-content) {
+                    &.autopayment-item {
+                        
+                        .info {
+                            font-size: 8pt;
+                            line-height: 1;
+                            #flexbox > .parent(row wrap, '', center, '');
+
+                            .label {
+                                font-size: 8pt;
+                                display: inline-block;
+                                float: none;
+                                margin-right: 3px;
+                            }
+
+                            .value {
+                                font-weight: 600;
+                            }
+                        }
+
+                        a {
+                            display: grid;
+                            grid-template-columns: 35% 15% 22% 14% 14%;
+                            background: transparent;
+                            padding: 0 4pt;
+
+                            &:before,
+                            &:after {
+                                .hide();
+                            }
+                        }
+
+                        [class*="cell-"] { 
+                            #flexbox > .parent(row wrap, '', center, '');
+                        }
+
+                        .cell-reservation {
+                            h2 {
+                                font-size: 9pt;
+                                width: 100%;
+                                .nowrap();
+                            }
+                        }
+
+                        .cell-card {
+
+                            .card-logo {
+                                margin-right: 4px;
+
+                                img {
+                                    .size(14px, auto);
+                                }
+                            }
+
+                            .info {
+                                width: 35%;
+                            }
+                        }
+
+                        .cell-cost,
+                        .cell-deposit {
+                            font-size: 9pt;
+                            #flexbox > .parent('', flex-end, '', '');
+                        }
+
+                        .cell-deposit {
+                            font-weight: 600;
+
+                            .deposit-due {
+                                font-size: 8pt;
+                                text-align: right;
+                                color: @grey3;
+                                text-transform: uppercase;
+                                width: 100%;
+                                .show();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

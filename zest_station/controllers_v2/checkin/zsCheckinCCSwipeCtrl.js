@@ -30,6 +30,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          *  -> switch from invoke to callAPI
          *  
          */
+        
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+        });
 
         $scope.continue = function() {
             // this is a debugging function, user will touch the icon to skip payment screen,
@@ -83,6 +87,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var onClickBack = function() {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
             $state.go('zest_station.checkInReservationDetails', $stateParams);
         };
 
@@ -129,7 +134,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     $scope.callAPI(zsPaymentSrv.submitDeposit, {
                         params: params,
                         'successCallBack': successSixPayDeposit,
-                        'failureCallBack': onSwipeError,
+                        'failureCallBack': emvFailureActions,
                         'loader': 'none'
                     });
                     // $scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixPayDeposit, onSwipeError, "NONE"); 
@@ -210,6 +215,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var goToSwipeError = function() {
+            $scope.$emit('hideLoader');
+            $scope.$emit('RUN_APPLY');
             if (atCardSwipeScreen()) {
                 $scope.zestStationData.waitingForSwipe = false;
                 $scope.swipeTimeout = false;
@@ -220,10 +227,24 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
                 $scope.$emit('hideLoader');
-                if (response.status === 'success') {
-                    goToCardSign();
+                
+                var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin  === 'true',
+                    authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
+
+                // In deposit mode the card is just saved now.
+                // Will add the authorization related to deposit flow later - CICO-54295
+                if ($stateParams.mode !== 'DEPOSIT' && authAtCheckinRequired && parseInt(authCCAmount) > 0) {
+                    $scope.callAPI(zsPaymentSrv.authorizeCC, {
+                        params: {
+                            'payment_method_id': response.id,
+                            'reservation_id': $stateParams.reservation_id,
+                            'amount': authCCAmount
+                        },
+                        'successCallBack': goToCardSign,
+                        'failureCallBack': emvFailureActions
+                    });
                 } else {
-                    goToSwipeError();
+                    goToCardSign();
                 }
             }
         };
@@ -540,10 +561,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 });
 
             } else {
-                $scope.callAPI(zsCheckinSrv.authorizeCC, {
+                $scope.callAPI(zsPaymentSrv.authorizeCC, {
                     params: data,
                     'successCallBack': onSuccessCaptureAuth,
-                    'failureCallBack': onSwipeError,
+                    'failureCallBack': emvFailureActions,
                     'loader': 'none'
                 });
             }
@@ -569,6 +590,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 goToSwipeError();
             }
 
+        };
+        var emvFailureActions = function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+            onSwipeError();
         };
 
         var startEmvTerminalActions = function() {
@@ -689,6 +714,14 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         init();
+
+        document.addEventListener('MOCK_MLI_CC_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $timeout(function() {
+                $scope.$emit('hideLoader');
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            }, 1000);
+        });
 
     }
 ]);

@@ -70,6 +70,11 @@ admin.controller('ADExternalMappingsAddCtrl', ['$scope', '$state', '$stateParams
             });
         };
 
+        $scope.skipNumberConversion = function () {
+            // more conditions may come in future
+            return $scope.interface.name === 'SAFLOK';
+        };
+
         $scope.onClickSaveNewMapping = function() {
             $scope.callAPI(ADInterfaceMappingSrv.createNewMapping, {
                 params: {

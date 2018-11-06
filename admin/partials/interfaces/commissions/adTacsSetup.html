@@ -2,7 +2,7 @@
     header-caption="TACS">
     <fieldset class="holder left">
         <ad-toggle-button is-checked="config.is_active"
-        label="{{'TACS_COMMISSIONS_PROCESSING'| translate}}" is-disabled="true"></ad-toggle-button>
+        label="{{'TACS_COMMISSIONS_PROCESSING'| translate}}" is-disabled="disableFeatureInNonDevEnv"></ad-toggle-button>
         <ad-textbox inputtype="text"
             value="config.group_id"
             label="{{'GROUP_ID'| translate}}"

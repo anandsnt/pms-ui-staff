@@ -3,7 +3,8 @@ angular.module('sntRover').service('jsMappings',
         function($q, rvBaseWebSrvV2, $ocLazyLoad, $log) {
 
             var mappingList = null,
-                paymentMappingList = undefined;
+                paymentMappingList = undefined,
+                service = this;
 
             /**
              * [fetchMappingList description]
@@ -24,27 +25,49 @@ angular.module('sntRover').service('jsMappings',
             };
 
             /**
+             * This method runs through the assets and injects using $ocLazyLoad provider
+             * @param keys
+             * @param modules_to_inject
+             * @param deferred
+             */
+            function injectAssets(keys, modules_to_inject, deferred) {
+                for (var i = 0, promises = []; i < keys.length; i++) {
+                    promises.push($ocLazyLoad.load({
+                        serie: true,
+                        files: mappingList[keys[i]]
+                    }));
+                }
+
+                $q.all(promises).then(function () {
+                    if (typeof modules_to_inject !== 'undefined') {
+                        $ocLazyLoad.inject(modules_to_inject);
+                    }
+
+                    deferred.resolve(true);
+                });
+            }
+
+            /**
              * [fetchAssetList description]
              * @param  {array} keys               [description]
              * @param  {[type]} modules_to_inject [description]
              * @return {[type]}                   [description]
              */
-            this.fetchAssets = function(keys, modules_to_inject) {
-                var promises = [], length = keys.length, i = 0;
+            this.fetchAssets = function (keys, modules_to_inject) {
+                var deferred = $q.defer();
 
-                if (!!mappingList) {
-                    for (; i < length; i++) {
-                        promises.push($ocLazyLoad.load({serie: true, files: mappingList[keys[i]]}));
-                    }
-                    return $q.all(promises).then(function() {
-                        if (typeof modules_to_inject !== "undefined") {
-                            $ocLazyLoad.inject(modules_to_inject);
-                        }
-                    });
+                if (mappingList) {
+                    injectAssets(keys, modules_to_inject, deferred);
                 } else {
-                    $log.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
-                    return;
+                    service.fetchMappingList().then(function () {
+                        injectAssets(keys, modules_to_inject, deferred);
+                    }, function () {
+                        $log.error('something wrong, mapping list is not filled yet, please ensure that flow/variables are correct');
+                        deferred.reject(false);
+                    });
                 }
+
+                return deferred.promise;
             };
 
 

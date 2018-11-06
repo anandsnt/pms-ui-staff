@@ -1,28 +1,28 @@
-<form method="post" id="reservationcard-loyalty" ng-init="loadLoyaltyPrograms()" class="block-item item-loyalty has-button" ng-show='reservationData.use_hlp == true || reservationData.use_ffp == true || $parent.reservationData.use_hlp == true || $parent.reservationData.use_ffp == true'>
-	<h3 class="block-title" translate>LOYALTY_LABEL</h3>	
+<form method="post" id="reservationcard-loyalty" ng-init="loadLoyaltyPrograms()" class="block-item item-loyalty has-button" ng-show='shouldShowLoyalty()'>
+	<h3 class="block-title" translate>LOYALTY_LABEL</h3>
 	<div ng-class="{'overlay':reservationData.reservation_card.reservation_status === 'CANCELED'}" class="select-item loyalty">
 		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->
-		<select iscroll-stop-propagation ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled"ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)" ng-disabled= "!isNewsPaperPreferenceAvailable()">
+		<select iscroll-stop-propagation ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled" ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)" ng-disabled= "!isNewsPaperPreferenceAvailable()">
 			
                     <option value="" data-id="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
                     <optgroup ng-if="$parent.reservationData.use_ffp" label="{{::('FREEQUENT_FLYER_LABEL'|translate)}}"></optgroup>
-                        <option ng-if="$parent.reservationData.use_ffp" value="{{::frequentflyer.id}}" ng-repeat="frequentflyer in ::$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram" ng-selected="selectedLoyaltyID==frequentflyer.id">
+                        <option ng-if="$parent.reservationData.use_ffp" value="{{::frequentflyer.id}}" ng-repeat="frequentflyer in $parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram" ng-selected="selectedLoyaltyID == frequentflyer.id">
                                  {{::frequentflyer.membership_type}}
                                  {{::frequentflyer.membership_card_number}}
                         </option>
 
                     <optgroup ng-if="$parent.reservationData.use_hlp"  label="{{::('HOTEL_LOYALTY_LABEL'|translate)}}"></optgroup>
-                        <option ng-if="$parent.reservationData.use_hlp" value="{{::hotelloyalty.id}}" ng-repeat="hotelloyalty in ::$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram" ng-selected="selectedLoyaltyID==hotelloyalty.id">
-                                {{::hotelloyalty.membership_type}}
-                                {{::hotelloyalty.membership_card_number}}
+                        <option ng-if="$parent.reservationData.use_hlp" value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in $parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram" ng-selected="selectedLoyaltyID == hotelloyalty.id">
+                                {{hotelloyalty.membership_type}}
+                                {{hotelloyalty.membership_card_number}}
                         </option>
 		</select>
 		<!-- Calculates the default selected loyalty -->
-		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty()">
+		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty">
 			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
-			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number.substr(selectedLoyalty.membership_card_number.length - 4)}} </span> </span>
+			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
 		</div>
-		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty()">
+		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty">
 			<span class="value code"> </span>
 			<span class="number" translate> LOYALTY_PROGRAM_SELECT_LABEL  </span>
 		</div>

@@ -14,13 +14,13 @@
 		{{ 'PAY' | translate }}
 	</button>
 	<!-- Open format bill popup -->
-    <button type="button" class="button with-icon blue" ng-click="showFormatBillPopup(reservationBillData.bills[currentActiveBill].bill_number)">
+    <button type="button" class="button with-icon" ng-class="getInvoiceButtonClass();" ng-disabled="isInvoiceButtonDisabled()" ng-click="showFormatBillPopup(reservationBillData.bills[currentActiveBill].bill_number)">
         <span class="icons icon-invoice"></span>
         Invoice
     </button>
 
 	<!-- Button to print registration card, show only for check ins  -->
-	<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+	<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="openRegCardPopup()" class="button with-icon brand-colors">
 		<span class="icons icon-print"></span>
 		Registration Card
 	</button>
@@ -45,7 +45,7 @@
 			<span class="icons icon-wallet"></span>
 			{{ 'PAY' | translate }}
 		</button>
-		<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+		<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="openRegCardPopup()" class="button with-icon brand-colors">
 			<span class="icons icon-print"></span>
 			Registration Card
 		</button>
@@ -72,7 +72,7 @@
 	<!-- Credit Card -->
 	<button type="button" class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC'" ng-click="showPaymentList()" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
 		<figure class="card-logo">
-			<img ng-src="/assets/images/{{billData.credit_card_details.card_code}}.png" alt="" />
+			<img ng-if="billData.credit_card_details.card_code !==''" ng-src="/assets/images/{{billData.credit_card_details.card_code}}.png" alt="" />
 			<span class="number">{{billData.credit_card_details.card_number}}</span>
 		</figure>
 		<span class="name">{{billData.guest_or_company_name}}</span>
@@ -231,7 +231,8 @@
 						<br />
 					</span>
 				</td>
-				<td class="description">
+				<td class="description" ng-class="{'with-reference': feesData.reference_text != ''}">
+					<span class="icons icon-invoice-blue" ng-show="feesData.reference_text != ''"></span>
 					<strong ng-repeat="description in feesData.description" ng-if = "!isStandAlone && !feesData.is_group_by_ref">
 						{{description.item_description}}
 					</strong>
@@ -295,12 +296,13 @@
 					</div>
 				</td>
 				<td ng-if="isStandAlone">
-					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits)" ng-if = "!feesData.is_group_by_ref" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
+					<button type="button" ng-show="showEditChargeButton(feesData.type.value)" class="button with-icon only-icon purple edit" ng-click="openActionsPopup(feesData.id,feesData.description[0].fees_desc,feesData.description[0].fees_amount,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice)" ng-if = "!feesData.is_group_by_ref" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
+
 						<span class="icons icon-pencil"></span>
 						<span translate>EDIT</span>
 					</button>
 				</td>
-				<td class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone">
+				<td class="action" ng-if="(hasMoveToOtherBillPermission() && isStandAlone)">
 	                <label class="checkbox inline">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }"/>

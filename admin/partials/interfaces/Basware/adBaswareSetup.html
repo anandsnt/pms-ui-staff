@@ -1,0 +1,46 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            <ad-textbox value="config.organization_id" label="{{'ORG_ID' | translate}}" placeholder="{{'ORG_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+        </fieldset>
+    </div>
+
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>API Access Configuration</h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox ng-if="availableSettings.indexOf('user_name') > -1"
+                        inputtype="text" value="config.user_name"
+                        label="{{'USER_NAME'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('password') > -1"
+                        inputtype="password"
+                        value="config.password"
+                        label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox ng-if="availableSettings.indexOf('hotel_code') > -1"
+                        inputtype="text"
+                        value="config.hotel_code"
+                        label="{{'HOTEL_CODE'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('end_point') > -1"
+                        inputtype="text"
+                        value="config.end_point"
+                        label="{{'ACCESS_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+</ad-common-parts-in-form-dir>

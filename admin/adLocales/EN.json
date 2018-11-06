@@ -153,7 +153,7 @@
     "TAX_ON_COMMISSIONS" : "Tax On Commissions",
     "TAX_TRANSACTION_CODE" : "Tax Transaction Code",
     "SELECT_PREPAID_COMMISSION_CHARGE_CODE": "Select Prepaid Commission Charge Code",
-    "SELECT_TAX_TRANSACTION_CODE" : "Select Tax Transaction Code", 
+    "SELECT_TAX_TRANSACTION_CODE" : "Select Tax Transaction Code",
     "EDIT": "Edit",
     "ALL": "All",
     "ADD":"Add",
@@ -164,7 +164,7 @@
     "ADD_NEW":"Add New",
     "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
     "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
-   
+
     "MENU_DASHBOARD" : "Dashboard",
     "MENU_SEARCH" : "Search",
     "MENU_SEARCH_RESERVATIONS" : "Search Reservations",
@@ -197,7 +197,7 @@
     "MENU_REPORTS":"Reports",
     "MENU_GROUPS": "Groups",
     "MENU_CREATE_GROUP": "New Group",
-    "MENU_MANAGE_GROUP": "Manage Groups",   
+    "MENU_MANAGE_GROUP": "Manage Groups",
 	"ICARE_SERVICES": "iCare Services",
     "OK":"Ok",
 	"DELETE":"Delete",
@@ -473,8 +473,8 @@
 "GIVEX_SECONDARY_ACCESS_URL_LABEL": "SECONDARY URL",
 "GIVEX_TIMEOUT_LABEL": "Timeout",
 "GIVEX_REQUESTOR_ID_LABEL": "Requester ID"
-,    
-    
+,
+
     "FROM": "From",
     "TO": "To",
     "GROUPS": "Groups",
@@ -559,13 +559,13 @@
 "TERMS_AND_CONDITIONS_LABEL": "TERMS AND CONDITIONS"
 
 ,
- 
- 
+
+
     "HOTEL_ANNOUNCEMENTS": "Hotel Announcements",
     "ZEST_WELCOME_MESSAGE_TITLE": "Zest Welcome Message",
     "ZEST_CHECKOUT_MESSAGE_TITLE": "Zest Checkout Message",
     "KEY_DELIVERY_EMAIL_MESSAGE_TITLE": "Key Delivery Email Message",
-    
+
     "GUEST_CHECKIN_SETUP": "Guest Checkin Setup",
     "SEND_CHECKIN_EMAIL": "Send Checkin Email",
     "SEND_CHECKIN_ALERT": "Send Email Check In Alert",
@@ -579,7 +579,7 @@
     "CHECKIN_ALERT": "Check in Alert",
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
-    
+
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
     "PRE_CHECK_IN_ONLY":"PRE-CHECK IN ONLY",
     "SENT_TO_QUEUE":"SENT TO QUEUE",
@@ -622,7 +622,7 @@
 "FIXED_BAND_PMS_ALERT_CODE": "PMS ALERT CODE",
 "ENTER_FIXED_BAND_PMS_ALERT_CODE": "Enter PMS Aert Code"
 
-,	
+,
 	"WORKSTATION": "Work Station",
 	"STATION_NAME": "Work Station Name",
 	"STATION_PRINTER": "Work Station Printer",
@@ -781,10 +781,11 @@
     "ROOM_TYPE__CODE_PLACE_HOLDER":"Enter Room Type Code",
     "MAX_OCCUPANCY_PLACE_HOLDER":"Enter Max Occupancy",
     "SNT_DESCRIPTION_PLACE_HOLDER":"Enter StayNTouch Description",
-	
+
     "USER_ROLES":"User roles",
     "ROLE_DASHBOARD": "Role Dashboard",
     "SELECT_DASHBOARD":"Select Dashboard",
+    "SELECT_MAPPING":"Select Mapping",
     "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
     "DEFAULT_DASHBOARD":"Default Dashboard",
 
@@ -865,8 +866,8 @@
 
 
 
-,    
-    
+,
+
     "NAME":"Name",
     "DESCRIPTION":"Description",
     "ACTIVE":"Active",
@@ -883,6 +884,8 @@
     "RATE_ONLY":"Rate Only",
     "RESERVATION_ONLY":"Reservation Only",
     "MANUAL_POSTING":"Manual Posting",
+    "COMMON_AREA": "Common Area",
+    "PASS_LEVEL_NO": "Pass Level Number",
     "FORECAST_FOR_NEXT_DAY":"Forecast for Next Day",
     "CHARGE_FULL_WEEKS_ONLY":"Charge full weeks only",
     "EDIT":"Edit",
@@ -1144,7 +1147,7 @@
 "ZESTSTATION_TITLE": "Zest Station Settings",
 "ZESTSTATION_BACK": "Back to Zest",
 "COLOR_SEC_LABEL": "Color details",
-        
+
 "TEXT_COLOR": "Text Color",
 "BUTTON_COLOR": "Button Color",
 "BG_COLOR": "Background Color",
@@ -1167,5 +1170,5 @@
 "REG_CARD_DELIVERY":"Registration card delivery options",
 "PROPERTY_GROUPS":"Property Groups"
 
-        
+
         }

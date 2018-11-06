@@ -7,8 +7,14 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			"email": data.email,
 			"guest_id": data.guest_id,
 			"phone": data.phone,
-			"mobile": data.mobile
+			"mobile": data.mobile,
+			"nationality_id": data.nationality_id
 		};
+		
+		dataToPost.address = {};
+		if (data.address) {
+			dataToPost.address.country_id = data.address.country_id;
+		}	
 
 		rvBaseWebSrvV2.putJSON(url, dataToPost).then(function(data) {
 			    deferred.resolve(data);

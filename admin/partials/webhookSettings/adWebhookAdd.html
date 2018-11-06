@@ -13,7 +13,8 @@
                                   required="yes"
                                   change-handler="onWebHookTypeChange"
                                   change-handler-param="state.new"
-                                  property="delivery_type"
+                                  property="delivery_type_display"
+                                  prefixValue="true"
                                   list="meta.deliveryTypes"
                                   label="{{'WEBHOOK_TYPE'| translate}}"
                                   div-class="full-width">
@@ -24,20 +25,45 @@
                             label="{{'URL'| translate}}"
                             styleclass="full-width"></ad-textbox>
             </fieldset>
+
+            <fieldset class="holder right">
+                <div class="entry full-width" ng-show="state.new.delivery_type==='mlife'">
+                    <label> {{ 'CONFIGURATION' | translate }} </label>
+                    <textarea json-text ng-model='state.new.options' rows="6"
+                              placeholder="Enter Configuration in JSON format"></textarea>
+                </div>
+                <div class="entry full-width" ng-show="state.new.delivery_type==='generic'">
+                    <button style="margin: 24px;"
+                            ng-click="testURLConnectivity(state.new);"
+                            class="button ng-binding blue">TEST ENDPOINT
+                    </button>
+                </div>
+                <div class="entry full-width"  ng-if="state.new.delivery_type==='generic' && (state.new.testMessage.request || state.new.testMessage.response)" snt-highlight-syntax>
+                  <strong>Request</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{state.new.testMessage.request}}
+                  </pre>
+                  <strong>Response</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{state.new.testMessage.response}}
+                  </pre>
+                </div>
+            </fieldset>
+
         </fieldset>
 
         <fieldset class="holder full-width" ng-show="state.new.canEditEvents">
             <div class="form-title">
                 <h3>Subscriptions</h3>
             </div>
-            <fieldset class="holder left">
+         <!--    <fieldset class="holder left">
                 <ad-textarea rows="2" div-class="full-width"
                              text-area-class="full-width"
                              value="state.new.selectedEvents"
                              disabled="true"
                              label="{{ 'SELECTED_SUBSCRIPTIONS' | translate}}" placeholder="">
                 </ad-textarea>
-            </fieldset>
+            </fieldset> -->
             <fieldset class="holder right">
                 <ad-textbox inputtype="text"
                             value="eventSearch"
@@ -55,7 +81,7 @@
                             <span class="ivh-treeview-node-label"
                                   style="padding-left: 10px;"
                                   ivh-treeview-toggle>
-                                            {{trvw.label(node)}}
+                                            {{trvw.label(node) | translate}}
                                             </span>
                             <div style="margin-top: 1em;" ivh-treeview-children></div>
                         </script>

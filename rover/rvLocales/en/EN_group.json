@@ -102,4 +102,7 @@
     "ROOM_TYPE_NOT_CONFIGURED_IN_GROUP":"Room type is not configured in Group, please review",
     "EXCLUDE_CANCELLED": "Exclude Cancelled",
     "PENDING_ONLY": "Pending Only",
-    "GROUP_NEXT_SET": "Next 14 Days"
+    "GROUP_NEXT_SET": "Next 14 Days",
+    "NO_SINGLE_RATE_CONFIGURED": "Single rate can't be blank",
+    "NO_PERMISSION_TO_OVERBOOK": "Room Block exceeds Room Type or House Availability - No permission to overbook.",
+    "TAX_EXEMPT_REFERENCE": "Tax Exempt Reference (200 chars.)"

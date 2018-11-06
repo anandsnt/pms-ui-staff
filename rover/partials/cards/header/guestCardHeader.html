@@ -1,10 +1,11 @@
 <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl" ng-click="guestCardClicked()">
     <section ng-if="!searchMode">
         <figure class="guest-image" ng-click="switchCard('guest-card')">
-            <img ng-src="{{guestCardData.contactInfo.avatar}}" />
+            <img ng-src="{{guestCardData.contactInfo.avatar}}" />            
+            <span class="stay-count" ng-if="guestCardData.contactInfo.stayCount > 0 && isStandAlone">{{::guestCardData.contactInfo.stayCount}}</span>
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
-        <form name="change-name" id="change-name">
+        <form name="change-name" id="change-name" class="dual-actions">
             <div class="holder">
                 <div class="entry" ng-click="openGuestCard()">
                     <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" placeholder="First Name" ng-blur="updateContactInfo()" auto-grow-field />
@@ -33,12 +34,18 @@
                 <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
             </div>
         </form>
-        <div class="card-actions" ng-show="viewState.isAddNewCard">
+        <div class="card-actions dual-actions" ng-show="viewState.isAddNewCard">
             <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('guest')" translate="">Save new card</button>
-            <button class="button blank ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
+            <button class="button red ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
         </div>
         <div class="card-actions" ng-hide="viewState.isAddNewCard">
-            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachGuestCard()" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>
+            <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachGuestCard()" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>            
+            <button type="button" class="button toggle has-arrow" ng-click="toggleCardActions()" ng-class="{'active' : manageCardState.isOpen, '' : !manageCardState.isOpen}" ng-show="!isStandAlone">Manage Card</button>            
+            <div class="manage-cards" ng-class="{'hidden': !manageCardState.isOpen, '' : manageCardState.isOpen}" ng-show="!isStandAlone">
+                <button type="button" class="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':shouldDisableRemoveGuestBtn(),'white red-text': !shouldDisableRemoveGuestBtn()}" ng-disabled="shouldDisableRemoveGuestBtn()">Remove</button>
+                <button type="button" class="button purple" ng-hide="true">Archive Card</button>
+                <button type="button" class="button red" ng-hide="true">Delete Card</button>
+            </div>
         </div>
     </section>
     <section ng-if="searchMode">

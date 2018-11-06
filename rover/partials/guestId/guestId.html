@@ -1,40 +1,44 @@
 <!-- Add class .with-details to show the left details -->
 <div id="guest-id" class="modal-content form guest-id with-details">
-    <button id="modal-close" type="button" class="dark-title modal-close" ng-click='deleteModal()'><span class="icons icon-close"></span></button>
+    <button id="modal-close" type="button" class="dark-title modal-close" ng-click='deleteModal()' style="z-index:100;"><span class="icons icon-close"></span></button>
 
-    <div class="modal-header">
+    <div class="modal-header" style="position: relative;">
         <h2>
             {{guestIdData.first_name}}  {{guestIdData.last_name}}
         </h2>
         <em ng-show='guestIdData.isPrimaryGuest'>Primary Guest </em>
         <em ng-show='!guestIdData.isPrimaryGuest'>Accompanying Guest </em>
+        <button type="button" class="button purple with-icon" ng-click="dowloadDocumnetDetails()">
+            <span class="icons icon-save"></span>
+            {{ 'DOWNLOAD' | translate }}
+        </button>
     </div>
 
     <div class="modal-body">
         <div class="content-left">
             <ul class="details">
                 <li>
-                    <span>Name</span>
+                    <span translate>GUEST_FIRST_NAME</span>
                     {{guestIdData.first_name}} 
                 </li>
                 <li>
-                    <span>Last Name</span>
+                    <span translate>GUEST_LAST_NAME</span>
                     {{guestIdData.last_name}} 
                 </li>
                 <li>
-                    <span>Date of Birth</span>
+                    <span translate>DOB</span>
                     {{guestIdData.dob}} 
                 </li>
                 <li>
-                    <span>Nationality</span>
+                    <span translate>NATIONALITY</span>
                     {{guestIdData.nationality}} 
                 </li>
                 <li>
-                    <span>ID Number (Ending with)</span>
+                    <span translate>ID_NUMBER</span>
                     {{guestIdData.docID}} 
                 </li>
                 <li>
-                    <span>ID Expiry (MM/YY)</span>
+                    <span translate>ID_EXPIRY</span>
                     {{guestIdData.docExpiry}} 
                 </li>
             </ul>

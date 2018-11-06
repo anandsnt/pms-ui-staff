@@ -470,7 +470,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				dataDict.is_queued_rooms_only = true;
 			} else if ($stateParams.type === "VIP") {
 				dataDict.vip = true;
-			} else if (!!$stateParams.type && query === '' && $stateParams.type !== 'SEARCH_NORMAL') {
+			} else if (!!$stateParams.type && query === '' && $stateParams.type !== 'SEARCH_NORMAL' && $stateParams.type !== 'RESET') {
 				dataDict.status = $stateParams.type;
 			}
 			// CICO-10323. for hotels with single digit search,
@@ -519,7 +519,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return item.is_row_visible;
 			})).length;
 			
-			if (resultsVisibleCount === 0) {
+			if (resultsVisibleCount === 0 && $scope.textInQueryBox === '') {
 				$scope.$emit("showSearchResultsArea", false);
 			}			
 		};
@@ -651,7 +651,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		/**
 		 * function to execute on clicking clear icon button
 		 */
-		$scope.clearResults = function() {
+		$scope.clearResults = function(event) {
+			
+			// CICO-48379 - Prevent the form submission while clicking the clear btn
+			if (event) {
+				event.preventDefault();
+			}			
+
 			$scope.results = [];
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
@@ -703,7 +709,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
-
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();

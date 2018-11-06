@@ -1,4 +1,5 @@
-<section role="complementary" id="room-assignment" class="content stay-card-inner" ng-class="{'check-in': reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'CHECKEDIN'])!=-1}">
+<section role="complementary" id="room-assignment" class="content stay-card-inner"
+		 ng-class="{'check-in': reservationData.reservation_card.reservation_status.indexOf(['CHECKING_IN', 'CHECKEDIN'])!=-1}">
 	<!-- Room assignment header -->
 	<input type="hidden" value="" id="roomassignment-ref-id">
 	<!-- Room assignment header -->
@@ -18,7 +19,8 @@
 	<div class="wrapper">
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Room assignment content -->
-		<div class="room-assignment-content" ng-class="{'has-room': reservationData.reservation_card.reservation_status!='CHECKEDIN' && !!reservationData.reservation_card.room_number && !roomAssgnment.inProgress}">
+		<div class="room-assignment-content"
+			 ng-class="{'has-room': reservationData.reservation_card.reservation_status!='CHECKEDIN' && !!reservationData.reservation_card.room_number && !roomAssgnment.inProgress}">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
@@ -32,21 +34,21 @@
                         <input class="query" placeholder="Search Room" type="search" autocomplete="off" ng-model="searchText" ng-change="searchRoom()">
                     </div>
 					<div class="select">
-						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox">
+						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox" ng-options="roomTypeInfo.type as roomTypeInfo.description for roomTypeInfo in roomTypes">
 							<!-- %option.placeholder{value: "all-types"} All room types -->
-							<option ng-repeat="roomtype in roomTypes" value="{{roomtype.type}}" ng-selected="roomtype.type==roomType">
-							{{roomtype.description}} </option>
+							<!-- <option ng-repeat="roomtype in roomTypes" value="{{roomtype.type}}" ng-selected="roomtype.type==roomType">
+							{{roomtype.description}} </option> -->
 						</select>
 					</div>
 				</div>
-				<div class="results">
+				<div class="results" ng-class="{'with-pagination': shouldShowPagination() }">
 					<!-- Advanced search fields -->
 					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'/assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
-
+					
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible, 'no-content':isRoomListEmpty()}">
 						<ul class="wrapper"  ng-show = "!isRoomListEmpty()">
-							<li ng-repeat="room in filteredRooms | limitTo: 25" ng-click="checkRoomTypeAvailability(room)">
+							<li ng-repeat="room in filteredRooms track by room.room_id" ng-click="checkRoomTypeAvailability(room)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number" ng-class="getRoomStatusClassForRoom(room)">{{room.room_number}}</span>
 									<span data-value="{{room.room_number}}" class="room-status" ng-class="getRoomStatusClassForRoom(room)" ng-show="room.room_status == 'NOTREADY'">{{getNotReadyRoomTag(room)}}</span>
 									<span class="room-preassignment" ng-show="room.is_preassigned">{{room.last_name + " "+ room.guarantee_type}}</span>
@@ -61,6 +63,8 @@
 						</div>
 					</div>
 				</div>
+				<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="filteredRooms.length && totalCount > 5">
+				</rv-pagination>
 			</div>
 
 			<div ng-include="'/assets/partials/roomAssignment/rvUpgrades.html'" ng-show="isUpsellAvailable()" ng-controller="RVUpgradesCtrl"> </div>

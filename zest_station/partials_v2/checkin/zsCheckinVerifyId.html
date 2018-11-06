@@ -1,0 +1,107 @@
+<section id="main" class="centered" role="main" ng-show="screenMode === 'WAIT_FOR_STAFF'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('ID_VERIFICATION_HEADER')" editable-text="ID_VERIFICATION_HEADER"></text>
+        </h1>
+        <h2>
+            <text data-ng-bind-html="getTagValue('ID_VERIFICATION_SUB_HEADER')" editable-text="ID_VERIFICATION_SUB_HEADER"></text>
+        </h2>
+        <button type="button" class="button done-btn" click-touch="ringBell()" ng-if="zestStationData.kiosk_staff_notification_sound">
+            <text data-ng-bind-html="getTagValue('CALL_STAFF')" editable-text="CALL_STAFF"></text>
+        </button>
+    </div>
+    <div>
+        <button class='button blue invis bottom-left' click-touch="adminVerify()">
+            Admin
+        </button>
+    </div>
+</section>
+
+<!--  staff PIN -->
+<section id="main" class="centered test" role="main" ng-show="screenMode ===  'ADMIN_PIN_ENTRY'" click-touch='resetTime()'>
+    <div id="content" class="input-field-contents">
+        <h1>
+            <text data-ng-bind-html="getTagValue('ADMIN_PIN_HEADER')" editable-text="ADMIN_PIN_HEADER"></text>
+        </h1>
+        <h2>
+            <text data-ng-bind-html="getTagValue('ADMIN_PIN_SUB_HEADER')" editable-text="ADMIN_PIN_SUB_HEADER"></text>
+        </h2>
+        <!-- user name -->
+        <div class="form">
+            <div class="entry input">
+                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" id="input_text" touch-press/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}">
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PIN error -->
+<section id="main" class="centered" role="main" ng-show="screenMode ===  'PIN_ERROR'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('PIN_ERROR_HEADER')" editable-text="PIN_ERROR_HEADER"></text>
+        </h1>
+        <h2>
+            <text data-ng-bind-html="getTagValue('PIN_ERROR_SUB_HEADER')" editable-text="PIN_ERROR_SUB_HEADER"></text>
+        </h2>
+        <button type="button" class="button done-btn" click-touch="retryPinEntry()">
+            <text data-ng-bind-html="getTagValue('RETRY')" editable-text="RETRY"></text>
+        </button>
+    </div>
+</section>
+
+<!-- Guest list -->
+<section id="main" role="main" ng-show="screenMode == 'GUEST_LIST'">
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('VERIFY_GUESTS_HEADER')" editable-text="VERIFY_GUESTS_HEADER"></text>
+        </h1>
+        <h2>
+            <text data-ng-bind-html="getTagValue('VERIFY_GUESTS_SUB_HEADER')" editable-text="VERIFY_GUESTS_SUB_HEADER"></text>
+        </h2>
+        <div id="guestsList" ng-iscroll="guests-list" ng-iscroll-delay="100" ng-init="setScroll()">
+            <ul id="selection" class="editable wrapper">
+                <li ng-repeat='guest in selectedReservation.guest_details track by $index'>
+                    <span class="details" ng-if='guest.last_name !== guest.first_name'>
+                        {{guest.first_name}}&nbsp;{{guest.last_name}}
+                    </span>
+                    <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
+                        {{guest.full_name}}    
+                    </span>
+                    <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                        {{guest.first_name}}    
+                    </span>
+                    </span>
+                    <nav id="options" role="nav" class="small-icons">
+                        <ul role="menu">
+                            <!-- both radio buttons have to have the same name attribute for each guest
+                    in this example: guest 1 would have id_guest[0] and guest 2 would have id_guest[1] on both radio inputs
+                    This wil ensure that one radio will be deselected if another is selected.
+                    -->
+                            <li class="radio-option">
+                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-1" value="WITH_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
+                                <label class="button option" for="radio-guest-{{ $index }}-1" style="transition: none;">
+                                    <ng-include src="icons.url.user_with_id"></ng-include>
+                                </label>
+                                <span translate>WITH_ID</span>
+                            </li>
+                            <li class="radio-option">
+                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-2" value="NO_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
+                                <label class="button option" for="radio-guest-{{ $index }}-2" style="transition: none;">
+                                    <ng-include src="icons.url.user_without_id"></ng-include>
+                                </label>
+                                <span translate>WITHOUT_ID</span>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

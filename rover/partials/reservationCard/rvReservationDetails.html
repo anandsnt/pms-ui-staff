@@ -2,6 +2,7 @@
 
     <!-- Reservation header -->
     <div class="reservation-header" ng-init="showEditDates = false">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="actions">
             <a ng-show="isStayDatesChangeAllowed()" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
                 <span class="date">
@@ -166,7 +167,7 @@
             <div class="check-data has-datepicker">
                 <label for="check-in-date" class="guest-status small-icon check-in">Arrival Date</label>
                 <!-- <input id="" type="text" class="datepicker" value="{Arrival Date}" readonly /> -->
-                <input name="room-service-date" id="check-in-date" type="text" class="datepicker" ui-date="arrivalDateOptions" ng-model="editStore.arrival" ui-date-format readonly>
+                <input name="room-service-date" id="check-in-date" type="text" class="datepicker" ui-date="arrivalDateOptions" ng-model="editStore.arrival" ui-date-format readonly ng-change="arrivalDateChanged()">
             </div>
             <div class="check-data has-datepicker">
                 <label for="check-out-date" class="guest-status small-icon check-out">Departure Date</label>

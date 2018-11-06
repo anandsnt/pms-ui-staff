@@ -1,0 +1,34 @@
+<section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <div data-view="HotelListView">
+        <!-- Hotels list -->
+        <section>
+            <header class="content-title float">
+                <h2>Manage Features By Hotel</h2>
+                <div class="entry table-search">
+                    <span class="search-text">Search</span>
+                    <span class="icons icon-search" name="submit" type="submit"></span>
+                    <input placeholder="Search by Hotel Name, Code or Chain Name" autocomplete="off" type="text" ad-delay-textbox="" ng-model="searchTerm" delay="1000" function-to-fire="searchHotels" class="search-hotel">
+                </div>
+            </header>
+            <section class="content-scroll">
+                <table class="grid datatable table hotel-list-scroll" template-pagination="nil" ng-table="tableParams" >
+                    <tbody>
+                    <tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in $data">
+                        <td data-title="'Hotel'" sortable="'hotel_name'" header-class="width-40">
+                            <a ng-click="edit(hotel)" class="title">
+                                <strong ng-bind-html="escapeNull(hotel.hotel_name) | highlightWords:searchWords"> </strong>
+                                <em> {{hotel.city}} , {{hotel.state}} </em>
+                            </a>
+                        </td>
+                        <td data-title="'Room'" sortable="'number_of_rooms'" header-class="width-20"><span class="number">{{hotel.number_of_rooms}}</span></td>
+                        <td data-title="'Chain'" sortable="'chain_name'" header-class="width-20" ng-bind-html="escapeNull(hotel.chain_name) | highlightWords:searchWords"></td>
+                        <td data-title="'Code'" sortable="'hotel_code'" header-class="width-20" ng-bind-html="escapeNull(hotel.hotel_code) | highlightWords:searchWords"></td>
+                        <td data-title="'# Integrations'" sortable="'integrations'" header-class="width-20">{{(hotel.integrations || []).length}}</td>
+                        <td data-title="'# Features'" sortable="'features'" header-class="width-20">{{(hotel.features || []).length}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </section>
+    </div>
+</section>

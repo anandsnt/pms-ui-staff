@@ -1,0 +1,64 @@
+    <!-- Report content -->
+    <div id="report-content" class="report-content grid scrollable" ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper">
+            <table class="deposit-reports tax-exempt-report">
+                <thead>
+                    <tr>
+                        <th><span>Name</span></th>
+                        <th><span class="dates">Dates</span></th>
+                        <th><span>Nights</span></th>
+                        <th><span class="account">Company / Travel Agent</span></th>
+                        <th><span>Rate</span></th>
+                        <th><span>Tax Exempt Type</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+
+                    <tr>
+                        <td colspan="3">
+                            Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
+                        </td>
+                        <td colspan="3">
+                            <li>
+				                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+				                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+				            </li>
+                </tfoot>
+                <tbody>
+                    <tr class="row-break" ng-repeat="eachRow in results">
+                        <td class="name">
+                            <div class="info">
+                                <span class="guest-status small-icon" ng-class="getReservationStatus(eachRow.status)">{{eachRow.status}}</span>
+                                <strong>{{eachRow.name}}</strong>
+                                <em>{{eachRow.confirm_no}}</em>
+                            </div>
+                        </td>
+                        <td class="dates">
+                            <div class="dates">
+                                <div class="date">
+                                    <span class="icons time check-in"></span>
+                                    <span>{{eachRow.arrival_date}}</span>
+                                </div>
+                                <div class="date">
+                                    <span class="icons time check-out"></span>
+                                    <span>{{eachRow.departure_date}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{eachRow.total_nights}}</td>
+                        <td class="account">
+                            <strong ng-if = "eachRow.travel_agent_name !== '' && eachRow.travel_agent_name !== null">{{eachRow.travel_agent_name}} | <em>{{eachRow.travel_agent_no}}</em></strong><br />
+                            <strong ng-if = "eachRow.company_name !== '' && eachRow.company_name !== null">{{eachRow.company_name}} | <em>{{eachRow.company_no}}</em></strong>
+                            <!-- If has group code -->
+                            <span class="icons icon-group" ng-if = "eachRow.group_code !== '' && eachRow.group_code !== null">{{eachRow.group_code}}</span>
+                            
+                        </td>
+                        <td>{{eachRow.rate_code}}</td>
+                        <td>{{eachRow.tax_exempt_type}}</td>
+                    </tr>
+                </tbody>
+            </table>            
+        </div>
+    </div>
+
+    <rv-pagination  page-options="paginationConfig" page-data="totalCount"></rv-pagination>

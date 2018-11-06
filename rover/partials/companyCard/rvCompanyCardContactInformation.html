@@ -3,7 +3,8 @@
     	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
         <div class="holder left">
-            <strong class="h3" translate>COMAPNY_INFO</strong>
+            <strong class="h3" ng-hide="account_type == 'TRAVELAGENT'" translate>COMAPNY_INFO</strong>
+            <strong class="h3" ng-show="account_type == 'TRAVELAGENT'" translate>TA_INFO</strong>
 
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_name" label="Company Name" placeholder = "Enter Company Name" styleclass="full-width" disabled="isUpdateEnabled()"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_name" label="Travel Agent Name" placeholder = "Enter Travel Agent Name" styleclass="full-width" disabled="isUpdateEnabledForTravelAgent()"></rv-textbox>
@@ -11,26 +12,23 @@
             <rv-textbox value="contactInformation.address_details.street2" placeholder = "Enter Address Line 2" styleclass="no-label" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.street3" placeholder = "Enter Address Line 3" styleclass="no-label full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.city" label="City" placeholder = "Enter City" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
-            <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code" placeholder = "Enter Postal code" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
+            <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code"  placeholder = "Enter Postal code" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.state" label="State" placeholder = "Enter State" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
-
             <!--<rv-dropdown label="Country" label-in-drop-down="Select country" list="contactInformation.countries" selected-Id='contactInformation.address_details.country' ></rv-dropdown> -->
             <!-- drop down directive is name & value, but in here it is different-->
             <div class="entry">
-                <label for="company-country" translate>COUNTRY</label>
+                <label for="company-country">{{'COUNTRY' | translate}}</label>
                 <div class="select">
-                    <select iscroll-stop-propagation id="company-country" name="company-country" ng-model="contactInformation.address_details.country_id" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
-                        <option value="" class="placeholder" translate>SELECT_COUNTRY</option>
-                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country_id" >
-                            {{country.value}}
-                        </option>
+                    <select ng-model="contactInformation.address_details.country_id" ng-options="country.id as country.value for country in countries" >        
+                       <option value="" translate>SELECT_COUNTRY</option>
                     </select>
                 </div>
             </div>
 
             <rv-textbox value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Contact Phone" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.fax" inputtype="tel" label="Fax" placeholder = "Enter Contact Fax" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
-            <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
+            <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="{{contactInformation.emailStyleClass}}" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
+            <rv-textbox value="contactInformation.e_invoice_address" ng-if="roverObj.isAnyInterfaceEnabled" label="E-Invoice Address" placeholder = "Enter E-Invoice Address" maxlength="30"></rv-textbox>            
             <rv-textbox value="contactInformation.account_details.web_page" label="Web Page" placeholder = "Enter Web Page" styleclass="full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
 
             <div class="entry full-width" ng-hide="true">
@@ -46,12 +44,13 @@
         </div>
 
         <div class="holder right">
-            <strong class="h3" translate>EXTENDED_COMPANY_DETAILS</strong>
+            <strong class="h3" ng-hide="account_type == 'TRAVELAGENT'" translate>EXTENDED_COMPANY_DETAILS</strong>
+            <strong class="h3" ng-show="account_type == 'TRAVELAGENT'" translate>EXTENDED_TA_DETAILS</strong>
 
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <div class="entry">
-                <label for="company-corporate-vat" translate>TAX_ID</label>
+                <label for="company-corporate-vat">{{'TAX_ID' | translate}}</label>
                 <input id="company-corporate-vat" ng-model="contactInformation.account_details.tax_number" placeholder = "Enter Tax ID" type="text" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"/>
             </div>
 
@@ -76,26 +75,20 @@
                         <option value="amount">{{currencySymbol}}</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="entry commission" ng-show="contactInformation.commission_details.is_on">
-                <label translate>PREPAID</label>
-                <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_prepaid}">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_prepaid }"></span>
-                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="contactInformation.commission_details.is_prepaid" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
-                    <span translate>PREPAID</span>
-                </label>
-            </div>
-
-            <div class="entry" ng-show="contactInformation.commission_details.is_on">
-                <label ng-show="contactInformation.commission_details.type === 'amount'" translate>PER_STAY_OR_PER_NIGHT</label>
-                <div class="select" ng-show="contactInformation.commission_details.type === 'amount'">
+                <div class="select" ng-show="contactInformation.commission_details.is_on && contactInformation.commission_details.type === 'amount'">
                     <select class="styled" value="contactInformation.commission_details.commission_type" ng-model="contactInformation.commission_details.commission_type" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
                         <option value="perStay" translate>PER_STAY</option>
                         <option value="perNight" translate>PER_NIGHT</option>
                     </select>
                 </div>
+            </div>
 
+            <div class="entry radio-check margin" ng-show="contactInformation.commission_details.is_on">
+                <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_prepaid}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_prepaid }"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="contactInformation.commission_details.is_prepaid" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
+                    <span translate>COMMISSION_IS_PREPAID</span>
+                </label>
             </div>
 
             <div class="entry full-width">

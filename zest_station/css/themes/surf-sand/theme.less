@@ -1,0 +1,184 @@
+/* StayNTouch Zest Station Styles | Surf Sand Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #5bb8b3;
+    
+    @textColor:             @black;
+    @backgroundColor:       @white;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: @white;
+    @backgroundSize: '';
+    
+    @headerIconsColor:      @black;
+    @headerIconsActive:     @black;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/surf-sand/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 320px;
+        height: 80px;
+        background-position: center;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #surf-sand {
+ 
+        #header {
+            height: 145px;
+            background: #e76a55;
+
+            .icons {
+                fill: white;
+            }
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
+
+            &.centered {
+                padding-top: 100px;
+                #content {
+                    height: 100%;
+                }
+            }
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 15px;
+
+            .logo {
+                width: auto;
+                height: 80px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    background: @brandColor;
+                    color: @white;
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: #8b8b8b;
+            }
+        } 
+
+        .add-on-list {
+            li {
+
+                &:not(.selected){
+                    border-color: rgba(0,0,0,0.05);
+
+                    .add-on-content {
+                        background: rgba(0,0,0,0.05);
+                    }
+                }
+                
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @black;
+                }
+            }
+        }
+
+        #textual {
+            background: #ececec;
+             
+
+            &:before,
+            &:after {
+                background: #ececec;
+            }
+
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+    }

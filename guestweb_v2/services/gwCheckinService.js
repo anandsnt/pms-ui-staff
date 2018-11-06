@@ -52,7 +52,7 @@ sntGuestWeb.service('GwCheckinSrv', [
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
 		// if controller didn't send the url suffix
 		if (typeof params.url_suffix === "undefined") {
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
 		}
 		var url = '/guest_web/authenticate_checkin_guest';
 
@@ -147,7 +147,7 @@ sntGuestWeb.service('GwCheckinSrv', [
 
 		// if controller didn't send the url suffix
 		if (typeof params.url_suffix === "undefined") {
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
 		}
 
 		GWBaseWebSrv.postJSON(url, params).then(function(data) {
@@ -172,21 +172,34 @@ sntGuestWeb.service('GwCheckinSrv', [
 
 	this.postGuestDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/' + params.reservation_id + '.json';
+		
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			deferred.resolve({});
+		} else {
+			var url = '/guest_web/guest_details/' + GwWebSrv.zestwebData.reservationID + '.json';
 
-		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
-		GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
+			params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
+			GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		}
+		
 		return deferred.promise;
 	};
 
 	this.getGuestDetails = function(params) {
 
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/' + params.reservation_id + '.json';
+		var url;
+
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/guest_details.json';
+		}
+		else {
+			url = '/guest_web/guest_details/' + params.reservation_id + '.json';
+		}
 
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
@@ -215,6 +228,142 @@ sntGuestWeb.service('GwCheckinSrv', [
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
 		params.url_suffix = (typeof GwWebSrv.zestwebData.url_suffix !== "undefined") ? GwWebSrv.zestwebData.url_suffix : "";
 		GWBaseWebSrv.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.sampleETAupdationResponse = {
+		"early_checkin_on": true,
+		"early_checkin_available": true,
+		"reservation_in_early_checkin_window": true,
+		"checkin_time": " 3:00 PM",
+		"last_early_checkin_hour": "12",
+		"last_early_checkin_minute": "00",
+		"last_early_checkin_primetime": "PM",
+		"early_checkin_restrict_hour_for_display": " 2",
+		"early_checkin_restrict_hour": "02",
+		"early_checkin_restrict_minute": "30",
+		"early_checkin_restrict_primetime": "PM",
+		"early_checkin_restrict_time": "02:30:00 PM",
+		"bypass_early_checkin": false,
+		"early_checkin_offer_id": 12,
+		"early_checkin_charge": '$30'
+	};
+
+	this.getAddonList = function() {
+
+		var deferred = $q.defer();
+		var url;
+
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/upsell_addons.json';
+		}
+		else {
+			url = '/api/upsell_addons';
+		} 
+		var params = {
+			'for_zest_web': true,
+			'reservation_id': GwWebSrv.zestwebData.reservationID
+		};
+
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "WEB";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.updateAddon = function(params) {
+
+		var deferred = $q.defer();
+		var url = '/api/reservations/update_package';
+
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "WEB";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+		params.id = GwWebSrv.zestwebData.reservationID;
+
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.deleteAddon = function(params) {
+
+		var deferred = $q.defer();
+		var url = '/api/reservations/delete_package';
+
+		params.id = GwWebSrv.zestwebData.reservationID;
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "WEB";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.getExistingAddonsList = function() {
+
+		var deferred = $q.defer();
+		var url = '/staff/staycards/reservation_addons';
+		var params = {
+			'reservation_id': GwWebSrv.zestwebData.reservationID,
+			'sync_with_pms': true
+		};
+
+		GWBaseWebSrv.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.getAddonAdminSettings = function() {
+		var deferred = $q.defer();
+		var url;
+
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/upsell_addons_setups.json';
+		}
+		else {
+			url = '/api/upsell_addons_setups';
+		} 
+		var params = {
+			'reservation_id': GwWebSrv.zestwebData.reservationID
+		};
+
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.getlateCheckoutSettings = function() {
+		var deferred = $q.defer();
+		var url;
+
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/get_late_checkout_setup.json';
+		}
+		else {
+			url = '/admin/hotel/get_late_checkout_setup.json';
+		} 
+
+		GWBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);

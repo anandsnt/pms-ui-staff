@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -7,6 +7,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 	$scope.isConnectedToPMS = false;
+	$scope.showInactiveRates = false;
 
 	/**
     * To fetch all rate types
@@ -30,6 +31,14 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
+
+		// CICO-55394 - Search field if used will always bring up both active/inactive rates irrespective of the check box being selected.
+		if (getParams.query !== "") {
+			getParams.show_inactive_rates = true;
+		}
+		else {
+			getParams.show_inactive_rates = $scope.showInactiveRates;
+		}
 		var fetchSuccessOfItemList = function(data) {
 			$timeout(function() {
 		        $scope.$emit('hideLoader');
@@ -43,7 +52,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	        	// params.total(data.results.length);
 	            $defer.resolve($scope.data);
 		    }, 500);
-
 		};
 
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
@@ -280,6 +288,43 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			$state.go('admin.rateDetails', {rateId: rateId});
 		}
 
+	};
+
+	$scope.openCsvUploadPopup = function() {
+		$scope.csvData = {
+			'csv_file': ''
+		};
+		ngDialog.open({
+			template: '/assets/partials/popups/adCsvUploadPopUp.html',
+			className: 'ngdialog-theme-default1 modal-theme1',
+			closeByDocument: true,
+			scope: $scope
+		});
+	};
+
+	$scope.uploadCSVFile = function() {
+		var uploadCSVFileSuccess = function() {
+			$scope.successMessage = $filter('translate')('IMPORT_IS_IN_PROGRESS');
+			ngDialog.close();
+			$timeout(function() {
+		        $scope.successMessage = "";
+		    }, 10000);
+		};
+		var options = {
+			params: $scope.csvData,
+			onSuccess: uploadCSVFileSuccess,
+			onFailure: function(err) {
+				ngDialog.close();
+				$scope.errorMessage = err;
+			}
+		};
+
+		$scope.callAPI(ADRatesSrv.uploadCSVFile, options);
+	};
+	// CICO-55394 - Method to toggle inactive rate checkbox.
+	$scope.toggleInactiveRates = function() {
+		$scope.showInactiveRates = !$scope.showInactiveRates;
+		$scope.reloadTable();
 	};
 
 }]);

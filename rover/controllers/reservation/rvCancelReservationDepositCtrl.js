@@ -5,19 +5,15 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 		$scope.errorMessage = "";
 
 		$scope.cancellationData = {
-			reason: ""
+			reason: "",
+			locale: $scope.languageData.selected_language_code
 		};
 
 		$scope.DailogeState.isCancelled = false ;
 
 		$scope.completeCancellationProcess = function() {
-
 			if ($scope.DailogeState.isCancelled) {
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id || $scope.reservationData.reservationId,
-					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
-					"isrefresh": false
-				});
+                $state.reload($state.current.name);
 			}
 			$scope.closeDialog();
 		};

@@ -24,8 +24,16 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
 	$scope.isSequenceModChangeDisabled = false;
+	$scope.swedenCountryId = '';
 	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
 	var isMPFlagResetConfirmPopupNeeded = false;
+
+	/*
+	 * Method to get country id 
+	 */
+	var getCountryId = function(countryName) {
+		return ( _.find( $scope.data.countries, function(obj) { return obj.name === countryName; } ) ).id;
+	};
 
 	// pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
@@ -48,9 +56,10 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.swedenCountryId = getCountryId($rootScope.infrasecSpecificCountry);
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
-				}
+				}				
 
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
@@ -73,9 +82,11 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.swedenCountryId = getCountryId($rootScope.infrasecSpecificCountry);
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
-				}
+				} 
+
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -111,8 +122,14 @@ admin.controller('ADHotelDetailsCtrl', [
 		$scope.readOnly = "yes";
 		var fetchSuccess = function(data) {
 			$scope.data = data;
+
 			if ($scope.data.selected_mod_type_id) {
 				$scope.isSequenceModChangeDisabled = true;
+			} 
+			else { 
+				$scope.data.selected_mod_type_id = (_.find($scope.data.mod_types, function (item) { 
+																						return item.value === 'MOD10'; 
+																					}).id);
 			}
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
@@ -199,12 +216,17 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin - To save Add/Edit data
 		if ($scope.isAdminSnt) {
 			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
+
+			if ($scope.data.country !== $scope.swedenCountryId) {
+				unwantedKeys.push("max_control_unit");
+			}
 			var data = dclone($scope.data, unwantedKeys);
 
 			if ($scope.mli.certificate != "") {
 				data.mli_certificate = $scope.mli.certificate;
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
+			data.max_control_unit = parseInt(data.max_control_unit);
 			var themeData = {
 				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : 'ORANGE'
 			};
@@ -238,9 +260,9 @@ admin.controller('ADHotelDetailsCtrl', [
 		/** ******************************************************************/
 
 			if ($scope.data.payment_gateway === "MLI") {
-				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
+				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "currency_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
 			} else {
-				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
+				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "currency_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
 			}
 
 
@@ -271,7 +293,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	            	document.getElementsByTagName("html")[0].removeAttribute( 'class');
 	            }
 
-				$state.go('admin.dashboard', {menu: 0});
+				$state.go('admin.dashboard', {menu: $scope.findMainMenuIndex('Hotel & Staff')});
 				$scope.$emit('hotelNameChanged', {"new_name": $scope.data.hotel_name});
 				angular.forEach($scope.data.currency_list, function(item, index) {
 		       		if (item.id === $scope.data.default_currency) {
@@ -448,6 +470,10 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.data.hotel_date_format = "";
 		}
 
+		if (!$scope.data.hotel_currency_format) {
+			$scope.data.hotel_currency_format = "";
+		}
+
 		if (!$scope.data.default_currency) {
 			$scope.data.default_currency = "";
 		}
@@ -517,5 +543,17 @@ admin.controller('ADHotelDetailsCtrl', [
     $scope.clickedCancel = function() {
     	$scope.data.is_multi_property = true;
     	closeDialogue();
+    };
+    /*
+     * Clicked Legal settings button - SNT admin
+     */
+    $scope.clickedLegalSettings = function() {
+    	ngDialog.open({
+            template: '/assets/partials/hotel/adHotelLegalSettings.html',
+            className: '',
+            scope: $scope,
+            closeByDocument: false,
+            controller: 'adHotelLegalSettingsController'
+        });
     };
 }]);

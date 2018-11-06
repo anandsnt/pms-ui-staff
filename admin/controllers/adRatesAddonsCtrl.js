@@ -9,12 +9,15 @@ admin.controller('ADRatesAddonsCtrl', [
     '$timeout',
     'activeRates',
     'availableLanguages',
-    function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates, availableLanguages) {
+    'addonUpsellSettings',
+    function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates, availableLanguages, addonUpsellSettings) {
 
 
         // extend base controller
         $scope.init = function() {
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
+            // higlight the selected Main menu (can come to this screen using the addon shortcuts)
+            $scope.$emit("changedSelectedMenu", $scope.findMainMenuIndex('Rates'));
 
             // various addon data holders
             $scope.data = [];
@@ -37,6 +40,8 @@ admin.controller('ADRatesAddonsCtrl', [
             };
 
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
+            $scope.showZestWebSettings = addonUpsellSettings.zest_web_addon_upsell_availability;
+            $scope.showZestStationSettings = addonUpsellSettings.zest_station_addon_upsell_availability;
         };
 
         $scope.init();
@@ -351,6 +356,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 post_type_id: $scope.singleAddon.post_type_id,
                 rate_code_only: $scope.singleAddon.rate_code_only,
                 manual_posting: $scope.singleAddon.manual_posting,
+                is_common_area: $scope.singleAddon.is_common_area,
+                pass_level_no: $scope.singleAddon.pass_level_no,
                 forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
                 charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
                 allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
@@ -358,8 +365,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 addon_image: $scope.singleAddon.addon_image,
                 is_sell_separate: $scope.singleAddon.is_sell_separate,
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
-                suffix_label: $scope.singleAddon.suffix_label
-
+                suffix_label: $scope.singleAddon.suffix_label,
+                notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase
             };
 
             if ($scope.isDefaulLanguageSelected()) {
@@ -651,6 +658,22 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.languageFilter = {
                 'locale': availableLanguages.selected_language_code
             };
-        }
+        };
+
+        $scope.returnAddonUpseellClass = function(addon) {
+            var styleClass;
+
+            if (addon.zest_station_upsell && !addon.zest_web_upsell) {
+                styleClass = 'kiosk-upsell';
+            } else if (!addon.zest_station_upsell && addon.zest_web_upsell) {
+                styleClass = 'web-upsell';
+            } else if (addon.zest_station_upsell && addon.zest_web_upsell) {
+                styleClass = 'zs-n-web-upsell';
+            } else {
+                styleClass = 'no-upsell';
+            }
+            return styleClass;
+
+        };
     }
 ]);

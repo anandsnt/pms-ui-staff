@@ -13,6 +13,18 @@
             <input type="text" name="email" placeholder="Enter an Email" ng-model="filterData.statementEmailAddress"/>
         </div>
 
+        <div class="entry full-width" >
+            <label for="languages">Language</label>
+            <div  class="select">
+                <select convert-to-number iscroll-stop-propagation ng-model="filterData.locale">
+                    <option style="display:none" value=""></option>
+                    <option value="{{item.code}}" ng-repeat="item in languageData.languages"
+                        ng-selected="item.code === filterData.locale"
+                        >{{item.language}}</option>
+                </select>
+            </div>
+        </div>
+
         <div class="actions">
 
             <button type="button" class="button with-icon open-modal" ng-class="{ 'blue': filterData.statementEmailAddress !== '' , 'grey overlay': filterData.statementEmailAddress === ''}" ng-click="emailArStatement()">

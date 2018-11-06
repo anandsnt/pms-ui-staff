@@ -50,6 +50,15 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				},
 				hotelLanguages: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchHotelLanguageList();
+				},
+				hotelTranslations: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchHotelTranslations();
+				},
+				defaultTranslations: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchDefaultTranslations();
+				},
+				configurableImagesData: function(zsGeneralSrv) {
+					return zsGeneralSrv.getImages();
 				}
 			}
 		});
@@ -91,6 +100,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 	        label: 'Out of Service',
 	        icon: 'out_of_service.png',
 	        tags: ['sleepy']
+        });
+
+        $stateProvider.state('zest_station.manualKeyPickup', {
+        	url: '/manualKeyPickUp/:reservation_id/:room_no/:first_name/:guest_id/:email/:mode',
+            templateUrl: '/assets/partials_v2/zsManualKeyPickup.html',
+            controller: 'zsManualKeyPickUpCtrl'
         });
 
 	}

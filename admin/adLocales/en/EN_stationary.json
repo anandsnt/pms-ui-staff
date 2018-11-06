@@ -27,6 +27,7 @@
 	"REGISTRATION_TEMPLATE":"Registration Template",
 	"SELECT_REGISTRATION_TEMPLATE":" Select Registration Template",
 	"SHOW_VEHICLE_INFORMATION":"Show Vehicle Information",
+	"SHOW_CONTACT_INFO": "Show Contact Information",
 	"SHOW_HOTEL_LOGO": "Show Hotel Logo",
 	"HOTEL_PICTURE": "Hotel Picture",
 	"SHOW_HOTEL_PICTURE" : "Show Hotel Picture",
@@ -76,6 +77,7 @@
 	"BY_FIRST_LAST_NAME" : "By First and Last name",
 	"BY_CUSTOM_TEXT" : "Custom Text",
 	"CUSTOM_SALUTATION" : "Custom Salutation",
+	"NO_SALUTATION" : "None",
 	"INCLUDE_TITLE" : "Include Title",
 	"TRANSLATIONS_SAVED_SUCCESSFULLY" : "Translations saved successfully",
 	"MENU_OPTION" : "Menu Option",
@@ -85,6 +87,7 @@
 	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
 	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print",
 	"EXT_TAX_BREAKDOWN" : "Extended Tax breakdown",
+	"ACTIVATE_FOLIO_NUMBER": "Activate Folio Number",
 	"SHOW_PERFORMA_INVOICE":"Pro Forma Invoice",
 
 	"SELECT LANGUAGE": "Select Language",
@@ -115,4 +118,17 @@
 	"PRO_FORMA_INVOICE":"Pro Forma Invoice",
 	"PRO_FORMA_BODY_TEXT_PLACEHOLDER":"Enter Pro Forma Invoice Body",
 	"EMAIL_GUEST_BILL_ON_CHECKOUT" : "Email Guest Bill on Check out",
-	"AR_INVOICE_BILLING_TEXT" : "A/R Invoice Billing Text"
+	"AR_INVOICE_BILLING_TEXT" : "A/R Invoice Billing Text",
+	"TERMS_AND_CONDITIONS": "Terms &amp; Conditions",
+	"GENERAL_TERMS_AND_CONDITIONS": "General T&C",
+	"ROVER_CHECKIN": "Rover Check in",
+	"REG_CARD_EMAIL": "Registration Card Email",
+	"ZEST_STATION": "Zest Station",
+	"ZEST_WEB": "Zest Web",
+	"ASSIGN_TO_SECTION": "Assign To Section",
+	"TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER": "Title for Terms & Conditions",
+	"TERMS_AND_CONDITIONS_PLACEHOLDER": "Enter Terms & Conditions",
+	"NONE": "None",
+	"ADD_NEW": "Add New",
+	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown"
+

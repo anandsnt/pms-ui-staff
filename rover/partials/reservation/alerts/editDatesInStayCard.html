@@ -54,13 +54,13 @@
                     </ul>
                 </div>
                 <div class="actions">
-                    <button type="button" class="button green" ng-click="changeStayDates();">Confirm</button>
+                    <button type="button" class="button green" ng-click="clickedOnStayDateChangeConfirmButton();">Confirm</button>
                     <button type="button" class="button blank" ng-click="closeDialog();">Close</button>
                 </div>
             </section>
 
             <!-- Scenario 3: House not available. -->
-            <section ng-if="!ngDialogData.is_house_available">
+            <section ng-if="!ngDialogData.is_house_available && !isSuiteReservation">
                 <span class="notice error">House not available for selected dates</span>
                 <div class="actions">
                     <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>
@@ -68,7 +68,7 @@
                 </div>
             </section>
             <!-- Scenario 4: Rate or Room Type not available or restricted. -->
-            <section ng-if="ngDialogData.is_house_available && !!showNotAvailableMessage">
+            <section ng-if="ngDialogData.is_house_available && !!showNotAvailableMessage && !isSuiteReservation">
                 <span class="notice error">Rate / Room Type not available for selected dates</span>
                 <div class="actions">
                     <button type="button" class="button blue" ng-click="moveToRoomRates();">Rooms &amp; Rates</button>
@@ -77,10 +77,17 @@
             </section>
         </section>
         <!--  Scenario 5: Show this when the user have the overbook permission and room type is not available -->
-        <section ng-if="!ngDialogData.is_invalid_move && showOverBookingAlert && ngDialogData.is_assigned_room_available">
+        <section ng-if="!ngDialogData.is_invalid_move && showOverBookingAlert && ngDialogData.is_assigned_room_available && !isSuiteReservation">
                 <span class="notice error">Room Type not available, you are about to overbook the Room Type</span>
                 <div class="actions">
                     <button type="button" class="button blank" ng-click="toggleOverBookingAlert();">Ok</button>
+                </div>
+        </section>
+
+        <section ng-if="!ngDialogData.is_invalid_move && restrictSuiteOverbooking">
+                <span class="notice error">Suite Room Type cannot be overbooked</span>
+                <div class="actions">
+                    <button type="button" class="button blank" ng-click="closeDialog();">Ok</button>
                 </div>
         </section>
     </form>

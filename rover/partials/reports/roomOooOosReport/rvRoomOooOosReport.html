@@ -14,12 +14,14 @@
                     <th class="cell-110">
                         <span class="sort"
                         	ng-class="{ 'sorting-asc' : isAsc(0), 'sorting-desc': isDesc(0) }"
-                        	ng-click="sortResultBy(chosenReport.sortByOptions[0], chosenReport)">Room No.</span>
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[0], chosenReport)" ng-if="!isBackgroundReportsEnabled">Room No.</span>
+                        <span ng-if="isBackgroundReportsEnabled">Room No.</span>
                     </th>
                     <th class="cell-140">
                         <span class="sort"
                         	ng-class="{ 'sorting-asc' : isAsc(1), 'sorting-desc': isDesc(1) }"
-                        	ng-click="sortResultBy(chosenReport.sortByOptions[1], chosenReport)">Room Type</span>
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[1], chosenReport)" ng-if="!isBackgroundReportsEnabled">Room Type</span>
+                        <span ng-if="isBackgroundReportsEnabled">Room Type</span>
                     </th>
                     <th class="cell-80">
                         <span>Status</span>
@@ -27,13 +29,15 @@
                     <th class="cell-110">
                         <span class="sort"
                         	ng-class="{ 'sorting-asc' : isAsc(3), 'sorting-desc': isDesc(3) }"
-                        	ng-click="sortResultBy(chosenReport.sortByOptions[3], chosenReport)">Start Date</span>
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[3], chosenReport)" ng-if="!isBackgroundReportsEnabled">Start Date</span>
+                        <span ng-if="isBackgroundReportsEnabled">Start Date</span>
                     </th>
                     <th class="cell-110">
                         <span class="sort"
                         	ng-class="{ 'sorting-asc' : isAsc(4), 'sorting-desc': isDesc(4) }"
-                        	ng-click="sortResultBy(chosenReport.sortByOptions[4], chosenReport)"
+                        	ng-click="sortResultBy(chosenReport.sortByOptions[4], chosenReport)" ng-if="!isBackgroundReportsEnabled"
                         >End Date</span>
+                        <span ng-if="isBackgroundReportsEnabled">End Date</span>
                     </th>
                     <th><span>Reason</span></th>
                     <th><span>Comments</span></th>
@@ -70,6 +74,6 @@
 	</div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>
 

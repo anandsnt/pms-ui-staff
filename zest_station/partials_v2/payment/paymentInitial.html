@@ -1,0 +1,121 @@
+<div touch-press="resetTime()">
+    <!-- Select payment type -->
+    <section id="main" role="main" ng-show="screenMode.value === 'SELECT_PAYMENT_METHOD'" class="centered">
+        <div id="content">
+            <h1 ng-show="screenMode.totalAmountPlusFees > 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_PAY')" editable-text="HOW_WOULD_YOU_LIKE_TO_PAY"></text></h1>
+            <h1 ng-show="screenMode.totalAmountPlusFees < 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_REFUND')" editable-text="HOW_WOULD_YOU_LIKE_TO_REFUND"></text></h1>
+            <div id="balance">
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+            </div>
+            <nav id="options" role="nav" class="options-menu">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='payUsingExistingCard()'>
+                            <div ng-include="icons.url.creditcard"></div>
+                        </button>
+                        Pay
+                        <p class="cc-details">
+                            <strong>{{cardDetails.}}</strong><br>
+                            <span><text data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></text></span> {{cardDetails.card_number}}<br> 
+                            <span><text data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></text></span> {{cardDetails.card_expiry}}
+                        </p>
+                    </li>
+                    <li class="break">
+                        <span>Or</span>
+                    </li>
+                    <li>
+                        <button type="button" class="button option" touch-press='payUsingNewCard()'>
+                            <div ng-include="icons.url.creditcard"></div>
+                        </button>
+                        <text data-ng-bind-html="getTagValue('USE_NEW_CARD')" editable-text="USE_NEW_CARD"></text>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- payment in progress -->
+    <section id="main" role="main" ng-show="screenMode.value === 'PAYMENT_IN_PROGRESS'" class="centered">
+        <!-- hide below content when payment is in progress -->
+        <div id="content" ng-show="!isCBAPayment || screenMode.paymentTypeFetchCompleted">
+            <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
+            <div id="balance">
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;
+                <span ng-hide="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+                <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }} ({{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }})</span>
+            </span>
+            </div>
+            <nav id="options" role="nav" class="options-menu">
+                <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+                    <img src="{{zestImages.cc_payment_image}}">
+                </div>
+                <ul role="menu" ng-if="zestImages.cc_payment_image.length === 0">
+                    <li>
+                        <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
+                            <div ng-include="icons.url.creditcard"></div>
+                        </button>
+                        <div ng-include="icons.url.creditcard_icmp" ng-if="!isCBAPayment  && icmp"></div>
+                        <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
+                        <img src="/assets/zest_station/css/icons/default/ingenico.png" alt="" class="device-image device-ingenico" ng-if="isCBAPayment"/>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- payment failed -->
+    <section id="main" class="centered kiosk" role="main" ng-show="screenMode.value === 'PAYMENT_FAILED'">
+
+        <div id="content">
+            <h1>
+                 <text editable-text="SWIPE_ERR_HEADER"> {{'SWIPE_ERR_HEADER' |translate}}</text>
+            </h1>
+            <h2 ng-show="screenMode.errorMessage.length">
+                ({{screenMode.errorMessage}})
+            </h2>
+
+            <nav id="options" class="large-icons" role="nav">
+                <ul role="menu">
+                    <li >
+                        <button type="button" class="button option" touch-press='reTryCardSwipe()'>
+                            <div ng-include="icons.url.creditcard"></div>
+                        </button>
+                        <h1>
+                            <text data-ng-bind-html="getTagValue('TRY_AGAIN')" editable-text="TRY_AGAIN"></text>
+                        </h1>
+                    </li>
+                
+                    <li class="break">
+                        <span>
+                            <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                        </span>
+                    </li>
+                    
+                    <li>
+                        <button type="button" class="button option" touch-press='talkToStaff()'>
+                            <div ng-include="icons.url.staff"></div>
+                        </button>
+                        <h1>
+                            <text data-ng-bind-html="getTagValue('SPEAK')" editable-text="SPEAK"></text>
+                        </h1>
+                        <h4>
+                            <text data-ng-bind-html="getTagValue('SPEAK_SUB')" editable-text="SPEAK_SUB"></text>
+                        </h4>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section> 
+
+    <!-- Payment success -->
+    <section id="main" class="centered" role="main" ng-show="screenMode.value === 'PAYMENT_SUCCESS'">
+        <div id="content">
+            <div ng-include="icons.url.success"></div>
+            <h1><text data-ng-bind-html="getTagValue('PAYMENT_SUCCESSFULL')" editable-text="PAYMENT_SUCCESSFULL"></text></h1>
+            <h2><text data-ng-bind-html="getTagValue('BALANCE_WAS_PAID')" editable-text="BALANCE_WAS_PAID"></text></h2>
+            <button type="button" class="button" click-touch="goToNextScreen()"><text data-ng-bind-html="getTagValue('NEXT')" editable-text="NEXT"></text></button>
+        </div>
+    </section>
+
+
+</div>

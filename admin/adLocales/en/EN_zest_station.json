@@ -20,11 +20,6 @@
 "PRINT":"Print",
 "AUTO_PRINT":"Auto Print",
 
-"STATION_LANGUAGE_FILE_ATTACHED":"File Attached",
-"STATION_LANGUAGE_CHOOSE_FILE":"Choose File...",
-"STATION_LANGUAGE_ATTACH_FILE":"Attach File",
-
-
 "STATION_LANGUAGE_SUPPORT":"Language Support",
 "STATION_LANGUAGE_SUPPORT_SWITCH":"Multi-Language Support",
 "STATION_LANGUAGE_DEFAULT":"Default Language",
@@ -39,10 +34,9 @@
 "STATION_LANGUAGE_CASTELLANO":"Castellano",
 
 "STATION_GUEST_ID_ACTIVATE" :"Guest ID Scan",
-"STATION_REMOVE_FILE" :"Remove File",
 "USE_V1_SCAN": "Use V1 lib for passport scan",
 
-"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"Prompt to Scan Guest ID(s) During Check-In and Pickup Keys",
+"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"During Check-In and Pickup Keys - SAMSOTECH",
 
 "ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
 "BOOKING_URL":"Booking Engine URL",
@@ -52,6 +46,7 @@
 "CHECKOUT":"Check Out",
 "CHECKIN":"Check In",
 "REG_CARD_TEXT":"Registration Card Text",
+"CUSTOM_REG_CARD_EMAIL_SUBJECT": "Custom Registration Subject",
 "CUSTOM_REG_CARD_HEADING": "Custom Registration Card Heading text",
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
@@ -88,14 +83,16 @@
 "MLI_DESKTOP_SWIPE_CHROME":"MLI Desktop Swipe - Chrome Only - Merchantlink Processor",
 "INFINEA_INGENICO_CC_IPAD":"Infinea/ Ingenico - ipad Only - Merchantlink Processor",
 "KEY_CREATION_METHOD":"Key Creation Method",
-"KEY_CREATION_IMAGE":"Sankyo Create Key In-Progress Image",
+"KEY_CREATION_IMAGE":"Create Key In-Progress Image",
 "REMOTE_ENCODING_CHROME_IPAD":"Remote Encoding - Chrome or iPad - Ving, Salto, Saflok",
 "SANKYO_ENCODING":"Sankyo Encoding - Chrome only - Atlas (Saflok) only - Uses websocket",
 "INGENICO_INFINEA_KEY":"Infinea/Ingenico - iPad Only - Ving, Salto, Saflok",
 "USE_SOCKET_PRINTING" : "Use Socket print",
 "USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device",
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
+"ADD_UPDATE_GUEST_DETAILS": "Add/Update Guest Details",
 "USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
+"COLLECT_GUEST_ADDRESS": "Collect Guest Address",
 "ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of Order Threshold",
 
 "ZEST_STATION_OFFLINE_SETTINGS" : "Offline Re-Connect Settings",
@@ -147,8 +144,26 @@
 "CREDIT_CARD_AND_PAYMENT_OPTIONS": "Credit Card & Payment Options",
 "BYPASS_SIGNATURE_CAPTURE": "Bypass Signature Capture",
 "BYPASS_CC_AUTH": "Bypass CC Authorization (Always bypass CC collection)",
-"VIEW_CC_ON_FILE": "View CC on file"
+"COLLECT_BALANCE": "Collect balance",
+"MANUAL": "Manual",
+"SEND_NON_CC_TO_STAFF": "Only Allow CC Guaranteed Reservations",
+"SHOW_PIN_LABEL": "Show PIN code",
 
+"STAFF_NOTIFICATION_SOUND": "Staff notification sound",
+"ROOM_PIN_PREFIX_TEXT": "Room PIN text",
+"RE_VERIFY_IDS": "Re-Verify ID",
+"ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY": "Always require staff to verify ID during the key pick up",
+
+"ADD_LOYALTY_PGMS": "Add Loyalty Programs",
+"CONFIGURABLE_IMAGES": "Configurable Images",
+"FILE_ATTACHED":"File Attached",
+"CHOOSE_FILE":"Choose File...",
+"ATTACH_FILE":"Attach File",
+"REMOVE_FILE" :"Remove File",
+
+"SWIPE_CC_FOR_AUTH": "Swipe CC for Authorization",
+"SWIPE_CC_FOR_PAYMENT": "Swipe CC for Payment",
+"KEY_CONFIRMATION_IMG": "Key confirmation image"
 
 
 

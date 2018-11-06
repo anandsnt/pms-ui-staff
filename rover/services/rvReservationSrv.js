@@ -206,7 +206,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		// CICO-24928 
 		this.updateReservationNote = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/notes/' + data.id;
+				url = '/reservation_notes/' + data.id;
 
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {
@@ -218,14 +218,19 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		};
 
 		this.getGuestDetails = function(guestData) {
-			var deferred = $q.defer();
-			var url = '/api/guest_details/' + guestData.id;
+            var deferred = $q.defer(),
+                url = '/api/guest_details/' + guestData.id;
 
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
-				deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
+			if (guestData.id === null) {
+				deferred.reject([""]);
+			} else {
+				rvBaseWebSrvV2.getJSON(url).then(function(data) {
+					deferred.resolve(data);
+				}, function(data) {
+					deferred.reject(data);
+				});
+			}
+			
 			return deferred.promise;
 		};
 		this.modifyRoomQueueStatus = function(data) {
