@@ -132,6 +132,10 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 		});
 	};
 
+	var sellLimitPrintCompleted = function() {
+		$( '#print-orientation' ).remove();
+	};
+
 	// print the sell limit page
 	var printSellLimit = function() {
 
@@ -145,27 +149,22 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 			/*
 			 *	======[ READY TO PRINT ]======
 			 */
-			// this will show the popup with full bill
+			// this will show the popup with full bill			
+
 			$timeout(function() {
-				/*
-				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-				*/
 
-				$window.print();
-
-				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(sellLimitPrintCompleted,
+						function(error) {
+							sellLimitPrintCompleted();
+						}, 'RVCardPlugin', 'printWebView', []);
+				}
+				else
+				{
+					window.print();
+					sellLimitPrintCompleted();
 				}
 			}, 100);
-
-			/*
-			 *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			 */
-
-			// remove the orientation after similar delay
-			$timeout( function() {
-				$( '#print-orientation' ).remove();
-			}, 100 );
 
 		}, 250);
 	};

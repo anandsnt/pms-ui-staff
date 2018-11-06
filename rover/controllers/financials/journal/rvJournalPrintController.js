@@ -251,10 +251,9 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 		$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
 	};
 
-	// add the print orientation after printing
-	var removePrintOrientation = function() {
+	var journalPrintCompleted = function() {
 		$( '#print-orientation' ).remove();
-	};
+	}
 
 	// print the journal page
 	var printJournal = function() {
@@ -272,25 +271,28 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			/*
 			 *	======[ READY TO PRINT ]======
 			 */
-			// this will show the popup with full bill
+
 		    $timeout(function() {
-		    	/*
-		    	 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-		    	 */
 
-		        $window.print();
-
-		        if ( sntapp.cordovaLoaded ) {
-		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		        }
-		    }, 100);
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(journalPrintCompleted,
+						function(error) {
+							journalPrintCompleted();
+						}, 'RVCardPlugin', 'printWebView', []);
+				}
+				else
+				{
+					window.print();
+					journalPrintCompleted();
+				}
+			}, 100);
 
 		    /*
 		     *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
 		     */
 
 			// remove the orientation after similar delay
-			$timeout(removePrintOrientation, 100);
+			
 
     	}, 250);
 	};
