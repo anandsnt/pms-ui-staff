@@ -378,6 +378,19 @@ angular.module('sntRover')
                 fetchRoomListDataAndReservationListData();
                 cancelReservationEditing();
             });
+
+            /*
+             *  Handle event emitted from child controller.
+             *  When clicking Unassigned filter button.
+             *  Reset filter selections and,
+             *  Refresh diary data - rooms and reservations after applying filter.
+             */
+            listeners['RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY'] = $scope.$on('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function() {
+                $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                $scope.diaryData.paginationData.page = 1;
+                fetchRoomListDataAndReservationListData();
+                cancelReservationEditing();
+            });
             
             // destroying listeners
             angular.forEach(listeners, function(listener) {
