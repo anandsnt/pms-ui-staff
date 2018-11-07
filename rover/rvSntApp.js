@@ -49,7 +49,7 @@ var GlobalApp = function() {
         script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
         script_node.setAttribute('type', 'application/javascript');
         document.body.appendChild(script_node);
-        document.addEventListener('deviceready', function(){
+        document.addEventListener('deviceready', function() {
             that.cordovaLoaded = true;
             that.cardReader = new CardOperation();
         }, false);
