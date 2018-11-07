@@ -115,6 +115,7 @@ var GlobalZestStationApp = function() {
         script_node.setAttribute('type', 'application/javascript');
         document.body.appendChild(script_node);
         document.addEventListener('deviceready', function(){
+            that.cordovaLoaded = true;
             that.cardReader = new CardOperation();
         }, false);
     };
