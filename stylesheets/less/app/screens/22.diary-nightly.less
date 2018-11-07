@@ -226,6 +226,13 @@
         &.filters {
             width: 120px;
 
+            .icons {
+                &.icon-filter-room {
+                    width: 25px;
+                    margin-left: -12px;
+                }
+            }
+
             .button:first-child {
                 margin-right: 10px;
             }
@@ -1243,6 +1250,19 @@
             background-color: @purpleStart;
             color: @white;
         }
+
+        /** Unassigned room - available reservation */
+        &.unassigned {
+            justify-content: center;
+            color: white;
+            .box-shadow(~"0px 1px 1px rgba(0,0,0,.3)");
+            .gradient (@logoGradientStart, @logoGradientEnd );
+            .hide();
+
+            .reservation-data {
+                justify-content: center;
+            }
+        }
     }
 
     /* Sidebar ***/
@@ -1550,6 +1570,10 @@
                 background-color: @logoPrimary;
             }
 
+            &.selected {
+                .gradient (@logoGradientStart, @logoGradientEnd);
+            }
+
             &:not(:last-child) {
                 margin-bottom: 10px;
             }
@@ -1777,6 +1801,27 @@
                 .name {
                     line-height: 15px;
                 }
+            }
+        }
+    }
+
+    /* Assigning rooms */
+    &.assigning-rooms {
+        .reservation {
+            &:not(.unassigned) {
+                &:before,
+                .name,
+                .reservation-data,
+                .reservation-icons {
+                    .hide();
+                }
+
+                background: rgba( 0, 0, 0, 0.1 );
+                .box-shadow(none);
+            }
+
+            &.unassigned {
+                .show();
             }
         }
     }
