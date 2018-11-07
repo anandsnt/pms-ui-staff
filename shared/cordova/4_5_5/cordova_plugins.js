@@ -2,7 +2,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
   {
     "id": "cordova-plugin-wkwebview-engine.ios-wkwebview-exec",
-    "file": "plugins/cordova-plugin-wkwebview-engine/src/www/ios/ios-wkwebview-exec.js",
+    "file": "plugins/cordova-plugin-wkwebview-engine/ios-wkwebview-exec.js",
     "pluginId": "cordova-plugin-wkwebview-engine",
     "clobbers": [
       "cordova.exec"
@@ -10,7 +10,7 @@ module.exports = [
   },
   {
     "id": "cordova-plugin-wkwebview-engine.ios-wkwebview",
-    "file": "plugins/cordova-plugin-wkwebview-engine/src/www/ios/ios-wkwebview.js",
+    "file": "plugins/cordova-plugin-wkwebview-engine/ios-wkwebview.js",
     "pluginId": "cordova-plugin-wkwebview-engine",
     "clobbers": [
       "window.WkWebView"
@@ -18,7 +18,7 @@ module.exports = [
   },
   {
     "id": "cordova-plugin-customurlscheme.LaunchMyApp",
-    "file": "plugins/cordova-plugin-customurlscheme/www/ios/LaunchMyApp.js",
+    "file": "plugins/cordova-plugin-customurlscheme/LaunchMyApp.js",
     "pluginId": "cordova-plugin-customurlscheme",
     "clobbers": [
       "window.plugins.launchmyapp"
