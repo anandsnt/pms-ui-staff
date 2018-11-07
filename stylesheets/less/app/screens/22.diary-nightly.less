@@ -139,7 +139,12 @@
 
         &.search {
             position: relative;
-            .calc-width(100, 740);
+            .box-shadow(~'none !important');
+            .calc-width(100, 790);
+
+            &.searching {
+                .calc-width(100,620);
+            }
 
             input {
                 position: relative;
@@ -170,7 +175,40 @@
         }
 
         &.switch {
-            width: 160px;
+            &.switch-available {
+                width: 170px;
+                padding-right: 0;
+
+                .switch-button {
+                    width: 160px;
+                    float: left;
+                }
+
+                .notice {
+                    margin-left: 10px;
+                    line-height: 40px;
+                    height: 40px;
+                    padding-top: 0;
+                    padding-bottom: 0;
+                    margin-bottom: 0;
+                    text-align: center;
+                    text-transform: uppercase;
+                    background: lighten(@yellow, 30);
+                    .pull-left;
+                    .calc-width( 100, 180 );
+                    .nowrap();
+                    .hide();
+                }
+
+                &.show-notice {
+                    .calc-width( 100, 560 );
+                    .notice { .show(); }
+                }
+            }
+
+            &.switch-days {
+                width: 140px;
+            }
 
             .switch-button {
                 background: rgba(0,0,0,.1);
@@ -284,6 +322,10 @@
 
             .button:first-child {
                 margin-right: 10px;
+            }
+
+            &.show-one {
+                width: 60px;
             }
         }
 
@@ -441,7 +483,18 @@
     @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
         .entry {
             &.search {
-                .calc-width(100, 560);
+                .calc-width(100, 670);
+                &.searching {
+                    .calc-width(100, 670);
+                }
+            }
+
+            &.switch {
+                &.switch-available {
+                    &.show-notice {
+                        .calc-width(100, 500);
+                    }
+                }
             }
 
             &.filters{
@@ -1871,6 +1924,49 @@
 
             &.unassigned {
                 .show();
+            }
+        }
+    }
+
+    /* Showing available slots to book */
+    &.showing-available {
+        .diary-nightly-unassigned {.hide()}
+        .reservation {
+            &:not(.unassigned) {
+                &:before,
+                .name,
+                .reservation-data,
+                .reservation-icons {
+                    .hide();
+                }
+
+                background: rgba( 0, 0, 0, 0.1 );
+                .box-shadow(none);
+            }
+
+            &.unassigned {
+                .gradient( @greenStart, @greenEnd );
+                .show();
+
+                background-position: 92% 55%, 0 0;
+                background-repeat: no-repeat, repeat;
+
+                &:hover,
+                &:active { 
+                    .gradient(@greenEnd, @greenStart);
+                }
+                
+                .name {
+                    background-image: @arrowWhiteRight;    
+                    background-size: 10px 10px, 100%, 100%;
+                    background-repeat: no-repeat, repeat;
+                    background-position: right center;
+                    padding-right: 15px;
+ 
+                    @media @highdpi { 
+                        background-image: @arrowWhiteRight2x;
+                    }
+                }
             }
         }
     }
