@@ -119,6 +119,10 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         }
     };
 
+    $scope.toggleHourlyAvailability = function(value) {
+        $scope.reservationSettingsData.hourly_availability_calculation = value;
+    };
+
     /*
      * Suite rooms toggle button actions
      */

@@ -212,11 +212,10 @@
 					
 	                <div class="entry" >
 	                	<label translate>Hourly Availability Calculation</label>
-	                	<div class="select select-col col1-3" >
-							<select ng-model="reservationSettingsData.hourly_availability_calculation" class="styled">
-		                        	<option ng-selected="item.value==reservationSettingsData.hourly_availability_calculation" ng-repeat="item in reservationSettingsData.hourly_availability_calculation_options" value="{{item.value}}">{{item.value}}</option>
-		                    </select>
-	                    </div>
+	                	<div class="switch" ng-class="{'disabled' : !reservationSettingsData.hourly_rates_for_day_use_enabled}">
+		                    <span ng-click="toggleHourlyAvailability(true)" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'FULL'}" class='active'>FULL</span>
+		                    <span ng-click="toggleHourlyAvailability(false)" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'LIMITED'}">LIMITED</span>
+		                </div>
 	                </div>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
