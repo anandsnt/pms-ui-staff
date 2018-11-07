@@ -625,5 +625,24 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        /**
+         * Fetch CC/TA card statistics details
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
+        this.fetchCompanyTravelAgentMonthlyReservations = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/' + params.accountId + '/statistics?view=RESERVATIONS';
+
+            delete params.accountId;
+            
+            rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);
