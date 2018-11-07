@@ -45,7 +45,8 @@ var GlobalApp = function() {
 
     this.loadCordovaWithVersion = function(version) {
         var script_node = document.createElement('script');
-        script_node.setAttribute('src', '/assets/shared/cordova/'+version+'/cordova.js');
+
+        script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
         script_node.setAttribute('type', 'application/javascript');
         document.body.appendChild(script_node);
         document.addEventListener('deviceready', function(){
