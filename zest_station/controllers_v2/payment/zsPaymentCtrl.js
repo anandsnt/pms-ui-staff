@@ -117,13 +117,14 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
         };
 
+        var cbaResponse,
+            cbaPaymentAttempt = 0;
+
         /**
          * Method to initate listeners that handle CBA payment scenarios
          * @returns {undefined} undefined
          */
         $scope.initiateCBAlisteners = function () {
-            var cbaResponse,
-                cbaPaymentAttempt = 0;
 
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
@@ -178,6 +179,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                             $log.warn(errorMessage);
                             showErrorMessage(errorMessage);
                             paymentFailureActions();
+                            cbaPaymentAttempt = 0;
                         }
                     }
                 );
