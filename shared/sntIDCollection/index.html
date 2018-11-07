@@ -1,0 +1,315 @@
+﻿<!-- THIS FILE IS JUST FOR TESTING AND IS TO BE EXCLUDED FROM THE ASSET COMPILATION. OPEN THIS FILE IN BROWSER -->
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>SNT test client</title>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+      <style>
+         .contents{
+         display: flex;
+         justify-content: center;
+         }
+         .jumbotron p {
+         font-size: 14px;
+         }
+         .form-group .btn {
+            width: 100%;
+         }
+         .invalid-id {
+            color: red;
+         }
+      </style>
+   </head>
+   <body ng-app="sntIDCollection" ng-controller="sntIDCollectionBaseCtrl">
+      <nav class="navbar" style="background: #EFEFEF">
+         <div class="container" style="text-align:center; padding: 40px 0px;">
+            <img src="logo.png" class="rounded float-left" alt="..." style="max-width: 250px;">
+         </div>
+      </nav>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'VALIDATE_SUBSCRIPTION'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">VALIDATE SUBSCRIPTION</p>
+                  <button type="button" class="btn btn-primary" ng-click="validateSubsription()">Validate</button>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'VALID_ID_CREDENTIALS'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">VALID SUBSCRIPTION</p>
+                  <button type="button" class="btn btn-primary" ng-click="startScanning()">Start ID/Passport scan</button>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'INVALID_ID_CREDENTIALS'">
+         <div class="row content">
+             
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">INVALID SUBSCRIPTION</p>
+               </div>
+            </div>
+             
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE'">
+         <div class="row content">
+             
+            <div class="col-md-12 jumbotron">
+               <p class="title">Upload a clear picture of the front of your ID card.</p>
+               <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none;">
+               <br/><br/>
+               <div class="jumbotron text-center">
+                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage()">Capture ID/Passport</button>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">ANALYSING FRONT IMAGE... PLEASE WAIT</p>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE_FAILED'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">UPLOAD FRONT IMAGE FAILED</p>
+                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage()">RETRY</button>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">CONFIRM FRONT IMAGE</p>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="confirmFrontImage()">PROCEED</button>
+                  </div>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE'">
+         <div class="row content">
+            
+            <div class="col-md-12 jumbotron">
+               <p class="title">Upload a clear picture of the back of your ID card.</p>
+               <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none;">
+               <br/><br/>
+               <div class="jumbotron text-center">
+                  <button type="button" class="btn btn-primary" ng-click="captureBackImage()">Capture ID/Passport</button>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'ANALYSING_BACK_IMAGE'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">ANALYSING BACK IMAGE... PLEASE WAIT</p>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE_FAILED'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">UPLOAD BACK IMAGE FAILED</p>
+                  <button type="button" class="btn btn-primary" ng-click="captureBackImage()">RETRY</button>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">PROCEED WITH IMAGES</p>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="confirmImages()">PROCEED</button>
+                  </div>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'ANALYSING_ID_DATA'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">ANALYSING DATA... PLEASE WAIT</p>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">ANALYSING FAILED</p>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+      </div>
+      <div class="container-fluid" ng-show="screenData.scanMode == 'FINAL_ID_RESULTS'">
+         <div class="row content">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+               <h4>Results</h4>
+               <div class="panel panel-default" style="padding: 20px;">
+                  <form>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">First name</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.first_name }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Given name</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.given_name }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Surname</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.surname }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Full name</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.full_name }}
+                        </div>
+                     </div>
+                     <div class="form-group row" ng-class="{'invalid-id': screenData.idDetails.iDAuthenticationStatus === 'Failed' || screenData.idDetails.iDAuthenticationStatus === 'Skipped' || screenData.idDetails.iDAuthenticationStatus === 'Caution'}">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Document Authentication</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.iDAuthenticationStatus }}
+                        </div>
+                     </div>
+                     <div class="form-group row" ng-class="{'invalid-id': screenData.idDetails.expirationStatus === 'Expired'}">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">ID Expiration Status</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.expirationStatus }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Birth Date</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.birth_date }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Nationality Code</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.nationality_code }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Doument class</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.document_class_name }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Document Number</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.document_number }}
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">ID expiry Date</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.expiration_date }}
+                        </div>
+                     </div>
+                  </form>
+               </div>
+               <div class="form-group text-center">
+                  <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
+               </div>
+            </div>
+            <div class="col-md-4"></div>
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE' || screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+         <div class="row content">
+            
+            <div class="col-md-12">
+               <div class="jumbotron text-center" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE' || screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+                  <p class="title">UPDATED FRONT IMAGE</p>
+                  <img id="front-side-image" style="max-width: 300px;"/>
+               </div>
+               <div class="jumbotron text-center" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+                  <p class="title">UPDATED BACK IMAGE</p>
+                  <img id="back-side-image"style="max-width: 300px;"/>
+               </div>
+            </div>
+
+         </div>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+      <script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+      <script src="https://momentjs.com/downloads/moment.js"></script>
+
+      <script src="sntIDCollectionApp.js"></script>
+      <script src="services/sntIDCollectionUtilsSrv.js"></script>
+      <script src="constants/sntIDCollectionConstants.js"></script>
+      <script src="constants/sntIDCollectionScreenModeConstants.js"></script>
+      <script src="services/sntIDCollectionSrv.js"></script>
+      <script src="controllers/sntIDCollectionBaseCtrl.js"></script>
+   </body>
+</html>
