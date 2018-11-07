@@ -125,7 +125,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
          * @returns {undefined} undefined
          */
         $scope.initiateCBAlisteners = function () {
-
+            cbaPaymentAttempt = 0;
+            
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
                 showErrorMessage(errorMessage);
