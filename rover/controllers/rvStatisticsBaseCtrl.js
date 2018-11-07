@@ -30,7 +30,7 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
         var styleClass = {};                    
 
         if (monthlyData.isOpen) {
-            var margin = monthlyData.reservations.length * 70 + 30;
+            var margin = monthlyData.reservations_count * 70 + 30;
 
             styleClass['margin-bottom'] = margin + 'px';
         }

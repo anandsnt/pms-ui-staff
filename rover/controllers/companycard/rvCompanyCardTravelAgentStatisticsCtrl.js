@@ -139,14 +139,14 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
         };
 
         $scope.shouldShowReservations = function(monthlyData) {
-            return (monthlyData.stay_count !== 0 || monthlyData.no_show_count !== 0 || monthlyData.cancellation_count !== 0);
+            return (monthlyData.stay_count !== 0 || monthlyData.no_show_count !== 0 || monthlyData.cancellation_count !== 0 || monthlyData.nights_count !== 0 );
         };
 
         // Toggle the reservation list view displayed for a month
         $scope.showMonthlyReservations = function( monthlyData ) {
-            // if (_.isEmpty(monthlyData.reservations)) {
-            //     return false;
-            // }
+            if (!$scope.shouldShowReservations(monthlyData)) {
+                return false;
+            }
             loadReservations(monthlyData);
             //monthlyData.isOpen = !monthlyData.isOpen;
             // $timeout(function() {
