@@ -112,16 +112,47 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             }
         };
 
+        var loadReservations = function(monthlyData) {
+            var onMonthlyReservationsFetchSuccess = function(data) {
+                $scope.statistics.reservations = data.reservations;
+                monthlyData.isOpen = !monthlyData.isOpen;                
+                $timeout(function() {
+                    reloadScroller(true);
+                    
+                }, 1000);
+                isDetailedViewScrollReady();
+            },
+            onMonthlyReservationsFetchFailure = function() {
+                $scope.statistics.reservations = [];
+            },
+            requestConfig = {
+                params: {
+                    year: $scope.filterData.selectedYear,
+                    month: monthlyData.month,
+                    accountId: getAccountId()
+                },
+                onSuccess: onMonthlyReservationsFetchSuccess,
+                onFailure: onMonthlyReservationsFetchFailure
+            };
+
+            $scope.callAPI(RVCompanyCardSrv.fetchCompanyTravelAgentMonthlyReservations, requestConfig);
+        };
+
+        $scope.shouldShowReservations = function(monthlyData) {
+            return (monthlyData.stay_count !== 0 || monthlyData.no_show_count !== 0 || monthlyData.cancellation_count !== 0);
+        };
+
         // Toggle the reservation list view displayed for a month
         $scope.showMonthlyReservations = function( monthlyData ) {
-            if (_.isEmpty(monthlyData.reservations)) {
-                return false;
-            }
-            monthlyData.isOpen = !monthlyData.isOpen;
-            $timeout(function() {
-                reloadScroller();
+            // if (_.isEmpty(monthlyData.reservations)) {
+            //     return false;
+            // }
+            loadReservations(monthlyData);
+            //monthlyData.isOpen = !monthlyData.isOpen;
+            // $timeout(function() {
+            //     reloadScroller();
                 
-            }, 200);
+            // }, 200);
         };
 
         // Processes the year change event
@@ -169,7 +200,8 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
         var setUpData = function() {                
                 $scope.statistics = {
                     summary: {},
-                    details: {}
+                    details: {},
+                    reservations: []
                 };
                 $scope.accountId = getAccountId();
                 $scope.currentYear = $scope.getCurrentYear();
