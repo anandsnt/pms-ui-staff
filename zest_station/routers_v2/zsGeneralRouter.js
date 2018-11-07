@@ -108,5 +108,11 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
             controller: 'zsManualKeyPickUpCtrl'
         });
 
+        $stateProvider.state('zest_station.sntIDScan', {
+        	url: '/sntIDScan/:params',
+            templateUrl: '/assets/partials_v2/zsSntAcuantIDScan.html',
+            controller: 'zsSntAcuantIDScanCtrl'
+        });
+
 	}
 ]);

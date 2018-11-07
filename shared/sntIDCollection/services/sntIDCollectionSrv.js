@@ -4,16 +4,27 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
 
-	var apiRequestHeader = {
-		'Authorization': 'Basic ' + btoa(acuantCredentials.username + ':' + acuantCredentials.password),
-		'Accept': 'application/json'
-	};
-	var imageApiRequestHeader = {
-		'Authorization': 'Basic ' + btoa(acuantCredentials.username + ':' + acuantCredentials.password),
-		'Accept': 'application/json',
-		'Content-Type': 'image/*'
-	};
 
+	function createCORSRequest(method, url) {
+		var xhr = new XMLHttpRequest();
+		if ("withCredentials" in xhr) {
+			xhr.open(method, url, true);
+		} else if (typeof XDomainRequest != "undefined") {
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+		} else {
+			xhr = null;
+		}
+		return xhr;
+	}
+
+	var createRequestObject = function(requestType, url) {
+		var requestGetDocument = createCORSRequest(requestType, url);
+
+		requestGetDocument.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
+		requestGetDocument.setRequestHeader("Accept", "application/json");
+		return requestGetDocument;
+	};
 	this.isValidSubsription = false;
 	this.instanceID;
 
@@ -44,17 +55,15 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 					deferred.reject(errorMessage);
 				}
 			};
+			var url = acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Subscriptions';
+			var requestGetDocument = createRequestObject('GET', url);
+			requestGetDocument.send();
+			requestGetDocument.onload = function() {
+				var documentObj = JSON.parse(requestGetDocument.responseText);
 
-			$http({
-				method: 'GET',
-				url: acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Subscriptions',
-				data: {},
-				headers: apiRequestHeader
-			}).then(function(response) {
-				validateSubscription(response.data);
-			}, function(error) {
-				deferred.reject(error);
-			});
+				validateSubscription(documentObj);
+			}
+
 		} else {
 			deferred.reject(errorMessage);
 		}
@@ -63,40 +72,38 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 
 	this.getDocInstance = function() {
 		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + "/AssureIDService/Document/Instance";
+		var requestDocInstance = createCORSRequest("POST", url);
 
-		$http({
-			method: 'POST',
-			url: acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/Instance',
-			data: {
-				'AuthenticationSensitivity': 0,
-				'ClassificationMode': 0,
-				'Device': {
-					'HasContactlessChipReader': false,
-					'HasMagneticStripeReader': false,
-					'SerialNumber': 'xxx',
-					'Type': {
-						'Manufacturer': 'xxx',
-						'Model': 'xxx',
-						'SensorType': 3
-					}
-				},
-				'ImageCroppingExpectedSize': 0,
-				'ImageCroppingMode': 1,
-				'ManualDocumentType': null,
-				'ProcessMode': 0,
-				'SubscriptionId': acuantCredentials.subscriptionID
+		requestDocInstance.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
+		requestDocInstance.setRequestHeader('Content-Type', 'application/json');
+		requestDocInstance.setRequestHeader("Accept", "application/json");
+
+		requestDocInstance.send(JSON.stringify({
+			'AuthenticationSensitivity': 0,
+			'ClassificationMode': 0,
+			'Device': {
+				'HasContactlessChipReader': false,
+				'HasMagneticStripeReader': false,
+				'SerialNumber': 'xxx',
+				'Type': {
+					'Manufacturer': 'xxx',
+					'Model': 'xxx',
+					'SensorType': 3
+				}
 			},
-			headers: {
-				'Authorization': 'Basic ' + btoa(acuantCredentials.username + ':' + acuantCredentials.password),
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			}
-		}).then(function(response) {
-			that.instanceID = response.data;
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
+			'ImageCroppingExpectedSize': 0,
+			'ImageCroppingMode': 1,
+			'ManualDocumentType': null,
+			'ProcessMode': 0,
+			'SubscriptionId': acuantCredentials.subscriptionID
+		}));
+
+		requestDocInstance.onload = function() {
+			var instanceID = JSON.parse(requestDocInstance.responseText);
+			that.instanceID = instanceID;
+			deferred.resolve(instanceID);
+		}
 		return deferred.promise;
 	};
 
@@ -104,81 +111,95 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 
 		var deferred = $q.defer();
 		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image?side=0&light=0&metrics=true';
-		
-		$http({
-			method: 'POST',
-			url: url,
-			data: unmodifiedFrontImage,
-			headers: imageApiRequestHeader
-		}).then(function(response) {
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
+		var requestDocInstance = createCORSRequest("POST", url);
+
+		requestDocInstance.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
+		requestDocInstance.setRequestHeader('Content-Type', 'image/*');
+		requestDocInstance.setRequestHeader("Accept", "application/json");
+
+		requestDocInstance.send(unmodifiedFrontImage);
+
+		requestDocInstance.onload = function(response) {
+			if (requestDocInstance.status === 201) {
+				deferred.resolve({});
+			} else {
+				deferred.reject({});
+			}
+
+		}
+		requestDocInstance.onerror = function() {
+			deferred.reject({});
+		}
 		return deferred.promise;
 	};
 
 	this.postBackImage = function(imageData) {
+
 		var deferred = $q.defer();
-		
-		$http({
-			method: 'POST',
-			url: acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID + '/Image?side=1&light=0',
-			data: imageData,
-			headers: imageApiRequestHeader
-		}).then(function(response) {
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
+		var url = acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID + '/Image?side=1&light=0';
+		var requestDocInstance = createCORSRequest("POST", url);
+
+		requestDocInstance.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
+		requestDocInstance.setRequestHeader('Content-Type', 'image/*');
+		requestDocInstance.setRequestHeader("Accept", "application/json");
+
+		requestDocInstance.send(imageData);
+
+		requestDocInstance.onload = function(response) {
+			if (requestDocInstance.status === 201) {
+				deferred.resolve({});
+			} else {
+				deferred.reject({});
+			}
+		}
+		requestDocInstance.onerror = function() {
+			deferred.reject({});
+		}
 		return deferred.promise;
 	};
 
 	this.getImage = function(side) {
 		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image?side=' + side + '&light=0';
+		var requestGetDocument = createRequestObject('GET', url);
+		requestGetDocument.responseType = 'arraybuffer';
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(requestGetDocument.response);
 
-		$http({
-			method: 'GET',
-			url: acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image?side=' + side + '&light=0',
-			headers: apiRequestHeader,
-			responseType: 'arraybuffer'
-		}).then(function(response) {
-			var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(response.data);
+			deferred.resolve(requestGetDocument.response);
+		}
 
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
 		return deferred.promise;
 	};
 
 	this.getImageQualityMetric = function(side) {
-		var deferred = $q.defer();
 
-		$http({
-			method: 'GET',
-			url: acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image/Metrics?side=' + side + '&light=0',
-			headers: apiRequestHeader
-		}).then(function(response) {
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
+		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image/Metrics?side=' + side + '&light=0';
+		var requestGetDocument = createRequestObject('GET', url);
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			var documentObj = JSON.parse(requestGetDocument.responseText);
+
+			deferred.resolve(documentObj);
+		}
+
 		return deferred.promise;
 	};
 
 	this.getClassification = function() {
-		var deferred = $q.defer();
 
-		$http({
-			method: 'GET',
-			url: acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Classification',
-			headers: apiRequestHeader
-		}).then(function(response) {
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
+		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Classification';
+		var requestGetDocument = createRequestObject('GET', url);
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			var documentObj = JSON.parse(requestGetDocument.responseText);
+
+			deferred.resolve(documentObj);
+		}
+
 		return deferred.promise;
 	};
 
@@ -216,37 +237,31 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 	};
 
 	this.getResults = function() {
-
 		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID;
+		var requestGetDocument = createRequestObject('GET', url);
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			var documentObj = JSON.parse(requestGetDocument.responseText);
+			documentObj.Fields = documentObj.Fields ? sntIDCollectionUtilsSrv.formatData(documentObj.Fields) : {};
+			deferred.resolve(documentObj);
+		}
 
-		$http({
-			method: 'GET',
-			url: acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID,
-			data: {},
-			headers: apiRequestHeader
-		}).then(function(response) {
-			response.data.Fields = response.data.Fields ? sntIDCollectionUtilsSrv.formatData(response.data.Fields) : {};
-
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
 		return deferred.promise;
 	};
 
 	this.deleteDocInstance = function() {
 		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID;
+		var requestGetDocument = createCORSRequest("DELETE", url);
 
-		$http({
-			method: 'DELETE',
-			url: acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID,
-			data: {},
-			headers: apiRequestHeader
-		}).then(function(response) {
-			deferred.resolve(response.data);
-		}, function(error) {
-			deferred.reject(error);
-		});
+		requestGetDocument.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
+		requestGetDocument.setRequestHeader("Accept", "application/json");
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			deferred.resolve({});
+		}
+
 		return deferred.promise;
 	};
 
@@ -264,7 +279,8 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 	// 			'Authorization': 'LicenseKey ' + acuantCredentials.LicenseKey,
 	// 			'Accept': 'application/json',
 	// 			'Content-Type': 'image/jpg'
-	// 		}
+	// 		},
+	// 		transformRequest: transformRequest
 	// 	}).then(function(response) {
 	// 		deferred.resolve(response.data);
 	// 	}, function(error) {

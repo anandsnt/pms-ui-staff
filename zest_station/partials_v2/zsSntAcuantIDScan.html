@@ -1,37 +1,5 @@
-﻿<!-- THIS FILE IS JUST FOR TESTING AND IS TO BE EXCLUDED FROM THE ASSET COMPILATION. OPEN THIS FILE IN BROWSER -->
+ <section id="main" class="centered" role="main">
 
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <title>SNT test client</title>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-      <style>
-         .contents{
-         display: flex;
-         justify-content: center;
-         }
-         .jumbotron p {
-         font-size: 14px;
-         }
-         .form-group .btn {
-            width: 100%;
-         }
-         .invalid-id {
-            color: red;
-         }
-      </style>
-   </head>
-   <body ng-app="sntIDCollection" ng-controller="sntIDCollectionBaseCtrl">
-      <nav class="navbar" style="background: #EFEFEF">
-         <div class="container" style="text-align:center; padding: 40px 0px;">
-            <img src="logo.png" class="rounded float-left" alt="..." style="max-width: 250px;">
-         </div>
-      </nav>
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'VALIDATE_SUBSCRIPTION'">
          <div class="row content">
             
@@ -75,7 +43,7 @@
                <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
-                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">Capture ID/Passport</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)">Capture ID/Passport</button>
                </div>
             </div>
             
@@ -98,7 +66,7 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD FRONT IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)">RETRY</button>
                </div>
             </div>
             
@@ -129,7 +97,7 @@
                <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
-                  <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">Capture ID/Passport</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureBackImage()">Capture ID/Passport</button>
                </div>
             </div>
             
@@ -152,7 +120,7 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD BACK IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureBackImage()">RETRY</button>
                </div>
             </div>
             
@@ -298,18 +266,4 @@
 
          </div>
       </div>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-      <script
-        src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
-      <script src="https://momentjs.com/downloads/moment.js"></script>
-
-      <script src="sntIDCollectionApp.js"></script>
-      <script src="services/sntIDCollectionUtilsSrv.js"></script>
-      <script src="constants/sntIDCollectionConstants.js"></script>
-      <script src="constants/sntIDCollectionScreenModeConstants.js"></script>
-      <script src="services/sntIDCollectionSrv.js"></script>
-      <script src="controllers/sntIDCollectionBaseCtrl.js"></script>
-   </body>
-</html>
+</section>

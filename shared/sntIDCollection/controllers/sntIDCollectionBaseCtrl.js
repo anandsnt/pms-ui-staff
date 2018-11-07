@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $log) {
+angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log) {
 
 	var resetScreenData = function() {
 		$scope.screenData = {
@@ -137,15 +137,24 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.scanMode = screenModes.analysing_back_image;
 	};
 
-	$scope.captureFrontImage = function() {
-		$('#'+ domIDMappings.front_side_upload).click();
+	$scope.captureFrontImage = function($event) {
+		$event.stopPropagation(); // <-- this is important
+
+		$timeout(function() {
+			angular.element(document.querySelector('#' + domIDMappings.front_side_upload)).click();
+		}, 0);
+
 	};
 
-	$scope.captureBackImage = function() {
-		$('#'+ domIDMappings.back_side_upload).click();
+	$scope.captureBackImage = function($event) {
+		$event.stopPropagation(); // <-- this is important
+
+		$timeout(function() {
+			angular.element(document.querySelector('#' + domIDMappings.back_side_upload)).click();
+		}, 0);
 	};
 
-	$scope.startScanning = function() {
+	$scope.startScanning = function($event) {
 		resetScreenData();
 		$('#'+ domIDMappings.front_image_preview).attr('src', '');
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
