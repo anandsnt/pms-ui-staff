@@ -1,5 +1,22 @@
 #reservation-card {
 
+    &.missing-guest-id {
+        .reservation-list .reservation,
+        .reservation-tabs-nav {
+            &:after {
+                position: absolute;
+                content: '';
+                display: block;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                background: rgba( 0, 0, 0, 0.5 );
+                z-index: 990;
+            }
+        }
+    }
+
     /* Left side tabs navigation ***/
     .reservation-tabs-nav {
         position: absolute;
@@ -433,6 +450,11 @@
                         padding-left: 40px;
                         .nowrap();
 
+                        &.red-text {
+                            width: 170px;
+                            text-align: left;
+                        }
+
                         .icon-identity-card {
                             background-position: 10px -10831px;
                         }
@@ -441,8 +463,13 @@
                             background-position: 10px -12211px;
                         }
 
+                        .icon-identity-card-red {
+                            background-position: 10px -12571px;
+                        }
+
                         .icon-identity-card,
-                        .icon-identity-card-grey {
+                        .icon-identity-card-grey,
+                        .icon-identity-card-red {
                             left: 10px;
                             top: 0;
                             .square(40px);
@@ -529,6 +556,22 @@
                 font-size: 16px;
                 .size(40px, 160px);
                 .pull-left;
+            }
+        }
+
+        /* Bottom Actions ***/
+        .bottom-actions {
+            text-align: right;
+            .button {
+                line-height: 50px;
+                height: 50px;
+                font-size: 18px;
+                padding: 0 20px;
+
+                &.grey {
+                    .gradient( @greyStart, @greyEnd );
+                    pointer-events: none;
+                }
             }
         }
     }
