@@ -206,7 +206,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 			return $ocLazyLoad.load({
 				insertBefore: '.main-container',
 				serie: true,
-				files: cssMappingList[key]
+				files: cssMappingList[key] || cssMappingList['guestweb_snt']
 			}).then(function() {
 				if (typeof modules_to_inject !== "undefined") {
 					$ocLazyLoad.inject(modules_to_inject);

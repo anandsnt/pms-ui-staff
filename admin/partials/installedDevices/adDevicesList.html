@@ -34,19 +34,29 @@
             <!--ng-table component -->
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
                 <tbody>
-                    <tr ng-repeat="device in $data" ng-click="deviceSelected(device)" class="device-list">
-                        <td data-title="'Name'" sortable="'device_name'" header-class="width-30" ng-hide="currentClickedElement == $index">
+                    <tr ng-repeat="device in $data" class="device-list">
+                        <td data-title="'Name'" sortable="'device_name'" header-class="width-30" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
                             <strong> {{device.device_name}}</strong>
                         </td>
-                        <td data-title="'Device ID'" sortable="'unique_id'" header-class="width-30" ng-hide="currentClickedElement == $index">
+                        <td data-title="'Device ID'" sortable="'unique_id'" header-class="width-30" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
                             <strong> {{device.unique_id}}</strong>
                         </td>
-                        <td data-title="'Version'" sortable="'app_version'" header-class="width-20" ng-hide="currentClickedElement == $index">
+                        <td data-title="'Version'" sortable="'app_version'" header-class="width-20" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
                             <strong>{{device.app_version}}</strong>
                         </td>
-                        <td data-title="'Upgrade Status'" sortable="'build_status'" header-class="width-20" ng-hide="currentClickedElement == $index">
+                        <td data-title="'Upgrade Status'" sortable="'build_status'" header-class="width-20" ng-hide="currentClickedElement == $index" ng-click="deviceSelected(device)">
                             <strong ng-class="{'red-text': device.build_status == 'FAILED', 'green-text': device.build_status == 'SUCCESS'}">{{device.build_status}}</strong>
                         </td>
+                        <td data-title="'Exclude Upgrade'" sortable="'is_excluded_from_auto_upgrade'" header-class="width-20" ng-hide="currentClickedElement == $index">
+                            <div class="entry full-width">
+                                <div class="switch-button single" ng-class="{ on : device.is_excluded_from_auto_upgrade }" ng-click="toggleManualUpgrade(device)">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+
+                            </div>
+                        </td>
+
                 </tbody>
             </table>
         </section>

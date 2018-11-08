@@ -21,7 +21,7 @@
 				<input type="text" ng-model="data.city" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-class="{'with-button': isAdminSnt}">
 				<label for="hotel-country"> Country <strong>*</strong> </label>
 				<div class="select">
 					<select convert-to-number ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
@@ -30,6 +30,7 @@
 
 					</select>
 				</div>
+				<button type="button" ng-show="isAdminSnt && isEdit" class="button blue" ng-click="clickedLegalSettings()">Legal Settings</button>
 			</div>
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
@@ -283,6 +284,15 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
+				<div class="entry">
+					<label for="hotel-time-zone"> Property Currency Format</label>
+					<div class="select">
+						<select convert-to-number ng-model="data.hotel_currency_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+							<option value=""> Property Currency Format </option>
+							<option ng-repeat="formats in data.currency_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_currency_format">{{formats.value}}</option>
+						</select>
+					</div>
+				</div>
 				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
 					<label>Invoice Number Sequence</label>
 					<div class="select">
@@ -440,6 +450,8 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
+
+                <ad-toggle-button is-checked="data.use_ows_chip_and_pin_flag" label="{{'OWS_CHIP_N_PIN' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
 				<!-- <div class="entry">
 					<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>

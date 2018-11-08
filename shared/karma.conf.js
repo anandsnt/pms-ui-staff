@@ -10,7 +10,15 @@ module.exports = function(config) {
             './lib/js/angular.min.js',
             './lib/js/angular-ui-router.min.js',
             './lib/js/angular-mocks.js',
-            './directives/activityIndicator/**/*.js'
-        ]
+            './directives/activityIndicator/**/*.js',
+            './sntCurrency/*.js'
+        ],
+        browsers: ['ChromeHeadlessNoSandbox'],
+        customLaunchers: {
+            ChromeHeadlessNoSandbox: {
+                base: 'ChromeHeadless',
+                flags: ['--no-sandbox']
+            }
+        }
     }));
 };

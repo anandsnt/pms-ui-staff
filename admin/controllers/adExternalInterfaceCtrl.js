@@ -231,7 +231,7 @@ admin.controller('adExternalInterfaceCtrl',
     $scope.fetchSetupSuccessCallback = function (data) {
         if (data.data && data.data.product_cross_customer) {
             $scope.interface = data.data.product_cross_customer.interface_id;
-            $scope.fetchManagerDetails();
+            $scope.fetchMinimalRateDetails();
         }
         
       if ($scope.interfaceName === 'Givex') {
@@ -252,6 +252,10 @@ admin.controller('adExternalInterfaceCtrl',
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchRoomTypes, {}, fetchRoomTypesSuccess);
+        // default source code is available only for Siteminder now.
+        if ($scope.interfaceName === 'Siteminder') {
+          $scope.invokeApi(adExternalInterfaceCommonSrv.fetchSourceCodes, {}, fetchSourceCodeSuccess);
+        }
 
         $scope.setRefreshTime();
       }
@@ -307,6 +311,11 @@ admin.controller('adExternalInterfaceCtrl',
         }
     };
 
+    $scope.sourceCodes = [];
+    var fetchSourceCodeSuccess = function(data) {
+        $scope.sourceCodes = data.sources;
+    };
+
     if ($scope.interfaceName !== 'Givex') {
         // Set the selected payment and origin
         var setPayment = function() {
@@ -334,22 +343,24 @@ admin.controller('adExternalInterfaceCtrl',
     }
     $scope.populateRateSelection = function() {
         $scope.rateSelection = [];
-        var rates = $scope.channel_manager_rates;
-        var rate;
+        var rates = $scope.minimalRates,
+            rate;
 
         for (var i in rates) {
-            rate = rates[i].rate;
+            rate = {
+              id: rates[i].id,
+              rate_name: rates[i].name
+            };
             if (rate) {
                 $scope.rateSelection.push(rate);
             }
         }
     };
-    $scope.rateSelection = [];
 
-    $scope.fetchManagerDetails = function() {
+    $scope.fetchMinimalRateDetails = function() {
         var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
-            $scope.channel_manager_rates = data.data.channel_manager_rates;
+            $scope.minimalRates = data.results;
             $scope.populateRateSelection();
         };
         var fetchFailure = function(data) {
@@ -357,7 +368,7 @@ admin.controller('adExternalInterfaceCtrl',
             $scope.$emit('hideLoader');
         };
 
-        $scope.invokeApi(ADChannelMgrSrv.fetchManagerDetails, {'id': $scope.interface}, fetchSuccess, fetchFailure);
+        $scope.invokeApi(ADChannelMgrSrv.fetchMinimalRateDetails, {'exclude_expired': true}, fetchSuccess, fetchFailure);
     };
 
     $scope.init();

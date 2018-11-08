@@ -96,6 +96,8 @@
 "GUESWEB_DEMO_MODE_ON" :"Zest web demo mode",
 "COUNTRY_SORT" : "Country sort",
 "ENFORCE_COUNTRY_SORT" : "Enforce country sort order",
+"FREE_FORM_COUNTRY_SELECT": "Free form country Select",
+"COUNRTY_FILTER_INSTRUCTIONS": "By default, the country list will be in alphabetical order. To narrow results further, use the filters below.",
 "ADDRESS_COUNTRY_LIST" : "Address country list",
 "VALIDATE_FIRST_NAME" : "Validate First Name",
 "SINGLE" : "SINGLE",
@@ -160,7 +162,7 @@
 "ID_TYPES_PASSPORT":"Passport",
 
 
-"MANUAL_ID_VERIFFICATION": "Manual ID verification",
+"MANUAL_ID_VERIFFICATION": "One-time Manual ID verification",
 "ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID": "To approve guest ID's, each staff member needs an staff ID. After saving this setting, please go to user setup to add",
 "GO_TO_USERS": "Go to User setup",
 

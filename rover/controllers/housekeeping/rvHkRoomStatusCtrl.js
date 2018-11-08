@@ -144,6 +144,24 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.currentView = view;
 			RVHkRoomStatusSrv.defaultViewState = view;
 		};
+		var scrollCount = 0;
+
+		var delayedExec = function(after, fn) {
+
+			var timer;
+			
+			return function() {
+				scrollCount += 1;
+				timer && clearTimeout(timer);
+				timer = setTimeout(fn, after);
+			};
+		};
+
+		var scrollStopper = delayedExec(500, function() {
+		    scrollCount = 0;
+		});
+
+		angular.element(document.querySelector('#rooms')).bind('scroll', scrollStopper);
 
 		$scope.toggleView = function() {
 			if ($scope.currentView === 'ROOMS') {
@@ -210,7 +228,14 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		// store the current room list scroll position
 		$scope.roomListItemClicked = function(room) {
-			localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+			$timeout(function() {
+				if (scrollCount === 0) {
+					localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+					$state.go("rover.housekeeping.roomDetails", {
+						id: room.id
+					});
+				}
+			}, 400);
 		};
 
 		$scope.showFilters = function() {
@@ -399,8 +424,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 		});
 
-		$scope.$on( '$destroy', allRendered );
-
+		$scope.$on( '$destroy', allRendered );		 
 
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
@@ -425,6 +449,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					// remove keyMirror
 					$scope.multiRoomAction.indexes[_key] = undefined;
 					delete $scope.multiRoomAction.indexes[_key];
+					$scope.multiRoomAction.allChosen = false;
 				}
 
 				if ( !$scope.multiRoomAction.rooms.length ) {

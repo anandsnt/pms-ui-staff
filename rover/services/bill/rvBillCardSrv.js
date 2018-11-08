@@ -262,11 +262,11 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		return deferred.promise;
 	};
 
-	this.createAnotherBill = function(data) {
+	this.createAnotherBill = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/bills/create_bill';
 
-			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+			BaseWebSrvV2.postJSON(url, params).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
 			    deferred.reject(data);

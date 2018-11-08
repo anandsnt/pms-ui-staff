@@ -156,52 +156,80 @@
             <button type="button" class="button brand-colors" ng-click="toGroup()" ng-show="filterOptions.selectedView === 'GROUP'">Group</button>
         </div>
         <div class="summary">
-            <div id="action-summary">
-                <h3 class="word_wrap">{{selectedAction.description}}</h3>
-                <div class="info assigned">
-                    <span class="label">Assigned To</span>
-                    {{selectedAction.assigned_to.name}}
-                </div>
-                <div class="info created">
-                    <span class="label">Created By</span>
-                    {{selectedAction.created_by.name}} {{selectedAction.created_at | date:dateFormat}} &#8226;
-                    {{selectedAction.created_at | date:"hh:mm a"}}
-                </div>
-                <div class="entry action-info date">
-                    <label for="due-date">Date Due</label>
-                    <button class="clear-query"> <!-- Add class "visible" to show (when date is not blank) -->
-                        <span class="icons icon-clear-search">Clear query</span>
-                    </button>
-                    <input id="due-date" class="datepicker" ui-date="dueDateEditOptions"
-                           ng-model="selectedAction.dueDate" value="" readonly
-                           ng-disabled="selectedAction.action_status === _actionCompleted"/>
-                </div>
-                <div class="entry action-info time">
-                    <label for="due-time">Time Due</label>
-                    <div class="select">
-                        <select id="due-time" ng-model="selectedAction.dueTime" ng-change="updateAction()"
-                                ng-disabled="selectedAction.action_status === _actionCompleted">
-                            <option value="{{timeSelector.value}}" ng-repeat="timeSelector in timeSelectorList"
-                                    ng-selected="selectedAction.dueTime === timeSelector.value">
-                                {{timeSelector.text}}
-                            </option>
-                        </select>
+            <!-- Add .hidden when showing edit or new action screen -->
+            <div id="action-summary" ng-hide="selectedView === 'new' || selectedView === 'edit'" class="action-summary scrollable" ng-iscroll="actionSummaryScroller" ng-iscroll-delay="500">
+                <div class="wrapper">
+                <!--
+                    'status-class':
+                     - 'unassigned'
+                     - 'assigned'
+                     - 'completed'
+                     - 'delete'
+                -->
+                    <span class="icons icon-action icon-{{selectedAction.action_status}} icon-100w">{{getActionStatusInfo(selectedAction)}}</span>
+
+                    <h3 class="word_wrap">{{selectedAction.description}} </h3>
+                    <span class="info">Created {{selectedAction.created_at | date:dateFormat}} at {{selectedAction.created_at | date:"hh:mm a"}} by {{selectedAction.created_by.name}}</span>
+
+                    <div class="info-lists" ng-class="{'last': selectedAction.action_status !== 'COMPLETED'}">
+                        <ul>
+                            <li>
+                                Assigned to
+                                <!-- add class .red if unassigned -->
+                                <!-- if unnasigned, 'Department' = Unassigned -->
+                                <strong ng-if="selectedAction.action_status === 'UNASSIGNED' " class="red">Unassigned</strong>
+                                <strong ng-if="selectedAction.action_status !== 'UNASSIGNED' ">{{selectedAction.assigned_to.name}}</strong>
+                            </li>
+                            <li>
+                                Date Due
+                                <strong>{{selectedAction.due_at_str |  date: dateFormat}}</strong>
+                            </li>
+                            <li>
+                                Time Due
+                                <strong>{{selectedAction.dueTimeAmPm}}</strong>
+                            </li>
+                        </ul>
+                        <!-- If completed -->
+                        <ul class="completed" ng-if="selectedAction.action_status === 'COMPLETED' ">
+                            <li>
+                                Completed by
+                                <strong ng-if="selectedAction.completed_by">{{selectedAction.completed_by.name}}</strong>
+                            </li>
+                            <li>
+                                Date Completed
+                                <strong>{{selectedAction.completed_at | date: dateFormat}}</strong>
+                            </li>
+                            <li>
+                                Time Completed
+                                <strong>{{selectedAction.completed_at | date: "hh:mm a"}}</strong>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <!-- If action completed, show this as well: -->
-                <div class="notice" ng-if="selectedAction.action_status === _actionCompleted">
-                    <span>Completed By</span>
-                    {{selectedAction.completed_by.name}} {{selectedAction.completed_at | date: dateFormat}} &#8226;
-                    {{selectedAction.completed_at | date: "hh:mm a"}}
                 </div>
             </div>
 
-            <div class="detail-actions col-2" ng-if="selectedAction.action_status !== _actionCompleted">
-                <button type="button" ng-hide="" class="button white brand-text" ng-click="changeAssignment()">
-                    {{!!selectedAction.assigned_to.name? "Re-Assign": "Assign"}}
-                </button>
-                <button type="button" class="button white green-text" ng-click="completeAction()">Complete
-                </button>
+            <!-- Add .hidden when showing edit or new action screen -->
+            <!-- if Delete status add class .inline -->
+            <div class="detail-actions" ng-hide="selectedView === 'new' || selectedView === 'edit'" ng-class="{'inline': selectedAction.action_status === 'delete'}">
+                <!-- If Unnasigned or assigned -->
+                <button type="button" class="button white purple-text"  ng-click="prepareEditAction()" ng-class="{'overlay': !hasPermissionToEditAction(), 'hidden': !shouldShowEditAndCompleteBtn(selectedAction)}">Edit</button>
+                <button type="button" class="button white green-text" ng-click="completeAction()" ng-class="{'hidden': !shouldShowEditAndCompleteBtn(selectedAction)}">Complete</button>
+               
+                <!-- If unnasigned, assigned or completed -->
+                <button type="button" class="button white red-text" ng-click="prepareDeletAction()" ng-class="{'overlay': !hasPermissionToDeleteAction(), 'hidden': !shouldShowDeleteBtn(selectedAction)}">Delete</button>
+                
+
+                <!-- if delete status -->
+                <button type="button" class="button blank"  ng-click="cancelDelete()" ng-class="{'hidden': selectedAction.action_status !== 'delete'}">Cancel</button>
+                <button type="button" class="button red" ng-class="{'hidden': selectedAction.action_status !== 'delete'}" ng-click="deleteAction()">Delete Action</button>
+                
+            </div>
+
+            <!-- remove .hidden when showing edit or new screens -->
+            <div id="secondary-actions" class="add-content" ng-controller="RVNewActionCtrl" ng-if="selectedView === 'new' && actions.length > 0" ng-include="'/assets/partials/actionsManager/rvAddAction.html'">
+            </div>
+            <!-- remove .hidden when showing edit or new screens -->
+            <div id="secondary-actions" class="add-content" ng-controller="RVNewActionCtrl" ng-if="selectedView === 'edit'" ng-include="'/assets/partials/actionsManager/rvEditAction.html'">                
             </div>
         </div>
     </div>

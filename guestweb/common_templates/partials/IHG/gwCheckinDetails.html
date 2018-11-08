@@ -51,20 +51,10 @@
                 <div class="row margin-top-20">
                     <div class="col-xs-12 left-align">
                         <div class="res-details-heading">
-                            RATE
+                            RATE DETAILS
                         </div>
                         <div class="res-date">
-                            {{reservationData.room_rate}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row margin-top-20">
-                    <div class="col-xs-12 left-align">
-                        <div class="res-details-heading">
-                            AVERAGE RATE PER NIGHT
-                        </div>
-                        <div class="res-date">
-                            {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2 }}
+                            {{reservationData.room_rate}} /  Approx. {{currencySymbol}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' | number:2 }} per night
                         </div>
                     </div>
                 </div>
@@ -79,6 +69,27 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+                <div class="res-details-heading margin-top-20" ng-show="isCCOnFile">
+                    <span class="small-italic-text upper-case">The below credit card on file will be pre-authorized to cover room charges, taxes, and {{currencySymbol}}{{ ccAuthorizationAmount }}/night for possible incidentals</span>
+                 </div>
+                 <div class="cc-details-container margin-top-10" ng-show="isCCOnFile">
+                    <div class="cc-image-container">
+                        <div class="orange customcb" style="margin-right: 5px;">
+                            <input type="checkbox" value="1" id="customcb2" name="" checked/>
+                            <label class="inner" for="customcb2"></label>
+                            <label class="outer" for="customcb2"></label>
+                        </div>
+                        <img src="/assets/guestweb/common_images/{{paymentDetails.card_type_image}}" />
+                    </div>
+                    <div class="cc-texts-container">
+                        <p>****{{paymentDetails.card_number}}</p>
+                        <p>{{paymentDetails.card_name}}</p>
+                        <p>EXPIRES {{paymentDetails.card_expiry}}</p>
+                    </div>
+                </div>
+                <div class="res-details-heading margin-top-10" ng-show="isCCOnFile">
+                    <span class="small-italic-text upper-case">If you would like to change the card on file, please call the hotel directly</span>
                 </div>
                 <div class="row applycharge margin-top-20">
                     <div class="col-xs-12 left-align">
@@ -100,7 +111,7 @@
             <div class="terms-alert">
                 <div>
                     <div class="left-align green-text">
-                        <p class="terms-main">To complete check-in,</p>
+                        <p class="terms-main">To complete check in,</p>
                         <p class="terms-sub"> Please read and agree to the following:</p>
                     </div>
                     <description class="terms-desc tnc" template="{{reservationData.terms_and_conditions}}">

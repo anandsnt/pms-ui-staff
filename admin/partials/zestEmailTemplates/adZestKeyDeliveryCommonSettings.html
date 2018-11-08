@@ -21,6 +21,12 @@
                     </div>
                     <ad-toggle-button is-checked="keyDeliveryCommonSettings.show_mobile_apps" label="{{ 'SHOW_MOBILE_APPS' | translate}}" div-class="half-width"></ad-toggle-button>
                 </fieldset>
+                <fieldset class="holder right">
+                     <div class="form-title full-width">
+                        <h3><span translate>HIDE_KEY_ICON</span></h3>
+                    </div>
+                    <ad-toggle-button is-checked="keyDeliveryCommonSettings.hide_key_icon" label="{{ 'HIDE_KEY_ICON' | translate}}" div-class="half-width"></ad-toggle-button>
+                </fieldset>
                 <div class="actions float">
                     <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
                         CANCEL

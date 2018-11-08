@@ -4,11 +4,10 @@ sntRover.controller('rvBillCardPopupCtrl',
 	BaseCtrl.call(this, $scope);
 	$scope.newAmount = '';
 
-	var refreshListWithData = function(data) {
-		$scope.init(data);
-		// expand list
-		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
-		$scope.calculateHeightAndRefreshScroll();
+	var refreshListWithData = function() {
+		$timeout(function() {
+			$scope.reloadCurrentActiveBill();
+		}, 700);
 	};
 
 	var hideLoaderAndClosePopup = function() {			

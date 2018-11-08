@@ -29,9 +29,9 @@
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <div class="section-container">
-                <p class="main-text">Arrival Details</p>
-                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
-                <p ng-show="showHotelTime" class="sub-main-text margin-top-10">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently {{hotelTime}} in the hotel’s local time.)</p>
+                <p class="main-text">Check In</p>
+                <p class="sub-text left-align">What time will you be arriving?</p>
+                <p ng-show="showHotelTime" class="sub-text margin-top-10" style="font-size: 10px !important;color: #808080;">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently {{hotelTime}} in the hotel’s local time.)</p>
                 <div class="row first-field">
                     <div class="select-style eta-single">
                         <select name="timepicker" id="timePicker" ng-model="arrivalTime">
@@ -41,10 +41,11 @@
                     </div>
                 </div>
                 <p class="sub-text left-align margin-top-20">LET US KNOW ANY REQUESTS OR COMMENTS</p>
-                <div class="row">
+                <div class="row margin-top-10">
                     <textarea rows="5" cols="50" ng-model="stayDetails.comment" class=" text-comment col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
                     </textarea>
                 </div>
+                <p class="sub-text margin-top-20" style="font-size: 10px !important;color: #808080;">While we are unable to guarantee check in prior to {{hotelCheckinTime}},  we will do our best to accommodate requests based on availability.</p>
                 <!--  submit button-->
                 <button class="btn btn-template margin-top-20" ng-click="postStayDetails()">Continue</button>
             </div>

@@ -32,6 +32,7 @@ angular.module('sntPay').controller('payCBACtrl',
                     }
                 }, 1000);
             };
+            var amountToPay = 0;
             
             
             var transaction = {
@@ -112,28 +113,29 @@ angular.module('sntPay').controller('payCBACtrl',
                 doPayment = function() {
                     sntCBAGatewaySrv.doPayment({
                         transaction_id: transaction.id,
-                        amount: $scope.payment.amount
+                        amount: amountToPay
                     }, onSubmitSuccess, onSubmitFailure);
                 },
                 doRefund = function() {
                     sntCBAGatewaySrv.doRefund({
                         transaction_id: transaction.id,
-                        amount: Math.abs($scope.payment.amount)
+                        amount: Math.abs(amountToPay)
                     }, onSubmitSuccess, onSubmitFailure);
                 },
                 initiatePaymentProcess = function(event, params) {
                     sntActivity.start('INIT_CBA_PAYMENT');
+                    amountToPay = 0;
                     startCbaTimer();
                     if (!$scope.payment || !$scope.payment.amount) {
                         $scope.payment = $scope.payment || {};
-                        $scope.payment.amount = params.postData.amount;
                     }
+                    amountToPay = params.postData.total_value_plus_fees ? params.postData.total_value_plus_fees : params.postData.amount;
                     sntCBAGatewaySrv.initiateTransaction(
-                        params.postData.amount,
+                        amountToPay,
                         params.bill_id
                     ).then(response => {
                         transaction.id = response.data.id;
-                        Number(params.postData.amount) > 0 ? doPayment() : doRefund();
+                        Number(amountToPay) > 0 ? doPayment() : doRefund();
                         // sntActivity.stop('INIT_CBA_PAYMENT');
                     }, errorMessage => {
                         $scope.$emit('hideLoader');

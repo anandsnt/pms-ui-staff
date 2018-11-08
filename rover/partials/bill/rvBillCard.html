@@ -114,7 +114,7 @@
 									<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
 									<div class="payment" ng-show="billTab.is_moved_to_ar">Moved to A/R</div>
 								</a>
-								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
+								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist && billTab.is_active && !billTab.is_control_code_exist && !billTab.is_folio_number_exists" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 							</li>
 							<li class="new-bill" ng-show="reservationBillData.bills.length < 10 && isStandAlone">
 								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
@@ -140,7 +140,14 @@
 											Add Charge
 										</button>
 									</li>
-
+									<!-- Advanced Bill -->
+									<li class="add-new" ng-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
+									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly">
+										<button type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
+											<span class="icons icon-charge"></span>
+											Advanced Bill
+										</button>
+									</li>
 									<!-- For checkin date -->
 									<li click-touch="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')">
@@ -253,7 +260,7 @@
 										<tr ng-repeat="billGroupExpense in billGroupItems.expense_details">
 											<!-- CICO-31516 - show if SR -->
 											<td class="price"
-												ng-if="!isBalanceShown(billData.is_rate_suppressed)">
+													ng-if="!isBalanceShown(billData.is_rate_suppressed)">
 													{{'SUPPRESSED_RATES_TEXT' | translate}}
 											</td>
 											<td class="price"
@@ -286,11 +293,13 @@
 					</div>
 					<!--Reverse checkout doesn't need signature-->
 					<div id="signature"
+						iscroll-stop-propagation
 						ui-jq="jSignature"
 						ui-options="signaturePluginOptions"
 						ng-mouseover="disableScroll()"
 						ng-mouseleave="enableScroll()"
-						div-touch-move-stop-propogate ng-show="showSignaturePad()" class="no-print">
+						div-touch-move-stop-propogate 
+						ng-show="showSignaturePad()" class="no-print">
 					</div>
 				</div>
 			</div>

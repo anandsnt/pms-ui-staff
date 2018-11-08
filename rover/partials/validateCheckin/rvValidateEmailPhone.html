@@ -1,37 +1,104 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
-	<form id="validate" class="modal-content form confirmation">
-		<button type="button" id="modal-close" class="modal-close"  ng-click="closeDialog()">
-			<span class="icons icon-close invert"></span>
-		</button>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<span class="h2 message" ng-show="showEmail && showPhone && showMobile" translate>PHONE_EMAIL_MOBILE_MISSING</span>
-		<span class="h2 message" ng-show="showEmail && showPhone && !showMobile" translate>PHONE_EMAIL_MISSING</span>
-		<span class="h2 message" ng-show="showEmail && !showPhone && showMobile" translate>MOBILE_EMAIL_MISSING</span>
-		<span class="h2 message" ng-show="!showEmail && showPhone && showMobile" translate>MOBILE_PHONE_MISSING</span>
-		<span class="h2 message" ng-show="!showEmail && showPhone && !showMobile" translate>PHONE_MISSING</span>
-		<span class="h2 message" ng-show="showEmail && !showPhone && !showMobile" translate>EMAIL_MISSING</span>
-		<span class="h2 message" ng-show="!showEmail && !showPhone && showMobile" translate>MOBILE_MISSING</span>
-		<span class="text" translate>PROVIDE_BEFORE_CHECKIN</span>
-		<div class="entry full-width" ng-show="showMobile">
-			<label for="guest-mobile">MOBILE</label>
-		    <input name="guest-mobile" id="guest-mobile" value="" type="text" autocomplete="off" ng-model="saveData.mobile" />
-		</div>
+	<div class="modal-content form check-in-data">
+	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+	    
+	    <span class="h2 message">Provide data before check in</span>
+	    <span class="text">Fields marked with <strong class="required">*</strong> are mandatory</span>  
+	    
+	    <!-- if no guest info required, don't show it -->
+	    <fieldset ng-if="shouldShowGuestInfoInValidationPopup">
+	        <legend>Guest Info</legend>
+	        <div class="fields">
+	            <div class="entry" ng-if="showNationality && roverObj.forceNationalityAtCheckin">
+	                <label>Nationality <strong class="required">*</strong></label>
+	                <div class="select">
+	                    <select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id" class="placeholder">
+							<option value="">Select Nationality</option>
+						</select>
+	                </div>
+	            </div>
+	            <div class="entry" ng-if="showCountry && roverObj.forceCountryAtCheckin">
+	                <label>Country <strong class="required">*</strong></label>
+	                <div class="select">
+	                    <select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.address.country_id" class="placeholder">
+							<option value="">Select Country</option>
+						</select>
+	                </div>
+	            </div>
+	            <div class="entry"  ng-if="showMobile">
+	                <label>Mobile</label>
+	                <input type="tel" placeholder="Enter Number" ng-model="saveData.mobile">
+	            </div>
+	            <div class="entry" ng-if="showPhone">
+	                <label>Phone</label>
+	                <input type="tel" placeholder="Enter Number" ng-model="saveData.phone">
+	            </div>
+	            <div class="entry" ng-if="showEmail">
+	                <label>E-mail</label>
+	                <input type="email" placeholder="Enter E-mail Address" ng-model="saveData.email">
+	            </div>
+	        </div>
+	    </fieldset>
+	     <fieldset ng-if="shouldShowDemographicsInValidationPopup">
+		        <legend>Demographics</legend>
+			        <div class="fields">
+			            <div class="entry margin" ng-if="shouldShowReservationType">
+		            <label for="reservation-type">Reservation type<strong ng-show="otherData.reservationTypeIsForced">*</strong>
+		            </label>
+		            <div class="select">
+		                <select convert-to-number iscroll-stop-propagation name="reservation-type" id="reservation-type" ng-class="{'placeholder': reservationParentData.demographics.reservationType == ''}" ng-model="reservationParentData.demographics.reservationType">
+		                    <option value="" translate>RESERVATION_TYPE_PLACEHOLDER</option>
+		                    <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value == reservationParentData.demographics.reservationType">{{reservationType.name}}</option>
+		                </select>
+		            </div>
+		        </div>
+		        <div class="entry margin" ng-if="shouldShowMarket">
+		            <label for="market">Market<strong ng-show="otherData.marketIsForced">*</strong>
+		            </label>
+		            <div class="select">
+		                <select convert-to-number iscroll-stop-propagation name="market" id="market" ng-class="{'placeholder': reservationParentData.demographics.market == ''}" ng-model="reservationParentData.demographics.market">
+		                    <option value="" translate>MARKET_PLACEHOLDER</option>
+		                    <option ng-repeat="market in otherData.markets" value="{{market.value}}" ng-selected="market.value==reservationParentData.demographics.market">{{market.name}}</option>
+		                </select>
+		            </div>
+		        </div>
+		        <div class="entry margin" ng-if="shouldShowSource">
+		            <label for="source">Source<strong ng-show="otherData.sourceIsForced">*</strong>
+		            </label>
+		            <div class="select">
+		                <select convert-to-number iscroll-stop-propagation name="source" id="source" ng-class="{'placeholder': reservationParentData.demographics.source == ''}" ng-model="reservationParentData.demographics.source">
+		                    <option value="" translate>SOURCE_PLACEHOLDER</option>
+		                    <option ng-repeat="source in otherData.sources" value="{{source.value}}" ng-selected="source.value==reservationParentData.demographics.source">{{source.name}}</option>
+		                </select>
+		            </div>
+		        </div>
+		        <div class="entry margin" ng-if="shouldShowOriginOfBooking">
+		            <label for="origin">Origin of Booking<strong ng-show="otherData.originIsForced">*</strong>
+		            </label>
+		            <div class="select">
+		                <select convert-to-number iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': reservationParentData.demographics.origin == ''}" ng-model="reservationParentData.demographics.origin">
+		                    <option value="" translate>ORIGIN_BOOKING_PLACEHOLDER</option>
+		                    <option ng-repeat="origin in otherData.origins" value="{{origin.value}}" ng-selected="origin.value==reservationParentData.demographics.origin">{{origin.name}}</option>
+		                </select>
+		            </div>
+		        </div>
 
-		<div id="guest-phone-entry" class="entry full-width" ng-show="showPhone" >
-			<label for="guest-phone" translate>PHONE</label>
-			<input type="text" value="" name="guest-phone" id="guest-phone" autocomplete="off" ng-model="saveData.phone">
-		</div>
-		<div id="guest-email-entry" class="entry full-width" ng-show="showEmail">
-			<label for="guest-email" translate>EMAIL</label>
-			<input type="text" value="" name="guest-email" id="guest-email" autocomplete="off" ng-model="saveData.email">
-		</div>
-		<div ng-show='!putInQueue' class="actions float">
-			<a id="submit" class="button green modal-close" ng-click="submitAndGoToCheckin()" translate>SUBMIT_AND_GOTO_CHECKIN</a>
-			<a id="cancel" class="button blank modal-close" ng-click="ignoreAndGoToCheckin()" translate>IGNORE_AND_GOTO_CHECKIN</a>
-		</div>
-		<div ng-show='putInQueue' class="actions float">
-			<a id="submit" class="button green modal-close" ng-click="submitAndGoToCheckin()" translate>SUBMIT_AND_GOTO_PUTINQUEUE</a>
-			<a id="cancel" class="button blank modal-close" ng-click="ignoreAndGoToCheckin()" translate>IGNORE_AND_GOTO_PUTINQUEUE</a>
-		</div>
-	</form>
+		        <div class="entry margin" ng-if="shouldShowSegments">
+		            <label for="origin">Segments<strong ng-show="otherData.segmentsIsForced">*</strong>
+		            </label>
+		            <div class="select">
+		                <select convert-to-number iscroll-stop-propagation name="origin" id="origin" ng-class="{'placeholder': reservationParentData.demographics.segment == ''}" ng-model="reservationParentData.demographics.segment" ng-disabled="!!reservationParentData.demographics.segment">
+		                    <option value="" translate>SEGMENT_PLACEHOLDER</option>
+		                    <option ng-repeat="segment in otherData.segments" value="{{segment.value}}" ng-selected="segment.value==reservationParentData.demographics.segment">{{segment.name}}</option>
+		                </select>
+		            </div>
+		        </div>
+	        </div>
+	    </fieldset>
+	    <div class="actions">
+	        <button class="button blank" ng-click="closeDialog()" ng-show="showNationality || showCountry || shouldShowDemographicsInValidationPopup">Cancel</button>
+	        <button class="button blank" ng-click="ignoreAndGoToCheckin()" ng-show="!showNationality && !showCountry && !shouldShowDemographicsInValidationPopup" translate>IGNORE_AND_GOTO_CHECKIN</button>
+	        <button class="button" ng-class="{'green': shouldEnableSubmitButton() || isDemographicsFormValid(), 'grey': !shouldEnableSubmitButton() || !isDemographicsFormValid()}" ng-disable="!(shouldEnableSubmitButton()) || !isDemographicsFormValid()" ng-click="submitAndGoToCheckin()">Submit</button>
+	    </div>
+	</div>
 </div>

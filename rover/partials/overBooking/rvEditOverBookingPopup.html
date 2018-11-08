@@ -3,7 +3,7 @@
 	    <button id="modal-close" ng-click="closeDialog()" type="button" class="modal-close"><span class="icons icon-close invert"></button>
 	    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	    <strong class="h2 message">{{overBookingObj.editData.date | date:fulldayInWeek}} , {{overBookingObj.editData.date | date:shortMonthAndDate}}</strong>
-	    <em class="text warning" translate>OVERBOOKING_WARN_MSG</em>
+	    <em class="text warning" translate>OVERBOOKING_WARN_MSG_EDIT</em>
 	    <em class="text warning" ng-if="overBookingObj.editData.type == 'HOUSE'" translate>HOUSE_LIMIT</em>
 	    <em class="text warning" ng-if="overBookingObj.editData.type == 'ROOM_TYPE'">{{overBookingObj.editData.roomTypeName}}</em>
 	    

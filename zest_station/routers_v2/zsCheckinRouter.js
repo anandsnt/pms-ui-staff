@@ -15,7 +15,7 @@ sntZestStation.config(['$stateProvider',
 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode',
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode/:previousState',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: true,
@@ -407,5 +407,19 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinVerifyIdCtrl'
         });
 
+        $stateProvider.state('zest_station.collectGuestAddress', {
+            url: '/collectGuestAddress',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinGuestAddress.html',
+            controller: 'zsCheckinGuestAddressCtrl',
+            resolve: {
+                guestAddress: function(zsCheckinSrv) {
+                    return zsCheckinSrv.fetchReservationAddress(zsCheckinSrv.getSelectedCheckInReservation().id);
+                },
+                countryList: function(zsGeneralSrv) {
+                    return zsGeneralSrv.fetchCountryList();
+                }
+            }
+        });
+    
     }
 ]);

@@ -76,7 +76,7 @@ module.exports = function(gulp, $, options){
 		});
 	});
 
-    gulp.task('zest-babelify-dev', ['rover-generate-mapping-list-dev', 'copy-cordova-assets'], function(){
+    gulp.task('zest-babelify-dev', ['rover-generate-mapping-list-dev'], function(){
         var fileList = [];
 
         fileList = fileList.concat(zestJSMappingList.preCompiledFiles);

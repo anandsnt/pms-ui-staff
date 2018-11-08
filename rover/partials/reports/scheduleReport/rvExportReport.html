@@ -62,6 +62,16 @@
                 </div>
             </div>
 
+            <div class="entry" ng-show="shouldShowExportCalenderDate()">
+                <label for="schedule-start">
+                   Date
+                </label>
+                <div class="has-datepicker">
+                    <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input type="text" class="datepicker" ui-date="exportCalenderOptions" ng-model="scheduleParams.export_date" placeholder="MM-DD-YYYY" readonly>
+                </div>
+            </div>
+
             <multi-option-selection ng-show="isGuestBalanceReport"
                 label="Guest/Account"
                 on-update="refreshSecondColumnScroll"

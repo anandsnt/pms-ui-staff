@@ -38,7 +38,8 @@ var sntRover = angular.module('sntRover', [
         'sntActivityIndicator',
         'overBookingModule',
         'guestCardModule',
-        'snt.transitionManager'
+        'snt.transitionManager',
+        'sntCurrencyFilter'
 	]);
 
 sntRover.config([

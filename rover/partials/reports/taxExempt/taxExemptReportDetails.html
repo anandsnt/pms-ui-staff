@@ -1,0 +1,107 @@
+    <div id="report-content" class="report-content grid scrollable" ng-hide="hasNoResults"  ng-iscroll="report-details-scroll"> <!-- Add class "with-pagination" if pagination is shown -->
+        <div class="wrapper">
+            <table class="deposit-reports tax-exempt-report">
+                <thead>
+                    <tr>
+                        <th><span class="sort sorting-asc">Reservation</span></th>
+                        <th><span>Tax Exempt Type</span></th>
+                        <th><span>Stay Date</span></th>
+                        <th><span>Rate</span></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
+                        </td>
+                        <td colspan="3">
+                            <li>
+                                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+                            </li>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <!-- EACH ROW REPRESENTS ONE STAY DATE -->
+                    <tr ng-repeat-start="eachRow in results" ng-class="{'row-break': eachRow.total_nights === 0}"> <!-- Add class 'row-break' for last stay date of the reservation -->
+                        <td class="name" rowspan="{{eachRow.dates.length}}">
+
+                            <!-- Guest Name -->
+                            <div class="info">
+                                <span class="guest-status small-icon" ng-class="getReservationStatus(eachRow.status)">{{eachRow.status}}</span>
+                                <strong>{{eachRow.name}}</strong>
+                                <em>{{eachRow.confirm_no}}</em>
+                            </div>
+
+                            <!-- Arrival & Departure Dates -->
+                            <div class="dates">
+                                <div class="date">
+                                    <span class="icons time check-in"></span>
+                                    <span>{{eachRow.arrival_date | date:dateFormat}}</span>
+                                </div>
+                                <div class="date">
+                                    <span class="icons time check-out"></span>
+                                    <span>{{eachRow.departure_date | date:dateFormat}}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- If part of Account / has Group Code -->
+                            <div class="guest-info">
+                                <!-- <strong>{Account Name} | <em>{Account No.}</em></strong> -->
+                                <!-- If has group code 
+                                <span class="icons icon-group">{Group Code}</span>
+                                -->
+                                <strong ng-if = "eachRow.travel_agent_name !== '' && eachRow.travel_agent_name !== null">{{eachRow.travel_agent_name}} | <em>{{eachRow.travel_agent_no}}</em></strong><br />
+                                <strong ng-if = "eachRow.company_name !== '' && eachRow.company_name !== null">{{eachRow.company_name}} | <em>{{eachRow.company_no}}</em></strong>
+                                <!-- If has group code -->
+                                <span class="icons icon-group" ng-if = "eachRow.group_code !== '' && eachRow.group_code !== null">{{eachRow.group_code}}</span>
+                                </div>
+
+                            <!-- If it has reference:-->
+                            <span class="reference" ng-if="eachRow.tax_exempt_reference !== ''">{{eachRow.tax_exempt_reference}}</span>
+                            
+                        </td>
+
+                        <td class="tax-exempt" ng-class="{'break': eachRow.totalTaxExempts > 1}" rowspan="{{eachRow.dates[0].rowSpanValue}}"> <!-- Add class 'break' if reservation has multiple tax exempt types and this is not the last one. LAST TAX EXEMPT TYPE NEVER HAS THAT CLASS APPLIED -->
+                            <strong>{{eachRow.dates[0].tax_exempt_type_name}}</strong>
+                        </td>
+                        <td class="date">
+                            <strong>{{eachRow.dates[0].date | date:dateFormat}}</strong>
+                            <span class="reference">{{eachRow.dates[0].date | date:'EEEE'}}</span>
+                        </td>
+                        <td class="rate">
+                            <strong><span class="currency">{{currencySymbol}}</span>{{eachRow.dates[0].rate_amount}}</strong>
+                            <span class="reference">{{eachRow.dates[0].rate_name}}</span>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="eachDate in eachRow.dates" ng-if="$index !== 0 && $index !== (eachRow.dates.length - 1) " >
+                        <td class="tax-exempt" ng-class="{'break': !eachDate.isLastTaxExemptType}"  rowspan="{{eachDate.rowSpanValue}}" ng-if="eachDate.is_next">
+                            <strong>{{eachDate.tax_exempt_type_name}}</strong>                            
+                        </td>
+
+                        <td class="date">
+                            <strong>{{eachDate.date | date:dateFormat}}</strong><span class="reference">{{eachDate.date | date:'EEEE'}}</span>
+                        </td>
+                        <td class="rate">
+                            <strong><span class="currency">{{currencySymbol}}</span>{{eachDate.rate_amount}}</strong><span class="reference">{{eachDate.rate_name}}</span>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end  class="row-break" ng-if="eachRow.total_nights > 0">
+                        <td class="tax-exempt" rowspan="{{eachRow.dates[eachRow.dates.length - 1].rowSpanValue}}" ng-if="eachRow.dates[eachRow.dates.length - 1].is_next">
+                            <strong>{{eachRow.dates[eachRow.dates.length - 1].tax_exempt_type_name}}</strong>                            
+                        </td>
+                        <td class="date">
+                            <strong>{{eachRow.dates[eachRow.dates.length - 1].date | date:dateFormat}}</strong><span class="reference">{{eachRow.dates[eachRow.dates.length - 1].date | date:'EEEE'}}</span>
+                        </td>
+                        <td class="rate">
+                            <strong><span class="currency"></span> - </strong><span class="reference"></span>
+                        </td>
+                    </tr>                    
+                </tbody>
+            </table>            
+        </div>
+    </div>
+
+    <rv-pagination  page-options="paginationConfig" page-data="totalCount"></rv-pagination>

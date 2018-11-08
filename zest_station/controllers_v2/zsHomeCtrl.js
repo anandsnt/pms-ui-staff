@@ -225,38 +225,6 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.selectedLanguage = language;
         };
 
-
-        $scope.$on('KEY_INPUT_OPTION', function(evt, option) {
-            var optionsToChooseFrom;
-
-            var keysOn = $scope.zestStationData.home_screen.pickup_keys,
-                checkinOn = $scope.zestStationData.home_screen.check_in, 
-                checkoutOn = $scope.zestStationData.home_screen.check_out;
-
-            if (option === 1) {
-                if (keysOn) {
-                    $scope.clickedOnPickUpKey();
-                } else if (checkinOn) {
-                    $scope.clickedOnCheckinButton();
-                } else {
-                    $scope.clickedOnCheckoutButton();
-                }
-
-            } else if (option === 2) {
-                if (keysOn && checkinOn) {
-                    $scope.clickedOnCheckinButton();
-
-                } else if (!keysOn && checkinOn && checkoutOn) {
-                    $scope.clickedOnCheckoutButton();
-                }
-
-            } else if (option === 3) {
-                if (keysOn && checkinOn && checkoutOn) {
-                    $scope.clickedOnCheckoutButton();
-                }
-            }
-        });
-
 		/**
 		 * [initializeMe description]
 		 */

@@ -197,6 +197,21 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.refreshScroller('leftPanelScroll');
 		}
 
+		// Add selected attribute to those markets which were chosen while running the report
+		var tagSelectedMarkets = function(selectedMarketIds) {
+			if (!selectedMarketIds) {
+				return;
+			}
+			_.each( $scope.markets.data, function(market) {
+				var isSelected = _.find( selectedMarketIds, { value: market.value} );
+
+				if (isSelected) {
+					market.selected = true;
+				}
+
+			});
+		};
+
 		function init() {
 
 			// dont init if there is an API error
@@ -217,12 +232,18 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
             
             $scope.isUndefinedMarketSelected = false;
 
+            // CICO-54574
+            if ($rootScope.isBackgroundReportsEnabled) {
+            	tagSelectedMarkets(chosenReport.appliedFilter.market_ids);
+            }            
+
 			angular.forEach($scope.markets.data, function(marketValue, index) {
 				if (marketValue.hasOwnProperty("selected") && marketValue.selected) {
 					$scope.marketExists = true;					
 					return true;
 				}
 			});
+
 
 			// CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
             // Here the api provides the data for the "UNASSIGNED" ones

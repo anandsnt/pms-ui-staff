@@ -24,11 +24,10 @@ sntRover.controller('roverController', [
     '$interval',
     'sntActivity',
     '$transitions',
-    'taxExempts',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, taxExempts) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
 
 
         var observeDeviceInterval;
@@ -128,7 +127,11 @@ sntRover.controller('roverController', [
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
             isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
-            hasActivatedFolioNumber: hotelDetails.has_activate_folio_number
+            hasActivatedFolioNumber: hotelDetails.has_activate_folio_number,
+            noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
+            noModifyInvoice: hotelDetails.no_modify_invoice,
+            forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
+            forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin
         };
         /*
          * hotel Details
@@ -138,6 +141,8 @@ sntRover.controller('roverController', [
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+        // CICO-35453 Currency Format
+        $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
         $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
         $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
@@ -220,9 +225,6 @@ sntRover.controller('roverController', [
             $log.error(err);
         }
         $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
-
-        $rootScope.taxExemptTypes = taxExempts.results;
-
 
         // handle six payment iFrame communication
         var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
@@ -318,10 +320,7 @@ sntRover.controller('roverController', [
 
         if ($rootScope.adminRole === 'Hotel Admin' || $rootScope.adminRole === 'Chain Admin') {
             $scope.isHotelAdmin = true;
-        }
-        $scope.shouldShowTaxExempt = function() {
-            return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
-        };
+        }        
         /**
          * menu - forming & associate logic
          * NOTE: Menu forming and logic and things are in service rvMenuSrv
@@ -529,7 +528,7 @@ sntRover.controller('roverController', [
 
             if (($rootScope.paymentGateway === 'CBA' || $rootScope.paymentGateway === 'CBA_AND_MLI') && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
-                $rootScope.disableObserveForSwipe = true;
+                $rootScope.disableObserveForSwipe = $rootScope.paymentGateway === 'CBA';
             }
 
             // for iPad we need to show the connected device status

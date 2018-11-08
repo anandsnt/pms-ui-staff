@@ -51,6 +51,17 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.pickupkey_authenticate_cc" label="{{'AUTHENTICATE_CC'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
+            <fieldset class="holder left" ng-if="zestSettings.kiosk_manual_id_scan">
+                <div class="form-title full-width">
+                    <h3><span translate>STATION_GUEST_ID_ACTIVATE</span> </h3>
+                </div>
+                <div class="form-subtitle-title">
+                    <h6>
+                        <span translate="">ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY</span> 
+                    </h6>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.pickup_key_always_ask_for_id" label="{{'RE_VERIFY_IDS'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

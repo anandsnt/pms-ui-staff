@@ -85,9 +85,16 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Journal Export': [
                 'YESTERDAY',
+                'TODAY',
+                'DATE'
+             ],
+             'Clairvoyix Stays Export': [
+             	'YESTERDAY',
+             	'ALL'
+             ],
+             'Clairvoyix Reservations Export': [
                 'TODAY'
              ]
-
         };
 
         var SCHEDULE_REPORT_TIMEPERIODS = {

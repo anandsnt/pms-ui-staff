@@ -7,10 +7,12 @@ module.exports = {
                 minifiedFiles: [                    
                 ],
                 nonMinifiedFiles: [                    
-                    controllerRoot + "guests/rvGuestCardDetailsCtrl.js",                    
+                    controllerRoot + "guests/rvGuestCardDetailsCtrl.js",
+                    controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",                    
                     controllerRoot + "rvContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
-                    controllerRoot + "rvGuestCardLoyaltyCtrl.js",                    
+                    controllerRoot + "rvGuestCardLoyaltyCtrl.js",
+                    controllerRoot + "reservationCard/rvGMSLoyalityCtrl.js",                    
                     controllerRoot + "rvContactInfoController.js",
                     controllerRoot + "cards/**/*.js",                    
                     controllerRoot + "likes/**/**.js",
@@ -18,6 +20,8 @@ module.exports = {
                     controllerRoot + "payment/**/**.js",                    
                     controllerRoot + "roverPayment/**/**.js", 
                     controllerRoot + "guestCardBaseCtrl.js",
+                    controllerRoot + 'rvStatisticsBaseCtrl.js',
+                    controllerRoot + 'guests/rvGuestCardStatisticsCtrl.js',
                     
                     servicesRoot + "payment/**/**.js",
                     servicesRoot + "likes/rvLikesSrv.js",                    
@@ -27,6 +31,7 @@ module.exports = {
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",                    
                     servicesRoot + "rvCompanyCardSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

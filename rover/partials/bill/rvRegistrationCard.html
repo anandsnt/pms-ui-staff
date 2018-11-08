@@ -143,6 +143,36 @@
     </tr>
 </table>
 
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td colspan="3">{{ printRegCardData.translation['address'] }}</td>
+        </tr>
+        <tr>
+            <td>{{ printRegCardData.translation['city'] }}</td>
+            <td>{{ printRegCardData.translation['state'] }}/{{ printRegCardData.translation['postal_code'] }}</td>
+            <td>{{ printRegCardData.translation['country'] }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td>{{ printRegCardData.translation['phone'] }}</td>
+            <td>{{ printRegCardData.translation['mobile'] }}</td>
+            <td>{{ printRegCardData.translation['email'] }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td>{{ printRegCardData.translation['id_type'] }}</td>
+            <td>{{ printRegCardData.translation['id_number'] }}</td>       
+        </tr>
+    </tbody>
+</table>
+
 <table class="terms-signature">
     <tr>
         <td ng-if="printRegistrationCardActive" colspan="2" class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.terms_conditions)"></td>

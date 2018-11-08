@@ -102,10 +102,9 @@
       <h1>
          <text data-ng-bind-html="getTagValue('ADD_ON_HEADING')" editable-text="ADD_ON_HEADING"></text>
       </h1>
-      <!--  <h3> <text editable-text="ADD_ON_TOTAL_TEXT">{{'ADD_ON_TOTAL_TEXT' | translate}}</text>&nbsp;{{zestStationData.currencySymbol}}{{getAmountTotal()}}</h3> -->
       <div id="upgrades">
-         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':viewableAddons.length >= 4}">
-            <li class="add-on" ng-repeat="addon in viewableAddons" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
+         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
+            <li class="add-on" ng-repeat="addon in pageData.viewableItems" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
                <div class="add-on-picture">
                   <img src="{{addon.image}}">
                </div>
@@ -170,7 +169,7 @@
          <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
          <p class="text">
             <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_1')" editable-text="ADD_ON_FOOTER_1"></text>
-            &nbsp;{{pageStartingIndex}}-{{pageEndingIndex}}&nbsp;
+            &nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;
             <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_2')" editable-text="ADD_ON_FOOTER_2"></text>
             &nbsp;{{addonsList.length}}&nbsp;
             <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_3')" editable-text="ADD_ON_FOOTER_3"></text>
@@ -178,19 +177,19 @@
          <!-- Remove this .button-group element when there is no navigation -->
          <div class="button-group" ng-if="addonsList.length > 1">
             <!-- add 'disabled="disabled"' if there is no previous page -->
-            <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-hide="disablePreviousButton">
+            <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disablePreviousButton, false)" ng-hide="pageData.disablePreviousButton">
                <div ng-include="icons.url.left_arrow_icon"></div>
             </button>
             <!-- touchstart is not following ng-disable, so for now keeping two versions -->
-            <button type="button" class="button only-icon" ng-show="disablePreviousButton" disabled="disabled">
+            <button type="button" class="button only-icon" ng-show="pageData.disablePreviousButton" disabled="disabled">
                <div ng-include="icons.url.left_arrow_icon"></div>
             </button>
             <!-- add 'disabled="disabled"' if there is no next page -->
-            <button type="button" class="button only-icon" click-touch="viewNextPage()" ng-hide="disableNextButton">
+            <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disableNextButton, true)" ng-hide="pageData.disableNextButton">
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
             <!-- touchstart is not following ng-disable, so for now keeping two versions -->
-            <button type="button" class="button only-icon" ng-show="disableNextButton" disabled="disabled">
+            <button type="button" class="button only-icon" ng-show="pageData.disableNextButton" disabled="disabled">
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>

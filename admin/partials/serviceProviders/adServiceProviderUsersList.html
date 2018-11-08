@@ -6,6 +6,15 @@
             <h2>Users for <strong>{{serviceProviderName}}</strong></h2>
             <span class="count">({{totalCount}})</span>
             <a ui-sref="admin.serviceprovideruserdetails({ serviceProviderId: serviceProviderId,name:serviceProviderName})" class="action add">Add new</a>
+            <div class="table-filters">
+                <div class="entry pull-left">
+                    <label class="checkbox" ng-class="{'checked': includeInactiveUsers}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': includeInactiveUsers}"></span>
+                        <input ng-class="{'checked': includeInactiveUsers}" type="checkbox" ng-click="clickedShowInactiveUsers()" name="inactive" value="1" ng-model="includeInactiveUsers" />
+                        Include inactive users
+                    </label>
+                </div>
+            </div>
             <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProviderId})" class="action back">Back to {{serviceProviderName}}</a>
         </header>    
         <section>

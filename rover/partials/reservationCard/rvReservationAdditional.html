@@ -1,12 +1,12 @@
 <div class="block-wrapper">
     <a class="block-title toggle has-arrow" ng-class="{'active': !additionalDetails.hideDetails}" ng-click="clickedAdditionalDetails($event)">Additional details</a>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <div ng-class="{'hidden': additionalDetails.hideDetails }">        
+    <div class="block-grid" ng-class="{'hidden': additionalDetails.hideDetails }">        
         <!-- Tax Exempt -->
         <div class="block-item additional-detail item-tax-exempt" ng-if="shouldShowTaxExempt()">
             <h3 class="block-title">Tax Exempt</h3>
-            <div class="entry">
-                <div class="switch-button" ng-class="{'on': additionalDetails.isTaxExemptEnabled}" >
+            <div class="entry half-width">
+                <div class="switch-button" ng-class="{'on': additionalDetails.isTaxExemptEnabled, 'overlay' : reservationData.reservation_card.reservation_status === 'CHECKEDOUT'}" >
                     <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleTaxExempt()"></div>
                     <input type="checkbox" ng-model="additionalDetails.isTaxExemptEnabled" ng-checked="additionalDetails.isTaxExemptEnabled" />
                     <label class="data-off">
@@ -18,24 +18,15 @@
                         <span class="value">On</span>
                     </label>
                 </div>
-                <div class="select" ng-show="additionalDetails.isTaxExemptEnabled"><!-- Remove class 'hidden' when L11 is checked -->
+                <div class="select" ng-class="{'overlay' : reservationData.reservation_card.reservation_status === 'CHECKEDOUT'}" ng-show="additionalDetails.isTaxExemptEnabled"><!-- Remove class 'hidden' when L11 is checked -->
                     <select ng-change="updateTaxExemptData()" 
                             ng-model="additionalDetails.taxExemptType"
                             ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
                     </select>
                 </div>
             </div>
-        </div>
-        <!-- Reservation Type -->
-        <div class="block-item item-type additional-detail">
-            <h3 class="block-title">Reservation Type</h3>
-            <div class="select">
-                <select convert-to-number name="reservation-type" id="reservation-type" ng-class="{'placeholder':reservationParentData.demographics.reservationType == ''}" ng-model="reservationParentData.demographics.reservationType" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
-                    <!-- Add  class="placeholder" when no value option is selected -->
-                    <option value="">Select Reservation Type</option>
-                    <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==reservationParentData.demographics.reservationType">{{reservationType.name}}</option>
-                </select>
-                </select>
+            <div class="entry" ng-show="additionalDetails.isTaxExemptEnabled" ng-class="{'overlay' : reservationData.reservation_card.reservation_status === 'CHECKEDOUT'}"> <!-- Remove class 'hidden' when L11 is checked -->
+                <textarea rows="4" maxlength="200" ng-change="doUpdateTaxExemptData()" ng-model="additionalDetails.taxExemptRefText" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}"></textarea>
             </div>
         </div>
 
@@ -47,6 +38,7 @@
             </h3>
             <div class="entry">
                 <div class="switch-button" ng-class="{'on': reservationData.reservation_card.commission_details.is_on}">
+                    <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleCommission()" ng-if="::hasPermissionToEditCommission" ></div>
                     <input id="ta-commission" value="1" type="checkbox" checked disabled />
                     <label class="data-off">
                         <span class="value">Off</span>
@@ -57,13 +49,42 @@
                         <span class="value">On</span>
                     </label>
                 </div>
-                <input value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()" ng-disabled='true'/>
-                <div class="select">
-                    <select convert-to-number name="travel-agent-commission-type" ng-model="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()" ng-disabled='true'>
+                <input value="{{reservationData.reservation_card.commission_details.commission_value}}"
+                       type="text"
+                       ng-model-options="{ updateOn: 'blur' }"
+                       ng-model="reservationData.reservation_card.commission_details.commission_value"
+                       ng-disabled="::!hasPermissionToEditCommission"
+                       ng-change="updateCommissionFromStaycard()" 
+                       ng-show="reservationData.reservation_card.commission_details.is_on"/>
+                <div class="select" ng-show="reservationData.reservation_card.commission_details.is_on">
+                    <select convert-to-number name="travel-agent-commission-type"
+                            ng-model="reservationData.reservation_card.commission_details.commission_type"
+                            ng-disabled="::!hasPermissionToEditCommission"
+                            ng-change="updateCommissionFromStaycard()">
                         <option value="percent">%</option>
                         <option value="amount">{{currencySymbol}}</option>
                     </select>
                 </div>
+                <div class="select" ng-show="reservationData.reservation_card.commission_details.is_on && reservationData.reservation_card.commission_details.commission_type === 'amount'">
+                    <select ng-model="reservationData.reservation_card.commission_details.post_type"
+                            ng-change="updateCommissionFromStaycard()">
+                        <option value="STAY" translate>PER_NIGHT</option>
+                        <option value="NIGHT" translate>PER_STAY</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reservation Type -->
+        <div class="block-item item-type additional-detail">
+            <h3 class="block-title">Reservation Type</h3>
+            <div class="select">
+                <select convert-to-number name="reservation-type" id="reservation-type" ng-class="{'placeholder':reservationParentData.demographics.reservationType == ''}" ng-model="reservationParentData.demographics.reservationType" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
+                    <!-- Add  class="placeholder" when no value option is selected -->
+                    <option value="">Select Reservation Type</option>
+                    <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==reservationParentData.demographics.reservationType">{{reservationType.name}}</option>
+                </select>
+                </select>
             </div>
         </div>
 

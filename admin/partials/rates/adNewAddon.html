@@ -31,7 +31,7 @@
 
                <!--  <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="translations.translated_description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}" required="yes" ng-show="!isDefaulLanguageSelected()"></ad-textarea> -->
 
-                
+
 
                 <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
                     <label class="checkbox">
@@ -94,7 +94,7 @@
 
                 </div>
 
-                
+
 
             </fieldset>
             <fieldset class="holder right float">
@@ -147,7 +147,7 @@
                 </div>
 
                 <ad-toggle-button div-class="full-width" label="{{'ALTERNATE_DESCRIPTION_SWITCH_LABEL' | translate}}" is-hide="!isConnectedToPMS" is-checked="singleAddon.is_alternate_description_active"></ad-toggle-button>
-                
+
                 <ad-textarea rows="4" hide="!(isConnectedToPMS && singleAddon.is_alternate_description_active) || (!isDefaulLanguageSelected())" div-class="full-width" text-area-class="full-width" value="singleAddon.alternate_description" name="desc" id="desc" label="{{'ALTERNATE_DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_ALTERNATE_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
 
                 <ad-textarea rows="4" hide="!(isConnectedToPMS && singleAddon.is_alternate_description_active) || isDefaulLanguageSelected()" div-class="full-width" text-area-class="full-width" value="translations.translated_alternate_description" name="desc" id="desc" label="{{'ALTERNATE_DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_ALTERNATE_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
@@ -192,6 +192,17 @@
                         <input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
                     </label>
                 </div>
+                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_common_area }"></span>
+                        <label>{{'COMMON_AREA' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.is_common_area">
+                    </label>
+                </div>
+                <div ng-if="singleAddon.is_common_area" class="entry">
+                    <ad-textbox inputtype="number" styleclass="full-width" value="singleAddon.pass_level_no" name="pass_level_no" id="pass_level_no" label="{{'PASS_LEVEL_NO' | translate}}" maxlength="2" required="no"></ad-textbox>
+                </div>
+
                 <div ng-show="showChargeFullWeeksOnly()" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.charge_full_weeks_only }"></span>

@@ -315,6 +315,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     }),
                    deffered = $q.defer();
 
+            choosenReport.usedFilters = selectedreport.filters;
             // generatedReportId is required make API call
             choosenReport.generatedReportId = selectedreport.id;
             // if the two reports are not the same, just call

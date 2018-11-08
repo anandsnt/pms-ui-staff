@@ -127,11 +127,20 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
 		$rootScope.skipBalanceCollection = false;
 
+
+		if (reservationAndhotelData.payment_gateway === "MLI") {
+			var script = document.createElement("script")
+
+			script.type = "text/javascript";
+			script.src = 'https://cnp.merchantlink.com/form/v2.1/hpf.js';
+			document.getElementsByTagName("head")[0].appendChild(script);
+		}
+
 		// This is used for greatwolf only
 		if (!_.isUndefined(reservationAndhotelData.zestweb_cc_authorization_amount) && reservationAndhotelData.zestweb_cc_authorization_amount.length > 0){
 			$rootScope.ccAuthorizationAmount = reservationAndhotelData.zestweb_cc_authorization_amount;
 		} else {
-			$rootScope.ccAuthorizationAmount = '50';
+			$rootScope.ccAuthorizationAmount = reservationAndhotelData.hotel_theme === 'guestweb_ihg' ? '40' : '50';
 		}
 
 
@@ -146,6 +155,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		// Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
+
+		$rootScope.hotelCheckinTime = reservationAndhotelData.hotel_checkin_time;
 
 		// Marketting apps
 		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;

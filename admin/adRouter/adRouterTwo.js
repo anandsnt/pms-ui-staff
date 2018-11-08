@@ -594,6 +594,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADInterfaceSubMenuCtrl',
         url: '/crmInterfaces'
     });
+    $stateProvider.state('admin.concierge', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/crmInterfaces'
+    });
 
     $stateProvider.state('admin.stationary', {
         templateUrl: '/assets/partials/stationary/adStationary.html',
@@ -632,13 +637,6 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'adAnalyticSetupCtrl',
         url: '/analyticSetup'
     });
-
-    $stateProvider.state('admin.debuggingSetup', {
-        templateUrl: '/assets/partials/debuggingSetup/adDebuggingSetup.html',
-        controller: 'adDebuggingSetupCtrl',
-        url: '/debuggingSetup'
-    });
-
 
     $stateProvider.state('admin.emailBlacklist', {
         templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',

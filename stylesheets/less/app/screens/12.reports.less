@@ -1969,7 +1969,12 @@
 
             &.card-authorization-check-reports {
                 margin-bottom: 2em;
-
+                td,
+                th {
+                    &.rate {
+                        width: 200px;
+                    }
+                }
                 td {
 
                     &.entity-name {
@@ -2479,6 +2484,46 @@
 
                         &.row-break {
                             td { border-bottom: 0; }
+                        }
+                    }
+                }
+                
+                &.tax-exempt-report {
+                    
+                    tbody {
+                        td {
+                            .reference {
+                                color: @grey3;
+                                .show();
+                            }
+
+                            &.name {
+
+                                .dates {
+                                    margin-bottom: 10px;
+                                }
+                            }
+
+                            &.tax-exempt {
+                                width: 320px;
+                                border-bottom: 0;
+
+                                &.break {
+                                    border-bottom: 1px solid @grey2;
+
+                                    &:after {
+                                        .hide();
+                                    }
+                                }
+                            }
+
+                            &.date {
+                                width: 160px;
+                            }
+
+                            &.rate {
+                                width: 240px;
+                            }
                         }
                     }
                 }

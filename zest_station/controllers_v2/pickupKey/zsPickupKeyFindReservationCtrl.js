@@ -8,11 +8,14 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 	'$timeout',
 	'zsCheckinSrv',
 	'zsGeneralSrv',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv) {
-
+	'$controller',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv, $controller) {
 
 		(function init() {
 			BaseCtrl.call(this, $scope);
+			$controller('zsPaymentCtrl', {
+				$scope: $scope
+			});
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
@@ -20,12 +23,17 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			});
 			$scope.setScreenIcon('key');
 			$scope.mode = 'LAST_NAME_ENTRY';
+			$scope.mainScreenMode = 'FIND_RESERVATION';
 			$scope.reservationParams = {
 				'last_name': '',
 				'room_no': ''
 			};
 			$scope.creditCardNumber = '';
 			$scope.reservationData = {};
+			$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'MLI' &&
+					$scope.zestStationData.hotelSettings.mli_cba_enabled ||
+				$scope.zestStationData.paymentGateway === 'CBA';
+
 		})();
 
 		var dismissKeyBoardActions = function() {
@@ -97,7 +105,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		var fetchGuestDetails = function(data, stateParams) {
 			var successCallBack = function(guest_details) {
-				if (!$scope.reservationHasPassportsScanned(guest_details) && !guest_details.primary_guest_details.guest_id_reviewed) {
+				if (!$scope.reservationHasPassportsScanned(guest_details) && (!guest_details.primary_guest_details.guest_id_reviewed || $scope.zestStationData.pickup_key_always_ask_for_id)) {
 					$scope.zestStationData.continuePickupFlow = function() {
 						goToKeyDispense(stateParams);
 					};
@@ -123,38 +131,40 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 
+		var onCCVerificationSuccess = function() {
+			if ($scope.reservationData.is_checked_in) {
+				var stateParams = {
+					'reservation_id': $scope.reservationData.reservation_id,
+					'room_no': $scope.reservationParams.room_no,
+					'first_name': $scope.reservationData.first_name
+				};
+
+				// Check if ID scan is required
+				if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_manual_id_scan) {
+					fetchGuestDetails($scope.reservationData, stateParams);
+				} else {
+					goToKeyDispense(stateParams);
+				}
+			} else {
+				// if the reservation is not checked in, procced to checkin
+				if (!$scope.reservationData.is_checked_in && $scope.reservationData.guest_arriving_today) {
+					fetchDetailsForCheckingIn($scope.reservationData.reservation_id);
+				} else {
+					generalFailureActions();
+				}
+			}
+		};
+
 		$scope.validateCConFile = function() {
 			$scope.callBlurEventForIpad();
-			var onCCVerificationSuccess = function() {
-				if ($scope.reservationData.is_checked_in) {
-					var stateParams = {
-						'reservation_id': $scope.reservationData.reservation_id,
-						'room_no': $scope.reservationParams.room_no,
-						'first_name': $scope.reservationData.first_name
-					};
-					
-					// Check if ID scan is required
-					if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_manual_id_scan) {
-						fetchGuestDetails($scope.reservationData, stateParams);
-					} else {
-						goToKeyDispense(stateParams);
-					}
-				} else {
-					// if the reservation is not checked in, procced to checkin
-					if (!$scope.reservationData.is_checked_in && $scope.reservationData.guest_arriving_today) {
-						fetchDetailsForCheckingIn($scope.reservationData.reservation_id);
-					} else {
-						generalFailureActions();
-					}
-				}
-			};
 			var onCCVerificationFailure = function() {
 				$scope.mode = 'CC_MATCH_FAILED';
 			};
 			var options = {
 				params: {
 					'last_four_cc_digits': $scope.creditCardNumber,
-					'id': $scope.reservationData.reservation_id
+					'id': $scope.reservationData.reservation_id,
+                    'application': 'KIOSK'
 				},
 				successCallBack: onCCVerificationSuccess,
 				failureCallBack: onCCVerificationFailure
@@ -171,11 +181,11 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		var searchReservation = function() {
 			var findReservationSuccess = function(data) {
 				$scope.reservationData = data;
-				if ((!data.is_checked_in && !data.guest_arriving_today) || data.is_checked_out) {
+				if (!data.is_checked_in && !data.guest_arriving_today || data.is_checked_out) {
 					generalFailureActions();
 				} else {
 					if ($scope.reservationData.has_cc) {
-						$scope.mode = 'CC_ENTRY';
+						$scope.mode = $scope.hideAddCardOption ? 'CC_ENTRY' : 'CC_OPTIONS';
 						$scope.focusInputField('credit-card');
 					} else {
 						$scope.mode = 'NO_CC_ON_FILE';
@@ -223,5 +233,26 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				$scope.focusInputField('last-name');
 			}
 		};
+
+		/* CC actions starts here */
+
+		$scope.useNewCard = function () {
+			$scope.mainScreenMode = 'PAYMENT_IN_PROGRESS';
+			$scope.reservation_id = $scope.reservationData.reservation_id;
+			$scope.screenMode.paymentAction = 'ADD_CARD'; 
+			$scope.payUsingNewCard();
+		};
+
+		$scope.$on('SAVE_CC_SUCCESS', function() {
+			$timeout(function() {
+				onCCVerificationSuccess();
+
+			}, 200);
+		});
+
+		$scope.$on('PAYMENT_FAILED', function() {
+			$scope.mainScreenMode = 'PAYMENT_FAILED';
+		});
+
 	}
 ]);

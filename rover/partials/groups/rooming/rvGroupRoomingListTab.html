@@ -224,7 +224,7 @@
                 </div>
                 <a ng-click="clickedOnReservation(reservation)">
                     <div class="data">
-                        <h2 ng-show="!isGuestBlank(reservation)">
+                        <h2 ng-show="!isGuestBlank(reservation)" style="text-transform: none">
                             <span ng-bind-html="escapeNull(reservation.lastname)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.firstname)|highlight:query:false"></span>
                         </h2>
                         <h2 ng-show="isGuestBlank(reservation)">

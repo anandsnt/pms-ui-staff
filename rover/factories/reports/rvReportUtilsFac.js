@@ -43,7 +43,8 @@ angular.module('reportsModule')
             'chosenIncludeGroup',
             'hasMinRoomNights',
             'hasMinRevenue',
-            'showActionables'
+            'showActionables',
+            'show_vat_with_rates'
         ];
 
         /**
@@ -407,6 +408,14 @@ angular.module('reportsModule')
                     );
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "SHOW_VAT_WITH_RATES",
+                        'description': "VAT"
+                    }
+                    );
+                    break;
+
                 default:
                     // no op
                     break;
@@ -590,6 +599,10 @@ angular.module('reportsModule')
                     report['hasIncludeAgingBalance'] = filter;
                 }
 
+                if ( filter.value === 'TAX_EXEMPT_TYPE' ) {
+                    report['hasIncludeTaxExempts'] = filter;
+                }
+
                 if ( filter.value === 'ACCOUNT_SEARCH' ) {
                     report['hasAccountSearch'] = filter;
                 }
@@ -599,7 +612,7 @@ angular.module('reportsModule')
                 }
 
                 // check for include company/ta filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' || filter.value === 'TA_CC_CARD') {
                     report['hasIncludeCompanyTa'] = filter;
                 }
 
@@ -610,6 +623,10 @@ angular.module('reportsModule')
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeCompanyTaGroup'] = filter;
+                }
+
+                if ( filter.value === 'GROUP_CODE' ) {
+                    report['hasGroupCode'] = filter;
                 }
 
                 if ( filter.value === 'MIN_REVENUE' ) {
@@ -625,6 +642,10 @@ angular.module('reportsModule')
 
                 if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
                     report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
+                }
+
+                if (filter.value === 'SHOW_VAT_WITH_RATES') {
+                    report['hasShowVatWithRates'] = filter;
                 }
 
                 if (filter.value === 'VAT_YEAR') {
@@ -889,6 +910,10 @@ angular.module('reportsModule')
                 } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
                     // requested++;
                     fillAgingBalance();
+                } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchTaxExemptTypes()
+                        .then( fillTaxExemptTypes );
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchAccounts()
@@ -1227,8 +1252,30 @@ angular.module('reportsModule')
                 });
             }
 
+            function fillTaxExemptTypes(data) {
+                
+              var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'TAX_EXEMPT_TYPE' });
+                    if ( !! foundFilter ) { 
+                        foundFilter['filled'] = true;
+                        report.hasIncludeTaxExempts = {
+                            data: data,
+                            options: {
+                                hasSearch: true,
+                                selectAll: true,
+                                key: 'name'
+                            }
+                        };
+                    }
+                });
+                completed++;
+                checkAllCompleted();
+            }    
+
             function fillAgingBalance() {
-              var  customData = [
+                var  customData = [
                                 {id: "0to30", status: "0-30 DAYS", selected: true},
                                 {id: "31to60", status: "31-60 DAYS", selected: true},
                                 {id: "61to90",  status: "61-90 DAYS", selected: true},
@@ -1749,14 +1796,26 @@ angular.module('reportsModule')
             // [date - name - room] > TO > [room - name - date]
             if ( report['title'] === reportNames['ARRIVAL'] ||
                  report['title'] === reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy( report['sort_fields'][0] ),
-                    roomSortBy = angular.copy( report['sort_fields'][2] );
+                var arrivalDateSortBy = angular.copy( report['sort_fields'][1] ),
+                    roomSortBy = angular.copy( report['sort_fields'][4] ),
+                    nameSortBy = angular.copy( report['sort_fields'][2] ),
+                    departureDateSortBy = angular.copy( report['sort_fields'][0] ),
+                    rateSortBy = angular.copy( report['sort_fields'][3] ),
+                    balanceSortBy = angular.copy( report['sort_fields'][5] );
 
-                dateSortBy['colspan'] = 2;
+                // CICO-57477 - This is done to disable sorts in column header for some fields
+                departureDateSortBy.disableSort = true;
+                balanceSortBy.disableSort = true;
+
+                arrivalDateSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
                 report['sort_fields'][0] = roomSortBy;
-                report['sort_fields'][2] = dateSortBy;
+                report['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][2] = arrivalDateSortBy;
+                report['sort_fields'][3] = departureDateSortBy;
+                report['sort_fields'][4] = rateSortBy;
+                report['sort_fields'][5] = balanceSortBy;
             }
 
             // for AR Summary report the sort by items must be
@@ -1780,14 +1839,26 @@ angular.module('reportsModule')
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
             if ( report['title'] === reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy( report['sort_fields'][0] ),
-                    roomSortBy = angular.copy( report['sort_fields'][1] );
+                var nameSortBy = angular.copy( report['sort_fields'][1] ),
+                    roomSortBy = angular.copy( report['sort_fields'][3] ),
+                    rateSortBy = angular.copy( report['sort_fields'][2] ),  
+                    arrivalDateSortBy = angular.copy( report['sort_fields'][0] ),
+                    departureDateSortBy = angular.copy( report['sort_fields'][4] );                   
+
+                // CICO-57477 - This is done to disable sorts in column header for some fields
+                arrivalDateSortBy.disableSort = true;
+                departureDateSortBy.disableSort = true;
+                balanceSortBy = {disableSort: true};
 
                 nameSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
                 report['sort_fields'][0] = roomSortBy;
                 report['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][2] = arrivalDateSortBy;
+                report['sort_fields'][3] = departureDateSortBy;
+                report['sort_fields'][4] = rateSortBy;
+                report['sort_fields'][5] = balanceSortBy;
             }
 
             // for Login and out Activity report

@@ -10,6 +10,7 @@
 
 "APPLY_TO_ROOM_TYPES": "Apply to Room Types",
 "OVERBOOKING_WARN_MSG": "This will override all existing house and room type limits for selected dates. Please review availability is correct.",
+"OVERBOOKING_WARN_MSG_EDIT": "This will override all existing house and room type limits for this date. Please review availability is correct.",
 "FROM": "From",
 "TO": "To",
 "EVERY": "Every",

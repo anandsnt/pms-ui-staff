@@ -8,8 +8,8 @@
             <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_LIST_SUB_HEADER')" editable-text="ROOM_UPGRADE_LIST_SUB_HEADER"></text>
         </h3>
         <!--Layout V4: add  .upgrade-list-v2 -->
-        <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':viewableRoomUpgrades.length === 2,'single-upgrade-list':viewableRoomUpgrades.length === 1}">
-            <li ng-repeat='room in viewableRoomUpgrades' click-touch="showRoomDetailsForStyleA(room)">
+        <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
+            <li ng-repeat='room in pageData.viewableItems' click-touch="showRoomDetailsForStyleA(room)">
                 <div class="upgrade-picture">
                     <img src="{{room.room_type_image}}">
                 </div>
@@ -35,16 +35,16 @@
             </button>
             <p class="text" ng-show="showPageNumberDetails">
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_1')" editable-text="ROOM_UPSELL_FOOTER_1"></text>
-                &nbsp;{{pageStartingIndex}}-{{pageEndingIndex}}&nbsp;
+                &nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_2')" editable-text="ROOM_UPSELL_FOOTER_2"></text>
                 &nbsp;{{upsellRooms.length}}&nbsp;
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_3')" editable-text="ROOM_UPSELL_FOOTER_3"></text>
             </p>
             <div class="button-group">
-                <button type="button" class="button" click-touch="viewPreviousPage()" ng-hide="hidePreviousButton">
+                <button type="button" class="button" click-touch="paginationAction(false)" ng-hide="pageData.disablePreviousButton">
                     <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_PREV')" editable-text="ROOM_UPGRADE_PREV"></text>
                 </button>
-                <button type="button" class="button" click-touch="viewNextPage()" ng-hide="hideNextButton">
+                <button type="button" class="button" click-touch="paginationAction(true)" ng-hide="pageData.disableNextButton">
                     <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_NEXT')" editable-text="ROOM_UPGRADE_NEXT"></text>
                 </button>
             </div>

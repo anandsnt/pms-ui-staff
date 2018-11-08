@@ -50,6 +50,7 @@ module.exports = function(config) {
             './constants/**/*.js',
             './factories/**/*.js',
             './filters/*.js',
+            '../shared/sntCurrency/sntCurrencyFilter.js',
             '../shared/baseCtrl.js',
             './partials/**/*.html'
         ],

@@ -435,9 +435,22 @@
 
                         .icon-identity-card {
                             background-position: 10px -10831px;
+                        }
+
+                        .icon-identity-card-grey {
+                            background-position: 10px -12211px;
+                        }
+
+                        .icon-identity-card,
+                        .icon-identity-card-grey {
                             left: 10px;
                             top: 0;
                             .square(40px);
+                        }
+
+                        &.purple {
+                            width: 40px;
+                            left: calc(~"100% + 120px");
                         }
                     }
                 }
@@ -1081,24 +1094,21 @@
 
                 /* Commision ***/
                 &.item-commission {
+                    margin-right: 0;
+                    width: 100%;
+
                     .entry {
-                        .float;
+                        display: grid;
+                        grid-template-columns: 120px 80px 60px 120px;
+                        grid-column-gap: 10px;
 
                         .switch-button { 
-                            margin-right: 10px;
-                            .calc-width(100, 160);
-                            .pull-left;
+                            width: 100%;
                         }
 
-                        input {
-                            margin-right: 10px;
-                            .size(50px, 80px);
-                            .pull-left;
-                        }
-
+                        input,
                         .select {
-                            .size(50px, 60px);
-                            .pull-left;
+                            height: 50px;
                         }
                     }
                 }
@@ -1149,19 +1159,69 @@
 
                 /* Tax Exempt ***/
                 &.item-tax-exempt {
+                    margin-right: 0;
+                    width: 100%;
+
                     .entry {
-                        .float;
+                        display: grid;
+                        grid-template-columns: 120px calc(~'100% - 130px');
+                        grid-column-gap: 10px;
+                        grid-row-gap: 10px;
 
                         .switch-button { 
-                            margin-right: 10px;
-                            .calc-width(100, 160);
-                            .pull-left;
+                            width: 100%;
                         }
 
+                        input,
                         .select {
-                            .size(50px, 150px);
-                            .pull-left;
+                            height: 50px;
                         }
+
+                        textarea {
+                            grid-column: span 2;
+                        }
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+            }
+
+            .block-grid {
+                display: grid;
+                grid-template-columns: calc(~'50% - 10px') calc(~'50% - 10px');
+                grid-column-gap: 20px;
+
+                .block-item {
+                    margin-right: 0;
+
+                    &.additional-detail {
+                        width: 100%;
+                    }
+
+                    &.item-commission,
+                    &.item-tax-exempt {
+                        grid-column: span 2;
+                    }
+                }
+            }
+
+            .block-grid {
+                display: grid;
+                grid-template-columns: calc(~'50% - 10px') calc(~'50% - 10px');
+                grid-column-gap: 20px;
+
+                .block-item {
+                    margin-right: 0;
+
+                    &.additional-detail {
+                        width: 100%;
+                    }
+
+                    &.item-commission,
+                    &.item-tax-exempt {
+                        grid-column: span 2;
                     }
                 }
             }

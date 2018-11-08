@@ -65,6 +65,22 @@ angular.module('sntRover').service('RVKeyPopupSrv', ['$q', 'RVBaseWebSrv', 'rvBa
 		return deferred.promise;
 	};
 
+    /**
+     * service function to generate new key from server by passing reservation confirmation number
+     */
+    this.generatePinCode = function(params) {
+        var deferred = $q.defer();
+        var url =  "/api/reservation/" + params.interface.toLowerCase() + "/" + params.confirmation_number + "/generate";
+
+
+        rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 
 	/**
 	* service function to add smartband to server

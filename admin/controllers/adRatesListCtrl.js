@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog', 'sntActivity',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog, sntActivity) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -7,6 +7,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 	$scope.isConnectedToPMS = false;
+	$scope.showInactiveRates = false;
 
 	/**
     * To fetch all rate types
@@ -30,6 +31,14 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);
+
+		// CICO-55394 - Search field if used will always bring up both active/inactive rates irrespective of the check box being selected.
+		if (getParams.query !== "") {
+			getParams.show_inactive_rates = true;
+		}
+		else {
+			getParams.show_inactive_rates = $scope.showInactiveRates;
+		}
 		var fetchSuccessOfItemList = function(data) {
 			$timeout(function() {
 		        $scope.$emit('hideLoader');
@@ -43,7 +52,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	        	// params.total(data.results.length);
 	            $defer.resolve($scope.data);
 		    }, 500);
-
 		};
 
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);
@@ -255,10 +263,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	};
 
-	$scope.showLoader = function() {
-		$scope.$emit('showLoader');
-	};
-
 	$scope.editRatesClicked = function(rateId, index) {
 		// If PMS connected, we show an inline edit screen for rates.
 		// Only rate name and description should be editable.
@@ -276,10 +280,9 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		// If standalone PMS, then the rate configurator wizard should be appeared.
 		} else {
-			$scope.showLoader();
+			sntActivity.start('LOAD_RATE_DETAILS');
 			$state.go('admin.rateDetails', {rateId: rateId});
 		}
-
 	};
 
 	$scope.openCsvUploadPopup = function() {
@@ -313,7 +316,11 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 		$scope.callAPI(ADRatesSrv.uploadCSVFile, options);
 	};
-
+	// CICO-55394 - Method to toggle inactive rate checkbox.
+	$scope.toggleInactiveRates = function() {
+		$scope.showInactiveRates = !$scope.showInactiveRates;
+		$scope.reloadTable();
+	};
 
 }]);
 

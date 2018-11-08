@@ -4,9 +4,9 @@
 "CONCEPT4000_SUB_TITLE": "Concept4000 API Access Configuration",
 "USERNAME": "Username",
 "PASSWORD": "Password",
-"FTP_URL": "Ftp Url",
-"FTP_LOCATION1": "Ftp Location1",
-"FTP_LOCATION2": "Ftp Location2",
-"FTP_PORT": "Port"
+"SFTP_URL": "SFTP Url",
+"SFTP_LOCATION1": "SFTP Location1",
+"SFTP_LOCATION2": "SFTP Location2",
+"SFTP_PORT": "Port"
 
 

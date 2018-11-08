@@ -128,3 +128,7 @@
     </div>
 <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>
 </section>
+
+<div ng-if="zestStationData.add_loyalty_pgms">
+    <ng-include src="'/assets/partials_v2/checkin/loyalty/zsCheckinLoyaltyMain.html'" ng-show="mode === 'LOYALTY_PROGRAMS'" ng-controller="zsCheckinLoyaltyCtrl"></ng-include>
+</div>

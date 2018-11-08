@@ -159,6 +159,20 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
+        /**
+         * Update Billing info
+         */
+        this.updateBillingInformation = function (params) {
+            var deferred = $q.defer(),
+                url = "api/bill_routings/update_dates";
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         /**
          * Sends the confirmation email
@@ -396,6 +410,30 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data.is_upsell_available);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.updateCommission = function(data) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/' + data.reservationId + '/update_commission';
+
+            rvBaseWebSrvV2.putJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.retrieveRoomPin = function(params) {
+            var deferred = $q.defer(),
+                url = '/staff/reservation/get_room_pin'; 
+
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });

@@ -1,0 +1,201 @@
+/* StayNTouch Zest Station Styles | First Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #b29126;
+    
+    @textColor:             @black;
+    @backgroundColor:       @white;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: @white;
+    @backgroundSize: '';
+    
+    @headerIconsColor:      @brandColor;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/park-james/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 90px;
+        height: 110px;
+        background-position: center;
+        margin-top: 0;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #park-james {
+ 
+        #header {
+            height: 145px;
+
+            .button {
+                .icons {
+                    fill: @black;
+                }
+            }
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
+
+            &.centered {
+                padding-top: 100px;
+                #content {
+                    height: 100%;
+                }
+            }
+        }
+
+        .entry.input {
+            .icons {
+                fill: @brandColor;
+            }
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 35px;
+
+            .logo {
+                width: auto;
+                height: 110px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    background-color: fade(@brandColor, 5);
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: @black;
+            }
+        } 
+
+        .add-on-list {
+            li {
+
+                &:not(.selected){
+                    border-color: rgba(0,0,0,0.05);
+
+                    .add-on-content {
+                        background: rgba(0,0,0,0.05);
+                    }
+                }
+                
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @black;
+                }
+            }
+        }
+
+        #textual {
+            background: #ececec;
+             
+
+            &:before,
+            &:after {
+                background: #ececec;
+            }
+
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        #upgrade {
+            border: 1px solid @brandColor;
+            border-radius: 5px;
+
+            .upgrade-price {
+                background-color: @brandColor;
+                color: @white;
+            }
+        }
+    }

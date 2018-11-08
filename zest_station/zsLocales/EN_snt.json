@@ -645,7 +645,7 @@
    "LAST_4_DIGITS_INCORRECT_MSG": "Please Select One of the Following:",
    "RE_ENTER": "RE-ENTER",
    "NO_CC_ON_FILE_HEADER": "No Credit Card Found",
-   "NO_CC_ON_FILE_SUB_HEADER": "Please Speak to our Staff Member",
+   "NO_CC_ON_FILE_SUB_HEADER": "Please use a new credit card to proceed",
 
    "CBA_IN_PROGRESS": "Deposit collection",
    "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
@@ -683,6 +683,53 @@
    "WITH_ID": "With ID",
    "WITHOUT_ID": "Without ID",
 
-   "ROOM_PIN_TEXT": "Your room door key code is"
+   "ROOM_PIN_TEXT": "Your room door key code is",
 
+   "ENTER_ADDRESS": "Enter Your Address",
+   "ADDRESS_1": "Address line 1",
+   "ADDRESS_2": "Address line 2",
+   "CITY": "City",
+   "STATE_OR_PROVINCE": "State/Province",
+   "POSTAL_OR_ZIP_CODE": "Postal/ZIP code",
+
+   "YOUR_ADDRESS": "Your Address",
+   "USE_ADDRESS_ON_FILE": "Use Address on File",
+   "ADD_NEW_ADDRESS": "Add New Address",
+   "OK": "OK",
+   "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information",
+   "ADD_NEW": "Add New",
+   "CREDIT_CARD": "Credit card",
+   "PLEASE_SELECT_ONE": "Please select one of the following",
+   "CC_OPTIONS_HEADER": "Proceed or add new credit card",
+   "ADD_NEW_CREDIT_CARD": "Add new Credit card",
+   
+   "PROCEED_WITH_EXISTING_LOYALTY": "Proceed with existing Loyalty",
+   "SELECT_LOYALTY_PROGRAM": "Select Loyalty Program",
+   "NUMBER": "Number",
+   "AIR_LINE_TYPE": "Airline / Type",
+   "LOYALTY_FOOTER": "Showing {{startingIndex}}-{{endingIndex}} of {{total}} programs",
+   "ENTER_FREQUENT_FLYER_PROGRAM_DETAILS": "Enter Frequent Flyer Program Details",
+   "SELECT_AIRLINE": "Select Airline",
+   "ENTER_HOTEL_LOYALTY_PROGRAM": "Enter Hotel Loyalty Program Details",
+   "SELECT_TYPE": "Select Type",
+   "SELECT_LEVEL": "Select Level",
+   "NEW_LOYALTY_PROGRAM": "New Loyalty Program",
+   "FREAQUENT_FLYER": "Frequent Flyer",
+   "HOTEL_LOYALTY": "Hotel Loyalty",
+   "SKIP_LOYALTY": "Skip Loyalty",
+   "LOYALTY_ERROR_MSG_1": "Sorry!..",
+   "NO_THANKS": "No Thanks",
+   "ADD_LOYALTY_PRGM": "Add Loyalty Program",
+   "SELECT_EXISTING_PGM": "Select Existing",
+   "ADD_NEW_LOYALTY": "Add New",
+   "MEMBERSHIP_ALREADY_TAKEN": "Membership already taken",
+   "LOYALTY_GENERAL_ERROR": "Something went wrong",
+   "UPDATE_EXISTING_PGM": "Update existing program",
+   "NEW_LOYALTY_PROGRAM_INSTRUCTIONS": "Select from programs offered by hotel",
+
+   "NO_COUNTRY_MATCH": "No match found!",
+   "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
+
+   "FEES": "FEES"
+   
 }

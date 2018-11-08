@@ -342,7 +342,7 @@
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTaGroup">
         </div>
 
-        <!-- item_50: group -->
+         <!-- item_50: group -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeGroup" ng-class="{'active': filterItemsToggle.item_50}" ng-click="toggleFilterItems('item_50')">
             <span class="title">Group</span>
         </a>
@@ -620,16 +620,33 @@
 
         <!-- item_34: company/ta -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeCompanyTa" ng-class="{'active': filterItemsToggle.item_34}" ng-click="toggleFilterItems('item_34')">
-            <span class="title">Company/TA</span>
+            <span class="title">Company / Travel Agent</span>
         </a>
         <div class="settings-content" ng-show="chosenReport.hasIncludeCompanyTa" ng-class="{'hidden': !filterItemsToggle.item_34}">
-            <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
+            <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company / Travel Agent" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTa">
         </div>
 
+        <!--item_53-->
 
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasGroupCode" ng-class="{'active': filterItemsToggle.item_53}" ng-click="toggleFilterItems('item_53')">
+            <span class="title">Group Code</span>
+        </a>
+        <div class="settings-content" ng-show="chosenReport.hasGroupCode" ng-class="{'hidden': !filterItemsToggle.item_53}">
+            <input class="icons icon-search" auto-complete auto-options="groupCodeOnDetails" data-card-type="" type="text" placeholder="Search by Group Code" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeGroupCode" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" >
+            <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeGroup">
+        </div>
 
-
+        <!-- item_54: Display options -->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeTaxExempts && chosenReport.hasIncludeTaxExempts.data.length" ng-class="{ 'active': filterItemsToggle.item_54 }" ng-click="toggleFilterItems('item_54')">
+            <span class="title">Tax Exempt Type</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasIncludeTaxExempts && chosenReport.hasIncludeTaxExempts.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_54 }">
+            <multi-option-selection label="Display(s)"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasIncludeTaxExempts.data"
+                options="chosenReport.hasIncludeTaxExempts.options"></multi-option-selection>
+        </div>
 
         <!-- item_35: Min. Revenue -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasMinRevenue" ng-class="{'active': filterItemsToggle.item_35}" ng-click="toggleFilterItems('item_35')">
@@ -775,6 +792,16 @@
             </label>
         </div>        
         <!-- YEARLY VAT END-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowVatWithRates" ng-class="{'active': filterItemsToggle.item_55}" ng-click="toggleFilterItems('item_55')">
+            <span class="title">VAT</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasShowVatWithRates" ng-class="{ 'hidden': !filterItemsToggle.item_55 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.show_vat_with_rates}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.show_vat_with_rates}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.show_vat_with_rates">
+                SHOW VAT WITH RATES
+            </label>
+        </div>  
 
 
         <!-- item_43: Completion Status -->

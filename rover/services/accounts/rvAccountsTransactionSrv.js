@@ -11,10 +11,6 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 				.then(function(data) {
 					angular.forEach(data.bills, function(bill, index2) {
 						bill.page_no = 1;
-						bill.start = 1;
-						bill.end = 1;
-						bill.nextAction = false;
-						bill.prevAction = false;
 						bill.transactions = [];
 						bill.activeDate = null;
 					});

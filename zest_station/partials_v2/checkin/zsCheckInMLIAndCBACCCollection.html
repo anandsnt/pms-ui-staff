@@ -15,9 +15,12 @@
          <text data-ng-bind-html="getTagValue('CC_SWIPE_TIMEOUT_SUB')" editable-text="CC_SWIPE_TIMEOUT_SUB"></text>
       </h2>
         <nav id="options" role="nav">
+            <div class='uploaded-key-image' id="keys" ng-show="waitingForSwipe && zestImages.cc_auth_image.length > 0">
+              <img src="{{zestImages.cc_auth_image}}">
+            </div>
             <ul role="menu">
                 <!-- card swipe -->
-                <li ng-show='waitingForSwipe'>
+                <li ng-show='waitingForSwipe && zestImages.cc_auth_image.length === 0'>
                   <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
                   <img src="/assets/zest_station/css/icons/default/magtek.png" alt="" class="device-image device-magtek">
                 </li>
@@ -62,14 +65,15 @@
         </ul>
     </div>
 </section>
-<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="screenMode.paymentAction === 'PAY_AMOUNT' && screenMode.value !== 'PAYMENT_IN_PROGRESS'">
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="screenMode.paymentAction === 'PAY_AMOUNT' && screenMode.value !== 'PAYMENT_IN_PROGRESS' && screenMode.paymentTypeFetchCompleted">
     <div id="content">
       <h1 ng-if='!swipeError'>
          <text data-ng-bind-html="getTagValue('DEPOSIT_REMAIN')" editable-text="DEPOSIT_REMAIN"></text>
       </h1>
       <h2 ng-if='!swipeError'>
          <text data-ng-bind-html="getTagValue('DEPOSIT_REMAIN_SUB')" editable-text="DEPOSIT_REMAIN_SUB"></text>
-         {{zestStationData.currencySymbol}}{{depositAmount}}
+         <span ng-hide="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }}</span>
+        <span ng-show="screenMode.showFees">{{zestStationData.currencySymbol}}{{ screenMode.totalAmountPlusFees | number: 2 }} ({{zestStationData.currencySymbol}}{{ screenMode.amountDue | number: 2 }} + {{zestStationData.currencySymbol}}{{ screenMode.totalFees | number: 2 }} {{ 'FEES' | translate }})</span>
       </h2>
       <h2 ng-if='!swipeError'>
          <text data-ng-bind-html="getTagValue('DEPOSIT_REMAIN_SUB_SUB')" editable-text="DEPOSIT_REMAIN_SUB_SUB"></text>
@@ -124,15 +128,18 @@
       <h2>
          <text data-ng-bind-html="getTagValue('CBA_IN_PROGRESS_SUB_TEXT')" editable-text="CBA_IN_PROGRESS_SUB_TEXT"></text>
       </h2>
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                  <text data-ng-bind-html="getTagValue('CBA_SWIPE_CARD_PLEASE')" editable-text="CBA_SWIPE_CARD_PLEASE"></text>
-                  <img src="/assets/zest_station/css/icons/default/ingenico.png" alt="" class="device-image device-ingenico">
-                </li>
-            </ul>
-        </nav>
-        <h4 ng-show="theme === 'yotel' && !zestStationData.is_standalone">
+      <nav id="options" role="nav">
+          <div class='uploaded-key-image' id="keys" ng-if="zestImages.cc_payment_image.length > 0">
+            <img src="{{zestImages.cc_payment_image}}">
+          </div>
+          <ul role="menu" ng-if="zestImages.cc_payment_image.length === 0">
+              <li>
+                <text data-ng-bind-html="getTagValue('CBA_SWIPE_CARD_PLEASE')" editable-text="CBA_SWIPE_CARD_PLEASE"></text>
+                <img src="/assets/zest_station/css/icons/default/ingenico.png" alt="" class="device-image device-ingenico">
+              </li>
+          </ul>
+      </nav>
+      <h4 ng-show="theme === 'yotel' && !zestStationData.is_standalone">
          <text data-ng-bind-html="getTagValue('CC_PLEASE_NOTE')" editable-text="CC_PLEASE_NOTE"></text>
       </h4>
         <ul ng-show="theme === 'yotel' && !zestStationData.is_standalone">

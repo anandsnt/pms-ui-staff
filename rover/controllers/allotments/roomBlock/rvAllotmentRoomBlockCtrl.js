@@ -256,13 +256,31 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+         * Checks whether the tripple button should be shown or not
+         */
+        $scope.shouldShowAddTrippleButton = function (roomTypeRate) {
+            var showTrippleBtn = $scope.allotmentConfigData.summary.rate === -1 && !$scope.shouldShowTripleEntryRow(roomTypeRate);
+
+            return showTrippleBtn;
+        };
+
+        /**
+         * Checks whether the quadruple button should be shown or not
+         */
+        $scope.shouldShowAddQuadrupleButton = function (roomTypeRate) {
+            var showQuadrupleBtn = $scope.allotmentConfigData.summary.rate === -1 && !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate);                                  
+
+            return showQuadrupleBtn;
+        };
+
+		/**
 		 * should we wanted to disable single box entry
 		 * @param {Object} [dateData] [description]
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {			
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.single_contract) ) ;
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable ) ;
 		};
 
 		/**
@@ -272,7 +290,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.double_contract));
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -282,7 +300,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.triple_contract) );
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -292,7 +310,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable || !$scope.isValueConfigured(dateData.quadruple_contract) );
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**

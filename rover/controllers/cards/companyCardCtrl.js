@@ -48,6 +48,11 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
+			} else if (tabToSwitch === 'statistics') {
+				$scope.$broadcast("LOAD_STATISTICS");
+			}
+			if (tabToSwitch === 'cc-activity-log') {
+				$scope.$broadcast("activityLogTabActive");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
@@ -148,6 +153,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
 			}
 			$scope.$broadcast("contactTabActive");
+			$scope.$broadcast("UPDATE_CONTACT_INFO");
 			$timeout(function() {
 				$scope.$emit('hideLoader');
 			}, 1000);

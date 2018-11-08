@@ -1,14 +1,8 @@
 <header ng-if='!isHotelAdmin' role="banner" id="global-header" class="float">
-	<!-- Logo -->
-	<img src="/assets/images/logo.png" class="logo" alt="">
-
-	<form role="search" name="search-form" method="get" id="search-form" class="search-form float hidden" action="index.html">
-		<div class="entry">
-			<a id="clear-query" href="#" class="icons icon-clear-search">Clear query</a>
-			<button type="submit" name="submit" class="icons icon-search">Search</button>
-			<input type="search" placeholder="Search" name="query" id="query" autocomplete="off">
-		</div>
-	</form>
+    <!-- Logo -->
+    <div class="logo">
+        <img src="/assets/images/logo.png" alt="">
+    </div>
 </header>
 
 <header ng-if='isHotelAdmin' id="global-header" role="banner">
@@ -22,9 +16,9 @@
         {{ 'TITLE_HOTEL_ADMIN' | translate }}
         <div class="user">
             <strong>
-            {{userInfo.first_name}}
-			{{userInfo.last_name}}
-			</strong>
+                {{userInfo.first_name}}
+                {{userInfo.last_name}}
+            </strong>
             <em class="date" ng-hide="isEodRunning"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
             <em class="date updating" ng-show="isEodRunning">End of Day Routine in Progress</em>
             <em class="date updating" ng-show="isEodProcessRunning&&!isEodRunning">EOD running again.</em>

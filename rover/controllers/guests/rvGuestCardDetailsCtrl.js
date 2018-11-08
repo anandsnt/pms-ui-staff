@@ -105,6 +105,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             } else if (tab === 'guest-contact') {
                 $scope.$broadcast('CONTACTINFOLOADED');
             }
+            else if (tab === 'activity-log') {
+                $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            } else if (tab === 'guest-statistics') {
+               $scope.$broadcast('LOAD_GUEST_STATISTICS'); 
+            }
             
             if (!$scope.viewState.isAddNewCard) {
                 $scope.current = tab;
@@ -259,6 +264,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             };
 
             $scope.isGuestCardFromMenu = true;
+            $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
 
             $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             $scope.countries = countries;
@@ -280,8 +286,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.loyaltyTabEnabled = false;
             $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
 
-            // Set contact tab as active by default
-            $scope.current = 'guest-contact';
+            // This is set when navigated to staycard from statistics details page
+            if ($stateParams.isBackToStatistics) {
+                $scope.current = 'guest-statistics';
+            } else {
+                // Set contact tab as active by default
+                $scope.current = 'guest-contact';
+            }
 
             $scope.paymentData = {};
             setTitleAndHeading();

@@ -41,7 +41,9 @@ angular.module('stayCardModule', [])
         $stateProvider.state('rover.reservation.search', {
             url: '/search',
             params: {
-                guestId: null
+                guestId: null,
+                selectedArrivalDate: null,
+                selectedRoomTypeId: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
@@ -227,7 +229,9 @@ angular.module('stayCardModule', [])
                 isFromCards: null,
                 isOnlineRoomMove: null,
                 isKeySystemAvailable: null,
-                isFromTACommission: null
+                isFromTACommission: null,
+                isFromGuestStatistics: null,
+                isFromCardStatistics: null
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {
@@ -254,6 +258,9 @@ angular.module('stayCardModule', [])
                 },
                 reseravationDepositData: function (RVReservationCardSrv, $stateParams, $rootScope) {
                     return $rootScope.isStandAlone ? RVReservationCardSrv.fetchDepositDetails($stateParams.id) : {};
+                },
+                taxExempts: function(RVHotelDetailsSrv) {
+                    return RVHotelDetailsSrv.fetchTaxExempts();
                 }
             }
         });
@@ -284,18 +291,23 @@ angular.module('stayCardModule', [])
                 room_type: '',
                 clickedButton: '',
                 upgrade_available: '', 
-                cannot_move_room: ''
+                cannot_move_room: '',
+                roomTypeId: ''
             },
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
                 roomsList: function (RVRoomAssignmentSrv, $stateParams) {
+                    var params = {
+                        reservation_id: $stateParams.reservation_id,
+                        page_no: 1,
+                        per_page: 25,
+                        room_types_ids: [$stateParams.roomTypeId],
+                        use_default_guest_preferences: true
+                    };
 
-                    var params = {};
-
-                    params.reservation_id = $stateParams.reservation_id;
                     // params.room_type = $stateParams.room_type;
-                    return RVRoomAssignmentSrv.getRooms(params);
+                    return RVRoomAssignmentSrv.getRoomsByRoomType(params);
                 },
                 roomPreferences: function (RVRoomAssignmentSrv, $stateParams) {
                     var params = {};
@@ -333,14 +345,6 @@ angular.module('stayCardModule', [])
             },
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
-            resolve: {
-                roomsList: function (RVRoomAssignmentSrv, $stateParams) {
-                    var params = {};
-
-                    params.reservation_id = $stateParams.reservation_id;
-                    return RVRoomAssignmentSrv.getRooms(params);
-                }
-            },
             lazyLoad: function ($transition$) {
                 return $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
@@ -414,6 +418,21 @@ angular.module('stayCardModule', [])
             lazyLoad: function ($transition$) {
                 return $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.actionsManager', 'directives']);
+            }
+        });
+        
+        $stateProvider.state('rover.quicktext', {
+            url: '/quicktext',
+            templateUrl: '/assets/partials/quicktext/rvQuickText.html',
+            controller: 'RVQuickTextController',
+            resolve: {
+                quicktextdata: function (rvQuickTextSrv) {
+                    return rvQuickTextSrv.fetchQuickTextData();
+                }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.quicktext', 'directives']);
             }
         });
     });

@@ -256,7 +256,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 name: 'chargeCodes',
                 method: 'getJSON',
-                url: 'api/charge_codes?is_get_all_charge_codes=true',
+                url: 'api/charge_codes',
                 resKey: 'results'
             });
         };
@@ -327,6 +327,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 // no name here since we dont want to cache it in the store ever
                 method: 'getJSON',
                 url: 'api/reports/search_by_company_agent_group' + urlPrams,
+                resKey: 'results'
+            });
+        };
+
+        service.fetchGroupCode = function(query) {
+            var urlPrams = '?query=' + query;
+
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: 'api/reports/search_group_by_code' + urlPrams,
                 resKey: 'results'
             });
         };
@@ -554,6 +565,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 url: 'admin/departments.json',
                 resKey: 'data',
                 resKey2: 'departments'
+            });
+        };
+
+        service.fetchTaxExemptTypes = function() {
+            return callApi({
+                name: 'taxExempts',
+                method: 'getJSON',
+                url: 'api/tax_exempt_types',
+                resKey: 'results'
             });
         };
 

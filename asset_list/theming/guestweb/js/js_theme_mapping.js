@@ -32,6 +32,7 @@ module.exports = {
             'guestweb_huntley': [ themeJsRoot + 'app_router_huntley.js'],
             'guestweb_mgm': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_aria.js'], // ------------------------------- MGM CHAIN #- 4
             'guestweb_aria_sky_suites': [ themeJsRoot + 'app_router_aria_sky_suites.js'], // ------------------------------- MGM CHAIN #- 13
+            'guestweb_mgm_springfield': [ themeJsRoot + 'app_router_mgm_springfield.js'], // ------------------------------- MGM CHAIN #- 13
             'guestweb_montauk': [ themeJsRoot + 'app_router_montauk.js'],
             'guestweb_nikko': [ themeJsRoot + 'app_router_niko.js'],
             'guestweb_palms': [ themeJsRoot + 'app_router_palm_spa.js'],

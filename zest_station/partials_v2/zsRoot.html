@@ -46,9 +46,7 @@
     // end of analytic code
 </script>
 
-<div ng-show="hasLoader" id="loading">
-    <div id="loading-spinner"></div>
-</div>
+<activity-indicator></activity-indicator>
 
 <div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
     {{zestStationData.workstationOooReason}}
@@ -98,7 +96,5 @@
 
 <div id="popup-overlay" ng-class="{'open':zestStationData.timeOut}"></div>
 <!-- Remove class "open" to hide popup overlay -->
-<div ng-controller="zsThemeActionsCtrl">
-    <ui-view></ui-view>
-</div>
+<ui-view></ui-view>
 <div ng-include="'/assets/partials_v2/zsTabletFooter.html'"></div>

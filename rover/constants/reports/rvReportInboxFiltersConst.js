@@ -35,6 +35,7 @@ angular.module('reportsModule')
         'campaign_types': 'Campaign Types',
         'status': 'Completion Status',
         'age_buckets': 'Aging Balance',
+        'tax_exempt_type_ids': 'Tax Exempt Type',
         'account_ids': 'Account Name(s)',
         'travel_agent_ids': 'Travel Agents',
         'floor': 'Floors',
@@ -129,5 +130,6 @@ angular.module('reportsModule')
         "group_by_user": "User",
         "group_by_group_name": "Group name",
         "DEPOSIT_DUE_FROM_DATE": "Deposit Due From Date",
-        "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date"
+        "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date",
+        "group_code": "Group Code"
     });

@@ -88,7 +88,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     oldFromDate: oldSumryData.block_from,
                     oldToDate: oldSumryData.block_to,
                     successCallBack: successCallBackOfMoveButton,
-                    failureCallBack: failureCallBackOfMoveButton
+                    failureCallBack: failureCallBackOfMoveButton,
+                    cancelPopupCallBack: cancelCallBackofDateChange
                 };
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);
@@ -986,6 +987,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
+            $scope.groupConfigData.summary.commission_details = response.commission_details;
+            
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
@@ -1583,6 +1586,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) + parseInt(1);
             } else if (value === 'complete') {
                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+            } 
+
+            // Update the action count when deleting an action with different status
+            if (_.isObject(value)) {
+               $scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) - parseInt(1);
+
+               if (value.deletedActionStatus !== 'COMPLETED') {
+                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+               }               
             }
         });
 
@@ -1642,6 +1654,19 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.shouldShowOriginOfBooking = $scope.shouldShowOriginOfBooking && $scope.hotelSettings.force_origin_of_booking;
                 $scope.shouldShowSegments = $scope.shouldShowSegments && $scope.hotelSettings.force_segments;
             }
+        };
+        /*
+         * Set tax exempt type id null when toggle is inactivated
+         */
+        $scope.clickedTaxExemptToggle = function() {
+            if (!$scope.groupConfigData.summary.is_tax_exempt) {
+                $scope.groupConfigData.summary.tax_exempt_type_id = '';
+                $scope.groupConfigData.summary.tax_exempt_ref_text = '';
+            } else {
+                if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary.tax_exempt_type_id === undefined) {
+                    $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;
+                }
+            }           
         };
 
         /**

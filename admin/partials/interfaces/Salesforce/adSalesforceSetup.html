@@ -8,39 +8,51 @@
             <span class="switch-icon"></span>
         </div>
     </div>
+    <section ng-if="config.enabled">
+        <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>API Access Configuration</h3>
+            </div>
+            <fieldset class="holder right">
+                <button class="button blue" ng-click="authorize()">
+                    {{config.authorized ? 'SALESFORCE_OAUTH_REAUTHORIZE' : 'SALESFORCE_OAUTH_AUTHORIZE' | translate}}
+                </button>
+            </fieldset>
+        </fieldset>
 
-    <div class="form-title full-width">
-        <h3><span translate>DUETTO_EXPORT_CONFIG</span></h3>
-    </div>
+        <div class="form-title full-width" ng-if="config.enabled">
+            <h3><span translate>DUETTO_EXPORT_CONFIG</span></h3>
+        </div>
 
-    <fieldset class="holder left">
-        <ad-textbox inputtype="text"
-                    value="config.sftp_host"
-                    label="{{'SFTP_ADDRESS'| translate}}"
-                    styleclass="full-width"></ad-textbox>
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text"
+                        value="config.sftp_host"
+                        label="{{'SFTP_ADDRESS'| translate}}"
+                        styleclass="full-width"></ad-textbox>
 
-        <ad-textbox inputtype="text"
-                    value="config.sftp_location"
-                    label="{{'FILE_PATH'| translate}}"
-                    styleclass="full-width"></ad-textbox>
-    </fieldset>
+            <ad-textbox inputtype="text"
+                        value="config.sftp_location"
+                        label="{{'FILE_PATH'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
 
-    <fieldset class="holder right">
-        <ad-textbox inputtype="text" value="config.sftp_username"
-                    label="{{'USER_NAME'| translate}}"
-                    styleclass="full-width"></ad-textbox>
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text" value="config.sftp_username"
+                        label="{{'USER_NAME'| translate}}"
+                        styleclass="full-width"></ad-textbox>
 
-        <ad-textbox inputtype="password"
-                    value="config.sftp_password"
-                    label="{{'PASSWORD'| translate}}"
-                    styleclass="full-width"></ad-textbox>
-    </fieldset>
+            <ad-textbox inputtype="password"
+                        value="config.sftp_password"
+                        label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
 
-    <ad-sync-block ng-if="config.enabled"
-                   is-export = "true"
-                   exclude-today="true"
-                   interface="{{interface}}"
-                   config="config">
-    </ad-sync-block>
+        <ad-sync-block ng-if="config.enabled"
+                       is-export = "true"
+                       exclude-today="true"
+                       interface="{{interface}}"
+                       config="config">
+        </ad-sync-block>
+    </section>
 
 </ad-common-parts-in-form-dir>
