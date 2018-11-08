@@ -83,7 +83,7 @@
                     <!-- remove .hidden when clicked on the month's row-->
                     <div class="statistics-reservations" ng-show="monthlyData.isOpen">
                         <ul class="search-results">
-                            <li class="reservation transaction" ng-repeat="reservation in statistics.reservations">
+                            <li class="reservation transaction" ng-repeat="reservation in monthlyData.reservations">
                                 <a class="faux-anchor" ng-click="navigateToStayCard(reservation)" ng-class="{'no-arrow': shouldShowNavigation()}">
                                     <div class="data">
                                         <!-- add .grey if we have no room/cancelled-->
