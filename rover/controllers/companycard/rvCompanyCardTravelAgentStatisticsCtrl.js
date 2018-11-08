@@ -117,7 +117,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 $scope.statistics.reservations = data.reservations;
                 monthlyData.isOpen = !monthlyData.isOpen;                
                 $timeout(function() {
-                    reloadScroller(true);
+                    reloadScroller();
                     
                 }, 1000);
                 isDetailedViewScrollReady();
