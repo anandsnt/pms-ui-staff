@@ -41,6 +41,7 @@
     "COMMISSION_Tax" : "Tax",
     "COMMISSION_OWING": "Owing",
     "COMMISSION_CONF_NO": "Conf. No.",
+    "COMMISSIONABLE_REVENUE": "Commissionable",
     "NO_COMMISSIONS": "No Commissions",
     "NO_COMMISSIONS_MSG": "Please switch tab and try again",
     "COMMISSION_BILLS_ON_HOLD": "Bills on Hold",
