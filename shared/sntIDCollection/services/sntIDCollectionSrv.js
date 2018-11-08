@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, $q, $filter, acuantCredentials, sntIDCollectionUtilsSrv) {
+angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $filter, acuantCredentials, sntIDCollectionUtilsSrv) {
 
 	var that = this;
 
@@ -16,7 +16,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 			xhr = null;
 		}
 		return xhr;
-	}
+	};
 
 	var createRequestObject = function(requestType, url) {
 		var requestGetDocument = createCORSRequest(requestType, url);
@@ -57,13 +57,20 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 			};
 			var url = acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Subscriptions';
 			var requestGetDocument = createRequestObject('GET', url);
+
 			requestGetDocument.send();
 			requestGetDocument.onload = function() {
-				var documentObj = JSON.parse(requestGetDocument.responseText);
+				if (requestGetDocument.status === 200) {
+					var documentObj = JSON.parse(requestGetDocument.responseText);
 
-				validateSubscription(documentObj);
-			}
-
+					validateSubscription(documentObj);
+				} else {
+					deferred.reject(errorMessage);
+				}
+			};
+			requestGetDocument.onerror = function() {
+				deferred.reject(errorMessage);
+			};
 		} else {
 			deferred.reject(errorMessage);
 		}
@@ -100,10 +107,17 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		}));
 
 		requestDocInstance.onload = function() {
-			var instanceID = JSON.parse(requestDocInstance.responseText);
-			that.instanceID = instanceID;
-			deferred.resolve(instanceID);
-		}
+			if (requestDocInstance.status === 201) {
+				var instanceID = JSON.parse(requestDocInstance.responseText);
+				that.instanceID = instanceID;
+				deferred.resolve(instanceID);
+			} else {
+				deferred.reject(['Document instance failed']);
+			}
+		};
+		requestDocInstance.onerror = function() {
+			deferred.reject(['Document instance failed']);
+		};
 		return deferred.promise;
 	};
 
@@ -116,20 +130,17 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		requestDocInstance.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
 		requestDocInstance.setRequestHeader('Content-Type', 'image/*');
 		requestDocInstance.setRequestHeader("Accept", "application/json");
-
 		requestDocInstance.send(unmodifiedFrontImage);
-
 		requestDocInstance.onload = function(response) {
 			if (requestDocInstance.status === 201) {
 				deferred.resolve({});
 			} else {
-				deferred.reject({});
+				deferred.reject(['Document front image posting failed']);
 			}
-
-		}
+		};
 		requestDocInstance.onerror = function() {
-			deferred.reject({});
-		}
+			deferred.reject(['Document front image posting failed']);
+		};
 		return deferred.promise;
 	};
 
@@ -142,19 +153,17 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		requestDocInstance.setRequestHeader("Authorization", "Basic " + btoa(acuantCredentials.username + ":" + acuantCredentials.password));
 		requestDocInstance.setRequestHeader('Content-Type', 'image/*');
 		requestDocInstance.setRequestHeader("Accept", "application/json");
-
 		requestDocInstance.send(imageData);
-
 		requestDocInstance.onload = function(response) {
 			if (requestDocInstance.status === 201) {
 				deferred.resolve({});
 			} else {
-				deferred.reject({});
+				deferred.reject(['Document back side image posting failed']);
 			}
-		}
+		};
 		requestDocInstance.onerror = function() {
-			deferred.reject({});
-		}
+			deferred.reject(['Document back side image posting failed']);
+		};
 		return deferred.promise;
 	};
 
@@ -162,13 +171,21 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		var deferred = $q.defer();
 		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image?side=' + side + '&light=0';
 		var requestGetDocument = createRequestObject('GET', url);
+
 		requestGetDocument.responseType = 'arraybuffer';
 		requestGetDocument.send();
 		requestGetDocument.onload = function() {
-			var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(requestGetDocument.response);
+			if (requestGetDocument.status === 200) {
+				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(requestGetDocument.response);
 
-			deferred.resolve(requestGetDocument.response);
-		}
+				deferred.resolve(requestGetDocument.response);
+			} else {
+				deferred.reject(['Document getImage failed']);
+			}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.reject(['Document getImage failed']);
+		};
 
 		return deferred.promise;
 	};
@@ -178,12 +195,20 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		var deferred = $q.defer();
 		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Image/Metrics?side=' + side + '&light=0';
 		var requestGetDocument = createRequestObject('GET', url);
+
 		requestGetDocument.send();
 		requestGetDocument.onload = function() {
-			var documentObj = JSON.parse(requestGetDocument.responseText);
+			if (requestGetDocument.status === 200) {
+				var documentObj = JSON.parse(requestGetDocument.responseText);
 
-			deferred.resolve(documentObj);
-		}
+				deferred.resolve(documentObj);
+			} else {
+				deferred.reject(['Document getImageQualityMetric failed']);
+			}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.reject(['Document getImageQualityMetric failed']);
+		};
 
 		return deferred.promise;
 	};
@@ -193,12 +218,20 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		var deferred = $q.defer();
 		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Classification';
 		var requestGetDocument = createRequestObject('GET', url);
+
 		requestGetDocument.send();
 		requestGetDocument.onload = function() {
-			var documentObj = JSON.parse(requestGetDocument.responseText);
+			if (requestGetDocument.status === 200) {
+				var documentObj = JSON.parse(requestGetDocument.responseText);
 
-			deferred.resolve(documentObj);
-		}
+				deferred.resolve(documentObj);
+			} else {
+				deferred.reject(['Document getClassification failed']);
+			}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.reject(['Document getClassification failed']);
+		};
 
 		return deferred.promise;
 	};
@@ -240,12 +273,20 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		var deferred = $q.defer();
 		var url = acuantCredentials.assureIDConnectEndpoint + '/AssureIDService/Document/' + that.instanceID;
 		var requestGetDocument = createRequestObject('GET', url);
+
 		requestGetDocument.send();
 		requestGetDocument.onload = function() {
-			var documentObj = JSON.parse(requestGetDocument.responseText);
-			documentObj.Fields = documentObj.Fields ? sntIDCollectionUtilsSrv.formatData(documentObj.Fields) : {};
-			deferred.resolve(documentObj);
-		}
+			if (requestGetDocument.status === 200) {
+				var documentObj = JSON.parse(requestGetDocument.responseText);
+				documentObj.Fields = documentObj.Fields ? sntIDCollectionUtilsSrv.formatData(documentObj.Fields) : {};
+				deferred.resolve(documentObj);
+			} else {
+				deferred.reject(['Document getResults failed']);
+			}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.reject(['Document getResults failed']);
+		};
 
 		return deferred.promise;
 	};
@@ -260,7 +301,10 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($http, 
 		requestGetDocument.send();
 		requestGetDocument.onload = function() {
 			deferred.resolve({});
-		}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.resolve({});
+		};
 
 		return deferred.promise;
 	};
