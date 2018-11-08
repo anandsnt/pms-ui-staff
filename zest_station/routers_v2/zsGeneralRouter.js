@@ -110,8 +110,8 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
         $stateProvider.state('zest_station.sntIDScan', {
         	url: '/sntIDScan/:params',
-            templateUrl: '/assets/partials_v2/zsSntAcuantIDScan.html',
-            controller: 'zsSntAcuantIDScanCtrl'
+            templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
+            controller: 'zsSntIDScanCtrl'
         });
 
 	}

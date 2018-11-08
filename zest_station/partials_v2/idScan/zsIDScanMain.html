@@ -1,4 +1,9 @@
- <section id="main" class="centered" role="main">
+ <!-- SELECT PROGRAM -->
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanGuestList.html'" 
+         ng-show="mode == 'SCAN_RESULTS'">
+</ng-include>
+
+<!--  <section id="main" class="centered" role="main" ng-show="false">
 
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'VALIDATE_SUBSCRIPTION'">
          <div class="row content">
@@ -266,4 +271,4 @@
 
          </div>
       </div>
-</section>
+</section> -->
