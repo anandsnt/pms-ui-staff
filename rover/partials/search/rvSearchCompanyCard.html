@@ -8,6 +8,13 @@
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
             <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+            <label class="checkbox inline">
+                 <!-- Add .checked when checked. -->
+                <span class="icon-form icon-checkbox"></span>
+                <!-- Add checked="checked" -->
+                <input name="ar" value="Declined" type="checkbox">
+                Only AR Accounts
+            </label>
         </div>
         <button type="button" class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</button>
     </form>
