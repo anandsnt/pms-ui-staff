@@ -146,8 +146,8 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 		formatedResults.last_name = idDetails.surname ? idDetails.surname : '';
 		formatedResults.full_name = idDetails.full_name ? idDetails.full_name : '';
 		formatedResults.nationality = idDetails.nationality_code ? idDetails.nationality_code : '';
-		formatedResults.expiration_date = idDetails.expiration_date ? idDetails.expiration_date : '';
-		formatedResults.date_of_birth = idDetails.birth_date ? idDetails.birth_date : '';
+		formatedResults.expiration_date = idDetails.expiration_date && idDetails.expiration_date !== 'Invalid date' ? idDetails.expiration_date : '';
+		formatedResults.date_of_birth = idDetails.birth_date && idDetails.birth_date !== 'Invalid date' ? idDetails.birth_date : '';
 
 		return formatedResults;
 	};
