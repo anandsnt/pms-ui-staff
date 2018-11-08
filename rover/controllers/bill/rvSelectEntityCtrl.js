@@ -74,7 +74,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	* if not fouund in the data, it will request for webservice
   	*/
   	var displayFilteredResultsCards = function() {
-	    var dataDict = {'query': $scope.textInQueryBox.trim()};
+	    var dataDict = {'query': $scope.textInQueryBox.trim(), 'has_ar_number': $scope.has_ar_number};
 
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	      
   	};
