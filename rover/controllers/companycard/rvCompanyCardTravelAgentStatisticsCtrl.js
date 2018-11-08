@@ -138,8 +138,9 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             $scope.callAPI(RVCompanyCardSrv.fetchCompanyTravelAgentMonthlyReservations, requestConfig);
         };
 
+        // Checks whether reservation listing should be shown or not
         $scope.shouldShowReservations = function(monthlyData) {
-            return (monthlyData.stay_count !== 0 || monthlyData.no_show_count !== 0 || monthlyData.cancellation_count !== 0 || monthlyData.nights_count !== 0 );
+            return monthlyData.reservations_count !== 0;
         };
 
         // Toggle the reservation list view displayed for a month
@@ -147,12 +148,15 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
             if (!$scope.shouldShowReservations(monthlyData)) {
                 return false;
             }
-            loadReservations(monthlyData);
-            //monthlyData.isOpen = !monthlyData.isOpen;
-            // $timeout(function() {
-            //     reloadScroller();
-                
-            // }, 200);
+
+            if (!monthlyData.isOpen) {
+                loadReservations(monthlyData);
+            } else {
+                monthlyData.isOpen = !monthlyData.isOpen;
+                $timeout(function() {
+                    reloadScroller();
+                }, 200); 
+            }
         };
 
         // Processes the year change event
