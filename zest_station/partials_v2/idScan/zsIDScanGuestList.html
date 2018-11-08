@@ -34,7 +34,7 @@
     </div>
     <div>
         <div id="actions" class="add-guests-footer">
-            <button type="button" class="button next" click-touch="goToNext(); resetTime();">
+            <button type="button" class="button next" ng-show="areAllGuestsScanned()" click-touch="goToNext(); resetTime();">
                 <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE_BTN"></text>
             </button>
              <div class="button-group">

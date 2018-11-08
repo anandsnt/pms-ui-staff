@@ -1,0 +1,43 @@
+<section id="main" class="guest-id-verify" role="main">
+
+        <div id="flex-holder" click-touch="enableScroll()">
+            <div id="textual" class="review-bill scrollable" ng-iscroll="confirm-images">
+                <div class="wrapper passport-details">
+                    <div id="bill">
+                         <h1 ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'">
+                            CONFIRM FRONT IMAGE
+                        </h1>
+                        <h1 ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+                            CONFIRM IMAGES
+                        </h1>
+
+                        <!-- Passport / Guest ID Scan preview -->
+                        <img id='image-preview' class='gid-image-preview'
+                                ng-show='idScanData.selectedIDInfo.front_image_data'
+                                data-ng-src="{{idScanData.selectedIDInfo.front_image_data}}" 
+                                src-error='' 
+                                >
+
+                        <img id='image-preview-back' ng-show='idScanData.selectedIDInfo.back_image_data'  class='gid-image-preview' 
+                                data-ng-src="{{idScanData.selectedIDInfo.back_image_data}}" 
+                                src-error='' 
+                                >
+                        <br/><br/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id='actions' class="align-center guest-id-actions">
+            <button type="button" class="button" touch-press='startScanning();'>
+                GO BACK
+            </button>
+            <button type="button" class="button" touch-press="confirmFrontImage()" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'">
+                PROCEED
+            </button>
+             <button type="button" class="button" touch-press="confirmImages()" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'">
+                PROCEED
+            </button>
+        </div>
+</section>
