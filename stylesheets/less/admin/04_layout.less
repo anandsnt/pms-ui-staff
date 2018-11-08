@@ -828,6 +828,20 @@ body { overflow: hidden; }
                         }
                     }
                 }
+
+                /* Form Row **/
+                &.form-row {
+                    td {
+                        padding: 0;
+                        background: transparent;
+
+                        .form {
+                            margin: 0;
+                            padding-top: 0;
+                            padding-bottom: 0;
+                        }
+                    }
+                }
             }
         }
 
@@ -899,6 +913,22 @@ body { overflow: hidden; }
 
         th,
         td {
+
+            &.break {
+                border-right: 1px solid rgba(0, 0, 0, 0.15 );
+            }
+            &.sequence {
+                width: 80px;
+                padding-right: 0;
+
+                .icon-handle {
+                    .hide();
+                }
+            }
+            &.sequence-rates {
+                width: 200px;
+            }
+
             &.activate {  
                 width: 110px; 
 
@@ -930,6 +960,12 @@ body { overflow: hidden; }
                         font-size: 14px;
                         color: @grey3;
                     }
+
+                    &.sequence {
+                        text-align: center;
+                        padding: 0;
+                        font-weight: 600;
+                    }
                 }
 
                 &.inactive {
@@ -941,6 +977,47 @@ body { overflow: hidden; }
                             color: @grey3; 
 
                             &:hover { color: @logoPrimary; }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.draggable {
+            td {
+                &.sequence {
+                    background: #e2e2e2;
+                    padding: 0 20px;
+                    text-align: right;
+                    position: relative;
+                    box-shadow: none;
+                    .icon-handle {
+                        display: block;
+                        width: 16px;
+                        height: 16px;
+                        position: absolute;
+                        top: 20px;
+                        left: 15px;
+
+                        &.centered {
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            margin: auto;
+                        }
+                    }
+                }
+            }
+
+            &:not(.editable) {
+
+                th,
+                td {
+                    &.delete {
+                        color: rgba(0, 0, 0, 0.0);
+                        * {
+                            .hide();
                         }
                     }
                 }

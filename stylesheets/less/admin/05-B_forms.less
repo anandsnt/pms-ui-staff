@@ -241,6 +241,26 @@
                 &.no-margin {
                     margin-bottom: 0;
                 }
+
+                &.radio {
+                    &.bold {
+                        &.checked { font-weight: 600; }
+                    }
+                    &.with-arrow {
+                        .icon-arrow-right {
+                            display: inline-block;
+                            vertical-align: middle;
+                            .square(10px);
+                        }
+                        &.checked {
+                            .icon-arrow-right {
+                                .icons.icon-arrow-right-bold;
+                            }
+                            font-weight: 600;
+                        }
+                        
+                    }
+                }
             }
 
             input,

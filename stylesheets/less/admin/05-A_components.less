@@ -1690,7 +1690,168 @@
         }
     }
 
+/* Rate Sequence Assignment ==============================*/
+    #assign-rate-sequence {
+        height: 100%;
+        &:after,
+        &:before {
+            content: '';
+            display: table;
+            clear: both;
+        }
 
+        .entry {
+            height: 100%;
+            &:after,
+            &:before {
+                content: '';
+                display: table;
+                clear: both;
+            }
+            label {
+                text-align: center;
+                text-transform: none;
+                font-size: 18px;
+
+                &:not(.green) {
+                    color: @grey3;
+                    font-style: italic;
+                }
+            }
+
+            &.movers {
+                height: 640px;
+                margin-top: 25px;
+                #flexbox > .parent( column wrap, center, center, '' );
+            }
+        }
+
+        .movers {
+            height: 640px;
+            margin: 0;
+        }
+
+        .boxes {
+            height: 640px;
+            position: relative;
+
+            ul {
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                left: 0;
+                padding: 0px 20px;
+                .calc-height(100, 20);
+                overflow: scroll;
+            }
+
+            li {
+                .icon-added {
+                    position: absolute;
+                    top: 10px;
+                    right: 12px;
+                    width: 14px;
+                    height: 15px;
+                    display: block;
+                }
+            }
+
+            &.with-search {
+                padding-top: 80px;
+
+                ul {
+                    .calc-height( 100, 80 );
+                    top: 80px;
+                }
+
+                &.with-pagination {
+                    ul {
+                        .calc-height(100,160);
+                    }
+                }
+            }
+
+            &.with-pagination {
+                padding-bottom: 80px;
+            }
+
+            &.with-sequence {
+                li {
+                    font-weight: 600;
+                }
+            }
+
+            &.without-sequence {
+                li {
+                    color: @grey3;
+                    font-style: italic;
+                }
+            }
+            .search-form {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px;
+                background: #e9e9e9;
+
+                .query {
+                    border-radius: 25px;
+                    height: 40px;
+                    padding: 0 25px;
+                }
+
+                .clear-query {
+                    position: absolute;
+                    right: 20px;
+                    top: 22px;
+                    border-radius: 50%;
+
+                    &.visible {
+                        background: lighten( @grey2, 5 );
+                    }
+                }
+
+                .icon-search {
+                    position: absolute;
+                    top: 24px;
+                    left: 20px;
+                }
+            }
+
+            .search-pagination {
+                padding: 10px;
+                background: #e9e9e9;
+
+                p {
+                    text-align: left;
+                    font-size: 16px;
+                    font-style: italic;
+                    .calc-width(100, 200);
+                }
+            }
+
+            .no-content {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 20px;
+                #flexbox > .parent( row wrap, center, center, '' );
+                .info {
+                    font-style: italic;
+                    font-size: 16px;
+                    color: @grey3;
+                    border: 1px dashed @grey3;
+                    padding: 35px;
+                    text-align: center;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
 // To align text to center with margin
 .align-text-center{
   margin-top: 10px;
