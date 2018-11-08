@@ -16,6 +16,8 @@
 				$scope: $scope
 			});
 
+			var stateParams = JSON.parse($stateParams.params);
+
 			/* ******************* GUEST LIST *********************** */
 
 			var setPageNumberDetails = function() {
@@ -82,10 +84,27 @@
 				$scope.$emit('PLAY_BELL_SOUND');
 			};
 
+			$scope.saveGuestIdDetails = function(action, imageType) {
+				
+			};
+
+
 			$scope.acceptID = function() {
-				$scope.idScanData.selectedIDInfo.idScanStatus = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
-				$scope.screenData.scanMode = 'GUEST_LIST';
-				setPageNumberDetails();
+				var accpetIdSuccess = function() {
+					$scope.idScanData.selectedIDInfo.idScanStatus = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
+					$scope.screenData.scanMode = 'GUEST_LIST';
+					setPageNumberDetails();
+				};
+				var apiParams = angular.copy($scope.idScanData.selectedIDInfo.scannedDetails);
+
+				apiParams.front_image_data = $scope.idScanData.selectedIDInfo.front_image_data;
+				apiParams.back_image_data = $scope.idScanData.selectedIDInfo.back_image_data;
+				apiParams.reservation_id = stateParams.reservation_id
+				apiParams.guest_id = $scope.idScanData.selectedIDInfo.id;
+				$scope.callAPI(zsCheckinSrv.savePassport, {
+					params: apiParams,
+					successCallBack: accpetIdSuccess
+				});
 			};
 			var resetSscannedData = function() {
 				$scope.idScanData.selectedIDInfo.front_image_data = '';
