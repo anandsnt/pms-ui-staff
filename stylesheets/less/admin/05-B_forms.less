@@ -994,6 +994,56 @@
                     }
                 }
 
+                &.autocomplete-search {
+                    padding: 0;
+
+                    &:not(.searching) {
+                        background: none;
+                        .box-shadow(none);
+
+                        input {
+                            background: @white;
+                        }
+
+                        .scrollable {
+                            .hide();
+                        }
+
+                        .search {
+                            input {
+                                color: @black;
+                            }
+                        }
+                    }
+
+                    .scrollable {
+                        position: relative;
+                        max-height: 400px;
+                    }
+
+                    .search {
+                        .box-shadow(none);
+                    }
+
+                    .highlight { color: @logoPrimary; }
+
+                    .radio {
+                        padding: 10px 10px 10px 40px;
+                        margin: 0;
+                        background: white;
+                        &:not(:last-child) {
+                            border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
+                        }
+
+                        .icon-radio {
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                            left: 10px;
+                        }
+                    }
+                }
+
                 .iScrollVerticalScrollbar { top: 5px; bottom: 5px; }
 
                 &.hidden { #fade > .out(); }
