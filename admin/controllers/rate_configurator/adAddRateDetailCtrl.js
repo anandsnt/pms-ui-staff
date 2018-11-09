@@ -66,6 +66,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return !$rootScope.isHourlyRatesEnabled && (!!$rootScope.isFFPActive || !!$rootScope.isHLPActive);
         };
 
+        $scope.shouldShowPeriodicity = function() {
+            return $rootScope.isHourlyRatesEnabled || $rootScope.hourlyRatesForDayUseEnabled;
+        };
+        
+        $scope.shouldShowBasedOnAndCopy = function() {
+            return !$scope.rateData.is_hourly_rate;
+        };
+
         $scope.isHourlyRatesEnabled = function () {
             return !!$rootScope.isHourlyRatesEnabled;
         };
