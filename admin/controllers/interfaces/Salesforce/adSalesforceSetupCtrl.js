@@ -1,5 +1,5 @@
-admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'adSalesforceConfigSrv', '$window',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, adSalesforceConfigSrv, $window) {
+admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv',
+    function($scope, $rootScope, config, adInterfacesCommonConfigSrv) {
 
         var interfaceIdentifier = 'salesforce';
 
@@ -20,14 +20,6 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'ad
                 onSuccess: function() {
                     $scope.goBackToPreviousState();
                 }
-            });
-        };
-
-        $scope.authorize = function() {
-            $scope.callAPI(adSalesforceConfigSrv.authorize, {
-              onSuccess: function(data) {
-                $window.location.href = data.redirect_url;
-              }
             });
         };
 
