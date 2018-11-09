@@ -137,7 +137,7 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 		return isDocumentExpired;
 	};
 
-	this.formatResults = function(idDetails, imageData) {
+	this.formatResults = function(idDetails) {
 		var formatedResults = {};
 
 		formatedResults.document_type = idDetails.document_class_name ? idDetails.document_class_name : '';

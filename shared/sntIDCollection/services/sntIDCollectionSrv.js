@@ -9,14 +9,14 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		var xhr = new XMLHttpRequest();
 		if ("withCredentials" in xhr) {
 			xhr.open(method, url, true);
-		} else if (typeof XDomainRequest != "undefined") {
+		} else if (typeof XDomainRequest !== "undefined") {
 			xhr = new XDomainRequest();
 			xhr.open(method, url);
 		} else {
 			xhr = null;
 		}
 		return xhr;
-	};
+	}
 
 	var createRequestObject = function(requestType, url) {
 		var requestGetDocument = createCORSRequest(requestType, url);
@@ -25,6 +25,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.setRequestHeader("Accept", "application/json");
 		return requestGetDocument;
 	};
+
 	this.isValidSubsription = false;
 	this.instanceID;
 
@@ -109,6 +110,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.onload = function() {
 			if (requestDocInstance.status === 201) {
 				var instanceID = JSON.parse(requestDocInstance.responseText);
+
 				that.instanceID = instanceID;
 				deferred.resolve(instanceID);
 			} else {
@@ -154,7 +156,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.setRequestHeader('Content-Type', 'image/*');
 		requestDocInstance.setRequestHeader("Accept", "application/json");
 		requestDocInstance.send(imageData);
-		requestDocInstance.onload = function(response) {
+		requestDocInstance.onload = function() {
 			if (requestDocInstance.status === 201) {
 				deferred.resolve({});
 			} else {
@@ -278,6 +280,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onload = function() {
 			if (requestGetDocument.status === 200) {
 				var documentObj = JSON.parse(requestGetDocument.responseText);
+				
 				documentObj.Fields = documentObj.Fields ? sntIDCollectionUtilsSrv.formatData(documentObj.Fields) : {};
 				deferred.resolve(documentObj);
 			} else {

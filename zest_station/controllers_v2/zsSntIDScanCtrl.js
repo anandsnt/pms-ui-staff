@@ -104,7 +104,7 @@
 
 				apiParams.front_image_data = $scope.idScanData.selectedGuest.front_image_data;
 				apiParams.back_image_data = $scope.idScanData.selectedGuest.back_image_data;
-				apiParams.reservation_id = stateParams.reservation_id
+				apiParams.reservation_id = stateParams.reservation_id;
 				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
@@ -116,6 +116,7 @@
 				$scope.idScanData.selectedGuest.back_image_data = '';
 				$scope.idScanData.selectedGuest.scannedDetails = {};
 			};
+
 			$scope.rejectID = function() {
 				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
 				$scope.screenData.scanMode = 'GUEST_LIST';
@@ -176,6 +177,7 @@
 				var guestNames = _.map($scope.selectedReservation.guest_details, function(guest) {
 					return guest.first_name + ' ' + guest.last_name;
 				});
+
 				newData.new_value = guestNames.join(', ');
 				params.details.push(newData);
 
@@ -206,7 +208,7 @@
 			};
 
 			$scope.adminVerify = function() {
-				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY'
+				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
 			$scope.goToNext = function() {
@@ -255,7 +257,7 @@
 				$scope.screenData.scanMode = 'GUEST_LIST';
 			});
 
-			var initializeMe = (function() {
+			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 

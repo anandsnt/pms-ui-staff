@@ -122,6 +122,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			var idDetailsForPms = sntIDCollectionUtilsSrv.formatResults($scope.screenData.idDetails);
 
 			$scope.$emit('FINAL_RESULTS', idDetailsForPms);
+			
 			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
 		}, function(response) {
 			$log.error(response);
@@ -159,7 +160,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}, 0);
 	};
 
-	$scope.startScanning = function($event) {
+	$scope.startScanning = function() {
 		resetScreenData();
 		$('#'+ domIDMappings.front_image_preview).attr('src', '');
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
