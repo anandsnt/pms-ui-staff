@@ -43,10 +43,10 @@
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>
-         <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" touch-press="scanCompleted(); resetTime();" translate>
+         <button type="button" class="button next" ng-show="areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" touch-press="scanCompleted(); resetTime();" translate>
          NEXT
          </button>
-         <button type="button" class="button next" ng-show="areAllGuestsApproved()" touch-press="doneButtonClicked(); resetTime();" translate>
+         <button type="button" class="button next" ng-show="areAllGuestsApproved() && (idScanData.verificationMethod !== 'STAFF' || idScanData.staffVerified)" touch-press="doneButtonClicked(); resetTime();" translate>
          DONE_BTN
          </button>
       </div>
