@@ -315,7 +315,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return undefined
 		 */
 		var onTransactionFetchSuccess = function(data) {
-
+			$scope.hasPrintFolioEnabled = data.is_print_folio_enabled;
 			$scope.transactionsDetails = data;
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
@@ -329,7 +329,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} 
 			if (currentActiveBill.balance_amount === "0.0") {
 
-				if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+				if ($scope.shouldGenerateFolioNumber) {
 					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists);
 				}
 			}
@@ -950,7 +950,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
-			// $scope.$emit('hideLoader');
+			
 		};
 
 		/*
@@ -979,7 +979,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					isDisabledInvoice = true;
 				}
 			}
-			return isDisabledInvoice;
+			return false;isDisabledInvoice;
 	    };
 
 		/**
