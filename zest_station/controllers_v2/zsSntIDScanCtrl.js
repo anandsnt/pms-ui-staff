@@ -81,7 +81,7 @@
 			};
 			$scope.areAllGuestsScanned = function() {
 				var allGuestsScaned = _.all($scope.selectedReservation.guest_details, function(guestDetail) {
-					return guestDetail.idScanStatus !== SCANING_PENDING;
+					return guestDetail.idScanStatus !== SCANING_PENDING && guestDetail.idScanStatus !== SCAN_REJECTED;
 				});
 
 				return allGuestsScaned;
@@ -226,7 +226,7 @@
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
-			$scope.goToNext = function() {
+			$scope.verifyStaff = function() {
 				$scope.callBlurEventForIpad();
 				var successCallback = function(response) {
 					$scope.pageData.pageNumber = 1;

@@ -28,10 +28,10 @@
       <!-- user name -->
       <div class="form">
          <div class="entry input">
-            <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" touch-press="showOnScreenKeyboard('input_text')" ng-model="screenData.adminPin" id="input_text" touch-press/>
+            <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" touch-press="showOnScreenKeyboard('input_text')" ng-model="screenData.adminPin" id="input_text" enter-press="verifyStaff()" touch-press/>
          </div>
          <div class="entry action">
-            <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}" translate>
+            <button type="button" class="button" touch-press='verifyStaff()' ng-class="{'overlay':adminPin.length < 1}" translate>
             NEXT_BTN
             </button>
          </div>
