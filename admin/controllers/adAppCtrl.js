@@ -65,8 +65,7 @@ admin.controller('ADAppCtrl', [
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
 		$rootScope.isSuiteRoomsAvailable = false;
-        $rootScope.hourltRatesFordayUseEnabled = false;
-		// in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+        // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
 	    $rootScope.businessDate = businessDate;
