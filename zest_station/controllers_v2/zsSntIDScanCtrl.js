@@ -1,3 +1,4 @@
+	// Summary of screen flow is listed at the end of this file
 	sntZestStation.controller('zsSntIDScanCtrl', [
 		'$scope',
 		'$state',
@@ -15,7 +16,7 @@
 			$controller('sntIDCollectionBaseCtrl', {
 				$scope: $scope
 			});
-			$controller('zsCheckinNextPageBaseCtrl',{
+			$controller('zsCheckinNextPageBaseCtrl', {
 				$scope: $scope
 			});
 
@@ -123,8 +124,6 @@
 
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
 
-			
-
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				$scope.idScanData.selectedGuest.scannedDetails = data;
 				if ($scope.idScanData.verificationMethod === 'STAFF') {
@@ -158,7 +157,9 @@
 				}
 			};
 
-			var callApiToRecord = function() {
+			/* ********************* STAFF VERIFICATION ************************* */
+
+			var recordIDApproval = function() {
 				// application name is set to ROVER to log staff name
 				var params = {
 					"id": stateParams.reservation_id,
@@ -189,7 +190,7 @@
 
 			$scope.doneButtonClicked = function() {
 				if ($scope.idScanData.verificationMethod === 'STAFF') {
-					callApiToRecord();
+					recordIDApproval();
 				} else {
 					nextPageActions();
 				}
@@ -257,14 +258,16 @@
 			var initializeMe = (function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
 				});
 				setPageNumberDetails();
+
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
-				$scope.setScreenIcon('checkin'); // yotel only
+				$scope.setScreenIcon('checkin');
 				$scope.idScanData = {
 					mode: '',
 					selectedGuest: {},
@@ -272,15 +275,40 @@
 					staffVerified: false
 				};
 				$scope.validateSubsription();
-				$scope.setScroller('passport-validate', {
-					disablePointer: true, // important to disable the pointer events that causes the issues
-					disableTouch: false, // false if you want the slider to be usable with touch devices
-					disableMouse: false, // false if you want the slider to be usable with a mouse (desktop)
-					preventDefaultException: {
-						className: /(^|\s)signature-pad-layout(\s|$)/
-					}
-				});
+				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
 			}());
 		}
 	]);
+
+
+	/* ***************************************************************************************************
+	
+	We are using Acuant webservices for retrieving data from the IDs (we are using sntIDCollection App)
+	
+	The screen flow is as follows,
+
+	Guest will reach this page either from checkin flow or from pickup key flow.
+
+	UI will check if the hotel has a valid active Acuant subscription. If no will ask guest to see staff.
+
+	If there is a valid subsription, the guest list will be shown with a max of 3 guest + accompanying guests
+	in a paginated view.
+
+	Guests need to select from the listed guest + accompanying list to start scanning.
+
+	For passports only front image is to be captured, for IDs both side are required.
+
+	UI will show captured images before proceeding to analyze the images for retrieving the ID details.
+
+	This has to be done for all the listed guest +  accompanying guests
+
+	When the required images are added, the result can be retrived, viewed and approved with or without Staff verification.
+
+	If staff verification is turned ON, after guest scans all guests, they will confirm they have finished scanning.
+
+	Guest can call staff (if notification sound is enabled, they can use it for calling staff).
+
+	Staff comes and enter their PIN code to proceed.
+
+	***************************************************************************************************** */
