@@ -65,7 +65,7 @@ admin.controller('ADAppCtrl', [
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
 		$rootScope.isSuiteRoomsAvailable = false;
-        // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
+		// in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
 	    // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
 
 	    $rootScope.businessDate = businessDate;
@@ -617,6 +617,7 @@ admin.controller('ADAppCtrl', [
 		 * @param {object} response
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
+
 			// flag to decide show task management under house keeping: true by default
 			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
 			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled;
@@ -656,8 +657,7 @@ admin.controller('ADAppCtrl', [
             $rootScope.hotelDateFormat = data.date_format.value;
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
-            $rootScope.hourlyRatesForDayUseEnabled = data.hourly_rates_for_day_use_enabled;
-            $rootScope.isSuiteRoomsAvailable = data.suite_enabled;
+			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
 			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s

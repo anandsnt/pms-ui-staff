@@ -175,7 +175,6 @@ sntRover.controller('roverController', [
             $rootScope.paymentGateway = hotelDetails.payment_gateway;
         }
         $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
-        $rootScope.hourlyRatesForDayUseEnabled = hotelDetails.hourly_rates_for_day_use_enabled;
         $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
         $rootScope.isAddonOn = hotelDetails.is_addon_on;
         $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
