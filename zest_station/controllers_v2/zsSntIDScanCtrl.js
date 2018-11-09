@@ -40,7 +40,8 @@
 				});
 
 				$scope.idScanData.selectedIDInfo = selectGuest;
-				if (selectedGuest.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED')) {
+				if (selectedGuest.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED') ||
+				    $scope.idScanData.staffVerified) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
@@ -48,9 +49,18 @@
 				}
 			};
 
-			$scope.areAllGuestsScanned = function() {
+			$scope.areAllGuestsApproved = function() {
 				var allGuestsScaned = _.all($scope.selectedReservation.guest_details, function(guestDetail) {
 					return guestDetail.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
+				});
+
+				return allGuestsScaned;
+			};
+			$scope.areAllGuestsScanned = function() {
+				var allGuestsScaned = _.all($scope.selectedReservation.guest_details, function(guestDetail) {
+					return guestDetail.idScanStatus === 'SCANNED' ||
+						guestDetail.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED') ||
+						guestDetail.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_REJECTED');
 				});
 
 				return allGuestsScaned;
@@ -126,7 +136,13 @@
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				$scope.idScanData.selectedIDInfo.scannedDetails = data;
-				refreshIDdetailsScroller();
+				if ($scope.idScanData.verificationMethod === 'STAFF') {
+					$scope.screenData.scanMode = 'GUEST_LIST';
+					$scope.idScanData.selectedIDInfo.idScanStatus = 'SCANNED';
+					setPageNumberDetails();
+				} else {
+					refreshIDdetailsScroller();
+				}
 			});
 
 			$scope.$on('IMAGE_UPDATED', function(evt, data) {
@@ -137,6 +153,13 @@
 				}
 				refreshConfrimImagesScroller();
 			});
+
+			$scope.recaptureFrontImage = function () {
+
+			};
+			$scope.recaptureBackImage = function () {
+
+			};
 
 			var checkIfEmailIsBlackListedOrValid = function() {
 				var email = !stateParams.guest_email ? '' : stateParams.guest_email;
@@ -200,7 +223,9 @@
 			};
 
 			$scope.doneButtonClicked = function() {
-				if (stateParams.mode === 'PICKUP_KEY' || stateParams.from_pickup_key) {
+				if ($scope.idScanData.verificationMethod === 'STAFF' && $scope.areAllGuestsScanned() && !$scope.areAllGuestsApproved()) {
+					$scope.idScanData.staffVerified = !$scope.idScanData.staffVerified;
+				} else if (stateParams.mode === 'PICKUP_KEY' || stateParams.from_pickup_key) {
 					$scope.zestStationData.continuePickupFlow();
 				} else {
 					checkinGuest();
@@ -226,7 +251,9 @@
 				$scope.setScreenIcon('checkin'); // yotel only
 				$scope.idScanData = {
 					mode: '',
-					selectedIDInfo: {}
+					selectedIDInfo: {},
+					verificationMethod: 'STAFF',
+					staffVerified: false
 				};
 				$scope.fromPickupKeyPassportScan = $stateParams.from_pickup_key === 'true';
 				$scope.validateSubsription();

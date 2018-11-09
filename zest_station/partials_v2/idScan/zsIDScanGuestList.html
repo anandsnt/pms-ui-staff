@@ -34,7 +34,9 @@
     </div>
     <div>
         <div id="actions" class="add-guests-footer">
-            
+            <button type="button" class="button prev add-guest-passport">
+                <!-- DUMMY BUTTON -->
+            </button>
              <div class="button-group">
                 <button type="button" class="button only-icon next" click-touch="paginationAction(false)" ng-class='{"disabled": pageData.disablePreviousButton}'>
                     <div ng-include="icons.url.left_arrow_icon"></div>
@@ -43,7 +45,7 @@
                     <div ng-include="icons.url.right_arrow_icon"></div>
                 </button>
              </div>
-             <button type="button" class="button next" ng-show="areAllGuestsScanned()" click-touch="doneButtonClicked(); resetTime();">
+             <button type="button" class="button next" ng-show="areAllGuestsApproved() || areAllGuestsScanned()" click-touch="doneButtonClicked(); resetTime();">
                 <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE_BTN"></text>
             </button>
         </div>
