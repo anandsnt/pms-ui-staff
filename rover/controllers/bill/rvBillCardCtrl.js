@@ -61,6 +61,8 @@ sntRover.controller('RVbillCardController',
 		isBlackBoxEnabled = reservationBillData.is_infrasec_activated_for_hotel && reservationBillData.is_infrasec_activated_for_workstation,
 		hasActivatedFolioNumber = reservationBillData.has_activate_folio_number;
 
+	$scope.hasPrintFolioEnabled = reservationBillData.is_print_folio_enabled;
+
 	// Log to track the issue.
 	$log.info('is_infrasec_activated_for_hotel', reservationBillData.is_infrasec_activated_for_hotel);
 	$log.info('is_infrasec_activated_for_workstation', reservationBillData.is_infrasec_activated_for_workstation);
