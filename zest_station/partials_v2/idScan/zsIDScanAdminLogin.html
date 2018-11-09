@@ -1,55 +1,54 @@
 <section id="main" class="centered" role="main" ng-show="screenData.adminMode === 'WAIT_FOR_STAFF'" click-touch='resetTime()'>
-    <div id="content">
-        <h1>
-            <text data-ng-bind-html="getTagValue('ID_VERIFICATION_HEADER')" editable-text="ID_VERIFICATION_HEADER"></text>
-        </h1>
-        <h2>
-            <text data-ng-bind-html="getTagValue('ID_VERIFICATION_SUB_HEADER')" editable-text="ID_VERIFICATION_SUB_HEADER"></text>
-        </h2>
-        <button type="button" class="button done-btn" click-touch="ringBell()" ng-if="zestStationData.kiosk_staff_notification_sound">
-            <text data-ng-bind-html="getTagValue('CALL_STAFF')" editable-text="CALL_STAFF"></text>
-        </button>
-    </div>
-    <div>
-        <button class='button blue invis bottom-left' click-touch="adminVerify()">
-            Admin
-        </button>
-    </div>
+   <div id="content">
+      <h1 translate>
+         ID_VERIFICATION_HEADER
+      </h1>
+      <h2 translate>
+         ID_VERIFICATION_SUB_HEADER
+      </h2>
+      <button type="button" class="button done-btn" click-touch="ringBell()" ng-if="zestStationData.kiosk_staff_notification_sound" translate>
+      CALL_STAFF
+      </button>
+   </div>
+   <div>
+      <button class='button blue invis bottom-left' click-touch="adminVerify()">
+      Admin
+      </button>
+   </div>
 </section>
-
 <!--  staff PIN -->
 <section id="main" class="centered test" role="main" ng-show="screenData.adminMode ===  'ADMIN_PIN_ENTRY'" click-touch='resetTime()'>
-    <div id="content" class="input-field-contents">
-        <h1>
-            <text data-ng-bind-html="getTagValue('ADMIN_PIN_HEADER')" editable-text="ADMIN_PIN_HEADER"></text>
-        </h1>
-        <h2>
-            <text data-ng-bind-html="getTagValue('ADMIN_PIN_SUB_HEADER')" editable-text="ADMIN_PIN_SUB_HEADER"></text>
-        </h2>
-        <!-- user name -->
-        <div class="form">
-            <div class="entry input">
-                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="screenData.adminPin" id="input_text" touch-press/>
-            </div>
-            <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}">
-                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
-                </button>
-            </div>
-        </div>
-    </div>
+   <div id="content" class="input-field-contents">
+      <h1 translate>
+         ADMIN_PIN_HEADER
+      </h1>
+      <h2 translate>
+         ADMIN_PIN_SUB_HEADER
+      </h2>
+      <!-- user name -->
+      <div class="form">
+         <div class="entry input">
+            <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="screenData.adminPin" id="input_text" touch-press/>
+         </div>
+         <div class="entry action">
+            <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}" translate>
+            NEXT_BTN
+            </button>
+         </div>
+      </div>
+   </div>
 </section>
 <!-- PIN error -->
 <section id="main" class="centered" role="main" ng-show="screenData.adminMode ===  'PIN_ERROR'" click-touch='resetTime()'>
-    <div id="content">
-        <h1>
-            <text data-ng-bind-html="getTagValue('PIN_ERROR_HEADER')" editable-text="PIN_ERROR_HEADER"></text>
-        </h1>
-        <h2>
-            <text data-ng-bind-html="getTagValue('PIN_ERROR_SUB_HEADER')" editable-text="PIN_ERROR_SUB_HEADER"></text>
-        </h2>
-        <button type="button" class="button done-btn" click-touch="retryPinEntry()">
-            <text data-ng-bind-html="getTagValue('RETRY')" editable-text="RETRY"></text>
-        </button>
-    </div>
+   <div id="content">
+      <h1 translate>
+         PIN_ERROR_HEADER
+      </h1>
+      <h2 translate>
+         PIN_ERROR_SUB_HEADER
+      </h2>
+      <button type="button" class="button done-btn" click-touch="retryPinEntry()" translate>
+      RETRY
+      </button>
+   </div>
 </section>

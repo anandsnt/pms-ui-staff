@@ -23,7 +23,7 @@
 			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED');
 			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
 			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
-			var SCAN_WAITING_FOR_APPROVAL = 'SCANNED';;
+			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
 
 			/* ******************* GUEST LIST *********************** */
 

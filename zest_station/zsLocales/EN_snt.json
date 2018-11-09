@@ -730,6 +730,27 @@
    "NO_COUNTRY_MATCH": "No match found!",
    "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
 
-   "FEES": "FEES"
+   "FEES": "FEES",
+
+   "GI_INVALID_ACUANT_SUBSCRIPTION": "INVALID SUBSCRIPTION",
+   "GI_INVALID_ACUANT_SUBSCRIPTION_INSTRUCTIONS": "Please see staff for more details",
+   "GID_SCAN_FRONT_IMAGE_SCAN_INSTRUCTIONS": "Place your ID in front of the camera with front side facing camera and press Scan",
+   "GID_SCAN_BACK_IMAGE_SCAN_INSTRUCTIONS": "Place your ID in front of the camera with back side facing camera and press Scan",
+   "GI_ANALYSING_IMAGE_MSG": "Analysing image... Please wait",
+   "GI_UPLOAD_BACK_IMAGE_FAILED": "Failed to analyze back side of the Document",
+   "GI_RETAKE_BACK_IMAGE": "Try again",
+   "GI_CONFIRM_FRONT_IMAGE": "Confirm front image",
+   "GI_CONFRIM_IMAGES": "Confirm images",
+   "GI_GO_BACK": "Go Back",
+   "GI_PROCEED": "PROCEED",
+
+   "GI_UPLOAD_FRONT_IMAGE_FAILED": "Failed to analyze front side of the Document",
+   "GI_RETAKE_FRONT_IMAGE": "Try again",
    
+   "GI_ID_ANALYSING_FAILED": "Failed to Analyze the Document!",
+   "GI_RESTART_SCANNING": "Restart scanning",
+
+   "GI_SCAN_PEDNING": "Scan Pending",
+   "GID_SCAN_ID_HEADER": "Scan your Id"
+
 }
