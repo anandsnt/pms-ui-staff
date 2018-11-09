@@ -42,14 +42,29 @@
 				setPageNumberDetails();
 			};
 
+			var demoModeScanActions = function () {
+
+                var options = {
+                    successCallBack: function(response) {
+                        $scope.idScanData.selectedGuest.scannedDetails = response;
+                        $scope.idScanData.selectedGuest.front_image_data = response.front_image_data;
+                        $scope.idScanData.selectedGuest.back_image_data = '';
+                        $scope.idScanData.selectedGuest.idScanStatus = $scope.idScanData.verificationMethod === 'STAFF' ? SCAN_WAITING_FOR_APPROVAL : SCAN_ACCEPTED;
+                    }
+                };
+
+                $scope.callAPI(zsCheckinSrv.getSampleAcuantIdScanDetails, options);
+			};
+
 			$scope.selectGuest = function(selectedGuest) {
 				var selectGuest = _.find($scope.selectedReservation.guest_details, function(guestDetail) {
 					return guestDetail.id === selectedGuest.id;
 				});
 
 				$scope.idScanData.selectedGuest = selectGuest;
-				if (selectedGuest.idScanStatus === SCAN_ACCEPTED ||
-					$scope.idScanData.staffVerified) {
+				if ($scope.inDemoMode() && !$scope.idScanData.staffVerified) {
+					demoModeScanActions();
+				} else if (selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
@@ -214,6 +229,8 @@
 			$scope.goToNext = function() {
 				$scope.callBlurEventForIpad();
 				var successCallback = function(response) {
+					$scope.pageData.pageNumber = 1;
+					setPageNumberDetails();
 					$scope.screenData.adminPin = '';
 					verfiedStaffId = response.user_id;
 					$scope.screenData.scanMode = 'GUEST_LIST';
@@ -221,6 +238,7 @@
 					// For some reason keyboard did'nt dismiss even after the above code
 					// TODO: investigate later
 					$scope.callBlurEventForIpad();
+					$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 				};
 				var failureCallback = function() {
 					$scope.screenData.adminPin = '';
@@ -248,10 +266,17 @@
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
-			$scope.goBackToScanAgain = function() {
-				verfiedStaffId = '';
-				$scope.idScanData.staffVerified = false;
+			var goBackToScanAgain = function() {
+				if ($scope.screenData.scanMode === 'FINAL_ID_RESULTS') {
+					$scope.showGuestList();
+				} else {
+					verfiedStaffId = '';
+					$scope.idScanData.staffVerified = false;
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+				}
 			};
+			// Back button will be only shown when staff is reviewwing
+			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, goBackToScanAgain);
 
 			$scope.$on('CREDENTIALS_VALIDATED', function() {
 				$scope.screenData.scanMode = 'GUEST_LIST';
@@ -277,7 +302,11 @@
 					staffVerified: false
 				};
 				$scope.validateSubsription();
-				$scope.setScroller('passport-validate');
+				$scope.setScroller('passport-validate', {
+					disablePointer: true, // important to disable the pointer events that causes the issues
+					disableTouch: false, // false if you want the slider to be usable with touch devices
+					disableMouse: false, // false if you want the slider to be usable with a mouse (desktop)
+				});
 				$scope.setScroller('confirm-images');
 			}());
 		}
