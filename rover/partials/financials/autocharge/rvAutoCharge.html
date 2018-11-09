@@ -65,12 +65,12 @@
     </ul>
 
     <!-- Reservations -->
-    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-show="!isAutoChargeProcessing && totalCount !== 0">
-    <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-class="{'with-checkboxes' : filters.status !== 'APPROVED'}" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+        <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">	                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index">
-                <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->	                    <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
+                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
+                    <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
                     <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
                         <!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
                         <label class="checkbox" ng-show="autoCharge.is_declined">
