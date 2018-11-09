@@ -17,6 +17,10 @@
 			});
 
 			var stateParams = JSON.parse($stateParams.params);
+			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED');
+			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
+			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
+			var SCAN_WAITING_FOR_APPROVAL = 'SCANNED';;
 
 			/* ******************* GUEST LIST *********************** */
 
@@ -39,9 +43,9 @@
 					return guestDetail.id === selectedGuest.id;
 				});
 
-				$scope.idScanData.selectedIDInfo = selectGuest;
-				if (selectedGuest.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED') ||
-				    $scope.idScanData.staffVerified) {
+				$scope.idScanData.selectedGuest = selectGuest;
+				if (selectedGuest.idScanStatus === SCAN_ACCEPTED ||
+					$scope.idScanData.staffVerified) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
@@ -51,16 +55,14 @@
 
 			$scope.areAllGuestsApproved = function() {
 				var allGuestsScaned = _.all($scope.selectedReservation.guest_details, function(guestDetail) {
-					return guestDetail.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
+					return guestDetail.idScanStatus === SCAN_ACCEPTED;
 				});
 
 				return allGuestsScaned;
 			};
 			$scope.areAllGuestsScanned = function() {
 				var allGuestsScaned = _.all($scope.selectedReservation.guest_details, function(guestDetail) {
-					return guestDetail.idScanStatus === 'SCANNED' ||
-						guestDetail.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_ACCEPTED') ||
-						guestDetail.idScanStatus === $filter('translate')('GID_STAFF_REVIEW_REJECTED');
+					return guestDetail.idScanStatus !== SCANING_PENDING;
 				});
 
 				return allGuestsScaned;
@@ -76,7 +78,6 @@
 				$timeout(function() {
 					scroller.scrollTo(0, 0, 300);
 				}, 0);
-
 			};
 
 			var refreshConfrimImagesScroller = function() {
@@ -87,43 +88,32 @@
 				$timeout(function() {
 					scroller.scrollTo(0, 0, 300);
 				}, 0);
-
 			};
-
-			$scope.ringBell = function() {
-				$scope.$emit('PLAY_BELL_SOUND');
-			};
-
-			$scope.saveGuestIdDetails = function(action, imageType) {
-
-			};
-
 
 			$scope.acceptID = function() {
 				var accpetIdSuccess = function() {
-					$scope.idScanData.selectedIDInfo.idScanStatus = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
+					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					setPageNumberDetails();
 				};
-				var apiParams = angular.copy($scope.idScanData.selectedIDInfo.scannedDetails);
+				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
 
-				apiParams.front_image_data = $scope.idScanData.selectedIDInfo.front_image_data;
-				apiParams.back_image_data = $scope.idScanData.selectedIDInfo.back_image_data;
+				apiParams.front_image_data = $scope.idScanData.selectedGuest.front_image_data;
+				apiParams.back_image_data = $scope.idScanData.selectedGuest.back_image_data;
 				apiParams.reservation_id = stateParams.reservation_id
-				apiParams.guest_id = $scope.idScanData.selectedIDInfo.id;
+				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
 					successCallBack: accpetIdSuccess
 				});
 			};
 			var resetSscannedData = function() {
-				$scope.idScanData.selectedIDInfo.front_image_data = '';
-				$scope.idScanData.selectedIDInfo.back_image_data = '';
-				$scope.idScanData.selectedIDInfo.scannedDetails = {};
+				$scope.idScanData.selectedGuest.front_image_data = '';
+				$scope.idScanData.selectedGuest.back_image_data = '';
+				$scope.idScanData.selectedGuest.scannedDetails = {};
 			};
 			$scope.rejectID = function() {
-				$scope.idScanData.selectedIDInfo.idScanStatus = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
-				resetSscannedData();
+				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				setPageNumberDetails();
 			};
@@ -135,31 +125,28 @@
 			});
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
-				$scope.idScanData.selectedIDInfo.scannedDetails = data;
+				$scope.idScanData.selectedGuest.scannedDetails = data;
 				if ($scope.idScanData.verificationMethod === 'STAFF') {
 					$scope.screenData.scanMode = 'GUEST_LIST';
-					$scope.idScanData.selectedIDInfo.idScanStatus = 'SCANNED';
+					$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
 					setPageNumberDetails();
 				} else {
 					refreshIDdetailsScroller();
 				}
 			});
 
+			$scope.showGuestList = function() {
+				$scope.screenData.scanMode = 'GUEST_LIST';
+			};
+
 			$scope.$on('IMAGE_UPDATED', function(evt, data) {
 				if (data.isFrontSide) {
-					$scope.idScanData.selectedIDInfo.front_image_data = data.imageData;
+					$scope.idScanData.selectedGuest.front_image_data = data.imageData;
 				} else {
-					$scope.idScanData.selectedIDInfo.back_image_data = data.imageData;
+					$scope.idScanData.selectedGuest.back_image_data = data.imageData;
 				}
 				refreshConfrimImagesScroller();
 			});
-
-			$scope.recaptureFrontImage = function () {
-
-			};
-			$scope.recaptureBackImage = function () {
-
-			};
 
 			var checkIfEmailIsBlackListedOrValid = function() {
 				var email = !stateParams.guest_email ? '' : stateParams.guest_email;
@@ -221,45 +208,125 @@
 					$scope.callAPI(zsCheckinSrv.checkInGuest, options);
 				}
 			};
-
-			$scope.doneButtonClicked = function() {
-				if ($scope.idScanData.verificationMethod === 'STAFF' && $scope.areAllGuestsScanned() && !$scope.areAllGuestsApproved()) {
-					$scope.idScanData.staffVerified = !$scope.idScanData.staffVerified;
-				} else if (stateParams.mode === 'PICKUP_KEY' || stateParams.from_pickup_key) {
+			var verfiedStaffId;
+			var nextPageActions = function() {
+				if (stateParams.mode === 'PICKUP_KEY' || stateParams.from_pickup_key) {
 					$scope.zestStationData.continuePickupFlow();
 				} else {
 					checkinGuest();
 				}
 			};
 
+			var callApiToRecord = function() {
+				// application name is set to ROVER to log staff name
+				var params = {
+					"id": stateParams.reservation_id,
+					"user_id": verfiedStaffId,
+					"application": 'ROVER',
+					"action_type": "ID_REVIEWED",
+					"details": []
+				};
+
+				var newData = {
+					'key': 'Guests Verified With ID',
+					'new_value': ''
+				};
+				var guestNames = _.map($scope.selectedReservation.guest_details, function(guest) {
+					return guest.first_name + ' ' + guest.last_name;
+				});
+				newData.new_value = guestNames.join(', ');
+				params.details.push(newData);
+
+				var options = {
+					params: params,
+					successCallBack: nextPageActions,
+					failureCallback: nextPageActions
+				};
+
+				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
+			};
+
+			$scope.doneButtonClicked = function() {
+				if ($scope.idScanData.verificationMethod === 'STAFF') {
+					callApiToRecord();
+				} else {
+					nextPageActions();
+				}
+			};
+
+			$scope.scanCompleted = function() {
+				$scope.screenData.scanMode = 'ADMIN_LOGIN';
+				$scope.screenData.adminMode = 'WAIT_FOR_STAFF';
+			};
+
+			$scope.ringBell = function() {
+				$scope.$emit('PLAY_BELL_SOUND');
+			};
+
+			$scope.adminVerify = function() {
+				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY'
+			};
+
+			$scope.goToNext = function() {
+				$scope.callBlurEventForIpad();
+				var successCallback = function(response) {
+					$scope.screenData.adminPin = '';
+					verfiedStaffId = response.user_id;
+					$scope.screenData.scanMode = 'GUEST_LIST';
+					$scope.idScanData.staffVerified = true;
+					// For some reason keyboard did'nt dismiss even after the above code
+					// TODO: investigate later
+					$scope.callBlurEventForIpad();
+				};
+				var failureCallback = function() {
+					$scope.screenData.adminPin = '';
+					$scope.screenData.adminMode = 'PIN_ERROR';
+				};
+				var options = {
+					params: {
+						'pin_code': $scope.screenData.adminPin
+					},
+					successCallBack: successCallback,
+					failureCallBack: failureCallback
+				};
+
+				if ($scope.inDemoMode()) {
+					successCallback({
+						id: 123
+					});
+				} else {
+					$scope.callAPI(zsGeneralSrv.verifyStaffByPin, options);
+				}
+
+			};
+
+			$scope.retryPinEntry = function() {
+				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
+			};
+
+			$scope.goBackToScanAgain = function() {
+				verfiedStaffId = '';
+				$scope.idScanData.staffVerified = false;
+			};
+
 			var initializeMe = (function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
-					guestDetail.idScanStatus = $filter('translate')('GID_SCAN_NOT_STARTED');
+					guestDetail.idScanStatus = SCANING_PENDING;
 				});
 				setPageNumberDetails();
-				// show back button
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-				// show close button
 				$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-
-				$scope.results = []; // scan results is the array of guests + status of passport (scanned/verified, etc)
-				$scope.allPassportsScanned = false;
-				$scope.allPassportReviewed = false;
 
 				$scope.setScreenIcon('checkin'); // yotel only
 				$scope.idScanData = {
 					mode: '',
-					selectedIDInfo: {},
+					selectedGuest: {},
 					verificationMethod: 'STAFF',
 					staffVerified: false
 				};
-				$scope.fromPickupKeyPassportScan = $stateParams.from_pickup_key === 'true';
 				$scope.validateSubsription();
-				$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
-
-				});
 				$scope.setScroller('passport-validate', {
 					disablePointer: true, // important to disable the pointer events that causes the issues
 					disableTouch: false, // false if you want the slider to be usable with touch devices
@@ -268,11 +335,7 @@
 						className: /(^|\s)signature-pad-layout(\s|$)/
 					}
 				});
-
 				$scope.setScroller('confirm-images');
-
-				//fetchGuestDetails();
-
 			}());
 		}
 	]);

@@ -40,6 +40,9 @@
    ng-show="screenData.scanMode == 'FINAL_ID_RESULTS'"></ng-include>
 <ng-include src="'/assets/partials_v2/idScan/zsIDScanGetResultFailed.html'"  
    ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'"></ng-include>
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanAdminLogin.html'"  
+   ng-show="screenData.scanMode == 'ADMIN_LOGIN'"></ng-include>
+
 
 
   <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none !important;">

@@ -23,25 +23,25 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
                             </label>
 
-                            <input type="text" ng-model='idScanData.selectedIDInfo.scannedDetails.last_name' class='disabled'/>
+                            <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.last_name' class='disabled'/>
                         </div>
 
                         <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
                             </label>
-                            <input type="text" ng-model='idScanData.selectedIDInfo.scannedDetails.first_name' class='disabled' />
+                            <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.first_name' class='disabled' />
                         </div>
 
                         <!-- Passport / Guest ID Scan preview -->
                         <img id='image-preview' class='gid-image-preview'
-                                ng-show='idScanData.selectedIDInfo.front_image_data'
-                                data-ng-src="{{idScanData.selectedIDInfo.front_image_data}}" 
+                                ng-show='idScanData.selectedGuest.front_image_data'
+                                data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
                                 src-error='' 
                                 >
 
-                        <img id='image-preview-back' ng-show='idScanData.selectedIDInfo.back_image_data'  class='gid-image-preview' 
-                                data-ng-src="{{idScanData.selectedIDInfo.back_image_data}}" 
+                        <img id='image-preview-back' ng-show='idScanData.selectedGuest.back_image_data'  class='gid-image-preview' 
+                                data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
                                 src-error='' 
                                 >
                                 
@@ -57,14 +57,14 @@
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_DOB')" editable-text="GID_REVIEW_DOB"></text>
                             </label>
-                            <input type="text" value='idScanData.selectedIDInfo.scannedDetails.dob' ng-model='idScanData.selectedIDInfo.scannedDetails.date_of_birth' class="disabled"/>
+                            <input type="text" value='idScanData.selectedGuest.scannedDetails.dob' ng-model='idScanData.selectedGuest.scannedDetails.date_of_birth' class="disabled"/>
                         </div>
                         <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_DOC_NUMBER')" editable-text="GID_REVIEW_DOC_NUMBER"></text>
                             </label>
 
-                            <input type="text" ng-model='idScanData.selectedIDInfo.scannedDetails.document_number' class="disabled"/>
+                            <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.document_number' class="disabled"/>
                         </div>
 
                         <div class="entry with-label">
@@ -72,7 +72,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_EXPIRY')" editable-text="GID_REVIEW_EXPIRY"></text>
                             </label>
 
-                            <input type="text" ng-model='idScanData.selectedIDInfo.scannedDetails.expiration_date' class="disabled"/>
+                            <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.expiration_date' class="disabled"/>
                         </div>
 
                         <div class="entry with-label">
@@ -80,7 +80,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
                             </label>
 
-                            <input type="text" ng-model='idScanData.selectedIDInfo.scannedDetails.nationality_fullname' class="disabled"/>
+                            <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.nationality_fullname' class="disabled"/>
                         </div>
 
                         <br/><br/>
@@ -91,6 +91,10 @@
         </div>
 
         <div id='actions' class="align-center guest-id-actions">
+            <button type="button" class="button" touch-press='showGuestList(); resetTime()'>
+                BACK
+            </button>
+
             <button type="button" class="button" touch-press='rejectID(); resetTime()'>
                 <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_REJECT')" editable-text="GID_VERIFY_PASSPORT_REJECT"></text>
             </button>

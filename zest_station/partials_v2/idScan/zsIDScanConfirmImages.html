@@ -13,13 +13,13 @@
 
                         <!-- Passport / Guest ID Scan preview -->
                         <img id='image-preview' class='gid-image-preview'
-                                ng-show='idScanData.selectedIDInfo.front_image_data'
-                                data-ng-src="{{idScanData.selectedIDInfo.front_image_data}}" 
+                                ng-show='idScanData.selectedGuest.front_image_data'
+                                data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
                                 src-error='' 
                                 >
 
-                        <img id='image-preview-back' ng-show='idScanData.selectedIDInfo.back_image_data'  class='gid-image-preview' 
-                                data-ng-src="{{idScanData.selectedIDInfo.back_image_data}}" 
+                        <img id='image-preview-back' ng-show='idScanData.selectedGuest.back_image_data'  class='gid-image-preview' 
+                                data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
                                 src-error='' 
                                 >
                         <br/><br/>

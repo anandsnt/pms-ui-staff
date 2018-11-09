@@ -45,7 +45,13 @@
                     <div ng-include="icons.url.right_arrow_icon"></div>
                 </button>
              </div>
-             <button type="button" class="button next" ng-show="areAllGuestsApproved() || areAllGuestsScanned()" click-touch="doneButtonClicked(); resetTime();">
+             <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" click-touch="scanCompleted(); resetTime();">
+                NEXT
+            </button>
+             <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && idScanData.staffVerified" click-touch="goBackToScanAgain(); resetTime();">
+                SCAN PENDING
+            </button>
+             <button type="button" class="button next" ng-show="areAllGuestsApproved()" click-touch="doneButtonClicked(); resetTime();">
                 <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE_BTN"></text>
             </button>
         </div>
