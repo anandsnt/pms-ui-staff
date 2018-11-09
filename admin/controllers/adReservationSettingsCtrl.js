@@ -88,6 +88,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         $rootScope.isHourlyRatesEnabled = !!$scope.reservationSettingsData.is_hourly_rate_on;
         $rootScope.dayUseEnabled = $scope.reservationSettingsData.day_use_enabled;
         $rootScope.hourlyRatesForDayUseEnabled = $scope.reservationSettingsData.hourly_rates_for_day_use_enabled;
+        $rootScope.hourlyAvailabilityCalculation = data.hourly_availability_calculation;
         $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
         $scope.$emit("refreshLeftMenu");
         $scope.$emit('hideLoader');

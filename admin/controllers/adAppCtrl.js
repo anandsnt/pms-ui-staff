@@ -657,7 +657,9 @@ admin.controller('ADAppCtrl', [
             $rootScope.hotelDateFormat = data.date_format.value;
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
+            $rootScope.dayUseEnabled = data.day_use_enabled;
             $rootScope.hourlyRatesForDayUseEnabled = data.hourly_rates_for_day_use_enabled;
+            $rootScope.hourlyAvailabilityCalculation = data.hourly_availability_calculation;
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
