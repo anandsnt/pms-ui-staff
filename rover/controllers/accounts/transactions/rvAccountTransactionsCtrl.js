@@ -329,7 +329,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} 
 			if (currentActiveBill.balance_amount === "0.0") {
 
-				if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+				if ($scope.shouldGenerateFolioNumber) {
 					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists);
 				}
 			}
