@@ -117,6 +117,9 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
          else {
             $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = !$scope.reservationSettingsData.hourly_rates_for_day_use_enabled;
         }
+        if ($scope.reservationSettingsData.hourly_rates_for_day_use_enabled == false) {
+            $scope.reservationSettingsData.hourly_availability_calculation = '';
+        }
     };
 
     $scope.toggleHourlyAvailability = function(value) {
