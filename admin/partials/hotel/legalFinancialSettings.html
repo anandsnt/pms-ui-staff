@@ -4,13 +4,13 @@
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
     <table class="table-settings">
         <tbody>
-            <tr ng-hide="true">
+            <tr>
                 <td>Lock Bill</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button on">
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_bill_lock_enabled}">
                         <!-- remove checked when not active-->
-                        <input name="lock-bill" id="lock-bill" value="lock-bill" type="checkbox" checked="">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_bill_lock_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
@@ -26,7 +26,8 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            
+             <tr>
                 <td>Restrict AR Invoice changes</td>
                 <td>
                     <!-- remove .on when not active -->
