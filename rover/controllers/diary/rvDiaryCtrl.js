@@ -2605,4 +2605,11 @@ angular.module('sntRover')
 		}
 	});
 
+	// Handle Nigthtly/Hourly toggle
+	$scope.toggleHourlyNightly = true;
+	$scope.navigateToNightlyDiary = function() {
+		$state.go("rover.nightlyDiary");
+		$scope.toggleHourlyNightly = false;
+	};
+
 }]);
