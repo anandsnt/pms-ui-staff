@@ -750,7 +750,7 @@
    "GI_ID_ANALYSING_FAILED": "Failed to Analyze the Document!",
    "GI_RESTART_SCANNING": "Restart scanning",
 
-   "GI_SCAN_PEDNING": "Scan Pending",
+   "GI_SCAN_PEDNING": "Next",
    "GID_SCAN_ID_HEADER": "Scan your Id"
 
 }

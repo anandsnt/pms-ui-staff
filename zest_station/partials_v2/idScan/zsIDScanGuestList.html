@@ -7,7 +7,7 @@
          GID_ADMIN_VERIFY_SUB_HEADER
       </h2>
       <ul id="selection" class="editable">
-         <li ng-repeat='guest in pageData.viewableItems track by $index' click-touch='selectGuest(guest)'>
+         <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)'>
             <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
                <span class="passport-scan-status">
                {{guest.idScanStatus}}
@@ -36,20 +36,20 @@
             <!-- DUMMY BUTTON -->
          </button>
          <div class="button-group">
-            <button type="button" class="button only-icon next" click-touch="paginationAction(false)" ng-class='{"disabled": pageData.disablePreviousButton}'>
+            <button type="button" class="button only-icon next" touch-press="paginationAction(false)" ng-class='{"disabled": pageData.disablePreviousButton}'>
                <div ng-include="icons.url.left_arrow_icon"></div>
             </button>
-            <button type="button" class="button only-icon next" click-touch="paginationAction(true)" ng-class='{"disabled": pageData.disableNextButton}'>
+            <button type="button" class="button only-icon next" touch-press="paginationAction(true)" ng-class='{"disabled": pageData.disableNextButton}'>
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>
-         <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" click-touch="scanCompleted(); resetTime();" translate>
+         <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" touch-press="scanCompleted(); resetTime();" translate>
          NEXT
          </button>
-         <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && idScanData.staffVerified" click-touch="goBackToScanAgain(); resetTime();" translate>
+         <button type="button" class="button next" ng-show="!areAllGuestsApproved() && areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && idScanData.staffVerified" touch-press="goBackToScanAgain(); resetTime();" translate>
          GI_SCAN_PEDNING
          </button>
-         <button type="button" class="button next" ng-show="areAllGuestsApproved()" click-touch="doneButtonClicked(); resetTime();" translate>
+         <button type="button" class="button next" ng-show="areAllGuestsApproved()" touch-press="doneButtonClicked(); resetTime();" translate>
          DONE_BTN
          </button>
       </div>

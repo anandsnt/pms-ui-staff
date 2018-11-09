@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main" ng-show="screenData.adminMode === 'WAIT_FOR_STAFF'" click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show="screenData.adminMode === 'WAIT_FOR_STAFF'" touch-press='resetTime()'>
    <div id="content">
       <h1 translate>
          ID_VERIFICATION_HEADER
@@ -6,18 +6,18 @@
       <h2 translate>
          ID_VERIFICATION_SUB_HEADER
       </h2>
-      <button type="button" class="button done-btn" click-touch="ringBell()" ng-if="zestStationData.kiosk_staff_notification_sound" translate>
+      <button type="button" class="button done-btn" touch-press="ringBell()" ng-if="zestStationData.kiosk_staff_notification_sound" translate>
       CALL_STAFF
       </button>
    </div>
    <div>
-      <button class='button blue invis bottom-left' click-touch="adminVerify()">
+      <button class='button blue invis bottom-left' touch-press="adminVerify()">
       Admin
       </button>
    </div>
 </section>
 <!--  staff PIN -->
-<section id="main" class="centered test" role="main" ng-show="screenData.adminMode ===  'ADMIN_PIN_ENTRY'" click-touch='resetTime()'>
+<section id="main" class="centered test" role="main" ng-show="screenData.adminMode ===  'ADMIN_PIN_ENTRY'" touch-press='resetTime()'>
    <div id="content" class="input-field-contents">
       <h1 translate>
          ADMIN_PIN_HEADER
@@ -28,7 +28,7 @@
       <!-- user name -->
       <div class="form">
          <div class="entry input">
-            <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="screenData.adminPin" id="input_text" touch-press/>
+            <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" touch-press="showOnScreenKeyboard('input_text')" ng-model="screenData.adminPin" id="input_text" touch-press/>
          </div>
          <div class="entry action">
             <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}" translate>
@@ -39,7 +39,7 @@
    </div>
 </section>
 <!-- PIN error -->
-<section id="main" class="centered" role="main" ng-show="screenData.adminMode ===  'PIN_ERROR'" click-touch='resetTime()'>
+<section id="main" class="centered" role="main" ng-show="screenData.adminMode ===  'PIN_ERROR'" touch-press='resetTime()'>
    <div id="content">
       <h1 translate>
          PIN_ERROR_HEADER
@@ -47,7 +47,7 @@
       <h2 translate>
          PIN_ERROR_SUB_HEADER
       </h2>
-      <button type="button" class="button done-btn" click-touch="retryPinEntry()" translate>
+      <button type="button" class="button done-btn" touch-press="retryPinEntry()" translate>
       RETRY
       </button>
    </div>
