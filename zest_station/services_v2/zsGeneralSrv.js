@@ -714,5 +714,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return zsBaseWebSrv.getJSON(url);
         };
 
+
+        this.getDeviceDetails = function(params) {
+
+            var url = "/api/notifications/device_details";
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
     }
 ]);

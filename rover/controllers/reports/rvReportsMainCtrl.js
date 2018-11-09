@@ -223,7 +223,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_51: false,
             item_52: false,
             item_53: false,
-            item_54: false
+            item_54: false,
+            item_55: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1304,7 +1305,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
                     $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
                 }
-            }            
+            }   
+
+            if ( report.hasShowVatWithRates ) {
+                key         = reportParams['SHOW_VAT_WITH_RATES'];
+                params[key] = report.show_vat_with_rates;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['show_vat_with_rates'] = report.show_vat_with_rates;
+                }
+            }         
 
             // include CICO filter
             if (!!report.hasCicoFilter) {
@@ -1893,12 +1903,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         }
                     });
 
-                    // in case if all reservation status are selected
+                    // in case if all tax exempts are selected
                     if (changeAppliedFilter && report['hasIncludeTaxExempts']['data'].length === selected.length) {
-                        $scope.appliedFilter.tax_exempt_type_ids = ['All Tax Exempts'];
+                        $scope.appliedFilter.tax_exempt_type_ids = [];
+                        params[key] = []; // If all tax exempts selected
                     }
                 }
-            }                      
+            }        
 
             // Include accounts
             if (report.hasOwnProperty('hasAccountSearch')) {
@@ -2103,7 +2114,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 params.rawData = _.extend(reportUtils.reduceObject(report), rawData);
                 params.appliedFilter = $scope.appliedFilter;
             }
-            
 
             return params;
         }
@@ -2189,12 +2199,54 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 return response;
             };
 
+            var responseForTaxExempt = function(response) {
+                
+                _.each(response.results, function (item) {
+                    var previousTaxExemptTypeId = '',
+                        taxExemptTypes = [],
+                        rowSpanIndex = 0,
+                        k = 0;
+
+                    _.each(item.dates, function(dateItem, dateIndex) {
+                        var currentTaxExemptTypeId = dateItem.tax_exempt_type_id;
+
+                        if (previousTaxExemptTypeId !== currentTaxExemptTypeId) {
+                            taxExemptTypes.push(dateItem.tax_exempt_type_id);
+                            previousTaxExemptTypeId = currentTaxExemptTypeId;                            
+                            if (dateIndex !== 0) {
+                                item.dates[dateIndex].is_next = true;
+                                item.dates[rowSpanIndex].rowSpanValue = k;
+                                item.dates[rowSpanIndex].isRowSpanApplied = true;
+                                item.dates[rowSpanIndex].isLastTaxExemptType = false;
+                                rowSpanIndex = dateIndex;
+                            }
+                            k = 1;
+                            
+                        } else {
+                            k++;
+                            item.dates[dateIndex].isRowSpanApplied = false;
+                        }
+                        if (item.dates.length === dateIndex + 1) {
+                            item.dates[rowSpanIndex].rowSpanValue = k;
+                            item.dates[rowSpanIndex].isRowSpanApplied = true;
+                            item.dates[rowSpanIndex].isLastTaxExemptType = true;
+                        }
+                    });
+                    item.totalTaxExempts = taxExemptTypes.length;
+                });
+                return response;
+            };
+
             // fill in data into seperate props
             var updateDS = function (response) {
                 if (chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
                     // Response modified to accomodate inside pagination
                     // For TA reservations
                     response = responseWithInsidePagination(response);
+                }
+                if (chosenReport.title === reportNames['TAX_EXEMPT']) {
+                    // Response modified to handle the different tax exempt types in each date
+                    response = responseForTaxExempt(response);
                 }
 
                 $scope.totals = response.totals || [];

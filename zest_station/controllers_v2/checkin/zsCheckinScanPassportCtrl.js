@@ -575,7 +575,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
                     'date_of_birth': selectedPassportInfo.dob,
-                    'signature': $("#signature").jSignature("getData")
+                    'signature': $("#signature").jSignature("getData"),
+                    'application': 'KIOSK'
                 },
                 successCallBack: function() {
                     validatePassportsView();

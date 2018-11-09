@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', 'zsReceiptPrintHelperSrv', '$log',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, zsReceiptPrintHelperSrv, $log) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -320,6 +320,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     }
                     $scope.cancelAdminSettings(true);
                 }
+
+                localStorage.setItem('snt_zs_printer', $scope.savedSettings.printer);
             };
             var failureCallBack = function() {
                 console.warn('unable to save workstation settings');
@@ -494,6 +496,39 @@ sntZestStation.controller('zsAdminCtrl', [
 
             $scope.zestStationData.connectedDeviceDetails.device_connection_state = 'refreshing...';
             $scope.cardReader.getConnectedDeviceDetails(callBacks);
+        };
+
+        $scope.showPrintMsgPopup = false;
+        $scope.printMessage = "";
+
+        $scope.closePrintErrorPopup = function () {
+             $scope.showPrintMsgPopup = false;
+        };
+        $scope.printSampleReceipt = function() {
+            var printRegCardData = {
+                'room_number': '500',
+                'dep_date': '10/10/2018'
+            };
+            var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard(printRegCardData, $scope.zestStationData);
+            var printFailedActions = function (errorData) {
+                $scope.$emit('hideLoader');
+                $scope.printMessage = errorData ? 'Print Error: ' + errorData.RVErrorDesc : 'Print Error';
+                $scope.showPrintMsgPopup = true;
+            };
+            var printSuccessActions = function () {
+                $scope.$emit('hideLoader');
+                $scope.printMessage = 'Print success';
+                $scope.showPrintMsgPopup = true;
+            };
+
+            if ($scope.isIpad && typeof cordova !== typeof undefined) {
+                $scope.$emit('showLoader');
+                cordova.exec(printSuccessActions,
+                         printFailedActions,
+                        'RVCardPlugin',
+                        'printReceipt', [ receiptPrinterParams ]);
+            }
+            $log.info(receiptPrinterParams);
         };
 
         // initialize
