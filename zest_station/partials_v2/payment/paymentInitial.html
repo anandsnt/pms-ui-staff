@@ -112,13 +112,30 @@
 
         <div id="content">
             <h1>
-                 <text editable-text="CBA_PAYMENT_NOT_POSTED_MSG"> {{'CBA_PAYMENT_NOT_POSTED_MSG' |translate}}</text>
+                 <span editable-text="CBA_PAYMENT_NOT_POSTED_MSG"> {{'CBA_PAYMENT_NOT_POSTED_MSG' |translate}}</span>
             </h1>
             <h1 style="font-size: 6em;">
-                {{screenMode.counter}}
+                {{screenMode.retryCounter}}
             </h1>
         </div>
-    </section> 
+    </section>
+      <!-- cba payment failed -->
+    <section id="main" class="centered kiosk" role="main" ng-show="screenMode.value === 'CBA_PAYMENT_FAILED_SEE_STAFF'">
+        <div id="content">
+            <h1>
+                 <span editable-text="CBA_PAYMENT_FAILED_SEE_STAFF"> {{'CBA_PAYMENT_FAILED_SEE_STAFF' |translate}}</span>
+            </h1>
+             <nav id="options" class="large-icons" role="nav">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='talkToStaff()'>
+                            <div ng-include="icons.url.staff"></div>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>  
 
     <!-- Payment success -->
     <section id="main" class="centered" role="main" ng-show="screenMode.value === 'PAYMENT_SUCCESS'">

@@ -731,6 +731,7 @@
    "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
 
    "FEES": "FEES",
-   "CBA_PAYMENT_NOT_POSTED_MSG": "Payment error!. Retryng shortly"
+   "CBA_PAYMENT_NOT_POSTED_MSG": "Payment posting failed. System will retry shortly. Please wait.",
+   "CBA_PAYMENT_FAILED_SEE_STAFF": "Payment failed. Please see a staff for proceeding."
    
 }
