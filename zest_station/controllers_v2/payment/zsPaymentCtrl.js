@@ -481,6 +481,80 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         };
 
+        /****************************************************/
+
+        var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
+            var blacklistCheckOptions = {
+                params: {
+                    'email': $scope.screenMode.email
+                },
+                successCallBack: function(data) {
+                    // onSuccess, 
+                    if (!data.black_listed_email) {
+                        afterBlackListValidation();
+
+                    } else {
+                        $log.warn('email is black listed, request different email address');
+                        onBlackListedEmailFound();
+                    }
+                },
+                failureCallBack: onValidationAPIFailure
+            };
+
+            $scope.callAPI(zsGeneralSrv.emailIsBlackListed, blacklistCheckOptions);
+        };
+
+        $scope.updateGuestEmail = function() {
+            var updateComplete = function() {
+                $scope.$emit('EMAIL_OPTIONS');
+                $scope.screenMode.value = 'EMAIL_OPTIONS';
+            };
+             var onBlackListedEmailFound = function() {
+                $scope.screenMode.value = 'EMAIL_INVLAID_MODE';
+            };
+            var onValidationAPIFailure = function(response) {
+                $log.warn('updateGuestEmailFailed: ', response); // if this fails would help give clues as to why
+                $scope.screenMode.value = 'EMAIL_UPDATION_FAILED';
+            };
+
+            var afterBlackListValidation = function() {
+                var options = {
+                    params: {
+                        'guest_id': $scope.screenMode.guestId,
+                        'email': $scope.screenMode.email
+                    },
+                    successCallBack: updateComplete
+                };
+
+                $scope.callAPI(zsGeneralSrv.updateGuestEmail, options);
+            };
+           
+
+            checkIfEmailIsBlacklisted(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure);
+        };
+
+        $scope.startEmailProcess = function() {
+            $scope.screenMode.value = _.isEmpty($scope.screenMode.email) ? 'ENTER_NEW_EMAIL' : 'EMAIL_OPTIONS';
+        };
+
+        $scope.editEmailAdress = function() {
+            $scope.screenMode.value = 'ENTER_NEW_EMAIL';
+        };
+
+        $scope.sendEmail = function() {
+            var options = {
+                params: {
+                    'guest_id': $scope.screenMode.guestId,
+                    'email': $scope.screenMode.email
+                },
+                successCallBack: function() {
+                    $scope.screenMode.value = 'EMAIL_SENT_SEE_STAFF';
+
+                }
+            };
+            $scope.callAPI(zsGeneralSrv.sendTransactionReceipt, options);
+        };
+
         $scope.$on('START_MLI_CARD_COLLECTION', function() {
             var hideLoader = true;
 

@@ -732,6 +732,9 @@
 
    "FEES": "FEES",
    "CBA_PAYMENT_NOT_POSTED_MSG": "Payment posting failed. System will retry shortly. Please wait.",
-   "CBA_PAYMENT_FAILED_SEE_STAFF": "Payment failed. Please see a staff for proceeding."
+   "CBA_PAYMENT_FAILED_SEE_STAFF": "Payment failed. Please see a staff for proceeding or send the last transaction receipt.",
+   "SEND_TRANSACTION_RECEIPT": "Send Transaction receipt as email",
+   "TRANSACTION_EMAIL_SENT": "Transaction Email sent",
+   "SEE_STAFF_FOR_MORE_DETAILS": "Please see a staff member for more details"
    
 }

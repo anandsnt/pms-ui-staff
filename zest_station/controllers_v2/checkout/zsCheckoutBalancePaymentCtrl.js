@@ -59,6 +59,9 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 $scope.screenMode.value = 'PAYMENT_FAILED';
             }
 
+            $scope.screenMode.email = $stateParams.email ? $stateParams.email : '';
+            $scope.screenMode.guestId = $stateParams.guest_detail_id;
+
         })();
     }
 ]);

@@ -714,5 +714,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return zsBaseWebSrv.getJSON(url);
         };
 
+        this.sendTransactionReceipt = function(params) {
+            var deferred = $q.defer(),
+                url = '';
+            // zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve({});
+            // }, function(data) {
+            //     deferred.reject(data);
+            // });
+            return deferred.promise;
+        };
+
     }
 ]);

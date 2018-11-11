@@ -128,14 +128,35 @@
              <nav id="options" class="large-icons" role="nav">
                 <ul role="menu">
                     <li>
+                        <button type="button" class="button option" touch-press='startEmailProcess()'>
+                            <div ng-include="icons.url.email"></div>
+                        </button>
+                        <span translate>
+                            EMAIL_TEXT
+                        </span>
+                    </li>
+                    <li class="break">
+                        <span translate>
+                            OR_TEXT
+                        </span>
+                    </li>
+                    <li>
                         <button type="button" class="button option" touch-press='talkToStaff()'>
                             <div ng-include="icons.url.staff"></div>
                         </button>
+                        <h1 translate>
+                            SPEAK
+                        </h1>
+                        <h4 translate>
+                            SPEAK_SUB
+                        </h4>
                     </li>
                 </ul>
             </nav>
         </div>
-    </section>  
+    </section> 
+    <ng-include src="'/assets/partials_v2/zsPaymentScreenEmailCollection.html'">
+    </ng-include>
 
     <!-- Payment success -->
     <section id="main" class="centered" role="main" ng-show="screenMode.value === 'PAYMENT_SUCCESS'">
