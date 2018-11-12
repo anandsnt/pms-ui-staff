@@ -181,7 +181,7 @@ admin.controller('ADAppCtrl', [
                         action: '',
                         iconClass: 'icon-groups',
                         menuIndex: 'menuGroups',
-                        hidden: $rootScope.isHourlyRatesEnabled,
+                        hidden: $rootScope.isHourlyRatesEnabled || shouldHideNightlyDiaryMenu,
                         submenu: [{
                             title: 'MENU_CREATE_GROUP',
                             action: 'rover.groups.config',
