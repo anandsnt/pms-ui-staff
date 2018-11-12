@@ -205,4 +205,15 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
         });
 
+        $stateProvider.state('admin.roverIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adRoverIdCollectionSetup.html',
+            controller: 'adRoverIdCollectionSetupCtrl',
+            url: '/roverIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('roverIdCollection');
+                }]
+            }
+        });
+
 });
