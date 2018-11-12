@@ -27,10 +27,11 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
 
     // Get style for statistics details expanded view
     $scope.getStyleForExpandedView = function( monthlyData ) {
-        var styleClass = {};                    
+        var styleClass = {},
+            count =  monthlyData.reservations_count || (monthlyData.reservations && monthlyData.reservations.length);
 
         if (monthlyData.isOpen) {
-            var margin = monthlyData.reservations.length * 70 + 30;
+            var margin = count * 70 + 30;
 
             styleClass['margin-bottom'] = margin + 'px';
         }
@@ -61,6 +62,7 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
         $scope.yearOptions = [];
 
         if ($scope.activeView === 'summary') {
+            startYear = startYear === $scope.getCurrentYear() ? startYear - 1 : startYear;
             endYear = $scope.getCurrentYear() - 1;
         } else {
             endYear = $scope.getCurrentYear();
@@ -83,5 +85,22 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
             });
         }
     };
+
+    // Get style class based on reservation status
+    $scope.getReservationClass = function(reservation) {
+        var classes = {
+            RESERVED: 'arrival',
+            CHECKING_IN: 'check-in',
+            CHECKEDIN: 'inhouse',
+            CHECKING_OUT: 'check-out',
+            CHECKEDOUT: 'departed',
+            CANCELED: 'cancel',
+            NOSHOW: 'no-show',
+            NOSHOW_CURRENT: 'no-show'
+
+        };
+        
+        return classes[reservation.reservation_status.toUpperCase()] || '';        
+      };
 
 };

@@ -7,9 +7,11 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
     '$state',
     '$stateParams',
     function ($scope, $rootScope, RVGuestCardsSrv, $timeout, $vault, $state, $stateParams) {
-        var listeners = [],
+        var listeners = {},
             SIDEBAR_SCROLLER = 'guest-sidebar-scroller',
-            MONTHLY_DATA_SCROLLER = 'guest-monthly-data-scroller';
+            MONTHLY_DATA_SCROLLER = 'guest-monthly-data-scroller',
+            SUMMARY_SIDEBAR_SCROLLER = 'guest-statistics-summary-sidebar-scroller',
+            SUMMARY_DATA_SCROLLER = 'guest-statistics-summary-data-scroller';
 
         BaseCtrl.call(this, $scope);
         StatisticsBaseCtrl.call(this, $scope, $rootScope);
@@ -19,6 +21,11 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                 var onStatisticsFetchSuccess = function(data) {
                         $scope.statistics.summary = data;
                         $scope.activeView = 'summary';
+                        $timeout(function() {
+                            reloadScroller(true);
+                            
+                        }, 200);
+                        isSummaryViewScrollReady();
                     },
                     onStatistcsFetchFailure = function() {
                         $scope.statistics.summary = {};
@@ -40,10 +47,10 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                         $scope.statistics.details = data;
                         $scope.statistics.details.monthly_data = $scope.statistics.details.monthly_data.reverse();
                         $timeout(function() {
-                            reloadScroller();
+                            reloadScroller(true);
                             
                         }, 500);
-                        isScrollReady();
+                        isDetailedViewScrollReady();
                     },
                     onStatistcsDetailsFetchFailure = function() {
                         $scope.statistics.details = [];
@@ -61,19 +68,16 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             },
             // Set the listeners for the controller
             setListeners = function() {
-                var statisticsTabActivateListener = $scope.$on('LOAD_GUEST_STATISTICS', function() {
+                listeners['LOAD_GUEST_STATISTICS'] = $scope.$on('LOAD_GUEST_STATISTICS', function() {
                                                         loadStatisticsSummary();
                                                     }),
-                    contactInfoUpdateListener = $scope.$on('UPDATE_CONTACT_INFO', function() {
+                listeners['UPDATE_CONTACT_INFO'] = $scope.$on('UPDATE_CONTACT_INFO', function() {
                                                     setUpData();    
                                                 });
-
-                listeners.push(statisticsTabActivateListener);
-                listeners.push(contactInfoUpdateListener);
             },
             // Destroy the listeners
             destroyListeners = function() {
-                listeners.forEach( function ( listener ) {
+                angular.forEach( function ( listener ) {
                     $scope.$on('$destroy', listener);
                 });
             };
@@ -84,10 +88,14 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
             if ( view === 'details') {
                 $scope.filterData.selectedYear =  year || $scope.getCurrentYear();
+                configureScroller();
+                isDetailedViewScrollReady();
                 populateYearDropDown();
                 loadStatisticsDetails();
             } else {
                 $scope.filterData.selectedYear =  $scope.getCurrentYear() - 1;
+                configureScroller();
+                isSummaryViewScrollReady();
                 populateYearDropDown();
                 loadStatisticsSummary();
             }
@@ -101,7 +109,8 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
             monthlyData.isOpen = !monthlyData.isOpen;
             $timeout(function() {
                 reloadScroller();
-            }, 100);
+                
+            }, 200);
         };
 
         // Handles the year dropdown change
@@ -167,46 +176,102 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
                     'probeType': 3,
                     'scrollX': true
                 });
+
+                $scope.setScroller(SUMMARY_SIDEBAR_SCROLLER, {
+                    'preventDefault': false,
+                    'probeType': 3
+                });
+                $scope.setScroller(SUMMARY_DATA_SCROLLER, {
+                    'preventDefault': false,
+                    'probeType': 3,
+                    'scrollX': true
+                });
              },
             // Refreshes the two scrollers in the screen
-            reloadScroller = function() {
-                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
-                    $scope.refreshScroller( SIDEBAR_SCROLLER );
-                }
-
-                if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
-                    $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
-                }
+            reloadScroller = function(shouldSrollToTop) {
+                $timeout(function() {
+                    if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) ) {
+                        $scope.refreshScroller( SIDEBAR_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[SIDEBAR_SCROLLER].scrollTo(0, 0, 100);
+                        }                        
+                    }
+                    if ( $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
+                        $scope.refreshScroller( MONTHLY_DATA_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[MONTHLY_DATA_SCROLLER].scrollTo(0, 0, 100);
+                        }
+                    }
+                    if ( $scope.myScroll.hasOwnProperty(SUMMARY_SIDEBAR_SCROLLER) ) {
+                        $scope.refreshScroller( SUMMARY_SIDEBAR_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[SUMMARY_SIDEBAR_SCROLLER].scrollTo(0, 0, 100);
+                        }
+                    }
+                    if ( $scope.myScroll.hasOwnProperty(SUMMARY_DATA_SCROLLER) ) {
+                        $scope.refreshScroller( SUMMARY_DATA_SCROLLER );
+                        if (shouldSrollToTop) {
+                            $scope.myScroll[SUMMARY_DATA_SCROLLER].scrollTo(0, 0, 100);
+                        }
+                    }
+                }, 200);
+                
             },
-            // Set up scroll listeners for left and right pane
-            setUpScrollListner = function() {
-                $scope.myScroll[ SIDEBAR_SCROLLER ]
+            // Set up scroll listeners for detailed view left and right pane
+            setUpDetailedViewScrollListner = function() {
+                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
+                    $scope.myScroll[ SIDEBAR_SCROLLER ]
                     .on('scroll', function() {
                         $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
                             .scrollTo( 0, this.y );
                     });
-
-                $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
+                    $scope.myScroll[ MONTHLY_DATA_SCROLLER ]
+                        .on('scroll', function() {
+                            $scope.myScroll[ SIDEBAR_SCROLLER ]
+                                .scrollTo( 0, this.y );
+                        });
+                }
+            },
+            // Set up scroll listeners for summary view left and right pane
+            setUpSummaryViewScrollListner = function() {
+                if ( $scope.myScroll.hasOwnProperty(SUMMARY_SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(SUMMARY_DATA_SCROLLER) ) {
+                    $scope.myScroll[ SUMMARY_SIDEBAR_SCROLLER ]
                     .on('scroll', function() {
-                        $scope.myScroll[ SIDEBAR_SCROLLER ]
+                        $scope.myScroll[ SUMMARY_DATA_SCROLLER ]
                             .scrollTo( 0, this.y );
                     });
-            },
-            // Check whether scroll is ready
-            isScrollReady = function () {
-                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
-                    setUpScrollListner();
-                } else {
-                    $timeout(isScrollReady, 1000);
+                    $scope.myScroll[ SUMMARY_DATA_SCROLLER ]
+                        .on('scroll', function() {
+                            $scope.myScroll[ SUMMARY_SIDEBAR_SCROLLER ]
+                                .scrollTo( 0, this.y );
+                        });
                 }
-            };
+                
+            },
+            // Check whether detailed view scroll is ready
+            isDetailedViewScrollReady = function () {
+                if ( $scope.myScroll.hasOwnProperty(SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(MONTHLY_DATA_SCROLLER) ) {
+                    setUpDetailedViewScrollListner();
+                } else {
+                    $timeout(isDetailedViewScrollReady, 1000);
+                }
+            },
+            // Check whether summary view scroll is ready
+            isSummaryViewScrollReady = function () {
+                if ( $scope.myScroll.hasOwnProperty(SUMMARY_SIDEBAR_SCROLLER) && $scope.myScroll.hasOwnProperty(SUMMARY_DATA_SCROLLER) ) {
+                    setUpSummaryViewScrollListner();
+                } else {
+                    $timeout(isSummaryViewScrollReady, 1000);
+                }
+            };            
 
         // Initialize the controller
         var init = function() {
             $scope.activeView = "summary";            
             setUpData();
             configureScroller();
-            isScrollReady();
+            isDetailedViewScrollReady();
+            isSummaryViewScrollReady();
             setListeners();
             destroyListeners();
 

@@ -2,7 +2,8 @@
 <form method="post" id="gc-statistics" name="statistics" class="form card-tab card-statistics" ng-controller="RVGuestCardStatisticsController" ng-if="current === 'guest-statistics'">
     <!--common header for fullscreen mode-->
     <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
-    <div include-replace ng-include="'/assets/partials/common/tabs/statisticsSummary.html'" ></div>
+    <div include-replace ng-include="'/assets/partials/guestCard/rvGuestCardStatisticsSummary.html'" ></div>
     <div include-replace ng-include="'/assets/partials/guestCard/rvGuestCardStatisticsDetails.html'"></div>
 </form>
+
 
