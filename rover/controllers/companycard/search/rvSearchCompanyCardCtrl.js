@@ -5,6 +5,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.heading = "Find Cards";
 		// model used in query textbox, we will be using this across
 		$scope.textInQueryBox = "";
+		$scope.hasArNumber = false;
 		$scope.$emit("updateRoverLeftMenu", "cards");
 		$scope.results = [];
 		var successCallBackofInitialFetch = function(data) {
