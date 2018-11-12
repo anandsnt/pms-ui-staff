@@ -192,6 +192,34 @@ angular.module('sntRover')
             $scope.toggleHourlyNightly = true;
         };
 
+        /*
+         *  Utility method to check whether we need to show Toggle DIARY H/N
+         *  Based on settings values inside Reservation settings.
+         */
+        $scope.hideToggleMenu = function() {
+            
+            /**
+             *  A = settings.day_use_enabled (true / false)
+             *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+             *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+             *
+             *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+             *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             */
+
+            var diaryConfig = $rootScope.hotelDiaryConfig,
+                hideToggleMenu = false;
+
+            // A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+            if ( !diaryConfig.dayUseEnabled ) {
+                hideToggleMenu = true;
+            }
+
+            return hideToggleMenu;
+        };
+
         init();
 
         // destroying listeners
