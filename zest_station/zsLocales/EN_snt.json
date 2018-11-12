@@ -751,6 +751,7 @@
    "GI_RESTART_SCANNING": "Restart scanning",
 
    "GI_SCAN_PEDNING": "Next",
-   "GID_SCAN_ID_HEADER": "Scan your Id"
+   "GID_SCAN_ID_HEADER": "Scan your Id",
+   "GI_ID_EXPIRED": "The ID you scanned seems to be expired. Please rescan"
 
 }

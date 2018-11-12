@@ -147,12 +147,17 @@
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
-				$scope.idScanData.selectedGuest.scannedDetails = data;
-				if ($scope.idScanData.verificationMethod === 'STAFF') {
+				if (data.expirationStatus === 'Expired') {
+					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
+				} else if (!data.document_number) {
+					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
+				} else if ($scope.idScanData.verificationMethod === 'STAFF') {
+					$scope.idScanData.selectedGuest.scannedDetails = data;
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
 					setPageNumberDetails();
 				} else {
+					$scope.idScanData.selectedGuest.scannedDetails = data;
 					refreshIDdetailsScroller();
 				}
 			});
