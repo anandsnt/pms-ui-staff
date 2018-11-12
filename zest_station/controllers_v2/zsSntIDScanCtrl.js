@@ -297,6 +297,12 @@
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 
+				if (!$scope.zestStationData.kiosk_scan_all_guests) {
+					$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
+						return guest.is_primary;
+					});
+				}
+
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
 				});
