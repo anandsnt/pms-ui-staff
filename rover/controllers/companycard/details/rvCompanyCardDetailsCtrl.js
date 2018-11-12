@@ -223,7 +223,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
-			$scope.isArTabAvailable = !$stateParams.isBackToTACommission;
+			$scope.isArTabAvailable = !$stateParams.isBackToTACommissionisBackToTACommission && !$stateParams.isBackToStatistics;
 			/*
 			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
 			*/
@@ -483,6 +483,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		// getting the contact information
 		var id = $stateParams.id;
+		$scope.shouldShowStatisticsTab = $stateParams.id !== 'add';
 		// here we are following a bad practice for add screen,
 		// we assumes that id will be equal to "add" in case for add, other for edit
 

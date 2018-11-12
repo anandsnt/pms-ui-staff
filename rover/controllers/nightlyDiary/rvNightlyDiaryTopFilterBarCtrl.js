@@ -185,6 +185,13 @@ angular.module('sntRover')
             }
         };
 
+        // Handle Nigthtly/Hourly toggle
+        $scope.toggleHourlyNightly = false;
+        $scope.navigateToHourlyDiary = function() {
+            $state.go("rover.diary");
+            $scope.toggleHourlyNightly = true;
+        };
+
         init();
 
         // destroying listeners

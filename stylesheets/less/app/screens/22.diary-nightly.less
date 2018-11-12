@@ -139,7 +139,7 @@
 
         &.search {
             position: relative;
-            .calc-width(100, 680);
+            .calc-width(100, 740);
 
             input {
                 position: relative;
@@ -170,7 +170,7 @@
         }
 
         &.switch {
-            width: 200px;
+            width: 160px;
 
             .switch-button {
                 background: rgba(0,0,0,.1);
@@ -209,6 +209,55 @@
                     }
 
                     &.data-on {
+                        left: auto;
+                        right: 100%;
+
+                        .switch-icon { margin: 0 0 0 5px; }
+                    }
+                }
+
+                &.on {
+                    .data-off { left: auto; right: -100%; }
+                    .data-on { left: auto; right: 0; }
+                }
+            }
+        }
+
+        &.diary-switch {
+            width: 100px;
+
+            .switch-button {
+                background: rgba(0,0,0,.1);
+                #border-radius > .rounded();
+                .size(40px, 100%);
+                .show;
+
+                .data-off,
+                .data-on { 
+                    font-size: 21px;
+                    line-height: 30px;
+                    height: 30px;
+
+                    .switch-icon {
+                        color: @grey3;
+                        text-shadow: none;
+                        .clickable;
+                        background: @white;
+                    }
+
+                    .value { 
+                        color: @grey2;
+                        font-weight: 600; 
+                    }
+
+                    &.data-off { 
+                        left: auto;
+                        right: 0;
+
+                        .switch-icon { margin: 0 5px 0 0; }
+                    }
+                    
+                    &.data-on { 
                         left: auto;
                         right: 100%;
 
