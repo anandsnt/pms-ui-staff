@@ -102,6 +102,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 if (_.isEmpty($scope.rateData.commission_details)) {
                     $scope.rateData.commission_details = data.commission_details;
                 }
+                $scope.$emit('hideLoader');
             };
 
             $scope.invokeApi(ADRatesSrv.fetchCommissionDetails, {}, fetchCommissionDetailsSuccess);
@@ -463,6 +464,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.originOfBookings = _.filter(data.booking_origins, function(origin) {
                     return origin.is_active;
                 });
+                $scope.$emit('hideLoader');
             };
 
             $scope.invokeApi(ADOriginsSrv.fetch, {}, onOriginOfBookingFetchSuccess);

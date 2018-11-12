@@ -30,7 +30,7 @@
 
 					</select>
 				</div>
-				<button type="button" ng-show="isAdminSnt" class="button blue" ng-click="clickedLegalSettings()">Legal Settings</button>
+				<button type="button" ng-show="isAdminSnt && isEdit" class="button blue" ng-click="clickedLegalSettings()">Legal Settings</button>
 			</div>
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>

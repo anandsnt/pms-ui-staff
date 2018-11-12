@@ -1,4 +1,4 @@
-<div class="statistics-details" ng-show="activeView === 'details'">
+<div class="statistics-details no-print" ng-show="activeView === 'details'">
     <div class="sidebar">
         <ul class="filters">
             <!-- When clicked hide statistics-details and remove .hidden from statistics-summary -->
@@ -12,12 +12,12 @@
                 </select>
             </div>
         </div>
-        <div class="sidebar-content scrollable" ng-iscroll="sidebarScroller">
+        <div class="sidebar-content scrollable" ng-iscroll="guest-sidebar-scroller">
             <div class="wrapper">
                 <!-- if we don't have data in the month add .no-data -->
                 <!-- if we click on it, add .open -->
                 <!-- add CSS => margin-bottom: {margin}px, where 'margin' is ( number of reservations * 70 ) + 30-->
-                <div class="row" ng-repeat="monthlyData in statistics.details.monthly_data" ng-class="{'no-data': monthlyData.stay_count === 0, 'open': monthlyData.isOpen}"
+                <div class="row" ng-repeat="monthlyData in statistics.details.monthly_data" ng-class="{'no-data': monthlyData.reservations.length === 0, 'open': monthlyData.isOpen}"
                     ng-style="getStyleForExpandedView(monthlyData)" ng-click="showMonthlyReservations(monthlyData)">
                     <!-- If we have data in the month -->
                     <span class="icons icon-double-arrow black" ng-show="monthlyData.reservations.length > 0"></span>
@@ -30,7 +30,7 @@
         <div class="row row-head">
             <div class="column"><strong>Stays</strong></div>
             <div class="column"><strong>Nights</strong></div>
-            <div class="column"><strong>Canc.</strong></div>
+            <div class="column"><strong>Cancel.</strong></div>
             <div class="column"><strong>No Shows</strong></div>
             <div class="column"><strong>ADR</strong></div>
             <div class="column"><strong>Room Revenue</strong></div>
@@ -53,7 +53,7 @@
                 </strong>
             </div>
         </div>
-        <div class="scrollable" ng-iscroll="monthlyDataScroller">
+        <div class="scrollable" ng-iscroll="guest-monthly-data-scroller">
             <div class="wrapper">
                 <span ng-repeat="monthlyData in statistics.details.monthly_data track by $index">
                     <div class="row">
@@ -87,7 +87,7 @@
                                 <a class="faux-anchor" ng-click="navigateToStayCard(reservation)" ng-class="{'no-arrow': shouldShowNavigation()}">
                                     <div class="data">
                                         <!-- add .grey if we have no room/cancelled-->
-                                        <h2 ng-class="{'grey': reservation.is_cancelled || !reservation.room_no}">
+                                        <h2 ng-class="{'grey': reservation.is_cancelled || reservation.reservation_status === 'NOSHOW'}">
                                             <span>{{reservation.last_name}}</span>, <span>{{reservation.first_name}}</span>
                                         </h2>
                                         <span class="confirmation">
@@ -102,14 +102,14 @@
                                         </time>
                                     </div>
                                     <div class="guest-date departure">
-                                        <span class="guest-status small-icon check-out"></span>
+                                        <span class="guest-status small-icon {{getReservationClass(reservation)}}"></span>
                                         <time datetime="">
                                             <span class="date">{{reservation.departure_date| date : dateFormat}}</span>
                                             <span class="time">{{reservation.departure_time}}</span>
                                         </time>
                                     </div>
                                     <div class="guest-data rate">
-                                        <strong><span ng-bind-html="reservation.adr | sntCurrency:this"></span> ADR</strong>
+                                        <strong><span class="currency">{{currencySymbol}}</span>{{reservation.adr | number: 2}} ADR</strong>
                                         <span>{{reservation.rate_name}}</span>
                                     </div>
                                     <div class="guest-data room">

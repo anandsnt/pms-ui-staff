@@ -1031,14 +1031,18 @@ sntZestStation.controller('zsRootCtrl', [
             var options = {
 
                 params: {
-                    device_uid: deviceId
+                    device_uid: deviceId,
+                    service_application_name: 'Zest station handler'
                 },
                 successCallBack: function(response) {
                     if (response && response.is_logging_enabled) {
                         $scope.socketOperator.enableDeviceLogging();
                     }
                 },
-                'loader': 'none'
+                failureCallBack: function () {
+                  // Do nothing (Common API failure callback redirects station to the out of order state)
+                },
+                loader: 'none'
             };
 
             $scope.callAPI(zsGeneralSrv.getDeviceDetails, options);
