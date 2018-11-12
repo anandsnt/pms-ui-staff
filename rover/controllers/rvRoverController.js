@@ -143,7 +143,6 @@ sntRover.controller('roverController', [
             hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
             hourlyAvailabilityCalculation: hotelDetails.hourly_availability_calculation
         };
-        console.log($rootScope.hotelDiaryConfig);
 
         /*
          * hotel Details
