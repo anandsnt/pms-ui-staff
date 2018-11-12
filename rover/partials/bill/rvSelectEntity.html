@@ -182,11 +182,11 @@
 			</div>
 
 		</div>
-    <label class="checkbox inline search-filter" ng-class="{'checked': has_ar_number}" ng-show="!isReservationActive">
+    <label class="checkbox inline search-filter" ng-class="{'checked': hasArNumber}" ng-show="!isReservationActive">
         <!-- add .checked when checked -->
-        <span class="icon-form icon-checkbox" ng-class="{'checked': has_ar_number}"></span>
+        <span class="icon-form icon-checkbox" ng-class="{'checked': hasArNumber}"></span>
         <!-- add checked="checked" when checked. -->
-        <input type="checkbox" ng-click="queryEntered()" ng-model="has_ar_number">
+        <input type="checkbox" ng-click="queryEntered()" ng-model="hasArNumber">
         AR Accounts Only
     </label>
 		<button ng-show="textInQueryBox!=''" type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>
