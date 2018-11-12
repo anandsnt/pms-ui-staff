@@ -752,6 +752,6 @@
 
    "GI_SCAN_PEDNING": "Next",
    "GID_SCAN_ID_HEADER": "Scan your Id",
-   "GI_ID_EXPIRED": "The ID you scanned seems to be expired. Please rescan"
-
+   "GI_ID_EXPIRED": "The ID you scanned seems to be expired. Please rescan",
+   "GI_EXPIRATION_DATE_INVALID": "Expiration date is invalid or could not be read, please rescan or please contact front desk." 
 }

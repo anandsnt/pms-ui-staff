@@ -147,7 +147,9 @@
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
-				if (data.expirationStatus === 'Expired') {
+				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
+				} else if (data.expirationStatus === 'Expired') {
 					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
 				} else if (!data.document_number) {
 					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
