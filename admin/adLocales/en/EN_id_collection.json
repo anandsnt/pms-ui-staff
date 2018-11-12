@@ -1,6 +1,7 @@
 
 
 "STATION_ID_COLLECTION_SETUP_HEADER": "Zest Station ID Collection Setup",
+"ROVER_ID_COLLECTION_SETUP_HEADER": "Rover ID Collection Setup",
 "SCAN_ALL_GUESTS_LABEL": "Scan all guests",
 "BELL_SOUND_SWITCH_LABEL": "Enable bell sound",
 "SCAN_TYPE_LABEL": "Select verification/scan type"
