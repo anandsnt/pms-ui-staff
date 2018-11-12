@@ -30,7 +30,7 @@ var GlobalApp = function() {
 
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
-        } else if (browser === 'rv_native_android') {
+        } else if (browser === 'rv_native_android' || browser === 'rv_native_ios') {
             that.browser = 'rv_native';
             that.cordovaLoaded = true;
         } else {
@@ -41,6 +41,19 @@ var GlobalApp = function() {
             that.loadScript(url);
         }
 
+    };
+
+    this.loadCordovaWithVersion = function(version) {
+        var script_node = document.createElement('script');
+
+        script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+        script_node.setAttribute('type', 'application/javascript');
+        document.body.appendChild(script_node);
+        document.addEventListener('deviceready', function() {
+            that.cordovaLoaded = true;
+            that.browser = 'rv_native';
+            that.cardReader = new CardOperation();
+        }, false);
     };
 
     this.loadScript = function(url) {
