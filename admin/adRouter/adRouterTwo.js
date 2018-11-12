@@ -933,4 +933,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/hkSections'
     });
 
+    $stateProvider.state('admin.idCollection', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/idCollection'
+    });
+
 });

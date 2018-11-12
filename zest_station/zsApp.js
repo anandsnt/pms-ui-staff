@@ -109,6 +109,19 @@ var GlobalZestStationApp = function() {
             xhr.send(); // LATER: Loading indicator
     };
 
+    this.loadCordovaWithVersion = function(version) {
+        var script_node = document.createElement('script');
+
+        script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+        script_node.setAttribute('type', 'application/javascript');
+        document.body.appendChild(script_node);
+        document.addEventListener('deviceready', function() {
+            that.cordovaLoaded = true;
+            that.browser = 'rv_native';
+            that.cardReader = new CardOperation();
+        }, false);
+    };
+
 
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data) {
