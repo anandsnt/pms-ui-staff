@@ -19,10 +19,10 @@
 
 @font-face {
     font-family:'LL Akkurat Pro Regular Web';
-        src: url('../../type/lineto-akkurat-pro-regular.eot');
-        src: url('../../type/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
-            url("../../type/lineto-akkurat-pro-regular.woff2") format("woff2"),
-            url('../../type/lineto-akkurat-pro-regular.woff') format('woff');
+        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot');
+        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
+            url("../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff2") format("woff2"),
+            url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff') format('woff');
         font-weight: normal;
         font-style: normal;
     } 
@@ -53,16 +53,6 @@
         fill: none;
         stroke: @white;
     }
-}
-
-.logo-svg{
-    background-image: url("../css/themes/sister-city/logo.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 100%;
-    height: 133px;
-    background-position: center;
-    margin-top: 7.9%;
 }
 
 /* 4. LAYOUT
@@ -111,9 +101,7 @@
 
         &.action {
             .button {
-                width: auto;
-                max-width: 100%;
-                min-width: 160px;
+                max-width: 160px;
             }
         }
     } 
@@ -240,6 +228,12 @@
             #calc > #width > .remove(100%, 160px);
  
         }
+
+        &.confirm-card {
+            .label {
+                color: @white;
+            }
+        }
     }
 
     #guests {
@@ -263,6 +257,21 @@
     }
 
     .popup {
+        #message-content {
+            .button {
+                color: @brandColor;
+                border: 2px solid @brandColor;
+                border-radius: 0px;
+                &.with-icon {
+                    text-align: center;
+                    padding: 0;
+                    svg { .hide(); }
+                }
+
+                
+            }
+        }
+
         #languages {
             .button {
                 color: @black;
@@ -297,6 +306,7 @@
     .add-on {
 
         background: @brandColor;
+
         .add-on-content {
             color: @white;
 
@@ -332,12 +342,16 @@
 
     .add-on-list {
         .add-on {
+            background: @brandColor;
+            color: @white;
+
             &.selected {
                 border-color: @white;
                 background: @white;
                 color: @brandColor;
 
                 .add-on-content {
+                    background: @white;
                     color: @brandColor;
                 }
             }
@@ -385,6 +399,10 @@
 
         .upgrade-info {
             color: @white;
+        }
+
+        .upgrade-price {
+            border-top: 4px solid white;
         }
     }
 }
