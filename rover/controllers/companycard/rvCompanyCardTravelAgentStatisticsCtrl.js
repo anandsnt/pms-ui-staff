@@ -114,7 +114,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
 
         var loadReservations = function(monthlyData) {
             var onMonthlyReservationsFetchSuccess = function(data) {
-                $scope.statistics.reservations = data.reservations;
+                monthlyData.reservations = data.reservations;
                 monthlyData.isOpen = !monthlyData.isOpen;                
                 $timeout(function() {
                     reloadScroller();
@@ -123,7 +123,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 isDetailedViewScrollReady();
             },
             onMonthlyReservationsFetchFailure = function() {
-                $scope.statistics.reservations = [];
+                monthlyData.reservations = [];
             },
             requestConfig = {
                 params: {
@@ -204,8 +204,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
         var setUpData = function() {                
                 $scope.statistics = {
                     summary: {},
-                    details: {},
-                    reservations: []
+                    details: {}                    
                 };
                 $scope.accountId = getAccountId();
                 $scope.currentYear = $scope.getCurrentYear();
