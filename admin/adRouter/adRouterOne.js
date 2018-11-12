@@ -199,10 +199,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             controller: 'adStationIdCollectionSetupCtrl',
             url: '/zestStationIDCollection',
             resolve: {
-	        	config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
-	            	return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
-	            }]
-	        }
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
+                }]
+            }
         });
 
 });
