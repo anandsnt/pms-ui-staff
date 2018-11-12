@@ -49,7 +49,13 @@
                         $scope.idScanData.selectedGuest.scannedDetails = response;
                         $scope.idScanData.selectedGuest.front_image_data = response.front_image_data;
                         $scope.idScanData.selectedGuest.back_image_data = '';
-                        $scope.idScanData.selectedGuest.idScanStatus = $scope.idScanData.verificationMethod === 'STAFF' ? SCAN_WAITING_FOR_APPROVAL : SCAN_ACCEPTED;
+						if ($scope.idScanData.verificationMethod === 'STAFF') {
+							$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
+						} else {
+							$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
+							refreshIDdetailsScroller();
+						}
+						setPageNumberDetails();
                     }
                 };
 
@@ -166,7 +172,7 @@
 
 			var verfiedStaffId;
 			var nextPageActions = function() {
-				if (stateParams.mode === 'PICKUP_KEY' || stateParams.from_pickup_key) {
+				if (stateParams.mode === 'PICKUP_KEY') {
 					$scope.zestStationData.continuePickupFlow();
 				} else {
 					$scope.checkinGuest(stateParams);
@@ -202,7 +208,12 @@
 					failureCallback: nextPageActions
 				};
 
-				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
+				if ($scope.inDemoMode()) {
+					nextPageActions();
+				} else {
+					$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
+				}
+				
 			};
 
 			$scope.doneButtonClicked = function() {
@@ -298,7 +309,7 @@
 				$scope.idScanData = {
 					mode: '',
 					selectedGuest: {},
-					verificationMethod: 'STAFF',
+					verificationMethod: $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ? 'STAFF' : 'NONE', // FR will be added later
 					staffVerified: false
 				};
 				$scope.validateSubsription();
