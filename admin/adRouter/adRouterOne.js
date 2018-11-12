@@ -194,4 +194,15 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             url: '/clientSuccessManager/:action/:id'
         });
 
+        $stateProvider.state('admin.zestStationIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adStationIdCollectionSetup.html',
+            controller: 'adStationIdCollectionSetupCtrl',
+            url: '/zestStationIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
+                }]
+            }
+        });
+
 });
