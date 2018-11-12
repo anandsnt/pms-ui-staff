@@ -103,7 +103,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				// last hope, we are looking in webservice.
 				if (visibleElementsCount === 0) {
 					var dataDict = {
-						'query': $scope.textInQueryBox.trim()
+						'query': $scope.textInQueryBox.trim(),
+						'has_ar_number': $scope.hasArNumber
 					};
 
 					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
