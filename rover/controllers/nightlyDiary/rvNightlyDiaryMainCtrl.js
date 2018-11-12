@@ -89,7 +89,13 @@ angular.module('sntRover')
                     filterList: {},
                     hideRoomType: true,
                     hideFloorList: true,
-                    isRightFilterActive: true
+                    isRightFilterActive: true,
+                    isAvaialbleRoomSlotActive: false,
+                    avalableSlotsForAssignRooms: {
+                        availableRoomList: [],
+                        fromDate: null,
+                        nights: null
+                    }
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -391,6 +397,18 @@ angular.module('sntRover')
                 fetchRoomListDataAndReservationListData();
                 cancelReservationEditing();
             });
+
+            /* Handle event emitted from child controllers.
+             * To toggle unassigned list and filter.
+             */
+            listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function( event, newData ) {
+                $scope.diaryData.isAvaialbleRoomSlotActive = true;
+
+                $scope.diaryData.avalableSlotsForAssignRooms = newData;
+                console.log(newData);
+
+                updateDiaryView();
+            });
             
             // destroying listeners
             angular.forEach(listeners, function(listener) {
@@ -432,6 +450,7 @@ angular.module('sntRover')
             var initialState = {
                 roomsList: roomsList.rooms,
                 reservationsList: reservationsList.rooms,
+                avalableSlotsForAssignRooms: [],
                 diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                 numberOfDays: $scope.diaryData.numberOfDays,
                 currentBusinessDate: $rootScope.businessDate,
@@ -454,6 +473,7 @@ angular.module('sntRover')
                     type: 'DIARY_VIEW_CHANGED',
                     numberOfDays: $scope.diaryData.numberOfDays,
                     reservationsList: $scope.diaryData.reservationsList.rooms,
+                    avalableSlotsForAssignRooms: $scope.diaryData.avalableSlotsForAssignRooms,
                     roomsList: $scope.diaryData.diaryRoomsList,
                     diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                     currentBusinessDate: $rootScope.businessDate,
