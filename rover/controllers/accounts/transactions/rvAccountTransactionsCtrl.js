@@ -950,7 +950,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return {[type]}	  [description]
 		 */
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
-			
+			$scope.$emit('hideLoader');
 		};
 
 		/*
@@ -979,7 +979,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					isDisabledInvoice = true;
 				}
 			}
-			return false;isDisabledInvoice;
+			return isDisabledInvoice;
 	    };
 
 		/**
