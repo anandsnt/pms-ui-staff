@@ -3,11 +3,6 @@ angular.module('admin').controller('adStationIdCollectionSetupCtrl', ['$scope', 
 
         var interfaceIdentifier = 'zestStationIdCollection';
 
-        $scope.sync = {
-            start_date: null,
-            end_date: null
-        };
-
         $scope.scan_types = [
             {
                 "name": "ID Scan",

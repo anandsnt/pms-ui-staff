@@ -216,4 +216,15 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
         });
 
+        $stateProvider.state('admin.zestWebIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adZestWebIdCollectionSetup.html',
+            controller: 'adZestWebIdCollectionSetupCtrl',
+            url: '/zestWebIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestWebIDCollection');
+                }]
+            }
+        });
+
 });
