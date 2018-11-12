@@ -134,6 +134,18 @@ sntRover.controller('roverController', [
             forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin
         };
         /*
+         *   A = settings.day_use_enabled (true / false)
+         *   B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         */
+        $rootScope.hotelDiaryConfig = {
+            dayUseEnabled: hotelDetails.day_use_enabled,
+            hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
+            hourlyAvailabilityCalculation: hotelDetails.hourly_availability_calculation
+        };
+        console.log($rootScope.hotelDiaryConfig);
+
+        /*
          * hotel Details
          */
         $rootScope.hotelDetails = hotelDetails;
