@@ -34,7 +34,7 @@ angular.module('admin').controller('adStationIdCollectionSetupCtrl', ['$scope', 
                 "value": "no_id_scan"
             }
 
-        ]
+        ];
 
         $scope.toggleAllGuests = function() {
             config.scan_all_guests = !config.scan_all_guests;

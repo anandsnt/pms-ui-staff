@@ -198,9 +198,9 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             templateUrl: '/assets/partials/idCollection/adStationIdCollectionSetup.html',
             controller: 'adStationIdCollectionSetupCtrl',
             url: '/zestStationIDCollection',
-	        resolve: {
-	            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
-	                return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
+            resolve: {
+	        	config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+	            	return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
 	            }]
 	        }
         });
