@@ -2200,6 +2200,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             };
 
             var responseForTaxExempt = function(response) {
+                
                 _.each(response.results, function (item) {
                     var previousTaxExemptTypeId = '',
                         taxExemptTypes = [],
@@ -2216,6 +2217,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                                 item.dates[dateIndex].is_next = true;
                                 item.dates[rowSpanIndex].rowSpanValue = k;
                                 item.dates[rowSpanIndex].isRowSpanApplied = true;
+                                item.dates[rowSpanIndex].isLastTaxExemptType = false;
                                 rowSpanIndex = dateIndex;
                             }
                             k = 1;
@@ -2227,6 +2229,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         if (item.dates.length === dateIndex + 1) {
                             item.dates[rowSpanIndex].rowSpanValue = k;
                             item.dates[rowSpanIndex].isRowSpanApplied = true;
+                            item.dates[rowSpanIndex].isLastTaxExemptType = true;
                         }
                     });
                     item.totalTaxExempts = taxExemptTypes.length;
