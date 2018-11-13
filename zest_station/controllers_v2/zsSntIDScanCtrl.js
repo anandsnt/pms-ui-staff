@@ -127,6 +127,9 @@
 				apiParams.back_image_data = $scope.idScanData.selectedGuest.back_image_data;
 				apiParams.reservation_id = stateParams.reservation_id;
 				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
+				if (apiParams.nationality_name) {
+					delete apiParams.nationality_name;
+				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
 					successCallBack: accpetIdSuccess
