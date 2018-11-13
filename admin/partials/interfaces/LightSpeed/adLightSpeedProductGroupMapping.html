@@ -1,0 +1,76 @@
+<div class="form-title full-width">
+    <h3>{{'LS_PRODUCT_GROUP_MAPPINGS' | translate}}</h3>
+</div>
+<div class="data-holder">
+    <div class="entry has-sortable" ng-if="lightspeed.floors_enabled">
+        <label>Restaurants</label>
+        <div class="select">
+            <select ng-model="data.selectedRestaurant"
+                    ng-options="restaurant.name for restaurant in restaurants"
+                    ng-change="fetchFloors()">
+
+            </select>
+        </div>
+    </div>
+    <div class="entry has-sortable pull-right" ng-if="lightspeed.floors_enabled">
+        <label>Floors</label>
+        <div class="select">
+            <select ng-model="data.selectedFloor"
+                    ng-options="floor.name for floor in floors"
+                    ng-change="fetchChargeCodeMapings()">
+            </select>
+        </div>
+    </div>
+    <div class="entry has-sortable">
+        <label>Charge Codes</label>
+        <div class="select">
+            <select ng-model="data.selectedChargeCode"
+                    ng-options="charge_code.charge_code for charge_code in chargeCodes"
+                    ng-change="filterMappedAndNonMappedProductGroups()">
+            </select>
+        </div>
+    </div>
+    <div class="entry has-sortable pull-right">
+        <label>&nbsp;</label>
+        <input type="text" placeholder="Filter Product Groups"  ng-model="data.filteredProductGroup" ng-change="filterNonMappedProductGroups()" />
+    </div>
+    <fieldset class="holder full-width">
+        <div class="entry has-sortable">
+            <label>Mapped Product Groups</label>
+            <ul id="mapped-product-groups" data-placeholder="Place Here The Mapped Product Groups"
+                class="boxes sortable empty short-list" data-drop="true"
+                jqyoui-droppable="{multiple:true}" ng-model="mappedProductGroups"
+                data-jqyoui-options="{accept: '.non-mapped-product-groups'}">
+                <li ng-repeat="productGroup in mappedProductGroups"
+                    ng-model="mappedProductGroups" data-drag="true"
+                    data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                    jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                    class='mapped-product-groups li-draggable'
+                    style="border: 1px solid green">
+                    <span class="icons icon-handle"> </span>{{productGroup.name}} - {{productGroup.restaurant_name}}
+                </li>
+            </ul>
+        </div>
+        <div class="entry has-sortable pull-right">
+            <label>Available Product Groups To Be Mapped</label>
+            <ul id="non-mapped-product-groups" data-placeholder="Non Mapped Product Groups"
+                class="boxes sortable empty short-list" data-drop="true"
+                jqyoui-droppable="{multiple:true}" ng-model="nonMappedProductGroups"
+                data-jqyoui-options="{accept: '.mapped-product-groups'}">
+                <li ng-repeat="productGroup in nonMappedProductGroups"
+                    ng-model="nonMappedProductGroups" data-drag="true"
+                    data-jqyoui-options="{revert: 'invalid',helper:'clone',appendTo: 'body'}"
+                    jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+                    class='non-mapped-product-groups li-draggable'
+                    style="border: 1px solid red">
+                    <span class="icons icon-handle"> </span>{{productGroup.name}} - {{productGroup.restaurant_name}}
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+    <div>
+        <button class='button blue' ng-click="saveExternalMappings()">
+            Save Mappings
+        </button>
+    </div>
+</div>

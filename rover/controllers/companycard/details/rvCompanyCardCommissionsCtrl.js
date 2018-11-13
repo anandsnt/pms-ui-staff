@@ -69,8 +69,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     });
                     $scope.selectedHotelCurrency = getCurrencySign(data.currency.value);
                     $scope.commissionDetails = data.commission_details;
-                    $scope.commissionSummary.totalRevenue = data.total_revenue;
-                    $scope.commissionSummary.totalCommission = data.total_commission;
+                    $scope.commissionSummary.totalCommissionableRevenue = data.total_commissionable_revenue;
+                    $scope.commissionSummary.totalCommission = data.total_commission - data.total_commission_unpaid;
                     $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
                     $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
                     // set pagination controls values
@@ -173,22 +173,25 @@ sntRover.controller('companyCardCommissionsCtrl', [
         var updateCommissionSummary = function(commissionList) {
             var unpaidCommission = 0,
                 totalRevenue = 0,
-                totalCommission = 0;
+                paidCommission = 0;
 
             commissionList.forEach(function(commission) {
                 if (!isEmptyObject(commission.commission_data)) {
-                    if (commission.commission_data.paid_status == 'Unpaid') {
+                    if (commission.commission_data.paid_status === 'Unpaid' ||
+                        commission.commission_data.paid_status === 'On Hold') {
                         unpaidCommission += commission.commission_data.amount;
+                    } else {
+                        // count in Paid and Prepaid commission
+                        paidCommission += commission.commission_data.amount;
                     }
-                    totalCommission += commission.commission_data.amount;
                 }
 
-                totalRevenue += commission.reservation_revenue;
+                totalRevenue += commission.commissionable_revenue;
             });
 
             $scope.commissionSummary.totalUnpaidCommission = unpaidCommission;
             $scope.commissionSummary.totalRevenue = totalRevenue;
-            $scope.commissionSummary.totalCommission = totalCommission;
+            $scope.commissionSummary.totalCommission = paidCommission;
         };
 
     // Selecting individual record checkbox
@@ -218,7 +221,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 updateCommissionSummary(commissionList);
             }
 
-            if ($scope.selectedCommissions.length === 0) {
+            // TODO: Adding the fix to solve the selection issue. The code above this comment needs to be revisisted
+            if ($scope.selectedCommissions.length === 0 && $scope.prePaidCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
             }            

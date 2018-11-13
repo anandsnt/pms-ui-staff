@@ -25,11 +25,12 @@ sntRover.controller('reservationDetailsController',
 	'RVReservationPackageSrv',
 	'transitions',
 	'taxExempts',
+	'sntActivity',
 	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
              reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
              RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
              RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
-             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts) {
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts, sntActivity) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -74,7 +75,6 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
-   		$scope.guestIDsAvailable = [];
    		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
@@ -166,7 +166,21 @@ sntRover.controller('reservationDetailsController',
             };
 
             
-        } else if ($scope.previousState.name === "rover.companycarddetails") {
+		} else if ($stateParams.isFromCardStatistics) {
+			setNavigationBookMark();
+			$rootScope.setPrevState = {
+				title: 'Card Statistics',
+				name: 'rover.companycarddetails',
+				param: {
+					id: $vault.get('cardId'),
+					type: $vault.get('type'),					
+					isBackToStatistics: true,
+					isBackFromStaycard: true,
+					selectedStatisticsYear: $vault.get('selectedYear')
+				}
+			};
+
+		} else if ($scope.previousState.name === "rover.companycarddetails") {
 
             setNavigationBookMark();
             $rootScope.setPrevState = {
@@ -180,7 +194,18 @@ sntRover.controller('reservationDetailsController',
 					isBackFromStaycard: true
 				}
             };
-        } else {
+        } else if ($stateParams.isFromGuestStatistics) {			
+			$rootScope.setPrevState = {
+				title: 'Guest Statistics',
+				name: 'rover.guest.details',
+				param: {
+					guestId: $vault.get('guestId'),
+					selectedStatisticsYear: $vault.get('selectedYear'),
+					isBackToStatistics: true					
+				}
+			};
+
+		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"
@@ -248,38 +273,27 @@ sntRover.controller('reservationDetailsController',
 			}
 		};
 
-		$scope.fetchedGuestIDs = false;
+		var guestIdList;
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
-				$scope.guestIdReponseData = response;
-     			$scope.$emit('hideLoader');
+				guestIdList = response;
+				console.log(response);
 
-				$scope.fetchedGuestIDs = true;
-				var guestOnReservation,
-					reservation_card = $scope.reservationData.reservation_card;
-
-				for (var i in response) {
-					guestOnReservation = response[i];
-					if (guestOnReservation.guest_id !== null && !$scope.guestIDsAvailable[guestOnReservation.guest_id]) {
-						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);
-					}
-				}
+				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var failureCallBack = function() {
-     			$scope.$emit('hideLoader');
-				console.warn('unable to fetch guest ids: ', arguments);
+				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 
-			if (!$scope.fetchedGuestIDs) {
-				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
-			}
-		}
+			sntActivity.start('GUEST_ID_FETCH');
+			$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
+
+		};
 
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
@@ -1648,132 +1662,118 @@ sntRover.controller('reservationDetailsController',
      /**
      * Toggle the overbooking alert section visibility
      */
-     $scope.toggleOverBookingAlert = function() {
-       $scope.showOverBookingAlert = !$scope.showOverBookingAlert;
-     }
+	$scope.toggleOverBookingAlert = function() {
+		$scope.showOverBookingAlert = !$scope.showOverBookingAlert;
+	}
 
-     $scope.hideGuestId = function(guest, isPrimary) {
-     	if (isPrimary) {
-     		guest = {
-     			'id': $scope.reservationParentData.guest.id
-     		}
-     	}
-     	var has_guest_id_scanned = false;
+	var retrieveGuestDocDetails = function(guestId) {
+		var guestIdInfo = _.find(guestIdList, function(guestIdData) {
+			return guestIdData.guest_id === guestId;
+		});
 
- 		if ($scope.guestIDsAvailable.indexOf(guest.id) !== -1) {
- 			has_guest_id_scanned = true;
- 		}
-     	return (!has_guest_id_scanned || !$scope.guestIdAdminEnabled);
-     }
-     /*
-      * show the guest id / passport when clicked "guest id" button from manage additional guests view
-      */
+		return guestIdInfo;
+	};
 
+	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
-      var getUserPassportInfo = function(guestResponseData, guest_id) {
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
+		var uploadedIdDetails = retrieveGuestDocDetails(guestId);
+		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data;
 
-     		for (var i in guestResponseData) {
-     			if (guestResponseData[i].guest_id === guest_id) {
-     				return guestResponseData[i];
-     			}
-     		}
-     		return null;
-      }
+		return isGuestIdUploaded;
 
+	};
 
-     $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
-     	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
-     	// CICO-38714
-     	// TODO: link with proper HTML once complete from design team
-     	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
+	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
-        $scope.$emit('hideLoader');
- 		var responseData = $scope.guestIdReponseData,
- 		 	guest_id;
+		$scope.$emit('hideLoader');
+		guestData = guestData ? guestData : {};
 
- 		if (isPrimaryGuest) {
- 			guest_id = $scope.reservationParentData.guest.id;
- 		} else {
- 			guest_id = guestData.id;
- 		}
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
+		var guestDocData = retrieveGuestDocDetails(guestId);
 
- 		var guest = getUserPassportInfo(responseData, guest_id);
- 		if (guest !== null) {
-	     	$scope.guestIdData = angular.copy(guestData);
-	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+		if (!$scope.hasGuestIDPermission) {
+			return;
+		} else if (guestDocData) {
+			guestDocData.guest_id = guestId;
+			guestDocData.is_primary_guest = isPrimaryGuest;
+			$scope.guestIdData = angular.copy(guestDocData);
+		} else {
+			$scope.guestIdData = {
+				'last_name': '',
+				'first_name': '',
+				'date_of_birth': '',
+				'nationality_id': '',
+				'document_number': '',
+				'expiration_date': '',
+				'guest_id': guestId,
+				'back_image_data': '',
+				'front_image_data': '',
+				'signature': '',
+				'is_manual_upload': true,
+				'is_primary_guest': isPrimaryGuest
+			}
+		}
 
-	     	// Set data FROM GuestID (ie. passport)
-	     	$scope.guestIdData.first_name = guest.first_name;
-	     	$scope.guestIdData.last_name = guest.last_name;
+		ngDialog.open({
+			template: '/assets/partials/guestId/rvGuestId.html',
+			className: 'guest-id-dialog',
+			controller: 'rvGuestIdScanCtrl',
+			scope: $scope
+		});
 
-	     	$scope.guestIdData.idType = guest.identityType;
-	     	$scope.guestIdData.dob = guest.date_of_birth;
+	};
 
-	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
-	     	$scope.guestIdData.nationality = guest.nationality;
+	$scope.$on('ON_GUEST_ID_POPUP_CLOSE', function() {
+		fetchGuestIDs();
+	});
 
-	     	$scope.guestIdData.docID = guest.document_number;
-	     	$scope.guestIdData.docExpiry = guest.expiration_date;
-	     	$scope.guestIdData.displayMode = 'FRONT_SIDE';
-	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
-	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
-	 		// END SETTING DATA FROM GUEST ID
-	 		$scope.guestIdData.signature = guest.signature;
-	 		
-
-	     	ngDialog.open({
-				template: '/assets/partials/guestId/guestId.html',
-				className: 'guest-id-dialog',
-				scope: $scope
-			});
- 		}
-
-     };
-
-	var buildGuestInfo = function() {
-		var firstName = _.isEmpty($scope.guestIdData.first_name) ? '' : $scope.guestIdData.first_name;
-		var lastName = _.isEmpty($scope.guestIdData.last_name) ? '' : $scope.guestIdData.last_name;
-		var docExpiry = _.isEmpty($scope.guestIdData.docExpiry) ? '' : $scope.guestIdData.docExpiry;
+	var buildGuestInfo = function(guestDocData) {
+		var firstName = _.isEmpty(guestDocData.first_name) ? '' : guestDocData.first_name;
+		var lastName = _.isEmpty(guestDocData.last_name) ? '' : guestDocData.last_name;
+		var docExpiry = _.isEmpty(guestDocData.expiration_date) ? '' : guestDocData.expiration_date;
 		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\r\n" +
 			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
-			$filter('translate')('DOB') + ": " + $scope.guestIdData.dob + "\r\n" +
-			$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\r\n" +
-			$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.docID + "\r\n" +
+			$filter('translate')('DOB') + ": " + guestDocData.date_of_birth + "\r\n" +
+			$filter('translate')('NATIONALITY') + ": " + guestDocData.nationality + "\r\n" +
+			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n" +
 			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
 		return guestInfo;
 	};
 
-	$scope.dowloadDocumnetDetails = function() {
+	$scope.dowloadDocumnetDetails = function(guestData, isPrimaryGuest) {
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
+		var guestDocData = retrieveGuestDocDetails(guestId);
+
+		guestDocData.first_name = guestDocData.first_name ? guestDocData.first_name : guestData.first_name;
+		guestDocData.last_name = guestDocData.last_name ? guestDocData.last_name : guestData.last_name;
+
 		var zip = new JSZip();
+		var createImageFile = function(image, imageFileName) {
+			if (image && image.length > 0) {
+				zip.file(imageFileName, image.split(',')[1], {
+					base64: true
+				});
+			}
+		};
 		var fileNamePrefix;
-		
-		if (_.isEmpty($scope.guestIdData.last_name)) {
-			fileNamePrefix = $scope.guestIdData.first_name;
-		} else if (_.isEmpty($scope.guestIdData.first_name)) {
-			fileNamePrefix = $scope.guestIdData.last_name;
-		} else if (_.isEmpty($scope.guestIdData.first_name) && _.isEmpty($scope.guestIdData.last_name)) {
+
+		if (_.isEmpty(guestDocData.last_name)) {
+			fileNamePrefix = guestDocData.first_name;
+		} else if (_.isEmpty(guestDocData.first_name)) {
+			fileNamePrefix = guestDocData.last_name;
+		} else if (_.isEmpty(guestDocData.first_name) && _.isEmpty(guestDocData.last_name)) {
 			fileNamePrefix = 'document';
 		} else {
-			fileNamePrefix = $scope.guestIdData.first_name + '-' + $scope.guestIdData.last_name;
+			fileNamePrefix = guestDocData.first_name + '-' + guestDocData.last_name;
 		}
 		// Add the guest details to a txt file
-		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo());
-		// Add a file to the directory, in this case an image with data URI as contents
-		zip.file(fileNamePrefix + "-ID.png", $scope.guestIdData.imgFrontSrc.split(',')[1], {
-			base64: true
-		});
-		// download backside if present
-		if ($scope.guestIdData.twoSidedDoc) {
-			zip.file(fileNamePrefix + "-ID-back-side.png", $scope.guestIdData.imgBackSrc.split(',')[1], {
-				base64: true
-			});
-		}
-		// Download signature
-		zip.file(fileNamePrefix + "-signature.png", $scope.guestIdData.signature.split(',')[1], {
-			base64: true
-		});
+		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo(guestDocData));
 
+		createImageFile(guestDocData.front_image_data, fileNamePrefix + "-ID.png");
+		createImageFile(guestDocData.back_image_data, fileNamePrefix + "-ID-back-side.png");
+		createImageFile(guestDocData.signature, fileNamePrefix + "-signature.png");
 
 		zip.generateAsync({
 				type: "blob"

@@ -369,6 +369,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.deleteContractConfirmed = function(event) {
 
 			event.stopPropagation();
+			var accountId = $stateParams.id;
+			
 			var deleteContractSuccessCallback = function() {
 				$scope.errorMessage = "";
 				$scope.contractList.current_contracts = [];
@@ -376,6 +378,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
+				if ($stateParams.id === "add") {
+					$scope.contractSelected.contract_code = "";
+					$scope.CancelAddNewContract();
+				}
 			};
 
 			var deleteContractFailureCallback = function(errorMessage) {
@@ -384,8 +390,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			};
 
 			ngDialog.close();
+			if (accountId === "add") {
+				accountId = $scope.contactInformation.id;
+			}
 			$scope.invokeApi(RVCompanyCardSrv.deleteContract,  {
-					"account_id": $stateParams.id,
+					"account_id": accountId,
 					"contract_id": $scope.contractSelected.id
 				}, deleteContractSuccessCallback, deleteContractFailureCallback);
 		};

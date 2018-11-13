@@ -2439,22 +2439,24 @@ sntRover.controller('RVbillCardController',
 	 *
 	 */
 	$scope.generateAdvanceBill = function() {
+		sntActivity.start('GENERATE_ADVANCE_BILL');
 		var data = {};
 
 		data.id = $scope.reservationBillData.reservation_id;
 		var getAdvanceBillSuccessCallback = function(successData) {
 			ngDialog.close();
-			$scope.$emit('hideLoader');
+			sntActivity.stop('GENERATE_ADVANCE_BILL');
 			$scope.init(successData);
 			var reservation = RVReservationCardSrv.getResrvationForConfirmationNumber($scope.reservationBillData.confirm_no);
 
 			reservation.reservation_card.balance_amount = successData.reservation_balance;
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationBillData.confirm_no, reservation);
 			$scope.reservationBillData.is_advance_bill = true;
+			$scope.getBillData($scope.currentActiveBill);
 		};
 		var getAdvanceBillErrorCallback = function(error) {
 			ngDialog.close();
-			$scope.$emit('hideLoader');
+			sntActivity.stop('GENERATE_ADVANCE_BILL');
 			$scope.errorMessage = error;
 		};
 

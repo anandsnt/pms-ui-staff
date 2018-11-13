@@ -41,6 +41,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 });
 
                 $scope.updateSelectedTaskslist();
+                $scope.$emit('hideLoader');
            };
             var failureCallBack = function(error) {
                 $scope.errorMessage = error;
@@ -471,7 +472,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.callAPI(ADReservationToolsSrv.reSyncRates, options);
         };
+        // CICO-56662
+        var listener = $scope.$on('INIT_RATE_DETAILS', function() {
+            $scope.init();
+        });
 
-        $scope.init();
+        $scope.$on('$destroy', listener );
     }
 ]);
