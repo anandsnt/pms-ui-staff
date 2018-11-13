@@ -31,7 +31,7 @@
                     </button>
                 </div>
                 <div class="card-actions" ng-show="isInAddMode()">
-                    <button type="button" class="button green" ng-click="saveNewAllotment()">Save Allotment</button>
+                    <button type="button" class="button green" ng-click="createNewAllotment()">Save Allotment</button>
                     <button type="button" class="button blank" ng-click="discardNewAllotment()">Discard</button>
                 </div>
             </div>
@@ -47,10 +47,13 @@
                     </li>
                     <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_DETAILS</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="ALLOTMENT_DETAILS" fs-toggle-class="fullscreen-card">Fullscreen</button>
                     </li>
                     <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_RESERVATIONS</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="ALLOTMENT_RESERVATIONS" fs-toggle-class="fullscreen-card">Fullscreen</button>
                     </li>
+
                     <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_ACTIVITY</a>
                     </li>

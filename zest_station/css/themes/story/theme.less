@@ -1,0 +1,194 @@
+/* StayNTouch Zest Station Styles | Hotel von Belle Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #b40d0f;
+    
+    @textColor:             @black;
+    @backgroundColor:       #f3f0e9;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: url("../css/themes/story/background.jpg");
+    @backgroundSize: cover;
+    
+    @headerIconsColor:      @brandColor;
+    @headerIconsActive:     @brandColor;   
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #story {
+        
+        .logo-svg{
+            background-image: url("../css/themes/story/logo.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 95px;
+            width: 281px;
+            margin-top: 50px;
+        }
+
+        #header {
+            height: 145px;
+
+            .button {
+                .icons {
+                    fill: @black;
+                }
+            }
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
+
+            &.centered {
+                padding-top: 100px;
+                #content {
+                    height: 100%;
+                }
+            }
+        }
+
+        input,
+        select,
+        button {
+            font-size: 1.3em;
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 0;
+
+            .logo {
+                width: auto;
+                height: 95px;
+                margin-top: 50px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: @black;
+            }
+        } 
+
+        .add-on-list {
+
+            // The second row is getting chunked on lower viewport height
+            @media screen and (max-height:800px) {
+                &.add-on-list-rows {
+                    li:nth-child(n+4) {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @brandColor;
+                }
+            }
+
+            #options {
+                li {
+                    .option {
+                        &.not-selected {
+                            .icon-text {
+                                color: @brandColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #textual {
+            background: @white;
+             
+
+            &:before,
+            &:after {
+                background: @white;
+            }
+
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+    }

@@ -113,7 +113,7 @@
 </div>
 
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn), 'no-options': !isStandAlone}" div-touch-move-stop-propogate> <!-- Add class "has-pagination" if pagination will exist on tablets -->
+<section id="rooms" class="content scrollable" ng-class="{'has-summary': hasActiveWorkSheet, 'hidden': currentView == 'summary', 'has-pagination': (!disablePrevBtn || !disableNextBtn), 'no-options': !isStandAlone}"  div-touch-move-stop-propogate > <!-- Add class "has-pagination" if pagination will exist on tablets -->
     <ul class="search-results" ng-hide="uiTotalCount == 0">
         <li class="mobile-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
             <p class="page-count">Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong>{{ netTotalCount }}</strong> items</p>
@@ -129,7 +129,7 @@
                 </label>
             </div>
 
-            <a ng-click="roomListItemClicked()" ui-sref="rover.housekeeping.roomDetails({ id: room.id })"> <!-- Add  class="with-image" if room is occupied -->
+            <a ng-click="roomListItemClicked(room)"> <!-- Add  class="with-image" if room is occupied -->
 
                 <div class="room-info" ng-class="{ 'on-hold': room.is_on_hold }">
                     <h2 class="{{ room.roomStatusClass }}">
@@ -193,6 +193,7 @@
                 <!-- Show only if room is occupied -->
                 <figure class="guest-image" ng-if="!room.is_queued && room.is_occupied">
                     <span ng-if="room.is_vip" class="vip" translate>VIP</span>
+                    <span class="stay-count" ng-if="room.guest_stay_count > 0 && isStandAlone">{{::room.guest_stay_count}}</span>
                     <img ng-src="{{::room.avatar_src}}" alt="" />
                 </figure>
 
@@ -235,11 +236,8 @@
     </ul>
 </section>
 
-<div class="search-pagination hk-pagination" ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
-    <!-- removed buttons since they include +300ms delay on touch pads -->
-    <label class="button dark-grey next" ng-click="loadNextPage($event)" ng-class="{'disabled': disableNextBtn}">Next</label>
-    <label class="button dark-grey prev" ng-click="loadPrevPage($event)" ng-class="{'disabled': disablePrevBtn}">Previous</label>
-    <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
+<div ng-show="!filterOpen && (!disablePrevBtn || !disableNextBtn)">
+    <rv-pagination page-options="hkSearchPagination" page-data="netTotalCount"></rv-pagination>
 </div>
 
 <!-- Rooms filters -->

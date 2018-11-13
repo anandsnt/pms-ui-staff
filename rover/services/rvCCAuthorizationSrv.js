@@ -4,7 +4,8 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
         var service = this,
             elapsedTimeinSeconds = 0,
             promiseIntervalTimer, // holds the promise returned by $interval
-            TERMINAL_POLLING_INTERVAL_MS = 3000;
+            TERMINAL_POLLING_INTERVAL_MS = 3000,
+            isAuthInProgress = false;
 
         var incrementTimer = function () {
             elapsedTimeinSeconds++;
@@ -73,16 +74,24 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
             var deferred = $q.defer();
             var url = '/api/cc/authorize';
 
+            // CICO-45248 Ensure duplicate auth calls aren't made from the UI
+            if (isAuthInProgress) {
+                $log.warn('Authorization attempted when previous call pending!');
+            }
+
+            isAuthInProgress = true;
+
             rvBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, param).then(function (data) {
                 if (data.status === 'processing_not_completed' && data.location_header) {
                     elapsedTimeinSeconds = 0;
                     promiseIntervalTimer = $interval(incrementTimer, 1000);
                     pollToTerminal(deferred, data.location_header);
                 } else {
+                    isAuthInProgress = false;
                     deferred.resolve(data);
                 }
-
             }, function (data) {
+                isAuthInProgress = false;
                 deferred.reject(data);
             });
             return deferred.promise;

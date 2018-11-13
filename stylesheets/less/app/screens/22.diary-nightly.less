@@ -490,7 +490,9 @@
         font-size: 18px;
         line-height: 14px;
         font-weight: 600;
-
+        width: 100%;
+        .show();
+        
         &.clean,
         &.inspected{ color: @green; }
 
@@ -501,6 +503,8 @@
     }
 
     .room-type {
+        width: 100%;
+        .show();
         .nowrap();
     }
 
@@ -693,6 +697,7 @@
             text-transform: uppercase;
             .size(40px, 85px);
             position: absolute;
+            .no-transition();
 
             .title {
                 text-align: center;
@@ -848,6 +853,7 @@
         .calc-height(100, 40);
 
         .wrapper {
+            min-height: 100%;
             #flexbox > .parent(row wrap, '', '', '');
         }
 
@@ -1591,7 +1597,7 @@
     &.with-reservation-overlay {
         overflow: visible;
 
-        &:after {
+        &:before {
             content:'';
             position: absolute;
             top: 0px;
@@ -1609,6 +1615,16 @@
             }
         }
 
+        .grid-content {
+            &.scroll-vertical {
+                overflow-y: hidden !important;
+            }
+        }
+        .grid-room-search-results {
+            &.scroll-vertical {
+                overflow-y: visible !important;
+            }
+        }
     }
 
     /* 7 Days ***/

@@ -33,6 +33,29 @@ select {
     .size(64px, 100%);
 }
 
+input,
+select {
+    &::-webkit-input-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &::-moz-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &:-ms-input-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &:-moz-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+}
+
 .button {
     text-align: center;
     color: @actionColor;
@@ -90,7 +113,6 @@ select {
     &.disabled,
     &[disabled] {
         opacity: 0.3;
-        background: rgba(255, 255, 255, 0.5);
     }
 }
 
@@ -99,13 +121,9 @@ select {
     #flexbox > .flex();
     #flexbox > .parent(row wrap, flex-start, flex-start, '');
     &.short {
-        width: 50% !important;
+        width: 60% !important;
         margin: 0 auto;
     }
-}
-
-.form:not(.ng-hide) {
-    display: table !important;
 }
 
 .entry {
@@ -128,9 +146,19 @@ select {
             .show;
         }
     }
+
+    &.select-with-button {
+        padding-bottom: 0;
+        margin: 0 10px 0 0;
+        #calc > #width > .remove(85%, 10px);
+        .box-shadow(none);
+    }
+
     &.input {
-        display: table-cell !important;
-        width: 100% !important;
+        position: relative;
+        #calc > #width > .remove(85%, 10px);
+        margin-right: 10px;
+
         .icons {
             position: absolute;
             top: 10px;
@@ -145,7 +173,7 @@ select {
         font-style: italic;
     }
     &.select-with-button {
-        width: 84.1%;
+        width: 82%;
         margin-right: 3px;
     }
     &.with-label {
@@ -188,6 +216,24 @@ select {
     }
     &.action {
         padding-left: 10px;
+        width: 15%;
+    }
+    &.entry-address {
+        margin: 0 20px 20px 0;
+        #calc > #width > .remove(35%, 13.33px);
+        float: left;
+
+        &.address-small {
+            #calc > #width > .remove(25%, 13.33px);
+        }
+        &.select {
+            clear: inherit;
+            .box-shadow(none);
+        }
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
     }
 }
 
@@ -363,21 +409,15 @@ select {
 .entry&.input > ng-include > .icons&.icon-date {
     position: absolute !important;
     margin-left: -6% !important;
-    top: 57%!important;
-    left: 66%;
 
     @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
         margin-left: -11% !important;
         margin-top: .5%;
-        top: 52.5%!important;
-        left: 66%;
     }
 
     @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
         margin-left: -11% !important;
         margin-top: 0% !important;
-        top: 57%!important;
-        left: 71%;
     }
 }
 /*Home Screen "Book-Now"*/
@@ -422,5 +462,28 @@ select {
 
     &.icon-adult {
         background-position: 5px -20957px;
+    }
+}
+.clear-text-icon{
+    cursor: pointer;
+}
+#textual.country-list.fill-height {
+    max-height: 200px !important;
+    min-height: 0px !important;
+}
+
+#country-id-search {
+    #calc > #width > .remove(75%, 10px);
+}
+.country-list {
+    #calc > #width > .remove(75%, 10px) !important;
+    ul {
+        margin-bottom: 0px;
+        height: auto;
+        li {
+            border-bottom: 1px #e5e5e5 solid;
+            cursor:  pointer;
+            padding: 10px;
+        }
     }
 }

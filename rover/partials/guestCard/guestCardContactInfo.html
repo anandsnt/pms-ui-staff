@@ -1,20 +1,20 @@
- <form id="gc-contact-info" outside-click-handler name="gc-contact-info" class="form card-tab scrollable" ng-controller="RVContactInfoController" ng-show="current == 'guest-contact'" ng-iscroll="contact_info" ng-iscroll-delay="1000" ng-iscroll-form='true'>
+ <form id="gc-contact-info" outside-click-handler name="gc-contact-info" class="form card-tab scrollable" ng-controller="RVContactInfoController" ng-show="current == 'guest-contact' || printState.clicked" ng-iscroll="contact_info" ng-iscroll-delay="1000" ng-iscroll-form='true'>
 	<div class="wrapper">
 		<div class="entry full-width">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		</div>
 		<div class="holder left">
-			<rv-textbox value="guestCardData.contactInfo.title" label = "Title" styleclass="clear"></rv-textbox>
-			<rv-textbox value="guestCardData.contactInfo.first_name" label = "First name" styleclass="margin" ></rv-textbox>
-			<rv-textbox value="guestCardData.contactInfo.last_name" label = "Last Name" ></rv-textbox>
-			<rv-textbox value="guestCardData.contactInfo.works_at" styleclass="margin"  label = "Works at" ></rv-textbox>
-			<rv-textbox value="guestCardData.contactInfo.job_title" label = "Job title" ></rv-textbox>
-			<rv-textbox value="guestCardData.contactInfo.tax_number" label = "Tax Number" styleclass="margin"></rv-textbox>
-			<div class="entry has-datepicker">
+			<rv-textbox value="guestCardData.contactInfo.title" label = "Title" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.title, 'clear')}}"></rv-textbox>
+			<rv-textbox value="guestCardData.contactInfo.first_name" label = "First name" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.first_name, 'margin')}}" ></rv-textbox>
+			<rv-textbox value="guestCardData.contactInfo.last_name" label = "Last Name" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.last_name, '')}}"></rv-textbox>
+			<rv-textbox value="guestCardData.contactInfo.works_at" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.works_at, 'margin')}}"  label = "Works at" ></rv-textbox>
+			<rv-textbox value="guestCardData.contactInfo.job_title" label = "Job title" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.job_title, '')}}" ></rv-textbox>
+			<rv-textbox value="guestCardData.contactInfo.tax_number" label = "Tax Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.tax_number, 'margin')}}"></rv-textbox>
+			<div class="entry has-datepicker" ng-class="{'no-print': !birthdayText}">
 				<label for="birthday"> Birthday </label>
 				<input type="text" ng-model="birthdayText" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
 			</div>
-			<div class="entry margin">
+			<div class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.nationality_id}">
 				<label for="country">Nationality</label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id">
@@ -22,7 +22,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry" ng-if="isStandAlone && languageData.show_language_field">
+			<div class="entry" ng-if="isStandAlone && languageData.show_language_field" ng-class="{'no-print': !guestCardData.contactInfo.language_id}">
 				<label for="languages">Language</label>
 				<div form="contact-info" class="select">
 					<select convert-to-number iscroll-stop-propagation ng-model="guestCardData.contactInfo.language_id">
@@ -33,7 +33,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="entry margin">
+			<div class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.id_type}">
 				<label for="country">Id Type</label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-options="idType.id as idType.value for idType in idTypeList" ng-model="guestCardData.contactInfo.id_type">
@@ -41,24 +41,26 @@
 					</select>
 				</div>
 			</div>
-			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number"></rv-textbox>
+			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 			
 		</div> 		
 		<div class="holder right">
-				<rv-textbox value="guestCardData.contactInfo.email" label="E-mail address" styleclass="full-width"></rv-textbox>
-				<div click-tap class="entry radio-check full-width">
-					<label id="guestcard_email_checkbox" class="checkbox"ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}">
+				<rv-textbox value="guestCardData.contactInfo.email" label="E-mail address" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.email, 'full-width')}}"></rv-textbox>
+				<div click-tap class="entry radio-check full-width no-label" ng-class="{'no-print': !guestCardData.contactInfo.is_opted_promotion_email}">
+					<label class="only-print" for="opt-in">Email Opt In</label>
+					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}"></span>
-						<input type="checkbox"  name="opt-in" id="opt-in" ng-model="guestCardData.contactInfo.is_opted_promotion_email">
-						<span class="guest_card_promotions">Promotions &amp; News Email Opt In </span> 
+			            <input name="opt-in" id="opt-in" value="opt-in" type="checkbox" ng-model="guestCardData.contactInfo.is_opted_promotion_email"/>
+			            Promotions &amp; News Email Opt In
+        			</label>					
 				</label>
 				</div>
-				<rv-textbox value="guestCardData.contactInfo.address.street1" label="Address" styleclass="margin"></rv-textbox>
-				<rv-textbox value="guestCardData.contactInfo.address.street2"  styleclass="no-label"></rv-textbox>
-				<rv-textbox value="guestCardData.contactInfo.address.city" styleclass="margin" label="City" ></rv-textbox>
-				<rv-textbox value="guestCardData.contactInfo.address.postal_code" label="Postal code" ></rv-textbox>
-				<rv-textbox value="guestCardData.contactInfo.address.state" styleclass="margin" label="State" ></rv-textbox>
-				<div class="entry">
+				<rv-textbox value="guestCardData.contactInfo.address.street1" label="Address" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.address.street1, 'margin')}}"></rv-textbox>
+				<rv-textbox value="guestCardData.contactInfo.address.street2" label="Address 2" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.address.street2)}}"></rv-textbox>
+				<rv-textbox value="guestCardData.contactInfo.address.city" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.address.city, 'margin')}}" label="City" ></rv-textbox>
+				<rv-textbox value="guestCardData.contactInfo.address.postal_code" label="Postal code" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.address.postal_code, '')}}"></rv-textbox>
+				<rv-textbox value="guestCardData.contactInfo.address.state" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.address.state, 'margin')}}" label="State" ></rv-textbox>
+				<div class="entry" ng-class="{'no-print': !guestCardData.contactInfo.address.country_id}">
 					<label for="country">Country</label>
 					<div form="contact-info" class="select">
 						<select iscroll-stop-propagation ng-options="country.id as country.value for country  in countries" ng-model="guestCardData.contactInfo.address.country_id">
@@ -66,8 +68,8 @@
 						</select>
 					</div>
 				</div>
-				<rv-textbox value="guestCardData.contactInfo.phone" styleclass="margin" label="Phone"></rv-textbox>
-				<rv-textbox value="guestCardData.contactInfo.mobile" label="Mobile" ></rv-textbox>
+				<rv-textbox value="guestCardData.contactInfo.phone" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.phone, 'margin')}}" label="Phone"></rv-textbox>
+				<rv-textbox value="guestCardData.contactInfo.mobile" label="Mobile" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mobile, '')}}"></rv-textbox>
 		</div> 	
 	</div> 		
  </form>

@@ -1,0 +1,91 @@
+<form method="post" id="cc-activity-log" name="cc-activity-log" class="form card-tab inner-header activity-log">
+
+     <div class="tab-header with-filters">
+        <div class="search-form has-dates">
+            <div class="entry dates">
+                <div class="entry-data has-datepicker">
+                    <label for="activity-log-date-from">From</label>
+                    <button ng-click="clearDate('FROM')" ng-class="{'visible': escapeNull(activityLogFilter.fromDate) !=''}" id="activity-log-date-from-clear" class="clear-query">
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input name="activity-log-date-from" id="activity-log-date-from" type="text" class="datepicker" value="{{activityLogFilter.fromDate | date:dateFormat}}" ng-click="clickedFromDate()" readonly="">
+                </div>
+                <div class="entry-data has-datepicker">
+                    <label for="activity-log-date-to">To</label>
+                    <button ng-click="clearDate('TO')" id="activity-log-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(activityLogFilter.toDate) !=''}">
+                        <span class="icons icon-clear-search">Clear query</span>
+                    </button>
+                    <input name="activity-log-date-to" id="activity-log-date-to" type="text" class="datepicker" value="{{activityLogFilter.toDate | date:dateFormat}}" ng-click="clickedToDate()" readonly="">
+                </div>
+            </div>
+            <div class="entry">
+                <div class="select">
+                    <select id="activity-log-activities" ng-model="activityLogFilter.selectedAction">
+                        <option value="" ng-selected="activityLogFilter.selectedAction === ''">All Actions</option>
+                        <option value="{{action.id}}" ng-repeat="action in activityLogFilter.actionsList" ng-selected="activityLogFilter.selectedAction === action.id">{{action.description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry search">
+                <button class="clear-query" ng-click="clearQuery()" ng-class="{'visible': activityLogFilter.query!=''}">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <button type="submit" name="submit" class="icons icon-search">Search</button>
+                <input name="activity-log-search" class="query" placeholder="Search by Details" type="search" autocomplete="off" ng-model="activityLogFilter.query">
+            </div> 
+            <button type="button" class="button green" ng-click="clickedFilterButton()">Filter</button>
+        </div> 
+    </div>
+
+    <!-- If there are open bills: -->
+    <div class="tab-details scrollable" ng-iscroll="rvCompanyCardActivityLogScroll" ng-iscroll-delay="100" ng-class="{ 'with-pagination': showPagination() }">
+        <div class="wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <span ng-click="sortByAction('USERNAME')" class="sort" ng-class="{'sorting-asc':activityLogFilter.user == 'asc','sorting-desc':activityLogFilter.user == 'desc'}">User</span>
+                        </th> 
+                        <th>
+                            <span ng-click="sortByAction('DATE')" class="sort" ng-class="{'sorting-asc':activityLogFilter.date == 'asc','sorting-desc':activityLogFilter.date == 'desc'}">Date &amp; Time</span>
+                        </th>
+                        <th>
+                            <span ng-click="sortByAction('ACTION')" class="sort" ng-class="{'sorting-asc':activityLogFilter.action == 'asc','sorting-desc':activityLogFilter.action == 'desc'}">Action</span>
+                        </th>
+                        <th>
+                            <span>Details</span>
+                        </th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in activityLogObj.response.results">
+                        <td class="name">
+                            {{item.user_name}}
+                            <span class="property">{{item.property}}</span>
+                        </td>
+                        <td class="date">{{item.date | date: dateFormat }}, {{item.time}}</td>
+                        <td class="action">{{item.action}}</td>
+                        <td class="details">
+                            <span ng-repeat="details in item.details">
+                                <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+                                    <strong>{{ details.old_value }}</strong>
+                                </span>
+                                {{details.key}}
+                                <span>
+                                    <strong>{{details.new_value}}</strong>
+                                </span>                        
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <rv-pagination ng-show="showPagination()" page-options="activityLogPagination" page-data="activityLogObj.response"></rv-pagination>
+
+</form>
+
+
+

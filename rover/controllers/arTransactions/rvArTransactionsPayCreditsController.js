@@ -11,11 +11,17 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     BaseCtrl.call(this, $scope);
 
     $scope.feeData = {};
+    $scope.selectedCC = {};
 
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
-    $scope.renderData.defaultPaymentAmount = $scope.arDataObj.unpaidAmount;
+    $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidAmount).toFixed(2);
+    $scope.saveData.paymentType = ($scope.passData.isRefundClick) ? $scope.passData.payment.payment_type_value  : '';
+    $scope.actionType = ($scope.passData.isRefundClick) ? "AR_REFUND_PAYMENT" : "AR_SUBMIT_PAYMENT";
+    if ($scope.passData.isRefundClick && $scope.passData.payment.payment_type_value === "CC") {
+        $scope.selectedCC = $scope.passData.payment.card_details;
+    }
     var bill_id = $scope.arDataObj.company_or_ta_bill_id;
 
     $scope.cardsList = [];
@@ -45,10 +51,12 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.renderData.paymentTypes = _.filter(data, function(paymentType) {
             return paymentType.name !== "GIFT_CARD";
         });
+
         renderDefaultValues();
     };
 
     var init = function() {
+
         $scope.referenceTextAvailable = false;
         $scope.showInitalPaymentScreen = true;
         $scope.depositPaidSuccesFully = false;
@@ -70,7 +78,8 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
 
-        $scope.allocatedPayment.payment_type = data.selectedPaymentTypeDescription;
+        $scope.allocatedPayment.payment_type   = data.selectedPaymentTypeDescription;
+        $scope.allocatedPayment.transaction_id = data.ar_transaction_id;
         if (data.selectedPaymentType === "CC") {
             data.cc_details.last_digits = data.cc_details.ending_with;
             data.cc_details.expire_date = data.cc_details.expiry_date;
@@ -91,6 +100,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
+        $scope.arDataObj.selectedInvoices = [];
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
@@ -162,9 +172,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             getSixCreditCardType(tokenDetails.card_type).toLowerCase() :
             cardDetails.cardType;
 
-        $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
-            successCallBack: successNewPayment,
-            params: {
+        var paymentPostData = {
                 "bill_id": bill_id,
                 "data_to_pass": {
                     "card_expiry": expiryDate,
@@ -173,7 +181,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',
                     "token": cardToken,
                     "card_code": cardCode
                 }
-            }
+            };
+
+        $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
+            successCallBack: successNewPayment,
+            params: paymentPostData
         });
     };
     /*
@@ -296,12 +308,13 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Invoke this method to show the refund amount on the button in the payment screen
      */
     var renderDefaultValues = function() {
-        $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
+        $scope.defaultRefundAmount = ((-1) * parseFloat($scope.renderData.defaultPaymentAmount)).toFixed(2);
         if ($scope.renderData.defaultPaymentAmount < 0) {
-            $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
+            $scope.defaultRefundAmount = ((-1) * parseFloat($scope.renderData.defaultPaymentAmount)).toFixed(2);
             $scope.shouldShowMakePaymentButton = false;
         } else {
             $scope.shouldShowMakePaymentButton = true;
-        }        
+        }  
+
     };
 }]);

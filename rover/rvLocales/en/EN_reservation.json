@@ -157,6 +157,9 @@
     "PRIMARY_EXTERNAL_REFERENCE": " [PRIMARY]",
 
 
-    "GUEST_ID_BUTTON": "GUEST ID"
+    "GUEST_ID_BUTTON": "GUEST ID",
 
-
+    "NEW_GUEST": "New Guest",
+    "GUEST_CARD": "Guest Card",
+    "CREATE_RESERVATION": "New Reservation",
+    "FIND_GUESTS": "Find Guests"

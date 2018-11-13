@@ -4,7 +4,6 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScop
 
 		var initialize = (function() {
 			BaseCtrl.call(this, $scope);
-			$scope.$emit('changedSelectedMenu', 10);
 			$scope.errorMessage = '';
 			$scope.successMessage = '';
 			$scope.hueSettings = kioskSettings;

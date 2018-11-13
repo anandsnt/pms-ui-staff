@@ -21,7 +21,7 @@
 				<input type="text" ng-model="data.city" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
 			</div>
 
-			<div class="entry">
+			<div class="entry" ng-class="{'with-button': isAdminSnt}">
 				<label for="hotel-country"> Country <strong>*</strong> </label>
 				<div class="select">
 					<select convert-to-number ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
@@ -30,6 +30,7 @@
 
 					</select>
 				</div>
+				<button type="button" ng-show="isAdminSnt && isEdit" class="button blue" ng-click="clickedLegalSettings()">Legal Settings</button>
 			</div>
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
@@ -107,6 +108,7 @@
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
 	                            PMS Overlay
 	                        </label>
+	                        <ad-textbox ng-if="isAdminSnt && data.country === swedenCountryId" label="Max. Control Unit (SE) workstations" value="data.max_control_unit"  placeholder="Enter Max. Control Unit (SE) workstations" name="max control unit" id="max control unit"></ad-textbox>	                        
 	                        <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
                         </fieldset>
                         <fieldset class="holder right">
@@ -139,6 +141,8 @@
 					<label for="hotel-zipcode"> ZipCode</label>
 					<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
 				</div>
+				<ad-textbox value="data.tax_id" label="{{'TAX_ID' | translate}}" placeholder="{{'TAX_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+				<ad-textbox value="data.swift_code" label="{{'SWIFT_CODE' | translate}}" placeholder="{{'SWIFT_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
 				<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 					<label for="rover"> Rover Registration </label>
 					<div  id="registration-for-rover" class="boxes">
@@ -154,12 +158,7 @@
 					</div>
 				</div>
 
-				<div class="entry">
-					<label for="terms_and_conditions" translate>
-					TERMS_AND_CONDITIONS_LABEL
-					</label>
-					<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
-				</div>
+				
 
 				<div class="entry full-width">
 	                             <div class="entry inline-flex" >
@@ -278,6 +277,28 @@
 						</select>
 					</div>
 				</div>
+				<div class="entry is-pms-tokenized" ng-if="!isAdminSnt && data.hotel_pms_type !=='OWS'">
+					<label >Enable Invoice Number Sequence</label>
+					<div class="switch-button single" ng-class="{ on : data.enable_mod_type == true }" ng-click="toggleInvoiceSequence()">
+						<input type="checkbox" value="{{data.enable_mod_type}}" name="is-mod-enabled" id="is-mod-enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+				<div class="entry">
+					<label for="hotel-time-zone"> Property Currency Format</label>
+					<div class="select">
+						<select convert-to-number ng-model="data.hotel_currency_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+							<option value=""> Property Currency Format </option>
+							<option ng-repeat="formats in data.currency_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_currency_format">{{formats.value}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
+					<label>Invoice Number Sequence</label>
+					<div class="select">
+					<select ng-disabled="{{isSequenceModChangeDisabled}}" ng-model="data.selected_mod_type_id" ng-options="mod_type.id as mod_type.value for mod_type in data.mod_types"></select>					
+					</div>
+				</div>
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label for="is-pms-tokenized">PMS Tokenized</label>
 					<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
@@ -299,7 +320,7 @@
 					<input type="text" ng-model="data.website_address" value="{{data.website_address}}" required="no" placeholder="Enter website address" name="website_address">
 				</div>
 				<div class="entry">
-					<label for="hotel_email_address"> Hotel Email Address </label>
+					<label for="hotel_email_address"> Hotel Email Address <strong>*</strong></label>
 					<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no">
 				</div>
 				<div class="entry date has-datepicker" ng-if="isAdminSnt">
@@ -310,7 +331,7 @@
 	                </button>
 				</div>
 				<div class="entry" ng-if="isAdminSnt">
-					<label for="hotel-pms-type"> Language </label>
+					<label for="hotel-pms-type"> Language <strong>*</strong></label>
 					<div class="select">
 						<select convert-to-number ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 							<option value=""> Language </option>
@@ -420,6 +441,8 @@
 
 				<ad-toggle-button is-checked="data.enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
+				<ad-toggle-button is-checked="data.enable_offline_check_in" label="{{'WEB_CHECKIN_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label>Privacy Check</label>
 					<div class="switch-button single" ng-class="{ on : data.is_email_privacy_check == true }" ng-click="data.is_email_privacy_check = !data.is_email_privacy_check">
@@ -427,6 +450,8 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
+
+                <ad-toggle-button is-checked="data.use_ows_chip_and_pin_flag" label="{{'OWS_CHIP_N_PIN' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
 				<!-- <div class="entry">
 					<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
@@ -437,8 +462,8 @@
 				</div> -->
 
 				<div class="entry full-width" ng-if="!isAdminSnt">
-					<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)  </label>
-					<div class="file-upload with-preview">
+					<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)</label>
+					<div class="file-upload with-preview logo-preview">
 						<span class="input">{{hotel_logo_file}}</span>
 						<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_logo)" ng-click = "data.hotel_logo = 'false'"></a>
 						<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
@@ -446,12 +471,12 @@
 							Choose file
 						</button>
 					</div>
-					<span class="file-preview"> <img ng-src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+					<span class="file-preview logo-preview"> <img ng-src="{{data.hotel_logo}}" alt=""> </span>
 				</div>
 
 				<div class="entry full-width" ng-if="!isAdminSnt">
-					<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)  </label>
-					<div class="file-upload with-preview">
+					<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)</label>
+					<div class="file-upload with-preview logo-preview">
 						<span class="input">{{hotel_template_logo_file}}</span>
 						<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_template_logo)" ng-click = "data.hotel_template_logo = 'false'"></a>
 						<input type="file" ng-model="data.hotel_template_logo" accept="image/*" app-filereader />
@@ -459,7 +484,7 @@
 							Choose file
 						</button>
 					</div>
-					<span class="file-preview"> <img src="{{data.hotel_template_logo}}" alt="" height="112" width="auto"> </span>
+					<span class="file-preview logo-preview"> <img src="{{data.hotel_template_logo}}" alt=""> </span>
 				</div>
 			</fieldset>
 
@@ -655,6 +680,8 @@
 				  	[Public IP for PosLynx] should be replaced with the domain name or the public IP of the PosLynx machine.
 					</span>
 				</div>
+
+                <ad-toggle-button is-checked="data.mli_cba_enabled" label="Enable CBA Payment Type" is-hide="!isAdminSnt || data.payment_gateway !== 'MLI'"></ad-toggle-button>
 
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
 					<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">

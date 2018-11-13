@@ -1,0 +1,27 @@
+<div ng-include="'/assets/partials/common/header.html'"></div>
+
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+<div ng-include="'/assets/partials/overBooking/rvOverBookingHeader.html'" include-replace></div>
+
+<!-- Overbooking Content -->
+<section class="overbooking-content" ng-class="{'showing-rooms': overBookingObj.isShowRoomsLeftToSell}">
+
+	<div ng-include="'/assets/partials/overBooking/rvOverBookingLeftSection.html'" include-replace></div>
+
+    <!-- Limits -->
+    <div class="overbooking-limits">
+
+        <div ng-include="'/assets/partials/overBooking/rvOverBookingTimelineAndHouseLimit.html'" include-replace></div>
+
+		<div ng-include="'/assets/partials/overBooking/rvOverBookingGrid.html'" include-replace></div>
+
+		<div class="overbooking-grid no-content" ng-if="overBookingObj.overBookingGridData.roomTypeSellLimits.length == 0">
+		    <div class="info">
+		        <span class="icon-no-content icon-room"></span>
+		        <strong class="h1" translate>NO_ROOM_TYPES</strong>
+		        <span class="h2" translate>MESSAGE_NOT_SELECTED_ANY_ROOM_TYPES</span>
+		    </div>
+		</div>
+    </div>
+</section>

@@ -1,0 +1,55 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-4"></div>
+        <!-- left side -->
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text final-text">Check-in complete</p>
+                <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+                <br/><br/>
+                <p class="sub-main-text top-spacing">{{responseData.confirmation_message}}
+                </p>
+                <br/><br/>
+                <p class="sub-main-text top-spacing" ng-if="mobileMarketingOn">
+                     <description template="{{mobileAppText}}">
+                     </description>
+                </p>
+                <br>
+                <div ng-class="{'dual-app-icons-container': apps.app_store.available && apps.play_store.available, 'single-app-icon-container': ((apps.app_store.available && !apps.play_store.available) || (!apps.app_store.available && apps.play_store.available))}" ng-if="mobileMarketingOn">
+                    <a ng-if="apps.app_store.available" href="{{apps.app_store.url}}" target='_blank'><img src="{{apps.app_store.img}}"</a>
+                    <a ng-if="apps.play_store.available" href="{{apps.play_store.url}}" target='_blank'><img src="{{apps.play_store.img}}"</a>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

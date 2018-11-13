@@ -1,0 +1,86 @@
+{
+	"results": [{
+		"id": 8,
+		"name": "from screen",
+		"charge_codes": [{
+			"charge_code": "1001",
+			"id": 13107
+		}, {
+			"charge_code": "1002",
+			"id": 13108
+		}, {
+			"charge_code": "1003",
+			"id": 81950
+		}]
+	}, {
+		"id": 13,
+		"name": "hello",
+		"charge_codes": [{
+			"charge_code": "1001",
+			"id": 13107
+		}, {
+			"charge_code": "1002",
+			"id": 13108
+		}]
+	}, {
+		"id": 11,
+		"name": "second",
+		"charge_codes": [{
+			"charge_code": "1001",
+			"id": 13107
+		}, {
+			"charge_code": "1002",
+			"id": 13108
+		}]
+	}, {
+		"id": 9,
+		"name": "tax exempt one",
+		"charge_codes": [{
+			"charge_code": "1730",
+			"id": 90957
+		}, {
+			"charge_code": "1731",
+			"id": 90958
+		}, {
+			"charge_code": "1732",
+			"id": 90959
+		}]
+	}, {
+		"id": 5,
+		"name": "tax one test 123",
+		"charge_codes": [{
+			"charge_code": "1001",
+			"id": 13107
+		}, {
+			"charge_code": "1002",
+			"id": 13108
+		}, {
+			"charge_code": "1003",
+			"id": 81950
+		}]
+	}, {
+		"id": 12,
+		"name": "third",
+		"charge_codes": [{
+			"charge_code": "1730",
+			"id": 90957
+		}, {
+			"charge_code": "1731",
+			"id": 90958
+		}]
+	}, {
+		"id": 14,
+		"name": "to check charge codes",
+		"charge_codes": [{
+			"charge_code": "202",
+			"id": 13111
+		}, {
+			"charge_code": "1731",
+			"id": 90958
+		}, {
+			"charge_code": "1729",
+			"id": 90960
+		}]
+	}],
+	"total_count": 7
+}

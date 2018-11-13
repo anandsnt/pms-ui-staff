@@ -19,4 +19,7 @@
 "NEW_CHARGE"        : "New Charge",
 "TOTAL"     		: "Total",
 "REFERENCE"     	: "Reference",
-"POST"     			: "Post"
+"POST"     			: "Post",
+"CREDIT"			: "Credit",
+"OPEN_BALANCE"		: "Open Balance",
+"AR_BALANCE"		: "AR Balance"

@@ -1,0 +1,30 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <!-- left side -->
+        <div class="col-md-4 align-center">
+            <div class="section-container">
+                <p class="main-text">Ready to Check-out?</p>
+                <p class="sub-main-text">{{checkoutTimessage}} {{checkoutTime}}.</p>
+                <a class="btn dual-button dark-button extended-btn margin-top-20" ui-sref="checkoutBalance">
+                    <p>Check-out</p>
+                    <p>now</p>
+                    <div class="checkout-icon"></div>
+                </a>
+                <div class="row footer-text">
+                    <span>{{footerMessage1}}</span>
+                    <br> Come back to this page to check-out at any time before {{checkoutTime}}.
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

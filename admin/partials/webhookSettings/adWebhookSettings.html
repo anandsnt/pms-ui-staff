@@ -13,7 +13,7 @@
                                   required="yes"
                                   change-handler="onWebHookTypeChange"
                                   change-handler-param="webHook"
-                                  property="delivery_type"
+                                  property="delivery_type_display"
                                   list="meta.deliveryTypes"
                                   label="{{'WEBHOOK_TYPE'| translate}}"
                                   div-class="full-width">
@@ -24,21 +24,46 @@
                             label="{{'URL'| translate}}"
                             styleclass="full-width"></ad-textbox>
             </fieldset>
+
+            <fieldset class="holder right">
+                <div class="entry full-width" ng-show="webHook.delivery_type==='mlife'">
+                    <label> {{ 'CONFIGURATION' | translate }} </label>
+                    <textarea json-text ng-model='webHook.options' rows="6"
+                              placeholder="Enter Configuration in JSON format"></textarea>
+                </div>
+                <div class="entry full-width" ng-show="webHook.delivery_type==='generic'">
+                    <button style="margin: 24px;"
+                            ng-click="testURLConnectivity(webHook);"
+                            class="button ng-binding blue">TEST ENDPOINT
+                    </button>
+                </div>
+                <div class="entry full-width"  ng-if="webHook.delivery_type==='generic' && (webHook.testMessage.request || webHook.testMessage.response)" snt-highlight-syntax>
+                  <strong>Request</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{webHook.testMessage.request}}
+                  </pre>
+                  <strong>Response</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{webHook.testMessage.response}}
+                  </pre>
+                </div>
+            </fieldset>
+
         </fieldset>
 
         <fieldset class="holder full-width" ng-show="webHook.canEditEvents">
             <div class="form-title">
                 <h3>Subscriptions</h3>
             </div>
-            <fieldset class="holder left">
+            <!-- <fieldset class="holder left">
                 <ad-textarea rows="2" div-class="full-width"
                              text-area-class="full-width"
                              value="webHook.selectedEvents"
                              disabled="true"
                              label="{{ 'SELECTED_SUBSCRIPTIONS' | translate}}" placeholder="">
                 </ad-textarea>
-            </fieldset>
-            <fieldset class="holder right">
+            </fieldset> -->
+            <fieldset class="holder left">
                 <ad-textbox inputtype="text"
                             value="eventSearch"
                             div-class="full-width"
@@ -55,7 +80,7 @@
                             <span class="ivh-treeview-node-label"
                                   style="padding-left: 10px;"
                                   ivh-treeview-toggle>
-                                            {{trvw.label(node)}}
+                                            {{trvw.label(node) | translate}}
                                             </span>
                             <div style="margin-top: 1em;" ivh-treeview-children></div>
                         </script>

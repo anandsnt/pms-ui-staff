@@ -20,7 +20,8 @@
 				cardNumber: "",
 				expiry_date: "",
 				card_type: "",
-				addToGuestCard: false
+				addToGuestCard: false,
+				locale: $scope.languageData.selected_language_code
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
@@ -266,12 +267,20 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": false
-					});
+					if ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+						$state.reload($state.current.name);
+						
+					} else {
+						// CICO-58191
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							id: $scope.reservationData.reservationId || $scope.reservationData.reservation_card.reservation_id,
+							confirmationId: $scope.reservationData.confirmNum || $scope.reservationData.reservation_card.confirmation_num,
+							isrefresh: true
+						});
+					}
+					
 				}
+
 				$scope.closeReservationCancelModal();
 			};
 
@@ -533,9 +542,10 @@
 			};
 
 			// Action against email button in staycard.
-			$scope.sendReservationCancellation = function() {
+			$scope.sendReservationCancellation = function(locale) {
 				var postData = {
 					"type": "cancellation",
+					"locale": locale,
 					"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
 				};
 				var data = {
@@ -578,7 +588,7 @@
 			};
 
 			// Action against print button in staycard.
-			$scope.printReservationCancellation = function() {
+			$scope.printReservationCancellation = function(locale) {
 				var succesfullCallback = function(data) {
 					$scope.printData = data.data;
 					printPage();
@@ -591,7 +601,8 @@
 					successCallBack: succesfullCallback,
 					failureCallBack: failureCallbackPrint,
 					params: {
-						'reservation_id': $scope.passData.reservationId
+						'reservation_id': $scope.passData.reservationId,
+						'locale': locale
 					}
 				});
 			};

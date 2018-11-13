@@ -5,7 +5,7 @@
 
     </header>
     <section class="content-scroll">
-        <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
         <form class="form float" >
             <fieldset class="holder left">
@@ -49,7 +49,10 @@
                 <ad-textbox value="data.data.product_cross_customer.tracker_pass_word" inputtype="password" label="{{'SITEMINDER_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.tracker_access_url" inputtype="access-url" name="access-url" id="access-url" label="{{'SITEMINDER_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="data.data.product_cross_customer.hotel_code" inputtype="hotel-code" name="hotel-code" id="hotel-code" label="{{'SITEMINDER_HOTEL_CODE_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-dropdown-name name="default-rate" savemodel="data.data.product_cross_customer.default_rate" id="rate-code" valueproperty="id" property="rate_name" list="rateSelection" label="{{'DEFAULT_EXTERNAL_RATE_CODE'| translate}}" styleclass="full-width"  style="padding-left: 0px;"></ad-dropdown-name>
+
+                <ad-dropdown-name name="default-source" savemodel="data.data.product_cross_customer.default_source_id" id="source-code" valueproperty="value" property="name" list="sourceCodes" label="{{'DEFAULT_SOURCE_CODE'| translate}}" styleclass="full-width"  style="padding-left: 0px;"></ad-dropdown-name>
+
+                <ad-dropdown-name name="default-rate" required="yes" savemodel="data.data.product_cross_customer.default_rate" id="rate-code" valueproperty="id" property="rate_name" list="rateSelection" label="{{'DEFAULT_EXTERNAL_RATE_CODE'| translate}}" styleclass="full-width"  style="padding-left: 0px;"></ad-dropdown-name>
                 <ad-dropdown-name required="yes" name="default-room-type" savemodel="data.data.product_cross_customer.default_room_type_id" id="room-type" valueproperty="id" property="name" list="roomTypes" label="{{'DEFAULT_ROOM_TYPE'| translate}}" styleclass="full-width"  style="padding-left: 0px;"></ad-dropdown-name>
                 <ad-dropdown-name name="default-origin" savemodel="data.data.product_cross_customer.default_origin" id="default-origin" valueproperty="value" property="name" list="booking.booking_origins" label="{{'SITEMINDER_DEFAULT_BOOKING_ORIGIN'| translate}}" styleclass="full-width"></ad-dropdown-name>
                 <ad-dropdown-name name="default-payment" savemodel="data.data.product_cross_customer.default_payment_id" id="default-payment" valueproperty="id" property="description" list="payments.payments" label="{{'SITEMINDER_DEFAULT_PAYMENT_METHOD'| translate}}" styleclass="full-width"  style="padding-left: 0px;"></ad-dropdown-name>

@@ -10,15 +10,18 @@
     "FIND_CARDS":"FIND CARDS",
 
     "COMAPNY_INFO": "Company Info",
+    "TA_INFO": "Travel Agent Info",
     "COUNTRY": "Country",
     "SELECT_COUNTRY": "Select country",
     "COMAPNY_LOGO": "Company logo",
     "CHOOSE_FILE": "Choose file",
     "PREVIEW_NOT_AVAILABLE": "Preview not available",
     "EXTENDED_COMPANY_DETAILS": "Extended Company Details",
+    "EXTENDED_TA_DETAILS": "Extended Travel Agent Details",
     "PRIMARY_CONTACT_DETAILS": "Primary Contact Details",
 
     "SELECT_CONTRACT": "Select contract",
+    "RATE_CODE_PLCHOLDER": "Rate Code",
     "NEW_CONTRACT": "New Contract",
     "SAVE_CONTRACT": "Save Contract",
     "DETAILS": "Details",
@@ -106,4 +109,11 @@
     "TAX_ID" : "Tax ID",
     "SHOW_PAYMENTS" : "Payments",
     "SHOW_CHARGES" : "Charges",
-    "SHOW_ALL" : "All"
+    "SHOW_ALL" : "All",
+
+    "COMPANY_CARD_DETACH_BILLING_INFO_AND_COMMISSIONS_WARNING": "Removing card may affect the Billing, Rate and Commissions.",
+    "REMOVE_AGENT": "Remove Agent",
+    "RESERVATION_COMMISSIONS_WARNING": "Commission may exist for the TA card. Please review the commission calculation.",
+    "CONTRACTED_RATE_EXISTS_WARNING": "Contracted rate exists on selected card. Update rate on reservation?",
+    "CONTRACTED_RATE_EXISTS_AND_COMMISSION_WARNING": "Contracted rate exists on selected card. Please review commission calculation.",
+    "TA_CARD_CANT_BE_REMOVED_WARNING_FOR_COMMISSIONS": "The Travel agent can't be detached due to the commission status."

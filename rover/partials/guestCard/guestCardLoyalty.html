@@ -5,24 +5,25 @@
         </div>
         <!-- Frequent Flyer Program -->
         <div class="holder left" ng-hide='!hotelFrequentFlyerProgramEnabled'>
-            <strong class="h3" translate>FREQUENT_FLYER_PROGRAM</strong>
+            <strong class="h3" translate >FREQUENT_FLYER_PROGRAM</strong>
             <a class="active-item item-loyalty" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram track by freaquentLoyalty.id" click-touch="showDeleteModal(freaquentLoyalty.id, $index, 'FFP')">
                <span class="value code">{{freaquentLoyalty.membership_type}}</span>
                 <span class="value number">{{freaquentLoyalty.membership_card_number}}</span>
                 <span class="value name">{{freaquentLoyalty.membership_level}}</span>
             </a>
-      
+            <span class="only-print" ng-if="loyaltyData.userMemberships.frequentFlyerProgram.length === 0">No Programs</span>
             <a click-touch="addNewFreaquentLoyality()" class="add-new-button" >+ <span translate>NEW_FREQUENT_FLYER_PROGRAM</span></a>
         </div>
 
         <!-- Hotel Loyalty Program -->
         <div class="holder right" ng-hide='!hotelLoyaltyProgramEnabled'>
-            <strong class="h3" translate>HOTEL_LOYALTY_PROGRAM</strong>
+            <strong class="h3" translate >HOTEL_LOYALTY_PROGRAM</strong>
             <a class="active-item item-loyalty" ng-repeat="hotelLoyalty in loyaltyData.userMemberships.hotelLoyaltyProgram track by hotelLoyalty.id" click-touch="showDeleteModal(hotelLoyalty.id, $index, 'HLP')">
                 <span class="value code">{{hotelLoyalty.membership_type}}</span>
                 <span class="value number">{{hotelLoyalty.membership_card_number}}</span>
                 <span class="value name">{{hotelLoyalty.membership_level}}</span>
             </a>
+            <span class="only-print" ng-if="loyaltyData.userMemberships.hotelLoyaltyProgram.length === 0">No Programs</span>
             <a click-touch="addNewHotelLoyality()" class="add-new-button">+ <span translate>NEW_HOTEL_LOYALTY_PROGRAM</span></a>
         </div>
     </div>

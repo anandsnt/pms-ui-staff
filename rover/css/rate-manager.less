@@ -904,7 +904,12 @@
                 &.room-type,
                 &.no-arrow {
                     padding-right: 15px;
-                } 
+                }
+
+                &.locked {
+                    color: @red;
+                    padding-right: 35px;
+                }
             }
 
             .base-rate-indicator,
@@ -992,7 +997,17 @@
                 .square(20px);
             }
 
-           
+            .icon-room-lock {
+                height: 15px;
+                width: 12px;
+                position: absolute;
+                right: 10px;
+                top: 5px;
+                bottom: 0;
+                margin: auto;
+                background-size: 80px;
+                background-position: 0px -6026px;
+            }
         }
     }
     

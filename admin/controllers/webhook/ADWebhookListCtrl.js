@@ -67,6 +67,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             };
 
         $scope.onClickAdd = function () {
+            $scope.state.selected = null;
             if ($scope.meta) {
                 resetNewWebhook();
                 $scope.state.mode = 'ADD';
@@ -168,6 +169,18 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             } else {
                 loadMeta(showEdit);
             }
+        };
+
+        $scope.testURLConnectivity = function(webHook) {
+            webHook.testMessage = {};
+            $scope.callAPI(ADWebhookSrv.testURLConnectivity, {
+                params: {
+                    url: webHook.url
+                },
+                successCallBack: function(response) {
+                    webHook.testMessage = response;
+                }
+            });
         };
 
         (function () {

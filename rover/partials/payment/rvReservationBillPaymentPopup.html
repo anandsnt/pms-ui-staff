@@ -46,16 +46,16 @@
                  style="margin-top: 0; padding-top: 0;"
                  ng-show="paymentDetails.paymentSuccess && (!splitBillEnabled || paymentDetails.authorizationCode)">
                 <div class="notice success" ng-if="!splitBillEnabled">Amount paid!</div>
-                <ul class="transaction">
+                <ul class="transaction" style="width: 80%;">
                     <li ng-show="!!paymentDetails.authorizationCode">
                         Your Authorize code is: <span class="auth">{{paymentDetails.authorizationCode}}</span>
                     </li>
                     <li ng-if="!splitBillEnabled && paymentDetails.feePaid">
                         Amount paid:
                         <span class="value">
-                            <i class="currency">{{currencySymbol}}</i>
-                            {{paymentDetails.amount |number:2}} + <i class="currency">{{currencySymbol}}</i>
-                            {{paymentDetails.feePaid |number:2}} fee
+                            <i class="currency">{{currencySymbol}} </i>
+                            {{paymentDetails.amount |number:2}} <i class="currency" ng-show="paymentDetails.showFee"> + {{currencySymbol}}
+                            {{paymentDetails.feePaid |number:2}} fee </i>
                         </span>
                     </li>
                     <li ng-if="!splitBillEnabled && !paymentDetails.feePaid">

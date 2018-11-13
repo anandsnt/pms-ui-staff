@@ -20,34 +20,13 @@
                     </tr>
 
                 </thead>
-                <tfoot>
-                    <!-- Travel Agent pagination -->
-                     <tr class="pagination">
-                        <td colspan="7">
-                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
-                        </td>
-                    </tr>
-                    <tr class="totals">
-                        <td colspan="3"></td>
-                        <td>
-                            Subtotals
-                        </td>
-                        <td>
-                           <span class="currency"><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.revenue}}
-                        </td>
-                        <td></td>
-                        <td>
-                            <span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.net_amount}}
-                        </td>
-                    </tr>
-                </tfoot>
                 <tbody >
 
                     <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <strong class="title">{{reservation.room_no}}</strong>
                         </td>
-                        <td class="name" rowspan="{{reservation.rate_details.length}}">
+                        <td class="name" rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <strong class="title">
                                 <a href="#">{{reservation.last_name}}, {{reservation.first_name}}</a>
                             </strong>
@@ -77,13 +56,13 @@
                         <td>
                             <span class="currency">{{currencySymbol}}</span>{{reservation.rate_details[0].rate_amount}}
                         </td>
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <span class="currency">{{currencySymbol}}</span>{{reservation.commission_revenue}}
                         </td>
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <span>{{reservation.commission_amount}}</span>
                         </td>
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <span class="currency">{{currencySymbol}}</span>{{reservation.net_amount}}
                         </td>
                     </tr>
@@ -101,24 +80,28 @@
                     </tr>
                    
                 </tbody>
+                <tfoot>
+                    <!-- Travel Agent pagination -->
+                     <tr class="pagination">
+                        <td colspan="7">
+                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
+                        </td>
+                    </tr>
+                    <tr class="totals">
+                        <td colspan="3"></td>
+                        <td>
+                            Subtotals
+                        </td>
+                        <td>
+                           <span class="currency"><span class="currency">{{currencySymbol}}</span>{{ ::travel_agents.sub_total.revenue}}
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="currency">{{currencySymbol}}</span>{{ ::travel_agents.sub_total.net_amount}}
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
-            <!-- Visible only on summary-->
-            <div class="travel-agent-print">
-                <div class="data">
-                    <h2>{{travel_agents.travel_agent_name}}</h2> 
-                    <p>IATA: {{travel_agents.IATA_number}}</p> 
-                </div>
-                <ul class="info-holder">
-                    <li>
-                        <strong><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.revenue}}</strong>
-                        <span>Revenue</span>
-                    </li>
-                    <li>
-                        <strong><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.net_amount}}</strong>
-                        <span>Net Amount</span>
-                    </li>
-                </ul>
-            </div>
         </div>
 
         <ul class="grid-footer">

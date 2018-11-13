@@ -5,7 +5,7 @@ angular.module('sntRover').controller('RVWorkManagementSearchDatePickerControlle
 			$scope.dateOptions = {
 				changeYear: true,
 				changeMonth: true,
-				yearRange: "-100:+0",
+                maxDate: tzIndependentDate($rootScope.businessDate).addDays(365),
 				minDate: tzIndependentDate($rootScope.businessDate),
 				onSelect: function(dateText, inst) {
 					$scope.onViewDateChanged();
@@ -27,7 +27,7 @@ angular.module('sntRover').controller('RVWorkManagementCreateDatePickerControlle
 				changeYear: true,
 				changeMonth: true,
 				minDate: tzIndependentDate($rootScope.businessDate),
-				yearRange: "-100:+0",
+				maxDate: tzIndependentDate($rootScope.businessDate).addDays(365),
 				onSelect: function(dateText, inst) {
 					ngDialog.close($scope.calendarDialog.id);
 				}
@@ -45,7 +45,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiDatePickerController
 			$scope.dateOptions = {
 				changeYear: true,
 				changeMonth: true,
-				yearRange: "-100:+0",
+                maxDate: tzIndependentDate($rootScope.businessDate).addDays(365),
 				onSelect: function(dateText, inst) {
 					$scope.onDateChanged();
 					ngDialog.close();

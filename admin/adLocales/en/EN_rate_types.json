@@ -13,4 +13,8 @@
 "ACTIONS_USERNAME": "Username",
 "ACTIONS_DATETIME": "Date / Time",
 "ACTIONS_ACTION_TYPE": "Action Type",
-"ACTIONS_ACTION_DETAILS": "Details"
+"ACTIONS_ACTION_DETAILS": "Details",
+
+"UPLOAD_CSV": "Upload CSV and import",
+"PLEASE_UPLOAD_CSV_FILE": "Please upload the CSV file",
+"IMPORT_IS_IN_PROGRESS": "The import process is in progress, please check the status later."

@@ -7,6 +7,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 	'$filter',
 	'$vault',
 	function($http, $q, rvBaseWebSrvV2, RVBaseWebSrv, $window, $filter, $vault) {
+        var service = this;
 
 		var setRoomServiceInVault = function(options) {
 			var getValue = function(id) {
@@ -34,9 +35,9 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 
-		this.roomDetails = {};
+		service.roomDetails = {};
 
-		this.fetch = function(id, businessDate) {
+		service.fetch = function(id, businessDate) {
 			var deferred = $q.defer();
 			var url = '/house/room/' + id + '.json';
 
@@ -44,8 +45,8 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 				var response = res.data;
 
 				if (response.status === "success") {
-					this.roomDetails = response.data.room_details;
-					deferred.resolve(this.roomDetails);
+					service.roomDetails = response.data.room_details;
+					deferred.resolve(service.roomDetails);
 				} else {
 					deferred.reject(response);
 				}
@@ -64,7 +65,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-		this.updateHKStatus = function(data) {
+		service.updateHKStatus = function(data) {
 			var deferred = $q.defer();
 			var url = '/house/change_house_keeping_status.json';
 
@@ -101,7 +102,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// room service status list (will be cached)
 		var allServiceStatus = [];
 
-		this.fetchAllServiceStatus = function() {
+		service.fetchAllServiceStatus = function() {
 			var deferred = $q.defer(),
 				url = 'api/room_services/status_list';
 
@@ -123,7 +124,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// maintenance reasons (will be cached)
 		var maintenanceReasons = [];
 
-		this.fetchMaintenanceReasons = function() {
+		service.fetchMaintenanceReasons = function() {
 			var deferred = $q.defer(),
 				url = 'api/maintenance_reasons';
 
@@ -142,7 +143,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-		this.getRoomLog = function(params) {
+		service.getRoomLog = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/room_actions/' + params.id + '/?page=' + params.page + '&per_page=' + params.per_page;
 
@@ -159,7 +160,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 		// fetch oo/os details from server
-		this.getRoomServiceStatus = function(params) {
+		service.getRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/room_services/service_info.json?',
 				from = tzIndependentDate(params.from_date),
@@ -180,7 +181,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 		// POST: save from IN_SERVICE to OO/OS
-		this.postRoomServiceStatus = function(params) {
+		service.postRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/room_services';
 
@@ -196,7 +197,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-		this.checkWhetherRoomStatusChangePossible = function(params) {
+		service.checkWhetherRoomStatusChangePossible = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/room_services/check_room_locked_or_assigned';
 
@@ -211,7 +212,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 		// POST: save from IN_SERVICE to OO/OS
-		this.postCheckOutReservation = function(params) {
+		service.postCheckOutReservation = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/reservations/' + params.id + '/checkout_from_house_keeping';
 
@@ -225,7 +226,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 		// PUT: update OO/OS to OO/OS
-		this.putRoomServiceStatus = function(params) {
+		service.putRoomServiceStatus = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/room_services/' + params.room_id;
 
@@ -240,7 +241,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 		// save the room back to in sevice
-		this.putRoomInService = function(params) {
+		service.putRoomInService = function(params) {
 			var deferred = $q.defer(),
 				url = 'api/room_services/' + params.room_id,
 				options = {
@@ -262,7 +263,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		// get all all WorkTypes
 		var workTypesList = [];
 
-		this.getWorkTypes = function() {
+		service.getWorkTypes = function() {
 			var deferred = $q.defer(),
 				url = 'api/work_types';
 
@@ -283,7 +284,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 
 
 		// room work time fetch record api
-		this.postRecordTime = function(params) {
+		service.postRecordTime = function(params) {
 			var deferred = $q.defer(),
 				url = '/api/work_assignments/record_time';
 
@@ -298,7 +299,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 		};
 
 		// CICO-12520 Room service status
-		this.fetchRoomStatus = function(params) {
+		service.fetchRoomStatus = function(params) {
 			var queryString = {
 				from_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month - 1, 1)), 'yyyy-MM-dd'),
 				to_date: $filter('date')(tzIndependentDate(new Date(params.year, params.month + 1, 1)), 'yyyy-MM-dd'),
@@ -318,7 +319,7 @@ angular.module('sntRover').service('RVHkRoomDetailsSrv', [
 			return deferred.promise;
 		};
 
-		this.changeHouseKeepingStatus = function(params) {
+		service.changeHouseKeepingStatus = function(params) {
 			var deferred = $q.defer(),
 				url = 'house/change_fo_status.json';
 

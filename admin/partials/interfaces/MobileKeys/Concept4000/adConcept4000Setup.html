@@ -1,0 +1,43 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{'CONCEPT4000_SETUP_HEADER'|translate}}">
+    <div class="entry full-width">
+        <label><span translate>ACTIVATE_INACTIVATE</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
+             ng-click="toggleEnabled()">
+            <input type="checkbox">
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+
+    <div class="form-title full-width">
+        <h3><span translate>CONCEPT4000_SUB_TITLE</span></h3>
+    </div>
+
+    <fieldset class="holder left">
+        <ad-textbox inputtype="text"
+                    value="config.username"
+                    label="{{'USERNAME'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text"
+                    value="config.password"
+                    label="{{'PASSWORD'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text"
+                    value="config.ftp_url"
+                    label="{{'SFTP_URL'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text" value="config.ftp_location1"
+                    label="{{'SFTP_LOCATION1'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text" value="config.ftp_location2"
+                    label="{{'SFTP_LOCATION2'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text" value="config.port"
+                    label="{{'SFTP_PORT'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+
+</ad-common-parts-in-form-dir>

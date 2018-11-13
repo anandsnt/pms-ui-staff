@@ -16,8 +16,9 @@
 						<span class="switch-icon"></span>
 						</div>
 					</div>
-					<ad-dropdown label="{{'MANUAL_BLNC_CHARGE_CODE' | translate}}" label-in-drop-down="{{'MANUAL_BLNC_CHARGE_CODE' | translate}}" selected-Id='data.ar_number_settings.selected_manual_charge_code_id' list="data.ar_number_settings.charge_codes" selbox-class='placeholder'
+					<ad-dropdown label="{{'MANUAL_BLNC_CHARGE_CODE' | translate}}" label-in-drop-down="{{'MANUAL_BLNC_CHARGE_CODE' | translate}}" selected-Id='data.ar_number_settings.selected_manual_charge_code_id' list="data.ar_number_settings.manual_balance_charge_codes" selbox-class='placeholder'
                     ></ad-dropdown>
+                    <ad-textbox ng-if="data.ar_number_settings.selected_credit_charge_code" value="data.ar_number_settings.selected_credit_charge_code" readonly='yes' label="{{'MANUAL_CREDIT_CHARGE_CODE' | translate}}"></ad-textbox>
 				</fieldset>
 				<div class="actions float">
 					<button id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" type="button" translate>CANCEL</button>

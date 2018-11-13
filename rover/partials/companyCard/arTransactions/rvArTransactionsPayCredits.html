@@ -5,7 +5,7 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Title when not paying from bill screen -->
         <strong class="h2 message">
-           {{'SUBMIT_PAYMENT' | translate}}
+           {{'SUBMIT_PAYMENT' | translate}} 
         </strong>
 
         <div class="payment-form">
@@ -16,10 +16,13 @@
                     payment-types="renderData.paymentTypes"
                     selected-payment-type="saveData.paymentType"
                     bill-number="billNumber"
-                    amount='arDataObj.unpaidAmount'
-                    action-type="AR_SUBMIT_PAYMENT" 
+                    ar-transaction-id = "passData.payment.transaction_id" 
+                    amount='renderData.defaultPaymentAmount'
+                    action-type="{{actionType}}" 
                     allocate-payment-after-posting = "allocatePaymentAfterPosting"
-                    has-permission='hasPermissionToMakePayment()'
+                    has-permission='hasPermissionToMakePayment()' 
+                    selected-c-c='passData.payment.card_details'
+                    reference-text='passData.payment.reference_text' 
                     form-template-url='/assets/partials/payment/rvARPaymentPartial.html'>
             </snt-payment>
         </div>

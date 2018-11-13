@@ -1,5 +1,6 @@
 <form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-iscroll='paymentList' ng-iscroll-delay='1000' ng-show="current == 'guest-credit'">
 	<div class="wrapper">
+		<strong class="h3 only-print" ng-class="{'no-print': paymentData.data.length === 0}">Credit Cards &amp; Payment</strong>
 		<!-- Credit cards on file -->
 		<div class="entry full-width">
  			<div ng-include="'/assets/partials/common/notification_message.html'"></div>

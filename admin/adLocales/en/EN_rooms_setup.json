@@ -8,12 +8,16 @@
 "DELIVER_QR_CODE_FOR_ROOM_KEY":"Deliver QR code for room key via email",
 "DELIVER_QR_CODE_TO_GUESTZEST_APP":"Deliver QR code to GuestZest App on Guests Smartphone",
 "DELIVER_MSG_TO_GUEST":"Deliver message to guest to pick up key from front desk",
+"DELIVER_PIN_TO_GUEST":"Show StoryConcept4000 Pin Code in Room Ready Email",
 "ROVER":"Rover",
 "MAKE_KEY_FOR_RFID_READER":"Make Key from RFID reader at Tablet",
 "SHOW_QR_CODE_FOR_ROOM_KEY":"Show QR code for room key on Tablet",
+"SHOW_PIN_FOR_ROOM_KEY":"Deliver PIN Code for room key via email",
 "USE_MOBILE_PHONE_KEY":"Use Mobile Phone Key",
 "ROOM_KEY_SYSTEM_VENDOR":"Room Key System Vendor",
 "KEY_SYSTEM_ACCESS_URL":"Key System Access URL",
+"AXBASE_END_POINT":"End Point URL",
+"AXBASE_END_POINT_URL_PLACEHOLDER":"Enter End Point URL",
 "KEY_SYSTEM_ACCESS_URL_PLACEHOLDER":"Enter Key System Access URL",
 "KEY_SYSTEM_ACCESS_PORT":"Key System Access Port",
 "KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER":"Enter Key System Access Port",
@@ -67,7 +71,7 @@
 "MIN_VERSION_LABEL" : "minimum version",
 "EXCLUDED_VERSION_LABEL" : "EXCLUDED OS VERSIONS",
 "MAINTENANCE_REASON_CODE_PLACEHOLDER" : "Maintenance Reason",
-"SHOW_ORACODE_IN_ROOM_READY_EMAIL" : "Show Oracode PIN in room ready email",
+"SHOW_PINCODE_IN_ROOM_READY_EMAIL" : "Show PIN in room ready email",
 
 "STATION_MOBILEKEY_DISABLED":"Do not offer Mobile Phone Key",
 "STATION_MOBILEKEY_THIRDPARTY":"Offer Mobile Phone Key - 3rd Party",
@@ -91,7 +95,8 @@
 "HOUSEKEEPING_SECTIONS": "Housekeeping Sections",
 "MANAGE_SECTIONS": "Manage Sections",
 "MANAGE_ROOMS": "Manage Rooms",
-"AUTO_ASSIGN": "Auto Assign"
+"AUTO_ASSIGN": "Auto Assign",
+"ROOM_IMPORT_IN_PROGESS": "Room import is in progress, please check the status later"
 
 
 

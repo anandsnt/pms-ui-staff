@@ -1,0 +1,291 @@
+/*------------------------------- Themes ----------------------------------------------------*/
+ @import "../style.less";
+
+@font-face {
+  font-family: SanFranciscoText;
+  src: local("SanFranciscoText"),
+       local("SanFranciscoText"),
+       url('/assets/type/SF-Compact-Text-Regular.otf');
+}
+
+
+.main-text, 
+.sub-main-text, 
+.sub-text,  
+.back-text,
+a,a:hover,
+.res-date, 
+.footer-sub-text,
+.footer-sub-text:hover,
+.phone-label,
+.footer-text,
+.res-details-heading,
+.res-details-heading:hover,
+p
+
+{ 
+    font-family: 'SanFranciscoText','Roboto', sans-serif;
+    color: #272727;
+}
+.main-text,
+.sub-main-text, 
+.sub-text {
+    font-weight: 400;
+}
+.main-text, 
+.sub-main-text {
+    text-align: center !important;
+}
+.main-text {
+    font-size: 35px !important;
+}
+.sub-main-text, 
+.error-text, 
+.request-text{
+    font-size: 20px !important;
+    line-height: 1.5em;
+}
+.sub-text{
+    font-size: 17px !important;
+    margin-bottom: 4px;
+}
+.logo-image {
+     margin: 4% auto 2%;
+}
+.header-bar{
+     background:#fff;
+     margin-bottom: 30px;
+}
+.btn-template,{
+    height: 67.5px;
+    padding: 0px;
+    text-transform: uppercase;
+    font-size: 23px;
+    font-weight: 200;
+}
+.btn {
+    font-weight: 400 !important;
+    font-family: 'SanFranciscoText','Roboto', sans-serif;
+    p, span {
+        font-family: 'SanFranciscoText','Roboto', sans-serif;
+    }
+}
+.early-checkin-button, .early-checkin-button:hover {
+    font-size: 23px !important;
+}
+.input-field{
+    height: 40px;
+    min-height: 40px;
+}
+.margin-top-20{
+    margin-top: 23px;
+}
+.btn{
+    text-transform: uppercase;
+}
+.footer-text {
+    font-size: 15px;
+}
+ .view-bill{
+     color:#d96932;
+}
+
+.calendar-button {
+    padding-left: 10px;
+    background-size: 30px;
+}
+ .btn,.btn:hover {
+     background:#d96932;
+     color:@white;
+}
+ .dark-button,.dark-button:hover{
+     background: #d96932 !important;
+}
+ .light-button,.light-button:hover{
+     background: #e69d7a !important;
+}
+ .checkouttime1,.checkouttime1:hover{
+     background: #e69d7a;
+}
+ .checkouttime2,.checkouttime2:hover{
+     background: #e1875b;
+}
+ .checkouttime3,.checkouttime3:hover{
+     background: #d96932;
+}
+ .down-arrow-button{
+     background-image:url('/assets/guestweb/common_images/orange/down_arrow.png');
+}
+ .right-arrow-button{
+     background-image:url('/assets/guestweb/common_images/orange/right_arrow.png');
+}
+ .upgrade-details .upgrades-btn {
+     background: #FB8B33;
+}
+ .proceed-to-checkin {
+     background: #FB8B33;
+}
+ .upgrades-label{
+     color:#FB8B33;
+}
+.align-center{
+    text-align: center;
+}
+.checkout-btn {
+    padding: 0px;
+}
+.extended-btn {
+    width: 90% !important;
+}
+.margin-bottom-40 {
+    margin-bottom: 40px !important;
+}
+
+.first-field {
+    margin-top: 27px;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 26px !important;
+}
+
+.proceed-to-checkin {
+    padding: 20px;
+}
+.query-text, .query-text:hover {
+    font-size: 11px;
+}
+
+.upgrade-icon {
+    margin: 5px auto !important;
+}
+.select-style select {
+    padding: 15px 8px;
+}
+.for {
+    font-size: 18px;
+}
+.addon-container.selected {
+    background-color: #e1875b !important;
+}
+
+/*----------------- date picker -------------------------*/
+ .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
+     color: #363634;
+     color: transparent;
+}
+ .pickadate-cell .pickadate-enabled ,.pickadate-centered-heading{
+     color: #000 !important;
+}
+ .pickadate-cell .pickadate-active {
+     background-color: #d96932 !important;
+     color:#fff !important;
+}
+ .date-picker-header{
+     background:#d96932;
+    .departure-date p {
+        color: @white;
+    }
+}
+ .calendar-selection {
+     color: #fff;
+}
+ .calendar-back {
+     background-image: url('/assets/guestweb/common_images/white/back_icon.png');
+}
+ .calendar-done{
+     background-image: url('/assets/guestweb/common_images/white/done_white.png');
+}
+ .addon-container.selected {
+     background-color:rgba(251, 139, 51,0.8);
+}
+
+.margin-top-20 {
+    margin-top: 26px!important;
+}
+.accept-charge-icon, 
+.checkout-icon, 
+.late-checkout-icon, 
+.upgrade-icon {
+    margin: 15px auto 20px;
+}
+.button-container {
+    height: 195px;
+}
+.dual-button{
+    width: 50%;
+    height: 172px;
+    padding: 0px;
+    margin-top: 23px;
+    p {
+        margin-bottom: 0px;
+        color: #fff;
+        font-size: 23px;
+        line-height: 26px;
+    }
+    p:first-child {
+        margin-top: 33px;
+    }
+}
+.footer-text {
+    font-style: normal;
+}
+.triple-button {
+    padding: 33px 12px;
+    height: 167.5px;
+}
+.no-thanks{
+    text-decoration: underline;
+}
+@media (max-width: 680px) {
+    .section-container {
+        padding-bottom: 20px;
+    }
+    .header-bar {
+        margin-bottom: 20px;
+    }
+    .logo-image {
+         width: 91px;
+         height: 36px;
+         margin-top: 30px;
+         max-width: 250px;
+    }
+    .back-to-checkout{
+         display:none;
+    }
+    .main-text {
+        font-size: 23px !important;
+        margin-bottom: 26px;
+    }
+    .sub-main-text,
+    .footer-text, 
+    .no-thanks,
+    .error-text, 
+    .request-text{
+        font-size: 12.5px !important;
+        margin-bottom: 0px !important;
+    }
+    .sub-text {
+        font-size: 12px !important;
+    }
+    .padded-text{
+        width: 223px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .footer-text {
+        margin-top: 22px;
+    }
+    .sub-main-text, 
+    .error-text, 
+    .request-text{
+        line-height: 2em;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .show-bill-wrap {
+        position: relative;
+    }
+}

@@ -193,7 +193,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 				return (list_of_triples.length > 0);
 			} else {
-				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+				return roomType.rate_config.is_extra_adult_rate_configured && roomType.rate_config.is_double_rate_configured;
 			}
 		};
 
@@ -215,7 +215,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType));
 			} else {
-				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+				return roomType.rate_config.is_extra_adult_rate_configured && roomType.rate_config.is_double_rate_configured;
 			}
 		};
 
@@ -256,13 +256,31 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+         * Checks whether the tripple button should be shown or not
+         */
+        $scope.shouldShowAddTrippleButton = function (roomTypeRate) {
+            var showTrippleBtn = $scope.allotmentConfigData.summary.rate === -1 && !$scope.shouldShowTripleEntryRow(roomTypeRate);
+
+            return showTrippleBtn;
+        };
+
+        /**
+         * Checks whether the quadruple button should be shown or not
+         */
+        $scope.shouldShowAddQuadrupleButton = function (roomTypeRate) {
+            var showQuadrupleBtn = $scope.allotmentConfigData.summary.rate === -1 && !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate);                                  
+
+            return showQuadrupleBtn;
+        };
+
+		/**
 		 * should we wanted to disable single box entry
 		 * @param {Object} [dateData] [description]
 		 * @param {Object} - Room Type data row
 		 * @return {Boolean}
 		 */
-		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
+		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {			
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable ) ;
 		};
 
 		/**
@@ -272,7 +290,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -282,7 +300,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -292,7 +310,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable );
 		};
 
 		/**
@@ -1627,7 +1645,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			var commonScrollerOptions = {
 				tap: true,
 				preventDefault: false,
-				probeType: 3
+				probeType: 3,
+				mouseWheel: true				
 			};
 			var scrollerOptionsForRoomRatesTimeline = _.extend({
 				scrollX: true,
@@ -1644,9 +1663,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.setScroller(TIMELINE_SCROLL, scrollerOptionsForRoomRatesTimeline);
 			$scope.setScroller(RATE_GRID_SCROLL, scrollerOptionsForRoomRatesGrid);
 
+			// CICO-45501 - Disable the scrolling when the focus is on input
+			// This is to solve the issue which happens when we enter values on the input box towards the end of the screen for release grid
+			$("#allotment-room-block-content input").on('focus', function (event) {
+				getScrollerObject (TIMELINE_SCROLL).disable();
+			});
+
+			// CICO-45501
+			$("#allotment-room-block-content").on('scroll', function (event) {
+				var horizontalScroll = event.currentTarget.scrollLeft;
+
+				if (horizontalScroll > 0) {
+					$(this).scrollLeft(0);
+				}				
+			});	
+			
+
 			$timeout(function() {
 				getScrollerObject (TIMELINE_SCROLL)
-					.on('scroll', function() {
+					.on('scroll', function() {						
 						var xPos = this.x;
 						var block = getScrollerObject (RATE_GRID_SCROLL);
 
@@ -1664,9 +1699,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 									runDigestCycle();
 							}
 						}
-					});
+					});				
 				getScrollerObject (ROOM_BLOCK_SCROLL)
-					.on('scroll', function() {
+					.on('scroll', function() {						
 						var yPos = this.y;
 						var block = getScrollerObject (RATE_GRID_SCROLL);
 

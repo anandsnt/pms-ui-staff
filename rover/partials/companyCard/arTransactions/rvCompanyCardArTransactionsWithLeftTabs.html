@@ -3,24 +3,25 @@
         <!-- Remove .active if the billing-content is not active-->
         <!-- Add .active on click & show appropriate billing-content-->
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'balance'}" ng-click="switchArTransactionTab('balance')">
-            Balance
-            <strong class="{totalClass}"><span class="currency">{{currencySymbol}}</span>{{arDataObj.unpaidAmount}}</strong>
+            Open Bills
+            <strong ng-class="{'red': arDataObj.unpaidAmount > 0, 'green': arDataObj.unpaidAmount <= 0 }"><span class="currency">{{currencySymbol}}</span>{{arDataObj.unpaidAmount | number:2}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'paid-bills'}" ng-click="switchArTransactionTab('paid-bills')">
-            Paid bills
-            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.paidAmount}}</strong>
+            Paid Bills
+            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.paidAmount | number:2}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
-            Unallocated
-            <strong class="{totalClass}"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit}}</strong>
+            Credit
+            <strong ng-class="{'red': arDataObj.unallocatedCredit < 0, 'green': arDataObj.unallocatedCredit >= 0 }"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit | number:2}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
             Allocated
-            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.allocatedCredit}}</strong>
+            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.allocatedCredit | number:2}}</strong>
         </li>
     </ul>
     <button type="button" class="button green" ng-click="addPayment()">Add Payment</button>
-    <button type="button" class="button blue hidden">Refund</button>
+    <button type="button" class="button blue" ng-click="getAllocatedPayments()">Refund</button>
+    <button type="button" class="button white purple-text" ng-if="arFlags.currentSelectedArTab === 'balance'" ng-click="clickedMoveZeroInvoicesAsPaid()">Move Zero Bills to Paid</button>
 </div>
 
 <!-- Open Bills Billing Content -->
@@ -91,7 +92,7 @@
 
                 <!-- if we can Pay All -->
                     <li class="break" ng-show="arFlags.shouldShowPayAllButton">
-                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalAllocatedAmount" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey':  arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="clickedPayAllButton()">Pay All</button>
+                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalOfAllInvoicesInBalanceTab, 'grey':  arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab}" ng-click="clickedPayAllButton()">Pay All</button>
                     </li>
                 
 

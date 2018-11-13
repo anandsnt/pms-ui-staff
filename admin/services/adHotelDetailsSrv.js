@@ -26,7 +26,7 @@ admin.service('ADHotelDetailsSrv', [
 	};
 
         that.fetchLanguages = function(deferred) {
-            var url = '/api/reference_values.json?type=language',
+            var url = '/admin/locales.json?',
                 UUID = ADHotelListSrv.getSelectedProperty();
 
             if (UUID) {
@@ -34,7 +34,7 @@ admin.service('ADHotelDetailsSrv', [
             }
 
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
-                hotelDetailsData.languages = data;
+                hotelDetailsData.languages = data.locales;
                 deferred.resolve(hotelDetailsData);
             }, function(data) {
                 deferred.reject(data);
@@ -156,4 +156,33 @@ admin.service('ADHotelDetailsSrv', [
 		});
 		return deferred.promise;
 	};
+	/*
+	 * get the financial legal settings
+	 */
+	that.getFinancialLegalSettings = function(data) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + data.hotel_id + '/legal_settings';
+
+        ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	/*
+	 * update the financial legal settings
+	 */
+	that.updateFinancialLegalSettings = function(params) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + params.hotel_id + '/legal_settings';
+
+        ADBaseWebSrvV2.putJSON(url, params.data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	
 }]);

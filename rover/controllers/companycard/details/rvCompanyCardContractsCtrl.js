@@ -7,7 +7,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.rateValueTypes = [ { value: "%", name: "percent" }, { value: $rootScope.currencySymbol, name: "amount" } ];
 		$scope.addData = {};
 
-		$scope.contractList.contractSelected = "";
+		$scope.contractSelected = {};
 		$scope.contractList.current_contracts = [];
 		$scope.contractList.future_contracts = [];
 		$scope.contractList.history_contracts = [];
@@ -16,7 +16,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.contractList.isRenameMode = false;
 		$scope.contractList.contractNameToChange = "";
 		var existingContractName = "";
-		var contractSelected;
+		var contractSelected = {};
 
 		$scope.errorMessage = "";
 		$scope.autoCompleteState = {};
@@ -134,6 +134,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
 			$scope.isDeleteAllowed = data.is_delete_allowed;
+			$scope.contractData.rate_value = parseInt($scope.contractData.rate_value).toFixed(2);
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
 
@@ -163,7 +164,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			// Disable contracts on selecting history
 			$scope.hasOverlay = false;
 			angular.forEach($scope.contractList.history_contracts, function(item, index) {
-				if (item.id === $scope.contractList.contractSelected) {
+				if (item.id === $scope.contractSelected.id) {
 					$scope.hasOverlay = true;
 				}
 			});
@@ -190,20 +191,24 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 		var fetchContractsListSuccessCallback = function(data) {
 			$scope.contractList = data;
-			$scope.contractList.contractSelected = data.contract_selected;
 			$scope.$emit('hideLoader');
 			checkContractListEmpty();
 			$scope.errorMessage = "";
-
+			$scope.contractSelected.id = data.contract_selected;
+			if ($scope.contractSelected.id) {
+				$scope.contractChanged();
+			}
 		};
 
 		var fetchContractsSuccessCallback = function(data) {
 			$scope.contractList = data;
-			$scope.contractList.contractSelected = contractSelected;
 			$scope.$emit('hideLoader');
 			checkContractListEmpty();
 			$scope.errorMessage = "";
-
+			$scope.contractSelected.id = contractSelected.id;
+			if ($scope.contractSelected.id) {
+				$scope.contractChanged();
+			}
 		};
 
 		var fetchContractsDetailsFailureCallback = function(data) {
@@ -270,8 +275,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
-
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		
+		// CICO-44105 : Removing api call on creating new cards.
+		if ($stateParams.id !== 'add') {
+			$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		}
 
 		$scope.fetchContractsList = function () {
 			if ($stateParams.id !== "add") {
@@ -298,26 +306,49 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.fetchContractsList();
 
 		/*
+		 *	Utility method to fetch contract object.
+		 *	@return {object}
+		 */
+		var getContractObj = function() {
+			var obj = {};
+
+			obj = _.findWhere($scope.contractList.current_contracts, {id: $scope.contractSelected.id});
+
+			if (typeof obj === 'undefined') {
+				obj = _.findWhere($scope.contractList.future_contracts, {id: $scope.contractSelected.id});
+			}
+
+			if (typeof obj === 'undefined') {
+				obj = _.findWhere($scope.contractList.history_contracts, {id: $scope.contractSelected.id});
+			}
+
+			return obj;
+		};
+
+		/*
 		 * Function to handle data change in 'Contract List'.
 		 */
-		$scope.$watch('contractList.contractSelected', function() {
+		$scope.contractChanged = function() {
+
 			if ($stateParams.id === "add") {
 				var account_id = $scope.contactInformation.id;
 			} else {
 				var account_id = $stateParams.id;
 			}
-			if ($scope.contractList.contractSelected) {
+			if ($scope.contractSelected.id) {
 				$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails, {
 					"account_id": account_id,
-					"contract_id": $scope.contractList.contractSelected
+					"contract_id": $scope.contractSelected.id
 				}, fetchContractsDetailsSuccessCallback, fetchContractsDetailsFailureCallback);
 				angular.forEach($scope.contractList.history_contracts, function(item, index) {
-					if (item.id === $scope.contractList.contractSelected) {
+					if (item.id === $scope.contractSelected.id) {
 						$scope.hasOverlay = true;
 					}
 				});
+				$scope.contractSelected.contract_code = getContractObj().contract_code;
+				
 			}
-		});
+		};
 
 		// Delete Contarct button action
 		// Shows conformation popup
@@ -338,6 +369,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.deleteContractConfirmed = function(event) {
 
 			event.stopPropagation();
+			var accountId = $stateParams.id;
+			
 			var deleteContractSuccessCallback = function() {
 				$scope.errorMessage = "";
 				$scope.contractList.current_contracts = [];
@@ -345,6 +378,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
+				if ($stateParams.id === "add") {
+					$scope.contractSelected.contract_code = "";
+					$scope.CancelAddNewContract();
+				}
 			};
 
 			var deleteContractFailureCallback = function(errorMessage) {
@@ -353,9 +390,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			};
 
 			ngDialog.close();
+			if (accountId === "add") {
+				accountId = $scope.contactInformation.id;
+			}
 			$scope.invokeApi(RVCompanyCardSrv.deleteContract,  {
-					"account_id": $stateParams.id,
-					"contract_id": $scope.contractList.contractSelected
+					"account_id": accountId,
+					"contract_id": $scope.contractSelected.id
 				}, deleteContractSuccessCallback, deleteContractFailureCallback);
 		};
 
@@ -383,7 +423,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			var dataNew = {
 				"id": data.id,
-				"contract_name": $scope.addData.contract_name
+				"contract_name": $scope.addData.contract_name,
+				"contract_code": data.contract_code
 			};
 
 			var businessDate = new Date($rootScope.businessDate);
@@ -396,9 +437,10 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.future_contracts.push(dataNew);
 			}
 
-			$scope.contractList.contractSelected = data.id;
+			$scope.contractSelected.id = data.id;
 			$scope.addData.contract_name = "";
-
+			$scope.addData.contract_code = "";
+			$scope.contractChanged();
 		};
 
 		// To handle click on nights button
@@ -432,7 +474,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				}
 			} else {
 				// Nights popup enabled only when contract is selected.
-				if ($scope.contractList.contractSelected) {
+				if ($scope.contractSelected.id) {
 					ngDialog.open({
 						template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 						controller: 'contractedNightsCtrl',
@@ -454,7 +496,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.selected_symbol = "+";
 			$scope.addData.selected_type = "amount";
 
-			$scope.addData.rate_value = 0;
+			$scope.addData.rate_value = 0.00;
 			$scope.addData.is_fixed_rate = false;
 			$scope.addData.is_rate_shown_on_guest_bill = false;
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
@@ -466,6 +508,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.CancelAddNewContract = function() {
 			$scope.contractList.isAddMode = false;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.errorMessage = "";
 			checkContractListEmpty();
 		};
@@ -529,18 +572,20 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				contractInfo = dataToUpdate;
 			}
-			if (!dataUpdated) {
-				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+			if (!dataUpdated && !$scope.contractList.isAddMode) {
+				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights', 'rate_name', 'rate_code']);
 
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
 				} else {
 					var account_id = $stateParams.id;
 				}
-				if ($scope.contractList.contractSelected) {
+				if ($scope.contractSelected.id) {
+					data.contract_name = getContractObj().contract_name;
+					data.contract_code = getContractObj().contract_code;
 					$scope.invokeApi(RVCompanyCardSrv.updateContract, {
 						"account_id": account_id,
-						"contract_id": $scope.contractList.contractSelected,
+						"contract_id": $scope.contractSelected.id,
 						"postData": data
 					}, saveContractSuccessCallback, saveContractFailureCallback);
 				}
@@ -553,7 +598,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.renameButtonClicked = function() {
 			// Setup data for Rename mode
 			$scope.contractList.isRenameMode = true;
-			var renameId = $scope.contractList.contractSelected;
+			var renameId = $scope.contractSelected.id;
 
 			$scope.contractNameToRename = "";
 			for (var index = 0; index < $scope.contractList.current_contracts.length; index++) {
@@ -581,6 +626,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.cancelRenameContract = function() {
 			$scope.contractList.isRenameMode = false;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.errorMessage = "";
 			checkContractListEmpty();
 		};
@@ -608,7 +654,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var renameContractSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = "";
-				contractSelected = angular.copy($scope.contractList.contractSelected);
+				contractSelected = angular.copy($scope.contractSelected);
 				$scope.contractList.current_contracts = [];
 				$scope.contractList.future_contracts = [];
 				$scope.contractList.history_contracts = [];
@@ -626,7 +672,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				data.contract_name = $scope.contractList.contractNameToChange;
 				$scope.invokeApi(RVCompanyCardSrv.updateContract, {
 					"account_id": account_id,
-					"contract_id": $scope.contractList.contractSelected,
+					"contract_id": $scope.contractSelected.id,
 					"postData": data
 				}, renameContractSuccessCallback, renameContractFailureCallback);
 			}
@@ -671,9 +717,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 		$scope.$watch('contractData.selected_type', function() {
 			if ($scope.contractData.selected_type === "percent") {
-				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value).toFixed(2);
 			} else {
-				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value).toFixed(2);
 			}
 		});
 		/*

@@ -1,136 +1,308 @@
-<form method="get" action="" name="commisions-search-form" id="commisions-search-form" class="search-form has-options three-options three-actions" role="search">
-    <!-- Add .commision-checked when one or more commisions are checked -->
-    <div class="entry search">
-        <!-- add class .visible when keywords are entered -->
-        <button class="clear-query" ng-class="{'visible' : filterData.searchQuery.length >0 }" ng-click ="clearSearchQuery()">
-            <span class="icons icon-clear-search" >Clear query</span>
-        </button>
-        <button class="icons icon-search">Search</button>
-        <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off" ng-model="filterData.searchQuery" ng-change="searchAccounts()">
-    </div>
-    <div class="entry options">
-        <div class="select with-label">
-            <label for="paid-status" >Bill Status</label>
-            <select ng-init="filterData.billStatus = filterData.billStatusOptions[0]" ng-model="filterData.billStatus" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.billStatusOptions">
-            </select>
-        </div>
+<!-- Search form -->
+<form method="get" action="" class="search-form has-dates commissions" role="search">
 
-        <div class="input with-label">
-            <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{currencySymbol}})</label>
-            <input type="text" ng-model="filterData.minAmount" id="min-amount" ng-change="searchAccounts()">
-        </div>
+   <!-- Add .commision-checked when one or more commisions are checked -->
+   <div class="entry search">
+      <!-- add class .visible when keywords are entered -->
+      <button type="button" class="clear-query" ng-class="{'visible' : filterData.searchQuery.length >0 }" ng-click ="clearSearchQuery()">
+      <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+      </button>
+      <button class="icons icon-search" translate>SEARCH</button>
+      <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off" ng-model="filterData.searchQuery" ng-change="fetchAgentsData()">
+   </div>
+   <div class="entry dates">
+    <div class="entry-data has-datepicker">
+        <label for="commisions-date-from">From</label>
+        <button type="button" class="clear-query" ng-class="{'visible': fromDate.length > 0}" ng-click="clearFromDate()"><span class="icons icon-clear-search">Clear query</span></button>
+        <!-- add class .visible when date selected -->
+       <input name="commisions-date-to"  id="commisions-date-from" class="datepicker" readonly type="text" rv-clear-text-box listen-this="fromDate" ui-date="fromDateOptions" value="{{fromDate}}" />        
+      <!--  <input id="commisions-date-drom" class="datepicker" ui-date="fromDateOptions"
+                               ng-model="fromDate" value="" readonly/> -->
 
-        <div class="select with-label larger-select">
-            <label for="sort-by">Sort By</label>
-            <select ng-init="filterData.sort_by = filterData.sortOptions[0]" ng-model="filterData.sort_by" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.sortOptions">
-            </select>
-        </div>
     </div>
+    <div class="entry-data has-datepicker">
+        <label for="commisions-date-to">To</label>
+        <button type="button" class="clear-query"  ng-class="{'visible': toDate.length > 0}" ng-click="clearToDate()"><span class="icons icon-clear-search">Clear query</span></button>
+        <!-- add class .visible when date selected -->
+       <input name="commisions-date-to"  id="commisions-date-to" class="datepicker" readonly type="text" ui-date="toDateOptions" value="{{toDate}}" rv-clear-text-box listen-this="toDate" />
+
+   </div>
+   </div>
+
     <div class="entry actions">
-        <button type="button" class="button blue with-icon only-icon" ng-click="printButtonClick()">
+        <button type="button" class="button white with-icon only-icon" click-touch="openSideFilters()" ng-class="{'active': sideFilterData.openSideFilter}"> <!-- Add class 'active' when clicked to show filters -->
+            <span class="count" ng-hide="returnNumberOfFilterApplied() === 0">{{ returnNumberOfFilterApplied()}}</span>
+            <span class="icons icon-filter" ng-class="{'active': sideFilterData.openSideFilter}"></span> 
+        </button>
+        <button type="button" class="button blue with-icon only-icon" click-touch="printButtonClick()">
             <span class="icons icon-print"></span>
         </button>
-        <!-- Remove class .hidden when one/more commisions are checked -->
-        <button type="button" class="button red with-icon only-icon hidden">
-            <span class="icons icon-hold"></span>
-        </button>
-        <!-- Remove class .hidden when one/more commisions are checked -->
-        <button type="button" class="button green with-icon only-icon hidden">
-            <span class="icons icon-wallet"></span>
-        </button>
     </div>
+
 </form>
-
 <!-- Search pagination -->
-<div class="search-pagination" ng-show="showPagination">
-    <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-    <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-    <p>{{'SHOWING' | translate}} <strong>{{start}}-{{end}}</strong> {{'OF' | translate}} <strong id="total-count">{{commissionsData.total_results}}</strong> {{'ITEMS' | translate}}</p>
-</div>
-
+<rv-pagination ng-show="showPagination" page-options="paginationData" page-data="commissionsData.total_count"></rv-pagination>
+<!--  -->
 <!-- Search panel - WITH RESULTS -->
-<section class="content commisions-content" role="main">
-    <div class="commisions-header">
+<section class="content commissions-content" role="main" ng-hide="initialLoading">
+    <!-- Filters -->
+   <div class="commissions-filters" ng-class="{'visible': sideFilterData.openSideFilter}">
+       <div class="filters-header">
+           <h2 translate>FILTERS</h2>
+           <p translate>SELECT_FILTERS_AND_APPLY</p>
+       </div>
+       <div class="filters-list scrollable">
+           <!-- Attach iScroll here -->
+           <div class="wrapper">
+               <div class="entry">
+                   <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{ ::currencySymbol }})</label>
+                   <input type="text" ng-model="sideFilterData.minAmount" id="min-amount">
+               </div>
+               <div class="entry">
+                   <label for="sort-by" translate>SORT_BY</label>
+                   <div class="select">
+                       <select ng-init="sideFilterData.sort_by = filterData.sortOptions[0]" ng-model="sideFilterData.sort_by" id="sort-by" ng-options="option.name for option in filterData.sortOptions">
+                        </select>
+                   </div>
+               </div>
+               <div class="entry">
+                   <label for="sort-by">{{'INCLUDE' | translate}}</label>
+                   <label class="checkbox">
+                       <!-- Add Class "checked" if L83 is checked -->
+                       <span class="icon-form icon-checkbox" ng-class="{'checked': sideFilterData.non_commissionable}"></span>
+                       <!-- Add Class "checked" if L83 is checked -->
+                       <input type="checkbox" ng-model="sideFilterData.non_commissionable" ng-class="{'checked': sideFilterData.non_commissionable}"/> {{ 'NON_COMMISSIONABLE_BILLS' | translate }}
+                   </label>
+               </div>
+           </div>
+       </div>
+       <div class="actions">
+           <button type="button" class="button green" click-touch="applyFilter()" translate>APPLY</button>
+       </div>
+   </div>
 
-        <ul class="commisions-totals">
-            <!--<li class="check">-->
-                <!--<span>Select</span>-->
-                <!--&lt;!&ndash; add .checked when checked &ndash;&gt;-->
-                <!--<label class="checkbox inline">-->
-                    <!--&lt;!&ndash; add .checked when all is checked-->
-                         <!--add .semi-checked when only part of commissions are checked &ndash;&gt;-->
-                    <!--<span class="icon-form icon-checkbox"></span>-->
-                    <!--&lt;!&ndash; add attribute checked="checked" when checked &ndash;&gt;-->
-                    <!--<input type="checkbox" value="{value}">-->
-                <!--</label>-->
-            <!--</li>-->
-            <li>
-                <span>Open Bills</span>
-                <span class="amount">{{commissionsData.total_number_of_unpaid_bills}}</span>
-            </li>
-            <li>
-                <span>Total Revenue</span>
-                <span class="amount">{{currencySymbol}}{{commissionsData.total_revenue| number: precisonTwo}}</span>
-            </li>
-            <li>
-                <span>Total to Date</span>
-                <span class="amount">{{currencySymbol}}{{commissionsData.total_commission_to_date | number: precisonTwo}}</span>
-            </li>
-            <li>
-                <span>Total Paid</span>
-                <span class="amount green">{{currencySymbol}}{{commissionsData.total_commission_paid | number: precisonTwo}}</span>
-            </li>
-            <li>
-                <span>Total Owing</span>
-                <span class="amount red">{{currencySymbol}}{{commissionsData.total_commission_owing| number: precisonTwo}}</span>
-            </li>
-        </ul>
-    </div>
-    <!-- Add .no-pagination when there is no pagination -->
-    <!-- Add .no-commisions-header when there is no header -->
-    <div class="commisions-list scrollable" ng-iscroll='commissionOverViewScroll'>
-        <div class="wrapper">
+   <!-- When searching, add .searching-->
+   <div class="commissions-header searching" ng-controller="RVCommisionsHeaderCtrl">
+      <ul class="filters" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
+         <!-- Add .active to current filter -->
+         <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
+            {{ 'TO_PAY' | translate}}
+            <strong>{{commissionsData.bill_count_totals.open}}</strong>
+         </li>
+         <li ng-class="{ 'active' : filterData.filterTab === 'ON_HOLD' }" ng-click="setFilterTab('ON_HOLD')">
+            {{ 'ON_HOLD' | translate}}
+            <strong>{{commissionsData.bill_count_totals.on_hold}}</strong>
+         </li>
+      </ul>
+      <!-- Hide if 1 or more agents are selected (checked) -->
+      <ul class="commissions-info" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
+         <!-- Show if active filter: Payable -->
+         <li ng-show="filterData.filterTab === 'PAYABLE'">
+            <span translate>ELIGIBLE_FOR_PAYMENT</span>
+            <span class="amount">{{ ::currencySymbol }}{{commissionsData.selectedBillsAmount| number: precisonTwo}}</span>
+         </li>
+         <!-- Show if active filter: Payable -->
+         <li class="actions" ng-show="filterData.filterTab === 'PAYABLE' && !areAgentsPartialySelected()">
+            <button type="button" class="button purple with-icon" ng-click="showExportPopup()">
+            <span class="icons icon-save"></span>{{ 'EXPORT' | translate}}
+            </button>
+         </li>
+         <!-- Show if active filter: On Hold (remove .hidden) -->
+         <li ng-show="filterData.filterTab === 'ON_HOLD'">
+            <span translate>AMOUNT_ON_HOLD</span>
+            <span class="amount">{{ ::currencySymbol }}{{commissionsData.selectedBillsAmount| number: precisonTwo}}</span>
+         </li>
+      </ul>
+      <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
+      <ul class="commissions-selected commissions-info" ng-show="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()) && filterData.filterTab === 'PAYABLE' ">
+         <li>
+            <span translate>BILLS_SELECTED</span>
+            <span class="amount">{{ noOfBillsSelected }}</span>
+         </li>
+         <li>
+            <span translate>ELIGIBLE_FOR_PAYMENT</span>
+            <span class="amount">{{ ::currencySymbol }} {{commissionsData.selectedBillsAmount| number: precisonTwo}}</span>
+         </li>
+         <li class="actions">
+            <button type="button" class="button red with-icon" ng-click="openPopupWithTemplate('rvCommisionsHoldPopup')"><span class="icons icon-hold"></span>{{ 'HOLD' | translate}}</button>
+            <button type="button" class="button purple with-icon" ng-hide="areAgentsPartialySelected()" ng-click="showExportPopup()"><span class="icons icon-save"></span>{{ 'EXPORT' | translate}}</button>
+            <button type="button" class="button green with-icon" ng-click="openPopupWithTemplate('rvCommisionsSetAsPaidPopup')"><span class="icons icon-wallet"></span>{{ 'SET_TO_PAID' | translate}}</button>
+            <!-- Clear checked agents -->
+            <button type="button" class="button white" ng-click="resetSelections()">{{ 'CLEAR_SELECTION' | translate}}</button>
+         </li>
+      </ul>
+      <!-- Show if active filer: On Hold & 1 or more agents are selected (checked) (remove .hidden) -->
+      <ul class="commissions-selected commissions-info" ng-show="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()) && filterData.filterTab === 'ON_HOLD' ">
+         <li>
+            <span translate>BILLS_SELECTED</span>
+            <span class="amount">{{ noOfBillsSelected }}</span>
+         </li>
+         <li>
+            <span translate>AMOUNT_ON_HOLD</span>
+            <span class="amount">{{ ::currencySymbol }}{{commissionsData.selectedBillsAmount| number: precisonTwo}}</span>
+         </li>
+         <li class="actions">
+            <button type="button" class="button blue with-icon" ng-click="openPopupWithTemplate('rvCommisionsReleasePopup')"><span class="icons icon-release"></span>Release</button>
+            <!-- Clear checked agents -->
+            <button type="button" class="button white" ng-click="resetSelections()" translate>CLEAR_SELECTION</button>
+         </li>
+      </ul>
+      <!-- Hide if 1 or more agents are selected (checked) or searching -->
+      <ul class="commissions-info totals" style="display:block" ng-hide="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected())">
+         <li>
+            <span translate>OPEN_BILLS</span>
+            <span class="amount">{{ commissionsData.bill_count_totals.open +commissionsData.bill_count_totals.on_hold  }}</span>
+         </li>
+         <li>
+            <span translate>TOTAL_OWING</span>
+            <span class="amount red">{{ ::currencySymbol }}{{ commissionsData.amount_totals.owing | number: precisonTwo }}</span>
+         </li>
+      </ul>
+   </div>
+   <!-- Add .no-pagination when there is no pagination -->
+   <!-- Add .no-commisions-header when there is no header -->
+   <div class="commissions-list no-print">
+      <!-- Add .hidden if no results (Hide)-->
+      <ul class="commissions-list-header" ng-show="commissionsData.accounts.length">
+         <li class="expand">
+            <span class="icons icon-double-arrow black expand-arrow"></span>
+         </li>
+         <li class="check">
+            <!-- If clicked, check all or uncheck all -->
+            <!-- Add .checked if checked -->
+            <label class="checkbox inline">
+               <!-- Add .checked if all are checked, add .semi-checked if some of the agents are checked -->
+               <span class="icon-form icon-checkbox" ng-class="{'checked': areAllAgentsSelected(), 'semi-checked': areAgentsPartialySelected()}"></span>
+               <!-- add checked="checked" when checked -->
+               <input type="checkbox" ng-model="allCommisionsSelected" ng-change="allCommisionsSelectionChanged()">
+            </label>
+         </li>
+         <li class="agent-info" translate>
+            TRAVEL_AGENT_INFO
+         </li>
+         <!-- Show if active filter: Payable (add .hidden to hide) -->
+         <li ng-show="filterData.filterTab === 'PAYABLE'" translate>
+            COMMISSIONS_PAYABLE_BILLS
+         </li>
+         <!-- Show if active filter: On Hold (remove .hidden)-->
+         <li ng-show="filterData.filterTab === 'ON_HOLD'" translate>
+            COMMISSION_BILLS_ON_HOLD
+         </li>
+         <li translate>
+            COMMISSION
+         </li>
+         <li translate>
+            COMMISSION_OWING
+         </li>
+      </ul>
+      <!-- Add .no-results if no results -->
+      <div class="commissions-list-content scrollable" ng-class="{'no-results': commissionsData.accounts.length === 0}" ng-iscroll='commissionOverViewScroll'>
+         <div class="wrapper">
             <ul class="search-results">
-                <li class="commision-item" ng-repeat ="account in commissionsData.accounts">
-                    <!--<div class="check">-->
-                        <!--&lt;!&ndash; add .checked when checked &ndash;&gt;-->
-                        <!--<label class="checkbox inline">-->
-                            <!--&lt;!&ndash; add .checked when checked &ndash;&gt;-->
-                            <!--<span class="icon-form icon-checkbox"></span>-->
-                            <!--&lt;!&ndash; add checked="checked" when checked &ndash;&gt;-->
-                            <!--<input value="{value}" type="checkbox">-->
-                        <!--</label>-->
-                    <!--</div>-->
-                    <a ng-click="navigateToTA(account)">
+               <!-- Show if no results -->
+               <li class="no-content" ng-show="commissionsData.accounts.length === 0">
+                  <div class="info">
+                     <span class="icon-no-content icon-ok"></span>
+                     <strong class="h1" translate="">NO_COMMISSIONS</strong>
+                     <span class="h2" translate>NO_COMMISSIONS_MSG</span>
+                  </div>
+               </li>
+               <li class="commision-item" ng-repeat ="account in commissionsData.accounts">
+                  <!-- Add .expanded if expanded -->
+                  <div class="faux-anchor" ng-class="{'expanded' : account.isExpanded}">
+                     <div class="expand toggle" ng-click="expandCommision(account)">
+                        <!-- Add .active if expanded -->
+                        <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active' : account.isExpanded}"></span>
+                     </div>
+                     <div class="check">
+                        <!-- add .checked when checked -->
+                        <label class="checkbox inline">
+                           <!-- add .checked when checked -->
+                           <span class="icon-form icon-checkbox" ng-class="{'checked': account.isSelected, 'semi-checked': account.isSemiSelected}"></span>
+                           <!-- add checked="checked" when checked -->
+                           <input type="checkbox" ng-model="account.isSelected" ng-change="commisionSelectionChanged(account)">
+                        </label>
+                     </div>
+                     <a class="has-arrow" ng-click="navigateToTA(account)">
                         <span class="account-image icons icon-travel-agent"></span>
                         <div class="data">
-                            <h2>{{account.account_name}}</h2>
-                            <div class="meta-data">
-                                <span class="icons icon-location">{{account.location}}</span>
-                                <span class="icons icon-guest-travelagent">{{account.iata_number}}</span>
-                            </div>
+                           <h2>{{ ::account.name }}</h2>
+                           <div class="meta-data">
+                              <span class="icons icon-guest-travelagent">{{ ::account.iata_number }}</span>
+                              <span class="icons icon-location">{{ ::account.location }}</span>
+                           </div>
+                            <!-- Show only if on hold -->
+                           <span class="icons icon-hold red" ng-show="filterData.filterTab === 'PAYABLE' && account.has_any_on_hold_bills"></span>
                         </div>
-                        <div class="info-holder">
-                            <div class="info open-bills">
-                                <strong>{{account.number_of_unpaid_bills}}</strong>
-                                <span>Open Bills</span>
-                            </div>
-                            <div class="info">
-                                <strong>{{currencySymbol}}{{account.total_revenue | number: precisonTwo}}</strong>
-                                <span>Revenue</span>
-                            </div>
-                            <div class="info">
-                                <strong class="green">{{currencySymbol}}{{account.commission_to_date | number: precisonTwo}}</strong>
-                                <span>To Date</span>
-                            </div>
-                            <div class="info">
-                                <strong ng-class="{'red': account.commission_owing > 0 }">{{currencySymbol}}{{account.commission_owing | number: precisonTwo}}</strong>
-                                <span>Owing</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                        <ul class="info">
+                           <li>
+                              {{ ::account.number_of_unpaid_bills }}
+                           </li>
+                           <li ng-show="account.commission_info.rate.type == 'amount'">{{ ::currencySymbol }}{{ ::account.commission_info.rate.value | number: precisonTwo }}</li>
+                           <li ng-hide="account.commission_info.rate.type == 'amount'">{{ ::account.commission_info.rate.value}}%</li>                           <!-- Remove class .red if 0 -->
+                           <li ng-class="{'red': account.amount_owing > 0 }">{{ ::currencySymbol }}{{ ::account.amount_owing | number: precisonTwo }}</li>
+                        </ul>
+                     </a>
+                     <!-- Remove .hidden when expanded -->
+                     <div class="commission-details" ng-show="account.isExpanded">
+                        <table style="margin-bottom: 60px;">
+                           <thead ng-hide="account.reservationsData.reservations.length == 0">
+                              <tr>
+                                 <th></th>
+                                 <th class="name" translate>GUEST</th>
+                                 <!-- Show this only if active filter: Payable -->
+                                 <th class="amount" translate>COMMISSION_CONF_NO</th>
+                                 <th class="amount" translate="">COMMISSION_REVENUE</th>
+                                 <th class="amount" translate>COMMISSIONABLE_REVENUE</th>
+                                 <th class="amount" translate>COMMISSION</th>
+                                 <th class="owing" translate>COMMISSION_OWING</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr ng-show="account.reservationsData.reservations.length == 0">
+                                 <td colspan="6">
+                                    <p style="text-align:center;">Nothing to display</p>
+                                 </td>
+                              </tr>
+                              <!-- Add class .odd or .even based on the row number -->
+                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in account.reservationsData.reservations">
+                                 <td>
+                                    <label class="checkbox inline">
+                                      <!-- add .checked when checked -->
+                                       <span class="icon-form icon-checkbox" ng-class="{'checked': reservation.isSelected}"></span>
+                                       <!-- add checked="checked" when checked -->
+                                       <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged(account, reservation)">
+                                    </label>
+                                 </td>
+                                 <td class="name">{{ ::reservation.guest.last_name }}, {{ reservation.guest.first_name}}</td>
+                                 <!-- Show this only if active filter: Payable -->
+                                 <td class="amount">{{  reservation.confirm_no}}</td>
+                                  <td class="amount">
+                                      {{ ::currencySymbol }} {{ reservation.revenue| number: precisonTwo}}
+                                  </td>
+                                  <td class="amount">
+                                      {{ ::currencySymbol }} {{ reservation.commissionable_revenue }}
+                                  </td>
+                                 <td class="amount">
+                                    {{ reservation.commission_rate}}
+                                 </td>
+                                 <!-- Add .red if more than 0 -->
+                                 <td class="owing" ng-class="{'red': reservation.amount_owing>0}">{{ ::currencySymbol }} {{ reservation.amount_owing| number: precisonTwo}}</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <rv-pagination ng-show="account.showResPagination" page-options="account.paginationData" page-data="account.reservationsData.total_count"></rv-pagination>
+                        <!-- <div class="search-pagination" ng-show="account.showResPagination">
+                           <button type="button" class="button dark-grey next" ng-click="loadNextReservationPage(account)" ng-disabled="disableReservationNextPage(account)" translate>NEXT</button>
+                           <button type="button" class="button dark-grey prev" ng-click="loadPrevReservationPage(account)" ng-disabled="account.reservationsPageNo === 1" translate>PREVIOUS</button>
+                           <p>{{'SHOWING' | translate}} <strong>{{account.startRes}}-{{account.endRes}}</strong> {{'OF' | translate}} <strong id="total-count">{{ ::account.reservationsData.total_count }}</strong> {{'ITEMS' | translate}}</p>
+                        </div> -->
+                     </div>
+                  </div>
+               </li>
             </ul>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
+   <div id="commissions-print" class="commissions-print" ng-include="'/assets/partials/financials/commissions/rvCommissionsSummaryPrint.html'"></div>
 </section>

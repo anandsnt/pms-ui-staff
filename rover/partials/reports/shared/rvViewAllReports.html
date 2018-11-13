@@ -31,9 +31,10 @@
     <div class="column-actions" ng-class="{'two-buttons': uiChosenReport.display_export_button && !hideExportOption}">
             <button type="button" class="button purple"
                 ng-click="exportCSV(uiChosenReport)"
-                ng-show="uiChosenReport.display_export_button && !hideExportOption">Export</button>
+                ng-show="uiChosenReport.display_export_button && !hideExportOption && !isBackgroundReportsEnabled">Export</button>
             <button type="button" class="button green"
                 ng-click="setnGenReport(uiChosenReport)"
-                ng-show="uiChosenReport.display_show_button">Show</button>
+                ng-show="uiChosenReport.display_show_button && !isBackgroundReportsEnabled">Show</button>
+            <button type="button" class="button green" ng-click="setnGenReport(uiChosenReport)" ng-show="isBackgroundReportsEnabled">Run Report</button>
         </div>
 </div>

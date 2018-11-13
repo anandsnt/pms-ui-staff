@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv',
-    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv', 'sntActivity',
+    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv, sntActivity) {
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -15,7 +15,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
             $scope.is_edit = false;
             // activate Rate Details View
-            $scope.rateMenu = 'Details';
+            $scope.rateMenu = '';
             $scope.prevMenu = "";
             // set here so as to avoid page reloading resulting in bussinness date being accessed before its being set in rootscope.
             $scope.businessDate = rateInitialData.business_date;
@@ -54,12 +54,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.errorMessage = '';
             // Added for CICO-24988
             $scope.isOriginOfBookingEnabled = ADRatesAddDetailsSrv.addRatesDetailsData.hotel_settings.reservation_type.is_origin_of_booking_enabled;
-            if ($scope.isOriginOfBookingEnabled) {
-               fetchOriginOfBookings();
-            }
-            fetchCommissionDetails();
-            setRateAdditionalDetails();
             // webservice call to fetch rate details for edit
+            // New arrays used for CICO-49136. We need to compare existing addons and 
+            // selected addons on update. If both are same no need to pass that param to API
+            $scope.existingAddonsIds = [];
+            $scope.existingAddons = [];
+            $scope.selectedAddonsIds = [];
+            $scope.selectedAddons = [];
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
                 $scope.is_edit = true;
@@ -67,20 +68,41 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     $scope.otherData.notIsBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
                 }
                 $scope.otherData.isEdit = true;
+                var existingAddonsIds = [],
+                    existingAddons = [];
+
+                angular.forEach(rateDetails.addons, function(addOn) {
+                    existingAddonsIds.push(addOn.id);
+                    existingAddons.push(addOn);
+                });
+                $scope.existingAddonsIds = existingAddonsIds;
+                $scope.existingAddons = existingAddons;
             }
+            else {
+                setRateAdditionalDetails();
+            }
+        };
+
+        // Method to invoke initial API calls when edit a list.
+        var initialAPIcalls = function() {
+            if ($scope.isOriginOfBookingEnabled) {
+               fetchOriginOfBookings();
+            }
+            fetchCommissionDetails();
 
             // CICO-36412
             if (!!$scope.rateData.based_on.id) {
                 fetchBasedOnRateDetails();
             }
+            sntActivity.stop('LOAD_RATE_DETAILS');
         };
-
 
         var fetchCommissionDetails = function() {
             var fetchCommissionDetailsSuccess = function(data) {
                 if (_.isEmpty($scope.rateData.commission_details)) {
                     $scope.rateData.commission_details = data.commission_details;
                 }
+                $scope.$emit('hideLoader');
             };
 
             $scope.invokeApi(ADRatesSrv.fetchCommissionDetails, {}, fetchCommissionDetailsSuccess);
@@ -96,7 +118,14 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 addOns.is_inclusive_in_rate = "false";
             });
             $scope.rateData.addOns = rateInitialData.addons;
-
+            angular.forEach($scope.rateData.addOns, function(addOn) {
+                addOn.shouldShow = true;
+                
+                if (_.indexOf(addOn.excluded_rate_ids, parseInt($stateParams.rateId)) !== -1) {
+                    addOn.shouldShow = false;
+                }
+               
+            });
 
             // restriction type
             $scope.restrictionDetails = rateInitialData.restrictionDetails;
@@ -126,14 +155,29 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     }
                 }
             });
-
         };
 
         /*
          * toogle different rate view
          */
-        $scope.$on("changeMenu", function(e, value) {
+        var listener = $scope.$on("changeMenu", function(e, value, initialLoad) {
+            
+            if ( initialLoad ) {
+                setRateAdditionalDetails();
+                $scope.manipulateData(rateDetails);
+                return;
+            }
             $scope.changeMenu(value);
+            if ( value === 'Details' ) {
+                initialAPIcalls();
+                $scope.$broadcast('INIT_RATE_DETAILS');
+            }
+            else if ( value === 'Room types') {
+                $scope.$broadcast('INIT_ROOM_TYPES');
+            }
+            else if ( value === 'Promotions') {
+                $scope.$broadcast('INIT_PROMOTIONS');
+            }
         });
 
         /*
@@ -219,7 +263,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.tasks = data.tasks;
             $scope.rateData.booking_origin_id = data.booking_origin_id;
 
-
             // addons -mark as activated for selected addons
             if ($scope.rateData.addOns.length > 0) {
                 var tempData = $scope.rateData.addOns;
@@ -237,7 +280,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
                     });
                 });
-
             }
             // addons mark as deactivated for selected addons
             angular.forEach($scope.allAddOns, function(addOns) {
@@ -249,7 +291,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }
 
             });
-
         };
 
         $scope.showPromotionSection = function() {
@@ -282,10 +323,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.date_ranges = data.date_ranges;
             $scope.rateData.rate_type.id = (data.rate_type !== null) ? data.rate_type.id : '';
             $scope.rateData.rate_type.name = (data.rate_type !== null) ? data.rate_type.name : '';
-            $scope.rateData.addOns = data.addons;
+            $scope.rateData.addOns = JSON.parse(JSON.stringify(data.addons));
             $scope.rateData.charge_code_id = data.charge_code_id;
             $scope.rateData.currency_code_id = data.currency_code_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
+            $scope.rateData.is_global_contract = data.is_global_contract;
 
             manipulateAdditionalDetails(data);
 
@@ -310,20 +352,20 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         // Fetch details success callback for rate edit
 
         var setRateDetails = function(data) {
+            var initialLoad = true;
 
             $scope.hotel_business_date = data.business_date;
             // set rate data for edit
             $scope.rateData.classification = data.rate_type.classification;
-            $scope.manipulateData(data);
             $scope.rateData.id = $stateParams.rateId;
             // navigate to step where user last left unsaved
             if ($scope.rateData.date_ranges.length > 0) {
                 activeDateRange = getActiveDateRange();
-                $scope.$emit("changeMenu", activeDateRange);
+                $scope.$emit("changeMenu", activeDateRange, initialLoad );
             } else if ($scope.rateData.room_type_ids.length > 0) {
-                $scope.$emit("changeMenu", 'Room types');
+                $scope.$emit("changeMenu", 'Room types', initialLoad );
             } else {
-                $scope.$emit("changeMenu", 'Details');
+                $scope.$emit("changeMenu", 'Details', initialLoad );
             }
             $scope.$emit('hideLoader');
             $scope.$broadcast('ratesChanged');
@@ -422,6 +464,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.originOfBookings = _.filter(data.booking_origins, function(origin) {
                     return origin.is_active;
                 });
+                $scope.$emit('hideLoader');
             };
 
             $scope.invokeApi(ADOriginsSrv.fetch, {}, onOriginOfBookingFetchSuccess);
@@ -431,7 +474,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * init call
          */
         $scope.init();
-
-
+        $scope.$on('$destroy', listener );
     }
 ]);

@@ -1,8 +1,8 @@
 <ul class="search-results">
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList" ng-click="clickedOnParentList( $event, $index )">
-        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
+    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
+        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
+            <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
 
@@ -11,7 +11,7 @@
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
                 <!-- add class .group/.allotment if group or allotment -->
                 <h2 ng-if="balance.guest_first_name!==null && balance.guest_last_name!==null">
-                    {{balance.guest_first_name}},  {{balance.guest_last_name}}
+                    {{balance.guest_last_name}},  {{balance.guest_first_name}}
                 </h2>
                 <h2 ng-if="balance.guest_first_name!=='' && balance.guest_last_name===''">
                     {{balance.guest_first_name}}
@@ -133,7 +133,7 @@
                             <!-- Show this if possible to edit charge
                                  opens /modals/ar-edit-charge.html
                              -->
-                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="!balance.is_partially_paid && !debit.is_adjustment && debit.credits === null" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="(!balance.is_partially_paid && !balance.is_manual_balance && debit.credits === null) && (!roverObj.noModifyInvoice)" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
                                 <span class="icons icon-edit-40"></span>
                             </button>
                         </td>
@@ -172,10 +172,11 @@
                 </tbody>
             </table>
             <div class="actions">
+                <button type="button" ng-show="balance.amount < 0" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
                 <button type="button" ng-show="arFlags.viewFromOutside && !balance.is_manual_balance" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" ng-click="moveInvoiceButtonClick(balance)" ng-show="!balance.is_partially_paid" class="button purple">Move Invoice</button>
                 <button type="button" class="button blue hidden">Print Invoice</button>
-                <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance">Post Charge</button>
+                <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance && !roverObj.noModifyInvoice">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
@@ -183,7 +184,7 @@
 	</li>
 	<li>
 		<!-- On click Show Manual Balance Billing Content -->
-		<button class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
+		<button class="add-new-button" ng-show="!roverObj.noModifyInvoice" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
 	</li>
     <li>
         <!-- To fix scroll -->

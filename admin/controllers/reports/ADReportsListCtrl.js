@@ -35,7 +35,12 @@ admin.controller('ADReportsListCtrl', ['$scope', '$rootScope', 'reports', 'adRep
         };
 
         $scope.getFilterTemplate = function(report) {
-            return "/assets/partials/reports/filters/ADClientUsageReportFilter.html";
+            switch (report.key) {
+                case 'CLIENT_USAGE':
+                    return "/assets/partials/reports/filters/ADClientUsageReportFilter.html";
+                default:
+                    return '/assets/partials/reports/filters/ADDefaultReportFilter.html';
+            }
         };
 
         // Init Controller

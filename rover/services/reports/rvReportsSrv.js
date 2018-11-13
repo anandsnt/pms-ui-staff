@@ -4,9 +4,13 @@ angular.module('sntRover').service('RVreportsSrv', [
 	'RVreportsSubSrv',
 	'$vault',
 	'$http',
-	function($q, rvBaseWebSrvV2, subSrv, $vault, $http) {
+	'RVReportApplyFlags',
+    'RVReportUtilsFac',
+    'RVReportSetupDates',
+	function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
 		var service       = {},
-			choosenReport = {};
+			choosenReport = {},
+			printClicked = false;
 
 		var SCHEDULE_TYPES = {
 			SCHEDULE_REPORT: 'SCHEDULE_REPORT',
@@ -78,8 +82,19 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+             ],
+             'Journal Export': [
+                'YESTERDAY',
+                'TODAY',
+                'DATE'
+             ],
+             'Clairvoyix Stays Export': [
+             	'YESTERDAY',
+             	'ALL'
+             ],
+             'Clairvoyix Reservations Export': [
+                'TODAY'
              ]
-
         };
 
         var SCHEDULE_REPORT_TIMEPERIODS = {
@@ -416,8 +431,52 @@ angular.module('sntRover').service('RVreportsSrv', [
         // Get the time periods for each of the reports in the schedule reports
         service.getScheduleReportTimePeriods = function( title ) {
         	return SCHEDULE_REPORT_TIMEPERIODS[title];
+        }; 
+        // Set the report inbox print clicked state
+        service.setPrintClicked = (val) => {
+        	this.printClicked = val;
         };
 
+        // Get the report inbox print clicked state
+        service.getPrintClickedState = () => {
+        	return this.printClicked;
+        };
+
+        // Process and apply filter flags on the selected report
+        service.processSelectedReport = (report, config) => {            
+
+            // apply certain flags based on the report name
+            applyFlags.init( report );
+
+            // add users filter for needed reports
+            // unfortunately this is not sent from server
+            reportUtils.addIncludeUserFilter( report );
+            reportUtils.addIncludeOtherFilter(report);
+
+
+            setupDates.init( report );
+            _.each(report['filters'], function(filter) {
+                setupDates.execFilter( report, filter );
+            });
+
+            // to process the filters for this report
+            reportUtils.processFilters(report, config);
+
+            // to reorder & map the sort_by to report details columns - for this report
+            // re-order must be called before processing
+            reportUtils.reOrderSortBy( report );
+
+            // to process the sort by for this report
+            // processing must be called after re-odering
+            reportUtils.processSortBy( report );
+
+            // to assign inital date values for this report
+            // reportUtils.initDateValues( report[i] );
+
+            // to process the group by for this report
+            reportUtils.processGroupBy( report );
+
+        };
 
 		return service;
 	}

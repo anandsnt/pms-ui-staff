@@ -3,7 +3,6 @@
 
 @import "variables.less";
 @import "base.less";
-@import "font.less";
 @import "layout.less";
 @import "state.less";
 @import "date-picker.less";
@@ -14,7 +13,6 @@
 
 body {
     font-size: 100%;
-    font-family: 'Source Sans Pro';
 }
 .main-text,.sub-text,.sub-main-text,.footer-text{
     font-weight:lighter;
@@ -261,6 +259,22 @@ body {
     }
     .right-arrow-button {
         background-position: 0 1px;
+    }
+    .addon-details .price-details{
+      font-size: 2.8em !important;
+    }
+    .section-container.addon-section-container{
+        max-width:550px !important;
+        .btn-template{
+            max-width:550px;
+        }
+        .addon-container{
+            min-height:150px;
+            padding:15px;
+            .content-image{
+                min-height:120px;
+            }
+        }
     }
 }
 

@@ -73,6 +73,7 @@
 		}
 
 		#header {
+            .transition();
 			#flexbox > .parent('', '', flex-end, '');
 
 			.button {
@@ -116,8 +117,9 @@
 		#main {
 			top: 140px;
 			left: 20px;
-			background: @backgroundColor url("../css/themes/yotel/background.png") no-repeat;
+			background: @backgroundColor url("../css/themes/yotel/background.png") 50% 100% no-repeat;
 			background-size: cover;
+            .transition();
 			#rounded > .round();
 			#calc > #height > .remove(100%, 160px);
 			#calc > #width > .remove(100%, 40px);
@@ -631,4 +633,24 @@
             }
         }
     }
+}
+
+
+/* Onscreen keyboard ***/
+@keyboardShift:         120px;
+
+&.showing-keyboard#yotel {
+
+    #header {
+        margin-top: -@keyboardShift;
+    }
+
+    #screen-icon {
+        top: 90px - @keyboardShift;
+    }
+
+    #main {
+        top: 140px - @keyboardShift;
+        #calc > #height > .remove(100%, 160px - @keyboardShift);
+    }          
 }

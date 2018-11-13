@@ -1,5 +1,5 @@
-admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'adExternalInterfaceCommonSrv',
-    function($http, $q, ADBaseWebSrvV2, $log, adExternalInterfaceCommonSrv) {
+admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'adExternalInterfaceCommonSrv', 'adAxbaseSrv',
+    function($http, $q, ADBaseWebSrvV2, $log, adExternalInterfaceCommonSrv, adAxbaseSrv) {
 
         var service = this;
 
@@ -40,6 +40,20 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
          */
         service.saveConfiguration = function(params) {
             return ADBaseWebSrvV2.postJSON('api/integrations/' + params.interfaceIdentifier + '/settings', params.config);
+        };
+        /**
+         * @param {Object} params used to build the API endpoint
+         * @return {deferred.promise|{then, catch, finally}} Promise for a request to save the room mapping
+         */
+        service.updateMappings = function(params) {
+            return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/save_room_mapping', params.config);
+        };
+        /**
+         * @param {Object} params used to build the API endpoint
+         * @return {deferred.promise|{then, catch, finally}} Promise for a request to import Rooms
+         */
+        service.startImportRooms = function(params) {
+            return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/import_rooms');
         };
 
         /**
@@ -86,5 +100,98 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             return deferred.promise;
         };
 
+        service.fetchRoomMappings = function(params) {
+            var deferred = $q.defer(),
+                promises = [],
+                meta = {};
+
+            promises.push(adAxbaseSrv.fetchRoomMappings().then(function(response) {
+                meta.room_mappings = response.room_mappings;
+            }));
+
+            promises.push(adExternalInterfaceCommonSrv.fetchRoom(params).then(function(response) {
+                meta.rooms = response.data.rooms;
+                meta.total_count = response.data.total_count;
+            }));
+
+            $q.all(promises).then(function() {
+                deferred.resolve(meta);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
+        service.countryList = [];
+        service.currencyList = [];
+
+        service.fetchCountryList = function() {
+            var deferred = $q.defer();
+            var url = '/ui/country_list.json';
+
+            if (service.countryList.length) {
+                deferred.resolve(service.countryList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url).then(function(countyList) {
+                    // change key names for the select box directive
+                    _.each(countyList, function(country) {
+                        country.name = country.value;
+                        country.value = country.id;
+                    });
+                    service.countryList = countyList;
+                    deferred.resolve(countyList);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+            return deferred.promise;
+        };
+
+        service.fetchCurrencyList = function() {
+            var deferred = $q.defer();
+            var url = '/ui/currency_list';
+            
+            if (service.countryList.length) {
+                deferred.resolve(service.currencyList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url).then(function(currencyList) {
+                    // change key names for the select box directive
+                    _.each(currencyList, function(currency) {
+                        currency.name = currency.code;
+                        currency.value = currency.id;
+                    });
+                    service.currencyList = currencyList;
+                    deferred.resolve(currencyList);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+            return deferred.promise;
+        };
+
+        service.fetchChargeGroups = function() {
+            var deferred = $q.defer();
+            var url = '/admin/charge_groups';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(chargeGroups) {
+                deferred.resolve(chargeGroups);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchTaxChargeCodes = function() {
+            var deferred = $q.defer();
+            var url = '/admin/charge_codes/tax_charge_code';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(taxChargeCodes) {
+                deferred.resolve(taxChargeCodes);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

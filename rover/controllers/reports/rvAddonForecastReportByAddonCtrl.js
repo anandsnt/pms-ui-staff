@@ -12,7 +12,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 	'ngDialog',
 	'$interval',
 	function($rootScope, $scope, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, ngDialog, $interval) {
-		
+
 		BaseCtrl.call(this, $scope);
 
 
@@ -179,7 +179,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			} else if ( 'prev' == type && ! eachDate.disablePrevBtn ) {
  				eachDate.pageNo--;
  				_.extend( eachDate, calPagination(eachDate) );
- 				
+
  				callResAPI( eachDate );
  			}
  		};
@@ -212,7 +212,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
  			statuses = _.where(chosenReport['hasReservationStatus']['data'], { selected: true });
  			if ( statuses.length > 0 ) {
- 				key         = reportParams['RESERVATION_STATUS'];
+ 				key         = reportParams['RESERVATION_STATUS_ARRAY'];
  				params[key] = [];
  				/**/
  				_.each(statuses, function(each) {
@@ -224,8 +224,16 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		}
 
  		function setup () {
- 			addonGroups  = $scope.chosenReport.hasAddonGroups.data || [];
- 			addons       = $scope.chosenReport.hasAddons.data || [];
+            try {
+                addonGroups  = $scope.chosenReport.hasAddonGroups.data;
+            } catch (err) {
+                addonGroups  = [];
+            }
+            try {
+                addons = $scope.chosenReport.hasAddons.data;
+            } catch (err) {
+                addons = [];
+            }
  			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
@@ -236,10 +244,10 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
 
  			_.each(addons, function(item) {
  				addonHash[item.addon_id] = item.addon_name;
- 			});	
+ 			});
 
  			$scope.modifiedResults = {};
- 			for (reportKey in results) {
+ 			for (var reportKey in results) {
  				if ( ! results.hasOwnProperty(reportKey) ) {
  					continue;
  				}
@@ -258,7 +266,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				for (i = 0, j = addonsAry.length; i < j; i++) {
  					var addonObj = addonsAry[i];
 
- 					for (addonKey in addonObj) {
+ 					for (var addonKey in addonObj) {
  						if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
  							continue;
  						}
@@ -277,7 +285,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  						for (k = 0, l = datesAry.length; k < l; k++) {
  							var dateObj = datesAry[k];
 
- 							for (dateKey in dateObj) {
+ 							for (var dateKey in dateObj) {
  								if ( '$$hashKey' == dateKey || ! dateObj.hasOwnProperty(dateKey) ) {
  									continue;
  								}
@@ -320,7 +328,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			});
  		};
 
- 		init();	
+ 		init();
 
  		var reInit = function() {
  			setup();

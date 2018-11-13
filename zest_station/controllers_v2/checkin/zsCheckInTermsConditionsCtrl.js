@@ -5,11 +5,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
     '$stateParams',
     'zsEventConstants',
     'zsCheckinSrv',
-    '$stateParams',
     '$timeout',
     '$sce',
     'zsUtilitySrv',
-    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce, zsUtilitySrv) {
+    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv) {
 
 		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -134,8 +133,19 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 };   
             }
 
-            if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+            if ($scope.zestStationData.id_scan_enabled) {
+                $state.go('zest_station.sntIDScan', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
+            else if ($scope.zestStationData.kiosk_manual_id_scan) {
+                $state.go('zest_station.checkInIdVerification', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
+            else if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $stateParams.email = $stateParams.guest_email;
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
                     afterGuestCheckinCallback({ 'status': 'success' });
@@ -144,6 +154,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             } else {
 
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $stateParams.email = $stateParams.guest_email;
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
                     $scope.callAPI(zsCheckinSrv.checkInGuest, options);
@@ -176,7 +187,14 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             if ($stateParams.pickup_key_mode) {
                 stateparams.pickup_key_mode = 'manual';
             }
-            $state.go('zest_station.checkInDeposit', stateparams);
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
+                stateparams.payment_method = $stateParams.payment_method;
+                var toParamsJson = JSON.stringify(stateparams);
+                
+                $state.go('zest_station.checkInMLIAndCBACCCollection', {params: toParamsJson});
+            } else {
+                $state.go('zest_station.checkInDeposit', stateparams);
+            }
         };
 
 
@@ -215,7 +233,19 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             if ($stateParams.pickup_key_mode) {
                 stateParams.pickup_key_mode = 'manual';
             }
-            $state.go('zest_station.checkInCardSwipe', stateParams);
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
+                // In case of CBA + MLI - if CC is already present use that CC for 
+                // further actions. Else collect a new CC using MLI
+                if ($stateParams.payment_method === 'CC') {
+                    checkInGuest();
+                } else {
+                    var toParamsJson = JSON.stringify(stateParams);
+
+                    $state.go('zest_station.checkInMLIAndCBACCCollection',  {params: toParamsJson});
+                }
+            } else {
+                $state.go('zest_station.checkInCardSwipe', stateParams);
+            }
         };
 
         var nextPageActions = function(byPassCC) {
@@ -271,40 +301,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             }
 
         };
-		/**
-		 * [agreeTerms description]
-		 *  on clicking agree, we will check if CC need to be skipped
-		 */
 
-        $scope.agreeTerms = function() {
-            checkIfNeedToSkipCC();
-        };
-		/**
-		 * [initiateTermsAndConditions description]
-		 * @return {[type]} [description]
-		 */
-        // var initiateTermsAndConditions = function() {
-        //     $scope.setScroller('terms');
-        //     setDisplayContentHeight(); // utils function
-        //     var refreshScroller = function() {
-        //         $scope.refreshScroller('terms');
-        //     };
-
-        //     $timeout(function() {
-        //         refreshScroller();
-        //     }, 600);
-        // };
-
-		// Based Upon Admin Setting need to skip displaying
-		// terms and conditions
-
-
-        // Always bypass this T&C, as we already binded T&C with reservation details page
-        // if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-            $scope.agreeTerms();
-        // } else {
-        //     init();
-        //     initiateTermsAndConditions();
-        // }
+        checkIfNeedToSkipCC();
     }
 ]);

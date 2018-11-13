@@ -1,0 +1,128 @@
+/* StayNTouch Zest Station Styles | Bunk Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #3eb397;
+ 
+    
+    @textColor:             @white;
+    @backgroundColor:       @black;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+    @background:            #000;
+    @backgroundSize:        cover;
+
+    @headerIconsColor:      @white;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @white;
+            stroke: @white;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @white;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #bunk {
+
+        .logo-svg{
+            background-image: url("../css/themes/bunk/logo.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 100px;
+            width: 175px;
+            margin-top: 50px;
+        }
+
+        #header {
+            height: 150px;
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 150px);
+            top: 150px;
+
+            &.centered {
+                padding-top: 100px;
+                #content {
+                    height: 100%;
+                }
+            }
+        }
+
+        #actions {
+            &.pull-right {
+                p {
+                    strong {
+                        font-size: 18px;
+                        font-weight: 400; 
+                    }
+                    color: @textColor;
+                }
+            }
+        }
+
+        .button.transparent {
+            background-color: fade(@white, 40);
+        }
+         
+        #logo {
+            .logo {
+                .size(100px, auto);
+            }
+        }
+
+        #options,
+        .popup #message-content .button {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        #guests {
+            .button {
+                background-color: @black;
+            }
+        }
+
+        #upgrade {
+            .upgrade-price {
+                background-color: @brandColor;
+            }
+        }
+
+        .add-on-list,
+        .add-on { 
+            .button {
+                &.transparent {
+                    background-color: fade(@black, 10);
+                }
+            }
+        }
+    }

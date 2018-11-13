@@ -1,0 +1,63 @@
+
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
+            <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
+            <p class="main-text">Arrival Details</p>
+            </div>
+
+             <!--  -->
+            <div class="section-container mob-padding-bottom-10">
+                <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
+                <span ng-show="showHotelTime" class="sub-main-text">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently  {{hotelTime}} in the hotel’s local time.)</span></p>
+                <br/><br/>
+                 <div class="row">
+                <div class="select-style eta-single">
+                        <select name="timepicker" id="timePicker" ng-model="arrivalTime">
+                            <option value="">select time</option>
+                            <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                        </select>
+                </div>
+                </div>
+            </div>
+            <p class="sub-text left-align margin-top-20">Please let us know if you have any special requests for your reservation, such as additional guest names or the number of keys we may prepare for you.</p>
+            <div class="row">
+                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class = "col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
+                </textarea>
+            </div>
+             <!--  submit button-->
+            <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">Continue</a>
+        </div>
+        <div class="col-md-4">
+        </div>                   
+    </div>
+</div>

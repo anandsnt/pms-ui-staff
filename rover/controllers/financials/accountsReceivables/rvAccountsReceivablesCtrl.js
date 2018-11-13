@@ -1,4 +1,4 @@
-sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'rvAccountsArTransactionsSrv', function($scope, $rootScope, $stateParams, $filter, rvAccountsArTransactionsSrv ) {
+sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'rvAccountsArTransactionsSrv', '$timeout', function($scope, $rootScope, $stateParams, $filter, rvAccountsArTransactionsSrv, $timeout ) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -20,26 +20,23 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     /*
      *   Method to initialize the AR Overview Data set.
      */  
-    var fetchArOverviewData = function() {
+    var fetchArOverviewData = function( pageNo ) {
+
+        $scope.filterData.page = pageNo || 1;
+
         var successCallBackFetchAccountsReceivables = function(data) {
 
             $scope.arOverviewData = {};
             $scope.arOverviewData = data;
-
-            $scope.errorMessage = "";
-            $scope.$emit('hideLoader');
-
-            // Compute the start, end and total count parameters
-            if ($scope.nextAction) {
-                $scope.start = $scope.start + $scope.filterData.perPage;
-            }
-            if ($scope.prevAction) {
-                $scope.start = $scope.start - $scope.filterData.perPage;
-            }
-            $scope.end = $scope.start + $scope.arOverviewData.accounts.length - 1;
-
-            refreshArOverviewScroll();
-
+            $scope.filterData.totalCount = data.total_result;
+            
+            $timeout(function () {
+                $scope.$broadcast('updatePagination', 'AR_PAGINATION');
+                $scope.errorMessage = "";
+                $scope.$emit('hideLoader');
+                refreshArOverviewScroll();
+            }, 500 );
+            
             // Condition to show/hide header bar - with OPEN GUEST BILL & UNPAID BALANCE.
             if ($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== "") {
             	$scope.filterData.hideArHeader = true;
@@ -66,6 +63,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 
         'page': 1,
         'perPage': 50,
+        'totalCount': 0,
         'searchQuery': '',
         'minAmount': '',
         'sortBy': 'NAME_ASC',
@@ -87,6 +85,13 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             {   'value': 'AMOUNT_ASC',   'name': 'AMOUNT ASC' },
             {   'value': 'AMOUNT_DESC',   'name': 'AMOUNT DESC'}
         ]
+    };
+
+    // Setting pagination object
+    $scope.arPaginationObj = {
+        id: 'AR_PAGINATION',
+        api: fetchArOverviewData,
+        perPage: $scope.filterData.perPage
     };
 
     // Filter block starts here ..
@@ -116,51 +121,6 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         fetchArOverviewData();
     };
     // Filter block ends here ..
-
-    // Pagination block starts here ..
-    $scope.loadNextSet = function() {
-        $scope.filterData.page++;
-        $scope.nextAction = true;
-        $scope.prevAction = false;
-        fetchArOverviewData();
-    };
-
-    $scope.loadPrevSet = function() {
-        $scope.filterData.page--;
-        $scope.nextAction = false;
-        $scope.prevAction = true;
-        fetchArOverviewData();
-    };
-
-    $scope.isNextButtonDisabled = function() {
-        var isDisabled = false;
-
-        if (!!$scope.arOverviewData && ($scope.end >= $scope.arOverviewData.total_result)) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    $scope.isPrevButtonDisabled = function() {
-        var isDisabled = false;
-
-        if ($scope.filterData.page === 1) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    var initPaginationParams = function() {
-        $scope.filterData.page = 1;
-        $scope.start = 1;
-        $scope.end = $scope.filterData.perPage;
-        $scope.nextAction = false;
-        $scope.prevAction = false;
-    };
-
-    initPaginationParams();
-
-    // Pagination block ends here ..
     
     fetchArOverviewData();
 

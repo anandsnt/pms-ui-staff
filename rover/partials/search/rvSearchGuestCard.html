@@ -1,0 +1,72 @@
+<div id="page-main-second"  ng-click="clickedOnSearchArea()" class="" style="">
+    <!-- Search form -->
+    <div ng-include="'/assets/partials/common/header.html'"></div> 
+    <form method="get" action="" class="search-form enable-adding" role="search">
+        <div class="entry search">
+            <button class="clear-query" ng-class="{'visible': textInQueryBox != ''}" ng-click="clearResults()" type="button">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input id="find-guests-query" class="query" placeholder="Search by Name, City or Email address" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
+        </div>        
+        <a class="add-new-button" ng-click="addNewCard()">+ Add new</a>
+    </form>    
+
+    <rv-pagination ng-if="guestSearch.results.length > 0" page-options="guestCardPagination" page-data="totalResultCount"></rv-pagination>
+
+    <section id="find-guests" class="content scrollable" role="main" ng-iscroll="guest_card_scroll" ng-class="{'no-pagination' : shouldHidePagination()}">
+        <div class="wrapper">
+            <ul id="guest-search-results" class="search-results">
+                <li class="reservation identify-guest" ng-repeat="guest in guestSearch.results" ng-hide="shouldHideSearchResults()">
+                    <a ui-sref="rover.guest.details({guestId: guest.id, query: textInQueryBox})">
+                        <figure class="guest-image">
+                            <img src="{{guest.image_url}}" alt="" /> 
+                            <span class="stay-count" ng-if="guest.stay_count > 0 && isStandAlone">{{::guest.stay_count}}</span>
+                            <span class="vip" ng-if="guest.vip">VIP</span>
+                        </figure>
+                        <div class="data" ng-class="{'no-stay': guest.stay_count === 0}">
+                            <h2 ng-show="escapeNull(guest.first_name) != '' || escapeNull(guest.last_name) != ''" ng-bind-html="getGuestName(guest.first_name, guest.last_name) | highlightWords :searchWords">
+                            </h2>
+                            <span class="confirmation" ng-if="!!guest.address.postal_code">{{guest.address.postal_code}}</span>
+                            <span class="icons icon-location" ng-hide = "(guest.address.city == null || guest.address.city == '') && (guest.address.state =='' || guest.address.state == null)">
+                                <span ng-bind-html="guest.address.city | highlight:textInQueryBox:false" ng-if="escapeNull(guest.address.city) != ''"></span>
+                                <span ng-hide="guest.address.city == null || guest.address.city == '' || guest.address.state =='' || guest.address.state == null">, </span>
+                                <span>{{ guest.address.state }}</span>
+                            </span>
+                            <span class="icons icon-phone" ng-if="!!guest.home_phone">{{guest.home_phone}}</span>
+                            <span class="icons icon-email-grey" ng-if="!!guest.email" ng-bind-html="guest.email | highlight:textInQueryBox:false"></span>
+                        </div>                        
+                        <div class="last-stay" ng-if="guest.stay_count > 0">
+                            <span class="label">
+                                Last <span class="date">{{ guest.last_stay.date | date: 'MMMM d, yyyy'}}</span>
+                            </span>
+                            <strong class="room">{{ guest.last_stay.room }}</strong>
+                            <em class="type">{{ guest.last_stay.room_type }}</em>
+                        </div>
+                    </a>
+                </li> 
+                <li class="no-content" ng-show="guestSearch.results.length==0 && textInQueryBox!=''">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">No matches have been found</strong>
+                        <span class="h2">Check that you didn't mispell the <strong>Name</strong>, <strong>City</strong> or <strong>Email</strong>.</span>                        
+                    </div>
+                </li>               
+            </ul>
+        </div>
+    </section>
+    
+    <section id="find-guests" class="content scrollable no-results" role="main" ng-if="guestSearch.results.length === 0 && textInQueryBox=='' ">
+        <div class="wrapper">
+            <ul id="guest-search-results" class="search-results">
+                <li class="no-content">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">Find Guests</strong>
+                        <span class="h2">Search by <strong>Guest Name</strong>, <strong>City</strong> or <strong>Email address</strong></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>

@@ -30,6 +30,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         BaseCtrl.call(this, $scope);
         $scope.isPrintClicked = false;
         $scope.isAnyPopupOpen = false;
+        var PAGINATION_ID = "GROUP_ROOMING_LIST";
 
         /**
          * Has Permission To Create group room block
@@ -554,76 +555,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {Boolean}
          */
         $scope.shouldShowPagination = function() {
-            return ($scope.totalResultCount >= $scope.perPage);
-        };
-
-        /**
-         * should we disable next button
-         * @return {Boolean}
-         */
-        $scope.isNextButtonDisabled = function() {
-            return ($scope.end >= $scope.totalResultCount);
-        };
-
-        /**
-         * should we disable prev button
-         * @return {Boolean}
-         */
-        $scope.isPrevButtonDisabled = function() {
-            return ($scope.start === 1);
-        };
-
-        /**
-         * function to trgger on clicking the next button
-         * will call the search API after updating the current page
-         * return - None
-         */
-        $scope.loadPrevSet = function() {
-            var isAtEnd = ($scope.end === $scope.totalResultCount);
-
-            if (isAtEnd) {
-                // last diff will be diff from our normal diff
-                var lastDiff = ($scope.totalResultCount % $scope.perPage);
-
-                if (lastDiff === 0) {
-                    lastDiff = $scope.perPage;
-                }
-
-                $scope.start = $scope.start - $scope.perPage;
-                $scope.end = $scope.end - lastDiff;
-            } else {
-                $scope.start = $scope.start - $scope.perPage;
-                $scope.end = $scope.end - $scope.perPage;
-            }
-
-            // Decreasing the page param used for API calling
-            $scope.page--;
-
-            // yes we are calling the API
-            $scope.fetchReservations();
-        };
-
-        /**
-         * function to trgger on clicking the next button
-         * will call the search API after updating the current page
-         * return - None
-         */
-        $scope.loadNextSet = function() {
-            $scope.start = $scope.start + $scope.perPage;
-            var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
-
-            if (willNextBeEnd) {
-                $scope.end = $scope.totalResultCount;
-            } else {
-                $scope.end = $scope.end + $scope.perPage;
-            }
-
-            // Increasing the page param used for API calling
-            $scope.page++;
-
-            // yes we are calling the API
-            $scope.fetchReservations();
-        };
+            return ($scope.totalResultCount > $scope.perPage);
+        }; 
 
         /**
          * Pagination things
@@ -798,6 +731,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             runDigestCycle();
             // we changed data, so
             refreshScrollers();
+
+            $timeout(function () {
+                $scope.$broadcast("updatePagination", PAGINATION_ID);
+            }, 100);
+
             // Added to resolve the issue - CICO-23144 - QA comment
             // updating from one popup not updating in other
             _.each($scope.selected_reservations, function(eachData, resIndex) {
@@ -818,11 +756,12 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * utility function to form API params for group search
          * return {Object}
          */
-        var formFetchReservationsParams = function() {
+        var formFetchReservationsParams = function(pageNo) {
+            pageNo = pageNo || 1;
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 per_page: $scope.perPage,
-                page: $scope.page,
+                page: pageNo,
                 sort_field: $scope.sort_field,
                 sort_dir: $scope.sort_dir,
                 arrival_date: formatDateForAPI($scope.arrival_date),
@@ -843,15 +782,16 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         };
 
         /**
-         * to fetch reservations against group
-         * @return - None
+         * Fetch reservations against group
+         * @param {Number} pageNo - current page
+         * @return {void}
          */
-        $scope.fetchReservations = function() {
-            var params = formFetchReservationsParams();
-            var options = {
-                params: params,
-                successCallBack: successCallBackOfFetchReservations
-            };
+        $scope.fetchReservations = function(pageNo) {            
+            var params = formFetchReservationsParams(pageNo),
+                options = {
+                    params: params,
+                    successCallBack: successCallBackOfFetchReservations
+                };
 
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
@@ -1966,6 +1906,15 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 
+        // Configure pagination params
+        var configurePagination = function () {
+            $scope.pageOptions = {
+                id: PAGINATION_ID,
+                perPage: $scope.perPage,
+                api: $scope.fetchReservations
+            };
+        };
+
         /**
          * Function to initialise room block details
          * @return - None
@@ -1988,16 +1937,24 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             // pagination
             initialisePagination();
+
+            configurePagination();
             // calling initially required APIs
             // CICO-17898 The initial APIs need to be called in the scenario while we come back to the Rooming List Tab from the stay card
             var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
             	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
 
-            if (isInRoomingList && (amDirectlyComingToRoomingList)) {
-                $timeout(function() {
-                    callInitialAPIs();
-                }, 10);
+            if ($stateParams.id !== "NEW_GROUP") {
+                if (isInRoomingList && (amDirectlyComingToRoomingList)) {
+                    $timeout(function() {
+                        callInitialAPIs();
+                    }, 10);
+                }
+            } else {
+                $scope.groupConfigData.activeTab = "SUMMARY";
+                $stateParams.activeTab = "SUMMARY";
             }
+            
         }());
 
 

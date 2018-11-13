@@ -1,6 +1,5 @@
 admin.controller('ADZestStationMobilePhoneKeyEmailSetupCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv) {
     BaseCtrl.call(this, $scope);
-    $scope.$emit('changedSelectedMenu', 10);
 
     $scope.data = {};
 

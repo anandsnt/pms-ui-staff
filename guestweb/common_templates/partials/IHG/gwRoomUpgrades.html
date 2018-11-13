@@ -1,0 +1,78 @@
+
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar mob-margin-bottom-3">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-show="isFetching && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk.You can also call the hotel at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>                   
+    </div>
+    <div class="row" ng-hide="isFetching || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <p class="main-text">Upgrade your room?</p>
+            <p class="sub-main-text">Browse upgrades or continue below:</p>
+            <div class="section-container margin-top-20">
+                <div class="carousel-view">
+                    <carousel>
+                        <slide ng-repeat="slide in slides" active="slide.active" >
+                            <div class="centeralign">
+                                <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="height:200px;width:100%;"/>
+                            </div>
+                            <div class="upgrade-details" style="overflow: hidden">
+                                <div class="col-xs-9 room-info mob-paddding-top-5">
+                                    <p class="room-name mob-margin-bottom-3">
+                                        {{slide.upgrade_room_type_name}}
+                                    </p>
+                                    <div class="row">
+                                        <span class="rate-info">
+                                           {{currencySymbol}}{{slide.upsell_amount | number:2 }}
+                                       </span>
+                                       <p class="rate-desc">
+                                        EXTRA<br>PER NIGHT
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 upgrades-btn mob-paddding-top-5" ng-click="upgradeClicked(slide.upgrade_room_type_id,slide.upgrade_room_number)">
+                                <div class="upgrade-icon"></div>
+                                <p class="center-align mob-margin-top-3">SELECT THIS <br /> UPGRADE</p>
+                            </div>
+                            <div class="col-xs-12 room-info">
+                                <description template="{{slide.upgrade_room_description}}" class="description-details left-align">
+                                </description>
+                            </div>
+                        </div>
+                    </slide>
+                </carousel>
+                <br/>
+                <div ng-click="noThanksClicked()" class="proceed-to-checkin">
+                    <div class="white-arrow"></div>
+                    <span>NO, THANKS. PROCEED TO <strong>CHECK-IN</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>                   
+</div>
+</div>
+

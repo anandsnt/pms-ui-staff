@@ -1,11 +1,11 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <form class="modal-content form group-guest" ng-cloak>
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert" /></button>
         <span class="message h2">
             Edit Guest
         </span>
         <div class="holder">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="entry margin">
                 <label for="firstname">First Name</label>
                 <input id="firstname" placeholder="Pending" ng-model="ngDialogData.firstname" type="text" ng-disabled="shouldDisableNameField(ngDialogData)" />

@@ -28,7 +28,8 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 			if (params.accountId === "NEW_ACCOUNT") {
 				deferred.resolve(angular.copy(self.baseAccountSummaryData));
 			} else {
-				url = 'api/posting_accounts/' + params.accountId;
+				var url = 'api/posting_accounts/' + params.accountId;
+				
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						deferred.resolve(data);

@@ -22,7 +22,7 @@
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
 
 				<!-- show For charge codes of the code type Payment -->
-				<div class="entry full-width" required="required" ng-show="prefetchData.selected_charge_code_type == '2'" >
+				<div class="entry full-width" required="required" ng-show="isPaymentSelected()" >
 					<label class="ng-binding" ng-hide="label.length==0">
 						{{'PAYMENT_TYPE'| translate}}
 						<strong class="" ng-show="isStandAlone"> * </strong>
@@ -53,22 +53,31 @@
 					</div>
 				</div>
 
-				<!-- show For charge codes of the code type TAX or FEES , for standalone hotels-->
+				<!-- show For charge codes of the code type TAX or FEES or TOURIST TAX , for standalone hotels-->
 				<div class="entry full-width">
 					
-					<ad-textbox value="prefetchData.minimum_amount_for_fees" ng-show="(prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '6') && !isPmsConfigured" inputtype="text" value="" label = "{{'MINIMUM_AMOUNT_TO_CHARGE_FEE'| translate}}" placeholder = "" styleclass="full-width" ></ad-textbox>
+					<ad-textbox value="prefetchData.minimum_amount_for_fees"
+						ng-show="(
+							isTaxSelected() || isTouristTaxSelected() || isFeesSelected()
+						) && !isPmsConfigured"
 
-					<div ng-show="(prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '6') && !isPmsConfigured" class="entry full-width" >
+						inputtype="text" value=""
+						label="{{'MINIMUM_AMOUNT_TO_CHARGE_FEE'| translate}}"
+						placeholder=""
+						styleclass="full-width">
+					</ad-textbox>
+
+					<div ng-show="(isTaxSelected() || isFeesSelected() || isTouristTaxSelected()) && !isPmsConfigured" class="entry full-width" >
 						<label translate> AMOUNT </label>
 						
 						<div class="select select-col col1-3 ">
 							<select ng-model="prefetchData.selected_amount_sign" class="styled">
 								<!-- Default to positive values for TAX / FEES -->
-	                        	<option value="+" ng-selected="prefetchData.selected_amount_sign === '+' || prefetchData.selected_charge_code_type == '1'" translate>
+	                        	<option value="+" ng-selected="prefetchData.selected_amount_sign === '+' || isTaxSelected() || isTouristTaxSelected()" translate>
 	                        		POSITIVE_SIGN
 	                        	</option> 
 	                        	<!-- RESTRICT only positive valuse for taxes! -->
-	                        	<option ng-if="prefetchData.selected_charge_code_type != '1'" value="-" ng-selected="prefetchData.selected_amount_sign === '-'" translate>
+	                        	<option ng-if="!(isTaxSelected() || isTouristTaxSelected())" value="-" ng-selected="prefetchData.selected_amount_sign === '-'" translate>
 	                        		NEGATIVE_SIGN
 	                        	</option> 
 	                        </select>
@@ -84,7 +93,7 @@
 					</div>
 
 					<!-- show For charge codes of the code type TAX only -->
-					<div ng-show="(prefetchData.selected_charge_code_type == '1') && !isPmsConfigured">
+					<div ng-show="(isTaxSelected() || isTouristTaxSelected()) && !isPmsConfigured">
 						<ad-select-number label="{{'AMOUNT_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'SELECT_AMOUNT_TYPE' | translate}}" items="prefetchData.amount_types" selected-Id="prefetchData.selected_amount_type" ></ad-select-number>
 						<ad-select-number label="{{'POST_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'Select Post Type' | translate}}" items="prefetchData.post_types" selected-Id="prefetchData.selected_post_type" ></ad-select-number>
 					</div>
@@ -116,7 +125,7 @@
 			
 			<fieldset class="holder right">
 				<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
-				<div ng-hide="prefetchData.selected_charge_code_type == '1' || !isPmsConfigured ">
+				<div ng-hide="isTaxSelected() || isTouristTaxSelected() || !isPmsConfigured ">
 					<div class="form-title">
 						<h3><span translate>CHARGE_CODE</span> {{'LINK_WITH' | translate}} </h3>
 					</div>
@@ -131,7 +140,7 @@
 					</div>
 				</div>
 				<!--for charge code type other than PAYMENT or TAX -->
-				<div ng-hide="isPmsConfigured || prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '2'" ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
+				<div ng-hide="shouldHideAddTaxOption()" ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
 
 			</fieldset>
 

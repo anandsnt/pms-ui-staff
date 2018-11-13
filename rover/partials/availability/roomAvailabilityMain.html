@@ -13,6 +13,12 @@
 				<option value="30" ng-selected="numberOfDaysSelected==30">30 Days</option>
 			</select>
 		</div>
+		<!-- Show Overbooking -->
+		<label ng-hide="isHourlyRateOn || (isPmsProductionEnv && !isSellLimitEnabled)" class="checkbox" ng-click="clickedIncludeOverbooking()" ng-class="{'checked': data.isIncludeOverbooking }"> <!-- Add class 'checked' if L17 is checked -->
+			<span class="icon-form icon-checkbox" ng-class="{'checked': data.isIncludeOverbooking }"></span>
+	        <input type="checkbox">
+	        Include Sell Limits
+	    </label>
 		<!-- Show print button only when viewing 14 days. When pressed, add class 'availability-print' to <html> element. When printing is completed, remove that class. -->
 		<button type="button"
 			class="button blue with-icon only-icon"

@@ -1,8 +1,8 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv',
-    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv', function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
 
 
         var summaryMemento, demographicsMemento;
+        
 
         /**
          * Whether our summary data has changed
@@ -88,7 +88,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     oldFromDate: oldSumryData.block_from,
                     oldToDate: oldSumryData.block_to,
                     successCallBack: successCallBackOfMoveButton,
-                    failureCallBack: failureCallBackOfMoveButton
+                    failureCallBack: failureCallBackOfMoveButton,
+                    cancelPopupCallBack: cancelCallBackofDateChange
                 };
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);
@@ -473,6 +474,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 updateSegment = function() {
                     var aptSegment = ''; // Variable to store the suitable segment ID
 
+                    // CICO-42249 - Flag to allow adding demographics for a newly created group
+                    $scope.forceDemographics = $scope.shouldShowDemographics();
+
                     if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
                         var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
 
@@ -723,20 +727,61 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 .then(successCallBackForFetchGroupActions, failuresCallBackForFetchGroupActions);
         };
 
+        var showMarkets = function (demographicsData) {
+                return demographicsData.is_use_markets && demographicsData.markets.length > 0;
+            },
+            showSources = function (demographicsData) {
+                return demographicsData.is_use_sources && demographicsData.sources.length > 0;
+            },
+            showOrigins = function (demographicsData) {
+                return demographicsData.is_use_origins && demographicsData.origins.length > 0;
+            },
+            showSegments = function (demographicsData) {
+                return demographicsData.is_use_segments && demographicsData.segments.length > 0;
+            };
+
         /**
-         * Place holder method for future implementation of mandatory demographic data
-         * @return {Boolean} Currently hardcoded to true
+         * Validates demographics data for mandatory fields for disabling the 
+         * Save & Continue btn in demographics popup
          */
-        $scope.isDemographicsFormValid = function() {
-            return true;
+        var validateDemographicsData = function(demographicsData) {
+            var isValid = true;
+            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+            
+            if ( showMarkets(demographicsData) && $scope.hotelSettings.force_market_code) {
+                isValid = !!$scope.groupConfigData.summary.demographics.market_segment_id;
+            }
+            if (showSources(demographicsData) && $scope.hotelSettings.force_source_code && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.source_id;
+            }
+            if (showOrigins(demographicsData) && $scope.hotelSettings.force_origin_of_booking && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.booking_origin_id;
+            }
+            if (showSegments(demographicsData) && $scope.hotelSettings.force_segments && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.segment_id;
+            }
+            return isValid;
+        };
+
+        /**
+         * Checks whether all the mandatory demographics fields are entered or not         
+         */
+        $scope.isDemographicsFormValid = function(assertValidation) {
+            var isDemographicsValid = true;
+
+            if (assertValidation) {
+                isDemographicsValid =  validateDemographicsData($scope.groupSummaryData.demographics);
+            }
+
+            return isDemographicsValid;            
         };
 
         /**
          * Demographics Popup Handler
          * @return undefined
          */
-        $scope.openDemographicsPopup = function() {
-            if ($scope.isInAddMode()) {
+        $scope.openDemographicsPopup = function(showRequiredFields, isBtnClick) {
+            if ( $scope.isInAddMode() && ( !$scope.forceDemographics || isBtnClick ) ) {
                 // If the group has not been saved yet, prompt user for the same
                 $scope.errorMessage = ['Please save the group first'];
                 return;
@@ -762,6 +807,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 },
                 onFetchDemographicsSuccess = function(demographicsData) {
                     $scope.groupSummaryData.demographics = demographicsData.demographics;
+                    $scope.setDemographicFields(showRequiredFields);
                     showDemographicsPopup();
                 },
                 onFetchDemographicsFailure = function(errorMessage) {
@@ -776,6 +822,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 });
 
             } else {
+                $scope.setDemographicFields(showRequiredFields);
                 showDemographicsPopup();
             }
 
@@ -860,23 +907,33 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         $scope.openSendConfirmationPopup = function () {
 
-            if ($scope.isInAddMode()) {
-                // If the group has not been saved yet, prompt user for the same
-                $scope.errorMessage = ['Please save the group first'];
-                return;
-            }
-            $scope.ngData = {};
-            $scope.groupConfirmationData = {
-                contact_email: $scope.groupConfigData.summary.contact_email,
-                is_salutation_enabled: false,
-                is_include_rooming_list: false,
-                personal_salutation: ''
+            var fetchGuestLanguageSuccess = function(data) {
+                if ($scope.isInAddMode()) {
+                    // If the group has not been saved yet, prompt user for the same
+                    $scope.errorMessage = ['Please save the group first'];
+                    return;
+                }
+                $scope.ngData = {};
+                $scope.languageData = data;
+                $scope.groupConfirmationData = {
+                    contact_email: $scope.groupConfigData.summary.contact_email,
+                    is_salutation_enabled: false,
+                    is_include_rooming_list: false,
+                    personal_salutation: '',
+                    locale: data.selected_language_code
+                };
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
+                    className: '',
+                    scope: $scope
+                });
             };
-            ngDialog.open({
-                template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
-                className: '',
-                scope: $scope
-            });
+
+            var options = {
+                onSuccess: fetchGuestLanguageSuccess
+            };
+
+            $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options);
         };
 
         /*
@@ -930,6 +987,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var onRateChangeSuccessCallBack = function(response) {
             $scope.$emit('hideLoader');
+            $scope.groupConfigData.summary.commission_details = response.commission_details;
+            
             if (!response.is_changed && !response.is_room_rate_available) {
                 showRateChangeWarningPopup();
                 $scope.groupConfigData.summary.rate = summaryMemento.rate;
@@ -1527,6 +1586,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) + parseInt(1);
             } else if (value === 'complete') {
                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+            } 
+
+            // Update the action count when deleting an action with different status
+            if (_.isObject(value)) {
+               $scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) - parseInt(1);
+
+               if (value.deletedActionStatus !== 'COMPLETED') {
+                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+               }               
             }
         });
 
@@ -1546,11 +1614,81 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         });
 
         /**
+         * Checks whether demographics popup should be presented while saving the group
+         */
+
+        $scope.shouldShowDemographics = function () {
+            var isDemographicsRequired = false;
+
+            if ($scope.groupSummaryData.demographics && $scope.hotelSettings) {
+                var shouldShowMarkets = showMarkets($scope.groupSummaryData.demographics) && 
+                                        $scope.hotelSettings.force_market_code,
+                    shouldShowSources = showSources($scope.groupSummaryData.demographics) && 
+                                        $scope.hotelSettings.force_source_code,                                  
+                    shouldShowOrigins = showOrigins($scope.groupSummaryData.demographics) && 
+                                        $scope.hotelSettings.force_origin_of_booking,                                                     
+                    shouldShowSegments = showSegments($scope.groupSummaryData.demographics) && $scope.hotelSettings.force_segments;
+                                   
+
+                isDemographicsRequired = shouldShowMarkets || shouldShowSources || shouldShowOrigins || shouldShowSegments;
+            }
+
+            return isDemographicsRequired;
+        };
+
+        /**
+         * Set the visibility of demographics fields based on the reservation settings and whether
+         * source/segments/origin/market is enabled
+         */
+        $scope.setDemographicFields = function (showRequiredFields) {
+            $scope.shouldShowReservationType = $scope.groupSummaryData.demographics.reservationTypes.length > 0;
+            $scope.shouldShowMarket = showMarkets($scope.groupSummaryData.demographics);
+            $scope.shouldShowSource = showSources($scope.groupSummaryData.demographics);
+            $scope.shouldShowOriginOfBooking = showOrigins($scope.groupSummaryData.demographics);
+            $scope.shouldShowSegments = showSegments($scope.groupSummaryData.demographics);
+
+            if (showRequiredFields) {
+                $scope.shouldShowReservationType = false;
+                $scope.shouldShowMarket = $scope.shouldShowMarket && $scope.hotelSettings.force_market_code;
+                $scope.shouldShowSource = $scope.shouldShowSource && $scope.hotelSettings.force_source_code;
+                $scope.shouldShowOriginOfBooking = $scope.shouldShowOriginOfBooking && $scope.hotelSettings.force_origin_of_booking;
+                $scope.shouldShowSegments = $scope.shouldShowSegments && $scope.hotelSettings.force_segments;
+            }
+        };
+        /*
+         * Set tax exempt type id null when toggle is inactivated
+         */
+        $scope.clickedTaxExemptToggle = function() {
+            if (!$scope.groupConfigData.summary.is_tax_exempt) {
+                $scope.groupConfigData.summary.tax_exempt_type_id = '';
+                $scope.groupConfigData.summary.tax_exempt_ref_text = '';
+            } else {
+                if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary.tax_exempt_type_id === undefined) {
+                    $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;
+                }
+            }           
+        };
+
+        /**
+         * Invoked from the groupconfig ctrl while saving a new group
+         */
+        $scope.$on('CREATE_GROUP', function () {
+           if ($scope.shouldShowDemographics()) {
+                $scope.forceDemographics = true;
+                $scope.groupSummaryData.promptMandatoryDemographics = true;                
+                $scope.openDemographicsPopup(true, false);
+
+            } else {
+               $scope.$emit('SAVE_GROUP'); 
+            }
+        });
+
+        /**
          * Function used to initialize summary view
          * @return undefined
          */
         var initializeMe = (function() {
-            var vm = this;
+            var vm = this; 
 
             BaseCtrl.call(vm, $scope);
 

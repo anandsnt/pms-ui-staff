@@ -135,8 +135,8 @@
 .form .entry-text-color-picker{
   margin-right:0 !important;
   input:not([size]){
-    width:60%;
     margin-left:5px;
+    background:#F4F3F4;
   }
 }
 .zest-web-settins-form{
@@ -146,10 +146,14 @@
 .phone-preview,.ipad-preview{
    margin:0 auto;
    padding-top: 61px !important;
-   .ngdialog-content{
+   .ngdialog-content {
      background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
    }
 }
+
+.ngdialog-content {
+   background: rgba(0,0,0,0) !important;
+ }
 
 .phone-preview{
    .ngdialog-content{
@@ -412,6 +416,12 @@
 .hotel-list-scroll {
   width: auto;
 }
+
+.email-template-preview .ngdialog-content{
+  width:750px !important;
+  background: transparent !important;
+}
+
 .hue-quick-set{
   i{
     font-style: italic;
@@ -434,4 +444,106 @@
     min-width: 30px;
     border: 1px solid #8c8c8c;
   }
+}
+
+.form .entry label span.no-text-transform, .no-text-transform{
+  text-transform: none;
+  color: rgb(32,34,37);
+}
+
+.station-language-entry .file-upload .button.download-arrow {
+    width:25px;
+}
+
+
+.grey-bg {
+  background: #eee !important;
+}
+.red-text {
+  color: red;
+}
+.green-text {
+  color: green;
+}
+.control-unit-class {
+  padding-top: 30px !important;
+}
+
+.action.no-icon {
+  background-image: none;
+  color: #82c3de;
+}
+
+.kiosk-upsell, 
+.web-upsell,
+.zs-n-web-upsell,
+.no-upsell {
+    background-repeat: no-repeat;
+    display: block;
+    text-indent: -9999;
+    height: 40px;
+    width:48px;
+    background-size: 40px;
+}
+.kiosk-upsell {
+    background-image: url(cssimg/admin/tab.png);
+}
+.web-upsell {
+    background-image: url(cssimg/admin/phone.png);
+    background-size: 30px;
+}
+.zs-n-web-upsell {
+    background-image: url(cssimg/admin/tab-n-phone.png);
+}
+
+.warning-popup {
+  width: 400px;
+  .msg {
+    padding:50px; 
+    text-align: center;
+  }
+  .actions.with-two-buttons{
+    button {
+      width:47% !important;
+    }
+    button:first-child {
+      float:left;
+    }
+    button:last-child {
+      float:right;
+    }
+  }
+}
+
+.filters .filter-label {
+    float: left;
+    margin-right:10px;
+    line-height: 2.5em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.device-list {
+    cursor: pointer;
+}
+
+
+.blink-text {
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.status-sub-text{
+  font-size: 12px; 
+  text-transform: uppercase;
+}
+
+.disabled-delete {
+  background-position: 13px -496px!important;
+  cursor: no-drop;
 }

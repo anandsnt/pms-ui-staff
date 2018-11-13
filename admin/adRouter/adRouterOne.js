@@ -54,7 +54,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url: '/user/:page/:id/:hotelId/:isUnlocking'
+			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
 		});
 
 		$stateProvider.state('admin.linkexisting', {
@@ -167,7 +167,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 
 		$stateProvider.state('admin.zestSortedCountryList', {
 			templateUrl: '/assets/partials/zestSetup/adCountrySorting.html',
-			controller: 'ADCountrySortCtrl',
+			controller: 'ADCountrySortAndRestrictionCtrl',
 			url: '/countrySort'
 		});
 
@@ -192,6 +192,39 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             templateUrl: '/assets/partials/clientSuccessManagers/adClientSuccessManagerAdd.html',
             controller: 'ADClientSuccessManagerDetailsCtrl',
             url: '/clientSuccessManager/:action/:id'
+        });
+
+        $stateProvider.state('admin.zestStationIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adStationIdCollectionSetup.html',
+            controller: 'adStationIdCollectionSetupCtrl',
+            url: '/zestStationIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
+                }]
+            }
+        });
+
+        $stateProvider.state('admin.roverIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adRoverIdCollectionSetup.html',
+            controller: 'adRoverIdCollectionSetupCtrl',
+            url: '/roverIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('roverIdCollection');
+                }]
+            }
+        });
+
+        $stateProvider.state('admin.zestWebIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adZestWebIdCollectionSetup.html',
+            controller: 'adZestWebIdCollectionSetupCtrl',
+            url: '/zestWebIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestWebIDCollection');
+                }]
+            }
         });
 
 });

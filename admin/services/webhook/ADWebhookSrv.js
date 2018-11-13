@@ -128,5 +128,12 @@ angular.module('admin').service('ADWebhookSrv', ['$http', '$q', 'ADBaseWebSrvV2'
 
             return deferred.promise;
         };
+
+
+        service.testURLConnectivity = function(params) {
+            var url = '/admin/webhooks/test_url';
+            
+            return ADBaseWebSrvV2.postJSON(url, params);
+        };
     }
 ]);

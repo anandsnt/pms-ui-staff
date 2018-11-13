@@ -4,6 +4,8 @@ var DesktopCardOperations = function () {
     var that = this;
     var ws = {};
 
+    this.isDesktopSwipeEnabled = false;
+
     that.callBacks = {};
 
     // Set to true if the desktop swipe is enabled and a WebSocket connection is established.
@@ -72,7 +74,11 @@ var DesktopCardOperations = function () {
     };
 
     this.startReader = function () {
-        ws.send(commands['observeForSwipe']);
+        if (that.isDesktopSwipeEnabled) {
+            ws.send(commands['observeForSwipe']);
+        } else {
+            console.warn('Desktop swipe not enabled in hotel config!');
+        }
     };
 
     this.getConnectedDeviceDetails = function (callBacks) {
@@ -81,7 +87,9 @@ var DesktopCardOperations = function () {
     };
 
     var init = function () {
-        ws.send(commands['observeForSwipe']);
+        if (that.isDesktopSwipeEnabled) {
+            ws.send(commands['observeForSwipe']);
+        }
 
         if (that.isDesktopUUIDServiceInvoked) {
             ws.send(commands['UUIDforDevice']);

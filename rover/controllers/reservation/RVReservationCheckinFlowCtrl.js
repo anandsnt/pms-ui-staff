@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
     ['$scope', '$rootScope', 'RVHotelDetailsSrv', '$log', 'RVCCAuthorizationSrv', 'ngDialog', '$timeout', 'RVBillCardSrv',
-        '$state', 'sntActivity',
+        '$state', 'sntActivity', 'sntEMVSharedSrv',
         function ($scope, $rootScope, RVHotelDetailsSrv, $log, RVCCAuthorizationSrv, ngDialog, $timeout, RVBillCardSrv,
-                  $state, sntActivity) {
+                  $state, sntActivity, sntEMVSharedSrv) {
 
             // NOTE rvBillCardCtrl is a parent for this controller! and a few variables and methods from the parent's scope are used in here
 
@@ -10,7 +10,9 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             var listeners = {};
 
             var getPaymentMethodId = function () {
-                return ($scope.billData.credit_card_details && $scope.billData.credit_card_details['payment_id']) || '';
+                var billData = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+                return (billData.credit_card_details && billData.credit_card_details['payment_id']) || '';
             };
 
             var fetchAuthInfo = function () {
@@ -33,6 +35,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                             canPayIncidentalsOnly: canPayIncidentalsOnly
                         });
                         $scope.checkInState.isAuthInfoFetchComplete = true;
+                        sntActivity.stop('REFRESH_PRE_AUTH_INFO');
                     },
                     failureCallBack: function (errorMessage) {
                         $scope.errorMessage = errorMessage;
@@ -126,6 +129,11 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     _.extend(params, $scope.checkInState.swipedCardData);
                 }
 
+                // check if the T&C was shown, if shown pass true if was accepted
+                if ($scope.reservationBillData.is_disabled_terms_conditions_checkin === 'false') {
+                    params.accepted_terms_and_conditions = $scope.saveData.termsAndConditions;
+                }
+
                 ngDialog.close();
 
                 $scope.callAPI(RVBillCardSrv.completeCheckin, {
@@ -163,6 +171,53 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 authorize({
                     is_emv_request: true,
                     amount: amountToAuth
+                });
+            };
+
+            var onSuccessAddCardWithEMV = function (data) {
+                var cardDetails = data.cardDetails,
+                    response = data.response,
+                    paymentData = $scope.reservationBillData;
+
+                _.extend(paymentData.bills[0].credit_card_details, {
+                    card_code: cardDetails.card_code,
+                    card_number: cardDetails.ending_with,
+                    card_expiry: cardDetails.expiry_date,
+                    payment_id: response.id,
+                    is_swiped: cardDetails.is_swiped,
+                    auth_color_code: cardDetails.auth_color_code
+                });
+
+                paymentData.bills[0].credit_card_details.payment_type = 'CC';
+
+                // CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
+                if ($scope.billNumber === 1) {
+                    $rootScope.$emit('UPDATEDPAYMENTLIST', paymentData.bills[0].credit_card_details);
+                }
+
+                $rootScope.$broadcast('BALANCECHANGED', {
+                    balance: response.reservation_balance,
+                    confirm_no: paymentData.confirm_no
+                });
+
+                // CICO-34754: room charge enabled needs to be true if cc added.
+                $rootScope.$broadcast('paymentChangedToCC');
+
+                $timeout(completeCheckin, 300);
+
+                $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
+            };
+
+            $scope.addCardWithEMV = function () {
+                ngDialog.close();
+                sntEMVSharedSrv.addCardInTerminal({
+                    workstation_id: $scope.workstation_id,
+                    bill_number: $scope.reservationData.bills[$scope.currentActiveBill].bill_number,
+                    reservation_id: $scope.reservationData.reservationId,
+                    emvTimeout: $scope.emvTimeout
+                }).then(onSuccessAddCardWithEMV, function (error) {
+                    $log.warn(error);
+                    $scope.errorMessage = error;
                 });
             };
 
@@ -244,7 +299,8 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                         'room_type': $scope.reservationBillData.room_type,
                         'clickedButton': 'checkinButton',
                         'upgrade_available': $scope.reservationBillData.is_upsell_available &&
-                        (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN')
+                        (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
+                        "roomTypeId": $scope.reservation.reservation_card.room_type_id
                     });
 
                     return false;
@@ -303,11 +359,18 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     ngDialog.close();
                 });
 
+                listeners['FETCH_REMAINING_AUTH'] = $scope.$on('FETCH_REMAINING_AUTH', function() {
+                    $scope.checkInState.isAuthInfoFetchComplete = false;
+                    sntActivity.start('REFRESH_PRE_AUTH_INFO');
+                    fetchAuthInfo();
+                });
+
                 // ------------------------------------------------------------------------------------ Clean up...
 
                 $scope.$on('$destroy', listeners['CONTINUE_CHECKIN']);
                 $scope.$on('$destroy', listeners['SWIPED_CARD_ADDED']);
                 $scope.$on('$destroy', listeners['STOP_CHECKIN_PROCESS']);
+                $scope.$on('$destroy', listeners['FETCH_REMAINING_AUTH']);
             };
 
             // ------------------------------------------------------------------------------------ Init

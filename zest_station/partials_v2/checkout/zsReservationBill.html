@@ -1,10 +1,10 @@
 <!-- The bill display section -->
 <section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
     <div id="content">
-        <h1>
+        <h1 ng-show="isReservationDetailsFetched">
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
         </h1>
-        <div id="flex-holder">
+        <div id="flex-holder" ng-show="isReservationDetailsFetched">
             <div id="textual" class="review-bill pull-left scrollable" ng-iscroll="bill-list">
                 <div class="wrapper">
                     <div id="bill">
@@ -40,6 +40,17 @@
                                 </div>
                             </div>
                         </div>
+                        <br/>
+                        <br/>
+                    </div>
+                    <h4 style="width: 100%;margin-bottom: 10px;" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length" data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h4>
+                    <div id="payment" ng-show="zestStationData.kiosk_collect_balance && paymentDetails &&  paymentDetails.card_number.length">
+                        <p>
+                            <strong>{{paymentDetails.card_type_name}}</strong><br>
+                            <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{paymentDetails.card_number}}<br>
+                            <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span> {{paymentDetails.card_expiry}}
+                        </p>
+                        <!-- <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a> -->
                     </div>
                     <ul id="rate">
                         <li class="sub">
@@ -105,5 +116,6 @@
     <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
     </div>
     <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    </div>
     </div>
 </div>

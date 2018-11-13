@@ -6,7 +6,7 @@
 		</div>
 	</span>
 	<div class="switch-button single {{buttonClass}}" ng-class="{'on': negativeLogic? !isChecked: isChecked}">
-		<input type="checkbox"  ng-checked="isChecked" ng-model="isChecked" ng-disabled="isDisabled">
+		<input type="checkbox"  ng-checked="isChecked" ng-model="isChecked" ng-disabled="isDisabled" ng-change='handler()' params>
 		<span class="switch-icon"></span>
 	</div>
 </div>

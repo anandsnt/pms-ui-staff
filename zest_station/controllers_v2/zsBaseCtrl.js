@@ -99,24 +99,29 @@ function BaseCtrl($scope) {
     };
 
     $scope.callAPI = function(serviceApi, options) {
-        var options = options ? options : {},
+        var identifier = _.uniqueId('API_REQ_'),
+            options = options ? options : {},
             params = options['params'] ? options['params'] : null,
             loader = options['loader'] ? options['loader'] : 'BLOCKER',
             showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
             successCallBack = options['successCallBack'] ? options['successCallBack'] : options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted,
-            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
+            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : options['onFailure'] ? options['onFailure'] : $scope.fetchedFailed,
             successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
         if (showLoader) {
-            $scope.$emit('showLoader');
+            if ($scope.startActivity) {
+                $scope.startActivity(identifier);
+            }
         }
 
         return serviceApi(params).then(
             // success call back
             function(data) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
+                    if ($scope.stopActivity) {
+                        $scope.stopActivity(identifier);
+                    }
                 }
                 if (successCallBack) {
                     if (successCallBackParameters) {
@@ -129,7 +134,9 @@ function BaseCtrl($scope) {
             // failure callback
             function(error) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
+                    if ($scope.stopActivity) {
+                        $scope.stopActivity(identifier);
+                    }
                 }
                 if (failureCallBack) {
                     if (failureCallBackParameters) {

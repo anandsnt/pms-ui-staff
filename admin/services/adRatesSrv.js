@@ -140,7 +140,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         // get rate details
         this.fetchDetails = function (params) {
             var deferred = $q.defer();
-
+            
             // fetch hotel business date
             that.fetchHotelInfo = function () {
                 var url = "/api/rover_header_info";
@@ -180,6 +180,18 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
                 that.fetchHotelInfo();
             }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.uploadCSVFile = function(params) {
+            var deferred = $q.defer();
+            var url = "/api/rates/upload";
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.results);
+            }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;

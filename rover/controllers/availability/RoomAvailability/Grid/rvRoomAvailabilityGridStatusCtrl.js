@@ -14,6 +14,7 @@ angular.module('sntRover')
                 $scope.toggleStatusOf = {};
                 $scope.toggleStatusOf['availableRooms'] = false;
                 $scope.toggleStatusOf['roomsSold'] = false;
+                $scope.toggleStatusOf['overbooking'] = false;
                 $scope.toggleStatusOf['occupancy'] = false;
                 $scope.toggleStatusOf['roomInventory'] = false;
             };
@@ -28,6 +29,7 @@ angular.module('sntRover')
                 $scope.setScroller('room_availability_scroller', scrollerOptions);
 
                 $scope.hideMeBeforeFetching = false;
+                $scope.isIncludeOverbooking = false;
                 initToggleStatus();
                 $scope.data = rvAvailabilitySrv.getGridData();
 
@@ -67,14 +69,6 @@ angular.module('sntRover')
 
             var hasBestAvailabilityRate = function () {
                 return hasAdditionalData() && !! $scope.data.additionalData.bestAvailabilityRate;
-            };
-
-            var hasRoomTypeWiseDetails = function () {
-                return hasAdditionalData() && !! $scope.data.additionalData.roomTypeWiseDetails;
-            };
-
-            var hasSoldRooms = function () {
-                return hasAdditionalData() && !! $scope.data.additionalData.adultsChildrenCounts;
             };
 
             /** 
@@ -126,6 +120,7 @@ angular.module('sntRover')
                     show = true,
                     multiple = true,
                     promises = [
+                        $scope.toggleOverbooking(show),
                         $scope.toggleOccupancy(show, multiple),
                         $scope.toggleAvailableRooms(show, multiple),
                         $scope.toggleSoldRooms(show, multiple),
@@ -146,6 +141,7 @@ angular.module('sntRover')
                 
                 $scope.toggleRoomInventory();
                 /**/
+                $scope.toggleOverbooking(show);
                 $scope.toggleOccupancy(show);
                 $scope.toggleAvailableRooms(show);
                 $scope.toggleSoldRooms(show);
@@ -170,6 +166,13 @@ angular.module('sntRover')
              * The data required to show these sections are catered through different APIs.
              */
             
+            $scope.toggleOverbooking = toggleSectionGenerator(
+                'overbooking',
+                rvAvailabilitySrv.fetchOverbooking,
+                function() {
+                    return isSectionOpen('overbooking');
+                }
+            );
 
             $scope.toggleOccupancy = toggleSectionGenerator(
                 'occupancy',
@@ -183,7 +186,7 @@ angular.module('sntRover')
                 'availableRooms',
                 rvAvailabilitySrv.getRoomsAvailability,
                 function() {
-                    return isSectionOpen('availableRooms') || hasRoomTypeWiseDetails();
+                    return isSectionOpen('availableRooms');
                 }
             );
 
@@ -191,7 +194,7 @@ angular.module('sntRover')
                 'roomsSold',
                 rvAvailabilitySrv.getOccupancyCount,
                 function() {
-                    return isSectionOpen('roomsSold') || hasSoldRooms();
+                    return isSectionOpen('roomsSold');
                 }
             );
 
@@ -199,7 +202,11 @@ angular.module('sntRover')
                 toggleSection( 'roomInventory', show );
                 $scope.refreshScroller('room_availability_scroller');
             };
-
+            
+            /*
+            * function to toggle the display of individual group/allotmet on clicking
+            * the toogle button
+            */
             $scope.toggleShowGroupAllotmentTotals = function (show) {
                 var deferred = $q.defer(),
                     delay = 100;
@@ -222,8 +229,11 @@ angular.module('sntRover')
 
                 return deferred.promise;
             };
-
-            $scope.$on('PRINT_AVAILABILITY', function (event) {
+            
+            // Listener hash to catch each events
+            var listeners = {};
+            
+            listeners['PRINT_AVAILABILITY'] = $scope.$on('PRINT_AVAILABILITY', function (event) {
                 openAllSections().then(function() {
                     var delay = 500,
                         closeDelay = 1000;
@@ -242,7 +252,7 @@ angular.module('sntRover')
             });
             // --------------------------------------------------------------------------------------------------------------
 
-            $scope.$on('$includeContentLoaded', function (event) {
+            listeners['$includeContentLoaded'] = $scope.$on('$includeContentLoaded', function (event) {
                 $scope.$emit('hideLoader');
                 $scope.refreshScroller('room_availability_scroller');
             });
@@ -252,7 +262,6 @@ angular.module('sntRover')
             var isFullDataAvaillable = function () {
                 return $scope.data.hasOwnProperty('additionalData');
             };
-
 
             var handleDataChange = function (multiple) {
                 $scope.data = rvAvailabilitySrv.getGridData();
@@ -270,9 +279,9 @@ angular.module('sntRover')
             * when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
             */
 
-            $scope.$on('changedRoomAvailableData', handleDataChange);
+            listeners['changedRoomAvailableData'] = $scope.$on('changedRoomAvailableData', handleDataChange);
 
-            $scope.$on('changedGrpNAllotData', function () {
+            listeners['changedGrpNAllotData'] = $scope.$on('changedGrpNAllotData', function () {
                 $scope.data.gridDataForGroupAvailability = rvAvailabilitySrv.getGridDataForGroupAvailability();
                 $scope.data.gridDataForAllotmentAvailability = rvAvailabilitySrv.getGridDataForAllotmentAvailability();
 
@@ -283,12 +292,6 @@ angular.module('sntRover')
             });
 
             /*
-            * function to toggle the display of individual group/allotmet on clicking
-            * the toogle button
-            */
-
-
-            /*
             * param - Holdstatus id
             * return Hold status name
             */
@@ -297,7 +300,6 @@ angular.module('sntRover')
 
                 return found && found.name;
             };
-
 
             /**
              * For iScroll, we need width of the table
@@ -338,7 +340,16 @@ angular.module('sntRover')
 
                 return retCls;
             };
+            // Catching INCLUDE_OVERBOOKING message from parent.
+            listeners['INCLUDE_OVERBOOKING'] = $scope.$on('INCLUDE_OVERBOOKING', function( event, flag ) {
+                $scope.isIncludeOverbooking = flag;
+            });
 
             init();
+            
+            // Destory listeners
+            angular.forEach(listeners, function(listener) {
+                $scope.$on('$destroy', listener);
+            });
         }
     ]);

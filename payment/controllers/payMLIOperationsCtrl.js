@@ -100,6 +100,13 @@ angular.module('sntPay').controller('payMLIOperationsController',
             };
 
             var renderDataFromSwipe = function (event, swipedCardData) {
+                // Discard swipe actions incase of CBA + MLI and if the action is PAYMENT
+                if ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' && !$scope.payment.isAddPaymentMode) {
+                    var errorMessage = ['Wrong Device ! Please use the CBA device to proceed with the payment action'];
+                    
+                    $scope.$emit(payEvntConst.PAYMENTAPP_ERROR_OCCURED, errorMessage);
+                    return;
+                }
                 isSwiped = true;
                 if ($scope.hotelConfig.isEMVEnabled) {
                     $scope.payment.isManualEntryInsideIFrame = true;
@@ -113,6 +120,9 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 $scope.cardData.cardType = swipedCardData.cardType;
                 $scope.payment.screenMode = 'CARD_ADD_MODE';
                 $scope.payment.addCCMode = 'ADD_CARD';
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
             };
 
             var tokenize = function (params) {
@@ -126,7 +136,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
                          *  ending_with: "0088",
                          *  expiry_date: "1217"
                          *  payment_method_id: 35102,
-                         *  token: "123465498745316854"
+                         *  token: "123465498745316854",
+                         *  is_swiped: true
                          * }
                          *
                          * NOTE: In case the request params sends add_to_guest_card: true AND guest_id w/o reservation_id
@@ -138,15 +149,18 @@ angular.module('sntPay').controller('payMLIOperationsController',
                         $scope.$emit('SUCCESS_LINK_PAYMENT', {
                             response: {
                                 id: response.payment_method_id || response.guest_payment_method_id,
+                                guest_payment_method_id: response.guest_payment_method_id,
                                 payment_name: 'CC',
-                                usedEMV: true
+                                usedEMV: true,
+                                addToGuestCard: $scope.payment.addToGuestCardSelected
                             },
                             selectedPaymentType: $scope.selectedPaymentType || 'CC',
                             cardDetails: {
                                 'card_code': cardType.toLowerCase(),
                                 'ending_with': response.ending_with,
                                 'expiry_date': response.expiry_date,
-                                'card_name': ''
+                                'card_name': '',
+                                'is_swiped': response.is_swiped
                             }
                         });
 
@@ -251,6 +265,24 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
             // when destroying we have to remove the attached '$on' events
             $scope.$on('destroy', resetCardEventHandler);
+
+
+            var mockSwipeAction = () => {
+                $scope.selectedPaymentType = 'CC';
+                renderDataFromSwipe({}, sntPaymentSrv.sampleMLISwipedCardResponse);
+            };
+
+            // To Mock MLI swipe - 
+            // Once payment screen is loaded, 
+            // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
+
+            document.addEventListener('MOCK_MLI_SWIPE', () => {
+                $scope.$emit('showLoader');
+                $timeout(() => {
+                    $scope.$emit('hideLoader');
+                    mockSwipeAction();
+                }, 1000);
+            });
 
             /** **************** init ***********************************************/
 

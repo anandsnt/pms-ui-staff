@@ -66,7 +66,7 @@ var CurrencyInfoMappings = {
     'COP': [0, '$', 'COL$'],
     'CRC': [0, '\u20a1', 'CR\u20a1'],
     'CZK': [2, 'K\u010d', 'K\u010d'],
-    'DKK': [18, 'kr', 'kr'],
+    'DKK': [18, 'kr.', 'kr'],
     'DOP': [2, '$', 'RD$'],
     'EGP': [2, '£', 'LE'],
     'EUR': [18, '€', '€'],
@@ -74,7 +74,7 @@ var CurrencyInfoMappings = {
     'HKD': [2, '$', 'HK$'],
     'ILS': [2, '\u20AA', 'IL\u20AA'],
     'INR': [2, '\u20B9', 'Rs'],
-    'ISK': [0, 'kr', 'kr'],
+    'ISK': [0, 'kr.', 'kr'],
     'JMD': [2, '$', 'JA$'],
     'JPY': [0, '¥', 'JP¥'],
     'KRW': [0, '\u20A9', 'KR₩'],
@@ -89,7 +89,7 @@ var CurrencyInfoMappings = {
     'PKR': [0, 'Rs', 'PKRs.'],
     'RUB': [42, 'руб.', 'руб.'],
     'SAR': [2, 'Rial', 'Rial'],
-    'SEK': [2, 'kr', 'kr'],
+    'SEK': [2, 'kr.', 'kr'],
     'SGD': [2, '$', 'S$'],
     'THB': [2, '\u0e3f', 'THB'],
     'TRY': [2, 'TL', 'YTL'],
@@ -592,6 +592,7 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+
 //retrieve month name from index
 function getMonthName(monthIndex){
     var monthName = new Array(12);
@@ -672,7 +673,7 @@ var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
     Object.keys(obj).forEach(function (key) {
         if ( obj[key] != null && typeof obj[key] === 'object') {
             return replaceValueWithinObject(obj[key], findStr, replaceObj);
-        } else if (obj[key] == findStr) {
+        } else if (obj[key] === findStr) {
             obj[key] = replaceObj;
         }
     });
@@ -688,4 +689,32 @@ var isObjectAllValuesEmpty = function (obj) {
         }
     });
     return ( emptyKeys.length == Object.keys(obj).length );
+};
+// Convert the given date object to timezone independent date
+var getTzIndependentDate = function(dateObj) {   
+
+    var r = dateObj.getTime();
+
+    if ( (dateObj.getHours() != 0) || (dateObj.getMinutes() != 0) ) {
+        r += dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    if ( dateObj.getTimezoneOffset() < 0 ) {
+        r -= dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    var adjustedDate = new Date(r)
+
+    if(adjustedDate.isOnDST()){
+        return new Date(r += Math.abs(dateObj.getDSTDifference()) * 60 * 1000);
+    }
+
+    return adjustedDate;
+};
+// Get timezone independent date for the given day, month and year
+var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
+    var d = new Date(year, month-1, day);
+
+    return getTzIndependentDate(d);
+
 };

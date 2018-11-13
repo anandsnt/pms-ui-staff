@@ -1,22 +1,11 @@
-<div class="data-holder">
-    <form class="form inline-form float">
-        <div class="form-title">
-            <h3><span></span> {{'ADD'| translate}} </h3>
-            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
-        </div>
-        <fieldset class="holder left">
-            <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list='socialNetworks' required='yes' selected-Id='newSocialLinkData.type'></ad-dropdown>
-        </fieldset>
-        <fieldset class="holder right">
-            <ad-textbox styleclass="full-width" value="newSocialLinkData.link" label="{{'SOCIAL_NETWORK_URL' | translate}}" placeholder="{{'ENTER_SOCIAL_NETWORK_URL' | translate}}" required="yes"></ad-textbox>
-        </fieldset>
-        <div class="actions float">
-            <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="onCancelAddLink()" translate>
-                CANCEL
-            </button>
-            <button type="button" id="save" class="button green edit-data-inline" ng-click="onPushNewLink()" translate>
-                OK
-            </button>
-        </div>
-    </form>
+<h4 translate><span>{{'ADD'| translate}}</span> Social Network</h4>
+<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list="socialNetworks" required='yes' selected-Id='newSocialLinkData.type' options = "{'showOptionsIf': isLinkAvailable}"></ad-dropdown>
+<ad-textbox inputtype="text" styleclass="full-width" value="newSocialLinkData.link" label="{{'SOCIAL_NETWORK_URL' | translate}}" placeholder="{{'ENTER_SOCIAL_NETWORK_URL' | translate}}" required="yes"></ad-textbox>
+<div class="actions float">
+    <button type="button" id="cancel" class="button blank" ng-click="onCancelAddLink()" translate>
+        CANCEL
+    </button>
+    <button type="button" id="save" class="button green" ng-click="onPushNewLink()" translate>
+        Add Link
+    </button>
 </div>

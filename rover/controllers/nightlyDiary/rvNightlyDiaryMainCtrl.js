@@ -34,6 +34,8 @@ angular.module('sntRover')
                 document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                 document.addEventListener('touchmove', window.touchmovestoppropogate, false);
             });
+            var isFromStayCard = $stateParams.isFromStayCard === 'true';
+
             /*
              * utility method Initiate controller
              * @return {}
@@ -45,7 +47,7 @@ angular.module('sntRover')
 
                 var srvParams = {};
 
-                if ($stateParams.isFromStayCard) {
+                if (isFromStayCard) {
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -178,11 +180,10 @@ angular.module('sntRover')
                     };
 
                     showReservationSelected();
-                    if (!$stateParams.isFromStayCard) {
+                    if (!isFromStayCard) {
                         $scope.$apply();
                     } else {
                         // To fix issue point 3 - QA failed comment - CICO-34410
-                        $stateParams.isFromStayCard = false;
                         srvParams = RVNightlyDiarySrv.getCache();
                         // Selection not showing top bar after unassigning reservation from room assignment
                         if (srvParams.currentSelectedReservationId === '') {
@@ -359,7 +360,7 @@ angular.module('sntRover')
                 };
             };
 
-            if ($stateParams.isFromStayCard) {
+            if (isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
 
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
@@ -387,7 +388,7 @@ angular.module('sntRover')
                 paginationData: $scope.diaryData.paginationData,
                 selectedReservationId: $scope.currentSelectedReservationId,
                 selectedRoomId: $scope.diaryData.selectedRoomId,
-                isFromStayCard: $stateParams.isFromStayCard,
+                isFromStayCard: isFromStayCard,
                 currentSelectedReservation: $scope.currentSelectedReservation,
                 dateFormat: $rootScope.dateFormat,
                 isPmsProductionEnvironment: $rootScope.isPmsProductionEnv

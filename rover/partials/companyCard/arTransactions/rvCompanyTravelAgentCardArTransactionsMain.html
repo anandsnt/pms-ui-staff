@@ -1,14 +1,23 @@
 <!-- Company Card Tab - AR Transactions -->
 <form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-class="{'overlay': !hasPermissionToCreateArAccount()}" >
+    <!--common header for fullscreen mode-->
+    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 
     <div class="tab-header">
+        <div class="ar-balance">
+            <span class="ar-label">AR Balance</span>
+            <strong class="ar-amount" ng-class="{'red': arDataObj.arBalance > 0, 'green': arDataObj.arBalance <= 0 }">
+                <span class="currency">{{currencySymbol}}</span>
+                {{arDataObj.arBalance | number:2}}
+            </strong>
+        </div>
         <div class="search-form has-dates">
             <div class="entry search">
                 <button class="clear-query" ng-click="clearResults()" ng-class="{'visible': filterData.query!=''}">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input name="ar-transaction-query" id="ar--query" class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" ng-change="filterChanged()" ng-model="filterData.query" />
+                <input name="ar-transaction-query" id="arTransactionQuery" class="query" placeholder="Search by Name, Room No. or Confirmation No." type="search" autocomplete="off" ng-keyup="queryEntered()" ng-model="filterData.query" />
             </div>
             <div class="entry dates">
                 <div class="entry-data has-datepicker">

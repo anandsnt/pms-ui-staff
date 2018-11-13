@@ -461,6 +461,14 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         $scope.reservationStatusFlags = computeReservationStatusFlags($scope.ngDialogData);
     };
 
+    // CICO-49191 Get the min date that can be chosen for a group reservation
+    var getReservationMinDate = function (groupInfo) {
+      var minDate = groupInfo.block_from > $rootScope.businessDate ? 
+                    groupInfo.block_from : $rootScope.businessDate;
+
+      return new tzIndependentDate(minDate);
+    };
+
     /**
      * utility function to set datepicker options
      * return - None
@@ -473,7 +481,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
         var commonDateOptions = {
             dateFormat: $rootScope.jqDateFormat,
             numberOfMonths: 1,
-            minDate: new tzIndependentDate(refData.block_from),
+            minDate: getReservationMinDate(refData),
             maxDate: new tzIndependentDate(refData.block_to),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation hide-arrow');

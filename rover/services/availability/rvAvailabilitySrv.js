@@ -215,6 +215,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		// array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [],
+		overbooking				= [],
 		occupancies  			= [],
 		availableRooms   		= [],
 		bookedRooms  			= [],
@@ -234,6 +235,9 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 
 			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
+
+			// Extracting overbooking details
+			overbooking.push(item.house_sell_limit);
 
 			// Extracting Occupancy details
 			occupancies.push(item.occupancy.percentage);
@@ -265,6 +269,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		gridData = {
 			'dates': dates,
+			'overbooking': overbooking,
 			'occupancies': occupancies,
 			'availableRooms': availableRooms,
 			'nonGroupRooms': nonGroupRooms,
@@ -459,7 +464,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		var dataForWebservice = {
 			from_date: firstDate,
-			to_date: secondDate
+			to_date: secondDate,
+			is_include_overbooking: params.is_include_overbooking
 		};
 
 		// Webservice calling section
@@ -850,6 +856,45 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.fetchOverbooking = function(dateRange) {
+            var deferred = $q.defer(),
+                url = '/api/availability/room_type_sell_limits';
+
+            rvBaseWebSrvV2.getJSON(url, dateRange).then(function(response) {
+                var roomTypeNames = [];
+
+                if (!that.data.gridData.additionalData) {
+                    that.data.gridData.additionalData = {};
+                }
+
+                if (response.results.length > 0) {
+                    // Inorder to get the room type names in the order of display fetch the first result set
+                    var firstDayRoomDetails = response.results[0].room_types,
+                        idsInOrder = _.pluck(firstDayRoomDetails, 'id');
+
+                    _.each(idsInOrder, function(roomTypeId) {
+                    	var roomTypeData = {};
+
+                    	roomTypeData.name = _.find(that.data.gridData.roomTypes, {
+                            id: roomTypeId
+                        }).name;
+                        roomTypeData.is_suite = _.find(that.data.gridData.roomTypes, {
+                            id: roomTypeId
+                        }).is_suite;
+                        roomTypeNames.push(roomTypeData);
+                    });
+                }
+                _.extend(that.data.gridData.additionalData, {
+                    'roomTypeWiseOverbookingDetails': _.zip.apply(null, _.pluck(response.results, 'room_types')),
+                    'roomTypeNamesOverbooking': roomTypeNames
+                });
+                deferred.resolve(true);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.getGuestOccupancies = function(dateRange) {
             var deferred = $q.defer(),
                 url = '/api/daily_occupancies/guest_counts';
@@ -894,7 +939,4 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
             return deferred.promise;
         };
-
-	/** *************************************************************************************************/
-
-}]);
+    }]);

@@ -391,7 +391,7 @@
 			$scope.addonFailureMessage = setText(fetchScreenDetails("ADDON-FAILURE").screen_title, "Sorry, This addon can't be added to your reservation");
 			$scope.addonSuccesMessage = setText(fetchScreenDetails("ADDON-SUCCESS").screen_title, "Thanks for the purchase. Your addon will be added to your account.");
 			$scope.addonSelectQty = setText(fetchScreenDetails("ADDON-SELECT-QTY").screen_title, "Select quantity");
-			$scope.addonPurchaseMsg = setText(fetchScreenDetails("ADDON-PURCHASE-MSG").screen_title, "Would you like to add @addon_name@ to your stay?.");
+			$scope.addonPurchaseMsg = setText(fetchScreenDetails("ADDON-PURCHASE-MSG").screen_title, "Would you like to add @addon_name@ to your stay?");
 			$scope.lcoAddonStartingMsg = setText(fetchScreenDetails("LCO-ADDON-STARTING-MSG").screen_title, "Extend your stay till");
 			$scope.lcoAddonEndingMsg = setText(fetchScreenDetails("LCO-ADDON-ENDING-MSG").screen_title, "at");
 			$scope.lcoAddonMainDesciprtion = '';

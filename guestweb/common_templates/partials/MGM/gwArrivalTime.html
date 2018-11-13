@@ -41,7 +41,15 @@
                 <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
                 <span ng-show="showHotelTime" class="sub-main-text">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently  {{hotelTime}} in the hotel’s local time.)</span></p>
                 <br/><br/>
-                <div class="row">
+                 <div class="row">
+                <div class="select-style eta-single">
+                        <select name="timepicker" id="timePicker" ng-model="arrivalTime">
+                            <option value="">select time</option>
+                            <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                        </select>
+                </div>
+                </div>
+               <!--  <div class="row">
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.hour"
@@ -66,7 +74,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <p class="sub-text left-align margin-top-20">LET US KNOW ANY REQUESTS OR COMMENTS</p>
             <div class="row">

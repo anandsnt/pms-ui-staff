@@ -2,7 +2,16 @@ angular.module('sntActivityIndicator', [])
     .directive('activityIndicator',
         function () {
             return {
-                template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ',
+                restrict : 'E',
+                template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ' +
+                '<div ng-show="showTerminalActivity" id="loading">' +
+                '    <div id="six-payment-loader">' +
+                '        <div class="centeralign alert-box">' +
+                '            WAITING FOR PAYMENT COMPLETION' +
+                '        </div>' +
+                '        <div class="waiting-payment">&nbsp;</div>' +
+                '    </div>' +
+                '</div>',
                 controller: ['$log', '$scope', '$timeout', '$rootScope', 'sntActivity',
                     function ($log, $scope, $timeout, $rootScope, sntActivity) {
                         var stats = {
@@ -40,7 +49,7 @@ angular.module('sntActivityIndicator', [])
                 if (_.indexOf(activities, activity) === -1) {
                     activities.push(activity);
                 } else {
-                    $log.error("Duplicate Activity");
+                    $log.error('Duplicate Activity');
                 }
                 updateIndicator();
             };
@@ -54,6 +63,10 @@ angular.module('sntActivityIndicator', [])
                 } else if (index === -1) {
                     $log.warn('trying to stop a non-existent activity...', activity);
                 }
+            };
+
+            service.toggleEMVIndicator = function () {
+                $rootScope.showTerminalActivity = !$rootScope.showTerminalActivity;
             };
 
             service.handleLegacyHide = function () {

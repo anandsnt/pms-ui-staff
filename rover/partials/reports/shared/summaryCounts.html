@@ -66,7 +66,9 @@
 <!-- Accounts Receivable Summary -->
 <ul ng-if="isThisReport( 'AR_SUMMARY_REPORT' )" class="totals">
     <li>Records<span>{{ summaryCounts.records }}</span></li>
-    <li>Balance Amount<span class="red"><span class="currency">{{ summaryCounts.balance_amount | currency:currencySymbol:2 }}</span></span></li>
+    <li>Open Balance<span class="red"><span class="currency">{{ summaryCounts.balance_amount | currency:currencySymbol:2 }}</span></span></li>
+    <li>Credit<span class="green"><span class="currency">{{ summaryCounts.credit_amount | currency:currencySymbol:2 }}</span></span></li>
+    <li>AR Balance<span ng-class="{'green': summaryCounts.ar_balance >= 0, 'red':  summaryCounts.ar_balance < 0}"><span class="currency">{{ summaryCounts.ar_balance | currency:currencySymbol:2 }}</span></span></li>
 </ul>
 
 
@@ -75,6 +77,11 @@
     <li>Early Check In<span>{{ summaryCounts.total_early_checkins }}</span></li>
     <li>Early Check In Revenue<span class="brand-colors"><span class="currency">{{ summaryCounts.total_revenue | currency:currencySymbol:2 }}</span></span></li>
 </ul>
+
+<!-- Arrival -->
+<ul ng-if="isThisReport( 'TAX_EXEMPT' )" class="totals">
+    <li>Total Tax Exempt Reservations<span>{{ summaryCounts.total_count }}</span></li>    
+</ul
 
 <!-- Arrival -->
 <ul ng-if="isThisReport( 'ARRIVAL' )" class="totals">
@@ -189,6 +196,22 @@
     <!-- Hide if not showing Group -->
     <li>Total Deposit Balance<span class="green"><span class="currency">{{summaryCounts.total_deposit_balance | currency:currencySymbol:2 }}</span></span></li>
 </ul>
+
+<!-- Guest/Account Deposit Balance Summary Report -->
+<ul ng-if="isThisReport( 'A/R_AGING' )" class="totals">
+    <li>Payments<span><span class="currency">{{summaryCounts.payments}}</span></span></li>
+    <li>Total Open Balance<span><span class="green"><span class="currency">{{summaryCounts.total_ar_balance | currency:currencySymbol:2 }}</span></span></span></li>
+    <li>0-30 Days<span><span class="currency">{{summaryCounts.days_0_30_sum | currency:currencySymbol:2 }}</span></span>
+    </li>
+    <li>31-60 Days<span><span class="currency">{{summaryCounts.days_31_60_sum | currency:currencySymbol:2 }}</span></span>
+    </li>
+    <li>61-90 Days<span><span class="currency">{{summaryCounts.days_61_90_sum | currency:currencySymbol:2 }}</span></span>
+    </li>
+    <li>91-120 Days<span><span class="currency">{{summaryCounts.days_91_120_sum | currency:currencySymbol:2 }}</span></span>
+    </li>
+    <li>120+ Days<span><span class="currency">{{summaryCounts.days_120_plus_sum | currency:currencySymbol:2 }}</span></span>
+    </li>
+</ul>
 <!-- Web check in -->
 <ul ng-if="isThisReport( 'ACTIONS_MANAGER' )" class="totals">
     <li>Total Actions<span>{{ totalCount}}</span></li>
@@ -229,4 +252,10 @@
 <!-- Departure report -->
 <ul ng-if="isThisReport( 'DEPARTURE' )" class="totals">
     <li>Total Departure Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
+</ul>
+<!-- Yearly vat report -->
+<ul ng-if="isThisReport( 'YEARLY_TAX')" class="totals">
+    <li>Total Gross Revenue<span><span class="currency">{{currencySymbol}}</span>{{ summaryCounts.total_revenue  }}</span></li>
+    <li>Total Tax<span>{{ summaryCounts.total_vat }}</span>
+    </li>  
 </ul>

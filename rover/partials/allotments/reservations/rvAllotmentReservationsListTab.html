@@ -1,4 +1,6 @@
 <form id="allotment-reservations" name="allotment-reservations" ng-click="clearErrorMessage()" class="form card-tab scrollable rooming-list inner-header" ng-controller="rvAllotmentReservationsListCtrl">
+	<!--common header for fullscreen mode-->
+	<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 	<div class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
 		<div class="search-form has-dates" ng-class="{'open': shouldShowAddReservationFields()}">
 			<!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
@@ -241,13 +243,8 @@
 	                    </a>
 	                </li>
 	            </ul>
-	        </div>
-	        <!-- Pagination -->
-		    <div class="search-pagination" ng-show="shouldShowPagination()">
-		        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
-		        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
-		        <p>{{'ACCOUNTS_SHOWING'|translate}}  <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
-		    </div>
+	        </div>	        
+		    <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
 	    </div>
 	</div>
 	<!-- Registration card -->

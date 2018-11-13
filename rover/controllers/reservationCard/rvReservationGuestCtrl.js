@@ -417,6 +417,15 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 				$scope.$emit('hideLoader');
 				$scope.guestData = data;
+				
+				// CICO-51935
+				if ($scope.guestCardData && $scope.guestCardData.contactInfo) {
+					$scope.guestCardData.contactInfo.stayCount = data.primary_guest_details && data.primary_guest_details.stay_count;
+
+					$rootScope.$broadcast('UPDATE_STAY_COUNT', {
+						stayCount: $scope.guestCardData.contactInfo.stayCount 
+					});
+				}				
 
                 $scope.accompanyingGuests = $scope.guestData.accompanying_guests_details ? groupAccompanyingGuestsByType($scope.guestData.accompanying_guests_details) : $scope.accompanyingGuests;
                 applyGuestCountRuleOnAccompanyingGuests($scope.guestData.adult_count, $scope.guestData.children_count, $scope.guestData.infants_count, $scope.accompanyingGuests);
@@ -480,7 +489,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
         // Checks whether the accompany guest label should be shown or not
 
-		var guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+		var guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
 
         $scope.showAccompanyingGuestLabel = function() {
             return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count) > 1 || guestIdAdminEnabled;

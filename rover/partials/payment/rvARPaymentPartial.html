@@ -1,12 +1,12 @@
 <div class="entry full-width" ng-class="{'amount': feeData.showFee}"
      ng-hide="paymentAttempted && !isPaymentFailure">
 
-    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay(<span>{{currencySymbol}}</span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
-           type="number"
-           class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" onpaste="return false"/>
+           type="number" value="{{payment.amount}}" 
+           class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
 
@@ -30,9 +30,9 @@
 
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
 <div class="entry full-width reference"
-     ng-show="isDisplayRef && (!paymentAttempted || isPaymentFailure)">
+     ng-show="((isDisplayRef && (!paymentAttempted || isPaymentFailure)) || actionType === 'AR_REFUND_PAYMENT')">
     <label>Reference</label>
-    <input ng-model="payment.referenceText" type="text"/>
+    <input ng-disabled="actionType === 'AR_REFUND_PAYMENT'" ng-model="payment.referenceText" value="payment.referenceText" type="text"/>
 </div>
 
 <!-- Success feedback -->
@@ -57,7 +57,7 @@
     </ul>
 </div>
 
-<div class="entry full-width" ng-hide="paymentAttempted && !isPaymentFailure">
+<div class="entry full-width" ng-hide="((paymentAttempted && !isPaymentFailure) || actionType === 'AR_REFUND_PAYMENT')">
     <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': payment.allocatePaymentAfterPosting}">
         <span class="icon-form icon-checkbox" ng-class="{'checked': payment.allocatePaymentAfterPosting}"></span>
         <input ng-model="payment.allocatePaymentAfterPosting" id="add-in-guest-card" value="1" type="checkbox" /> {{'ALLOCATE_PAYMENT_AFTER_POSTING' | translate}}
@@ -65,18 +65,25 @@
 </div>
 
 <!-- Buttons -->
-<div class="actions" ng-hide="paymentAttempted && !isPaymentFailure">
-    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
-        CANCEL
-    </button>
-    <button type="button" class="button green" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && !isRefund()">
-        MAKE PAYMENT
-    </button>
-    <button type="button" class="button blue" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && isRefund()">
-        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
-    </button>
+<div ng-hide="paymentAttempted && !isPaymentFailure">
+  <div class="actions" ng-hide="actionType === 'AR_REFUND_PAYMENT'">
+      <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+          CANCEL
+      </button>
+      <button type="button" class="button green" click-touch="submitPayment()"
+              ng-show="!isRefund()">
+          MAKE PAYMENT
+      </button>    
+  </div>
+  <div class="actions" ng-show="actionType === 'AR_REFUND_PAYMENT'">
+      <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+          CLOSE
+      </button>
+      <button type="button" class="button blue" click-touch="submitPayment()"
+              ng-show="isRefund()">
+          REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+      </button>
+  </div>
 </div>
 <div class="actions" ng-show="paymentAttempted && !isPaymentFailure">
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>

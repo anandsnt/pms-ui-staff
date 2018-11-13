@@ -1,0 +1,114 @@
+<div ng-show="hasNoResults" class="report-content no-content">
+    <div class="info">
+        <span class="icon-no-content icon-reports"></span>
+        <strong class="h1">No reports found</strong>
+        <span class="h2">Try changing search criteria or modify dates</span>
+    </div>
+</div>
+<!-- Report content -->
+<div id="report-content" class="report-content grid scrollable" ng-hide="hasNoResults"  ng-iscroll="report-details-scroll" ng-controller="RVYearlyTaxReportDetailsController">
+    <div class="wrapper">
+        <ul class="grid-header vat-report">
+            <li>Revenue</li>
+            <li>TAX</li>
+        </ul>
+        <!-- Level 1 - With VAT ID -->
+        <a ng-click="setResultWithVatCollapsedOrNot()" class="title-1 has-arrow toggle vat-report" ng-class="{'active': results.with_vat_id.isCollapsed}" ng-show="results.with_vat_id"> <!-- Toggle class 'active' when clicked -->
+
+            <strong>Cards With Tax ID</strong>
+            <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_revenue | number: precisonTwo }}</span>
+            <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_vat | number: precisonTwo }}</span>
+        </a>
+        <div id="with-vat-id" class="grid-content vat-report" ng-class="{'hidden': !results.with_vat_id.isCollapsed}"> <!-- Toggle class hidden when L89-L93 is clicked -->
+                
+            
+                <!-- Level 2 - Companies -->
+                <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report" ng-click="clickedGetRevenueAndTax('WITH_VAT_ID', accountsWithVatId.account_type_id)" ng-class="{'active': accountsWithVatId.isCollapsed}" ng-repeat-start="accountsWithVatId in results.with_vat_id.accounts"> <!-- Toggle class 'active' when clicked -->
+                    <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies </strong>
+                    <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents </strong>
+                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_revenue | number: precisonTwo }}</span>
+                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_vat | number: precisonTwo }}</span>
+                </a>
+                <table id="with-vat-company" class="grid-content" ng-class="{'hidden': !accountsWithVatId.isCollapsed}" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
+                    <thead>
+                        <tr>
+                            <th class="number"><span>Tax ID</span></th>
+                            <th class="number"><span>AR Number</span></th>
+                            <th><span>Name</span></th>
+                            <th class="revenue"><span>Revenue</span></th>
+                            <th class="revenue"><span>TAX</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat = "revenueData in accountsWithVatId.revenueData">
+                            <td class="number">{{revenueData.vat_id}}</td>
+                            <td class="number">{{revenueData.ar_number}}</td>
+                            <td>{{revenueData.name}}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
+                        </tr>
+                       <!-- ... repeat L112-L118 for every company-->
+                    </tbody>
+                </table>
+
+            </span>
+        </div>
+        
+         <!-- Level 1 - Without Tax ID -->
+            <a href="#without-vat-id " ng-click="setResultWithOutVatCollapsedOrNot()" class="title-1 has-arrow toggle vat-report" ng-class="{'active': results.without_vat_id.isCollapsed}" ng-show="results.without_vat_id"> <!-- Toggle class 'active' when clicked -->
+
+                
+                <strong> Cards Without Tax ID</strong>
+                <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_revenue | number: precisonTwo }}</span>
+                <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_vat | number: precisonTwo }}</span>
+            </a>
+      
+        <div id="without-vat-id" class="grid-content vat-report" ng-class="{'hidden': !results.without_vat_id.isCollapsed}" > <!-- Toggle class hidden when L136-L140 is clicked -->
+           
+            
+                <!-- Level 2 - Companies -->
+                <a class="title-2 has-arrow toggle vat-report" ng-click="clickedGetRevenueAndTax('WITHOUT_VAT_ID', accountsWithOutVatId.account_type_id, accountsWithOutVatId.isCollapsed)" ng-class="{'active': accountsWithOutVatId.isCollapsed}" ng-repeat-start="accountsWithOutVatId in results.without_vat_id.accounts"> <!-- Toggle class 'active' when clicked -->
+                    <strong ng-show="accountsWithOutVatId.account_type === 'COMPANY'">Companies</strong>
+                    <strong ng-show="accountsWithOutVatId.account_type === 'TRAVELAGENT'">Travel Agents </strong>
+
+                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_revenue | number: precisonTwo }}</span>
+                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_vat | number: precisonTwo }}</span>
+                </a>
+                <table id="with-vat-company" class="grid-content vat-report" ng-class="{'hidden': !accountsWithOutVatId.isCollapsed}" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
+                    <thead>
+                        <tr>
+                            <th class="number"><span>Tax ID</span></th>
+                            <th class="number"> <span>AR Number</span></th>
+                            <th><span>Name</span></th>
+                            <th class="revenue"><span>Revenue</span></th>
+                            <th class="revenue"><span>TAX</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         <tr ng-repeat = "revenueData in accountsWithOutVatId.revenueData">
+                            <td >{{revenueData.vat_id}}</td>
+                            <td >{{revenueData.ar_number}}</td>
+                            <td>{{revenueData.name}}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
+                        </tr>
+                       <!-- ... repeat L112-L118 for every company-->
+                    </tbody>
+                </table>
+
+           
+        </div>
+
+        <ul class="grid-footer">
+            <li>
+                Yearly TAX for <span>{{chosenReport.year}}</span><br>
+                Company / Travel Agent <span ng-show="results.with_vat_id">with Tax ID</span> 
+                <span ng-show="results.with_vat_id && results.without_vat_id">, </span> <span ng-show="results.without_vat_id">without Tax ID</span>
+            </li>
+            <li>
+                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+            </li>
+        </ul>
+    </div>
+</div>

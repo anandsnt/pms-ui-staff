@@ -5,6 +5,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.heading = "Find Cards";
 		// model used in query textbox, we will be using this across
 		$scope.textInQueryBox = "";
+		$scope.hasArNumber = false;
 		$scope.$emit("updateRoverLeftMenu", "cards");
 		$scope.results = [];
 		var successCallBackofInitialFetch = function(data) {
@@ -55,7 +56,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * function to perform filtering/request data from service in change event of query box
 		 */
 		$scope.queryEntered = _.debounce(function() {
-			if ($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3) {
+			if ($scope.textInQueryBox === "") {
 				$scope.results = [];
 			} else {
 				displayFilteredResults();
@@ -75,8 +76,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
-			// if the entered text's length < 3, we will show everything, means no filtering
-			if ($scope.textInQueryBox.length < 3) {
+			if (!$scope.textInQueryBox.length) {
 				// based on 'is_row_visible' parameter we are showing the data in the template
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;
@@ -104,7 +104,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				// last hope, we are looking in webservice.
 				if (visibleElementsCount === 0) {
 					var dataDict = {
-						'query': $scope.textInQueryBox.trim()
+						'query': $scope.textInQueryBox.trim(),
+						'has_ar_number': $scope.hasArNumber
 					};
 
 					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);

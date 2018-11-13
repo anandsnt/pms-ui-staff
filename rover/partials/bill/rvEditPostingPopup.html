@@ -41,12 +41,23 @@
             <div class="entry full-width">
                 <textarea placeholder="Adjustment reason" ng-model="adjustmentReason" rows="2"></textarea>
             </div>
+            <!-- Reference  -->
+            <div class="entry full-width break">
+                <label for="reference">Reference</label>
+                <input id="reference" placeholder="Enter reference" value="" ng-model="reference_text" type="text" />
+                <label class="checkbox inline" ng-class="{'checked': show_ref_on_invoice}"> <!-- Add class 'checked' when L135 is checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': show_ref_on_invoice}"></span> <!-- Add class 'checked' when L135 is checked -->
+                    <input type="checkbox" ng-model="show_ref_on_invoice">
+                    Show Reference on Guest Invoice
+                </label>
+            </div
             <!-- Preview, hidden until amount edited or charge code changed -->
             <div id="edit-preview" class="entry full-width notice" ng-show="selectedChargeCode.description.length>0 || newAmount.length>0">
                 <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
                 <ul>
                     <li>
                         <strong class="flag" translate>ADJUSTMENT</strong>
+
                         <span ng-hide="selectedChargeCode">
                         {{selectedTransaction.desc}} </span>
                         <span ng-show="selectedChargeCode">{{selectedChargeCode.description}}</span>               
@@ -55,7 +66,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge(newAmount, selectedChargeCode, adjustmentReason)">{{getEditChargeButtonText() | translate}}</button>
+                <button type="button" class="button green modal-close guest-bill-edit-buttons" ng-click="editCharge()">{{getEditChargeButtonText() | translate}}</button>
                 <button type="button" class="button blank guest-bill-edit-buttons" ng-click="callActionsPopupAction('close')" translate>CANCEL</button> 
             </div>
         </fieldset>

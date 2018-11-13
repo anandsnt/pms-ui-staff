@@ -6,7 +6,9 @@ module.exports = {
             
             return {
                 minifiedFiles: [
-                    sharedJs + 'jquery.qtip.min.js' // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jquery.qtip.min.js', // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jsZip/jszip.min.js',
+                    sharedJs + 'fileSaver/filesaver.min.js'
                 ],
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
@@ -33,6 +35,11 @@ module.exports = {
                     controllerRoot + "smartbands/**/**.js",
                     controllerRoot + "validateCheckout/**/**.js",
                     controllerRoot + "validateCheckin/**/**.js",
+                    controllerRoot + "guestCardBaseCtrl.js",
+                    controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",
+                    controllerRoot + 'rvStatisticsBaseCtrl.js',
+                    controllerRoot + 'guests/rvGuestCardStatisticsCtrl.js',
+                    controllerRoot + "rvGuestCompanyTravelAgentStatisticsCtrl.js",
 
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
@@ -52,8 +59,17 @@ module.exports = {
                     servicesRoot + "rvLoyaltyProgramSrv.js",
                     servicesRoot + "bill/rvBillCardSrv.js",
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardActivityLogSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",
-                    servicesRoot + "nightlyDiary/**/*.js"
+                    servicesRoot + "nightlyDiary/**/*.js",
+                    servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",
+                    servicesRoot + "roomAssignment/rvUpgradesSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
+                    servicesRoot + 'guestcard/rvGuestCardSrv.js',			    
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ]
             };
 	}

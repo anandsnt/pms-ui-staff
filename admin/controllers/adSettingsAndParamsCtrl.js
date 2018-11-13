@@ -23,6 +23,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.selected_group_charge_code = settingsAndParamsData.group_charge_code_id;
     $scope.emailRecipientsForEodReports = settingsAndParamsData.email_recipients_for_eod_reports;
     $scope.check_guest_auth_for_interface_postings = settingsAndParamsData.check_guest_auth_for_interface_postings;
+    $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
 
     /**
     * To handle save button action
@@ -43,7 +44,8 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
         					"cc_batch_processing": $scope.cc_batch_processing,
         					"cc_auto_settlement_by_eod": $scope.cc_auto_settlement_by_eod,
                             "email_recipients_for_eod_reports": $scope.emailRecipientsForEodReports,
-                            "check_guest_auth_for_interface_postings": $scope.check_guest_auth_for_interface_postings
+                            "check_guest_auth_for_interface_postings": $scope.check_guest_auth_for_interface_postings,
+                            "auto_charge_deposit": $scope.auto_charge_deposit
         				};
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);

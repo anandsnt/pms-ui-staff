@@ -1,9 +1,9 @@
 <div class="ng-scope" ng-include="'/assets/partials/common/notification_message.html'"></div>
 <!-- Drop down to select payment method -->
-<div id="payment-type" class="entry full-width" ng-show="payment.screenMode === 'PAYMENT_MODE'">
+<div id="payment-type" class="entry full-width" ng-show="payment.screenMode === 'PAYMENT_MODE' && (!paymentAttempted || isPaymentFailure)">
     <label for="payment-type" translate>PAYMENT_TYPE</label>
-    <div class="select">
-        <select ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
+    <div class="select" >
+        <select ng-disabled="actionType === 'AR_REFUND_PAYMENT'" ng-options="paymentData.name as paymentData.description for paymentData in paymentTypes"
                 ng-model="selectedPaymentType" ng-change="onPaymentInfoChange(true)">
             <option value="" translate>SELECT_PAYMENT_TYPE</option>
         </select>
@@ -28,7 +28,7 @@
     </div>
 </div>
 <!-- Display the selected Credit card details -->
-<div id="selected-card" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
+<div id="selected-card" ng-class="{'overlay': actionType === 'AR_REFUND_PAYMENT'}" class="entry full-width" ng-click="onCardClick()" ng-show="showSelectedCard()">
     <label>Credit Card (<span>Tap to change</span>)</label>
     <label class="active-item item-payment">
         <figure class="card-logo">

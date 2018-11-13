@@ -1,5 +1,5 @@
-angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout', '$rootScope',
-    function($q, $http, $log, $timeout, $rootScope) {
+angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout', '$rootScope', 'sntPaymentSrv',
+    function($q, $http, $log, $timeout, $rootScope, sntPaymentSrv) {
         var service = this,
             isCheckLastTransactionInProgress = false,
             cordovaAPI = new CardOperation(),
@@ -19,8 +19,15 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                 TO: 'MA'
             };
 
-        // cordovaAPI = new CBAMockOperation();
-
+        // To Mock CBA actions - 
+        // Once payment screen is loaded, 
+        // In browser console call document.dispatchEvent(new Event('MOCK_CBA')) 
+    
+        
+        document.addEventListener('MOCK_CBA', () => {
+            cordovaAPI = new CBAMockOperation();
+            sntPaymentSrv.mockCba = true;
+        });
         /**
          *
          * @param amount
@@ -65,10 +72,13 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                 "external_print_data": cordovaResponse.custom_data,
                 "external_message": null,
                 "payment_method": {
+                    "payment_type": "CBA",
+                    "do_not_attach_cc_to_bill": true,
                     "card_name": cordovaResponse.card_name,
                     "card_expiry": formattedExpiry,
-                    "card_number": cordovaResponse.pan,
-                    "credit_card_type": cordovaResponse.card_type
+                    "mli_token": cordovaResponse.pan, // For MLI payment gateway with CBA
+                    "credit_card_type": cordovaResponse.card_type,
+                    "card_number": cordovaResponse.pan
                 }
             });
         };

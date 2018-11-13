@@ -2,8 +2,8 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 	'$scope',
 	'$state',
 	'zsEventConstants',
-	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window', 'zsUtilitySrv',
-	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window, zsUtilitySrv) {
+	'$stateParams', 'zsCheckinSrv', '$rootScope', '$window', 'zsUtilitySrv', 'zsReceiptPrintHelperSrv',
+	function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $rootScope, $window, zsUtilitySrv, zsReceiptPrintHelperSrv) {
 
 		/** ********************************************************************************************
 		 **      Expected state params -----> guest_id    
@@ -65,13 +65,28 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 *	======[ READY TO PRINT ]======
 			 */
 			setTimeout(function() {
-				if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
-					var printer = (sntZestStation.selectedPrinter);
+				if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
+					var receiptPrinterParams = zsReceiptPrintHelperSrv.setUpOwsMessageForReceiptPrinter($scope.currentOwsMessage, $scope.zestStationData);
 
-					cordova.exec(
-						onPrintSuccess(), // print complete, should go to final screen
-						onPrintError(), // if print error, inform guest there was an error
-						'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+					if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+						cordova.exec(
+							onPrintSuccess,
+							function() {
+								// To ensure the error message from receipt printer is not recorded,
+                                //  we will show our generic print error message
+								onPrintError();
+							},
+							'RVCardPlugin',
+							'printReceipt',
+							[ receiptPrinterParams ]);
+					} else {
+						cordova.exec(
+							onPrintSuccess,
+							onPrintError,
+							'RVCardPlugin',
+							'printWebView', ['filep', '1', $scope.zestStationData.defaultPrinter]);
+					}
+
 				} else {
 					$window.print();
 				}

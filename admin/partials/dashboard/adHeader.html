@@ -40,12 +40,12 @@
 
          ng-repeat="bookmark in bookMarks"
          data-drag="true"
-         data-jqyoui-options="{revert: 'invalid'}"
+         data-jqyoui-options="{revert: 'invalid', delay: 300}"
 
          jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}"
 
          ng-model="bookMarks"
-         ng-hide="!bookmark.name" ng-click="clickedMenuItem($event, bookmark.state)">
+         ng-hide="!bookmark.name" touch-press="clickedMenuItem($event, bookmark.state)">
 
 		    {{bookmark.name}}
 

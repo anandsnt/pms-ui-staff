@@ -1,0 +1,75 @@
+<span class="message h2">Financial Settings</span>
+<div class="scrollable" ng-iscroll="financialSettingsList" ng-iscroll-delay="100">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+    <table class="table-settings">
+        <tbody>
+            <tr>
+                <td>Lock Bill</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_bill_lock_enabled}">
+                        <!-- remove checked when not active-->
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_bill_lock_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-hide="true">
+                <td>Show Folio Number on Bill</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button on">
+                        <!-- remove checked when not active-->
+                        <input name="folio-on-bill" id="folio-on-bill" value="folio-on-bill" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            
+             <tr>
+                <td>Restrict AR Invoice changes</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.no_modify_invoice}">
+                        <!-- remove checked when not active-->
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.no_modify_invoice" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Restrict Invoice reprint / Re-email</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.no_reprint_reemail_invoice}">
+                        <!-- remove checked when not active-->
+                        <input name="no-reprint" id="no-reprint" ng-model="legalSettings.no_reprint_reemail_invoice" value="no-reprint" type="checkbox" >
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-hide="true">
+                <td>Void Bill</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button on">
+                        <!-- remove checked when not active-->
+                        <input name="void-bill" id="void-bill" value="void-bill" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-hide="true">
+                <td>Folio Number Prefix</td>
+                <td>
+                    <input type="text" placeholder="Enter Prefix"> 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <button class="button blank" ng-click="closeDialog()">Cancel</button>
+    <button class="button green" ng-click="saveLegalSettings()">Save Changes</button>
+</div>

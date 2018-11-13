@@ -21,7 +21,10 @@ module.exports = {
 				loginRoot + 'loginApp.js',
 				loginRoot + 'loginRouter.js',
 				loginRoot + '**/*.js',
-				'!'+loginRoot+'loginJsAssetList.js'
+				'!'+loginRoot+'loginJsAssetList.js',
+                // Eliminate all spec files
+                '!**/*.spec.js',
+                '!**/*.conf.js'
 			]	
 		};
 		return loginJsAssets;

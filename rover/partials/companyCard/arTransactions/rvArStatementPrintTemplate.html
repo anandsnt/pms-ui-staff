@@ -3,7 +3,7 @@
         <img ng-src="{{printData.hotel_logo}}" alt="" />
         <h1>{{printData.hotel_name}}</h1>
         <span ng-bind-html="printData.hotel_address"></span>
-        <span class="type" translate>STATEMENT</span>
+        <span class="type">{{printData.translation.statement}}</span>
     </div>
 
     <div class="statement-header">
@@ -12,11 +12,11 @@
             <span ng-bind-html="printData.card_details.address"></span>
         </div>
         <div class="statement-info">
-            <p class="statement-meta"><strong translate>STATEMENT_DATE</strong>{{printData.statement_date}}</p>
-            <p class="statement-meta" ng-if="printData.account_type === 'COMPANY'"><strong translate>CORPORATE_ID</strong>{{printData.corporate_id}}</p>
-            <p class="statement-meta" ng-if="printData.account_type === 'TRAVELAGENT'"><strong translate>IATA_NO</strong>{{printData.iata_no}}</p>
-            <p class="statement-meta"><strong translate>INVOICE_NO</strong>{{printData.invoice_no}}</p>
-            <p class="statement-meta"><strong translate>PAYMENT_DUE_DAYS</strong>{{printData.payment_due_days}}</p>
+            <p class="statement-meta"><strong >{{printData.translation.statement_date}}</strong>{{printData.statement_date}}</p>
+            <p class="statement-meta" ng-if="printData.account_type === 'COMPANY'"><strong >{{printData.translation.corp_id}}</strong>{{printData.corporate_id}}</p>
+            <p class="statement-meta" ng-if="printData.account_type === 'TRAVELAGENT'"><strong >{{printData.translation.iata_number}}</strong>{{printData.iata_no}}</p>
+            <p class="statement-meta"><strong >{{printData.translation.invoice_number}}</strong>{{printData.invoice_no}}</p>
+            <p class="statement-meta"><strong >{{printData.translation.payment_due_dates}}</strong>{{printData.payment_due_days}}</p>
         </div>
     </div>
 
@@ -26,15 +26,15 @@
 
     <div class="invoice-body">
         <table class="invoice-details">
-            <thead>
+            <thead style="display:table-row-group;">
                 <tr>
                     <th></th>
-                    <th class="charge-date" translate>DATE_OF_CHARGE</th>
-                    <th class="charge-code" translate>CHARGE_CODE</th>
-                    <th class="charge-description" translate>CHARGE_DESCRIPTION</th>
-                    <th class="align-right" translate>DEBITS</th>
-                    <th class="align-right" translate>CREDITS</th>
-                    <th class="align-right" translate>AMOUNT_DUE</th>
+                    <th class="charge-date" ><strong>{{printData.translation.date_of_charge}}</strong></th>
+                    <th class="charge-code" ><strong>{{printData.translation.charge_code}}</strong></th>
+                    <th class="charge-description" ><strong>{{printData.translation.charge_description}}</strong></th>
+                    <th class="align-right charge-amount" ><strong>{{printData.translation.debits}}</strong></th>
+                    <th class="align-right charge-amount" ><strong>{{printData.translation.credits}}</strong></th>
+                    <th class="align-right charge-amount-title" ><strong>{{printData.translation.amount_due}}</strong></th>
                 </tr>
             </thead>
             <tbody>
@@ -43,15 +43,15 @@
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
-                            <strong translate>RESERV_NO</strong>
+                            <strong >{{printData.translation.reservation_no}}</strong>
                             {{statement.reservation_no}}
                         </span>
                         <span class="person-meta">
-                            <strong translate>ARRIVAL_DATE</strong> 
+                            <strong >{{printData.translation.arrival_date}}</strong> 
                             {{statement.arrival_date | date:dateFormat }}
                         </span>
                         <span class="person-meta">
-                            <strong translate>DEPARTURE_DATE</strong> 
+                            <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
                         </span>
                     </td>
@@ -90,15 +90,15 @@
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
-                            <strong translate>ACCOUNT_NO</strong> 
+                            <strong >{{printData.translation.account_no}}</strong> 
                             {{statement.account_no}}
                         </span>
                         <span class="person-meta" ng-if="statement.arrival_date">
-                            <strong translate>ARRIVAL_DATE</strong> 
+                            <strong >{{printData.translation.arrival_date}}</strong> 
                             {{statement.arrival_date | date:dateFormat }}
                         </span>
                         <span class="person-meta" ng-if="statement.departure_date">
-                            <strong translate>DEPARTURE_DATE</strong> 
+                            <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
                         </span>
                     </td>
@@ -137,7 +137,7 @@
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
-                            <strong translate>DEPARTURE_DATE</strong> 
+                            <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
                         </span>
                     </td>
@@ -188,12 +188,12 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="6"><strong translate>TOTAL_AMOUNT</strong></td>
+                    <td colspan="6"><strong >{{printData.translation.total_amount}}</strong></td>
                     <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount | number: precisonTwo}}</strong></td>
                 </tr>
 
                 <tr>
-                    <td colspan="6"><strong translate>TOTAL_AMOUNT_DUE</strong></td>
+                    <td colspan="6"><strong >{{printData.translation.total_amount_due}}</strong></td>
                     <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount_due | number: precisonTwo}}</strong></td>
                 </tr>
 
@@ -209,10 +209,10 @@
         <table class="invoice-details tax-breakdown" ng-if="printData.has_enabled_extended_tax_breakdown">
             <thead>
                 <tr>
-                    <th class="tax-description" translate>TAX_DESCRIPTION</th>
-                    <th translate>GROSS</th>
-                    <th translate>NET</th>
-                    <th translate>TAX</th>
+                    <th class="tax-description" ><strong>{{printData.translation.tax_description}}</strong></th>
+                    <th ><strong>{{printData.translation.gross}}</strong></th>
+                    <th ><strong>{{printData.translation.net}}</strong></th>
+                    <th ><strong>{{printData.translation.tax}}</strong></th>
                 </tr>
             </thead>
             <tbody>
@@ -233,7 +233,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td>Total</td>
+                    <td>{{printData.translation.total}}</td>
                     <td>
                         <span class="currency">{{currencySymbol}}</span>{{printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo}}
                     </td>

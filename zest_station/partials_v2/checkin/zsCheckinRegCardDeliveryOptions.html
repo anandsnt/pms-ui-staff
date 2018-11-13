@@ -99,8 +99,11 @@
         </span>
         <strong>{{printRegCardData.room_number}}</strong>
     </div>
+    <div class="room" ng-if="printRegCardData.show_room_pin">
+         <span style="font-size: 18pt;"> {{ 'ROOM_PIN_TEXT' | translate }} &nbsp;<span  style="font-weight: 700;">{{ printRegCardData.room_pin }}</span></span>
+    </div>
     <!-- If text outputs multiple <p> tags then wrap it with <div class="terms"> instead of <p id="terms"> -->
-    <p class="terms">{{printRegCardData.reg_card_text}}</p>
+    <p class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.reg_card_text)" style="width:80%; margin: 0 auto;"></p>
 </section>
 <div class="room page-print" ng-show="theme === 'yotel'">
         <section id="registration-card" class="page-print">

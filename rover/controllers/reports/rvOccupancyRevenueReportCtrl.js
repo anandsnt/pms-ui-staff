@@ -197,6 +197,21 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.refreshScroller('leftPanelScroll');
 		}
 
+		// Add selected attribute to those markets which were chosen while running the report
+		var tagSelectedMarkets = function(selectedMarketIds) {
+			if (!selectedMarketIds) {
+				return;
+			}
+			_.each( $scope.markets.data, function(market) {
+				var isSelected = _.find( selectedMarketIds, { value: market.value} );
+
+				if (isSelected) {
+					market.selected = true;
+				}
+
+			});
+		};
+
 		function init() {
 
 			// dont init if there is an API error
@@ -213,17 +228,27 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.marketExists = false;
 			// since we moved these from main controller
             // CICO-38515 - Copied the market list which is already set
-			$scope.markets = angular.copy(chosenReport.hasMarketsList);
-            // CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
-            // Here the api provides the data for the "UNASSIGNED" ones
-            $scope.markets.data.pop();
+			$scope.markets = JSON.parse(JSON.stringify(chosenReport.hasMarketsList));
+            
+            $scope.isUndefinedMarketSelected = false;
+
+            // CICO-54574
+            if ($rootScope.isBackgroundReportsEnabled) {
+            	tagSelectedMarkets(chosenReport.appliedFilter.market_ids);
+            }            
 
 			angular.forEach($scope.markets.data, function(marketValue, index) {
-				if (marketValue.hasOwnProperty("selected")) {
-					$scope.marketExists = true;
+				if (marketValue.hasOwnProperty("selected") && marketValue.selected) {
+					$scope.marketExists = true;					
 					return true;
 				}
 			});
+
+
+			// CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
+            // Here the api provides the data for the "UNASSIGNED" ones
+           _.find($scope.markets.data,  {name: 'UNDEFINED'}).name = "Unassigned";
+            
 
 			// deep check if we have these flags choosen by the user
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });

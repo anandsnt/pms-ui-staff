@@ -37,16 +37,21 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 
 
 	};
+
+
 	$scope.clickChargeButton = function() {
 		choosedNoCharge = false;
 
 		var options = {
             params: {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-				"room_no": $scope.assignedRoom.room_number,
+				"room_no": $scope.assignedRoom ? $scope.assignedRoom.room_number : "",
 				"upsell_amount": $scope.roomCharge,
-				"forcefully_assign_room": wanted_to_forcefully_assign,
-				"is_preassigned": $scope.assignedRoom.is_preassigned
+				"forcefully_assign_room": !!$scope.overbooking.isOpted && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') ? true : wanted_to_forcefully_assign, // CICO-47546
+				"is_preassigned": $scope.assignedRoom.is_preassigned,
+				// CICO-55101
+				"change_roomtype_alone": !$scope.assignedRoom,
+				'room_type': !$scope.assignedRoom ? $scope.getCurrentRoomType().type : ''
 			},
             successCallBack: $scope.successCallbackUpgrade,
             failureCallBack: $scope.failureCallbackUpgrade
@@ -163,11 +168,14 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 		var options = {
             params: {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-				"room_no": $scope.assignedRoom.room_number,
-				"forcefully_assign_room": wanted_to_forcefully_assign,
+				"room_no": $scope.assignedRoom ? $scope.assignedRoom.room_number : "",
+				"forcefully_assign_room": !!$scope.overbooking.isOpted && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') ? true : wanted_to_forcefully_assign, // CICO-47546
 				"is_preassigned": $scope.assignedRoom.is_preassigned,
-                upsell_amount: "0" // CICO-44174 Pass 0 in upsell_amount if they select "No Charge".
-                // This will ensure that we override configured upsell amount to $0 if they select "No Charge"
+                upsell_amount: "0", // CICO-44174 Pass 0 in upsell_amount if they select "No Charge".
+				// This will ensure that we override configured upsell amount to $0 if they select "No Charge"
+				// CICO-55101
+				'change_roomtype_alone': !$scope.assignedRoom,
+				'room_type': !$scope.assignedRoom ? $scope.getCurrentRoomType().type : '' 
 			},
             successCallBack: $scope.successCallbackUpgrade,
             failureCallBack: $scope.failureCallbackUpgrade,

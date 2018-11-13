@@ -32,7 +32,10 @@ module.exports = {
 				diaryViewRoot + "diary-timeline.js",
 				diaryViewRoot + "diary-timeline-panel.js",
 				diaryViewRoot + "diary-grid-panel.js",
-				diaryViewRoot + "diary-content.js"
+				diaryViewRoot + "diary-content.js",
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 

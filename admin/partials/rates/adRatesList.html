@@ -7,6 +7,8 @@
 
 			<a class="action import" ng-click="importFromPms($event)" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 
+			<a class="action import" ng-click="openCsvUploadPopup()" ng-show="isConnectedToPMS" translate>UPLOAD_CSV</a>
+
 			<div class="filters">
 				<div class="filter select">
 					<div class="entry">
@@ -23,20 +25,26 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			
-			
 			<span class="count-show">Show</span>
 			<div class="select table-count rates-table-count">
 				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 			</div>
 			<span class="count-entries">entries</span>
-				
-			<div class="entry table-search">
-				<span class="search-text">Search</span>
-				<span class="icons icon-search" name="submit" type="submit"></span>
-				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
-		    </div>
-			
+
+			<div class="table-filters">
+				<div class="entry pull-left" ng-hide="searchTerm !== ''">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{'checked': showInactiveRates}"></span>
+						<input type="checkbox" name="inactive" ng-click="toggleInactiveRates()"/>
+						Show inactive rates
+					</label>
+				</div>
+				<div class="entry table-search">
+					<span class="search-text">Search</span>
+					<span class="icons icon-search" name="submit" type="submit"></span>
+					<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+				</div>
+			</div>
 
 			<div id="new-form-holder"></div>
 			<!--ng-table component -->
@@ -68,13 +76,12 @@
 							</span>
 						</td>
 						<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-15" ng-hide="currentClickedElement == $index">
-							<div class="entry" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
+							<div class="entry" ng-class="{'overlay' : rate.is_global_contract}" ng-click="toggleActive(rate.id,rate.status,rate.is_activation_allowed)">
 								<div class="switch-button single" ng-class="{'on': rate.status}">
 									<input type="checkbox"  ng-checked="rate.status">
 									<span class="switch-icon"></span>
 								</div>
 							</div>
-							<!-- {{rate.status ? 'ACTIVE' : 'INACTIVE'}} -->
 						</td>
 						<td header-class="width-10" ng-hide="currentClickedElement == $index">
 							 <span class="icons delete_small cursor_pointer" ng-click="deleteRate(rate.id)" ng-hide="false">&nbsp;</span>

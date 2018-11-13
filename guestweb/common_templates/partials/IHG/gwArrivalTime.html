@@ -1,0 +1,56 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-show="isLoading && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-in at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- main content -->
+    <div class="row" ng-hide="isLoading || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text">Check In</p>
+                <p class="sub-text left-align">What time will you be arriving?</p>
+                <p ng-show="showHotelTime" class="sub-text margin-top-10" style="font-size: 10px !important;color: #808080;">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently {{hotelTime}} in the hotel’s local time.)</p>
+                <div class="row first-field">
+                    <div class="select-style eta-single">
+                        <select name="timepicker" id="timePicker" ng-model="arrivalTime">
+                            <option value="">select time</option>
+                            <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="sub-text left-align margin-top-20">LET US KNOW ANY REQUESTS OR COMMENTS</p>
+                <div class="row margin-top-10">
+                    <textarea rows="5" cols="50" ng-model="stayDetails.comment" class=" text-comment col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
+                    </textarea>
+                </div>
+                <p class="sub-text margin-top-20" style="font-size: 10px !important;color: #808080;">While we are unable to guarantee check in prior to {{hotelCheckinTime}},  we will do our best to accommodate requests based on availability.</p>
+                <!--  submit button-->
+                <button class="btn btn-template margin-top-20" ng-click="postStayDetails()">Continue</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>

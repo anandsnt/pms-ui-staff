@@ -3,7 +3,7 @@
   This displays the available rooms for upgrading.
 */
 (function() {
-  var checkinUpgradeRoomController = function($scope, $location, $rootScope, checkinRoomUpgradeOptionsService, checkinRoomUpgradeService, checkinDetailsService, $state, $window) {
+  var checkinUpgradeRoomController = function($scope, $location, $rootScope, checkinRoomUpgradeOptionsService, checkinRoomUpgradeService, checkinDetailsService, $state) {
 
     $scope.pageValid = false;
 
@@ -30,12 +30,13 @@
       $scope.isFetching = true;
 
       var updateGoogleAnalyticsRoomUpgradeFetchFailed = function() {
-        $window.ga('send', {
-          hitType: 'event',
+        var params = {
           eventCategory: 'Zestweb Room Upgrade',
           eventAction: 'fetch failed',
           eventLabel: 'Room Upgrade Fetch Failed'
-        });
+        };
+
+        checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
       };
 
       var setUpUpsellRoomTypeData = function(response) {
@@ -66,12 +67,13 @@
           updateGoogleAnalyticsRoomUpgradeFetchFailed();
           $scope.noThanksClicked();
         } else {
-          $window.ga('send', {
-            hitType: 'event',
+          var params = {
             eventCategory: 'Zestweb Room Upgrade',
             eventAction: 'fetch success',
             eventLabel: 'Room Upgrade Fetch success'
-          });
+          };
+
+          checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
           setUpUpsellRoomTypeData(response);
         }
       }, function() {
@@ -105,12 +107,13 @@
           data.upsell_room_no = roomNumber;
         }
         var updateGoogleAnalyticsRoomUpgradeFailed = function() {
-          $window.ga('send', {
-            hitType: 'event',
+          var params = {
             eventCategory: 'Zestweb Room Upgrade',
             eventAction: 'Room upgrade Failed',
-            eventLabel: 'Room Upgrade failed'
-          });
+            eventLabel: 'Room upgrade Failed'
+          };
+
+          checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
         };
         
         checkinRoomUpgradeService.post(data).then(function(response) {
@@ -120,12 +123,13 @@
             $rootScope.netWorkError = true;
             updateGoogleAnalyticsRoomUpgradeFailed();
           } else {
-            $window.ga('send', {
-              hitType: 'event',
+            var params = {
               eventCategory: 'Zestweb Room Upgrade',
               eventAction: 'Room upgrade success',
-              eventLabel: 'Room Upgrade succes'
-            });
+              eventLabel: 'Room upgrade success'
+            };
+            
+            checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
             $rootScope.upgradesAvailable = false;
             $rootScope.isUpgradeAvailableNow = false;
             $rootScope.ShowupgradedLabel = true;
@@ -155,7 +159,7 @@
   };
 
   var dependencies = [
-    '$scope', '$location', '$rootScope', 'checkinRoomUpgradeOptionsService', 'checkinRoomUpgradeService', 'checkinDetailsService', '$state', '$window',
+    '$scope', '$location', '$rootScope', 'checkinRoomUpgradeOptionsService', 'checkinRoomUpgradeService', 'checkinDetailsService', '$state',
     checkinUpgradeRoomController
   ];
 

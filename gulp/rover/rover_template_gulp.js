@@ -10,6 +10,8 @@ module.exports = function(gulp, $, options) {
 	    runSequence 			= require('run-sequence'),
 		DEST_ROOT_PATH      	= options['DEST_ROOT_PATH'];
 
+    const debug = require('gulp-debug');
+
 	//Template - START
 	var templateInjector = function(fileName) {
 		return gulp.src(ROVER_HTML_FILE)
@@ -45,6 +47,9 @@ module.exports = function(gulp, $, options) {
 	        }))
 	        .pipe($.uglify({compress:true}))
 			.pipe($.rev())
+            .pipe(debug({
+                title: 'stayntouch-debug:'
+            }))
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
 	        .pipe($.rev.manifest(ROVER_TEMPLTE_MANFEST_FILE))
 	        .pipe(gulp.dest(MANIFEST_DIR));

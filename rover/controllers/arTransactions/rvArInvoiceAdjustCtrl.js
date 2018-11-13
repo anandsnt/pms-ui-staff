@@ -14,7 +14,8 @@ sntRover.controller('RvArInvoiceAdjustController',
       var init = function() {
 
         var successCallBackOfGetInfo = function(data) {
-          $scope.adjustData = data;
+          $scope.adjustData = data.charge_details[0];
+          $scope.show_reference_on_guest_invoice = data.charge_details[0].is_reference_text_shown;
         };
 
         var paramsToService = {},
@@ -53,11 +54,15 @@ sntRover.controller('RvArInvoiceAdjustController',
        */
       $scope.clickedAdjust = function() {
         var postData = { 
-          new_amount: $scope.new_amount,          
-          reference_text: $scope.reference,
+          new_amount: $scope.adjustData.amount,          
+          reference_text: $scope.adjustData.reference_text,
           show_ref_on_invoice: $scope.show_reference_on_guest_invoice,
-          is_manual_balance: $scope.selectedInvoice.is_manual_balance
+          is_manual_balance: $scope.selectedInvoice.is_manual_balance          
         };
+
+        if ($scope.selectedTransaction.is_adjustment) {
+          postData.change_reference_only = $scope.selectedTransaction.is_adjustment;
+        }
 
         if (!$scope.selectedTransaction.is_group_by_ref) {
           if ($scope.selectedInvoice.is_manual_balance) {

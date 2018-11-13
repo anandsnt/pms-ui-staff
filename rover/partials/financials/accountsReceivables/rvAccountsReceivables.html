@@ -1,5 +1,4 @@
 <span>
-
     <!-- Search form -->
     <form method="get" action="" name="accounts-receivables-search-form" id="accounts-receivables-search-form" class="search-form has-options three-options" role="search">
         <div class="entry search">
@@ -32,23 +31,40 @@
     </form>
 
     <!-- Search pagination -->
-    <div class="search-pagination" ng-show="isShowPagination()">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-        <p>{{'SHOWING' | translate}} <strong>{{start}}-{{end}}</strong> {{'OF' | translate}} <strong id="total-count">{{arOverviewData.total_result}}</strong> {{'ITEMS' | translate}}</p>
+    <div ng-show="isShowPagination()">
+        <rv-pagination page-options="arPaginationObj" page-data="filterData.totalCount"></rv-pagination>
     </div>
 
     <!-- Search panel - WITH RESULTS -->
     <section class="content accounts-ar-content" role="main">
         <div ng-hide="filterData.hideArHeader" class="accounts-ar-header">
             <ul class="accounts-ar-totals">
-                <li class="guest-bills">
-                    <span translate>OPEN_GUEST_BILLS</span>
-                    <span class="amount">{{arOverviewData.open_guest_bill}}</span>
+                <li class="number">
+                    <span translate>OPEN_BILLS</span>
+                    <span class="amount">
+                        {{arOverviewData.open_guest_bill}}
+                    </span>
                 </li>
-                <li class="unpaid-balance">
-                    <span translate>UNPAID_BALANCE</span>
-                    <span class="amount red">{{currencySymbol}}{{arOverviewData.unpaid_balance | number: precisonTwo }}</span>
+                <li class="number">
+                    <span translate>OPEN_BALANCE</span>
+                    <span class="amount red">
+                        <span class="currency">{{currencySymbol}}</span>
+                        {{arOverviewData.open_balance | number: precisonTwo }}
+                    </span>
+                </li>
+                <li class="number">
+                    <span translate>CREDIT</span>
+                    <span class="amount green">
+                        <span class="currency">{{currencySymbol}}</span>
+                        {{arOverviewData.total_credit | number: precisonTwo }}
+                    </span>
+                </li>
+                <li class="number">
+                    <span translate>AR_BALANCE</span>
+                    <span class="amount" ng-class="{'red': arOverviewData.ar_balance > 0, 'green': arOverviewData.ar_balance <= 0}">
+                        <span class="currency">{{currencySymbol}}</span>
+                        {{arOverviewData.ar_balance | number: precisonTwo }}
+                    </span>
                 </li>
             </ul>
         </div>
@@ -64,24 +80,30 @@
                                 <strong class="confirmation">{{account.ar_number}}</strong>
                                 <span class="icons icon-location" ng-hide="escapeNullStr(account.location)==''" >{{escapeNullStr(account.location)}}
                             </span>
-                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-company">{{account.account_number}}</span>
-                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-travelagent">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''" class="icons icon-guest-company">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''" class="icons icon-guest-travelagent">{{account.account_number}}</span>
                                 <span ng-hide="escapeNullStr(account.ageing_date)==' '" class="icons icon-time confirmation">{{account.ageing_date}}</span>
                             </div>
                             <div class="info-holder">
-                                <div class="info ageing-days">
+                                <div class="info number">
                                     <strong>{{account.ageing_days}}</strong>
                                     <span translate>AGING_DAYS</span>
                                 </div>
-                                <div class="info open-bills">
+                                <div class="info number">
                                     <strong>{{account.open_bill}}</strong>
                                     <span translate>OPEN_BILLS</span>
                                 </div>
-                                <div class="info balance">
-                                    <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
-                                        {{currencySymbol}}{{account.current_balance | number: precisonTwo }}
+                                <div class="info value">
+                                    <strong ng-class="{'green': account.credit >= 0, 'red': account.credit < 0 }">
+                                        {{currencySymbol}} {{account.credit | number: precisonTwo }}
                                     </strong>
-                                    <span translate>BALANCE</span>
+                                    <span translate>CREDIT</span>
+                                </div>
+                                <div class="info value">
+                                    <strong ng-class="{'red': account.current_balance >= 0, 'green': account.current_balance < 0 }">
+                                        {{currencySymbol}} {{account.current_balance | number: precisonTwo }}
+                                    </strong>
+                                    <span translate>OPEN_BALANCE</span>
                                 </div>
                             </div>
                         </a>

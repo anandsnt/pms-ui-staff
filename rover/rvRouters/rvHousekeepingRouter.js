@@ -7,7 +7,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHousekeeping.html',
             controller: 'RVHkAppCtrl',
             resolve: {
-                housekeepingAssets: function(jsMappings, mappingList) {
+                housekeepingAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.housekeeping', 'directives']);
                 }
             }
@@ -103,21 +103,22 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagement.html',
             controller: 'RVWorkManagementCtrl',
             resolve: {
-                workManagementAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.workManagement', 'directives']);
-                },
-                employees: function(RVWorkManagementSrv, workManagementAssets) {
+                employees: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchMaids();
                 },
-                workTypes: function(RVWorkManagementSrv, workManagementAssets) {
+                workTypes: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchWorkTypes();
                 },
-                shifts: function(RVWorkManagementSrv, workManagementAssets) {
+                shifts: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchShifts();
                 },
-                floors: function(RVHkRoomStatusSrv, workManagementAssets) {
+                floors: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchFloors();
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.workManagement', 'directives']);
             }
         });
 
@@ -133,21 +134,21 @@ angular.module('housekeepingModule', [])
             controller: 'RVWorkManagementMultiSheetCtrl',
             params: {filterParams: null},
             resolve: {
-                allUnassigned: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
                     });
                 },
-                activeWorksheetEmp: function(RVHkRoomStatusSrv, workManagementAssets) {
+                activeWorksheetEmp: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 },
-                fetchHKStaffs: function(RVWorkManagementSrv, workManagementAssets) {
+                fetchHKStaffs: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchHKStaffs();
                 },
                 allRoomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchAllRoomTypes();
                 },
-                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams) {
                     var unassignedRoomsParam = {
                         date: $stateParams.date
                     };
@@ -167,12 +168,12 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/workManagement/rvWorkManagementSingleSheet.html',
             controller: 'RVWorkManagementSingleSheetCtrl',
             resolve: {
-                wmWorkSheet: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                wmWorkSheet: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchWorkSheet({
                         id: $stateParams.id
                     });
                 },
-                allUnassigned: function(RVWorkManagementSrv, $stateParams, workManagementAssets) {
+                allUnassigned: function(RVWorkManagementSrv, $stateParams) {
                     return RVWorkManagementSrv.fetchAllUnassigned({
                         date: $stateParams.date
                     });

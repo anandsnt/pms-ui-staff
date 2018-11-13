@@ -27,7 +27,20 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
 		});
 		return deferred.promise;
 	};
-	this.fetchOrigins = function() {
+
+    this.fetchRoomMappings = function() {
+        var url = '/api/hotel_settings/axbase3000/fetch_room_mappings';
+
+        return ADBaseWebSrvV2.getJSON(url);
+    };
+
+    this.fetchRoom = function(params) {
+        var url = '/admin/hotel_rooms.json';
+
+        return ADBaseWebSrvV2.getJSON(url, params);
+    };
+
+    this.fetchOrigins = function() {
 		var deferred = $q.defer();
 		var url = '/api/booking_origins.json';
 
@@ -112,6 +125,16 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
         return ADBaseWebSrv.getJSON('/admin/room_types.json');
     };
 
+    /**
+     * Fetch the hotels source codes
+     */
+    this.fetchSourceCodes = function() {
+        var params = {
+            is_active: true
+        };
+
+        return ADBaseWebSrvV2.getJSON('/api/sources.json', params);
+    };
 	this.testSetup = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection/' + data.interface;

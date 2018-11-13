@@ -1,105 +1,118 @@
 <!-- Travel Agent Card Tab - Commisions -->
 <form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
     <div class="tab-header with-filters">
-
-        <div class="search-form" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
-            <!-- Add class "hidden" when selecting all/individual commisions -->
-            <div class="entry date-range">
-                <div class="entry-data has-datepicker">
-                    <label for="commision-date-from" translate>COMMISSION_START_DATE</label>
-                    <button class="clear-query" ng-click="$event.preventDefault(); clearFromDateField();" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
-                        <!-- Add class 'visible' when date is selected -->
-                        <span class="icons icon-clear-search" translate>COMMISSION_CLEAR_QUERY</span>
-                    </button>
-                    <input id="commision-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
-                </div>
-                <div class="entry-data has-datepicker">
-                    <label for="commision-date-to" translate>COMMISSION_END_DATE</label>
-                    <button class="clear-query" ng-click="$event.preventDefault(); clearToDateField();" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
-                        <!-- Add class 'visible' when date is selected -->
-                        <span class="icons icon-clear-search" translate>COMMISSION_CLEAR_QUERY</span>
-                    </button>
-                    <input id="commision-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()"  readonly />
-                </div>
-            </div>
-            <div class="entry">
-                <label for="commision-status" translate>COMMISSION_STATUS</label>
-                <div class="select">
-                    <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
-                        <option value="Commissionable" selected translate>COMMISSION_COMMISSIONABLE</option>
-                        <option value="Non-commissionable" translate>COMMISSION_NON_COMMISSIONABLE</option>
-                    </select>
-                </div>
-            </div>
-            <div class="entry" >
-                <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
-                <div class="select">
-                    <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
-                        <option value="" translate>COMMISSION_SET_STATUS</option>
-                        <option value="All" translate>COMMISSION_ALL</option>
-                        <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>
-                        <option value="Paid" translate>COMMISSION_PAID</option>
-                        <option value="Prepaid" translate>COMMISSION_PREPAID</option>
-                    </select>
-                </div>
-            </div>
-
-
-        </div>
-
-        <!-- Remove class "hidden" when selecting all/individual commisions -->
-        <div class="search-form" ng-show="(filterData.selectAll || selectedCommissions.length > 0)">
-            <div class="entry" ng-show="filterData.commissionStatus == 'Commissionable'">
-                <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
-                <div class="select">
-                    <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
-                        <option value="" translate>COMMISSION_SET_STATUS</option>
-                        <option value="All" translate>COMMISSION_ALL</option>
-                        <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>
-                        <option value="Paid" translate>COMMISSION_PAID</option>
-                        <option value="Prepaid" translate>COMMISSION_PREPAID</option>
-                    </select>
-                </div>
-            </div>
-            <div class="entry commission" ng-show="filterData.commissionStatus == 'Commissionable'">
-                <label for="commision-paid" >Recalculate Commission</label>
-                <div class="entry">
-                    <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
-                    <div class="switch-button" ng-class="{'on': filterData.toggleCommission}">
-                        <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()">
-                        <label class="data-off">
-                            <span class="switch-icon">%</span>
-                            <span class="value">{{ currencySymbol }}</span>
-                        </label>
-                        <label class="data-on">
-                            <span class="value">%</span>
-                            <span class="switch-icon">{{ currencySymbol }}</span>
-                        </label>
+        <div class="search-form has-options has-dates">
+            <div class="filters" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
+                <!-- Add class "hidden" when selecting all/individual commisions -->
+                
+                <div class="entry dates date-range">
+                    <div class="entry-data has-datepicker">
+                        <label for="commision-date-from" translate>COMMISSION_START_DATE</label>
+                        <button class="clear-query" ng-click="$event.preventDefault(); clearFromDateField();" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
+                            <!-- Add class 'visible' when date is selected -->
+                            <span class="icons icon-clear-search" translate>COMMISSION_CLEAR_QUERY</span>
+                        </button>
+                        <input id="commision-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
                     </div>
                 </div>
-                <button type="button" class="button green" ng-click="clickedRecalculate()" ng-disabled="filterData.commssionRecalculationValue == '' " ng-class="{'grey' : filterData.commssionRecalculationValue == ''}">Recalculate</button>
+                <div class="entry dates date-range">
+                    <div class="entry-data has-datepicker">
+                        <label for="commision-date-to" translate>COMMISSION_END_DATE</label>
+                        <button class="clear-query" ng-click="$event.preventDefault(); clearToDateField();" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
+                            <!-- Add class 'visible' when date is selected -->
+                            <span class="icons icon-clear-search" translate>COMMISSION_CLEAR_QUERY</span>
+                        </button>
+                        <input id="commision-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()"  readonly />
+                    </div>
+                </div>
+                <div class="entry select with-label">
+                    <label for="commision-status" translate>COMMISSION_STATUS</label>
+                        <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
+                            <option value="Commissionable" selected translate>COMMISSION_COMMISSIONABLE</option>
+                            <option value="Non-commissionable" translate>COMMISSION_NON_COMMISSIONABLE</option>
+                        </select>
+                </div>
+                <div class="entry paid-status select with-label" >
+                    <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
+                        <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
+                            <option value="" translate>COMMISSION_SET_STATUS</option>
+                            <option value="All" translate>COMMISSION_ALL</option>
+                            <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>
+                            <option value="Paid" translate>COMMISSION_PAID</option>
+                            <option value="Prepaid" translate>COMMISSION_PREPAID</option>
+                            <option value="On Hold" translate>COMMISSION_HOLD</option>
+                        </select>
+                </div>
+
+                <div class="entry property select with-label" ng-show="shouldShowProperty()">
+                    <label for="commision-property">Property</label>                 
+                        <select ng-model="filterData.selectedHotel" ng-change="onPropertyFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          
+                        </select>               
+                </div>
+
+
             </div>
-        </div>
-        <!-- upto here -->
-
+            <!-- Remove class "hidden" when selecting all/individual commisions -->
+            <div class="recalculate-form" ng-show="(filterData.selectAll || selectedCommissions.length > 0)">
+                
+                <div class="entry paid-status" >
+                    
+                    <div class="select with-label">
+                        <label for="commision-paid" translate>COMMISSION_HOLD_STATUS</label>
+                        <select id="commision-paid" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange(true)">
+                            <option value="" translate>COMMISSION_SET_STATUS</option>
+                            <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>
+                            <option value="On Hold" translate>COMMISSION_HOLD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry paid-status" ng-show="filterData.paidStatus != 'Prepaid'">
+                    
+                    <div class="select with-label">
+                        <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
+                        <select id="commision-paid" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange(false)">
+                            <option value="" translate>COMMISSION_SET_STATUS</option>
+                            <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>
+                            <option value="Paid" translate>COMMISSION_PAID</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry commission" >
+                    
+                    <div class="entry input with-label">
+                        <label for="commision-paid" >Recalculate Comm.</label>
+                        <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue" ng-change="recalculationValueChanged()">
+                        <div class="switch-button" ng-class="{'on': filterData.toggleCommission}" ng-click="toggleCommission()">
+                            <input id="recalculate-commission" value="" type="checkbox">
+                            <label class="data-off">
+                                <span class="switch-icon">%</span>
+                                <span class="value">{{ currencySymbol }}</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="value">%</span>
+                                <span class="switch-icon">{{ currencySymbol }}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="button green" ng-click="clickedRecalculate()" ng-disabled="filterData.commssionRecalculationValue == '' " ng-class="{'grey' : filterData.commssionRecalculationValue == ''}">Recalculate</button>
+                </div>
+            </div>
     </div>
-
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
-    <div class="tab-details" ng-class="{'with-pagination' : shouldShowPagination()}" ng-show="commissionDetails.length > 0">
-        <!-- Add class "with-pagination" when pagination is shown -->
+        <!-- upto here -->
         <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
-            <li>{{'COMMISSION_UNPAID' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission | number : 2}}</span></li>
-            <li>{{'COMMISSION_TOTEL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue | number : 2}}</span></li>
-            <li>{{'COMMISSION_TO_DATE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalCommission | number : 2}}</span></li>
+            <li>{{'RESERVATION_TOTAL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalReservationsRevenue | number : 2}}</span></li>
+            <li>{{'RESERVATION_COMMISSIONABLE_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalCommissionableRevenue | number : 2}}</span></li>
+            <li>{{'COMMISSION_TO_DATE' | translate}}<span class="value green">{{ currencySymbol }}{{commissionSummary.totalCommission | number : 2}}</span></li>
+            <li>{{'COMMISSION_OWING' | translate}}<span class="value red">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission | number : 2}}</span></li>
             <li class="action no-margin">
                 <button type="button" class="button blue with-icon only-icon" ng-click="clickedPrintButton()">
                     <span class="icons icon-print"></span>
                 </button>
             </li>
-            <li class="action">
+            <!-- <li class="action">
                 <label class="checkbox inline" ng>
+
                     Select
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : filterData.selectAll}"></span>
                     <input id="commisions-select" ng-model="filterData.selectAll" type="checkbox" ng-change="toggleSelection()" />
@@ -107,55 +120,112 @@
             </li>
             <li class="action" ng-class="{'hidden' : (filterData.commissionStatus == 'Non-commissionable' || filterData.paidStatus == 'Prepaid' || (!filterData.selectAll && selectedCommissions.length == 0) || (selectedCommissions.length == 0 && prePaidCommissions.length > 0)) }">
                 <!-- Remove class "hidden" when selecting all/individual commisions -->
-                <div class="select">
+                <!-- <div class="select">
                     <select id="selected-paid" class="placeholder" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange()">
                         <option value="" translate>COMMISSION_SET_PAID_STATUS</option>
                         <option value="Unpaid" translate>COMMISSION_UNPAID</option>
                         <option value="Paid" translate>COMMISSION_PAID</option>
                     </select>
                 </div>
-            </li>
+            </li> -->
         </ul>
+
+    </div>
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+    <div class="tab-details" ng-class="{'with-pagination' : shouldShowPagination()}" ng-show="commissionDetails.length > 0">
+        <!-- Add class "with-pagination" when pagination is shown -->
+        
+        <ul class="search-results-header">
+            <li class="action">
+                <label class="checkbox inline" ng-class="{'hidden' : filterData.paidStatus == 'Prepaid'}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked' : filterData.selectAll}"></span>
+                    <input id="commisions-select" ng-model="filterData.selectAll" type="checkbox" ng-change="toggleSelection()" />
+                </label>
+            </li>
+            <li class="reservation">Reservation</li>
+
+            <!--If commission status is Non-Commissionable add class .last-->
+            <li class="revenue">{{'COMMISSION_REVENUE' | translate}}</li>
+
+            <li class="commissionable">{{'RESERVATION_COMMISSIONABLE_REVENUE' | translate}}</li>
+
+            <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+            <li class="commission">{{'COMMISSION_RATE' | translate}}</li>
+
+            <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+            <li class="amount">{{'COMMISSION_AMOUNT' | translate}}</li>
+
+            <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+            <li class="hold" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">{{'COMMISSION_HOLD' | translate}}</li>
+
+            <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+            <li class="paid" >{{'COMMISSION_PAID' | translate}}</li>
+        </ul>
+
         <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'print-selected' : (filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0)}" ng-iscroll="commission-list" >
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
+             
+                    <div class="faux-anchor" ng-class="{ 'print-selected' : commissionDetail.is_checked, 'prepaid': commissionDetail.commission_data.paid_status == 'Prepaid'}">
 
-
-                    <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid'">
-                        <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
-                        <label class="data-off">
-                            <span class="value" translate>COMMISSION_UNPAID</span>
-                            <span class="switch-icon" translate>COMMISSION_PAID</span>
+                        <label class="checkbox inline" ng-class="{'hidden' : commissionDetail.commission_data.paid_status == 'Prepaid'}" >
+                            <!-- add class "checked" when L56 checked -->
+                            <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
+                            <!-- add class "checked" when L56 checked -->
+                            <input ng-model="commissionDetail.is_checked" type="checkbox" ng-click="onCheckBoxSelection(commissionDetail)" />
                         </label>
-                        <label class="data-on">
-                            <span class="switch-icon" translate>COMMISSION_UNPAID</span>
-                            <span class="value" translate>COMMISSION_PAID</span>
-                        </label>
-                    </div>
-                    <!-- If prepaid, replace L22-L32 with this:
-                    <div class="prepaid">Prepaid</div> -->
-                    <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
-                    <div class="prepaid" ng-show="isEmptyObject(commissionDetail.commission_data)" translate></div>
-                    <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
-                        <!-- add class "checked" when L56 checked -->
-                        <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
-                        <!-- add class "checked" when L56 checked -->
-                        <input ng-model="commissionDetail.is_checked" type="checkbox" ng-click="onCheckBoxSelection(commissionDetail)" />
-                    </label>
-                    <!-- Clicking L40 block should open Stay Card for this reservation -->
-                    <div class="faux-anchor has-arrow next-view" ng-click="goToStayCard(commissionDetail.reservation_id, commissionDetail.reservation_no)">
-                        <div class="data">
-                            <h2>{{commissionDetail.guest_name}}</h2>
-                            <span class="confirmation">{{commissionDetail.reservation_no}}</span>
-                        </div>
-                        <div class="values">
-                            <div class="value-block revenue">{{'COMMISSION_REVENUE' | translate}}<strong>{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</strong></div>
-                            <div class="value-block type">%/{{currencySymbol}}<strong>{{commissionDetail.commission_data.rate}}</strong></div>
-                            <div class="value-block amount">{{'COMMISSION' | translate}}<strong><span ng-if="commissionDetail.commission_data.amount !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount | number : 2}}</strong></div>
-                            <div class="value-block tax" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}<strong><span ng-if="commissionDetail.commission_data.tax !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.tax | number : 2}}</strong></div>
-                        </div>
-                    </div>
 
+                        <!-- Clicking L40 block should open Stay Card for this reservation -->
+                        
+                        <a class="has-arrow next-view" ng-click="goToStayCard(commissionDetail.reservation_id, commissionDetail.reservation_no)">
+                            <div class="data">
+                                <h2>{{commissionDetail.guest_name}}</h2>
+                                <span class="confirmation">{{commissionDetail.reservation_no}}</span>
+                            </div>
+                            <div class="commissionable">{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</div>
+
+                            <div class="revenue">{{ currencySymbol }}{{commissionDetail.commission_data.commissionable_revenue | number : 2}}</div>
+
+                            
+                            <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+                            <div class="commission" ng-class="{'recalculated':commissionDetail.commission_data.is_recalculated}"><strong>{{commissionDetail.commission_data.rate}}</strong></div>
+                            <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+                            <div class="amount"><strong><span ng-if="commissionDetail.commission_data.amount !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount | number : 2}}</strong></div>
+                            <!-- 
+                                <div class="value-block tax" ng-show="commissionSummary.taxOnCommissions">{{'COMMISSION_Tax' | translate}}<strong><span ng-if="commissionDetail.commission_data.tax !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.tax | number : 2}}</strong></div>
+                             -->
+                        </a>
+
+                        <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
+                        <div class="hold-status" >
+
+                            <!-- Don't show this button if the commission is paid or prepaid -->
+                            <!-- If on Hold, add class .active -->
+                            <button type="button" class="button with-icon" ng-class="{'active': commissionDetail.commission_data.paid_status === 'On Hold'}" ng-click="toggleHoldStatus(commissionDetail)" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
+                                <!-- If on Hold, add class .red and remove .black-->
+                                <span class="icons icon-hold " ng-class="{'black': commissionDetail.commission_data.paid_status !== 'On Hold', 'red': commissionDetail.commission_data.paid_status === 'On Hold'}"></span>
+                            </button>
+
+
+                        </div>
+                        <div class="paid-status" >
+                            <span ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</span>
+                            <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
+                                <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
+                                <label class="data-off">
+                                    <span class="switch-icon" translate>COMMISSION_UNPAID</span>
+                                    <span class="value" translate>COMMISSION_PAID</span>
+                                </label>
+                                <label class="data-on">
+                                    <span class="value" translate>COMMISSION_UNPAID</span>
+                                    <span class="switch-icon" translate>COMMISSION_PAID</span>
+                                </label>
+                            </div>
+                        </div>                        
+                        
+                    </div>
 
                 </li>
             </ul>
@@ -174,11 +244,12 @@
         </ul>
     </div>
     <!-- Pagination -->
-    <div class="search-pagination" ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage">
+    <rv-pagination ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage" page-options="paginationData" page-data="pagination.totalResultCount"></rv-pagination>
+    <!-- <div class="search-pagination" ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>COMMISSION_NEXT</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>COMMISSION_PREVIOUS</button>
         <p>{{'COMMISSION_SHOWING' | translate}}<strong> {{pagination.start}}-{{pagination.end}}</strong> of <strong id="total-count"> {{pagination.totalResultCount}} </strong>{{'COMMISSION_ITEMS' | translate}}</p>
-    </div>
+    </div> -->
     <!-- When no data to show, replace L89-93 with this -->
     <div class="tab-details no-content" ng-show="commissionDetails.length == 0">
         <div class="info">

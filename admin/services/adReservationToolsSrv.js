@@ -77,5 +77,41 @@ admin.service('ADReservationToolsSrv', [
 
             return deferred.promise;
         };
+
+        /**
+         * To Search Rates
+         * @return {Object}
+         */
+        this.searchRates = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/rates/search_rates';
+
+            ADBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /**
+         * To resync rate task
+         * @return {Object}
+         */
+        this.reSyncRates = function(params) {
+            var deferred = $q.defer(),
+                url      = 'api/rates/' + params.id + '/sync_rate';
+
+            ADBaseWebSrvV2.postJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
     }
 ]);

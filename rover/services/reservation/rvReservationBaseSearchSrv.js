@@ -8,6 +8,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             'roomTypes': {},
             'businessDate': {}
         };
+        this.rateDetailsList = {};
 
         // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 
@@ -382,32 +383,52 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             }
             return deferred.promise;
         };
+        /**
+         * Method for remove rate id's with cache.
+         * @constructor
+         * @param {Object} params - Object with rate id's
+         * @return {Array} list of rate id's which are not available in cache
+         */
+        var formFilteredRateIds = function(params) {
+            var fetchList = _.reject(params.rate_ids,
+                function(rate_id) {
+                if (!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
+                    return true;
+                }
+                return false;
+            });
 
+            return fetchList;
+        };
 
-        this.fetchRatesDetailed = function(params) {
-            var deferred = $q.defer(),
-                url = '/api/rates/detailed';
+        /**
+         * Method for fetch rate details.
+         * @constructor
+         * @param {Object} params - Object with rate id's
+         * @return {Object} promise
+         */
+        this.fetchRatesDetails = function(params) {
+            var fetchRateListIds = formFilteredRateIds(params),
+                deferred = $q.defer(),
+                url = '/api/rates/search.json',
+                payload = {};
 
-            if ((params && params.isForceRefresh) || that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
-                RVBaseWebSrvV2.getJSON(url).then(function(response) {
-                    var rates = [];
-
-                    _.each(response.results, function(rate) {
-                        rates[rate.id] = rate;
+                payload['rate_ids'] = fetchRateListIds;
+                if (fetchRateListIds.length === 0) {
+                    deferred.resolve({});
+                } else {
+                    RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
+                        _.each(response.results, function(rate) {
+                            that.rateDetailsList[rate.id] = {
+                                expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
+                                details: rate };
+                        });
+                        deferred.resolve(response.results);
+                    }, function(data) {
+                        deferred.reject(data);
                     });
+                }
 
-                    that.cache.responses['rateDetails'] = {
-                        data: rates,
-                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
-                    };
-
-                    deferred.resolve(rates);
-                }, function(data) {
-                    deferred.reject(data);
-                });
-            } else {
-                deferred.resolve(that.cache.responses['rateDetails']['data']);
-            }
             return deferred.promise;
         };
 
@@ -438,11 +459,6 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 promises = [];
 
             that['rates-restrictions'] = {};
-
-            promises.push(that.fetchRatesDetailed(params).then(function(response) {
-                that['rates-restrictions']['rates'] = response;
-            }));
-
             promises.push(that.fetchRestricitonTypes(params).then(function(response) {
                 that['rates-restrictions']['restrictions'] = response;
             }));
@@ -518,6 +534,73 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
+
+            return deferred.promise;
+        };
+
+        /**
+         * Fetches hotel settings configured in admin
+         */
+        this.fetchHotelReservationSettings = function () {
+            var deferred = $q.defer(),
+                url = "/api/hotel_settings/show_hotel_reservation_settings";
+
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {                    
+                    deferred.resolve(data);
+            }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+            });
+            
+            return deferred.promise;
+        };
+        /**
+         * Method for searching rate.
+         * @constructor
+         * @param {Object} params - Object with query .
+         */
+        this.searchForRates = function (params) {
+            var deferred = $q.defer(),
+                payload = {},
+                url = "/api/rates.json?&sort_dir=true&sort_field=rate";
+
+            payload['query'] = params.query;
+            payload['per_page'] = 25;
+            payload['page'] = 1;
+            RVBaseWebSrvV2.getJSON(url, payload).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
+        this.fetchRateDetailsForIds = function(params) {
+            var fetchRateListIds = formFilteredRateIds(params),
+                deferred = $q.defer(),
+                url = '/api/rates/search.json',
+                payload = {};
+
+                payload['rate_ids'] = fetchRateListIds;
+                if (fetchRateListIds.length === 0) {
+                    deferred.resolve({});
+                } else {
+                    RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
+                        _.each(response.results, function(rate) {
+                            that.rateDetailsList[rate.id] = {
+                                expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
+                                details: rate };
+                        });
+                        var cachedRateIds = _.difference(params.rate_ids, fetchRateListIds);
+
+                        _.each(cachedRateIds, function(rateId) {
+                            response.results.push(that.rateDetailsList[rateId].details);
+                        });
+                        deferred.resolve(response.results);
+                    }, function(data) {
+                        deferred.reject(data);
+                    });
+                }
 
             return deferred.promise;
         };

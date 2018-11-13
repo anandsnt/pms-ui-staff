@@ -310,23 +310,18 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             // debugging
             if ($scope.inDemoMode()) {
-                var response;
-                
-                $scope.hasLoader = true;
                 demoModeScanCount++;
 
-                if ($scope.zestStationData.v1GuestIDScanning) {
-                    response = zsCheckinSrv.v1ScannerDemoData;
-                } 
-                else if (demoModeScanCount % 2 === 0) {
-                    response = zsCheckinSrv.sampleIdFrontSideScanData;
-                } else {
-                    response = zsCheckinSrv.v2ScannerDemoData;
-                }
-                $timeout(function() {
-                    $scope.$emit('PASSPORT_SCAN_SUCCESS', response);
-                    $scope.hasLoader = false;
-                }, 1000);
+                var options = {
+                    params: {
+                        demoModeScanCount: demoModeScanCount
+                    },
+                    successCallBack: function(response) {
+                        $scope.$emit('PASSPORT_SCAN_SUCCESS', response);
+                    }
+                };
+
+                $scope.callAPI(zsCheckinSrv.getSampleIdFrontSideData, options);
 
             } else {
                 samsoTechScanPassport();
@@ -343,9 +338,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.$emit('PASSPORT_SCAN_SUCCESS', { 'skipScan': true });
                 } else {
                     $scope.mode = 'SCANNING_IN_PROGRESS';
-                    $timeout(function() {
-                        $scope.$emit('PASSPORT_SCAN_SUCCESS', zsCheckinSrv.sampleIdBackSideScanData);
-                    }, 1000);
+
+                    var options = {
+                        params: {},
+                        successCallBack: function(response) {
+                            $scope.$emit('PASSPORT_SCAN_SUCCESS', response);
+                        }
+                    };
+
+                    $scope.callAPI(zsCheckinSrv.getSampleIdBackSideData, options);
                 }
 
             } else {
@@ -574,7 +575,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
                     'date_of_birth': selectedPassportInfo.dob,
-                    'signature': $("#signature").jSignature("getData")
+                    'signature': $("#signature").jSignature("getData"),
+                    'application': 'KIOSK'
                 },
                 successCallBack: function() {
                     validatePassportsView();
@@ -999,7 +1001,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             var fetchReservationDetails = function() {
                 var onSuccessFetchReservationDetails = function(data) {
                     if (data.data) {
+                        // Store the reservation_details which had temperory datas like accepted_terms_and_conditions in a variable and
+                        // set it back after the reservation_details is replaced from the API response
+                        var acceptedTermsAndConditions = $scope.selectedReservation.reservation_details.accepted_terms_and_conditions;
+
                         $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                        $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = acceptedTermsAndConditions;
                         $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                         if ($scope.isRateSuppressed()) {
                             $scope.selectedReservation.reservation_details.balance = 0;
@@ -1081,7 +1088,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name,
-                    'email': $stateParams.email
+                    'email': $stateParams.email || $stateParams.guest_email
                 };
 
                 if ($scope.zestStationData.is_kiosk_ows_messages_active) {

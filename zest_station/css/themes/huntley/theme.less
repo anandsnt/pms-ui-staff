@@ -1,0 +1,219 @@
+/* StayNTouch Zest Station Styles | Huntley Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #6ad3f1;
+ 
+    
+    @textColor:             @black;
+    @backgroundColor:       @white;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+    @background:            @backgroundColor;
+    @backgroundSize:        cover;
+
+    @headerIconsColor:      @white;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        fill: @white;
+
+        &.icon-create-key {
+            fill: @white;
+            stroke: @white;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @white;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+        &.hi-tech-demo-icon{
+            height: 72% !important;
+            width: 112.5% !important;
+            margin: -120px !important;
+        }
+        &.hi-tech-demo-icon-sky-blue{
+            margin-left: -50% !important;
+            margin-top: -40% !important;
+            fill: @actionBackground !important;
+            stroke: @actionBackground !important;
+        }
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #huntley {
+ 
+        .logo-svg{
+            background-image: url("../css/themes/huntley/logo.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 300px;
+            background-position: center;
+            height: 120px;
+        }
+
+        input,
+        select {
+            color: @white;
+        }
+
+        #header {
+            height: 120px;
+            border-top: 10px solid @black;
+
+            .icons {
+                fill: @brandColor;
+            }
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 120px);
+            top: 120px;
+            &.centered {
+                padding-top: 0;
+            }
+        }
+
+        #actions {
+            &.pull-right {
+                p {
+                    strong {
+                        font-size: 18px;
+                        font-weight: 400; 
+                    }
+                    color: @textColor;
+                }
+            }
+
+            &.languages {
+                .language {
+                    &.selected {
+                        border: 1px solid @brandColor;
+                    }
+                }
+            }
+        }
+
+        .popup {
+            #languages {
+                .button {
+                    &.active { border: 1px solid @brandColor; }
+                }
+            }
+        }
+
+        .button.transparent {
+            background-color: fade(@black, 10);
+
+            &:not(.text-red) {
+                color: @black;
+            }
+
+            .icons {
+                &.icon-arrow-left,
+                &.icon-arrow-right {
+                    
+                    stroke: @black;
+                }
+            }
+        }
+         
+        #logo {
+            padding-top: 10px;
+            
+            .logo {
+                .size(120px, 300px);
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    background: @black;
+                    color: @white;
+                }
+            }
+        }
+
+        #options {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        #textual {
+            background: rgba(0,0,0,0.05);
+
+            &:before,
+            &:after {
+                background: transparent;
+            }
+        }
+
+        #guests {
+            .button {
+                background-color: @black;
+            }
+        }
+
+        #upgrade {
+            background: rgba(0,0,0,0.05);
+            
+            .upgrade-price {
+                background: @black;
+                color: @white;
+            } 
+        }
+
+        .upgrade-list {
+            &.upgrade-list-v2 {
+                .upgrade-content {
+                     background: rgba(0,0,0,0.05);
+                }
+            }
+        }
+
+        .add-on-list,
+        .add-on { 
+            input {
+                color: @black;
+            }
+            .button {
+                &.transparent {
+                    background-color: fade(@black, 10);
+                }
+            }
+        }
+
+        .add-on {
+            background: rgba(0,0,0,0.05);
+
+            &.selected {
+                background: @brandColor;
+            }
+
+            &.popup-content {
+                background: @white;
+            }
+        }
+    }

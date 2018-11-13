@@ -36,4 +36,21 @@ admin.service('ADzestWebGlobalSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q
 		return deferred.promise;
 	};
 
+	this.webSafeFonts = ['Arial',
+		'Helvetica',
+		'Times New Roman',
+		'Times',
+		'Courier New',
+		'Courier',
+		'Verdana',
+		'Georgia',
+		'Palatino',
+		'Garamond',
+		'Bookman',
+		'Comic Sans MS',
+		'Trebuchet MS',
+		'Arial Black',
+		'Impact'
+	];
+
 }]);

@@ -267,3 +267,28 @@ var returnFooterStyleClass = function(footerCount) {
   }
   return footerClass;
 };
+
+var customizeStylesForIhgApp = function() {
+  // customize style
+  // logo is not in a common HTML
+  var node = document.createElement('style');
+  node.innerHTML = '.row.header-bar {margin-bottom:35px !important;}';
+  if (navigator.userAgent.match(/Android/i) !== -1 && navigator.userAgent.match(/Android/i) !== null) {
+    node.innerHTML = node.innerHTML + ".res-details-heading,.back-text,.btn,.btn p,.btn span p,.footer-sub-text,.footer-sub-text:hover,.footer-text,.phone-label,.res-date,.sub-main-text,.sub-text,a,a:hover,.main-text{font-family: Roboto,sans-serif !important}";
+    node.innerHTML = node.innerHTML + ".btn,.btn p,.btn span p, .btn-template {font-weight: 400 !important}";
+  }
+  document.head.appendChild(node);
+};
+
+var customizeStylesBasedOnUrlType = function(theme) {
+  // customize style
+  // logo is not in a common HTML
+  var node = document.createElement('style');
+  node.innerHTML = ".logo-image {display: none;} .row.header-bar {margin-bottom: 50px !important;} #zest-footer{ display: none !important;}";
+  document.head.appendChild(node);
+  if (theme === 'guestweb_ihg') {
+    // for IHG, font family for android App is to be Roboto
+    customizeStylesForIhgApp();
+  }
+};
+

@@ -7,7 +7,10 @@ module.exports = {
 				roverRoot + "controllers/housekeeping/**/*.js",
 				roverRoot + "controllers/workManagement/**/*.js",
 				roverRoot + "services/housekeeping/**/*.js",
-				roverRoot + "services/workManagement/**/*.js"
+				roverRoot + "services/workManagement/**/*.js",
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return houseKeepingJsAssets;

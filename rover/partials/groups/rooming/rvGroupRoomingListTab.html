@@ -1,4 +1,6 @@
 <form id="group-rooming-list" name="group-rooming-list" class="form card-tab inner-header rooming-list" ng-controller="rvGroupRoomingListCtrl">
+    <!--common header for fullscreen mode-->
+    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
     <div id="group-room-list-header" class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
         <div class="search-form has-dates" ng-class="{'open': isAddingMode && !groupConfigData.summary.is_cancelled}">
             <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
@@ -202,22 +204,13 @@
         <li ng-show="groupConfigData.summary.hide_rates && isPrintClicked" class="rate sort" ng-class="getSortClass('room_rate_amount')" ng-click="sortBy('room_rate_amount')"> &nbsp;</li>
         <li class="status sort" ng-class="getSortClass('reservation_status')" ng-click="sortBy('reservation_status')">{{'GROUP_STATUS'|translate}}</li>
     </ul>
-
-    <!-- Pagination, if applicable
-    see {_shared/pagination.html}
-    -->
-
-    <!-- Pagination -->
-    <div class="search-pagination" ng-show="shouldShowPagination()">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>ACCOUNTS_NEXT</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>ACCOUNTS_PREVIOUS</button>
-        <p>{{'ACCOUNTS_SHOWING'|translate}}  <strong>{{start}}-{{end}}</strong> {{'ACCOUNTS_SHOWING_OF'|translate}} <strong id="total-count">{{totalResultCount}}</strong> {{'ACCOUNTS_ITEMS'|translate}}</p>
-    </div>
+    
+    <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
 
     <!-- Rooming List Content -->
     <div id="rooming-grid" class="rooming-grid scrollable"
         ng-show="!shouldShowNoReservations()"
-        ng-class="{'with-pagination': shouldShowPagination()}"
+        ng-class="{'with-pagination': shouldShowPagination(), 'no-pagination': !shouldShowPagination()}"
         ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
 
         <ul id="rooming-grid-list" class="search-results wrapper">
@@ -231,7 +224,7 @@
                 </div>
                 <a ng-click="clickedOnReservation(reservation)">
                     <div class="data">
-                        <h2 ng-show="!isGuestBlank(reservation)">
+                        <h2 ng-show="!isGuestBlank(reservation)" style="text-transform: none">
                             <span ng-bind-html="escapeNull(reservation.lastname)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.firstname)|highlight:query:false"></span>
                         </h2>
                         <h2 ng-show="isGuestBlank(reservation)">

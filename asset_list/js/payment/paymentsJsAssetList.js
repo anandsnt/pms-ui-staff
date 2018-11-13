@@ -11,10 +11,15 @@ module.exports = {
                     paymentRoot + "controllers/**/*.js",
                     paymentRoot + "directives/**/*.js",
                     paymentRoot + "services/**/*.js",
-                    paymentRoot + "payAppInit.js"
+                    paymentRoot + "payAppInit.js",
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ],
                 mli: [paymentRoot + 'payApp.js',
-                    paymentRoot + "controllers/**/*.js"]
+                    paymentRoot + "controllers/**/*.js",
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
+                ]
             };
         return paymentJsAssets;
     }

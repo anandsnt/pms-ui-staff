@@ -4,7 +4,7 @@
         text-shadow: none !important;
         filter:none !important;
         -ms-filter: none !important;
-        -webkit-print-color-adjust:exact;
+        -webkit-print-color-adjust: exact;
     }
 
     @page { margin: 1cm; }
@@ -27,7 +27,11 @@
     .reservation-tabs-nav,
     .reservation-list,
     .search-form,
-    .release-notes { display: none !important; }
+    .release-notes,
+    .fullscreen-header,
+    .commissions-filters,
+    .overbooking-header { display: none !important; }
+    #find-invoices { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -280,7 +284,7 @@
         &.icon-group { background-position: 0 -120px; }
         &.icon-guest-company { background-position: 0 -140px; }
         &.icon-guest-travelagent { background-position: 0 -160px; }
-        &.icon-hold { background-position: 0 -180px;  
+        &.icon-hold { background-position: 0 -180px;
             &.red {
                 background-position: 0 -180px;
                 }
@@ -293,9 +297,8 @@
 
 /* 5. COMPONENTS
 ==========================================================*/
+/* Action Manager           ===============================*/
 
-/* Action Manager ========================================*/
-    
     /* Hide Content */
     .actions-content {
         .content-left,
@@ -309,7 +312,7 @@
     }
 
 /* Availability             ==============================*/
-    
+
     /* Hide everything except availability ***/
     .availability-print {
         .container,
@@ -329,7 +332,7 @@
 
             col {
                 width: 16%;
-                
+
                 &.grid-col { width: 6%; }
             }
 
@@ -374,7 +377,7 @@
                             border-bottom: 2px solid @grey2;
                         }
                     }
-                }                
+                }
             }
         }
 
@@ -457,7 +460,7 @@
                     }
 
                     .confirmation {
-                        
+
                         color: @grey3;
                         margin-right: 8pt;
 
@@ -493,7 +496,7 @@
 
                         .guest-status { margin-right: 4pt; }
 
-                        .time { 
+                        .time {
                             color: @grey3;
                             .show;
                         }
@@ -517,7 +520,7 @@
                     &.paid { color: @grey3; }
                 }
 
-                .switch-button { 
+                .switch-button {
                     line-height: 20px;
                     text-align: right;
                     .size(20px, 4cm);
@@ -530,16 +533,16 @@
                         .switch-icon { .hide; }
                     }
 
-                    .data-on { 
-                        .hide; 
+                    .data-on {
+                        .hide;
 
                         .value { color: @grey3; }
                     }
 
-                    .data-off { 
-                        .show; 
+                    .data-off {
+                        .show;
 
-                        .value { 
+                        .value {
                             color: @textColor;
                             font-weight: 600;
                         }
@@ -668,9 +671,10 @@
             /* Rooms ***/
             &.room {
                 position: relative;
+                margin-right: 5px;
 
                 a,
-                .faux-anchor { 
+                .faux-anchor {
                     .show();
                 }
 
@@ -682,7 +686,7 @@
                     position: relative;
                     padding-right: 10%;
 
-                    h2 { 
+                    h2 {
                         margin: 0;
                         line-height: 10px;
                         .nowrap();
@@ -692,7 +696,7 @@
                         .icons {
                             display: inline-block;
                             vertical-align: middle;
-                            .size(8pt, 15pt); 
+                            .size(8pt, 15pt);
                             margin-left: 2pt;
 
                             &.icon-suite {
@@ -702,9 +706,9 @@
                     }
 
                     .room-type,
-                    .room-status { 
+                    .room-status {
                         line-height: 10px;
-                        .nowrap(); 
+                        .nowrap();
                         display: block;
                     }
 
@@ -726,9 +730,9 @@
                     width: 30%;
                     .pull-left;
 
-                    .guest-status { 
+                    .guest-status {
                         background-image: none;
-                        margin-right: 4pt; 
+                        margin-right: 4pt;
                     }
 
                     .current,
@@ -737,7 +741,7 @@
                         line-height: 20px;
                         .pull-left;
                         .size(20px, 50%);
-                    } 
+                    }
                 }
 
                 .assigned,
@@ -763,7 +767,7 @@
 
                 .guest-image,
                 .icon-queued,
-                .show-vacant { 
+                .show-vacant {
                     position: absolute;
                     top: 5px;
                     right: 0;
@@ -774,9 +778,9 @@
                     .square(20px);
                 }
 
-                .show-vacant { 
+                .show-vacant {
                     text-align: right;
-                    line-height: 20px; 
+                    line-height: 20px;
                     width: 10%;
                 }
 
@@ -789,13 +793,22 @@
                     .square(12px);
                 }
 
+                .stay-count {
+                    font-size: 6pt;
+                    line-height: 12px;
+                    background: @grey1;
+                    color: @black;
+                    bottom: -2px;
+                    .square(12px);
+                }
+
                 .tasks {
                     margin-left: 60%;
                     width: 18%;
                     padding: 2pt;
                     background-color: @grey1;
                     .pull-left;
-                    
+
                     li {
                         font-style: italic;
                         line-height: 10pt;
@@ -842,7 +855,7 @@
                     .departure-date {
                         margin-left: 2pt;
                     }
-                    
+
                 }
 
                 .last-column {
@@ -851,18 +864,81 @@
                     .service-status {
                         width: 100%;
                         float: none;
-                    } 
+                    }
                 }
             }
 
             /* Commisions ***/
             &.commision {
+                .faux-anchor {
+                    #flexbox > .parent( row wrap, flex-start, center, '' );
+                }
 
-                .has-arrow { background: transparent; }
+                .has-arrow { 
+                    background: transparent; 
+                    #flexbox > .parent( row wrap, flex-start, center, '' );
+                    flex-grow: 1;
+
+                    .data {
+                        flex-grow: 1;
+                        margin: 0;
+
+                        h2 {
+                            font-size: 14px;
+                            margin: 0;
+                            line-height: 1;
+                        }
+
+                        .confirmation {
+                            font-size: 14px;
+                            height: auto;
+                            line-height: 1;
+                        }
+                    }
+
+                    .revenue,
+                    .commission {
+                        width: 80px;
+                        font-size: 14px;
+                    }
+
+                    .amount {
+                        width: 95px;
+                    }
+
+                    .revenue,
+                    .commission,
+                    .amount {
+                        text-align: right;
+                    }
+                }
+
+                .paid-status {
+                    width: 60px;
+                    color: @grey3;
+                    text-align: right;
+                    text-transform: uppercase; 
+                }
+
+                .hold-status {
+                    width: 70px;
+                    text-align: center;
+
+                    .button {
+                        .box-shadow(none);
+                        .square(30px); 
+
+                        .icon-hold {
+                            top: 5px;
+                        }
+                        
+                        &:not(.active){
+                            .hide(); 
+                        }
+                    }
+                }
 
                 .data {
-                    .pull-left;
-
                     .confirmation {
                         line-height: 10px;
                         color: @grey3;
@@ -870,77 +946,45 @@
                     }
                 }
 
-                .values {
-                    margin: 0;
-                    .pull-left;
+                .switch-button {
+                    position: relative;
+                    text-align: right;
+                    text-transform: uppercase;
+                }
 
-                    .value-block {
-                        line-height: 1;
-                        color: @grey3;
-                        padding: 0 16pt;
-                        .pull-left;
+                .switch-button {
+                    input { .hide(); }
 
-                        strong {
+                    .data-on,
+                    .data-off {
+                        .value { .hide(); }
+                    }
+
+                    .data-on {
+                        .hide();
+
+                        .switch-icon { 
                             color: @textColor;
                             font-weight: 600;
-                            .show;
                         }
+                    }
 
-                        &.revenue,
-                        &.amount { width: 30%; }
-                        &.type,
-                        &.tax { width: 20%; }
+                    .data-off {
+                        .show();
 
-                        &:not(:last-child) { border-right: 1px solid @grey2; }
+                        .switch-icon {
+                            color: @grey3; 
+                        }
+                    }
+
+                    &.on {
+                        .data-on { .show(); }
+                        .data-off { .hide(); }
                     }
                 }
 
-                &.in-card {
-                    .data { .calc-width(35, 30); }
-
-                    .values { .calc-width(65, 30); }
-
-                    .prepaid,
-                    .switch-button {
-                        line-height: 20px;
-                        text-align: right;
-                        text-transform: uppercase;
-                        .size(20px, 60px);
-                        .pull-left;
-                    }
-
-                    .prepaid { color: @grey3; }
-
-                    .switch-button {
-                        input { .hide; }
-
-                        .data-on,
-                        .data-off {
-                            .switch-icon { .hide; }
-                        }
-
-                        .data-on {
-                            .hide;
-
-                            .value { color: @grey3; }
-                        }
-
-                        .data-off {
-                            .show;
-
-                            .value {
-                                color: @textColor;
-                                font-weight: 600;
-                            }
-                        }
-
-                        &.on {
-                            .data-on { .show; }
-                            .data-off { .hide; }
-                        }
-                    }
-
-                    .checkbox { .hide; }
+                .checkbox {
+                    .hide();
                 }
 
                 &:last-child { border-bottom: 0; }
@@ -993,7 +1037,8 @@
                     .card-actions { .hide; }
 
                     &.second,
-                    &.third { .hide; }
+                    &.third,
+					&.fourth { .hide; }
                 }
             }
 
@@ -1009,6 +1054,10 @@
                             font-size: 10pt;
                             margin: 0;
                             .hide;
+
+                            .button {
+                                .hide();
+                            }
 
                             a { color: @grey3; }
 
@@ -1104,38 +1153,53 @@
                         }
 
                         /* Commisions ***/
-                        &.commisions {
-                            .tab-details {
-                                .totals {
-                                    margin-bottom: 8pt;
-                                    clear: both;
-                                    .float;
-
+                        .commisions {
+                            .tab-header {
+                                .totals { 
                                     li {
-                                        font-size: 8pt;
-                                        line-height: 1;
-                                        text-align: left;
-                                        color: @grey3;
-                                        text-transform: uppercase;
-                                        .pull-left;
-
-                                        .value {
-                                            font-size: 12pt;
-                                            line-height: 1;
-                                            font-weight: 300;
-                                            color: @textColor;
-                                            .show;
-                                        }
-
-                                        &:not(:nth-last-child(4)) {
-                                            margin-right: 8pt;
-                                            padding-right: 8pt;
-                                            border-right: 1px solid @grey2;
-                                        }
-
-                                        &.action { .hide; }
+                                        display: inline-block;
+                                        padding: 0 4pt 0 0;
                                     }
                                 }
+                            }
+                            .tab-details {
+                                .search-results-header {
+                                    #flexbox > .parent(row, flex-start, center, center);
+                                    
+                                    li {
+                                        margin:0;
+
+                                        &.action {
+                                            .hide();
+                                        }
+
+                                        &.paid {
+                                            width: 60px;
+                                            text-align: right;
+                                        }
+
+                                        &.hold {
+                                            width: 70px;
+                                            text-align: center;
+                                        }
+
+                                        &.amount {
+                                            width: 160px;
+                                            padding-right: 65px;
+                                            text-align: right;
+                                        }
+
+                                        &.commission,
+                                        &.revenue {
+                                            width: 80px;
+                                            text-align: right;
+                                        }
+                                        
+                                        &.reservation {
+                                            flex-grow: 1;
+                                        }
+                                    }
+                                } 
 
                                 .print-selected {
                                     .reservation:not(.selected) { .hide; }
@@ -1163,8 +1227,7 @@
                 .tab-header,
                 .search-results,
                 .billing-sidebar,
-                .no-content,
-                .billing-footer  { .hide; }
+                .billing-footer { .hide; }
 
                 .ar-statement {
                     display: block;
@@ -1173,7 +1236,7 @@
                     .invoice-footer {
                         text-align: justify;
                     }
-                    
+
                     img {
                         -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
                         filter: grayscale(100%);
@@ -1191,13 +1254,13 @@
                         text-transform: uppercase;
                         background-color: @grey2;
                         padding:4pt 0;
-                        font-size: 5pt;
-                        
+                        font-size: 4pt;
+                        word-break: break-word;
+
                         &:last-child {
                             padding-right: 4pt;
                         }
-                        
-                        
+
                         &.charge-date,
                         &.charge-code,
                         &.charge-amount {
@@ -1206,8 +1269,16 @@
 
                         /*Add space to Charge Amount and Amount Due*/
                         &:nth-child(5),
-                        &:nth-child(6){
+                        &:nth-child(6),
+                        &.charge-code,
+                        &.charge-date {
                             padding-right: 4pt;
+                        }
+
+                        &.charge-description {
+                            strong {
+                                font-weight: 700;
+                            }
                         }
                     }
 
@@ -1223,155 +1294,162 @@
                             padding-top:4pt;
                         }
 
+
                         tr {
                             td {
                                 border-bottom:1px solid @grey2;
                                 padding: 4pt 4pt 4pt 0;
 
                                 &.charge-description {
-                                    padding-right:8pt;
+                                    padding-right: 8pt;
                                     word-break: break-word;
-                                }
+                                } 
 
                                 &.amount-due {
                                     vertical-align: bottom;
-                                } 
-                            }
-                        }
-
-                        .charges-table-container {
-                            padding-right: 0;
-                        }
-                        .charges-table {
-                            tr td {
-                                &.charge-date,
-                                &.charge-code,
-                                &.charge-amount {
-                                    width: 45pt !important;
                                 }
                             }
-                            tr:last-child td {
-                                border-bottom: none;
-                            }
-                            tr:first-child td {
-                                padding-top: 0;
-                            }
                         }
                     }
 
-                    .statement-header {
-                        &:after {
-                            display: table;
-                            clear: both;
-                            content: '';
-                        }
+                    .charges-table-container {
+                        padding-right: 0;
                     }
 
-                    .statement-header-text {
-                        text-align:left;
-                    }
-
-                    .invoice-header {
-                        margin-top: 1.5cm;
-                        position: relative;
-
-                        img {
-                            position: absolute;
-                            height: 30px;
-                            top: -30px;
-                            right: 0;
-                        }
-                        h1 {
-                            font-size:18pt;
-                            font-weight: 600;
+                    .charges-table {
+                        tr td {
+                            &.charge-date,
+                            &.charge-code,
+                            &.charge-amount {
+                                width: 45pt !important;
+                            } 
                         }
 
-                        .statement-company-address {
-                            font-size:10pt;
-                            font-style: italic;
+                        tr:last-child td {
+                            border-bottom: none;
+                        }
+                        tr:first-child td {
+                            padding-top: 0;
                         }
                     }
+                }
 
-                    .guest-info {
-                        font-size: 9pt;
-                        width:50%;
-                        float:left;
+                .statement-header {
+                    &:after {
+                        display: table;
+                        clear: both;
+                        content: '';
+                    }
+                }
 
-                        img {
-                            .size(40px, auto);
-                        }
+                .invoice-header {
+                    margin-top: 1.5cm;
+                    position: relative;
+
+                    img {
+                        position: absolute;
+                        height: 30px;
+                        top: -30px;
+                        right: 0;
                     }
 
-                    .person td,
-                    .payment td {
-                        vertical-align: top;
-                        &.person-info {
-                            width: 3.5cm;
-                        }
-                        .name {
-                            font-size:11pt;
-                        }
+                    h1 {
+                        font-size:18pt;
+                        font-weight: 600;
+                    }
 
-                        .person-meta {
-                            margin-top:0.05cm;
+                    .statement-company-address {
+                        font-size:10pt;
+                        font-style: italic;
+                    }
+                }
+
+                .guest-info {
+                    font-size: 9pt;
+                    width:50%;
+                    float:left;
+
+                    img {
+                        .size(40px, auto);
+                    }
+                }
+
+                .person td,
+                .payment td {
+                    padding:5pt 0;
+                    vertical-align: top;
+
+                    &.person-info {
+                        width: 3.5cm;
+                    }
+
+                    .name {
+                        font-size:11pt;
+                    }
+
+                    .person-meta {
+                        margin-top:0.05cm;
+                        display: block;
+
+                        strong {
                             display: block;
-                            strong {
-                                display: block;
-                            }
+                        }
+                    }
+                }
+
+                .tax-breakdown {
+                    td,th {
+                        padding: 4pt;
+                        text-align: right;
+
+                        &:first-child {
+                            text-align: left;
+                            padding-left: 4pt;
                         }
                     }
 
-                    .tax-breakdown {
-                        td,th {
-                            padding: 4pt;
-                            text-align: right;
-
-                            &:first-child {
-                                text-align: left;
-                                padding-left: 4pt;
-                            }
-                        }
-                        
-                        tfoot td {
-                            background-color: @grey2;
-                            font-weight: bold;
-                        }
-
-                        .tax-description {
-                            width: 50%;
-
-                        }
+                    th {
+                        font-size: 8pt;
                     }
 
-                    .statement-info {
-                        width:50%;
-                        float:right;
-                        margin-bottom:0.5cm;
-
-                        &:after {
-                            display: table;
-                            content: '';
-                            clear: both;
-                        }
+                    tfoot td {
+                        background-color: @grey2;
+                        font-weight: bold;
                     }
 
-                    .statement-meta {
-                        width:50%;
-                        float:left;
-                        font-size:9pt;
-                        margin-bottom:0.1cm;
+                    .tax-description {
+                        width: 50%;
+                    }
+                }
 
-                        strong { display:block; }
-                        
+                .statement-info {
+                    width:50%;
+                    float:right;
+                    margin-bottom:0.5cm;
 
-                        &:nth-child(3) {
-                            clear: both;
-                        }
+                    &:after {
+                        display: table;
+                        content: '';
+                        clear: both;
+                    }
+                }
 
-                        &:nth-child(3),
-                        &:first-child{
-                            padding-right: 1em;
-                        }
+                .statement-meta {
+                    width:50%;
+                    float:left;
+                    font-size:9pt;
+                    margin-bottom:0.1cm;
+
+                    strong { display:block; }
+
+
+                    &:nth-child(3) {
+                        clear: both;
+                    }
+
+                    &:nth-child(3),
+                    &:first-child{
+                        padding-right: 1em;
                     }
                 }
             }
@@ -1432,11 +1510,11 @@
             &.legend {
                 li {
                     .float;
-                    .icons { 
+                    .icons {
                         .square(20px);
                         display: block;
                         float: left;
-                    } 
+                    }
                 }
             }
         }
@@ -1723,11 +1801,11 @@
                             padding-left: 0;
                             border-top: 1px solid @grey1;
 
-                            span { 
-                                .show(); 
+                            span {
+                                .show();
                             }
 
-                            strong { 
+                            strong {
                                 color: @grey4;
                                 text-transform: uppercase;
                                 font-weight: 600;
@@ -1735,7 +1813,7 @@
                                 .show();
                             }
 
-                            p { 
+                            p {
                                 line-height: 1;
                             }
 
@@ -1753,9 +1831,30 @@
                                         &.icon-unassigned { background-position: 0 -220px; }
                                         &.icon-assigned { background-position: 0 -240px; }
                                         &.icon-completed { background-position: 0 -260px; }
-                                    }                                    
+                                    }
                                 }
                             }
+                        }
+
+                        &[data-count] {
+                            position: relative;
+                            padding-right: 30px;
+
+                            &:before {
+                                content: attr(data-count);
+                                position: absolute;
+                                top: 5px;
+                                right: 10px;
+                                font-size: 10pt;
+                                line-height: 15pt;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                text-align: center;
+                                color: @black;
+                                background: @grey1;
+                                .square(14pt);
+                                #border-radius > .rounded(50%);
+                            }  
                         }
                     }
 
@@ -1986,12 +2085,47 @@
                         }
                     }
                 }
+
+                &.tax-exempt-report {
+
+                    td {
+                        .reference {
+                            color: @grey3;
+                            .show();
+                        }
+
+                        .icons {
+                            &.time {
+                                width: 20px;
+                                height: 20px;
+                                float: left;
+
+                                &.check-in {
+                                    background-position: 0px 0px;
+                                }
+
+                                &.check-out {
+                                    background-position: 0px -20px;
+                                }
+                            }
+                        }
+
+                        &.name { 
+                            width: 240pt;
+                            border-bottom: 1px solid @grey2;
+                        }
+                        
+                        &.date { width: 80pt; }
+                        
+                        &.rate { width: 150pt; }
+                    }
+                }
             }
 
             &.balance-reports {
                 thead {
                     th {
-                        padding: 4pt 8pt 4pt 4pt; 
+                        padding: 4pt 8pt 4pt 4pt;
 
                         &:last-child { padding-right: 0; }
                     }
@@ -2251,10 +2385,10 @@
 
                                     &.active {
                                         td {
-                                            border-bottom-color: rgba(0,0,0,0.04);  
+                                            border-bottom-color: rgba(0,0,0,0.04);
                                         }
                                     }
-                                    
+
                                 }
                             }
                             // Used in Comparison Report
@@ -2263,8 +2397,8 @@
                                     &.code {
                                         padding-left: 20px;
                                     }
-                                    border-bottom-color: rgba(0,0,0,0.03);  
-                                } 
+                                    border-bottom-color: rgba(0,0,0,0.03);
+                                }
 
                                 &.last {
                                     td {
@@ -2285,12 +2419,12 @@
                         tr {
                             th {
                                 .switch-button {
-                                     
+
                                     .value,
                                     input {
                                         .hide();
                                     }
-                                    
+
                                     &:not(.on) {
                                         .data-on {
                                             .hide();
@@ -2399,7 +2533,7 @@
                     tbody {
                         tr {
                             &.total {
-                             
+
                                 td {
                                     border-top: 1px solid @black;
                                     border-bottom: 1px solid @black;
@@ -2412,7 +2546,7 @@
                                         }
                                     }
                                 }
-                                
+
                             }
                         }
                     }
@@ -2423,14 +2557,14 @@
                 tbody {
                     tr {
                         td {
-                            width: 3.4cm; 
+                            width: 3.4cm;
 
                             &.entity-name {
                                 width: -webkit-calc(~'100% - 19cm');
                                 width: -moz-calc(~'100% - 19cm');
                                 width: calc(~'100% - 19cm');
                             }
-                            
+
                             &.red,
                             &.penalty { color: @grey3; position:relative }
 
@@ -2444,10 +2578,10 @@
                                 color: white;
                                 width: 15px;
                                 text-align: center;
-                                height: 15px; 
+                                height: 15px;
                                 line-height: 15px;
                                 font-weight: 600;
-                            } 
+                            }
 
                             &:first-child {
                                 width: 2cm;
@@ -2462,10 +2596,34 @@
                 border-collapse: collapse;
                 border-spacing: 0;
 
+                /* styles for commission summary print */ 
+                &.payment-report {
+                    thead {
+                        display: table-row-group;
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                &.confirm-no {
+                                    width: 75pt;
+                                }
+                            }    
+                        }
+                    }
+                }
+
                 thead {
+                    display: table-row-group;
                     tr {
                         th {
-                            
+
 
                             &.amount {
                                 width: 100pt;
@@ -2485,25 +2643,25 @@
                         }
 
                         &.bottom-row {
-                                
-                            th { 
-                                
+
+                            th {
+
                                 text-transform: none;
                                 font-style: italic;
                                 background: @grey1;
                                 border-bottom: 0;
-                                font-weight: 400; 
+                                font-weight: 400;
 
                                 &.break {
-                                    border-left: 1px solid rgba(0,0,0,.4); 
+                                    border-left: 1px solid rgba(0,0,0,.4);
                                 }
                                 &:not(.break) {
-                                     border-left: 1px solid rgba(0,0,0,.1); 
+                                     border-left: 1px solid rgba(0,0,0,.1);
                                 }
-                               
+
                                 .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
-                                 
+
                                 &:first-child { border-left: 0; }
 
                                 &:not(:first-child) {
@@ -2517,7 +2675,7 @@
                 tbody {
                     tr {
                         td {
-                            border-bottom: 1px solid rgba(0,0,0,0.1);
+                            page-break-inside: avoid;
 
                             &.name {
 
@@ -2526,7 +2684,7 @@
                                         color: inherit;
                                     }
                                 }
-                                 
+
                                 .data {
                                     display: block;
                                 }
@@ -2534,15 +2692,22 @@
                                 .guest-date {
                                     clear: both;
 
+                                    .guest-status { .hide(); }
+
                                     .date {
-                                        margin-top: 5pt;
+                                        margin-top: 0;
                                         display: block;
-                                        line-height: 20px;
+                                        line-height: 15px;
+
+                                        &:first-child { margin-top: 5pt; }
                                     }
- 
+
                                     span {
                                         margin:0 2pt;
-                                    } 
+
+                                        &:first-child { margin-left: 0pt; }
+                                        &:last-child { margin-right: 0pt; }
+                                    }
                                 }
                             }
 
@@ -2551,7 +2716,7 @@
                             &:nth-child(7) {
                                 padding-left: 4pt;
                             }
-                        } 
+                        }
 
                         &.rate-row {
                             td {
@@ -2561,22 +2726,42 @@
                     }
                 }
 
-                tfoot { 
-                    
-                    tr {
+                tfoot {
+                    display: table-row-group;
+                    tr { 
                         &.totals {
                             td {
                                 font-size: 14px;
                             }
                         }
+
                         &.pagination {
-                            display: none; 
+                            display: none;
                         }
                     }
-                   
+
+                }
+
+                /** For Financials > Commissions print */
+                &.payment-report {
+                    margin-bottom: 10pt;
+                    
+                    thead {
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+
+                                &.guest {
+                                    width: 300pt;
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            
+
 
             &.group-rooms-reports {
                 table-layout: fixed;
@@ -2587,8 +2772,8 @@
                             text-align: center;
                             font-weight: 600;
 
-                            &[colspan] { 
-                                border-right: 1px solid @grey2; 
+                            &[colspan] {
+                                border-right: 1px solid @grey2;
 
                                 &:last-child { border-right: 0; }
                             }
@@ -2596,7 +2781,7 @@
 
                         &:first-child {
                             th {
-                                
+
                                 .nowrap();
 
                                 &[colspan="1"] {
@@ -2609,11 +2794,11 @@
                             th {
                                 text-transform: none;
                                 font-style: italic;
-                                font-weight: 400; 
+                                font-weight: 400;
                                 background: @grey1;
                                 border-bottom: 0;
                                 border-right: 1px solid @grey2;
-                                 
+
                                 &:last-child { border-right: 0; }
                             }
                         }
@@ -2625,7 +2810,7 @@
                     td {
                         text-align: center;
 
-                        &.empty { 
+                        &.empty {
                             border-color: @grey1;
 
                             // Shifting the border to left and bottom instead of right and bottom
@@ -2633,8 +2818,8 @@
                             // Adding left border to the first filled day
                             &+td:not(.empty) {
                                 border-width: 0 1px 1px 1px;
-                            } 
-                           
+                            }
+
                         }
 
                         &.zero {
@@ -2833,7 +3018,7 @@
             }
 
             &.books {
-                .statistics-headings { 
+                .statistics-headings {
                     width: 75px;
 
                     th.action-row {
@@ -2908,6 +3093,15 @@
                     color: @grey3;
                     margin-top: 4pt;
                 }
+
+                &.vat-report {
+                    font-weight: 600;
+
+                    li {
+                        text-align: right;
+                        width: 120px;
+                    }
+                }
             }
 
             .grid-footer {
@@ -2958,6 +3152,24 @@
                 }
 
                 &.title-3 { border-bottom: 1px solid @grey2; }
+
+                /* VAT Report ***/
+                &.vat-report {
+                    strong {
+                        .calc-width(100, 240);
+
+                        em {
+                            color: @grey3;
+                            font-weight: 400;
+                            padding-left: 8px;
+                        }
+                    }
+
+                    span:not(.currency) { 
+                        text-align: right;
+                        width: 120px; 
+                    }
+                }
             }
 
             .grid-content {
@@ -2993,16 +3205,33 @@
                                 white-space: normal;
                             }
                         }
+
+                        &.vat-revenue {
+                            text-align: right;
+                            width: 120px;
+                        }
                     }
 
                     &.pagination { .hide; }
+                }
+
+                &.vat-report {
+                    
+                    .number {
+                        width: 140px;
+                    }
+                    
+                    .revenue {
+                        text-align: right;
+                        width: 120px;
+                    }
                 }
             }
         }
 
         &.occupancy-footer { display: table; }
 
-        &.card-authorization-check { 
+        &.card-authorization-check {
             .grid-footer {
                 li {
                     .pull-right;
@@ -3018,9 +3247,9 @@
                 &:last-child {
                     border-bottom: 1px solid @grey2;
                 }
-                
+
             }
-            
+
             .group-info {
                 padding: 4pt 10pt;
                 border-top: 1px solid @grey2;
@@ -3049,29 +3278,29 @@
 
                         &:not(:last-child) {
                             margin-right: 15pt;
-                        } 
+                        }
 
                         span {
                             color: @grey3;
                         }
                     }
                 }
-                
+
             }
 
-            .group-data { 
+            .group-data {
                 .float;
 
                 ul {
                     .pull-left;
-                    width: 75px; 
+                    width: 75px;
 
                     .main-heading {
                         height: 36px;
                         line-height: 36px;
                         font-size: 12px;
                         text-align: center;
-                        background: @grey1; 
+                        background: @grey1;
                         text-transform: uppercase;
                         font-weight: 600;
                         border-right: 1px solid rgba(0, 0, 0, 0.1)
@@ -3092,10 +3321,10 @@
                         }
 
                         .icons {
-                            margin-top: 1pt; 
+                            margin-top: 1pt;
                             .pull-left;
                             .square(12pt);
-                            
+
                             &.icon-blocked { background-position: 2px -277px; }
 
                             &.icon-picked-up { background-position: 2px -318px; }
@@ -3116,7 +3345,7 @@
                 }
 
                 &.totals {
-                     
+
 
                     table {
                         thead {
@@ -3127,7 +3356,7 @@
                                 th {
                                     text-align: left;
                                     &:first-child {
-                            
+
                                         &:not(:last-child) {
                                             text-align: right;
                                         }
@@ -3136,8 +3365,8 @@
                             }
                         }
                         tbody {
-                            td { 
-                                font-weight: 600;  
+                            td {
+                                font-weight: 600;
                             }
                         }
                     }
@@ -3145,101 +3374,39 @@
             }
         }
 
-         &.print-commission-agent {
+        &.print-commission-agent {
+
+            .travel-agent-single-print {
+                .show();
+            }
 
             &.scrollable {
                 overflow: hidden;
             }
 
-            .travel-agent {
-                &:not(.printing) {
-                    .hide();
-                }
-
-                .button {
-                    .hide();
-                }
-            }
-
-            .travel-agent-print {
+            .travel-agent-print,
+            .wrapper {
                 .hide();
-            }
+            } 
         }
 
         &.print-commission-summary {
-            .commission-reports,
-            h2,
-            .iScrollVerticalScrollbar,
+
+            .travel-agent-single-print,
+            .travel-agent-print,
             .button {
                 .hide();
-            } 
+            }
 
-            // Fix bug with the scroll
             &.scrollable {
                 overflow: hidden;
             }
 
             .travel-agent {
+                margin-bottom: 20pt;
                 border-bottom: 1px solid @grey2;
-                &.last {
-                    border-bottom: 0
-                }
-            }
-            .grid-footer {
-                .show();
-            }
-            .travel-agent-print {
-                .float;
-                padding: 4pt 0;
- 
-                .data {
-                    width: 40%; 
-                    margin-top: 10px;
-                    .pull-left;
 
-                    h2 {
-                        .show(); 
-                        width:100%;   
-                        line-height: 1;
-                        white-space: normal;
-                        margin-bottom: 6px;
-                        padding-right: 5px;
-                        display: block; 
-                        font-size: 10pt
-
-                    }
-                }
-
-                .info-holder {
-                    .pull-right;
-                    width: 60%;
-                    margin:0;
-                    padding:0;
-
-                    li {
-
-                        margin-top: 5px;
-                        text-align: center;
-                        width: 50%;
-                        color: @grey3;
-                        .pull-left();
-
-                        strong {
-                            font-size: 15pt;
-                            line-height: 1.25em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @black;
-                            display: block;
-                        }
-
-                        span {
-                            font-size: 10pt;
-                            text-transform: uppercase;
-                        }
-
-                    }
-                }
+                &:last-child { margin-bottom: 10pt; }
             }
         }
     }
@@ -3279,7 +3446,7 @@
 
             &:not(:last-child) { margin-right: 20pt; }
         }
-    } 
+    }
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -3456,13 +3623,13 @@
                 border-bottom: 1px solid @grey3;
             }
 
-            .print-date { 
+            .print-date {
                 order: 4;
 
                 .arrival-date,
                 .departure-date {
                     display: block;
-                    margin-top: 2pt; 
+                    margin-top: 2pt;
 
                     .guest-status {
                         .square(10px);
@@ -3940,9 +4107,9 @@
                 font-size:18pt;
                 font-weight: 600;
                 line-height: 40px;
-                }  
+                }
             }
-            
+
 
             img {
                 .size(40px, auto);
@@ -3954,7 +4121,7 @@
                 height: 4.8cm;
                 h1 {
                     font-size: 10pt;
-                    font-weight: 600; 
+                    font-weight: 600;
                 }
 
                 .type {
@@ -3981,10 +4148,10 @@
                 display: block;
                 margin-top: 0.25cm;
             }
-            
+
             .info-right {
                 text-align: right;
-                
+
             }
 
             &.account-info {
@@ -4024,18 +4191,18 @@
             text-align: center;
             margin-top: 0;
             clear: both;
-            
+
             &.top-header {
                 height: 1.5cm;
                 position: relative;
-                
+
                 img {
                     position: absolute;
                     height: 30px;
                     top: -30px;
                     right: 0;
                 }
-                
+
                 h1 {
                     font-size:18pt;
                     font-weight: 600;
@@ -4237,6 +4404,10 @@
         .guest-data-enter {
             margin-bottom: 10pt;
 
+            &.fixed {
+                table-layout: fixed;
+            }
+
             td {
                 padding: 10pt;
                 border: 2pt solid #ebebeb;
@@ -4400,118 +4571,615 @@
     }
 
 /* Commisions               ==============================*/
-    .commisions-content {
+    .commissions-content {
         margin: 0 2cm;
-        .commisions-totals {
-            margin-bottom: .5cm;
-            li {
-                margin:0 10pt;
 
-                span {
-                    &.amount {
-                        &.red {
-                            color:@grey3;
-                        }
+        .commissions-header {
+            margin-bottom: .5cm;
+            .float;
+
+            ul {
+                .pull-left();
+                .float;
+
+                &.totals {
+                    .pull-right();
+                }
+
+                li {
+                    margin-right: 10pt;
+                    .pull-left();
+
+                    &.actions {
+                        display: none;
+                    }
+
+                    span {
+                        text-transform: uppercase;
+                    }
+
+                    .amount {
+                        display: block;
+                        font-weight: bold;
                     }
                 }
             }
+
+            .filters {
+                li {
+                    text-transform: uppercase;
+                    &:not(.active) {
+                        display: none;
+                    }
+
+                    strong {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        .commissions-list {
+            .expand,
             .check {
-                display: none;
+                .hide();
+            }
+
+            .commissions-list-header {
+                .float;
+
+                li {
+                    text-align: right;
+                    width: 130px;
+                    text-transform: uppercase;
+                    .pull-left();
+
+                    &.agent-info {
+                        text-align: left;
+                        .calc-width(100, 390);
+                    }
+
+                    &:last-child {
+                        padding-right: 5pt;
+                    }
+                }
             }
         }
 
          /* Commision Item***/
         .commision-item {
-                    position: relative;
+            position: relative;
+            .float;
+
+            a {
+                &.has-arrow {
+                    background: none !important;
+                }
+            }
+
+            .data {
+                .calc-width(100, 390);
+                .pull-left();
+
+                .meta-data {
+                    display: block;
+                    width: 100%;
+                    clear: both;
+                    margin-top: 5pt;
+                }
+
+                h2 {
+                    line-height: 1;
+                    white-space: normal; 
+                    padding-right: 5px;
+                    display: block;
+                    vertical-align: top;
+                }
+
+                .icons {
+                    display: inline;
+                    line-height: 20px;
+                    height: 20px;
+                    overflow: hidden;
+                }
+
+                .icon-hold {
+                    position: absolute;
+                    left: -40px;
+                    top: 10px; 
+                    margin: auto;
+                }
+
+                .icons {
+                    color: @grey3;
+                    padding-left: 20px;
+                }
+
+                .icon-location,
+                .icon-guest-travelagent {
+                    background: none;
+                    padding: 0;
+                    display: block;
+                    line-height: 1;
+                    height: auto;
+                    .pull-left();
+                }
+
+                .icon-location {
+                        width: 70%;
+                }
+                 .icon-guest-travelagent {
+                        width: 30%;
+                 }
+            }
+
+            .info {
+                text-align: right;
+                .pull-right;
+                .float;
+
+                li {
+                    border-bottom: none;
+                    width: 130px;
+                    height: 30px;
+                    line-height: 30px;
+                    padding: 0;
+                    .pull-left();
+
+                    &:last-child {
+                        padding-right: 5pt;
+                    }
+                }
+            }
+
+            .commission-details {
+                display: block !important;
+                th,
+                td {
+                    &:first-child {
+                        width: 10pt;
+                    }
+                    &.amount,
+                    &.owing {
+                        text-align: right;
+                        width: 130px;
+                        padding-right: 0;
+                    }
+
+                    &.owing {
+                        padding-right: 5pt;
+                    }
+                }
+            }
+        }
+    }
+
+/* Overbooking              ==============================*/
+    .overbooking-content {
+        #flexbox > .parent(row nowrap, '', '', '');
+
+        .row {
+            height: 18pt;
+            width: 100%;
+            box-shadow: inset 0 -1px 0 @grey2;
+            overflow: hidden;
+            #flexbox > .parent(row nowrap, '', '', '');
+        }
+
+        .cell {
+            line-height: 18pt;
+            text-align: right;
+            box-shadow: inset 1px 0 0 @grey2;
+            .size(18pt, 7.14%);
+            #flexbox > .parent(row nowrap, '', '', '');
+
+            .rooms {
+                font-size: 8pt;
+                font-style: italic;
+                color: @grey3;
+                display: none;
+
+                &.unavailable {
+                    color: @red;
+                }
+            }
+
+            .limit {
+                display: block;
+                padding: 0 8pt;
+                width: 100%;
+            }
+
+            &:last-child {
+                box-shadow: inset 1px 0 0 @grey2, inset -1px 0 0 @grey2;
+            }
+        }
+
+        .overbooking-timeline {
+            background-color: @grey1;
+            box-shadow: inset 0 -1px 0 @grey2, inset 0 1px 0 @grey2;
+            .size(44pt, 100%);
+            #flexbox > .parent(column wrap, space-between, '', '');
+
+            .wrapper {
+                padding: 5px;
+            }
+
+            .label {
+                margin-top: auto;
+                margin-left: auto;
+                font-weight: 600;
+                font-size: 8pt;
+                line-height: 22pt;
+                color: @textColor;
+            }
+
+            .row {
+                overflow: hidden;
+                .size(22pt, 100%);
+            }
+
+            .cell {
+                line-height: 22pt;
+                height: 22pt;
+
+                &.day {
+                    line-height: 1;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding: 4pt 6pt;
+                    flex-wrap: wrap;
+
+                    span {
+                        width: 100%;
+                        .show();
+                    }
+
+                    strong {
+                        font-weight: 600;
+                        width: 100%;
+                    }
+                }
+            }           
+
+            .limit {
+                font-size: 10pt;
+                font-weight: 600;
+            }
+        }
+
+        .overbooking-rooms {
+            width: 180px;
+            box-shadow: inset 1px 0 0 @grey2;
+
+            .row {
+                line-height: 1;
+                text-transform: uppercase;
+                text-align: right;
+                padding: 0 6pt;
+                #flexbox > .parent(column wrap, center, flex-end, '');
+            }
+        }
+
+        .overbooking-limits {
+            width: calc(~'100% - 180px');
+        }
+
+        /* Showing rooms left to sell ***/ 
+        &.showing-rooms {
+            .rooms {
+                display: block;
+                padding: 0 4pt 0 8pt;
+                width: 24pt;
+                box-shadow: inset -1px 0 0 @grey2;
+            }
+
+            .limit {
+                display: block;
+                padding-left: 4pt;
+                width: calc(~'100% - 24pt');
+            }
+        }
+    }
+
+/* Card Print               ==============================*/
+    .card-print {
+        .cards-wrapper {
+            .cards-header {
+                display: block !important;
+                height: auto;
+                margin-bottom: 20px;
+
+                .card-header {
                     .float;
-                    .data {
-                         
-                        width: 40%;
-                        .pull-left();
-                        .meta-data {
-                            display: block;
-                            width: 100%;
-                            clear: both;
-                        }
 
-                        h2 {
-                            line-height: 1;
-                            white-space: normal;
-                            margin-bottom: 6px;
-                            padding-right: 5px;
-                            display: block;
-                            vertical-align: top;
-                        }
-       
-                        .icons {
-                            display: inline;
-                            line-height: 20px;
-                            height: 20px;
-                            overflow: hidden; 
-                        }
-
-                        .icon-hold {
-                            position: absolute;
-                            left: -40px;
-                            top: 0;
-                            bottom: 0;
-                            margin: auto;
-                        }
-
-                        .icons {
-                            color: @grey3;
-                            padding-left: 20px;
-                        }
-
-                        .icon-location,
-                        .icon-guest-travelagent {
-                            background: none;
-                            padding: 0;
-                            display: block;
-                            .pull-left();
-                        }
-
-                        .icon-location {
-                                width: 70%;
-                        }
-                         .icon-guest-travelagent { 
-                                width: 30%;
-                         }
-                    }
-
-                    .info-holder {
-                        float: right;
-                        width: 60%;
-                    }
-
-                    .info {
-                        margin-top: 5px;
-                        text-align: center;
-                        width: 25%;
-                        color: @grey3;
+                    .guest-image {
+                        .show;
                         .pull-left;
+                        .square(40px);
+                        margin-right: 10px;
 
-                        strong {
-                            font-size: 20px;
-                            line-height: 1.25em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @textColor;
-                            .show;
-                            &.red { color: @grey3; }
+                        .vip { .hide; }
+                    }
+
+                    form {
+                        .calc-width(100, 50);
+                        .pull-left;
+                        text-align: left;
+
+                        .status {
+                            display: inline-block;
+                            font-weight: inherit;
+                            font-size: inherit;
                         }
 
-                        span {
-                            font-size: 14px;
-                            text-transform: uppercase;
+                        .name { font-size: 1.5em; font-weight: 600; }
+
+                        ul {
+                            li {
+                                display: inline-block;
+                                margin: 0 10px 0 0;
+                            }
+                        }
+
+                        .switch-button {
+                            vertical-align: middle;
+                            padding-left: 10px;
+                            margin-left: 10px;
+                            border-left: 1px solid rgba(0,0,0,0.1);
+                            width: auto;
+                            &.on { display: inline-block; }
+                            &:not(.on),
+                            .data-off,
+                            input { .hide; }
+
+                            .data-on { 
+                                .float;
+
+                                .value { .hide; }
+                                .switch-icon { 
+                                    .pull-left;
+                                    background: transparent;
+                                    border-radius: 0;
+                                    color: @black;
+                                    font-size: inherit;
+
+                                    &.vip {
+                                        font-weight: inherit;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+            }
+        }
+
+        .notice,
+        .card-tabs-nav { .hide; }
+
+        .card-tab { 
+            display: block !important; 
+            .float;
+
+            .entry {
+                width: 100%;
+                margin: 0;
+                .float;
+
+                /** Something in PMS that can't be removed? */
+                .check-block { display: inline-block; }
+
+                label { 
+                    display: inline-block;
+                    &:not(.checkbox):not(.radio) {
+                        width: 150px;
+                    }
+
+                    &.checkbox,
+                    &.radio {
+                        &:not(.checked),
+                        .icon-form,
+                        input { .hide; }
+
+                        float: none;
+
+                        &.checked {
+                            &.print-block { display: block !important; }
+                        }
+                    }
+                }
+
+                input,
+                .select {
+                    display: inline-block;
+                    vertical-align: middle;
+                    .calc-width(100,200);
+                }
+                
+                .select {
+                    &:after { .hide; }
+                }
+
+                .clear-value { .hide; }
+
+                input,
+                select,
+                label.checkbox,
+                label.radio {
+                    background: transparent;
+                    min-height: auto;
+                    height: auto;
+                    line-height: 18px;
+                    border:0;
+                    padding: 0;
+                    font-size: 14px;
+                    .box-shadow(none);
+                }
+            }
+
+            .holder,
+            .entry {
+                span {
+                    &.only-print { font-size: 14px; }
+                }
+            }
+
+            .h3 {
+                margin-bottom: 15px;
+                margin-top: 30px;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .active-item {
+                display: block;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(0,0,0,0.15);
+
+                &.item-loyalty {
+                    .value {
+                        &.code,
+                        &.number {
+                            margin-rigth: 40px;
+                        }
+
+                        &.code {
+                            width: 100px;
+                        }
+
+                        &.number {
+                            width: 150px;
+                        }
+                    }
+                }
+                .card-logo {
+                    margin: 0 40px 0 0;
+                }
+                .primary { .hide; }
+                
+            }
+            .add-new-button { .hide; }
+        }
+    }
+
+/* Automatic Payments       ==============================*/
+    #automatic-payments {
+
+        .cell-checkbox {
+            .hide();
+        }
+
+        .grid-header {
+            display: grid;
+            grid-template-columns: 35% 15% 22% 14% 14%;
+            background-color: @grey1;
+
+            li {
+                font-size: 8pt;
+                line-height: 1;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin: 0;
+                padding: 4pt 4pt 4pt 0;
+
+                &.cell-reservation {
+                    padding-left: 4pt;
+                }
+            }
+
+            .cell-cost,
+            .cell-deposit {
+                text-align: right;
+            }
+        }
+
+        .grid-content {
+            .search-results {
+                li:not(.no-content) {
+                    &.autopayment-item {
+                        
+                        .info {
+                            font-size: 8pt;
+                            line-height: 1;
+                            #flexbox > .parent(row wrap, '', center, '');
+
+                            .label {
+                                font-size: 8pt;
+                                display: inline-block;
+                                float: none;
+                                margin-right: 3px;
+                            }
+
+                            .value {
+                                font-weight: 600;
+                            }
+                        }
+
+                        a {
+                            display: grid;
+                            grid-template-columns: 35% 15% 22% 14% 14%;
+                            background: transparent;
+                            padding: 0 4pt;
+
+                            &:before,
+                            &:after {
+                                .hide();
+                            }
+                        }
+
+                        [class*="cell-"] { 
+                            #flexbox > .parent(row wrap, '', center, '');
+                        }
+
+                        .cell-reservation {
+                            h2 {
+                                font-size: 9pt;
+                                width: 100%;
+                                .nowrap();
+                            }
+                        }
+
+                        .cell-card {
+
+                            .card-logo {
+                                margin-right: 4px;
+
+                                img {
+                                    .size(14px, auto);
+                                }
+                            }
+
+                            .info {
+                                width: 35%;
+                            }
+                        }
+
+                        .cell-cost,
+                        .cell-deposit {
+                            font-size: 9pt;
+                            #flexbox > .parent('', flex-end, '', '');
+                        }
+
+                        .cell-deposit {
+                            font-weight: 600;
+
+                            .deposit-due {
+                                font-size: 8pt;
+                                text-align: right;
+                                color: @grey3;
+                                text-transform: uppercase;
+                                width: 100%;
+                                .show();
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
-
-

@@ -23,7 +23,14 @@ sntRover.controller('reservationDetailsController',
 	'RVReservationStateService',
 	'RVReservationBaseSearchSrv',
 	'RVReservationPackageSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
+	'transitions',
+	'taxExempts',
+	'sntActivity',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
+             reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
+             RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
+             RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts, sntActivity) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -36,7 +43,8 @@ sntRover.controller('reservationDetailsController',
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+		    ALLOWED_RESV_LIMIT = 92;
 
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
@@ -46,6 +54,18 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		$scope.shouldShowTaxExempt = function() {
+            return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
+        };
+
+		$scope.taxExemptTypes = taxExempts.results;
+		var defaultTaxExemptObject = _.findWhere($scope.taxExemptTypes, {is_default: true});
+
+		$scope.defaultTaxExemptTypeId = '';
+		if (typeof defaultTaxExemptObject !== "undefined") {
+			$scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
+		} 
+		
 		// CICO-29343 - Set the flag to false initially and checking the View SR permission
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
@@ -53,10 +73,9 @@ sntRover.controller('reservationDetailsController',
 		// CICO-38714 / CICO-41313 - Set the Guest ID Permission flag and check if each guest has an id scanned or not
 		// set to false if the hotel admin switch is turned off
 
-		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
-   		$scope.guestIDsAvailable = [];
-
+   		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -75,6 +94,7 @@ sntRover.controller('reservationDetailsController',
 			if ($scope.previousState.name === "rover.groups.config") {
 				setNavigationBookMark();
 			}
+
 			$rootScope.setPrevState = {
 				title: 'GROUP DETAILS',
 				name: 'rover.groups.config',
@@ -83,7 +103,15 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "ROOMING"
 				}
 			};
-		} else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
+		}else if ($scope.previousState.name === 'rover.financials.autoCharge') {
+            $rootScope.setPrevState = {
+                title: 'AUTO CHARGE',
+                name: 'rover.financials.autoCharge',
+                param: {
+                    isFromStayCard: true
+                }
+            };
+        } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
 			}
@@ -127,18 +155,31 @@ sntRover.controller('reservationDetailsController',
 				title: 'Room Diary'
 
 			};
-		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
-			if ($scope.previousState.name === "rover.reports") {
-				setNavigationBookMark();
-			}
+        } else if ((transitions.get().from()['name'].match(/rover\.reports/))) {
+            $rootScope.setPrevState = {
+                title: 'REPORTS',
+                name: transitions.get().from()['name'],
+                param: angular.extend(
+                    angular.copy(transitions.get().params('from')), {
+                        action: 'report.show.last'
+                    })
+            };
+
+            
+		} else if ($stateParams.isFromCardStatistics) {
+			setNavigationBookMark();
 			$rootScope.setPrevState = {
-				title: 'REPORTS',
-				name: 'rover.reports',
+				title: 'Card Statistics',
+				name: 'rover.companycarddetails',
 				param: {
-					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
-					activeTab: "REPORTS"
+					id: $vault.get('cardId'),
+					type: $vault.get('type'),					
+					isBackToStatistics: true,
+					isBackFromStaycard: true,
+					selectedStatisticsYear: $vault.get('selectedYear')
 				}
 			};
+
 		} else if ($scope.previousState.name === "rover.companycarddetails") {
 
             setNavigationBookMark();
@@ -149,10 +190,22 @@ sntRover.controller('reservationDetailsController',
 					id: $vault.get('travelAgentId'),
 					type: $vault.get('travelAgentType'),
 					query: $vault.get('travelAgentQuery'),
-					isBackToTACommission: $stateParams.isFromTACommission
+					isBackToTACommission: $stateParams.isFromTACommission,
+					isBackFromStaycard: true
 				}
             };
-        } else {
+        } else if ($stateParams.isFromGuestStatistics) {			
+			$rootScope.setPrevState = {
+				title: 'Guest Statistics',
+				name: 'rover.guest.details',
+				param: {
+					guestId: $vault.get('guestId'),
+					selectedStatisticsYear: $vault.get('selectedYear'),
+					isBackToStatistics: true					
+				}
+			};
+
+		} else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"
@@ -187,6 +240,11 @@ sntRover.controller('reservationDetailsController',
 			$scope.goBackSearch = function() {
 				$scope.$emit('showLoader');
 				$scope.updateSearchCache();
+				// With the previous version of ui-router, this useCache state param was
+                // set to true in case of a back navigation in the $rootScope.loadPrevState method of rvApp.js file
+                // With the upgraded ui-router the stateparams cannot be changed in the middle of a transition
+                backParam = backParam || {};
+                backParam.useCache = true;
 				$state.go('rover.search', backParam);
 			};
 		}
@@ -215,38 +273,27 @@ sntRover.controller('reservationDetailsController',
 			}
 		};
 
-		$scope.fetchedGuestIDs = false;
+		var guestIdList;
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
-				$scope.guestIdReponseData = response;
-     			$scope.$emit('hideLoader');
+				guestIdList = response;
+				console.log(response);
 
-				$scope.fetchedGuestIDs = true;
-				var guestOnReservation,
-					reservation_card = $scope.reservationData.reservation_card;
-
-				for (var i in response) {
-					guestOnReservation = response[i];
-					if (guestOnReservation.guest_id !== null && !$scope.guestIDsAvailable[guestOnReservation.guest_id]) {
-						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);
-					}
-				}
+				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var failureCallBack = function() {
-     			$scope.$emit('hideLoader');
-				console.warn('unable to fetch guest ids: ', arguments);
+				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
 
-			if (!$scope.fetchedGuestIDs) {
-				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
-			}
-		}
+			sntActivity.start('GUEST_ID_FETCH');
+			$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
+
+		};
 
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
@@ -257,6 +304,9 @@ sntRover.controller('reservationDetailsController',
 
 		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
+		$scope.guestCardData.nationality_id = reservationListData.guest_details.nationality_id;
+		$scope.guestCardData.contactInfo.address = {};
+		$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
 
 		/**
 		 *	We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -290,10 +340,31 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.reservationData = reservationDetails;
 
+		/**
+	     * Get the max value of the departure date for the given arrival date
+	     * @param - fromDate Arrival Date
+	     * @return - departure Date
+	     */
+	    $scope.getReservationMaxDepartureDate = function (arrivalDate) {
+	        var dateObj = tzIndependentDate(arrivalDate),
+	            dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
+	            dateParts = dateString.match(/(\d+)/g);
+
+	            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + ALLOWED_RESV_LIMIT);
+	    };
+
 		// CICO-13564
 		$scope.editStore = {
 			arrival: $scope.reservationData.reservation_card.arrival_date,
 			departure: $scope.reservationData.reservation_card.departure_date
+		};
+
+		// CICO-49191 - Get the min date for showing in the arrival/departure calendar for group reservation
+		var getMinDateForGroupReservation = function () {
+			var minDate = $rootScope.businessDate > $scope.reservationData.reservation_card.group_block_from ? 
+                          $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
+
+			return $filter('date')(minDate, $rootScope.dateFormat);
 		};
 
 		// for groups this date picker must not allow user to pick
@@ -301,16 +372,28 @@ sntRover.controller('reservationDetailsController',
 		// and before the group start date
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
 			datePickerCommon = angular.extend(datePickerCommon, {
-				minDate: $filter('date')($scope.reservationData.reservation_card.group_block_from, $rootScope.dateFormat),
+				minDate: getMinDateForGroupReservation(),
 				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
 			});
 
 		}
 
 		$scope.arrivalDateOptions = angular.copy(datePickerCommon);
-		$scope.departureDateOptions = angular.copy(datePickerCommon);
+		$scope.departureDateOptions = angular.copy(datePickerCommon);	
+
+	    // CICO-46933
+		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+		
+		// CICO-46933
+		$scope.arrivalDateChanged = function () {			
+            $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+            $scope.editStore.departure = tzIndependentDate($scope.editStore.departure) <= $scope.getReservationMaxDepartureDate($scope.editStore.arrival) ? 
+                                        $scope.editStore.departure : $scope.getReservationMaxDepartureDate($scope.editStore.arrival)
+
+		};
 
 		$scope.reservationData.paymentTypes = paymentTypes;
+		$scope.reservationData.paymentMethods = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
 		$scope.reservationData.justCreatedRes = (typeof $stateParams.justCreatedRes !== "undefined" && $stateParams.justCreatedRes !== "" && $stateParams.justCreatedRes !== null && $stateParams.justCreatedRes === "true") ? true : false;
@@ -685,7 +768,8 @@ sntRover.controller('reservationDetailsController',
 		$scope.isStayDatesChangeAllowed = function() {
 			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
 				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
-				group_id              = $scope.reservationData.reservation_card.group_id;
+				group_id              = $scope.reservationData.reservation_card.group_id,
+                isStayDatesChangeAllowed;
 
 			var not_hourly_reservation = ! is_hourly_reservation,
 				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
@@ -851,6 +935,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 			var updateFailure = function(data) {
+				$scope.errorMessage = data;
 				$scope.$emit('hideLoader');
 			};
 
@@ -998,7 +1083,10 @@ sntRover.controller('reservationDetailsController',
                         // CICO-36733
                         $scope.showOverBookingAlert = !response.data.is_room_type_available && response.data.is_house_available && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
                         $scope.showChangeDatesPopup = !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') || response.data.is_room_type_available || !response.data.is_house_available;
-
+                        // CICO-44842 Show message when trying to overbook a suite reservation
+                        $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
+                        $scope.isSuiteReservation = response.data.is_suite_reservation;
+                        $scope.routingInfo = response.data.routing_info;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1116,6 +1204,61 @@ sntRover.controller('reservationDetailsController',
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
+		/**
+         * Shows pop up to remind update the billing info
+         *  @params none
+         * @returns void
+         */
+        $scope.showBillingInformationPrompt = function() {
+            ngDialog.close();
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvShowBillingInformationPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+        /**
+         * Update the billing information when stay range changes if any billing info exist
+         * @params none
+         * @returns void
+         */
+        $scope.updateBillingInformation = function() {
+            var postParams = {
+                'from_date': $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+                'to_date': $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+                'reservation_id': $scope.reservationData.reservation_card.reservation_id
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.updateBillingInformation, {
+                params: postParams,
+                successCallBack: $scope.closeBillingInfoPopup
+            });
+        };
+        /**
+         * Handle click on staydate change confirm button
+         * @params none
+         * @returns void
+         */
+        $scope.clickedOnStayDateChangeConfirmButton = function() {
+            var routingInfo = $scope.routingInfo;
+
+            if (routingInfo.incoming_from_room || routingInfo.out_going_to_room
+                || routingInfo.out_going_to_comp_tra ) {
+                $scope.showBillingInformationPrompt();
+            } else {
+                $scope.closeBillingInfoPopup();
+            }
+        };
+        /**
+         * Close the dailoge and proceed to change stay date process.
+         * @params none
+         * @returns void
+         */
+        $scope.closeBillingInfoPopup = function() {
+            ngDialog.close();
+            $scope.changeStayDates();
+        };
 
 		$scope.changeStayDates = function(flags) {
 
@@ -1519,86 +1662,126 @@ sntRover.controller('reservationDetailsController',
      /**
      * Toggle the overbooking alert section visibility
      */
-     $scope.toggleOverBookingAlert = function() {
-       $scope.showOverBookingAlert = !$scope.showOverBookingAlert;
-     }
+	$scope.toggleOverBookingAlert = function() {
+		$scope.showOverBookingAlert = !$scope.showOverBookingAlert;
+	}
 
-     $scope.hideGuestId = function(guest, isPrimary) {
-     	if (isPrimary) {
-     		guest = {
-     			'id': $scope.reservationParentData.guest.id
-     		}
-     	}
-     	var has_guest_id_scanned = false;
+	var retrieveGuestDocDetails = function(guestId) {
+		var guestIdInfo = _.find(guestIdList, function(guestIdData) {
+			return guestIdData.guest_id === guestId;
+		});
 
- 		if ($scope.guestIDsAvailable.indexOf(guest.id) !== -1) {
- 			has_guest_id_scanned = true;
- 		}
-     	return (!has_guest_id_scanned || !$scope.guestIdAdminEnabled);
-     }
-     /*
-      * show the guest id / passport when clicked "guest id" button from manage additional guests view
-      */
+		return guestIdInfo;
+	};
 
+	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
-      var getUserPassportInfo = function(guestResponseData, guest_id) {
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
+		var uploadedIdDetails = retrieveGuestDocDetails(guestId);
+		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data;
 
-     		for (var i in guestResponseData) {
-     			if (guestResponseData[i].guest_id === guest_id) {
-     				return guestResponseData[i];
-     			}
-     		}
-     		return null;
-      }
+		return isGuestIdUploaded;
 
+	};
 
-     $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
-     	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
-     	// CICO-38714
-     	// TODO: link with proper HTML once complete from design team
-     	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
+	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
 
-        $scope.$emit('hideLoader');
- 		var responseData = $scope.guestIdReponseData,
- 		 	guest_id;
+		$scope.$emit('hideLoader');
+		guestData = guestData ? guestData : {};
 
- 		if (isPrimaryGuest) {
- 			guest_id = $scope.reservationParentData.guest.id;
- 		} else {
- 			guest_id = guestData.id;
- 		}
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
+		var guestDocData = retrieveGuestDocDetails(guestId);
 
- 		var guest = getUserPassportInfo(responseData, guest_id);
- 		if (guest !== null) {
-	     	$scope.guestIdData = angular.copy(guestData);
-	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+		if (!$scope.hasGuestIDPermission) {
+			return;
+		} else if (guestDocData) {
+			guestDocData.guest_id = guestId;
+			guestDocData.is_primary_guest = isPrimaryGuest;
+			$scope.guestIdData = angular.copy(guestDocData);
+		} else {
+			$scope.guestIdData = {
+				'last_name': '',
+				'first_name': '',
+				'date_of_birth': '',
+				'nationality_id': '',
+				'document_number': '',
+				'expiration_date': '',
+				'guest_id': guestId,
+				'back_image_data': '',
+				'front_image_data': '',
+				'signature': '',
+				'is_manual_upload': true,
+				'is_primary_guest': isPrimaryGuest
+			}
+		}
 
-	     	// Set data FROM GuestID (ie. passport)
-	     	$scope.guestIdData.first_name = guest.first_name;
-	     	$scope.guestIdData.last_name = guest.last_name;
+		ngDialog.open({
+			template: '/assets/partials/guestId/rvGuestId.html',
+			className: 'guest-id-dialog',
+			controller: 'rvGuestIdScanCtrl',
+			scope: $scope
+		});
 
-	     	$scope.guestIdData.idType = guest.identityType;
-	     	$scope.guestIdData.dob = guest.date_of_birth;
+	};
 
-	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
-	     	$scope.guestIdData.nationality = guest.nationality;
+	$scope.$on('ON_GUEST_ID_POPUP_CLOSE', function() {
+		fetchGuestIDs();
+	});
 
-	     	$scope.guestIdData.docID = guest.document_number;
-	     	$scope.guestIdData.docExpiry = guest.expiration_date;
-	     	$scope.guestIdData.displayMode = 'FRONT_SIDE';
-	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
-	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
-	 		// END SETTING DATA FROM GUEST ID
-	 		$scope.guestIdData.signature = guest.signature;
-	 		
+	var buildGuestInfo = function(guestDocData) {
+		var firstName = _.isEmpty(guestDocData.first_name) ? '' : guestDocData.first_name;
+		var lastName = _.isEmpty(guestDocData.last_name) ? '' : guestDocData.last_name;
+		var docExpiry = _.isEmpty(guestDocData.expiration_date) ? '' : guestDocData.expiration_date;
+		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\r\n" +
+			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
+			$filter('translate')('DOB') + ": " + guestDocData.date_of_birth + "\r\n" +
+			$filter('translate')('NATIONALITY') + ": " + guestDocData.nationality + "\r\n" +
+			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n" +
+			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
-	     	ngDialog.open({
-				template: '/assets/partials/guestId/guestId.html',
-				className: 'guest-id-dialog',
-				scope: $scope
+		return guestInfo;
+	};
+
+	$scope.dowloadDocumnetDetails = function(guestData, isPrimaryGuest) {
+		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guestData.id;
+		var guestDocData = retrieveGuestDocDetails(guestId);
+
+		guestDocData.first_name = guestDocData.first_name ? guestDocData.first_name : guestData.first_name;
+		guestDocData.last_name = guestDocData.last_name ? guestDocData.last_name : guestData.last_name;
+
+		var zip = new JSZip();
+		var createImageFile = function(image, imageFileName) {
+			if (image && image.length > 0) {
+				zip.file(imageFileName, image.split(',')[1], {
+					base64: true
+				});
+			}
+		};
+		var fileNamePrefix;
+
+		if (_.isEmpty(guestDocData.last_name)) {
+			fileNamePrefix = guestDocData.first_name;
+		} else if (_.isEmpty(guestDocData.first_name)) {
+			fileNamePrefix = guestDocData.last_name;
+		} else if (_.isEmpty(guestDocData.first_name) && _.isEmpty(guestDocData.last_name)) {
+			fileNamePrefix = 'document';
+		} else {
+			fileNamePrefix = guestDocData.first_name + '-' + guestDocData.last_name;
+		}
+		// Add the guest details to a txt file
+		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo(guestDocData));
+
+		createImageFile(guestDocData.front_image_data, fileNamePrefix + "-ID.png");
+		createImageFile(guestDocData.back_image_data, fileNamePrefix + "-ID-back-side.png");
+		createImageFile(guestDocData.signature, fileNamePrefix + "-signature.png");
+
+		zip.generateAsync({
+				type: "blob"
+			})
+			.then(function(blob) {
+				saveAs(blob, fileNamePrefix + ".zip");
 			});
- 		}
 
-     };
+	};
 
 }]);

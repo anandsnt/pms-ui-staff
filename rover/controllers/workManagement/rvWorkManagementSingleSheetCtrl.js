@@ -1,5 +1,8 @@
-angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv', '$timeout', '$state', 'ngDialog', '$filter', 'allUnassigned', '$window',
-	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv, $timeout, $state, ngDialog, $filter, allUnassigned, $window) {
+angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', [
+    '$rootScope', '$scope', '$stateParams', 'wmWorkSheet', 'RVWorkManagementSrv',
+    '$timeout', '$state', 'ngDialog', '$filter', 'allUnassigned', '$window', '$transitions',
+	function($rootScope, $scope, $stateParams, wmWorkSheet, RVWorkManagementSrv,
+             $timeout, $state, ngDialog, $filter, allUnassigned, $window, $transitions) {
 		BaseCtrl.call(this, $scope);
 
 
@@ -8,16 +11,18 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', ['$root
 			$_afterSave = null;
 
 		// auto save the sheet when moving away
-		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
-			if ( 'rover.workManagement.singleSheet' === fromState.name && $_shouldSaveFirst) {
-				e.preventDefault();
-
+        $transitions.onStart({}, function(transition) {
+            if ( 'rover.workManagement.singleSheet' === transition.from().name && $_shouldSaveFirst) {
 				$_afterSave = function() {
 					$_shouldSaveFirst = false;
-					$state.go(toState, toParams);
+					$state.go(transition.to(), transition.params());
 				};
 
 				$scope.saveWorkSheet();
+
+                // INFO: https://ui-router.github.io/ng1/docs/latest/modules/transition.html#hookresult
+                // returning false would cancel this transition
+				return false;
 			}
 		});
 

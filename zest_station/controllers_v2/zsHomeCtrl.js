@@ -15,7 +15,12 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.clickedOnPickUpKey = function() {
             $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
-            if ($scope.zestStationData.pickup_qr_scan) {
+            if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
+                $state.go('zest_station.manualKeyPickup', {
+                    'mode': 'PICKUP_KEY'
+                });
+            }
+            else if ($scope.zestStationData.pickup_qr_scan) {
                 $scope.setScreenIcon('key');
                 $state.go('zest_station.qrPickupKey');
             } else {
@@ -219,38 +224,6 @@ sntZestStation.controller('zsHomeCtrl', [
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
         };
-
-
-        $scope.$on('KEY_INPUT_OPTION', function(evt, option) {
-            var optionsToChooseFrom;
-
-            var keysOn = $scope.zestStationData.home_screen.pickup_keys,
-                checkinOn = $scope.zestStationData.home_screen.check_in, 
-                checkoutOn = $scope.zestStationData.home_screen.check_out;
-
-            if (option === 1) {
-                if (keysOn) {
-                    $scope.clickedOnPickUpKey();
-                } else if (checkinOn) {
-                    $scope.clickedOnCheckinButton();
-                } else {
-                    $scope.clickedOnCheckoutButton();
-                }
-
-            } else if (option === 2) {
-                if (keysOn && checkinOn) {
-                    $scope.clickedOnCheckinButton();
-
-                } else if (!keysOn && checkinOn && checkoutOn) {
-                    $scope.clickedOnCheckoutButton();
-                }
-
-            } else if (option === 3) {
-                if (keysOn && checkinOn && checkoutOn) {
-                    $scope.clickedOnCheckoutButton();
-                }
-            }
-        });
 
 		/**
 		 * [initializeMe description]

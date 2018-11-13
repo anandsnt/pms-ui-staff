@@ -1,0 +1,18 @@
+<div role="dialog" id="modal" class="modal-show">
+    <div class="modal-content form commissions">
+        <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert" ng-click="closeThisDialog()"></span></button>
+        
+        <span class="h2 message">Hold</span>
+        <!-- On default: -->
+        <span class="text">Put commission records on hold</span>
+        
+        <div class="notice">
+            <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{ ::commissionsData.selectedBillsAmount | number: precisonTwo}}</strong>
+            <span class="bills">{{ ::noOfBillsSelected }} Bills</span>
+        </div>
+        <div class="actions">
+            <button type="button" class="button red" ng-click="popupBtnAction('hold')">Put Records on Hold</button>
+            <button type="button" id="cancel" class="button blank" ng-click="closeThisDialog()">Cancel</button>
+        </div>
+    </div>
+</div>

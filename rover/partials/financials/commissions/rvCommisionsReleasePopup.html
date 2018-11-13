@@ -1,0 +1,17 @@
+<div role="dialog" id="modal" class="modal-show">
+    <div class="modal-content form commissions">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeThisDialog()"><span class="icons icon-close invert"></span></button>
+        
+        <span class="h2 message">Release</span>
+        <span class="text">Set commission records as eligible for payment</span>
+        
+        <div class="notice">
+            <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{ ::commissionsData.selectedBillsAmount | number: precisonTwo}}</strong>
+            <span class="bills">{{ ::noOfBillsSelected }} Bills</span>
+        </div>
+        <div class="actions">
+            <button type="button" class="button blue" ng-click="popupBtnAction('release')">Release Records</button>
+            <button type="button" id="cancel" class="button blank" ng-click="closeThisDialog()">Cancel</button>
+        </div>
+    </div>
+</div>

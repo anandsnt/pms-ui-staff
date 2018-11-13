@@ -10,7 +10,9 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
     '$timeout',
     '$window',
     '$translate',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window, $translate) {
+    'zsReceiptPrintHelperSrv',
+    '$log',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, zsUtilitySrv, zsGeneralSrv, $filter, $timeout, $window, $translate, zsReceiptPrintHelperSrv, $log) {
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> reservation_id, room_no,  first_name, guest_id, key_success
@@ -20,7 +22,6 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
-
 		/**
 		 * MODES IN THE SCREEN
 		 * 1.EMAIL_ENTRY_MODE
@@ -161,25 +162,45 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 try {
 				// this will show the popup with full bill
                     $timeout(function() {
+                        var receiptPrinterParams;
+
+                        if ($scope.isIpad && $scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                            // Adding this condition here for easy debuging from browser in iPad mode
+                            receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
+                            $log.info(receiptPrinterParams);
+                        }
 					/*
 					 * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 					 */
 
-                        if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
-                            var printer = sntZestStation.selectedPrinter;
+                        if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
+                            if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                                cordova.exec(
+                                    printSuccessActions,
+                                    function() {
+                                        // To ensure the error message from receipt printer is not recorded,
+                                        //  we will show our generic print error message
+                                        printFailedActions();
+                                    },
+                                    'RVCardPlugin',
+                                    'printReceipt',
+                                    [ receiptPrinterParams ]);
+                            } else {
+                                cordova.exec(
+                                    printSuccessActions,
+                                    printFailedActions,
+                                    'RVCardPlugin',
+                                    'printWebView', ['filep', '1', $scope.zestStationData.defaultPrinter]);
+                            }
+                            
 
-                            cordova.exec(function() {
-                                printSuccessActions();
-                            }, function() {
-                                printFailedActions();
-                            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
                         } else {
                             if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
 							// we will call websocket services to print
                                 handleStarTacPrinterActions();
                             } else {
 
-                                $window.print();
+                                $scope.$emit('PRINT_CURRENT_PAGE');
                                 setTimeout(function() {
                                     printSuccessActions();
                                 }, 100);

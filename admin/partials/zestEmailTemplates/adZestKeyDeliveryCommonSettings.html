@@ -1,0 +1,44 @@
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()" ng-cloak>
+    <header class="content-title float">
+        <h2 translate>KEY_DELIVERY_COMMON_SETTINGS</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <h4 ng-hide="hotelDetails.is_dynamic_template_on">{{ 'CONTACT_SNT_FOR_DETAILS' | translate }} <a href="{{ 'SNT_HELP_DESK_LINK' | translate}}" target="_blank">{{ 'SNT_HELP_DESK'| translate }}</a></h4>
+        <br/>
+    </header>
+    <section class="content-scroll" ng-style="{ 'margin-top' : hotelDetails.is_dynamic_template_on ? '10px' : '40px' }">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div>
+            <form class="form zest-web-settins-form float">
+                <fieldset class="holder left">
+                    <div class="form-title full-width">
+                        <h3><span translate>ROOM_NO_SETTINGS</span></h3>
+                    </div>
+                    <ad-textbox value="keyDeliveryCommonSettings.room_text" label="{{'ROOM_TEXT' | translate}}" styleclass="half-width"></ad-textbox>
+                    <ad-textbox hide="!keyDeliveryCommonSettings.show_pincode_in_room_ready_email" value="keyDeliveryCommonSettings.room_pin_text" label="{{'ROOM_PIN_TEXT' | translate}}" styleclass="half-width"></ad-textbox>
+                    <div class="form-title full-width">
+                        <h3><span translate>MOBILE_APPS_SETTINGS</span></h3>
+                    </div>
+                    <ad-toggle-button is-checked="keyDeliveryCommonSettings.show_mobile_apps" label="{{ 'SHOW_MOBILE_APPS' | translate}}" div-class="half-width"></ad-toggle-button>
+                </fieldset>
+                <fieldset class="holder right">
+                     <div class="form-title full-width">
+                        <h3><span translate>HIDE_KEY_ICON</span></h3>
+                    </div>
+                    <ad-toggle-button is-checked="keyDeliveryCommonSettings.hide_key_icon" label="{{ 'HIDE_KEY_ICON' | translate}}" div-class="half-width"></ad-toggle-button>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClicked()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding blue" ng-click="previewClicked()">
+                        PREVIEW
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                        SAVE_CHANGES
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

@@ -10,7 +10,6 @@ var GlobalApp = function() {
     try {
         this.desktopCardReader = new DesktopCardOperations();
         this.MLIOperator = new MLIOperation();
-        this.desktopUUIDService = new DesktopUUIDService();
     }
     catch (er) {
         console.log(er);
@@ -25,17 +24,54 @@ var GlobalApp = function() {
 
 
     this.setBrowser = function(browser) {
+
+
+        var url = "/assets/shared/cordova.js";
+
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
-        }
-        else {
+        } else if (browser === 'rv_native_android' || browser === 'rv_native_ios') {
+            that.browser = 'rv_native';
+            that.cordovaLoaded = true;
+        } else {
             that.browser = browser;
         }
+
         if (browser === 'rv_native' && !that.cordovaLoaded) {
-            // NOTE: Cordova JS assets has been loaded along with the other dashboardJsAssetList
-            that.fetchCompletedOfCordovaPlugins();
+            that.loadScript(url);
         }
 
+    };
+
+    this.loadCordovaWithVersion = function(version) {
+        var script_node = document.createElement('script');
+
+        script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+        script_node.setAttribute('type', 'application/javascript');
+        document.body.appendChild(script_node);
+        document.addEventListener('deviceready', function() {
+            that.cordovaLoaded = true;
+            that.browser = 'rv_native';
+            that.cardReader = new CardOperation();
+        }, false);
+    };
+
+    this.loadScript = function(url) {
+            /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
+             * webview of iOS / Android.
+             */
+            var xhr = new XMLHttpRequest(); // LATER: IE support?
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                      that.fetchCompletedOfCordovaPlugins(xhr.responseText);
+                } else {
+                    that.fetchFailedOfCordovaPlugins();
+                }
+            };
+            xhr.open("GET", url, true);
+
+            xhr.send(); // LATER: Loading indicator
     };
 
     this.notifyDeviceStateChange = function(device_name, type, value) {
@@ -51,8 +87,14 @@ var GlobalApp = function() {
     };
 
     // success function of coddova plugin's appending
-    this.fetchCompletedOfCordovaPlugins = function() {
-        that.cordovaLoaded = true;
+    this.fetchCompletedOfCordovaPlugins = function(script) {
+        that.cordovaLoaded = true;       
+
+        var script_node = document.createElement('script');
+
+        script_node.innerHTML = script;
+
+        document.body.appendChild(script_node);
         try {
             that.cardReader = new CardOperation();
             that.iBeaconLinker = new iBeaconOperation();
@@ -62,9 +104,14 @@ var GlobalApp = function() {
         }
     };
 
+    // success function of coddova plugin's appending
+    this.fetchFailedOfCordovaPlugins = function() {
+        that.cordovaLoaded = false;
+    };
+
     this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
-        that.cardReader = new CardOperation();
+        that.cardReader = new MockCardOperation();
     };
 
     this.reInitCardOperations = function() {
@@ -80,6 +127,27 @@ var GlobalApp = function() {
         sntCordovaInit();
         document.addEventListener("deviceready", checkDeviceConnection, false);
     };
+
+    // IMPORTANT: The below variable will be used in admin and Staff Apps.
+    
+    // Some features may not be completed by the end of a sprint
+    // and reverting will be painful. So in those cases, we can temperorily disable 
+    // such features (like a toggle button) in production and release
+    
+    var url = window.location;
+    var isInDevEnv = false;
+
+    if (url.hostname) {
+        if (typeof url.hostname === typeof 'str') {
+            if (url.hostname.indexOf('pms-dev') !== -1 ||
+                url.hostname.indexOf('pms-prod-test') !== -1 ||
+                url.hostname.indexOf('192.168.1') !== -1 ||
+                url.hostname.indexOf('localhost') !== -1) {
+                isInDevEnv = true;
+            }
+        }
+    }
+    this.environment = isInDevEnv ? 'DEV' : 'PROD';
 };
 
 sntapp = new GlobalApp();

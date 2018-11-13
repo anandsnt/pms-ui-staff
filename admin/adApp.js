@@ -28,17 +28,20 @@ var admin = angular.module('admin',
     'limitInputRange',
     'convertToNumber',
     'ADChainRouter',
-    'ivh.treeview']);
+    'touchPress',
+    'ivh.treeview',
+    'sntActivityIndicator']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config([
     '$httpProvider',
     '$locationProvider',
     'ivhTreeviewOptionsProvider',
-    function($httpProvider, $locationProvider, ivhTreeviewOptionsProvider) {
+    '$qProvider',
+    function($httpProvider, $locationProvider, ivhTreeviewOptionsProvider, $qProvider) {
         $httpProvider.interceptors.push('sharedHttpInterceptor');
         $locationProvider.html5Mode(true);
-
+        $qProvider.errorOnUnhandledRejections(false);
         ivhTreeviewOptionsProvider.set({
             validate: true,
             expandToDepth: -1,

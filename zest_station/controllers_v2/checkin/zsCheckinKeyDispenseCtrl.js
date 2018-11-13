@@ -47,7 +47,23 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                 $scope.mode = 'DISPENSE_KEY_MODE';
             }
             $scope.setScreenIcon('key');
+
+            // for Manual key creation navigate to new screen.
+            if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
+                $state.go('zest_station.manualKeyPickup', {
+                    'mode': 'CHECKIN',
+                    'guest_id': $stateParams.guest_id,
+                    'email': $stateParams.email,
+                    'reservation_id': $stateParams.reservation_id,
+                    'room_no': $stateParams.room_no,
+                    'first_name': $stateParams.first_name
+                });
+            }
         }());
+
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
+            $scope.$emit('EJECT_KEYCARD');
+        });
 
         $scope.guestDetails = {
             "guestEmail": $stateParams.email

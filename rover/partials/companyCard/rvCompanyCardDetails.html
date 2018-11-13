@@ -21,19 +21,29 @@
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
-
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field ng-readonly="isUpdateEnabled() || !isUpdateEnabledForName()" />
+                            </div>
+                            <div class="switch-button global-flag toggle-display" ng-click="toggleGlobalButton()" ng-class="{'on': contactInformation.is_global_enabled, 'readonly': isGlobalToggleReadOnly}"> <!-- Add class 'on' when checked -->
+                                <input id="global-company-card" type="checkbox">
+                                <label class="data-off">
+                                    <span class="switch-icon">Global</span>
+                                    <span class="value">Off</span>
+                                </label>
+                                <label class="data-on">
+                                    <span class="value">On</span>
+                                    <span class="switch-icon">Global</span>
+                                </label>
                             </div>
                             <span class="icons icon-notes" ng-show="contactInformation.account_notes_count > 0"></span>
                         </div>
                         <div class="holder data">
-                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
+                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location" ng-readonly="isUpdateEnabled()"   data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
 
-                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
+                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state" ng-readonly="isUpdateEnabled()"  type="text" class="masked-input" auto-grow-field/>
 
-                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
+                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" ng-readonly="isUpdateEnabled()"  type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
 
-                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
+                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" ng-readonly="isUpdateEnabled()"  type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
                         </div>
                     </form>
 
@@ -56,10 +66,14 @@
                         <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                             <a translate>CONTRACTS</a>
                         </li>
+                        <li ng-class="{'ui-tabs-active': currentSelectedTab === 'statistics'}" ng-click="switchTabTo($event, 'statistics')" ng-if="isStandAlone && !isHourlyRateOn && shouldShowStatisticsTab">
+                            <a translate>STATISTICS</a>
+                            <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
+                        </li>
                         <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
                             <a translate>Notes</a>
                         </li>
-                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="isCommissionTabAvailable && account_type == 'TRAVELAGENT' && !isEmptyObject(contactInformation.commission_details)">
+                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-commissions'}" ng-click="switchTabTo($event, 'cc-commissions')" ng-show="shouldShowCommissionsTab()">
                             <a translate>COMMISSIONS</a>
                         </li>
 
@@ -69,6 +83,11 @@
 
                         <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions','with-filters':isWithFilters }" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                             <a translate>AR_TRANSACTIONS</a>
+                            <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="AR_TRANSACTIONS" fs-toggle-class="fullscreen-card">Fullscreen</button>
+                        </li>
+
+                        <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-activity-log'}" ng-click="switchTabTo($event, 'cc-activity-log')">
+                            <a translate>ACTIVITY_LOG</a>
                         </li>
 
                         <li class="with-filters" ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
@@ -80,13 +99,17 @@
                     <span ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></span>
                     <!-- Company Card Tab 2 Contract -->
                     <span ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></span>
-                    <!-- Company Card Tab 3 Commissions -->
+                    <!-- Guest Card Tab 3 Statistics -->
+                    <span ng-include="'/assets/partials/companyCard/rvCompanyCardTravelAgentStatistics.html'"></span>
+                    <!-- Company Card Tab 4 Commissions -->
                     <span ng-include="'/assets/partials/companyCard/rvCompanyCardCommissions.html'" ng-controller="companyCardCommissionsCtrl"></span>
 
-                    <!-- Company Card Tab 3 Ar accounts -->
+                    <!-- Company Card Tab 5 Ar accounts -->
                     <span ng-controller="companyCardArAccountCtrl" ng-include="'/assets/partials/companyCard/rvcompanyCardArAccount.html'" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable"></span>
-                    <!-- Company Card Tab 4 AR Transactions -->
+                    <!-- Company Card Tab 6 AR Transactions -->
                     <span ng-controller="RVCompanyCardArTransactionsMainCtrl" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArTransactionsMain.html'" ng-show="(contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable) && currentSelectedTab == 'cc-ar-transactions'"></span>
+                    <!-- Company - Activity Log -->
+                    <span ng-controller="RVCompanyCardActivityLogCtrl" ng-include="'/assets/partials/companyCard/activityLog/rvCompanyCardActivityLog.html'" ng-show="currentSelectedTab == 'cc-activity-log'"></span>
                     <!-- Company - Notes -->
                     <span ng-include="'/assets/partials/companyCard/rvCompanyCardNotes.html'" ng-show="currentSelectedTab == 'cc-notes'"></span>
                     <!-- Company Card Tab 5 Resevations -->

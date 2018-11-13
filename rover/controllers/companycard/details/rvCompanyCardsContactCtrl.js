@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog', '$rootScope',
-	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog, $rootScope) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv', 'rvPermissionSrv', '$state', '$stateParams', 'ngDialog', '$rootScope',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, rvPermissionSrv, $state, $stateParams, ngDialog, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');
@@ -7,7 +7,6 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("contactTabActive", function() {
 			refreshScroller();
 		});
-
 
 		$scope.isEmpty = function (obj) {
 			return _.isEmpty(obj);
@@ -19,7 +18,6 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.toggleCommission = function() {
 			$scope.contactInformation.commission_details.is_on = !$scope.contactInformation.commission_details.is_on;
 		};
-
 
 		// trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType) {
@@ -93,7 +91,5 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
-
-
 	}
 ]);

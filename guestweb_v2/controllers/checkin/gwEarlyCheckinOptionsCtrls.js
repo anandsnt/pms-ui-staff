@@ -27,14 +27,19 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 			};
 			var params = {
 				'reservation_id': GwWebSrv.zestwebData.reservationID,
-				'early_checkin_offer_id': $stateParams.id
+				'early_checkin_offer_id': $stateParams.id,
+                'application': 'WEB'
 			};
 			var options = {
 				params: params,
 				successCallBack: applyEarlyCheckinSuccess
 			};
 
-			$scope.callAPI(GwCheckinSrv.applyEarlyCheckin, options);
+			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+				applyEarlyCheckinSuccess();
+			} else {
+				$scope.callAPI(GwCheckinSrv.applyEarlyCheckin, options);
+			}
 		};
 		$scope.changeArrivalTime = function() {
 			var stateParams = {

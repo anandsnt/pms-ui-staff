@@ -1,0 +1,41 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+	<div class="inline-edit">
+		<header class="content-title float">
+			<h2 translate>RESYNC_RATES</h2>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form class="form inline-form">
+				<div class="entry rel">
+					<label for="select-rate" translate>SELECT_A_RATE</label>
+					<div class="faux-select" ng-class="{'active': isActiveRateDropDown}" ng-click="toggleRateDropDown()">
+						<span class="value" ng-if="selectedRateObj.name === ''" translate>SELECT_A_RATE</span>
+						<span class="value" ng-if="selectedRateObj.name !== ''">{{selectedRateObj.name}}</span>
+					</div>
+					<div id="select-rate" class="faux-select-options" ng-show="isActiveRateDropDown">
+						<div class="search">
+							<button ng-click="clearSearch()" id="faux-select-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox.length > 0 }"><span class="icons icon-clear-search" translate>CLEAR_QUERY</span></button>
+							<button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+							<input ng-change="searchQuery()" ng-model="textInQueryBox" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+						</div>
+						<div class="scrollable small" ng-show="textInQueryBox.length > 2" ng-iscroll="resyncRateScroll"  ng-iscroll-delay="500">
+							<div class="wrapper">
+								<label ng-repeat="item in rateListResult track by $index" class="radio" ng-class="{'checked': item.id === selectedRateObj.id}">
+									<span class="icon-form icon-radio" ng-class="{'checked': item.id === selectedRateObj.id }"></span>
+									<input ng-click="clickedEachRate($index)" name="resync_rate" ng-checked="item.id === selectedRateObj.id" value="{{item.id}}" type="radio">
+									<span class="text">{{item.name}}</span>
+								</label>
+							</div>
+						</div>
+					</div> 
+				</div>
+				<div class="entry only-button">
+					<button type="button" class="button" ng-class="{'blue':selectedRateObj.id !== null, 'grey': (selectedRateObj.id === null )}" ng-disabled="(selectedRateObj.id === null)" ng-click="clickedSyncButton()" translate>SYNC</button>
+					<span ng-if="selectedRateObj.id && selectedRateObj.last_sync_status && selectedRateObj.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{selectedRateObj.last_sync_at}}</span>
+					<span ng-if="selectedRateObj.id && !selectedRateObj.last_sync_status && selectedRateObj.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{selectedRateObj.last_sync_at}}</span>
+				</div>
+			</form>
+		</section>
+	</div>
+</section>
+      

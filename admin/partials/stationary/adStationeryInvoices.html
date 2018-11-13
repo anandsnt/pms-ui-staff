@@ -1,0 +1,193 @@
+<!-- Guest Invoice -->
+<div class="group-holder" ng-class = "{'active': is_guest_invoice_active}">
+    <div class="form-title has-toggle" ng-click = "is_guest_invoice_active = !is_guest_invoice_active"> <!-- Clicking this toggles class 'active' on L2 -->
+        <h3>Guest Invoice</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+                       
+            <div class="stationery-email">
+                <h4>Invoice Email</h4>
+                <ad-textbox styleclass="full-width" value="data.guest_bill_email_subject" label="{{'GUEST_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.guest_bill_email_body" label="{{'GUEST_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_header" label="{{'HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_footer" label="{{'FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+            </div>
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings</h4>
+            <div class="entry">
+                <label for="guest-address" class="switch-label">Show Hotel Address</label>
+                <div class="switch-button" ng-class = "{'on': data.show_hotel_address}"> <!-- Add class 'on' when L42 is checked -->
+                    <input id="guest-address" type="checkbox" ng-model="data.show_hotel_address"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="guest-email-checkout" class="switch-label">Email Bill on Check out</label>
+                <div class="switch-button" ng-class = "{'on': data.is_email_enabled_on_checkout}"> <!-- Add class 'on' when L49 is checked -->
+                    <input id="guest-email-checkout" type="checkbox" ng-model="data.is_email_enabled_on_checkout"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="guest-hotel-logo">Hotel Logo</label>
+                <div class="select">
+                    <select ng-model="data.logo_type" name="email-hotel-logo">
+                        <option value="" translate> SELECT_LOGO_TYPE </option>
+                        <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>                
+            <div class="entry">
+                <label for="guest-default-bill">Default Bill</label>
+                <div class="select">
+                    <select ng-model="data.selected_guest_bill" name="guest-bill-template">
+                            <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Company / TA Invoice -->
+<div class="group-holder" ng-class = "{'active': is_company_ta_active}">
+    <div class="form-title has-toggle" ng-click = "is_company_ta_active = !is_company_ta_active"> <!-- Clicking this toggles class 'active' on L81 -->
+        <h3>Company / Travel Agent Invoice</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+                        
+            <div class="stationery-email">
+                <h4>Company/TA Invoice Email</h4>
+                <ad-textbox styleclass="full-width" value="data.company_ta_bill_subject" label="{{'CARDS_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.company_ta_bill_body" label="{{'CARDS_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+            </div>
+            <h4>A/R Invoice</h4>
+            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_invoice_billing_text" label="{{'AR_INVOICE_BILLING_TEXT'| translate}}" placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings</h4>
+            <div class="entry">
+                <label for="guest-address" class="switch-label">Show Hotel Address</label>
+                <div class="switch-button" ng-class = "{'on': data.show_hotel_address}"> <!-- Add class 'on' when L42 is checked -->
+                    <input id="guest-address" type="checkbox" ng-model="data.show_hotel_address"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry" ng-show="false">
+                <label for="guest-hotel-logo">Hotel Logo</label>
+                <div class="select">
+                    <select ng-model="stationery_data.cards_invoice_logo_type" name="email-hotel-logo">
+                        <option value="" translate> SELECT_LOGO_TYPE </option>
+                        <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>                
+            <div class="entry">
+                <label for="guest-default-bill">Default Bill</label>
+                <div class="select">
+                    <select ng-model="data.selected_guest_bill" name="guest-bill-template">
+                        <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Account Invoice Invoice -->
+<div class="group-holder" ng-class = "{'active': is_account_invoice_active}" ng-show="false">
+    <div class="form-title has-toggle" ng-click = "is_account_invoice_active = !is_account_invoice_active"> <!-- Clicking this toggles class 'active' on L150 -->
+        <h3>Account Invoice</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+                    
+            <div class="stationery-email">
+                <h4>Account Invoice Email</h4>
+                <div class="entry full-width">
+                    <label>Subject</label>
+                    <input type="text" placeholder="Enter Subject">
+                </div>
+                <div class="entry full-width">
+                    <label>Body</label>
+                    <textarea rows="4" placeholder="Enter Email content"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings</h4>
+            <div class="entry">
+                <label for="guest-address" class="switch-label">Show Hotel Address</label>
+                <div class="switch-button" ng-class = "{'on': data.show_hotel_address}"> <!-- Add class 'on' when L42 is checked -->
+                    <input id="guest-address" type="checkbox" ng-model="data.show_hotel_address"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="guest-hotel-logo">Hotel Logo</label>
+                <div class="select">
+                    <select ng-model="stationery_data.account_invoice_logo_type" name="email-hotel-logo">
+                        <option value="" translate> SELECT_LOGO_TYPE </option>
+                        <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="account-default-bill">Default Bill</label>
+                <div class="select">
+                    <select ng-model="data.selected_account_bill" name="account-bill-template">
+                        <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_account_bill">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pro Forma Invoice -->
+<div class="group-holder" ng-class = "{'active': is_pro_forma_invoice_active}">
+    <div class="form-title has-toggle" ng-click = "is_pro_forma_invoice_active = !is_pro_forma_invoice_active"> <!-- Clicking this toggles class 'active' on L214 -->
+        <h3>Pro Forma Invoice</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+             
+            <div class="stationery-email">
+                <h4>Pro Forma Invoice Email</h4>
+                <ad-textbox styleclass="full-width" value="data.pro_forma_invoice_subject" label="{{'PRO_FORMA_INVOICE_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}" ng-show="data.is_pro_forma_enabled"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_body" label="{{'PRO_FORMA_INVOICE_BODY'| translate}} " placeholder="{{'PRO_FORMA_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea  rows="2" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_header" label="{{'PRO_FORMA_INVOICE_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_footer" label="{{'PRO_FORMA_INVOICE_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
+            </div>
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings</h4>
+            <div class="entry">
+                <label for="pro-forma-invoice" class="switch-label">Pro Forma Invoice</label>
+                <div class="switch-button" ng-class = "{'on': data.is_pro_forma_enabled}"> <!-- Add class 'on' when L42 is checked -->
+                    <input id="pro-forma-invoice" type="checkbox" ng-model="data.is_pro_forma_enabled"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="guest-address" class="switch-label">Show Hotel Address</label>
+                <div class="switch-button" ng-class = "{'on': data.show_hotel_address}"> <!-- Add class 'on' when L42 is checked -->
+                    <input id="guest-address" type="checkbox" ng-model="data.show_hotel_address"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry" ng-show="false">
+                <label for="guest-hotel-logo">Hotel Logo</label>
+                <div class="select">
+                    <select ng-model="stationery_data.proforma_invoice_logo_type" name="email-hotel-logo">
+                        <option value="" translate> SELECT_LOGO_TYPE </option>
+                        <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>                
+        </div>
+    </div>
+</div>

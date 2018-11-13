@@ -61,10 +61,10 @@
             </p>
             <!-- Toggle class "hidden" when .line-toggle is clicked/tapped -->
             <ul ng-class="{'hidden' : !roomtype_rate.isCollapsed}">
-                <li class="line" translate ng-hide="allotmentConfigData.summary.rate != -1 && roomtype_rate.rate_config.single_rate == null">SINGLE</li>
-                <li class="line" translate ng-hide="allotmentConfigData.summary.rate != -1 && roomtype_rate.rate_config.double_rate == null">DOUBLE</li>
+                <li class="line" translate ng-hide="allotmentConfigData.summary.rate != -1 && !roomtype_rate.rate_config.is_single_rate_configured">SINGLE</li>
+                <li class="line" translate ng-hide="allotmentConfigData.summary.rate != -1 && !roomtype_rate.rate_config.is_double_rate_configured">DOUBLE</li>
                 <li class="line small add"
-                    ng-if="!shouldShowTripleEntryRow(roomtype_rate) && allotmentConfigData.summary.rate == -1"
+                    ng-if="shouldShowAddTrippleButton(roomtype_rate)"
                     ng-click="addTripleEntryRow(roomtype_rate)"
                     ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
                     translate>
@@ -81,8 +81,7 @@
                     QUADRUPLE
                 </li>
                 <li class="line small"
-                    ng-if="!shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && allotmentConfigData.summary.rate == -1"
-
+                    ng-if="shouldShowAddQuadrupleButton(roomtype_rate)"
                     ng-click="addQuadrupleEntryRow(roomtype_rate)"
                     ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
                     translate>
@@ -91,7 +90,7 @@
                 <!-- When clicked, add L110-113 -->
                 <!-- When + Add Triple is clicked, show option to add quadruple:
                 <li  translate></li> // When clicked, add L115-118 -->
-                <li class="line small add" ng-if="shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)"></li>
+                <li class="line small add" ng-if="!shouldShowAddTrippleButton(roomtype_rate) && !shouldShowAddQuadrupleButton(roomtype_rate)"></li>
             </ul>
         </div>
     </div>
@@ -147,7 +146,7 @@
                 </div>
                 <!-- Single -->
                 <!-- <div class="line hidden"> -->
-                <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.single_rate == null">
+                <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && !roomType.rate_config.is_single_rate_configured">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <!-- we are not going behind ng-change, it will trigger everytime there is acharctr chnge, so we ae using our delay text box -->
                     <input type="text"
@@ -167,7 +166,7 @@
                 </div>
                 <!-- Double -->
                 <!-- <div class="line hidden"> -->
-                <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && roomType.rate_config.double_rate == null">
+                <div class="line" ng-class="{'hidden' : !roomType.isCollapsed}" ng-hide="allotmentConfigData.summary.rate != -1 && !roomType.rate_config.is_double_rate_configured">
                     <!-- Toggle class hidden when .line-toggle (L59) is clicked/tapped -->
                     <input type="text"
                         value="{{dateData.double}}"

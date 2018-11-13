@@ -1,6 +1,8 @@
 admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv, upsellData, availableLanguages) {
 
 	BaseCtrl.call(this, $scope);
+	// higlight the selected Main menu (can come to this screen using the addon shortcuts)
+	$scope.$emit("changedSelectedMenu", $scope.findMainMenuIndex('Promos & Upsell'));
 	var addonDefaultImage,
 		blankAmountTypes = [],
 		blankPostTypes = [],

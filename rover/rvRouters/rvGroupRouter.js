@@ -12,7 +12,7 @@ angular.module('groupModule', [])
             templateUrl: '/assets/partials/groups/rvGroupRoot.html',
             controller: 'rvGroupRootCtrl',
             resolve: {            
-                groupAssets: function(jsMappings, mappingList) {
+                groupAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.groups', 'directives']);
                 }
             }
@@ -49,17 +49,14 @@ angular.module('groupModule', [])
 
         // group summary : CICO-12790
         $stateProvider.state('rover.groups.config', {
-            url: '/config/:id/:activeTab/:newGroupName',
+            url: '/config',
             templateUrl: '/assets/partials/groups/rvGroupConfiguration.html',
+            params: {
+                id: 'NEW_GROUP',
+                activeTab: 'SUMMARY',
+                newGroupName: ''
+            },
             controller: 'rvGroupConfigurationCtrl',
-            onEnter: ['$stateParams', function($stateParams) {
-                if (!$stateParams.id) {
-                    $stateParams.id = "NEW_GROUP";
-                }
-                if (!$stateParams.activeTab) {
-                    $stateParams.activeTab = "SUMMARY";
-                }
-            }],
             resolve: {
                 loadPaymentMapping: function (jsMappings) {
                     return jsMappings.loadPaymentMapping();
@@ -83,7 +80,14 @@ angular.module('groupModule', [])
                     };
 
                     return rvGroupConfigurationSrv.getHoldStatusList (params);
+                },
+                hotelSettings: function (RVReservationBaseSearchSrv, groupAssets) {
+                    return RVReservationBaseSearchSrv.fetchHotelReservationSettings();
+                },
+                taxExempts: function(RVHotelDetailsSrv) {
+                    return RVHotelDetailsSrv.fetchTaxExempts();
                 }
+
             }
 
         });

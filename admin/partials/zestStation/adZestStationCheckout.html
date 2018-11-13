@@ -23,7 +23,13 @@
                 </div>
                 <ad-checkbox is-checked="zestSettings.guest_bill.email" label="{{ 'EMAIL_UPDATE_ZS' | translate}}"></ad-checkbox>
                 <ad-checkbox is-checked="zestSettings.guest_bill.print" label="{{ 'PRINT' | translate}}"></ad-checkbox>
-            </fieldset>  
+            </fieldset> 
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3><span translate>COLLECT_BALANCE</span> </h3>
+                </div>
+            <ad-toggle-button is-checked="zestSettings.kiosk_collect_balance" label="{{'COLLECT_BALANCE'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

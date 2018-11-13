@@ -1,0 +1,251 @@
+<!-- Guest Confirmation -->
+<div class="group-holder" ng-class = "{'active': is_guest_confirmation_active}">
+    <div class="form-title has-toggle" ng-click = "is_guest_confirmation_active = !is_guest_confirmation_active"> <!-- Clicking this toggles class 'active' on L2 -->
+        <h3>Guest Confirmation</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+             
+
+            <!-- Email -->
+            <div class="group-holder" ng-class = "{'active': is_confirmation_email_active}">
+                <div class="form-title has-toggle" ng-click = "is_confirmation_email_active = !is_confirmation_email_active"> <!-- Clicking this toggles class 'active' on L19 -->
+                    <h3>Confirmation Email</h3>
+                </div>
+                <div class="stationery-group">
+                    <div class="stationery-email">
+                        <ad-textbox styleclass="full-width" value="data.confirmation_email_subject" label="{{'CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                        <div class="entry full-width">
+                            <label>Body</label>
+                            <div class="boxes">
+                                <!-- 4.Check box to 'Display Add-Ons'-->
+                                <ad-checkbox is-checked="data.display_addons" label="{{ 'DISPLAY_ADD_ONS' | translate}}" div-class="full-width"></ad-checkbox>
+                                <!-- 5.Check box to 'Display Total Stay Cost'-->
+                                <ad-checkbox is-checked="data.display_total_stay_cost" label="{{ 'DISPLAY_TOTAL_STAY_COST' | translate}}" div-class="full-width"></ad-checkbox>
+                                <!-- 6.Check box to 'Display Tax breakdown'-->
+                                <ad-checkbox is-checked="data.show_tax_break_down" label="{{ 'SHOW_TAX_BREAKDWON' | translate}}" div-class="full-width"></ad-checkbox>
+                                <!-- 7.'Display Average Daily Rate' -->
+                                <ad-checkbox is-checked="data.display_average_daily_rate" label="{{ 'DISPLAY_ADR' | translate}}" div-class="full-width"></ad-checkbox>
+                                <!-- 8.'Add deposit rules' -->
+                                <ad-checkbox is-checked="data.add_deposit_rules" label="{{ 'ADD_DEPOSIT_RULES' | translate}}" div-class="full-width"></ad-checkbox>
+                                <!-- 9.'Add cancellation_policy_description' -->
+                                <ad-checkbox is-checked="data.add_cancellation_policy_description" label="{{ 'ADD_CANCELLATION_POLICY_DESC' | translate}}" div-class="full-width"></ad-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Letter -->
+            <div class="group-holder" ng-class = "{'active': is_confirmation_letter_active}">
+                <div class="form-title has-toggle" ng-click = "is_confirmation_letter_active = !is_confirmation_letter_active"> <!-- Clicking this toggles class 'active' on L64 -->
+                    <h3>Confirmation Letter</h3>
+                </div>
+                <div class="stationery-group">
+                    <div class="entry full-width">
+                        <label translate>CONFIRMATION_LETTER_TEXT</label>
+                        <ad-textarea rows="8" div-class="full-width" text-area-class="full-width" value="data.confirmation_template_text"></ad-textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hotel -->
+            <div class="group-holder" ng-class = "{'active': is_hotel_direction_active}">
+                <div class="form-title has-toggle" ng-click = "is_hotel_direction_active = !is_hotel_direction_active"> <!-- Clicking this toggles class 'active' on L77 -->
+                    <h3>Hotel</h3>
+                </div>
+                <div class="stationery-group">
+                    <div class="entry full-width">
+                        <label translate>GETTING_TO_THE_HOTEL</label>
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.location_text"></ad-textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location -->
+            <div class="group-holder" ng-class = "{'active': is_location_active}">
+                <div class="form-title has-toggle" ng-click = "is_location_active = !is_location_active"> <!-- Clicking this toggles class 'active' on L90 -->
+                    <h3>Location</h3>
+                </div>
+                <div class="stationery-group">
+                    <div class="entry full-width">
+                        <label translate>LOCATION_IMAGE</label>
+                        <div class="file-upload with-preview">
+                            <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.location_image)" ng-click="data.location_image = 'false'"></a>
+                            <span class="input">{{location_image_file}}</span>
+                            <input type="file" ng-model="data.location_image" accept="image/*" app-filereader />
+                            <button type="button" class="button brand-colors">
+                                Choose file
+                            </button>
+                        </div>
+                        <span class="file-preview"> <img ng-src="{{data.location_image}}" alt="" height="112" width="auto"> </span>
+                    </div>
+                    <ad-textbox styleclass="full-width" value="data.location_url" label="{{'LOCATION_URL'| translate}}" placeholder="{{'ENTER_LOCATION_URL'| translate}}"></ad-textbox>
+                    <ad-textbox value="data.location_url_label" label="{{'LOCATION_URL_LABEL'| translate}}" placeholder="{{'ENTER_LOCATION_URL_LABEL'| translate}}"></ad-textbox>
+                </div>
+            </div>
+
+            <!-- App -->
+            <div class="group-holder" ng-class = "{'active': is_app_active}" ng-show="data.show_links_to_download_app">
+                <div class="form-title has-toggle" ng-click = "is_app_active = !is_app_active"> <!-- Clicking this toggles class 'active' on L120 -->
+                    <h3>App</h3>
+                </div>
+                <div class="stationery-group">
+                    <ad-textbox styleclass="full-width" value="data.app_link_app_store" label="{{'APP_LINK_IN_ITUNES_STORE'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_ITUNES_STORE'| translate}}"></ad-textbox>
+                    <ad-textbox styleclass="full-width" value="data.app_link_google_play" label="{{'APP_LINK_IN_GOOGLE_PLAY'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_GOOGLE_PLAY'| translate}}"></ad-textbox>
+                    <div class="entry full-width">
+                        <label>Marketing text for app to show on confirmation</label>
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.app_marketing_text"></ad-textarea>
+                    </div>
+                </div>
+            </div>  
+
+            <!-- Social Networks -->
+            <div class="group-holder" ng-class = "{'active': is_social_network_active}" ng-show="data.show_social_network_links">
+                <div class="form-title has-toggle" ng-click = "is_social_network_active = !is_social_network_active"> <!-- Clicking this toggles class 'active' on L141 -->
+                    <h3>Social Networks</h3>
+                </div>
+                <div class="stationery-group">
+                    <section ng-include="'/assets/partials/stationary/adSocialLinks.html'"></section>
+                    <button type="button" id="add-new-button" class="button action add" ng-click="onAddNewSocialLink()" translate ng-hide="currentSocialLink == 'NEW'">ADD_NEW</button>
+                </div>
+            </div>          
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings - Email</h4>
+            <div class="entry">
+                <label for="confirmation-hotel-picture" class="switch-label">Show Hotel Picture</label>
+                <div class="switch-button" ng-class = "{'on': data.show_hotel_picture}"> <!-- Add class 'on' when L175 is checked -->
+                    <input id="confirmation-hotel-picture" type="checkbox" ng-model="data.show_hotel_picture"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="confirmation-hotel-logo">Hotel Logo</label>
+                <div class="select">
+                    <select ng-model="data.email_logo_type" id="confirmation-hotel-logo">
+                        <option value="">No Logo</option>
+                        <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <h4>Settings - Letter</h4>
+            <div class="entry" ng-if="data.print_confirmation_letter">
+                <label for="print-guest-confirmation" class="switch-label">Print Confirmation Letter</label>
+                <div class="switch-button" ng-class = "{'on': data.print_confirmation_letter}"> <!-- Add class 'on' when L193 is checked -->
+                    <input id="print-guest-confirmation" type="checkbox" ng-model="data.print_confirmation_letter"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="send-guest-confirmation" class="switch-label">Send Confirmation Letter</label>
+                <div class="switch-button" ng-class = "{'on': data.send_confirmation_letter}"> <!-- Add class 'on' when L200 is checked -->
+                    <input id="send-guest-confirmation" type="checkbox" ng-model="data.send_confirmation_letter"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="custom-guest-confirmation" class="switch-label">Custom Text per Reservation</label>
+                <div class="switch-button" ng-class = "{'on': data.is_custom_text_per_reservation}"> <!-- Add class 'on' when L207 is checked -->
+                    <input id="custom-guest-confirmation" type="checkbox" ng-model="data.is_custom_text_per_reservation"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <h4>Settings - App & Social Networks</h4>
+            <div class="entry">
+                <label for="links-guest-confirmation" class="switch-label">Show Links to Download App</label>
+                <div class="switch-button" ng-class = "{'on': data.show_links_to_download_app}"> <!-- Add class 'on' when L215 is checked -->
+                    <input id="links-guest-confirmation" type="checkbox" ng-model="data.show_links_to_download_app"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="networks-guest-confirmation" class="switch-label">Show Social Networks</label>
+                <div class="switch-button" ng-class = "{'on': data.show_social_network_links}">
+                    <input id="networks-guest-confirmation" type="checkbox" ng-model="data.show_social_network_links"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+        </div>          
+    </div>
+</div>
+
+<!-- Guest Cancellation -->
+<div class="group-holder" ng-class = "{'active': is_guest_cancellation_active}"> 
+    <div class="form-title has-toggle" ng-click = "is_guest_cancellation_active = !is_guest_cancellation_active"> <!-- Clicking this toggles class 'active' on L224 -->
+        <h3>Guest Cancellation</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+            
+            <h4>Cancellation Email</h4>
+            <div class="stationery-email">
+                <ad-textbox styleclass="full-width" value="data.cancellation_email_subject" label="{{'CANCELLATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_email_body" label="{{'CANCELLATION_EMAIL_BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+            </div>
+            <h4>Cancellation Letter</h4>
+            <ad-textarea rows="8" div-class="full-width" text-area-class="full-width" value="data.cancellation_letter_body" label="{{'CANCELLATION_LETTER_BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+        </div>
+        <div class="stationery-settings">
+            <h4>Settings</h4>
+            <div class="entry">
+                <label for="send-cancellation" class="switch-label">Send Cancellation Letter</label>
+                <div class="switch-button" ng-class = "{'on': data.send_cancellation_letter}"> <!-- Add class 'on' when L261 is checked -->
+                    <input id="send-cancellation" type="checkbox" ng-model="data.send_cancellation_letter"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="print-cancellation" class="switch-label">Print Cancellation Letter</label>
+                <div class="switch-button" ng-class = "{'on': data.print_cancellation_letter}"> <!-- Add class 'on' when L268 is checked -->
+                    <input id="print-cancellation" type="checkbox" ng-disabled="!data.send_cancellation_letter" ng-model="data.print_cancellation_letter"> 
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="cancellation-hotel-logo">Hotel Logo</label>
+                <div class="select">
+                    <select ng-model="data.logo_type_for_cancellation" id="cancellation-hotel-logo">
+                        <option value="">No Logo</option>
+                        <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type_for_cancellation">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Group -->
+<div class="group-holder" ng-class = "{'active': is_group_confirmation_active}">
+    <div class="form-title has-toggle" ng-click = "is_group_confirmation_active = !is_group_confirmation_active"> <!-- Clicking this toggles class 'active' on L287 -->
+        <h3>Group Confirmation</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+            
+            <h4>Confirmation Email</h4>
+            <div class="stationery-email">
+                <ad-textbox styleclass="full-width" value="data.group_confirmation_email_subject" label="{{'GROUP_CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <div class="entry full-width">
+                    <label>Body</label>
+                    <div class="boxes">
+                        <div class="entry">
+                            <label>Hold Status</label>
+                            <div class="select">
+                                <select convert-to-number ng-model="data.groupholdstatus" ng-change="showConfirmationHeaderFooterBasedOnHoldStatus()">
+                                    <option ng-repeat="item in holdStatusList" value="{{item.id}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_header" label="{{'CONFIRMATION_HEADER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_HEADER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
+                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_footer" label="{{'CONFIRMATION_FOOTER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
+                    </div>
+                </div>
+                <div class="entry full-width">
+                    <label translate>GETTING_TO_THE_HOTEL</label>
+                    <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="data.group_location_text"></ad-textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

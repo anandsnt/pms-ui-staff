@@ -86,12 +86,8 @@
             </div>
         </div>
     </div>
-    <div class="search-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>
-    </div>
-
+    
+    <rv-pagination page-options="pageOptions" page-data="totalResultCount" ng-if="openTab === 'Log'"></rv-pagination>
 
 </div>
 

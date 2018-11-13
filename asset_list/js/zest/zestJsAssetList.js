@@ -3,6 +3,7 @@ module.exports = {
 		var sharedRoot = 'shared/',
 			jsLibRoot = sharedRoot + 'lib-legacy/js/',
 			zestRoot = 'zest_station/',
+            paymentRoot = 'payment/',
 
 			adminJsAssets = {
 				minifiedFiles: [
@@ -34,7 +35,9 @@ module.exports = {
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-typing.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
-					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js'
+					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js',
+                    jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
+                    sharedRoot + 'lib/js/moment.min.js',
 
 				],
 				nonMinifiedFiles: [
@@ -50,8 +53,9 @@ module.exports = {
 					sharedRoot + 'directives/touchPress/touchPress.js',
 					sharedRoot + 'directives/enterPress/enterPress.js',
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
+                    sharedRoot + 'directives/activityIndicator/**/*.js',
 					jsLibRoot + 'date.js',
-                	sharedRoot + 'cordova.js',
+                	// sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
 					zestRoot + 'zsUtils.js',
 					zestRoot + 'zsWebSocketActions.js',
@@ -66,8 +70,24 @@ module.exports = {
 					zestRoot + 'constants/**/*.js',
 					zestRoot + 'zsCardOperations.js',
 					zestRoot + 'zsSwipeOperations.js',
-					zestRoot + 'zsMLIOperations.js'
-				]
+					zestRoot + 'zsMLIOperations.js',
+                    '!**/*.spec.js',
+                    '!**/*.conf.js'
+				],
+                preCompiledFiles : [
+                    paymentRoot + "constants/payConfig.js",
+                    paymentRoot + 'payApp.js',
+                    paymentRoot + "constants/paymentConstants.js",
+                    paymentRoot + "constants/paymentEventConstants.js",
+                    paymentRoot + "controllers/**/*.js",
+                    paymentRoot + "directives/**/*.js",
+                    paymentRoot + "services/**/*.js",
+                    paymentRoot + "payAppInit.js",
+                    sharedRoot + 'sntIDCollection/sntIDCollectionApp.js',
+                    sharedRoot + 'sntIDCollection/services/*.js',
+                    sharedRoot + 'sntIDCollection/constants/*.js',
+                    sharedRoot + 'sntIDCollection/controllers/*.js',
+                ]
 			};
 
 		return adminJsAssets;

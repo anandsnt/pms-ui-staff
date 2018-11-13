@@ -19,10 +19,10 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
             $scope.invokeApi(ADChannelMgrSrv.fetchRoomTypes, {}, fetchSuccess);
         };
         $scope.loadRoomTypes();
-        $scope.selectInterface = function(interface) {
-            $scope.lastSelectedInterface = interface;
+        $scope.selectInterface = function(selectedInterface) {
+            $scope.lastSelectedInterface = selectedInterface;
             // store to state to pick up in adChannelMgrEditCtrl.js
-            $state.selectedInterface = interface;
+            $state.selectedInterface = selectedInterface;
         };
 
         $scope.loadTable = function () {
@@ -40,15 +40,15 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
 
         $scope.loadTable();
 
-        $scope.toggleActive = function (interface) {
-            var id = interface.id, active = interface.active;
+        $scope.toggleActive = function (selectedInterface) {
+            var id = selectedInterface.id, active = selectedInterface.active;
             var params = {'id': id, active: !active};
             var toggleSuccess = function () {
                 $scope.$emit('hideLoader');
                 // on success
-                angular.forEach($scope.data, function (interface, key) {
-                    if (interface.id === id) {
-                        interface.active = !interface.active;
+                angular.forEach($scope.data, function (value) {
+                    if (value.id === id) {
+                        value.active = !value.active;
                     }
                 });
             };
@@ -60,9 +60,9 @@ admin.controller('ADChannelMgrCtrl', ['$scope', '$rootScope', '$state', 'ADChann
             $scope.invokeApi(ADChannelMgrSrv.toggleActivate, params, toggleSuccess, toggleFailure);
         };
         
-        $scope.editChannelManager = function(interface) {
-            $scope.selectInterface(interface);
-            $state.go('admin.channelManagerEditRates', interface);
+        $scope.editChannelManager = function(selectedInterface) {
+            $scope.selectInterface(selectedInterface);
+            $state.go('admin.channelManagerEditRates', selectedInterface);
         };
 
         $scope.showLoader = function () {

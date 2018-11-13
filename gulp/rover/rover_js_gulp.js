@@ -15,6 +15,7 @@ module.exports = function(gulp, $, options) {
 	    roverGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'StateJsMappings/' + generated + 'rover/',
 		roverGenFile 			= roverGenDir + generated + 'roverStateJsMappings.json';
 
+
 	//Be careful: PRODUCTION
 	gulp.task('create-statemapping-and-inject-rover-js-production', function(){
 	    var file_name = extendedMappings['rover.dashboard'][0],
@@ -57,7 +58,7 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('rover-build-js-and-mapping-list-prod', ['copy-cordova-assets'], function(){
+	gulp.task('rover-build-js-and-mapping-list-prod', function(){
 		var glob = require('glob-all'),
 			fileList = [],
 			es = require('event-stream'),
@@ -141,7 +142,7 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
-	gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev', 'copy-cordova-assets'], function(){
+	gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev'], function(){
 		delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 		var fileList = [];
@@ -195,13 +196,14 @@ module.exports = function(gulp, $, options) {
 			paths 			= paths.concat(fileList);
 		}
 		paths = paths.concat('asset_list/js/rover/**/*.js', 'asset_list/stateJsMapping/rover/**/*.js');
-		gulp.watch(paths, function(callback){
-			return runSequence('build-rover-js-dev', 'copy-rover-base-html')
-		});
+
+        gulp.watch(paths).on('change', function(file) {
+            $.onChangeJSinDev(file.path);
+        });
 	});
 	
 	gulp.task('copy-cordova-assets', function(){
-		return gulp.src(['shared/cordova.js', 'shared/cordova_plugins.js'], {base: '.'})
+		return gulp.src(['shared/cordova.js', 'shared/cordova/**/*.js'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
@@ -217,7 +219,8 @@ module.exports = function(gulp, $, options) {
 			combinedList = require(stateMappingList[state].filename).getList();
 			fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
 		}
-		fileList = fileList.concat('shared/cordova.js');
+		// fileList = fileList.concat('shared/cordova.js')
+		// 			.concat('shared/cordova_android.js');
 		return gulp.src(fileList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
