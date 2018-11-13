@@ -54,12 +54,6 @@ module.exports = {
 					sharedRoot + 'directives/enterPress/enterPress.js',
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
                     sharedRoot + 'directives/activityIndicator/**/*.js',
-                   
-                    sharedRoot + 'sntIDCollection/sntIDCollectionApp.js',
-                    sharedRoot + 'sntIDCollection/services/*.js',
-                    sharedRoot + 'sntIDCollection/constants/*.js',
-                    sharedRoot + 'sntIDCollection/controllers/*.js',
-                    
 					jsLibRoot + 'date.js',
                 	// sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
@@ -88,7 +82,11 @@ module.exports = {
                     paymentRoot + "controllers/**/*.js",
                     paymentRoot + "directives/**/*.js",
                     paymentRoot + "services/**/*.js",
-                    paymentRoot + "payAppInit.js"
+                    paymentRoot + "payAppInit.js",
+                    sharedRoot + 'sntIDCollection/sntIDCollectionApp.js',
+                    sharedRoot + 'sntIDCollection/services/*.js',
+                    sharedRoot + 'sntIDCollection/constants/*.js',
+                    sharedRoot + 'sntIDCollection/controllers/*.js',
                 ]
 			};
 
