@@ -1,0 +1,23 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveConfig"
+                             header-caption="{{'ROVER_ID_COLLECTION_SETUP_HEADER'|translate}}">
+    <div class="entry holder-left">
+        <label><span translate>ACTIVATE_INACTIVATE</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
+             ng-click="toggleEnabled()">
+            <input type="checkbox">
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+
+    <div class="entry holder-right">        
+
+        <label><span translate>SCAN_ALL_GUESTS_LABEL</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.scan_all_guests }"
+             ng-click="toggleAllGuests()">
+            <input type="checkbox">
+            <span class="switch-icon"></span>
+        </div>
+
+    </div>
+
+</ad-common-parts-in-form-dir>
