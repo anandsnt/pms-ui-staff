@@ -23,6 +23,8 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
         },
     500);
 
+    $scope.hasArNumber = false;
+
     /**
     * Single digit search done based on the settings in admin
     * The single digit search is done only for numeric characters.
