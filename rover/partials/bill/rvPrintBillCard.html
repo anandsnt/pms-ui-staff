@@ -15,7 +15,7 @@
             <span ng-show="!isInformationalInvoice">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number">
+            <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
@@ -68,7 +68,7 @@
             <span ng-show="!isInformationalInvoice">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number">
+            <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
