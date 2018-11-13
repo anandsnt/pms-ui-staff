@@ -16,7 +16,11 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
     $scope.billNumberOnAddCC = '';
-    $scope.currentBillStatus = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
+    // $scope.currentBillStatus = true;
+    // if ($scope.reservationBillData) {
+    //     $scope.currentBillStatus = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
+    // }
+    
 
     if ($scope.selectedEntity.credit_card_details !== null && $scope.selectedEntity.credit_card_details !== undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')) {
 
@@ -79,6 +83,12 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         $scope.oldPayment = $scope.renderAddedPayment;
         $scope.renderAddedPayment = null;
         isAddPayment = false;
+    };
+
+    $scope.checkBillStatus = function(billId) {
+        var selectedbillIndex = _.indexOf($scope.reservationBillData.bills, {bill_id: billId});
+
+        return $scope.reservationBillData.bills[selectedbillIndex].is_active;
     };
 
     /**
