@@ -1,5 +1,7 @@
 angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $filter, acuantCredentials, sntIDCollectionUtilsSrv) {
-
+	// We will not be using $http as it will be using common headers upadted from the application (X-CSRF-Token,X-Requested-With, Authorization etc)
+	// This will fail the Acuant Webservices. So we will use xhr
+	
 	var that = this;
 
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
