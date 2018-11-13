@@ -113,7 +113,7 @@
                         </div>
                         <div class="cell-deposit" ng-class="{'color-green' : !autoCharge.is_declined, 'color-red' : autoCharge.is_declined}">
                             {{currencySymbol}}{{autoCharge.deposit_paid}}
-                            <div class="deposit-due" ng-show="autoCharge.is_declined">{{currencySymbol}}{{autoCharge.deposit_paid}}</div>
+                            <div class="deposit-due" ng-show="autoCharge.is_declined">{{currencySymbol}}{{autoCharge.deposit_due}}</div>
                         </div>
                     </a>
                 </li>
