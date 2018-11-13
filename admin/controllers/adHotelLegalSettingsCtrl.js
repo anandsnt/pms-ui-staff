@@ -39,8 +39,12 @@ admin.controller('adHotelLegalSettingsController',
 					'hotel_id': $scope.data.id,
 					'data': $scope.legalSettings
 				},
-				successCallBack: function() {
-					$scope.successMessage = "Saved Succesfully!";
+				successCallBack: function(data) {
+					if (data.errors.length === 0) {
+						$scope.successMessage = "Saved Succesfully!";
+					}
+					
+					$scope.errorMessage = data.errors;
 				}
 			};
 

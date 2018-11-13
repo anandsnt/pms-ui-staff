@@ -13,12 +13,17 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 
 		$scope.completeCancellationProcess = function() {
 			if ($scope.DailogeState.isCancelled) {
-				// CICO-58191
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					id: $scope.reservationData.reservationId,
-					confirmationId: $scope.reservationData.confirmNum,
-					isrefresh: true
-				});
+				if ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+					$state.reload($state.current.name);					
+				} else {
+					// CICO-58191
+					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						id: $scope.reservationData.reservationId || $scope.reservationData.reservation_card.reservation_id,
+						confirmationId: $scope.reservationData.confirmNum || $scope.reservationData.reservation_card.confirmation_num,
+						isrefresh: true
+					});
+				}
+				
 			}
 			$scope.closeDialog();
 		};
