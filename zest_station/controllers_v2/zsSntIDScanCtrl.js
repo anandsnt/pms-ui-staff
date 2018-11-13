@@ -322,7 +322,8 @@
 				$scope.idScanData = {
 					mode: '',
 					selectedGuest: {},
-					verificationMethod: $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ? 'STAFF' : 'NONE', // FR will be added later
+					//verificationMethod: $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ? 'STAFF' : 'NONE', // FR will be added later
+					verificationMethod: 'NONE',
 					staffVerified: false
 				};
 				$scope.validateSubsription();
