@@ -4,9 +4,15 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
 
-
+	/**
+	 * [createCORSRequest description]
+	 * @param  {[string]} method [http method]
+	 * @param  {[string]} url    [API URL]
+	 * @return {[object]}        [description]
+	 */
 	function createCORSRequest(method, url) {
 		var xhr = new XMLHttpRequest();
+
 		if ("withCredentials" in xhr) {
 			xhr.open(method, url, true);
 		} else if (typeof XDomainRequest !== "undefined") {
@@ -18,6 +24,8 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		return xhr;
 	}
 
+	// This method is common for all GET requests
+	// POST and delete method have different other headers based on the API type
 	var createRequestObject = function(requestType, url) {
 		var requestGetDocument = createCORSRequest(requestType, url);
 
