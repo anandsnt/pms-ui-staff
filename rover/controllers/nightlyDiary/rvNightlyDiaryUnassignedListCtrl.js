@@ -12,6 +12,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+        $scope.selectedResId = null;
         
         var retrieveAvailableRooms = function( selectedItem ) {
             var successCallBack = function(data) {
@@ -33,6 +34,7 @@ angular.module('sntRover')
                         reservationId: selectedItem.reservation_id
                     };
 
+                    $scope.selectedResId = selectedItem.reservation_id;
                     $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
                 }
             },
