@@ -23,6 +23,8 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
         },
     500);
 
+    $scope.hasArNumber = false;
+
     /**
     * Single digit search done based on the settings in admin
     * The single digit search is done only for numeric characters.
@@ -74,7 +76,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	* if not fouund in the data, it will request for webservice
   	*/
   	var displayFilteredResultsCards = function() {
-	    var dataDict = {'query': $scope.textInQueryBox.trim()};
+		var dataDict = {'query': $scope.textInQueryBox.trim(), 'has_ar_number': $scope.hasArNumber};
 
 	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, searchSuccessCards);	      
   	};
