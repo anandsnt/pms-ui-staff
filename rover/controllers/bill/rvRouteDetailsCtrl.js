@@ -16,6 +16,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
     $scope.billNumberOnAddCC = '';
+    $scope.currentBillStatus = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
 
     if ($scope.selectedEntity.credit_card_details !== null && $scope.selectedEntity.credit_card_details !== undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')) {
 
