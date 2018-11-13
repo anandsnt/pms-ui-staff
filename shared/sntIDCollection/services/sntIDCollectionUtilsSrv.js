@@ -136,4 +136,19 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 		
 		return isDocumentExpired;
 	};
+
+	this.formatResults = function(idDetails) {
+		var formatedResults = {};
+
+		formatedResults.document_type = idDetails.document_class_name ? idDetails.document_class_name : '';
+		formatedResults.document_number = idDetails.document_number ? idDetails.document_number : '';
+		formatedResults.first_name = idDetails.first_name ? idDetails.first_name : '';
+		formatedResults.last_name = idDetails.surname ? idDetails.surname : '';
+		formatedResults.full_name = idDetails.full_name ? idDetails.full_name : '';
+		formatedResults.nationality = idDetails.nationality_code ? idDetails.nationality_code : '';
+		formatedResults.expiration_date = idDetails.expiration_date && idDetails.expiration_date !== 'Invalid date' ? idDetails.expiration_date : '';
+		formatedResults.date_of_birth = idDetails.birth_date && idDetails.birth_date !== 'Invalid date' ? idDetails.birth_date : '';
+
+		return formatedResults;
+	};
 });
