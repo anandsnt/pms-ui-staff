@@ -26,19 +26,23 @@ describe('zsCheckinVerifyIdCtrl', function() {
             $stateParams.params = JSON.stringify(params);
             zsCheckinSrv = _zsCheckinSrv_;
         });
+        angular.extend($scope, {
+            zestStationData: {
+                kiosk_scan_all_guests: false
+            },
+            inDemoMode: function() {
+                return;
+            },
+            setScreenIcon: function() {
+                return;
+            },
+            callBlurEventForIpad: function() {
+                return;
+            }
+        });
         $controller('zsCheckinVerifyIdCtrl', {
             $scope: $scope
         });
-        $scope.inDemoMode = function() {
-            return false;
-        };
-        $scope.setScreenIcon = function() {
-            return false;
-        };
-        $scope.callBlurEventForIpad = function() {
-            return false;
-        };
-        $scope.zestStationData = {};
     });
 
     it('On entering guest ID verification, screen mode has to be Wait for Staff', function() {
