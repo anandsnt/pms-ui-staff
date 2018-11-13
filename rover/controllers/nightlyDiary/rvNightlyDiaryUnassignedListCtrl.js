@@ -3,17 +3,11 @@ angular.module('sntRover')
     [   '$scope',
         '$rootScope',
         'RVNightlyDiarySrv',
-        '$state',
-        '$stateParams',
-        '$filter',
         'ngDialog',
         function(
             $scope,
             $rootScope,
             RVNightlyDiarySrv,
-            $state,
-            $stateParams,
-            $filter,
             ngDialog
         ) {
 
@@ -25,13 +19,18 @@ angular.module('sntRover')
                 var roomCount = data.rooms.length;
 
                 if ( roomCount === 0 ) {
-                    console.log("NO ROOMS AVAIALBLE");
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
+                        className: '',
+                        scope: $scope
+                    });
                 }
                 else {
                     var newData = {
                         availableRoomList: data.rooms,
                         fromDate: selectedItem.arrival_date,
-                        nights: selectedItem.number_of_nights
+                        nights: selectedItem.number_of_nights,
+                        reservationId: selectedItem.reservation_id
                     };
 
                     $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
@@ -39,9 +38,12 @@ angular.module('sntRover')
             },
             failureCallBackMethod = function(errorMessage) {
                 $scope.errorMessage = errorMessage;
-                console.log(errorMessage);
                 if (errorMessage[0] === "Suite Room Type Assigned") {
-                    console.log("Suite Room Type Assigned");
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiarySuiteRooms.html',
+                        className: '',
+                        scope: $scope
+                    });
                 }
             },
             postData = {
@@ -60,7 +62,7 @@ angular.module('sntRover')
 
         $scope.clickedUnassignedItem = function( index ) {
             var item = $scope.diaryData.unassignedReservationList.reservations[index];
-            console.log(item);
+
             retrieveAvailableRooms(item);
         };
 }]);
