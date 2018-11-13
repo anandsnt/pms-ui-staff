@@ -76,6 +76,13 @@
                      div-class="full-width">
     			</ad-checkbox>
 
+    			<ad-checkbox
+                     is-checked="data.is_available_for_day_use"
+                     is-disabled="!data.room_type_is_available_for_day_use"
+                     label="{{ 'AVAILABLE_FOR_DAY_USE' | translate}}"
+                     div-class="full-width">
+    			</ad-checkbox>
+
 				<div class="entry full-width">
 					<label for="room-picture">
 						{{ 'IMAGE' | translate }}
