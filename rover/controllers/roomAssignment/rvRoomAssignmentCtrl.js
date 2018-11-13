@@ -1066,11 +1066,10 @@ sntRover.controller('RVroomAssignmentController', [
 
 	// Shows the occupancy dialog during room change
 	var showMaxOccupancyDialogForRoomTypeChange = function() {
-		var reservationStatus = $scope.reservationData.reservation_card.reservation_status,
-			showOccupancyMessage = false,
+		var showOccupancyMessage = false,
 			currentRoomType = $scope.getCurrentRoomType();
 
-			if (currentRoomType.max_occupancy != null && $scope.reservation_occupancy != null) {
+			if (currentRoomType.max_occupancy !== null && $scope.reservation_occupancy !== null) {
 					if (currentRoomType.max_occupancy < $scope.reservation_occupancy) {
 						showOccupancyMessage = true;
 						$scope.max_occupancy = currentRoomType.max_occupancy;
