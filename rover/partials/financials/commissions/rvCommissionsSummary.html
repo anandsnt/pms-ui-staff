@@ -252,8 +252,8 @@
                                  <th class="name" translate>GUEST</th>
                                  <!-- Show this only if active filter: Payable -->
                                  <th class="amount" translate>COMMISSION_CONF_NO</th>
-                                  <th class="amount" translate>COMMISSIONABLE_REVENUE</th>
-                                  <th class="amount" translate="">COMMISSION_REVENUE</th>
+                                 <th class="amount" translate="">COMMISSION_REVENUE</th>
+                                 <th class="amount" translate>COMMISSIONABLE_REVENUE</th>
                                  <th class="amount" translate>COMMISSION</th>
                                  <th class="owing" translate>COMMISSION_OWING</th>
                               </tr>
@@ -278,11 +278,11 @@
                                  <!-- Show this only if active filter: Payable -->
                                  <td class="amount">{{  reservation.confirm_no}}</td>
                                   <td class="amount">
-                                      {{ reservation.commissionable_revenue }}
+                                      {{ ::currencySymbol }} {{ reservation.revenue| number: precisonTwo}}
                                   </td>
-                                 <td class="amount">
-                                    {{ ::currencySymbol }} {{ reservation.revenue| number: precisonTwo}}
-                                 </td>
+                                  <td class="amount">
+                                      {{ ::currencySymbol }} {{ reservation.commissionable_revenue }}
+                                  </td>
                                  <td class="amount">
                                     {{ reservation.commission_rate}}
                                  </td>
