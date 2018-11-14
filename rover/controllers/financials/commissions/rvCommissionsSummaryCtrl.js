@@ -425,19 +425,38 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         /* *************** search ends here **************************** */
         $scope.printButtonClick = function() {
 
-            var successCallback = function(data) {
-                $scope.printData = data;
-                $scope.$emit('hideLoader');
-                updateHeader(true);
-                $timeout(function() {
-                    $('head').append('<style id=\'print-orientation\'>@page { size: landscape; }</style>');
-                    $window.print();
-                    if (sntapp.cordovaLoaded) {
-                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-                    }
-                    updateHeader();
-                }, 500);
-            };
+            var printCompletedActions = function() {
+                    $timeout(function() {
+                        // remove the orientation after similar delay
+                        removePrintOrientation();
+                    }, 100);
+                },
+                addPrintOrientation = function() {
+                    $( 'head' ).append( '<style id=\'print-orientation\'>@page { size: landscape; }</style>' );
+                },
+                // add the print orientation after printing
+                removePrintOrientation = function() {
+                    $( '#print-orientation' ).remove();
+                },
+                successCallback = function(data) {
+                    $scope.printData = data;
+                    $scope.$emit('hideLoader');
+                    updateHeader(true);
+                    $timeout(function() {
+                        addPrintOrientation();
+                        if (sntapp.cordovaLoaded) {
+                            cordova.exec(printCompletedActions,
+                                function(error) {
+                                    // handle error if needed
+                                    printCompletedActions();
+                                }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
+                        } else {
+                            $window.print();
+                            printCompletedActions();
+                        }
+                        updateHeader();
+                    }, 500);
+                };
 
             var printParams = getParams();
             

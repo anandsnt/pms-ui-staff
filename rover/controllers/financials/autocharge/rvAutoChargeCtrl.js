@@ -9,7 +9,7 @@ sntRover.controller('RVAutoChargeController',
         '$window',
         '$stateParams',
         'rvUtilSrv',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams,  util) {
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams, util) {
 
             BaseCtrl.call(this, $scope);
 
@@ -128,16 +128,16 @@ sntRover.controller('RVAutoChargeController',
                  * function forms array of selected reservation ids
                  * @return - [Integer]
                  */
-                generateSelectedReservationIds = function () {
-                    var selectedReservationIds = [];
+                generateSelectedReservationReportIds = function () {
+                    var selectedReservationReportIds = [];
 
                     _.map($scope.autoCharges,
                         function(autoCharge) {
                             if (autoCharge.isSelected) {
-                                selectedReservationIds.push(autoCharge.reservation_id);
+                                selectedReservationReportIds.push(autoCharge.deposit_report_id);
                             }
                         });
-                    return selectedReservationIds;
+                    return selectedReservationReportIds;
                 };
 
             /*
@@ -169,37 +169,32 @@ sntRover.controller('RVAutoChargeController',
                 // CICO-9569 to solve the hotel logo issue
                 $('header .logo').addClass('logo-hide');
                 $('header .h2').addClass('text-hide');
-
                 // add the orientation
                 addPrintOrientation();
 
-                /*
-                *	======[ READY TO PRINT ]======
-                */
-                // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                    *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                    */
+                var printCompletedActions = function() {
+                    $timeout(function() {
+                        // CICO-9569 to solve the hotel logo issue
+                        $('header .logo').removeClass('logo-hide');
+                        $('header .h2').addClass('text-hide');
 
-                    $window.print();
-                    if ( sntapp.cordovaLoaded ) {
-                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                        // remove the orientation after similar delay
+                        removePrintOrientation();
+                    }, 100);
+                };
+
+                $timeout(function() {
+                    if (sntapp.cordovaLoaded) {
+                        cordova.exec(printCompletedActions,
+                            function(error) {
+                                // handle error if needed
+                                printCompletedActions();
+                            }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'P']);
+                    } else {
+                        $window.print();
+                        printCompletedActions();
                     }
-                }, 1000);
-
-                /*
-                *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-                */
-
-                $timeout(function() {
-                    // CICO-9569 to solve the hotel logo issue
-                    $('header .logo').removeClass('logo-hide');
-                    $('header .h2').addClass('text-hide');
-
-                    // remove the orientation after similar delay
-                    removePrintOrientation();
-                }, 1000);
+                }, 100);
             };
 
             // print bill
@@ -210,10 +205,10 @@ sntRover.controller('RVAutoChargeController',
             // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
-                    page_no: pageNo || 1,
-                    status: $scope.filters.status,
-                    due_date: $scope.filters.due_date,
-                    per_page: $scope.paginationConfig.perPage
+                        page_no: pageNo || 1,
+                        status: $scope.filters.status,
+                        due_date: $scope.filters.due_date,
+                        per_page: $scope.paginationConfig.perPage
                     },
                     stateData = {
                         filters: params,
@@ -244,7 +239,7 @@ sntRover.controller('RVAutoChargeController',
             $scope.processSelectedAutoCharges = function() {
                 var params = {
                         due_date: $scope.filters.due_date,
-                        reservations_ids: generateSelectedReservationIds()
+                        reservation_reports_ids: generateSelectedReservationReportIds()
                     },
                     options = {
                         params: params,
