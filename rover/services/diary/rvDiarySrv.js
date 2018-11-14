@@ -321,7 +321,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 Room = Config({
                     id: meta.room.id,
                     name: 'room',
-                    url: 'api/rooms?is_available_for_day_use=true',
+                    url: 'api/rooms',
                     key_prefix: 'rm-',
                     namespace: 'rooms',
                     cache: true
@@ -384,7 +384,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                 RoomType = Config({
                     id: meta.room_type.id,
                     name: 'room_type',
-                    url: '/api/room_types.json?is_exclude_pseudo=true&&is_available_for_day_use=true',
+                    url: '/api/room_types.json?is_exclude_pseudo=true',
                     key_prefix: 'rt-',
                     namespace: 'results',
                     cache: true
