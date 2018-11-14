@@ -78,7 +78,7 @@
 
     			<ad-checkbox
                      is-checked="data.is_available_for_day_use"
-                     is-hide="!dayUseEnabled"
+                     is-hide="!dayUseEnabled || data.room_type_is_suite"
                      label="{{ 'AVAILABLE_FOR_DAY_USE' | translate}}"
                      div-class="full-width">
     			</ad-checkbox>
