@@ -252,7 +252,7 @@ const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     gridDays: state.numberOfDays,
     newArrivalPosition: state.newArrivalPosition,
     newDeparturePosition: state.newDeparturePosition,
-    isAvaialbleRoomSlotActive: state.isAvaialbleRoomSlotActive
+    isAvailableRoomSlotActive: state.isAvailableRoomSlotActive
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {

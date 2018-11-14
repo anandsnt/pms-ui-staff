@@ -7,7 +7,7 @@
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.totalSearchResults > 0 , 'with-reservation-overlay': diaryData.totalRoomNumberSearchResults > 0, 'assigning-rooms': diaryData.isAvaialbleRoomSlotActive }" class="content" role="main">
+<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.totalSearchResults > 0 , 'with-reservation-overlay': diaryData.totalRoomNumberSearchResults > 0, 'assigning-rooms': diaryData.isAvailableRoomSlotActive }" class="content" role="main">
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">

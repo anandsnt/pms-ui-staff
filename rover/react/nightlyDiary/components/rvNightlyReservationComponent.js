@@ -3,7 +3,7 @@ const { findDOMNode } = ReactDOM;
 const ReservationComponent = createClass({
 
     setClassName() {
-        if (this.props.isAvaialbleRoomSlotActive) {
+        if (this.props.isAvailableRoomSlotActive) {
             return this.props.reservation.reservationClass + " " + "overlay";
         }
         else {
