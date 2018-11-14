@@ -40,10 +40,13 @@ let calculateUnassignedRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, ua
     return returnData;
 };
 
+
 const mapStateToNightlyDiaryUnAssignedContainerProps = (state) => ({
     uar_data: calculateUnassignedRoomsPositionAndDuration(
         state.diaryInitialDayOfDateGrid, state.avalableSlotsForAssignRooms, state.numberOfDays
-    )
+    ),
+    assignRoom: state.callBackFromAngular.unAssignedRoomSelect,
+    avalableSlotsForAssignRooms: state.avalableSlotsForAssignRooms
 });
 
 const NightlyDiaryUnAssignedContainer = connect(

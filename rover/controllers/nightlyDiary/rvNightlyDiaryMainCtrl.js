@@ -223,6 +223,16 @@ angular.module('sntRover')
                 };
 
                 /*
+                 * handle unassigned room select.
+                 * @param roomDetails - Current selected room details
+                 * @param reservationDetails - Current selected reservation details
+                 * @return {}
+                 */
+                var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
+                    console.log(roomDetails, reservationDetails);
+                };
+
+                /*
                  * Function to check room availability.
                  */
                 var checkReservationAvailability = (arrivalDate, DepartureDate) => {
@@ -426,7 +436,8 @@ angular.module('sntRover')
                         goToNextPage,
                         selectReservation,
                         extendShortenReservation,
-                        checkReservationAvailability
+                        checkReservationAvailability,
+                        unAssignedRoomSelect
                     };
                 };
 
