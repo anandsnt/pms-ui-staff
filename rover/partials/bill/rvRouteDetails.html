@@ -117,10 +117,10 @@
 					</snt-payment>
 				</div>
 
-				<div class="title" ng-hide="isHourlyRateOn || billingEntity === 'GROUP_DEFAULT_BILLING' || selectedEntity.entity_type === 'GROUP' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'">
+				<div class="title" ng-hide="shouldHideSplitCharge()">
                         Split Charges 
                 </div>
-                <div class="entry" ng-hide="isHourlyRateOn || billingEntity === 'GROUP_DEFAULT_BILLING' || selectedEntity.entity_type === 'GROUP' || billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || billingEntity === 'ALLOTMENT_DEFAULT_BILLING'" ng-class="{'overlay': checkBillStatus()}">
+                <div class="entry" ng-hide="shouldHideSplitCharge()" ng-class="{'overlay': checkBillStatus()}">
                     <label class="checkbox" for="split-charges" ng-class="{'checked': selectedEntity.split_charge_by_50}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': selectedEntity.split_charge_by_50}"></span>
                         <input ng-class="{'checked': selectedEntity.split_charge_by_50}" name="split-charges" id="split-charges" ng-model="selectedEntity.split_charge_by_50" value="1" type="checkbox">

@@ -1121,6 +1121,10 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
         }
     };
+
+    $scope.shouldHideSplitCharge = function() {
+        return $scope.isHourlyRateOn || $scope.billingEntity === 'GROUP_DEFAULT_BILLING' || $scope.selectedEntity.entity_type === 'GROUP' || $scope.billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || $scope.billingEntity === 'ALLOTMENT_DEFAULT_BILLING';
+    };
     $scope.sixIsManual = false;
     $scope.$on('CHANGE_IS_MANUAL', function(e, value) {
         $scope.sixIsManual = value;
