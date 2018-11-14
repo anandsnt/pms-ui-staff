@@ -147,7 +147,7 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 
 		formatedResults.document_type = idDetails.document_class_name ? idDetails.document_class_name : '';
 		formatedResults.document_number = idDetails.document_number ? idDetails.document_number : '';
-		formatedResults.first_name = idDetails.first_name ? idDetails.first_name : '';
+		formatedResults.first_name = idDetails.first_name ? idDetails.first_name : idDetails.given_name;
 		formatedResults.last_name = idDetails.surname ? idDetails.surname : '';
 		formatedResults.full_name = idDetails.full_name ? idDetails.full_name : '';
 		formatedResults.nationality = idDetails.nationality_code ? that.countryMappings[idDetails.nationality_code] : '';
