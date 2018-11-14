@@ -98,8 +98,12 @@ sntRover.controller('RVroomAssignmentController', [
 	* function to to get the rooms based on the selected room type
 	*/
 	$scope.getRooms = function() {
+		$scope.isRoomTypeChanged = true;
 		$scope.searchText = '';
-		$scope.currentRoomTypeId = (_.find($scope.roomTypes, {type: $scope.roomType})).id;
+		var changedRoomType = _.find($scope.roomTypes, {type: $scope.roomType});
+
+		$scope.currentRoomTypeId = changedRoomType.id;
+		$scope.currentRoomTypeName = changedRoomType.description;
 		$scope.isSearchActive = false;
 		self.getRoomsByRoomType(1);
 	};
@@ -212,63 +216,62 @@ sntRover.controller('RVroomAssignmentController', [
 	* function to check occupancy for the reservation
 	*/
 	$scope.showMaximumOccupancyDialog = function(roomObject) {
+			if (!roomObject) {
+				showMaxOccupancyDialogForRoomTypeChange();
+			} else {
+				var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 
-
-			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
-
-			var showOccupancyMessage = false;
+				var showOccupancyMessage = false;
 
 				if (roomObject.room_max_occupancy != null && $scope.reservation_occupancy != null) {
-						if (roomObject.room_max_occupancy < $scope.reservation_occupancy) {
-							showOccupancyMessage = true;
-							$scope.max_occupancy = roomObject.room_max_occupancy;
+					if (roomObject.room_max_occupancy < $scope.reservation_occupancy) {
+						showOccupancyMessage = true;
+						$scope.max_occupancy = roomObject.room_max_occupancy;
 					}
 				} else if (roomObject.room_type_max_occupancy != null && $scope.reservation_occupancy != null) {
-						if (roomObject.room_type_max_occupancy < $scope.reservation_occupancy) {
-							showOccupancyMessage = true;
-							$scope.max_occupancy = roomObject.room_type_max_occupancy;
-						}
+					if (roomObject.room_type_max_occupancy < $scope.reservation_occupancy) {
+						showOccupancyMessage = true;
+						$scope.max_occupancy = roomObject.room_type_max_occupancy;
+					}
 				}
 
-			$scope.assignedRoom = roomObject;
-			if ($scope.assignedRoom.is_upgrade_room === "true") {
-	        	var selectedRoomIndex = '';
+				$scope.assignedRoom = roomObject;
+				if ($scope.assignedRoom.is_upgrade_room === "true") {
+					var selectedRoomIndex = '';
 
-				angular.forEach(roomUpgrades.upsell_data, function(value, key) {
-					if ($scope.assignedRoom.room_number === value.upgrade_room_number) {
-						selectedRoomIndex = key;
-					}
-				});
-				$scope.$broadcast('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', selectedRoomIndex);
-	        } else {
-
-				$scope.roomTransfer.newRoomNumber = roomObject.room_number;
-				if (showOccupancyMessage) {
-					selectedRoomObject = roomObject;
-			    	$scope.oldRoomType = oldRoomType;
-					ngDialog.open({
-		                  template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
-		                  controller: 'rvMaximumOccupancyDialogController',
-		                  className: 'ngdialog-theme-default',
-		                  scope: $scope
-		                });
+					angular.forEach(roomUpgrades.upsell_data, function (value, key) {
+						if ($scope.assignedRoom.room_number === value.upgrade_room_number) {
+							selectedRoomIndex = key;
+						}
+					});
+					$scope.$broadcast('UPGRADE_ROOM_SELECTED_FROM_ROOM_ASSIGNMENT', selectedRoomIndex);
 				} else {
-					if (reservationStatus === "CHECKEDIN") {
-						$scope.moveInHouseRooms();
+					$scope.roomTransfer.newRoomNumber = roomObject.room_number;
+					if (showOccupancyMessage) {
+						selectedRoomObject = roomObject;
+						$scope.oldRoomType = oldRoomType;
+						ngDialog.open({
+							template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+							controller: 'rvMaximumOccupancyDialogController',
+							className: 'ngdialog-theme-default',
+							scope: $scope
+						});
 					} else {
-						if (oldRoomType !== roomObject.room_type_code) {
-
-							$scope.oldRoomType = oldRoomType;
-							$scope.openApplyChargeDialog();
+						if (reservationStatus === "CHECKEDIN") {
+							$scope.moveInHouseRooms();
 						} else {
-							$scope.roomTransfer.withoutRateChange = true;
-							$scope.assignRoom();
+							if (oldRoomType !== roomObject.room_type_code) {
+
+								$scope.oldRoomType = oldRoomType;
+								$scope.openApplyChargeDialog();
+							} else {
+								$scope.roomTransfer.withoutRateChange = true;
+								$scope.assignRoom();
+							}
 						}
 					}
 				}
-
-
-		}
+			}
 
 	};
 
@@ -965,6 +968,7 @@ sntRover.controller('RVroomAssignmentController', [
 		self.refreshPagination();
 		$scope.isSearchActive = false;
 		$scope.searchText = '';
+		$scope.isRoomTypeChanged = false;
 	};
 	$scope.init();
 
@@ -1018,6 +1022,71 @@ sntRover.controller('RVroomAssignmentController', [
 	// Checks whether pagination should be shown or not
 	$scope.shouldShowPagination = function() {
 		return $scope.totalCount > ROOMS_LISTING_PAGE_SIZE;
+	};
+
+	// Checks whether room change room type button should be shown or not
+	$scope.shouldShowChangeRoomTypeBtn = function() {
+		return $rootScope.isStandAlone && !$rootScope.isHourlyRateOn && $scope.isRoomTypeChanged && $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDIN';
+	};
+
+	// Implement the functionality to change only the room type for due-in/future reservations
+	$scope.changeRoomType = function() {
+		if ($scope.isRoomLockedForThisReservation === "true") {
+			ngDialog.open({
+                template: '/assets/partials/roomAssignment/rvRoomLocked.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+		} else {
+			var availabilityCount = (_.find($scope.roomTypes, {type: $scope.roomType})).availability,
+				currentRoomType = $scope.getCurrentRoomType(),
+			    isAvailablityExist = availabilityCount > 0,
+			    isOverBookPermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+			
+			if (!isAvailablityExist) {
+				if (currentRoomType.is_suite_room || !isOverBookPermission) {
+					ngDialog.open({
+						template: '/assets/partials/roomAssignment/rvRoomTypeNotAvailable.html',
+						className: 'ngdialog-theme-default',
+						scope: $scope
+					});
+				} else {
+					ngDialog.open({
+						template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
+						controller: 'RVOverBookRoomDialogController',
+						className: 'ngdialog-theme-default',
+						scope: $scope
+					});
+				}
+			} else {
+				showMaxOccupancyDialogForRoomTypeChange();
+			}
+		}
+	};
+
+	// Shows the occupancy dialog during room change
+	var showMaxOccupancyDialogForRoomTypeChange = function() {
+		var showOccupancyMessage = false,
+			currentRoomType = $scope.getCurrentRoomType();
+
+			if (currentRoomType.max_occupancy !== null && $scope.reservation_occupancy !== null) {
+					if (currentRoomType.max_occupancy < $scope.reservation_occupancy) {
+						showOccupancyMessage = true;
+						$scope.max_occupancy = currentRoomType.max_occupancy;
+					}
+			}
+				
+			if (showOccupancyMessage) {
+				ngDialog.open({
+						template: '/assets/partials/roomAssignment/rvMaximumOccupancyDialog.html',
+						controller: 'rvMaximumOccupancyDialogController',
+						className: 'ngdialog-theme-default',
+						scope: $scope
+					});
+			} else {
+				$scope.openApplyChargeDialog();
+			}
+		
 	};
 
 }]);

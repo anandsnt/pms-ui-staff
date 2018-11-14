@@ -36,7 +36,8 @@ module.exports = {
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js',
-                    jsLibRoot + 'oclazyload/ocLazyLoad.min.js'
+                    jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
+                    sharedRoot + 'lib/js/moment.min.js',
 
 				],
 				nonMinifiedFiles: [
@@ -81,7 +82,11 @@ module.exports = {
                     paymentRoot + "controllers/**/*.js",
                     paymentRoot + "directives/**/*.js",
                     paymentRoot + "services/**/*.js",
-                    paymentRoot + "payAppInit.js"
+                    paymentRoot + "payAppInit.js",
+                    sharedRoot + 'sntIDCollection/sntIDCollectionApp.js',
+                    sharedRoot + 'sntIDCollection/services/*.js',
+                    sharedRoot + 'sntIDCollection/constants/*.js',
+                    sharedRoot + 'sntIDCollection/controllers/*.js',
                 ]
 			};
 

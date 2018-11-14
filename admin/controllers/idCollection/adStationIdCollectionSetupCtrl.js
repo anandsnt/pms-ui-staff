@@ -23,12 +23,7 @@ angular.module('admin').controller('adStationIdCollectionSetupCtrl', ['$scope', 
             {
                 "name": "ID Scan With Samsotech",
                 "value": "id_scan_with_samsotech"
-            },
-            {
-                "name": "No ID Scan",
-                "value": "no_id_scan"
             }
-
         ];
 
         $scope.toggleAllGuests = function() {
