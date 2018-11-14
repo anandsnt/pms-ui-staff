@@ -1,5 +1,5 @@
 const isRoomIsAvailable = (roomId, state) => {
-    const unAssignedRoomList = state.avalableSlotsForAssignRooms.availableRoomList;
+    const unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
     let flagforAvailable = false;
     let roomDetails = {};
 

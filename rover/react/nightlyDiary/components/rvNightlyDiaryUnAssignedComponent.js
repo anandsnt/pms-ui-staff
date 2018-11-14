@@ -17,7 +17,7 @@ const NightlyDiaryUnAssignedComponent = createClass({
         return (
             <div style={this.getStyles()}
                 className="reservation unassigned"
-                onClick={() => this.props.assignRoom(this.props.roomDetails, this.props.avalableSlotsForAssignRooms)}
+                onClick={() => this.props.assignRoom(this.props.roomDetails, this.props.availableSlotsForAssignRooms)}
             >
                 <div className="reservation-data">
                     ASSIGN

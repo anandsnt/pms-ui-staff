@@ -92,7 +92,7 @@ angular.module('sntRover')
                         hideFloorList: true,
                         isRightFilterActive: true,
                         isAvaialbleRoomSlotActive: false,
-                        avalableSlotsForAssignRooms: {
+                        availableSlotsForAssignRooms: {
                             availableRoomList: [],
                             fromDate: null,
                             nights: null
@@ -417,7 +417,7 @@ angular.module('sntRover')
                 listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData) {
                     $scope.diaryData.isAvaialbleRoomSlotActive = true;
 
-                    $scope.diaryData.avalableSlotsForAssignRooms = newData;
+                    $scope.diaryData.availableSlotsForAssignRooms = newData;
                     console.log(newData);
 
                     updateDiaryView();
@@ -464,7 +464,7 @@ angular.module('sntRover')
                 var initialState = {
                     roomsList: roomsList.rooms,
                     reservationsList: reservationsList.rooms,
-                    avalableSlotsForAssignRooms: {},
+                    availableSlotsForAssignRooms: {},
                     isAvaialbleRoomSlotActive: false,
                     diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                     numberOfDays: $scope.diaryData.numberOfDays,
@@ -489,7 +489,7 @@ angular.module('sntRover')
                         numberOfDays: $scope.diaryData.numberOfDays,
                         reservationsList: $scope.diaryData.reservationsList.rooms,
                         isAvaialbleRoomSlotActive: $scope.diaryData.isAvaialbleRoomSlotActive,
-                        avalableSlotsForAssignRooms: $scope.diaryData.avalableSlotsForAssignRooms,
+                        availableSlotsForAssignRooms: $scope.diaryData.availableSlotsForAssignRooms,
                         roomsList: $scope.diaryData.diaryRoomsList,
                         diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                         currentBusinessDate: $rootScope.businessDate,
