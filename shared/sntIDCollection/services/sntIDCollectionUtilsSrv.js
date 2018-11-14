@@ -1,20 +1,25 @@
-angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($filter) {
+'use strict';
+
+angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($filter) {
+	// We will not be using $http as it will be using common headers upadted from the application (X-CSRF-Token,X-Requested-With, Authorization etc)
+	// This will fail the Acuant Webservices. So we will use zhr
 
 	var that = this;
 
-	this.base64ArrayBuffer = function(buffer) {
+	this.base64ArrayBuffer = function (buffer) {
 		var arr = new Uint8Array(buffer);
 		var raw = '';
-		var subArray, chunk = 5000;
+		var subArray,
+		    chunk = 5000;
 
-		for (let i = 0, j = arr.length; i < j; i += chunk) {
+		for (var i = 0, j = arr.length; i < j; i += chunk) {
 			subArray = arr.subarray(i, i + chunk);
 			raw += String.fromCharCode.apply(null, subArray);
 		}
 		return 'data:image/jpeg;base64,' + btoa(raw);
 	};
 
-	this.processDate = function(date) {
+	this.processDate = function (date) {
 		date = date.replace('Date', '');
 		date = date.replace(')', '');
 		date = date.replace('(', '');
@@ -23,7 +28,7 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 		return parseInt(date);
 	};
 
-	this.dataURLtoBlob = function(dataURL) {
+	this.dataURLtoBlob = function (dataURL) {
 		// Decode the dataURL    
 		var binary = atob(dataURL.split(',')[1]);
 		// Create 8-bit unsigned array
@@ -38,27 +43,27 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 		});
 	};
 
-	this.formatData = function(fields) {
+	this.formatData = function (fields) {
 		var formatedData = {};
-		var dateFormmater = function(val) {
+		var dateFormater = function dateFormater(val) {
 			return val ? moment(that.processDate(val)).utc().format('DD-MM-YYYY') : '';
 		};
 		var customFormatters = {
-			'Birth Date': dateFormmater,
-			'Expiration Date': dateFormmater
+			'Birth Date': dateFormater,
+			'Expiration Date': dateFormater
 		};
 
-		angular.forEach(fields, function({
-			Key,
-			Value
-		}) {
+		angular.forEach(fields, function (_ref) {
+			var Key = _ref.Key,
+			    Value = _ref.Value;
+
 			formatedData[Key.toLowerCase().split(' ').join('_')] = customFormatters[Key] ? customFormatters[Key](Value) : Value;
 		});
 
 		return formatedData;
 	};
 
-	this.resizeImage = function(img, file) {
+	this.resizeImage = function (img, file) {
 		var canvas = document.createElement('canvas');
 		var ctx = canvas.getContext('2d');
 
@@ -93,11 +98,11 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 
 		var dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
 		var imageData = dataurl ? that.dataURLtoBlob(dataurl) : '';
-		
+
 		return imageData;
 	};
 
-	this.retrieveAuthenticationStatus = function(idAuthentication) {
+	this.retrieveAuthenticationStatus = function (idAuthentication) {
 
 		var idAuthentication = null;
 
@@ -128,16 +133,16 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function($f
 		return idAuthentication;
 	};
 
-	this.isIDExpired = function(alerts) {
+	this.isIDExpired = function (alerts) {
 		var expirationAlert = $filter('filter')(alerts, {
 			Key: 'Document Expired'
 		}, true)[0];
-		var isDocumentExpired = expirationAlert ? (expirationAlert.Result === 4 || expirationAlert.Result === 5) : false;
-		
+		var isDocumentExpired = expirationAlert ? expirationAlert.Result === 4 || expirationAlert.Result === 5 : false;
+
 		return isDocumentExpired;
 	};
 
-	this.formatResults = function(idDetails) {
+	this.formatResults = function (idDetails) {
 		var formatedResults = {};
 
 		formatedResults.document_type = idDetails.document_class_name ? idDetails.document_class_name : '';
