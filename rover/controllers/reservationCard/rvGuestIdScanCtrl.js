@@ -25,8 +25,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		var scrollOptions = {
 			preventDefaultException: {
-				tagName: /^(INPUT|SELECT)$/
+				tagName: /^(INPUT|SELECT|BUTTON)$/
 			},
+			tap: true,
+			preventDefault: false,
+			deceleration: 0.0001,
 			preventDefault: false
 		};
 
