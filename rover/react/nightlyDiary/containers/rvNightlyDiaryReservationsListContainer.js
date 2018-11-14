@@ -1,4 +1,4 @@
-const {connect} = ReactRedux;
+const { connect } = ReactRedux;
 
 let convertRowReadyToComponent = (roomsList, selectedRoomId) => {
 
@@ -12,9 +12,11 @@ const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     reservationsListToComponent: convertRowReadyToComponent(state.reservationsList, state.selectedRoomId),
     roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
     selectedReservationId: state.selectedReservationId,
-    selectedRoomId: state.selectedRoomId
+    selectedRoomId: state.selectedRoomId,
+    showUnAssignedRooms: state.isAvaialbleRoomSlotActive,
+    state: state
 });
 
 const NightlyDiaryReservationsListContainer = connect(
-  mapStateToNightlyDiaryReservationsListContainerProps
+    mapStateToNightlyDiaryReservationsListContainerProps
 )(NightlyDiaryReservationsListComponent);
