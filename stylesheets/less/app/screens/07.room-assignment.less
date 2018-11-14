@@ -424,12 +424,25 @@
         &.has-room { .calc-height(100, 170); }
     }
 
-    #unassign-room {
+    .room-assignment-actions {
         position: absolute;
-        bottom: 20px;
-        left: 50%;
-        line-height: 50px;
-        width: 380px;
-        margin-left: -190px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding: 20px;
+        width: 100%;
+        max-width: 1024px;
+        #flexbox > .parent( row, center, '', '' ); 
+
+        .button {
+            line-break: 50px;
+            height: 50px;
+            .calc-width( 50, 20 );
+
+            &:nth-child(2) {
+                margin-left: auto;
+            }
+        }
     }
 }

@@ -590,5 +590,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+        this.getSampleAcuantIdScanDetails = function() {
+            var deferred = $q.defer();
+            var url = '/sample_json/zest_station/acuant_sample_response.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+
+        };
     }
 ]);

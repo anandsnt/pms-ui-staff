@@ -80,6 +80,12 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         isAddPayment = false;
     };
 
+    $scope.checkBillStatus = function(billId) {
+        var selectedbillIndex = _.indexOf($scope.reservationBillData.bills, {bill_id: billId});
+
+        return $scope.reservationBillData.bills[selectedbillIndex].is_active;
+    };
+
     /**
      * function to show the payment list on cancelling or adding new payment
      */
