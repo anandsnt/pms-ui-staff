@@ -1,15 +1,26 @@
 <div id="page-main-second"  ng-click="clickedOnSearchArea()" class="" style="">
     <!-- Search form -->
     <div ng-include="'/assets/partials/common/header.html'"></div>
-    <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}">
+    <form name="find-cards-search-form" id="find-cards-search-form" class="search-form enable-adding has-options single-option" role="search">
+   <!--  <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}"> -->
         <div class="entry search">
             <button type="button" id="clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
-            <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+            <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">            
         </div>
-        <button type="button" class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</button>
+        <div class="entry options">
+            <!-- Add .checked when checked. -->
+            <label class="checkbox inline" ng-class="{'checked': hasArNumber}">
+                <!-- Add .checked when checked. -->
+                <span class="icon-form icon-checkbox" ng-class="{'checked': hasArNumber}"></span>
+                <!-- Add checked="checked" -->
+                <input type="checkbox" ng-model="hasArNumber" ng-class="{'checked': hasArNumber}" ng-click="queryEntered()">
+                AR Accounts Only
+            </label>
+        </div>
+        <button type="button" ng-show="textInQueryBox!=''" class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</button>
     </form>
 
     <section id="find-cards" class="content scrollable" ng-iscroll="company_card_scroll" >

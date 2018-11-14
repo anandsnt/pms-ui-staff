@@ -144,12 +144,16 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 }
                 
             } else {
-                if ($scope.zestStationData.kiosk_manual_id_scan) {
-                    var stateParams = $stateParams;
+                var stateParams = $stateParams;
 
-                    stateParams.signature = signatureBase64Data;
-                    stateParams = JSON.stringify(stateParams);
+                stateParams.signature = signatureBase64Data;
+                stateParams = JSON.stringify(stateParams);
 
+                if ($scope.zestStationData.id_scan_enabled) {
+                    $state.go('zest_station.sntIDScan', {
+                        params: JSON.stringify(stateParams)
+                    });
+                } else if ($scope.zestStationData.kiosk_manual_id_scan) {
                     $state.go('zest_station.checkInIdVerification', {
                         params: stateParams
                     });

@@ -51,7 +51,7 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.pickupkey_authenticate_cc" label="{{'AUTHENTICATE_CC'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
-            <fieldset class="holder left" ng-if="zestSettings.kiosk_manual_id_scan">
+            <fieldset class="holder left" ng-if="zestSettings.kiosk_manual_id_scan || (zestSettings.kiosk_scan_enabled && zestSettings.kiosk_scan_mode !== 'id_scan_with_samsotech')">
                 <div class="form-title full-width">
                     <h3><span translate>STATION_GUEST_ID_ACTIVATE</span> </h3>
                 </div>

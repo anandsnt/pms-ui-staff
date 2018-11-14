@@ -1,0 +1,55 @@
+<section id="main" class="centered test add_remove_main" role="main"  ng-show="screenData.scanMode == 'INVALID_ID_CREDENTIALS'">
+   <div id="content">
+      <h1 translate>
+         GI_INVALID_ACUANT_SUBSCRIPTION
+      </h1>
+      <h2 translate>
+         GI_INVALID_ACUANT_SUBSCRIPTION_INSTRUCTIONS
+      </h2>
+   </div>
+</section>
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanGuestList.html'" 
+   ng-show="screenData.scanMode == 'GUEST_LIST'"></ng-include>
+<section id="main" class="centered test add_remove_main" role="main"  
+   ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE' ||
+   screenData.scanMode == 'ANALYSING_BACK_IMAGE'  ||
+   screenData.scanMode == 'ANALYSING_ID_DATA'">
+   <div id="content">
+      <h1 translate>
+         GI_ANALYSING_IMAGE_MSG
+      </h1>
+   </div>
+</section>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanFrontSide.html'" 
+   ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanFrontImageFailed.html'"  
+   ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE_FAILED'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanBackSide.html'" 
+   ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanBackImageFailed.html'"  
+   ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE_FAILED'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanConfirmImages.html'" 
+   ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES' || screenData.scanMode == 'CONFIRM_FRONT_IMAGE'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanResults.html'" 
+   ng-show="screenData.scanMode == 'FINAL_ID_RESULTS'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanGetResultFailed.html'"  
+   ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanIDExpired.html'"  
+   ng-show="screenData.scanMode == 'ID_DATA_EXPIRED'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanIDInvalidExpiryDate.html'"  
+   ng-show="screenData.scanMode == 'EXPIRATION_DATE_INVALID'"></ng-include>
+   
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanAdminLogin.html'"  
+   ng-show="screenData.scanMode == 'ADMIN_LOGIN'"></ng-include>
+   
+<input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none !important;">
+<input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none !important;">
