@@ -133,13 +133,19 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 };   
             }
 
-            if ($scope.zestStationData.kiosk_manual_id_scan) {
+            if ($scope.zestStationData.id_scan_enabled) {
+                $state.go('zest_station.sntIDScan', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
+            else if ($scope.zestStationData.kiosk_manual_id_scan) {
                 $state.go('zest_station.checkInIdVerification', {
                     params: JSON.stringify($stateParams)
                 });
             }
             else if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $stateParams.email = $stateParams.guest_email;
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
                     afterGuestCheckinCallback({ 'status': 'success' });
@@ -148,6 +154,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             } else {
 
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $stateParams.email = $stateParams.guest_email;
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
                     $scope.callAPI(zsCheckinSrv.checkInGuest, options);

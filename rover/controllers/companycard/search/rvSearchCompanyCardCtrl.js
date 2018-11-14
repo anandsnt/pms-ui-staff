@@ -5,6 +5,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.heading = "Find Cards";
 		// model used in query textbox, we will be using this across
 		$scope.textInQueryBox = "";
+		$scope.hasArNumber = false;
 		$scope.$emit("updateRoverLeftMenu", "cards");
 		$scope.results = [];
 		var successCallBackofInitialFetch = function(data) {
@@ -103,7 +104,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				// last hope, we are looking in webservice.
 				if (visibleElementsCount === 0) {
 					var dataDict = {
-						'query': $scope.textInQueryBox.trim()
+						'query': $scope.textInQueryBox.trim(),
+						'has_ar_number': $scope.hasArNumber
 					};
 
 					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
