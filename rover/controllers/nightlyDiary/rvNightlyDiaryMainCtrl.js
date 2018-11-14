@@ -229,7 +229,9 @@ angular.module('sntRover')
                  * @return {}
                  */
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
+                    $scope.diaryData.isAvaialbleRoomSlotActive = false;
                     console.log(roomDetails, reservationDetails);
+                    fetchRoomListDataAndReservationListData();
                 };
 
                 /*
