@@ -1,6 +1,6 @@
-<section id="main" class="guest-id-verify" role="main" style="top: 90px !important;">
+<section id="main" class="guest-id-verify" role="main">
    <div id="flex-holder" touch-press="enableScroll()">
-      <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate">
+      <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate" style="height: 75%;">
          <div class="wrapper passport-details">
             <div id="bill">
                <h1 translate>
@@ -60,11 +60,17 @@
                   </label>
                   <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.expiration_date' class="disabled"/>
                </div>
-               <div class="entry with-label">
+               <div class="entry with-label" ng-hide="idScanData.selectedGuest.scannedDetails.nationality_name">
                   <label translate>
                   GID_REVIEW_NATIONALITY
                   </label>
-                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.nationality_fullname' class="disabled"/>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.nationality'  class="disabled"/>
+               </div>
+               <div class="entry with-label" ng-show="idScanData.selectedGuest.scannedDetails.nationality_name">
+                  <label translate>
+                  GID_REVIEW_NATIONALITY
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.nationality_name'  class="disabled"/>
                </div>
                <br/><br/>
             </div>

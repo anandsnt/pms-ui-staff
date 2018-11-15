@@ -200,10 +200,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                          //  
 
                         var successCallBack = function(guest_details) {
-
-                            if (($scope.zestStationData.check_in_collect_passport && !$scope.reservationHasPassportsScanned(guest_details))  ||
+                            var areAllRequiredIDsPresent = $scope.reservationHasPassportsScanned(guest_details);
+                            
+                            if (($scope.zestStationData.check_in_collect_passport && !areAllRequiredIDsPresent)  ||
                                ($scope.zestStationData.kiosk_manual_id_scan && (!guest_details.primary_guest_details.guest_id_reviewed || $scope.zestStationData.pickup_key_always_ask_for_id)) ||
-                               ($scope.zestStationData.id_scan_enabled && (!guest_details.primary_guest_details.guest_id_reviewed || $scope.zestStationData.pickup_key_always_ask_for_id))) {
+                               ($scope.zestStationData.id_scan_enabled && (!areAllRequiredIDsPresent || $scope.zestStationData.pickup_key_always_ask_for_id))) {
 
                                 $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
                                     // 
