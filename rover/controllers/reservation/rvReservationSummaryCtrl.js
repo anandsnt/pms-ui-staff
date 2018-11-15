@@ -1424,7 +1424,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
 
             if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
-                isValid = demographicsData.reservationType !== "";
+                isValid = demographicsData.reservationType !== "" && demographicsData.reservationType !== null;
             }
             if ($scope.otherData.marketsEnabled && $scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
                 isValid = demographicsData.market !== "";

@@ -58,13 +58,13 @@ sntRover.controller('RVbillCardController',
 		scrollerOptionForSummary = {scrollX: true },
 		scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false},
 		// CICO-49105 - Blackbox enabled or not.
-		isBlackBoxEnabled = reservationBillData.is_infrasec_activated_for_hotel && reservationBillData.is_infrasec_activated_for_workstation,
-		hasActivatedFolioNumber = reservationBillData.has_activate_folio_number;
+		isBlackBoxEnabled = reservationBillData.is_infrasec_activated_for_hotel && reservationBillData.is_infrasec_activated_for_workstation;
+
+	$scope.hasPrintFolioEnabled = reservationBillData.is_print_folio_enabled;
 
 	// Log to track the issue.
 	$log.info('is_infrasec_activated_for_hotel', reservationBillData.is_infrasec_activated_for_hotel);
 	$log.info('is_infrasec_activated_for_workstation', reservationBillData.is_infrasec_activated_for_workstation);
-	$log.info('has_activate_folio_number', reservationBillData.has_activate_folio_number);
 
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
@@ -759,7 +759,7 @@ sntRover.controller('RVbillCardController',
 		reservationBillData = data;
 		$scope.init(data);
 		$scope.calculateBillDaysWidth();
-		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+		if ($scope.shouldGenerateFolioNumber) {
 			that.callGenerateFolioNumberApi();
 		}	
 	};
@@ -803,7 +803,7 @@ sntRover.controller('RVbillCardController',
 			$scope.shouldGenerateFolioNumber = true;
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
-	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+	 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
 				callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = true;
 				toBillIndex = parseInt(newBillValue) - 1;
@@ -1196,7 +1196,7 @@ sntRover.controller('RVbillCardController',
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);	
@@ -2439,22 +2439,23 @@ sntRover.controller('RVbillCardController',
 	 *
 	 */
 	$scope.generateAdvanceBill = function() {
+		sntActivity.start('GENERATE_ADVANCE_BILL');
 		var data = {};
 
 		data.id = $scope.reservationBillData.reservation_id;
 		var getAdvanceBillSuccessCallback = function(successData) {
 			ngDialog.close();
-			$scope.$emit('hideLoader');
-			$scope.init(successData);
+			sntActivity.stop('GENERATE_ADVANCE_BILL');
 			var reservation = RVReservationCardSrv.getResrvationForConfirmationNumber($scope.reservationBillData.confirm_no);
 
 			reservation.reservation_card.balance_amount = successData.reservation_balance;
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationBillData.confirm_no, reservation);
 			$scope.reservationBillData.is_advance_bill = true;
+			$scope.getBillData($scope.currentActiveBill);
 		};
 		var getAdvanceBillErrorCallback = function(error) {
 			ngDialog.close();
-			$scope.$emit('hideLoader');
+			sntActivity.stop('GENERATE_ADVANCE_BILL');
 			$scope.errorMessage = error;
 		};
 
@@ -2799,7 +2800,7 @@ sntRover.controller('RVbillCardController',
 		 	var billCount = $scope.reservationBillData.bills.length,
 	 			reservationStatus = $scope.reservationBillData.reservation_status;
 
-	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+	 		if ($scope.shouldGenerateFolioNumber) {
 				that.callGenerateFolioNumberApi();
 			}			
 		 	// CICO-10906 review process continues after payment.
@@ -2830,7 +2831,7 @@ sntRover.controller('RVbillCardController',
 		}
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
@@ -3002,7 +3003,7 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = true;
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);
@@ -3238,7 +3239,7 @@ sntRover.controller('RVbillCardController',
      	$scope.refreshScroller('bill-tab-scroller');
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
-		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+		if ($scope.shouldGenerateFolioNumber) {
 			that.callGenerateFolioNumberApi();
 		}
 		

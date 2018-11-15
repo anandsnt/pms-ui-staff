@@ -1027,6 +1027,27 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$emit('hideLoader');
         });
 
+        var fetchDeviceDetails = function(deviceId) {
+            var options = {
+
+                params: {
+                    device_uid: deviceId,
+                    service_application_name: 'Zest station handler'
+                },
+                successCallBack: function(response) {
+                    if (response && response.is_logging_enabled) {
+                        $scope.socketOperator.enableDeviceLogging();
+                    }
+                },
+                failureCallBack: function () {
+                  // Do nothing (Common API failure callback redirects station to the out of order state)
+                },
+                loader: 'none'
+            };
+
+            $scope.callAPI(zsGeneralSrv.getDeviceDetails, options);
+        };
+
 
 		/** ******************************************************************************
 		 *   Websocket actions related to keycard lookup
@@ -1147,8 +1168,8 @@ sntZestStation.controller('zsRootCtrl', [
                     }
 
                 }
-
-
+            } else if (response.Command === 'cmd_device_uid' && response.ResponseCode === 0 && response.Message) {
+                fetchDeviceDetails(response.Message);
             }
         };
 
@@ -1164,7 +1185,7 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info('Websocket:-> socket connected');
             $scope.zestStationData.stationHandlerConnectedStatus = 'Connected';
             $scope.runDigestCycle();
-            
+            $scope.socketOperator.fetchDeviceId();
             $scope.$broadcast('SOCKET_CONNECTED');
             if ($state.current.name === 'zest_station.home' || $state.current.name === 'zest_station.outOfService') {
                 $timeout(function() {
@@ -1315,6 +1336,19 @@ sntZestStation.controller('zsRootCtrl', [
             return null;
         };
 
+        var getSelectedPrinterFromLocalStorage = function() {
+            var storedPrinter;
+
+            try {
+                storedPrinter = storage.getItem('snt_zs_printer');
+            } catch (err) {
+                $log.warn(err);
+            }        
+            if (storedPrinter) {
+                $scope.zestStationData.defaultPrinter = storedPrinter;
+            }
+        };
+
         $scope.getWorkStationSetting = function(id) {
             if (zsGeneralSrv.last_workstation_set.work_stations) {
                 for (var i in zsGeneralSrv.last_workstation_set.work_stations) {
@@ -1392,6 +1426,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.workstation = {
                     'selected': station
                 };
+                getSelectedPrinterFromLocalStorage();
 				// set work station id and status
                 $scope.zestStationData.workstationName = station.name;
                 $scope.zestStationData.set_workstation_id = $scope.getStationIdFromName(station.name).id;
@@ -1867,6 +1902,25 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kiosk_offline_reconnect_time = parseInt($scope.zestStationData.kiosk_offline_reconnect_time);
             }
+            // Scan settings
+            // TODO - remove the old settings related code later
+             
+            // Manual ID verification
+            $scope.zestStationData.kiosk_manual_id_scan = $scope.zestStationData.kiosk_manual_id_scan ||
+                ($scope.zestStationData.kiosk_scan_enabled &&
+                    $scope.zestStationData.kiosk_scan_mode === 'staff_id_verification');
+
+            // ID verification using samsotech scanner
+            $scope.zestStationData.check_in_collect_passport = $scope.zestStationData.check_in_collect_passport ||
+                ($scope.zestStationData.kiosk_scan_enabled &&
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_samsotech');
+
+            // ID verification using Acuant Webservices
+            $scope.zestStationData.id_scan_enabled = $scope.zestStationData.kiosk_scan_enabled &&
+                ($scope.zestStationData.kiosk_scan_mode === 'id_scan' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
+
 
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 

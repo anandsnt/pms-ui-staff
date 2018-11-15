@@ -575,7 +575,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
                     'date_of_birth': selectedPassportInfo.dob,
-                    'signature': $("#signature").jSignature("getData")
+                    'signature': $("#signature").jSignature("getData"),
+                    'application': 'KIOSK'
                 },
                 successCallBack: function() {
                     validatePassportsView();
@@ -1087,7 +1088,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name,
-                    'email': $stateParams.email
+                    'email': $stateParams.email || $stateParams.guest_email
                 };
 
                 if ($scope.zestStationData.is_kiosk_ows_messages_active) {

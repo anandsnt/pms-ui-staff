@@ -102,17 +102,23 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         /** end of contact information area */
-
+        var contractRates = [];
+        
         this.fetchContractsList = function(data) {
             var deferred = $q.defer();
             var url = '/api/accounts/' + data.account_id + '/contracts';
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                contractRates = data;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.getContractedRates = function() {
+            return contractRates;
         };
 
         this.fetchContractsDetails = function(data) {
@@ -197,17 +203,18 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @param {Object} params payLoad
          * @return {promise|{then, catch, finally}|*|e} Promise
          */
+        
         this.fetchRates = function(params) {
             var deferred = $q.defer(),
                 url = '/api/rates/contract_rates';
 
-            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {               
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;
-        };
+        };        
 
         this.replaceCard = function(data) {
             var request = {
@@ -578,6 +585,63 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
              });
 
              return deffered.promise;
+        };
+
+        /**
+         * Fetch CC/TA card statistics summary
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
+        this.fetchCompanyTravelAgentStatisticsSummary = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/' + params.accountId + '/statistics?view=SUMMARY';
+            
+            delete params.accountId;
+
+            rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /**
+         * Fetch CC/TA card statistics details
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
+        this.fetchCompanyTravelAgentStatisticsDetails = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/' + params.accountId + '/statistics?view=DETAILED';
+
+            delete params.accountId;
+            
+            rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /**
+         * Fetch CC/TA card statistics details
+         * @param {Object} params request params
+         * @return {Promise} promise
+         */
+        this.fetchCompanyTravelAgentMonthlyReservations = function (params) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/' + params.accountId + '/statistics?view=RESERVATIONS';
+
+            delete params.accountId;
+            
+            rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
         };
 
     }

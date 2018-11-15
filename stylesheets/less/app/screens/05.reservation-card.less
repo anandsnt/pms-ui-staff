@@ -435,9 +435,22 @@
 
                         .icon-identity-card {
                             background-position: 10px -10831px;
+                        }
+
+                        .icon-identity-card-grey {
+                            background-position: 10px -12211px;
+                        }
+
+                        .icon-identity-card,
+                        .icon-identity-card-grey {
                             left: 10px;
                             top: 0;
                             .square(40px);
+                        }
+
+                        &.purple {
+                            width: 40px;
+                            left: calc(~"100% + 120px");
                         }
                     }
                 }
@@ -641,7 +654,8 @@
                 margin: 0;
                 .pull-right; 
 
-                &.payment-hold {
+                &.payment-hold,
+                &.block-text {
                     float: none;
                     display: inline-block;
                     line-height: 15px;

@@ -23,6 +23,23 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       // variables
       var initialPopupData = {};
 
+      var fieldsEnabled = {
+        date: true,
+        room: true,
+        occupancy: true,
+        roomType: true
+      };
+
+      // Calculates the disabled condition for each of the fields
+      var calculateDisableCondition = function(field, value) {
+        fieldsEnabled[field] = value;
+        for (var key in fieldsEnabled) {
+          if (key !== field) {
+            fieldsEnabled[key] = !value;
+          }
+        }
+      };
+
       /**
        * should we allow to change the room of a particular reservation
        * @param {Object} reservation
@@ -32,7 +49,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN'];
 
-        return !_.contains(validResStatuses, rStatus);
+        return !(fieldsEnabled['room'] && _.contains(validResStatuses, rStatus));
       };
 
       /**
@@ -44,7 +61,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN'];
 
-        return !_.contains(validResStatuses, rStatus);
+        return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
       };
 
       /**
@@ -56,7 +73,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         var rStatus = reservation.status,
             validResStatuses = ['RESERVED', 'CHECKING_IN', 'CHECKEDIN', 'CHECKING_OUT'];
 
-        return !_.contains(validResStatuses, rStatus);
+        return !(fieldsEnabled['date'] && _.contains(validResStatuses, rStatus));
       };
 
       /**
@@ -121,15 +138,17 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
         // but should be disabled
         var room_type_id_list = _.pluck($scope.roomTypesAndData, 'room_type_id'),
             containNonEditableRoomType = !_.contains(room_type_id_list, parseInt(reservation.room_type_id)),
-            rStatus = reservation.status;
+            rStatus = reservation.status,
+            shouldDisable = !(rStatus === 'RESERVED' || rStatus === 'CHECKING_IN') || containNonEditableRoomType;
 
         // CICO-18717: disable room type switch once a user checks in
-        return (!(rStatus === 'RESERVED' || rStatus === 'CHECKING_IN') || containNonEditableRoomType);
+        return (!fieldsEnabled['roomType'] || shouldDisable);
       };
 
       $scope.shouldDisableReservationOccuppancyChange = function(reservation) {
-        return ($scope.reservationStatusFlags.isUneditable ||
-                $scope.reservationStatusFlags.isCheckedOut);
+        var shouldDisable = $scope.reservationStatusFlags.isUneditable || $scope.reservationStatusFlags.isCheckedOut;
+
+        return !fieldsEnabled['occupancy'] || shouldDisable;
       };
 
       /**
@@ -333,6 +352,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           successCallBack: successCallBackOfListOfFreeRoomsAvailable
         };
 
+        calculateDisableCondition('roomType', true);
         $scope.callAPI(rvAllotmentReservationsListSrv.getFreeAvailableRooms, options);
       };
 
@@ -382,6 +402,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {undefined}
        */
       var reservationFromDateChoosed = function(date, datePickerObj) {
+        calculateDisableCondition('date', true);
         $scope.roomingListState.editedReservationStart = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
       };
@@ -391,6 +412,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @return {undefined}
        */
       var reservationToDateChoosed = function(date, datePickerObj) {
+        calculateDisableCondition('date', true);
         $scope.roomingListState.editedReservationEnd = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
         runDigestCycle();
       };
@@ -417,6 +439,16 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       var initializeVariables = function() {
         _.extend(initialPopupData, $scope.ngDialogData);
         $scope.reservationStatusFlags = computeReservationStatusFlags($scope.ngDialogData);
+      };
+
+      // Occupancy change handler
+      $scope.changedReservationOccupancy = function() {
+        calculateDisableCondition('occupancy', true);
+      };
+  
+      // Room change handler
+      $scope.changedReservationRoom = function() {
+        calculateDisableCondition('room', true);
       };
 
       /**
