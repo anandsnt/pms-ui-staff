@@ -101,6 +101,9 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       if (!data.hourly_rates_for_day_use_enabled) {
         data.hourly_availability_calculation = '';
       }
+      else if (data.hourly_availability_calculation === '') {
+        data.hourly_availability_calculation = 'FULL';
+      }
 
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 
