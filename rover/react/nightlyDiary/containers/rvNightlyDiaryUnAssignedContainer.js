@@ -24,6 +24,7 @@ let calculateUnassignedRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, ua
 
     let durationOfUnAssignedRoom = 0;
     let numberOfNightsVisibleInGrid = uarData.nights;
+    
     durationOfUnAssignedRoom = numberOfNightsVisibleInGrid * nightDuration;
     if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
         durationOfUnAssignedRoom = durationOfUnAssignedRoom - 2 * NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
@@ -39,7 +40,6 @@ let calculateUnassignedRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, ua
 
     return returnData;
 };
-
 
 const mapStateToNightlyDiaryUnAssignedContainerProps = (state) => ({
     uar_data: calculateUnassignedRoomsPositionAndDuration(
