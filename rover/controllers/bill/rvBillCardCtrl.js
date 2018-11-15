@@ -1953,7 +1953,9 @@ sntRover.controller('RVbillCardController',
 		if (balanceAmount === "0.00" && ($scope.reservationBillData.reservation_status === "CHECKEDOUT" || $scope.reservationBillData.reservation_status === "NOSHOW") && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
+				if ($scope.reservationBillData.is_bill_lock_enabled) {
 					$scope.reservationBillData.bills[billIndex].is_active = false;
+				}
 					$scope.reservationBillData.bills[billIndex].is_folio_number_exists = true;
 				},
 				paramsToService = {
@@ -2031,13 +2033,17 @@ sntRover.controller('RVbillCardController',
 				// Updating review status of the bill.
 				$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
 				// Locking the bill.
-				currentActiveBill.is_active = false;
+				if ($scope.reservationBillData.is_bill_lock_enabled) {
+					currentActiveBill.is_active = false;
+				}				
 				// Moving to next bill to review
 				$scope.findNextBillToReview();
 			}
 			else {
 				// Locking the bill. - Call after payment.
-				currentActiveBill.is_active = false;
+				if ($scope.reservationBillData.is_bill_lock_enabled) {
+					currentActiveBill.is_active = false;
+				}
 			}
 		},
 		failureCallBackOfApiCall = function(errorMessage) {
