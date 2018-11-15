@@ -683,6 +683,14 @@
 
                 <ad-toggle-button is-checked="data.mli_cba_enabled" label="Enable CBA Payment Type" is-hide="!isAdminSnt || data.payment_gateway !== 'MLI'"></ad-toggle-button>
 
+                <div class="entry" ng-if="isAdminSnt && data.payment_gateway === 'MLI' && data.mli_cba_enabled">
+                    <label for="mli-emv-enabled">
+                        CBA Staff Notification Email
+                    </label>
+                    <input type="text" ng-model="data.cba_notification_email"
+                           value="{{data.cba_notification_email}}" placeholder="Email Address For Staff Notification">
+                </div>
+
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
 					<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">
 						TEST MERCHANTLINK PAYMENT GATEWAY
