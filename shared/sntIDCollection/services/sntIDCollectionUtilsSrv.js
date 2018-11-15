@@ -6,6 +6,14 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 
 	var that = this;
 
+	var windowLocation = window.location;
+
+	this.isInDevEnv = true;
+
+	if (windowLocation.hostname && typeof windowLocation.hostname === typeof 'str' && windowLocation.hostname.indexOf('pms.stayntouch.com') !== -1) {
+		that.isInDevEnv = false;
+	}
+
 	this.base64ArrayBuffer = function (buffer) {
 		var arr = new Uint8Array(buffer);
 		var raw = '';
