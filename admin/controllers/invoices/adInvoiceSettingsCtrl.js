@@ -24,6 +24,7 @@ admin.controller('ADInvoiceSettingsCtrl', [
                 $scope.$emit('hideLoader');
                 if (data.errors) {
                     $scope.errorMessage = data.errors;
+                    $scope.invoiceSettings.is_print_invoice_enabled = true;
                 } else {
                     $scope.errorMessage = [];
                     $scope.goBackToPreviousState();
