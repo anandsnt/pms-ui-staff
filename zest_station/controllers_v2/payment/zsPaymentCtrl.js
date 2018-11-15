@@ -481,7 +481,6 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         };
 
-        /****************************************************/
 
         $scope.$on('START_MLI_CARD_COLLECTION', function() {
             var hideLoader = true;

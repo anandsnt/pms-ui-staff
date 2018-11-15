@@ -126,8 +126,5 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			goToSwipeError();
 			$scope.$digest();
 		});
-
-		$scope.screenMode.email = stateParams.guest_email ? stateParams.guest_email : '';
-		$scope.screenMode.guestId = stateParams.guest_id;
 	}
 ]);
