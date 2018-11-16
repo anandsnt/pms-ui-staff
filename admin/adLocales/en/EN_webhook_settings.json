@@ -19,4 +19,6 @@
 "edit_guest": "EDIT GUEST",
 "anonymize_guest": "ANONYMIZE GUEST DATA",
 "room_status": "ROOM STATUS",
-"room_status_service": "ROOM STATUS SERVICE"
+"room_status_service": "ROOM STATUS SERVICE",
+"create_account": "CREATE COMPANY/TRAVEL AGENT ACCOUNT",
+"edit_account": "EDIT COMPANY/TRAVEL AGENT ACCOUNT"

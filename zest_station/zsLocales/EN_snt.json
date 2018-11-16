@@ -730,6 +730,30 @@
    "NO_COUNTRY_MATCH": "No match found!",
    "TYPE_IN_OR_SCROLL_DOWN": "Type in or Scroll down",
 
-   "FEES": "FEES"
+   "FEES": "FEES",
+   "CBA_PAYMENT_NOT_POSTED_MSG": "Payment posting failed. System will retry shortly. Please wait.",
+   "CBA_PAYMENT_FAILED_SEE_STAFF": "Payment failed. Please see a staff for proceeding.",
+
+   "GI_INVALID_ACUANT_SUBSCRIPTION": "INVALID SUBSCRIPTION",
+   "GI_INVALID_ACUANT_SUBSCRIPTION_INSTRUCTIONS": "Please see staff for more details",
+   "GID_SCAN_FRONT_IMAGE_SCAN_INSTRUCTIONS": "Place your ID in front of the camera with front side facing camera and press Scan",
+   "GID_SCAN_BACK_IMAGE_SCAN_INSTRUCTIONS": "Place your ID in front of the camera with back side facing camera and press Scan",
+   "GI_ANALYSING_IMAGE_MSG": "Analysing image... Please wait",
+   "GI_UPLOAD_BACK_IMAGE_FAILED": "Failed to analyze back side of the Document",
+   "GI_RETAKE_BACK_IMAGE": "Try again",
+   "GI_CONFIRM_FRONT_IMAGE": "Confirm front image",
+   "GI_CONFRIM_IMAGES": "Confirm images",
+   "GI_GO_BACK": "Go Back",
+   "GI_PROCEED": "PROCEED",
+
+   "GI_UPLOAD_FRONT_IMAGE_FAILED": "Failed to analyze front side of the Document",
+   "GI_RETAKE_FRONT_IMAGE": "Try again",
    
+   "GI_ID_ANALYSING_FAILED": "Failed to Analyze the Document!",
+   "GI_RESTART_SCANNING": "Restart scanning",
+
+   "GI_SCAN_PEDNING": "Next",
+   "GID_SCAN_ID_HEADER": "Scan your Id",
+   "GI_ID_EXPIRED": "The ID you scanned seems to be expired. Please rescan",
+   "GI_EXPIRATION_DATE_INVALID": "Expiration date is invalid or could not be read, please rescan or please contact front desk." 
 }

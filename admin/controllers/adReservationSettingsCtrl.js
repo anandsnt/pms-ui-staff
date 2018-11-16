@@ -99,6 +99,13 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       };
       var data = dclone($scope.reservationSettingsData, ['prepaid_commission_charge_codes', 'tax_transaction_codes']);
 
+      if (!data.hourly_rates_for_day_use_enabled) {
+        data.hourly_availability_calculation = '';
+      }
+      else if (data.hourly_availability_calculation === '') {
+        data.hourly_availability_calculation = 'FULL';
+      }
+
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 
     };
@@ -118,7 +125,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
             $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = !$scope.reservationSettingsData.hourly_rates_for_day_use_enabled;
         }
         if (!$scope.reservationSettingsData.hourly_rates_for_day_use_enabled) {
-            $scope.reservationSettingsData.hourly_availability_calculation = '';
+            $scope.reservationSettingsData.hourly_availability_calculation = 'FULL';
         }
     };
     
