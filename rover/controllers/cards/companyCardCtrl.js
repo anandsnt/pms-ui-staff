@@ -108,13 +108,14 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			ngDialog.close();
 		};
 		var callCompanyCardServices = function() {
+			
 			var param = {
 				'id': $scope.reservationDetails.companyCard.id
 			};
 			var successCallbackFetchArNotes = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.arAccountNotes = data;
-				$scope.$broadcast('ARDetailsRecieved');
+				$scope.$broadcast('ARDetailsRecieved 9');
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
@@ -138,29 +139,35 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 
 
 		/* -------AR account ends here-----------*/
+		if ($rootScope.shouldInvokeCompanyService) {
+			$rootScope.shouldInvokeCompanyService = false;
+			$scope.$on('companyCardAvailable', function(obj, isNew) {
+			
+				$scope.searchMode = false;
+				$scope.contactInformation = $scope.companyContactInformation;
+				// object holding copy of contact information
+				// before save we will compare 'contactInformation' against 'presentContactInfo'
+				// to check whether data changed
+				$scope.currentSelectedTab = 'cc-contact-info';
+				presentContactInfo = angular.copy($scope.contactInformation);
+				if (isNew === true) {
+					$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
+					$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
+					$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
+				}
+				$scope.$broadcast("contactTabActive");
+				$scope.$broadcast("UPDATE_CONTACT_INFO");
+				$timeout(function() {
+					$scope.$emit('hideLoader');
+				}, 1000);
+				if (!isNew) {
+					callCompanyCardServices();
+				}	
+				
+			});
+		}
+		$scope.$on('$destroy', a);
 
-		$scope.$on('companyCardAvailable', function(obj, isNew) {
-			$scope.searchMode = false;
-			$scope.contactInformation = $scope.companyContactInformation;
-			// object holding copy of contact information
-			// before save we will compare 'contactInformation' against 'presentContactInfo'
-			// to check whether data changed
-			$scope.currentSelectedTab = 'cc-contact-info';
-			presentContactInfo = angular.copy($scope.contactInformation);
-			if (isNew === true) {
-				$scope.contactInformation.account_details.account_name = $scope.searchData.companyCard.companyName;
-				$scope.contactInformation.address_details.city = $scope.searchData.companyCard.companyCity;
-				$scope.contactInformation.account_details.account_number = $scope.searchData.companyCard.companyCorpId;
-			}
-			$scope.$broadcast("contactTabActive");
-			$scope.$broadcast("UPDATE_CONTACT_INFO");
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-			}, 1000);
-			if (!isNew) {
-				callCompanyCardServices();
-			}
-		});
 
 		$scope.$on("companyCardDetached", function() {
 			$scope.searchMode = true;

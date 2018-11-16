@@ -13,7 +13,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			status: false,
 			cardType: ""
 		};
-
+		$rootScope.shouldInvokeCompanyService = true;
+		$rootScope.shouldListenTravelAgent = true;
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
