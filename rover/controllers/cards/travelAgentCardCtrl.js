@@ -139,34 +139,32 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		};
 
 		/* -------AR account ends here-----------*/
-		if ($rootScope.shouldListenTravelAgent) {
-			$rootScope.shouldListenTravelAgent = false;
-			$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
-				$scope.searchMode = false;
-				$scope.contactInformation = $scope.travelAgentInformation;
-				$scope.contactInformation.id = $scope.reservationDetails.travelAgent.id;
-				// object holding copy of contact information
-				// before save we will compare 'contactInformation' against 'presentContactInfo'
-				// to check whether data changed
-				$scope.currentSelectedTab = 'cc-contact-info';
-				presentContactInfo = angular.copy($scope.contactInformation);
+		$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
+			$scope.searchMode = false;
+			$scope.contactInformation = $scope.travelAgentInformation;
+			$scope.contactInformation.id = $scope.reservationDetails.travelAgent.id;
+			// object holding copy of contact information
+			// before save we will compare 'contactInformation' against 'presentContactInfo'
+			// to check whether data changed
+			$scope.currentSelectedTab = 'cc-contact-info';
+			presentContactInfo = angular.copy($scope.contactInformation);
 
-				if (isNew === true) {
-					$scope.contactInformation.account_details.account_name = $scope.searchData.travelAgentCard.travelAgentName;
-					$scope.contactInformation.address_details.city = $scope.searchData.travelAgentCard.travelAgentCity;
-					$scope.contactInformation.account_details.account_number = $scope.searchData.travelAgentCard.travelAgentIATA;
-				}
+			if (isNew === true) {
+				$scope.contactInformation.account_details.account_name = $scope.searchData.travelAgentCard.travelAgentName;
+				$scope.contactInformation.address_details.city = $scope.searchData.travelAgentCard.travelAgentCity;
+				$scope.contactInformation.account_details.account_number = $scope.searchData.travelAgentCard.travelAgentIATA;
+			}
 
-				$scope.$broadcast("contactTabActive");
-				$scope.$broadcast("UPDATE_CONTACT_INFO");
-				$timeout(function() {
-					$scope.$emit('hideLoader');
-				}, 1000);
-				if (!isNew) {
-					callCompanyCardServices();
-				}
-			});
-		}
+			$scope.$broadcast("contactTabActive");
+			$scope.$broadcast("UPDATE_CONTACT_INFO");
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 1000);
+			if (!isNew) {
+				callCompanyCardServices();
+			}
+		});
+		
 
 
 		$scope.$on("travelAgentSearchInitiated", function() {

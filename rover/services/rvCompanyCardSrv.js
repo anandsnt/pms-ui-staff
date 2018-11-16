@@ -2,7 +2,12 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
     function($q, rvBaseWebSrvV2) {
 
         var service = this,
-            cachedResponses = {};
+            cachedResponses = {},
+            lifeSpan = 3600 * 1000; // In milliseconds
+
+        service.companyTaArDetailsCached = [];
+        service.companyTaNotes = [];
+        service.cachedTime = '';
 
         // some default values
         this.DEFAULT_PER_PAGE = 10;
@@ -93,7 +98,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer();
             var url = 'api/accounts/save.json';
 
-            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {                               
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -254,38 +259,64 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+        
+        this.fetchArAccountDetails = function(data) { 
+ 
+            var id = data.id,
+                deferred = $q.defer(),
+                url = '/api/accounts/' + id + '/ar_details';
 
-        this.fetchArAccountDetails = function(data) {
-            var id = data.id;
-            var deferred = $q.defer();
-            var url = '/api/accounts/' + id + '/ar_details';
+            if (!service.companyTaArDetailsCached[id] || (service.companyTaArDetailsCached[id].expiry && Date.now() > service.companyTaArDetailsCached[id].expiry)) {
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
+                    service.companyTaArDetailsCached[id] = deferred;
+
+                    rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        service.companyTaArDetailsCached[id] = {"response" : data, "expiry": Date.now() + lifeSpan};
+                        
+                        deferred.resolve(data);
+                    }, function(data) {
+                        deferred.reject(data);companyTaArDetailsCached
+                    });              
+            }
+            else if (!service.companyTaArDetailsCached[id].response) {
+                return service.companyTaArDetailsCached[id].promise;
+                
+            } else {
+                deferred.resolve(service.companyTaArDetailsCached[id]);
+            }
             return deferred.promise;
         };
 
         this.fetchArAccountNotes = function(data) {
-            var id = data.id;
-            var deferred = $q.defer();
-            var url = '/api/accounts/' + id + '/ar_notes';
+            var id = data.id,
+                deferred = $q.defer(),
+                url = '/api/accounts/' + id + '/ar_notes';
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
+            if (!service.companyTaNotes[id] || (service.companyTaNotes[id].expiry && Date.now() > service.companyTaNotes[id].expiry) ) {
+
+                service.companyTaNotes[id] = deferred;
+                rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    service.companyTaNotes[id] = {"response" : data, "expiry": Date.now() + lifeSpan};
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else if (!service.companyTaNotes[id].response) {
+                return service.companyTaNotes[id].promise;
+            } else {
+                deferred.resolve(service.companyTaNotes[id]);
+            }
             return deferred.promise;
         };
 
         this.saveARNote = function(data) {
-            var deferred = $q.defer();
-            var url = '/api/accounts/save_ar_note';
+            var deferred = $q.defer(),
+                url = '/api/accounts/save_ar_note',
+                accountId = data.id;
 
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                // Invalidating cache
+                service.companyTaNotes[accountId] = null;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -294,10 +325,13 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         this.saveARDetails = function(data) {
-            var deferred = $q.defer();
-            var url = 'api/accounts/save_ar_details';
+            var deferred = $q.defer(),
+                url = 'api/accounts/save_ar_details',
+                accountId = data.id;
 
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                // Invalidating cache
+                service.companyTaArDetailsCached[accountId] = null; 
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
