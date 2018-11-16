@@ -3,7 +3,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
         var service = this,
             cachedResponses = {},
-            lifeSpan = 3600 * 1000; // In milliseconds
+            lifeSpan = 60000; // In milliseconds
 
         service.companyTaArDetailsCached = [];
         service.companyTaNotes = [];
@@ -98,7 +98,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer();
             var url = 'api/accounts/save.json';
 
-            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {                               
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -108,7 +108,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
         /** end of contact information area */
         var contractRates = [];
-        
+
         this.fetchContractsList = function(data) {
             var deferred = $q.defer();
             var url = '/api/accounts/' + data.account_id + '/contracts';
@@ -208,18 +208,18 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @param {Object} params payLoad
          * @return {promise|{then, catch, finally}|*|e} Promise
          */
-        
+
         this.fetchRates = function(params) {
             var deferred = $q.defer(),
                 url = '/api/rates/contract_rates';
 
-            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {               
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;
-        };        
+        };
 
         this.replaceCard = function(data) {
             var request = {
@@ -259,9 +259,9 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-        
-        this.fetchArAccountDetails = function(data) { 
- 
+
+        this.fetchArAccountDetails = function(data) {
+
             var id = data.id,
                 deferred = $q.defer(),
                 url = '/api/accounts/' + id + '/ar_details';
@@ -272,17 +272,17 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         service.companyTaArDetailsCached[id] = {"response" : data, "expiry": Date.now() + lifeSpan};
-                        
+
                         deferred.resolve(data);
                     }, function(data) {
                         deferred.reject(data);companyTaArDetailsCached
-                    });              
+                    });
             }
             else if (!service.companyTaArDetailsCached[id].response) {
                 return service.companyTaArDetailsCached[id].promise;
-                
+
             } else {
-                deferred.resolve(service.companyTaArDetailsCached[id]);
+                deferred.resolve(service.companyTaArDetailsCached[id].response);
             }
             return deferred.promise;
         };
@@ -296,7 +296,10 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
                 service.companyTaNotes[id] = deferred;
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    service.companyTaNotes[id] = {"response" : data, "expiry": Date.now() + lifeSpan};
+                    service.companyTaNotes[id] = {
+                        'response': data,
+                        'expiry': Date.now() + lifeSpan
+                    };
                     deferred.resolve(data);
                 }, function(data) {
                     deferred.reject(data);
@@ -304,7 +307,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             } else if (!service.companyTaNotes[id].response) {
                 return service.companyTaNotes[id].promise;
             } else {
-                deferred.resolve(service.companyTaNotes[id]);
+                deferred.resolve(service.companyTaNotes[id].response);
             }
             return deferred.promise;
         };
@@ -331,7 +334,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 // Invalidating cache
-                service.companyTaArDetailsCached[accountId] = null; 
+                service.companyTaArDetailsCached[accountId] = null;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -342,8 +345,11 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         this.deleteARNote = function(data) {
             var deferred = $q.defer();
             var url = '/api/accounts/delete_ar_note';
+            var accountId = data.id;
 
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                // Invalidating cache
+                service.companyTaNotes[accountId] = null;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -357,6 +363,8 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var url = 'api/accounts/' + id + '/delete_ar_detail';
 
             rvBaseWebSrvV2.deleteJSON(url).then(function(data) {
+                // Invalidating cache
+                service.companyTaArDetailsCached[id] = null;
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -629,7 +637,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         this.fetchCompanyTravelAgentStatisticsSummary = function (params) {
             var deferred = $q.defer(),
                 url = '/api/accounts/' + params.accountId + '/statistics?view=SUMMARY';
-            
+
             delete params.accountId;
 
             rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
@@ -650,7 +658,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 url = '/api/accounts/' + params.accountId + '/statistics?view=DETAILED';
 
             delete params.accountId;
-            
+
             rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
@@ -669,7 +677,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 url = '/api/accounts/' + params.accountId + '/statistics?view=RESERVATIONS';
 
             delete params.accountId;
-            
+
             rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
