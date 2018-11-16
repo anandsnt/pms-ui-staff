@@ -86,7 +86,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         $scope.fetchAvailableRoomTypesForSuite(index, id);
     };
 	$scope.editRoomTypes = function(index, id)	{
-		$scope.departmentData = {};
+        $scope.departmentData = {};
 		$scope.currentClickedElement = index;
 		$scope.roomTypeData = {};
 	 	var successCallbackRender = function(data) {
@@ -262,7 +262,8 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 			"image_of_room_type": "",
 			"is_room_type_ows_request_per_status_type": false,
 			"room_class_id": "",
-			"is_image_deleted": ""
+			"is_image_deleted": "",
+            "is_available_for_day_use": false
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');

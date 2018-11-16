@@ -291,6 +291,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		postData.active_room_likes = [];
 		postData.selected_floor = $scope.data.selected_floor;
 		postData.max_occupancy = $scope.data.max_occupancy;
+		postData.is_available_for_day_use = $scope.data.is_available_for_day_use;
 		postData.is_exclude_from_manual_room_assignment = $scope.data.is_exclude_from_manual_room_assignment;
 		postData.is_exclude_from_auto_room_assignment = $scope.data.is_exclude_from_auto_room_assignment;
 		postData.is_exclude_from_manual_checkin = $scope.data.is_exclude_from_manual_checkin;

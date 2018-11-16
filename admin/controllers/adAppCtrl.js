@@ -684,6 +684,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
             $rootScope.hotelDateFormat = data.date_format.value;
 			$scope.$emit('hideLoader');
+            $rootScope.dayUseEnabled = data.day_use_enabled;
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
             $rootScope.hourlyRatesForDayUseEnabled = data.hourly_rates_for_day_use_enabled;
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
@@ -692,6 +693,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            
             // CICO-51146
             $rootScope.isBackgroundReportsEnabled = data.background_report;
             // CICO-55154
