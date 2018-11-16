@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $filter, acuantCredentials, productionCredentials, sntIDCollectionUtilsSrv) {
+angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $filter, acuantCredentials, sntIDCollectionUtilsSrv) {
 	// We will not be using $http as it will be using common headers upadted from the application (X-CSRF-Token,X-Requested-With, Authorization etc)
 	// This will fail the Acuant Webservices. So we will use xhr
 	
@@ -6,7 +6,19 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
 
-	var acuantCredentials = sntIDCollectionUtilsSrv.isInDevEnv ? acuantCredentials : productionCredentials;
+	var acuantCredentials = acuantCredentials;
+	
+	var windowLocation = window.location;
+
+	this.isInDevEnv = true;
+
+	if (windowLocation.hostname && typeof windowLocation.hostname === typeof 'str' && windowLocation.hostname.indexOf('pms.stayntouch.com') !== -1) {
+		that.isInDevEnv = false;
+	}
+
+	this.setAcuantCredentialsForProduction = function (credentials) {
+		acuantCredentials = credentials;
+	};
 	/**
 	 * [createCORSRequest description]
 	 * @param  {[string]} method [http method]
