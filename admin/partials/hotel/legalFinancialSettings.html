@@ -15,13 +15,13 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-hide="true">
-                <td>Show Folio Number on Bill</td>
+            <tr>
+                <td>Print Folio Number on Invoice</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button on">
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_print_folio_enabled}">
                         <!-- remove checked when not active-->
-                        <input name="folio-on-bill" id="folio-on-bill" value="folio-on-bill" type="checkbox" checked="">
+                        <input name="folio-on-bill" id="folio-on-bill" ng-model="legalSettings.is_print_folio_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
@@ -60,10 +60,16 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-hide="true">
+            <tr>
                 <td>Folio Number Prefix</td>
                 <td>
-                    <input type="text" placeholder="Enter Prefix"> 
+                    <input type="text" ng-model="legalSettings.folio_no_prefix" placeholder="Enter Prefix"> 
+                </td>
+            </tr>
+            <tr>
+                <td>First Folio number field</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.first_folio_number" placeholder="Enter First Folio Number"> 
                 </td>
             </tr>
         </tbody>

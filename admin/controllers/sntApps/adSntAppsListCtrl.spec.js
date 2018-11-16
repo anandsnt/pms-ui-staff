@@ -133,7 +133,7 @@ describe('ADSntAppsListCtrl', function() {
         });
 
         it('if the version is valid, proceed with Build Upload', function() {
-            $scope.fileName = 'setup-v1.5.0.3-installer.exe';
+            $scope.selectedApp.sftp_path = 'setup-v1.5.0.3-installer.exe';
             $scope.checkIfVersionIsValid();
             $scope.$digest();
             expect(adAppVersionsSrv.uploadBuild).toHaveBeenCalled();

@@ -39,7 +39,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in data.summaryData.deposit_balance.transactions">
-                        <td>{{item.room}}</td>
+                        <td>{{item.room}}<em>{{item.accompany_guest_name}}</em></td>
                         <td>{{item.name}}</td>
                         <td>{{item.reservation_number}}</td>
                         <td>{{item.type}}</td>
