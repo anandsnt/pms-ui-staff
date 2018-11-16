@@ -34,7 +34,7 @@
                                 <div><span>Description</span></div>
                             </th>
                             <th width="30%" rowspan="2">
-                                <div><span>Upload status</span></div>
+                                <div><span>SFTP Path</span></div>
                             </th>
                             <th width="10%" rowspan="2">
                                 <div><span>Delete</span></div>
@@ -53,15 +53,7 @@
                                 {{app.description}}
                             </td>
                             <td>
-                                <span class="green-text" ng-show="app.upload_status == 'SUCCESS'">{{app.upload_status}}</span>
-                                <div ng-show="app.upload_status === 'FAILURE'">
-                                    <span class="red-text">{{app.upload_status}}</span></br/>
-                                    <span class="status-sub-text">{{app.upload_failure_reason}}</span>
-                                </div>
-                                <div ng-show="app.upload_status === 'PENDING'">
-                                    <span>{{app.upload_status}}</span></br>
-                                    <span class="blink-text status-sub-text">Upload in progress</span>
-                                </div>
+                                <span class="green-text" ng-show="app.upload_status == 'SUCCESS'">{{app.build_path}}</span>
                             </td>
                             <td>
                                 <span class="icons disabled-delete" ng-show="app.upload_status === 'PENDING'" >&nbsp;</span>
@@ -94,17 +86,8 @@
                     </div>
             </fieldset>
             <fieldset class="holder left">
-                <div class="entry full-width">
-                    <label for="certificate">Upload Build&nbsp;<strong>*</strong></label>
-                    <div class="file-upload">
-                        <span class="input">{{fileName}}</span>
-                        <input type="file" file-changed="fileChanged()" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>
-                        <button type="button" class="button brand-colors">
-                            Attach
-                        </button>
-                    </div>
-                </div>
-                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width" readonly="yes" required="yes"></ad-textbox>
+                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
+                <ad-textbox value="selectedApp.sftp_path" label="{{ 'SFTP_BUILD_PATH' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedApp.description" label="{{ 'DESCRIPTION' | translate}}" placeholder=""></ad-textarea>
             </fieldset>
             <div class="actions float">

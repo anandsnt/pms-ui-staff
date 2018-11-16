@@ -98,12 +98,12 @@ sntRover.controller('RVroomAssignmentController', [
 	* function to to get the rooms based on the selected room type
 	*/
 	$scope.getRooms = function() {
-		$scope.isRoomTypeChanged = true;
 		$scope.searchText = '';
 		var changedRoomType = _.find($scope.roomTypes, {type: $scope.roomType});
 
 		$scope.currentRoomTypeId = changedRoomType.id;
 		$scope.currentRoomTypeName = changedRoomType.description;
+		$scope.currentRoomTypeCode = changedRoomType.type;
 		$scope.isSearchActive = false;
 		self.getRoomsByRoomType(1);
 	};
@@ -968,7 +968,7 @@ sntRover.controller('RVroomAssignmentController', [
 		self.refreshPagination();
 		$scope.isSearchActive = false;
 		$scope.searchText = '';
-		$scope.isRoomTypeChanged = false;
+		$scope.currentRoomTypeCode = $scope.reservationData.reservation_card.room_type_code;
 	};
 	$scope.init();
 
@@ -1015,6 +1015,8 @@ sntRover.controller('RVroomAssignmentController', [
 	};
 
 	$scope.clickedCancelButton = function() {
+		$scope.assignedRoom = "";
+		$scope.currentRoomObject = "";
 		$scope.getRooms(true);
 		$scope.closeDialog();
 	};
@@ -1026,7 +1028,10 @@ sntRover.controller('RVroomAssignmentController', [
 
 	// Checks whether room change room type button should be shown or not
 	$scope.shouldShowChangeRoomTypeBtn = function() {
-		return $rootScope.isStandAlone && !$rootScope.isHourlyRateOn && $scope.isRoomTypeChanged && $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDIN';
+		return $rootScope.isStandAlone && 
+			   !$rootScope.isHourlyRateOn && 
+			   ($scope.reservationData.reservation_card.room_type_code !== $scope.currentRoomTypeCode) &&
+			   $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDIN';
 	};
 
 	// Implement the functionality to change only the room type for due-in/future reservations
