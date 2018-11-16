@@ -20,10 +20,15 @@ admin.controller('ADInvoiceSettingsCtrl', [
         */
         $scope.saveClick = function() {
 
-            var saveInvoiceSettingsSuccessCallback = function() {
-                 $scope.errorMessage = [];
-                 $scope.$emit('hideLoader');
-                 $scope.goBackToPreviousState();
+            var saveInvoiceSettingsSuccessCallback = function(data) {
+                $scope.$emit('hideLoader');
+                if (data.errors) {
+                    $scope.errorMessage = data.errors;
+                    $scope.invoiceSettings.is_print_invoice_enabled = true;
+                } else {
+                    $scope.errorMessage = [];
+                    $scope.goBackToPreviousState();
+                }                
             };
 
             $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings, saveInvoiceSettingsSuccessCallback);

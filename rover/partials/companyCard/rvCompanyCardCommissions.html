@@ -184,9 +184,9 @@
                                 <h2>{{commissionDetail.guest_name}}</h2>
                                 <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                             </div>
-                            <div class="commissionable">{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</div>
+                            <div class="revenue">{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</div>
 
-                            <div class="revenue">{{ currencySymbol }}{{commissionDetail.commission_data.commissionable_revenue | number : 2}}</div>
+                            <div class="commissionable">{{ currencySymbol }}{{commissionDetail.commission_data.commissionable_revenue | number : 2}}</div>
 
                             
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
