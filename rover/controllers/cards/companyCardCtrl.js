@@ -115,7 +115,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			var successCallbackFetchArNotes = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.arAccountNotes = data;
-				$scope.$broadcast('ARDetailsRecieved 9');
+				$scope.$broadcast('ARDetailsRecieved');
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
