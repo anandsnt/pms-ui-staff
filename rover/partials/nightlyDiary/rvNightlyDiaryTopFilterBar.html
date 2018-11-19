@@ -36,6 +36,25 @@
         </button>
     </div>
 
+    <!-- booked or available -->
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()"> 
+        <div class="switch-button on" ng-class="{'on' : !diaryData.showAvailableRooms }"> <!-- Class 'on' is default, It means that we are showing Booked days. --> 
+            <input value="" type="checkbox" checked>
+            <label class="data-off">
+                <span class="value">Booked</span>
+                <span class="switch-icon">Available</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">Booked</span>
+                <span class="value">Available</span>
+            </label>
+        </div>
+        <div class="notice">
+            Select Room and Arrival Date
+        </div>
+    </div> 
+
+    <!-- Search bar -->
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
 
     <!-- 7 or 21 Days -->

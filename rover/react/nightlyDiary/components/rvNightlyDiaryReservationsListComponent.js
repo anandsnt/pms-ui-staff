@@ -19,7 +19,6 @@ const isRoomIsAvailable = (roomId, state) => {
     }
 };
 
-
 const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showUnAssignedRooms, state }) => {
 
     return (
@@ -50,6 +49,14 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                             showUnAssignedRooms ?
 
                                 isRoomIsAvailable(item.id, state)
+                                : ''
+                        }
+                        {
+                            state.showAvailableRooms && item.availableSlots.length > 0 ?
+                                item.availableSlots.map((availableDate) => (
+                                    <NightlyDiaryAvailableRoomListContainer date={availableDate} />
+                                )
+                                )
                                 : ''
                         }
 

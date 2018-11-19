@@ -4,6 +4,7 @@ let convertRowReadyToComponent = (roomsList, selectedRoomId) => {
 
     roomsList.map((room) => {
         room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
+        room.availableSlots = ['2018-10-10', '2018-10-12'];
     });
     return roomsList;
 };

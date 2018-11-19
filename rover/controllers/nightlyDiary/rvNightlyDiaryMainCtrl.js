@@ -90,6 +90,7 @@ angular.module('sntRover')
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
+                        showAvailableRooms: false,
                         isRightFilterActive: true,
                         isAvailableRoomSlotActive: false,
                         availableSlotsForAssignRooms: {
@@ -423,6 +424,13 @@ angular.module('sntRover')
                     updateDiaryView();
                 });
 
+                /* Handle event emitted from child controllers.
+                 * To toggle available and booked.
+                 */
+                listeners['TOGGLE_BOOKED_AVAIALBLE'] = $scope.$on('TOGGLE_BOOKED_AVAIALBLE', function () {
+                    updateDiaryView();
+                });
+
                 // destroying listeners
                 angular.forEach(listeners, function (listener) {
                     $scope.$on('$destroy', listener);
@@ -490,6 +498,7 @@ angular.module('sntRover')
                         reservationsList: $scope.diaryData.reservationsList.rooms,
                         isAvailableRoomSlotActive: $scope.diaryData.isAvailableRoomSlotActive,
                         availableSlotsForAssignRooms: $scope.diaryData.availableSlotsForAssignRooms,
+                        showAvailableRooms: $scope.diaryData.showAvailableRooms,
                         roomsList: $scope.diaryData.diaryRoomsList,
                         diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                         currentBusinessDate: $rootScope.businessDate,
