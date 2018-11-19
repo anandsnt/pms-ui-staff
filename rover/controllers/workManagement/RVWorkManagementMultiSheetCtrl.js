@@ -579,6 +579,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					runDigestCycle();
 				}, 150);
 			};
+			
 			$timeout(function() {
 				if ( sntapp.cordovaLoaded ) {
 					cordova.exec(onPrintCompletion, function() {

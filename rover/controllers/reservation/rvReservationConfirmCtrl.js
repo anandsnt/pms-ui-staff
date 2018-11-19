@@ -173,6 +173,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			var onPrintCompletion = function() {
 				$timeout(removePrintOrientation, 100);
 			};
+			
 	    	$timeout(function() {
 	        	if ( sntapp.cordovaLoaded ) {
 	            	cordova.exec(onPrintCompletion, function() {
