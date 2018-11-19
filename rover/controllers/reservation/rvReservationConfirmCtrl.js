@@ -169,14 +169,20 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		var printPage = function() {
 			// add the orientation
 			addPrintOrientation();
+
+			var onPrintCompletion = function() {
+				$timeout(removePrintOrientation, 100);
+			};
 	    	$timeout(function() {
-	        	$window.print();
 	        	if ( sntapp.cordovaLoaded ) {
-	            	cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        	}
+	            	cordova.exec(onPrintCompletion, function() {
+						onPrintCompletion();
+					}, 'RVCardPlugin', 'printWebView', []);
+	        	} else {
+					$window.print();
+					onPrintCompletion();
+				}
 	    	}, 100);
-			// remove the orientation after similar delay
-			$timeout(removePrintOrientation, 100);
 		};
 
 		$scope.printData = {};
