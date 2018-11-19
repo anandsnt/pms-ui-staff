@@ -164,8 +164,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				callCompanyCardServices();
 			}
 		});
-		
-
 
 		$scope.$on("travelAgentSearchInitiated", function() {
 			$scope.companySearchIntiated = true;
