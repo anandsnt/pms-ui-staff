@@ -108,6 +108,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			ngDialog.close();
 		};
 		var callCompanyCardServices = function() {
+			
 			var param = {
 				'id': $scope.reservationDetails.companyCard.id
 			};
@@ -140,6 +141,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		/* -------AR account ends here-----------*/
 
 		$scope.$on('companyCardAvailable', function(obj, isNew) {
+		
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.companyContactInformation;
 			// object holding copy of contact information
@@ -159,7 +161,8 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}, 1000);
 			if (!isNew) {
 				callCompanyCardServices();
-			}
+			}	
+			
 		});
 
 		$scope.$on("companyCardDetached", function() {

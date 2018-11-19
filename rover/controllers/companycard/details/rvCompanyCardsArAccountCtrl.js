@@ -32,7 +32,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		});
 
 		var updateArAccount = function( initialUpdate ) {
-			
+
 			var successCallbackOfsaveARDetails = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = "";
@@ -58,6 +58,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 			var dataToSend = $scope.arAccountDetails;
 
+            if (_.isEmpty(presentArDetails)) {
+                presentArDetails = angular.fromJson(angular.toJson($scope.arAccountDetails));
+            }
+
 			if (!!$scope.contactInformation.id) {
 				dataToSend.id = $scope.contactInformation.id;
 				presentArDetails.id = $scope.contactInformation.id;
@@ -66,15 +70,18 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var dataNotUpdated = false;
 
 			// check if data was edited
-			if (!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
-				dataNotUpdated = true;
-				presentArDetails = presentArDetailsAfterEdit;
-			}
+            var ignoredKeys = ['workstation_id'];
+
+            if (!angular.equals(_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))) {
+                dataNotUpdated = true;
+                presentArDetails = presentArDetailsAfterEdit;
+            }
+
 			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
 			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
-				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB , 
+				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB ,
 				// we call save API without AR Number.
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber, failureCallback );
 			}
@@ -88,7 +95,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			if (!!$scope.arAccountDetails && !!$scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 				updateArAccount();
 			}
-			
+
 		});
 
 		// to set data to be compared from time to time
