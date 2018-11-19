@@ -42,7 +42,7 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
   	* function to perform filtering/request data from service in change event of query box
   	*/
 	$scope.queryEntered = function() {
-		if ($scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
+		if (!$scope.hasArNumber && $scope.textInQueryBox.length < 3 && isSearchOnSingleDigit($scope.textInQueryBox)) {
 			$scope.results.accounts = [];
 			$scope.results.posting_accounts  = [];
 			$scope.results.reservations = [];
