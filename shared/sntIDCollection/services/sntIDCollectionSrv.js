@@ -99,8 +99,8 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 			requestGetDocument.onerror = function() {
 				deferred.reject(errorMessage);
 			};
-			requestGetDocument.ontimeout = function (e) {
-  				deferred.reject(operationTimedOutMsg);
+			requestGetDocument.ontimeout = function(e) {
+				deferred.reject(operationTimedOutMsg);
 			};
 		} else {
 			deferred.reject(errorMessage);
@@ -227,7 +227,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getImage failed']);
 		};
-		requestGetDocument.ontimeout = function(e) {
+		requestGetDocument.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 
@@ -253,7 +253,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getImageQualityMetric failed']);
 		};
-		requestGetDocument.ontimeout = function(e) {
+		requestGetDocument.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 
@@ -279,7 +279,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getClassification failed']);
 		};
-		requestGetDocument.ontimeout = function(e) {
+		requestGetDocument.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 
@@ -338,7 +338,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getResults failed']);
 		};
-		requestGetDocument.ontimeout = function(e) {
+		requestGetDocument.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 
@@ -359,7 +359,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.resolve({});
 		};
-		requestGetDocument.ontimeout = function(e) {
+		requestGetDocument.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 
