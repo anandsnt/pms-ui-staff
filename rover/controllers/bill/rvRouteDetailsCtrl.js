@@ -80,7 +80,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         isAddPayment = false;
     };
 
-    $scope.checkBillStatus = function(billId) {
+    $scope.checkBillStatus = function() {
         return !$scope.reservationBillData.bills[0].is_active;
     };
 
