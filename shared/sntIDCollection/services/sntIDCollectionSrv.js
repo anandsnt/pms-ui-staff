@@ -99,7 +99,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 			requestGetDocument.onerror = function() {
 				deferred.reject(errorMessage);
 			};
-			requestGetDocument.ontimeout = function(e) {
+			requestGetDocument.ontimeout = function() {
 				deferred.reject(operationTimedOutMsg);
 			};
 		} else {
@@ -150,7 +150,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.onerror = function() {
 			deferred.reject(['Document instance failed']);
 		};
-		requestDocInstance.ontimeout = function(e) {
+		requestDocInstance.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 		return deferred.promise;
@@ -176,7 +176,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.onerror = function() {
 			deferred.reject(['Document front image posting failed']);
 		};
-		requestDocInstance.ontimeout = function(e) {
+		requestDocInstance.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 		return deferred.promise;
@@ -202,7 +202,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.onerror = function() {
 			deferred.reject(['Document back side image posting failed']);
 		};
-		requestDocInstance.ontimeout = function(e) {
+		requestDocInstance.ontimeout = function() {
 			deferred.reject(operationTimedOutMsg);
 		};
 		return deferred.promise;
