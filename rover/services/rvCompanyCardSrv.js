@@ -271,11 +271,11 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                     service.companyTaArDetailsCached[id] = deferred;
 
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                        service.companyTaArDetailsCached[id] = {"response" : data, "expiry": Date.now() + lifeSpan};
+                        service.companyTaArDetailsCached[id] = {"response": data, "expiry": Date.now() + lifeSpan};
 
                         deferred.resolve(data);
                     }, function(data) {
-                        deferred.reject(data);companyTaArDetailsCached
+                        deferred.reject(data);
                     });
             }
             else if (!service.companyTaArDetailsCached[id].response) {
