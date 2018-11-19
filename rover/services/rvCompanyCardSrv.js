@@ -13,6 +13,8 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         this.DEFAULT_PER_PAGE = 10;
         this.DEFAULT_PAGE = 1;
 
+        var openSaveAccountRequests = {};
+
         /** contact information area */
 
         /**
@@ -24,9 +26,11 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var id = data.id;
             var deferred = $q.defer();
             var url = '/api/accounts/' + id;
+            var keysToRemove = ['is_eod_failed', 'is_eod_in_progress', 'is_eod_manual_started', 'is_eod_process_running'];
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
+                // Remove irrelevant keys
+                deferred.resolve(_.omit(data, keysToRemove));
             }, function(data) {
                 deferred.reject(data);
             });
@@ -95,14 +99,37 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @return {promise|{then, catch, finally}|*|e} Promise
          */
         this.saveContactInformation = function(data) {
-            var deferred = $q.defer();
-            var url = 'api/accounts/save.json';
+            var deferred = $q.defer(),
+                url = 'api/accounts/save.json',
+                accountId = parseInt(data.id, 10),
+                requests,
+                contactInformation = _.omit(data, ['workstation_id']),
+                existingRequest,
+                requestInfo = {
+                    data: contactInformation,
+                    deferred: deferred
+                };
+
+            openSaveAccountRequests[accountId] = openSaveAccountRequests[accountId] || [];
+            requests = openSaveAccountRequests[accountId];
+            existingRequest = requests.find(function(req) {
+                return angular.equals(req.data, contactInformation) && !req.resolved;
+            });
+
+            if (existingRequest) {
+                return existingRequest.deferred.promise;
+            }
+
+            requests.push(requestInfo);
 
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                requestInfo.resolved = true;
                 deferred.resolve(data);
             }, function(data) {
+                requestInfo.resolved = true;
                 deferred.reject(data);
             });
+
             return deferred.promise;
         };
 
@@ -685,6 +712,5 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-
     }
 ]);

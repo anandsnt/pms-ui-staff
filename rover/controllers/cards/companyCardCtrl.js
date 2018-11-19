@@ -25,7 +25,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				if ($scope.viewState.isAddNewCard) {
 					$scope.$broadcast("setCardContactErrorMessage", [$filter('translate')('COMPANY_SAVE_PROMPT')]);
 				} else {
-					saveContactInformation($scope.contactInformation);
+					saveContactInformation();
 				}
 			}
 			if ($scope.currentSelectedTab === 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
@@ -201,7 +201,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 */
 		$scope.isUpdateEnabled = function() {
 			var isDisabledFields = false;
-			
+
 			if ($scope.contactInformation.is_global_enabled) {
 				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 					isDisabledFields = true;
@@ -238,12 +238,12 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		$scope.$on("saveContactInformation", function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-			saveContactInformation($scope.contactInformation);
+			saveContactInformation();
 		});
 
 		$scope.$on("saveCompanyContactInformation", function(event) {
 			event.preventDefault();
-			saveContactInformation($scope.contactInformation);
+			saveContactInformation();
 		});
 
 		/**
@@ -251,7 +251,8 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 */
 		$scope.$on("OUTSIDECLICKED", function(event, targetElement) {
 			event.preventDefault();
-			saveContactInformation($scope.contactInformation);
+
+			saveContactInformation();
 			$scope.checkOutsideClick(targetElement);
 			$rootScope.$broadcast("saveArAccount");
 			$rootScope.$broadcast("saveContract");
@@ -291,14 +292,10 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 					$scope.reservationData.company.name = $scope.contactInformation.account_details.account_name;
 				}
 			}
-
-			// taking a deep copy of copy of contact info. for handling save operation
-			// we are not associating with scope in order to avoid watch
-			presentContactInfo = angular.copy($scope.contactInformation);
 		};
 
 		$scope.clickedSaveCard = function(cardType) {
-			saveContactInformation($scope.contactInformation);
+			saveContactInformation();
 		};
 
 		/**
@@ -317,9 +314,14 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		var saveContactInformation = function(data) {
 			var dataUpdated = false;
 
-			if (!angular.equals(data, presentContactInfo)) {
-				dataUpdated = true;
-			}
+            data = data || $scope.contactInformation;
+
+            // NOTE: Commission details aren't applicable for company card
+            if (!angular.equals(_.omit(data, ['commission_details']), _.omit(presentContactInfo, ['commission_details']))) {
+                dataUpdated = true;
+                presentContactInfo = angular.copy($scope.contactInformation);
+            }
+
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
