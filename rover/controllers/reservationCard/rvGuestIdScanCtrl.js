@@ -99,11 +99,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		$scope.uploadFrontImage = function() {
-			$('#front-image-upload').click();
+			$('#front-image-upload').trigger('click');
 		};
 
 		$scope.uploadBackImage = function() {
-			$('#back-image-upload').click();
+			$('#back-image-upload').trigger('click');
 		};
 
 		var markIDDetailsHasChanged = function() {
