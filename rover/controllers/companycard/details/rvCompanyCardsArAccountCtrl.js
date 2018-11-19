@@ -72,7 +72,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			// check if data was edited
             var ignoredKeys = ['workstation_id'];
 
-			if (!angular.equals(_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))){
+			if (!angular.equals (_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))){
 				dataNotUpdated = true;
 				presentArDetails = presentArDetailsAfterEdit;
 			}
