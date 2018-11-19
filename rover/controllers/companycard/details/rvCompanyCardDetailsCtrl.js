@@ -223,7 +223,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
-			$scope.isArTabAvailable = !$stateParams.isBackToTACommissionisBackToTACommission && !$stateParams.isBackToStatistics;
+			$scope.isArTabAvailable = !$stateParams.isBackToTACommission && !$stateParams.isBackToStatistics;
 			/*
 			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
 			*/
