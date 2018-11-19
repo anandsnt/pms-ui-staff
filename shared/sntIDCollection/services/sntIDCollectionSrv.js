@@ -6,6 +6,19 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
 
+	var acuantCredentials = acuantCredentials;
+	
+	var windowLocation = window.location;
+
+	this.isInDevEnv = true;
+
+	if (windowLocation.hostname && typeof windowLocation.hostname === typeof 'str' && windowLocation.hostname.indexOf('pms.stayntouch.com') !== -1) {
+		that.isInDevEnv = false;
+	}
+
+	this.setAcuantCredentialsForProduction = function (credentials) {
+		acuantCredentials = credentials;
+	};
 	/**
 	 * [createCORSRequest description]
 	 * @param  {[string]} method [http method]
