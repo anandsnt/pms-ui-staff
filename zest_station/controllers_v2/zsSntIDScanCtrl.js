@@ -10,7 +10,8 @@
 		'$controller',
 		'$filter',
 		'$timeout',
-		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller, $filter, $timeout) {
+		'sntIDCollectionSrv',
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $controller, $filter, $timeout, sntIDCollectionSrv) {
 
 			BaseCtrl.call(this, $scope);
 			$controller('sntIDCollectionBaseCtrl', {
@@ -25,6 +26,11 @@
 			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
 			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
 			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
+
+			if (!sntIDCollectionSrv.isInDevEnv) {
+				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.acuant_credentials);
+			}
+			
 
 			/* ******************* GUEST LIST *********************** */
 
