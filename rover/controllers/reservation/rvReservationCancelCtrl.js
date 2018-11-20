@@ -575,13 +575,23 @@
 				$("header .logo").hide();
 				$("header .h2").hide();
 
+				var onPrintCompletion = function() {
+					$timeout(function() {
+						$("header .logo").show();
+						$("header .h2").show();
+						removePrintOrientation();
+					}, 100);
+				};
+
 				$timeout(function() {
-					$window.print();
 					if (sntapp.cordovaLoaded) {
-						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-					}
-					$("header .logo").show();
-					$("header .h2").show();
+						cordova.exec(onPrintCompletion, function() {
+							onPrintCompletion();
+						}, 'RVCardPlugin', 'printWebView', []);
+					} else {
+						$window.print();
+						onPrintCompletion();	
+					}					
 				}, 400);
 				// remove the orientation after similar delay
 				$timeout(removePrintOrientation, 100);
