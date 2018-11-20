@@ -58,6 +58,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 			var dataToSend = $scope.arAccountDetails;
 
+            if (_.isEmpty(presentArDetails)) {
+                presentArDetails = angular.fromJson(angular.toJson($scope.arAccountDetails));
+            }
+
 			if (!!$scope.contactInformation.id) {
 				dataToSend.id = $scope.contactInformation.id;
 				presentArDetails.id = $scope.contactInformation.id;
@@ -66,7 +70,9 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var dataNotUpdated = false;
 
 			// check if data was edited
-			if (!angular.equals(presentArDetailsAfterEdit, presentArDetails)) {
+            var ignoredKeys = ['workstation_id'];
+
+			if (!angular.equals (_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))){
 				dataNotUpdated = true;
 				presentArDetails = presentArDetailsAfterEdit;
 			}
