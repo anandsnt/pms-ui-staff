@@ -14,7 +14,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			cardType: ""
 		};
 
-
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 
