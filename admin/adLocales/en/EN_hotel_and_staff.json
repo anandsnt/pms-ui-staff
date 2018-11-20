@@ -9,4 +9,6 @@
 "ORG_ID": "Organisation ID",
 "ORG_ID_PLACEHOLDER": "Enter Organisation ID",
 "SWIFT_CODE": "SWIFT CODE",
-"SWIFT_PLACEHOLDER": "Enter Swift code"
+"SWIFT_PLACEHOLDER": "Enter Swift code",
+"AR_NUMBER": "AR Number",
+"AR_NUMBER_PLACEHOLDER": "Enter AR Number for Property"
