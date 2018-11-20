@@ -16,7 +16,7 @@
                     <span ng-if="reservation.is_vip" class="vip">VIP</span>
                     <span class="room">{{reservation.room_type_name}}</span>
                 </div>
-                <div class="arrival">{{reservation.arrival_date}}</div>
+                <div class="arrival">{{reservation.arrival_date | date:dateFormat}}</div>
                 <div class="nights">{{reservation.number_of_nights}}</div>
             </div>
         </div>
