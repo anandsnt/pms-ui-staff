@@ -25,8 +25,14 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
             }
         }
         avialableRoomPosition = avialableRoomPosition + 'px';
+        let width = nightDuration;
+        if (this.props.state.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
+            width = width - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
+        } else if (this.props.state.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
+            width = width - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
+        }
         const style = {
-            width: nightDuration + 'px',
+            width: width + 'px',
             transform: 'translateX(' + avialableRoomPosition + ')',
             display: 'block'
         };
@@ -35,10 +41,12 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
     },
     render() {
         return (
-            <div style={this.getStyles()} className="reservation unassigned">
+            <div style={this.getStyles()}
+                className="reservation unassigned"
+                onClick={() => { console.log(this.props.room.id, this.props.date); }}
+            >
                 <div className="reservation-data">
-                    ASSIGN
-                    <span className="name">100</span>
+                    <span className="name">BOOK</span>
                 </div>
             </div>
         );

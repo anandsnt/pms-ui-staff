@@ -52,9 +52,9 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                                 : ''
                         }
                         {
-                            state.showAvailableRooms && item.availableSlots.length > 0 ?
-                                item.availableSlots.map((availableDate) => (
-                                    <NightlyDiaryAvailableRoomListContainer date={availableDate} />
+                            state.showAvailableRooms && item.availableFreeSlots.length > 0 ?
+                                item.availableFreeSlots.map((availableDate) => (
+                                    <NightlyDiaryAvailableRoomListContainer date={availableDate} room={item}/>
                                 )
                                 )
                                 : ''

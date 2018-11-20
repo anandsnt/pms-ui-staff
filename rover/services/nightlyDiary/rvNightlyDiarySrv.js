@@ -205,5 +205,23 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+
+        /*
+         * Fetch Available free slots for booking reservation
+         * @param {data} object
+         * return object
+         */
+        this.retrieveAvailableFreeSlots = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/availability';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.rooms);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);
