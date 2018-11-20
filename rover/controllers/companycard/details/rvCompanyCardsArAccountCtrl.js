@@ -32,7 +32,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		});
 
 		var updateArAccount = function( initialUpdate ) {
-			
+
 			var successCallbackOfsaveARDetails = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = "";
@@ -71,16 +71,15 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 			// check if data was edited
             var ignoredKeys = ['workstation_id'];
-
-			if (!angular.equals (_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))){
-				dataNotUpdated = true;
-				presentArDetails = presentArDetailsAfterEdit;
-			}
+            if (!angular.equals(_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))) {
+                dataNotUpdated = true;
+                presentArDetails = presentArDetailsAfterEdit;
+            }
 			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
 			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
-				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB , 
+				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB ,
 				// we call save API without AR Number.
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber, failureCallback );
 			}
@@ -94,7 +93,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			if (!!$scope.arAccountDetails && !!$scope.arAccountDetails.is_auto_assign_ar_numbers && !$scope.arAccountDetails.ar_number) {
 				updateArAccount();
 			}
-			
+
 		});
 
 		// to set data to be compared from time to time
