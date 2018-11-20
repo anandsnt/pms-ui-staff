@@ -231,7 +231,7 @@ angular.module('sntRover')
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
                     $scope.diaryData.isAvailableRoomSlotActive = false;
                     console.log(roomDetails, reservationDetails);
-                    fetchRoomListDataAndReservationListData();
+                    // TODO : fetchRoomListDataAndReservationListData();
                 };
 
                 /*
