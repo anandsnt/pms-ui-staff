@@ -5,7 +5,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 	var that = this;
 
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
-
+	var operationTimedOutMsg = ['Operation timed out !'];
 	var acuantCredentials = acuantCredentials;
 	
 	var windowLocation = window.location;
@@ -35,6 +35,10 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 			xhr.open(method, url);
 		} else {
 			xhr = null;
+		}
+
+		if (xhr) {
+			xhr.timeout = 60000;
 		}
 		return xhr;
 	}
@@ -95,6 +99,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 			requestGetDocument.onerror = function() {
 				deferred.reject(errorMessage);
 			};
+			requestGetDocument.ontimeout = function() {
+				deferred.reject(operationTimedOutMsg);
+			};
 		} else {
 			deferred.reject(errorMessage);
 		}
@@ -143,6 +150,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.onerror = function() {
 			deferred.reject(['Document instance failed']);
 		};
+		requestDocInstance.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
 		return deferred.promise;
 	};
 
@@ -165,6 +175,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		};
 		requestDocInstance.onerror = function() {
 			deferred.reject(['Document front image posting failed']);
+		};
+		requestDocInstance.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
 		};
 		return deferred.promise;
 	};
@@ -189,6 +202,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestDocInstance.onerror = function() {
 			deferred.reject(['Document back side image posting failed']);
 		};
+		requestDocInstance.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
 		return deferred.promise;
 	};
 
@@ -210,6 +226,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		};
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getImage failed']);
+		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
 		};
 
 		return deferred.promise;
@@ -234,6 +253,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getImageQualityMetric failed']);
 		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
 
 		return deferred.promise;
 	};
@@ -256,6 +278,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		};
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getClassification failed']);
+		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
 		};
 
 		return deferred.promise;
@@ -313,6 +338,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		requestGetDocument.onerror = function() {
 			deferred.reject(['Document getResults failed']);
 		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
 
 		return deferred.promise;
 	};
@@ -330,6 +358,9 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		};
 		requestGetDocument.onerror = function() {
 			deferred.resolve({});
+		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
 		};
 
 		return deferred.promise;
