@@ -73,7 +73,7 @@
                     <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
                     <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
                         <!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
-                        <label class="checkbox" ng-show="autoCharge.is_declined">
+                        <label class="checkbox" ng-show="autoCharge.is_declined && autoCharge.can_retry_processing">
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : autoCharge.isSelected}"></span>
                             <input id="{{autoCharge.reservation_id}}" type="checkbox" ng-model="autoCharge.isSelected" ng-change="handleAutoChargeSelection()">
                         </label>
