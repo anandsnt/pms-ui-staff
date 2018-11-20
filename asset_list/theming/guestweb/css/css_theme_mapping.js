@@ -5,6 +5,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_the_hotel_at_auburn_university': [ themeCSSRoot + 'guestweb_the_hotel_at_auburn_university.css'],
             'guestweb_twa_hotel': [ themeCSSRoot + 'guestweb_twa_hotel.css'],
             'guestweb_sister_city_hotel_ny': [ themeCSSRoot + 'guestweb_sister_city_hotel_ny.css'],
             'guestweb_cedar_court_hotels': [ themeCSSRoot + 'guestweb_cedar_court_hotels.css'],
