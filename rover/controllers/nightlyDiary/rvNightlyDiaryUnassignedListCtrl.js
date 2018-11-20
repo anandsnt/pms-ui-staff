@@ -13,7 +13,10 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
         $scope.selectedResId = null;
-        
+        /**
+         *  Retrieve Available Rooms
+         *  @param {Object} - [selected reservation Item]
+         */
         var retrieveAvailableRooms = function( selectedItem ) {
             var successCallBack = function(data) {
                 $scope.errorMessage = '';
@@ -61,10 +64,20 @@ angular.module('sntRover')
 
             $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
         };
-
+        /**
+         *  Handle unassigned reservation items
+         *  @param {int} - [index value of reservations]
+         */
         $scope.clickedUnassignedItem = function( index ) {
             var item = $scope.diaryData.unassignedReservationList.reservations[index];
 
             retrieveAvailableRooms(item);
         };
+
+        var listener = $scope.$on('RESET_UNASSIGNED_LIST_SELECTION', function() {
+            $scope.selectedResId = null;
+            
+        });
+
+        $scope.$on('$destroy', listener);
 }]);

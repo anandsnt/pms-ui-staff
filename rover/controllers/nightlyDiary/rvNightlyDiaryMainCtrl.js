@@ -368,6 +368,9 @@ angular.module('sntRover')
 
                 listeners['UPDATE_UNASSIGNED_RESERVATIONLIST'] = $scope.$on('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
                     fetchUnassignedReservationList();
+                    $scope.diaryData.isAvailableRoomSlotActive = false;
+                    $scope.diaryData.availableSlotsForAssignRooms = {};
+                    $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
 
                 /* Handle event emitted from child controllers.
