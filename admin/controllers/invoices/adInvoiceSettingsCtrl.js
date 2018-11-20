@@ -22,7 +22,7 @@ admin.controller('ADInvoiceSettingsCtrl', [
 
             var saveInvoiceSettingsSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
-                if (data.errors) {
+                if (data.errors.length > 0) {
                     $scope.errorMessage = data.errors;
                     $scope.invoiceSettings.is_print_invoice_enabled = true;
                 } else {
