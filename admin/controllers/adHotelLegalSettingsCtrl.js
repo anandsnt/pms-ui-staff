@@ -9,8 +9,7 @@ admin.controller('adHotelLegalSettingsController',
 		$scope.activeTab = 'financials';
 		var scrollerOptions = {
 				tap: true,
-				preventDefault: false,
-				showScrollbar: true
+				scrollbars: true
 		};
 
 		$scope.setScroller('financialSettingsList', scrollerOptions);
