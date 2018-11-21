@@ -183,6 +183,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 // yes..yes..the name is confusing..i know
                 // cant do much with this now. It saved in admin like that
                 var printopted = 'false';
+                var printYetToDone;
                 // if update email and print option are off
 
                 if (!guest_bill.email && !guest_bill.print) {

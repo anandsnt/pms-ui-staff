@@ -95,10 +95,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         var setErrorMessageBasedOnResponse = function(errorMessage) {
             var message = '';
 
-            if (errorMessage.includes('OPERATOR TIMEOUT')) {
+            if (errorMessage && errorMessage.includes('OPERATOR TIMEOUT')) {
                 // 143 TRANSACTION FAILED.:OPERATOR TIMEOUT
                 message = 'OPERATION TIMED OUT';
-            } else if (errorMessage.includes('104 Connection with an external device not established')) {
+            } else if (errorMessage && errorMessage.includes('104 Connection with an external device not established')) {
                 // 104 CONNECTION WITH AN EXTERNAL DEVICE NOT ESTABLISHED.
                 message = 'PLEASE RECHECK THE CONNECTION WITH THE EXTERNAL DEVICE';
             } else {
@@ -117,11 +117,16 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
         };
 
+        var cbaResponse,
+            cbaPaymentAttempt = 0;
+
         /**
          * Method to initate listeners that handle CBA payment scenarios
          * @returns {undefined} undefined
          */
         $scope.initiateCBAlisteners = function () {
+            cbaPaymentAttempt = 0;
+            
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
                 showErrorMessage(errorMessage);
@@ -130,6 +135,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             });
 
             var listenerCBAPaymentSuccess = $scope.$on('CBA_PAYMENT_SUCCESS', function(event, response) {
+                cbaResponse = response;
+                cbaPaymentAttempt++;
+
                 var params = zsPaymentSrv.getSubmitPaymentParams();
 
 
@@ -150,9 +158,36 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         $scope.$emit('CBA_PAYMENT_COMPLETED');
                     },
                     function(errorMessage) {
-                        $log.warn(errorMessage);
-                        showErrorMessage(errorMessage);
-                        paymentFailureActions();
+                        errorMessage = _.isEmpty(errorMessage) ? 'Payment Failed' : errorMessage;
+
+                        if (cbaPaymentAttempt <= $scope.zestStationData.hotelSettings.cba_payment_retry_count) {
+                            $scope.screenMode.value = 'RETRY_CBA_PAYMENT';
+                            $scope.$emit('hideLoader');
+                            $scope.screenMode.paymentInProgress = false;
+                            $scope.screenMode.paymentSuccess = false;
+
+                            var cbaRetryTime = $scope.zestStationData.hotelSettings.cba_payment_retry_time;
+                            
+                            $scope.screenMode.retryCounter = cbaRetryTime;
+                           
+                            $scope.onTimeout = function() {
+                                $scope.screenMode.retryCounter--;
+                                mytimeout = $timeout($scope.onTimeout, 1000);
+                                if ($scope.screenMode.retryCounter === 0) {
+                                    $timeout.cancel(mytimeout);
+                                    $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
+                                    $scope.$emit('CBA_PAYMENT_SUCCESS', cbaResponse);
+                                }
+                            };
+                            var mytimeout = $timeout($scope.onTimeout, 1000);
+                            
+                        } else {
+                            $log.warn(errorMessage);
+                            showErrorMessage(errorMessage);
+                            paymentFailureActions();
+                            cbaPaymentAttempt = 0;
+                            $scope.screenMode.value = 'CBA_PAYMENT_FAILED_SEE_STAFF';
+                        }
                     }
                 );
             });
@@ -445,6 +480,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
 
         };
+
 
         $scope.$on('START_MLI_CARD_COLLECTION', function() {
             var hideLoader = true;

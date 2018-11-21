@@ -141,11 +141,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		var uploadBuild = function() {
 			if (checkIfFileTypeisInValid()) {
 				$scope.errorMessage = ['Wrong file extension !'];
-			}
-			// processing the huge build param will take time in backend
-			// so inorder to avoid that, check if build is presnet in UI
-			else if (_.isEmpty($scope.selectedApp.build)) {
-				$scope.errorMessage = ['Upload Build is mandatory']
 			} else {
 				var params = angular.copy($scope.selectedApp);
 
@@ -157,12 +152,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.callAPI(adAppVersionsSrv.uploadBuild, {
 					params: params,
 					successCallBack: function() {
-						ngDialog.open({
-							template: '/assets/partials/sntApps/adUPloadInProgressPopup.html',
-							className: 'ngdialog-theme-default',
-							scope: $scope,
-							closeByDocument: false
-						});
+                        fetchAppVersions();
 					}
 				});
 			}
@@ -174,12 +164,13 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.checkIfVersionIsValid = function() {
+            $scope.fileName = $scope.selectedApp.sftp_path;
 			$scope.clearErrorMessage();
 			$scope.callAPI(adAppVersionsSrv.checkIfVersionIsValid, {
 				params: {
 					version: $scope.selectedApp.version,
 					service_application_type_id: $scope.filterType.id,
-					file_name: $scope.fileName
+					sftp_path: $scope.selectedApp.sftp_path
 				},
 				successCallBack: uploadBuild
 			});
