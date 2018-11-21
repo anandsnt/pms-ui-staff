@@ -52,7 +52,7 @@
         <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
         <li class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
             <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
-            <label class="checkbox">
+            <label class="checkbox" ng-show="isDeclinedAutoChargesPresent">
                 <span class="icon-form icon-checkbox" ng-class="{'semi-checked' :isPartiallySelected, 'checked': isAllSelected }"></span>
                 <input id="select-all" type="checkbox" ng-model="isAllSelected" ng-change="handleAutoChargeSelection('ALL')">
             </label>
