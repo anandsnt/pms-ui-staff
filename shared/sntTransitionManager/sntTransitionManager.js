@@ -3,7 +3,7 @@ angular.module('snt.transitionManager',
     .run(['$rootScope', '$transitions', 'transitions', '$log', '$window',
         function ($rootScope, $transitions, transitionsSrv, $log, $window) {
 
-            $transitions.onSuccess({}, function (transition) {
+            $transitions.onEnter({}, function (transition) {
                 var deepIndex;
 
                 if (transition.from().name === transition.to().name) {
