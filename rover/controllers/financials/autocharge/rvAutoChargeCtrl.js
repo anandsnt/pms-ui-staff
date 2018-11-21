@@ -150,6 +150,7 @@ sntRover.controller('RVAutoChargeController',
                         return autoCharge.is_declined;
                     });
 
+                $scope.isDeclinedAutoChargesPresent = declinedAutoCharges.length !== 0 ;
                 if (selection_type === 'ALL') {
                     $scope.autoCharges = processAutoChargeSelections($scope.autoCharges, $scope.isAllSelected);
                     $scope.isPartiallySelected = false;
@@ -249,7 +250,10 @@ sntRover.controller('RVAutoChargeController',
                     options = {
                         params: params,
                         successCallBack: function() {
-                            $scope.fetchAutoCharge();
+                            $timeout(function () {
+                                $scope.fetchAutoCharge();
+                            }, 3000 );
+
                         }
                     };
 
