@@ -128,16 +128,16 @@ sntRover.controller('RVAutoChargeController',
                  * function forms array of selected reservation ids
                  * @return - [Integer]
                  */
-                generateSelectedReservationIds = function () {
-                    var selectedReservationIds = [];
+                generateSelectedReservationReportIds = function () {
+                    var selectedReservationReportIds = [];
 
                     _.map($scope.autoCharges,
                         function(autoCharge) {
                             if (autoCharge.isSelected) {
-                                selectedReservationIds.push(autoCharge.reservation_id);
+                                selectedReservationReportIds.push(autoCharge.deposit_report_id);
                             }
                         });
-                    return selectedReservationIds;
+                    return selectedReservationReportIds;
                 };
 
             /*
@@ -210,10 +210,10 @@ sntRover.controller('RVAutoChargeController',
             // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
-                    page_no: pageNo || 1,
-                    status: $scope.filters.status,
-                    due_date: $scope.filters.due_date,
-                    per_page: $scope.paginationConfig.perPage
+                        page_no: pageNo || 1,
+                        status: $scope.filters.status,
+                        due_date: $scope.filters.due_date,
+                        per_page: $scope.paginationConfig.perPage
                     },
                     stateData = {
                         filters: params,
@@ -244,7 +244,7 @@ sntRover.controller('RVAutoChargeController',
             $scope.processSelectedAutoCharges = function() {
                 var params = {
                         due_date: $scope.filters.due_date,
-                        reservations_ids: generateSelectedReservationIds()
+                        reservation_reports_ids: generateSelectedReservationReportIds()
                     },
                     options = {
                         params: params,

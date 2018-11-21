@@ -75,7 +75,7 @@
                <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
-                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage()">Capture ID/Passport</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">Capture ID/Passport</button>
                </div>
             </div>
             
@@ -98,7 +98,7 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD FRONT IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage()">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">RETRY</button>
                </div>
             </div>
             
@@ -129,7 +129,7 @@
                <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
-                  <button type="button" class="btn btn-primary" ng-click="captureBackImage()">Capture ID/Passport</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">Capture ID/Passport</button>
                </div>
             </div>
             
@@ -152,7 +152,7 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD BACK IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureBackImage()">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">RETRY</button>
                </div>
             </div>
             
@@ -249,10 +249,16 @@
                            {{ screenData.idDetails.birth_date }}
                         </div>
                      </div>
-                     <div class="form-group row">
+                     <div class="form-group row" ng-hide="screenData.idDetails.nationality_name">
                         <label for="staticEmail" class="col-sm-6 col-form-label">Nationality Code</label>
                         <div class="col-sm-6">
                            {{ screenData.idDetails.nationality_code }}
+                        </div>
+                     </div>
+                     <div class="form-group row" ng-show="screenData.idDetails.nationality_name">
+                        <label for="staticEmail" class="col-sm-6 col-form-label">Nationality Name</label>
+                        <div class="col-sm-6">
+                           {{ screenData.idDetails.nationality_name }}
                         </div>
                      </div>
                      <div class="form-group row">

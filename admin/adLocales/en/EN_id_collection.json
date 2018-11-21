@@ -1,0 +1,11 @@
+
+
+"STATION_ID_COLLECTION_SETUP_HEADER": "Zest Station ID Collection Setup",
+"ZEST_WEB_ID_COLLECTION_SETUP_HEADER": "Zest Web ID Collection Setup",
+"ROVER_ID_COLLECTION_SETUP_HEADER": "Rover ID Collection Setup",
+"SCAN_ALL_GUESTS_LABEL": "Scan all guests",
+"BELL_SOUND_SWITCH_LABEL": "Enable bell sound",
+"MANDATORY_SWITCH_LABEL": "Mandatory",
+"FACE_RECOGNITION_SWITCH_LABEL": "Enable Face Recognition",
+"SCAN_TYPE_LABEL": "Select verification/scan type",
+"SCAN_TYPE": "Scan Type"
