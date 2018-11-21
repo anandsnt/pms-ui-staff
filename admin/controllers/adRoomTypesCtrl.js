@@ -263,7 +263,7 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 			"is_room_type_ows_request_per_status_type": false,
 			"room_class_id": "",
 			"is_image_deleted": "",
-            "is_available_for_day_use": false
+            "is_available_for_day_use": $rootScope.dayUseEnabled || false
 		};
 		$timeout(function() {
             $location.hash('new-form-holder');

@@ -242,7 +242,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		$scope.data.room_image = "";
 		$scope.data.room_number = "";
 		$scope.data.room_type_id = "";
-
+		$scope.data.is_available_for_day_use = $rootScope.dayUseEnabled;
 	};
 	var fecthAllRoomDetailsFailureCallback = function(errorMessage) {
 		$scope.$emit('hideLoader');
