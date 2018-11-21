@@ -248,6 +248,10 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', [
 			// add the orientation
 			addPrintOrientation();
 
+			var onPrintCompletion = function() {
+				$timeout(removePrintOrientation, 100);
+			};
+
 			/*
 			*	======[ READY TO PRINT ]======
 			*/
@@ -256,19 +260,16 @@ angular.module('sntRover').controller('RVWorkManagementSingleSheetCtrl', [
 				/*
 				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 				*/
-
-				$window.print();
 				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					cordova.exec(onPrintCompletion, function() {
+						onPrintCompletion();
+					}, 'RVCardPlugin', 'printWebView', ['singleSheet', '0', '', 'L']);
+				} else {
+					$window.print();
+					onPrintCompletion();	
 				}
 			}, 100);
-
-			/*
-			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			*/
-
-			// remove the orientation after similar delay
-			$timeout(removePrintOrientation, 100);
+			
 		};
 
 
