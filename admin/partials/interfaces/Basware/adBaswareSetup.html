@@ -4,7 +4,10 @@
         <fieldset class="holder left">
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
-            <ad-textbox value="config.organization_id" label="{{'ORG_ID' | translate}}" placeholder="{{'ORG_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+            <ad-textbox value="config.organization_id" label="{{'ORG_ID' | translate}}" placeholder="{{'ORG_ID_PLACEHOLDER' | translate}}" styleclass="half-width"></ad-textbox>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-textbox value="config.property_ar_number" label="{{'AR_NUMBER' | translate}}" placeholder="{{'AR_NUMBER_PLACEHOLDER' | translate}}" styleclass="half-width"></ad-textbox>
         </fieldset>
     </div>
 
