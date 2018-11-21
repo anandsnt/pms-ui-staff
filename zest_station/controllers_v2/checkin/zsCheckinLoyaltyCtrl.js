@@ -28,10 +28,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		/* ************** BACK BUTTON ACTIONS ********************* */
 
 		$scope.$on('LOYALTY_PROGRAMS_BACK_NAVIGATIONS', function() {
-			if ($scope.loyaltyMode === 'EXISTING_LOYALTY' || ($scope.loyaltyMode === 'SELECT_LOYALTY' && !$scope.existingLoyalty)) {
+			if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
 				$scope.$emit('CHANGE_MODE_TO_RESERVATION_DETAILS');
-			} else if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
-				$scope.loyaltyMode = 'EXISTING_LOYALTY';
 			} else if (($scope.loyaltyMode === 'ADD_NEW_FF_LOYALTY' && isHlpActive) || ($scope.loyaltyMode === 'ADD_HOTEL_LOYALTY' && isFfpActive)) {
 				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
 			} else {
@@ -57,8 +55,15 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.existingLoyalty = _.find($scope.existingLoyaltyPgms, function(loyalty) {
 					return response.selected_loyalty === loyalty.id;
 				});
-				$scope.loyaltyMode = $scope.existingLoyalty ? 'EXISTING_LOYALTY' : 'SELECT_LOYALTY';
+
+				if ($scope.existingLoyalty) {
+					$scope.existingLoyaltyPgms = _.filter($scope.existingLoyaltyPgms, function(loyalty) {
+						return loyalty.id !== $scope.existingLoyalty.id;
+					});
+				}
+				$scope.loyaltyMode = 'SELECT_LOYALTY';
 			};
+			
 			var onFailureResponse = function() {
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
 			};

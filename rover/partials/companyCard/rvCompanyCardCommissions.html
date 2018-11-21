@@ -81,7 +81,7 @@
                     
                     <div class="entry input with-label">
                         <label for="commision-paid" >Recalculate Comm.</label>
-                        <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
+                        <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue" ng-change="recalculationValueChanged()">
                         <div class="switch-button" ng-class="{'on': filterData.toggleCommission}" ng-click="toggleCommission()">
                             <input id="recalculate-commission" value="" type="checkbox">
                             <label class="data-off">
@@ -101,7 +101,8 @@
         <!-- upto here -->
         <ul class="totals" ng-class="{'selected' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
             <!-- Add class "selected" when selecting all/individual commisions -->
-            <li>{{'COMMISSION_TOTEL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalRevenue | number : 2}}</span></li>
+            <li>{{'RESERVATION_TOTAL_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalReservationsRevenue | number : 2}}</span></li>
+            <li>{{'RESERVATION_COMMISSIONABLE_REVENUE' | translate}}<span class="value">{{ currencySymbol }}{{commissionSummary.totalCommissionableRevenue | number : 2}}</span></li>
             <li>{{'COMMISSION_TO_DATE' | translate}}<span class="value green">{{ currencySymbol }}{{commissionSummary.totalCommission | number : 2}}</span></li>
             <li>{{'COMMISSION_OWING' | translate}}<span class="value red">{{ currencySymbol }}{{commissionSummary.totalUnpaidCommission | number : 2}}</span></li>
             <li class="action no-margin">
@@ -138,7 +139,7 @@
         
         <ul class="search-results-header">
             <li class="action">
-                <label class="checkbox inline">
+                <label class="checkbox inline" ng-class="{'hidden' : filterData.paidStatus == 'Prepaid'}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : filterData.selectAll}"></span>
                     <input id="commisions-select" ng-model="filterData.selectAll" type="checkbox" ng-change="toggleSelection()" />
                 </label>
@@ -147,6 +148,8 @@
 
             <!--If commission status is Non-Commissionable add class .last-->
             <li class="revenue">{{'COMMISSION_REVENUE' | translate}}</li>
+
+            <li class="commissionable">{{'RESERVATION_COMMISSIONABLE_REVENUE' | translate}}</li>
 
             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
             <li class="commission">{{'COMMISSION_RATE' | translate}}</li>
@@ -165,8 +168,9 @@
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
              
-                    <div class="faux-anchor">
-                        <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
+                    <div class="faux-anchor" ng-class="{ 'print-selected' : commissionDetail.is_checked, 'prepaid': commissionDetail.commission_data.paid_status == 'Prepaid'}">
+
+                        <label class="checkbox inline" ng-class="{'hidden' : commissionDetail.commission_data.paid_status == 'Prepaid'}" >
                             <!-- add class "checked" when L56 checked -->
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                             <!-- add class "checked" when L56 checked -->
@@ -181,7 +185,9 @@
                                 <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                             </div>
                             <div class="revenue">{{ currencySymbol }}{{commissionDetail.reservation_revenue | number : 2}}</div>
-                            
+
+                            <div class="commissionable">{{ currencySymbol }}{{commissionDetail.commission_data.commissionable_revenue | number : 2}}</div>
+
                             
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
                             <div class="commission" ng-class="{'recalculated':commissionDetail.commission_data.is_recalculated}"><strong>{{commissionDetail.commission_data.rate}}</strong></div>

@@ -99,7 +99,8 @@ function BaseCtrl($scope) {
     };
 
     $scope.callAPI = function(serviceApi, options) {
-        var options = options ? options : {},
+        var identifier = _.uniqueId('API_REQ_'),
+            options = options ? options : {},
             params = options['params'] ? options['params'] : null,
             loader = options['loader'] ? options['loader'] : 'BLOCKER',
             showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
@@ -109,14 +110,18 @@ function BaseCtrl($scope) {
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
         if (showLoader) {
-            $scope.$emit('showLoader');
+            if ($scope.startActivity) {
+                $scope.startActivity(identifier);
+            }
         }
 
         return serviceApi(params).then(
             // success call back
             function(data) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
+                    if ($scope.stopActivity) {
+                        $scope.stopActivity(identifier);
+                    }
                 }
                 if (successCallBack) {
                     if (successCallBackParameters) {
@@ -129,7 +134,9 @@ function BaseCtrl($scope) {
             // failure callback
             function(error) {
                 if (showLoader) {
-                    $scope.$emit('hideLoader');
+                    if ($scope.stopActivity) {
+                        $scope.stopActivity(identifier);
+                    }
                 }
                 if (failureCallBack) {
                     if (failureCallBackParameters) {
@@ -344,19 +351,20 @@ function BaseCtrl($scope) {
     };
 
     $scope.reservationHasPassportsScanned = function(guestData) {
-        for (var i in guestData.accompanying_guests_details) {
-            if (!guestData.accompanying_guests_details[i].is_passport_present) {
-                $scope.trackSessionActivity('PUK/CI', 'Passport Missing[Accompany guest]', '-', 'PASSPORT_SCAN', true);
-                return false;
-            }
+        var areAllRequiredIdsScanned = true;
+
+        if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_scan_all_guests) {
+            _.each(guestData.accompanying_guests_details, function(guest) {
+                if (!guest.is_passport_present) {
+                    areAllRequiredIdsScanned = false;
+                }
+            });
         }
-        if (!guestData.primary_guest_details.is_passport_present) {
-            $scope.trackSessionActivity('PUK/CI', 'Passport Missing[Primary guest]', '-', 'PASSPORT_SCAN', true);
-            return false;
+        if (areAllRequiredIdsScanned && !guestData.primary_guest_details.is_passport_present) {
+            areAllRequiredIdsScanned = false;
         }
-        $scope.trackSessionActivity('PUK/CI', 'all passports verified', '-', 'PASSPORT_SCAN', false);
-        // else all passports for reservation have been scanned already
-        return true;
+
+        return areAllRequiredIdsScanned;
     };
 
     $scope.trackEvent = function(event_name, event_type, from, at) {

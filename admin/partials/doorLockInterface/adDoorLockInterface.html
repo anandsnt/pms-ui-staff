@@ -165,14 +165,19 @@
 					</fieldset>
 
 					<fieldset>
-		                <div class="form-title key-server-details-title" >
-							<h3><span translate>OTHER_SETTINGS</span></h3>
-						</div>
-						<div class="entry">
-							<ad-checkbox is-checked="data.remove_leading_zero" label="{{'REMOVE_ROOM_NUMBER_LEADING_ZEROS' | translate }}" div-class="full-width"></ad-checkbox>
-							<ad-checkbox is-checked="data.enable_remote_encoding" label="{{'ENABLE_REMOTE_ENCODING' | translate }}" div-class="full-width"></ad-checkbox>
-							<ad-checkbox is-checked="data.enable_mobile_app_key" label="{{'ENABLE_MOBILE_APP_KEY' | translate }}" div-class="full-width"></ad-checkbox>
-						</div>
+                        <div class="form-title key-server-details-title" >
+                            <h3><span translate>OTHER_SETTINGS</span></h3>
+                        </div>
+                        <div class = "holder left">
+                            <ad-checkbox is-checked="data.remove_leading_zero" label="{{'REMOVE_ROOM_NUMBER_LEADING_ZEROS' | translate }}" div-class="full-width"></ad-checkbox>
+                            <ad-checkbox is-checked="data.enable_remote_encoding" label="{{'ENABLE_REMOTE_ENCODING' | translate }}" div-class="full-width"></ad-checkbox>
+                            <ad-checkbox is-checked="data.enable_mobile_app_key" label="{{'ENABLE_MOBILE_APP_KEY' | translate }}" div-class="full-width"></ad-checkbox>
+
+                        </div>
+                        <div class = "holder right">
+                            <ad-toggle-button styleclass="half-width" is-checked="data.allow_common_area_for_keys" label="{{ 'COMMON_AREA' | translate}}" ></ad-toggle-button>
+                            <ad-textbox hide="!data.allow_common_area_for_keys" value="data.pass_level_numbers" inputtype="text" label = "{{'PASS_LEVEL_NUMBERS' | translate }}" styleclass="half-width" ></ad-textbox>
+                        </div>
 					</fieldset>
 
 					<div class="actions float">

@@ -84,14 +84,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
             $scope.$digest();
             expect($scope.$emit).toHaveBeenCalledWith('CHANGE_MODE_TO_RESERVATION_DETAILS');
         });
-        it('On navigating back from SELECT_LOYALTY with a valid existingLoyalty, change loyaltyMode to EXISTING_LOYALTY', function() {
-            $scope.loyaltyMode = 'SELECT_LOYALTY';
-            $scope.existingLoyalty = {
-                id: 123
-            };
-            $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
-            expect($scope.loyaltyMode).toEqual('EXISTING_LOYALTY');
-        });
+        
         it('On navigating back from ADD_NEW_FF_LOYALTY or ADD_HOTEL_LOYALTY, change loyaltyMode to ADD_NEW_LOYALTY', function() {
             spyOn($scope, '$emit');
             $scope.loyaltyMode = 'ADD_NEW_FF_LOYALTY';

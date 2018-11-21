@@ -64,12 +64,13 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             return deferred.promise;
         };
         
-        this.fetchManagerDetails = function (data) {
+        this.fetchMinimalRateDetails = function (data) {
             var deferred = $q.defer();
 
-            var url = "/api/channel_managers/" + data.id;
+            var url = "api/rates/minimal",
+                params = data;
 
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
@@ -138,6 +139,10 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
                         deferred.reject(data);
                 });
                 return deferred.promise;
+        };
+
+        this.fetchManagerDetails = function(data) {
+            return ADBaseWebSrvV2.getJSON('/api/channel_managers/' + data.id);
         };
 
     }

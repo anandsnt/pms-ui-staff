@@ -493,7 +493,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		var onRateChangeSuccess = function(data) {
 			$scope.$emit('hideLoader');
-
+			$scope.allotmentConfigData.summary.commission_details = data.commission_details;
+			
 			if (!data.is_changed && !data.is_room_rate_available) {
 				showChangeDateNotPossiblePopup();
 				$scope.allotmentConfigData.summary.rate = summaryMemento.rate;

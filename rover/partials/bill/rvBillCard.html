@@ -114,7 +114,7 @@
 									<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
 									<div class="payment" ng-show="billTab.is_moved_to_ar">Moved to A/R</div>
 								</a>
-								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
+								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist && billTab.is_active && !billTab.is_control_code_exist && !billTab.is_folio_number_exists" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 							</li>
 							<li class="new-bill" ng-show="reservationBillData.bills.length < 10 && isStandAlone">
 								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
@@ -293,11 +293,13 @@
 					</div>
 					<!--Reverse checkout doesn't need signature-->
 					<div id="signature"
+						iscroll-stop-propagation
 						ui-jq="jSignature"
 						ui-options="signaturePluginOptions"
 						ng-mouseover="disableScroll()"
 						ng-mouseleave="enableScroll()"
-						div-touch-move-stop-propogate ng-show="showSignaturePad()" class="no-print">
+						div-touch-move-stop-propogate 
+						ng-show="showSignaturePad()" class="no-print">
 					</div>
 				</div>
 			</div>

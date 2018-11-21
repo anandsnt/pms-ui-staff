@@ -14,8 +14,49 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'isUsingExistingCardPayment': false,
             'paymentAction': '', // can be add card (ADD_CARD) or pay (PAY_AMOUNT),
             'paymentSuccess': false,
-            'paymentFailure': false
+            'paymentFailure': false,
+            'paymentTypeFetchCompleted': false,
+            'totalAmountPlusFees': 0,
+            'showFees': false,
+            'amountDue': 0,
+            'totalFees': 0
         };
+
+        $scope.$on("FETCH_PAYMENT_TYPES", function(event, data) {
+            $scope.callAPI(zsPaymentSrv.fetchAvailablePaymentTyes, {
+                params: {},
+                'successCallBack': function(paymentTypes) {
+                    var selectedPaymentType = _.find(paymentTypes, {
+                        name: data.paymentTypeName
+                    });
+                    var feeInfo = (selectedPaymentType &&
+                        selectedPaymentType.charge_code &&
+                        selectedPaymentType.charge_code.fees_information) || {};
+                    var amountDetails = sntPaymentSrv.calculateFee(data.amountToPay, feeInfo);
+                    var paymentParams = zsPaymentSrv.getPaymentData();
+
+                    if (amountDetails.showFees) {
+                        // for resetting service data
+                        paymentParams.total_value_plus_fees = amountDetails.totalOfValueAndFee;
+                        paymentParams.fees_amount = amountDetails.calculatedFee;
+                        paymentParams.fees_charge_code_id = amountDetails.feeChargeCode;
+
+                        // for diplaying
+                        $scope.screenMode.showFees = true;
+                        $scope.screenMode.totalAmountPlusFees = amountDetails.totalOfValueAndFee;
+                        $scope.screenMode.amountDue = amountDetails.defaultAmount;
+                        $scope.screenMode.totalFees = amountDetails.calculatedFee;
+                    } else {
+                        $scope.screenMode.totalAmountPlusFees = amountDetails.defaultAmount;
+                    }
+
+                    zsPaymentSrv.setPaymentData(paymentParams);
+                    $scope.screenMode.paymentTypeFetchCompleted = true;
+
+                    $scope.$emit('FETCH_PAYMENT_TYPES_COMPLETED');
+                }
+            });
+        });
 
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
@@ -45,16 +86,19 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$emit('showLoader');
             $scope.screenMode.errorMessage = '';
             $scope.screenMode.paymentInProgress = true;
-            $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
+
+            var paymentParams = zsPaymentSrv.getSubmitPaymentParams();
+
+            $scope.$broadcast('INITIATE_CBA_PAYMENT', paymentParams);
         };
 
         var setErrorMessageBasedOnResponse = function(errorMessage) {
             var message = '';
 
-            if (errorMessage.includes('OPERATOR TIMEOUT')) {
+            if (errorMessage && errorMessage.includes('OPERATOR TIMEOUT')) {
                 // 143 TRANSACTION FAILED.:OPERATOR TIMEOUT
                 message = 'OPERATION TIMED OUT';
-            } else if (errorMessage.includes('104 Connection with an external device not established')) {
+            } else if (errorMessage && errorMessage.includes('104 Connection with an external device not established')) {
                 // 104 CONNECTION WITH AN EXTERNAL DEVICE NOT ESTABLISHED.
                 message = 'PLEASE RECHECK THE CONNECTION WITH THE EXTERNAL DEVICE';
             } else {
@@ -73,11 +117,16 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
         };
 
+        var cbaResponse,
+            cbaPaymentAttempt = 0;
+
         /**
          * Method to initate listeners that handle CBA payment scenarios
          * @returns {undefined} undefined
          */
         $scope.initiateCBAlisteners = function () {
+            cbaPaymentAttempt = 0;
+            
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
                 showErrorMessage(errorMessage);
@@ -86,6 +135,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             });
 
             var listenerCBAPaymentSuccess = $scope.$on('CBA_PAYMENT_SUCCESS', function(event, response) {
+                cbaResponse = response;
+                cbaPaymentAttempt++;
+
                 var params = zsPaymentSrv.getSubmitPaymentParams();
 
 
@@ -106,9 +158,36 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         $scope.$emit('CBA_PAYMENT_COMPLETED');
                     },
                     function(errorMessage) {
-                        $log.warn(errorMessage);
-                        showErrorMessage(errorMessage);
-                        paymentFailureActions();
+                        errorMessage = _.isEmpty(errorMessage) ? 'Payment Failed' : errorMessage;
+
+                        if (cbaPaymentAttempt <= $scope.zestStationData.hotelSettings.cba_payment_retry_count) {
+                            $scope.screenMode.value = 'RETRY_CBA_PAYMENT';
+                            $scope.$emit('hideLoader');
+                            $scope.screenMode.paymentInProgress = false;
+                            $scope.screenMode.paymentSuccess = false;
+
+                            var cbaRetryTime = $scope.zestStationData.hotelSettings.cba_payment_retry_time;
+                            
+                            $scope.screenMode.retryCounter = cbaRetryTime;
+                           
+                            $scope.onTimeout = function() {
+                                $scope.screenMode.retryCounter--;
+                                mytimeout = $timeout($scope.onTimeout, 1000);
+                                if ($scope.screenMode.retryCounter === 0) {
+                                    $timeout.cancel(mytimeout);
+                                    $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
+                                    $scope.$emit('CBA_PAYMENT_SUCCESS', cbaResponse);
+                                }
+                            };
+                            var mytimeout = $timeout($scope.onTimeout, 1000);
+                            
+                        } else {
+                            $log.warn(errorMessage);
+                            showErrorMessage(errorMessage);
+                            paymentFailureActions();
+                            cbaPaymentAttempt = 0;
+                            $scope.screenMode.value = 'CBA_PAYMENT_FAILED_SEE_STAFF';
+                        }
                     }
                 );
             });
@@ -228,7 +307,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'is_emv_request': true,
                     'reservation_id': $scope.reservation_id.toString(),
                     'add_to_guest_card': false,
-                    'amount': $scope.balanceDue,
+                    'amount': $scope.screenMode.totalAmountPlusFees,
                     'bill_number': 1,
                     'payment_type': 'CC'
                 };
@@ -245,7 +324,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'is_emv_request': false,
                     'reservation_id': $scope.reservation_id,
                     'add_to_guest_card': false,
-                    'amount': $scope.balanceDue,
+                    'amount': $scope.screenMode.totalAmountPlusFees,
                     'bill_number': 1,
                     'payment_type': 'CC',
                     'payment_type_id': $scope.cardDetails.id
@@ -326,7 +405,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "card_expiry": cardExpiry,
                         "credit_card": swipedCardData.RVCardReadCardType,
                         "is_emv_request": false,
-                        "amount": $scope.balanceDue,
+                        "amount": $scope.screenMode.totalAmountPlusFees,
                         "bill_number": 1
                     };
 
@@ -401,6 +480,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
 
         };
+
 
         $scope.$on('START_MLI_CARD_COLLECTION', function() {
             var hideLoader = true;

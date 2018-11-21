@@ -100,6 +100,10 @@ module.exports = {
 				filename: roverJsListRoot + 'actionJsAssetList.js',
 				babelify: true
 			},
+			'rover.quicktext': {
+				filename: roverJsListRoot + 'quicktextJsAssetList.js',
+				babelify: true
+			},
 			'rover.companycardsearch': {
 				filename: roverJsListRoot + 'companyCardSearchJsAssetList.js',
 				babelify: false

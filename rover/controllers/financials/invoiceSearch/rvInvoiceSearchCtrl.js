@@ -15,7 +15,9 @@ sntRover.controller('RVInvoiceSearchController',
 
 		const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
 			that = this,
-			PER_PAGE = 10;	
+			PER_PAGE = 10;
+			
+		$scope.currentActivePage = 1;	
 
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -51,6 +53,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
+			$scope.currentActivePage = page || 1;
 			if ($scope.invoiceSearchData.query.length > 1) {
 				$scope.invoiceSearchFlags.isQueryEntered = true;
 				const successCallBackOfPayment = (data) => {						
@@ -91,6 +94,35 @@ sntRover.controller('RVInvoiceSearchController',
 		var updateInformationalInvoiceListener = $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
 			$scope.isInformationalInvoice = isInformationalInvoice;
 		});
+
+		/*
+	     * Function to get invoice button class
+	     */
+		$scope.getInvoiceButtonClass = function(parentIndex, billIndex) {
+
+			var invoiceButtonClass = "blue";
+
+			if (!$scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_active && $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_folio_number_exists && $scope.roverObj.noReprintReEmailInvoice) {
+				if ($scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_printed_once && $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_emailed_once) {
+					invoiceButtonClass = "grey";
+				}
+			}
+			return invoiceButtonClass;
+		};
+		/*
+	     * Function to get invoice button class
+	     */
+		$scope.isInvoiceButtonDisabled = function(parentIndex, billIndex) {
+
+			var isDisabledInvoice = false;
+
+			if (!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists && $scope.roverObj.noReprintReEmailInvoice) {
+				if ($scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_printed_once && $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_emailed_once) {
+					isDisabledInvoice = true;
+				}
+			}
+			return isDisabledInvoice;
+		};
 		
 		/*
 		 * Opens the popup which have the option to choose the bill layout while print/email
@@ -99,11 +131,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.showFormatBillPopup = function(parentIndex, billIndex) {
 			$scope.billNo = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].bill_no;
-			if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
-				$scope.isSettledBill = !$scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_control_code_exist;
-			} else {
-				$scope.isSettledBill = true;
-			}			
+	
 			$scope.isInformationalInvoice = false;
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$scope.invoiceSearchFlags.isClickedReservation = true;
@@ -117,7 +145,10 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.clickedInvoiceData = $scope.invoiceSearchData.reservationsList.results[parentIndex];
 				$scope.invoiceSearchFlags.isClickedReservation = false;
 			}
-			
+			$scope.isSettledBill = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_active;
+			$scope.isEmailedOnce = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_emailed_once;
+			$scope.isPrintedOnce = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_printed_once;
+			$scope.isFolioNumberExists = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_folio_number_exists;
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',
@@ -179,6 +210,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 						// remove the orientation after similar delay
 						removePrintOrientation();
+						$scope.searchInvoice($scope.currentActivePage);
 					}, 1000);
 
 				},
@@ -247,6 +279,7 @@ sntRover.controller('RVInvoiceSearchController',
 				api: $scope.searchInvoice,
 				perPage: PER_PAGE
 			};
+			$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);

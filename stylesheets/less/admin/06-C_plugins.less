@@ -389,6 +389,170 @@
                     }
                 }
             }
+
+            /* Legal Settings */
+            &.legal-settings {
+                width: 670px;
+                height: 460px;
+                padding: 0;
+                .float;
+
+                &.small {
+                    height: 330px;
+                }
+
+                .content-left {
+                    width: 200px;
+                    height: 100%;
+                    background: rgba( 0, 0, 0, 0.1 );
+                    overflow: hidden;
+                    .box-shadow(inset -1px 1px 2px rgba(0,0,0,.15));
+                    .pull-left;
+
+                    ul {
+                        li {
+                            height: 50px;
+                            line-height: 50px;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            padding: 0 20px;
+                            text-align: right;
+                            cursor: pointer;
+                            margin: 0;
+                            border-bottom: 1px solid rgba( 0,0,0,0.15 );
+                            position: relative;
+
+                            .icons {
+                                background-size: 15px;
+                                width: 17px;
+                                height: 15px;
+                                position: absolute;
+                                left: 10px;
+                                top: 0;
+                                bottom: 0;
+                                margin: auto;
+
+                                &.icon-action { background-position: 2px -570px; }
+                                &.icon-success { background-position: 3px -555px; }
+                            }
+
+                            &.active {
+                                background: @background;
+                                font-weight: 600;
+                                .box-shadow( -2px 1px 2px rgba(0,0,0,.15));
+                            }
+                        }
+                    }
+                }
+
+                .content-right {
+                    height: 100%;
+                    padding: 20px;
+                    .calc-width(100, 200);
+                    .pull-left;
+
+                    .content {
+                        position: relative;
+                        height: 100%;
+
+                        .h2 { margin-bottom: 40px }
+
+                        .content-status {
+                            font-size: 24px;
+                            text-transform: uppercase;
+                            color: @grey3;
+                            text-align: center;
+                            margin-top: 20px;
+                            margin-top: 20px;
+
+                            .icons {
+                                width: 50px;
+                                height: 50px;
+                                margin: 0 auto;
+                            }
+
+                            .status-text { 
+                                margin: 10px 0 0 0;
+                                font-weight: 600;
+
+                                &.green {
+                                    color: @green;
+                                }
+
+                                &.orange {
+                                    color: @orange;
+                                }
+                            }
+                        }
+
+                        .scrollable {
+                            position: relative;
+                            padding-right: 10px;
+                            overflow-y: scroll;
+                            .calc-height(100, 160);
+
+                            .iScrollVerticalScrollbar {
+                                right: 0;
+
+                                .iScrollIndicator {
+                                    background: rgba( 0, 0, 0, 0.1 );
+                                }
+                            }
+                        }
+
+                        .table-settings {
+                            width: 100%;
+
+                            &.no-border {
+                                td {
+                                    border-top: none;
+                                }
+                            }
+
+                            td {
+                                height: 50px;
+                                vertical-align: middle;
+                                border-top: 1px solid rgba( 0,0,0,0.15 );
+
+                                input,
+                                .select { 
+                                    width: 100%;
+                                    margin: 10px 0;
+                                }
+                            }
+
+                            td:last-child {
+                                width: 150px;
+                                text-align: right;
+
+                                input,
+                                .select,
+                                .switch-button {
+                                    float: right;
+                                }
+
+                            }
+                        }
+
+                        .actions {
+                            position: absolute;
+                            width: 100%;
+                            bottom: 0;
+                            left: 0;
+                            text-align: center;
+                            border-top: 1px solid rgba(0,0,0,.1);
+                            padding: 20px 0;
+
+                            .button {
+                                display: inline-block;
+                                width: auto;
+                                height: 40px;
+                                line-height: 40px;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

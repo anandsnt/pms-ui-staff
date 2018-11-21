@@ -5,7 +5,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
     $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation); 
-    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill); 
+    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill && $scope.reservationBillData.is_bill_lock_enabled); 
     /*
     *  Get the request params for bill settings info
     */
@@ -184,6 +184,68 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         emailRequest.to_address = $scope.data.to_address;
         emailRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
+    };
+
+    /*
+     * Function to get print button class
+     */
+    $scope.getPrintButtonClass = function() {
+
+        var printButtonClass = "blue";
+
+        if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
+            if ($scope.isPrintedOnce) {
+                printButtonClass = "grey";
+            }
+        }
+        return printButtonClass;
+    };
+    /*
+     * Function to get print button class
+     */
+    $scope.isPrintButtonDisabled = function() {
+
+        var isPrintButtonDisabled = false;
+
+        if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
+            if ($scope.isPrintedOnce) {
+                isPrintButtonDisabled = true;
+            }
+        }
+        return isPrintButtonDisabled;
+    };
+
+    /*
+     * Function to get email button class
+     */
+    $scope.getEmailButtonClass = function() {
+
+        var emailButtonClass = "blue";
+
+        if (!$scope.data.to_address) {
+            emailButtonClass = "grey";
+        } else if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
+            if ($scope.isEmailedOnce) {
+                emailButtonClass = "grey";
+            }
+        }
+        return emailButtonClass;
+    };
+    /*
+     * Function to get email button disabled or not
+     */
+    $scope.isEmailButtonDisabled = function() {
+
+        var isEmailButtonDisabled = false;
+
+        if (!$scope.data.to_address) {
+            isEmailButtonDisabled = true;
+        } else if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
+            if ($scope.isEmailedOnce) {
+                isEmailButtonDisabled = true;
+            }
+        }
+        return isEmailButtonDisabled;
     };
 
     /*

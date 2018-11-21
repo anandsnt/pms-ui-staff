@@ -10,6 +10,10 @@
             <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                 <a translate>CONTRACTS</a>
             </li>
+            <li ng-class="{'ui-tabs-active': currentSelectedTab === 'statistics'}" ng-click="switchTabTo($event, 'statistics')" ng-if="isStandAlone && !isHourlyRateOn">
+                <a translate>STATISTICS</a>
+                <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Statistics" fs-toggle-class="fullscreen-card">Fullscreen</button>                            
+            </li>
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-notes'}" ng-click="switchTabTo($event, 'cc-notes')">
                 <a translate>Notes</a>
             </li>
@@ -34,6 +38,8 @@
         <span ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></span>
         <!-- Travel Agent - Contract -->
         <span ng-controller="cardContractsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></span>
+        <!--  Statistics -->
+        <span ng-include="'/assets/partials/companyCard/rvCompanyCardTravelAgentStatistics.html'"></span>
         <!-- Travel Agent - Commissions -->
         <span ng-include="'/assets/partials/companyCard/rvCompanyCardCommissions.html'" ng-controller="companyCardCommissionsCtrl"></span>
         <!-- Travel Agent - AR Accounts -->

@@ -22,7 +22,7 @@
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-			var showOnlyPrimaryGuest = false;
+			var showOnlyPrimaryGuest = !$scope.zestStationData.kiosk_scan_all_guests;
 
 			if (showOnlyPrimaryGuest) {
 				$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {

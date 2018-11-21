@@ -47,6 +47,17 @@
                     <h3><span translate>COLLECT_USER_NATIONALITY </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.check_in_collect_nationality" label="{{'COLLECT_USER_NATIONALITY'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-form-sub-title title="COUNRTY_FILTER_INSTRUCTIONS" hide="!zestSettings.check_in_collect_nationality"></ad-form-sub-title>
+                <ad-checkbox is-checked="zestSettings.kiosk_enforce_country_sort" 
+                                label="{{'ENFORCE_COUNTRY_SORT'| translate}}" 
+                                div-class="full-width" 
+                                is-disabled="zestSettings.use_free_form_country_selection" 
+                                is-hide="!zestSettings.check_in_collect_nationality"></ad-checkbox>
+                <ad-checkbox is-checked="zestSettings.use_free_form_country_selection" 
+                                label="{{'FREE_FORM_COUNTRY_SELECT'| translate}}" 
+                                div-class="full-width" 
+                                is-disabled="zestSettings.kiosk_enforce_country_sort" 
+                                is-hide="!zestSettings.check_in_collect_nationality"></ad-checkbox>
             </fieldset>
             <fieldset class="holder right">
                 <div class="form-title full-width">
@@ -84,16 +95,7 @@
                 <ad-toggle-button is-checked="zestSettings.kiosk_display_terms_and_condition" label="{{'DISPLAY_TERMS_AND_CONDITIONS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
-
             <fieldset class="holder right">
-                <div class="form-title full-width">
-                    <h3><span translate>ADDRESS_COUNTRY_LIST </span> </h3>
-                </div>
-                <ad-toggle-button is-checked="zestSettings.kiosk_enforce_country_sort" label="{{'ENFORCE_COUNTRY_SORT'| translate}}" div-class="full-width"></ad-toggle-button>
-            </fieldset>
-
-
-            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>VALIDATE_FIRST_NAME </span> </h3>
                 </div>
@@ -101,7 +103,7 @@
             </fieldset>
 
 
-            <fieldset class="holder right">
+            <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>ADD_UPDATE_GUEST_DETAILS </span> </h3>
                 </div>
@@ -109,7 +111,7 @@
                 <ad-toggle-button is-checked="zestSettings.kiosk_collect_guest_address" label="{{'COLLECT_GUEST_ADDRESS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
-            <fieldset class="holder left">
+            <fieldset class="holder right">
                 <div class="form-title full-width">
                     <h3>
                         <span translate>ADD_LOYALTY_PGMS</span>

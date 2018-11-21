@@ -28,7 +28,9 @@ function(
             url: '/guestcarddetails',
             params: {
                 guestId: '',
-                query: ''
+                query: '',
+                isBackToStatistics: null,
+                selectedStatisticsYear: null
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',

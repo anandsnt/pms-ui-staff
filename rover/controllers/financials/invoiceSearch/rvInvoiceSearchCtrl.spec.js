@@ -31,6 +31,8 @@ describe('RVInvoiceSearchController', function () {
                     $scope = _$rootScope_.$new();
                 });
 
+                $rootScope.roverObj = {};                
+
                 rvInvoiceSearchController = $controller('RVInvoiceSearchController', {
                     $scope: $scope
                 });

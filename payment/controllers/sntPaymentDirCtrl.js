@@ -1,8 +1,8 @@
 angular.module('sntPay').controller('sntPaymentController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', '$location', 'PAYMENT_CONFIG',
-        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity',
+        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity', 'rvPermissionSrv',
         function ($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
-                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity) {
+                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity, rvPermissionSrv) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
@@ -99,6 +99,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     // if fee was calculated wrt to payment type
                     params.postData.fees_amount = $scope.feeData.calculatedFee;
                     params.postData.fees_charge_code_id = $scope.feeData.feeChargeCode;
+                    params.postData.total_value_plus_fees = $scope.feeData.totalOfValueAndFee;
                 }
 
                 if ($scope.isDisplayRef) {
@@ -684,10 +685,22 @@ angular.module('sntPay').controller('sntPaymentController',
                                     'ar_type': 'company'
                                 });
                             } else {
-                                promptCreateAR({
-                                    account_id: data.company_id,
-                                    is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
-                                });
+
+                                if (rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT')) {
+                                    promptCreateAR({
+                                        account_id: data.company_id,
+                                        is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                                    });
+                                } else {
+                                    $scope.account_id = data.company_id;
+                                    ngDialog.open({
+                                        template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+                                        controller: 'RVAccountReceivableMessagePopupCtrl',
+                                        className: '',
+                                        scope: $scope
+                                    });
+                                }   
+
                             }
                         } else if (data.travel_agent_present) {
                             if (data.travel_agent_ar_attached) {
@@ -695,10 +708,21 @@ angular.module('sntPay').controller('sntPaymentController',
                                     'ar_type': 'travel_agent'
                                 });
                             } else {
-                                promptCreateAR({
-                                    account_id: data.travel_agent_id,
-                                    is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
-                                });
+
+                                if (rvPermissionSrv.getPermissionValue('CREATE_AR_ACCOUNT')) {
+                                    promptCreateAR({
+                                        account_id: data.travel_agent_id,
+                                        is_auto_assign_ar_numbers: data.is_auto_assign_ar_numbers
+                                    });
+                                } else {
+                                    $scope.account_id = data.travel_agent_id;
+                                    ngDialog.open({
+                                        template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
+                                        controller: 'RVAccountReceivableMessagePopupCtrl',
+                                        className: '',
+                                        scope: $scope
+                                    });
+                                }                                 
                             }
                         } else {
                             $scope.errorMessage = [$filter('translate')('ACCOUNT_ID_NIL_MESSAGE_PAYMENT')];
@@ -805,7 +829,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmedDBpayment) {
                     $scope.$emit('HIDE_BILL_PAYMENT_POPUP');
-                    confirmDirectBillPayment();
+                    confirmDirectBillPayment(params.postData);
                     return;
                 }
 
@@ -854,7 +878,14 @@ angular.module('sntPay').controller('sntPaymentController',
                     feeInfo,
                     usingChipAndPin = isEMVEnabled && !$scope.payment.isManualEntryInsideIFrame;
 
-                if (!$scope.hotelConfig.isStandAlone) {
+                // For overlays we are not handling Fees from our side except for CBA payment type
+                if (!$scope.hotelConfig.isStandAlone && $scope.selectedPaymentType !== 'CBA') {
+                    $scope.feeData = {
+                        calculatedFee: '',
+                        totalOfValueAndFee: '',
+                        showFee: false,
+                        feeChargeCode: ''
+                    };
                     return;
                 }
                 selectedPaymentType = _.find($scope.paymentTypes, {

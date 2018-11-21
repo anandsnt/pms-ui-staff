@@ -5,8 +5,10 @@
    </header>
    <section class="content-scroll">
       <ul class="dashboard-items float">
-         <li ng-repeat="submenu in toolsMenu.sub_components">
+      <!-- ng-hide added CICO-57726 -->
+         <li ng-repeat="submenu in toolsMenu.sub_components" ng-hide="submenu.state === 'admin.resyncRates'">
             <a ng-click="openSubmenu($event, submenu.state)" class="{{ submenu.icon_class }}">{{ submenu.name }}</a>
+            
             <a ng-click="openSubmenu($event, submenu.state)" class="text">{{ submenu.name }}</a>
          </li>
       </ul>  

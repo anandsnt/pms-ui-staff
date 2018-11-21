@@ -48,7 +48,15 @@ module.exports = {
             'farmers-daughter': [themeCSSRoot + 'farmers-daughter.less'],
             'park-james': [themeCSSRoot + 'park-james.less'],
             'annapolis': [themeCSSRoot + 'annapolis.less'],
-            'origin': [themeCSSRoot + 'origin.less']
+            'origin': [themeCSSRoot + 'origin.less'],
+            'kinney': [themeCSSRoot + 'kinney.less'],
+            'hubert': [themeCSSRoot + 'hubert.less'],
+            'de-blend': [themeCSSRoot + 'de-blend.less'],
+            'anthony': [themeCSSRoot + 'anthony.less'],
+            'stewart': [themeCSSRoot + 'stewart.less'],
+            'university-inn': [themeCSSRoot + 'university-inn.less'],
+            'cedar-court': [themeCSSRoot + 'cedar-court.less'],
+            'sister-city': [themeCSSRoot + 'sister-city.less']
         };
     }
 };
