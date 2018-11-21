@@ -1,0 +1,54 @@
+<section id="main" class="centered test add_remove_main" role="main">
+   <div id="content" class='add-guest-mode-content'>
+      <h1 translate>
+         Verify Passport
+      </h1>
+      <h2 translate>
+         Reservation Details
+      </h2>
+      <ul id="selection" class="editable">
+         <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)'>
+            <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
+               <span class="passport-scan-status">
+               {{guest.idScanStatus}}
+               </span>
+               <!-- guest icons, adult, student, infant -->
+               <!-- primaryGuest is always an adult , and wont have guest_type included -->
+               <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
+               <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
+               <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
+               <span ng-if='guest.last_name !== guest.first_name'>
+               {{guest.first_name}}&nbsp;{{guest.last_name}}
+               </span>
+               <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
+               {{guest.full_name}}    
+               </span>
+               <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+               {{guest.first_name}}    
+               </span>
+            </span>
+         </li>
+      </ul>
+   </div>
+   <div>
+      <div id="actions" class="add-guests-footer">
+         <button type="button" class="button prev add-guest-passport">
+            <!-- DUMMY BUTTON -->
+         </button>
+         <div class="button-group">
+            <button type="button" class="button only-icon next" touch-press="paginationAction(false)" ng-class='{"disabled": pageData.disablePreviousButton}'>
+               <div ng-include="icons.url.left_arrow_icon"></div>
+            </button>
+            <button type="button" class="button only-icon next" touch-press="paginationAction(true)" ng-class='{"disabled": pageData.disableNextButton}'>
+               <div ng-include="icons.url.right_arrow_icon"></div>
+            </button>
+         </div>
+         <button type="button" class="button next" ng-show="areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" touch-press="scanCompleted(); resetTime();" translate>
+         NEXT
+         </button>
+         <button type="button" class="button next" ng-show="areAllGuestsApproved() && (idScanData.verificationMethod !== 'STAFF' || idScanData.staffVerified)" touch-press="doneButtonClicked(); resetTime();" translate>
+         DONE
+         </button>
+      </div>
+   </div>
+</section>

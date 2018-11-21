@@ -50,6 +50,12 @@
 		// conduct survey
 		else if ($state.href('conductSurvey') !== null && $rootScope.conductSurvey && !$rootScope.skipBalanceconductSurvey) {
 			$state.go('conductSurvey'); // conduct Survey
+		} 
+		// Collect guest ID
+		else if ($state.href('sntIDScan') !== null ) {
+			$state.go('sntIDScan', {
+				params: JSON.stringify({"mode": "PRE_CHECKIN"})
+			});
 		} else {
 			// this page will be used again after email entry
 			// So once preckin is completed we store some details

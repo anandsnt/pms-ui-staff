@@ -41,6 +41,12 @@
 	else if ($rootScope.isCheckedin) {
 		$state.go('checkinSuccess');
 	}
+	// Collect guest ID
+	else if ($state.href('sntIDScan') !== null ) {
+		$state.go('sntIDScan', {
+				params: JSON.stringify({"mode": "CHECKIN"})
+			});
+	}
 	else {
 		$scope.pageValid = true;
 	}

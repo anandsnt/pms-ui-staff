@@ -22,7 +22,7 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates', []);
-var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad']);
+var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad', 'sntIDCollection']);
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope) {
 	$state.go('guestwebRoot');
 	/*

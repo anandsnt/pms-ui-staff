@@ -11,6 +11,7 @@ module.exports = {
         var sharedHtml = 'guestweb/**/shared/**/*.html';
         var zestHtml = 'guestweb/**/zest/partials/';
         var commonNonMgmTemplates = ['guestweb/**/common_templates/partials/checkin/**.html',
+                'guestweb/**/common_templates/partials/checkin/**/*.html',
                 'guestweb/**/common_templates/partials/checkout/**.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
                 checkoutNowPartials + '*.html',
