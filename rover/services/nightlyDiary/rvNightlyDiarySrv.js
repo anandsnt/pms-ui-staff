@@ -188,5 +188,22 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+
+        /*
+         * Fetch Available Rooms
+         * @param {data} object
+         * return object
+         */
+        this.retrieveAvailableRooms = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/rooms/retrieve_available_rooms';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
     }
 ]);
