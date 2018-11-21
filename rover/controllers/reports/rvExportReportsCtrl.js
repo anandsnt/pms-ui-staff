@@ -489,7 +489,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Reservations': true,
                 'Rooms': true,
                 'Future Reservations': true,
-                'Journal Export': true
+                'Journal Export': true,
+                'Clairvoyix Stays Export': true,
+                'Clairvoyix Reservations Export': true
             };
 
             var forRunOnceOnly = {
@@ -501,22 +503,27 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Last Week Reservations': true,
                 'Past Reservations - Monthly': true,
                 'Nationality Statistics': true,
-                'Commissions': true
+                'Commissions': true,
+                'Clairvoyix Stays Export': true,
+                'Clairvoyix Reservations Export': true
             };
 
             var forWeekly = {
                 'Future Reservations': true,
-                'Last Week Reservations': true
+                'Last Week Reservations': true,
+                'Clairvoyix Reservations Export': true
             };
             var forMonthly = {
                 'Future Reservations': true,
                 'Past Reservations - Monthly': true,
                 'Nationality Statistics': true,
-                'Commissions': true
+                'Commissions': true,
+                'Clairvoyix Reservations Export': true
             };
 
             var forHourly = {
-                'Future Reservations': true
+                'Future Reservations': true,
+                'Clairvoyix Reservations Export': true
             };
 
             if ( forHourly[item.report.title] ) {

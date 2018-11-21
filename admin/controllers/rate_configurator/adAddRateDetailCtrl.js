@@ -41,6 +41,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 });
 
                 $scope.updateSelectedTaskslist();
+                $scope.$emit('hideLoader');
            };
             var failureCallBack = function(error) {
                 $scope.errorMessage = error;
@@ -426,6 +427,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                                 });
 
             $scope.rateData.tax_inclusive_or_exclusive = selectedObj.tax_inclusive_or_exclusive;
+            // CICO-56637 - For new rates show the commission charge codes when selecting charge code
+            $scope.rateData.commission_details.charge_codes = selectedObj.taxes;
+            $scope.rateData.commission_details.charge_codes.push({ id: selectedObj.id, name: selectedObj.description, code: selectedObj.name });
         };
 
         $scope.updateSelectedTaskslist = function () {
@@ -468,7 +472,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.callAPI(ADReservationToolsSrv.reSyncRates, options);
         };
+        // CICO-56662
+        var listener = $scope.$on('INIT_RATE_DETAILS', function() {
+            $scope.init();
+        });
 
-        $scope.init();
+        $scope.$on('$destroy', listener );
     }
 ]);

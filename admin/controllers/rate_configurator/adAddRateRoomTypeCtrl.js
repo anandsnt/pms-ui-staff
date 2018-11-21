@@ -10,7 +10,6 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
         $scope.nonAssignedroomTypes = [];
         $scope.assignedRoomTypes = [];
         $scope.availableRoomTypes = [];
-        $scope.fetchAllRoomTypes();
     };
 
     /**
@@ -265,9 +264,14 @@ admin.controller('ADAddRateRoomTypeCtrl', ['$scope', 'ADRatesAddRoomTypeSrv', '$
         $scope.selectedUnAssignedRoomIndex = -1;
         lastDropedTime = new Date();
     };
-
-
+    
     $scope.init();
+    // CICO-56662
+    var listener = $scope.$on('INIT_ROOM_TYPES', function() {
+        $scope.fetchAllRoomTypes();
+    });
+
+    $scope.$on('$destroy', listener );
 
 }]);
 

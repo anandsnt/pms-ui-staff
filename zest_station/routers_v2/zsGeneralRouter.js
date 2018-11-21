@@ -56,6 +56,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				},
 				defaultTranslations: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchDefaultTranslations();
+				},
+				configurableImagesData: function(zsGeneralSrv) {
+					return zsGeneralSrv.getImages();
 				}
 			}
 		});
@@ -103,6 +106,12 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         	url: '/manualKeyPickUp/:reservation_id/:room_no/:first_name/:guest_id/:email/:mode',
             templateUrl: '/assets/partials_v2/zsManualKeyPickup.html',
             controller: 'zsManualKeyPickUpCtrl'
+        });
+
+        $stateProvider.state('zest_station.sntIDScan', {
+        	url: '/sntIDScan/:params',
+            templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
+            controller: 'zsSntIDScanCtrl'
         });
 
 	}

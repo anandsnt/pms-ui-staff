@@ -116,6 +116,36 @@
                 <label for="group-pickup" TRANSLATE>PICK_UP</label>
                 <input id="group-pickup" ng-model="groupConfigData.summary.rooms_pickup" type="text" readonly ng-disabled="isInStaycardScreen()"/>
             </div>
+             <!-- If TA is liked to this group, show commission toggle  -->
+            <div class="entry commission margin" ng-show="groupConfigData.summary.group_id && groupConfigData.summary.travel_agent.id">
+                <label for="travel-agent-commission" translate>COMMISSION</label>
+                <div class="switch-button" ng-class="{'on': groupConfigData.summary.commission_details.is_on}"> <!-- Add class 'on' when L94 is checked -->
+                    <input id="travel-agent-commission" ng-model="groupConfigData.summary.commission_details.is_on" type="checkbox" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+                <!-- Show only when commission is turned on: -->
+                <input ng-model="groupConfigData.summary.commission_details.value" type="text" ng-show="groupConfigData.summary.commission_details.is_on"/>
+                <div class="select" ng-show="groupConfigData.summary.commission_details.is_on">
+                    <select name="travel-agent-commission-type" ng-model="groupConfigData.summary.commission_details.type">
+                        <option value="percent">%</option>
+                        <option value="amount">{{currencySymbol}}</option>
+                    </select>
+                </div>
+                <!-- Show  only when commission is turned on & type is set to $ -->
+                <div class="select" ng-show="groupConfigData.summary.commission_details.is_on && groupConfigData.summary.commission_details.type === 'amount'">
+                    <select ng-model="groupConfigData.summary.commission_details.commission_type">
+                        <option value="NIGHT" translate>PER_STAY</option>
+                        <option value="STAY" translate>PER_NIGHT</option>
+                    </select>
+                </div>
+            </div>
             <div class="entry full-width with-button">
                 <label for="group-rate" translate>RATE</label>
                 <div class="select">
@@ -157,6 +187,7 @@
                             ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
                     </select>
                 </div>
+                <textarea rows="4" ng-show="groupConfigData.summary.is_tax_exempt" ng-model="groupConfigData.summary.tax_exempt_ref_text" placeholder="{{'TAX_EXEMPT_REFERENCE' | translate}}" maxlength="200"></textarea>
             </div>
 
             <!-- Notes -->

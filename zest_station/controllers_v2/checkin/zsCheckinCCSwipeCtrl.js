@@ -215,6 +215,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var goToSwipeError = function() {
+            $scope.$emit('hideLoader');
+            $scope.$emit('RUN_APPLY');
             if (atCardSwipeScreen()) {
                 $scope.zestStationData.waitingForSwipe = false;
                 $scope.swipeTimeout = false;

@@ -265,7 +265,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var requestControlDigitsFromBlackBox = function() {
 
 			var successCallBackOfBlackBoxApi = function(data) {
+				if ($scope.transactionsDetails.is_bill_lock_enabled) {					
 					$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active = false;
+				}
 			},
 			failureCallBackOfBlackBoxApi = function(errorMessage) {
 				$scope.errorMessage = errorMessage;
@@ -294,16 +296,18 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if (balanceAmount === "0.0" && !isFolioNumberExists) {
 
 				var successCallBackOfGenerateFolioNumber = function(data) {
+					if ($scope.transactionsDetails.is_bill_lock_enabled) {
 						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active = false;
-						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists = true;
-					},
-					paramsToService = {
-						'bill_id': billId
-					},
-				    options = {
-						params: paramsToService,
-						successCallBack: successCallBackOfGenerateFolioNumber
-					};
+					}
+					$scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+				},
+				paramsToService = {
+					'bill_id': billId
+				},
+				options = {
+					params: paramsToService,
+					successCallBack: successCallBackOfGenerateFolioNumber
+				};
 							
 				$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
 			}		
@@ -315,7 +319,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return undefined
 		 */
 		var onTransactionFetchSuccess = function(data) {
-
+			$scope.hasPrintFolioEnabled = data.is_print_folio_enabled;
 			$scope.transactionsDetails = data;
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
@@ -329,7 +333,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} 
 			if (currentActiveBill.balance_amount === "0.0") {
 
-				if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+				if ($scope.shouldGenerateFolioNumber) {
 					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists);
 				}
 			}
@@ -573,14 +577,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			.then(function() {
 				sntActivity.stop("SHOW_PAYMENT_MODEL");
 				$scope.passData = getPassData();
+				$scope.paymentModalOpened = true;
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
 					className: '',
 					controller: 'RVAccountsTransactionsPaymentCtrl',
 					closeByDocument: false,
 					scope: $scope
-				});
-				$scope.paymentModalOpened = true;
+				});			
 			});
 		};
 
@@ -832,6 +836,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
 					$scope.showEmailSentStatusPopup();
+					$scope.switchTabTo('TRANSACTIONS');
 				},
 				mailFailed = function(errorMessage) {
 					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
@@ -852,7 +857,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedPrint = function(requestParams) {
-				printBillCard(requestParams);
+			$scope.closeDialog();
+			printBillCard(requestParams);
 		};
 
 		var printBillCard = function(requestParams) {
@@ -881,7 +887,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.nav-bar').removeClass('no-print');
 					$('.cards-header').removeClass('no-print');
 					$('.card-tabs-nav').removeClass('no-print');
-
+					$scope.switchTabTo('TRANSACTIONS');
 				}, 100);
 			};
 
@@ -950,6 +956,35 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var successFetchOfAllReqdForTransactionDetails = function(data) {
 			// $scope.$emit('hideLoader');
 		};
+
+		/*
+	     * Function to get invoice button class
+	     */
+	    $scope.getInvoiceButtonClass = function() {
+
+			var invoiceButtonClass = "blue";
+
+			if (!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists && $scope.roverObj.noReprintReEmailInvoice) {
+				if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_printed_once && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_emailed_once) {
+					invoiceButtonClass = "grey";
+				}
+			}
+			return invoiceButtonClass;
+	    };
+	    /*
+	     * Function to get invoice button class
+	     */
+	    $scope.isInvoiceButtonDisabled = function() {
+
+			var isDisabledInvoice = false;
+
+			if (!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists && $scope.roverObj.noReprintReEmailInvoice) {
+				if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_printed_once && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_emailed_once) {
+					isDisabledInvoice = true;
+				}
+			}
+			return isDisabledInvoice;
+	    };
 
 		/**
 		 * when we failed in fetching any of the data required for transaction details,
@@ -1094,6 +1129,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNo = billNo;
 			$scope.isSettledBill = isActiveBill;
 			$scope.isInformationalInvoice = false;
+			$scope.isEmailedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_emailed_once;
+	    	$scope.isPrintedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_printed_once;
+	    	$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',

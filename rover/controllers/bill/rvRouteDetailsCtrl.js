@@ -80,6 +80,10 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         isAddPayment = false;
     };
 
+    $scope.checkBillStatus = function() {
+        return !$scope.reservationBillData.bills[0].is_active;
+    };
+
     /**
      * function to show the payment list on cancelling or adding new payment
      */
@@ -757,11 +761,15 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     var saveRouteAPICall = function() {
 
         $scope.saveSuccessCallback = function(data) {
-            $scope.reservationBillData.bills[data.bill_number - 1] = {
-                bill_id: data.id,
-                bill_number: data.bill_number,
-                total_amount: 0
-            };
+            $scope.$parent.$emit('hideLoader');
+            if ($scope.reservationBillData) {
+                $scope.reservationBillData.bills[data.bill_number - 1] = {
+                    bill_id: data.id,
+                    bill_number: data.bill_number,
+                    total_amount: 0
+                };
+            }
+
             if (data.tax_exempt_warning) {
                 var message = [];
 
@@ -769,7 +777,6 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 $scope.$emit('displayErrorMessage', message);
             }
             
-            $scope.$parent.$emit('hideLoader');
             if (data.has_crossed_credit_limit) {
                 showLimitExceedPopup();
             }
@@ -843,11 +850,14 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
          */
         var createBillSuccessCallback = function(data) {
             $scope.$emit('hideLoader');
-            $scope.reservationBillData.bills[data.bill_number - 1] = {
-                bill_id: data.id,
-                bill_number: data.bill_number,
-                total_amount: 0
-            };
+            if ($scope.reservationBillData) {
+                $scope.reservationBillData.bills[data.bill_number - 1] = {
+                    bill_id: data.id,
+                    bill_number: data.bill_number,
+                    total_amount: 0
+                };
+            }
+            
             $scope.selectedEntity.to_bill = data.id;
             $scope.bills[$scope.bills.length - 1].id = data.id;
             $scope.bills[$scope.bills.length - 1].bill_number = data.bill_number;
@@ -1108,6 +1118,10 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 return $scope.bills[i].bill_number;
             }
         }
+    };
+
+    $scope.shouldHideSplitCharge = function() {
+        return $scope.isHourlyRateOn || $scope.billingEntity === 'GROUP_DEFAULT_BILLING' || $scope.selectedEntity.entity_type === 'GROUP' || $scope.billingEntity === 'TRAVEL_AGENT_DEFAULT_BILLING' || $scope.billingEntity === 'COMPANY_CARD_DEFAULT_BILLING' || $scope.billingEntity === 'ALLOTMENT_DEFAULT_BILLING';
     };
     $scope.sixIsManual = false;
     $scope.$on('CHANGE_IS_MANUAL', function(e, value) {

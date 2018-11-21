@@ -61,6 +61,13 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 } else {
                     $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.splice(index, 1);
                 }
+                var selectedLoyalty = $scope.selectedLoyalty;
+
+                // CICO-56459 Remove the selection when the selected FFP/HLP is deleted from guest card
+                if ( selectedLoyalty && ( id === selectedLoyalty.id ) ) {
+                   $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = null; 
+                   $scope.selectedLoyaltyID = '';
+                }                
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
             $scope.isLoyaltySelected();
         });
@@ -168,6 +175,19 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
         $scope.ffpProgramsActive = function(b) {
             $scope.hotelFrequentFlyerProgramEnabled = b;
             $scope.$parent.reservationData.use_ffp = b;
+        };
+
+        // Checks whether the loyalty section section should be shown or not based on the admin settings
+        // FFP/HLP can be enabled/disabled from the admin settings - Guest cards setup    
+        $scope.shouldShowLoyalty = function() {
+            var shouldShow = $scope.reservationData.use_hlp || 
+                             $scope.reservationData.use_ffp || 
+                             $scope.$parent.reservationData.use_hlp ||
+                             $scope.$parent.reservationData.use_ffp ||
+                             ($scope.reservationData.reservation_card.loyalty_level && $scope.reservationData.reservation_card.loyalty_level.use_ffp) ||
+                             ($scope.reservationData.reservation_card.loyalty_level && $scope.reservationData.reservation_card.loyalty_level.use_hlp);
+
+            return shouldShow;
         };
 
         var getGMSSettings = function () {

@@ -156,4 +156,33 @@ admin.service('ADHotelDetailsSrv', [
 		});
 		return deferred.promise;
 	};
+	/*
+	 * get the financial legal settings
+	 */
+	that.getFinancialLegalSettings = function(data) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + data.hotel_id + '/legal_settings';
+
+        ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	/*
+	 * update the financial legal settings
+	 */
+	that.updateFinancialLegalSettings = function(params) {
+		var deferred = $q.defer(),
+			url = '/admin/hotels/' + params.hotel_id + '/legal_settings';
+
+        ADBaseWebSrvV2.putJSON(url, params.data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	
 }]);

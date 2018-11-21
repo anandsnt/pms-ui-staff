@@ -175,10 +175,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 'is_kiosk': true
             };
             var checkOutSuccess = function () {
-                if ($scope.zestStationData.keyCardInserted) {
-                    $scope.zestStationData.keyCaptureDone = true;
-                    $scope.socketOperator.CaptureKeyCard();
-                }
+                $scope.$emit('CAPTURE_KEY_CARD');
                 var guest_bill = $scope.zestStationData.guest_bill;
 
                 // guest_bill.email refers to update email not the send email
@@ -186,6 +183,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 // yes..yes..the name is confusing..i know
                 // cant do much with this now. It saved in admin like that
                 var printopted = 'false';
+                var printYetToDone;
                 // if update email and print option are off
 
                 if (!guest_bill.email && !guest_bill.print) {

@@ -480,6 +480,16 @@ body { overflow: hidden; }
             margin-left: 10px;
         }
 
+        .icons {
+            &.icon-lock {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto 0;
+            }
+        }
+
         .action {
             margin-top: 2px;
             font-size: 16px;
@@ -605,13 +615,41 @@ body { overflow: hidden; }
             }
 
             &.activate,
-            &.delete { text-align: center; }
+            &.delete,
+            &.restriction { text-align: center; }
+
             &.activate { width: 110px; }
             &.delete { width: 60px; }
             
             &.check { width: 40px; padding-left: 15px; }
             &.with-shadow {
                 .box-shadow(1px 0px 0px rgba(0,0,0,0.1));
+            }
+            &.restriction { 
+                width: 100px;
+
+                &.short {
+                    width: 80px;
+                }
+
+                &.medium {
+                    width: 120px;
+                }
+
+                &.wide {
+                    width: 130px;
+                }
+
+                .checkbox {
+                    width: 20px;
+                    height: 20px;
+                    margin: 0;
+                    .icon-form {
+                        &.icon-checkbox {
+                            &.checked { .gradient(@redEnd, @redStart); }
+                        }
+                    }
+                }
             }
         }
 
@@ -787,6 +825,37 @@ body { overflow: hidden; }
                             color: @grey3; 
 
                             &:hover { color: @logoPrimary; }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.unsubscription-list {
+            tr {
+                th {
+                    padding: 0 0 0 25px !important;
+                    font-size: 14px;
+                    text-align: left;
+                }
+
+                td,
+                th {
+                    &:not(:last-child) {
+                        border-right: 1px solid rgba(0,0,0,0.15);
+                    }
+
+                    .box-shadow( 1px 1px 0 rgba(0, 0, 0, 0.1) );
+                }
+
+                td {
+                    background: @grey1;
+                    height: 40px;
+                    line-height: 40px;
+
+                    &.red {
+                        em {
+                            color: @red;
                         }
                     }
                 }

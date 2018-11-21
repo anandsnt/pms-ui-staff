@@ -247,17 +247,11 @@
                         Light OFF
                     </div>
                 </div>
-                <div class="entry with-label" ng-show="showDebugModeOption">
-                    <label>Test Double-Sided Scanning</label>
-                    <label class='admin-label-description'>Click to
-                        <span ng-show='zestStationData.doubleSidedScan'>Disable</span>
-                        <span ng-show='!zestStationData.doubleSidedScan'>Enable</span>
-                    </label>
-                    <div ng-show='!zestStationData.doubleSidedScan' class="select button done-btn" type="button" touch-press="zestStationData.doubleSidedScan=true">
-                        Enable
-                    </div>
-                    <div ng-show='zestStationData.doubleSidedScan' class="select button done-btn" type="button" touch-press="zestStationData.doubleSidedScan=false">
-                        Disable
+                <div class="entry with-label" ng-show="showDebugModeOption && isIpad && zestStationData.zest_printer_option === 'RECEIPT'">
+                    <label>Print Sample Reg. card</label>
+                    <label class='admin-label-description'></label>
+                    <div class="select button done-btn" type="button" touch-press="printSampleReceipt()">
+                        Print
                     </div>
                 </div>
             </div>
@@ -276,3 +270,24 @@
         </button>
     </div>
 </section>
+<!-- Popup -->
+<div class="popup" ng-class="{'open': showPrintMsgPopup}">
+    <div class="popup-content">
+        <h2 class="nocaps">
+            {{ printMessage }}
+        </h2>
+        <button type="button" class="button idle-timeout-btn" click-touch='closePrintErrorPopup();'>
+            CLOSE
+        </button>
+    </div>
+</div>
+
+<div id="popup-overlay" ng-class="{'open': showPrintMsgPopup}" 
+    style="background: #e5e5e5;
+            width: 100%;
+            height: 100%;
+            z-index: 800;
+            position: fixed;
+            opacity: 0.8;
+            top: 0;">
+</div>

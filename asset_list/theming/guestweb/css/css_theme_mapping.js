@@ -5,6 +5,21 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_the_hotel_at_auburn_university': [ themeCSSRoot + 'guestweb_the_hotel_at_auburn_university.css'],
+            'guestweb_twa_hotel': [ themeCSSRoot + 'guestweb_twa_hotel.css'],
+            'guestweb_sister_city_hotel_ny': [ themeCSSRoot + 'guestweb_sister_city_hotel_ny.css'],
+            'guestweb_cedar_court_hotels': [ themeCSSRoot + 'guestweb_cedar_court_hotels.css'],
+            'guestweb_university_inn': [ themeCSSRoot + 'guestweb_university_inn.css'],
+            'guestweb_hu_hotel': [ themeCSSRoot + 'guestweb_hu_hotel.css'],
+            'guestweb_cortona_inn_suites': [ themeCSSRoot + 'guestweb_cortona_inn_suites.css'],
+            'guestweb_crossroads_hotel': [ themeCSSRoot + 'guestweb_crossroads_hotel.css'],
+            'guestweb_sandyport_beach_resort': [ themeCSSRoot + 'guestweb_sandyport_beach_resort.css'],
+            'guestweb_stewart_aparthotel': [ themeCSSRoot + 'guestweb_stewart_aparthotel.css'],
+            'guestweb_the_anthony': [ themeCSSRoot + 'guestweb_the_anthony.css'],
+            'guestweb_2l_de_blend': [ themeCSSRoot + 'guestweb_2l_de_blend.css'],
+            'guestweb_hotel_hubert': [ themeCSSRoot + 'guestweb_hotel_hubert.css'],
+            'guestweb_the_normandy_hotel': [ themeCSSRoot + 'guestweb_the_normandy_hotel.css'],
+            'guestweb_the_kinney_slo': [ themeCSSRoot + 'guestweb_the_kinney_slo.css'],
             'guestweb_origins_red_rocks': [ themeCSSRoot + 'guestweb_origins_red_rocks.css'],
             'guestweb_mgm_springfield': [ themeCSSRoot + 'guestweb_mgm_springfield.css'],
             'guestweb_rsvp_motel': [ themeCSSRoot + 'guestweb_rsvp_motel.css'],

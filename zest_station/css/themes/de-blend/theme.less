@@ -1,0 +1,199 @@
+/* StayNTouch Zest Station Styles | 2L de Blend Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #faaa5a;
+    
+@textColor:             @black;
+@backgroundColor:       #efeff4;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+.logo-svg{
+    background-image: url("../css/themes/de-blend/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 342px;
+    height: 80px;
+    background-position: center; 
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#de-blend {
+
+    #header {
+        height: 125px;
+        background: #232e39;
+
+        .button {
+            .icons {
+                fill: @white;
+            }
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 125px);
+        top: 125px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    button {
+        font-size: 1.3em;
+    }
+
+    input,
+    select {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 80px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: #8b8b8b;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    #textual {
+        background: @white;
+         
+
+        &:before,
+        &:after {
+            background: @white;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #selection {
+
+        &.loyalty li {
+            .details {
+                color: @black;
+
+                .number {
+                    color: @brandColor;
+                }
+            }
+        }
+    }
+}

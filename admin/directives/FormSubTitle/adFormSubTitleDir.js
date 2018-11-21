@@ -4,7 +4,8 @@ admin.directive('adFormSubTitle', ['$timeout', function($timeout) {
         replace: 'true',
         scope: {
             fullWidth: '@fullWidth',
-            title: '@title'
+            title: '@title',
+            hide: '=hide'
         },
         templateUrl: '/assets/directives/FormSubTitle/adFormSubTitleDir.html'
     };
