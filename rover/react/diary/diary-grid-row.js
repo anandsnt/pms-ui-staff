@@ -63,7 +63,7 @@ var GridRow = React.createClass({
 		/* Create grid row and insert each occupany item as child into that row*/
 		return React.DOM.li({
 			key: props.key,
-			className: props.data.is_available_for_day_use ? 'grid-row' : 'grid-row overlay'
+			className: props.data.is_available_for_day_use ? 'grid-row' : 'grid-row overlay occupied'
 		},
 		hourly_divs,
 		room_inactives,
