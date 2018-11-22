@@ -9,8 +9,7 @@ admin.controller('adHotelLegalSettingsController',
 		$scope.activeTab = 'financials';
 		var scrollerOptions = {
 				tap: true,
-				preventDefault: false,
-				showScrollbar: true
+				scrollbars: true
 		};
 
 		$scope.setScroller('financialSettingsList', scrollerOptions);
@@ -39,8 +38,12 @@ admin.controller('adHotelLegalSettingsController',
 					'hotel_id': $scope.data.id,
 					'data': $scope.legalSettings
 				},
-				successCallBack: function() {
-					$scope.successMessage = "Saved Succesfully!";
+				successCallBack: function(data) {
+					if (data.errors.length === 0) {
+						$scope.successMessage = "Saved Succesfully!";
+					}
+					
+					$scope.errorMessage = data.errors;
 				}
 			};
 

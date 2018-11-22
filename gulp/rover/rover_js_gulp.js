@@ -203,7 +203,7 @@ module.exports = function(gulp, $, options) {
 	});
 	
 	gulp.task('copy-cordova-assets', function(){
-		return gulp.src(['shared/cordova.js'], {base: '.'})
+		return gulp.src(['shared/cordova.js', 'shared/cordova/**/*.js'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 

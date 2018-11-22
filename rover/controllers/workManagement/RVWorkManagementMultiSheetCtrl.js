@@ -566,27 +566,31 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 			*/
 			$scope.$emit('hideLoader');
+
+			var onPrintCompletion = function() {
+				$timeout(function() {
+					removePrintOrientation();
+	
+					$scope.multiSheetState = angular.copy(multiSheetStateBackup);
+					$scope.employeeList = angular.copy(employeeListBackup);
+					$scope.onEmployeeListClosed();
+	
+					multiSheetStateBackup = null;
+					runDigestCycle();
+				}, 150);
+			};
+			
 			$timeout(function() {
-				$window.print();
 				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					cordova.exec(onPrintCompletion, function() {
+						onPrintCompletion();
+					}, 'RVCardPlugin', 'printWebView', ['worksheet', '0', '', 'L']);
+				} else {
+					$window.print();
+					onPrintCompletion();	
 				}
-
-				/*
-				*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-				*/
+				
 			}, 100);
-			// remove the orientation after similar delay
-			$timeout(function() {
-				removePrintOrientation();
-
-				$scope.multiSheetState = angular.copy(multiSheetStateBackup);
-				$scope.employeeList = angular.copy(employeeListBackup);
-				$scope.onEmployeeListClosed();
-
-				multiSheetStateBackup = null;
-				runDigestCycle();
-			}, 150);
 
 		};
 

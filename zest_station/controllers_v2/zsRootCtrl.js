@@ -1031,14 +1031,18 @@ sntZestStation.controller('zsRootCtrl', [
             var options = {
 
                 params: {
-                    device_uid: deviceId
+                    device_uid: deviceId,
+                    service_application_name: 'Zest station handler'
                 },
                 successCallBack: function(response) {
                     if (response && response.is_logging_enabled) {
                         $scope.socketOperator.enableDeviceLogging();
                     }
                 },
-                'loader': 'none'
+                failureCallBack: function () {
+                  // Do nothing (Common API failure callback redirects station to the out of order state)
+                },
+                loader: 'none'
             };
 
             $scope.callAPI(zsGeneralSrv.getDeviceDetails, options);
@@ -1898,6 +1902,25 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kiosk_offline_reconnect_time = parseInt($scope.zestStationData.kiosk_offline_reconnect_time);
             }
+            // Scan settings
+            // TODO - remove the old settings related code later
+             
+            // Manual ID verification
+            $scope.zestStationData.kiosk_manual_id_scan = $scope.zestStationData.kiosk_manual_id_scan ||
+                ($scope.zestStationData.kiosk_scan_enabled &&
+                    $scope.zestStationData.kiosk_scan_mode === 'staff_id_verification');
+
+            // ID verification using samsotech scanner
+            $scope.zestStationData.check_in_collect_passport = $scope.zestStationData.check_in_collect_passport ||
+                ($scope.zestStationData.kiosk_scan_enabled &&
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_samsotech');
+
+            // ID verification using Acuant Webservices
+            $scope.zestStationData.id_scan_enabled = $scope.zestStationData.kiosk_scan_enabled &&
+                ($scope.zestStationData.kiosk_scan_mode === 'id_scan' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
+                    $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
+
 
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 

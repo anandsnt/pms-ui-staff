@@ -14,6 +14,8 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 
 		BaseCtrl.call(this, $scope);
 		var stateParams = JSON.parse($stateParams.params);
+		
+		$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
 		$scope.screenMode = {};
 		$controller('zsPaymentCtrl', {
