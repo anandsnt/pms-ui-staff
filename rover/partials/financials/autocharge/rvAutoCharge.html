@@ -20,7 +20,7 @@
     </div>
 
     <!-- Process -->
-    <div class="entry process" ng-show="isPartiallySelected || isAllSelected">
+    <div class="entry process" ng-show="isDeclinedAutoChargesPresent && ( isPartiallySelected || isAllSelected ) ">
         <!-- Show only when some reservations are selected -->
         <button class="button green" ng-click="processSelectedAutoCharges()">Process Selected</button>
     </div>
