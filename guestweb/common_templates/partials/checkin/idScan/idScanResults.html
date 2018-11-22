@@ -1,5 +1,5 @@
 <section id="main" class="guest-id-verify" role="main">
-   <div id="flex-holder" touch-press="enableScroll()">
+   <div id="flex-holder" ng-click="enableScroll()">
       <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate" style="height: 75%;">
          <div class="wrapper passport-details">
             <div id="bill">
@@ -78,10 +78,10 @@
       </div>
    </div>
    <div id='actions' class="align-center guest-id-actions">
-      <button type="button" class="button" touch-press='rejectID(); resetTime()' translate>
+      <button type="button" class="button" ng-click='rejectID(); resetTime()' translate>
       GID_VERIFY_PASSPORT_REJECT
       </button>
-      <button type="button" class="button" touch-press='acceptID(); resetTime()' translate>
+      <button type="button" class="button" ng-click='acceptID(); resetTime()' translate>
       GID_VERIFY_PASSPORT_ACCEPT
       </button>
    </div>

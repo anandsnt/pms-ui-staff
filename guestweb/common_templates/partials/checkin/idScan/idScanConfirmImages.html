@@ -25,13 +25,13 @@
       </div>
    </div>
    <div id='actions' class="align-center guest-id-actions">
-      <button type="button" class="button" touch-press='startScanning();' translate>
+      <button type="button" class="button" ng-click='startScanning();' translate>
       Go Back
       </button>
-      <button type="button" class="button" touch-press="confirmFrontImage()" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" translate>
+      <button type="button" class="button" ng-click="confirmFrontImage()" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" translate>
       PROCEED
       </button>
-      <button type="button" class="button" touch-press="confirmImages()" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" translate>
+      <button type="button" class="button" ng-click="confirmImages()" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" translate>
       PROCEED
       </button>
    </div>

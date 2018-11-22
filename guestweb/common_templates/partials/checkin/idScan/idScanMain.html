@@ -30,7 +30,7 @@
     <!-- email entry -->
     <div class="row" ng-hide="isLoading || netWorkError || idScanCompleted">
         <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing sm-no-top-spacing section-container" role="main"  ng-show="screenData.scanMode == 'INVALID_ID_CREDENTIALS'">
+        <div class="col-md-4 top-spacing sm-no-top-spacing section-container" role="main"  >
             <div id="main" class="centered test add_remove_main" role="main"  ng-show="screenData.scanMode == 'INVALID_ID_CREDENTIALS'">
                <div id="content">
                   <h1 translate>
@@ -41,7 +41,7 @@
                   </h2>
                </div>
             </div>
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanGuestList.html'" 
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanGuestList.html'" 
                ng-show="screenData.scanMode == 'GUEST_LIST'"></ng-include>
             <div id="main" class="centered test add_remove_main" role="main"  
                ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE' ||
@@ -54,49 +54,50 @@
                </div>
             </div>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanFrontSide.html'" 
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanFrontSide.html'" 
                ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanFrontImageFailed.html'"  
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanFrontImageFailed.html'"  
                ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE_FAILED'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/zsIDScanBackSide.html'" 
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanBackSide.html'" 
                ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanBackImageFailed.html'"  
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanBackImageFailed.html'"  
                ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE_FAILED'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanConfirmImages.html'" 
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanConfirmImages.html'" 
                ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES' || screenData.scanMode == 'CONFIRM_FRONT_IMAGE'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanResults.html'" 
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanResults.html'" 
                ng-show="screenData.scanMode == 'FINAL_ID_RESULTS'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanGetResultFailed.html'"  
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanGetResultFailed.html'"  
                ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanIDExpired.html'"  
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanIDExpired.html'"  
                ng-show="screenData.scanMode == 'ID_DATA_EXPIRED'"></ng-include>
 
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanIDInvalidExpiryDate.html'"  
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanIDInvalidExpiryDate.html'"  
                ng-show="screenData.scanMode == 'EXPIRATION_DATE_INVALID'"></ng-include>
                
-            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScan/idScanAdminLogin.html'"  
+            <ng-include src="'/assets/common_templates/partials/checkin/idScan/idScanAdminLogin.html'"  
                ng-show="screenData.scanMode == 'ADMIN_LOGIN'"></ng-include>
                
             <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none !important;">
             <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none !important;">
         </div>   
+   </div>
     <!-- email updated -->
     <div class="row" ng-hide="isLoading || netWorkError || !idScanCompleted">
         <div class="col-md-4"></div>
         <div class="col-md-4 top-spacing sm-no-top-spacing section-container mob-padding-bottom-10">
             <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
-                <p class="main-text"> E-mail Address Updated</p>
-                <p class="sub-main-text"> We updated your Guest profile to include this e-mail address: {{guestDetails.email}}</p>
+                <p class="main-text"> ID SCAN COMPLETE</p>
+                <p class="sub-main-text"> We completed your Guest profile to include the ID info</p>
             </div>
             <a class="btn btn-template" ng-click="continueToPrecheckin()" value="Continue">Continue</a>
-            <a class="btn btn-template margin-top-10 grey-btn" ng-click="changeEmail()"> Change Email address</a>
+            <!-- <a class="btn btn-template margin-top-10 grey-btn" ng-click="changeEmail()"> Change Email address</a> -->
         </div>
         <div class="col-md-4">
         </div>

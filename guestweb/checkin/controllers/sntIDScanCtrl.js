@@ -64,9 +64,7 @@
 				});
 
 				$scope.idScanData.selectedGuest = selectGuest;
-				if ($scope.inDemoMode() && !$scope.idScanData.staffVerified) {
-					demoModeScanActions();
-				} else if (selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) {
+				if (selectedGuest.idScanStatus === SCAN_ACCEPTED ) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
@@ -121,7 +119,7 @@
 
 				apiParams.front_image_data = $scope.idScanData.selectedGuest.front_image_data;
 				apiParams.back_image_data = $scope.idScanData.selectedGuest.back_image_data;
-				apiParams.reservation_id = checkinReservationData.reservation_id;
+				apiParams.reservation_id = $scope.checkinReservationData.reservation_id;
 				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
 				if (apiParams.nationality_name) {
 					delete apiParams.nationality_name;
@@ -198,7 +196,7 @@
 			var recordIDApproval = function() {
 				// application name is set to ROVER to log staff name
 				var params = {
-					"id": checkinReservationData.reservation_id,
+					"id": $scope.checkinReservationData.reservation_id,
 					"user_id": verfiedStaffId,
 					"application": 'ROVER',
 					"action_type": "ID_REVIEWED",
