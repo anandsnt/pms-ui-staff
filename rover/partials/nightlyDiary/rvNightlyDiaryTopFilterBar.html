@@ -56,7 +56,7 @@
     <!-- Show / Hide Filters -->
     <div class="entry filters visible">
         <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
-            <span class="count">{{diaryData.unassignedReservationList.total_count}}</span>
+            <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>
         <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER' }" ng-click="toggleFilter('RESERVATION_FILTER')">
