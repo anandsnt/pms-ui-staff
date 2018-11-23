@@ -281,8 +281,13 @@ sntRover.controller('reservationActionsController', [
 
         $scope.roomAssignmentNeeded = function() {
             if ($scope.reservationData.reservation_card.room_number === '' ||
+<<<<<<< HEAD
                     $scope.reservationData.reservation_card.room_status === 'NOTREADY' ||
                     $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
+=======
+                    ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && !$scope.hasAnySharerCheckedin() ) ||
+                    ($scope.reservationData.reservation_card.fo_status === 'OCCUPIED' && !$scope.hasAnySharerCheckedin() )) {
+>>>>>>> 7d37d60... CICO-59843 Checked the presence of shared reservations along with room status for navigating to room assignment screen
                 if ($scope.reservationData.reservation_card.room_number === '' && $scope.putInQueueClicked) {
                     return true;
                 }
