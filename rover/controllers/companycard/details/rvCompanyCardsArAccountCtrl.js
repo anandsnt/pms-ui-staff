@@ -71,12 +71,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 			// check if data was edited
             var ignoredKeys = ['workstation_id'];
-
             if (!angular.equals(_.omit(presentArDetailsAfterEdit, ignoredKeys), _.omit(presentArDetails, ignoredKeys))) {
                 dataNotUpdated = true;
                 presentArDetails = presentArDetailsAfterEdit;
             }
-
 			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}

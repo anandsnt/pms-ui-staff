@@ -147,9 +147,10 @@ sntRover.controller('RVAutoChargeController',
             $scope.handleAutoChargeSelection = function (selection_type) {
                 var declinedAutoCharges = _.filter($scope.autoCharges,
                     function(autoCharge) {
-                        return autoCharge.is_declined;
+                        return autoCharge.is_declined && autoCharge.can_retry_processing;
                     });
 
+                $scope.isDeclinedAutoChargesPresent = declinedAutoCharges.length !== 0 ;
                 if (selection_type === 'ALL') {
                     $scope.autoCharges = processAutoChargeSelections($scope.autoCharges, $scope.isAllSelected);
                     $scope.isPartiallySelected = false;
@@ -226,6 +227,7 @@ sntRover.controller('RVAutoChargeController',
                         $scope.isAutoChargeProcessing = !!response.auto_charge_deposit_running;
 
                         $timeout(function () {
+                            $scope.handleAutoChargeSelection();
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
                             $scope.$broadcast('updatePageNo', params.page_no);
                             refreshScroll();
@@ -244,7 +246,10 @@ sntRover.controller('RVAutoChargeController',
                     options = {
                         params: params,
                         successCallBack: function() {
-                            $scope.fetchAutoCharge();
+                            $timeout(function () {
+                                $scope.fetchAutoCharge();
+                            }, 3000 );
+
                         }
                     };
 
