@@ -171,7 +171,6 @@ var GridRowItem = React.createClass({
 			className += ' locked';
 		}
 
-
 		return className;
 
 	},
@@ -200,7 +199,8 @@ var GridRowItem = React.createClass({
 			is_room_locked          = data.cannot_move_room,
 			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
 			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
-										+ (show_outstanding_indicator ? ' deposit-required' : '');
+										+ (show_outstanding_indicator ? ' deposit-required' : '')
+										+ (props.data.is_hourly ? '' : ' class-for-nightly');// change with actual class name
 
 		if (state.editing) {
 			start_time_ms = state.currentResizeItem[m.start_date];
