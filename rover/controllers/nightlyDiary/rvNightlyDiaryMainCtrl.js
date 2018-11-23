@@ -90,7 +90,6 @@ angular.module('sntRover')
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
-                        isRightFilterActive: true,
                         isAvailableRoomSlotActive: false,
                         availableSlotsForAssignRooms: {
                             availableRoomList: [],
@@ -145,6 +144,12 @@ angular.module('sntRover')
                             'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
                             'selected_floor_ids': $scope.diaryData.selectedFloors
                         };
+
+                    if ( $scope.diaryData.isAvailableRoomSlotActive ) {
+                        var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
+                        
+                        postData.selected_room_type_ids = [roomTypeId];
+                    }
 
                     if (roomId) {
                         postData.room_id = roomId;
@@ -222,6 +227,12 @@ angular.module('sntRover')
                     }
                 };
 
+                var resetUnassignedList = function() {
+                    $scope.diaryData.isAvailableRoomSlotActive = false;
+                    $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
+                    $scope.diaryData.availableSlotsForAssignRooms = {};
+                };
+
                 /*
                  * handle unassigned room select.
                  * @param roomDetails - Current selected room details
@@ -229,7 +240,7 @@ angular.module('sntRover')
                  * @return {}
                  */
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
-                    $scope.diaryData.isAvailableRoomSlotActive = false;
+                    resetUnassignedList();
                     console.log(roomDetails, reservationDetails);
                     // TODO : fetchRoomListDataAndReservationListData();
                 };
@@ -367,9 +378,8 @@ angular.module('sntRover')
                 });
 
                 listeners['UPDATE_UNASSIGNED_RESERVATIONLIST'] = $scope.$on('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
+                    resetUnassignedList();
                     fetchUnassignedReservationList();
-                    $scope.diaryData.isAvailableRoomSlotActive = false;
-                    $scope.diaryData.availableSlotsForAssignRooms = {};
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
 
@@ -382,13 +392,6 @@ angular.module('sntRover')
                     $scope.diaryData.showFilterPanel = true;
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(roomId);
-                });
-
-                /* Handle event emitted from child controllers.
-                 * To toggle unassigned list and filter.
-                 */
-                listeners['TOGGLE_FILTER'] = $scope.$on('TOGGLE_FILTER', function (event) {
-                    $scope.diaryData.isRightFilterActive = !$scope.diaryData.isRightFilterActive;
                 });
 
                 /*
@@ -408,6 +411,7 @@ angular.module('sntRover')
                  *  Refresh diary data - rooms and reservations after applying filter.
                  */
                 listeners['RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY'] = $scope.$on('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
+                    resetUnassignedList();
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                     $scope.diaryData.paginationData.page = 1;
                     fetchRoomListDataAndReservationListData();
@@ -419,11 +423,8 @@ angular.module('sntRover')
                  */
                 listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData) {
                     $scope.diaryData.isAvailableRoomSlotActive = true;
-
                     $scope.diaryData.availableSlotsForAssignRooms = newData;
-                    console.log(newData);
-
-                    updateDiaryView();
+                    fetchRoomListDataAndReservationListData();
                 });
 
                 // destroying listeners

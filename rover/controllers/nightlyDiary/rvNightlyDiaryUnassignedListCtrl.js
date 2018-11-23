@@ -34,7 +34,8 @@ angular.module('sntRover')
                         availableRoomList: data.rooms,
                         fromDate: selectedItem.arrival_date,
                         nights: selectedItem.number_of_nights,
-                        reservationId: selectedItem.reservation_id
+                        reservationId: selectedItem.reservation_id,
+                        roomTypeId: selectedItem.room_type_id
                     };
 
                     $scope.selectedResId = selectedItem.reservation_id;
