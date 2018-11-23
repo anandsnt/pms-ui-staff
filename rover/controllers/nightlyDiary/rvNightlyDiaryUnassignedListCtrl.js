@@ -12,11 +12,12 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
-        $scope.selectedResId = null;
+        $scope.selectedItem = {};
+        var listeners = {};
 
         // Handle validation popup close.
         $scope.closeDialog = function() {
-            $scope.selectedResId = null;
+            $scope.selectedItem = {};
             $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
             ngDialog.close();
         };
@@ -26,7 +27,7 @@ angular.module('sntRover')
          *  @param {Object} - [selected reservation Item]
          */
         var retrieveAvailableRooms = function( selectedItem ) {
-            $scope.selectedResId = selectedItem.reservation_id;
+            $scope.selectedItem = selectedItem;
             var successCallBack = function(data) {
                 $scope.errorMessage = '';
                 var roomCount = data.rooms.length;
@@ -74,6 +75,7 @@ angular.module('sntRover')
 
             $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
         };
+
         /**
          *  Handle unassigned reservation items
          *  @param {int} - [index value of reservations]
@@ -84,9 +86,37 @@ angular.module('sntRover')
             retrieveAvailableRooms(item);
         };
 
-        var listener = $scope.$on('RESET_UNASSIGNED_LIST_SELECTION', function() {
-            $scope.selectedResId = null;
+        listeners['SUCCESS_ROOM_ASSIGNMENT'] = $scope.$on('SUCCESS_ROOM_ASSIGNMENT', function(e, room ) {
+            var availableRoomList = $scope.diaryData.availableSlotsForAssignRooms.availableRoomList,
+                unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
+
+            // Update reservatio section...
+            availableRoomList = _.reject(availableRoomList, function(obj) { return obj.room_id === room.room_id; });
+
+            var newData = {
+                availableRoomList: availableRoomList,
+                fromDate: $scope.selectedItem.arrival_date,
+                nights: $scope.selectedItem.number_of_nights,
+                reservationId: $scope.selectedItem.reservation_id,
+                roomTypeId: $scope.selectedItem.room_type_id
+            };
+
+            $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
+
+            // Update unassigned reservation list...
+            unassignedReservationList = _.reject(unassignedReservationList, function(obj) { return obj.reservation_id === $scope.selectedItem.reservation_id; });
+            $scope.diaryData.unassignedReservationList.reservations = [];
+            $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
+            ///$scope.diaryData.selectedRoomCount = unassignedReservationList.length;
+            $scope.selectedItem = {};
         });
 
-        $scope.$on('$destroy', listener);
+        listeners['RESET_UNASSIGNED_LIST_SELECTION'] = $scope.$on('RESET_UNASSIGNED_LIST_SELECTION', function() {
+             $scope.selectedItem = {};
+        });
+
+        // destroying listeners
+        angular.forEach(listeners, function (listener) {
+            $scope.$on('$destroy', listener);
+        });
 }]);
