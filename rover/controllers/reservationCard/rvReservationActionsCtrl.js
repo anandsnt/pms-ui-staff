@@ -282,7 +282,7 @@ sntRover.controller('reservationActionsController', [
         $scope.roomAssignmentNeeded = function() {
             if ($scope.reservationData.reservation_card.room_number === '' ||
                     $scope.reservationData.reservation_card.room_status === 'NOTREADY' ||
-                    $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
+                    ($scope.reservationData.reservation_card.fo_status === 'OCCUPIED' && !$scope.hasAnySharerCheckedin() )) {
                 if ($scope.reservationData.reservation_card.room_number === '' && $scope.putInQueueClicked) {
                     return true;
                 }
