@@ -1715,6 +1715,12 @@ sntRover.controller('reservationDetailsController',
 			}
 		}
 
+		try {
+			angular.module("sntIDCollection")
+		} catch (err) {
+			$ocLazyLoad.inject('sntIDCollection');
+		}
+		
 		ngDialog.open({
 			template: '/assets/partials/guestId/rvGuestId.html',
 			className: 'guest-id-dialog',

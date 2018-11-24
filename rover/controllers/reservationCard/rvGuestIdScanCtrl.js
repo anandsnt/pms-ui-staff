@@ -5,9 +5,15 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'RVGuestCardsSrv',
 	'dateFilter',
 	'$timeout',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout) {
+	'$ocLazyLoad',
+	'$controller',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout,  $ocLazyLoad, $controller) {
 
 		BaseCtrl.call(this, $scope);
+
+		$controller('sntIDCollectionBaseCtrl', {
+			$scope: $scope
+		});
 
 		var dateInHotelsFormat = function(date) {
 			return JSON.parse(JSON.stringify(dateFilter(new Date(date), $rootScope.dateFormat)));
@@ -231,5 +237,97 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				failureCallBack: generalFailureCallBack
 			});
 		};
+
+		/**************************** ID SCAN *****************************/
+
+		$scope.scanFrontSide = function() {
+			$scope.screenData.imageSide = 0;
+			$scope.captureFrontImage();
+		};
+		$scope.scanBackSide = function() {
+			$scope.screenData.imageSide = 1;
+			$scope.captureBackImage();
+		};
+
+		$scope.$on('IMAGE_UPDATED', function(evt, data) {
+			if (data.isFrontSide) {
+				$scope.guestIdData.front_image_data = data.imageData;
+				$scope.guestIdData.back_image_data = '';
+			} else {
+				$scope.guestIdData.back_image_data = data.imageData;
+			}
+			$scope.refreshScroller('id-details');
+
+			// If back side of ID is not needed, retrive the ID details
+			if ($scope.screenData.scanMode === 'CONFIRM_ID_IMAGES') {
+				$scope.confirmImages();
+			} else {
+				$scope.$emit('hideLoader');
+			}
+		});
+
+
+		var setIDDetailsForScannedDocument = function(data) {
+			var frontSideImage = angular.copy($scope.guestIdData.front_image_data);
+			var backSideImage = angular.copy($scope.guestIdData.back_image_data);
+
+			$scope.guestIdData = {};
+
+			var expirationDate = moment(data.expiration_date, 'DD-MM-YYYY');
+			var dateOfBirth = moment(data.date_of_birth, 'DD-MM-YYYY');
+
+			data.expiration_date = expirationDate.isValid() ? expirationDate.format('MM-DD-YYYY') : '';
+			data.date_of_birth = dateOfBirth.isValid() ? dateOfBirth.format('MM-DD-YYYY') : '';
+
+			$scope.guestIdData.front_image_data = frontSideImage;
+			$scope.guestIdData.back_image_data = backSideImage;
+			$scope.guestIdData.last_name = data.first_name;
+			$scope.guestIdData.first_name = data.last_name;
+			$scope.guestIdData.document_number = data.document_number;
+			$scope.guestIdData.document_type = data.document_type && data.document_type.toUpperCase() === 'PASSPORT' ? 'PASSPORT' : 'ID_CARD';
+			$scope.guestIdData.expiry_date = data.expiration_date;
+			$scope.guestIdData.expiry_date_for_display = data.expiration_date ? dateInHotelsFormat(data.expiration_date) : '';
+			$scope.guestIdData.dob_for_display = data.date_of_birth ? dateInHotelsFormat(data.date_of_birth) : '';
+			$scope.guestIdData.date_of_birth = data.date_of_birth;
+			var nationality_id = '';
+
+			if (data.nationality_name) {
+				_.each($scope.countyList, function(country) {
+					_.each(country.names, function(countryName) {
+						if (data.nationality_name === countryName) {
+							nationality_id = country.id.toString();
+						}
+					});
+				});
+			}
+			$scope.guestIdData.nationality_id = nationality_id;
+			console.log(nationality_id);
+		};
+
+		$scope.$on('FINAL_RESULTS', function(evt, data) {
+			$scope.$emit('hideLoader');
+			if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+				$scope.guestIdData.errorMessage = 'INVALID EXPIRATION DATE';
+				generalFailureCallBack();
+			} else if (data.expirationStatus === 'Expired') {
+				$scope.guestIdData.errorMessage = 'ID IS EXPIRED';
+				generalFailureCallBack();
+			} else if (!data.document_number) {
+				$scope.guestIdData.errorMessage = 'Failed to Analyze the document';
+				generalFailureCallBack();
+			} else {
+				setIDDetailsForScannedDocument(data);
+				$scope.refreshScroller('id-details');
+			}
+		});
+
+		$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+			$scope.$emit('showLoader');
+		});
+		$scope.$on('IMAGE_ANALYSIS_FAILED', function() {
+			$scope.$emit('hideLoader');
+			$scope.guestIdData.errorMessage = 'Failed to Analyze the image';
+			generalFailureCallBack();
+		});
 	}
 ]);
