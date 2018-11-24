@@ -11,6 +11,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 
+		$scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
+
 		$controller('sntIDCollectionBaseCtrl', {
 			$scope: $scope
 		});

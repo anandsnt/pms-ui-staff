@@ -97,20 +97,20 @@
                         <img src="{{ guestIdData.front_image_data }}">
                         <input type="file" id="front-image-upload" accept="image/*"ng-model="guestIdData.front_image_data" accept="*" app-filereader style="display: none;" ng-change="ImageChange('front-image')"/>
                         <div class="document-actions" ng-show="guestIdData.front_image_data.length > 0">
-                            <button type="button" class="button white green-text" ng-click="scanFrontSide()">Re-Scan</button>
-                            <button type="button" class="button white blue-text" ng-click="uploadFrontImage()" translate>RE_UPLOAD</button>
+                            <button type="button" class="button white green-text" ng-click="scanFrontSide()" ng-show="isIpad">Re-Scan</button>
+                            <button type="button" class="button white blue-text" ng-click="uploadFrontImage()" ng-hide="isIpad"translate>RE_UPLOAD</button>
                             <!-- <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
-                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE', 'front-image')" style="width: calc(200% + 10px);" translate>DELETE</button>
+                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE', 'front-image')" translate>DELETE</button>
                         </div>
                         <!-- if no data then this -->
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.front_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.front_image_data.length === 0" translate>NO_IMAGE</h3>
                         <p ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
                         <button type="button" class="button white green-text" 
-                        ng-show="guestIdData.front_image_data.length === 0" ng-click="scanFrontSide()" translate>SCAN_ID</button>
+                        ng-show="guestIdData.front_image_data.length === 0 && isIpad" ng-click="scanFrontSide()" translate>SCAN_ID</button>
                         <button type="button" 
                                 class="button white blue-text" 
-                                ng-show="guestIdData.front_image_data.length === 0" 
+                                ng-show="guestIdData.front_image_data.length === 0 && !isIpad" 
                                 ng-click="uploadFrontImage()"
                                 translate>UPLOAD_IMAGE
                         </button>
@@ -125,21 +125,20 @@
                         <input type="file" id="back-image-upload" accept="image/*"ng-model="guestIdData.back_image_data" accept="*" app-filereader style="display: none;" ng-change="ImageChange('back-image')"
                         />
                         <div class="document-actions" ng-show="guestIdData.back_image_data.length > 0">
-                            <button type="button" class="button white green-text" ng-click="scanBackSide()">Re-Scan</button>
-                            <button type="button" class="button white blue-text" ng-click="uploadBackImage()" translate>RE_UPLOAD</button>
+                            <button type="button" class="button white green-text" ng-click="scanBackSide()" ng-show="isIpad">Re-Scan</button>
+                            <button type="button" class="button white blue-text" ng-click="uploadBackImage()" ng-hide="isIpad"translate>RE_UPLOAD</button>
                        <!--      <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
-                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE','back-image')"
-                            style="width: calc(200% + 10px);" translate>DELETE</button>
+                            <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE','back-image')" translate>DELETE</button>
                         </div>
                         <!-- if no data then this -->
                         <span class="icons icon-identity-card-missing" ng-show="guestIdData.back_image_data.length === 0"></span>
                         <h3 ng-show="guestIdData.back_image_data.length === 0" translate>NO_IMAGE</h3>
                         <p ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
                         <button type="button" class="button white green-text"
-                        ng-show="guestIdData.back_image_data.length === 0" ng-click="scanBackSide()" translate>SCAN_ID</button>
+                        ng-show="guestIdData.back_image_data.length === 0 && isIpad" ng-click="scanBackSide()" translate>SCAN_ID</button>
                         <button type="button" 
                                 class="button white blue-text" 
-                                ng-show="guestIdData.back_image_data.length === 0" 
+                                ng-show="guestIdData.back_image_data.length === 0 && !isIpad" 
                                 ng-click="uploadBackImage()"translate
                                 >UPLOAD_IMAGE
                         </button>
