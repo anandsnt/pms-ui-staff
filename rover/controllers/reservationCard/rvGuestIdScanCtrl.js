@@ -303,20 +303,23 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				});
 			}
 			$scope.guestIdData.nationality_id = nationality_id;
-			console.log(nationality_id);
+		};
+
+		var idScanFailureActions = function(errorMessage) {
+			$scope.guestIdData.errorMessage = errorMessage;
+			generalFailureCallBack();
+			$scope.guestIdData.front_image_data = '';
+			$scope.guestIdData.back_image_data = '';
 		};
 
 		$scope.$on('FINAL_RESULTS', function(evt, data) {
 			$scope.$emit('hideLoader');
 			if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-				$scope.guestIdData.errorMessage = 'INVALID EXPIRATION DATE';
-				generalFailureCallBack();
+				idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
 			} else if (data.expirationStatus === 'Expired') {
-				$scope.guestIdData.errorMessage = 'ID IS EXPIRED';
-				generalFailureCallBack();
+				idScanFailureActions('ID IS EXPIRED. PLEASE RETRY OR USE ANOTHER ID.');
 			} else if (!data.document_number) {
-				$scope.guestIdData.errorMessage = 'Failed to Analyze the document';
-				generalFailureCallBack();
+				idScanFailureActions('FAILED TO ANALYZE THE DOCUMENT. PLEASE RETRY OR USE ANOTHER ID.');
 			} else {
 				setIDDetailsForScannedDocument(data);
 				$scope.refreshScroller('id-details');
