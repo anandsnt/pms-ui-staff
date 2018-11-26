@@ -52,7 +52,7 @@
 			$state.go('conductSurvey'); // conduct Survey
 		} 
 		// Collect guest ID
-		else if ($state.href('sntIDScan') !== null ) {
+		else if ($state.href('sntIDScan') !== null && $rootScope.id_collection_enabled && !$rootScope.idScanComplete ) {
 			$state.go('sntIDScan', {
 				params: JSON.stringify({"mode": "PRE_CHECKIN"})
 			});

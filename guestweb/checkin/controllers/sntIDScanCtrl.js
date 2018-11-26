@@ -1,6 +1,7 @@
 	// Summary of screen flow is listed at the end of this file
 	sntGuestWeb.controller('sntIDScanCtrl', [
 		'$scope',
+		'$rootScope',
 		'$state',
 		'$stateParams',
 		'guestIDScanService',
@@ -8,7 +9,7 @@
 		'$controller',
 		'$filter',
 		'$timeout',
-		function($scope, $state, $stateParams, guestIDScanService, checkinDetailsService, $controller, $filter, $timeout) {
+		function($scope, $rootScope, $state, $stateParams, guestIDScanService, checkinDetailsService, $controller, $filter, $timeout) {
 
 			$controller('sntIDCollectionBaseCtrl', {
 				$scope: $scope
@@ -184,6 +185,7 @@
 
 			var verfiedStaffId;
 			var nextPageActions = function() {
+				$rootScope.idScanComplete = true;
 				if (stateParams.mode === 'CHECKIN') {
 					$state.go('checkinKeys');
 				} else {
@@ -235,11 +237,7 @@
 			};
 
 			$scope.doneButtonClicked = function() {
-				if ($scope.idScanData.verificationMethod === 'STAFF') {
-					recordIDApproval();
-				} else {
-					nextPageActions();
-				}
+				nextPageActions();
 			};
 
 			$scope.scanCompleted = function() {
@@ -281,7 +279,7 @@
 				$scope.pageData = guestIDScanService.retrievePaginationStartingData();
 				$scope.selectedReservation = checkinDetailsService.getResponseData();
 
-				if (!$scope.checkinReservationData.scan_all_guests) {
+				if (!$rootScope.scan_all_guests) {
 					$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
 						return guest.is_primary;
 					});
@@ -307,7 +305,6 @@
 				// $scope.setScroller('confirm-images');
 				$scope.netWorkError = false;
 				$scope.isLoading = false;
-				$scope.idScanCompleted = false;
 			}());
 		}
 	]);

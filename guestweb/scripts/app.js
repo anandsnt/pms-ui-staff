@@ -127,6 +127,11 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
 		$rootScope.skipBalanceCollection = false;
 
+		$rootScope.id_collection_enabled = reservationAndhotelData.id_collection_enabled;
+		$rootScope.scan_all_guests = reservationAndhotelData.scan_all_guests;
+		$rootScope.id_collection_mandatory = reservationAndhotelData.id_collection_mandatory;
+		$rootScope.face_recognition_enabled = reservationAndhotelData.face_recognition_enabled;
+
 
 		if (reservationAndhotelData.payment_gateway === "MLI") {
 			var script = document.createElement("script")

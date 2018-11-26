@@ -1,38 +1,29 @@
-<section id="main" class="guest-id-verify" role="main">
-   <div id="flex-holder" touch-press="enableScroll()">
-      <div id="textual" class="review-bill scrollable" ng-iscroll="confirm-images" style="height: 75%;">
-         <div class="wrapper passport-details">
-            <div id="bill">
-               <h1 ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" translate>
-                  Confirm front image
-               </h1>
-               <h1 ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" translate>
-                  Confirm images
-               </h1>
-               <!-- Passport / Guest ID Scan preview -->
-               <img id='image-preview' class='gid-image-preview'
-                  ng-show='idScanData.selectedGuest.front_image_data'
-                  data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
-                  src-error='' 
-                  >
-               <img id='image-preview-back' ng-show='idScanData.selectedGuest.back_image_data'  class='gid-image-preview' 
-                  data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
-                  src-error='' 
-                  >
-               <br/><br/>
-            </div>
-         </div>
-      </div>
+
+<div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
+   <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'"> Confirm front image</p>
+   <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'"> Confirm images</p>
+   <!-- <img id='image-preview' class='gid-image-preview'
+      ng-show='idScanData.selectedGuest.front_image_data'
+      data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
+      src-error=''>
+   <img id='image-preview-back' ng-show='idScanData.selectedGuest.back_image_data'  class='gid-image-preview' 
+      data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
+      src-error='' > -->
+
+   <div class="col-md-12">
+               <div class="jumbotron text-center" ng-show='idScanData.selectedGuest.front_image_data'>
+                  <p class="title">UPDATED FRONT IMAGE</p>
+                  <img id="front-side-image" data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
+                     src-error='' style="max-width: 190px;"/>
+               </div>
+               <div class="jumbotron text-center" ng-show="idScanData.selectedGuest.back_image_data">
+                  <p class="title">UPDATED BACK IMAGE</p>
+                  <img id="back-side-image" data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
+                      src-error='' style="max-width: 190px;"/>
+               </div>
    </div>
-   <div id='actions' class="align-center guest-id-actions">
-      <button type="button" class="button" ng-click='startScanning();' translate>
-      Go Back
-      </button>
-      <button type="button" class="button" ng-click="confirmFrontImage()" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" translate>
-      PROCEED
-      </button>
-      <button type="button" class="button" ng-click="confirmImages()" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" translate>
-      PROCEED
-      </button>
-   </div>
-</section>
+</div>
+<a class="btn btn-template grey-btn" ng-click="startScanning()" value="Go Back">Go Back</a>
+<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" ng-click="confirmFrontImage()"> PROCEED</a>
+<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" ng-click="confirmImages()"> PROCEED</a>
+

@@ -1,54 +1,33 @@
-<section id="main" class="centered test add_remove_main" role="main">
-   <div id="content" class='add-guest-mode-content'>
-      <h1 translate>
-         Verify Passport
-      </h1>
-      <h2 translate>
-         Reservation Details
-      </h2>
-      <ul id="selection" class="editable">
-         <li ng-repeat='guest in pageData.viewableItems track by $index' ng-click='selectGuest(guest)'>
-            <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
-               <span class="passport-scan-status">
-               {{guest.idScanStatus}}
-               </span>
-               <!-- guest icons, adult, student, infant -->
-               <!-- primaryGuest is always an adult , and wont have guest_type included -->
-               <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
-               <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
-               <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
-               <span ng-if='guest.last_name !== guest.first_name'>
-               {{guest.first_name}}&nbsp;{{guest.last_name}}
-               </span>
-               <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
-               {{guest.full_name}}    
-               </span>
-               <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
-               {{guest.first_name}}    
-               </span>
-            </span>
-         </li>
-      </ul>
-   </div>
-   <div>
-      <div id="actions" class="add-guests-footer">
-         <button type="button" class="button prev add-guest-passport">
-            <!-- DUMMY BUTTON -->
-         </button>
-         <div class="button-group">
-            <button type="button" class="button only-icon next" ng-click="paginationAction(false)" ng-class='{"disabled": pageData.disablePreviousButton}'>
-               <div ng-include="icons.url.left_arrow_icon"></div>
-            </button>
-            <button type="button" class="button only-icon next" ng-click="paginationAction(true)" ng-class='{"disabled": pageData.disableNextButton}'>
-               <div ng-include="icons.url.right_arrow_icon"></div>
-            </button>
-         </div>
-         <button type="button" class="button next" ng-show="areAllGuestsScanned() && idScanData.verificationMethod === 'STAFF' && !idScanData.staffVerified" ng-click="scanCompleted(); resetTime();" translate>
-         NEXT
-         </button>
-         <button type="button" class="button next" ng-show="areAllGuestsApproved() && (idScanData.verificationMethod !== 'STAFF' || idScanData.staffVerified)" ng-click="doneButtonClicked(); resetTime();" translate>
-         DONE
-         </button>
-      </div>
-   </div>
-</section>
+
+<div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" >
+            <p class="main-text no-text-case">Scan your ID</p>
+            <p class="sub-main-text no-text-case margin-top-20">Skip the long lines and upload state issued ID for the following guests! Remember if you opt out now, you will still required to submit it to staff before you can check in</p>
+            <div ng-repeat="guest in pageData.viewableItems track by $index" class="guest-container margin-top-10" ng-click="selectGuest(guest)" ng-class="{'selected':true}">
+                <div >
+                    
+                    <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
+                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
+                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
+                </div>
+                <div class="content-desc">
+                  <p class="sub-text no-text-case float-left">
+                     <span ng-if='guest.last_name !== guest.first_name'>
+                     {{guest.first_name}}&nbsp;{{guest.last_name}}
+                     </span>
+                     <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
+                     {{guest.full_name}}    
+                     </span>
+                     <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                     {{guest.first_name}}    
+                     </span>
+                     <span >&nbsp;&nbsp;Scan status : {{guest.idScanStatus}}</span>
+                  </p>
+               </div>
+            </div>
+            
+             <a class="margin-top-20 numbers-pagination grey-btn"  ng-hide="pageData.disablePreviousButton && pageData.disableNextButton" ng-show="!areAllGuestsApproved()" ng-class='{"numbers-pagination-disabled": pageData.disablePreviousButton}' ng-click="paginationAction(false)">PREV</a>
+              <a class="margin-top-20 numbers-pagination grey-btn" ng-hide="pageData.disablePreviousButton && pageData.disableNextButton" ng-show="!areAllGuestsApproved()"  ng-class='{"numbers-pagination-disabled": pageData.disableNextButton}'ng-click="paginationAction(true)">NEXT</a>
+
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!areAllGuestsApproved() && !id_collection_mandatory" ng-click="doneButtonClicked()">SKIP</a>
+            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">DONE</a>
+</div>
