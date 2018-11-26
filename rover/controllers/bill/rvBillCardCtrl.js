@@ -2133,7 +2133,7 @@ sntRover.controller('RVbillCardController',
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
-			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
 			$scope.checkoutInProgress = false;
 			showDirectDebitDisabledPopup();	
@@ -2193,7 +2193,7 @@ sntRover.controller('RVbillCardController',
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
-			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 	};
 
@@ -2270,7 +2270,7 @@ sntRover.controller('RVbillCardController',
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
-		else if ($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType !== "DB") {
+		else if (ActiveBillBalance !== "0.00" && paymentType !== "DB") {
 			// Show payment popup for stand-alone only.
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
@@ -2287,7 +2287,7 @@ sntRover.controller('RVbillCardController',
 
 		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
 			// Checking last bill balance for stand-alone only.
-			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
+			if (typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
 				    paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
 
@@ -2952,7 +2952,7 @@ sntRover.controller('RVbillCardController',
 
 		$scope.reviewStatusArray = [];
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			if (value.total_fees !== undefined) {
+			//if (value.total_fees !== undefined) {
 				var data = {};
 		        // Bill is reviewed(true) or not-reviewed(false).
 
@@ -2960,7 +2960,7 @@ sntRover.controller('RVbillCardController',
 				data.billNumber = value.bill_number;
 				data.billIndex = key;
 				$scope.reviewStatusArray.push(data);
-			}
+			//}
 		});
 	};
 
