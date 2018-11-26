@@ -13,11 +13,20 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
         $scope.selectedResId = null;
+
+        // Handle validation popup close.
+        $scope.closeDialog = function() {
+            $scope.selectedResId = null;
+            $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+            ngDialog.close();
+        };
+
         /**
          *  Retrieve Available Rooms
          *  @param {Object} - [selected reservation Item]
          */
         var retrieveAvailableRooms = function( selectedItem ) {
+            $scope.selectedResId = selectedItem.reservation_id;
             var successCallBack = function(data) {
                 $scope.errorMessage = '';
                 var roomCount = data.rooms.length;
@@ -38,7 +47,6 @@ angular.module('sntRover')
                         roomTypeId: selectedItem.room_type_id
                     };
 
-                    $scope.selectedResId = selectedItem.reservation_id;
                     $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
                 }
             },
@@ -78,7 +86,6 @@ angular.module('sntRover')
 
         var listener = $scope.$on('RESET_UNASSIGNED_LIST_SELECTION', function() {
             $scope.selectedResId = null;
-            
         });
 
         $scope.$on('$destroy', listener);
