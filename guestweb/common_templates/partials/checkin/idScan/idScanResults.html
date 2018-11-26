@@ -1,82 +1,70 @@
 
 <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
    <p class="main-text"> ID scanning is complete.</p>
-   <div class="panel panel-default" style="padding: 20px;">
-                  <form>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">First name</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.first_name }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Given name</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.given_name }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Surname</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.surname }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Full name</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.full_name }}
-                        </div>
-                     </div>
-                     <div class="form-group row" ng-class="{'invalid-id': screenData.idDetails.iDAuthenticationStatus === 'Failed' || screenData.idDetails.iDAuthenticationStatus === 'Skipped' || screenData.idDetails.iDAuthenticationStatus === 'Caution'}">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Document Authentication</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.iDAuthenticationStatus }}
-                        </div>
-                     </div>
-                     <div class="form-group row" ng-class="{'invalid-id': screenData.idDetails.expirationStatus === 'Expired'}">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">ID Expiration Status</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.expirationStatus }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Birth Date</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.birth_date }}
-                        </div>
-                     </div>
-                     <div class="form-group row" ng-hide="screenData.idDetails.nationality_name">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Nationality Code</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.nationality_code }}
-                        </div>
-                     </div>
-                     <div class="form-group row" ng-show="screenData.idDetails.nationality_name">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Nationality Name</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.nationality_name }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Doument class</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.document_class_name }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">Document Number</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.document_number }}
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label for="staticEmail" class="col-sm-6 col-form-label">ID expiry Date</label>
-                        <div class="col-sm-6">
-                           {{ screenData.idDetails.expiration_date }}
-                        </div>
-                     </div>
-                  </form>
-               </div>
-</div>
+   <p class="sub-main-text"> Please review your details and confirm.</p>
 
-<a class="btn btn-template" ng-click="acceptID()" value="Restart scanning">Done</a>
+
+   <div class="section-container">
+      <p class="sub-text left-align margin-top-10">First name</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.first_name" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Given name</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.given_name" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Surname</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.surname" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Full name</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.full_name" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Document Authentication</p>
+      <div class="row">
+        <input type="text" ng-disabled="true" class="input-field padding-1" ng-model="screenData.idDetails.iDAuthenticationStatus" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">ID Expiration Status</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.expirationStatus" ng-disabled="true" />
+         
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Birth Date</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.birth_date" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Nationality Code</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.nationality_code" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Nationality Name</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.nationality_name" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Doument class</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.document_class_name" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">Doument Number</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.document_number" />
+      </div>
+
+      <p class="sub-text left-align margin-top-10">ID expiry Date</p>
+      <div class="row">
+         <input type="text" class="input-field padding-1" ng-model="screenData.idDetails.expiration_date" />
+      </div>
+   </div>
+
+<a class="btn btn-template" ng-click="acceptID()" value="Restart scanning">Confirm</a>
