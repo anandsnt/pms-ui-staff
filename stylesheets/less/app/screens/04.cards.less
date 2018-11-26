@@ -3081,7 +3081,7 @@
                             z-index: 20;
                             height: 60px;
                             #fade > .in();
-                            .calc-width(100, 365);
+                            .calc-width(100, 340);
                             .pull-left();
                             .box-shadow(inset -2px 0px 1px rgba(0,0,0,0.05));
 
@@ -3135,7 +3135,6 @@
                                 }
                             }
                             
-
                             .entry {
                                 padding: 0; 
                                 .box-shadow(none);
@@ -3234,6 +3233,12 @@
                                 }
                             }
 
+                            .button-filter {
+                                margin: 0;
+                                flex-basis: 40px;
+                                flex-shrink: 0;
+                            }
+
                             &.hidden,
                             &.ng-hide {
                                 visibility: hidden;
@@ -3245,7 +3250,7 @@
                         .totals {
                             background: @background;
                             padding: 10px 10px 10px 20px;
-                            .size(60px, 365px);
+                            .size(60px, 340px);
                             .pull-right();
                             #flexbox > .parent(row, space-between, center, center);
 
@@ -3255,7 +3260,7 @@
                                 text-transform: uppercase;
                                 font-size: 14px;
                                 line-height: 16px;
-                                width: 100px;
+                                padding-right: 20px;
 
                                 .value {
                                     font-weight: 600;
@@ -3274,6 +3279,10 @@
 
                                 &.action {
                                     width: 40px;
+                                    padding-right: 0;
+                                    flex-shrink: 0;
+                                    flex-basis: 40px;
+                                    margin-left: auto;
 
                                     .button {
                                         .square(40px);
@@ -3293,6 +3302,41 @@
                                 }
                             }
                            
+                        }
+
+                        &:not(.no-filters) {
+                            .search-form {
+                                .button-filter {
+                                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
+                                    .gradient (@logoGradientEnd, @logoGradientStart);
+    
+                                    .icons {
+                                        &.icon-filter {
+                                            .icons > .icon-filter.active;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.no-filters {
+                            .search-form {
+                                width: 300px;
+                            }
+
+                            .totals {
+                                .calc-width(100, 300);
+                            }
+
+                            &.no-multi-property {
+                                .search-form {
+                                    width: 60px;
+                                }
+    
+                                .totals {
+                                    .calc-width(100, 60);
+                                } 
+                            }
                         }
                     }
 
