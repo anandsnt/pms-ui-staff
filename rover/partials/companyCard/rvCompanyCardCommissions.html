@@ -1,6 +1,6 @@
 <!-- Travel Agent Card Tab - Commisions -->
 <form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
-    <div class="tab-header" ng-class="{ 'with-filters' : isCommissionFilterTabOpened, 'no-filters': !isCommissionFilterTabOpened, 'no-multi-property': !shouldShowPropertyDropDown}">
+    <div class="tab-header" ng-class="{ 'with-filters' : isCommissionFilterTabOpened, 'no-filters': !isCommissionFilterTabOpened && !(filterData.selectAll || selectedCommissions.length > 0), 'no-multi-property': !shouldShowPropertyDropDown}">
         <div class="search-form has-options has-dates">
             <div class="filters" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
                 <!-- Add class "hidden" when selecting all/individual commisions -->

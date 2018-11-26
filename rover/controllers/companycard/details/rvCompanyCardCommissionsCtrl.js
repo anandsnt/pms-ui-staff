@@ -254,6 +254,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 fetchCommissionDetails(false);
                 $scope.status.groupPaidStatus = '';
             }
+            $scope.isCommissionFilterTabOpened = true;
         };
 
     // Updates the paid status to the server
