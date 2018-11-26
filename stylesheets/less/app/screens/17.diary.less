@@ -1,4 +1,3 @@
-/* Room Diary                ==============================*/
     .diary-content {
 
         .diary-header {
@@ -27,7 +26,7 @@
 
                 select { padding: 12px 10px; }
 
-                &.date {
+                &.date { 
                     .calc-width(20, 11);
 
                     .entry-data {
@@ -76,10 +75,10 @@
                         }
 
                         &:hover { background-position: 92% -34px; }
-                    }
+                    } 
                 }
 
-                &.time {
+                &.time { 
                     .calc-width(14, 11);
 
                     select {
@@ -87,25 +86,25 @@
                         font-weight: 600;
                         padding: 0 10px;
 
-                        option {
-                            font-size: 16px;
+                        option { 
+                            font-size: 16px; 
                             font-weight: 400;
                         }
                     }
                 }
 
-                &.room {  .calc-width(18, 12); }
+                &.room {  .calc-width(18, 12); } 
 
-                &.rate {
+                &.rate { 
                     position: relative;
                     .calc-width(24, 12);
 
-                    .faux-select {
+                    .faux-select { 
                         position: relative;
                         padding: 0 10px;
                         line-height: 50px;
                         cursor: pointer;
-                        z-index: 1030;
+                        z-index: 9992;
                         .faux-clickable;
 
                         &:after {
@@ -123,7 +122,7 @@
                     }
                 }
 
-                &.switch {
+                &.switch { 
                     .calc-width(12, 12);
 
                     .switch-button {
@@ -133,7 +132,7 @@
                         .show;
 
                         .data-off,
-                        .data-on {
+                        .data-on { 
                             font-size: 24px;
                             line-height: 40px;
                             height: 40px;
@@ -145,19 +144,19 @@
                                 background: @white;
                             }
 
-                            .value {
+                            .value { 
                                 color: @grey2;
-                                font-weight: 600;
+                                font-weight: 600; 
                             }
 
-                            &.data-off {
+                            &.data-off { 
                                 left: auto;
                                 right: 0;
 
                                 .switch-icon { margin: 0 5px 0 0; }
                             }
-
-                            &.data-on {
+                            
+                            &.data-on { 
                                 left: auto;
                                 right: 100%;
 
@@ -199,20 +198,20 @@
                         text-transform: uppercase;
                         font-weight: 600;
                         color: @white;
-                        .calc-width(100, 500);
+                        .calc-width(100, 380);
                         .pull-left;
 
-                        h1 {
+                        h1 { 
                             display: inline-block;
                             font-size: 20px;
-                            margin-right: 15px;
+                            margin-right: 15px; 
                         }
 
                         span { margin: 0 5px; }
                     }
 
                     .actions {
-                        width: 500px;
+                        width: 380px;
                         .pull-left;
 
                         .button {
@@ -240,7 +239,7 @@
                 position: absolute;
                 top: 80px;
                 left: 10px;
-                z-index: 1199;
+                z-index: 9992;
                 .calc-width(100, 10);
                 .faux-clickable;
                 .transition;
@@ -254,12 +253,12 @@
                         text-overflow: clip;
                         .show;
 
-                        .icon-form {
+                        .icon-form { 
                             top: 15px;
-                            left: 10px;
+                            left: 10px; 
                         }
 
-                        .placeholder {
+                        .placeholder { 
                             color: @grey3;
                             font-style: italic;
                             .hide;
@@ -277,21 +276,21 @@
                             background-color: @white;
                             .square(50px);
                             z-index: 99;
-
-                            &.icon-ok-10 {
-                                right: 50px;
+                            
+                            &.icon-ok-10 { 
+                                right: 50px; 
                                 background-position: 20px -5840px;
                             }
 
-                            &.icon-remove-10 {
-                                right: 0;
+                            &.icon-remove-10 { 
+                                right: 0; 
                                 background-position: 20px -3920px;
                             }
                         }
 
                         &:last-child { border-bottom: 0; }
                     }
-                }
+                }           
 
                 &.showing-search {
                     width: 420px;
@@ -324,7 +323,7 @@
                             font-weight: 700;
                             line-height: 50px;
                             padding-left: 40px;
-                            color: @logoPrimary;
+                            color: @logoPrimary; 
                             z-index: 9;
                             background: @grey1;
                             .placeholder-text(18px, 50px, 600, @grey4, normal);
@@ -357,21 +356,21 @@
                                 #border-radius > .rounded(20px);
                             }
 
-                            &.visible {
+                            &.visible { 
                                 visibility: visible;
 
                                 .icons {
-                                    .opacity(100);
-                                    #fade > .in();
+                                    .opacity(100); 
+                                    #fade > .in(); 
                                 }
                             }
 
                             &:hover,
-                            &.active {
+                            &.active { 
                                 .icons { background-color: @logoPrimary; }
                             }
                         }
-                    }
+                    } 
                 }
 
                 &.hidden { #fade > .out(); }
@@ -779,8 +778,6 @@
                         &.occupied {
                             position: relative;
                             color: @white;
-                            cursor: @draggable, pointer;
-                            cursor: @draggable 16 16, pointer;
 
                             &:after,
                             &:before {
@@ -926,6 +923,21 @@
                                 }
 
                                 &.no-show { color: @white; }
+                            }
+
+                            &.nightuse {
+                                cursor: default;
+                                background-color: #375fa3;
+
+                                &:after {
+                                    .icons > .icon-diary-nightuse();
+                                    background-color: transparent;
+                                }
+                            }
+
+                            &:not(.nightuse) {
+                                cursor: @draggable, pointer;
+                                cursor: @draggable 16 16, pointer;
                             }
                         }
 
@@ -1305,6 +1317,10 @@
 
                                 &.oos {
                                     &:after { background-position: 0 -3074px; }
+                                }
+
+                                &.nightuse {
+                                    &:after { background-position: 0 -3062px; }
                                 }
                             }
 
