@@ -267,12 +267,18 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					// CICO-58191
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						id: $scope.reservationData.reservationId,
-						confirmationId: $scope.reservationData.confirmNum,
-						isrefresh: true
-					});
+					if ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+						$state.reload($state.current.name);
+						
+					} else {
+						// CICO-58191
+						$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+							id: $scope.reservationData.reservationId || $scope.reservationData.reservation_card.reservation_id,
+							confirmationId: $scope.reservationData.confirmNum || $scope.reservationData.reservation_card.confirmation_num,
+							isrefresh: true
+						});
+					}
+					
 				}
 
 				$scope.closeReservationCancelModal();
@@ -569,13 +575,23 @@
 				$("header .logo").hide();
 				$("header .h2").hide();
 
+				var onPrintCompletion = function() {
+					$timeout(function() {
+						$("header .logo").show();
+						$("header .h2").show();
+						removePrintOrientation();
+					}, 100);
+				};
+
 				$timeout(function() {
-					$window.print();
 					if (sntapp.cordovaLoaded) {
-						cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-					}
-					$("header .logo").show();
-					$("header .h2").show();
+						cordova.exec(onPrintCompletion, function() {
+							onPrintCompletion();
+						}, 'RVCardPlugin', 'printWebView', []);
+					} else {
+						$window.print();
+						onPrintCompletion();	
+					}					
 				}, 400);
 				// remove the orientation after similar delay
 				$timeout(removePrintOrientation, 100);

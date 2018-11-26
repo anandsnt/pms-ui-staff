@@ -215,6 +215,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		* @param dataToSend data object to API
 		*/
 		that.fetchTransactions = function () {
+			$scope.errorMessage = '';
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
 				successCallBack: successCallbackOfFetchAPI,
 				params: that.createParametersFetchTheData()
@@ -362,7 +363,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var failureCallBackOfPayment = function(errorMessage) {
 			// In this case - we have to show the error in footer
-			if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
+		if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
 			}

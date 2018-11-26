@@ -1796,14 +1796,26 @@ angular.module('reportsModule')
             // [date - name - room] > TO > [room - name - date]
             if ( report['title'] === reportNames['ARRIVAL'] ||
                  report['title'] === reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy( report['sort_fields'][0] ),
-                    roomSortBy = angular.copy( report['sort_fields'][2] );
+                var arrivalDateSortBy = angular.copy( report['sort_fields'][1] ),
+                    roomSortBy = angular.copy( report['sort_fields'][4] ),
+                    nameSortBy = angular.copy( report['sort_fields'][2] ),
+                    departureDateSortBy = angular.copy( report['sort_fields'][0] ),
+                    rateSortBy = angular.copy( report['sort_fields'][3] ),
+                    balanceSortBy = angular.copy( report['sort_fields'][5] );
 
-                dateSortBy['colspan'] = 2;
+                // CICO-57477 - This is done to disable sorts in column header for some fields
+                departureDateSortBy.disableSort = true;
+                balanceSortBy.disableSort = true;
+
+                arrivalDateSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
                 report['sort_fields'][0] = roomSortBy;
-                report['sort_fields'][2] = dateSortBy;
+                report['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][2] = arrivalDateSortBy;
+                report['sort_fields'][3] = departureDateSortBy;
+                report['sort_fields'][4] = rateSortBy;
+                report['sort_fields'][5] = balanceSortBy;
             }
 
             // for AR Summary report the sort by items must be
@@ -1827,14 +1839,26 @@ angular.module('reportsModule')
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
             if ( report['title'] === reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy( report['sort_fields'][0] ),
-                    roomSortBy = angular.copy( report['sort_fields'][1] );
+                var nameSortBy = angular.copy( report['sort_fields'][1] ),
+                    roomSortBy = angular.copy( report['sort_fields'][3] ),
+                    rateSortBy = angular.copy( report['sort_fields'][2] ),  
+                    arrivalDateSortBy = angular.copy( report['sort_fields'][0] ),
+                    departureDateSortBy = angular.copy( report['sort_fields'][4] );                   
+
+                // CICO-57477 - This is done to disable sorts in column header for some fields
+                arrivalDateSortBy.disableSort = true;
+                departureDateSortBy.disableSort = true;
+                balanceSortBy = {disableSort: true};
 
                 nameSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
                 report['sort_fields'][0] = roomSortBy;
                 report['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][2] = arrivalDateSortBy;
+                report['sort_fields'][3] = departureDateSortBy;
+                report['sort_fields'][4] = rateSortBy;
+                report['sort_fields'][5] = balanceSortBy;
             }
 
             // for Login and out Activity report

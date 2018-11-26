@@ -31,8 +31,7 @@ describe('RVInvoiceSearchController', function () {
                     $scope = _$rootScope_.$new();
                 });
 
-                $rootScope.roverObj = {};
-                $rootScope.roverObj.hasActivatedFolioNumber = true;
+                $rootScope.roverObj = {};                
 
                 rvInvoiceSearchController = $controller('RVInvoiceSearchController', {
                     $scope: $scope

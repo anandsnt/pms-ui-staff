@@ -87,6 +87,7 @@
 	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
 	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print",
 	"EXT_TAX_BREAKDOWN" : "Extended Tax breakdown",
+	"PRINT_INVOICE_NUMBER": "Print Invoice Number",
 	"ACTIVATE_FOLIO_NUMBER": "Activate Folio Number",
 	"SHOW_PERFORMA_INVOICE":"Pro Forma Invoice",
 

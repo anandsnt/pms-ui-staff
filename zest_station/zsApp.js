@@ -18,7 +18,8 @@ var sntZestStation = angular.module('sntZestStation', [
     'clickTouch',
     'sntPay',
     'sntPayConfig',
-    'sntActivityIndicator'
+    'sntActivityIndicator',
+    'sntIDCollection'
 ]);
 
 
@@ -106,6 +107,19 @@ var GlobalZestStationApp = function() {
             xhr.open("GET", url, true);
 
             xhr.send(); // LATER: Loading indicator
+    };
+
+    this.loadCordovaWithVersion = function(version) {
+        var script_node = document.createElement('script');
+
+        script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+        script_node.setAttribute('type', 'application/javascript');
+        document.body.appendChild(script_node);
+        document.addEventListener('deviceready', function() {
+            that.cordovaLoaded = true;
+            that.browser = 'rv_native';
+            that.cardReader = new CardOperation();
+        }, false);
     };
 
 

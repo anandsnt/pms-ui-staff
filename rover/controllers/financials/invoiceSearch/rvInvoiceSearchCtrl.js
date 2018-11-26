@@ -283,9 +283,7 @@ sntRover.controller('RVInvoiceSearchController',
 				api: $scope.searchInvoice,
 				perPage: PER_PAGE
 			};
-			$scope.searchPlaceHolder = ($rootScope.roverObj.hasActivatedFolioNumber) ? 
-										$filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER') : 
-										$filter('translate')('SEARCH_PLACE_HOLDER_WITHOUT_FOLIO_NUMBER');
+			$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);
