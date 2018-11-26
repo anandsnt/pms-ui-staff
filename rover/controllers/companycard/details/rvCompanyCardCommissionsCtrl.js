@@ -498,7 +498,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         $scope.toggleFilter = function() {
             $scope.isCommissionFilterTabOpened = !$scope.isCommissionFilterTabOpened;
-        }
+        };
 
         $scope.$on('LOAD_SUBSCRIBED_MPS', function() {
             if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
