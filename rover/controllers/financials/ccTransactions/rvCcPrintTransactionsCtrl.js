@@ -126,7 +126,7 @@ sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', 
               cordova.exec(ccTransactionsPrintCompleted,
                 function(error) {
                   ccTransactionsPrintCompleted();
-                }, 'RVCardPlugin', 'printWebView', ['cc Transactions', '', '', printMode]);
+                }, 'RVCardPlugin', 'printWebView', ['', '', '', printMode]);
             }
             else
             {
