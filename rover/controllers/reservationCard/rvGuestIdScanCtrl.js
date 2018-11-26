@@ -18,7 +18,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		});
 
 		var dateInHotelsFormat = function(date) {
-			return JSON.parse(JSON.stringify(dateFilter(new Date(date), $rootScope.dateFormat)));
+			$rootScope.dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
+			return moment(date, 'MM-DD-YYYY').format($rootScope.dateFormat);
 		};
 
 		$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
@@ -244,11 +245,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.scanFrontSide = function() {
 			$scope.screenData.imageSide = 0;
-			$scope.captureFrontImage();
+			document.getElementById('front-image').click();
+			
 		};
 		$scope.scanBackSide = function() {
 			$scope.screenData.imageSide = 1;
-			$scope.captureBackImage();
+			document.getElementById('back-image').click();
 		};
 
 		$scope.$on('IMAGE_UPDATED', function(evt, data) {
@@ -272,14 +274,13 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		var setIDDetailsForScannedDocument = function(data) {
 			var frontSideImage = angular.copy($scope.guestIdData.front_image_data);
 			var backSideImage = angular.copy($scope.guestIdData.back_image_data);
-
-			$scope.guestIdData = {};
+			
 
 			var expirationDate = moment(data.expiration_date, 'DD-MM-YYYY');
 			var dateOfBirth = moment(data.date_of_birth, 'DD-MM-YYYY');
 
-			data.expiration_date = expirationDate.isValid() ? expirationDate.format('MM-DD-YYYY') : '';
-			data.date_of_birth = dateOfBirth.isValid() ? dateOfBirth.format('MM-DD-YYYY') : '';
+			$scope.guestIdData.expiration_date = expirationDate.isValid() ? expirationDate.format('MM-DD-YYYY') : '';
+			$scope.guestIdData.date_of_birth = dateOfBirth.isValid() ? dateOfBirth.format('MM-DD-YYYY') : '';
 
 			$scope.guestIdData.front_image_data = frontSideImage;
 			$scope.guestIdData.back_image_data = backSideImage;
@@ -287,10 +288,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.first_name = data.last_name;
 			$scope.guestIdData.document_number = data.document_number;
 			$scope.guestIdData.document_type = data.document_type && data.document_type.toUpperCase() === 'PASSPORT' ? 'PASSPORT' : 'ID_CARD';
-			$scope.guestIdData.expiry_date = data.expiration_date;
-			$scope.guestIdData.expiry_date_for_display = data.expiration_date ? dateInHotelsFormat(data.expiration_date) : '';
-			$scope.guestIdData.dob_for_display = data.date_of_birth ? dateInHotelsFormat(data.date_of_birth) : '';
-			$scope.guestIdData.date_of_birth = data.date_of_birth;
+			$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
+			$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
 			var nationality_id = '';
 
 			if (data.nationality_name) {
