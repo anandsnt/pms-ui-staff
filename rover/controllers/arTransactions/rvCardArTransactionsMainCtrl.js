@@ -215,6 +215,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		* @param dataToSend data object to API
 		*/
 		that.fetchTransactions = function () {
+			$scope.errorMessage = '';
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
 				successCallBack: successCallbackOfFetchAPI,
 				params: that.createParametersFetchTheData()
@@ -362,7 +363,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var failureCallBackOfPayment = function(errorMessage) {
 			// In this case - we have to show the error in footer
-			if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
+		if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
 			}
@@ -731,6 +732,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $( '#print-orientation' ).remove();
         };
 
+        var arTransactionPrintCompleted = function() {
+			$("header .logo").removeClass('logo-hide');
+            // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
+            $scope.$emit("PRINT_AR_STATEMENT", false);
+            // remove the orientation after similar delay
+            removePrintOrientation();
+        };
+
         // print AR Statement
         var printArStatement = function(params) {
             var printDataFetchSuccess = function(successData) {
@@ -742,33 +751,29 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 $scope.$emit("PRINT_AR_STATEMENT", true);
                 // add the orientation
                 addPrintOrientation();
-
                 /*
                 *   ======[ READY TO PRINT ]======
                 */
                 // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                    *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                    */
+               $timeout(function() {
 
-                    $window.print();
-                    if ( sntapp.cordovaLoaded ) {
-                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-                    }
-                }, 1000);
+					if (sntapp.cordovaLoaded) {
+						cordova.exec(arTransactionPrintCompleted,
+							function() {
+								arTransactionPrintCompleted();
+							}, 'RVCardPlugin', 'printWebView', []);
+					}
+					else
+					{
+						window.print();
+						arTransactionPrintCompleted();
+					}
+				}, 100);
 
                 /*
                 *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
                 */
 
-                $timeout(function() {
-                    $("header .logo").removeClass('logo-hide');
-                    // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
-                    $scope.$emit("PRINT_AR_STATEMENT", false);
-                    // remove the orientation after similar delay
-                    removePrintOrientation();
-                }, 1000);
             };
 
             var printDataFailureCallback = function(errorData) {

@@ -351,19 +351,20 @@ function BaseCtrl($scope) {
     };
 
     $scope.reservationHasPassportsScanned = function(guestData) {
-        for (var i in guestData.accompanying_guests_details) {
-            if (!guestData.accompanying_guests_details[i].is_passport_present) {
-                $scope.trackSessionActivity('PUK/CI', 'Passport Missing[Accompany guest]', '-', 'PASSPORT_SCAN', true);
-                return false;
-            }
+        var areAllRequiredIdsScanned = true;
+
+        if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_scan_all_guests) {
+            _.each(guestData.accompanying_guests_details, function(guest) {
+                if (!guest.is_passport_present) {
+                    areAllRequiredIdsScanned = false;
+                }
+            });
         }
-        if (!guestData.primary_guest_details.is_passport_present) {
-            $scope.trackSessionActivity('PUK/CI', 'Passport Missing[Primary guest]', '-', 'PASSPORT_SCAN', true);
-            return false;
+        if (areAllRequiredIdsScanned && !guestData.primary_guest_details.is_passport_present) {
+            areAllRequiredIdsScanned = false;
         }
-        $scope.trackSessionActivity('PUK/CI', 'all passports verified', '-', 'PASSPORT_SCAN', false);
-        // else all passports for reservation have been scanned already
-        return true;
+
+        return areAllRequiredIdsScanned;
     };
 
     $scope.trackEvent = function(event_name, event_type, from, at) {

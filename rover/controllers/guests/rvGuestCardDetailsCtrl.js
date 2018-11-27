@@ -344,37 +344,34 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             // add the orientation
             addPrintOrientation();
 
+            var onPrintCompletion = function() {
+                $timeout(function() {
+                    $scope.printState.clicked = false;
+                    // CICO-9569 to solve the hotel logo issue
+                    $("header .logo").removeClass('logo-hide');
+                    $("header .h2").addClass('text-hide');
+    
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 200);
+            };
+
             /*
             *   ======[ READY TO PRINT ]======
             */
             // this will show the popup with full bill
             $timeout(function() {
-                /*
-                *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                */
-
-                $window.print();
                 if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    cordova.exec(onPrintCompletion, function() {
+                        onPrintCompletion();
+                    }, 'RVCardPlugin', 'printWebView', []);
+                } else {
+                    $window.print();
+                    onPrintCompletion();
                 }
             }, 200);
 
-            /*
-            *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-            */
-
-            $timeout(function() {
-                $scope.printState.clicked = false;
-                // CICO-9569 to solve the hotel logo issue
-                $("header .logo").removeClass('logo-hide');
-                $("header .h2").addClass('text-hide');
-
-                // remove the orientation after similar delay
-                removePrintOrientation();
-            }, 200);
-
         };
-       
 
         init();        
 }]);

@@ -95,7 +95,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		var $_lastQuery = '';
 
-		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters ),
 
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
@@ -927,39 +927,43 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		function $_startPrinting() {
+			$scope.$emit('hideLoader');
 			/*
 			*	======[ READY TO PRINT ]======
 			*/
 
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
-			$scope.$emit('hideLoader');
+			
+			var onPrintCompletion = function() {
+				// remove the orientation after similar delay
+				$timeout(function() {
+					// remove the orientation
+					$( '#print-orientation' ).remove();
+
+					// reset params to what it was before printing
+					$_page = $scope.returnToPage;
+					$_updateFilters('page', $_page);
+					$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
+
+					$_callRoomsApi();
+				}, 150);
+			};
 
 			/*
 			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 			*/
 			$timeout(function() {
-				$window.print();
 				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					cordova.exec(onPrintCompletion, function() {
+						onPrintCompletion();
+					}, 'RVCardPlugin', 'printWebView', ['hkstatus', '0', '', 'L']);
+				} else {
+					$window.print();
+					onPrintCompletion();
 				}
 			}, 100);
-			/*
-			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			*/
-
-			// remove the orientation after similar delay
-			$timeout(function() {
-				// remove the orientation
-				$( '#print-orientation' ).remove();
-
-				// reset params to what it was before printing
-				$_page = $scope.returnToPage;
-				$_updateFilters('page', $_page);
-				$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
-
-				$_callRoomsApi();
-			}, 150);
+			
 		}
 
 

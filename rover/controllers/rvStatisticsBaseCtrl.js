@@ -27,10 +27,11 @@ var StatisticsBaseCtrl = function ($scope, $rootScope) {
 
     // Get style for statistics details expanded view
     $scope.getStyleForExpandedView = function( monthlyData ) {
-        var styleClass = {};                    
+        var styleClass = {},
+            count =  monthlyData.reservations_count || (monthlyData.reservations && monthlyData.reservations.length);
 
         if (monthlyData.isOpen) {
-            var margin = monthlyData.reservations.length * 70 + 30;
+            var margin = count * 70 + 30;
 
             styleClass['margin-bottom'] = margin + 'px';
         }

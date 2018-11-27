@@ -25,8 +25,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		var scrollOptions = {
 			preventDefaultException: {
-				tagName: /^(INPUT|SELECT)$/
+				tagName: /^(INPUT|SELECT|BUTTON)$/
 			},
+			tap: true,
+			preventDefault: false,
+			deceleration: 0.0001,
 			preventDefault: false
 		};
 
@@ -96,11 +99,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		$scope.uploadFrontImage = function() {
-			$('#front-image-upload').click();
+			$('#front-image-upload').trigger('click');
 		};
 
 		$scope.uploadBackImage = function() {
-			$('#back-image-upload').click();
+			$('#back-image-upload').trigger('click');
 		};
 
 		var markIDDetailsHasChanged = function() {
