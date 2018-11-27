@@ -2,7 +2,7 @@
 <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" >
             <p class="main-text no-text-case">Scan your ID</p>
             <p class="sub-main-text no-text-case margin-top-20">Skip the long lines and upload state issued ID for the following guests! Remember if you opt out now, you will still required to submit it to staff before you can check in</p>
-            <div ng-repeat="guest in pageData.viewableItems track by $index" class="guest-container margin-top-10" ng-click="selectGuest(guest)" ng-class="{'selected':true}">
+            <div ng-repeat="guest in selectedReservation.guest_details track by $index" class="guest-container margin-top-10" ng-click="selectGuest(guest)" ng-class="{'selected':true}">
                 <div >
                     
                     <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
@@ -24,9 +24,6 @@
                   </p>
                </div>
             </div>
-            
-             <a class="margin-top-20 numbers-pagination grey-btn"  ng-hide="pageData.disablePreviousButton && pageData.disableNextButton" ng-show="!areAllGuestsApproved()" ng-class='{"numbers-pagination-disabled": pageData.disablePreviousButton}' ng-click="paginationAction(false)">PREV</a>
-              <a class="margin-top-20 numbers-pagination grey-btn" ng-hide="pageData.disablePreviousButton && pageData.disableNextButton" ng-show="!areAllGuestsApproved()"  ng-class='{"numbers-pagination-disabled": pageData.disableNextButton}'ng-click="paginationAction(true)">NEXT</a>
 
             <a class="btn btn-template margin-top-20 grey-btn" ng-show="!areAllGuestsApproved() && !id_collection_mandatory" ng-click="doneButtonClicked()">SKIP</a>
             <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">DONE</a>

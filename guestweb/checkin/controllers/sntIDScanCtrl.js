@@ -25,40 +25,6 @@
 
 			/* ******************* GUEST LIST *********************** */
 
-			var setPageNumberDetails = function() {
-				var itemsPerPage = 3;
-
-				$scope.pageData = guestIDScanService.proceesPaginationDetails($scope.selectedReservation.guest_details, itemsPerPage, $scope.pageData.pageNumber);
-			};
-
-			$scope.paginationAction = function(isNextPage) {
-				if ((isNextPage && $scope.pageData.disableNextButton) || (!isNextPage && $scope.pageData.disablePreviousButton)) {
-					return;
-				}
-				$scope.pageData.pageNumber = isNextPage ? ++$scope.pageData.pageNumber : --$scope.pageData.pageNumber;
-				setPageNumberDetails();
-			};
-
-			var demoModeScanActions = function () {
-
-                var options = {
-                    successCallBack: function(response) {
-                        $scope.idScanData.selectedGuest.scannedDetails = response;
-                        $scope.idScanData.selectedGuest.front_image_data = response.front_image_data;
-                        $scope.idScanData.selectedGuest.back_image_data = '';
-						if ($scope.idScanData.verificationMethod === 'STAFF') {
-							$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
-						} else {
-							$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
-							refreshIDdetailsScroller();
-						}
-						setPageNumberDetails();
-                    }
-                };
-
-                // $scope.callAPI(guestIDScanService.getSampleAcuantIdScanDetails, options);
-			};
-
 			$scope.selectGuest = function(selectedGuest) {
 				var selectGuest = _.find($scope.selectedReservation.guest_details, function(guestDetail) {
 					return guestDetail.id === selectedGuest.id;
@@ -79,35 +45,6 @@
 				});
 
 				return allGuestsScaned;
-			};
-			$scope.areAllGuestsScanned = function() {
-				var allGuestsScaned = _.all($scope.selectedReservation.guest_details, function(guestDetail) {
-					return guestDetail.idScanStatus !== SCANING_PENDING && guestDetail.idScanStatus !== SCAN_REJECTED;
-				});
-
-				return allGuestsScaned;
-			};
-
-			/* ******************* SCROLLERS *********************** */
-
-			var refreshIDdetailsScroller = function() {
-				$scope.refreshScroller('passport-validate');
-
-				var scroller = $scope.getScroller('passport-validate');
-
-				$timeout(function() {
-					scroller.scrollTo(0, 0, 300);
-				}, 0);
-			};
-
-			var refreshConfrimImagesScroller = function() {
-				$scope.refreshScroller('confirm-images');
-
-				var scroller = $scope.getScroller('confirm-images');
-
-				$timeout(function() {
-					scroller.scrollTo(0, 0, 300);
-				}, 0);
 			};
 
 			$scope.acceptID = function() {
@@ -144,11 +81,6 @@
 				$scope.idScanData.selectedGuest.scannedDetails = {};
 			};
 
-			$scope.rejectID = function() {
-				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
-				$scope.screenData.scanMode = 'GUEST_LIST';
-				setPageNumberDetails();
-			};
 
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
 
@@ -180,10 +112,8 @@
 				} else {
 					$scope.idScanData.selectedGuest.back_image_data = data.imageData;
 				}
-				refreshConfrimImagesScroller();
 			});
 
-			var verfiedStaffId;
 			var nextPageActions = function() {
 				$rootScope.idScanComplete = true;
 				if (stateParams.mode === 'CHECKIN') {
@@ -193,90 +123,17 @@
 				}
 			};
 
-			/* ********************* STAFF VERIFICATION ************************* */
-
-			var recordIDApproval = function() {
-				// application name is set to ROVER to log staff name
-				var params = {
-					"id": $scope.checkinReservationData.reservation_id,
-					"user_id": verfiedStaffId,
-					"application": 'ROVER',
-					"action_type": "ID_REVIEWED",
-					"details": []
-				};
-
-				var newData = {
-					'key': 'Guests Verified With ID',
-					'new_value': ''
-				};
-				var guestNames = _.map($scope.selectedReservation.guest_details, function(guest) {
-					return guest.first_name + ' ' + guest.last_name;
-				});
-
-				newData.new_value = guestNames.join(', ');
-				params.details.push(newData);
-
-				if ($scope.inDemoMode()) {
-					nextPageActions();
-				} else {
-
-					guestIDScanService.recordIdVerification(params).then(function(response) {
-					$scope.isLoading = false;
-					if (response.status === 'failure') {
-						$scope.netWorkError = true;
-					} else {
-						nextPageActions()
-					}
-				}, function() {
-					$scope.netWorkError = true;
-					$scope.isLoading = false;
-					nextPageActions()
-				});
-				}
-				
-			};
-
 			$scope.doneButtonClicked = function() {
 				nextPageActions();
 			};
-
-			$scope.scanCompleted = function() {
-				$scope.screenData.scanMode = 'ADMIN_LOGIN';
-				$scope.screenData.adminMode = 'WAIT_FOR_STAFF';
-			};
-
-			$scope.ringBell = function() {
-				$scope.$emit('PLAY_BELL_SOUND');
-			};
-
-			$scope.adminVerify = function() {
-				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
-			};
-
 			
-
-			$scope.retryPinEntry = function() {
-				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
-			};
-
-			var goBackToScanAgain = function() {
-				if ($scope.screenData.scanMode === 'FINAL_ID_RESULTS') {
-					$scope.showGuestList();
-				} else {
-					verfiedStaffId = '';
-					$scope.idScanData.staffVerified = false;
-					
-				}
-			};
-			// Back button will be only shown when staff is reviewwing
-			// $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, goBackToScanAgain);
 
 			$scope.$on('CREDENTIALS_VALIDATED', function() {
 				$scope.screenData.scanMode = 'GUEST_LIST';
 			});
 
 			(function() {
-				$scope.pageData = guestIDScanService.retrievePaginationStartingData();
+				
 				$scope.selectedReservation = checkinDetailsService.getResponseData();
 
 				if (!$rootScope.scan_all_guests) {
@@ -288,11 +145,7 @@
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
 				});
-				setPageNumberDetails();
-
-				// $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-				// $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-
+				
 				
 				$scope.idScanData = {
 					mode: '',
@@ -301,9 +154,6 @@
 					staffVerified: false
 				};
 				$scope.validateSubsription();
-				// $scope.setScroller('passport-validate');
-				// $scope.setScroller('confirm-images');
-				$scope.netWorkError = false;
 				$scope.isLoading = false;
 			}());
 		}
@@ -331,12 +181,6 @@
 
 	This has to be done for all the listed guest +  accompanying guests
 
-	When the required images are added, the result can be retrived, viewed and approved with or without Staff verification.
-
-	If staff verification is turned ON, after guest scans all guests, they will confirm they have finished scanning.
-
-	Guest can call staff (if notification sound is enabled, they can use it for calling staff).
-
-	Staff comes and enter their PIN code to proceed.
+	When the required images are added, the result can be retrived and reviewed.
 
 	***************************************************************************************************** */
