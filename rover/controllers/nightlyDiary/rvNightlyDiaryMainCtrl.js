@@ -240,9 +240,23 @@ angular.module('sntRover')
                  * @return {}
                  */
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
-                    resetUnassignedList();
-                    console.log(roomDetails, reservationDetails);
-                    // TODO : fetchRoomListDataAndReservationListData();
+                    var successCallBackAssignRoom = function (data) {
+                        $scope.errorMessage = '';
+                        $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
+                    },
+                    postData = {
+                        "reservation_id": reservationDetails.reservationId,
+                        "room_number": roomDetails.room_number,
+                        "without_rate_change":true,
+                        "is_preassigned":false,
+                        "forcefully_assign_room":false
+                    },
+                    options = {
+                        params: postData,
+                        successCallBack: successCallBackAssignRoom
+                    };
+
+                    $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
                 /*

@@ -205,5 +205,22 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+
+        /*
+         * Assign Room in Diary
+         * @param {data} object
+         * return object
+         */
+        this.assignRoom = function(params) {
+            var deferred = $q.defer(),
+                url = '/staff/reservation/modify_reservation';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
     }
 ]);
