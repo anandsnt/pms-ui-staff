@@ -733,7 +733,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         };
 
         var arTransactionPrintCompleted = function() {
-        	$("header .logo").removeClass('logo-hide');
+			$("header .logo").removeClass('logo-hide');
             // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
             $scope.$emit("PRINT_AR_STATEMENT", false);
             // remove the orientation after similar delay
@@ -759,7 +759,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 					if (sntapp.cordovaLoaded) {
 						cordova.exec(arTransactionPrintCompleted,
-							function(error) {
+							function() {
 								arTransactionPrintCompleted();
 							}, 'RVCardPlugin', 'printWebView', []);
 					}

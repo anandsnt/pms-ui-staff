@@ -3,8 +3,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	'$rootScope',
 	'ngDialog',
 	'$timeout',
-	'$window',
-	function($scope, $rootScope, ngDialog, $timeout, $window) {
+	function($scope, $rootScope, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('roomTypeFilterList');
@@ -155,7 +154,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 
 				if (sntapp.cordovaLoaded) {
 					cordova.exec(sellLimitPrintCompleted,
-						function(error) {
+						function() {
 							sellLimitPrintCompleted();
 						}, 'RVCardPlugin', 'printWebView', []);
 				}

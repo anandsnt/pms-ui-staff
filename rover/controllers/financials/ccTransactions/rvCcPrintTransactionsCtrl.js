@@ -1,4 +1,4 @@
-sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', '$timeout', '$window', function($scope, $rootScope, $timeout, $window) {
+sntRover.controller('RVCcPrintTransactionsController', ['$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout) {
 	BaseCtrl.call(this, $scope);
 
 	/** Code for PRINT BOX drawer common Resize Handler starts here .. **/

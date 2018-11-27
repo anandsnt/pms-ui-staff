@@ -253,7 +253,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	var journalPrintCompleted = function() {
 		$( '#print-orientation' ).remove();
-	}
+	};
 
 	// print the journal page
 	var printJournal = function() {
