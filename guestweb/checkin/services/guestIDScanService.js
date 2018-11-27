@@ -1,5 +1,5 @@
 (function() {
-	var guestIDScanService = function($q, $http, $rootScope) {
+	var guestIDScanService = function($q, $http) {
 
 	var savePassport = function(params) {
             var deferred = $q.defer();
@@ -23,7 +23,7 @@
 };
 
 var dependencies = [
-'$q', '$http', '$rootScope',
+'$q', '$http',
 guestIDScanService
 ];
 

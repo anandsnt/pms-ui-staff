@@ -8,8 +8,7 @@
 		'checkinDetailsService',
 		'$controller',
 		'$filter',
-		'$timeout',
-		function($scope, $rootScope, $state, $stateParams, guestIDScanService, checkinDetailsService, $controller, $filter, $timeout) {
+		function($scope, $rootScope, $state, $stateParams, guestIDScanService, checkinDetailsService, $controller, $filter) {
 
 			$controller('sntIDCollectionBaseCtrl', {
 				$scope: $scope
@@ -17,7 +16,6 @@
 
 			var stateParams = JSON.parse($stateParams.params);
 			var SCANING_PENDING = "Not Started";
-			var SCAN_REJECTED = "Rejected";
 			var SCAN_ACCEPTED = "Accepted";
 			var SCAN_WAITING_FOR_APPROVAL = "Success";
 
@@ -33,7 +31,6 @@
 				$scope.idScanData.selectedGuest = selectGuest;
 				if (selectedGuest.idScanStatus === SCAN_ACCEPTED ) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
-					refreshIDdetailsScroller();
 				} else {
 					$scope.startScanning();
 				}
@@ -51,7 +48,6 @@
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
 					$scope.screenData.scanMode = 'GUEST_LIST';
-					setPageNumberDetails();
 				};
 				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
 
@@ -68,7 +64,7 @@
 					if (response.status === 'failure') {
 						$scope.netWorkError = true;
 					} else {
-						accpetIdSuccess()
+						accpetIdSuccess();
 					}
 				}, function() {
 					$scope.netWorkError = true;
@@ -91,14 +87,8 @@
 					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
 				} else if (!data.document_number) {
 					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
-				} else if ($scope.idScanData.verificationMethod === 'STAFF') {
-					$scope.idScanData.selectedGuest.scannedDetails = data;
-					$scope.screenData.scanMode = 'GUEST_LIST';
-					$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
-					setPageNumberDetails();
 				} else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
-					refreshIDdetailsScroller();
 				}
 			});
 
