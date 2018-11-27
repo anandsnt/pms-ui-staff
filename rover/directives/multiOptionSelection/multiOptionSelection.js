@@ -139,9 +139,6 @@ sntRover
 					}
 
 					if ( typeof $scope.affectsFilter == typeof {} ) {
-						console.log("####Filter name");
-						console.log($scope.affectsFilter.name);
-						console.log($scope.report);
 						$scope.affectsFilter.process( $scope.report[$scope.affectsFilter.name], selectedItems );
 					}
 
