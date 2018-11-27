@@ -107,7 +107,6 @@ angular.module('sntRover')
             unassignedReservationList = _.reject(unassignedReservationList, function(obj) { return obj.reservation_id === $scope.selectedItem.reservation_id; });
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
-            ///$scope.diaryData.selectedRoomCount = unassignedReservationList.length;
             $scope.selectedItem = {};
         });
 
