@@ -7,8 +7,7 @@
 		'guestIDScanService',
 		'checkinDetailsService',
 		'$controller',
-		'$filter',
-		function($scope, $rootScope, $state, $stateParams, guestIDScanService, checkinDetailsService, $controller, $filter) {
+		function($scope, $rootScope, $state, $stateParams, guestIDScanService, checkinDetailsService, $controller) {
 
 			$controller('sntIDCollectionBaseCtrl', {
 				$scope: $scope
@@ -17,7 +16,6 @@
 			var stateParams = JSON.parse($stateParams.params);
 			var SCANING_PENDING = "Not Started";
 			var SCAN_ACCEPTED = "Accepted";
-			var SCAN_WAITING_FOR_APPROVAL = "Success";
 
 			$scope.checkinReservationData = checkinDetailsService.getResponseData();
 
