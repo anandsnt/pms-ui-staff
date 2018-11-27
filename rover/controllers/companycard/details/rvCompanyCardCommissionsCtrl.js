@@ -254,6 +254,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 fetchCommissionDetails(false);
                 $scope.status.groupPaidStatus = '';
             }
+            $scope.isCommissionFilterTabOpened = true;
         };
 
     // Updates the paid status to the server
@@ -293,14 +294,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
             return isToggleEnabled;
         };
 
-        $scope.shouldShowProperty = function() {
-            var shouldShowPropertyDropDown = false;
-        
-            if ($scope.contactInformation.is_global_enabled && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $rootScope.isAnMPHotel) {
-                shouldShowPropertyDropDown = true;
-            }
-            return shouldShowPropertyDropDown;
-        };
 
     // Action for the paid/unpaid toggle button for individual record
         $scope.togglePaidStatus = function(commission) {
@@ -503,8 +496,13 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         };
 
+        $scope.toggleFilter = function() {
+            $scope.isCommissionFilterTabOpened = !$scope.isCommissionFilterTabOpened;
+        };
+
         $scope.$on('LOAD_SUBSCRIBED_MPS', function() {
             if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+                $scope.shouldShowPropertyDropDown = true;
                 fetchMultiProperties();
             }
         
@@ -522,6 +520,12 @@ sntRover.controller('companyCardCommissionsCtrl', [
     var init = function() {
         $scope.commissionDetails = [];
         $scope.commissionSummary = {};
+        $scope.isCommissionFilterTabOpened = true;
+        $scope.contactInformation = $scope.$parent.contactInformation;
+        $scope.shouldShowPropertyDropDown = false;
+        if ($scope.contactInformation.is_global_enabled && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $rootScope.isAnMPHotel) {
+            $scope.shouldShowPropertyDropDown = true;
+        }
         $scope.filterData = {
             fromDate: $stateParams.fromDate,
             toDate: $stateParams.toDate,
