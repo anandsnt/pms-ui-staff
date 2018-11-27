@@ -1331,7 +1331,13 @@ angular.module('sntPay').controller('sntPaymentController',
             }
 
             $scope.onPaymentSuccess = function (response) {
-                $scope.paymentAttempted = true;
+                if ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments)
+                {
+                    $scope.paymentAttempted = false;
+                } else {
+                    $scope.paymentAttempted = true;
+                }
+                
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
 
