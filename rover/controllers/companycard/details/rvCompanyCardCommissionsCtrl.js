@@ -521,11 +521,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
         $scope.commissionDetails = [];
         $scope.commissionSummary = {};
         $scope.isCommissionFilterTabOpened = true;
-        $scope.contactInformation = $scope.$parent.contactInformation;
         $scope.shouldShowPropertyDropDown = false;
-        if ($scope.contactInformation.is_global_enabled && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $rootScope.isAnMPHotel) {
-            $scope.shouldShowPropertyDropDown = true;
-        }
+
         $scope.filterData = {
             fromDate: $stateParams.fromDate,
             toDate: $stateParams.toDate,
