@@ -72,7 +72,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'stewart': 'Stewart Aparthotel',
             'university-inn': 'University Inn',
             'cedar-court': 'Cedar Court Hotels',
-            'sister-city': 'Sister City Hotel NY'
+            'sister-city': 'Sister City Hotel NY',
+            'twa': 'TWA Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
