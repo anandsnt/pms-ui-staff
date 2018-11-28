@@ -56,7 +56,8 @@ module.exports = {
             'stewart': [themeCSSRoot + 'stewart.less'],
             'university-inn': [themeCSSRoot + 'university-inn.less'],
             'cedar-court': [themeCSSRoot + 'cedar-court.less'],
-            'sister-city': [themeCSSRoot + 'sister-city.less']
+            'sister-city': [themeCSSRoot + 'sister-city.less'],
+            'twa': [themeCSSRoot + 'twa.less']
         };
     }
 };
