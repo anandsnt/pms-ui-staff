@@ -53,6 +53,16 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                                 : ''
                         }
 
+                        {
+                            item.hourly_reservations.length > 0 ?
+
+                                item.hourly_reservations.map((hourlyItem) => (
+                                    <NightlyDiaryHourlyContainer hourlyItem={hourlyItem} />
+                                )
+                                )
+                                : ''
+                        }
+
                     </div>
                 )
                 )
