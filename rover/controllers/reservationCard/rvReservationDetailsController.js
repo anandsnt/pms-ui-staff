@@ -1716,8 +1716,8 @@ sntRover.controller('reservationDetailsController',
 		}
 
 		try {
-			angular.module("sntIDCollection")
-		} catch () {
+			angular.module("sntIDCollection");
+		} catch (err) {
 			$ocLazyLoad.inject('sntIDCollection');
 		}
 		

@@ -67,11 +67,10 @@ module.exports = {
                     servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",
                     servicesRoot + "roomAssignment/rvUpgradesSrv.js",
                     servicesRoot + "guestcard/rvGuestCardSrv.js",
-                    servicesRoot + 'guestcard/rvGuestCardSrv.js',
-                    sharedRoot + 'sntIDCollection/sntIDCollectionApp.js',
-                    sharedRoot + 'sntIDCollection/services/*.js',
-                    sharedRoot + 'sntIDCollection/constants/*.js',
-                    sharedRoot + 'sntIDCollection/controllers/*.js',		    
+                    sharedRoot + "sntIDCollection/sntIDCollectionApp.js",
+                    sharedRoot + "sntIDCollection/services/*.js",
+                    sharedRoot + "sntIDCollection/constants/*.js",
+                    sharedRoot + "sntIDCollection/controllers/*.js",		    
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

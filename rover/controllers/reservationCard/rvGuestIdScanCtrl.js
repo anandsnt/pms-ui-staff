@@ -5,9 +5,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'RVGuestCardsSrv',
 	'dateFilter',
 	'$timeout',
-	'$ocLazyLoad',
 	'$controller',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout,  $ocLazyLoad, $controller) {
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller) {
 
 		BaseCtrl.call(this, $scope);
 
