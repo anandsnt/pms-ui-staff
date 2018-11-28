@@ -1,0 +1,30 @@
+
+<div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" >
+            <p class="main-text no-text-case">Scan your ID</p>
+            <p class="sub-main-text no-text-case margin-top-20">Skip the long lines and upload state issued ID for the following guests! Remember if you opt out now, you will still required to submit it to staff before you can check in</p>
+            <div ng-repeat="guest in selectedReservation.guest_details track by $index" class="guest-container margin-top-10" ng-click="selectGuest(guest)" ng-class="{'selected':true}">
+                <div >
+                    
+                    <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
+                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
+                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
+                </div>
+                <div class="content-desc">
+                  <p class="sub-text no-text-case float-left" style="margin:12px;">
+                     <span ng-if='guest.last_name !== guest.first_name'>
+                     {{guest.first_name}}&nbsp;{{guest.last_name}}
+                     </span>
+                     <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
+                     {{guest.full_name}}    
+                     </span>
+                     <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                     {{guest.first_name}}    
+                     </span>
+                     <span >,&nbsp;&nbsp;Scan status : {{guest.idScanStatus}}</span>
+                  </p>
+               </div>
+            </div>
+
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!areAllGuestsApproved() && !id_collection_mandatory" ng-click="doneButtonClicked()">SKIP</a>
+            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">DONE</a>
+</div>
