@@ -1,7 +1,7 @@
 <div ng-show="!diaryData.isEditReservationMode" class="diary-nightly-search-form" ng-controller="rvNightlyDiaryTopFilterBarController" ng-class="{'hidden': diaryData.isEditReservationMode}">
 
     <!-- Toggle Hourly / Nightly -->
-    <div class="entry diary-switch" ng-hide="hideToggleMenu()">
+    <div class="entry diary-switch switch-view" ng-hide="hideToggleMenu()">
         <div class="switch-button" ng-class="{'on': toggleHourlyNightly}">
             <input ng-click="navigateToHourlyDiary()" id="diary-hours-days" type="checkbox">
             <label class="data-off">
@@ -15,11 +15,19 @@
         </div>
     </div>
 
-    <!-- Refresh -->
-    <div class="entry reset" ng-click="clickedResetButton()">
-        <button type="button" class="button white with-icon only-icon">
-            <span class="icons icon-reset"></span>
-        </button>
+    <!-- 7 or 21 Days -->
+    <div class="entry switch switch-view">
+        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
+            <input value="" type="checkbox" checked>
+            <label class="data-off">
+                <span class="value">7</span>
+                <span class="switch-icon">21</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">7</span>
+                <span class="value">21</span>
+            </label>
+        </div>
     </div>
 
     <!-- Set start date -->
@@ -36,22 +44,26 @@
         </button>
     </div>
 
-    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
-
-    <!-- 7 or 21 Days -->
-    <div class="entry switch">
-        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
-            <input value="" type="checkbox" checked>
+    <!-- Reservations or Available Slots View -->
+    <div class="entry switch switch-available"> 
+        <div class="switch-button on"> <!-- Remove class 'on' when L48 is not checked -->
+            <input id="diary-availability" value="" type="checkbox" checked /> <!-- Showing existing reservations when checked. Showing Available slots when not checked -->
             <label class="data-off">
-                <span class="value" translate>7_DAYS</span>
-                <span class="switch-icon" translate>21_DAYS</span>
+                <span class="value" data-long="Reserved">Res.</span>
+                <span class="switch-icon" data-long="Available">Avl.</span>
             </label>
             <label class="data-on">
-                <span class="switch-icon" translate>7_DAYS</span>
-                <span class="value" translate>21_DAYS</span>
+                <span class="switch-icon" data-long="Reserved">Res.</span>
+                <span class="value" data-long="Available">Avl.</span>
             </label>
         </div>
+        <!-- If L48 is hot checked (showing Available Slots), output this: 
+        <div class="notice">
+            Select Room and Arrival Date
+        </div> -->
     </div>
+
+    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
 
     <!-- Show / Hide Filters -->
     <div class="entry filters visible">
@@ -62,6 +74,10 @@
         <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER' }" ng-click="toggleFilter('RESERVATION_FILTER')">
             <span class="count">{{diaryData.selectedRoomCount + diaryData.selectedFloorCount}}</span>
             <span class="icons icon-filter" ng-class="{'active': diaryData.rightFilter === 'RESERVATION_FILTER' }"></span>
+        </button>
+        <!-- Refresh -->
+        <button type="button" class="button white with-icon only-icon" ng-click="clickedResetButton()">
+            <span class="icons icon-reset"></span>
         </button>
     </div>
 
