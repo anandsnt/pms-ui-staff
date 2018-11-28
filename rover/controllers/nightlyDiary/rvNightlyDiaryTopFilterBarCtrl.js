@@ -104,6 +104,7 @@ angular.module('sntRover')
             else {
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
             }
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
@@ -123,8 +124,8 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
-            $scope.$emit('UPDATE_RESERVATIONLIST');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To toggle Booked/Available button.
@@ -162,8 +163,8 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('UPDATE_RESERVATIONLIST');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on right date shift.
@@ -171,21 +172,22 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('UPDATE_RESERVATIONLIST');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
+            $scope.diaryData.fromDate = $rootScope.businessDate;
             init();
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
         // To toggle filter and unassigned list.
         $scope.toggleFilter = function(activeTab) {
             if($scope.diaryData.rightFilter !== activeTab){
                 $scope.diaryData.rightFilter = activeTab;
-                $scope.$emit('TOGGLE_FILTER');
             }
             if (activeTab === 'UNASSIGNED_RESERVATION'){
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');

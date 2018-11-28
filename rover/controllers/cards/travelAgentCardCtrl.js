@@ -139,7 +139,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		};
 
 		/* -------AR account ends here-----------*/
-
 		$scope.$on('travelAgentFetchComplete', function(obj, isNew) {
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.travelAgentInformation;
@@ -165,7 +164,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				callCompanyCardServices();
 			}
 		});
-
 
 		$scope.$on("travelAgentSearchInitiated", function() {
 			$scope.companySearchIntiated = true;

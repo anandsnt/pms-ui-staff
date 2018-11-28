@@ -33,6 +33,7 @@
 /* Reservation Search + Dates + Filters ***/
 .diary-nightly-search-form {
     position: relative;
+    padding: 0 10px;
     background: rgba(0,0,0,.1);
     .show();
     .size(60px, 100%);
@@ -62,11 +63,11 @@
         &:active {
 
             &.with-icon {
-                &.only-iconÂ {
+                &.only-icon {
                     overflow: visible;
                 }
             }
-
+            
         }
 
         &.active {
@@ -81,14 +82,10 @@
     }
 
     .entry {
-        padding: 10px;
-
-        &.reset {
-            width: 60px;
-        }
+        padding: 10px 0;
 
         &.date {
-            width: 300px;
+            width: 270px;
 
             .entry-data,
             .button {
@@ -100,16 +97,24 @@
                 background-position: 3px -1227px;
             }
 
+            .button {
+                &:first-child {
+                    #border-radius > .right(0);
+                }
+
+                &:last-child {
+                    #border-radius > .left(0);
+                }
+            }
+
             .entry-data {
+                position: relative;
                 background: @white @calendar no-repeat 94% 10px;
                 background-size: 20px;
-                position: relative;
-                margin:0 5px;
-                #border-radius > .rounded();
-                .box-shadow();
-                .calc-width(100, 90);
                 height: 40px;
-                .show;
+                .box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
+                .calc-width(100, 80);
+                .show();
 
                 input {
                     position: absolute;
@@ -134,94 +139,22 @@
                 }
 
                 &:hover { background-position: 94% -40px; }
-            }
-        }
-
-        &.search {
-            position: relative;
-            .box-shadow(~'none !important');
-            .calc-width(100, 790);
-
-            &.searching {
-                .calc-width(100,620);
-            }
-
-            input {
-                position: relative;
-                font-size: 18px;
-                font-weight: 600;
-                color: @logoPrimary;
-                background: @white @icons2x 10px 13px no-repeat;
-                background-size: 120px;
-                width: 100%;
-                padding: 0 32px;
-                z-index: 400;
-                #border-radius > .rounded(25px);
-            }
-
-            .clear-query {
-                .clear-input(20px, 20px);
-            }
-
-            .result-count {
-                position: absolute;
-                top: 20px;
-                right: 50px;
-                color: @grey3;
-                font-size: 13px;
-                text-transform: uppercase;
-                z-index: 420;
-            }
+            } 
         }
 
         &.switch {
-            &.switch-available {
-                width: 170px;
-                padding-right: 0;
-
-                .switch-button {
-                    width: 160px;
-                    float: left;
-                }
-
-                .notice {
-                    margin-left: 10px;
-                    line-height: 40px;
-                    height: 40px;
-                    padding-top: 0;
-                    padding-bottom: 0;
-                    margin-bottom: 0;
-                    text-align: center;
-                    text-transform: uppercase;
-                    background: lighten(@yellow, 30);
-                    .pull-left;
-                    .calc-width( 100, 180 );
-                    .nowrap();
-                    .hide();
-                }
-
-                &.show-notice {
-                    .calc-width( 100, 560 );
-                    .notice { .show(); }
-                }
-            }
-
-            &.switch-days {
-                width: 140px;
-            }
-
             .switch-button {
                 background: rgba(0,0,0,.1);
                 #border-radius > .rounded();
-                 .show;
+                .show;
                 .size( 40px, 100% );
 
                 input {
                     .square(100%);
                 }
-
+                
                 .data-off,
-                .data-on {
+                .data-on { 
                     font-size: 14px;
                     line-height: 30px;
                     height: 30px;
@@ -234,19 +167,19 @@
                         background: @white;
                     }
 
-                    .value {
+                    .value { 
                         color: @grey3;
-                        font-weight: 600;
+                        font-weight: 600; 
                     }
 
-                    &.data-off {
+                    &.data-off { 
                         left: auto;
                         right: 0;
 
                         .switch-icon { margin: 0 5px 0 0; }
                     }
-
-                    &.data-on {
+                    
+                    &.data-on { 
                         left: auto;
                         right: 100%;
 
@@ -261,8 +194,8 @@
             }
         }
 
-        &.diary-switch {
-            width: 100px;
+        &.switch-view {
+            width: 75px;
 
             .switch-button {
                 background: rgba(0,0,0,.1);
@@ -310,8 +243,74 @@
             }
         }
 
+        &.switch-available {
+            width: 100px;
+            .float();
+
+            .switch-button {
+                width: 100px;
+                float: left;
+            }
+
+            .notice {
+                margin-left: 10px;
+                font-weight: 600;
+                line-height: 40px;
+                height: 40px;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                text-align: center;
+                text-transform: uppercase;
+                background: lighten(@yellow, 30);
+                .pull-left;
+                .calc-width(100, 110);
+                .nowrap();
+                .hide();
+            }
+
+            &.show-notice {
+                .calc-width(100, 550);
+
+                .notice { .show(); }
+            }
+        }
+
+        &.search {
+            position: relative;
+            .calc-width(100, 710);
+
+            input {
+                position: relative;
+                font-size: 18px;
+                font-weight: 600;
+                color: @logoPrimary;
+                background: @white @icons2x 10px 13px no-repeat;
+                background-size: 120px;
+                width: 100%;
+                padding: 0 32px;
+                z-index: 400;
+                #border-radius > .rounded(25px);
+            }
+
+            .clear-query {
+                .clear-input(20px, 20px);
+            }
+
+            .result-count {
+                position: absolute;
+                top: 20px;
+                right: 50px;
+                color: @grey3;
+                font-size: 13px;
+                text-transform: uppercase;
+                z-index: 420;
+            }
+        }
+
         &.filters {
-            width: 120px;
+            width: 140px;
+            .float();
 
             .icons {
                 &.icon-filter-room {
@@ -320,17 +319,22 @@
                 }
             }
 
-            .button:first-child {
-                margin-right: 10px;
+            .button {
+                .pull-left;
+                .show();
+
+                &:not(:last-child) {
+                    margin-right: 10px;
+                }
             }
 
             &.show-one {
-                width: 60px;
+                width: 90px;
             }
         }
 
-        &:not(:first-child) {
-            .box-shadow(inset 1px 0px 0 rgba(0,0,0,0.1));
+        &:not(:last-child) {
+            margin-right: 10px;
         }
     }
 
@@ -338,16 +342,17 @@
     .diary-search {
         position: absolute;
         top: 0;
-        left: 0;
+        left: -10px;
         font-size: 14px;
         line-height: 20px;
         text-transform: uppercase;
         padding: 60px 0 10px 0;
         background-color: @grey1;
         overflow: hidden;
+        height: 390px;
+        width: ~'calc(100% + 20px)';
         z-index: 320;
         .box-shadow();
-        .size(390px, 100%);
 
         .highlight {
             color: @logoPrimary;
@@ -411,23 +416,23 @@
                     padding-left: 14px;
                     background-size: 90px;
 
-                    &.icon-guest-company {
-                        color: @ccard;
+                    &.icon-guest-company { 
+                        color: @ccard; 
                         background-position: 0 -570px;
                     }
-
-                    &.icon-guest-travelagent {
-                        color: @tacard;
+                    
+                    &.icon-guest-travelagent { 
+                        color: @tacard; 
                         background-position: 0 -615px;
                     }
 
-                    &.icon-group {
-                        color: @groupcard;
+                    &.icon-group { 
+                        color: @groupcard; 
                         background-position: 0 -60px;
                     }
 
-                    &.icon-allotment {
-                        color: @allotmentcard;
+                    &.icon-allotment { 
+                        color: @allotmentcard; 
                         background-position: 0 -6239px;
                     }
                 }
@@ -475,25 +480,47 @@
                 .iScrollIndicator {
                     background: rgba(0,0,0,0.15);
                 }
-            }
+            }                
         }
     }
 
     /* Screen big enough to show two columns  ***/
     @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
         .entry {
+            
             &.search {
                 .calc-width(100, 670);
-                &.searching {
-                    .calc-width(100, 670);
-                }
             }
 
-            &.switch {
-                &.switch-available {
-                    &.show-notice {
-                        .calc-width(100, 500);
+            &.switch-available {
+                width: 200px;
+
+                .switch-button {
+                    width: 200px;
+                }
+
+                .value,
+                .switch-icon {
+                    position: relative;
+                    .hide-text();
+
+                    &:after {
+                        content: attr(data-long);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        text-indent: 0;
+                        .square(100%);
+                        .show();
                     }
+                }
+
+                .notice {
+                    .calc-width(100, 210);
+                }
+
+                &.show-notice {
+                    .calc-width(100, 460);
                 }
             }
 
@@ -887,30 +914,6 @@
         @media screen and (min-width: ~'@{containerWidth}px') {
             left: ~'@{roomsWidth}px';
         }
-
-
-
-        /*@media screen and (min-width: 1024px) {
-            left: ~'@{roomsWidth}px';
-        }*/
-
-        /*@media screen and (max-width: 840px) {
-            left: 0;
-        }
-
-        @media screen and (min-width: 1024px) {
-            left: ~"@{roomsWidth}px";
-        }*/
-
-        /* Screen big enough to show one column
-        @media screen and (min-width: ~'@{gridSingleSidebar}px') {
-            left: ~"calc(100% - @{gridSingleSidebar}px)";
-        } ***/
-
-        /* Screen big enough to show two columns
-        @media screen and (min-width: ~'@{gridDualSidebar}px') {
-            left: ~"calc(100% - @{gridDualSidebar}px)";
-        } ***/
     }
 
     /* Grid - Room Search Results ***/
@@ -936,16 +939,6 @@
         &.visible {
             .show();
         }
-
-        /* Screen big enough to show one column
-        @media screen and (min-width: ~'@{gridSingleSidebar}px') {
-            .calc-width(100, @gridSingleSidebar);
-        } ***/
-
-        /* Screen big enough to show two columns
-        @media screen and (min-width: ~'@{gridDualSidebar}px') {
-            .calc-width(100, @gridDualSidebar);
-        } ***/
     }
 
     /* Grid Content - Rooms & Reservations ***/
@@ -1239,6 +1232,20 @@
             color: @grey3;
         }
 
+        &.dayuse {
+            z-index: 4;
+            .gradient(#6895e4, #375fa3);
+
+            .reservation-data {
+                .square(100%);
+                #flexbox > .parent(row wrap, center, '', '');
+            }
+
+            .icons {
+                .square(12px);
+            }
+        }
+
         /* Past Reservation ***/
         &.passed {
             #flexbox > .parent('', flex-end, '', '');
@@ -1356,7 +1363,7 @@
         /** Unassigned room - available reservation */
         &.unassigned {
             justify-content: center;
-            color: white;
+            color: @white;
             .box-shadow(~"0px 1px 1px rgba(0,0,0,.3)");
             .gradient (@logoGradientStart, @logoGradientEnd );
             .hide();
@@ -1672,10 +1679,6 @@
                 background-color: @logoPrimary;
             }
 
-            &.selected {
-                .gradient (@logoGradientStart, @logoGradientEnd);
-            }
-
             &:not(:last-child) {
                 margin-bottom: 10px;
             }
@@ -1911,45 +1914,66 @@
     &.assigning-rooms {
         .reservation {
             &:not(.unassigned) {
+                background: rgba(0,0,0,.1);
+                cursor: default;
+                .box-shadow(none);
+
                 &:before,
                 .name,
                 .reservation-data,
                 .reservation-icons {
-                    .hide();
+                    display: none !important;
                 }
-
-                background: rgba( 0, 0, 0, 0.1 );
-                .box-shadow(none);
             }
 
             &.unassigned {
                 .show();
             }
         }
+
+        &.diary-days-21 {
+            .reservation {
+                &.unassigned {
+                    .name {
+                        width: 10px;
+                        background-image: @arrowWhiteRight;    
+                        background-size: 10px 10px, 100%, 100%;
+                        background-repeat: no-repeat, repeat;
+                        background-position: right center;
+                        .hide-text();
+
+                        @media @highdpi { 
+                            background-image: @arrowWhiteRight2x;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /* Showing available slots to book */
     &.showing-available {
-        .diary-nightly-unassigned {.hide()}
+        .diary-nightly-unassigned {
+            .hide();
+        }
+
         .reservation {
             &:not(.unassigned) {
+                background: rgba(0,0,0,.1);
+                cursor: default;
+                .box-shadow(none);
+
                 &:before,
                 .name,
                 .reservation-data,
                 .reservation-icons {
-                    .hide();
-                }
-
-                background: rgba( 0, 0, 0, 0.1 );
-                .box-shadow(none);
+                    display: none !important;
+                }                
             }
 
             &.unassigned {
                 .gradient( @greenStart, @greenEnd );
                 .show();
-
-                background-position: 92% 55%, 0 0;
-                background-repeat: no-repeat, repeat;
 
                 &:hover,
                 &:active { 
@@ -1965,6 +1989,18 @@
  
                     @media @highdpi { 
                         background-image: @arrowWhiteRight2x;
+                    }
+                }
+            }
+        }
+
+        &.diary-days-21 {
+            .reservation {
+                &.unassigned {
+                    .name {
+                        padding-right: 0;
+                        width: 10px;
+                        .hide-text();
                     }
                 }
             }

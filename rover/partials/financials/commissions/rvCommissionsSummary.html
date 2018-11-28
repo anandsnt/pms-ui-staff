@@ -281,7 +281,7 @@
                                       {{ ::currencySymbol }} {{ reservation.revenue| number: precisonTwo}}
                                   </td>
                                   <td class="amount">
-                                      {{ ::currencySymbol }} {{ reservation.commissionable_revenue }}
+                                      {{ ::currencySymbol }} {{ reservation.commissionable_revenue| number: precisonTwo }}
                                   </td>
                                  <td class="amount">
                                     {{ reservation.commission_rate}}

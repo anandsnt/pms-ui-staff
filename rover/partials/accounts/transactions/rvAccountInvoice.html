@@ -20,8 +20,8 @@
     <div class="info-bottom">
         <div class="info-left" ng-if="printData.card_type === 'COMPANY'">
             <strong >{{printData.translation.invoice_date}}:&nbsp; </strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice"><strong>{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}<br></span>
-            <span ng-if="printData.folio_number">
+            <span ng-show="!isInformationalInvoice  && printData.is_print_invoice_enabled"><strong>{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}<br></span>
+            <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong>{{printData.translation.folio_number}}:&nbsp;</strong>
                 {{printData.folio_number}}<br>
             </span>
@@ -46,8 +46,8 @@
         </div>
         <div class="info-left" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong >{{printData.translation.invoice_date}}:&nbsp;</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong >{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}<br>
-            <span ng-if="printData.folio_number">
+            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled"><strong >{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}</span><br>
+            <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong>{{printData.translation.folio_number}}:&nbsp;</strong>
                 {{printData.folio_number}}<br>
             </span>
@@ -168,6 +168,6 @@
     {{printData.ar_invoice_billing_text}}
 </div>
 
-<div class="invoice-footer text-center">
+<div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.custom_text_footer)">
     {{printData.custom_text_footer}}
 </div>

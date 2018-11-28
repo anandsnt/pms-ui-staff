@@ -153,6 +153,12 @@ angular.module('sntRover')
                             'selected_floor_ids': $scope.diaryData.selectedFloors
                         };
 
+                    if ( $scope.diaryData.isAvailableRoomSlotActive ) {
+                        var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
+                        
+                        postData.selected_room_type_ids = [roomTypeId];
+                    }
+
                     if (roomId) {
                         postData.room_id = roomId;
                         $scope.diaryData.selectedRoomId = roomId;
@@ -229,6 +235,12 @@ angular.module('sntRover')
                     }
                 };
 
+                var resetUnassignedList = function() {
+                    $scope.diaryData.isAvailableRoomSlotActive = false;
+                    $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
+                    $scope.diaryData.availableSlotsForAssignRooms = {};
+                };
+
                 /*
                  * handle unassigned room select.
                  * @param roomDetails - Current selected room details
@@ -236,9 +248,23 @@ angular.module('sntRover')
                  * @return {}
                  */
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
-                    $scope.diaryData.isAvailableRoomSlotActive = false;
-                    console.log(roomDetails, reservationDetails);
-                    fetchRoomListDataAndReservationListData();
+                    var successCallBackAssignRoom = function (data) {
+                        $scope.errorMessage = '';
+                        $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
+                    },
+                    postData = {
+                        "reservation_id": reservationDetails.reservationId,
+                        "room_number": roomDetails.room_number,
+                        "without_rate_change":true,
+                        "is_preassigned":false,
+                        "forcefully_assign_room":false
+                    },
+                    options = {
+                        params: postData,
+                        successCallBack: successCallBackAssignRoom
+                    };
+
+                    $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
                 /*
@@ -374,7 +400,9 @@ angular.module('sntRover')
                 });
 
                 listeners['UPDATE_UNASSIGNED_RESERVATIONLIST'] = $scope.$on('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
+                    resetUnassignedList();
                     fetchUnassignedReservationList();
+                    $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
 
                 /* Handle event emitted from child controllers.
@@ -386,13 +414,6 @@ angular.module('sntRover')
                     $scope.diaryData.showFilterPanel = true;
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(roomId);
-                });
-
-                /* Handle event emitted from child controllers.
-                 * To toggle unassigned list and filter.
-                 */
-                listeners['TOGGLE_FILTER'] = $scope.$on('TOGGLE_FILTER', function (event) {
-                    $scope.diaryData.isRightFilterActive = !$scope.diaryData.isRightFilterActive;
                 });
 
                 /*
@@ -412,6 +433,7 @@ angular.module('sntRover')
                  *  Refresh diary data - rooms and reservations after applying filter.
                  */
                 listeners['RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY'] = $scope.$on('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
+                    resetUnassignedList();
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                     $scope.diaryData.paginationData.page = 1;
                     fetchRoomListDataAndReservationListData();
@@ -423,11 +445,8 @@ angular.module('sntRover')
                  */
                 listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData) {
                     $scope.diaryData.isAvailableRoomSlotActive = true;
-
                     $scope.diaryData.availableSlotsForAssignRooms = newData;
-                    console.log(newData);
-
-                    updateDiaryView();
+                    fetchRoomListDataAndReservationListData();
                 });
 
                 /**

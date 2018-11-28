@@ -27,7 +27,6 @@ describe('RVbillCardController', function () {
                     $scope = _$rootScope_.$new();
                     $scope.reservation = reservationSampleData;
                     $rootScope.roverObj = {};
-                    $rootScope.roverObj.hasActivatedFolioNumber = true;
                 });
 
                 RVbillCardController = $controller('RVbillCardController', {
