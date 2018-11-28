@@ -1,5 +1,5 @@
 var GridRowItem = React.createClass({
-	getInitialState: function() {
+	getInitialState: function () {
 		return {
 			editing: this.props.edit.active,
 			resizing: this.props.resizing,
@@ -9,13 +9,13 @@ var GridRowItem = React.createClass({
 		};
 	},
 
-	__setDragOver: function(bool) {
+	__setDragOver: function (bool) {
 		this.setState({
 			isDragOver: typeof bool === typeof true ? bool : false
 		});
 	},
 
-	componentDidMount: function() {
+	componentDidMount: function () {
 		var rootElement = $(this.getDOMNode());
 
 		rootElement.droppable({
@@ -26,7 +26,7 @@ var GridRowItem = React.createClass({
 		});
 	},
 
-	componentWillReceiveProps: function(nextProps) {
+	componentWillReceiveProps: function (nextProps) {
 		var meta_id = this.props.meta.occupancy.id,
 			edit = nextProps.edit,
 			editing = edit.active,
@@ -56,12 +56,12 @@ var GridRowItem = React.createClass({
 		}
 	},
 
-	componentWillUnmount: function() {
-    },
+	componentWillUnmount: function () {
+	},
 
-	__formInnerText: function(data, meta) {
+	__formInnerText: function (data, meta) {
 		var caption,
-			props   = this.props,
+			props = this.props,
 			display = props.display;
 
 		switch (data[meta.status]) {
@@ -81,7 +81,7 @@ var GridRowItem = React.createClass({
 				// if there is any accomoanying guests
 				if (!_.isEmpty(data[meta.accompanying_guests])) {
 					caption = caption + "  |  ";
-					_.each(data[meta.accompanying_guests], function(element, index, list) {
+					_.each(data[meta.accompanying_guests], function (element, index, list) {
 						caption += (element.guest_name);
 						if (index !== (list.length - 1)) {
 							caption += ", ";
@@ -95,17 +95,17 @@ var GridRowItem = React.createClass({
 
 	},
 
-	__formHouseKeepingStyle: function(data, display, meta, end_time_ms) {
+	__formHouseKeepingStyle: function (data, display, meta, end_time_ms) {
 
-		var style = {}, ms_fifteen_min	= 900000, end_of_reservation;
+		var style = {}, ms_fifteen_min = 900000, end_of_reservation;
 
-		style.width =  data[meta.maintenance] * display.px_per_int + 'px';
+		style.width = data[meta.maintenance] * display.px_per_int + 'px';
 		end_of_reservation = (data[meta.maintenance] * ms_fifteen_min + end_time_ms);
 
 		// (CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
-		if ( end_of_reservation > display.x_p) {
+		if (end_of_reservation > display.x_p) {
 			// reservation crossing the grid boundary we are hiding
-			if (end_time_ms > display.x_p) {
+			if (end_time_ms > display.x_p || !data.is_hourly) {
 				style.display = 'none';
 			}
 			else {
@@ -116,23 +116,23 @@ var GridRowItem = React.createClass({
 
 	},
 
-	__get_class_for_reservation_span: function() {
+	__get_class_for_reservation_span: function () {
 		var props = this.props,
 			state = this.state,
-			data  = props.data,
-			m     = props.meta.occupancy,
+			data = props.data,
+			m = props.meta.occupancy,
 			is_temp_reservation = (data[m.status] === 'available');
 
 		//	console.log(props)
 
 		// if not availability check, this reservation was already there
-		var className  = (!is_temp_reservation ? 'occupied ' : '');
+		var className = (!is_temp_reservation ? 'occupied ' : '');
 
-			// when we select a particular reservation
-			className += (state.editing ? ' editing' : '');
+		// when we select a particular reservation
+		className += (state.editing ? ' editing' : '');
 
-			// we have to show striped reservation when we select a availability check reservation
-			className += ((is_temp_reservation && data.selected) || (is_temp_reservation && this.state.isDragOver) ? ' reserved' : '');
+		// we have to show striped reservation when we select a availability check reservation
+		className += ((is_temp_reservation && data.selected) || (is_temp_reservation && this.state.isDragOver) ? ' reserved' : '');
 
 		// guest status mapping
 		// console.log(data.cannot_move_room)
@@ -170,37 +170,43 @@ var GridRowItem = React.createClass({
 		if (data.cannot_move_room) {
 			className += ' locked';
 		}
+		if (!data.is_hourly) {
+			className = "occupied nightuse";
+		}
 
 		return className;
 
 	},
 
-	render: function() {
+	render: function () {
 
-		var props 					= this.props,
-			state 					= this.state,
-			display 				= props.display,
-			px_per_ms               = display.px_per_ms,
-			px_per_int 				= display.px_per_int,
-			x_origin   				= display.x_n,
-			data 					= props.data,
-			row_data 				= props.row_data,
-			m                		= props.meta.occupancy,
-			start_time_ms 			= !state.resizing ? data[m.start_date] : state.currentResizeItem[m.start_date],
-			end_time_ms 			= !state.resizing ? data[m.end_date] : state.currentResizeItem[m.end_date],
-			maintenance_time_span 	= data[m.maintenance] * px_per_int,
-			reservation_time_span 	= (end_time_ms - start_time_ms) * px_per_ms,
+		var props = this.props,
+			state = this.state,
+			display = props.display,
+			px_per_ms = display.px_per_ms,
+			px_per_int = display.px_per_int,
+			x_origin = display.x_n,
+			data = props.data,
+			row_data = props.row_data,
+			m = props.meta.occupancy,
+			start_time_ms = !state.resizing ? data[m.start_date] : state.currentResizeItem[m.start_date],
+			end_time_ms = !state.resizing ? data[m.end_date] : state.currentResizeItem[m.end_date],
+			maintenance_time_span = data[m.maintenance] * px_per_int,
+			reservation_time_span = (end_time_ms - start_time_ms) * px_per_ms,
 
-			innerText 				= this.__formInnerText(data, m),
+			innerText = this.__formInnerText(data, m),
 
-			houseKeepingTaskStyle	= this.__formHouseKeepingStyle(data, display, m, end_time_ms),
-			left 					= (start_time_ms - x_origin) * px_per_ms + 'px',
-			is_balance_present	 	= data.is_balance_present,
-			is_room_locked          = data.cannot_move_room,
+			houseKeepingTaskStyle = this.__formHouseKeepingStyle(data, display, m, end_time_ms),
+			left = (start_time_ms - x_origin) * px_per_ms + 'px',
+			is_balance_present = data.is_balance_present,
+			is_room_locked = data.cannot_move_room,
 			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
-			row_item_class 			= 'occupancy-block' + ( state.editing ? ' editing' : '')
-										+ (show_outstanding_indicator ? ' deposit-required' : '')
-										+ (props.data.is_hourly ? '' : ' class-for-nightly');// change with actual class name
+			row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '')
+				+ (show_outstanding_indicator ? ' deposit-required' : '')
+
+		if (!this.props.data.is_hourly) {
+			row_item_class = "occupancy-block";
+		}
 
 		if (state.editing) {
 			start_time_ms = state.currentResizeItem[m.start_date];
@@ -209,7 +215,7 @@ var GridRowItem = React.createClass({
 		}
 		var start_date = new Date(start_time_ms);
 
-		var display_start_time = (display.x_n instanceof Date ? display.x_n : new Date (display.x_n) );
+		var display_start_time = (display.x_n instanceof Date ? display.x_n : new Date(display.x_n));
 
 		if (!display_start_time.isOnDST() && start_date.isOnDST()) {
 			var dateForCalculatingLeft = new Date(start_time_ms);
@@ -232,12 +238,17 @@ var GridRowItem = React.createClass({
 
 		var styleForDepositIcon = {};
 
-		if (!show_outstanding_indicator) {
+		if (!show_outstanding_indicator || !this.props.data.is_hourly) {
 			styleForDepositIcon.display = 'none';
 			styleForDepositIcon.width = '0px';
 		}
 
-		return React.createElement( GridRowItemDrag, {
+		var styleForRoomLocked = {};
+		if (!this.props.data.is_hourly) {
+			styleForRoomLocked .display = 'none';
+			styleForRoomLocked .width = '0px';
+		}
+		return React.createElement(GridRowItemDrag, {
 			key: data.key,
 			className: row_item_class,
 			row_data: row_data,
@@ -258,44 +269,45 @@ var GridRowItem = React.createClass({
 				display: 'block',
 				left: left
 			},
-			__setDragOver: function(bool) { this.__setDragOver(bool); }.bind(this)
+			__setDragOver: function (bool) { this.__setDragOver(bool); }.bind(this)
 		},
-		React.DOM.span({
-			className: this.__get_class_for_reservation_span(),
-			style: {
-				width: reservation_time_span + 'px'
-			}
-		},
+			React.DOM.span({
+				className: this.__get_class_for_reservation_span(),
+				style: {
+					width: reservation_time_span + 'px'
+				}
+			},
 
-		React.DOM.span({
-			className: show_outstanding_indicator ? 'deposit-icon' : '',
-			style: styleForDepositIcon
-		}, display.currency_symbol),
-		React.DOM.span({
-			className: is_room_locked ? 'icons icon-diary-lock' : ''
-		}, ''),
-		innerText),
-		React.DOM.span({
-			className: 'maintenance',
-			style: houseKeepingTaskStyle
-		}, ' '));
+				React.DOM.span({
+					className: show_outstanding_indicator ? 'deposit-icon' : '',
+					style: styleForDepositIcon
+				}, display.currency_symbol),
+				React.DOM.span({
+					className: is_room_locked ? 'icons icon-diary-lock' : '',
+					style: styleForRoomLocked
+				}, ''),
+				innerText),
+			React.DOM.span({
+				className: 'maintenance',
+				style: houseKeepingTaskStyle
+			}, ' '));
 	},
 
-	__onDrop: function(e, ui) {
+	__onDrop: function (e, ui) {
 		var data = this.props.data;
 		var status = this.props.meta.occupancy.status;
 
-		if ( data[status] === 'available' ) {
+		if (data[status] === 'available') {
 			e.preventDefault();
 			ui.helper.fadeOut();
-			this.props.unassignedRoomList.dropReservation( data['room_id'] );
+			this.props.unassignedRoomList.dropReservation(data['room_id']);
 		}
 	},
-	__onDragOver: function(e) {
+	__onDragOver: function (e) {
 		var data = this.props.data;
 		var status = this.props.meta.occupancy.status;
 
-		if ( data[status] === 'available' ) {
+		if (data[status] === 'available') {
 			e.preventDefault();
 		}
 
