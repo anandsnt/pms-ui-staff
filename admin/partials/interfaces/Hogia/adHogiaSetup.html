@@ -1,0 +1,50 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+    </div>
+
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>API Access Configuration</h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox ng-if="availableSettings.indexOf('api_url') > -1"
+                        inputtype="text" value="config.api_url"
+                        label="{{'API_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('oauth_url') > -1"
+                        inputtype="text"
+                        value="config.oauth_url"
+                        label="{{'OAUTH_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('organization_id') > -1"
+                        value="config.organization_id"
+                        label="{{'ORG_ID' | translate}}"
+                        styleclass="half-width"></ad-textbox>
+
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox ng-if="availableSettings.indexOf('client_id') > -1"
+                        inputtype="text"
+                        value="config.client_id"
+                        label="{{'CLIENT_ID'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('client_secret') > -1"
+                        inputtype="text"
+                        value="config.client_secret"
+                        label="{{'CLIENT_SECRET'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+</ad-common-parts-in-form-dir>
