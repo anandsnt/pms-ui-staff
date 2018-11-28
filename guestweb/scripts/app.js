@@ -22,7 +22,7 @@ and some folder dedicated to MGM, which has some text changes specifically asked
 
 */
 var sntGuestWebTemplates = angular.module('sntGuestWebTemplates', []);
-var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad']);
+var sntGuestWeb = angular.module('sntGuestWeb', ['ui.router', 'ui.bootstrap', 'pickadate', 'oc.lazyLoad', 'sntIDCollection']);
 sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $scope) {
 	$state.go('guestwebRoot');
 	/*
@@ -126,6 +126,11 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
 		$rootScope.skipBalanceCollection = false;
+
+		$rootScope.id_collection_enabled = reservationAndhotelData.id_collection_enabled;
+		$rootScope.scan_all_guests = reservationAndhotelData.scan_all_guests;
+		$rootScope.id_collection_mandatory = reservationAndhotelData.id_collection_mandatory;
+		$rootScope.face_recognition_enabled = reservationAndhotelData.face_recognition_enabled;
 
 
 		if (reservationAndhotelData.payment_gateway === "MLI") {
