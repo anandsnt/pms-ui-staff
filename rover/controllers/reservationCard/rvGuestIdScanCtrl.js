@@ -11,11 +11,15 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
+		$scope.showScanOption = navigator.userAgent.match(/iPad/i) !== null && 
+								$scope.hotelDetails.id_collection &&
+		 						$scope.hotelDetails.id_collection.rover.enabled;
 
 		$controller('sntIDCollectionBaseCtrl', {
 			$scope: $scope
 		});
+
+		$scope.screenData.showBackSideScan = false;
 
 		var dateInHotelsFormat = function(date) {
 			$rootScope.dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
@@ -265,7 +269,9 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			// If back side of ID is not needed, retrive the ID details
 			if ($scope.screenData.scanMode === 'CONFIRM_ID_IMAGES') {
 				$scope.confirmImages();
+				$scope.screenData.showBackSideScan = false;
 			} else {
+				$scope.screenData.showBackSideScan = true;
 				$scope.$emit('hideLoader');
 			}
 		});
