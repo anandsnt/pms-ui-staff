@@ -166,9 +166,20 @@ sntRover.controller('RVInvoiceSearchController',
 			$( '#print-orientation' ).remove();
 		};
 
+		var invoiceSearchPrintCompleted = function() {
+			// CICO-9569 to solve the hotel logo issue
+			$("header .logo").removeClass('logo-hide');
+			$("header .h2").addClass('text-hide');
+
+			// remove the orientation after similar delay
+			removePrintOrientation();
+			$scope.searchInvoice($scope.currentActivePage);
+		};
+
 		// print the page
 		that.printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
+					
 					if ($scope.invoiceSearchFlags.isClickedReservation) {
 						$scope.printData = successData;
 					} else {
@@ -193,24 +204,17 @@ sntRover.controller('RVInvoiceSearchController',
 						*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 						*/
 
-						$window.print();
-						if ( sntapp.cordovaLoaded ) {
-							cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+						if (sntapp.cordovaLoaded) {
+							cordova.exec(invoiceSearchPrintCompleted,
+								function(error) {
+									invoiceSearchPrintCompleted();
+								}, 'RVCardPlugin', 'printWebView', []);
 						}
-					}, 1000);
-
-					/*
-					*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-					*/
-
-					$timeout(function() {
-						// CICO-9569 to solve the hotel logo issue
-						$("header .logo").removeClass('logo-hide');
-						$("header .h2").addClass('text-hide');
-
-						// remove the orientation after similar delay
-						removePrintOrientation();
-						$scope.searchInvoice($scope.currentActivePage);
+						else
+						{
+							window.print();
+							invoiceSearchPrintCompleted();
+						}
 					}, 1000);
 
 				},
