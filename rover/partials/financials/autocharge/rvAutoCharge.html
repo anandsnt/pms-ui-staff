@@ -32,13 +32,13 @@
 
     <!-- Tabs -->
     <ul class="filters">
-        <li class="active" ng-hide="filters.status == 'DECLINED'">
+        <li ng-hide="filters.status == 'DECLINED'" ng-class="{'active': selectedTab == 'DEPOSIT_TAB'}" ng-click="selectHeaderTab('DEPOSIT_TAB')">
             <strong>Deposits</strong> {{currencySymbol}}{{totalDeposite}}
         </li>
-        <!--<li>-->
-        <!--<strong>EOD Check Out</strong>-->
-        <!--{currency}{amount}-->
-        <!--</li>-->
+        <li ng-hide="filters.status == 'DECLINED'" ng-class="{'active': selectedTab == 'EOD_TAB'}" ng-click="selectHeaderTab('EOD_TAB')">
+        <strong>EOD Check Out</strong>
+            {{currencySymbol}}{{totalDeposite}}
+        </li>
     </ul>
 </form>
 
