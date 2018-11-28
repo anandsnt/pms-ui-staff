@@ -245,7 +245,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			});
 		};
 
-		/**************************** ID SCAN *****************************/
+		/* *************************** ID SCAN **************************** */
 
 		$scope.scanFrontSide = function() {
 			$scope.screenData.imageSide = 0;
