@@ -25,18 +25,6 @@ angular.module('sntRover').service('RVAutoChargeSrv',
                 return RVBaseWebSrvV2.getJSON(url, params);
 
             };
-
-            /*
-             * Service function to fetch Accounts Receivables
-             * @return {object} payments
-             */
-
-            that.fetchEodAutoCharge = function (params) {
-                var url = '/api/auto_charge/auto_charge_checkout';
-
-                return RVBaseWebSrvV2.getJSON(url, params);
-
-            };
             /*
              * Service function to start autocharge process
              * @return {object}
