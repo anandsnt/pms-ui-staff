@@ -373,44 +373,37 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             return hasShownToggleBtn ? {'visibility': 'visible'} : {'visibility': 'hidden'};
         };
-        // add the print orientation before printing
-        var addPrintOrientation = function() {
-                $( 'head' ).append( '<style id=\'print-orientation\'>@page { size: landscape; }</style>' );
-            },
-            removePrintOrientation = function() {
-                $( '#print-orientation' ).remove();
-            };
 
     // To print the current screen details.
         $scope.clickedPrintButton = function() {
 
-            addPrintOrientation();
+        // CICO-11667 to enable landscpe printing on transactions page.
+        // Sorry , we have to access the DOM , so using jQuery..
+            $('body').prepend('<style id=\'paper-orientation\'>@page { size: landscape; }</style>');
 
-            $('header .logo').addClass('logo-hide');
-            $('header .h2').addClass('text-hide');
-            var printCompletedActions = function() {
-                $timeout(function() {
-                    // CICO-9569 to solve the hotel logo issue
-                    $('header .logo').removeClass('logo-hide');
-                    $('header .h2').addClass('text-hide');
-
-                    // remove the orientation after similar delay
-                    removePrintOrientation();
-                }, 100);
-            };
-
+        /*
+         *  ======[ READY TO PRINT ]======
+         */
+        // this will show the popup
             $timeout(function() {
-                if (sntapp.cordovaLoaded) {
-                    cordova.exec(printCompletedActions,
-                        function(error) {
-                            // handle error if needed
-                            printCompletedActions();
-                        }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
-                } else {
-                    $window.print();
-                    printCompletedActions();
+            /*
+             *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+             */
+
+                $window.print();
+
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
                 }
+
+            // Removing the style after print.
+                $('#paper-orientation').remove();
+
             }, 100);
+
+        /*
+         *  ======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
+         */
 
         };
     // Handle toggle commssion action
