@@ -104,7 +104,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 
     var unmodifiedFrontImage, unmodifiedFaceImage;
-	var processImage = function(evt, frontSideImage, faceImage) {
+	var processImage = function(evt, frontSideImage, faceImage, previousState) {
 
 		var file = evt.target;
 		var reader = new FileReader();
@@ -139,7 +139,13 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 				$log.error('The File APIs are not fully supported in this browser.');
 			}
 		};
-		reader.readAsDataURL(file.files[0]);
+		if (file.files.length > 0) {
+			reader.readAsDataURL(file.files[0]);
+		} else {
+			$timeout(function() {
+				$scope.screenData.scanMode = previousState;
+			}, 0);
+		}
 	};
 
 	$scope.confirmImages = function() {
@@ -172,19 +178,19 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.frontImageChanged = function(evt) {
 		$scope.screenData.frontSideImage = '';
-		processImage(evt, true, false);
+		processImage(evt, true, false, angular.copy($scope.screenData.scanMode));
 		$scope.screenData.scanMode = screenModes.analysing_front_image;
 	};
 
 	$scope.backImageChanged = function(evt) {
 		$scope.screenData.faceImage = '';
-		processImage(evt, false, false);
+		processImage(evt, false, false, angular.copy($scope.screenData.scanMode));
 		$scope.screenData.scanMode = screenModes.analysing_back_image;
 	};
 
 	$scope.faceImageChanged = function (evt) {
 		$scope.screenData.backSideImage = '';
-		processImage(evt, false, true);
+		processImage(evt, false, true, angular.copy($scope.screenData.scanMode));
 		$scope.screenData.scanMode = screenModes.confirm_id_images;
 
 	};
