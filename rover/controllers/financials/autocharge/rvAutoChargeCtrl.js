@@ -248,7 +248,7 @@ sntRover.controller('RVAutoChargeController',
                     }
                 };
 
-                if ($scope.selectedTab === DEPOSIT) {
+                if ($scope.selectedTab !== EOD ) {
                     $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
                 } else {
                     $scope.callAPI(RVAutoChargeSrv.fetchEodAutoCharge, options);
