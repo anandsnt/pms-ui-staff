@@ -7,6 +7,8 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 	var errorMessage = ['Error: The subscription ID provided does not match any active subscription.'];
 	var operationTimedOutMsg = ['Operation timed out !'];
 	var acuantCredentials = acuantCredentials;
+
+	acuantCredentials.LicenseKey = btoa(acuantCredentials.LicenseKey);
 	
 	var windowLocation = window.location;
 
@@ -18,6 +20,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 
 	this.setAcuantCredentialsForProduction = function (credentials) {
 		acuantCredentials = credentials;
+		acuantCredentials.LicenseKey = btoa(acuantCredentials.LicenseKey);
 	};
 	/**
 	 * [createCORSRequest description]

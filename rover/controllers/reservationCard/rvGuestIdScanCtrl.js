@@ -6,7 +6,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'dateFilter',
 	'$timeout',
 	'$controller',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller) {
+	'sntIDCollectionSrv',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -338,5 +339,9 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.errorMessage = 'Failed to Analyze the image';
 			generalFailureCallBack();
 		});
+
+		if (!sntIDCollectionSrv.isInDevEnv) {
+			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.acuant_credentials);
+		}
 	}
 ]);
