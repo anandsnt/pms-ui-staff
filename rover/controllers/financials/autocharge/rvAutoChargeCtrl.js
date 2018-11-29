@@ -117,6 +117,8 @@ sntRover.controller('RVAutoChargeController',
                  */
                 processAutoChargeSelections = function (autoCharges, value) {
                     return _.map(autoCharges, function(autoCharge) {
+                        autoCharge.bill_balance = autoCharge.debits - autoCharge.credits;
+
                         return _.extend(autoCharge, {'isSelected': value});
                     });
                 },
@@ -232,7 +234,9 @@ sntRover.controller('RVAutoChargeController',
                         resetSelections();
                         $scope.autoCharges = processAutoChargeSelections(response.details, false);
                         $scope.totalCount = response.total_count;
-                        $scope.totalDeposite = response.total_deposit;
+                        if ( response.total_deposit ) {
+                            $scope.totalDeposite = response.total_deposit;
+                        }
                         $scope.isAutoChargeProcessing = !!response.auto_charge_deposit_running;
 
                         $timeout(function () {
