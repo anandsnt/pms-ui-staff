@@ -101,7 +101,7 @@ angular.module('sntRover')
                 roomTypeId: $scope.selectedItem.room_type_id
             };
 
-            $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
+            $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData, true );
 
             // Update unassigned reservation list...
             unassignedReservationList = _.reject(unassignedReservationList, function(obj) { return obj.reservation_id === $scope.selectedItem.reservation_id; });
