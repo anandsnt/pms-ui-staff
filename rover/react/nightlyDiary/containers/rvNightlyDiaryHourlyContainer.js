@@ -33,7 +33,6 @@ let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly
 
     durationOfHourlydRoom = Math.ceil(totalDurationInHours / 12) * (nightDuration / 2);
 
-
     var returnData = {};
 
     returnData.style = {};
@@ -41,7 +40,6 @@ let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly
     returnData.style.transform = "translateX(" + unHourlyRoomPosition + "px)";
     return returnData;
 };
-
 
 const mapStateToNightlyDiaryHourlyContainerProps = (state, ownProps) => ({
     hourly_data: calculateHourlyRoomsPositionAndDuration(
