@@ -1,6 +1,6 @@
-const {connect} = ReactRedux;
+const { connect } = ReactRedux;
 
-let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDateGrid, oooOosData, numberOfDays) => {
+let calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDateGrid, oooOosData, numberOfDays) => {
     let nightDuration = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / numberOfDays;
     let diaryInitialDate = tzIndependentDate(diaryInitialDayOfDateGrid);
     let outOfOrderOutOfServiceStartDate = tzIndependentDate(oooOosData.start_date);
@@ -12,8 +12,7 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
     let diffBtwInitialAndArrivalDate = outOfOrderOutOfServiceStartDate.getTime() - diaryInitialDate.getTime();
     let noOfDaysBtwInitialAndArrivalDate = 0;
 
-    if (diffBtwInitialAndArrivalDate > 0)
-    {
+    if (diffBtwInitialAndArrivalDate > 0) {
         noOfDaysBtwInitialAndArrivalDate = Math.abs((diffBtwInitialAndArrivalDate) / (oneDay));
     }
     else if (diffBtwInitialAndArrivalDate < 0) {
@@ -82,8 +81,7 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
 
     if ((outOfOrderOutOfServiceEndDate.getTime() >= diaryInitialDate.getTime())
         && (outOfOrderOutOfServiceEndDate.getTime() <= finalDayOfDiaryGrid)
-        && (outOfOrderOutOfServiceStartDate.getTime() !== outOfOrderOutOfServiceEndDate.getTime()))
-    {
+        && (outOfOrderOutOfServiceStartDate.getTime() !== outOfOrderOutOfServiceEndDate.getTime())) {
 
         if (outOfOrderOutOfServiceStartDate.getTime() < diaryInitialDate.getTime()) {
             numberOfNightsVisibleInGrid = Math.abs((outOfOrderOutOfServiceEndDate.getTime() - diaryInitialDate.getTime()) / (oneDay));
@@ -91,15 +89,15 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
         numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid + 1;
         durationOfOutOfOrderOutOfService = numberOfNightsVisibleInGrid * nightDuration;
         if (outOfOrderOutOfServiceStartDate.getTime() >= diaryInitialDate.getTime()) {
-           // durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;
-       
+            // durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;
+
             if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
                 durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
             } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
                 durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
             }
         }
-        
+
     } else if (outOfOrderOutOfServiceStartDate.getTime() === outOfOrderOutOfServiceEndDate.getTime()) {
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
             durationOfOutOfOrderOutOfService = nightDuration - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
@@ -108,8 +106,8 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
         }
     } else if (outOfOrderOutOfServiceEndDate.getTime() > finalDayOfDiaryGrid) {
         let noOfDaysBtwFinalAndArrivalDate = Math.abs((finalDayOfDiaryGrid - outOfOrderOutOfServiceStartDate.getTime()) / (oneDay));
-       // Considering the day when the reservation starts (if past or first day = 1, second day = 2, ....)
-       // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
+        // Considering the day when the reservation starts (if past or first day = 1, second day = 2, ....)
+        // let reservationArrivalDay = noOfDaysBtwFinalAndDepartureDate + 1;
         let daysInsideTheGrid = 0;
 
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
@@ -131,14 +129,16 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
     return returnData;
 };
 
-const mapStateToNightlyDiaryOutOfOrderOutOfServiceContainerProps = (state, ownProps) => ({
-    ooo_oos: calculateOutOfOrderOutOfServicePositionAndDuration(
-        state.diaryInitialDayOfDateGrid, ownProps.ooo_oos, state.numberOfDays),
-    ooo_oos_data: ownProps.ooo_oos,
-    classForDiv: (ownProps.ooo_oos.hk_service_status === "OUT_OF_SERVICE") ? "reservation oos" : "reservation ooo",
-    gridDays: state.numberOfDays
-});
+const mapStateToNightlyDiaryOutOfOrderOutOfServiceContainerProps = (state, ownProps) => (
+    {
+        ooo_oos: calculateOutOfOrderOutOfServicePositionAndDuration(
+            state.diaryInitialDayOfDateGrid, ownProps.ooo_oos, state.numberOfDays),
+        ooo_oos_data: ownProps.ooo_oos,
+        classForDiv: (ownProps.ooo_oos.hk_service_status === "OUT_OF_SERVICE") ? "reservation oos" : "reservation ooo",
+        gridDays: state.numberOfDays
+    }
+);
 
 const NightlyDiaryOutOfOrderOutOfServiceContainer = connect(
-  mapStateToNightlyDiaryOutOfOrderOutOfServiceContainerProps
+    mapStateToNightlyDiaryOutOfOrderOutOfServiceContainerProps
 )(OutOfOrderOutOfServiceComponent);

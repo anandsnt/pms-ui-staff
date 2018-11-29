@@ -76,6 +76,25 @@ angular
                     params.per_page = 50;
                 }
                 return RVNightlyDiarySrv.fetchReservationsList(params);
+            },
+            unassignedReservationList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
+                var params = {};
+
+                if ($stateParams.isFromStayCard) {
+                    params = RVNightlyDiarySrv.getCache();
+                }
+                else {
+                    if (!!$stateParams.start_date) {
+                        params.start_date = $stateParams.start_date;
+                    }
+                    else {
+                        params.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                            .format($rootScope.momentFormatForAPI);
+                    }
+                    params.no_of_days = 7;
+                    params.businessDate = $rootScope.businessDate;
+                }
+                return RVNightlyDiarySrv.fetchUnassignedRoomList(params);
             }
         },
         lazyLoad: function($transition$) {

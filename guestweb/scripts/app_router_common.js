@@ -189,4 +189,10 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'offerAddonOptionsController',
 		title: 'Addons'
 	});
+
+	$stateProvider.state('sntIDScan', {
+        	url: '/sntIDScan/:params',
+            templateUrl: '/assets/common_templates/partials/checkin/idScan/idScanMain.html',
+            controller: 'sntIDScanCtrl'
+        });
 }]);

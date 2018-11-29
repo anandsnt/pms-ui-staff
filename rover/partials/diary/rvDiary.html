@@ -20,6 +20,20 @@
                 <button class="button gray" ng-click="editCancel()">Cancel</button>
             </div>
         </div>
+        <div class="entry switch">
+            <label for="diary-hours-days">DAY/NIGHT USE</label>
+            <div class="switch-button" ng-class="{'on': toggleHourlyNightly}">
+                <input ng-click="navigateToNightlyDiary()" name="diary-hours-days" id="diary-hours-days" value="" type="checkbox" checked />
+                <label class="data-off">
+                    <span class="value">D</span>
+                    <span class="switch-icon">N</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">D</span>
+                    <span class="value">N</span>
+                </label>
+            </div>
+        </div>
         <div class="entry date">
             <label for="arrival-date">Date</label>
             <div class="entry-data">
@@ -104,20 +118,6 @@
                     <input auto-complete="" auto-options="autocompleteOptions" name="diary-corporate-query" id="diary-corporate-query" class="query ui-autocomplete-input" placeholder="Type Company or Travel Agent Name" type="search" ng-model="corporateSearchText" ul-class="find-cards" focus-me="focusOnCorporateSearchText">
                 </div>
 
-            </div>
-        </div>
-        <div class="entry switch" ng-hide="!isHourlyRateOn">
-            <label for="diary-hours-days">Hours / Days</label>
-            <div class="switch-button" ng-class="{on: gridProps.filter.reservation_format === 'h'}">
-                <input name="diary-hours-days" id="diary-hours-days" value="" type="checkbox" checked  /> <!--ng-click="gridProps.filter.toggleHoursDays()" -->
-                <label class="data-off">
-                    <span class="value">H</span>
-                    <span class="switch-icon">D</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">H</span>
-                    <span class="value">D</span>
-                </label>
             </div>
         </div>
         <div class="entry switch display">
