@@ -163,16 +163,32 @@
             
             <div class="col-md-12">
                <div class="jumbotron text-center">
+                  <input type="file" accept="image/*" capture="user" id="face-image-upload" ng-upload-change="faceImageChanged($event)" value="" style="display: none;">
                   <p class="title">PROCEED WITH IMAGES</p>
                   <div class="form-group">
                      <button type="button" class="btn btn-primary" ng-click="confirmImages()">PROCEED</button>
+                  </div>
+                   <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="startFacialRecognition()">FACIAL RECOGNITION</button>
                   </div>
                   <div class="form-group">
                      <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
                   </div>
                </div>
             </div>
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'">
+         <div class="row content">
             
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">FACIAL RECOGNTION FAILED</p>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'ANALYSING_ID_DATA'">
@@ -183,7 +199,6 @@
                   <p class="title">ANALYSING DATA... PLEASE WAIT</p>
                </div>
             </div>
-            
          </div>
       </div>
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'">

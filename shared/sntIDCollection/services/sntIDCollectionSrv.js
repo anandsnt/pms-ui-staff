@@ -366,28 +366,37 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		return deferred.promise;
 	};
 
-	// this.faceMatch = function(facialMatchData) {
-	// 	var deferred = $q.defer();
-	// 	$http({
-	// 		method: 'POST',
-	// 		url: 'https://cssnwebservices.com/CSSNService/CardProcessor/FacialMatch',
-	// 		data: facialMatchData,
-	// 		cache: false,
-	// 		contentType: 'application/octet-stream; charset=utf-8;',
-	// 		dataType: 'json',
-	// 		processData: false,
-	// 		headers: {
-	// 			'Authorization': 'LicenseKey ' + acuantCredentials.LicenseKey,
-	// 			'Accept': 'application/json',
-	// 			'Content-Type': 'image/jpg'
-	// 		},
-	// 		transformRequest: transformRequest
-	// 	}).then(function(response) {
-	// 		deferred.resolve(response.data);
-	// 	}, function(error) {
-	// 		deferred.reject(error);
-	// 	});
-	// 	return deferred.promise;
-	// };
+	this.verifyFacialMatch = function(idFrontImage, facialImgData) {
+
+	    var deferred = $q.defer();
+		var url = 'https://cssnwebservices.com/CSSNService/CardProcessor/FacialMatch';
+		var requestDocInstance = createCORSRequest("POST", url);
+
+        var facialMatchData = new FormData();
+
+        facialMatchData.append("idFaceImage", idFrontImage);
+        facialMatchData.append("selfieImage", facialImgData);
+
+		requestDocInstance.setRequestHeader("Authorization", "LicenseKey " + acuantCredentials.LicenseKey);
+		requestDocInstance.setRequestHeader('Content-Type', 'image/*');
+		requestDocInstance.setRequestHeader("Accept", "application/json");
+		requestDocInstance.send(facialMatchData);
+		requestDocInstance.onload = function() {
+			if (requestDocInstance.status === 200) {
+				var documentObj = JSON.parse(requestDocInstance.responseText);
+
+				deferred.resolve(documentObj);
+			} else {
+				deferred.reject(['Facial Recognition Failed']);
+			}
+		};
+		requestDocInstance.onerror = function() {
+			deferred.reject(['Facial Recognition Failed']);
+		};
+		requestDocInstance.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
+		return deferred.promise;
+	};
 
 });

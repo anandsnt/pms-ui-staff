@@ -17,5 +17,6 @@ angular.module('sntIDCollection').constant('screenModes', {
 	analysing_id_data: 'ANALYSING_ID_DATA',
 	analysing_id_data_failed: 'ANALYSING_ID_DATA_FAILED',
 
-	final_id_results: 'FINAL_ID_RESULTS'
+	final_id_results: 'FINAL_ID_RESULTS',
+	facial_recognition_failed: 'FACIAL_RECOGNTION_FAILED'
 });
