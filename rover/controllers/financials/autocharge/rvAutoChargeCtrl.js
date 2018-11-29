@@ -9,7 +9,7 @@ sntRover.controller('RVAutoChargeController',
         '$window',
         '$stateParams',
         'rvUtilSrv',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams, util) {
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams,  util) {
 
             BaseCtrl.call(this, $scope);
 
@@ -176,32 +176,37 @@ sntRover.controller('RVAutoChargeController',
                 // CICO-9569 to solve the hotel logo issue
                 $('header .logo').addClass('logo-hide');
                 $('header .h2').addClass('text-hide');
+
                 // add the orientation
                 addPrintOrientation();
 
-                var printCompletedActions = function() {
-                    $timeout(function() {
-                        // CICO-9569 to solve the hotel logo issue
-                        $('header .logo').removeClass('logo-hide');
-                        $('header .h2').addClass('text-hide');
+                /*
+                *	======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+                    /*
+                    *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
 
-                        // remove the orientation after similar delay
-                        removePrintOrientation();
-                    }, 100);
-                };
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 1000);
+
+                /*
+                *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
 
                 $timeout(function() {
-                    if (sntapp.cordovaLoaded) {
-                        cordova.exec(printCompletedActions,
-                            function(error) {
-                                // handle error if needed
-                                printCompletedActions();
-                            }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'P']);
-                    } else {
-                        $window.print();
-                        printCompletedActions();
-                    }
-                }, 100);
+                    // CICO-9569 to solve the hotel logo issue
+                    $('header .logo').removeClass('logo-hide');
+                    $('header .h2').addClass('text-hide');
+
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 1000);
             };
 
             // print bill
