@@ -91,7 +91,11 @@ angular.module('sntRover')
                 unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
             // Update reservatio section...
-            availableRoomList = _.reject(availableRoomList, function(obj) { return obj.room_id === room.room_id; });
+            availableRoomList = _.reject( availableRoomList,
+                function(obj) {
+                    return obj.room_id === room.room_id; 
+                }
+            );
 
             var newData = {
                 availableRoomList: availableRoomList,
@@ -104,7 +108,12 @@ angular.module('sntRover')
             $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
 
             // Update unassigned reservation list...
-            unassignedReservationList = _.reject(unassignedReservationList, function(obj) { return obj.reservation_id === $scope.selectedItem.reservation_id; });
+            unassignedReservationList = _.reject( unassignedReservationList,
+                function(obj) {
+                    return obj.reservation_id === $scope.selectedItem.reservation_id; 
+                }
+            );
+
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
             $scope.selectedItem = {};

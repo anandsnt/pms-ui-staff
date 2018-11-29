@@ -240,16 +240,16 @@ angular.module('sntRover')
                  * @return {}
                  */
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
-                    var successCallBackAssignRoom = function (data) {
+                    var successCallBackAssignRoom = function () {
                         $scope.errorMessage = '';
                         $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
                     },
                     postData = {
                         "reservation_id": reservationDetails.reservationId,
                         "room_number": roomDetails.room_number,
-                        "without_rate_change":true,
-                        "is_preassigned":false,
-                        "forcefully_assign_room":false
+                        "without_rate_change": true,
+                        "is_preassigned": false,
+                        "forcefully_assign_room": false
                     },
                     options = {
                         params: postData,
