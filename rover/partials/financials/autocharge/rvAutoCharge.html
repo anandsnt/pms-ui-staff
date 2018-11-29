@@ -20,7 +20,7 @@
     </div>
 
     <!-- Process -->
-    <div class="entry process" ng-show="isPartiallySelected || isAllSelected">
+    <div class="entry process" ng-show="isDeclinedAutoChargesPresent && ( isPartiallySelected || isAllSelected ) ">
         <!-- Show only when some reservations are selected -->
         <button class="button green" ng-click="processSelectedAutoCharges()">Process Selected</button>
     </div>
@@ -52,7 +52,7 @@
         <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
         <li class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
             <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
-            <label class="checkbox">
+            <label class="checkbox" ng-show="isDeclinedAutoChargesPresent">
                 <span class="icon-form icon-checkbox" ng-class="{'semi-checked' :isPartiallySelected, 'checked': isAllSelected }"></span>
                 <input id="select-all" type="checkbox" ng-model="isAllSelected" ng-change="handleAutoChargeSelection('ALL')">
             </label>
@@ -73,7 +73,7 @@
                     <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
                     <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
                         <!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
-                        <label class="checkbox" ng-show="autoCharge.is_declined">
+                        <label class="checkbox" ng-show="autoCharge.is_declined && autoCharge.can_retry_processing">
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : autoCharge.isSelected}"></span>
                             <input id="{{autoCharge.reservation_id}}" type="checkbox" ng-model="autoCharge.isSelected" ng-change="handleAutoChargeSelection()">
                         </label>
