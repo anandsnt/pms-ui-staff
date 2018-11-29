@@ -160,7 +160,6 @@
       </div>
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'">
          <div class="row content">
-            
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <input type="file" accept="image/*" capture="user" id="face-image-upload" ng-upload-change="faceImageChanged($event)" value="" style="display: none;">
@@ -184,6 +183,9 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">FACIAL RECOGNTION FAILED</p>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-primary" ng-click="startFacialRecognition()">RETRY</button>
+                  </div>
                   <div class="form-group">
                      <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
                   </div>

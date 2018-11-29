@@ -102,6 +102,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}, facialRecognitionFailed);
 	};
 
+
+    var unmodifiedFrontImage, unmodifiedFaceImage;
 	var processImage = function(evt, frontSideImage, faceImage) {
 
 		var file = evt.target;
@@ -116,9 +118,15 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 					var imageData = sntIDCollectionUtilsSrv.resizeImage(img, file);
 
 					if (faceImage){
-						verifyFaceImageWithId($scope.screenData.frontSideImage, imageData);
+						unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
+						$timeout(function() {
+							$scope.screenData.scanMode = screenModes.analysing_id_data;
+						}, 0);
+						verifyFaceImageWithId(unmodifiedFrontImage, unmodifiedFaceImage);
+						$scope.$emit('FR_ANALYSIS_STARTED');
 					}
 					else if (frontSideImage) {
+						unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
 						getDocInstance();
 						$scope.screenData.frontSideImage = imageData;
 					} else {
