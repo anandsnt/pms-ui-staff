@@ -95,7 +95,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 
 		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
-			if (response.FacialMatch) {
+			if (response && response.FacialMatch && response.FacialMatchConfidenceRating > 95) {
 				$scope.$emit('FR_SUCCESS');
 			} else {
 				facialRecognitionFailed();
