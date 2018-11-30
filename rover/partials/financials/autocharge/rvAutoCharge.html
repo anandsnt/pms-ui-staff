@@ -8,7 +8,7 @@
     </div>
 
     <!-- Status -->
-    <div class="entry status" ng-show="selectedTab == 'DEPOSIT_TAB'">
+    <div class="entry status">
         <div class="select">
             <label for="automatic-payments-status">Status</label>
             <select id="automatic-payments-status" ng-model="filters.status" ng-change="fetchAutoCharge()">
@@ -32,12 +32,13 @@
 
     <!-- Tabs -->
     <ul class="filters">
-        <li ng-hide="filters.status == 'DECLINED'" ng-class="{'active': selectedTab == 'DEPOSIT_TAB'}" ng-click="selectHeaderTab('DEPOSIT_TAB')">
+        <li class="active" ng-hide="filters.status == 'DECLINED'">
             <strong>Deposits</strong> {{currencySymbol}}{{totalDeposite}}
         </li>
-        <li ng-hide="filters.status == 'DECLINED'" ng-class="{'active': selectedTab == 'EOD_TAB'}" ng-click="selectHeaderTab('EOD_TAB')">
-            <strong>EOD Check Out</strong>
-        </li>
+        <!--<li>-->
+        <!--<strong>EOD Check Out</strong>-->
+        <!--{currency}{amount}-->
+        <!--</li>-->
     </ul>
 </form>
 
@@ -47,9 +48,9 @@
 <section id="automatic-payments" class="content automatic-payments-content" role="main">
 
     <!-- Header -->
-    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0" ng-class="{'with-checkbox' : filters.status !== 'APPROVED' && selectedTab == 'DEPOSIT_TAB'}">
+    <ul class="grid-header" ng-show="!isAutoChargeProcessing && totalCount !== 0" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
         <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-        <li class="cell-checkbox" ng-show="filters.status !== 'APPROVED' && selectedTab == 'DEPOSIT_TAB'">
+        <li class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
             <!-- Remove L73-L78 when showing ONLY APPROVED TRANSACITONS -->
             <label class="checkbox" ng-show="isDeclinedAutoChargesPresent">
                 <span class="icon-form icon-checkbox" ng-class="{'semi-checked' :isPartiallySelected, 'checked': isAllSelected }"></span>
@@ -57,20 +58,20 @@
             </label>
         </li>
         <li class="cell-reservation">Reservation</li>
-        <li class="cell-date">{{selectedTab == 'DEPOSIT_TAB' ? 'Arrival Date' : 'Departure Date'}}</li>
+        <li class="cell-date">Arrival Date</li>
         <li class="cell-card">Card Details</li>
-        <li class="cell-cost">{{selectedTab == 'DEPOSIT_TAB' ? 'Stay Cost' : 'Bill No'}}</li>
-        <li class="cell-deposit">{{selectedTab == 'DEPOSIT_TAB' ? 'Deposit Paid' : 'Balance Paid'}}</li>
+        <li class="cell-cost">Stay Cost</li>
+        <li class="cell-deposit">Deposit Paid</li>
     </ul>
 
     <!-- Reservations -->
-    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-class="{'with-checkboxes' : filters.status !== 'APPROVED' && selectedTab == 'DEPOSIT_TAB'}" ng-show="!isAutoChargeProcessing && totalCount !== 0">
+    <div id="automatic-payments-content" class="grid-content scrollable with-pagination" ng-iscroll="chargeScroller" ng-class="{'with-checkboxes' : filters.status !== 'APPROVED'}" ng-show="!isAutoChargeProcessing && totalCount !== 0">
         <!-- Remove class 'with-checkboxes' when showing ONLY APPROVED TRANSACITONS -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index" ng-class="{'with-checkbox' : filters.status !== 'APPROVED' && selectedTab == 'DEPOSIT_TAB'}">
+                <li class="reservation autopayment-item" ng-repeat="autoCharge in autoCharges track by $index" ng-class="{'with-checkbox' : filters.status !== 'APPROVED'}">
                     <!-- Remove class 'with-checkbox' when showing ONLY APPROVED TRANSACITONS -->
-                    <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED' && selectedTab == 'DEPOSIT_TAB'">
+                    <div class="cell-checkbox" ng-show="filters.status !== 'APPROVED'">
                         <!-- Remove L91-L96 when showing ONLY APPROVED TRANSACITONS -->
                         <label class="checkbox" ng-show="autoCharge.is_declined && autoCharge.can_retry_processing">
                             <span class="icon-form icon-checkbox" ng-class="{'checked' : autoCharge.isSelected}"></span>
@@ -92,7 +93,7 @@
                         </div>
                         <div class="cell-date">
                             <span class="guest-status check-in"></span>
-                            <span class="date">{{selectedTab == 'DEPOSIT_TAB' ? autoCharge.arrival_date : autoCharge.departure_date}}</span>
+                            <span class="date">{{autoCharge.arrival_date}}</span>
                         </div>
                         <div class="cell-card">
                             <figure class="card-logo">
@@ -107,26 +108,13 @@
                                 <span class="value">{{autoCharge.card_details.auth_code}}</span>
                             </div>
                         </div>
-
-                        <div class="cell-cost" ng-show="selectedTab == 'DEPOSIT_TAB'">
+                        <div class="cell-cost">
                             {{currencySymbol}}{{autoCharge.stay_cost}}
                         </div>
-                        <div class="cell-cost" ng-show="selectedTab == 'EOD_TAB'">
-                            {{autoCharge.bill_number}}
-                        </div>
-
-                        <div class="cell-deposit"
-                             ng-class="{'color-green' : !autoCharge.is_declined, 'color-red' : autoCharge.is_declined}"
-                             ng-show="selectedTab == 'DEPOSIT_TAB'">
+                        <div class="cell-deposit" ng-class="{'color-green' : !autoCharge.is_declined, 'color-red' : autoCharge.is_declined}">
                             {{currencySymbol}}{{autoCharge.deposit_paid}}
                             <div class="deposit-due" ng-show="autoCharge.is_declined">{{currencySymbol}}{{autoCharge.deposit_due}}</div>
                         </div>
-                        <div class="cell-deposit"
-                             ng-class="{'color-green' : !autoCharge.bill_balance, 'color-red' : autoCharge.bill_balance}"
-                             ng-show="selectedTab == 'EOD_TAB'">
-                            {{currencySymbol}}{{autoCharge.bill_balance}}
-                        </div>
-
                     </a>
                 </li>
             </ul>
