@@ -85,6 +85,14 @@
                 </div>
             </div>
 
+            <div class="entry radio-check margin" ng-show="contactInformation.commission_details.is_on && contactInformation.is_global_enabled">
+                <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_global_commission}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_global_commission }"></span>
+                    <input type="checkbox"  name="opt-in" id="opt-in" ng-model="contactInformation.commission_details.is_global_commission" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
+                    <span translate>GLOBAL_COMMISSION</span>
+                </label>
+            </div>
+
             <div class="entry radio-check margin" ng-show="contactInformation.commission_details.is_on">
                 <label class="checkbox"ng-class="{'checked': contactInformation.commission_details.is_prepaid}">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': contactInformation.commission_details.is_prepaid }"></span>
