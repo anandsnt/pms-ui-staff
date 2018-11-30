@@ -27,8 +27,8 @@
 			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
 			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
 
-			if (!sntIDCollectionSrv.isInDevEnv) {
-				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.acuant_credentials);
+			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
+				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
 			}
 			
 

@@ -340,8 +340,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			generalFailureCallBack();
 		});
 
-		if (!sntIDCollectionSrv.isInDevEnv) {
-			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.acuant_credentials);
+		if (!sntIDCollectionSrv.isInDevEnv && $scope.hotelDetails.id_collection) {
+			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.id_collection.acuant_credentials);
 		}
 	}
 ]);

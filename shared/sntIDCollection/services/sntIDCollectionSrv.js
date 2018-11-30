@@ -20,7 +20,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 
 	this.setAcuantCredentialsForProduction = function (credentials) {
 		acuantCredentials = credentials;
-		acuantCredentials.LicenseKey = btoa(acuantCredentials.LicenseKey);
+		acuantCredentials.LicenseKey = btoa(acuantCredentials.licenseKey);
 	};
 	/**
 	 * [createCORSRequest description]
