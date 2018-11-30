@@ -1,7 +1,6 @@
 angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope', '$rootScope', 'RVGuestCardLoyaltySrv', 'ngDialog', 'RVLoyaltyProgramSrv', function($scope, $rootScope, RVGuestCardLoyaltySrv, ngDialog, RVLoyaltyProgramSrv) {
     BaseCtrl.call(this, $scope);
     var GMSData = {};
-    var listeners = [];
 
     $scope.init = function() {
         var loyaltyFetchsuccessCallback = function(data) {
@@ -44,7 +43,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
 * To check for the loyalty levels in hotel loyalty section for the guest
 * and notify the guestcard header to display the same
 */
-    listeners['reload-loyalty-section-data'] = $rootScope.$on('reload-loyalty-section-data', function(evt, data) {
+    $scope.addListener('reload-loyalty-section-data', function(evt, data) {
         if (data) {
             if (data.reload) {
                 if ($rootScope.goToReservationCalled) {
@@ -64,14 +63,14 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             }
         }
     };
-    listeners['clearNotifications'] = $scope.$on('clearNotifications', function() {
+    $scope.addListener('clearNotifications', function() {
         $scope.errorMessage = '';
         $scope.successMessage = '';
     });
     var scrollerOptions = { preventDefault: false};
 
     $scope.setScroller('loyaltyList', scrollerOptions);
-    listeners['REFRESHLIKESSCROLL'] = $scope.$on('REFRESHLIKESSCROLL', function() {
+    $scope.addListener('REFRESHLIKESSCROLL', function() {
         $scope.refreshScroller('loyaltyList');
     });
     $scope.addNewFreaquentLoyality = function() {
@@ -116,7 +115,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             scope: $scope
         });
     };
-    listeners['loyaltyProgramAdded'] = $scope.$on('loyaltyProgramAdded', function(e, data, source) {
+    $scope.addListener('loyaltyProgramAdded', function(e, data, source) {
         if (typeof $scope.loyaltyData === 'undefined') {
             return;
         }
@@ -137,12 +136,12 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
         }
     };
-    listeners['loyaltyDeletionError'] = $scope.$on('loyaltyDeletionError', function(e, error) {
+    $scope.addListener('loyaltyDeletionError', function(e, error) {
         $scope.$parent.myScroll['loyaltyList'].scrollTo(0, 0);
         $scope.errorMessage = error;
     });
 
-    listeners['detect-hlps-ffp-active-status'] = $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
+    $scope.addListener('detect-hlps-ffp-active-status', function(evt, data) {
         if (data.userMemberships.use_hlp) {
             $scope.loyaltyProgramsActive(true);
             $scope.$parent.guestCardData.use_hlp = true;
@@ -178,12 +177,4 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
 
         $scope.callAPI(RVLoyaltyProgramSrv.getGMSSettings, options);
     };
-
-    $scope.$on('$destroy', listeners['reload-loyalty-section-data']);
-    $scope.$on('$destroy', listeners['clearNotifications']);
-    $scope.$on('$destroy', listeners['loyaltyDeletionError']);
-    $scope.$on('$destroy', listeners['loyaltyProgramAdded']);
-    $scope.$on('$destroy', listeners['detect-hlps-ffp-active-status']);
-    $scope.$on('$destroy', listeners['REFRESHLIKESSCROLL']);
-
 }]);

@@ -1,5 +1,7 @@
 BaseCtrl = function($scope) {
 
+    var _listeners = [];
+
     $scope.businessDate = '';
 
     $scope.fetchedCompleted = function () {
@@ -317,5 +319,16 @@ BaseCtrl = function($scope) {
 
     // Absolute value of a number
     $scope.absVal = Math.abs;
+
+    $scope.addListener = function(name, callback) {
+        _listeners.push($scope.$on(name, callback));
+    };
+
+    $scope.$on('$destroy', function() {
+        _listeners.forEach(function(handle) {
+            // invoke listener's deregistration function
+            handle();
+        });
+    });
 
 };
