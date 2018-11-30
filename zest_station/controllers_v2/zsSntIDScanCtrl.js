@@ -155,6 +155,26 @@
 
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
 
+			$scope.screenData.facialRecognitionInProgress = false;
+
+			$scope.$on('FR_ANALYSIS_STARTED', function() {
+				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+				$scope.screenData.facialRecognitionInProgress = true;
+				$scope.$emit('showLoader');
+			});
+			$scope.$on('FR_FAILED', function() {
+				$scope.$emit('hideLoader');
+				$scope.screenData.facialRecognitionInProgress = false;
+				$scope.screenData.scanMode = 'FACIAL_RECOGNTION_FAILED';
+				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+			});
+
+			$scope.$on('FR_SUCCESS', function(){
+				$scope.$emit('hideLoader');
+				$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
+				refreshIDdetailsScroller();
+			});
+
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
 					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
@@ -167,7 +187,12 @@
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
 					setPageNumberDetails();
-				} else {
+				} else if ($scope.idScanData.verificationMethod === 'FR') {
+					$scope.screenData.facialRecognitionInProgress = false;
+					$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+					$scope.idScanData.selectedGuest.scannedDetails = data;
+				} 
+				else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
 					refreshIDdetailsScroller();
 				}
@@ -294,7 +319,7 @@
 			};
 
 			var goBackToScanAgain = function() {
-				if ($scope.screenData.scanMode === 'FINAL_ID_RESULTS') {
+				if ($scope.screenData.scanMode === 'FINAL_ID_RESULTS' || $scope.screenData.scanMode === 'FACIAL_RECOGNTION_FAILED') {
 					$scope.showGuestList();
 				} else {
 					verfiedStaffId = '';
@@ -308,6 +333,16 @@
 			$scope.$on('CREDENTIALS_VALIDATED', function() {
 				$scope.screenData.scanMode = 'GUEST_LIST';
 			});
+
+			var retrieveIdScanType = function() {
+				if ($scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification') {
+					return 'STAFF';
+				} else if ($scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification') {
+					return 'FR';
+				} else {
+					return 'NONE';
+				}
+			};
 
 			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
@@ -331,7 +366,7 @@
 				$scope.idScanData = {
 					mode: '',
 					selectedGuest: {},
-					verificationMethod: $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ? 'STAFF' : 'NONE', // FR will be added later
+					verificationMethod: retrieveIdScanType(),
 					staffVerified: false
 				};
 				$scope.screenData.scanMode = 'GUEST_LIST';

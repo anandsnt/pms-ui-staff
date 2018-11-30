@@ -92,10 +92,11 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var facialRecognitionFailed = function() {
 			$scope.$emit('FR_FAILED');
 			$scope.screenData.scanMode = screenModes.facial_recognition_failed;
-		}
+		};
+
 		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
 			if (response.FacialMatch) {
-				$scope.confirmImages();
+				$scope.$emit('FR_SUCCESS');
 			} else {
 				facialRecognitionFailed();
 			}
@@ -183,16 +184,14 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.backImageChanged = function(evt) {
-		$scope.screenData.faceImage = '';
+		$scope.screenData.backSideImage = '';
 		processImage(evt, false, false, angular.copy($scope.screenData.scanMode));
 		$scope.screenData.scanMode = screenModes.analysing_back_image;
 	};
 
 	$scope.faceImageChanged = function (evt) {
-		$scope.screenData.backSideImage = '';
+		$scope.screenData.faceImage = '';
 		processImage(evt, false, true, angular.copy($scope.screenData.scanMode));
-		$scope.screenData.scanMode = screenModes.confirm_id_images;
-
 	};
 
 	$scope.captureFrontImage = function() {
