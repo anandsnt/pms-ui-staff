@@ -48,15 +48,15 @@
 
 				var options = {
 					params: params,
-					loader: 'none'
+					loader: 'none',
+					failureCallBack: function() {
+						// do nothing
+					}
 				};
 
 				$scope.callAPI(zsGeneralSrv.recordReservationActions, options);
 			};
 			
-
-			
-
 			/* ******************* GUEST LIST *********************** */
 
 			var setPageNumberDetails = function() {
@@ -211,13 +211,13 @@
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-					recordIDScanActions('ID_ANALYZING', 'Failed due to invalid expiry date on the ID for the guest');
+					recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date on the ID) for the guest');
 					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
 				} else if (data.expirationStatus === 'Expired') {
-					recordIDScanActions('ID_ANALYZING', 'Failed because the ID is expired for the guest');
+					recordIDScanActions('ID_ANALYZING', 'Failed (ID expired) for the guest');
 					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
 				} else if (!data.document_number) {
-					recordIDScanActions('ID_ANALYZING', 'Failed because the ID documnet number is missing for the guest');
+					recordIDScanActions('ID_ANALYZING', 'Failed (blank ID number) for the guest');
 					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
 				} else if ($scope.idScanData.verificationMethod === 'STAFF') {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
