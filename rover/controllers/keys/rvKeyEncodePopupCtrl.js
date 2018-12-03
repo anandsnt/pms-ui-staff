@@ -151,41 +151,35 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	};
 
 	$scope.printPinCode = function() {
+		$('.nav-bar').addClass('no-print');
+		$('.cards-header').addClass('no-print');
+		$('.card-tabs-nav').addClass('no-print');
 
-    $('.nav-bar').addClass('no-print');
-    $('.cards-header').addClass('no-print');
-    $('.card-tabs-nav').addClass('no-print');
 
-    var pinEl = document.createElement("div");
+		var pinEl = document.createElement("div");
+		
+		pinEl.innerHTML = getPrintContent();
+		// var currenBody = document.body.innerHTML;		
+		document.body.appendChild(pinEl);
 
-    pinEl.innerHTML = getPrintContent();
-        // var currenBody = document.body.innerHTML;
-    document.body.appendChild(pinEl);
+		// this will show the popup with full report
+		$timeout(function() {
 
-    var printCompletedActions = function() {
-        $timeout(function() {
+			/*
+			 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			 */
 
-            $('.nav-bar').removeClass('no-print');
-            $('.cards-header').removeClass('no-print');
-            $('.card-tabs-nav').removeClass('no-print');
-            document.body.removeChild(pinEl);
+			$window.print();
+			if (sntapp.cordovaLoaded) {
+				cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+			}
 
-        }, 100);
-    };
+			$('.nav-bar').removeClass('no-print');
+			$('.cards-header').removeClass('no-print');
+			$('.card-tabs-nav').removeClass('no-print');
+			document.body.removeChild(pinEl);
 
-    $timeout(function() {
-        if (sntapp.cordovaLoaded) {
-            cordova.exec(printCompletedActions,
-                function(error) {
-                    // handle error if needed
-                    printCompletedActions();
-                }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
-        } else {
-            $window.print();
-            printCompletedActions();
-        }
-    }, 100);
-
+		}, 100);
 	};
 
 	$scope.isPrintKeyEnabled = function() {

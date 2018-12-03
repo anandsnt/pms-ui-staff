@@ -43,7 +43,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
 * To check for the loyalty levels in hotel loyalty section for the guest
 * and notify the guestcard header to display the same
 */
-    $rootScope.$on('reload-loyalty-section-data', function(evt, data) {
+    $scope.addListener('reload-loyalty-section-data', function(evt, data) {
         if (data) {
             if (data.reload) {
                 if ($rootScope.goToReservationCalled) {
@@ -63,14 +63,14 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             }
         }
     };
-    $scope.$on('clearNotifications', function() {
+    $scope.addListener('clearNotifications', function() {
         $scope.errorMessage = '';
         $scope.successMessage = '';
     });
     var scrollerOptions = { preventDefault: false};
 
     $scope.setScroller('loyaltyList', scrollerOptions);
-    $scope.$on('REFRESHLIKESSCROLL', function() {
+    $scope.addListener('REFRESHLIKESSCROLL', function() {
         $scope.refreshScroller('loyaltyList');
     });
     $scope.addNewFreaquentLoyality = function() {
@@ -115,11 +115,11 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             scope: $scope
         });
     };
-    $scope.$on('loyaltyProgramAdded', function(e, data, source) {
+    $scope.addListener('loyaltyProgramAdded', function(e, data, source) {
         if (typeof $scope.loyaltyData === 'undefined') {
             return;
         }
-	
+
         if (data.membership_class === 'HLP') {
             $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push(data);
         } else {
@@ -136,11 +136,12 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
         }
     };
-    $scope.$on('loyaltyDeletionError', function(e, error) {
+    $scope.addListener('loyaltyDeletionError', function(e, error) {
         $scope.$parent.myScroll['loyaltyList'].scrollTo(0, 0);
         $scope.errorMessage = error;
     });
-    $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
+
+    $scope.addListener('detect-hlps-ffp-active-status', function(evt, data) {
         if (data.userMemberships.use_hlp) {
             $scope.loyaltyProgramsActive(true);
             $scope.$parent.guestCardData.use_hlp = true;

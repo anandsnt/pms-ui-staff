@@ -334,7 +334,7 @@
 					verificationMethod: $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ? 'STAFF' : 'NONE', // FR will be added later
 					staffVerified: false
 				};
-				$scope.validateSubsription();
+				$scope.screenData.scanMode = 'GUEST_LIST';
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
 			}());

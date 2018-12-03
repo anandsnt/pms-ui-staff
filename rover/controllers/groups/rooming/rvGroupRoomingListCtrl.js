@@ -1643,32 +1643,36 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     $(this).off('load');
                     $(this).remove();
 
-                    // yes we have everything we wanted
-                    window.print();
+                    var onPrintCompletion = function() {
+                        $timeout(function() {
+                            $scope.print_type = '';
+                            removePrintOrientation();
+                            $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
+                            $scope.resevationsBeforePrint = [];
+    
+                        }, 1200);
+                        $timeout(function() {
+                            $scope.isPrintClicked = false;
+                        }, 200);
+                    };
 
                     // if we are in the app
                     $timeout(function() {
                         if (sntapp.cordovaLoaded) {
                             cordova.exec(
-                                function(success) {},
-                                function(error) {},
+                                onPrintCompletion,
+                                function() {
+                                    onPrintCompletion();
+                                },
                                 'RVCardPlugin',
-                                'printWebView', []
+                                'printWebView', ['', '0', '', 'L']
                             );
+                        } else {
+                            window.print();
+                            onPrintCompletion();
                         }
                     }, 300);
-
-
-                    $timeout(function() {
-                        $scope.print_type = '';
-                        removePrintOrientation();
-                        $scope.reservations = util.deepCopy($scope.resevationsBeforePrint);
-                        $scope.resevationsBeforePrint = [];
-
-                    }, 1200);
-                    $timeout(function() {
-                        $scope.isPrintClicked = false;
-                    }, 200);
+                    
                 });
 
 
@@ -1816,29 +1820,33 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     $scope.isPrintRegistrationCard = true;
                     $rootScope.addNoPrintClass = true;
 
+                    var onPrintCompletion = function() {
+                        $timeout(function() {
+                            $scope.isPrintRegistrationCard = false;
+                            $rootScope.addNoPrintClass = false;
+                            // CICO-9569 to solve the hotel logo issue
+                            $("header .logo").removeClass('logo-hide');
+                            $("header .h2").addClass('text-hide');
+    
+                            // remove the orientation after similar delay
+                            removePrintOrientation();
+                        }, 100);
+                    };
+
                     $timeout(function() {
                         /*
                          *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */
 
-                        $window.print();
+                        
                         if (sntapp.cordovaLoaded) {
-                            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                            cordova.exec(onPrintCompletion, function() {
+                                onPrintCompletion();
+                            }, 'RVCardPlugin', 'printWebView', []);
+                        } else {
+                            $window.print();
+                            onPrintCompletion();
                         }
-                    }, 100);
-
-                    /*
-                     *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-                     */
-                    $timeout(function() {
-                        $scope.isPrintRegistrationCard = false;
-                        $rootScope.addNoPrintClass = false;
-                        // CICO-9569 to solve the hotel logo issue
-                        $("header .logo").removeClass('logo-hide');
-                        $("header .h2").addClass('text-hide');
-
-                        // remove the orientation after similar delay
-                        removePrintOrientation();
                     }, 100);
 
                 },
