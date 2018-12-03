@@ -37,9 +37,8 @@
 				value = value ? value : $scope.idScanData.selectedGuest.first_name + ' ' + $scope.idScanData.selectedGuest.last_name;
 				var params = {
 					"id": stateParams.reservation_id,
-					//"user_id": verfiedStaffId,
 					"application": 'KIOSK',
-					"action_type": actionType, //"ID_REVIEWED",
+					"action_type": actionType,
 					"details": [{
 						"key": key,
 						"new_value": value
@@ -196,7 +195,7 @@
 				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Failed for the guest');
 			});
 
-			$scope.$on('FR_SUCCESS', function(){
+			$scope.$on('FR_SUCCESS', function() {
 				$scope.$emit('hideLoader');
 				$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 				refreshIDdetailsScroller();

@@ -371,14 +371,14 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 
 	this.verifyFacialMatch = function(idFrontImage, facialImgData) {
 
-	    var deferred = $q.defer();
+		var deferred = $q.defer();
 		var url = 'https://cssnwebservices.com/CSSNService/CardProcessor/FacialMatch';
 		var requestDocInstance = createCORSRequest("POST", url);
 
-        var facialMatchData = new FormData();
+		var facialMatchData = new FormData();
 
-        facialMatchData.append("idFaceImage", idFrontImage);
-        facialMatchData.append("selfieImage", facialImgData);
+		facialMatchData.append("idFaceImage", idFrontImage);
+		facialMatchData.append("selfieImage", facialImgData);
 
 		requestDocInstance.setRequestHeader("Authorization", "LicenseKey " + acuantCredentials.LicenseKey);
 		requestDocInstance.setRequestHeader('Content-Type', 'image/*');

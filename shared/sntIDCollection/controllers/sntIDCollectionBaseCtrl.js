@@ -118,7 +118,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 				img.onload = function() {
 					var imageData = sntIDCollectionUtilsSrv.resizeImage(img, file);
 
-					if (faceImage){
+					if (faceImage) {
 						unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
 						$timeout(function() {
 							$scope.screenData.scanMode = screenModes.analysing_id_data;
