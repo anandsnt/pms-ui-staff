@@ -47,6 +47,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			}
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
 		});
 	};
@@ -56,6 +57,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = screenModes.upload_back_image_failed;
 		});
 	};
@@ -65,6 +67,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};
@@ -78,6 +81,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			}
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};
@@ -102,6 +106,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 						$scope.screenData.backSideImage = imageData;
 						postBackImage();
 					}
+					$scope.$emit('IMAGE_ANALYSIS_STARTED');
 				};
 			} else {
 				$log.error('The File APIs are not fully supported in this browser.');
