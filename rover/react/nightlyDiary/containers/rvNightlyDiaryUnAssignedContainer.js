@@ -23,7 +23,7 @@ let calculateUnassignedRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, ua
     }
 
     let durationOfUnAssignedRoom = 0;
-    let numberOfNightsVisibleInGrid = uarData.nights;
+    let numberOfNightsVisibleInGrid = (uarData.nights <= 1) ? 1 : uarData.nights;
     
     durationOfUnAssignedRoom = numberOfNightsVisibleInGrid * nightDuration;
     if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
