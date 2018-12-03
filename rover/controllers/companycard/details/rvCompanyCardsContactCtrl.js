@@ -8,6 +8,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 			refreshScroller();
 		});
 
+
 		$scope.isEmpty = function (obj) {
 			return _.isEmpty(obj);
 		};

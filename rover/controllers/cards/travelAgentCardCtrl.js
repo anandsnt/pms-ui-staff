@@ -68,6 +68,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$scope.isWithFilters = data;
 		});
 
+		
 		var presentContactInfo = {};
 		/* -------AR account starts here-----------*/
 
