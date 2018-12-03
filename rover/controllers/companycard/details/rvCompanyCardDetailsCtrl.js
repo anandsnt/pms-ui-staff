@@ -203,7 +203,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.showARTab = function($event) {
 			$scope.isArTabAvailable = true;
 			$scope.$broadcast('setgenerateNewAutoAr', true);
-			$scope.showArAccountButtonClick($event);
+			//$scope.showArAccountButtonClick($event);
 		};
 
 		/*
