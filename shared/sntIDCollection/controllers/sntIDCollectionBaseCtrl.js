@@ -59,7 +59,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
-			$scope.$emit('IMAGE_ANALYSIS_FAILED');
+			$scope.$emit('IMAGE_ANALYSIS_FAILED', response);
 			$scope.screenData.scanMode = screenModes.upload_back_image_failed;
 		});
 	};
@@ -69,7 +69,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
-			$scope.$emit('IMAGE_ANALYSIS_FAILED');
+			$scope.$emit('IMAGE_ANALYSIS_FAILED', response);
 			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};

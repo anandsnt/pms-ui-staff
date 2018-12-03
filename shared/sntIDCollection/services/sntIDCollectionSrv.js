@@ -173,7 +173,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 			if (requestDocInstance.status === 201) {
 				deferred.resolve({});
 			} else {
-				deferred.reject(['Document front image posting failed']);
+				deferred.reject(['Document front image posting failed (Response status: ' + requestDocInstance.status + ')']);
 			}
 		};
 		requestDocInstance.onerror = function() {
@@ -199,7 +199,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 			if (requestDocInstance.status === 201) {
 				deferred.resolve({});
 			} else {
-				deferred.reject(['Document back side image posting failed']);
+				deferred.reject(['Document back side image posting failed (Response status: ' + requestDocInstance.status + ')']);
 			}
 		};
 		requestDocInstance.onerror = function() {

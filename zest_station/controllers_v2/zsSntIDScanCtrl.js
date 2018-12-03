@@ -30,6 +30,31 @@
 			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
 				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
 			}
+
+			/* ******************* RECORD ACTIONS ******************* */
+
+			var recordIDScanActions = function(actionType, key, value) {
+				value = value ? value : $scope.idScanData.selectedGuest.first_name + ' ' + $scope.idScanData.selectedGuest.last_name;
+				var params = {
+					"id": stateParams.reservation_id,
+					//"user_id": verfiedStaffId,
+					"application": 'KIOSK',
+					"action_type": actionType, //"ID_REVIEWED",
+					"details": [{
+						"key": key,
+						"new_value": value
+					}]
+				};
+
+				var options = {
+					params: params,
+					loader: 'none'
+				};
+
+				$scope.callAPI(zsGeneralSrv.recordReservationActions, options);
+			};
+			
+
 			
 
 			/* ******************* GUEST LIST *********************** */
@@ -125,6 +150,7 @@
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
 					$scope.screenData.scanMode = 'GUEST_LIST';
+					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
 					setPageNumberDetails();
 				};
 				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
@@ -167,20 +193,31 @@
 				$scope.screenData.facialRecognitionInProgress = false;
 				$scope.screenData.scanMode = 'FACIAL_RECOGNTION_FAILED';
 				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Failed for the guest');
 			});
 
 			$scope.$on('FR_SUCCESS', function(){
 				$scope.$emit('hideLoader');
 				$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 				refreshIDdetailsScroller();
+				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest');
+			});
+
+			$scope.$on('IMAGE_ANALYSIS_FAILED', function(event, data) {
+				var errorMessage = data && Array.isArray(data) ? data[0] + ' for the guest' : 'Failed for the guest';
+
+				recordIDScanActions('ID_IMAGE_PROCESSING', errorMessage);
 			});
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+					recordIDScanActions('ID_ANALYZING', 'Failed due to invalid expiry date on the ID for the guest');
 					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
 				} else if (data.expirationStatus === 'Expired') {
+					recordIDScanActions('ID_ANALYZING', 'Failed because the ID is expired for the guest');
 					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
 				} else if (!data.document_number) {
+					recordIDScanActions('ID_ANALYZING', 'Failed because the ID documnet number is missing for the guest');
 					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
 				} else if ($scope.idScanData.verificationMethod === 'STAFF') {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
@@ -252,7 +289,7 @@
 				if ($scope.inDemoMode()) {
 					nextPageActions();
 				} else {
-					$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
+					$scope.callAPI(zsGeneralSrv.recordReservationActions, options);
 				}
 				
 			};
