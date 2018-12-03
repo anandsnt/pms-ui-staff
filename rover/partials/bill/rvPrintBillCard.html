@@ -1,6 +1,6 @@
 <div class="invoice-logo envelope">
     <img ng-src="{{printData.hotel_logo}}" alt="" />
-    <h1>{{printData.hotel_name}}</h1>
+    <h1>{{printData.hotel_name}}+++</h1>
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type" ng-if="!printData.is_proforma_invoice">{{printData.translation.invoice}}</span>
     <span class="type" ng-if="printData.is_proforma_invoice" >{{printData.translation.proforma_invoice}}</span>
@@ -14,6 +14,9 @@
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled">
+                <strong >{{printData.ar_invoice_label}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
             <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
@@ -67,6 +70,9 @@
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled">
+                <strong >{{printData.ar_invoice_label}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
             <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
