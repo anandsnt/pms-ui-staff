@@ -9,7 +9,7 @@ sntRover.controller('RVAutoChargeController',
         '$window',
         '$stateParams',
         'rvUtilSrv',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams, util) {
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams,  util) {
 
             BaseCtrl.call(this, $scope);
 
@@ -22,6 +22,8 @@ sntRover.controller('RVAutoChargeController',
                     yearRange: '-10:',
                     maxDate: tzIndependentDate($rootScope.businessDate)
                 },
+                EOD = 'EOD_TAB',
+                DEPOSIT = 'DEPOSIT_TAB',
                 /*
                  * function handle date changes event and Calls API
                  * @return - {None}
@@ -97,6 +99,7 @@ sntRover.controller('RVAutoChargeController',
                     if ( isFromStayCard ) {
                         $scope.filters = RVAutoChargeSrv.getStateData().filters;
                         $scope.due_date = RVAutoChargeSrv.getStateData().due_date;
+                        $scope.selectedTab = RVAutoChargeSrv.getStateData().selectedTab;
                         $scope.fetchAutoCharge($scope.filters.page_no);
                     } else {
                         $scope.filters = {
@@ -104,6 +107,7 @@ sntRover.controller('RVAutoChargeController',
                             due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'dd/MM/yyyy')
                         };
                         $scope.due_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
+                        $scope.selectedTab = DEPOSIT;
                         $scope.fetchAutoCharge();
                     }
                 },
@@ -113,6 +117,8 @@ sntRover.controller('RVAutoChargeController',
                  */
                 processAutoChargeSelections = function (autoCharges, value) {
                     return _.map(autoCharges, function(autoCharge) {
+                        autoCharge.bill_balance = autoCharge.debits - autoCharge.credits;
+
                         return _.extend(autoCharge, {'isSelected': value});
                     });
                 },
@@ -170,38 +176,47 @@ sntRover.controller('RVAutoChargeController',
                 // CICO-9569 to solve the hotel logo issue
                 $('header .logo').addClass('logo-hide');
                 $('header .h2').addClass('text-hide');
+
                 // add the orientation
                 addPrintOrientation();
 
-                var printCompletedActions = function() {
-                    $timeout(function() {
-                        // CICO-9569 to solve the hotel logo issue
-                        $('header .logo').removeClass('logo-hide');
-                        $('header .h2').addClass('text-hide');
+                /*
+                *	======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+                    /*
+                    *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
 
-                        // remove the orientation after similar delay
-                        removePrintOrientation();
-                    }, 100);
-                };
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 1000);
+
+                /*
+                *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
 
                 $timeout(function() {
-                    if (sntapp.cordovaLoaded) {
-                        cordova.exec(printCompletedActions,
-                            function(error) {
-                                // handle error if needed
-                                printCompletedActions();
-                            }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'P']);
-                    } else {
-                        $window.print();
-                        printCompletedActions();
-                    }
-                }, 100);
+                    // CICO-9569 to solve the hotel logo issue
+                    $('header .logo').removeClass('logo-hide');
+                    $('header .h2').addClass('text-hide');
+
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 1000);
             };
 
             // print bill
             $scope.clickedPrint = function() {
                 $scope.closeDialog();
                 that.printBill();
+            };
+            $scope.selectHeaderTab = function(value) {
+                $scope.selectedTab = value;
+                $scope.fetchAutoCharge();
             };
             // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
@@ -213,7 +228,8 @@ sntRover.controller('RVAutoChargeController',
                     },
                     stateData = {
                         filters: params,
-                        due_date: $scope.due_date
+                        due_date: $scope.due_date,
+                        selectedTab: $scope.selectedTab
                     };
 
                 RVAutoChargeSrv.setStateData(stateData);
@@ -223,7 +239,9 @@ sntRover.controller('RVAutoChargeController',
                         resetSelections();
                         $scope.autoCharges = processAutoChargeSelections(response.details, false);
                         $scope.totalCount = response.total_count;
-                        $scope.totalDeposite = response.total_deposit;
+                        if ( response.total_deposit ) {
+                            $scope.totalDeposite = response.total_deposit;
+                        }
                         $scope.isAutoChargeProcessing = !!response.auto_charge_deposit_running;
 
                         $timeout(function () {
@@ -235,7 +253,12 @@ sntRover.controller('RVAutoChargeController',
                     }
                 };
 
-                $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
+                if ($scope.selectedTab !== EOD ) {
+                    $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
+                } else {
+                    $scope.callAPI(RVAutoChargeSrv.fetchEodAutoCharge, options);
+                }
+
             };
             // Call Api to process declined charges
             $scope.processSelectedAutoCharges = function() {
