@@ -11,7 +11,19 @@
         <form class="form float" >
             <fieldset class="holder full-width">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="entry">
+                <label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : coTaMandatoryFields.mandatory_on_ar_account }"></span>
+                    Mandatory during AR number creation
+                    <input type="checkbox" ng-model="coTaMandatoryFields.mandatory_on_ar_account">
+                </label>
+            </div>
             <table id="languages" class="grid datatable">
+                <thead>
+                    <tr>
+                        <th class="header">Field Name</th>
+                        <th class="header">Status</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
                         <td header-class="width-90">
