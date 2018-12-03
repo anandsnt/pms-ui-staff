@@ -202,13 +202,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 
-		$scope.showARTab = function($event) {
+		$scope.showARTab = function() {
 
 			createArAccountCheck = true;
 			$scope.isArTabAvailable = true;
 			saveContactInformation($scope.contactInformation);
-			// $scope.$broadcast('setgenerateNewAutoAr', true);
-			//$scope.showArAccountButtonClick($event);
 		};
 
 		/*
@@ -431,10 +429,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		};
 
-		$scope.addListener("MANDATORY_CHECK_FAILED", function(event, errorMessage){
+		$scope.addListener("MANDATORY_CHECK_FAILED", function(event, errorMessage) {
 			$scope.$broadcast("setCardContactErrorMessage",  errorMessage);
 			$scope.isArTabAvailable = false;
-		})
+		});
 
 
 		/* -------AR account ends here-----------*/

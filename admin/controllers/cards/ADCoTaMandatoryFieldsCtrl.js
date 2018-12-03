@@ -14,7 +14,7 @@ function($scope, $state, ADCoTaMandatorySrv) {
 	/*
 	 * To fetch mandatory fields
 	 */
-	$scope.loadCoTaMandatoryFields =  function($defer, params) {
+	$scope.loadCoTaMandatoryFields =  function($defer) {
 
 		var successCallBack = function(data) {
 			$scope.coTaMandatoryFields = data;
