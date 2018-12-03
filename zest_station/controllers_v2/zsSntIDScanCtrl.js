@@ -211,7 +211,7 @@
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-					recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date on the ID) for the guest');
+					recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date) for the guest');
 					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
 				} else if (data.expirationStatus === 'Expired') {
 					recordIDScanActions('ID_ANALYZING', 'Failed (ID expired) for the guest');
