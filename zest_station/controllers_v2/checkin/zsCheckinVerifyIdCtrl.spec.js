@@ -98,7 +98,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 deferred.resolve({});
                 return deferred.promise;
             });
-            spyOn(zsGeneralSrv, 'recordIdVerification').and.callFake(function() {
+            spyOn(zsGeneralSrv, 'recordReservationActions').and.callFake(function() {
                 var deferred = $q.defer();
 
                 deferred.resolve({});
@@ -125,7 +125,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
             };
             $scope.approveGuest();
             $scope.$digest();
-            expect(zsGeneralSrv.recordIdVerification).not.toHaveBeenCalled();
+            expect(zsGeneralSrv.recordReservationActions).not.toHaveBeenCalled();
         });
 
         it('On continuing without any pending guest ID verification, proceed to loging', function() {
@@ -146,7 +146,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
             };
             $scope.approveGuest();
             $scope.$digest();
-            expect(zsGeneralSrv.recordIdVerification).toHaveBeenCalled();
+            expect(zsGeneralSrv.recordReservationActions).toHaveBeenCalled();
         });
     });
 
@@ -158,7 +158,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 deferred.resolve({});
                 return deferred.promise;
             });
-            spyOn(zsGeneralSrv, 'recordIdVerification').and.callFake(function() {
+            spyOn(zsGeneralSrv, 'recordReservationActions').and.callFake(function() {
                 var deferred = $q.defer();
 
                 deferred.resolve({});
@@ -179,7 +179,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
         it('Should call record API and checkin API', function() {
             $scope.approveGuest();
             $scope.$digest();
-            expect(zsGeneralSrv.recordIdVerification).toHaveBeenCalled()
+            expect(zsGeneralSrv.recordReservationActions).toHaveBeenCalled()
             expect(zsCheckinSrv.checkInGuest).toHaveBeenCalled();
         });
 
