@@ -405,6 +405,12 @@ angular.module('sntRover').controller('reservationRoomStatus',
             return $scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn;
         };
 
+    // Checks whether original room type should be shown in staycard
+    $scope.shouldShowOriginalRoomType = function() {
+        return ($scope.reservationData.reservation_card.room_type_description && $scope.reservationData.reservation_card.original_room_type_desc &&
+            $scope.reservationData.reservation_card.room_type_description !== $scope.reservationData.reservation_card.original_room_type_desc);
+    };
+
         /**
          * initiation
          * @returns {undefined}
