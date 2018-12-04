@@ -2,7 +2,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
-		$scope.isAddNewCard = ($stateParams.id === "add") ? true : false;	
+		$scope.isAddNewCard = ($stateParams.id === "add");	
 
 		/* Checking permision to show Commission Tab */
 
