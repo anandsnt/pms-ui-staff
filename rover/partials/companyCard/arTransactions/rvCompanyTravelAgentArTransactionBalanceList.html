@@ -19,9 +19,12 @@
                 <h2 ng-if="balance.guest_first_name==='' && balance.guest_last_name!==''">
                     {{balance.guest_last_name}}
                 </h2>
-				<span class="invoice">
+				<span class="invoice" ng-if="arDataObj.is_print_ar_invoice_number_enabled">
 					Invoice #<span class="value">{{balance.invoice_number}}</span>
 				</span>
+                <span class="invoice">
+                    {{balance.ar_invoice_label}} #<span class="value">{{balance.ar_invoice_number}}</span>
+                </span>
 				<span class="confirmation" ng-if="balance.external_reference_number!==null">
 					Ext #<span class="value">{{balance.external_reference_number}}</span>
 				</span>
