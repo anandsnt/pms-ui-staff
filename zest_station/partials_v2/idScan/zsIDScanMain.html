@@ -50,6 +50,13 @@
    
 <ng-include src="'/assets/partials_v2/idScan/zsIDScanAdminLogin.html'"  
    ng-show="screenData.scanMode == 'ADMIN_LOGIN'"></ng-include>
-   
+
+<ng-include src="'/assets/partials_v2/idScan/zsFacialRecognitionFailed.html'"  
+   ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'"></ng-include>
+
+<ng-include src="'/assets/partials_v2/idScan/zsIDScanFaceImage.html'"  
+   ng-show="screenData.scanMode == 'FACIAL_RECOGNITION_MODE'"></ng-include>
+
+<input type="file" accept="image/*" capture="user" id="face-image-upload" ng-upload-change="faceImageChanged($event)" value="" style="display:none !important;">
 <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none !important;">
 <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none !important;">
