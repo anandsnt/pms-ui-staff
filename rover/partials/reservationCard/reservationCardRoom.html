@@ -1,7 +1,7 @@
 <div class="block-item item-room" ng-controller="reservationRoomStatus" ng-class="addHasButtonClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.is_upsell_available)" >
   <h3 class="block-title">
         Room
-
+		<span class="block-text" ng-if="shouldShowOriginalRoomType()">Original: {{reservationData.reservation_card.original_room_type_desc}}</span>
 
       <button ng-controller="staycardController" ng-click="showRoomSharerPopup()" type="button" class="button blue" ng-hide="sharedReservationData.sharers.length === 0">Shared</button>
 
