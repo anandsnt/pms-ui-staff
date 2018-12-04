@@ -34,8 +34,8 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		$state.go('noOptionAvailable');
 	});
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window', 'checkinDetailsService',
-	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window, checkinDetailsService) {
+sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window', 'checkinDetailsService', 'sntIDCollectionSrv',
+	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window, checkinDetailsService, sntIDCollectionSrv) {
 
 		loadAssets('/assets/favicon.png', 'icon', 'image/png');
 		loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
@@ -162,6 +162,10 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
 		$rootScope.hotelCheckinTime = reservationAndhotelData.hotel_checkin_time;
+
+		if (!sntIDCollectionSrv.isInDevEnv) {
+			sntIDCollectionSrv.setAcuantCredentialsForProduction(reservationAndhotelData.acuant_credentials);
+		}
 
 		// Marketting apps
 		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;

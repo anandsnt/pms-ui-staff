@@ -755,5 +755,13 @@
    "GI_SCAN_PEDNING": "Next",
    "GID_SCAN_ID_HEADER": "Scan your Id",
    "GI_ID_EXPIRED": "The ID you scanned seems to be expired. Please rescan",
-   "GI_EXPIRATION_DATE_INVALID": "Expiration date is invalid or could not be read, please rescan or please contact front desk." 
+   "GI_EXPIRATION_DATE_INVALID": "Expiration date is invalid or could not be read, please rescan or please contact front desk.",
+
+   "TAKE_SELFIE_INSTRUCTIONS": "Please stand in front of the front camera to take your picture",
+   "TAKE_SELFIE_SUB_INSTRUCTIONS": "",
+   "TAKE_SELFIE": "Continue",
+   "FACIAL_VERIFICATION_IN_PROGRESS": "Facial recongnition in progress",
+   "FACIAL_VERIFICATION_IN_PROGRESS_SUB": "Please wait while the system is processing",
+   "FACIAL_RECOGNITION_FAILED_SEE_STAFF_OPTIONALLY": "Facial recongnition failed. Please retry or contact a staff",
+   "RETAKE_SELFIE": "Retake"
 }
