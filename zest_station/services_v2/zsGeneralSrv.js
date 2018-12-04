@@ -644,7 +644,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        this.recordIdVerification = function(params) {
+        this.recordReservationActions = function(params) {
 
             var deferred = $q.defer(),
                 url = '/api/reservation_actions';
