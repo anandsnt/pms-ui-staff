@@ -11,6 +11,9 @@ function($scope, $state, ADCoTaMandatorySrv) {
 
 		$scope.callAPI(ADCoTaMandatorySrv.saveCoTaMandatoryFields, options);
 	};
+	/*
+	 * Set all fields false;
+	 */
 	$scope.clickedMandatoryCheck = function() {
 		if (!$scope.coTaMandatoryFields.mandatory_on_ar_account) {
 			$scope.coTaMandatoryFields = {
