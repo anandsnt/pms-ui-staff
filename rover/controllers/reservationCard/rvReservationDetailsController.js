@@ -453,7 +453,7 @@ sntRover.controller('reservationDetailsController',
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
 
-			$scope.$emit("guestTabUpdated", {"shouldShowGuestDetails" : $scope.shouldShowGuestDetails});
+			$scope.$emit("guestTabUpdated", {"shouldShowGuestDetails": $scope.shouldShowGuestDetails});
 
 		};
 
@@ -1680,33 +1680,37 @@ sntRover.controller('reservationDetailsController',
 	};
 
 	$scope.isIdRequiredForGuest = function(guest, isPrimaryGuest) {
-		if(isPrimaryGuest)
+		if (isPrimaryGuest) {
 			return $scope.hotelDetails.id_collection.rover.enabled && !$scope.isGuestIdUploaded(guest, true);
-		else
-			return $scope.hotelDetails.id_collection.rover.enabled && $scope.hotelDetails.id_collection.rover.scan_all_guests && !$scope.isGuestIdUploaded(guest, false);
+		} 
+		return $scope.hotelDetails.id_collection.rover.enabled && $scope.hotelDetails.id_collection.rover.scan_all_guests && !$scope.isGuestIdUploaded(guest, false);
 	};
 
 	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
 		var uploadedIdDetails = retrieveGuestDocDetails(guestId);
-		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data && !guest.id_proof_expired;
+		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data && !uploadedIdDetails.id_proof_expired;
 
 		return isGuestIdUploaded;
 
 	};
 
 	$scope.isGuestIdRequiredForCheckin = function() {
-		if(!$scope.hotelDetails.id_collection.rover.enabled)
+		if (!$scope.hotelDetails.id_collection.rover.enabled) {
 			return false;
-		if(!$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true))
+		}
+		if (!$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true)) {
 			return true;
-		if(!$scope.hotelDetails.id_collection.rover.scan_all_guests)
+		}
+		if (!$scope.hotelDetails.id_collection.rover.scan_all_guests) {
 			return false;
+		}
 		var guestIdRequired = false;
 		_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
-			if(!$scope.isGuestIdUploaded(guestInfo, false))
+			if (!$scope.isGuestIdUploaded(guestInfo, false)) {
 				guestIdRequired = true;
+			}
 		});
 		return guestIdRequired;
 	};

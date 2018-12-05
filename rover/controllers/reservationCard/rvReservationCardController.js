@@ -23,7 +23,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 		$scope.$on('guestTabUpdated', function(event, data) {
 			$scope.shouldShowGuestDetails = data.shouldShowGuestDetails;
-		})
+		});
 
 
 		/*

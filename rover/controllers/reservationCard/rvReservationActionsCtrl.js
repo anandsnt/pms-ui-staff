@@ -585,7 +585,7 @@ sntRover.controller('reservationActionsController', [
 		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
-			if($scope.isGuestIdRequiredForCheckin()) {
+			if ($scope.isGuestIdRequiredForCheckin()) {
 				$scope.toggleGuests(true);
 				return;
 			} else {
