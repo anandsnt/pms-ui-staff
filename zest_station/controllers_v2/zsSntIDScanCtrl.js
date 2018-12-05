@@ -26,6 +26,7 @@
 			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
 			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
 			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
+			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED');
 
 			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
 				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
@@ -100,11 +101,13 @@
 				$scope.idScanData.selectedGuest = selectGuest;
 				if ($scope.inDemoMode() && !$scope.idScanData.staffVerified) {
 					demoModeScanActions();
-				} else if (selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) {
+				} else if ((selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) && selectedGuest.idScanStatus !==  SCANING_PENDING) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
 					$scope.startScanning();
+					$scope.idScanData.staffVerified = false;
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
 			};
 
@@ -189,9 +192,9 @@
 			});
 			$scope.$on('FR_FAILED', function() {
 				$scope.$emit('hideLoader');
+				$scope.idScanData.selectedGuest.idScanStatus = FR_FAILED_STATUS;
 				$scope.screenData.facialRecognitionInProgress = false;
 				$scope.screenData.scanMode = 'FACIAL_RECOGNTION_FAILED';
-				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Failed for the guest');
 			});
 
@@ -378,6 +381,11 @@
 				} else {
 					return 'NONE';
 				}
+			};
+
+			$scope.loginAsStaff = function() {
+				$scope.screenData.scanMode = 'ADMIN_LOGIN';
+				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
 			(function() {
