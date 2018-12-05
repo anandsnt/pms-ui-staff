@@ -14,10 +14,10 @@
             <div class="entry">
                 <label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : coTaMandatoryFields.mandatory_on_ar_account }"></span>
                     Mandatory during AR number creation
-                    <input type="checkbox" ng-model="coTaMandatoryFields.mandatory_on_ar_account">
+                    <input type="checkbox" ng-click="clickedMandatoryCheck()" ng-model="coTaMandatoryFields.mandatory_on_ar_account">
                 </label>
             </div>
-            <table id="languages" class="grid datatable">
+            <table id="languages" class="grid datatable" ng-show="coTaMandatoryFields.mandatory_on_ar_account">
                 <thead>
                     <tr>
                         <th class="header">Field Name</th>
