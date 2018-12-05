@@ -154,7 +154,7 @@
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
 					setPageNumberDetails();
-					if ($scope.idScanData.verificationMethod == 'NONE') {
+					if ($scope.idScanData.verificationMethod !== 'STAFF') {
 						$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 					}
 				};
@@ -182,7 +182,7 @@
 				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				setPageNumberDetails();
-				if ($scope.idScanData.verificationMethod == 'NONE') {
+				if ($scope.idScanData.verificationMethod !== 'STAFF') {
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
 			};
@@ -364,14 +364,15 @@
 			};
 
 			var goBackToScanAgain = function() {
-				var backToGuestListScreenModes = ['FINAL_ID_RESULTS', 
-												  'FACIAL_RECOGNTION_FAILED', 
-												  'UPLOAD_FRONT_IMAGE', 
-												  'UPLOAD_FRONT_IMAGE_FAILED', 
-												  'UPLOAD_BACK_IMAGE', 
-												  'UPLOAD_BACK_IMAGE_FAILED',
-												  'CONFIRM_ID_IMAGES',
-												  'CONFIRM_FRONT_IMAGE'];
+				var backToGuestListScreenModes = ['FINAL_ID_RESULTS',
+					'FACIAL_RECOGNTION_FAILED',
+					'UPLOAD_FRONT_IMAGE',
+					'UPLOAD_FRONT_IMAGE_FAILED',
+					'UPLOAD_BACK_IMAGE',
+					'UPLOAD_BACK_IMAGE_FAILED',
+					'CONFIRM_ID_IMAGES',
+					'CONFIRM_FRONT_IMAGE'
+				];
 
 				if (backToGuestListScreenModes.indexOf($scope.screenData.scanMode) > -1) {
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
