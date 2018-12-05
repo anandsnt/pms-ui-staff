@@ -15,15 +15,15 @@
             data-drop="true"
             ng-model="available"
             style="overflow-y: scroll !important;"
-            jqyoui-droppable="{multiple:true, onOver: 'onUnSelectChargeGroup'}"
-            data-jqyoui-options="{accept:'.selected_reports'}">
+            jqyoui-droppable="{multiple:true, onOver: 'onUnSelect'}"
+            data-jqyoui-options="{accept:'.selected-reports'}">
 
             <li ng-repeat="chargeGroup in available" data-drag="true"
                 ng-model="available"
                 jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
                 data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
-                class="available-reports li-draggable" ng-click="chooseAvailableChargeGroup($index)"
-                ng-class='{selected: chosenAvailableChargeGroups.indexOf($index) > -1}'>
+                class="available-reports li-draggable" ng-click="chooseAvailable($index)"
+                ng-class='{selected: chosenAvailable.indexOf($index) > -1}'>
                 <span class="icons icon-handle"></span>
                 <span class="icons icon-handle"></span> {{ chargeGroup.description }}
             </li>
@@ -34,11 +34,11 @@
             <span class="icons icon-mover-right to-target"
                   data-type="target"
                   ng-click="selectChosen()"
-                  ng-class="{active: chosenAvailableChargeGroups.length >= 1}"
+                  ng-class="{active: chosenAvailable.length >= 1}"
                   data-type="source">Select Charge Code(s)
             </span>
             <span class="icons icon-mover-left to-source" data-type="source" ng-click="unSelectChosen()"
-                  ng-class="{active: chosenSelectedChargeGroups.length >= 1}"> Un-select Charge Code(s)
+                  ng-class="{active: chosenSelected.length >= 1}"> Un-select Charge Code(s)
             </span>
             </span>
         <span>
@@ -60,11 +60,11 @@
             <span class="assigned_room_text">Selected Charge Codes</span></label>
         <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true"
             ng-model="selected"
-            jqyoui-droppable="{multiple:true, onOver: 'onSelectChargeGroup'}"
+            jqyoui-droppable="{multiple:true, onOver: 'onSelect'}"
             data-jqyoui-options="{accept:'.available-reports'}">
             <li ng-repeat="chargeGroup in selected"
-                ng-click="chooseSelectedChargeGroup($index)"
-                ng-class='{selected: chosenSelectedChargeGroups.indexOf($index) > -1}'
+                ng-click="chooseSelected($index)"
+                ng-class='{selected: chosenSelected.indexOf($index) > -1}'
                 class="selected-reports li-draggable"
                 data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
                 data-drag="true"
