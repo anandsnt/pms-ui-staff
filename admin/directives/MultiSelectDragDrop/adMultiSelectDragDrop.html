@@ -1,0 +1,78 @@
+<fieldset class="holder full-width">
+    <div class="form-title">
+        <h3>
+            CC Payment<span> Charge Codes</span>
+        </h3>
+        <em class="status">
+            <span>Select at least one Charge Code</span>
+        </em>
+    </div>
+    <div class="entry has-sortable">
+        <label class="center_align"><em class="rate_roomtype_text">Available Charge Codes</em></label>
+
+        <ul class="boxes sortable ui-sortable short-list"
+            data-type="source"
+            data-drop="true"
+            ng-model="available"
+            style="overflow-y: scroll !important;"
+            jqyoui-droppable="{multiple:true, onOver: 'onUnSelectChargeGroup'}"
+            data-jqyoui-options="{accept:'.selected_reports'}">
+
+            <li ng-repeat="chargeGroup in available" data-drag="true"
+                ng-model="available"
+                jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                class="available-reports li-draggable" ng-click="chooseAvailableChargeGroup($index)"
+                ng-class='{selected: chosenAvailableChargeGroups.indexOf($index) > -1}'>
+                <span class="icons icon-handle"></span>
+                <span class="icons icon-handle"></span> {{ chargeGroup.description }}
+            </li>
+        </ul>
+    </div>
+    <div class="entry movers rates_mover">
+            <span class="top_mover">
+            <span class="icons icon-mover-right to-target"
+                  data-type="target"
+                  ng-click="selectChosen()"
+                  ng-class="{active: chosenAvailableChargeGroups.length >= 1}"
+                  data-type="source">Select Charge Code(s)
+            </span>
+            <span class="icons icon-mover-left to-source" data-type="source" ng-click="unSelectChosen()"
+                  ng-class="{active: chosenSelectedChargeGroups.length >= 1}"> Un-select Charge Code(s)
+            </span>
+            </span>
+        <span>
+               <div class="green_gradient icons">
+                  <span class="active to-source green_mover icons_rates"
+                        data-type="source"
+                        ng-click="selectAll()"> Select Charge Code(s)
+                  </span>
+               </div>
+               <div class="red_gradient icons">
+                  <span class="active to-target  red_mover icons_rates" data-type="target" ng-click="unSelectAll()">
+                  Un-select Charge Code(s)
+                  </span>
+               </div>
+            </span>
+    </div>
+    <div class="entry has-sortable">
+        <label class="center_align">
+            <span class="assigned_room_text">Selected Charge Codes</span></label>
+        <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true"
+            ng-model="selected"
+            jqyoui-droppable="{multiple:true, onOver: 'onSelectChargeGroup'}"
+            data-jqyoui-options="{accept:'.available-reports'}">
+            <li ng-repeat="chargeGroup in selected"
+                ng-click="chooseSelectedChargeGroup($index)"
+                ng-class='{selected: chosenSelectedChargeGroups.indexOf($index) > -1}'
+                class="selected-reports li-draggable"
+                data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                data-drag="true"
+                ng-model="selected"
+                jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                <span class="icons icon-handle"></span>
+                <span class="icons icon-handle"></span> {{ chargeGroup.description }}
+            </li>
+        </ul>
+    </div>
+</fieldset>

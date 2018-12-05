@@ -5,14 +5,6 @@ admin.controller('adTwinfieldSetupCtrl', [
 
         $scope.interface = 'TWINFIELD';
 
-        var resetChosenChargeGroups = function() {
-            $scope.chosenSelectedChargeGroups = [];
-            $scope.chosenAvailableChargeGroups = [];
-        };
-
-        $scope.chosenSelectedChargeGroups = [];
-        $scope.chosenAvailableChargeGroups = [];
-
         /**
          * when clicked on check box to enable/diable GoMomentIvy
          * @return {undefined}
@@ -29,120 +21,13 @@ admin.controller('adTwinfieldSetupCtrl', [
             $scope.goBackToPreviousState();
         };
 
-        /**
-         * Toggle chosen Charge Groups in selected column
-         * @param {Integer} chargeGroupIndex chargeGroup selected
-         * @returns {undefined}
-         */
-        $scope.chooseSelectedChargeGroup = function(chargeGroupIndex) {
-            if ($scope.chosenSelectedChargeGroups.indexOf(chargeGroupIndex) > -1) {
-                $scope.chosenSelectedChargeGroups = _.without($scope.chosenSelectedChargeGroups, chargeGroupIndex);
-            } else {
-                $scope.chosenSelectedChargeGroups.push(chargeGroupIndex);
-            }
-        };
-
-        /**
-         * Toggle chosen Charge Groups in the available column
-         * @param {Integer} chargeGroupIndex chargeGroup selected
-         * @returns {undefined}
-         */
-        $scope.chooseAvailableChargeGroup = function(chargeGroupIndex) {
-            if ($scope.chosenAvailableChargeGroups.indexOf(chargeGroupIndex) > -1) {
-                $scope.chosenAvailableChargeGroups = _.without($scope.chosenAvailableChargeGroups, chargeGroupIndex);
-            } else {
-                $scope.chosenAvailableChargeGroups.push(chargeGroupIndex);
-            }
-        };
-
-        /**
-         * Handle a selection event
-         * @returns {undefined}
-         */
-        $scope.onSelectChargeGroup = function() {
-            resetChosenChargeGroups();
-        };
-
-        /**
-         * * Handle a un-selection event
-         * @returns {undefined}
-         */
-        $scope.onUnSelectChargeGroup = function() {
-            resetChosenChargeGroups();
-        };
-
-        /**
-         * Method to move chosen Charge Groups from available column to the selected column
-         * @returns {undefined}
-         */
-        $scope.selectChosen = function() {
-            var chosenAvailableChargeGroupValues = [];
-
-            _.each($scope.chosenAvailableChargeGroups, function(chargeGroupIndex) {
-                chosenAvailableChargeGroupValues.push($scope.meta.available_charge_groups[chargeGroupIndex]);
-            });
-            $scope.meta.selected_charge_groups = $scope.meta.selected_charge_groups.concat(chosenAvailableChargeGroupValues);
-            $scope.meta.available_charge_groups = _.difference($scope.meta.available_charge_groups, chosenAvailableChargeGroupValues);
-
-            resetChosenChargeGroups();
-        };
-
-        /**
-         * Method to move chosen Charge Groups from selected column to the available column
-         * @returns {undefined}
-         */
-        $scope.unSelectChosen = function() {
-            var chosenSelectedChargeGroupValues = [];
-
-            _.each($scope.chosenSelectedChargeGroups, function(chargeGroupIndex) {
-                chosenSelectedChargeGroupValues.push($scope.meta.selected_charge_groups[chargeGroupIndex]);
-            });
-            $scope.meta.available_charge_groups = $scope.meta.available_charge_groups.concat(chosenSelectedChargeGroupValues);
-            $scope.meta.selected_charge_groups = _.difference($scope.meta.selected_charge_groups, chosenSelectedChargeGroupValues);
-
-            resetChosenChargeGroups();
-        };
-
-        /**
-         * Move all Charge Groups to the selected column
-         * @returns {undefined}
-         */
-        $scope.selectAll = function() {
-            $scope.meta.selected_charge_groups = $scope.meta.selected_charge_groups.concat($scope.meta.available_charge_groups);
-            $scope.meta.available_charge_groups = [];
-            resetChosenChargeGroups();
-        };
-
-        /**
-         * Move all Charge Groups to the available column
-         * @returns {undefined}
-         */
-        $scope.unSelectAll = function() {
-            $scope.meta.available_charge_groups = $scope.meta.available_charge_groups.concat($scope.meta.selected_charge_groups);
-            $scope.meta.selected_charge_groups = [];
-            resetChosenChargeGroups();
-        };
-
-
-        /**
-         * Toggle chosen chosen charge codes in the available column
-         * @param {Integer} chargeGroupIndex chargeGroup selected
-         * @returns {undefined}
-         */
-        $scope.chooseAvailableChargeCode = function(chargeGroupIndex) {
-            if ($scope.chosenAvailableChargeCodes.indexOf(chargeGroupIndex) > -1) {
-                $scope.chosenAvailableChargeCodes = _.without($scope.chosenAvailableChargeCodes, chargeGroupIndex);
-            } else {
-                $scope.chosenAvailableChargeCodes.push(chargeGroupIndex);
-            }
-        };
 
         /**
          * when we clicked on save button
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.config.credit_card_payment_charge_codes = _.pluck($scope.meta.selected_charge_groups, 'charge_code').
+            $scope.config.credit_card_payment_charge_codes = _.pluck($scope.meta.selected_charge_codes, 'charge_code').
                 join(',');
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
@@ -154,6 +39,10 @@ admin.controller('adTwinfieldSetupCtrl', [
         };
 
 
+        /**
+         * Method to fetch the authorize API
+         * @returns {undefined}
+         */
         $scope.authorize = function() {
             $scope.callAPI(adTwinfieldSetupSrv.getAuthorizationURI, {
                 successCallBack: function(data) {
@@ -163,6 +52,11 @@ admin.controller('adTwinfieldSetupCtrl', [
         };
 
 
+        /**
+         * Method to segregate the list of charge codes to selected and available groups
+         * @param {string} selectedPayments string returned
+         * @returns {undefined}
+         */
         function initiateChargeCodesSelection(selectedPayments) {
             selectedPayments = selectedPayments.split(',');
 
@@ -170,8 +64,8 @@ admin.controller('adTwinfieldSetupCtrl', [
                 function(chargeCode) {return selectedPayments.indexOf(chargeCode.charge_code) > -1;});
 
             $scope.meta = {
-                available_charge_groups: _.difference(paymentChargeCodes.data.charge_codes, selectedObjects),
-                selected_charge_groups: selectedObjects
+                available_charge_codes: _.difference(paymentChargeCodes.data.charge_codes, selectedObjects),
+                selected_charge_codes: selectedObjects
             };
         }
 
