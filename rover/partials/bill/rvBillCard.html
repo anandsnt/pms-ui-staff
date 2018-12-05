@@ -139,15 +139,19 @@
 											<span class="icons icon-charge"></span>
 											Add Charge
 										</button>
-									</li>
-									<!-- Advanced Bill -->
-									<li class="add-new" ng-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
-									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly">
-										<button type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
+										<button g-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
+									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly" type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
 											<span class="icons icon-charge"></span>
 											Advanced Bill
 										</button>
+										<button type="button" class="button with-icon red" ng-show="shouldShowVoidBill()" ng-click="clickedVoidBillButton()"> <!-- Click opens {modals/void-bill.html} -->
+		                                    <span class="icons icon-blocked-white"></span> 
+		                                    Void<br/>Bill
+		                                </button>
+
 									</li>
+									<!-- Advanced Bill -->
+									
 									<!-- For checkin date -->
 									<li click-touch="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')">

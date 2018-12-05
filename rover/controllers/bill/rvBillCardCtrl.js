@@ -3189,7 +3189,29 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.reloadCurrentActiveBill = function() {
 		$scope.getBillData($scope.currentActiveBill);
-	};	
+	};
+	/*
+	 * Should show void bill button
+	 * bill must be locked, payment type must be other than DB, 
+	 * Number of bills must be < 10, balance must be 0.00
+	 */
+	$scope.shouldShowVoidBill = function() {
+		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
+		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
+		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 
+		$scope.reservationBillData.bills.length < 10;
+	};
+	/*
+	 * Open void bill popup
+	 */
+	$scope.clickedVoidBillButton = function() {
+		ngDialog.open({
+			template: '/assets/partials/bill/rvVoidBillPopup.html',
+			controller: 'RVVoidBillPopupCtrl',
+			className: '',
+			scope: $scope
+		});
+	};
 
 	$scope.$on( '$destroy', updateGenerateFolioFlag );
 	    $scope.putInQueue = false;
