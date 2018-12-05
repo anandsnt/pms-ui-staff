@@ -125,6 +125,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/* -------AR account starts here-----------*/
 
 		$scope.$on('ERRORONARTAB', function(e) {
+			$scope.isArTabAvailable = true;
 			$scope.switchTabTo('', 'cc-ar-accounts');
 		});
 
@@ -205,7 +206,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.showARTab = function() {
 
 			createArAccountCheck = true;
-			$scope.isArTabAvailable = true;
 			saveContactInformation($scope.contactInformation);
 		};
 
