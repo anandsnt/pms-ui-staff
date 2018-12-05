@@ -1088,7 +1088,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name,
-                    'email': $stateParams.email || $stateParams.guest_email
+                    'email': $stateParams.email || $stateParams.guest_email || ""
                 };
 
                 if ($scope.zestStationData.is_kiosk_ows_messages_active) {

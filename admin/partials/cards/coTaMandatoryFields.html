@@ -1,0 +1,159 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div class="inline-edit">
+        <header class="content-title float">
+            <h2 translate> Company / Travel Agent Mandatory fields</h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            <div class="header-title" style="padding-top: 20px; font-size: 12px;">
+              <em>Mandatory during AR number creation</em>
+            </div>
+        </header>
+        <section class="content-scroll">
+        <form class="form float" >
+            <fieldset class="holder full-width">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div class="entry">
+                <label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : coTaMandatoryFields.mandatory_on_ar_account }"></span>
+                    Mandatory during AR number creation
+                    <input type="checkbox" ng-model="coTaMandatoryFields.mandatory_on_ar_account">
+                </label>
+            </div>
+            <table id="languages" class="grid datatable">
+                <thead>
+                    <tr>
+                        <th class="header">Field Name</th>
+                        <th class="header">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td header-class="width-90">
+                            Address Line 1
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.address_line1_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                            City
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.city_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Postal Code
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.postal_code_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Country
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.country">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Contact Phone
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_phone_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_phone_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Contact E-mail address
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_email_address_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_email_address_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Contact Name
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_name_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_name_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Tax-ID
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.tax_id_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.tax_id_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Pay days
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.pay_days_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.pay_days_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+             <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" translate="">Cancel</button>
+                <button type="button" ng-click="saveMandatoryFields()" class="button green">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+       
+
+    </div>
+</section>
