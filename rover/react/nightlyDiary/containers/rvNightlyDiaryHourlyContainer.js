@@ -9,30 +9,49 @@ let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly
     let depature_time_array = hourly_data.dept_time.split(':');
     let oneDay = 24 * 60 * 60 * 1000;
     let diffBtwInitialAndStartDate = arrivalTime.getTime() - diaryInitialDate.getTime();
-    let noOfDaysBtwInitialAndArrivalDate = Math.abs((diffBtwInitialAndStartDate) / (oneDay));
+    let noOfDaysBtwInitialAndArrivalDate = diffBtwInitialAndStartDate / oneDay;
 
     let unHourlyRoomPosition = 0;
 
-    if (noOfDaysBtwInitialAndArrivalDate > 0) {
-        unHourlyRoomPosition = noOfDaysBtwInitialAndArrivalDate * nightDuration;
-    }
+    unHourlyRoomPosition = noOfDaysBtwInitialAndArrivalDate * nightDuration;
+
     if (parseInt(arrival_time_array[0]) >= 12) {
         unHourlyRoomPosition = unHourlyRoomPosition + (nightDuration / 2);
     }
 
-    arrivalTime.setHours(parseInt(arrival_time_array[0]));
-    arrivalTime.setMinutes(parseInt(arrival_time_array[1]));
-    depatureTime.setHours(parseInt(depature_time_array[0]));
-    depatureTime.setMinutes(parseInt(depature_time_array[1]));
+    if ((arrival_time_array[0]) < 12) {
+        arrivalTime.setHours(parseInt('00'));
+        arrivalTime.setMinutes(parseInt('00'));
+    }
+    else if (arrival_time_array[0] >= 12) {
+        arrivalTime.setHours(parseInt('12'));
+        arrivalTime.setMinutes(parseInt('00'));
+    }
+    if ((depature_time_array[0]) < 12) {
+        depatureTime.setHours(parseInt('12'));
+        depatureTime.setMinutes(parseInt('00'));
+    }
+    else if (depature_time_array[0] > 12) {
+        depatureTime.setHours(parseInt('23'));
+        depatureTime.setMinutes(parseInt('59'));
+    }
+    else if (parseInt(depature_time_array[0]) === 12) {
+        depatureTime.setHours(parseInt('12'));
+        depatureTime.setMinutes(parseInt('00'));
+        if (depature_time_array[1] > 0) {
+            depatureTime.setHours(parseInt('23'));
+            depatureTime.setMinutes(parseInt('59'));
+        }
+    }
 
     let oneHour = 60 * 60 * 1000;
-    let totalDurationInHours = arrivalTime.getTime() - depatureTime.getTime();
+    let totalDurationInHours = depatureTime.getTime() - arrivalTime.getTime();
+
     totalDurationInHours = Math.abs((totalDurationInHours) / (oneHour));
 
     let durationOfHourlydRoom = 0;
 
-    durationOfHourlydRoom = Math.ceil(totalDurationInHours / 12) * (nightDuration / 2);
-
+    durationOfHourlydRoom = Math.abs(totalDurationInHours / 12) * (nightDuration / 2);
     var returnData = {};
 
     returnData.style = {};
