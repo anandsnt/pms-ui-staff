@@ -4,135 +4,72 @@
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
     <div class="entry full-width" ng-controller="adTwinfieldSetupMappingCtrl">
-        <div class="entry full-width" ng-if="!state.showNewMapForm">
+        <div class="entry full-width" ng-show="state.mode=='LIST'">
             <div class="content-title" style="position: relative;">
                 <span class="count">MAPPINGS({{totalCount}})</span>
                 <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
             </div>
         </div>
 
-        <form ng-if="state.showNewMapForm" class="form float">
-            <fieldset class="holder full-width">
-                <div class="form-title">
-                    <h3 translate><span>Add&nbsp;</span>Mapping</h3>
-                    <em class="status">{{'ALL_FIELDS_MANDIATORY' | translate}}</em>
-                </div>
-            </fieldset>
-            <fieldset class="holder left">
-                <ad-dropdown-name savemodel="mapping.typeof"
-                                  change-handler="onChangeMappingType"
-                                  valueproperty="name"
-                                  property="text"
-                                  label-in-drop-down="Select Mapping Type"
-                                  list="state.mappingTypes"
-                                  label="{{'MAPPING_TYPE'| translate}}"
-                                  div-class="full-width">
-                </ad-dropdown-name>
-            </fieldset>
-            <fieldset class="holder right">
-                <ad-dropdown-name savemodel="mapping.meta_data.cost_center"
-                                  ng-show="mapping.typeof"
-                                  valueproperty="Code"
-                                  property="Name"
-                                  label-in-drop-down="Select Value"
-                                  list="state.meta.cost_centers"
-                                  label="{{'COST_CENTER'| translate}}"
-                                  skip-number-conversion="true"
-                                  div-class="full-width">
-                </ad-dropdown-name>
-            </fieldset>
-            <fieldset class="holder left">
-                <ad-dropdown-name savemodel="mapping.value"
-                                  ng-show="mapping.typeof"
-                                  valueproperty="value"
-                                  label-properties="['charge_code', 'description']"
-                                  label-in-drop-down="Select Value"
-                                  list="state.meta.charge_codes"
-                                  label="{{'SNT_VALUE'| translate}}"
-                                  skip-number-conversion="true"
-                                  div-class="full-width">
-                </ad-dropdown-name>
-            </fieldset>
-            <fieldset class="holder right">
-                <div class='entry full-width' ng-if="mapping.typeof === 'gl_account'">
-                    <label>{{'EXTERNAL_VALUE'| translate}}</label>
-                    <div class='select'>
-                        <select ng-model='mapping.external_value'>
-                            <option ng-repeat='extValue in state.meta.gl_accounts' value='{{extValue.Code}}'>
-                                {{extValue.Name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class='entry full-width' ng-if="mapping.typeof === 'vat_code'">
-                    <label>{{'EXTERNAL_VALUE'| translate}}</label>
-                    <div class='select'>
-                        <select ng-model='mapping.external_value'>
-                            <option ng-repeat='extValue in state.meta.vat_types' value='{{extValue.Code}}'>
-                                {{extValue.Name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-            </fieldset>
-            <div class="actions float">
-                <button type="button"
-                        class="button blank add-data-inline" ng-click="navigateBack()" translate>
-                    CANCEL
-                </button>
-                <button type="button" class="button green" ng-click="onClickSaveNew()" translate>
-                    {{'SAVE_NEW_MAPPING' | translate}}
-                </button>
-            </div>
+        <form ng-show="state.mode=='ADD'"
+              class="form float"
+              ng-include="'/assets/partials/interfaces/Twinfield/adTwinFieldMappingDetailView.html'">
         </form>
 
+        <section ng-show="state.mode !=='ADD'">
 
-        <!--ng-table component -->
-        <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-if="totalCount > 0">
-            <tbody>
-            <tr ng-repeat="mapping in $data"
-                ng-class="{'selected': room.isSelected}">
-                <td data-title="'MAPPING TYPE'" sortable="'mapping_type'" header-class="width-30"
-                    ng-click="onEditMapping(mapping)">
-                    {{mapping.mapping_type}}
-                </td>
-                <td data-title="'SNT VALUE'" sortable="'snt_value'" header-class="width-30"
-                    ng-click="onEditMapping(mapping)">
-                    {{mapping.snt_value}}
-                </td>
-                <td data-title="'EXTERNAL VALUE'" sortable="'ext_value'" header-class="width-30"
-                    ng-click="onEditMapping(mapping)">
-                    {{mapping.ext_value}}
-                </td>
-                <td data-title="'DELETE'" header-class="width-10" class="delete">
-                    <a class="icons icon-delete large-icon" ng-click="onClickDelete(mapping)"></a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!--Custom pagination footer goes here-->
-        <script type="text/ng-template" id="custom/pager" ng-if="totalCount > 0">
-            <div class="search-pagination">
-                <div class="entry">
-                    Show
-                    <div class="select">
-                        <select ng-model="displyCount" ng-options="opt for opt in displayCountList"
-                                ng-change="displayCountChanged(displyCount)"></select>
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-show="totalCount > 0">
+                <tbody>
+                <tr ng-repeat="mappingRow in $data"
+                    ng-class="{'selected': room.isSelected}">
+                    <td data-title="'MAPPING TYPE'" sortable="'typeof'" header-class="width-30" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.typeof}}
+                    </td>
+                    <td data-title="'SNT VALUE'" sortable="'value'" header-class="width-20" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.value}}
+                    </td>
+                    <td data-title="'EXTERNAL VALUE'" sortable="'external_value'" header-class="width-20" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.external_value}}
+                    </td>
+                    <td data-title="'COST CENTER'" sortable="'cost_center'" header-class="width-20" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.meta_data.cost_center}}
+                    </td>
+                    <td data-title="'DELETE'" header-class="width-10" class="delete" ng-hide="mappingRow.editing">
+                        <a class="icons icon-delete large-icon" ng-click="onClickDelete(mappingRow)"></a>
+                    </td>
+                    <td colspan="5" ng-show="mappingRow.editing"
+                        ng-include="'/assets/partials/interfaces/Twinfield/adTwinFieldMappingDetailView.html'"></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--Custom pagination footer goes here-->
+            <script type="text/ng-template" id="custom/pager" ng-show="totalCount > 0">
+                <div class="search-pagination">
+                    <div class="entry">
+                        Show
+                        <div class="select">
+                            <select ng-model="displyCount" ng-options="opt for opt in displayCountList"
+                                    ng-change="displayCountChanged(displyCount)"></select>
+                        </div>
+                        mappings per page
                     </div>
-                    mappings per page
+                    <button type="button" class="button dark-grey next" ng-repeat="page in pages"
+                            ng-show="page.type == 'next'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Next
+                    </button>
+                    <button type="button" class="button dark-grey prev" ng-repeat="page in pages"
+                            ng-show="page.type == 'prev'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Prev
+                    </button>
+                    <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
                 </div>
-                <button type="button" class="button dark-grey next" ng-repeat="page in pages"
-                        ng-show="page.type == 'next'" ng-click="params.page(page.number)"
-                        ng-class="{'disabled': !page.active}">Next
-                </button>
-                <button type="button" class="button dark-grey prev" ng-repeat="page in pages"
-                        ng-show="page.type == 'prev'" ng-click="params.page(page.number)"
-                        ng-class="{'disabled': !page.active}">Prev
-                </button>
-                <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
-            </div>
-        </script>
-        <!--end-->
+            </script>
+            <!--end-->
+        </section>
     </div>
 </div>

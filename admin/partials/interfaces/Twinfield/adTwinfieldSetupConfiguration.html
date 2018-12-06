@@ -20,10 +20,10 @@
             <div class="entry full-width">
                 <label>
                     TWINFIELD OAUTH
-                    <span class="oauth-status success" ng-if="config.authorized">
+                    <span class="oauth-status success" ng-if="config.is_authorized">
                             {{'EXACT_ONLINE_AUTHORIZED' | translate}}
                         </span>
-                    <span class="oauth-status" ng-if="!config.authorized">
+                    <span class="oauth-status" ng-if="!config.is_authorized">
                             {{'EXACT_ONLINE_UNAUTHORIZED' | translate}}
                         </span>
                 </label>

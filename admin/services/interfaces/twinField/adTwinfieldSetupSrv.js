@@ -39,6 +39,14 @@ admin.service('adTwinfieldSetupSrv', [
             return ADBaseWebSrvV2.postJSON('/api/hotel_settings/twinfield/save_mappings', params);
         };
 
+        service.deleteMapping = function(id) {
+            return ADBaseWebSrvV2.deleteJSON('/api/hotel_settings/twinfield/mappings/' + id);
+        };
+
+        service.updateMapping = function(params) {
+            return ADBaseWebSrvV2.putJSON('/api/hotel_settings/twinfield/mappings/' + params.id, params);
+        };
+
         service.fetchMeta = function() {
             var deferred = $q.defer(),
                 promises = [],
@@ -70,6 +78,7 @@ admin.service('adTwinfieldSetupSrv', [
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
+            
             return deferred.promise;
         };
 

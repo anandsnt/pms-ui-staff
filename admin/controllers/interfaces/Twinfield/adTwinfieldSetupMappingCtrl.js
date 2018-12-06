@@ -6,7 +6,7 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         $scope.state = {
-            showNewMapForm: false,
+            mode: 'LIST',
             mappingTypes: [
                 {
                     name: 'gl_account',
@@ -33,18 +33,16 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
             };
         }
 
-        $scope.mapping = fetchEmptyMapping();
-
         $scope.onClickAdd = function() {
             if (!$scope.state.meta) {
                 $scope.callAPI(adTwinfieldSetupSrv.fetchMeta, {
                     successCallBack: function(meta) {
                         $scope.state.meta = meta;
-                        $scope.state.showNewMapForm = true;
+                        $scope.state.mode = 'ADD';
                     }
                 });
             } else {
-                $scope.state.showNewMapForm = true;
+                $scope.state.mode = 'ADD';
             }
         };
 
@@ -54,7 +52,7 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
                 params: $scope.mapping,
                 successCallBack: function() {
                     $scope.reloadTable();
-                    $scope.state.showNewMapForm = false;
+                    $scope.state.mode = 'LIST';
                     $scope.mapping = fetchEmptyMapping();
                 }
             });
@@ -68,6 +66,10 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
             $scope.displyCount = count;
         };
 
+        $scope.onCancelDetailedView = function() {
+            resetAllEdits();
+            $scope.state.mode = 'LIST';
+        };
 
         $scope.fetchTableData = function($defer, params) {
             var getParams = $scope.calculateGetParams(params),
@@ -85,23 +87,49 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
             $scope.invokeApi(adTwinfieldSetupSrv.fetchMappings, getParams, fetchSuccessOfItemList);
         };
 
-        // $scope.onClickDelete = function(mapping) {
-        //     $scope.callAPI(ADInterfaceMappingSrv.deleteMappingWithId, {
-        //         params: {
-        //             mapping_id: mapping.id
-        //         },
-        //         onSuccess: function() {
-        //             $scope.reloadTable();
-        //         }
-        //     });
-        // };
+        $scope.onClickDelete = function(mapping) {
+            $scope.callAPI(adTwinfieldSetupSrv.deleteMapping, {
+                params: mapping.id,
+                onSuccess: function() {
+                    $scope.reloadTable();
+                }
+            });
+        };
+
+        /**
+         * @return {undefined} undefined
+         */
+        function resetAllEdits() {
+            $scope.data.map(function(mapping) {
+                mapping.editing = false;
+            });
+        }
 
         $scope.onEditMapping = function(mapping) {
-            $state.go('admin.edit-external-mapping', {
-                hotel_id: $stateParams.hotel_id,
-                interface_id: $stateParams.interface_id,
-                interface_name: $stateParams.interface_name,
-                mapping_id: mapping.id
+            resetAllEdits();
+            if (!$scope.state.meta) {
+                $scope.callAPI(adTwinfieldSetupSrv.fetchMeta, {
+                    successCallBack: function(meta) {
+                        $scope.state.meta = meta;
+                        $scope.mapping = angular.copy(mapping);
+                        mapping.editing = true;
+                        $scope.state.mode = 'EDIT';
+                    }
+                });
+            } else {
+                $scope.mapping = angular.copy(mapping);
+                mapping.editing = true;
+                $scope.state.mode = 'EDIT';
+            }
+        };
+
+
+        $scope.onClickUpdate = function() {
+            $scope.callAPI(adTwinfieldSetupSrv.updateMapping, {
+                params: _.omit($scope.mapping, ['editing', 'created_at', 'integration_id', 'property_id', 'updated_at']),
+                onSuccess: function() {
+                    $scope.reloadTable();
+                }
             });
         };
 
@@ -120,7 +148,7 @@ admin.controller('adTwinfieldSetupMappingCtrl', [
 
         (function() {
             $scope.totalCount = 0;
-
+            $scope.mapping = fetchEmptyMapping();
             $scope.loadTable();
         })();
     }]);
