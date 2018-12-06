@@ -114,6 +114,10 @@
 			$scope.doneButtonClicked = function() {
 				nextPageActions();
 			};
+
+			$scope.toggleSkip = function() {
+				$scope.idScanData.idScanSkipped = !$scope.idScanData.idScanSkipped;
+			};
 			
 
 			$scope.$on('CREDENTIALS_VALIDATED', function() {
@@ -139,7 +143,7 @@
 					mode: '',
 					selectedGuest: {},
 					verificationMethod: 'NONE', // FR will be added later
-					staffVerified: false
+					idScanSkipped: false
 				};
 				$scope.validateSubsription();
 				$scope.isLoading = false;
