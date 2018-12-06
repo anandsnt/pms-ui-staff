@@ -154,7 +154,7 @@
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
 					setPageNumberDetails();
-					if ($scope.idScanData.verificationMethod !== 'STAFF') {
+					if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
 						$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 					}
 				};
@@ -182,7 +182,7 @@
 				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				setPageNumberDetails();
-				if ($scope.idScanData.verificationMethod !== 'STAFF') {
+				if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
 			};
