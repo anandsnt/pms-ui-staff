@@ -9,8 +9,7 @@
                      <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                      <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
                 </div>
-                <div class="content-desc">
-                  <p class="sub-text no-text-case float-left guest-list-text" >
+                <p class="no-text-case float-left guest-list-text" >
                      <span ng-if='guest.last_name !== guest.first_name'>
                      {{guest.first_name}}&nbsp;{{guest.last_name}}
                      </span>
@@ -20,9 +19,9 @@
                      <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
                      {{guest.first_name}}    
                      </span>
-                     <span >,&nbsp;&nbsp;Scan status : {{guest.idScanStatus}}</span>
-                  </p>
-               </div>
+                     <br/>
+                     <span >Scan status : {{guest.idScanStatus}}</span>
+                </p>
             </div>
 
             <a class="btn btn-template margin-top-20 grey-btn" ng-show="!areAllGuestsApproved() && !id_collection_mandatory" ng-click="doneButtonClicked()">SKIP</a>
