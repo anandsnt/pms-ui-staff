@@ -238,10 +238,12 @@
                         <button class="button with-icon white" click-touch='showScannedGuestID(true, guestData.primary_guest_details)'
                             ng-class='{ "overlay":!hasGuestIDPermission, 
                                         "green-text": isGuestIdUploaded(guestData.primary_guest_details, true), 
-                                        "grey-text": !isGuestIdUploaded(guestData.primary_guest_details, true)}'>
+                                        "grey-text": !isGuestIdUploaded(guestData.primary_guest_details, true) && !isIdRequiredForGuest(guestData.primary_guest_details, true),
+                                        "red-text": isIdRequiredForGuest(guestData.primary_guest_details, true)}'>
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guestData.primary_guest_details, true), 
-                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guestData.primary_guest_details, true)}"></span>
-                             {{'GUEST_ID_BUTTON' |translate}}
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guestData.primary_guest_details, true) && !isIdRequiredForGuest(guestData.primary_guest_details, true),
+                                             'icons icon-identity-card-red': isIdRequiredForGuest(guestData.primary_guest_details, true)}"></span>
+                             {{'GUEST_ID_BUTTON'|translate}}
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)">
                             <span class="icons icon-save"></span> Download
@@ -263,10 +265,12 @@
                             ng-show="guest.id"
                             ng-class='{ "overlay":!hasGuestIDPermission, 
                                         "green-text": isGuestIdUploaded(guest), 
-                                        "grey-text": !isGuestIdUploaded(guest)}'>
+                                        "grey-text": !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest), 
+                                        "red-text": isIdRequiredForGuest(guest)}'>
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
-                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}" style="left:10px !important; top:0 !important;"></span>
-                            {{'GUEST_ID_BUTTON' |translate}}
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
+                                             'icons icon-identity-card-red': isIdRequiredForGuest(guest)}" style="left:10px !important; top:0 !important;"></span>
+                            {{'GUEST_ID_BUTTON'|translate}}
                         </button>
                          <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
@@ -289,10 +293,12 @@
                             ng-show="guest.id"
                             ng-class='{ "overlay":!hasGuestIDPermission, 
                                         "green-text": isGuestIdUploaded(guest), 
-                                        "grey-text": !isGuestIdUploaded(guest)}'>
+                                        "grey-text": !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest), 
+                                        "red-text": isIdRequiredForGuest(guest)}'>
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
-                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
-                            {{'GUEST_ID_BUTTON' |translate}}
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
+                                             'icons icon-identity-card-red': isIdRequiredForGuest(guest)}"></span>
+                            {{'GUEST_ID_BUTTON'|translate}}
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
@@ -316,10 +322,12 @@
                             ng-show="guest.id"
                             ng-class='{ "overlay":!hasGuestIDPermission, 
                                         "green-text": isGuestIdUploaded(guest), 
-                                        "grey-text": !isGuestIdUploaded(guest)}'>
+                                        "grey-text": !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest), 
+                                        "red-text": isIdRequiredForGuest(guest)}'>
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
-                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest)}"></span>
-                            {{'GUEST_ID_BUTTON' |translate}}
+                                             'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
+                                             'icons icon-identity-card-red': isIdRequiredForGuest(guest)}"></span>
+                            {{'GUEST_ID_BUTTON'|translate}}
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
@@ -328,6 +336,12 @@
 
                 </div>
             </form>
+        </div>
+        <!-- Show this if we have missing mandatory guest IDs -->
+        <div class="bottom-actions"  ng-show="isFromCheckin">
+            <button class="button blank" click-touch="toggleGuests()">Cancel</button>
+            <!-- Replace .grey with .green if we have all mandatory Guest IDs and can proceed to check in -->
+            <button class="button " ng-disabled="isGuestIdRequiredForCheckin()" click-touch="continueToCheckinAfterIdScan()" ng-class="{'grey': isGuestIdRequiredForCheckin(), 'green': !isGuestIdRequiredForCheckin()}" translate>CONTINUE_TO_CHECKIN_BUTTON</button>
         </div>
     </div>
 
