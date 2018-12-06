@@ -74,7 +74,7 @@ admin.controller('adTwinfieldSetupCtrl', [
          * @return {undefined}
          */
         (function() {
-            let disabledKeys = ['access_token', 'refresh_token', 'credit_card_payment_charge_codes'];
+            var disabledKeys = ['access_token', 'refresh_token', 'credit_card_payment_charge_codes'];
 
             // default to empty string to mitigate null
             initiateChargeCodesSelection(twinfieldSetupValues['credit_card_payment_charge_codes'] || '');
