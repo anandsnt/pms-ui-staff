@@ -3826,7 +3826,9 @@
 
                             .statistics-reservations {
                                 border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
                                 .search-results { padding: 20px; }
+                                
                                 .reservation {
                                     .faux-anchor {
                                         &:not(.no-arrow) {
@@ -3888,6 +3890,25 @@
                                             }
                                         }
                                     }
+                                }
+
+                                .numbers-pagination,
+                                .search-pagination {
+                                    position: static;
+                                    left: auto;
+                                    bottom: auto;
+                                    height: 40px;
+                                    background: transparent;
+                                    padding: 0 20px;
+                                    margin-bottom: 20px;
+                                    .box-shadow(none);
+
+                                    .button { 
+                                        font-size: 14px; 
+                                    }
+
+                                    &:before,
+                                    &:after { .hide; }
                                 }
                             }
                         }
