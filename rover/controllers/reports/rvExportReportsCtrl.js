@@ -1,5 +1,4 @@
 angular.module('sntRover').controller('RVExportReportsCtrl', [
-angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$rootScope',
     '$scope',
     'RVreportsSrv',
