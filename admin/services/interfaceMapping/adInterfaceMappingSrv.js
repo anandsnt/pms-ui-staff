@@ -5,7 +5,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
          * @return {object} mapping list
          */
 
-        this.fetchExternalMappingList = function (data) {
+        this.fetchExternalMappingList = function () {
             var deferred = $q.defer();
             var url = "/admin/external_mappings/interface_types.json";
 
