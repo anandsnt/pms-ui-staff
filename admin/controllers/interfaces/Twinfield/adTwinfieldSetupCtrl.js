@@ -5,12 +5,24 @@ admin.controller('adTwinfieldSetupCtrl', [
 
         $scope.interface = 'TWINFIELD';
 
+        $scope.state = {
+            activeTab: 'SETUP'
+        };
+
         /**
          * when clicked on check box to enable/diable GoMomentIvy
          * @return {undefined}
          */
         $scope.toggleEnabled = function() {
             $scope.config.enabled = !$scope.config.enabled;
+        };
+
+        /**
+         *
+         * @return {undefined}
+         */
+        $scope.toggleMappings = function() {
+            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
         };
 
         /**
