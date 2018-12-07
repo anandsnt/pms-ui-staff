@@ -10,4 +10,11 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	$scope.$on('FR_SUCCESS', function() {
 		$scope.confirmImages();
 	});
+
+	if($scope.screenData.useExtCamera) {
+		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+		$scope.startExtCameraCapture();
+	} else {
+		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+	}
 });

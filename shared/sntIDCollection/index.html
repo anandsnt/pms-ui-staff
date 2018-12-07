@@ -70,13 +70,25 @@
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE'">
          <div class="row content">
              
-            <div class="col-md-12 jumbotron">
+            <div class="col-md-12 jumbotron" ng-hide="screenData.useExtCamera">
                <p class="title">Upload a clear picture of the front of your ID card.</p>
                <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
                   <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">Capture ID/Passport</button>
                </div>
+            </div>
+
+             <div class="col-md-12 jumbotron" ng-show="screenData.useExtCamera">
+               <p class="title">Please place the ID below the camera. The photo will be caprured in <b>{{ screenData.cameraTimer }}</b> seconds</p>
+               <video id="id-video" autoplay></video>
+               <img src="" id="screenshot-img">
+               <buton id="screenshot-button">Capture</button>
+                  ---
+               <a download="YourFileName.jpeg" href="{{screenData.frontSideImage}}">
+                  download
+                  <img src="{{screenData.frontSideImage}}"></img>
+               </a>
             </div>
             
          </div>

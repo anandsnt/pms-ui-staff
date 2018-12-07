@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log) {
+angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log, $interval) {
 
 	var resetScreenData = function() {
 		$scope.screenData = {
@@ -7,7 +7,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			imageSide: 0,
 			scanMode: screenModes.validate_subscription,
 			idDetails: {},
-			needBackSideScan: false
+			needBackSideScan: false,
+			useExtCamera: true
 		};
 	};
 	var domIDMappings;
@@ -28,7 +29,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		sntIDCollectionSrv.getImageDetails($scope.screenData.imageSide).then(function(response) {
 
 			$scope.screenData.needBackSideScan = !(response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3);
+			$scope.screenData.needBackSideScan = false;
 
+			
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
 				$scope.screenData.scanMode = screenModes.confirm_id_images;
 			} else {
@@ -123,7 +126,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 						$timeout(function() {
 							$scope.screenData.scanMode = screenModes.analysing_id_data;
 						}, 0);
-						verifyFaceImageWithId(unmodifiedFrontImage, unmodifiedFaceImage);
+						verifyFaceImageWithId(unmodifiedFaceImage, unmodifiedFaceImage);
 						$scope.$emit('FR_ANALYSIS_STARTED');
 					}
 					else if (frontSideImage) {
@@ -229,6 +232,92 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$timeout(function() {
 			angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();
 		}, 0);
+	};
+
+	$scope.startExtCameraCapture1 = function() {
+		$scope.screenData.cameraTimer = 5;
+		var video = document.getElementById('id-video');
+		if (video && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+			// Not adding `{ audio: true }` since we only want video now
+			navigator.mediaDevices.getUserMedia({
+				video: true
+			}).then(function(stream) {
+				video.srcObject = stream;
+				video.play();
+				var selfieTimerInterval = $interval(function() {
+					$scope.screenData.cameraTimer--;
+					if ($scope.screenData.cameraTimer === 3) {
+						$interval.cancel(selfieTimerInterval);
+						// var canvas = document.createElement('canvas');
+						// var context = canvas.getContext('2d');
+						// context.drawImage(video, 0, 0, 680, 480);
+						// var dataURLstring = canvas.toDataURL();
+
+						// var imageData = sntIDCollectionUtilsSrv.resizeImage(video);
+
+	
+						// unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
+						// //getDocInstance();
+						// $scope.screenData.frontSideImage = imageData;
+
+						// $scope.videoCapture = dataURLstring;
+						var canvas = document.createElement('canvas');
+						canvas.id = "CursorLayer";
+						var context = canvas.getContext('2d');
+						
+
+						context.drawImage(video, 0, 0, 500, 375);
+
+						var dataURLstring = canvas.toDataURL();
+						unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
+						$scope.videoCapture = dataURLstring;
+					}
+				}, 1000);
+			});
+		}
+	};
+
+	$scope.startExtCameraCapture = function() {
+		var screenshotButton = document.querySelector('#screenshot-button');
+		var img = document.querySelector('#screenshot-img');
+		var video = document.querySelector('#id-video');
+
+		var canvas = document.createElement('canvas');
+
+	
+		navigator.mediaDevices.getUserMedia({
+				video: true
+			}).
+			then(handleSuccess).catch(function(){
+
+			});
+	
+
+		screenshotButton.onclick = video.onclick = function() {
+			// canvas.width = video.videoWidth;
+			// canvas.height = video.videoHeight;
+			// canvas.getContext('2d').drawImage(video, 0, 0);
+			// // Other browsers will fall back to image/png
+			// var dataURLstring =canvas.toDataURL('image/webp');
+			// img.src = dataURLstring;
+
+			// unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
+
+			// unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
+
+			var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+
+		    ///verifyFaceImageWithId(imageData, imageData);
+		    $scope.screenData.frontSideImage = imageData;
+			getDocInstance();
+			
+			//download(dataURLstring, 'strFileName', 'image/png');
+		};
+
+		function handleSuccess(stream) {
+			screenshotButton.disabled = false;
+			video.srcObject = stream;
+		};
 	};
 
 	(function() {
