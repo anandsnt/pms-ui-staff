@@ -121,10 +121,12 @@
 			
 
 			$scope.$on('CREDENTIALS_VALIDATED', function() {
-				if ($scope.selectedReservation.guest_details.length > 1)
+				if ($scope.selectedReservation.guest_details.length > 1) {
 					$scope.screenData.scanMode = 'GUEST_LIST';
-				else 
+				}
+				else {
 					$scope.selectGuest($scope.selectedReservation.guest_details[0]);
+				}
 			});
 
 			(function() {
