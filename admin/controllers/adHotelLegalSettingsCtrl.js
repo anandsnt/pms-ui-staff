@@ -32,8 +32,18 @@ admin.controller('adHotelLegalSettingsController',
 		/*
 		 * update legal settings
 		 */
-		$scope.saveLegalSettings = function() {
-			var options = {
+		$scope.saveLegalSettings = function(screen) {
+			$scope.legalSettingsCopy = angular.copy($scope.legalSettings);
+			var unwantedKeys = [];
+
+			if (screen === 'financial') {
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'ar_invoice_label'];
+			} else if (screen === 'ar') {
+				unwantedKeys = ['is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 'first_folio_number']
+			}
+
+			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
+			var	options = {
 				params: {
 					'hotel_id': $scope.data.id,
 					'data': $scope.legalSettings
@@ -42,7 +52,7 @@ admin.controller('adHotelLegalSettingsController',
 					if (data.errors.length === 0) {
 						$scope.successMessage = "Saved Succesfully!";
 					}
-					
+					$scope.legalSettings = $scope.legalSettingsCopy;
 					$scope.errorMessage = data.errors;
 				}
 			};
@@ -66,7 +76,7 @@ admin.controller('adHotelLegalSettingsController',
 					'hotel_id': $scope.data.id
 				},
 				successCallBack: function(response) {
-					$scope.legalSettings = response.data;
+					$scope.legalSettings = response.data;					
 				}
 			};
 
