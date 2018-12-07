@@ -21,8 +21,9 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		$scope.screenData.showBackSideScan = false;
 
 		var dateInHotelsFormat = function(date) {
-			$rootScope.dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
-			return moment(date, 'MM-DD-YYYY').format($rootScope.dateFormat);
+			var dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
+			
+			return moment(date, 'MM-DD-YYYY').format(dateFormat);
 		};
 
 		$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
