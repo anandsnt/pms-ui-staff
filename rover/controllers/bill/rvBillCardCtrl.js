@@ -2911,6 +2911,19 @@ sntRover.controller('RVbillCardController',
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
+<<<<<<< HEAD
+=======
+	/*
+	 * Void bill success
+	 */
+	$scope.addListener('VOID_BILL_GENERATED', function(event, billData) {
+		$scope.closeDialog();
+		angular.forEach(billData, function(value, key) {
+			createBillSuccessCallback(value);
+		});
+		$scope.getBillData($scope.currentActiveBill);
+	});
+>>>>>>> e29960c... CICO-53720: Void, void and repost
 
 	/*
 	*Open the terms and conditions dialog after fetching
@@ -3111,7 +3124,7 @@ sntRover.controller('RVbillCardController',
     /*
     * Checks whether the amount needs to show or not
     */
-    $scope.isBalanceShown = function(is_rate_suppressed) {
+    $scope.isBalanceShown = function(is_rate_suppressed, billData) {
     	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
@@ -3199,7 +3212,13 @@ sntRover.controller('RVbillCardController',
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 
+<<<<<<< HEAD
 		$scope.reservationBillData.bills.length < 10;
+=======
+		$scope.reservationBillData.bills.length < 10 && $scope.reservationBillData.is_void_bill_enabled && 
+		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_voided && 
+		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill;
+>>>>>>> e29960c... CICO-53720: Void, void and repost
 	};
 	/*
 	 * Open void bill popup
