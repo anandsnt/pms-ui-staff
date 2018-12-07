@@ -6,7 +6,6 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
          */
 
         this.fetchExternalMappingList = function (data) {
-            var hotel_id = data.hotel_id;
             var deferred = $q.defer();
             var url = "/admin/external_mappings/interface_types.json";
 
@@ -28,7 +27,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
          * @return {object} mapping type,snt values to render its dropdowns
          */
         this.fetchAddMapping = function (data) {
-            var hotel_id = data.hotel_id, interface_id = data.interface_type_id;
+            var interface_id = data.interface_type_id;
             var deferred = $q.defer();
             var url = "/admin/external_mappings/" + interface_id + "/new_mappings.json";
 
@@ -44,7 +43,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
          * @return {object} mapping type,snt values to render its dropdowns.
          */
         this.fetchEditMapping = function (data) {
-            var hotel_id = data.hotel_id, interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+            var interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
             var deferred = $q.defer();
             var url = '/admin/external_mappings/' + interface_id + '/edit_mapping/' + mappingTypeId + '.json';
 
@@ -56,7 +55,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
             return deferred.promise;
         };
         this.saveEditMapping = function (data) {
-            var hotel_id = data.hotel_id, interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+            var interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
             var deferred = $q.defer();
             var url = '/admin/external_mappings/' + interface_id + '/update_mapping/' + mappingTypeId + '.json';
 
@@ -73,7 +72,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
          */
         this.saveMapping = function (data) {
             // interface_id will be a property in the data file
-            var hotel_id = data.hotel_id, interface_id = data.interface_type_id;
+            var interface_id = data.interface_type_id;
             var deferred = $q.defer();
             var url = '/admin/external_mappings/' + interface_id + '/new_mapping/';
 
@@ -89,7 +88,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
          * @return {object} status of deletion
          */
         this.deleteMapping = function (data) {
-            var hotel_id = data.hotel_id, interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
+            var interface_id = data.interface_type_id, mappingTypeId = data.mapping_type_id;
             var deferred = $q.defer();
             var url = "/admin/external_mappings/" + interface_id + "/delete_mapping/" + mappingTypeId + ".json";
 
@@ -129,8 +128,7 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
         };
 
         this.fetchInterfaceMappingTypes = function(data) {
-            var hotel_id = data.hotel_id,
-                interface_id = data.interface_type_id,
+            var interface_id = data.interface_type_id,
                 deferred = $q.defer(),
                 url = '/admin/external_mappings/' + interface_id + '/interface_mappings.json?exclude_mappings=true';
 
