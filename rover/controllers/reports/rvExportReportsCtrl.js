@@ -1,4 +1,5 @@
 angular.module('sntRover').controller('RVExportReportsCtrl', [
+angular.module('sntRover').controller('RVExportReportsCtrl', [
     '$rootScope',
     '$scope',
     'RVreportsSrv',
@@ -1140,7 +1141,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
          * Show export calender only for joyrnal export
          */
         $scope.shouldShowExportCalenderDate = function () {
-          console.log($scope.selectedEntityDetails.report)
             if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
