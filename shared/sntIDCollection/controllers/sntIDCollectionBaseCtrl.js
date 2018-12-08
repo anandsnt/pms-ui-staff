@@ -239,49 +239,6 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}, 0);
 	};
 
-	$scope.startExtCameraCapture1 = function() {
-		$scope.screenData.cameraTimer = 5;
-		var video = document.getElementById('id-video');
-		if (video && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-			// Not adding `{ audio: true }` since we only want video now
-			navigator.mediaDevices.getUserMedia({
-				video: true
-			}).then(function(stream) {
-				video.srcObject = stream;
-				video.play();
-				var selfieTimerInterval = $interval(function() {
-					$scope.screenData.cameraTimer--;
-					if ($scope.screenData.cameraTimer === 3) {
-						$interval.cancel(selfieTimerInterval);
-						// var canvas = document.createElement('canvas');
-						// var context = canvas.getContext('2d');
-						// context.drawImage(video, 0, 0, 680, 480);
-						// var dataURLstring = canvas.toDataURL();
-
-						// var imageData = sntIDCollectionUtilsSrv.resizeImage(video);
-
-	
-						// unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
-						// //getDocInstance();
-						// $scope.screenData.frontSideImage = imageData;
-
-						// $scope.videoCapture = dataURLstring;
-						var canvas = document.createElement('canvas');
-						canvas.id = "CursorLayer";
-						var context = canvas.getContext('2d');
-						
-
-						context.drawImage(video, 0, 0, 500, 375);
-
-						var dataURLstring = canvas.toDataURL();
-						unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
-						$scope.videoCapture = dataURLstring;
-					}
-				}, 1000);
-			});
-		}
-	};
-
 	$scope.startExtCameraCapture = function(type) {
 		var video = type === 'front-image' ? document.querySelector('#id-video') : document.querySelector('#id-back-video');
 
@@ -311,14 +268,13 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var video = document.querySelector('#id-back-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
 		$scope.screenData.backSideImage = imageData;
-		getDocInstance();
+		postBackImage();
 	};
 
 	$scope.retryBackImageUsingExtCamera = function (argument) {
 		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
 		$scope.startExtCameraCapture('back-image');
 	};
-
 
 	(function() {
 		resetScreenData();
