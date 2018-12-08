@@ -8,7 +8,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			scanMode: screenModes.validate_subscription,
 			idDetails: {},
 			needBackSideScan: false,
-			useExtCamera: true
+			useExtCamera: false
 		};
 	};
 	var domIDMappings;
@@ -25,12 +25,14 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 	};
 
+	$scope.setConfigurations = function(config) {
+		$scope.screenData.useExtCamera = config.useExtCamera;
+	};
+
 	var getImageDetails = function() {
 		sntIDCollectionSrv.getImageDetails($scope.screenData.imageSide).then(function(response) {
 
 			$scope.screenData.needBackSideScan = !(response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3);
-			$scope.screenData.needBackSideScan = false;
-
 			
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
 				$scope.screenData.scanMode = screenModes.confirm_id_images;
@@ -178,6 +180,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.confirmFrontImage = function() {
 		$scope.screenData.imageSide = 1;
 		$scope.screenData.scanMode = $scope.screenData.needBackSideScan ? screenModes.upload_back_image : screenModes.confirm_id_images;
+		if ($scope.screenData.scanMode === screenModes.upload_back_image && $scope.screenData.useExtCamera) {
+			$scope.startExtCameraCapture('back-image')
+		}
 	};
 
 	$scope.frontImageChanged = function(evt) {
@@ -277,48 +282,43 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}
 	};
 
-	$scope.startExtCameraCapture = function() {
-		var screenshotButton = document.querySelector('#screenshot-button');
-		var img = document.querySelector('#screenshot-img');
-		var video = document.querySelector('#id-video');
+	$scope.startExtCameraCapture = function(type) {
+		var video = type === 'front-image' ? document.querySelector('#id-video') : document.querySelector('#id-back-video');
 
-		var canvas = document.createElement('canvas');
-
-	
 		navigator.mediaDevices.getUserMedia({
-				video: true
-			}).
-			then(handleSuccess).catch(function(){
-
-			});
-	
-
-		screenshotButton.onclick = video.onclick = function() {
-			// canvas.width = video.videoWidth;
-			// canvas.height = video.videoHeight;
-			// canvas.getContext('2d').drawImage(video, 0, 0);
-			// // Other browsers will fall back to image/png
-			// var dataURLstring =canvas.toDataURL('image/webp');
-			// img.src = dataURLstring;
-
-			// unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
-
-			// unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(dataURLstring);
-
-			var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
-
-		    ///verifyFaceImageWithId(imageData, imageData);
-		    $scope.screenData.frontSideImage = imageData;
-			getDocInstance();
-			
-			//download(dataURLstring, 'strFileName', 'image/png');
-		};
-
-		function handleSuccess(stream) {
-			screenshotButton.disabled = false;
+			video: true
+		}).
+		then(function handleSuccess(stream) {
 			video.srcObject = stream;
-		};
+		}).catch(function() {
+
+		});
 	};
+
+	$scope.captureFrontImageUsingExtCamera = function (argument) {
+		var video = document.querySelector('#id-video');
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		$scope.screenData.frontSideImage = imageData;
+		getDocInstance();
+	};
+
+	$scope.retryFrontImageUsingExtCamera = function (argument) {
+		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+		$scope.startExtCameraCapture('front-image');
+	};
+
+	$scope.captureBackImageUsingExtCamera = function (argument) {
+		var video = document.querySelector('#id-back-video');
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		$scope.screenData.backSideImage = imageData;
+		getDocInstance();
+	};
+
+	$scope.retryBackImageUsingExtCamera = function (argument) {
+		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
+		$scope.startExtCameraCapture('back-image');
+	};
+
 
 	(function() {
 		resetScreenData();

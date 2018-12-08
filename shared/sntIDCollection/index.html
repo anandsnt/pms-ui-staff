@@ -80,15 +80,12 @@
             </div>
 
              <div class="col-md-12 jumbotron" ng-show="screenData.useExtCamera">
-               <p class="title">Please place the ID below the camera. The photo will be caprured in <b>{{ screenData.cameraTimer }}</b> seconds</p>
+               <p class="title">Please place the ID below the camera with front side of ID facing camera.
                <video id="id-video" autoplay></video>
-               <img src="" id="screenshot-img">
-               <buton id="screenshot-button">Capture</button>
-                  ---
-               <a download="YourFileName.jpeg" href="{{screenData.frontSideImage}}">
-                  download
-                  <img src="{{screenData.frontSideImage}}"></img>
-               </a>
+               <br/><br/>
+               <div class="jumbotron text-center">
+                  <buton type="button" class="btn btn-primary" ng-click="captureFrontImageUsingExtCamera()">Capture</button>
+               </div>
             </div>
             
          </div>
@@ -110,7 +107,8 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD FRONT IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-hide="screenData.useExtCamera" ng-click="captureFrontImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-show="screenData.useExtCamera" ng-click="retryFrontImageUsingExtCamera()">RETRY</button>
                </div>
             </div>
             
@@ -136,12 +134,21 @@
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE'">
          <div class="row content">
             
-            <div class="col-md-12 jumbotron">
+            <div class="col-md-12 jumbotron" ng-hide="screenData.useExtCamera">
                <p class="title">Upload a clear picture of the back of your ID card.</p>
                <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
                   <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">Capture ID/Passport</button>
+               </div>
+            </div>
+
+            <div class="col-md-12 jumbotron" ng-show="screenData.useExtCamera">
+               <p class="title">Please place the ID below the camera with back side of ID facing camera.</p>
+               <video id="id-back-video" autoplay></video>
+               <br/><br/>
+               <div class="jumbotron text-center">
+                  <buton type="button" class="btn btn-primary" ng-click="captureBackImageUsingExtCamera()">Capture</button>
                </div>
             </div>
             
@@ -164,7 +171,8 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD BACK IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-hide="screenData.useExtCamera" ng-click="captureBackImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-show="screenData.useExtCamera" ng-click="retryBackImageUsingExtCamera()">RETRY</button>
                </div>
             </div>
             
