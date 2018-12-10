@@ -102,6 +102,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 
 		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
+			alert(response.FacialMatchConfidenceRating);
 			if (response && response.FacialMatch && response.FacialMatchConfidenceRating > 95) {
 				$scope.$emit('FR_SUCCESS');
 			} else {
@@ -205,19 +206,18 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	var processImageFromIos = function(faceImage, frontSideImage, imageData) {
+		$scope.$emit('FR_ANALYSIS_STARTED');
 		var img = document.createElement('img');
 
-		img.src = imageData;
+		var unmodifiedFaceImage = "data:image/jpeg;base64," + imageData;
+
+		img.src = unmodifiedFaceImage;
 		img.onload = function() {
-			var imageData = sntIDCollectionUtilsSrv.resizeImage(img, file);
+			var imageData = sntIDCollectionUtilsSrv.resizeImage(img);
 
 			if (faceImage) {
-				unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
-				$timeout(function() {
-					$scope.screenData.scanMode = screenModes.analysing_id_data;
-				}, 0);
+				unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(unmodifiedFaceImage);
 				verifyFaceImageWithId(unmodifiedFaceImage, unmodifiedFaceImage);
-				$scope.$emit('FR_ANALYSIS_STARTED');
 			}
 			// else if (frontSideImage) {
 			// 	unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
@@ -227,7 +227,11 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			// 	$scope.screenData.backSideImage = imageData;
 			// 	postBackImage();
 			// }
-			$scope.$emit('IMAGE_ANALYSIS_STARTED');
+
+		};
+
+		img.onerror = function(error) {
+			$scope.$emit('FR_FAILED');
 		};
 	};
 
@@ -263,9 +267,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.startFacialRecognition = function() {
+
 		if ($scope.screenData.useiOSAppCamera) {
 			cordova.exec(function(response) {
-				processImageFromIos(faceImage, undefined, response);
+				processImageFromIos(true, undefined, response.image_base64);
 			}, function(error) {
 				$scope.$emit('FR_FAILED');
 			}, 'RVCardPlugin', 'captureFacePhoto', [5, 3]);
