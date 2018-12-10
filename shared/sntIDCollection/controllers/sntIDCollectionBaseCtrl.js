@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log) {
+angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log, $interval) {
 
 	var resetScreenData = function() {
 		$scope.screenData = {
@@ -7,7 +7,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			imageSide: 0,
 			scanMode: screenModes.validate_subscription,
 			idDetails: {},
-			needBackSideScan: false
+			needBackSideScan: false,
+			useExtCamera: false
 		};
 	};
 	var domIDMappings;
@@ -24,11 +25,15 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 	};
 
+	$scope.setConfigurations = function(config) {
+		$scope.screenData.useExtCamera = config.useExtCamera;
+	};
+
 	var getImageDetails = function() {
 		sntIDCollectionSrv.getImageDetails($scope.screenData.imageSide).then(function(response) {
 
 			$scope.screenData.needBackSideScan = !(response.image_classification && response.image_classification.Type && response.image_classification.Type.Size === 3);
-
+			
 			if (!$scope.screenData.needBackSideScan || $scope.screenData.imageSide === 1) {
 				$scope.screenData.scanMode = screenModes.confirm_id_images;
 			} else {
@@ -123,7 +128,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 						$timeout(function() {
 							$scope.screenData.scanMode = screenModes.analysing_id_data;
 						}, 0);
-						verifyFaceImageWithId(unmodifiedFrontImage, unmodifiedFaceImage);
+						verifyFaceImageWithId(unmodifiedFaceImage, unmodifiedFaceImage);
 						$scope.$emit('FR_ANALYSIS_STARTED');
 					}
 					else if (frontSideImage) {
@@ -175,6 +180,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.confirmFrontImage = function() {
 		$scope.screenData.imageSide = 1;
 		$scope.screenData.scanMode = $scope.screenData.needBackSideScan ? screenModes.upload_back_image : screenModes.confirm_id_images;
+		if ($scope.screenData.scanMode === screenModes.upload_back_image && $scope.screenData.useExtCamera) {
+			$scope.startExtCameraCapture('back-image')
+		}
 	};
 
 	$scope.frontImageChanged = function(evt) {
@@ -229,6 +237,43 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$timeout(function() {
 			angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();
 		}, 0);
+	};
+
+	$scope.startExtCameraCapture = function(type) {
+		var video = type === 'front-image' ? document.querySelector('#id-video') : document.querySelector('#id-back-video');
+
+		navigator.mediaDevices.getUserMedia({
+			video: true
+		}).
+		then(function handleSuccess(stream) {
+			video.srcObject = stream;
+		}).catch(function() {
+
+		});
+	};
+
+	$scope.captureFrontImageUsingExtCamera = function (argument) {
+		var video = document.querySelector('#id-video');
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		$scope.screenData.frontSideImage = imageData;
+		getDocInstance();
+	};
+
+	$scope.retryFrontImageUsingExtCamera = function (argument) {
+		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+		$scope.startExtCameraCapture('front-image');
+	};
+
+	$scope.captureBackImageUsingExtCamera = function (argument) {
+		var video = document.querySelector('#id-back-video');
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		$scope.screenData.backSideImage = imageData;
+		postBackImage();
+	};
+
+	$scope.retryBackImageUsingExtCamera = function (argument) {
+		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
+		$scope.startExtCameraCapture('back-image');
 	};
 
 	(function() {
