@@ -16,6 +16,7 @@ angular.module('admin').
                 _.each(data.rooms,
                     function(room) {
                         var relevantMapping = _.find(mappedRooms, {value: room.room_number});
+                        
                         roomlist.push({
                             room_number: room.room_number,
                             external_value: relevantMapping ? relevantMapping.external_value : ''

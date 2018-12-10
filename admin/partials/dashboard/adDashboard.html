@@ -1,6 +1,7 @@
  <!-- Listing & details holders -->
-
-   <section id="dashboard-hotel" class="content admin-scrollfix"  data-drop="true"  jqyoui-droppable="{multiple:false, onDrop: 'onDropingMenuItemListing'}"  ng-model='dropedElementsModel' data-jqyoui-options="{accept: '.in-quick-menu'}" div-touch-move-stop-propogate>
+<section ng-if="selectedMenu">
+   <section id="dashboard-hotel" class="content admin-scrollfix"  data-drop="true"
+            jqyoui-droppable="{multiple:false, onDrop: 'onDropingMenuItemListing'}"  ng-model='dropedElementsModel' data-jqyoui-options="{accept: '.in-quick-menu'}" div-touch-move-stop-propogate>
       <header class="content-title float header-pos">
          <h2>{{selectedMenu.menu_name}} setup</h2>
       </header>
@@ -28,4 +29,4 @@
          </ul>  
       </section>    
    </section>
-
+</section>
