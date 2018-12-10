@@ -1,0 +1,29 @@
+
+<div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
+   <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'"> Confirm front image</p>
+   <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'"> Confirm images</p>
+   <!-- <img id='image-preview' class='gid-image-preview'
+      ng-show='idScanData.selectedGuest.front_image_data'
+      data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
+      src-error=''>
+   <img id='image-preview-back' ng-show='idScanData.selectedGuest.back_image_data'  class='gid-image-preview' 
+      data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
+      src-error='' > -->
+
+   <div class="col-md-12">
+               <div class="jumbotron text-center" ng-show='idScanData.selectedGuest.front_image_data'>
+                  <p class="title">UPDATED FRONT IMAGE</p>
+                  <img id="front-side-image" data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
+                     src-error='' style="max-width: 100%;"/>
+               </div>
+               <div class="jumbotron text-center" ng-show="idScanData.selectedGuest.back_image_data">
+                  <p class="title">UPDATED BACK IMAGE</p>
+                  <img id="back-side-image" data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
+                      src-error='' style="max-width: 100%;"/>
+               </div>
+   </div>
+</div>
+<a class="btn btn-template grey-btn" ng-click="startScanning()" value="Go Back">GO BACK</a>
+<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" ng-click="confirmFrontImage()"> PROCEED</a>
+<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" ng-click="confirmImages()"> PROCEED</a>
+

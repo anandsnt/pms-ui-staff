@@ -1,0 +1,18 @@
+<section id="main" class="centered test add_remove_main" role="main">
+   <div id="content" style="text-align: center;">
+      <h1 translate>
+         FACIAL_RECOGNITION_FAILED_SEE_STAFF_OPTIONALLY
+      </h1>
+      <button type="button" class="button done-btn" touch-press="startFacialRecognition()" translate>
+         RETAKE_SELFIE
+      </button>
+      <button ng-if="zestStationData.kiosk_staff_notification_sound" type="button" class="button done-btn transparent" touch-press="ringBell()" translate>
+         CALL_STAFF
+      </button>
+   </div>
+   <div>
+      <button class='button blue invis bottom-left' touch-press="loginAsStaff()">
+         Admin
+      </button>
+   </div>
+</section>

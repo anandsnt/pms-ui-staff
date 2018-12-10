@@ -1,0 +1,43 @@
+<span class="message h2">Financial Settings</span>
+<div class="scrollable" ng-iscroll="financialSettingsList" ng-iscroll-delay="100">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+    <table class="table-settings wrapper">
+        <tbody>
+            <tr>
+                <td>Print AR invoice number</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_print_ar_invoice_number_enabled}">
+                        <!-- remove checked when not active-->
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_print_ar_invoice_number_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>AR Invoice Number Prefix</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.ar_invoice_number_prefix" placeholder="Enter Prefix"> 
+                </td>
+            </tr>
+            <tr>
+                <td>First AR Invoice Number field</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.first_ar_invoice_number" placeholder="Enter First AR Invoice Number"> 
+                </td>
+            </tr>
+            <tr>
+                <td>AR Invoice Label</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.ar_invoice_label" placeholder="Enter AR Invoice Label"> 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <button class="button blank" ng-click="closeDialog()">Cancel</button>
+    <button class="button green" ng-click="saveLegalSettings('ar')">Save Changes</button>
+</div>
