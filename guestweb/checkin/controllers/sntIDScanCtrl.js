@@ -56,7 +56,7 @@
 				if (apiParams.nationality_name) {
 					delete apiParams.nationality_name;
 				}
-
+				$scope.isLoading = true;
 				guestIDScanService.savePassport(apiParams).then(function(response) {
 					$scope.isLoading = false;
 					if (response.status === 'failure') {
@@ -121,7 +121,12 @@
 			
 
 			$scope.$on('CREDENTIALS_VALIDATED', function() {
-				$scope.screenData.scanMode = 'GUEST_LIST';
+				if ($scope.selectedReservation.guest_details.length > 1) {
+					$scope.screenData.scanMode = 'GUEST_LIST';
+				}
+				else {
+					$scope.selectGuest($scope.selectedReservation.guest_details[0]);
+				}
 			});
 
 			(function() {
