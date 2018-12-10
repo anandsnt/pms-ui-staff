@@ -220,12 +220,6 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 			$window.open('https://status.stayntouch.com', '_blank');
 		}
 	};
-
-	(function() {
-        // clear existing jwt
-        loginSrv.reset();
-	})();
-
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
