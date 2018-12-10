@@ -2134,8 +2134,9 @@
                     margin-right: 20px; 
                     .calc-width(50, 130);
 
-                    h2 { 
-                        line-height: 50px;
+                    h2 {
+                        font-size: 18px;
+                        line-height: 18px;
                     }
 
                     span.icons {
@@ -2165,6 +2166,24 @@
                 }
 
                 .icon-contracts { margin-top: 15px; }
+                .icon-archive {
+                    display: block;
+                    .square(20px);
+                    position: absolute;
+                    right: 20px;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                    opacity: 0.5;
+                }
+
+                .archived {
+                    .data {
+                        h2 {
+                            color: @grey3 !important;
+                        }
+                    }
+                }
             }
 
             &.card-result {
