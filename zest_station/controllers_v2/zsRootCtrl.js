@@ -1933,6 +1933,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
+            $scope.zestStationData.iOSCameraEnabled = false;
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
@@ -1940,12 +1941,14 @@ sntZestStation.controller('zsRootCtrl', [
                     // leave app_version null and autoIpadKeyboardEnabled to false
                     $timeout(function() {
                         
-                        cordova.exec(function(success) {
-                            if (success && success.AppVersion) {
-                                $scope.zestStationData.appVersion = success.AppVersion;
+                        cordova.exec(function(response) {
+                            if (response && response.AppVersion) {
+                                $scope.zestStationData.appVersion = response.AppVersion;
                                 // if the app version is accessible, then also the cordova configuration has been updated
                                 // as of 1.3.4.3, the config for auto-prompt keyboard is enabled
                                 $scope.zestStationData.autoIpadKeyboardEnabled = true;
+
+                                $scope.zestStationData.iOSCameraEnabled = response.iOSVersion && response.iOSVersion >= 11;
                             }
 
                         }, function() {

@@ -433,6 +433,9 @@
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
+				$scope.setConfigurations({
+					useiOSAppCamera: $scope.zestStationData.autoIpadKeyboardEnabled
+				});
 			}());
 		}
 	]);

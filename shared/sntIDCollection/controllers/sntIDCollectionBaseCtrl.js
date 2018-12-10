@@ -8,7 +8,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			scanMode: screenModes.validate_subscription,
 			idDetails: {},
 			needBackSideScan: false,
-			useExtCamera: false
+			useExtCamera: false,
+			useiOSAppCamera: false
 		};
 	};
 	var domIDMappings;
@@ -27,6 +28,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.setConfigurations = function(config) {
 		$scope.screenData.useExtCamera = config.useExtCamera;
+		$scope.screenData.useiOSAppCamera = config.useExtCamera;
 	};
 
 	var getImageDetails = function() {
@@ -202,6 +204,33 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		processImage(evt, false, true, angular.copy($scope.screenData.scanMode));
 	};
 
+	var processImageFromIos = function(faceImage, frontSideImage, imageData) {
+		var img = document.createElement('img');
+
+		img.src = imageData;
+		img.onload = function() {
+			var imageData = sntIDCollectionUtilsSrv.resizeImage(img, file);
+
+			if (faceImage) {
+				unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
+				$timeout(function() {
+					$scope.screenData.scanMode = screenModes.analysing_id_data;
+				}, 0);
+				verifyFaceImageWithId(unmodifiedFaceImage, unmodifiedFaceImage);
+				$scope.$emit('FR_ANALYSIS_STARTED');
+			}
+			// else if (frontSideImage) {
+			// 	unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
+			// 	getDocInstance();
+			// 	$scope.screenData.frontSideImage = imageData;
+			// } else {
+			// 	$scope.screenData.backSideImage = imageData;
+			// 	postBackImage();
+			// }
+			$scope.$emit('IMAGE_ANALYSIS_STARTED');
+		};
+	};
+
 	$scope.captureFrontImage = function() {
 		$timeout(function() {
 			angular.element(document.querySelector('#' + domIDMappings.front_side_upload)).click();
@@ -234,11 +263,19 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.startFacialRecognition = function() {
-		$timeout(function() {
-			angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();
-		}, 0);
+		if ($scope.screenData.useiOSAppCamera) {
+			cordova.exec(function(response) {
+				processImageFromIos(faceImage, undefined, response);
+			}, function(error) {
+				$scope.$emit('FR_FAILED');
+			}, 'RVCardPlugin', 'captureFacePhoto', [5, 3]);
+		} else {
+			$timeout(function() {
+				angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();
+			}, 0);
+		}
 	};
-
+	
 	$scope.startExtCameraCapture = function(type) {
 		var video = type === 'front-image' ? document.querySelector('#id-video') : document.querySelector('#id-back-video');
 
