@@ -124,7 +124,7 @@
                         <div class="cell-deposit"
                              ng-class="{'color-green' : !autoCharge.bill_balance, 'color-red' : autoCharge.bill_balance}"
                              ng-show="selectedTab == 'EOD_TAB'">
-                            {{currencySymbol}}{{autoCharge.bill_balance}}
+                            {{currencySymbol}}{{autoCharge.bill_balance|number:2}}
                         </div>
 
                     </a>
