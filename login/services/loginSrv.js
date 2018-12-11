@@ -4,8 +4,29 @@ angular.module('login').service('loginSrv',
 
             var service = this;
 
-            service.reset = function() {
-                $window.localStorage.removeItem('jwt');
+            /**
+             * This method calls the login/validate if there is a JWT available to see if the user can be redirected to Rover / SNT Admin
+             * @return {deferred.promise|{then, catch, finally}|*|promise.promise|promise|jQuery.promise|Promise<any>} promise resolves to
+             * {is_snt_admin: {Boolean}, redirect_url: {String}}
+             */
+            service.checkSession = function() {
+                var jwt = $window.localStorage.getItem('jwt'),
+                    url = '/login/validate',
+                    deferred = $q.defer();
+
+                if (jwt) {
+                    $http.get(url).
+                        then(function(response) {
+                            deferred.resolve(response.data);
+                        }, function() {
+                            $window.localStorage.removeItem('jwt');
+                            deferred.resolve('');
+                        });
+                } else {
+                    deferred.resolve('');
+                }
+
+                return deferred.promise;
             };
 
             service.login = function(data, successCallback, failureCallBack) {
@@ -13,6 +34,7 @@ angular.module('login').service('loginSrv',
 
                 $http.post("/login/submit", data).then(function(response) {
                     if (response.data.status === "success") {
+                        $window.localStorage.removeItem('jwt');
                         $window.localStorage.setItem('jwt', response.headers('Auth-Token'));
                         successCallback(response.data.data);
                     } else {
