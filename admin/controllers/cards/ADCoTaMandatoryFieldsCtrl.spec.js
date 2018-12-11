@@ -5,16 +5,14 @@ describe('ADCoTaMandatoryFieldsCtrl', function() {
         ADCoTaMandatorySrv,
         $q,
         $defer,
-        $rootScope,
-        ngTableParams;
+        $rootScope;
 
     beforeEach(function() {
         module('admin');
-        inject(function (_$controller_, _$rootScope_, _ADCoTaMandatorySrv_, _$q_, _ngTableParams_) {
+        inject(function (_$controller_, _$rootScope_, _ADCoTaMandatorySrv_, _$q_) {
             $controller = _$controller_;
             ADCoTaMandatorySrv = _ADCoTaMandatorySrv_;
             $q = _$q_;
-            $defer = $q.defer();
             $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
             $scope.coTaMandatoryFields = {
