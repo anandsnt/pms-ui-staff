@@ -444,7 +444,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
         };
 
     $scope.recalculationValueChanged = function() {
-        if (Math.sign($scope.filterData.commssionRecalculationValue) !== 1) {
+        if (isNaN($scope.filterData.commssionRecalculationValue)) {
             $scope.filterData.commssionRecalculationValue = '';
         }
     };
