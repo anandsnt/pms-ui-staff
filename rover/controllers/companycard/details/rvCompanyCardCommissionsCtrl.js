@@ -211,6 +211,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 $scope.prePaidCommissions = _.filter($scope.prePaidCommissions, function(value) {
                     return value.reservation_id != commission.reservation_id;
                 });
+                // If any one of the items is unselected, set the all select flag to false
+                $scope.filterData.selectAll = false;
             }
             if ($scope.selectedCommissions.length == 0 && $scope.prePaidCommissions.length == 0) {
                 fetchCommissionDetails(false);
@@ -222,11 +224,19 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 updateCommissionSummary(commissionList);
             }
 
+            // Check if all the items have been selected, if selected toggle on the select all checbox
+            var isAllCommissionsSelected = _.every($scope.commissionDetails, function(commissionDetail) {
+                return commissionDetail.is_checked;
+            });
+
             // TODO: Adding the fix to solve the selection issue. The code above this comment needs to be revisisted
             if ($scope.selectedCommissions.length === 0 && $scope.prePaidCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
-            }            
+            } else if (isAllCommissionsSelected) {            
+                $scope.filterData.selectAll = true;
+                $scope.toggleSelection();
+            }
         };
 
     // Updates the checked status of the current  page records while making the whole selection
