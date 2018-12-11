@@ -226,7 +226,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             // Check if all the items have been selected, if selected toggle on the select all checbox
             var isAllCommissionsSelected = _.every($scope.commissionDetails, function(commissionDetail) {
-                return commissionDetail.is_checked
+                return commissionDetail.is_checked;
             });
 
             // TODO: Adding the fix to solve the selection issue. The code above this comment needs to be revisisted
