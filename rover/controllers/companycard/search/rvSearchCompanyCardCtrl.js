@@ -108,6 +108,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 						'has_ar_number': $scope.hasArNumber
 					};
 
+					if (!$scope.viewState.isViewSelected) {
+						dataDict.account_type = 'COMPANY';
+						if (!$scope.viewState.isCompanyCardSelected) {
+							dataDict.account_type = 'TRAVELAGENT';
+						}
+					}
+
 					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
 				}
 				// we have changed data, so we are refreshing the scrollerbar
@@ -131,5 +138,40 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			$scope.textInQueryBox = $stateParams.textInQueryBox;
 			$scope.queryEntered();
 		}
+
+		// Switch between view/merge screens
+		$scope.onViewChange = () => {			
+			if($scope.viewState.isViewSelected) {
+				$scope.viewState.isCompanyCardSelected = true;
+			}
+		};
+
+		$scope.onCardSelection = (card) => {
+			if(!$scope.selectedCardsForMerge.length) {
+				card.isPrimary = true;
+			}
+			$scope.selectedCardsForMerge.push(card);
+		};
+
+		$scope.onPrimaryGuestSelectionChange = (id) => {
+			$scope.selectedCardsForMerge.forEach((card) => {
+				if (card.id === id)	{
+					card.isPrimary = true;
+				} else {
+					card.isPrimary = false;
+				}
+			})
+		};
+
+		// Initialize the co/ta search view
+		var init = () => {
+			$scope.viewState = {
+				isViewSelected: true,
+				isCompanyCardSelected: true
+			};
+			$scope.selectedCardsForMerge = [];
+		};
+
+		init();
 	}
 ]);
