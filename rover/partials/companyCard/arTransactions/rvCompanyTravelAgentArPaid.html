@@ -11,7 +11,7 @@
                     <span>{{paidInvoice.guest_last_name}}</span>, <span>{{paidInvoice.guest_first_name}}</span>
                 </h2>
                 <span class="invoice">Invoice #<span class="value">{{paidInvoice.invoice_number}}</span></span>
-                <span class="invoice" ng-if="arDataObj.is_print_ar_invoice_number_enabled && paidInvoice.ar_invoice_number!==null">
+                <span class="invoice" ng-if="arDataObj.isPrintArInvoiceNumberEnabled && paidInvoice.ar_invoice_number!==null">
                     {{paidInvoice.ar_invoice_label}} #<span class="value">{{paidInvoice.ar_invoice_number}}</span>
                 </span>
                 <span class="confirmation" ng-if="paidInvoice.external_reference_number !== null">Ext #<span class="value">{{paidInvoice.external_reference_number}}</span></span>
@@ -26,7 +26,7 @@
                 <h2>
                     <span>{{paidInvoice.account_name}}</span>
                 </h2>
-                <span class="invoice" ng-if="arDataObj.is_print_ar_invoice_number_enabled && paidInvoice.ar_invoice_number!==null">
+                <span class="invoice" ng-if="arDataObj.isPrintArInvoiceNumberEnabled && paidInvoice.ar_invoice_number!==null">
                     {{paidInvoice.ar_invoice_label}} #<span class="value">{{paidInvoice.ar_invoice_number}}</span>
                 </span>
                 <span class="invoice">Account #<span class="value">{{paidInvoice.account_number}}</span></span>
