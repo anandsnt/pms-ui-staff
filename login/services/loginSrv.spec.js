@@ -12,6 +12,12 @@ describe('LoginSrv', function() {
             'errors': []
         };
 
+        beforeAll(function() {
+            window.onbeforeunload = function() {
+                return 'Application trying to do a full page reload!';
+            };
+        });
+
         beforeEach(function() {
             module('login');
 

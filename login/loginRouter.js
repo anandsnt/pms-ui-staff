@@ -12,13 +12,13 @@ login.config([
         $stateProvider.state('top', {
             url: '/',
             onEnter: [
-                'sessionInfo', function(sessionInfo) {
+                '$window', 'sessionInfo', function($window, sessionInfo) {
                     if (sessionInfo && sessionInfo.is_sp_admin) {
-                        location.href = '/login?select_property=true';
+                        $window.location.href = '/login?select_property=true';
                     } else if (sessionInfo && sessionInfo.redirect_url) {
-                        location.href = sessionInfo.redirect_url;
+                        $window.location.href = sessionInfo.redirect_url;
                     } else {
-                        location.href = '/login';
+                        $window.location.href = '/login';
                     }
                 }],
             resolve: {
