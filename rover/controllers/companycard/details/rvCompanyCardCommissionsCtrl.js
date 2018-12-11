@@ -321,12 +321,13 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         };
 
-        $scope.toggleHoldStatus = function(commission) {
-
+        $scope.toggleHoldStatus = function($event, commission) {
             if (commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid") {
                 $scope.errorMessage = ['Only transactions on \'UNPAID\' status can be set to On Hold'];
+                $event.stopPropagation();
                 return;
             }
+
             var commissionToUpdate = {};
 
             commissionToUpdate.reservation_id = commission.reservation_id;
@@ -384,6 +385,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
             return hasShownToggleBtn ? {'visibility': 'visible'} : {'visibility': 'hidden'};
         };
 
+        $scope.$on("CLEAR_ERROR_MESSAGE", function() {
+            $scope.errorMessage = '';
+        });
     // To print the current screen details.
         $scope.clickedPrintButton = function() {
 
