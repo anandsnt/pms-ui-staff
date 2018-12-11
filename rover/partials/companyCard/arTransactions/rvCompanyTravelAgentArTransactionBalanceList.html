@@ -22,7 +22,7 @@
 				<span class="invoice" ng-if="arDataObj.is_print_ar_invoice_number_enabled">
 					Invoice #<span class="value">{{balance.invoice_number}}</span>
 				</span>
-                <span class="invoice">
+                <span class="invoice" ng-if="arDataObj.is_print_ar_invoice_number_enabled && balance.ar_invoice_number!==null">
                     {{balance.ar_invoice_label}} #<span class="value">{{balance.ar_invoice_number}}</span>
                 </span>
 				<span class="confirmation" ng-if="balance.external_reference_number!==null">
@@ -45,7 +45,10 @@
 				<!-- add class .group/.allotment if group or allotment -->
 				<h2>
 					{{balance.account_name}}
-				</h2>                
+				</h2> 
+                <span class="invoice" ng-if="arDataObj.is_print_ar_invoice_number_enabled && balance.ar_invoice_number!==null">
+                    {{balance.ar_invoice_label}} #<span class="value">{{balance.ar_invoice_number}}</span>
+                </span>               
 
 				<span class="invoice">
 					Account #<span class="value">{{balance.account_number}}</span>
