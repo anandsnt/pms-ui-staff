@@ -322,11 +322,12 @@ sntRover.controller('companyCardCommissionsCtrl', [
         };
 
         $scope.toggleHoldStatus = function($event, commission) {
-            $event.stopPropagation();
             if (commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid") {
                 $scope.errorMessage = ['Only transactions on \'UNPAID\' status can be set to On Hold'];
+                $event.stopPropagation();
                 return;
             }
+
             var commissionToUpdate = {};
 
             commissionToUpdate.reservation_id = commission.reservation_id;
