@@ -48,13 +48,14 @@ describe('LoginSrv', function() {
         });
 
         it('validate token', function() {
-            var response;
-
-            this.$httpBackend.when('GET', '/login/validate').
-                respond(200, {
+            var response,
+                sampleResponse = {
                     is_sp_admin: false,
                     redirect_url: '/staff'
-                });
+                };
+
+            this.$httpBackend.when('GET', '/login/validate').
+                respond(200, sampleResponse);
 
             this.loginSrv.checkSession(null,
                 function() {
@@ -69,7 +70,7 @@ describe('LoginSrv', function() {
             this.$httpBackend.flush(1);
 
             expect(response).
-                toEqual('success');
+                toEqual(sampleResponse);
         });
 
         it('validate token - expired or missing token', function() {
@@ -91,8 +92,9 @@ describe('LoginSrv', function() {
 
             this.$httpBackend.flush(1);
 
+            // This method resolves to '' in case of failure
             expect(response).
-                toEqual('failure');
+                toEqual('');
         });
 
         /**
