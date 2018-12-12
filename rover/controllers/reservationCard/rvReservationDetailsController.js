@@ -453,7 +453,9 @@ sntRover.controller('reservationDetailsController',
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
 
-			$scope.$emit("guestTabUpdated", {"shouldShowGuestDetails": $scope.shouldShowGuestDetails});
+			$scope.$emit("SHOW_GUEST_ID_LIST", {
+				"shouldShowGuestDetails": isFromCheckin
+			});
 
 		};
 
