@@ -824,11 +824,23 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.callAPI(rvAllotmentConfigurationSrv.saveRoomBlockBookings, options);
 		};
 
-		$scope.saveReleaseDays = function() {
+		$scope.saveReleaseDays = function(massUpdateReleaseDays, massUpdateEndDate) {
 			var params = {
 				allotment_id: $scope.allotmentConfigData.summary.allotment_id,
 				results: $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings
-			};
+			},
+			allotmentStartDate = $scope.allotmentConfigData.summary.block_from,
+			businessDate = new tzIndependentDate($rootScope.businessDate);
+
+			if (massUpdateReleaseDays) {
+				params.start_date = allotmentStartDate;
+				if (allotmentStartDate < businessDate) {
+					params.start_date = businessDate;
+				}
+				params.start_date = formatDateForAPI(params.start_date);
+				params.release_days = parseInt(massUpdateReleaseDays);				
+				params.end_date = formatDateForAPI(massUpdateEndDate);
+			}
 
 			var options = {
 				params: params,

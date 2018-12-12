@@ -14,6 +14,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.twinfieldSetup', {
+        templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
+        controller: 'adTwinfieldSetupCtrl',
+        url: '/gomomentivy/setup',
+        resolve: {
+            twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+            }],
+            paymentChargeCodes: ['adTwinfieldSetupSrv', function(adTwinfieldSetupSrv) {
+                return adTwinfieldSetupSrv.getPaymentChargeCodes();
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zestWebGlobalSetup', {
         templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
         controller: 'ADzestWebGlobalSettingsCtrl',
@@ -331,22 +345,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/mapping/:hotelId'
     });
 
+    // hotel_id will be removed from the following stateProvider URL's (external-mappings, add-external-mapping, edit-external-mapping)
     $stateProvider.state('admin.external-mappings', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsList.html',
         controller: 'ADExternalMappingsListCtrl',
-        url: '/mappings/show/:hotel_id/:interface_id/:interface_name'
+        url: '/mappings/show/:interface_id/:interface_name'
     });
 
     $stateProvider.state('admin.add-external-mapping', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsAdd.html',
-        url: '/mappings/add/:mapping_type/:hotel_id/:interface_id/:interface_name',
+        url: '/mappings/add/:mapping_type/:interface_id/:interface_name',
         controller: 'ADExternalMappingsAddCtrl',
         resolve: {
             mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
                 function(ADInterfaceMappingSrv, $stateParams) {
                     return ADInterfaceMappingSrv.fetchInterfaceMappingTypes({
-                        interface_type_id: $stateParams.interface_id,
-                        hotel_id: $stateParams.hotel_id
+                        interface_type_id: $stateParams.interface_id
                     });
                 }
             ]
@@ -355,14 +369,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.edit-external-mapping', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsEdit.html',
-        url: '/mappings/add/:mapping_type/:hotel_id/:interface_id/:interface_name/:mapping_id',
+        url: '/mappings/add/:mapping_type/:interface_id/:interface_name/:mapping_id',
         controller: 'ADExternalMappingsEditCtrl',
         resolve: {
             mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
                 function(ADInterfaceMappingSrv, $stateParams) {
                     return ADInterfaceMappingSrv.fetchInterfaceMappingTypes({
-                        interface_type_id: $stateParams.interface_id,
-                        hotel_id: $stateParams.hotel_id
+                        interface_type_id: $stateParams.interface_id
                     });
                 }
             ],

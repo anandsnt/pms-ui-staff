@@ -1,0 +1,94 @@
+<div class="form float" ng-if="state.activeTab === 'SETUP'">
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <div class="entry full-width">
+                <label><span translate>ACTIVATE_INACTIVATE</span></label>
+                <div name="active-inactive-toggle"
+                     class="switch-button single"
+                     ng-class="{ on: config.enabled }"
+                     ng-click="toggleEnabled()">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <div class="entry full-width">
+                <label>
+                    TWINFIELD OAUTH
+                    <span class="oauth-status success" ng-if="config.is_authorized">
+                            {{'EXACT_ONLINE_AUTHORIZED' | translate}}
+                        </span>
+                    <span class="oauth-status" ng-if="!config.is_authorized">
+                            {{'EXACT_ONLINE_UNAUTHORIZED' | translate}}
+                        </span>
+                </label>
+                <div target="_self" class="button blue" ng-click="authorize()">
+                    {{'EXACT_ONLINE_OAUTH' | translate}}
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>API Access<span> Configuration</span></h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text" value="config.process_url"
+                        label="{{'PROCESS_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text" value="config.finder_url"
+                        label="{{'FINDER_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Settings</h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text" value="config.hotel_code"
+                        label="{{'OFFICE_CODE'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.suspended_account_code"
+                        label="{{'SUSPENSE_ACCOUNT_CODE'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text" value="config.balancing_ledger_account_number"
+                        label="{{'LEDGER_ACCOUNT_NUMBER'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <multi-select-drag-drop available="meta.available_charge_codes"
+                            selected="meta.selected_charge_codes"></multi-select-drag-drop>
+
+    <ad-sync-block historical-date-range-days="30"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <div class="actions float">
+        <button type="button" id="cancel" class="button blank add-data-inline"
+                ng-click="goBackToPreviousState()" translate>
+            CANCEL
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green"
+                ng-click="saveSetup()" translate>
+            SAVE_CHANGES
+        </button>
+    </div>
+</div>

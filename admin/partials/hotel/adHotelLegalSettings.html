@@ -8,6 +8,7 @@
 					- icon-success -> when success/activated
 				-->
 				<li ng-class="{'active': activeTab === 'financials'}" ng-click="clickedTabMenu('financials')">Financials</li>
+				<li ng-class="{'active': activeTab === 'account_receivables'}" ng-click="clickedTabMenu('account_receivables')">Account  Receivables</li>
 				<li ng-class="{'active': activeTab === 'reports'}" ng-click="clickedTabMenu('reports')">Reports</li>
 				<li ng-class="{'active': activeTab === 'reservations'}" ng-click="clickedTabMenu('reservations')">Reservations</li>
 				<li ng-class="{'active': activeTab === 'luhn'}" ng-click="clickedTabMenu('luhn')"><span class="icons icon-action"></span>Luhn Algorithm</li>
@@ -19,6 +20,10 @@
 			<!-- hide when not active screen (add .hidden) -->
 			<div class="content" ng-show="activeTab === 'financials'">
 				<div ng-include="'/assets/partials/hotel/legalFinancialSettings.html'"></div>
+			</div>
+			<!-- hide when not active screen (add .hidden) -->
+			<div class="content" ng-show="activeTab === 'account_receivables'">
+				<div ng-include="'/assets/partials/hotel/legalAccountReceivablesSettings.html'"></div>
 			</div>
 			<!-- Reports -->
 			<div class="content hidden" ng-show="activeTab === 'reports'">

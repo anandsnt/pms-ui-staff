@@ -1,11 +1,11 @@
 <!-- Travel Agent Card Tab - Commisions -->
 <form method="post" action="{action}" id="ta-commisions" name="ta-commisions" class="form card-tab inner-header commisions" ng-show="currentSelectedTab == 'cc-commissions'">
-    <div class="tab-header with-filters">
+    <div class="tab-header" ng-class="{ 'with-filters' : isCommissionFilterTabOpened, 'no-filters': !isCommissionFilterTabOpened && !(filterData.selectAll || selectedCommissions.length > 0), 'no-multi-property': !shouldShowPropertyDropDown}">
         <div class="search-form has-options has-dates">
             <div class="filters" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
                 <!-- Add class "hidden" when selecting all/individual commisions -->
                 
-                <div class="entry dates date-range">
+                <div class="entry dates date-range" ng-class="{'hidden': !isCommissionFilterTabOpened}">
                     <div class="entry-data has-datepicker">
                         <label for="commision-date-from" translate>COMMISSION_START_DATE</label>
                         <button class="clear-query" ng-click="$event.preventDefault(); clearFromDateField();" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}">
@@ -15,7 +15,7 @@
                         <input id="commision-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
                     </div>
                 </div>
-                <div class="entry dates date-range">
+                <div class="entry dates date-range" ng-class="{'hidden': !isCommissionFilterTabOpened}">
                     <div class="entry-data has-datepicker">
                         <label for="commision-date-to" translate>COMMISSION_END_DATE</label>
                         <button class="clear-query" ng-click="$event.preventDefault(); clearToDateField();" ng-class="{'visible': escapeNull(filterData.toDate) !=''}">
@@ -25,14 +25,14 @@
                         <input id="commision-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()"  readonly />
                     </div>
                 </div>
-                <div class="entry select with-label">
+                <div class="entry select with-label" ng-class="{'hidden': !isCommissionFilterTabOpened}">
                     <label for="commision-status" translate>COMMISSION_STATUS</label>
                         <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
                             <option value="Commissionable" selected translate>COMMISSION_COMMISSIONABLE</option>
                             <option value="Non-commissionable" translate>COMMISSION_NON_COMMISSIONABLE</option>
                         </select>
                 </div>
-                <div class="entry paid-status select with-label" >
+                <div class="entry paid-status select with-label" ng-class="{'hidden': !isCommissionFilterTabOpened}">
                     <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
                         <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
                             <option value="" translate>COMMISSION_SET_STATUS</option>
@@ -44,13 +44,14 @@
                         </select>
                 </div>
 
-                <div class="entry property select with-label" ng-show="shouldShowProperty()">
+                <div class="entry property select with-label" ng-show="shouldShowPropertyDropDown">
                     <label for="commision-property">Property</label>                 
                         <select ng-model="filterData.selectedHotel" ng-change="onPropertyFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          
                         </select>               
                 </div>
-
-
+                <button type="button" class="button button-filter white with-icon only-icon" ng-click="toggleFilter()">
+                    <span class="icons icon-filter"></span>
+                </button>
             </div>
             <!-- Remove class "hidden" when selecting all/individual commisions -->
             <div class="recalculate-form" ng-show="(filterData.selectAll || selectedCommissions.length > 0)">
@@ -203,7 +204,7 @@
 
                             <!-- Don't show this button if the commission is paid or prepaid -->
                             <!-- If on Hold, add class .active -->
-                            <button type="button" class="button with-icon" ng-class="{'active': commissionDetail.commission_data.paid_status === 'On Hold'}" ng-click="toggleHoldStatus(commissionDetail)" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
+                            <button type="button" class="button with-icon" ng-class="{'active': commissionDetail.commission_data.paid_status === 'On Hold'}" ng-click="toggleHoldStatus($event, commissionDetail)" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
                                 <!-- If on Hold, add class .red and remove .black-->
                                 <span class="icons icon-hold " ng-class="{'black': commissionDetail.commission_data.paid_status !== 'On Hold', 'red': commissionDetail.commission_data.paid_status === 'On Hold'}"></span>
                             </button>

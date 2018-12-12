@@ -18,7 +18,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			front_side_upload: domIDMapping ? domIDMapping.front_side_upload : 'front-image',
 			back_side_upload: domIDMapping ? domIDMapping.back_side_upload : 'back-image',
 			front_image_preview: domIDMapping ? domIDMapping.front_image_preview : 'front-side-image',
-			back_image_preview: domIDMapping ? domIDMapping.back_image_preview : 'back-side-image'
+			back_image_preview: domIDMapping ? domIDMapping.back_image_preview : 'back-side-image',
+			face_img_upload: domIDMapping ? domIDMapping.face_img_upload : 'face-image-upload',
+			face_image: domIDMapping ? domIDMapping.face_image : 'face-image'
 		};
 	};
 
@@ -47,6 +49,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			}
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
 		});
 	};
@@ -56,6 +59,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED', response);
 			$scope.screenData.scanMode = screenModes.upload_back_image_failed;
 		});
 	};
@@ -65,6 +69,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			getImageDetails();
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED', response);
 			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};
@@ -78,11 +83,29 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			}
 		}, function(response) {
 			$log.error(response);
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
 		});
 	};
 
-	var processImage = function(evt, frontSideImage) {
+	var verifyFaceImageWithId = function(frontSideImage, facialImage) {
+		var facialRecognitionFailed = function() {
+			$scope.$emit('FR_FAILED');
+			$scope.screenData.scanMode = screenModes.facial_recognition_failed;
+		};
+
+		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
+			if (response && response.FacialMatch && response.FacialMatchConfidenceRating > 95) {
+				$scope.$emit('FR_SUCCESS');
+			} else {
+				facialRecognitionFailed();
+			}
+		}, facialRecognitionFailed);
+	};
+
+
+    var unmodifiedFrontImage, unmodifiedFaceImage;
+	var processImage = function(evt, frontSideImage, faceImage, previousState) {
 
 		var file = evt.target;
 		var reader = new FileReader();
@@ -95,19 +118,35 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 				img.onload = function() {
 					var imageData = sntIDCollectionUtilsSrv.resizeImage(img, file);
 
-					if (frontSideImage) {
+					if (faceImage) {
+						unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
+						$timeout(function() {
+							$scope.screenData.scanMode = screenModes.analysing_id_data;
+						}, 0);
+						verifyFaceImageWithId(unmodifiedFrontImage, unmodifiedFaceImage);
+						$scope.$emit('FR_ANALYSIS_STARTED');
+					}
+					else if (frontSideImage) {
+						unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
 						getDocInstance();
 						$scope.screenData.frontSideImage = imageData;
 					} else {
 						$scope.screenData.backSideImage = imageData;
 						postBackImage();
 					}
+					$scope.$emit('IMAGE_ANALYSIS_STARTED');
 				};
 			} else {
 				$log.error('The File APIs are not fully supported in this browser.');
 			}
 		};
-		reader.readAsDataURL(file.files[0]);
+		if (file.files.length > 0) {
+			reader.readAsDataURL(file.files[0]);
+		} else {
+			$timeout(function() {
+				$scope.screenData.scanMode = previousState;
+			}, 0);
+		}
 	};
 
 	$scope.confirmImages = function() {
@@ -140,14 +179,19 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.frontImageChanged = function(evt) {
 		$scope.screenData.frontSideImage = '';
-		processImage(evt, true);
+		processImage(evt, true, false, angular.copy($scope.screenData.scanMode));
 		$scope.screenData.scanMode = screenModes.analysing_front_image;
 	};
 
 	$scope.backImageChanged = function(evt) {
 		$scope.screenData.backSideImage = '';
-		processImage(evt, false);
+		processImage(evt, false, false, angular.copy($scope.screenData.scanMode));
 		$scope.screenData.scanMode = screenModes.analysing_back_image;
+	};
+
+	$scope.faceImageChanged = function (evt) {
+		$scope.screenData.faceImage = '';
+		processImage(evt, false, true, angular.copy($scope.screenData.scanMode));
 	};
 
 	$scope.captureFrontImage = function() {
@@ -179,6 +223,12 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			$scope.screenData.scanMode = screenModes.invalid_id_credentials;
 			$log.error(response);
 		});
+	};
+
+	$scope.startFacialRecognition = function() {
+		$timeout(function() {
+			angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();
+		}, 0);
 	};
 
 	(function() {

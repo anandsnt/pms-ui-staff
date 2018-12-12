@@ -281,8 +281,8 @@ sntRover.controller('reservationActionsController', [
 
         $scope.roomAssignmentNeeded = function() {
             if ($scope.reservationData.reservation_card.room_number === '' ||
-                    $scope.reservationData.reservation_card.room_status === 'NOTREADY' ||
-                    $scope.reservationData.reservation_card.fo_status === 'OCCUPIED') {
+                    ($scope.reservationData.reservation_card.room_status === 'NOTREADY' && !$scope.hasAnySharerCheckedin() ) ||
+                    ($scope.reservationData.reservation_card.fo_status === 'OCCUPIED' && !$scope.hasAnySharerCheckedin() )) {
                 if ($scope.reservationData.reservation_card.room_number === '' && $scope.putInQueueClicked) {
                     return true;
                 }
@@ -585,7 +585,12 @@ sntRover.controller('reservationActionsController', [
 		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
-			startCheckin();
+			if ($scope.isGuestIdRequiredForCheckin()) {
+				$scope.toggleGuests(true);
+				return;
+			} else {
+				startCheckin();
+			}			
 		};
 		$scope.unAvailablePopup = function() {
 			ngDialog.open({
