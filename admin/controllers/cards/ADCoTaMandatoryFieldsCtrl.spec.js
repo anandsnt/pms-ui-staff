@@ -4,7 +4,6 @@ describe('ADCoTaMandatoryFieldsCtrl', function() {
         $scope = {},
         ADCoTaMandatorySrv,
         $q,
-        $defer,
         $rootScope;
 
     beforeEach(function() {
