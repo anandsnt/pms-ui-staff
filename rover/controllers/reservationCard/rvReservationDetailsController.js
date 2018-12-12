@@ -474,12 +474,15 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.shouldShowTimeDetails = false;
 		$scope.toggleTime = function() {
-			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;
-			if ($scope.shouldShowTimeDetails) {
-				$scope.shouldShowGuestDetails = false;
-			}
+			$scope.showEditDates = false;
+			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;	
 		};
 
+		$scope.showEditDates = false;
+		$scope.toggleReservationDates = function() {
+			$scope.shouldShowTimeDetails = false;
+			$scope.showEditDates = !$scope.showEditDates;
+		};
 
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
