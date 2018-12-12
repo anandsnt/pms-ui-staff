@@ -18,7 +18,6 @@ function($scope, $state, ADCoTaMandatorySrv) {
 		if (!$scope.coTaMandatoryFields.mandatory_on_ar_account) {
 			$scope.coTaMandatoryFields = {
 				tax_id_mandatory: false,
-				pay_days_mandatory: false,
 				contact_name_mandatory: false,
 				address_line1_mandatory: false,
 				city_mandatory: false,

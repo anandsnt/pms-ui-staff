@@ -585,7 +585,12 @@ sntRover.controller('reservationActionsController', [
 		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
-			startCheckin();
+			if ($scope.isGuestIdRequiredForCheckin()) {
+				$scope.toggleGuests(true);
+				return;
+			} else {
+				startCheckin();
+			}			
 		};
 		$scope.unAvailablePopup = function() {
 			ngDialog.open({

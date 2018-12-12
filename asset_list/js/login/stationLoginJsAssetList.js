@@ -18,7 +18,12 @@ module.exports = {
 			nonMinifiedFiles: [
 				sharedRoot + 'directives/documentTouchMovePrevent/*.js',
                 sharedRoot + 'directives/clickTouch/clickTouch.js',
+                sharedRoot + 'interceptors/**/*.js',
+
+                loginRoot + 'loginApp.js',
+                loginRoot + 'loginRouter.js',
 				loginRoot + "**/*.js",
+
 				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
 				'!'+loginRoot+'stationLoginJsAssetList.js',

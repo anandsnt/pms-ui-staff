@@ -21,7 +21,7 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 				'reservation_id': stateParams.reservation_id,
 				'room_no': stateParams.room_no,
 				'first_name': stateParams.first_name,
-				'email': stateParams.guest_email || stateParams.email
+				'email': stateParams.guest_email || stateParams.email ||  ""
 			};
 
 			if ($scope.zestStationData.is_kiosk_ows_messages_active) {

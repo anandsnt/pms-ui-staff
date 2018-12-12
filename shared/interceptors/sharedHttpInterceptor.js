@@ -38,14 +38,21 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
 
         return {
             request: function(config) {
-                var hotel = sntAuthorizationSrv.getProperty();
+                var hotel = sntAuthorizationSrv.getProperty(),
+                    jwt = $window.localStorage.getItem('jwt');
 
                 if (hotel) {
                     config.headers['Hotel-UUID'] = hotel;
                 }
+
+                if (jwt) {
+                    config.headers['Auth-Token'] = jwt;
+                }
                 return config;
             },
             response: function(response) {
+                const jwt = response.headers('Auth-Token');
+
                 // if manual bussiness date change is in progress alert user.
                 if (response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate) {
                     $rootScope.$emit('bussinessDateChangeInProgress');
@@ -58,6 +65,10 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 }
                 if (response.data.hasOwnProperty('is_eod_process_running')) {
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
+                }
+
+                if (jwt) {
+                    $window.localStorage.setItem('jwt', jwt);
                 }
 
                 return response || $q.when(response);

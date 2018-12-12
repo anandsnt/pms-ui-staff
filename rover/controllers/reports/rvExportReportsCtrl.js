@@ -187,7 +187,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
             if ( $scope.scheduleParams.export_date ) {
                 params.export_date = $scope.scheduleParams.export_date;
-            }            
+            }
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -491,7 +491,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Future Reservations': true,
                 'Journal Export': true,
                 'Clairvoyix Stays Export': true,
-                'Clairvoyix Reservations Export': true
+                'Clairvoyix Reservations Export': true,
+                'Synxis - Reservations': true,
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
             };
 
             var forRunOnceOnly = {
@@ -505,25 +507,30 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Nationality Statistics': true,
                 'Commissions': true,
                 'Clairvoyix Stays Export': true,
-                'Clairvoyix Reservations Export': true
+                'Clairvoyix Reservations Export': true,
+                'Synxis - Reservations': true,
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
             };
 
             var forWeekly = {
                 'Future Reservations': true,
                 'Last Week Reservations': true,
-                'Clairvoyix Reservations Export': true
+                'Clairvoyix Reservations Export': true,
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
             };
             var forMonthly = {
                 'Future Reservations': true,
                 'Past Reservations - Monthly': true,
                 'Nationality Statistics': true,
                 'Commissions': true,
-                'Clairvoyix Reservations Export': true
+                'Clairvoyix Reservations Export': true,
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
             };
 
             var forHourly = {
                 'Future Reservations': true,
-                'Clairvoyix Reservations Export': true
+                'Clairvoyix Reservations Export': true,
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
             };
 
             if ( forHourly[item.report.title] ) {
@@ -614,7 +621,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             } else {
                 $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                                                     .calendar();
-            }            
+            }
 
             if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
                 $scope.scheduleParams.time = $scope.selectedEntityDetails.time;
@@ -648,7 +655,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
              */
             $scope.exportCalenderOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate)
-            }, datePickerCommon);            
+            }, datePickerCommon);
 
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
@@ -1134,15 +1141,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
          */
         $scope.shouldShowExportCalenderDate = function () {
             if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
-                var dateFieldObject = _.find($scope.originalScheduleTimePeriods, 
-                    function(item) { 
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
+                    function(item) {
                         return item.value === 'DATE'; }
                     );
 
                 if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
                     return true;
                 }
-            }                
+            }
             return false;
         };
 
