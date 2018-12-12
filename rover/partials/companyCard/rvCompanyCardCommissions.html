@@ -204,7 +204,7 @@
 
                             <!-- Don't show this button if the commission is paid or prepaid -->
                             <!-- If on Hold, add class .active -->
-                            <button type="button" class="button with-icon" ng-class="{'active': commissionDetail.commission_data.paid_status === 'On Hold'}" ng-click="toggleHoldStatus(commissionDetail)" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
+                            <button type="button" class="button with-icon" ng-class="{'active': commissionDetail.commission_data.paid_status === 'On Hold'}" ng-click="toggleHoldStatus($event, commissionDetail)" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
                                 <!-- If on Hold, add class .red and remove .black-->
                                 <span class="icons icon-hold " ng-class="{'black': commissionDetail.commission_data.paid_status !== 'On Hold', 'red': commissionDetail.commission_data.paid_status === 'On Hold'}"></span>
                             </button>
