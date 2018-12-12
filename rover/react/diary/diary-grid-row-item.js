@@ -244,9 +244,10 @@ var GridRowItem = React.createClass({
 		}
 
 		var styleForRoomLocked = {};
+		
 		if (!this.props.data.is_hourly) {
-			styleForRoomLocked .display = 'none';
-			styleForRoomLocked .width = '0px';
+			styleForRoomLocked.display = 'none';
+			styleForRoomLocked.width = '0px';
 		}
 		return React.createElement(GridRowItemDrag, {
 			key: data.key,
