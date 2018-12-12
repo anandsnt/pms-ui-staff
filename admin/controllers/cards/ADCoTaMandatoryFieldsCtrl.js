@@ -24,7 +24,8 @@ function($scope, $state, ADCoTaMandatorySrv) {
 				postal_code_mandatory: false,
 				country_mandatory: false,
 				contact_phone_mandatory: false,
-				contact_email_address_mandatory: false
+				contact_email_address_mandatory: false,
+				e_invoice_mandatory: false
 			};
 		}
 	};
