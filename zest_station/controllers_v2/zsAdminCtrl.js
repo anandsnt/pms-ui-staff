@@ -241,9 +241,16 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.info('login out');
             }
             $scope.reportGoingOffline('logout');
-             $timeout(function() {
-                $window.location.href = '/station_logout';
-            }, 500);
+
+            var options = {
+                successCallBack: function() {
+                    $timeout(function() {
+                        $window.location.href = '/station_logout';
+                    });
+                }
+            };
+            
+            $scope.callAPI(zsGeneralSrv.signOut, options);
             
         };
 
