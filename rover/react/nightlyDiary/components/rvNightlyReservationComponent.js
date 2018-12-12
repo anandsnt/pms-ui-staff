@@ -6,9 +6,8 @@ const ReservationComponent = createClass({
         if (this.props.isAvailableRoomSlotActive) {
             return this.props.reservation.reservationClass + " " + "overlay";
         }
-        else {
-            return this.props.reservation.reservationClass;
-        }
+        
+        return this.props.reservation.reservationClass;
     },
 
     render() {

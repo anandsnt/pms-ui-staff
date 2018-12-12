@@ -730,9 +730,9 @@ admin.controller('ADAppCtrl', [
              *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
              */
             $rootScope.hotelDiaryConfig = {
-                dayUseEnabled: hotelDetails.day_use_enabled,
-                hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
-                hourlyAvailabilityCalculation: hotelDetails.hourly_availability_calculation
+                dayUseEnabled: data.day_use_enabled,
+                hourlyRatesForDayUseEnabled: data.hourly_rates_for_day_use_enabled,
+                hourlyAvailabilityCalculation: data.hourly_availability_calculation
             };
 
 			setupLeftMenu();

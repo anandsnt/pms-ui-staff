@@ -205,7 +205,7 @@ var GridRowItem = React.createClass({
 				+ (show_outstanding_indicator ? ' deposit-required' : '')
 
 		if (!this.props.data.is_hourly) {
-			row_item_class = "occupancy-block";
+			row_item_class = "occupancy-block overlay";
 		}
 
 		if (state.editing) {
@@ -268,7 +268,8 @@ var GridRowItem = React.createClass({
 			currentDragItem: props.currentResizeItem,
 			style: {
 				display: 'block',
-				left: left
+				left: left,
+				opacity: '1'
 			},
 			__setDragOver: function (bool) { this.__setDragOver(bool); }.bind(this)
 		},

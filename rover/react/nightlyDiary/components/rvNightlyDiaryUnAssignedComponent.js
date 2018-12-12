@@ -1,5 +1,4 @@
-const { createClass, PropTypes } = React;
-const { findDOMNode } = ReactDOM;
+const { createClass } = React;
 
 const NightlyDiaryUnAssignedComponent = createClass({
     getStyles() {
