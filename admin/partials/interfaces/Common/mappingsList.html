@@ -1,0 +1,75 @@
+<div class="form float" ng-if="state.activeTab === 'MAPPING'">
+
+    <div class="entry full-width" ng-controller="adInterfaceMappingCtrl">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+        <div class="entry full-width" ng-show="state.mode=='LIST'">
+            <div class="content-title" style="position: relative;">
+                <span class="count">MAPPINGS({{totalCount}})</span>
+                <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
+            </div>
+        </div>
+
+        <form ng-show="state.mode=='ADD'"
+              class="form float"
+              ng-include="'/assets/partials/interfaces/Common/mapping.html'">
+        </form>
+
+        <section ng-show="state.mode !=='ADD'">
+
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-show="totalCount > 0">
+                <tbody>
+                <tr ng-repeat="mappingRow in $data"
+                    ng-class="{'selected': room.isSelected}">
+                    <td data-title="'MAPPING TYPE'" sortable="'typeof'" header-class="width-30" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.typeof}}
+                    </td>
+                    <td data-title="'SNT VALUE'" sortable="'value'" header-class="width-20" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.value}}
+                    </td>
+                    <td data-title="'EXTERNAL VALUE'" sortable="'external_value'" header-class="width-20" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.external_value}}
+                    </td>
+                    <td data-title="'COST CENTER'" sortable="'cost_center'" header-class="width-20" ng-hide="mappingRow.editing"
+                        ng-click="onEditMapping(mappingRow)">
+                        {{mappingRow.meta_data.cost_center}}
+                    </td>
+                    <td data-title="'DELETE'" header-class="width-10" class="delete" ng-hide="mappingRow.editing">
+                        <a class="icons icon-delete large-icon" ng-click="onClickDelete(mappingRow)"></a>
+                    </td>
+                    <td colspan="5" ng-show="mappingRow.editing"
+                        ng-include="'/assets/partials/interfaces/Common/mapping.html'"></td>
+                </tr>
+                </tbody>
+            </table>
+            <!--Custom pagination footer goes here-->
+            <script type="text/ng-template" id="custom/pager" ng-show="totalCount > 0">
+                <div class="search-pagination">
+                    <div class="entry">
+                        Show
+                        <div class="select">
+                            <select ng-model="displyCount" ng-options="opt for opt in displayCountList"
+                                    ng-change="displayCountChanged(displyCount)"></select>
+                        </div>
+                        mappings per page
+                    </div>
+                    <button type="button" class="button dark-grey next" ng-repeat="page in pages"
+                            ng-show="page.type == 'next'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Next
+                    </button>
+                    <button type="button" class="button dark-grey prev" ng-repeat="page in pages"
+                            ng-show="page.type == 'prev'" ng-click="params.page(page.number)"
+                            ng-class="{'disabled': !page.active}">Prev
+                    </button>
+                    <p>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</p>
+                </div>
+            </script>
+            <!--end-->
+        </section>
+    </div>
+</div>

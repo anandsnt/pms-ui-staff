@@ -613,16 +613,21 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.hogiaSetup', {
-        templateUrl: '/assets/partials/interfaces/Hogia/adHogiaSetup.html',
-        controller: 'adInterfaceCommonCtrl',
+        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        controller: 'adInterfaceConfigurationCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'hogia';
         }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('hogia');
-            }]
+            config: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('hogia');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
+                }]
         }
     });
 
