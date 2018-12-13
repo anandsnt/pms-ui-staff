@@ -3,12 +3,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
-        url: '/exactonline/setup/:code',
+        url: '/exactonline/setup',
         resolve: {
-            exactOnlineSetupValues: ['adExactOnlineSetupSrv', '$stateParams', function(adExactOnlineSetupSrv, $stateParams) {
-                var code = $stateParams.code || '';
-
-                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration(code);
+            exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
