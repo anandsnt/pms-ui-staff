@@ -14,16 +14,16 @@
                <div class="jumbotron text-center" ng-show='idScanData.selectedGuest.front_image_data'>
                   <p class="title">UPDATED FRONT IMAGE</p>
                   <img id="front-side-image" data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
-                     src-error='' style="max-width: 190px;"/>
+                     src-error='' style="max-width: 100%;"/>
                </div>
                <div class="jumbotron text-center" ng-show="idScanData.selectedGuest.back_image_data">
                   <p class="title">UPDATED BACK IMAGE</p>
                   <img id="back-side-image" data-ng-src="{{idScanData.selectedGuest.back_image_data}}" 
-                      src-error='' style="max-width: 190px;"/>
+                      src-error='' style="max-width: 100%;"/>
                </div>
    </div>
 </div>
-<a class="btn btn-template grey-btn" ng-click="startScanning()" value="Go Back">Go Back</a>
+<a class="btn btn-template grey-btn" ng-click="startScanning()" value="Go Back">GO BACK</a>
 <a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" ng-click="confirmFrontImage()"> PROCEED</a>
 <a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" ng-click="confirmImages()"> PROCEED</a>
 

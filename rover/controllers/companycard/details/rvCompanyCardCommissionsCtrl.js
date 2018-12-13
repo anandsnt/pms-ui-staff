@@ -211,6 +211,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 $scope.prePaidCommissions = _.filter($scope.prePaidCommissions, function(value) {
                     return value.reservation_id != commission.reservation_id;
                 });
+                // If any one of the items is unselected, set the all select flag to false
+                $scope.filterData.selectAll = false;
             }
             if ($scope.selectedCommissions.length == 0 && $scope.prePaidCommissions.length == 0) {
                 fetchCommissionDetails(false);
@@ -222,11 +224,19 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 updateCommissionSummary(commissionList);
             }
 
+            // Check if all the items have been selected, if selected toggle on the select all checbox
+            var isAllCommissionsSelected = _.every($scope.commissionDetails, function(commissionDetail) {
+                return commissionDetail.is_checked;
+            });
+
             // TODO: Adding the fix to solve the selection issue. The code above this comment needs to be revisisted
             if ($scope.selectedCommissions.length === 0 && $scope.prePaidCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
-            }            
+            } else if (isAllCommissionsSelected) {            
+                $scope.filterData.selectAll = true;
+                $scope.toggleSelection();
+            }
         };
 
     // Updates the checked status of the current  page records while making the whole selection
@@ -311,12 +321,13 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         };
 
-        $scope.toggleHoldStatus = function(commission) {
-
+        $scope.toggleHoldStatus = function($event, commission) {
             if (commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid") {
                 $scope.errorMessage = ['Only transactions on \'UNPAID\' status can be set to On Hold'];
+                $event.stopPropagation();
                 return;
             }
+
             var commissionToUpdate = {};
 
             commissionToUpdate.reservation_id = commission.reservation_id;
@@ -373,37 +384,47 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             return hasShownToggleBtn ? {'visibility': 'visible'} : {'visibility': 'hidden'};
         };
+        // add the print orientation before printing
+        var addPrintOrientation = function() {
+                $( 'head' ).append( '<style id=\'print-orientation\'>@page { size: landscape; }</style>' );
+            },
+            removePrintOrientation = function() {
+                $( '#print-orientation' ).remove();
+            };
 
+        $scope.$on("CLEAR_ERROR_MESSAGE", function() {
+            $scope.errorMessage = '';
+        });
     // To print the current screen details.
         $scope.clickedPrintButton = function() {
 
-        // CICO-11667 to enable landscpe printing on transactions page.
-        // Sorry , we have to access the DOM , so using jQuery..
-            $('body').prepend('<style id=\'paper-orientation\'>@page { size: landscape; }</style>');
+            addPrintOrientation();
 
-        /*
-         *  ======[ READY TO PRINT ]======
-         */
-        // this will show the popup
+            $('header .logo').addClass('logo-hide');
+            $('header .h2').addClass('text-hide');
+            var printCompletedActions = function() {
+                $timeout(function() {
+                    // CICO-9569 to solve the hotel logo issue
+                    $('header .logo').removeClass('logo-hide');
+                    $('header .h2').addClass('text-hide');
+
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 100);
+            };
+
             $timeout(function() {
-            /*
-             *  ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-             */
-
-                $window.print();
-
-                if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                if (sntapp.cordovaLoaded) {
+                    cordova.exec(printCompletedActions,
+                        function(error) {
+                            // handle error if needed
+                            printCompletedActions();
+                        }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
+                } else {
+                    $window.print();
+                    printCompletedActions();
                 }
-
-            // Removing the style after print.
-                $('#paper-orientation').remove();
-
             }, 100);
-
-        /*
-         *  ======[ PRINTING COMPLETE. JS EXECUTION WILL COMMENCE ]======
-         */
 
         };
     // Handle toggle commssion action
@@ -444,7 +465,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
         };
 
     $scope.recalculationValueChanged = function() {
-        if (Math.sign($scope.filterData.commssionRecalculationValue) !== 1) {
+        if (isNaN($scope.filterData.commssionRecalculationValue)) {
             $scope.filterData.commssionRecalculationValue = '';
         }
     };

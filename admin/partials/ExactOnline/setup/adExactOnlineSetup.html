@@ -35,9 +35,9 @@
                             {{'EXACT_ONLINE_UNAUTHORIZED' | translate}}
                         </span>
                     </label>
-                    <a target="_self" href="{{exactOnlineSetup.oauth_url}}" class="button blue">
+                    <button ng-click="authorize(exactOnlineSetup.oauth_url)" class="button blue">
                         {{'EXACT_ONLINE_OAUTH' | translate}}
-                    </a>
+                    </button>
                 </div>
             </fieldset>
 

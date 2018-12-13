@@ -6,7 +6,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'dateFilter',
 	'$timeout',
 	'$controller',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller) {
+	'sntIDCollectionSrv',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -21,8 +22,9 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		$scope.screenData.showBackSideScan = false;
 
 		var dateInHotelsFormat = function(date) {
-			$rootScope.dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
-			return moment(date, 'MM-DD-YYYY').format($rootScope.dateFormat);
+			var dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
+			
+			return moment(date, 'MM-DD-YYYY').format(dateFormat);
 		};
 
 		$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
@@ -338,5 +340,9 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.errorMessage = 'Failed to Analyze the image';
 			generalFailureCallBack();
 		});
+
+		if (!sntIDCollectionSrv.isInDevEnv && $scope.hotelDetails.id_collection) {
+			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.id_collection.acuant_credentials);
+		}
 	}
 ]);

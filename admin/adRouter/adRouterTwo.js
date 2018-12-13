@@ -939,4 +939,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       url: '/idCollection'
     });
 
+    $stateProvider.state('admin.cotaMandatoryFields', {
+      templateUrl: '/assets/partials/cards/coTaMandatoryFields.html',
+      controller: 'ADCoTaMandatoryFieldsCtrl',
+      url: '/coTaMandatoryFields'
+    });
+
 });
