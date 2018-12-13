@@ -3,6 +3,20 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'sntAut
 
     var service = this;
 
+    var urlencode = function(str) {
+        str = (str + '').toString();
+
+        // Tilde should be allowed unescaped in future versions of PHP (as reflected below), but if you want to reflect current
+        // PHP behavior, you would need to add ".replace(/~/g, '%7E');" to the following.
+        return encodeURIComponent(str).
+            replace(/!/g, '%21').
+            replace(/'/g, '%27').
+            replace(/\(/g, '%28').
+            replace(/\)/g, '%29').
+            replace(/\*/g, '%2A').
+            replace(/%20/g, '+');
+    };
+
     /**
      * to get the ExactOnLine configraton values
      * @return {undefined}
@@ -28,11 +42,10 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'sntAut
         return ADBaseWebSrvV2.getJSON(url);
     };
 
+
     service.setOAuth = function(code) {
-        return ADBaseWebSrvV2.getJSON('/api/hotel_settings/exactonline/oauth', {
-            code: code,
-            hotel_uuid: sntAuthorizationSrv.getProperty()
-        });
+        return ADBaseWebSrvV2.getJSON('/api/hotel_settings/exactonline/oauth&code=' + urlencode(code)
+            + '&hotel_uuid=' + sntAuthorizationSrv.getProperty());
     };
 
 
