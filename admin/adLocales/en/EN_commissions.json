@@ -8,6 +8,7 @@
     "SELECT_CHARGE_CODE" : "Select Charge Code",
     "CHARGE_CODE" : "Charge Code",
     "CHARGE_CODES" : "Charge Codes",
+    "COMMISSION_CHARGE_CODES": "Charge Codes (Non selection of charge codes means entire stay cost)",
     "ON" : "On",
     "OFF" : "Off",
     "TAX_ON_COMMISSIONS" : "Tax On Commissions",

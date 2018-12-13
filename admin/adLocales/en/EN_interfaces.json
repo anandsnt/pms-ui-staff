@@ -112,4 +112,8 @@
 	"API_URL": "API URL",
 	"OAUTH_URL": "OAuth URL",
 	"CLIENT_ID": "Client ID",
-	"CLIENT_SECRET": "Client Secret"
+	"CLIENT_SECRET": "Client Secret",
+  "GL_ACCOUNT": "GL Account",
+  "VAT_CODE": "VAT Code",
+  "COST_CENTER": "Cost Center"
+

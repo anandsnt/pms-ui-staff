@@ -26,6 +26,7 @@
 			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
 			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
 			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
+			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED');
 
 			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
 				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
@@ -100,11 +101,13 @@
 				$scope.idScanData.selectedGuest = selectGuest;
 				if ($scope.inDemoMode() && !$scope.idScanData.staffVerified) {
 					demoModeScanActions();
-				} else if (selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) {
+				} else if ((selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) && selectedGuest.idScanStatus !==  SCANING_PENDING) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
 					$scope.startScanning();
+					$scope.idScanData.staffVerified = false;
+					$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 				}
 			};
 
@@ -151,6 +154,9 @@
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
 					setPageNumberDetails();
+					if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
+						$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+					}
 				};
 				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
 
@@ -176,6 +182,9 @@
 				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				setPageNumberDetails();
+				if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+				}
 			};
 
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
@@ -183,15 +192,14 @@
 			$scope.screenData.facialRecognitionInProgress = false;
 
 			$scope.$on('FR_ANALYSIS_STARTED', function() {
-				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				$scope.screenData.facialRecognitionInProgress = true;
 				$scope.$emit('showLoader');
 			});
 			$scope.$on('FR_FAILED', function() {
 				$scope.$emit('hideLoader');
+				$scope.idScanData.selectedGuest.idScanStatus = FR_FAILED_STATUS;
 				$scope.screenData.facialRecognitionInProgress = false;
 				$scope.screenData.scanMode = 'FACIAL_RECOGNTION_FAILED';
-				$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
 				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Failed for the guest');
 			});
 
@@ -219,6 +227,7 @@
 					recordIDScanActions('ID_ANALYZING', 'Failed (blank ID number) for the guest');
 					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
 				} else if ($scope.idScanData.verificationMethod === 'STAFF') {
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 					$scope.idScanData.selectedGuest.scannedDetails = data;
 					$scope.screenData.scanMode = 'GUEST_LIST';
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_WAITING_FOR_APPROVAL;
@@ -355,7 +364,18 @@
 			};
 
 			var goBackToScanAgain = function() {
-				if ($scope.screenData.scanMode === 'FINAL_ID_RESULTS' || $scope.screenData.scanMode === 'FACIAL_RECOGNTION_FAILED') {
+				var backToGuestListScreenModes = ['FINAL_ID_RESULTS',
+					'FACIAL_RECOGNTION_FAILED',
+					'UPLOAD_FRONT_IMAGE',
+					'UPLOAD_FRONT_IMAGE_FAILED',
+					'UPLOAD_BACK_IMAGE',
+					'UPLOAD_BACK_IMAGE_FAILED',
+					'CONFIRM_ID_IMAGES',
+					'CONFIRM_FRONT_IMAGE'
+				];
+
+				if (backToGuestListScreenModes.indexOf($scope.screenData.scanMode) > -1) {
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 					$scope.showGuestList();
 				} else {
 					verfiedStaffId = '';
@@ -378,6 +398,11 @@
 				} else {
 					return 'NONE';
 				}
+			};
+
+			$scope.loginAsStaff = function() {
+				$scope.screenData.scanMode = 'ADMIN_LOGIN';
+				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
 			(function() {

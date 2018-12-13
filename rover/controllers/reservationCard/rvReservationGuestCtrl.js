@@ -413,9 +413,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                 CHILDREN: [],
                 INFANTS: []
             };
+
 			var successCallback = function(data) {
 				$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 				$scope.$emit('hideLoader');
+				$scope.$parent.guestData = data;
 				$scope.guestData = data;
 				
 				// CICO-51935
@@ -488,11 +490,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		});
 
         // Checks whether the accompany guest label should be shown or not
-
-		var guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
-
         $scope.showAccompanyingGuestLabel = function() {
-            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count) > 1 || guestIdAdminEnabled;
+            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count + $scope.guestData.accompanying_guests_details.length) > 1;
         };
 
 	}
