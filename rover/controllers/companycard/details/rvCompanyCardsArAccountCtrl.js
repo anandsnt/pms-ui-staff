@@ -53,7 +53,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var failureCallback = function(errorMessage) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = errorMessage;
-				if (errorMessage[0] !== 'Mandatory fields need to be filled in on the CO/TA card attached') {
+				if (errorMessage[0] !== 'Please complete required AR Account Information') {
 					$scope.$emit('ERRORONARTAB');
 					$scope.switchTabTo('click', 'cc-ar-accounts');
 				} else {
