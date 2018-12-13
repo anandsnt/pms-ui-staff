@@ -13,7 +13,7 @@
 			</div>
 			<div class="actions float">
 				<button id="cancel" class="button blank modal-close ng-scope" ng-click="closeDialog()" type="button" translate>CANCEL</button>
-				<button id="save" class="button green modal-close ng-scope" ng-click="createAccountReceivable()" type="button" translate>CREATE</button>
+				<button id="save" class="button modal-close ng-scope" ng-click="createAccountReceivable()" type="button" translate ng-class="{'overlay grey': isCreateButtonDisabled, 'green': !isCreateButtonDisabled}">CREATEdfg</button>
 			</div>
 		</form>
 	
