@@ -170,7 +170,7 @@ var GridRowItem = React.createClass({
 		if (data.cannot_move_room) {
 			className += ' locked';
 		}
-		if (!data.is_hourly) {
+		if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
 			className = "occupied nightuse";
 		}
 
@@ -204,7 +204,7 @@ var GridRowItem = React.createClass({
 			row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '')
 				+ (show_outstanding_indicator ? ' deposit-required' : '')
 
-		if (!this.props.data.is_hourly) {
+		if (typeof data.is_hourly !=='undefined' && !data.is_hourly) {
 			row_item_class = "occupancy-block overlay";
 		}
 
