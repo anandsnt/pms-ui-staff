@@ -14,19 +14,19 @@ admin.service('adIFCInterfaceMappingSrv', [
         };
 
         service.add = function(params) {
-            return ADBaseWebSrvV2.putJSON('/ifc/' + params.interfaceIdentifier + '/mappings', params.mapping);
+            return ADBaseWebSrvV2.postJSON('/ifc/' + params.interfaceIdentifier.toLowerCase() + '/mappings', params.mapping);
         };
 
         service.delete = function(params) {
-            return ADBaseWebSrvV2.deleteJSON('/ifc/' + params.interfaceIdentifier + '/mappings/' + params.id);
+            return ADBaseWebSrvV2.deleteJSON('/ifc/' + params.interfaceIdentifier.toLowerCase() + '/mappings/' + params.id);
         };
 
         service.update = function(params) {
-            return ADBaseWebSrvV2.putJSON('/ifc/' + params.interfaceIdentifier + '/mappings/' + params.id, params.mapping);
+            return ADBaseWebSrvV2.putJSON('/ifc/' + params.interfaceIdentifier.toLowerCase() + '/mappings/' + params.id, params.mapping);
         };
 
-        service.fetch = function(identifier) {
-            return ADBaseWebSrvV2.deleteJSON('/ifc/' + identifier + '/mappings');
+        service.fetch = function(params) {
+            return ADBaseWebSrvV2.getJSON('/ifc/' + params.identifier.toLowerCase() + '/mappings', params.payload);
         };
 
         service.fetchMeta = function(interfaceIdentifier) {

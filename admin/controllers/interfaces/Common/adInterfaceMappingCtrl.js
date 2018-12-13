@@ -87,7 +87,10 @@ admin.controller('adInterfaceMappingCtrl', [
                 };
 
             $scope.callAPI(adIFCInterfaceMappingSrv.fetch, {
-                params: getParams,
+                params: {
+                    payload: getParams,
+                    identifier: $scope.interface
+                },
                 successCallBack: fetchSuccessOfItemList
             });
         };
