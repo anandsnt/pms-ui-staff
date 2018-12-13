@@ -26,11 +26,6 @@ angular.module('admin').controller('adTopCtrl',
                 if ($stateParams.state) {
                     var params = ($stateParams.params && angular.fromJson(decodeURI($stateParams.params))) || {};
 
-                    // Exactonline oAuth returns code - Add that to the params
-                    if ($stateParams.code) {
-                        params.code = $stateParams.code;
-                    }
-
                     $state.go($stateParams.state.replace(/-/g, '.'), params);
                 } else {
                     $state.go('admin.dashboard', {
