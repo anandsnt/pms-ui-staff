@@ -1,9 +1,9 @@
 <div class="form float" ng-if="state.activeTab === 'MAPPING'">
 
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-
     <div class="entry full-width" ng-controller="adTwinfieldSetupMappingCtrl">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
         <div class="entry full-width" ng-show="state.mode=='LIST'">
             <div class="content-title" style="position: relative;">
                 <span class="count">MAPPINGS({{totalCount}})</span>
