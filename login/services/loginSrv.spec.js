@@ -12,11 +12,7 @@ describe('LoginSrv', function() {
             'errors': []
         };
 
-        beforeAll(function() {
-            window.onbeforeunload = function() {
-                return 'Application trying to do a full page reload!';
-            };
-        });
+        var sampleJWT = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDQ2NTE4MjgsInNlc3Npb24iOiJiZjljNjcwYTk0YTlmNGNjNjQyZTZlZmExZTUxNDdkOCJ9.OjAAK5VfvAuptfDj9HTlh8-Gkp2hfjjackgw5GdNXx0';
 
         beforeEach(function() {
             module('login');
@@ -63,6 +59,8 @@ describe('LoginSrv', function() {
             this.$httpBackend.when('GET', '/login/validate').
                 respond(200, sampleResponse);
 
+            localStorage.setItem('jwt', sampleJWT);
+
             this.loginSrv.checkSession(null,
                 function() {
                     response = 'success';
@@ -71,36 +69,15 @@ describe('LoginSrv', function() {
                 }).
                 then(function(data) {
                     response = data;
+                }, function(data) {
+                    response = data;
                 });
 
             this.$httpBackend.flush(1);
+            localStorage.removeItem('jwt');
 
             expect(response).
                 toEqual(sampleResponse);
-        });
-
-        it('validate token - expired or missing token', function() {
-            var response,
-                unauthorizedStatusCode = 401;
-
-            this.$httpBackend.when('GET', '/login/validate').
-                respond(unauthorizedStatusCode);
-
-            this.loginSrv.checkSession(null,
-                function() {
-                    response = 'success';
-                }, function() {
-                    response = 'failure';
-                }).
-                then(function(data) {
-                    response = data;
-                });
-
-            this.$httpBackend.flush(1);
-
-            // This method resolves to '' in case of failure
-            expect(response).
-                toEqual('');
         });
 
         /**

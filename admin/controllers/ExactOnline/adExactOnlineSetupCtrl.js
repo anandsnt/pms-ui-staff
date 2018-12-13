@@ -1,5 +1,5 @@
-admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints',
-    function($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, endPoints) {
+admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints', '$window',
+    function($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, endPoints, $window) {
 
         BaseCtrl.call(this, $scope);
 
@@ -85,6 +85,19 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
             };
 
             $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+        };
+
+        $scope.authorize = function (url) {
+            var jwt = $window.localStorage.getItem('jwt'),
+                urlObj = new URL(url);
+
+            if (jwt) {
+                // Remove redirect_uri in case already present! Admin app handles redirection after OAuth
+                urlObj.searchParams.delete('redirect_uri');
+                // Set redirect_uri to point back to Admin application
+                urlObj.searchParams.set('redirect_uri', location.href + '?state=admin-exactOnlineSetup');
+                $window.location.href = urlObj.href;
+            }
         };
 
         /**
