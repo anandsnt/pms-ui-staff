@@ -305,9 +305,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.cameraSourceChanged = function() {
-		if ($scope.screenData.imageSide === 0) {
+		if ($scope.screenData.extCamForFrontIDActivated) {
 			$scope.startExtCameraCapture('front-image');
-		} else {
+		}
+		if ($scope.screenData.extCamForBackIDActivated) {
 			$scope.startExtCameraCapture('back-image');
 		}
 		localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.screenData.selectedCamera);
