@@ -1,13 +1,25 @@
-angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout',
-	function($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout) {
+angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout','RVCompanyCardSrv',
+	function($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout, RVCompanyCardSrv) {
+		const filterValues = {
+			ALL: 'ALL',
+			AR_ONLY: 'AR_ONLY'
+		};
+		const mergBtnLabels = {
+			VERIFY_MERGE: 'Verify Merge',
+			MERGE_CARDS: 'Merge Cards'
+		};
+		const mergeStatusText = {
+			VERIFYING_MERGE: 'Verifying Merge',
+			OK_TO_MERGE: 'Ok to Merge',
+			MERGE_NOT_POSSIBLE: 'Merge not possible'
+		};
 
 		BaseCtrl.call(this, $scope);
 		$scope.heading = "Find Cards";
-		// model used in query textbox, we will be using this across
-		$scope.textInQueryBox = "";
+		
 		$scope.hasArNumber = false;
 		$scope.$emit("updateRoverLeftMenu", "cards");
-		$scope.results = [];
+		
 		var successCallBackofInitialFetch = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.results = data.accounts;
@@ -105,8 +117,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				if (visibleElementsCount === 0) {
 					var dataDict = {
 						'query': $scope.textInQueryBox.trim(),
-						'has_ar_number': $scope.hasArNumber
 					};
+
+					dataDict.has_ar_number = false;
+					if ($scope.cardFilter === filterValues.AR_ONLY) {
+						dataDict.has_ar_number = true;
+					}
 
 					if (!$scope.viewState.isViewSelected) {
 						dataDict.account_type = 'COMPANY';
@@ -139,37 +155,126 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			$scope.queryEntered();
 		}
 
-		// Switch between view/merge screens
+		/**
+		 * Handles the switching between merge and normal search view
+		 */
 		$scope.onViewChange = () => {			
 			if($scope.viewState.isViewSelected) {
 				$scope.viewState.isCompanyCardSelected = true;
 			}
+			$scope.cardFilter = filterValues.ALL;
+			$scope.textInQueryBox = '';
 		};
 
+		/**
+		 * Handles the selection of cards for merge from the search results
+		 * @param {Object} card - contains the details of CC/TA card
+		 * @return {void}
+		 */
 		$scope.onCardSelection = (card) => {
-			if(!$scope.selectedCardsForMerge.length) {
+			if(!$scope.viewState.selectedCardsForMerge.length) {
 				card.isPrimary = true;
+				$scope.viewState.selectedPrimaryCard = card;
 			}
-			$scope.selectedCardsForMerge.push(card);
+			if (card.selected) {
+				$scope.viewState.selectedCardsForMerge.push(card);
+			} else {
+				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (card) => {
+					if (!card.selected) {
+						card.isPrimary = false;
+					}
+					return !card.selected;
+				});	
+			}
 		};
 
+		/**
+		 * Handles the primary guest selection from the cards chosen for merge
+		 * @param {Number} id - id of the card
+		 * @return {void}
+		 */
 		$scope.onPrimaryGuestSelectionChange = (id) => {
-			$scope.selectedCardsForMerge.forEach((card) => {
+			$scope.viewState.selectedCardsForMerge.forEach((card) => {
 				if (card.id === id)	{
 					card.isPrimary = true;
+					$scope.viewState.selectedPrimaryCard = card;
 				} else {
 					card.isPrimary = false;
 				}
 			})
 		};
 
+		/**
+		 * Get the merge btn class name based on the current state of the merge process
+		 * @return {String} className  - style class
+		 */
+		$scope.getActionClass = () => {
+			let className = '';
+
+			if($scope.viewState.selectedCardsForMerge.length === 1) {
+				className = 'grey';
+			}
+			return className;
+		};
+
+		/**
+		 * Get the display text for the merge button
+		 * @return {String} label - proper label for the btn
+		 */
+		$scope.getMergeBtnLabel = () => {
+			let label = mergBtnLabels.VERIFY_MERGE;
+
+			// if ($scope.selectedCardsForMerge.) {
+			// 	label = mergBtnLabels
+			// }
+			return label;
+		};
+
+		$scope.verifyMerge = () => {
+			let onVerificationSuccess = (data) => {
+				if (data.can_merge) {
+					$scope.viewState.mergeStatusText = mergeStatusText.OK_TO_MERGE;
+				} else {
+					$scope.mergeStatusErrors = data.errors;
+					$scope.viewState.mergeStatusText = mergeStatusText.MERGE_NOT_POSSIBLE;	
+				}
+				
+
+				},
+				onVerificationFailure = (errors) => {
+
+				};
+
+			let selectedNonPrimaryCards = _.reject($scope.viewState.selectedCardsForMerge, (card) => {
+												return card.isPrimary;
+											});
+
+			let postData = {
+				card_ids: _.pluck(selectedNonPrimaryCards, 'id')
+			};
+			$scope.viewState.mergeStatusText = mergeStatusText.VERIFYING_MERGE;
+
+			$scope.callAPI(RVCompanyCardSrv.verifyTravelAgentCompanyCardMerge, {
+				params: postData,
+				onSuccess: onVerificationSuccess,
+				onFailure: onVerificationFailure
+			});	
+
+		};
+
 		// Initialize the co/ta search view
 		var init = () => {
+			// model used in query textbox, we will be using this across
+			$scope.textInQueryBox = "";
+			$scope.results = [];
+			$scope.cardFilter = filterValues.ALL;
 			$scope.viewState = {
 				isViewSelected: true,
-				isCompanyCardSelected: true
+				isCompanyCardSelected: true,
+				selectedCardsForMerge: [],
+				selectedPrimaryCard: {},
+				mergeStatusText: ''
 			};
-			$scope.selectedCardsForMerge = [];
 		};
 
 		init();
