@@ -7,7 +7,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'$timeout',
 	'$controller',
 	'sntIDCollectionSrv',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv) {
+	'sntIDCollectionUtilsSrv',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv, sntIDCollectionUtilsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -344,14 +345,14 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		}
 
 		$scope.showScanOption = $scope.hotelDetails.id_collection &&
-		 						$scope.hotelDetails.id_collection.rover.enabled && $scope.isInMobile();
+		 						$scope.hotelDetails.id_collection.rover.enabled && sntIDCollectionUtilsSrv.isInMobile();
 
 		$scope.connectedCameras = [];
 		var cameraCount = 0;
 
 		// for non mobile devices, check if cameras are present, if yes show options to scan based
 		// settings
-		if (!$scope.isInMobile() && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+		if (!sntIDCollectionUtilsSrv.isInMobile() && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
 			navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
 
 				angular.forEach(deviceInfos, function(device) {
