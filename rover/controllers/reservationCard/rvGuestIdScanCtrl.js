@@ -371,7 +371,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		 								$scope.hotelDetails.id_collection.rover.enabled &&
 		 								$scope.connectedCameras.length > 0;
 		 		// default to previously selected camera
-		 		$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || ($scope.connectedCameras ? $scope.connectedCameras[0].id : '');
+		 		$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || ($scope.connectedCameras && $scope.connectedCameras.length ? $scope.connectedCameras[0].id : '');
 				$scope.setConfigurations(config);
 			});
 		}
