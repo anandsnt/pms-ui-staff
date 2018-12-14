@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope, $controller) {
+angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope, $controller, sntIDCollectionUtilsSrv) {
 	$controller('sntIDCollectionBaseCtrl', {
 		$scope: $scope
 	});
@@ -11,17 +11,35 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 		$scope.confirmImages();
 	});
 
-	var config = {
-		useExtCamera: false,
-		useExtCamera: false
-	};
+	$scope.connectedCameras = [];
+	var cameraCount = 0;
 
-	$scope.setConfigurations(config);
+	if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+		navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
 
-	if($scope.screenData.useExtCamera) {
-		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
-		$scope.startExtCameraCapture('front-image');
+			angular.forEach(deviceInfos, function(device) {
+				if (device.kind == 'videoinput') {
+					$scope.connectedCameras.push({
+						'id': device.deviceId,
+						'label': device.label || 'camera ' + (cameraCount + 1)
+					});
+					cameraCount++;
+				}
+			});
+			var config = {
+				useExtCamera: $scope.connectedCameras.length > 0
+			};
+			$scope.setConfigurations(config);
+			if ($scope.screenData.useExtCamera) {
+				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+				$scope.startExtCameraCapture('front-image');
+				$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || $scope.connectedCameras[0].id;
+			} else {
+				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+			}
+		});
 	} else {
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 	}
+	
 });

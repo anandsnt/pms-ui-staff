@@ -85,8 +85,11 @@
                     <option value="PASSPORT" translate>PASSPORT</option>
                 </select>
             </div>
-
-
+            <div class="select document-type" ng-show="screenData.useExtCamera">
+                <select ng-model="screenData.selectedCamera" class="placeholder" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged()">
+                    <option value="" disabled> Select Camera</option>
+                </select>
+            </div>
 
             <div class="guest-documents">
                 <div class="guest-document">

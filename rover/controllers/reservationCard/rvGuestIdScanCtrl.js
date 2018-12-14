@@ -343,13 +343,37 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.id_collection.acuant_credentials);
 		}
 
-		var config = {
-			useExtCamera: !$scope.isInMobile()
-		};
 		$scope.showScanOption = $scope.hotelDetails.id_collection &&
-		 						$scope.hotelDetails.id_collection.rover.enabled;
+		 						$scope.hotelDetails.id_collection.rover.enabled && $scope.isInMobile();
 
-		$scope.setConfigurations(config);
+		$scope.connectedCameras = [];
+		var cameraCount = 0;
+
+		// for non mobile devices, check if cameras are present, if yes show options to scan based
+		// settings
+		if (!$scope.isInMobile() && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+			navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
+
+				angular.forEach(deviceInfos, function(device) {
+					if (device.kind == 'videoinput') {
+						$scope.connectedCameras.push({
+							'id': device.deviceId,
+							'label': device.label || 'camera ' + (cameraCount + 1)
+						});
+						cameraCount++;
+					}
+				});
+				var config = {
+					useExtCamera: $scope.connectedCameras.length > 0
+				};
+				$scope.showScanOption = $scope.hotelDetails.id_collection &&
+		 								$scope.hotelDetails.id_collection.rover.enabled &&
+		 								$scope.connectedCameras.length > 0;
+		 		// default to previously selected camera
+		 		$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || ($scope.connectedCameras ? $scope.connectedCameras[0].id : '');
+				$scope.setConfigurations(config);
+			});
+		}
 
 	}
 ]);

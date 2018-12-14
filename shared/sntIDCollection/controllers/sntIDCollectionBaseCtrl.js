@@ -285,7 +285,11 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var video = type === 'front-image' ? document.querySelector('#id-video') : document.querySelector('#id-back-video');
 
 		navigator.mediaDevices.getUserMedia({
-			video: true
+			video: {
+				deviceId: $scope.screenData.selectedCamera ? {
+					exact: $scope.screenData.selectedCamera
+				} : undefined
+			}
 		}).
 		then(function handleSuccess(stream) {
 			video.srcObject = stream;
@@ -300,6 +304,14 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		});
 	};
 
+	$scope.cameraSourceChanged = function() {
+		if ($scope.screenData.imageSide === 0) {
+			$scope.startExtCameraCapture('front-image');
+		} else {
+			$scope.startExtCameraCapture('back-image');
+		}
+		localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.screenData.selectedCamera);
+	};
 
     $scope.stopExtCamera = function(type) {
         if (type === 'front-image') {

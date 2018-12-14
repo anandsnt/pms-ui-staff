@@ -80,6 +80,8 @@
             </div>
 
              <div class="col-md-12 jumbotron" ng-show="screenData.useExtCamera">
+               <select ng-model="screenData.selectedCamera" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged()">
+               </select>
                <p class="title">Please place the ID below the camera with front side of ID facing camera.
                <video id="id-video" autoplay></video>
                <br/><br/>
