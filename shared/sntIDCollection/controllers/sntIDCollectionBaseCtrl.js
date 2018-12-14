@@ -289,33 +289,62 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}).
 		then(function handleSuccess(stream) {
 			video.srcObject = stream;
+			if (type === 'front-image') {
+				$scope.screenData.extCamForFrontIDActivated = true;
+			} else {
+				$scope.screenData.extCamForBackIDActivated = true;
+			}
+			$scope.$digest();
 		}).catch(function() {
 
 		});
 	};
 
-	$scope.captureFrontImageUsingExtCamera = function (argument) {
+
+    $scope.stopExtCamera = function(type) {
+        if (type === 'front-image') {
+            $scope.screenData.extCamForFrontIDActivated = false;
+        } else {
+            $scope.screenData.extCamForBackIDActivated = false;
+        }
+    };
+
+	$scope.captureFrontImageUsingExtCamera = function () {
+		$scope.screenData.imageSide = 0;
 		var video = document.querySelector('#id-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
 		$scope.screenData.frontSideImage = imageData;
+		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		getDocInstance();
 	};
 
-	$scope.retryFrontImageUsingExtCamera = function (argument) {
+	$scope.retryFrontImageUsingExtCamera = function () {
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 		$scope.startExtCameraCapture('front-image');
 	};
 
-	$scope.captureBackImageUsingExtCamera = function (argument) {
+	$scope.captureBackImageUsingExtCamera = function () {
+		$scope.screenData.imageSide = 1;
 		var video = document.querySelector('#id-back-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
 		$scope.screenData.backSideImage = imageData;
+		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		postBackImage();
 	};
 
-	$scope.retryBackImageUsingExtCamera = function (argument) {
+	$scope.retryBackImageUsingExtCamera = function () {
 		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
 		$scope.startExtCameraCapture('back-image');
+	};
+
+	$scope.isInMobile = function() {
+		return (navigator.userAgent.match(/Android/i) ||
+			navigator.userAgent.match(/webOS/i) ||
+			navigator.userAgent.match(/iPhone/i) ||
+			navigator.userAgent.match(/iPad/i) ||
+			navigator.userAgent.match(/iPod/i) ||
+			navigator.userAgent.match(/BlackBerry/i) ||
+			navigator.userAgent.match(/Windows Phone/i));
 	};
 
 	(function() {

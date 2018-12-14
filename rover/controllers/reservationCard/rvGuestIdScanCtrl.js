@@ -11,10 +11,6 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.showScanOption = navigator.userAgent.match(/iPad/i) !== null && 
-								$scope.hotelDetails.id_collection &&
-		 						$scope.hotelDetails.id_collection.rover.enabled;
-
 		$controller('sntIDCollectionBaseCtrl', {
 			$scope: $scope
 		});
@@ -262,8 +258,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			if (data.isFrontSide) {
 				$scope.guestIdData.front_image_data = data.imageData;
 				$scope.guestIdData.back_image_data = '';
+				$scope.screenData.extCamForFrontIDActivated = false;
 			} else {
 				$scope.guestIdData.back_image_data = data.imageData;
+				$scope.screenData.extCamForBackIDActivated = false;
 			}
 			$scope.refreshScroller('id-details');
 
@@ -344,5 +342,14 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		if (!sntIDCollectionSrv.isInDevEnv && $scope.hotelDetails.id_collection) {
 			sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.hotelDetails.id_collection.acuant_credentials);
 		}
+
+		var config = {
+			useExtCamera: !$scope.isInMobile()
+		};
+		$scope.showScanOption = $scope.hotelDetails.id_collection &&
+		 						$scope.hotelDetails.id_collection.rover.enabled;
+
+		$scope.setConfigurations(config);
+
 	}
 ]);

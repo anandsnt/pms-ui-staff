@@ -12,6 +12,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	});
 
 	var config = {
+		useExtCamera: false,
 		useExtCamera: false
 	};
 
