@@ -21,7 +21,7 @@ sntRover.controller('reservationCardController', ['$rootScope', '$scope', 'RVRes
 
 		$scope.isIpad = navigator.userAgent.match(/iPad/i) !== null;
 
-		$scope.$on('guestTabUpdated', function(event, data) {
+		$scope.$on('SHOW_GUEST_ID_LIST', function(event, data) {
 			$scope.shouldShowGuestDetails = data.shouldShowGuestDetails;
 		});
 
