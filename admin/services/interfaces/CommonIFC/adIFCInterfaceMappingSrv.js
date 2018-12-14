@@ -3,8 +3,10 @@ admin.service('adIFCInterfaceMappingSrv', [
 
         var service = this;
 
+        var interfaceswithNumericExternalValues = ['HOGIA'];
+
         var metaLists = {
-            'hogia': ['CHARGE_CODES']
+            'HOGIA': ['CHARGE_CODES']
         };
 
         var metaPromises = {
@@ -26,11 +28,15 @@ admin.service('adIFCInterfaceMappingSrv', [
         };
 
         service.fetch = function(params) {
-            return ADBaseWebSrvV2.getJSON('/ifc/' + params.identifier.toLowerCase() + '/mappings', params.payload);
+            return ADBaseWebSrvV2.getJSON('/ifc/' + params.interfaceIdentifier.toLowerCase() + '/mappings', params.payload);
+        };
+
+        service.isNumericExternalValue = function(interfaceIdentifier) {
+            return interfaceswithNumericExternalValues.indexOf(interfaceIdentifier) >= 0;
         };
 
         service.fetchMeta = function(interfaceIdentifier) {
-            let metaList = metaLists[interfaceIdentifier.toLowerCase()],
+            let metaList = metaLists[interfaceIdentifier],
                 deferred = $q.defer(),
                 promises = [],
                 meta = {};

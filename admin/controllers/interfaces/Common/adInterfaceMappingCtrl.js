@@ -39,10 +39,12 @@ admin.controller('adInterfaceMappingCtrl', [
                     params: $scope.interface,
                     successCallBack: function(meta) {
                         $scope.state.meta = meta;
+                        $scope.mapping = fetchEmptyMapping();
                         $scope.state.mode = 'ADD';
                     }
                 });
             } else {
+                $scope.mapping = fetchEmptyMapping();
                 $scope.state.mode = 'ADD';
             }
         };
@@ -76,20 +78,26 @@ admin.controller('adInterfaceMappingCtrl', [
 
         $scope.fetchTableData = function($defer, params) {
             var getParams = $scope.calculateGetParams(params),
-                fetchSuccessOfItemList = function(data) {
+                fetchSuccessOfItemList = function(response) {
+                    // Convert to number in case the external values have a restriction
+                    if (adIFCInterfaceMappingSrv.isNumericExternalValue($scope.interface)) {
+                        _.each(response.data, function(mapping) {
+                            mapping.external_value = parseInt(mapping.external_value, 10);
+                        });
+                    }
                     $scope.currentClickedElement = -1;
-                    $scope.totalCount = data.total_count;
-                    $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-                    $scope.data = data.data;
+                    $scope.totalCount = response.total_count || response.data.length;
+                    $scope.totalPage = Math.ceil(response.total_count / $scope.displyCount);
+                    $scope.data = response.data;
                     $scope.currentPage = params.page();
-                    params.total(data.total_count);
+                    params.total($scope.totalCount);
                     $defer.resolve($scope.data);
                 };
 
             $scope.callAPI(adIFCInterfaceMappingSrv.fetch, {
                 params: {
                     payload: getParams,
-                    identifier: $scope.interface
+                    interfaceIdentifier: $scope.interface
                 },
                 successCallBack: fetchSuccessOfItemList
             });
@@ -145,6 +153,7 @@ admin.controller('adInterfaceMappingCtrl', [
                 },
                 onSuccess: function() {
                     $scope.reloadTable();
+                    $scope.state.mode = 'LIST';
                 }
             });
         };

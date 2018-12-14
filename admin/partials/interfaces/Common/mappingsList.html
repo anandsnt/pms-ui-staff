@@ -35,14 +35,10 @@
                         ng-click="onEditMapping(mappingRow)">
                         {{mappingRow.external_value}}
                     </td>
-                    <td data-title="'COST CENTER'" sortable="'cost_center'" header-class="width-20" ng-hide="mappingRow.editing"
-                        ng-click="onEditMapping(mappingRow)">
-                        {{mappingRow.meta_data.cost_center}}
-                    </td>
                     <td data-title="'DELETE'" header-class="width-10" class="delete" ng-hide="mappingRow.editing">
                         <a class="icons icon-delete large-icon" ng-click="onClickDelete(mappingRow)"></a>
                     </td>
-                    <td colspan="5" ng-show="mappingRow.editing"
+                    <td colspan="4" ng-show="mappingRow.editing"
                         ng-include="'/assets/partials/interfaces/Common/mapping.html'"></td>
                 </tr>
                 </tbody>
