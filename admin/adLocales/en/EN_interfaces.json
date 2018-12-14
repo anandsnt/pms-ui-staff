@@ -107,4 +107,7 @@
   "TAX_CHARGE_CODE_21": "Tax Charge Code 21%",
   "EXPORT": "Export",
   "quicktext_SETUP_HEADER": "Quicktext Setup",
-  "DEFAULT_SOURCE_CODE": "Default Source Code"
+  "DEFAULT_SOURCE_CODE": "Default Source Code",
+  "GL_ACCOUNT": "GL Account",
+  "VAT_CODE": "VAT Code",
+  "COST_CENTER": "Cost Center"
