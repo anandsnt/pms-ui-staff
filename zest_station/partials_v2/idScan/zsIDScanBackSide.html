@@ -6,11 +6,15 @@
       <h2 translate>
          GID_SCAN_BACK_IMAGE_SCAN_INSTRUCTIONS
       </h2>
+      <video id="id-back-video" style="height:50%; width:auto; margin:0 auto; display: block;" ng-show="screenData.extCamForBackIDActivated" autoplay></video>
    </div>
    <div>
       <div id="actions" class="footer-centered">
-         <button type="button" class="button next" touch-press="captureBackImage()" translate>
-         GID_SCAN_BUTTON
+         <button type="button" class="button next" touch-press="captureBackImage()" ng-hide="screenData.extCamForBackIDActivated" translate>
+            GID_SCAN_BUTTON
+         </button>
+         <button type="button" class="button next" touch-press="captureBackImageUsingExtCamera()" ng-show="screenData.extCamForBackIDActivated" translate>
+            GID_SCAN_BUTTON
          </button>
       </div>
    </div>

@@ -30,10 +30,10 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 				useExtCamera: $scope.connectedCameras.length > 0
 			};
 			$scope.setConfigurations(config);
-			if ($scope.screenData.useExtCamera) {
+			if ($scope.deviceConfig.useExtCamera) {
 				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 				$scope.startExtCameraCapture('front-image');
-				$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || $scope.connectedCameras[0].id;
+				$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || '';
 			} else {
 				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 			}

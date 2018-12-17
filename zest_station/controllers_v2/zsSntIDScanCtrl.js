@@ -405,6 +405,15 @@
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
+			/***************** External camera actions ********/
+
+			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function(){
+				$scope.startExtCameraCapture('front-image');
+			});
+			$scope.$on('BACK_SIDE_SCANNING_STARTED', function(){
+				$scope.startExtCameraCapture('front-image');
+			});
+
 			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
@@ -434,7 +443,8 @@
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
 				$scope.setConfigurations({
-					useiOSAppCamera: $scope.zestStationData.autoIpadKeyboardEnabled
+					useiOSAppCamera: $scope.zestStationData.autoIpadKeyboardEnabled,
+					useExtCamera: $scope.zestStationData.connectedCameras.length > 0
 				});
 			}());
 		}

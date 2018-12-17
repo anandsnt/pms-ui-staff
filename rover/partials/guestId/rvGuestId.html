@@ -85,7 +85,7 @@
                     <option value="PASSPORT" translate>PASSPORT</option>
                 </select>
             </div>
-            <div class="select document-type" ng-show="screenData.useExtCamera">
+            <div class="select document-type" ng-show="deviceConfig.useExtCamera">
                 <select ng-model="screenData.selectedCamera" class="placeholder" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged()">
                     <option value="" disabled> Select Camera</option>
                 </select>
@@ -101,8 +101,8 @@
                         <input type="file" id="front-image-upload" accept="image/*"ng-model="guestIdData.front_image_data" accept="*" app-filereader style="display: none;" ng-change="ImageChange('front-image')"/>
                        
                         <div class="document-actions" ng-show="guestIdData.front_image_data.length > 0">
-                            <button type="button" class="button white green-text needsclick" ng-click="scanFrontSide()" ng-show="showScanOption && !screenData.useExtCamera">Re-Scan</button>
-                            <button type="button" class="button white green-text needsclick" ng-click="startExtCameraCapture('front-image')" ng-show="showScanOption && screenData.useExtCamera">Re-Scan</button>
+                            <button type="button" class="button white green-text needsclick" ng-click="scanFrontSide()" ng-show="showScanOption && !deviceConfig.useExtCamera">Re-Scan</button>
+                            <button type="button" class="button white green-text needsclick" ng-click="startExtCameraCapture('front-image')" ng-show="showScanOption && deviceConfig.useExtCamera">Re-Scan</button>
                             <button type="button" class="button white blue-text needsclick" ng-click="uploadFrontImage()" translate>RE_UPLOAD</button>
                             <!-- <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
                             <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE', 'front-image')" ng-show="showScanOption" style="width: calc(200% + 10px)" translate>DELETE</button>
@@ -114,9 +114,9 @@
                         <h3 ng-show="guestIdData.front_image_data.length === 0" translate>NO_IMAGE</h3>
                         <p ng-show="guestIdData.front_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
                         <button type="button" class="button white green-text needsclick" 
-                        ng-show="guestIdData.front_image_data.length === 0 && showScanOption && !screenData.useExtCamera" ng-click="scanFrontSide()" translate>SCAN_ID</button>
+                        ng-show="guestIdData.front_image_data.length === 0 && showScanOption && !deviceConfig.useExtCamera" ng-click="scanFrontSide()" translate>SCAN_ID</button>
                         <button type="button" class="button white green-text needsclick" 
-                        ng-show="guestIdData.front_image_data.length === 0 && showScanOption && screenData.useExtCamera" ng-click="startExtCameraCapture('front-image')" translate>SCAN_ID</button>
+                        ng-show="guestIdData.front_image_data.length === 0 && showScanOption && deviceConfig.useExtCamera" ng-click="startExtCameraCapture('front-image')" translate>SCAN_ID</button>
                         <button type="button" 
                                 class="button white blue-text needsclick" 
                                 ng-show="guestIdData.front_image_data.length === 0" 
@@ -140,8 +140,8 @@
                         <input type="file" id="back-image-upload" accept="image/*"ng-model="guestIdData.back_image_data" accept="*" app-filereader style="display: none;" ng-change="ImageChange('back-image')"
                         />
                         <div class="document-actions" ng-show="guestIdData.back_image_data.length > 0">
-                            <button type="button" class="button white green-text needsclick" ng-click="scanBackSide()" ng-show="showScanOption && screenData.showBackSideScan && !screenData.useExtCamera"">Re-Scan</button>
-                             <button type="button" class="button white green-text needsclick" ng-click="startExtCameraCapture('back-image')" ng-show="showScanOption && screenData.showBackSideScan && screenData.useExtCamera">Re-Scan</button>
+                            <button type="button" class="button white green-text needsclick" ng-click="scanBackSide()" ng-show="showScanOption && screenData.showBackSideScan && !deviceConfig.useExtCamera"">Re-Scan</button>
+                             <button type="button" class="button white green-text needsclick" ng-click="startExtCameraCapture('back-image')" ng-show="showScanOption && screenData.showBackSideScan && deviceConfig.useExtCamera">Re-Scan</button>
                             <button type="button" class="button white blue-text needsclick" ng-click="uploadBackImage()" translate>RE_UPLOAD</button>
                        <!--      <button type="button" class="button white purple-text" ng-click="dowloadDocumnetDetails()" translate>ID_DOWNLOAD</button> -->
                             <button type="button" class="button white red-text" ng-click="saveGuestIdDetails('DELETE','back-image')" translate>DELETE</button>
@@ -151,9 +151,9 @@
                         <h3 ng-show="guestIdData.back_image_data.length === 0" translate>NO_IMAGE</h3>
                         <p ng-show="guestIdData.back_image_data.length === 0" translate>SCAN_ID_INSTRUCTIONS</p>
                         <button type="button" class="button white green-text needsclick"
-                        ng-show="guestIdData.back_image_data.length === 0 && showScanOption && screenData.showBackSideScan && !screenData.useExtCamera" ng-click="scanBackSide()" translate>SCAN_ID</button>
+                        ng-show="guestIdData.back_image_data.length === 0 && showScanOption && screenData.showBackSideScan && !deviceConfig.useExtCamera" ng-click="scanBackSide()" translate>SCAN_ID</button>
                         <button type="button" class="button white green-text needsclick"
-                        ng-show="guestIdData.back_image_data.length === 0 && showScanOption && screenData.showBackSideScan && screenData.useExtCamera" ng-click="startExtCameraCapture('back-image')" translate>SCAN_ID</button>
+                        ng-show="guestIdData.back_image_data.length === 0 && showScanOption && screenData.showBackSideScan && deviceConfig.useExtCamera" ng-click="startExtCameraCapture('back-image')" translate>SCAN_ID</button>
                         <button type="button" 
                                 class="button white blue-text needsclick" 
                                 ng-show="guestIdData.back_image_data.length === 0" 

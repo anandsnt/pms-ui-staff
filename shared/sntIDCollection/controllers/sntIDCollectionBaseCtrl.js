@@ -7,12 +7,15 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			imageSide: 0,
 			scanMode: screenModes.validate_subscription,
 			idDetails: {},
-			needBackSideScan: false,
-			useExtCamera: false,
-			useiOSAppCamera: false
+			needBackSideScan: false
 		};
 	};
 	var domIDMappings;
+
+	$scope.deviceConfig = {
+		useExtCamera: false,
+		useiOSAppCamera: false
+	};
 
 	$scope.setIDsForImageElements = function(domIDMapping) {
 		// Incase the image elements have different IDs in different places
@@ -27,8 +30,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.setConfigurations = function(config) {
-		$scope.screenData.useExtCamera = config.useExtCamera;
-		$scope.screenData.useiOSAppCamera = config.useExtCamera;
+		$scope.deviceConfig.useExtCamera = config.useExtCamera;
+		$scope.deviceConfig.useiOSAppCamera = config.useiOSAppCamera;
 	};
 
 	var getImageDetails = function() {
@@ -183,8 +186,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.confirmFrontImage = function() {
 		$scope.screenData.imageSide = 1;
 		$scope.screenData.scanMode = $scope.screenData.needBackSideScan ? screenModes.upload_back_image : screenModes.confirm_id_images;
-		if ($scope.screenData.scanMode === screenModes.upload_back_image && $scope.screenData.useExtCamera) {
-			$scope.startExtCameraCapture('back-image')
+		if ($scope.screenData.scanMode === screenModes.upload_back_image && $scope.deviceConfig.useExtCamera) {
+			$scope.startExtCameraCapture('back-image');
 		}
 	};
 
@@ -254,6 +257,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
 		$scope.screenData.scanMode = screenModes.upload_front_image;
 		$scope.$emit('CLEAR_PREVIOUS_DATA');
+		$scope.$emit('FRONT_SIDE_SCANNING_STARTED');
 	};
 
 	$scope.validateSubsription = function() {
@@ -268,7 +272,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.startFacialRecognition = function() {
 
-		if ($scope.screenData.useiOSAppCamera) {
+		if ($scope.deviceConfig.useiOSAppCamera) {
 			cordova.exec(function(response) {
 				processImageFromIos(true, undefined, response.image_base64);
 			}, function(error) {
