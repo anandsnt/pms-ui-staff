@@ -1819,7 +1819,7 @@ sntZestStation.controller('zsRootCtrl', [
         var checkForExternalCameras = function() {
 
             var cameraCount = 0;
-            
+
             $scope.zestStationData.connectedCameras = [];
             $scope.zestStationData.useExtCamera = false;
 
@@ -1837,7 +1837,6 @@ sntZestStation.controller('zsRootCtrl', [
                             cameraCount++;
                         }
                     });
-                    $scope.zestStationData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || '';
                     $scope.zestStationData.useExtCamera = $scope.zestStationData.connectedCameras.length > 0
                 });
             }

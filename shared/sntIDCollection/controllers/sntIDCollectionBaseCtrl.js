@@ -7,7 +7,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			imageSide: 0,
 			scanMode: screenModes.validate_subscription,
 			idDetails: {},
-			needBackSideScan: false
+			needBackSideScan: false,
+			extCamForFrontIDActivated: false,
+			extCamForBackIDActivated: false
 		};
 	};
 	var domIDMappings;
@@ -15,6 +17,12 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.deviceConfig = {
 		useExtCamera: false,
 		useiOSAppCamera: false
+	};
+
+	var stopVideoStream = function() {
+		if (window.localVideoStream && window.localVideoStream.getVideoTracks() && window.localVideoStream.getVideoTracks().length) {
+			window.localVideoStream.getVideoTracks()[0].stop()
+		}
 	};
 
 	$scope.setIDsForImageElements = function(domIDMapping) {
@@ -57,8 +65,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 					$('#' + domIDMappings.back_image_preview).attr('src', base64String);
 				}
 			}
+			stopVideoStream();
 		}, function(response) {
 			$log.error(response);
+			stopVideoStream();
 			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
 		});
@@ -71,6 +81,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			$log.error(response);
 			$scope.$emit('IMAGE_ANALYSIS_FAILED', response);
 			$scope.screenData.scanMode = screenModes.upload_back_image_failed;
+			stopVideoStream();
 		});
 	};
 
@@ -81,6 +92,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			$log.error(response);
 			$scope.$emit('IMAGE_ANALYSIS_FAILED', response);
 			$scope.screenData.scanMode = screenModes.upload_front_image_failed;
+			stopVideoStream();
 		});
 	};
 
@@ -105,7 +117,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 
 		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
-			alert(response.FacialMatchConfidenceRating);
+			// alert(response.FacialMatchConfidenceRating);
 			if (response && response.FacialMatch && response.FacialMatchConfidenceRating > 95) {
 				$scope.$emit('FR_SUCCESS');
 			} else {
@@ -134,7 +146,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 						$timeout(function() {
 							$scope.screenData.scanMode = screenModes.analysing_id_data;
 						}, 0);
-						verifyFaceImageWithId(unmodifiedFaceImage, unmodifiedFaceImage);
+						verifyFaceImageWithId(unmodifiedFrontImage, unmodifiedFaceImage);
 						$scope.$emit('FR_ANALYSIS_STARTED');
 					}
 					else if (frontSideImage) {
@@ -257,7 +269,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
 		$scope.screenData.scanMode = screenModes.upload_front_image;
 		$scope.$emit('CLEAR_PREVIOUS_DATA');
-		$scope.$emit('FRONT_SIDE_SCANNING_STARTED');
+		if ($scope.zestStationData.useExtCamera) {
+			$scope.$emit('FRONT_SIDE_SCANNING_STARTED');
+		}
 	};
 
 	$scope.validateSubsription = function() {
@@ -288,14 +302,15 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.startExtCameraCapture = function(type) {
 		var video = type === 'front-image' ? document.querySelector('#id-video') : document.querySelector('#id-back-video');
 
+		var cameraId = localStorage.getItem('ID_SCAN_CAMERA_ID');
+
 		navigator.mediaDevices.getUserMedia({
 			video: {
-				deviceId: $scope.screenData.selectedCamera ? {
-					exact: $scope.screenData.selectedCamera
-				} : undefined
+				deviceId: cameraId
 			}
 		}).
 		then(function handleSuccess(stream) {
+			window.localVideoStream = stream;
 			video.srcObject = stream;
 			if (type === 'front-image') {
 				$scope.screenData.extCamForFrontIDActivated = true;
@@ -306,16 +321,6 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		}).catch(function() {
 
 		});
-	};
-
-	$scope.cameraSourceChanged = function() {
-		if ($scope.screenData.extCamForFrontIDActivated) {
-			$scope.startExtCameraCapture('front-image');
-		}
-		if ($scope.screenData.extCamForBackIDActivated) {
-			$scope.startExtCameraCapture('back-image');
-		}
-		localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.screenData.selectedCamera);
 	};
 
     $scope.stopExtCamera = function(type) {
@@ -353,6 +358,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
 		$scope.startExtCameraCapture('back-image');
 	};
+	$scope.$on('$destroy', function() {
+		stopVideoStream();
+    });
 
 	(function() {
 		resetScreenData();

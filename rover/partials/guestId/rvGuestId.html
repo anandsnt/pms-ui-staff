@@ -86,7 +86,7 @@
                 </select>
             </div>
             <div class="select document-type" ng-show="deviceConfig.useExtCamera">
-                <select ng-model="screenData.selectedCamera" class="placeholder" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged()">
+                <select ng-model="selectedCamera" class="placeholder" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged(selectedCamera)">
                     <option value="" disabled> Select Camera</option>
                 </select>
             </div>

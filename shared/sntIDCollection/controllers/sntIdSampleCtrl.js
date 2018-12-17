@@ -14,6 +14,16 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	$scope.connectedCameras = [];
 	var cameraCount = 0;
 
+	$scope.cameraSourceChanged = function() {
+		localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
+
+		if ($scope.screenData.extCamForBackIDActivated) {
+			$scope.startExtCameraCapture('back-image');
+		} else {
+			$scope.startExtCameraCapture('front-image');
+		}
+	};
+
 	if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
 		navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
 
@@ -33,7 +43,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 			if ($scope.deviceConfig.useExtCamera) {
 				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 				$scope.startExtCameraCapture('front-image');
-				$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || '';
+				$scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || '';
 			} else {
 				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 			}

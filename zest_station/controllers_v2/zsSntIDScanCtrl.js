@@ -443,7 +443,7 @@
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
 				$scope.setConfigurations({
-					useiOSAppCamera: $scope.zestStationData.autoIpadKeyboardEnabled,
+					useiOSAppCamera: false,
 					useExtCamera: $scope.zestStationData.connectedCameras.length > 0
 				});
 			}());

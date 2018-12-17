@@ -349,6 +349,17 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.connectedCameras = [];
 		var cameraCount = 0;
+		$scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
+
+		$scope.cameraSourceChanged = function() {
+			localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
+			if ($scope.screenData.extCamForFrontIDActivated) {
+				$scope.startExtCameraCapture('front-image');
+			}
+			if ($scope.screenData.extCamForBackIDActivated) {
+				$scope.startExtCameraCapture('back-image');
+			}
+		};
 
 		// for non mobile devices, check if cameras are present, if yes show options to scan based
 		// settings
@@ -370,8 +381,6 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				$scope.showScanOption = $scope.hotelDetails.id_collection &&
 		 								$scope.hotelDetails.id_collection.rover.enabled &&
 		 								$scope.connectedCameras.length > 0;
-		 		// default to previously selected camera
-		 		$scope.screenData.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID') || '';
 				$scope.setConfigurations(config);
 			});
 		}
