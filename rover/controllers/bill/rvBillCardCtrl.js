@@ -2955,7 +2955,7 @@ sntRover.controller('RVbillCardController',
 
 		$scope.reviewStatusArray = [];
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			//if (value.total_fees !== undefined) {
+
 				var data = {};
 		        // Bill is reviewed(true) or not-reviewed(false).
 
@@ -2963,7 +2963,7 @@ sntRover.controller('RVbillCardController',
 				data.billNumber = value.bill_number;
 				data.billIndex = key;
 				$scope.reviewStatusArray.push(data);
-			//}
+
 		});
 	};
 
