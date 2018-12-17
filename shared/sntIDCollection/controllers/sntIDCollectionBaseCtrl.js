@@ -1,4 +1,4 @@
-angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log, $interval) {
+angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function($scope, sntIDCollectionSrv, sntIDCollectionUtilsSrv, screenModes, $timeout, $log) {
 
 	var resetScreenData = function() {
 		$scope.screenData = {
@@ -21,7 +21,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	var stopVideoStream = function() {
 		if (window.localVideoStream && window.localVideoStream.getVideoTracks() && window.localVideoStream.getVideoTracks().length) {
-			window.localVideoStream.getVideoTracks()[0].stop()
+			window.localVideoStream.getVideoTracks()[0].stop();
 		}
 	};
 
@@ -227,7 +227,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		img.src = unmodifiedFaceImage;
 		img.onload = function() {
-			var imageData = sntIDCollectionUtilsSrv.resizeImage(img);
+			// var imageData = sntIDCollectionUtilsSrv.resizeImage(img);
 
 			if (faceImage) {
 				unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(unmodifiedFaceImage);
@@ -247,7 +247,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		};
 
-		img.onerror = function(error) {
+		img.onerror = function() {
 			$scope.$emit('FR_FAILED');
 		};
 	};
@@ -337,6 +337,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.imageSide = 0;
 		var video = document.querySelector('#id-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+
 		$scope.screenData.frontSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		getDocInstance();
@@ -351,6 +352,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.imageSide = 1;
 		var video = document.querySelector('#id-back-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		
 		$scope.screenData.backSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		postBackImage();

@@ -28,7 +28,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 		navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
 
 			angular.forEach(deviceInfos, function(device) {
-				if (device.kind == 'videoinput') {
+				if (device.kind === 'videoinput') {
 					$scope.connectedCameras.push({
 						'id': device.deviceId,
 						'label': device.label || 'camera ' + (cameraCount + 1)
@@ -39,6 +39,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 			var config = {
 				useExtCamera: $scope.connectedCameras.length > 0
 			};
+			
 			$scope.setConfigurations(config);
 			if ($scope.deviceConfig.useExtCamera) {
 				$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';

@@ -405,12 +405,12 @@
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
 
-			/***************** External camera actions ********/
+			/** *************** External camera actions ****** **/
 
-			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function(){
+			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
 				$scope.startExtCameraCapture('front-image');
 			});
-			$scope.$on('BACK_SIDE_SCANNING_STARTED', function(){
+			$scope.$on('BACK_SIDE_SCANNING_STARTED', function() {
 				$scope.startExtCameraCapture('front-image');
 			});
 

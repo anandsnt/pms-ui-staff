@@ -1707,7 +1707,7 @@ sntRover.controller('reservationDetailsController',
 			return false;
 		}
 		var guestIdRequired = false;
-		if ($scope.guestData){
+		if ($scope.guestData) {
 			_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
 				if (!$scope.isGuestIdUploaded(guestInfo, false)) {
 					guestIdRequired = true;

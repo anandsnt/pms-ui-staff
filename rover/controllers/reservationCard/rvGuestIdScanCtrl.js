@@ -334,10 +334,22 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
 			$scope.$emit('showLoader');
 		});
+
+		var restartVideoStream = function() {
+			if ($scope.showScanOption) {
+				if ($scope.screenData.extCamForFrontIDActivated) {
+					$scope.startExtCameraCapture('front-image');
+				}
+				if ($scope.screenData.extCamForBackIDActivated) {
+					$scope.startExtCameraCapture('back-image');
+				}
+			}
+		};
 		$scope.$on('IMAGE_ANALYSIS_FAILED', function() {
 			$scope.$emit('hideLoader');
 			$scope.guestIdData.errorMessage = 'Failed to Analyze the image';
 			generalFailureCallBack();
+			restartVideoStream();
 		});
 
 		if (!sntIDCollectionSrv.isInDevEnv && $scope.hotelDetails.id_collection) {
@@ -349,16 +361,12 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.connectedCameras = [];
 		var cameraCount = 0;
+
 		$scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
 
 		$scope.cameraSourceChanged = function() {
 			localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
-			if ($scope.screenData.extCamForFrontIDActivated) {
-				$scope.startExtCameraCapture('front-image');
-			}
-			if ($scope.screenData.extCamForBackIDActivated) {
-				$scope.startExtCameraCapture('back-image');
-			}
+			restartVideoStream();
 		};
 
 		// for non mobile devices, check if cameras are present, if yes show options to scan based
@@ -367,7 +375,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
 
 				angular.forEach(deviceInfos, function(device) {
-					if (device.kind == 'videoinput') {
+					if (device.kind === 'videoinput') {
 						$scope.connectedCameras.push({
 							'id': device.deviceId,
 							'label': device.label || 'camera ' + (cameraCount + 1)
@@ -378,6 +386,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				var config = {
 					useExtCamera: $scope.connectedCameras.length > 0
 				};
+				
 				$scope.showScanOption = $scope.hotelDetails.id_collection &&
 		 								$scope.hotelDetails.id_collection.rover.enabled &&
 		 								$scope.connectedCameras.length > 0;

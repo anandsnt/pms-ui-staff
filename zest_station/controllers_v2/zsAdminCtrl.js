@@ -402,6 +402,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: successCallBack,
                 failureCallBack: failureCallBack
             };
+            
             localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
             $scope.callAPI(zsGeneralSrv.saveSettings, options);
         };
