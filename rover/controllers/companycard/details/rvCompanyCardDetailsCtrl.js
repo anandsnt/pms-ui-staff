@@ -610,8 +610,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			} else {
+				if (createArAccountCheck) {
+					$scope.$broadcast('setgenerateNewAutoAr', true);
+				}
 				createArAccountCheck = false;
-				$scope.$broadcast('setgenerateNewAutoAr', true);
+				
 			}
 		};
 

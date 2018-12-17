@@ -40,6 +40,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
 
+		var callGenerateFolioNumberApiAfterSuccessfullMoveCharge = false;
+
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data) {
 
@@ -290,16 +292,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param billId is the bill id
 		 * @param balanceAmount is the balance Amount
 		 */
-		that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
+		that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
 			$scope.shouldGenerateFolioNumber = false;
 			if (balanceAmount === "0.0" && !isFolioNumberExists) {
 
 				var successCallBackOfGenerateFolioNumber = function(data) {
 					if ($scope.transactionsDetails.is_bill_lock_enabled) {
-						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active = false;
+						$scope.transactionsDetails.bills[billIndex].is_active = false;
 					}
-					$scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+					$scope.transactionsDetails.bills[billIndex].is_folio_number_exists = true;
 				},
 				paramsToService = {
 					'bill_id': billId
@@ -318,7 +320,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param  {[type]} data [description]
 		 * @return undefined
 		 */
-		var onTransactionFetchSuccess = function(data) {
+		var onTransactionFetchSuccess = function(data, moveChargeData) {
 			$scope.hasPrintFolioEnabled = data.is_print_folio_enabled;
 			$scope.transactionsDetails = data;
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
@@ -334,10 +336,22 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if (currentActiveBill.balance_amount === "0.0") {
 
 				if ($scope.shouldGenerateFolioNumber) {
-					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists);
+					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists, $scope.currentActiveBill);
 				}
 			}
 
+			if (callGenerateFolioNumberApiAfterSuccessfullMoveCharge) {
+				callGenerateFolioNumberApiAfterSuccessfullMoveCharge = false;
+				
+				var billIndex = _.indexOf($scope.transactionsDetails.bills, _.findWhere($scope.transactionsDetails.bills, {
+                        bill_id: moveChargeData.toBill
+                    })),
+				    movedToBillData = $scope.transactionsDetails.bills[billIndex];
+
+			    if (movedToBillData.balance_amount === "0.0") {
+					that.generateFolioNumber(movedToBillData.bill_id, movedToBillData.balance_amount, movedToBillData.is_folio_number_exists, billIndex);
+				}
+			}
 			configSummaryDateFlags();
 			loadDefaultBillDateData();
 
@@ -348,10 +362,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * success method move charge
 		 */
-		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function() {
+		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event, moveChargeData) {
 
 			var chargesMoved = function(data) {
-					onTransactionFetchSuccess(data);
+					onTransactionFetchSuccess(data, moveChargeData);
 				},
 				params = {
 					"account_id": $scope.accountConfigData.summary.posting_account_id
@@ -361,6 +375,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					successCallBack: chargesMoved
 				};
 
+			callGenerateFolioNumberApiAfterSuccessfullMoveCharge = true;
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		});
 
@@ -370,12 +385,15 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * API calling method to get the transaction details
 		 * @return - undefined
 		 */
-		var getTransactionDetails = function() {
-			var params = {
-				"account_id": $scope.accountConfigData.summary.posting_account_id
+		var getTransactionDetails = function(moveChargeData) {
+			var transactionSuccess = function(data) {
+					onTransactionFetchSuccess(data, moveChargeData);
+				},
+				params = {
+					"account_id": $scope.accountConfigData.summary.posting_account_id
 				},
 				options = {
-					successCallBack: onTransactionFetchSuccess,
+					successCallBack: transactionSuccess,
 					params: params
 				};
 
@@ -449,8 +467,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 */
 			var moveToBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
+				var newBillValueId = _.findWhere($scope.transactionsDetails.bills, {
+                    bill_number: parseInt(newBillValue)
+                }).bill_id;
+
+				dataToMove.toBill = parseInt(newBillValueId);
 				// Fetch data again to refresh the screen with new data
-				getTransactionDetails();
+				getTransactionDetails(dataToMove);
 			};
 
 			/*
@@ -460,7 +483,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data.errorMessage;
 			};
-
+			
+			callGenerateFolioNumberApiAfterSuccessfullMoveCharge = true;
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
 
