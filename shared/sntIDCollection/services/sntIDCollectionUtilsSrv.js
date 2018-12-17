@@ -71,8 +71,9 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 
 		var MAX_WIDTH = 3032;
 		var MAX_HEIGHT = 2008;
+		
 		width = width ? width : img.width;
-		height = height ? height: img.height;
+		height = height ? height : img.height;
 
 		if (width > height) {
 			if (width > MAX_WIDTH) {

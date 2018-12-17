@@ -292,6 +292,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			cordova.exec(function(response) {
 				processImageFromIos(true, undefined, response.image_base64);
 			}, function(error) {
+				$log.error(error);
 				$scope.$emit('FR_FAILED');
 			}, 'RVCardPlugin', 'captureFacePhoto', [5, 3]);
 		} else {
@@ -320,7 +321,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 				$scope.screenData.extCamForBackIDActivated = true;
 			}
 			$scope.$digest();
-		}).catch(function() {
+		})
+		.catch(function() {
 
 		});
 	};
@@ -352,7 +354,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.imageSide = 1;
 		var video = document.querySelector('#id-back-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
-		
+
 		$scope.screenData.backSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		postBackImage();

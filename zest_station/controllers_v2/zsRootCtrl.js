@@ -1837,7 +1837,7 @@ sntZestStation.controller('zsRootCtrl', [
                             cameraCount++;
                         }
                     });
-                    $scope.zestStationData.useExtCamera = $scope.zestStationData.connectedCameras.length > 0
+                    $scope.zestStationData.useExtCamera = $scope.zestStationData.connectedCameras.length > 0;
                 });
             }
         };

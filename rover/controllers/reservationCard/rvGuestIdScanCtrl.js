@@ -345,6 +345,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				}
 			}
 		};
+		
 		$scope.$on('IMAGE_ANALYSIS_FAILED', function() {
 			$scope.$emit('hideLoader');
 			$scope.guestIdData.errorMessage = 'Failed to Analyze the image';
@@ -386,7 +387,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				var config = {
 					useExtCamera: $scope.connectedCameras.length > 0
 				};
-				
+
 				$scope.showScanOption = $scope.hotelDetails.id_collection &&
 		 								$scope.hotelDetails.id_collection.rover.enabled &&
 		 								$scope.connectedCameras.length > 0;
