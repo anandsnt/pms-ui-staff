@@ -61,7 +61,8 @@ module.exports = function(config) {
             '../payment/**/*.js': ['babel'],
             './controllers/**/*.js': ['babel'],
             './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
-            './partials/**/*.html': ['ng-html2js']
+            './partials/**/*.html': ['ng-html2js'],
+            './services/likes/**/*.js': ['browserify']
         },
 
         // start these browsers
@@ -72,6 +73,9 @@ module.exports = function(config) {
                 base: 'ChromeHeadless',
                 flags: ['--no-sandbox']
             }
+        },
+        browserify: {
+            plugin: ['tsify']
         }
     }));
 };
