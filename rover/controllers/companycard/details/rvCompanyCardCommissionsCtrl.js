@@ -67,7 +67,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     _.each(data.commission_details, function(element, index) {
                         _.extend(element, {is_checked: false});
                     });
-                    $scope.selectedHotelCurrency = getCurrencySign(data.currency.value);
+                    $scope.currencySymbol = getCurrencySign(data.currency.value);
                     $scope.commissionDetails = data.commission_details;
                     $scope.commissionSummary.totalCommissionableRevenue = data.total_commissionable_revenue;
                     $scope.commissionSummary.totalReservationsRevenue = data.total_reservations_revenue;
