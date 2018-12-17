@@ -96,9 +96,9 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
                 className: '',
                 scope: $scope
             };
-        // If GMS setting is on, show GMS iframe, else default - CICO-50633
+        // If GMS setting and membership feature is on, show GMS iframe, else default - CICO-50633 & CICO-60486
 
-        if (GMSData.GMSSettings.membership_feature) {
+        if (GMSData.GMSSettings.membership_feature && GMSData.GMSSettings.enabled) {
             ngDialog.open(GMSDialog);
         } else {
             ngDialog.open(AddLoyaltyProgramDiaolg);
