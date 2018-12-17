@@ -13,6 +13,7 @@ module.exports = {
 			},
 			'rover.reservation': {
 				filename: roverJsListRoot + 'stayCardJsAssetList.js',
+                modules: true,
 				babelify: true
 			},
 			'rover.availability': {
