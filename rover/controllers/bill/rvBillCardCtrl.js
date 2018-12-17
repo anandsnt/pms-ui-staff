@@ -2618,7 +2618,7 @@ sntRover.controller('RVbillCardController',
 			$scope.status = "alert";
 			$scope.showEmailSentStatusPopup();
 		};
-
+		data.hotel_id  = $rootScope.hotelDetails.userHotelsData.current_hotel_id;
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	};
 
