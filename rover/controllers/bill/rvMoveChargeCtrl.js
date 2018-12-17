@@ -211,9 +211,8 @@ sntRover.controller('RVMoveChargeCtrl',
 				$scope.$emit('moveChargeSuccsess', response.data);
 				$scope.closeDialog();
 			};
-			var failureCallback = function(data) {moveChargeSuccsessmoveChargeSuccsess
-				console.log("@failureCallback");
-				console.log(data);
+			var failureCallback = function(data) {
+
                 $scope.errorMessage = data;
                 $scope.$emit('hideLoader');
             };

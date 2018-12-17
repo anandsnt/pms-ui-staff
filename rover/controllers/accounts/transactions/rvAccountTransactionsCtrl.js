@@ -347,7 +347,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                         bill_id: moveChargeData.toBill
                     })),
 				    movedToBillData = $scope.transactionsDetails.bills[billIndex];
-				    
+
 			    if (movedToBillData.balance_amount === "0.0") {
 					that.generateFolioNumber(movedToBillData.bill_id, movedToBillData.balance_amount, movedToBillData.is_folio_number_exists, billIndex);
 				}
@@ -374,6 +374,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					params: params,
 					successCallBack: chargesMoved
 				};
+
 			callGenerateFolioNumberApiAfterSuccessfullMoveCharge = true;
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		});
@@ -389,7 +390,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					onTransactionFetchSuccess(data, moveChargeData);
 				},
 				params = {
-				"account_id": $scope.accountConfigData.summary.posting_account_id
+					"account_id": $scope.accountConfigData.summary.posting_account_id
 				},
 				options = {
 					successCallBack: transactionSuccess,
@@ -482,6 +483,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = data.errorMessage;
 			};
+			
 			callGenerateFolioNumberApiAfterSuccessfullMoveCharge = true;
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
