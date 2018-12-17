@@ -342,14 +342,15 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			if (callGenerateFolioNumberApiAfterSuccessfullMoveCharge) {
 				callGenerateFolioNumberApiAfterSuccessfullMoveCharge = false;
-				//var abcd = _.indexOf($scope.transactionsDetails.bills, function(data) { return bill_id = moveChargeData.toBill;});
+				
 				var billIndex = _.indexOf($scope.transactionsDetails.bills, _.findWhere($scope.transactionsDetails.bills, {
                         bill_id: moveChargeData.toBill
                     })),
 				    movedToBillData = $scope.transactionsDetails.bills[billIndex];
-				    if (movedToBillData.balance_amount === "0.0") {
-						that.generateFolioNumber(movedToBillData.bill_id, movedToBillData.balance_amount, movedToBillData.is_folio_number_exists, billIndex);
-					}
+				    
+			    if (movedToBillData.balance_amount === "0.0") {
+					that.generateFolioNumber(movedToBillData.bill_id, movedToBillData.balance_amount, movedToBillData.is_folio_number_exists, billIndex);
+				}
 			}
 			configSummaryDateFlags();
 			loadDefaultBillDateData();
