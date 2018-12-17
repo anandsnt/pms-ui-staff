@@ -221,7 +221,6 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	var processImageFromIos = function(faceImage, frontSideImage, imageData) {
-		$scope.$emit('FR_ANALYSIS_STARTED');
 		var img = document.createElement('img');
 
 		var unmodifiedFaceImage = "data:image/jpeg;base64," + imageData;
@@ -232,7 +231,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 			if (faceImage) {
 				unmodifiedFaceImage = sntIDCollectionUtilsSrv.dataURLtoBlob(unmodifiedFaceImage);
-				verifyFaceImageWithId(unmodifiedFaceImage, unmodifiedFaceImage);
+				verifyFaceImageWithId(unmodifiedFrontImage, unmodifiedFaceImage);
+				$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+				$scope.$emit('FR_ANALYSIS_STARTED');
+				$scope.$digest();
 			}
 			// else if (frontSideImage) {
 			// 	unmodifiedFrontImage = sntIDCollectionUtilsSrv.dataURLtoBlob(reader.result);
