@@ -724,5 +724,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return zsBaseWebSrv.getJSON(url, params);
         };
 
+        this.signOut = function() {
+            return zsBaseWebSrv.getJSON('/logout');
+        };
     }
 ]);

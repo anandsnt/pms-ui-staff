@@ -4,7 +4,7 @@
     <div class="reservation-header" ng-init="showEditDates = false">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="actions">
-            <a ng-show="isStayDatesChangeAllowed()" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
+            <a ng-show="isStayDatesChangeAllowed()" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="toggleReservationDates()">
                 <span class="date">
                     <span class="guest-status small-icon check-in">&nbpsp;</span>
                     <span ng-show="!isIpad">{{reservationData.reservation_card.arrival_date|date:'EEEE'}}</span>
@@ -183,46 +183,35 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
             <ul class="guest-count">
-                <li>
-                    <span class="guest-icon">
-                        <span class="icons icon-adult"></span>
-                    </span>
+                <li class="select">
+                    <span class="icons icon-adult"></span>
                     <label class="label" for="adults-count">Adults</label>
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
-                    <div class="select">
-                        <select convert-to-number ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
+                    <select convert-to-number ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
                             <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.adult_count">{{::i}}</option>
-                        </select>
-                    </div>
+                    </select>
                 </li>
-                <li>
-                    <span class="guest-icon">
-                        <span class="icons icon-student"></span>
-                    </span>
+                <li class="select">
+                    <span class="icons icon-student"></span>
                     <label class="label" for="children-count">Children</label>
                     <!-- <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
-                    <div class="select">
-                        <select convert-to-number ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange()">
-                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.children_count">{{::i}}</option>
-                        </select>
-                    </div>
+      
+                    <select convert-to-number ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange()">
+                        <option ng-repeat="i in [0, otherData.maxChildren] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.children_count">{{::i}}</option>
+                    </select>
                 </li>
-                <li>
-                    <span class="guest-icon">
-                        <span class="icons icon-infant"></span>
-                    </span>
+                <li class="select">
+                    <span class="icons icon-infant"></span>
                     <label class="label" for="infants-count">Infants</label>
                     <!-- <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
-                    <div class="select">
-                        <select convert-to-number ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange()">
+                    <select convert-to-number ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange()">
                             <option ng-repeat="i in [0, otherData.maxInfants] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.infants_count">{{::i}}</option>
-                        </select>
-                    </div>
+                    </select>
                 </li>
             </ul>
 
             <!-- Accompany in guest card -->
-            <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
+            <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0 && !isStandAlone" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
             <form method="post" name="manage-guests" id="manage-guests" class="form scrollable" ng-iscroll="accompanyGuestList" ng-iscroll-delay='1000'>
                 <div class="wrapper accompany-guest-wrapper">
@@ -243,7 +232,8 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guestData.primary_guest_details, true), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guestData.primary_guest_details, true) && !isIdRequiredForGuest(guestData.primary_guest_details, true),
                                              'icons icon-identity-card-red': isIdRequiredForGuest(guestData.primary_guest_details, true)}"></span>
-                             {{'GUEST_ID_BUTTON'|translate}}
+                            <span ng-show="!isIdRequiredForGuest(guestData.primary_guest_details, true)">{{ 'GUEST_ID_BUTTON' | translate }}</span>
+                            <span ng-show="isIdRequiredForGuest(guestData.primary_guest_details, true)">{{ 'GUEST_ID_MISSING_BUTTON' | translate }}</span>
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)">
                             <span class="icons icon-save"></span> Download
@@ -270,7 +260,8 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
                                              'icons icon-identity-card-red': isIdRequiredForGuest(guest)}" style="left:10px !important; top:0 !important;"></span>
-                            {{'GUEST_ID_BUTTON'|translate}}
+                            <span ng-show="!isIdRequiredForGuest(guest)">{{ 'GUEST_ID_BUTTON' | translate }}</span>
+                            <span ng-show="isIdRequiredForGuest(guest)">{{ 'GUEST_ID_MISSING_BUTTON' | translate }}</span>
                         </button>
                          <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
@@ -298,7 +289,8 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
                                              'icons icon-identity-card-red': isIdRequiredForGuest(guest)}"></span>
-                            {{'GUEST_ID_BUTTON'|translate}}
+                            <span ng-show="!isIdRequiredForGuest(guest">{{ 'GUEST_ID_BUTTON' | translate }}</span>
+                            <span ng-show="isIdRequiredForGuest(guest)">{{ 'GUEST_ID_MISSING_BUTTON' | translate }}</span>
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
@@ -327,7 +319,8 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
                                              'icons icon-identity-card-red': isIdRequiredForGuest(guest)}"></span>
-                            {{'GUEST_ID_BUTTON'|translate}}
+                            <span ng-show="!isIdRequiredForGuest(guest">{{ 'GUEST_ID_BUTTON' | translate }}</span>
+                            <span ng-show="isIdRequiredForGuest(guest)">{{ 'GUEST_ID_MISSING_BUTTON' | translate }}</span>
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download

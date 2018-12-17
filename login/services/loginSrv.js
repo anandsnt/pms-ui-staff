@@ -4,11 +4,42 @@ angular.module('login').service('loginSrv',
 
             var service = this;
 
+            /**
+             * This method calls the login/validate if there is a JWT available to see if the user can be redirected to Rover / SNT Admin
+             * @return {deferred.promise|{then, catch, finally}|*|promise.promise|promise|jQuery.promise|Promise<any>} promise resolves to
+             * {is_snt_admin: {Boolean}, redirect_url: {String}}
+             */
+            service.checkSession = function() {
+                var jwt = $window.localStorage.getItem('jwt'),
+                    url = '/login/validate',
+                    deferred = $q.defer();
+
+                if (jwt) {
+                    $http.get(url).
+                        then(function(response) {
+                            deferred.resolve(response.data);
+                        }, function() {
+                            $window.localStorage.removeItem('jwt');
+                            deferred.resolve('');
+                        });
+                } else {
+                    deferred.resolve('');
+                }
+
+                return deferred.promise;
+            };
+
             service.login = function(data, successCallback, failureCallBack) {
                 var deferred = $q.defer();
 
                 $http.post("/login/submit", data).then(function(response) {
                     if (response.data.status === "success") {
+                        var jwt = response.headers('Auth-Token');
+
+                        $window.localStorage.removeItem('jwt');
+                        if (jwt) {
+                            $window.localStorage.setItem('jwt', jwt);
+                        }
                         successCallback(response.data.data);
                     } else {
                         // please note the type of error expecting is array
@@ -41,6 +72,11 @@ angular.module('login').service('loginSrv',
                 // Sample params {params:{"email":email}}
                 $http.post("/login/send_temporary_password", data).then(function(response) {
                     if (response.data.status === "success") {
+                        var jwt = response.headers('Auth-Token');
+
+                        if (jwt) {
+                            $window.localStorage.setItem('jwt', jwt);
+                        }
                         successCallback(response.data.data);
                     } else {
                         // please note the type of error expecting is array

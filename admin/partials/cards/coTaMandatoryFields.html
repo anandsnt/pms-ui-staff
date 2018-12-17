@@ -128,7 +128,20 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                            E-Invoice
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.e_invoice_mandatory }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.e_invoice_mandatory">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>                     
                 </tbody>
             </table>
         </fieldset>
