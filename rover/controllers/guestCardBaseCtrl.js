@@ -151,4 +151,4 @@ window.GuestCardBaseCtrl = function ($scope, RVSearchSrv, RVContactInfoSrv, rvPe
         return contactInfo;
     };
 
-}
+};
