@@ -244,7 +244,6 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.clickedEmail = function(data) {
 			$scope.closeDialog();
-			data.hotel_id  = $rootScope.hotelDetails.userHotelsData.current_hotel_id;
 			var sendEmailSuccessCallback = function() {
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
