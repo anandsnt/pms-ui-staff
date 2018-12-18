@@ -243,6 +243,26 @@
                     .box-shadow(1px 1px 0 rgba(0, 0, 0, 0.15));
                     #flexbox > .parent( column, center, '', '' );
 
+                    &.with-button {
+                        padding-right: 50px;
+
+                        .button {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background: @grey1;
+                            .box-shadow();
+                            .square(30px);
+
+                            .icons {
+                                background-size: 80px;
+                                &.icon-remove-40 {
+                                    background-position: 4px -2503px;
+                                }
+                            }
+                        }
+                    }
+
                     .merge-icon {
                         position: absolute;
                         top: 10px;
