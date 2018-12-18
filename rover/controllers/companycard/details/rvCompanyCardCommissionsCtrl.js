@@ -518,6 +518,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
                 $scope.shouldShowPropertyDropDown = true;
                 fetchMultiProperties();
+            } else {
+                $scope.shouldShowPropertyDropDown = false;
             }
         
         });
