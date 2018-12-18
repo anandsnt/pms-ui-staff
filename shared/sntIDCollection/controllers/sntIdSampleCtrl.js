@@ -24,7 +24,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 		}
 	};
 
-	if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+	if (!sntIDCollectionUtilsSrv.isInMobile() && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
 		navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
 
 			angular.forEach(deviceInfos, function(device) {
@@ -52,5 +52,9 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	} else {
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 	}
+
+	$scope.$on('FRONT_SIDE_SCANNING_STARTED', function(){
+		$scope.startExtCameraCapture('front-image');
+	});
 	
 });

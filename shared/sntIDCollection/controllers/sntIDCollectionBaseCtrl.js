@@ -271,7 +271,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$('#'+ domIDMappings.back_image_preview).attr('src', '');
 		$scope.screenData.scanMode = screenModes.upload_front_image;
 		$scope.$emit('CLEAR_PREVIOUS_DATA');
-		if ($scope.zestStationData.useExtCamera) {
+		if ($scope.deviceConfig.useExtCamera) {
 			$scope.$emit('FRONT_SIDE_SCANNING_STARTED');
 		}
 	};
@@ -309,7 +309,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		navigator.mediaDevices.getUserMedia({
 			video: {
-				deviceId: cameraId
+				deviceId: cameraId,
+				width: 2560,
+				height: 1920
 			}
 		}).
 		then(function handleSuccess(stream) {
@@ -338,7 +340,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.captureFrontImageUsingExtCamera = function () {
 		$scope.screenData.imageSide = 0;
 		var video = document.querySelector('#id-video');
-		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, 2560, 1920);
 
 		$scope.screenData.frontSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
@@ -353,7 +355,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	$scope.captureBackImageUsingExtCamera = function () {
 		$scope.screenData.imageSide = 1;
 		var video = document.querySelector('#id-back-video');
-		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, video.videoWidth, video.videoHeight);
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined,2560, 1920);
 
 		$scope.screenData.backSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
