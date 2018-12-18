@@ -30,8 +30,9 @@
     .release-notes,
     .fullscreen-header,
     .commissions-filters,
-    .overbooking-header { display: none !important; }
-    #find-invoices { display: none !important; }
+    .overbooking-header,
+    #find-invoices,
+    .cards .ui-resizable-handle { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -121,8 +122,8 @@
 /* 4. LAYOUT
 ==========================================================*/
 
-/* App screens				==============================*/
-	.container {
+/* App screens              ==============================*/
+    .container {
         position: static;
         top: 0 !important;
         left: 0 !important;
@@ -186,8 +187,8 @@
     .iScrollVerticalScrollbar,
     .iScrollHorizontalScrollbar { .hide; }
 
-/* Nav Bar 					==============================*/
-	.nav-bar {
+/* Nav Bar                  ==============================*/
+    .nav-bar {
         position: relative;
         height: auto;
         padding: 0;
@@ -998,227 +999,216 @@
         z-index: 9999;
         .hide;
 
-        .cards-wrapper {
+        /* Card headers ***/
+        .cards-header {
+            height: 14pt;
 
-            /* Card headers ***/
-            .cards-header {
-                height: 14pt;
+            .card-header {
 
-                .card-header {
+                form,
+                .card-search-form {
+                    float: none;
+                    text-align: center;
 
-                    form,
-                    .card-search-form {
-                        float: none;
-                        text-align: center;
+                    .masked-input {
+                        color: @textColor;
+                        border: 0;
+                        background: transparent;
+                        .no-transition;
+                        .box-shadow(none);
+                        .hide;
 
-                        .masked-input {
-                            color: @textColor;
-                            border: 0;
-                            background: transparent;
-                            .no-transition;
-                            .box-shadow(none);
-                            .hide;
-
-                            &.h1 {
-                                font-size: 14pt;
-                                line-height: 1;
-                                text-align: center;
-                                font-weight: 700;
-                                margin: 0;
-                                width: 100% !important;
-                                height: 14pt !important;
-                                min-height: 14pt !important;
-                                .show;
-                            }
-                        }
-                    }
-
-                    .guest-image,
-                    .card-actions { .hide; }
-
-                    &.second,
-                    &.third,
-					&.fourth { .hide; }
-                }
-            }
-
-            /* Card content with tabs ***/
-            .cards-content {
-                .card-content {
-
-                    .card-tabs-nav {
-                        margin-bottom: 12pt;
-
-                        li {
+                        &.h1 {
+                            font-size: 14pt;
+                            line-height: 1;
                             text-align: center;
-                            font-size: 10pt;
+                            font-weight: 700;
                             margin: 0;
-                            .hide;
-
-                            .button {
-                                .hide();
-                            }
-
-                            a { color: @grey3; }
-
-                            &.ui-tabs-active { .show; }
+                            width: 100% !important;
+                            height: 14pt !important;
+                            min-height: 14pt !important;
+                            .show;
                         }
                     }
+                }
 
-                    .card-tab {
+                .guest-image,
+                .switch-button,
+                .card-actions { .hide; }
 
-                        .tab-header {
-                            .search-form,
-                            .button { .hide; }
+                &.second,
+                &.third,
+                &.fourth { .hide; }
+            }
+        }
 
-                            .totals {
-                                margin-bottom: 8pt;
-                                clear: both;
-                                .float;
+        /* Card Tabs ***/
+        .card-tabs-nav {
+            margin-bottom: 12pt;
 
-                                li {
-                                    font-size: 8pt;
-                                    line-height: 1;
-                                    text-align: left;
-                                    margin: 0;
-                                    padding: 0 4pt;
+            li {
+                text-align: center;
+                font-size: 10pt;
+                margin: 0;
+                .hide;
 
-                                    .label {
-                                        margin: 0;
-                                        float: none;
-                                        .show;
-                                    }
+                .button {
+                    .hide();
+                }
 
-                                    .value {
-                                        font-size: 12pt;
-                                        line-height: 1;
-                                        font-weight: 300;
-                                        color: @textColor;
-                                        .show;
-                                    }
+                a { color: @grey3; }
 
-                                    &:last-child { .hide; }
-                                }
-                            }
-                        }
+                &.ui-tabs-active { .show; }
+            }
+        }
 
-                        /* AR Transactions ***/
-                        &.transactions {
-                            .tab-header {
-                                .totals {
-                                    li {
-                                        margin-right: 8pt;
-                                        padding-right: 8pt;
-                                        border-right: 1px solid @grey2;
-                                        .pull-left;
+        /* Card Content - Header ***/
+        .tab-header {
+            .search-form,
+            .button { .hide; }
 
-                                        &:nth-last-child(2) {
-                                            margin-right: 0;
-                                            padding-right: 0;
-                                            border-right: 0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            .totals {
+                margin-bottom: 8pt;
+                clear: both;
+                .float;
 
-                        /* Rooming List ***/
-                        &.rooming-list {
-                            .tab-details {
-                                .rooming-list-header {
-                                    margin: 0;
-                                    .float;
+                li {
+                    font-size: 8pt;
+                    line-height: 1;
+                    text-align: left;
+                    margin: 0;
+                    padding: 0 4pt;
 
-                                    li {
-                                        font-size: 8pt;
-                                        line-height: 1em;
-                                        text-transform: uppercase;
-                                        font-weight: 600;
-                                        background: @grey1;
-                                        padding: 4pt;
-                                        margin: 0;
-                                        .pull-left;
+                    .label {
+                        margin: 0;
+                        float: none;
+                        .show;
+                    }
 
-                                        &.check { .hide; }
+                    .value {
+                        font-size: 12pt;
+                        line-height: 1;
+                        font-weight: 300;
+                        color: @textColor;
+                        .show;
+                    }
 
-                                        &.status,
-                                        &.room { width: 5%; }
-                                        &.rate { width: 10%; }
-                                        &.date { width: 15%; }
-                                        &.name,
-                                        &.type { width: 25%; }
-                                    }
-                                }
-                            }
-                        }
+                    &:last-child { .hide; }
+                }
+            }
+        }
 
-                        /* Commisions ***/
-                        .commisions {
-                            .tab-header {
-                                .totals { 
-                                    li {
-                                        display: inline-block;
-                                        padding: 0 4pt 0 0;
-                                    }
-                                }
-                            }
-                            .tab-details {
-                                .search-results-header {
-                                    #flexbox > .parent(row, flex-start, center, center);
-                                    
-                                    li {
-                                        margin:0;
+        /* AR Transactions ***/
+        .transactions {
+            .tab-header {
+                .totals {
+                    li {
+                        margin-right: 8pt;
+                        padding-right: 8pt;
+                        border-right: 1px solid @grey2;
+                        .pull-left;
 
-                                        &.action {
-                                            .hide();
-                                        }
-
-                                        &.paid {
-                                            width: 60px;
-                                            text-align: right;
-                                        }
-
-                                        &.hold {
-                                            width: 70px;
-                                            text-align: center;
-                                        }
-
-                                        &.amount {
-                                            width: 160px;
-                                            padding-right: 65px;
-                                            text-align: right;
-                                        }
-
-                                        &.commission,
-                                        &.revenue {
-                                            width: 80px;
-                                            text-align: right;
-                                        }
-                                        
-                                        &.reservation {
-                                            flex-grow: 1;
-                                        }
-                                    }
-                                } 
-
-                                .print-selected {
-                                    .reservation:not(.selected) { .hide; }
-                                }
-                            }
+                        &:nth-last-child(2) {
+                            margin-right: 0;
+                            padding-right: 0;
+                            border-right: 0;
                         }
                     }
                 }
             }
         }
 
-        .ui-resizable-handle { .hide; }
+        /* Rooming List ***/
+        .rooming-list {
+            .tab-details {
+                .rooming-list-header {
+                    margin: 0;
+                    .float;
 
-        &.open,
-        &.fullscreen { .show; }
-        .ar-statement {
-            display:none;
+                    li {
+                        font-size: 8pt;
+                        line-height: 1em;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        background: @grey1;
+                        padding: 4pt;
+                        margin: 0;
+                        .pull-left;
+
+                        &.check { .hide; }
+
+                        &.status,
+                        &.room { width: 5%; }
+                        &.rate { width: 10%; }
+                        &.date { width: 15%; }
+                        &.name,
+                        &.type { width: 25%; }
+                    }
+                }
+            }
         }
+
+        /* Commisions ***/
+        .commisions {
+            .tab-header {
+                .totals { 
+                    li {
+                        display: inline-block;
+                        padding: 0 4pt 0 0;
+                    }
+                }
+            }
+            .tab-details {
+
+                .search-results-header {
+                    #flexbox > .parent(row, flex-start, center, center);
+                    
+                    li {
+                        margin:0;
+
+                        &.action {
+                            .hide();
+                        }
+
+                        &.paid {
+                            width: 60px;
+                            text-align: right;
+                        }
+
+                        &.hold {
+                            width: 70px;
+                            text-align: center;
+                        }
+
+                        &.amount {
+                            width: 160px;
+                            padding-right: 65px;
+                            text-align: right;
+                        }
+
+                        &.commission,
+                        &.revenue {
+                            width: 80px;
+                            text-align: right;
+                        }
+                        
+                        &.reservation {
+                            flex-grow: 1;
+                        }
+                    }
+                } 
+
+                .print-selected {
+                    .reservation:not(.selected) { .hide; }
+                }
+            }
+        }
+
         /* AR Statement ***/
+        .ar-statement {
+            .hide();
+        }
+
         &.print-statement {
             .cards-header,
             .card-tabs-nav { .hide; }
@@ -1454,6 +1444,10 @@
                 }
             }
         }
+
+        /* Open ***/
+        &.open,
+        &.fullscreen { .show; }
     }
 
 /* Reports                  ==============================*/
