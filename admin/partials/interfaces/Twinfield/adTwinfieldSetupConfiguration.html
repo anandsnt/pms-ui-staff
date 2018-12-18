@@ -37,16 +37,19 @@
     <fieldset class="holder full-width">
         <div class="form-title">
             <h3>API Access<span> Configuration</span></h3>
+            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}}</em>
         </div>
 
         <fieldset class="holder left">
             <ad-textbox inputtype="text" value="config.process_url"
+                        required="yes"
                         label="{{'PROCESS_URL'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
 
         <fieldset class="holder right">
             <ad-textbox inputtype="text" value="config.finder_url"
+                        required="yes"
                         label="{{'FINDER_URL'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
@@ -55,19 +58,23 @@
     <fieldset class="holder full-width">
         <div class="form-title">
             <h3>Settings</h3>
+            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}}</em>
         </div>
 
         <fieldset class="holder left">
             <ad-textbox inputtype="text" value="config.hotel_code"
+                        required="yes"
                         label="{{'OFFICE_CODE'| translate}}"
                         styleclass="full-width"></ad-textbox>
             <ad-textbox inputtype="text" value="config.suspended_account_code"
+                        required="yes"
                         label="{{'SUSPENSE_ACCOUNT_CODE'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
 
         <fieldset class="holder right">
             <ad-textbox inputtype="text" value="config.balancing_ledger_account_number"
+                        required="yes"
                         label="{{'LEDGER_ACCOUNT_NUMBER'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
