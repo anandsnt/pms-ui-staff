@@ -64,7 +64,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        }
 	        else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.searchBackButtonCaption = $filter('translate')('MENU_COMMISIONS');
-			} else {
+			} else if ($stateParams.isMergeViewSelected) {
+				$scope.searchBackButtonCaption = $filter('translate')('MERGE_CARDS');			}
+			else {
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
@@ -215,11 +217,17 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		*		Back to Balance/Paid tabs -> Back to AR Trans/Company & TA Cards search
 		*/
 		if (!$stateParams.isBackFromStaycard) {
-
-			$rootScope.prevStateBookmarkDataFromAR = {
-				title: $scope.searchBackButtonCaption,
-				name: $rootScope.previousState.name
-			};
+			if ($stateParams.isMergeViewSelected) {
+				$rootScope.prevStateBookmarkDataFromAR = {
+					title: $scope.searchBackButtonCaption,
+					name: $rootScope.previousState.name
+				};
+			} else {
+				$rootScope.prevStateBookmarkDataFromAR = {
+					title: $scope.searchBackButtonCaption,
+					name: $rootScope.previousState.name
+				};
+			}
 
 		}
 		// CICO-11664

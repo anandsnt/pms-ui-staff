@@ -1,6 +1,7 @@
-angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout', 'RVCompanyCardSrv',
-	function ($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout, RVCompanyCardSrv) {
-		var self = this;
+angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout', 'RVCompanyCardSrv', '$state',
+	function ($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout, RVCompanyCardSrv, $state) {
+		var self = this,
+			transitionParams = null;
 
 		const filterValues = {
 			ALL: 'ALL',
@@ -26,9 +27,25 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.hasArNumber = false;
 		$scope.$emit("updateRoverLeftMenu", "cards");
 
+		var applyPreviousSelections = () => {			
+			if (transitionParams && transitionParams.selectedIds && transitionParams.selectedIds.length > 0) {
+				$scope.results.forEach((card) => {
+					var selectedCard = _.find(transitionParams.selectedIds, {id: card.id});
+
+					if (selectedCard) {
+						card.selected = true;
+						card.isPrimary = selectedCard.isPrimary;
+						$scope.viewState.selectedCardsForMerge.push(card);
+					}
+				});
+			}
+			transitionParams = null;
+		};
+
 		var successCallBackofInitialFetch = function (data) {
 			$scope.$emit("hideLoader");
 			$scope.results = data.accounts;
+			applyPreviousSelections();
 			setTimeout(function () {
 				refreshScroller();
 			}, 750);
@@ -45,10 +62,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		};
 
 		$scope.setScroller(scrollers.COMPANY_CARD_SCROLL, scrollerOptions);
-		$scope.setScroller(scrollers.SELECTED_CARDS_FOR_MERGE_SCROLL, {
-			tap: true,
-			preventDefault: false
-		});
+		$scope.setScroller('selected_cards_for_merge_scroll');
 
 
 
@@ -87,6 +101,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.queryEntered = _.debounce(function () {
 			if ($scope.textInQueryBox === "") {
 				$scope.results = [];
+				self.resetSelectionsForMerge();
 				refreshScroller();
 			} else {
 				displayFilteredResults();
@@ -184,7 +199,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			}
 			$scope.cardFilter = filterValues.ALL;
 			$scope.textInQueryBox = '';
-			$scope.viewState.canMerge = false;
+			$scope.viewState.canMerge = null;
 		};
 
 		/**
@@ -196,9 +211,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			if (!$scope.viewState.selectedCardsForMerge.length) {
 				card.isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = card;
+				
 			}
 			if (card.selected) {
-				$scope.viewState.selectedCardsForMerge.push(card);
+				$scope.viewState.selectedCardsForMerge.push(card);				
 			} else {
 				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (card) => {
 					if (!card.selected) {
@@ -321,7 +337,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.onTravelAgentCompanyCardSwitch = () => {
 			self.resetSelectionsForMerge();
 			$scope.results = [];
-			$scope.viewState.canMerge = false;
+			$scope.viewState.canMerge = null;
 			$scope.queryEntered();
 		};
 
@@ -366,6 +382,22 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 		};
 
+		$scope.navigateToDetails = (id, accountType) => {
+			let ids = _.map($scope.viewState.selectedCardsForMerge, (card) => {
+				return {id: card.id, isPrimary: card.isPrimary || false};
+			});
+
+			$state.go('rover.companycarddetails', {
+				id: id,
+				type: accountType,
+				query: $scope.textInQueryBox,
+				selectedIds: ids || [],
+				isMergeViewSelected: !$scope.viewState.isViewSelected,
+				activeSubView: $scope.viewState.isCompanyCardSelected ? 'CC' : 'TA',
+				cardType: $scope.cardFilter
+			});
+		};
+
 		/**
 		 * Resetting the values of variables 
 		 */
@@ -407,6 +439,17 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				hasInitiatedMergeVerification: false,
 				mergeStatusErrors: []
 			};
+
+			transitionParams = $state.transition.params('from');
+
+			if (transitionParams && transitionParams.isMergeViewSelected) {
+				$scope.viewState.isViewSelected = !transitionParams.isMergeViewSelected;
+				$scope.textInQueryBox = transitionParams.query;				
+				$scope.viewState.isCompanyCardSelected = transitionParams.activeSubView === 'CC';
+				$scope.cardFilter = transitionParams.cardType;
+				$scope.queryEntered();
+			}
+			
 		};
 
 		init();
