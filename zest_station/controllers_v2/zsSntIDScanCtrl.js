@@ -408,10 +408,27 @@
 			/** *************** External camera actions ****** **/
 
 			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
+				$scope.$emit('showLoader');
 				$scope.startExtCameraCapture('front-image');
 			});
-			$scope.$on('BACK_SIDE_SCANNING_STARTED', function() {
-				$scope.startExtCameraCapture('front-image');
+			$scope.$on('FRONT_IMAGE_CONFIRMED', function() {
+				if ($scope.screenData.scanMode === 'UPLOAD_BACK_IMAGE' && $scope.deviceConfig.useExtCamera) {
+					$scope.$emit('showLoader');
+					$scope.startExtCameraCapture('back-image');
+				}
+			});
+			$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+				$scope.screenData.scanMode = 'ANALYSING_ID_DATA';
+			});
+
+			$scope.$on('EXT_CAMERA_STARTED', function() {
+				$timeout(function() {
+					$scope.$emit('hideLoader');
+				}, 3000);
+			});
+
+			$scope.$on('EXT_CAMERA_FAILED', function() {
+				$scope.$emit('hideLoader');
 			});
 
 			(function() {

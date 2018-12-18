@@ -394,6 +394,18 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				$scope.setConfigurations(config);
 			});
 		}
+		
+		$scope.$on('EXT_CAMERA_STARTING', function() {
+			$scope.$emit('showLoader');
+		});
+		$scope.$on('EXT_CAMERA_STARTED', function() {
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 3000);
+		});
+		$scope.$on('EXT_CAMERA_FAILED', function() {
+			$scope.$emit('hideLoader');
+		});
 
 	}
 ]);

@@ -53,7 +53,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 		$scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
 	}
 
-	$scope.$on('FRONT_SIDE_SCANNING_STARTED', function(){
+	$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
 		$scope.startExtCameraCapture('front-image');
 	});
 	
