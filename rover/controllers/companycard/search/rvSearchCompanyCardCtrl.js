@@ -35,6 +35,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 					if (selectedCard) {
 						card.selected = true;
 						card.isPrimary = selectedCard.isPrimary;
+						if (card.isPrimary) {
+							$scope.viewState.selectedPrimaryCard = card;	
+						}
 						$scope.viewState.selectedCardsForMerge.push(card);
 					}
 				});
