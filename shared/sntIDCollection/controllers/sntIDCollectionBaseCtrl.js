@@ -308,7 +308,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		navigator.mediaDevices.getUserMedia({
 			video: {
-				deviceId: cameraId,
+				deviceId: cameraId ? {
+					exact: cameraId
+				} : undefined,
 				width: 2560,
 				height: 1920
 			}
