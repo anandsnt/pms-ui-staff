@@ -593,12 +593,13 @@ sntRover.controller('roverController', [
             $scope.menuOpen = false;
         };
 
-        $scope.logout = function () {
-            var redirUrl = '/logout/';
-
-            $timeout(function () {
-                $window.location.href = redirUrl;
-            }, 300);
+        $scope.logout = function() {
+            sntActivity.start('LOGOUT_INVALIDATE_TOKEN');
+            RVDashboardSrv.signOut().finally(function() {
+                $timeout(function () {
+                    $window.location.href = '/logout';
+                });
+            });
         };
 
         var openEndOfDayPopup = function () {

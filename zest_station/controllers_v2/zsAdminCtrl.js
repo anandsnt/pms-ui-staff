@@ -241,9 +241,12 @@ sntZestStation.controller('zsAdminCtrl', [
                 console.info('login out');
             }
             $scope.reportGoingOffline('logout');
-             $timeout(function() {
-                $window.location.href = '/station_logout';
-            }, 500);
+
+            zsGeneralSrv.signOut().finally(function() {
+               $timeout(function () {
+                   $window.location.href = '/station_logout';
+               });
+             });
             
         };
 
@@ -402,7 +405,8 @@ sntZestStation.controller('zsAdminCtrl', [
                 successCallBack: successCallBack,
                 failureCallBack: failureCallBack
             };
-
+            
+            localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
             $scope.callAPI(zsGeneralSrv.saveSettings, options);
         };
 
@@ -531,6 +535,8 @@ sntZestStation.controller('zsAdminCtrl', [
             $log.info(receiptPrinterParams);
         };
 
+        $scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
+
         // initialize
         (function() {
             var localDebugging = false, // change this if testing locally, be sure to make false if going up to dev/release/prod
@@ -577,6 +583,9 @@ sntZestStation.controller('zsAdminCtrl', [
             }
             if ($scope.isIpad) {
                 $scope.fetchDeviceStatus();
+            }
+            if ($scope.zestStationData.id_scan_enabled) {
+                $scope.$emit('CHECK_FOR_EXTERNAL_CAMERAS');
             }
 
         }());

@@ -56,6 +56,12 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/import_rooms');
         };
 
+
+        service.fetchMappingTypes = function(integration) {
+            return ADBaseWebSrvV2.getJSON('/ifc/proxy/mappings/types?integration=' + integration);
+        };
+
+
         /**
          *
          * @return {deferred.promise|{then, catch, finally}} Promise for an object containing list of paymentMethods, bookingOrigins and rates
@@ -151,7 +157,7 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
         service.fetchCurrencyList = function() {
             var deferred = $q.defer();
             var url = '/ui/currency_list';
-            
+
             if (service.countryList.length) {
                 deferred.resolve(service.currencyList);
             } else {
