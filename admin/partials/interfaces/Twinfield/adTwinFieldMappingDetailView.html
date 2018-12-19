@@ -17,16 +17,10 @@
     </ad-dropdown-name>
 </fieldset>
 <fieldset class="holder right">
-    <ad-dropdown-name savemodel="mapping.meta_data.cost_center"
-                      ng-show="mapping.typeof"
-                      valueproperty="Code"
-                      property="Name"
-                      label-in-drop-down="Select Value"
-                      list="state.meta.cost_centers"
-                      label="{{'COST_CENTER'| translate}}"
-                      skip-number-conversion="true"
-                      div-class="full-width">
-    </ad-dropdown-name>
+    <ad-textbox inputtype="text" value="mapping.meta_data.cost_center"
+                required="yes"
+                label="{{'COST_CENTER'| translate}}"
+                styleclass="full-width"></ad-textbox>
 </fieldset>
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.value"
