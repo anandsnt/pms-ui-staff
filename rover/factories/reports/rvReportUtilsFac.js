@@ -1448,9 +1448,13 @@ angular.module('reportsModule')
                             affectsFilter: {
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
-                                    var hasUrl = _.find(selectedItems, { value: 'URL' });
-
-                                    filter.updateData(!hasUrl);
+                                    var hasUrl = _.find(selectedItems, { value: 'URL' }),
+                                        hasUrlFilter = _.find(report['filters'], { value: 'URLS'});
+                                        
+                                    //CICO-59057
+                                    if (hasUrlFilter) {
+                                        filter.updateData(!hasUrl);
+                                    }                                    
                                 }
                             }
                         };

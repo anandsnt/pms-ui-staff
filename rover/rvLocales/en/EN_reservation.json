@@ -158,6 +158,8 @@
 
 
     "GUEST_ID_BUTTON": "GUEST ID",
+    "GUEST_ID_MISSING_BUTTON": "GUEST ID MISSING",
+    "CONTINUE_TO_CHECKIN_BUTTON": "Continue To Checkin",
 
     "NEW_GUEST": "New Guest",
     "GUEST_CARD": "Guest Card",

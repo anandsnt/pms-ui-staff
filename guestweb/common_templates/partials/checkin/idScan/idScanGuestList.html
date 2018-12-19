@@ -1,0 +1,35 @@
+
+<div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" >
+            <p class="main-text no-text-case">Scan your ID</p>
+            <p ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved()" class="sub-main-text no-text-case margin-top-20">Using your device camera, we will scan your picture ID. Beginning with the picture side or page, you will be prompted if additional pages/sides will also need to be scanned. Please have your ID ready, then select the guest whose ID will be scanned.</p>
+
+            <p ng-show="!idScanData.idScanSkipped && areAllGuestsApproved()" class="sub-main-text no-text-case margin-top-20">Scanning complete for all required guests. Thank you.</p>
+
+            <p ng-show="idScanData.idScanSkipped" class="sub-main-text no-text-case margin-top-20">If you opt out now, you will still required to submit it to staff before you can check in. Please confirm if you really want to skip ID SCAN.</p>
+            <div ng-show="!idScanData.idScanSkipped" ng-repeat="guest in selectedReservation.guest_details track by $index" class="guest-container margin-top-10" ng-click="selectGuest(guest)" ng-class="{'selected':true}">
+                <div >
+                    
+                    <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
+                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
+                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
+                </div>
+                <p class="no-text-case float-left guest-list-text" >
+                     <span ng-if='guest.last_name !== guest.first_name'>
+                     {{guest.first_name}}&nbsp;{{guest.last_name}}
+                     </span>
+                     <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
+                     {{guest.full_name}}    
+                     </span>
+                     <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                     {{guest.first_name}}    
+                     </span>
+                     <br/>
+                     <span >Scan status : {{guest.idScanStatus}}</span>
+                </p>
+            </div>
+
+            <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">PROCEED TO ID SCAN</a>
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="doneButtonClicked()">CONFIRM SKIP</a>
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">SKIP</a>
+            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">DONE</a>
+</div>

@@ -1,0 +1,25 @@
+<section id="main" class="centered" role="main">
+   <div id="content" ng-hide="screenData.facialRecognitionInProgress">
+      <h1 translate>
+         TAKE_SELFIE_INSTRUCTIONS
+      </h1>
+      <h2 translate>
+         TAKE_SELFIE_SUB_INSTRUCTIONS
+      </h2>
+   </div>
+   <div ng-hide="screenData.facialRecognitionInProgress">
+      <div id="actions" class="footer-centered">
+         <button type="button" class="button next" touch-press="startFacialRecognition()" translate>
+         TAKE_SELFIE
+         </button>
+      </div>
+   </div>
+    <div id="content" ng-show="screenData.facialRecognitionInProgress">
+      <h1 translate>
+         FACIAL_VERIFICATION_IN_PROGRESS
+      </h1>
+      <h2 translate>
+         FACIAL_VERIFICATION_IN_PROGRESS_SUB
+      </h2>
+   </div>
+</section>

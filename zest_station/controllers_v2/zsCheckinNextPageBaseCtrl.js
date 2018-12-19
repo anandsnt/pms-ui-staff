@@ -8,9 +8,9 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 
 		var stateParams = JSON.parse($stateParams.params);
 		var checkIfEmailIsBlackListedOrValid = function() {
-			var email = !stateParams.guest_email ? '' : stateParams.guest_email;
+			var email = stateParams.guest_email ? stateParams.guest_email : stateParams.guest_email;
 
-			return email.length > 0 && !(stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
+			return email && email.length > 0 && !(stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
 		};
 		var afterGuestCheckinCallback = function() {
 			$scope.checkinInProgress = false;
@@ -21,7 +21,7 @@ sntZestStation.controller('zsCheckinNextPageBaseCtrl', [
 				'reservation_id': stateParams.reservation_id,
 				'room_no': stateParams.room_no,
 				'first_name': stateParams.first_name,
-				'email': stateParams.guest_email
+				'email': stateParams.guest_email || stateParams.email ||  ""
 			};
 
 			if ($scope.zestStationData.is_kiosk_ows_messages_active) {
