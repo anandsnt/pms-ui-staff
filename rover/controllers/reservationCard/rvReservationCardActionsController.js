@@ -68,7 +68,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             if ($scope.savingDescription) {
                 if ($scope.lastSavedDescription !== description_new) {
                     if (description_new && description_new !== '') {
-                        $scope.callAPI(rvActionTasksSrv.updateNewAction, params,  {
+                        $scope.callAPI(rvActionTasksSrv.updateNewAction, params, {
                             params: params,
                             successCallBack: onSuccess,
                             failureCallBack: onFailure
@@ -135,7 +135,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
               $scope.actionsSyncd = true;
             };
 
-            $scope.callAPI(rvActionTasksSrv.syncActionCount,  {
+            $scope.callAPI(rvActionTasksSrv.syncActionCount, {
                 params: id,
                 successCallBack: onSuccess,
                 failureCallBack: onFailure
@@ -413,7 +413,9 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             month = spl[0];
             year = spl[2];
 
-            return {day: day, month: month, year: year};
+            return {day: day,
+month: month,
+year: year};
         };
         $scope.showSelectCalendar = function() {
             // to ensure same day due to utc hour, set utc hour to 0100
@@ -495,7 +497,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         };
 
         $scope.showActionSummary = function() {
-            return $scope.actionSelected === 'selected' || ($scope.actionSelected === 'selected' && $scope.refreshing);
+            return $scope.actionSelected === 'selected' || $scope.actionSelected === 'selected' && $scope.refreshing;
         };
 
         $scope.showNewAction = function() {
@@ -507,15 +509,15 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         };
 
         $scope.showEmptyActions = function() {
-            return ($scope.actions.totalCount === 0 && $scope.actionSelected === 'none') || $scope.refreshToEmpty;
+            return $scope.actions.totalCount === 0 && $scope.actionSelected === 'none' || $scope.refreshToEmpty;
         };
 
         $scope.postActionEnabled = function() {
-            return !$scope.newAction.hasDate || !$scope.newAction.notes || (!$scope.departmentSelected && !$scope.isStandAlone);
+            return !$scope.newAction.hasDate || !$scope.newAction.notes || !$scope.departmentSelected && !$scope.isStandAlone;
         };
 
         $scope.showAssignScreen = function() {
-            return $scope.actionSelected === 'assign' || ($scope.actionSelected === 'assign' && $scope.refreshing);
+            return $scope.actionSelected === 'assign' || $scope.actionSelected === 'assign' && $scope.refreshing;
         };
 
         $scope.refreshActionList = function(del, selected) {
@@ -523,7 +525,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             var onSuccess = function(data) {
                 var splitTimeString = data.business_date_time.split("T");
 
-                $scope.hotel_time = splitTimeString[0] + "T" +  splitTimeString[1].split(/[+-]/)[0];
+                $scope.hotel_time = splitTimeString[0] + "T" + splitTimeString[1].split(/[+-]/)[0];
 
                 var list = data.data;
                 // if doing a refresh, dont replace the actions array, since it will cause the UI to flash
@@ -638,8 +640,8 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                 return false;
             } else if ($scope.actionSelected === "none" || $scope.actionSelected === "new") {
                 return true;
-            } else if ((!(($scope.actions.totalCount > 0 || $scope.refreshing) && !$scope.refreshToEmpty) &&
-                        !(($scope.actions.totalCount === 0 && $scope.actionSelected === "none") || $scope.refreshToEmpty))) {
+            } else if (!(($scope.actions.totalCount > 0 || $scope.refreshing) && !$scope.refreshToEmpty) &&
+                        !($scope.actions.totalCount === 0 && $scope.actionSelected === "none" || $scope.refreshToEmpty)) {
                 return false;
             }
             return true;
@@ -737,7 +739,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         $scope.populateTimeFieldValue = function() {
              var getFormattedTime = function (fourDigitTime) {
                 var hours24 = parseInt(fourDigitTime.substring(0, 2));
-                var hours = ((hours24 + 11) % 12) + 1;
+                var hours = (hours24 + 11) % 12 + 1;
                 var amPm = hours24 > 11 ? ' PM' : ' AM';
                 var minutes = fourDigitTime.substring(2);
 
@@ -773,6 +775,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                 closeByEscape: false
             });
         };
+
         $scope.openActionsPopup = function() {
             $scope.openingPopup = true;
             $scope.fetchActionsList();
@@ -821,7 +824,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
 
             $scope.isRefreshing = true;
 
-            var removingLastAction = ($scope.actions.totalCount - 1 <= 0);
+            var removingLastAction = $scope.actions.totalCount - 1 <= 0;
 
             if (deleting && removingLastAction) {
                 $scope.refreshToEmpty = true;
@@ -839,7 +842,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             // mark the selected action as complete, notify the api
             var params = $scope.getBaseParams();
 
-                params.action_task.id  = $scope.selectedAction.id;
+                params.action_task.id = $scope.selectedAction.id;
                 params.is_complete = true;
                 $scope.initRefresh(del);
 
@@ -848,7 +851,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                     $scope.lastSelectedItemId = params.action_task.id;
                     $scope.refreshActionList(del, selected);
 
-                    if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete') {
+                    if ($scope.actions.totalCount - 1 <= 1 && del !== 'delete') {
                         $scope.actionSelected = 'selected';
                     }
                     $scope.isRefreshing = false;
@@ -860,7 +863,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                     $scope.isRefreshing = false;
                 };
 
-                $scope.callAPI(rvActionTasksSrv.completeAction,  {
+                $scope.callAPI(rvActionTasksSrv.completeAction, {
                     params: params,
                     successCallBack: onSuccess,
                     failureCallBack: onFailure
@@ -922,7 +925,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         var getUpdateRequestParams = function() {
             var params = $scope.getBaseParams();
 
-            params.action_task.id  = $scope.newAction.actionId;
+            params.action_task.id = $scope.newAction.actionId;
 
             if ($scope.newAction.department) {
                params.assigned_to = $scope.newAction.department.value;
