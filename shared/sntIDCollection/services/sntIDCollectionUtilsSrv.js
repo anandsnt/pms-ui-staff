@@ -63,7 +63,7 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		return formatedData;
 	};
 
-	this.resizeImage = function (img, file) {
+	this.resizeImage = function (img, file, width, height) {
 		var canvas = document.createElement('canvas');
 		var ctx = canvas.getContext('2d');
 
@@ -71,8 +71,9 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 
 		var MAX_WIDTH = 3032;
 		var MAX_HEIGHT = 2008;
-		var width = img.width;
-		var height = img.height;
+		
+		width = width ? width : img.width;
+		height = height ? height : img.height;
 
 		if (width > height) {
 			if (width > MAX_WIDTH) {
@@ -96,7 +97,8 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		ctx.imageSmoothingEnabled = false;
 		ctx.drawImage(img, 0, 0, width, height);
 
-		var dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
+		var fileType = file && file.files[0] ? file.files[0].type : 'image/jpeg';
+		var dataurl = canvas.toDataURL(fileType, 90 * .01);
 		var imageData = dataurl ? that.dataURLtoBlob(dataurl) : '';
 
 		return imageData;
@@ -406,5 +408,15 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		"YEM": "YE",
 		"ZMB": "ZM",
 		"ZWE": "ZW"
+	};
+
+	this.isInMobile = function() {
+		return (navigator.userAgent.match(/Android/i) ||
+			navigator.userAgent.match(/webOS/i) ||
+			navigator.userAgent.match(/iPhone/i) ||
+			navigator.userAgent.match(/iPad/i) ||
+			navigator.userAgent.match(/iPod/i) ||
+			navigator.userAgent.match(/BlackBerry/i) ||
+			navigator.userAgent.match(/Windows Phone/i));
 	};
 });
