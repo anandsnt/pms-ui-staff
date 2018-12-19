@@ -14,6 +14,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.twinfieldSetup', {
+        templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
+        controller: 'adTwinfieldSetupCtrl',
+        url: '/gomomentivy/setup',
+        resolve: {
+            twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+            }],
+            paymentChargeCodes: ['adTwinfieldSetupSrv', function(adTwinfieldSetupSrv) {
+                return adTwinfieldSetupSrv.getPaymentChargeCodes();
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zestWebGlobalSetup', {
         templateUrl: '/assets/partials/zestwebGlobalSettings/adZestWebGlobalSettings.html',
         controller: 'ADzestWebGlobalSettingsCtrl',

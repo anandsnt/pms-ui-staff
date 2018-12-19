@@ -1135,9 +1135,8 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.genReport(false, 1, perPageCount);
         }
 
-        // add the print orientation before printing
-        // TODO: 49259 Move Print Orientation to a constant ---
-        var addPrintOrientation = function () {
+        // Get print orientation for each report
+        var getPrintOrientation = function() {
             var orientation = 'portrait';
 
             switch ($scope.chosenReport.title) {
@@ -1178,6 +1177,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                 // no op
             }
 
+            return orientation;
+        };
+
+        // add the print orientation before printing
+        // TODO: 49259 Move Print Orientation to a constant ---
+        var addPrintOrientation = function () {
+            var orientation = getPrintOrientation();            
+
             $('head').append('<style id=\'print-orientation\'>@page { size: ' + orientation + '; }</style>');
 
             // hide #loader by adding '.ng-hide' class
@@ -1214,54 +1221,62 @@ sntRover.controller('RVReportDetailsCtrl', [
                 $(this).off('load');
                 $(this).remove();
 
+                var onPrintCompletion = function() {
+                    // in background we need to keep the report with its original state
+                    $timeout(function () {
+                        // remove the orientation
+                        removePrintOrientation();
+
+                        // CICO-39558
+                        if ($scope.chosenReport.title ===
+                            reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+                            $scope.printTACommissionFlag.summary = false;
+                        }
+
+                        if ($scope.chosenReport.title ===
+                            reportNames['YEARLY_TAX']) {
+                            $scope.$broadcast('YEARLY_TAX_PRINT_COMPLETED');
+                        }
+
+                        // If a specific report ctrl has created a pre-print 'afterPrint' method
+                        // to get clear/remove anything after print
+                        // READ MORE: rvReportsMainCtrl:L#:61-75
+                        if ('function' == typeof $scope.printOptions.afterPrint) {
+                            $scope.printOptions.afterPrint();
+                        }
+                        
+                        if (reportsSrv.getPrintClickedState()) {
+                            $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
+                            reportsSrv.setPrintClicked(false);
+                            $scope.viewStatus.showDetails = false;
+                            if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
+                            reportsSrv.setChoosenReport({});  
+                            }
+                            sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
+                            
+                        } else {
+                            // load the report with the original page
+                            $scope.fetchNextPage($scope.returnToPage);
+                        }
+                        
+                    }, 2000);
+                };
+
                 // this will show the popup with full report
                 $timeout(function() {
-                    $window.print();
                     if (sntapp.cordovaLoaded) {
-                        cordova.exec(function() {
-                        }, function() {
-                        }, 'RVCardPlugin', 'printWebView', []);
+                        var mode = getPrintOrientation() === 'landscape' ? 'L' : 'P';
+
+                        cordova.exec(onPrintCompletion, function() {
+                            onPrintCompletion();
+                        }, 'RVCardPlugin', 'printWebView', ['', '0', '', mode]);
+                    } else {
+                        $window.print();
+                        onPrintCompletion();
+
                     }
                 }, 1000);
-
-                // in background we need to keep the report with its original state
-                $timeout(function () {
-                    // remove the orientation
-                    removePrintOrientation();
-
-                    // CICO-39558
-                    if ($scope.chosenReport.title ===
-                        reportNames['TRAVEL_AGENT_COMMISSIONS']) {
-                        $scope.printTACommissionFlag.summary = false;
-                    }
-
-                    if ($scope.chosenReport.title ===
-                        reportNames['YEARLY_TAX']) {
-                        $scope.$broadcast('YEARLY_TAX_PRINT_COMPLETED');
-                    }
-
-                    // If a specific report ctrl has created a pre-print 'afterPrint' method
-                    // to get clear/remove anything after print
-                    // READ MORE: rvReportsMainCtrl:L#:61-75
-                    if ('function' == typeof $scope.printOptions.afterPrint) {
-                        $scope.printOptions.afterPrint();
-                    }
-                    
-                    if (reportsSrv.getPrintClickedState()) {
-                        $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
-                        reportsSrv.setPrintClicked(false);
-                        $scope.viewStatus.showDetails = false;
-                        if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
-                          reportsSrv.setChoosenReport({});  
-                        }
-                        sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
-                        
-                    } else {
-                        // load the report with the original page
-                        $scope.fetchNextPage($scope.returnToPage);
-                    }
-                    
-                }, 2000);
+                
             });
         };
 

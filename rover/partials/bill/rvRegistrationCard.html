@@ -146,33 +146,58 @@
 <table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
     <tbody>
         <tr>
-            <td colspan="3">{{ printRegCardData.translation['address'] }}</td>
-        </tr>
+            <td colspan="3"><strong>{{ printRegCardData.translation['address'] }}</strong> <br />
+                {{printRegCardData.guest_details['street']}}<br />
+                {{printRegCardData.guest_details['street2']}}
+            </td>
+        </tr>       
         <tr>
-            <td>{{ printRegCardData.translation['city'] }}</td>
-            <td>{{ printRegCardData.translation['state'] }}/{{ printRegCardData.translation['postal_code'] }}</td>
-            <td>{{ printRegCardData.translation['country'] }}</td>
+            <td><strong>{{ printRegCardData.translation['city'] }}</strong><br />
+               <span> {{printRegCardData.guest_details['city']}}</span></td>
+            <td><strong>{{ printRegCardData.translation['state'] }}/{{ printRegCardData.translation['postal_code'] }}</strong><br />
+                {{printRegCardData.guest_details['state']}}/{{printRegCardData.guest_details['postal_code']}}</td>
+            <td><strong>{{ printRegCardData.translation['country'] }}</strong><br />
+                {{printRegCardData.guest_details['country_name']}}</td>
+        </tr>        
+    </tbody>
+</table>
+<table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
+    <tbody>
+        <tr>
+            <td><strong>{{ printRegCardData.translation['phone'] }}</strong><br />
+                {{printRegCardData.guest_details['phone']}}</td>
+            <td><strong>{{ printRegCardData.translation['mobile'] }}</strong><br />
+                {{printRegCardData.guest_details['mobile']}}</td>
+            <td><strong>{{ printRegCardData.translation['email'] }}</strong><br />
+                {{printRegCardData.guest_details['email']}}</td>
         </tr>
     </tbody>
 </table>
 <table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
     <tbody>
         <tr>
-            <td>{{ printRegCardData.translation['phone'] }}</td>
-            <td>{{ printRegCardData.translation['mobile'] }}</td>
-            <td>{{ printRegCardData.translation['email'] }}</td>
+            <td><strong>{{ printRegCardData.translation['id_type'] }}</strong><br />
+                {{printRegCardData.guest_details['id_type']}}</td>
+            <td><strong>{{ printRegCardData.translation['id_number'] }}</strong><br />
+                {{printRegCardData.guest_details['id_number']}}</td>       
         </tr>
     </tbody>
 </table>
 <table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
     <tbody>
-        <tr>
-            <td>{{ printRegCardData.translation['id_type'] }}</td>
-            <td>{{ printRegCardData.translation['id_number'] }}</td>       
+        <tr>            
+            <td><strong>{{ printRegCardData.translation['birthday'] }}</strong> <br />
+                {{printRegCardData.guest_details['birthday']}}
+            </td>
+            <td><strong>{{ printRegCardData.translation['nationality'] }} </strong><br />
+                {{printRegCardData.guest_details['nationality_name']}}
+            </td>
+            <td><strong>{{ printRegCardData.translation['job_title'] }} </strong><br />
+                {{printRegCardData.guest_details['job_title']}}
+            </td>
         </tr>
     </tbody>
 </table>
-
 <table class="terms-signature">
     <tr>
         <td ng-if="printRegistrationCardActive" colspan="2" class="terms" data-ng-bind-html="trustAsHtml(printRegCardData.terms_conditions)"></td>

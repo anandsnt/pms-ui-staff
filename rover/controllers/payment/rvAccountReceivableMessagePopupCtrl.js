@@ -10,6 +10,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',
 
 	$scope.isCreateNewARAccountMode = false;
 	$scope.data = {};
+	$scope.isCreateButtonDisabled = false;
 
 	$scope.createAccountAction = function() {
 
@@ -39,6 +40,10 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',
 	$scope.failureCreate = function(errorMessage) {
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
+		$scope.isCreateButtonDisabled = false;
+		if ($scope.errorMessage[0] === "Please complete required AR Account Information") {
+			$scope.isCreateButtonDisabled = true;
+		}
 	};
 
 	$scope.createAccountReceivable = function( isAutoAssignARNumber ) {

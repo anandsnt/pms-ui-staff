@@ -145,6 +145,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
             $scope.arDataObj.arBalance = data.ar_balance;
+            $scope.arDataObj.isPrintArInvoiceNumberEnabled = data.is_print_ar_invoice_number_enabled;
+            $scope.arDataObj.arInvoiceLabel = data.ar_invoice_label;
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -732,6 +734,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $( '#print-orientation' ).remove();
         };
 
+        var arTransactionPrintCompleted = function() {
+			$("header .logo").removeClass('logo-hide');
+            // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
+            $scope.$emit("PRINT_AR_STATEMENT", false);
+            // remove the orientation after similar delay
+            removePrintOrientation();
+        };
+
         // print AR Statement
         var printArStatement = function(params) {
             var printDataFetchSuccess = function(successData) {
@@ -743,33 +753,29 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 $scope.$emit("PRINT_AR_STATEMENT", true);
                 // add the orientation
                 addPrintOrientation();
-
                 /*
                 *   ======[ READY TO PRINT ]======
                 */
                 // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                    *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                    */
+               $timeout(function() {
 
-                    $window.print();
-                    if ( sntapp.cordovaLoaded ) {
-                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-                    }
-                }, 1000);
+					if (sntapp.cordovaLoaded) {
+						cordova.exec(arTransactionPrintCompleted,
+							function() {
+								arTransactionPrintCompleted();
+							}, 'RVCardPlugin', 'printWebView', []);
+					}
+					else
+					{
+						window.print();
+						arTransactionPrintCompleted();
+					}
+				}, 100);
 
                 /*
                 *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
                 */
 
-                $timeout(function() {
-                    $("header .logo").removeClass('logo-hide');
-                    // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
-                    $scope.$emit("PRINT_AR_STATEMENT", false);
-                    // remove the orientation after similar delay
-                    removePrintOrientation();
-                }, 1000);
             };
 
             var printDataFailureCallback = function(errorData) {

@@ -21,6 +21,7 @@
         <div class="info-left" ng-if="printData.card_type === 'COMPANY'">
             <strong >{{printData.translation.invoice_date}}:&nbsp; </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice  && printData.is_print_invoice_enabled"><strong>{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}<br></span>
+            <span ng-show="!isInformationalInvoice  && printData.is_print_ar_invoice_number_enabled && printData.is_db_payment_exists"><strong>{{printData.ar_invoice_label}}:&nbsp;</strong>{{printData.ar_invoice_number}}<br></span>
             <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong>{{printData.translation.folio_number}}:&nbsp;</strong>
                 {{printData.folio_number}}<br>
@@ -47,6 +48,7 @@
         <div class="info-left" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong >{{printData.translation.invoice_date}}:&nbsp;</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled"><strong >{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}</span><br>
+            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists"><strong >{{printData.ar_invoice_label}}:&nbsp;</strong>{{printData.ar_invoice_number}}</span><br>
             <span ng-if="printData.folio_number && hasPrintFolioEnabled">
                 <strong>{{printData.translation.folio_number}}:&nbsp;</strong>
                 {{printData.folio_number}}<br>

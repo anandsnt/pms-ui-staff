@@ -1,30 +1,32 @@
 angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$rootScope', function($http, $q, RVBaseWebSrv, RVBaseWebSrvV2, $rootScope) {
 
 
-	var that = this;
+    var that = this;
 
-	var paymentsData = {};
+    var cache = {
+        'PAYMENT_TYPES': {}
+    };
 
-	this.renderPaymentScreen = function(data) {
-		var deferred = $q.defer();
-		var url = '/staff/payments/addNewPayment.json';
+    this.renderPaymentScreen = function(data) {
+        var deferred = $q.defer(),
+            url = '/staff/payments/addNewPayment.json',
+            stringifiedParams = angular.toJson(data || 'default');
 
-		// removing the caching part, as the direct bill option is
-		// needed conditionaly only based on param -> direct_bill
+        if (cache['PAYMENT_TYPES'][stringifiedParams]) {
+            deferred.resolve(cache['PAYMENT_TYPES'][stringifiedParams]);
+        } else {
+            RVBaseWebSrv.getJSON(url, data).
+                then(function(data) {
+                    cache['PAYMENT_TYPES'][stringifiedParams] = data;
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+        }
 
-		// if(!isEmpty(paymentsData) && !(data && data.direct_bill)){
-		// 	deferred.resolve(paymentsData)
-		// }else{
-			RVBaseWebSrv.getJSON(url, data).then(function(data) {
-			    paymentsData = data;
-			    deferred.resolve(data);
-			}, function(data) {
-				deferred.reject(data);
-			});
-		// };
+        return deferred.promise;
+    };
 
-		return deferred.promise;
-	};
     this.fetchAvailPayments = function(data) {
 		var deferred = $q.defer();
 		var url = '/staff/payments/addNewPayment.json';
@@ -118,7 +120,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
 
 		var pollToTerminal = function(async_callback_url) {
-			// we will continously communicate with the terminal till 
+			// we will continously communicate with the terminal till
 			// the timeout set for the hotel
 			if (timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
@@ -196,7 +198,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 		var url = '/api/cc/get_token.json';
 
 		var pollToTerminal = function(async_callback_url) {
-			// we will continously communicate with the terminal till 
+			// we will continously communicate with the terminal till
 			// the timeout set for the hotel
 			if (timeStampInSeconds >= $rootScope.emvTimeout) {
 				var errors = ["Request timed out. Unable to process the transaction"];
@@ -227,7 +229,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 				});
 			}
 		};
-		
+
 
 		RVBaseWebSrvV2.postJSONWithSpecialStatusHandling(url, postData).then(function(data) {
 			// if connect to emv terminal is neeeded
