@@ -1602,11 +1602,17 @@ span.keys-msg-bold{
       z-index: 21000;
   }
 
-@media not print {
+
+.toggle-display {
+  display: block !important;
+}
+
+@media print {
   .toggle-display {
-    display: block !important;
+    display: none !important;
   }
 }
+
 div#guest-id.modal-content {
   height:auto;
 }
