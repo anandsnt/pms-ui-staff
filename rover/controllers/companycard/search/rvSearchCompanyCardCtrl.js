@@ -401,8 +401,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 		};
 
-		$scope.removeSelectedCard = (event, card) => {
-			event.preventDefault();
+		$scope.removeSelectedCard = (card) => {
 			$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (cardDetails) => {
 				return cardDetails.id === card.id;
 			});
