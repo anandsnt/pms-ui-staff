@@ -65,7 +65,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		};
 
 		$scope.setScroller(scrollers.COMPANY_CARD_SCROLL, scrollerOptions);
-		$scope.setScroller('selected_cards_for_merge_scroll');
+		$scope.setScroller(scrollers.SELECTED_CARDS_FOR_MERGE_SCROLL);
 
 
 
