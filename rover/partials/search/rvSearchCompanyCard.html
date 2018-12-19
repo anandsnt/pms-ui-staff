@@ -1,234 +1,239 @@
 <div id="page-main-second" ng-click="clickedOnSearchArea()" class="" style="">
-        <!-- Search form -->
-        <div ng-include="'/assets/partials/common/header.html'"></div>
-        <form name="find-cards-search-form" id="find-cards-search-form" class="search-form card-search" role="search"
-            ng-class="{'enable-adding': viewState.isViewSelected, 'show-merge': !viewState.isViewSelected}">
-            <!--  <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}"> -->
-            <div class="entry switch">
-                <!-- add .disabled if showing archived -->
-                <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
-                    <!-- Add disabled="disabled" if showing archived -->
-                    <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()">
-                    <label class="data-off">
-                        <span class="value">View</span>
-                        <span class="switch-icon">Merge</span>
-                    </label>
-                    <label class="data-on">
-                        <span class="switch-icon">View</span>
-                        <span class="value">Merge</span>
-                    </label>
-                </div>
+    <!-- Search form -->
+    <div ng-include="'/assets/partials/common/header.html'"></div>
+    <form name="find-cards-search-form" id="find-cards-search-form" class="search-form card-search" role="search"
+        ng-class="{'enable-adding': viewState.isViewSelected && textInQueryBox !== '', 'show-merge': !viewState.isViewSelected}">
+        <!--  <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}"> -->
+        <div class="entry switch">
+            <!-- add .disabled if showing archived -->
+            <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
+                <!-- Add disabled="disabled" if showing archived -->
+                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()">
+                <label class="data-off">
+                    <span class="value">View</span>
+                    <span class="switch-icon">Merge</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">View</span>
+                    <span class="value">Merge</span>
+                </label>
             </div>
-            <!-- Remove .hidden when Merge is selected -->
-            <div class="entry switch switch-merge" ng-show="!viewState.isViewSelected">
-                <div class="switch-button" ng-class="{'on': viewState.isCompanyCardSelected}">
-                    <input id="cards-merge-cota-switch" type="checkbox" ng-model="viewState.isCompanyCardSelected"
-                        ng-change="onTravelAgentCompanyCardSwitch()">
-                    <label class="data-off">
-                        <span class="value">
-                            <span class="icons icon-company"></span>
-                        </span>
-                        <span class="switch-icon">
-                            <span class="icons icon-travel-agent"></span>
-                        </span>
-                    </label>
-                    <label class="data-on">
-                        <span class="switch-icon">
-                            <span class="icons icon-company"></span>
-                        </span>
-                        <span class="value">
-                            <span class="icons icon-travel-agent"></span>
-                        </span>
-                    </label>
-                </div>
+        </div>
+        <!-- Remove .hidden when Merge is selected -->
+        <div class="entry switch switch-merge" ng-show="!viewState.isViewSelected">
+            <div class="switch-button" ng-class="{'on': viewState.isCompanyCardSelected}">
+                <input id="cards-merge-cota-switch" type="checkbox" ng-model="viewState.isCompanyCardSelected"
+                    ng-change="onTravelAgentCompanyCardSwitch()">
+                <label class="data-off">
+                    <span class="value">
+                        <span class="icons icon-company"></span>
+                    </span>
+                    <span class="switch-icon">
+                        <span class="icons icon-travel-agent"></span>
+                    </span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">
+                        <span class="icons icon-company"></span>
+                    </span>
+                    <span class="value">
+                        <span class="icons icon-travel-agent"></span>
+                    </span>
+                </label>
             </div>
-            <div class="entry search">
-                <button type="button" id="clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
-                    <span class="icons icon-clear-search">Clear query</span>
-                </button>
-                <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query"
-                    autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+        </div>
+        <div class="entry search">
+            <button type="button" id="clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query"
+                autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+        </div>
+        <div class="entry options">
+            <div class="select with-label">
+                <label for="showing-cards">Showing</label>
+                <select id="showing-cards" ng-model="cardFilter" ng-change="queryEntered()">
+                    <option value="ALL">All Active Cards</option>
+                    <option value="AR_ONLY">AR Accounts Only</option>
+                </select>
             </div>
-            <div class="entry options">
-                <div class="select with-label">
-                    <label for="showing-cards">Showing</label>
-                    <select id="showing-cards" ng-model="cardFilter" ng-change="queryEntered()">
-                        <option value="ALL">All Active Cards</option>
-                        <option value="AR_ONLY">AR Accounts Only</option>
-                    </select>
-                </div>
-            </div>
-            <button type="button" ng-show="textInQueryBox!=''" class="add-new-button" data-lock="true" name="add-new-card"
-                ng-click="addNewCard()">+ Add new</button>
-        </form>
-    
-        <section id="find-cards" class="content scrollable no-results" role="complementary" ng-show="textInQueryBox === ''">
+        </div>
+        <a class="add-new-button" ng-show="textInQueryBox!=''" ng-click="addNewCard()">+ Add new</a>
+        <!-- <button type="button" ng-if="textInQueryBox!=''" class="add-new-button" data-lock="true" name="add-new-card"
+            ng-click="addNewCard()">+ Add new</button> -->
+    </form>
+
+    <section id="find-cards" class="content scrollable no-results" role="complementary" ng-show="textInQueryBox === ''">
+        <div class="wrapper">
+            <ul id="cards-search-results" class="search-results">
+                <li class="no-content">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">Find Cards</strong>
+                        <span class="h2">Search by <strong>Name</strong>, <strong>IATA #</strong> or <strong>Corporate
+                                ID</strong></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && results.length > 0 && textInQueryBox !== ''}">
+        <ul class="find-cards-header" ng-hide="textInQueryBox === '' || results.length === 0">
+            <li class="card">Card Details</li>
+            <!-- hide if showing archived cards -->
+            <li class="rate">Rate</li>
+            <!-- hide if showing archived cards -->
+            <li class="contract">Contract</li>
+        </ul>
+        <!-- Results / content -->
+        <div class="scrollable" ng-iscroll="company_card_scroll">
             <div class="wrapper">
-                <ul id="cards-search-results" class="search-results">
-                    <li class="no-content">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <ul id="search-cards-results" class="search-results">
+                    <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible === true || textInQueryBox !== '' ">
+                        <label class="checkbox">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked': row.selected}"></span>
+                            <input type="checkbox" ng-change="onCardSelection(row)" ng-model="row.selected">
+                        </label>
+                        <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
+                        <a ng-click="navigateToDetails(row.id, row.account_type)">
+                            <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+                                <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
+                                <img ng-src="{{row.company_logo}}" alt="">
+                            </figure>
+
+                            <div ng-if="escapeNull(row.company_logo)==''">
+                                <div class="guest-image icons" ng-class="{'icon-company' : escapeNull(row.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(row.account_type)=='TRAVELAGENT'}">
+                                    <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
+                                </div>
+                            </div>
+
+                            <div class="data" ng-class="{'no-address': escapeNull(row.account_address)===''}">
+                                <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
+                                <span class="icons icon-location" ng-if="escapeNull(row.account_address)!==''">{{row.account_address}}</span>
+                            </div>
+
+                            <div class="rate" ng-if="row.current_contracts.length > 0">
+                                <span class="label">Rate</span>
+                                {{row.current_contracts[0].based_on.name}}
+                            </div>
+                            <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple
+                            </span>
+                            <span class="icons icon-contracts active" ng-if="row.current_contracts.length === 1">Active</span>
+                        </a>
+                    </li>
+                    <!-- No results / no content when searched query not found-->
+                    <li class="no-content" ng-show="results.length === 0 && textInQueryBox !== ''">
                         <div class="info">
                             <span class="icon-no-content icon-cards"></span>
-                            <strong class="h1">Find Cards</strong>
-                            <span class="h2">Search by <strong>Name</strong>, <strong>IATA #</strong> or <strong>Corporate
-                                    ID</strong></span>
+                            <strong class="h1">No matches have been found</strong>
+                            <span class="h2"> Do you want to create a new Company or Travel Agent card ? <br />
+                                <a class="open-modal" ng-click="addNewCard()">Add a New Card</a>
+                            </span>
                         </div>
                     </li>
+
                 </ul>
             </div>
-        </section>
-    
-        <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && results.length > 0 && textInQueryBox !== ''}"
-            >
-            <ul class="find-cards-header" ng-hide="textInQueryBox === '' || results.length === 0">
-                <li class="card">Card Details</li>
-                <!-- hide if showing archived cards -->
-                <li class="rate">Rate</li>
-                <!-- hide if showing archived cards -->
-                <li class="contract">Contract</li>
-            </ul>
-            <!-- Results / content -->
-            <div class="scrollable" ng-iscroll="company_card_scroll">
-                <div class="wrapper">
-                    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                    <ul id="search-cards-results" class="search-results">
-                        <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible === true || textInQueryBox !== '' ">
-                            <label class="checkbox">
-                                <span class="icon-form icon-checkbox" ng-class="{'checked': row.selected}"></span>
-                                <input type="checkbox" ng-change="onCardSelection(row)" ng-model="row.selected">
-                            </label>
-                            <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
-                            <a ng-click="navigateToDetails(row.id, row.account_type)">
-                                <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-                                    <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
-                                    <img ng-src="{{row.company_logo}}" alt="">
-                                </figure>
-    
-                                <div ng-if="escapeNull(row.company_logo)==''">
-                                    <div class="guest-image icons" ng-class="{'icon-company' : escapeNull(row.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(row.account_type)=='TRAVELAGENT'}">
-                                        <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
-                                    </div>
-                                </div>
-    
-                                <div class="data" ng-class="{'no-address': escapeNull(row.account_address)===''}">
-                                    <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
-                                    <span class="icons icon-location" ng-if="escapeNull(row.account_address)!==''">{{row.account_address}}</span>
-                                </div>
-    
-                                <div class="rate" ng-if="row.current_contracts.length > 0">
-                                    <span class="label">Rate</span>
-                                    {{row.current_contracts[0].based_on.name}}
-                                </div>
-                                <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple
-                                </span>
-                                <span class="icons icon-contracts active" ng-if="row.current_contracts.length === 1">Active</span>
-                            </a>
-                        </li>
-                        <!-- No results / no content when searched query not found-->
-                        <li class="no-content" ng-show="results.length === 0 && textInQueryBox !== ''">
-                            <div class="info">
-                                <span class="icon-no-content icon-cards"></span>
-                                <strong class="h1">No matches have been found</strong>
-                                <span class="h2"> Do you want to create a new Company or Travel Agent card ? <br />
-                                    <a class="open-modal" ng-click="addNewCard()">Add a New Card</a>
-                                </span>
-                            </div>
-                        </li>
-    
-                    </ul>
-                </div>
+        </div>
+
+        <div class="merge-cards">
+            <div class="merge-header">
+                <h2>Cards to Merge</h2>
+                <p>Select a primary card and merge other cards into it.</p>
             </div>
-    
-            <div class="merge-cards">
-                <div class="merge-header">
-                    <h2>Cards to Merge</h2>
-                    <p>Select a primary card and merge other cards into it.</p>
+            <!-- .no-content when no content -->
+            <div class="merge-content scrollable" ng-class="{'no-content': viewState.selectedCardsForMerge.length === 0}"
+                ng-iscroll="selected_cards_for_merge_scroll">
+                <!--Show this when no content (no cards) -->
+                <div class="info" ng-if="viewState.selectedCardsForMerge.length === 0">
+                    <span class="icon-no-content icon-cards"></span>
+                    <strong class="h1">Nothing selected</strong>
+                    <span class="h2">When you select a card it will appear here.</span>
                 </div>
-                <!-- .no-content when no content -->
-                <div class="merge-content scrollable" ng-class="{'no-content': viewState.selectedCardsForMerge.length === 0}" ng-iscroll="selected_cards_for_merge_scroll">
-                    <!--Show this when no content (no cards) -->
-                    <div class="info" ng-if="viewState.selectedCardsForMerge.length === 0">
-                        <span class="icon-no-content icon-cards"></span>
-                        <strong class="h1">Nothing selected</strong>
-                        <span class="h2">When you select a card it will appear here.</span>
-                    </div>
-                    <!-- When cards selected -->
-                    <div class="wrapper" ng-if="viewState.selectedCardsForMerge.length > 0 && !viewState.hasInitiatedMergeVerification">
-                        <!-- If no address, add .no-address -->
-                        <label class="radio card no-address" ng-class="{'no-address': !escapeNull(selectedItem.account_address), 'checked': selectedItem.isPrimary}"
-                            ng-repeat="selectedItem in viewState.selectedCardsForMerge">
-                            <span class="icon-form icon-radio" ng-class="{'checked': selectedItem.isPrimary}"></span>
-                            <input type="radio" ng-model="selectedItem.isPrimary" ng-click="onPrimaryGuestSelectionChange(selectedItem.id)">
-                            <!-- 'class':
+                <!-- When cards selected -->
+                <div class="wrapper" ng-if="viewState.selectedCardsForMerge.length > 0 && !viewState.hasInitiatedMergeVerification">
+                    <!-- If no address, add .no-address -->
+                    <label class="radio card no-address with-button" ng-class="{'no-address': !escapeNull(selectedItem.account_address), 'checked': selectedItem.isPrimary}"
+                        ng-repeat="selectedItem in viewState.selectedCardsForMerge">
+                        <span class="icon-form icon-radio" ng-class="{'checked': selectedItem.isPrimary}"></span>
+                        <input type="radio" ng-model="selectedItem.isPrimary" ng-click="onPrimaryGuestSelectionChange(selectedItem.id)">
+                        <!-- 'class':
                                     - company -> If Company
                                     - travel-agent -> if Travel Agent
                                 -->
-                            <span class="primary" ng-class="{'company': escapeNull(selectedItem.account_type) === 'COMPANY', 'company': escapeNull(selectedItem.account_type) === 'TRAVELAGENT'}">Primary</span>
-                            <h2>{{selectedItem.account_name}}</h2>
-                            <!-- if no address, hide this-->
-                            <p ng-hide="!escapeNull(selectedItem.account_address)">{{selectedItem.account_address}}</p>
-                        </label>
-                    </div>
-    
-                    <!-- when card are being merged -->
-                    <div class="wrapper" ng-if="viewState.hasInitiatedMergeVerification">
-                        <div class="card">
-                            <div class="merge-icon">
-                                <!-- 'icon-card':
+                        <span class="primary" ng-class="{'company': escapeNull(selectedItem.account_type) === 'COMPANY', 'company': escapeNull(selectedItem.account_type) === 'TRAVELAGENT'}">Primary</span>
+                        <h2>{{selectedItem.account_name}}</h2>
+                        <!-- if no address, hide this-->
+                        <p ng-hide="!escapeNull(selectedItem.account_address)">{{selectedItem.account_address}}</p>
+                        <button type="button" class="button with-icon only-icon" ng-click="removeSelectedCard(selectedItem)">
+                            <span class="icons icon-remove-40"></span>
+                        </button>
+                    </label>
+                </div>
+
+                <!-- when card are being merged -->
+                <div class="wrapper" ng-if="viewState.hasInitiatedMergeVerification">
+                    <div class="card">
+                        <div class="merge-icon">
+                            <!-- 'icon-card':
                                     - icon-company - If company
                                     - icon-travel-agent - If travel agent -->
-                                <span class="guest-image icons" ng-class="{'icon-company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}"></span>
-                            </div>
-                            <!-- 'class':
+                            <span class="guest-image icons" ng-class="{'icon-company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}"></span>
+                        </div>
+                        <!-- 'class':
                                 - company -> If Company
                                 - travel-agent -> if Travel Agent
                                 -->
-                            <span class="primary" ng-class="{'company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}">Primary</span>
-                            <h2>{{viewState.selectedPrimaryCard.account_name}}</h2>
-                            <!-- Hide if no available -->
-                            <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.account_address)">{{viewState.selectedPrimaryCard.account_address}}</p>
-                        </div>
-    
-                        <!-- If merge is possible add .green,
-                             If merge with errors add .red -->
-                        <div class="merge-status" ng-class="{'green': viewState.canMerge, 'red': !viewState.canMerge}">
-                            {{viewState.mergeStatusText}}
-                        </div>
-    
-                        <div class="card" ng-repeat="card in viewState.selectedCardsForMerge" ng-if="!card.isPrimary">
-                            <span class="merge-icon">
-                                <!-- While merging -->
-                                <div id="loading-spinner" ng-show="showVerifyMergeProcessActivityIndicator" />
-                                <!-- if with error -->
-                                <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
-                                <!-- if with success -->
-                                <span class="icons icon-action icon-completed" ng-if="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
-                            </span>
-                            <h2>{{card.account_name}}</h2>
-                            <!-- Hide if no available -->
-                            <p ng-hide="!escapeNull(card.account_address)">{{card.account_address}}</p>
-                            <!-- if errors -->
-                            <p class="error" ng-if="getErrorMsg(card) !== ''">{{getErrorMsg(card)}}</p>
-                        </div>
+                        <span class="primary" ng-class="{'company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}">Primary</span>
+                        <h2>{{viewState.selectedPrimaryCard.account_name}}</h2>
+                        <!-- Hide if no available -->
+                        <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.account_address)">{{viewState.selectedPrimaryCard.account_address}}</p>
                     </div>
-    
+
+                    <!-- If merge is possible add .green,
+                             If merge with errors add .red -->
+                    <div class="merge-status" ng-class="{'green': viewState.canMerge, 'red': !viewState.canMerge}">
+                        {{viewState.mergeStatusText}}
+                    </div>
+
+                    <div class="card" ng-repeat="card in viewState.selectedCardsForMerge" ng-if="!card.isPrimary">
+                        <span class="merge-icon">
+                            <!-- While merging -->
+                            <div id="loading-spinner" ng-show="showVerifyMergeProcessActivityIndicator" />
+                            <!-- if with error -->
+                            <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
+                            <!-- if with success -->
+                            <span class="icons icon-action icon-completed" ng-if="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
+                        </span>
+                        <h2>{{card.account_name}}</h2>
+                        <!-- Hide if no available -->
+                        <p ng-hide="!escapeNull(card.account_address)">{{card.account_address}}</p>
+                        <!-- if errors -->
+                        <p class="error" ng-if="getErrorMsg(card) !== ''">{{getErrorMsg(card)}}</p>
+                    </div>
                 </div>
-    
-                <!-- .hidden when no content.-->
-                <div class="merge-actions" ng-hide="viewState.selectedCardsForMerge.length === 0">
-                    <button class="button blank" ng-click="cancelSelections()">Cancel</button>
-                    <!-- 'merge-class':
+
+            </div>
+
+            <!-- .hidden when no content.-->
+            <div class="merge-actions" ng-hide="viewState.selectedCardsForMerge.length === 0">
+                <button class="button blank" ng-click="cancelSelections()">Cancel</button>
+                <!-- 'merge-class':
                                 - grey   - When only once card is selected or merge errors
                                 - purple - When more than once card is selected for merging
                                 - green  - When merge is possible
                             -->
-                    <button class="button {{getMergeActionClassName()}}" ng-click="verifyMerge()" ng-if="!viewState.canMerge" ng-disabled="viewState.selectedCardsForMerge.length === 1">Verify
-                        Merge</button>
-                    <!-- Show this btn only upon verification success-->
-                    <button class="button green" ng-click="mergeCards()" ng-if="viewState.canMerge">Merge Cards</button>
-                </div>
+                <button class="button {{getMergeActionClassName()}}" ng-click="verifyMerge()" ng-if="!viewState.canMerge"
+                    ng-disabled="viewState.selectedCardsForMerge.length === 1">Verify
+                    Merge</button>
+                <!-- Show this btn only upon verification success-->
+                <button class="button green" ng-click="mergeCards()" ng-if="viewState.canMerge">Merge Cards</button>
             </div>
-    
-    
-        </section>
-    </div>
+        </div>
+
+
+    </section>
+</div>

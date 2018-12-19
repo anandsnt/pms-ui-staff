@@ -401,6 +401,27 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 		};
 
+		$scope.removeSelectedCard = (event, card) => {
+			event.preventDefault();
+			$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (cardDetails) => {
+				return cardDetails.id === card.id;
+			});
+
+			if (card.isPrimary) {
+				$scope.viewState.selectedPrimaryCard = {};
+			}
+
+			var selectedCard = _.find($scope.results, {id: card.id});
+
+			selectedCard.selected = false;
+
+			if ($scope.viewState.selectedCardsForMerge.length > 0) {
+				$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
+				$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
+			}
+
+		};
+
 		/**
 		 * Resetting the values of variables 
 		 */
