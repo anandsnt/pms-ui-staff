@@ -3,6 +3,7 @@
     "PREPAID_COMMISSION_CHARGE_CODE": "Prepaid commission charge code",
     "PREPAID": "Prepaid",
     "COMMISSION_IS_PREPAID": "Commission Prepaid",
+    "GLOBAL_COMMISSION": "Global Commission",
     "PER_STAY": "Per Stay",
     "PER_NIGHT": "Per Night",
     "PER_STAY_OR_PER_NIGHT" : "Per Stay/Per Night",
