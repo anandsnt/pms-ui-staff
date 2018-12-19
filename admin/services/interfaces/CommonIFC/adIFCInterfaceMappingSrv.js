@@ -36,7 +36,7 @@ admin.service('adIFCInterfaceMappingSrv', [
         };
 
         service.fetchMeta = function(interfaceIdentifier) {
-            let metaList = metaLists[interfaceIdentifier],
+            var metaList = metaLists[interfaceIdentifier],
                 deferred = $q.defer(),
                 promises = [],
                 meta = {};
