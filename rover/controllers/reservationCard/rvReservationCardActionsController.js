@@ -36,6 +36,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         $scope.editingDescriptionInline = false;
         $scope.lastSelectedItemId = '';
         $scope.actionSelected = 'selected';
+        $scope.isRefreshing = false;
 
         var setInitialActionsCount = function() {
             $scope.actions.totalCount = $scope.reservationListData.action_count;
@@ -115,7 +116,6 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             }
         };
 
-
         $scope.syncActions = function(id) {
             /*
              * method to sync action count for the staycard
@@ -124,8 +124,9 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             var onSuccess = function(data) {
                 $scope.actions.totalCount = data.total_count;
                 $scope.actions.pendingCount = data.pending_count;
-                $scope.actionsSyncd = true;
+                $scope.actionsCount = rvActionTasksSrv.getActionsClassName($scope.actions.totalCount, $scope.actions.pendingCount);
 
+                $scope.actionsSyncd = true;
                 // Update the actionsCount variable in $scope; This is used to manage the style of the actions button
                 setInitialActionsCount();
             };
@@ -146,18 +147,11 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             $scope.refreshScroller('rvActionListScroller');
         };
 
-
-        $scope.hasArrivalDate = false;
-        $scope.hasDepartureDate = false;
-
-        $scope.getArDeDateStr = function(dateStr, timeStr) {
-            if (!dateStr) {
-                dateStr = ' ';
-            }
-            if (!timeStr) {
-                timeStr = ' ';
-            }
+        var getArDeDateStr = function(dateStr, timeStr) {
             var aDay = rvActionTasksSrv.getDateFromDate(dateStr), aDayString = ' ';
+
+            dateStr = dateStr || ' ';
+            timeStr = timeStr || ' ';
 
             if (aDay) {
                 aDay = aDay.toLowerCase();
@@ -178,33 +172,21 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                     $filter('date')(new tzIndependentDate(dateStr), $rootScope.dateFormat) +
                     '  ' +
                     timeStr;
-            } else {
-                return timeStr;
             }
+
+            return timeStr;
         };
 
         var setActionsHeaderInfo = function() {
             var arDate = $scope.reservationData.reservation_card.arrival_date,
-                    arTime = $scope.reservationData.reservation_card.arrival_time;
+                arTime = $scope.reservationData.reservation_card.arrival_time,
+                arrivalDayString = getArDeDateStr(arDate, arTime),
+                deDate = $scope.reservationData.reservation_card.departure_date,
+                deTime = $scope.reservationData.reservation_card.departure_time,
+                departureDayString = getArDeDateStr(deDate, deTime);
 
-            var arrivalDayString = $scope.getArDeDateStr(arDate, arTime);
-
-            if (!arrivalDayString) {
-                $scope.hasArrivalDate = false;
-            } else {
-                $scope.hasArrivalDate = true;
-            }
-
-            var deDate = $scope.reservationData.reservation_card.departure_date,
-                    deTime = $scope.reservationData.reservation_card.departure_time;
-
-            var departureDayString = $scope.getArDeDateStr(deDate, deTime);
-
-            if (!departureDayString) {
-                $scope.hasDepartureDate = false;
-            } else {
-                $scope.hasDepartureDate = true;
-            }
+            $scope.hasArrivalDate = !!arrivalDayString;
+            $scope.hasDepartureDate = !!departureDayString;
             $scope.actions.arrivalDateString = arrivalDayString;
             $scope.actions.departureDateString = departureDayString;
         };
@@ -300,7 +282,6 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
 
                 params['due_at'] = $filter('date')(dateObj, $rootScope.dateFormatForAPI) +
                     ($scope.newAction.time_due ? "T" + $scope.newAction.time_due + ":00" : "");
-
             }
 
             $scope.callAPI(rvActionTasksSrv.postNewAction, {
@@ -487,25 +468,10 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             $scope.clearNewAction();
         };
 
-        $scope.cancelAssign = function() {
-            // switch back to selected view of lastSelected
-            // just change the view to selected
-            $scope.setRightPane('selected');
-            $scope.clearAssignSection();
-        };
-
         $scope.refreshingList = function() {
-            if ($scope.refreshing || $scope.refreshToEmpty) {
-                $scope.$parent.$emit('showLoader');
-                return true;
-            } else {
-                setTimeout(function() {
-                    $scope.$parent.$emit('hideLoader');
-                }, 1200);
-                return false;
-
-            }
+            return $scope.refreshing || $scope.refreshToEmpty;
         };
+
         $scope.refreshingToNonEmpty = function() {
             return $scope.refreshing && !$scope.refreshToEmpty;
         };
@@ -563,6 +529,9 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                 // if doing a refresh, dont replace the actions array, since it will cause the UI to flash
                 // and look like a bug, instead go through the objects and update them
 
+                $scope.actions.totalCount = data.action_count;
+                $scope.actions.pendingCount = data.pending_action_count;
+                $scope.actionsCount = rvActionTasksSrv.getActionsClassName($scope.actions.totalCount, $scope.actions.pendingCount);
 
                 var inActions = false;
                 var listItem, actionItem;
@@ -647,8 +616,8 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                 if ($scope.refreshing) {
                     $scope.refreshing = false;
                 }
-                // $scope.$parent.$emit('hideLoader');
             };
+
             var onFailure = function(data) {
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshToEmpty = false;
@@ -662,7 +631,6 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                 successCallBack: onSuccess,
                 failureCallBack: onFailure
             });
-
         };
 
         $scope.hasActionStatus = function() {
@@ -676,6 +644,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             }
             return true;
         };
+
         $scope.isDeletePending = function(id, a) {
             for (var i in a) {
                 if (a[i] === id) {
@@ -692,24 +661,19 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         };
 
         $scope.isAlert = function(v) {
-           var str = 'ALERT';
-
-            return isSameString(str, v);
+            return isSameString('ALERT', v);
         };
+
         $scope.isRequest = function(v) {
-           var str = 'REQUEST';
-
-            return isSameString(str, v);
+            return isSameString('REQUEST', v);
         };
+
         $scope.isTrace = function(v) {
-           var str = 'TRACE';
-
-            return isSameString(str, v);
+            return isSameString('TRACE', v);
         };
-        $scope.isMessage = function(v) {
-           var str = 'MESSAGE';
 
-            return isSameString(str, v);
+        $scope.isMessage = function(v) {
+            return isSameString('MESSAGE', v);
         };
 
         $scope.fetchActionsList = function() {
@@ -763,64 +727,11 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             });
         };
 
-        var getTimeFromDateMilli = function(d) {
-            if (typeof d === typeof 'string') {
-                return formatTime(parseInt(d));
-            } else if (typeof d === typeof 12345) {
-                return formatTime(d);
-            }
-        };
-
         $scope.setDefaultActionSelected = function(index) {
-            if (!index) {
-                index = 0;
+            index = index || 0;// first action selected by default
+            if ($scope.actions[index]) {
+                $scope.selectAction($scope.actions[index]);
             }
-            setTimeout(function() {
-                if ($scope.actions[index]) {
-                     $scope.selectAction($scope.actions[index]);// first action selected by default
-                 }
-            }, 100);
-        };
-
-        var formatTime = function(timeInMs, via) {
-            var dt = new Date(timeInMs);
-            var hours, minutes, seconds;
-
-            if (via === 'created_at_time') {
-                     hours = dt.getHours();
-                     minutes = dt.getMinutes();
-                     seconds = dt.getSeconds();
-             } else {
-                     hours = dt.getHours();
-                     minutes = dt.getMinutes();
-                     seconds = dt.getSeconds();
-             }
-
-            if (hours < 10) {
-             hours = '0' + hours;
-            }
-            if (minutes < 10) {
-             minutes = '0' + minutes;
-            }
-            if (seconds < 10) {
-             seconds = '0' + seconds;
-            }
-            return getFormattedTime(hours + '' + minutes);
-
-        };
-        var getFormattedTime = function (fourDigitTime) {
-            var hours24 = parseInt(fourDigitTime.substring(0, 2));
-            var hours = ((hours24 + 11) % 12) + 1;
-            var amPm = hours24 > 11 ? ' PM' : ' AM';
-            var minutes = fourDigitTime.substring(2);
-
-            if (typeof hours === typeof 2) {
-                if (hours < 10) {
-                    hours = '0' + hours;
-                }
-            }
-
-            return hours + ':' + minutes + amPm;
         };
 
         $scope.populateTimeFieldValue = function() {
@@ -844,8 +755,8 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                 });
             }
         };
-        $scope.timeFieldValue = [];
 
+        $scope.timeFieldValue = [];
 
         var initPopup = function() {
             var templateUrl = '/assets/partials/reservationCard/actions/rvReservationCardActionsPopup.html';
@@ -866,6 +777,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             $scope.openingPopup = true;
             $scope.fetchActionsList();
         };
+
         $scope.clearAssignSection = function() {
             $scope.departmentSelect.selected = {};
             $scope.closeSelectedCalendar();
@@ -923,10 +835,6 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
             }
         };
 
-        $scope.endRefresh = function() {
-            $scope.isRefreshing = false;
-        };
-        $scope.isRefreshing = true;
         $scope.completeAction = function(del, selected) {
             // mark the selected action as complete, notify the api
             var params = $scope.getBaseParams();
@@ -943,13 +851,13 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
                     if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete') {
                         $scope.actionSelected = 'selected';
                     }
-                     $scope.isRefreshing = false;
+                    $scope.isRefreshing = false;
                     $scope.refreshScroller('actionSummaryScroller');
                 };
                 var onFailure = function(data) {
                     $scope.errorMessage = data;
                     $scope.$parent.$emit('hideLoader');
-                    $scope.endRefresh();
+                    $scope.isRefreshing = false;
                 };
 
                 $scope.callAPI(rvActionTasksSrv.completeAction,  {
@@ -1092,13 +1000,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
 
         // Get action status based class name
         $scope.getActionStatusClass = function(action) {
-            var status = action.action_status;
-
-            if (status === 'delete') {
-                status = action.originalStatus;
-            }
-
-            return status;
+            return action.action_status === 'delete' ? action.originalStatus : action.action_status;
         };
 
         (function() {

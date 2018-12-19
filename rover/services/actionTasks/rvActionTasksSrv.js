@@ -74,6 +74,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
 
                     data.action_count = data.data.length;
                     data.pending_action_count = _.countBy(data.data, 'completed_at')["null"];
+                    data.pending_action_count = data.pending_action_count || 0;
                     data.className = self.getActionsClassName(data.action_count, data.pending_action_count);
 
                     deferred.resolve(data);
