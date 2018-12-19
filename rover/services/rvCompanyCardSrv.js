@@ -718,7 +718,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @param {Object} params contains array of ids of the cc/ta
          * @return {Promise} promise
          */
-        this.verifyTravelAgentCompanyCardMerge = (params) => {
+        this.verifyTravelAgentCompanyCardMerge = function(params) {
             var deferred = $q.defer(),
                 url = '/api/accounts/validate_card_merge';
 
@@ -735,7 +735,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @param {Object} params contains primary card id, non-primary card ids and card type
          * @return {Promise} promise
          */
-        this.mergeCards = (params) => {
+        this.mergeCards = function(params)  {
             var deferred = $q.defer(),
                 url = '/api/accounts/merge_cards';
 
