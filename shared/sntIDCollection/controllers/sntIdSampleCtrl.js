@@ -56,5 +56,11 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 	$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
 		$scope.startExtCameraCapture('front-image');
 	});
+
+	$scope.$on('FRONT_IMAGE_CONFIRMED', function() {
+		if ($scope.screenData.scanMode === 'UPLOAD_BACK_IMAGE' && $scope.deviceConfig.useExtCamera) {
+			$scope.startExtCameraCapture('back-image');
+		}
+	});
 	
 });

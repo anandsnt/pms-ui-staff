@@ -315,6 +315,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			generalFailureCallBack();
 			$scope.guestIdData.front_image_data = '';
 			$scope.guestIdData.back_image_data = '';
+			$scope.screenData.extCamForFrontIDActivated = false;
+			$scope.screenData.extCamForBackIDActivated = false;
 		};
 
 		$scope.$on('FINAL_RESULTS', function(evt, data) {

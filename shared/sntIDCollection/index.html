@@ -83,7 +83,7 @@
                <select ng-model="selectedCamera" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged()">
                </select>
                <p class="title">Please place the ID below the camera with front side of ID facing camera.</p>
-               <video width="1080" height="810" id="id-video" autoplay></video>
+               <video width="640" height="480" id="id-video" autoplay></video>
                <br/><br/>
                <div class="jumbotron text-center">
                   <buton type="button" class="btn btn-primary" ng-click="captureFrontImageUsingExtCamera()">Capture</button>
@@ -147,7 +147,7 @@
 
             <div class="col-md-12 jumbotron" ng-show="deviceConfig.useExtCamera">
                <p class="title">Please place the ID below the camera with back side of ID facing camera.</p>
-               <video width="1080" height="810" id="id-back-video" autoplay></video>
+               <video width="640" height="480" id="id-back-video" autoplay></video>
                <br/><br/>
                <div class="jumbotron text-center">
                   <buton type="button" class="btn btn-primary" ng-click="captureBackImageUsingExtCamera()">Capture</button>
