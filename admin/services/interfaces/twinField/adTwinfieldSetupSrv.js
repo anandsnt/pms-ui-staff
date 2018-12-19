@@ -27,10 +27,6 @@ admin.service('adTwinfieldSetupSrv', [
             return ADBaseWebSrvV2.getJSON('/api/hotel_settings/twinfield/fetch_vat_types');
         };
 
-        service.fetchCostCenters = function() {
-            return ADBaseWebSrvV2.getJSON('/api/hotel_settings/twinfield/fetch_cost_centers');
-        };
-
         service.fetchMappings = function(params) {
             return ADBaseWebSrvV2.getJSON('/api/hotel_settings/twinfield/fetch_mappings', params);
         };
@@ -60,11 +56,6 @@ admin.service('adTwinfieldSetupSrv', [
             promises.push(service.fetchVATCodes().
                 then(function(response) {
                     meta['vat_types'] = response.data;
-                }));
-
-            promises.push(service.fetchCostCenters().
-                then(function(response) {
-                    meta['cost_centers'] = response.data;
                 }));
 
             promises.push(service.getAllChargeCodes().
