@@ -73,6 +73,10 @@
                         }
                     }
 
+                    a {
+                        height: 60px;
+                    }
+
                     .guest-image {
                         margin-right: 10px;
                         background-size: 100px;
@@ -95,13 +99,17 @@
                     }
 
                     .data { 
-                        height: 30px;
+                        height: 35px;
                         .calc-width(100, 505 );
                         #flexbox > .parent( column, center, '', '' );
+                        
+                        &.no-address {
+                            height: 30px;
+                        }
 
                         span {
                             &.icons {
-                                padding-left: 16px;
+                                padding-left: 14px;
                             }
                         }
                     }
@@ -246,11 +254,18 @@
                     &.with-button {
                         padding-right: 50px;
 
+                        &.with-label {
+                            label {
+                                padding-right: 50px;
+                            }
+                        }
+
                         .button {
                             position: absolute;
                             top: 10px;
                             right: 10px;
                             background: @grey1;
+                            z-index: 999;
                             .box-shadow();
                             .square(30px);
 
@@ -261,6 +276,12 @@
                                 }
                             }
                         }
+                    }
+
+                    &.with-label {
+                        background: transparent;
+                        padding: 0;
+                        .box-shadow(none);
                     }
 
                     .merge-icon {
@@ -352,29 +373,40 @@
                             color: @red;
                         }
                     }
-                }
 
-                label {
-                    &.radio {
-                        position: relative;
-                        width: 100%;
-                        margin: 0 0 10px 0;
-                        padding: 10px 10px 10px 40px;
-
-                        .primary {
-                            .hide(); 
-                        }
-
-                        &:not(.checked) {
-                            &.no-address {
-                                .icon-form {
-                                    top: auto;
-                                }
+                    label {
+                        &.radio {
+                            position: relative;
+                            width: 100%;
+                            min-height: 50px;
+                            margin: 0 0 10px 0;
+                            padding: 10px 10px 10px 40px;
+    
+                            .primary {
+                                .hide(); 
+                            }
+    
+                            &.checked {
+                                .primary { .show(); }
                             }
                         }
+                    }
 
-                        &.checked {
-                            .primary { .show(); }
+                    &.no-address {
+                        label {
+                            &:not(.checked) {
+                                
+                                .icon-form {
+                                    top: 0;
+                                    bottom: 0;
+                                    margin: auto;
+                                }
+
+                                h2 {
+                                    line-height: 30px;
+                                }
+                                
+                            }
                         }
                     }
                 }
@@ -2161,7 +2193,7 @@
 
                     span.icons {
                         padding-left: 20px;
-                        line-height: 24px;
+                        line-height: 14px;
                         font-size: 14px;
                         float:left;
                         color: @grey3;
@@ -2170,7 +2202,7 @@
 
                         &.icon-location {
                             background-size: 100px;
-                            background-position: 0px -32px;
+                            background-position: -3px -32px;
                         }
                     }
 
