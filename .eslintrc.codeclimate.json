@@ -169,6 +169,11 @@
             {
                 "max": 1
             }
+        ],
+        "no-extra-parens":[
+            "warn",
+            "all",
+            { "nestedBinaryExpressions" : false }
         ]
     }
 }

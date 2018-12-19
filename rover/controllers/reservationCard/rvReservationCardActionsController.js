@@ -497,7 +497,7 @@ year: year};
         };
 
         $scope.showActionSummary = function() {
-            return $scope.actionSelected === 'selected' || $scope.actionSelected === 'selected' && $scope.refreshing;
+            return $scope.actionSelected === 'selected' || ($scope.actionSelected === 'selected' && $scope.refreshing);
         };
 
         $scope.showNewAction = function() {
@@ -509,15 +509,15 @@ year: year};
         };
 
         $scope.showEmptyActions = function() {
-            return $scope.actions.totalCount === 0 && $scope.actionSelected === 'none' || $scope.refreshToEmpty;
+            return ($scope.actions.totalCount === 0 && $scope.actionSelected === 'none') || $scope.refreshToEmpty;
         };
 
         $scope.postActionEnabled = function() {
-            return !$scope.newAction.hasDate || !$scope.newAction.notes || !$scope.departmentSelected && !$scope.isStandAlone;
+            return !$scope.newAction.hasDate || !$scope.newAction.notes || (!$scope.departmentSelected && !$scope.isStandAlone);
         };
 
         $scope.showAssignScreen = function() {
-            return $scope.actionSelected === 'assign' || $scope.actionSelected === 'assign' && $scope.refreshing;
+            return $scope.actionSelected === 'assign' || ($scope.actionSelected === 'assign' && $scope.refreshing);
         };
 
         $scope.refreshActionList = function(del, selected) {
@@ -640,8 +640,8 @@ year: year};
                 return false;
             } else if ($scope.actionSelected === "none" || $scope.actionSelected === "new") {
                 return true;
-            } else if (!(($scope.actions.totalCount > 0 || $scope.refreshing) && !$scope.refreshToEmpty) &&
-                        !($scope.actions.totalCount === 0 && $scope.actionSelected === "none" || $scope.refreshToEmpty)) {
+            } else if ((!(($scope.actions.totalCount > 0 || $scope.refreshing) && !$scope.refreshToEmpty) &&
+                        !(($scope.actions.totalCount === 0 && $scope.actionSelected === "none") || $scope.refreshToEmpty))) {
                 return false;
             }
             return true;
