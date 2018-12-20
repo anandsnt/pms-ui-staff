@@ -83,6 +83,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     refreshScroll();
                     hideLoaderIfWasStarted();
                     $scope.filterData.commissionsLoaded = true;
+                    clearCurrentSelection();
                 },
                 onCommissionFetchFailure = function(error) {
                     $scope.$emit('hideLoader');
