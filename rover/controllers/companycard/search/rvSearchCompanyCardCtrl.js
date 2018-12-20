@@ -7,10 +7,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			ALL: 'ALL',
 			AR_ONLY: 'AR_ONLY'
 		};
-		const mergBtnLabels = {
-			VERIFY_MERGE: 'Verify Merge',
-			MERGE_CARDS: 'Merge Cards'
-		};
+		
 		const mergeStatusText = {
 			VERIFYING_MERGE: 'Verifying Merge',
 			OK_TO_MERGE: 'Ok to Merge',
@@ -66,8 +63,6 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 		$scope.setScroller(scrollers.COMPANY_CARD_SCROLL, scrollerOptions);
 		$scope.setScroller(scrollers.SELECTED_CARDS_FOR_MERGE_SCROLL);
-
-
 
 		var refreshScroller = function () {
 			$timeout(function () {
@@ -152,7 +147,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				// last hope, we are looking in webservice.
 				if (visibleElementsCount === 0) {
 					var dataDict = {
-						'query': $scope.textInQueryBox.trim(),
+						'query': $scope.textInQueryBox.trim()
 					};
 
 					dataDict.has_ar_number = false;
@@ -276,19 +271,16 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				refreshSelectedCardsScroller();
 
 			},
-				onVerificationFailure = (errors) => {
+				onVerificationFailure = () => {
 
 				};
 			
 			$scope.showVerifyMergeProcessActivityIndicator = true;
 
-			let selectedNonPrimaryCards = _.reject($scope.viewState.selectedCardsForMerge, (card) => {
-				return card.isPrimary;
-			});
-
 			let postData = {
 				card_ids: self.getNonPrimaryCardIds()
 			};
+
 			$scope.viewState.mergeStatusText = mergeStatusText.VERIFYING_MERGE;
 			$scope.viewState.hasInitiatedMergeVerification = true;
 			$scope.callAPI(RVCompanyCardSrv.verifyTravelAgentCompanyCardMerge, {
@@ -351,7 +343,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			let selectedIds = _.pluck($scope.viewState.selectedCardsForMerge, 'id');
 
 			$scope.results.forEach((card) => {
-				if(selectedIds.indexOf(card.id) !== -1 ) {
+				if (selectedIds.indexOf(card.id) !== -1 ) {
 					card.selected = false;
 					card.isPrimary = false;
 				}
@@ -369,13 +361,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				primary_card_id: $scope.viewState.selectedPrimaryCard.id,
 				card_type: $scope.viewState.isCompanyCardSelected ? 'COMPANY' : 'TRAVELAGENT'
 			},
-			onMergeSuccess = (data) => {
+			onMergeSuccess = () => {
 				self.resetSelectionsForMerge();
 				$scope.queryEntered();
 			},
 			onMergeFailure = (error) => {
 				$scope.viewState.mergeStatusText = error;
-				$scope.viewState.canMerge  = false
+				$scope.viewState.canMerge  = false;
 			};
 
 			$scope.callAPI(RVCompanyCardSrv.mergeCards, {
