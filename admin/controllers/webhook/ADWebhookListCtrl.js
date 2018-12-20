@@ -14,13 +14,15 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                 });
             },
             buildWebHookSupportingEvents = function (deliveryType) {
-              supportedEvents = webHookSupportingEvents(deliveryType, $scope.meta.deliveryTypes);
+              var supportedEvents = webHookSupportingEvents(deliveryType, $scope.meta.deliveryTypes);
               $scope.meta[deliveryType] = {events: supportedEvents};
               return $scope.meta[deliveryType].events;
             },
             webHookSupportingEvents = function (deliveryType, deliveryTypes) {
               var supportedEvents = [],
-                  eventsTable = {};
+                  eventsTable = {},
+                  deliveryTypeEvents;
+
               deliveryTypeEvents = _.find(deliveryTypes, {
                                       delivery_type: deliveryType
                                     }).supporting_events;
@@ -30,7 +32,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
               });
 
               _.each($scope.meta.events, function(event) {
-                if(eventsTable[event.value]){
+                if (eventsTable[event.value]) {
                   supportedEvents.push(event);
                 }
               });
