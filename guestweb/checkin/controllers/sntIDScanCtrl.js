@@ -119,15 +119,13 @@
 				$scope.idScanData.idScanSkipped = !$scope.idScanData.idScanSkipped;
 			};
 			
-
-			$scope.$on('CREDENTIALS_VALIDATED', function() {
+			var startScanning = function() {
 				if ($scope.selectedReservation.guest_details.length > 1) {
 					$scope.screenData.scanMode = 'GUEST_LIST';
-				}
-				else {
+				} else {
 					$scope.selectGuest($scope.selectedReservation.guest_details[0]);
 				}
-			});
+			};
 
 			(function() {
 				
@@ -150,7 +148,7 @@
 					verificationMethod: 'NONE', // FR will be added later
 					idScanSkipped: false
 				};
-				$scope.validateSubsription();
+				startScanning();
 				$scope.isLoading = false;
 			}());
 		}

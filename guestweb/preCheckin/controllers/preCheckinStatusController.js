@@ -2,7 +2,7 @@
 	Precheckin final Ctrl where the pre checkin API is called
 */
 (function() {
-	var preCheckinStatusController = function($scope, preCheckinSrv, $rootScope, $state) {
+	var preCheckinStatusController = function($scope, preCheckinSrv, $rootScope, $state, sntIDCollectionUtilsSrv) {
 		// if prompt for cc is turned on
 		// we will always ask for CC addition in case of MLI
 
@@ -52,7 +52,7 @@
 			$state.go('conductSurvey'); // conduct Survey
 		} 
 		// Collect guest ID
-		else if ($state.href('sntIDScan') !== null && $rootScope.id_collection_enabled && !$rootScope.idScanComplete ) {
+		else if ($state.href('sntIDScan') !== null && $rootScope.id_collection_enabled && !$rootScope.idScanComplete && sntIDCollectionUtilsSrv.isInMobile()) {
 			$state.go('sntIDScan', {
 				params: JSON.stringify({"mode": "PRE_CHECKIN"})
 			});
@@ -91,7 +91,7 @@
 
 	var dependencies = [
 		'$scope',
-		'preCheckinSrv', '$rootScope', '$state',
+		'preCheckinSrv', '$rootScope', '$state', 'sntIDCollectionUtilsSrv',
 		preCheckinStatusController
 	];
 

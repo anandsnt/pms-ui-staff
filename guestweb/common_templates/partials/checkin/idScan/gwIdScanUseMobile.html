@@ -1,0 +1,21 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row" ng-hide="isPosting || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container">
+            <p class="main-text"></p>
+            <p class="sub-main-text"> Please note that you will need to scan ID cards to complete your checkin process. So please continue from a mobile device with camera or complete precheckin now. You will still required to submit it to staff before you can check in. Feel free to call us at {{ hotelPhone }}</em>
+            </p>
+             <a class="btn btn-template early-checkin-button margin-top-10" ng-click="proceedWithoutIdScan()"> Proceed</a>
+             <!-- <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="abortCheckin()"> Abort</a> -->
+        </div>
+        <div class="col-md-4">
+        </div>                   
+    </div>
+</div>
