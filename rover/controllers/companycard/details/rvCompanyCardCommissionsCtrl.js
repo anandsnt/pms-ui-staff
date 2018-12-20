@@ -521,6 +521,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 fetchMultiProperties();
             } else {
                 $scope.shouldShowPropertyDropDown = false;
+                init();
             }
         
         });
@@ -552,7 +553,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             toggleCommission: false,
             commssionRecalculationValue: '',
              // By default set the value to current hotel
-                selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
+            selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
             commissionsLoaded: false
             };
         // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID
