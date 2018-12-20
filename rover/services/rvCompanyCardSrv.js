@@ -71,7 +71,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             });
 
             return deferred.promise;
-        }
+        };
 
         /**
          * getting details of commission status of travel agent card
