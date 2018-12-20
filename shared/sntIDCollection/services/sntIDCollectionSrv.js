@@ -18,9 +18,11 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		that.isInDevEnv = false;
 	}
 
-	this.setAcuantCredentialsForProduction = function (credentials) {
+	this.setAcuantCredentialsForProduction = function(credentials) {
 		acuantCredentials = credentials;
-		acuantCredentials.LicenseKey = btoa(acuantCredentials.licenseKey);
+		if (acuantCredentials && acuantCredentials.licenseKey) {
+			acuantCredentials.LicenseKey = btoa(acuantCredentials.licenseKey);
+		}
 	};
 	/**
 	 * [createCORSRequest description]

@@ -316,6 +316,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 
 			$timeout(function() {
+                $scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 				$scope.activateSelectedTab();				
 			}, 1000);
 		};

@@ -3,8 +3,11 @@
       <h1 translate>
          GI_UPLOAD_FRONT_IMAGE_FAILED
       </h1>
-      <button type="button" class="button done-btn" touch-press="captureFrontImage()" translate>
-      GI_RETAKE_FRONT_IMAGE
+      <button type="button" class="button done-btn" ng-hide="deviceConfig.useExtCamera" touch-press="captureFrontImage()" translate>
+      	GI_RETAKE_FRONT_IMAGE
+      </button>
+      <button type="button" class="button done-btn" ng-show="deviceConfig.useExtCamera" touch-press="retryFrontImageUsingExtCamera()" translate>
+      	GI_RETAKE_FRONT_IMAGE
       </button>
    </div>
 </section>
