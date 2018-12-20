@@ -1607,7 +1607,21 @@ span.keys-msg-bold{
   display: block !important;
 }
 
+@media print {
+  .toggle-display {
+    display: none !important;
+  }
+}
+
 div#guest-id.modal-content {
   height:auto;
+}
+
+.guest-documents.scan-mode {
+  grid-template-columns: calc(100%) !important;
+}
+.half-width-buttons{
+  width: 50% !important;
+  margin: 0 auto;
 }
 

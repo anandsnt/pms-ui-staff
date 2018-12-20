@@ -4,60 +4,42 @@
         <em class="status">{{'ALL_FIELDS_MANDIATORY' | translate}}</em>
     </div>
 </fieldset>
+
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.typeof"
                       change-handler="onChangeMappingType"
                       valueproperty="name"
                       property="text"
-                      is-disabled="state.mode==='EDIT'"
+                      is-disabled="state.mode==='EDIT' || state.mappingTypes.length === 1"
                       label-in-drop-down="Select Mapping Type"
                       list="state.mappingTypes"
                       label="{{'MAPPING_TYPE'| translate}}"
                       div-class="full-width">
     </ad-dropdown-name>
 </fieldset>
-<fieldset class="holder right">
-    <ad-textbox inputtype="text" value="mapping.meta_data.cost_center"
-                ng-if="mapping.typeof"
-                required="yes"
-                label="{{'COST_CENTER'| translate}}"
-                styleclass="full-width"></ad-textbox>
-</fieldset>
+
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.value"
                       ng-show="mapping.typeof"
                       valueproperty="charge_code"
                       label-properties="['charge_code', 'description']"
                       label-in-drop-down="Select Value"
-                      list="state.meta.charge_codes"
+                      list="state.meta['CHARGE_CODES']"
                       label="{{'SNT_VALUE'| translate}}"
                       skip-number-conversion="true"
                       div-class="full-width">
     </ad-dropdown-name>
 </fieldset>
-<fieldset class="holder right">
-    <div class='entry full-width' ng-if="mapping.typeof === 'gl_account'">
-        <label>{{'EXTERNAL_VALUE'| translate}}</label>
-        <div class='select'>
-            <select ng-model='mapping.external_value'>
-                <option ng-repeat='extValue in state.meta.gl_accounts' value='{{extValue.Code}}'>
-                    {{extValue.Name}}
-                </option>
-            </select>
-        </div>
-    </div>
-    <div class='entry full-width' ng-if="mapping.typeof === 'vat_code'">
-        <label>{{'EXTERNAL_VALUE'| translate}}</label>
-        <div class='select'>
-            <select ng-model='mapping.external_value'>
-                <option ng-repeat='extValue in state.meta.vat_types' value='{{extValue.Code}}'>
-                    {{extValue.Name}}
-                </option>
-            </select>
-        </div>
-    </div>
 
+<fieldset class="holder right">
+    <div class='entry full-width'>
+        <ad-textbox inputtype="number"
+                    value="mapping.external_value"
+                    label="{{'EXTERNAL_VALUE'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </div>
 </fieldset>
+
 <div class="actions float">
     <button type="button"
             class="button blank add-data-inline" ng-click="onCancelDetailedView()" translate>

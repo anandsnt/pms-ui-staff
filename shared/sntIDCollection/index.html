@@ -70,12 +70,23 @@
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE'">
          <div class="row content">
              
-            <div class="col-md-12 jumbotron">
+            <div class="col-md-12 jumbotron" ng-hide="deviceConfig.useExtCamera">
                <p class="title">Upload a clear picture of the front of your ID card.</p>
                <input type="file" accept="image/*" capture="environment" id="front-image" ng-upload-change="frontImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
                   <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">Capture ID/Passport</button>
+               </div>
+            </div>
+
+             <div class="col-md-12 jumbotron" ng-show="deviceConfig.useExtCamera">
+               <select ng-model="selectedCamera" ng-options="camera.id as camera.label for camera in connectedCameras" ng-change="cameraSourceChanged()">
+               </select>
+               <p class="title">Please place the ID below the camera with front side of ID facing camera.</p>
+               <video width="640" height="480" id="id-video" autoplay></video>
+               <br/><br/>
+               <div class="jumbotron text-center">
+                  <buton type="button" class="btn btn-primary" ng-click="captureFrontImageUsingExtCamera()">Capture</button>
                </div>
             </div>
             
@@ -98,7 +109,8 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD FRONT IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureFrontImage($event)()">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-hide="deviceConfig.useExtCamera" ng-click="captureFrontImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-show="deviceConfig.useExtCamera" ng-click="retryFrontImageUsingExtCamera()">RETRY</button>
                </div>
             </div>
             
@@ -124,12 +136,21 @@
       <div class="container-fluid contents" ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE'">
          <div class="row content">
             
-            <div class="col-md-12 jumbotron">
+            <div class="col-md-12 jumbotron" ng-hide="deviceConfig.useExtCamera">
                <p class="title">Upload a clear picture of the back of your ID card.</p>
                <input type="file" accept="image/*" capture="environment" id="back-image" ng-upload-change="backImageChanged($event)" value="" style="display: none;">
                <br/><br/>
                <div class="jumbotron text-center">
                   <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">Capture ID/Passport</button>
+               </div>
+            </div>
+
+            <div class="col-md-12 jumbotron" ng-show="deviceConfig.useExtCamera">
+               <p class="title">Please place the ID below the camera with back side of ID facing camera.</p>
+               <video width="640" height="480" id="id-back-video" autoplay></video>
+               <br/><br/>
+               <div class="jumbotron text-center">
+                  <buton type="button" class="btn btn-primary" ng-click="captureBackImageUsingExtCamera()">Capture</button>
                </div>
             </div>
             
@@ -152,7 +173,8 @@
             <div class="col-md-12">
                <div class="jumbotron text-center">
                   <p class="title">UPLOAD BACK IMAGE FAILED</p>
-                  <button type="button" class="btn btn-primary" ng-click="captureBackImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-hide="deviceConfig.useExtCamera" ng-click="captureBackImage($event)">RETRY</button>
+                  <button type="button" class="btn btn-primary" ng-show="deviceConfig.useExtCamera" ng-click="retryBackImageUsingExtCamera()">RETRY</button>
                </div>
             </div>
             
