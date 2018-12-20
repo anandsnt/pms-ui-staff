@@ -370,11 +370,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				card_type: $scope.viewState.isCompanyCardSelected ? 'COMPANY' : 'TRAVELAGENT'
 			},
 			onMergeSuccess = (data) => {
-				$scope.queryEntered();
 				self.resetSelectionsForMerge();
+				$scope.queryEntered();
 			},
 			onMergeFailure = (error) => {
-
+				$scope.viewState.mergeStatusText = error;
+				$scope.viewState.canMerge  = false
 			};
 
 			$scope.callAPI(RVCompanyCardSrv.mergeCards, {
@@ -385,9 +386,15 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 		};
 
+		/**
+		 * 
+		 * @param {Number} id identifier for the card
+		 * @param {String} accountType CC/TA
+		 * @return {void}
+		 */
 		$scope.navigateToDetails = (id, accountType) => {
 			let ids = _.map($scope.viewState.selectedCardsForMerge, (card) => {
-				return {id: card.id, isPrimary: card.isPrimary || false};
+				return { id: card.id, isPrimary: card.isPrimary || false };
 			});
 
 			$state.go('rover.companycarddetails', {
@@ -401,7 +408,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 		};
 
+		/**
+		 * Remove the given card from the list of cards selected for merge
+		 * @param {Object} card the card to be removed
+		 * @return {void}
+		 */
 		$scope.removeSelectedCard = (card) => {
+			// Remove the cards from the list
 			$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (cardDetails) => {
 				return cardDetails.id === card.id;
 			});
@@ -410,10 +423,14 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.viewState.selectedPrimaryCard = {};
 			}
 
-			var selectedCard = _.find($scope.results, {id: card.id});
+			var selectedCard = _.find($scope.results, { id: card.id });
 
-			selectedCard.selected = false;
+			// Mark the search result entry as non-selected
+			if (selectedCard) {
+				selectedCard.selected = false;
+			}
 
+			// Set the first card in the list as primary, if the given card for deletion is primary
 			if ($scope.viewState.selectedCardsForMerge.length > 0) {
 				$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
@@ -463,7 +480,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				mergeStatusErrors: []
 			};
 
-			transitionParams = $state.transition.params('from');
+			transitionParams = $state.transition && $state.transition.params('from');
 
 			if (transitionParams && transitionParams.isMergeViewSelected) {
 				$scope.viewState.isViewSelected = !transitionParams.isMergeViewSelected;
