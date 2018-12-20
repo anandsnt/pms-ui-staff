@@ -1705,18 +1705,21 @@ sntRover.controller('reservationDetailsController',
 		if (!$scope.hotelDetails.id_collection.rover.enabled) {
 			return false;
 		}
-		if (!$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true)) {
+		if ($scope.guestData && !$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true)) {
 			return true;
 		}
 		if (!$scope.hotelDetails.id_collection.rover.scan_all_guests) {
 			return false;
 		}
 		var guestIdRequired = false;
-		_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
-			if (!$scope.isGuestIdUploaded(guestInfo, false)) {
-				guestIdRequired = true;
-			}
-		});
+		if ($scope.guestData) {
+			_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
+				if (!$scope.isGuestIdUploaded(guestInfo, false)) {
+					guestIdRequired = true;
+				}
+			});
+		}
+		
 		return guestIdRequired;
 	};
 
