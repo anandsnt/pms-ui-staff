@@ -14,7 +14,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         this.DEFAULT_PAGE = 1;
 
         var openSaveAccountRequests = {},
-            that =this;
+            that = this;
 
         /** contact information area */
 
@@ -40,7 +40,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetchContactInformationMandatoryFields = function() {
             var deferred = $q.defer(),
-            url = '/admin/co_ta_settings/current_settings';
+                url = '/admin/co_ta_settings/current_settings';
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
