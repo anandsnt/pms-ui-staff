@@ -57,17 +57,16 @@
                 <span class="value" data-long="Available">Avl.</span>
             </label>
         </div>
-        <!-- If L48 is hot checked (showing Available Slots), output this: 
-        <div class="notice">
+        <div class="notice" ng-show="diaryData.showAvailableRooms">
             Select Room and Arrival Date
-        </div> -->
+        </div>
     </div>
 
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
 
     <!-- Show / Hide Filters -->
-    <div class="entry filters">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+    <div class="entry filters" ng-class="{'show-one': diaryData.showAvailableRooms }">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showAvailableRooms}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
             <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>

@@ -248,16 +248,16 @@ angular.module('sntRover')
                  * @return {}
                  */
                 var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
-                    var successCallBackAssignRoom = function (data) {
+                    var successCallBackAssignRoom = function () {
                         $scope.errorMessage = '';
                         $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
                     },
                     postData = {
                         "reservation_id": reservationDetails.reservationId,
                         "room_number": roomDetails.room_number,
-                        "without_rate_change":true,
-                        "is_preassigned":false,
-                        "forcefully_assign_room":false
+                        "without_rate_change": true,
+                        "is_preassigned": false,
+                        "forcefully_assign_room": false
                     },
                     options = {
                         params: postData,
@@ -443,8 +443,11 @@ angular.module('sntRover')
                 /* Handle event emitted from child controllers.
                  * To toggle unassigned list and filter.
                  */
-                listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData) {
+                listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData, shouldHide) {
                     $scope.diaryData.isAvailableRoomSlotActive = true;
+                    if (shouldHide) {
+                        $scope.diaryData.isAvailableRoomSlotActive = false;
+                    }
                     $scope.diaryData.availableSlotsForAssignRooms = newData;
                     fetchRoomListDataAndReservationListData();
                 });

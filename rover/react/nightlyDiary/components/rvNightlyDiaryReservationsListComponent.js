@@ -14,9 +14,8 @@ const isRoomIsAvailable = (roomId, state) => {
             <NightlyDiaryUnAssignedContainer roomDetails={roomDetails} />
         );
     }
-    else {
-        return false;
-    }
+    
+    return false;
 };
 
 const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showUnAssignedRooms, state }) => {
@@ -55,6 +54,16 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                             state.showAvailableRooms && item.availableFreeSlots.length > 0 ?
                                 item.availableFreeSlots.map((availableDate) => (
                                     <NightlyDiaryAvailableRoomListContainer date={availableDate} room={item}/>
+                                )
+                                )
+                                : ''
+                        }
+
+                        {
+                            item.hourly_reservations.length > 0 ?
+
+                                item.hourly_reservations.map((hourlyItem) => (
+                                    <NightlyDiaryHourlyContainer hourlyItem={hourlyItem} />
                                 )
                                 )
                                 : ''

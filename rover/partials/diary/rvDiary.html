@@ -34,6 +34,20 @@
                 </label>
             </div>
         </div>
+        <div class="entry switch display">
+            <label for="diary-range">Show <span>(Hours)</span></label>
+            <div class="switch-button" ng-class="{on: gridProps.viewport.hours === 12}">
+                <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked ng-click="gridProps.filter.toggleRange()" />
+                <label class="data-off">
+                    <span class="value">12</span>
+                    <span class="switch-icon">24</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">12</span>
+                    <span class="value">24</span>
+                </label>
+            </div>
+        </div>
         <div class="entry date">
             <label for="arrival-date">Date</label>
             <div class="entry-data">
@@ -44,7 +58,7 @@
                 <span id="arrival-date-month" class="month">{{gridProps.filter.arrival_date.toComponents().date.monthName}}</span>
                 <span id="arrival-date-year" class="year">{{gridProps.filter.arrival_date.getFullYear()}}</span>
             </div>
-        </div>
+        </div>  
         <div class="entry time">
             <label for="arrival-time">Arrival Time</label>
             <div class="select">
@@ -54,17 +68,6 @@
                         ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times" ng-change="clickedOnArrivalTime()">
                     <option value="" selected="selected">Select</option>
                     <!--<option value={{arrival_time}}>{{arrival_time}}</option> -->
-                </select>
-            </div>
-        </div>
-        <div class="entry room">
-            <label for="room-type">Room Type</label>
-            <div class="select">
-                <select id="room-type"
-                        name="room-type"
-                        ng-model="gridProps.filter.room_type"
-                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-change="clickedOnRoomType()" class="placeholder">
-                    <option value="" selected="selected">Select</option>
                 </select>
             </div>
         </div>
@@ -120,18 +123,15 @@
 
             </div>
         </div>
-        <div class="entry switch display">
-            <label for="diary-range">Show <span>(Hours)</span></label>
-            <div class="switch-button" ng-class="{on: gridProps.viewport.hours === 12}">
-                <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked ng-click="gridProps.filter.toggleRange()" />
-                <label class="data-off">
-                    <span class="value">12</span>
-                    <span class="switch-icon">24</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">12</span>
-                    <span class="value">24</span>
-                </label>
+        <div class="entry room">
+            <label for="room-type">Room Type</label>
+            <div class="select">
+                <select id="room-type"
+                        name="room-type"
+                        ng-model="gridProps.filter.room_type"
+                        ng-options="room_type as room_type.name for room_type in gridProps.filter.room_types" ng-change="clickedOnRoomType()" class="placeholder">
+                    <option value="" selected="selected">Select</option>
+                </select>
             </div>
         </div>
         <div class="entry reset">

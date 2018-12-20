@@ -26,11 +26,12 @@ sntRover.controller('reservationDetailsController',
 	'transitions',
 	'taxExempts',
 	'sntActivity',
+	'$ocLazyLoad',
 	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
              reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
              RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
              RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
-             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts, sntActivity) {
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts, sntActivity, $ocLazyLoad) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -437,8 +438,10 @@ sntRover.controller('reservationDetailsController',
 	//  showing Guest button arrow as part of CICO-25774
 
 		// $scope.shouldShowGuestDetails = false;
-		$scope.toggleGuests = function() {
+		fetchGuestIDs();
+		$scope.toggleGuests = function(isFromCheckin) {
 
+			$scope.isFromCheckin = isFromCheckin;
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
@@ -449,6 +452,10 @@ sntRover.controller('reservationDetailsController',
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
+
+			$scope.$emit("SHOW_GUEST_ID_LIST", {
+				"shouldShowGuestDetails": isFromCheckin
+			});
 
 		};
 
@@ -469,12 +476,15 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.shouldShowTimeDetails = false;
 		$scope.toggleTime = function() {
-			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;
-			if ($scope.shouldShowTimeDetails) {
-				$scope.shouldShowGuestDetails = false;
-			}
+			$scope.showEditDates = false;
+			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;	
 		};
 
+		$scope.showEditDates = false;
+		$scope.toggleReservationDates = function() {
+			$scope.shouldShowTimeDetails = false;
+			$scope.showEditDates = !$scope.showEditDates;
+		};
 
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
@@ -1674,14 +1684,44 @@ sntRover.controller('reservationDetailsController',
 		return guestIdInfo;
 	};
 
+	$scope.isIdRequiredForGuest = function(guest, isPrimaryGuest) {
+		if (isPrimaryGuest) {
+			return $scope.hotelDetails.id_collection.rover.enabled && !$scope.isGuestIdUploaded(guest, true);
+		} 
+		return $scope.hotelDetails.id_collection.rover.enabled && $scope.hotelDetails.id_collection.rover.scan_all_guests && !$scope.isGuestIdUploaded(guest, false);
+	};
+
 	$scope.isGuestIdUploaded = function(guest, isPrimaryGuest) {
 
 		var guestId = isPrimaryGuest ? $scope.reservationParentData.guest.id : guest.id;
 		var uploadedIdDetails = retrieveGuestDocDetails(guestId);
-		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data;
+		var isGuestIdUploaded = uploadedIdDetails && uploadedIdDetails.front_image_data && !uploadedIdDetails.id_proof_expired;
 
 		return isGuestIdUploaded;
 
+	};
+
+	$scope.isGuestIdRequiredForCheckin = function() {
+		if (!$scope.hotelDetails.id_collection.rover.enabled) {
+			return false;
+		}
+		if (!$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true)) {
+			return true;
+		}
+		if (!$scope.hotelDetails.id_collection.rover.scan_all_guests) {
+			return false;
+		}
+		var guestIdRequired = false;
+		_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
+			if (!$scope.isGuestIdUploaded(guestInfo, false)) {
+				guestIdRequired = true;
+			}
+		});
+		return guestIdRequired;
+	};
+
+	$scope.continueToCheckinAfterIdScan = function() {
+		$scope.$broadcast('PROCEED_CHECKIN');
 	};
 
 	$scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
@@ -1715,6 +1755,12 @@ sntRover.controller('reservationDetailsController',
 			}
 		}
 
+		try {
+			angular.module("sntIDCollection");
+		} catch (err) {
+			$ocLazyLoad.inject('sntIDCollection');
+		}
+		
 		ngDialog.open({
 			template: '/assets/partials/guestId/rvGuestId.html',
 			className: 'guest-id-dialog',

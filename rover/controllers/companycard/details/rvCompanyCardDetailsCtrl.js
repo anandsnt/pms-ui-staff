@@ -2,7 +2,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
-		$scope.isAddNewCard = ($stateParams.id === "add") ? true : false;
+		$scope.isAddNewCard = ($stateParams.id === "add");	
 
 		/* Checking permision to show Commission Tab */
 
@@ -26,6 +26,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPrintArStatement = false;
 		$scope.contactInformation = {};
 		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
+		var createArAccountCheck = false;
+
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -116,13 +118,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
 				$scope.$emit("saveContactInformation");
 			}
-
-
+			$scope.$broadcast("CLEAR_ERROR_MESSAGE");
 		};
 
 		/* -------AR account starts here-----------*/
 
 		$scope.$on('ERRORONARTAB', function(e) {
+			$scope.isArTabAvailable = true;
 			$scope.switchTabTo('', 'cc-ar-accounts');
 		});
 
@@ -200,10 +202,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 
-		$scope.showARTab = function($event) {
-			$scope.isArTabAvailable = true;
-			$scope.$broadcast('setgenerateNewAutoAr', true);
-			$scope.showArAccountButtonClick($event);
+		$scope.showARTab = function() {
+
+			createArAccountCheck = true;
+			saveContactInformation($scope.contactInformation);
 		};
 
 		/*
@@ -306,6 +308,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 
 			$timeout(function() {
+                $scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 				$scope.activateSelectedTab();				
 			}, 1000);
 		};
@@ -426,6 +429,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		};
 
+		$scope.addListener("MANDATORY_CHECK_FAILED", function(event, errorMessage) {
+			$scope.$broadcast("setCardContactErrorMessage",  errorMessage);
+			$scope.isArTabAvailable = false;
+		});
+
 
 		/* -------AR account ends here-----------*/
 
@@ -516,6 +524,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
+			if (createArAccountCheck) {
+				createArAccountCheck = false;
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				return;
+			}			
 
 			if (typeof data.id !== 'undefined' && data.id !== "") {
 				// to check if id is defined or not before save
@@ -597,6 +610,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				};
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
+			} else {
+				if (createArAccountCheck) {
+					$scope.$broadcast('setgenerateNewAutoAr', true);
+				}
+				createArAccountCheck = false;
+				
 			}
 		};
 

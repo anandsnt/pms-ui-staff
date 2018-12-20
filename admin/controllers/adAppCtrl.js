@@ -730,9 +730,9 @@ admin.controller('ADAppCtrl', [
              *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
              */
             $rootScope.hotelDiaryConfig = {
-                dayUseEnabled: hotelDetails.day_use_enabled,
-                hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
-                hourlyAvailabilityCalculation: hotelDetails.hourly_availability_calculation
+                dayUseEnabled: data.day_use_enabled,
+                hourlyRatesForDayUseEnabled: data.hourly_rates_for_day_use_enabled,
+                hourlyAvailabilityCalculation: data.hourly_availability_calculation
             };
 
 			setupLeftMenu();
@@ -912,11 +912,11 @@ admin.controller('ADAppCtrl', [
         };
 
         $scope.logout = function() {
-            var redirUrl = '/logout/';
-
-            $timeout(function() {
-                $window.location.href = redirUrl;
-            }, 300);
+            ADAppSrv.signOut().finally(function() {
+                $timeout(function () {
+                    $window.location.href = '/logout';
+                });
+            });
         };
 
         $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
@@ -935,4 +935,17 @@ admin.controller('ADAppCtrl', [
             index = _.isUndefined(index) ? $scope.selectedIndex : index;
             return index;
         };
-}]);
+
+        (function() {
+            if (!adminMenuData.menus.length) {
+                var staffURL = '/staff/h/';
+
+                $('body').addClass('no-animation');
+                $('#admin-header').css({'z-index': '0'});
+                $('section.content-scroll').css({'overflow': 'visible'});
+
+                staffURL += sntAuthorizationSrv.getProperty();
+                $window.location.href = staffURL;
+            }
+        })();
+    }]);

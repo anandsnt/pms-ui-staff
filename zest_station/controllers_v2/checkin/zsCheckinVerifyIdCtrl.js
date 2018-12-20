@@ -198,7 +198,7 @@
 					}
 				};
 
-				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
+				$scope.callAPI(zsGeneralSrv.recordReservationActions, options);
 			};
 
 			$scope.approveGuest = function() {
