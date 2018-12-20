@@ -246,12 +246,13 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		var absUrl = $location.$$absUrl;
 		var isInvokedFromApp = absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1;
 		var theme = reservationAndhotelData.hotel_theme;
+		isInvokedFromApp = true;
 
 		var isIDScanOnAndDeviceIsNotMobile = function(){
 			return $state.href('sntIDScan') !== null &&
 				   $state.href('sntIDScanUseMobile') &&
 				   $rootScope.id_collection_enabled &&
-				   $rootScope.id_collection_mandatory &&
+				   // $rootScope.id_collection_mandatory &&
 				   !sntIDCollectionUtilsSrv.isInMobile();
 		};
 
