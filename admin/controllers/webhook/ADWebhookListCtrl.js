@@ -13,6 +13,30 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                     }
                 });
             },
+            buildWebHookSupportingEvents = function (deliveryType) {
+              supportedEvents = webHookSupportingEvents(deliveryType, $scope.meta.deliveryTypes);
+              $scope.meta[deliveryType] = {events: supportedEvents};
+              return $scope.meta[deliveryType].events;
+            },
+            webHookSupportingEvents = function (deliveryType, deliveryTypes) {
+              var supportedEvents = [],
+                  eventsTable = {};
+              deliveryTypeEvents = _.find(deliveryTypes, {
+                                      delivery_type: deliveryType
+                                    }).supporting_events;
+
+              _.each(deliveryTypeEvents, function (event) {
+                eventsTable[event] = true;
+              });
+
+              _.each($scope.meta.events, function(event) {
+                if(eventsTable[event.value]){
+                  supportedEvents.push(event);
+                }
+              });
+
+              return supportedEvents;
+            },
             resetNewWebhook = function () {
                 $scope.state.new = {
                     'url': '',
@@ -108,6 +132,9 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onWebHookTypeChange = function (value, webHook) {
             webHook.canEditEvents = canEditEvents($scope.meta.deliveryTypes, webHook.delivery_type);
+            $scope.state.new.availableEvents = $scope.meta[webHook.delivery_type] ?
+                                    $scope.meta[webHook.delivery_type].events :
+                                    buildWebHookSupportingEvents(webHook.delivery_type);
         };
 
         $scope.onToggleActive = function (webHook) {
