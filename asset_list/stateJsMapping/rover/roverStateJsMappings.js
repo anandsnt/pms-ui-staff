@@ -39,7 +39,7 @@ module.exports = {
 			},
 			'rover.groups': {
 				filename: roverJsListRoot + 'groupJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.allotments': {
 				filename: roverJsListRoot + 'allotmentJsAssetList.js',
