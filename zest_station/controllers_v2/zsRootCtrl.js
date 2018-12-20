@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations', 'configurableImagesData', 
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller', 'sntActivity',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller', 'sntActivity', 'sntIDCollectionUtilsSrv',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -36,7 +36,8 @@ sntZestStation.controller('zsRootCtrl', [
         languages,
         defaultTranslations,
         $controller,
-        sntActivity
+        sntActivity,
+        sntIDCollectionUtilsSrv
         ) {
 
         // in order to prevent url change or fresh url entering with states
@@ -1815,6 +1816,34 @@ sntZestStation.controller('zsRootCtrl', [
             });
         });
 
+        var checkForExternalCameras = function() {
+
+            var cameraCount = 0;
+
+            $scope.zestStationData.connectedCameras = [];
+            $scope.zestStationData.useExtCamera = false;
+
+            // for non mobile devices, check if cameras are present, if yes show options to scan based
+            // settings
+            if (!sntIDCollectionUtilsSrv.isInMobile() && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                navigator.mediaDevices.enumerateDevices().then(function gotDevices(deviceInfos) {
+
+                    angular.forEach(deviceInfos, function(device) {
+                        if (device.kind == 'videoinput') {
+                            $scope.zestStationData.connectedCameras.push({
+                                'id': device.deviceId,
+                                'label': device.label || 'camera ' + (cameraCount + 1)
+                            });
+                            cameraCount++;
+                        }
+                    });
+                    $scope.zestStationData.useExtCamera = $scope.zestStationData.connectedCameras.length > 0;
+                });
+            }
+        };
+
+        $scope.$on('CHECK_FOR_EXTERNAL_CAMERAS', checkForExternalCameras);
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1922,6 +1951,10 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
 
 
+            if ($scope.zestStationData.id_scan_enabled) {
+                checkForExternalCameras();
+            }
+
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
@@ -1933,6 +1966,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
+            $scope.zestStationData.iOSCameraEnabled = false;
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
@@ -1940,12 +1974,14 @@ sntZestStation.controller('zsRootCtrl', [
                     // leave app_version null and autoIpadKeyboardEnabled to false
                     $timeout(function() {
                         
-                        cordova.exec(function(success) {
-                            if (success && success.AppVersion) {
-                                $scope.zestStationData.appVersion = success.AppVersion;
+                        cordova.exec(function(response) {
+                            if (response && response.AppVersion) {
+                                $scope.zestStationData.appVersion = response.AppVersion;
                                 // if the app version is accessible, then also the cordova configuration has been updated
                                 // as of 1.3.4.3, the config for auto-prompt keyboard is enabled
                                 $scope.zestStationData.autoIpadKeyboardEnabled = true;
+
+                                $scope.zestStationData.iOSCameraEnabled = response.iOSVersion && response.iOSVersion >= 11;
                             }
 
                         }, function() {
