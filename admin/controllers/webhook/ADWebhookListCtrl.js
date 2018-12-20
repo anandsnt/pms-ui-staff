@@ -15,6 +15,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             },
             buildWebHookSupportingEvents = function (deliveryType) {
               var supportedEvents = webHookSupportingEvents(deliveryType, $scope.meta.deliveryTypes);
+              
               $scope.meta[deliveryType] = {events: supportedEvents};
               return $scope.meta[deliveryType].events;
             },
