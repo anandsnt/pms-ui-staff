@@ -1,7 +1,6 @@
 <fieldset class="holder full-width">
     <div class="form-title">
         <h3 translate><span>{{state.mode}}&nbsp;</span>Mapping</h3>
-        <em class="status">{{'ALL_FIELDS_MANDIATORY' | translate}}</em>
     </div>
 </fieldset>
 <fieldset class="holder left">
@@ -20,7 +19,6 @@
 <fieldset class="holder right">
     <ad-textbox inputtype="text" value="mapping.meta_data.cost_center"
                 ng-if="mapping.typeof"
-                required="yes"
                 label="{{'COST_CENTER'| translate}}"
                 styleclass="full-width"></ad-textbox>
 </fieldset>
