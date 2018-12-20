@@ -420,6 +420,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 
 			if (card.isPrimary) {
+				card.isPrimary = false;
 				$scope.viewState.selectedPrimaryCard = {};
 			}
 
