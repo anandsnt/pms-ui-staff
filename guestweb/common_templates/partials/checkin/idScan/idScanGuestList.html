@@ -1,7 +1,7 @@
 
 <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none" >
             <p class="main-text no-text-case">Scan your ID</p>
-            <p ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved()" class="sub-main-text no-text-case margin-top-20">Using your device camera, we will scan your picture ID. Beginning with the picture side or page, you will be prompted if additional pages/sides will also need to be scanned. Please have your ID ready, then select the guest whose ID will be scanned.</p>
+            <p ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved()" class="sub-main-text no-text-case margin-top-20">Please have your ID ready, then select the guest whose ID will be scanned.</p>
 
             <p ng-show="!idScanData.idScanSkipped && areAllGuestsApproved()" class="sub-main-text no-text-case margin-top-20">Scanning complete for all required guests. Thank you.</p>
 
@@ -28,8 +28,8 @@
                 </p>
             </div>
 
-            <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">PROCEED TO ID SCAN</a>
-            <a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="doneButtonClicked()">CONFIRM SKIP</a>
-            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">SKIP</a>
-            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">DONE</a>
+            <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">Poceed to ID Scan</a>
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="doneButtonClicked()">Confrim Skip</a>
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">Skip</a>
+            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">Done</a>
 </div>
