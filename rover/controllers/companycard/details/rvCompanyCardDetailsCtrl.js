@@ -516,7 +516,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				'id': id
 			};
 
-			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
+			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformationAndMandatoryFields, data, successCallbackOfInitialFetch);
 		}
 
 

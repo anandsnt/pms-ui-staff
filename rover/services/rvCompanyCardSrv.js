@@ -13,7 +13,8 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         this.DEFAULT_PER_PAGE = 10;
         this.DEFAULT_PAGE = 1;
 
-        var openSaveAccountRequests = {};
+        var openSaveAccountRequests = {},
+            that = this;
 
         /** contact information area */
 
@@ -34,6 +35,41 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        this.fetchContactInformationMandatoryFields = function() {
+            var deferred = $q.defer(),
+                url = '/admin/co_ta_settings/current_settings';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchContactInformationAndMandatoryFields = function(data) {
+            var deferred = $q.defer(),
+                returnData = {};
+
+            $q.when().then(function() {
+                return that.fetchContactInformation(data).then(function(response) {
+                    returnData = response;
+                });
+            })
+            .then(function() {                 
+                return that.fetchContactInformationMandatoryFields().then(function(response) {
+                    returnData.mandatoryFields = response;
+                });
+            })
+            .then(function() {
+                deferred.resolve(returnData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
             return deferred.promise;
         };
 
