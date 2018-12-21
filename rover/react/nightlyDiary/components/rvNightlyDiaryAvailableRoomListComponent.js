@@ -43,7 +43,7 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
         return (
             <div style={this.getStyles()}
                 className="reservation unassigned"
-                onClick={() => { console.log(this.props.room.id, this.props.date); }}
+                onClick={() => this.props.clickedBookRoom(this.props.room.id, this.props.date)}
             >
                 <div className="reservation-data">
                     <span className="name">BOOK</span>

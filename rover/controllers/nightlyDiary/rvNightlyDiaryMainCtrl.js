@@ -267,6 +267,11 @@ angular.module('sntRover')
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
+                var clickedBookRoom = (roomId, date) => {
+                    console.log('here');
+                    console.log(roomId,date);
+                };
+
                 /*
                  * Function to check room availability.
                  */
@@ -502,7 +507,8 @@ angular.module('sntRover')
                         selectReservation,
                         extendShortenReservation,
                         checkReservationAvailability,
-                        unAssignedRoomSelect
+                        unAssignedRoomSelect,
+                        clickedBookRoom
                     };
                 };
 

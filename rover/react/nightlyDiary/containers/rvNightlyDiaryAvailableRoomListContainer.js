@@ -1,7 +1,8 @@
 const { connect } = ReactRedux;
 
 const mapStateToNightlyDiaryUnAvailableRoomListContainerProps = (state) => ({
-    state
+    state,
+    clickedBookRoom: state.callBackFromAngular.clickedBookRoom
 });
 
 const NightlyDiaryAvailableRoomListContainer = connect(
