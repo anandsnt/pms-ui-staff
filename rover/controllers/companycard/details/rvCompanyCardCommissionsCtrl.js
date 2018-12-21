@@ -83,6 +83,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     refreshScroll();
                     hideLoaderIfWasStarted();
                     $scope.filterData.commissionsLoaded = true;
+                    clearCurrentSelection();
                 },
                 onCommissionFetchFailure = function(error) {
                     $scope.$emit('hideLoader');
@@ -518,6 +519,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
                 $scope.shouldShowPropertyDropDown = true;
                 fetchMultiProperties();
+            } else {
+                $scope.shouldShowPropertyDropDown = false;
+                init();
             }
         
         });
@@ -549,7 +553,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             toggleCommission: false,
             commssionRecalculationValue: '',
              // By default set the value to current hotel
-                selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
+            selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
             commissionsLoaded: false
             };
         // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID

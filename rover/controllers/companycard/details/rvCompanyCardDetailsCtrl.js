@@ -308,6 +308,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 
 			$timeout(function() {
+                $scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 				$scope.activateSelectedTab();				
 			}, 1000);
 		};
@@ -515,7 +516,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				'id': id
 			};
 
-			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
+			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformationAndMandatoryFields, data, successCallbackOfInitialFetch);
 		}
 
 

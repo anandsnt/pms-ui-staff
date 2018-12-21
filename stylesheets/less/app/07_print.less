@@ -1181,8 +1181,12 @@
                         }
 
                         &.amount {
-                            width: 160px;
-                            padding-right: 65px;
+                            width: 95px;
+                            text-align: right;
+                        }
+
+                        &.commissionable {
+                            width: 100px;
                             text-align: right;
                         }
 
@@ -1196,10 +1200,19 @@
                             flex-grow: 1;
                         }
                     }
+                    
                 } 
 
                 .print-selected {
                     .reservation:not(.selected) { .hide; }
+                }
+            }
+
+            .search-results {
+                .commissionable {
+                    width: 100px;
+                    text-align: right;
+                    font-size: 14px;
                 }
             }
         }

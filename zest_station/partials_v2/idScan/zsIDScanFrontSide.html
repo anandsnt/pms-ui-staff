@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main">
+<section id="main" ng-class="{ 'centered': !screenData.extCamForFrontIDActivated }" role="main">
    <div id="content">
       <h1 translate>
          GID_SCAN_ID_HEADER
@@ -6,10 +6,14 @@
       <h2 translate>
          GID_SCAN_FRONT_IMAGE_SCAN_INSTRUCTIONS
       </h2>
+      <video id="id-video" style="height:50%; width:auto; margin:0 auto; display: block;" ng-show="screenData.extCamForFrontIDActivated" autoplay></video>
    </div>
    <div>
       <div id="actions" class="footer-centered">
-         <button type="button" class="button next" touch-press="captureFrontImage()" translate>
+         <button type="button" class="button next" touch-press="captureFrontImage()" ng-hide="screenData.extCamForFrontIDActivated" translate>
+         GID_SCAN_BUTTON
+         </button>
+         <button type="button" class="button next" touch-press="captureFrontImageUsingExtCamera()" ng-show="screenData.extCamForFrontIDActivated" translate>
          GID_SCAN_BUTTON
          </button>
       </div>
