@@ -38,6 +38,12 @@ admin.controller('adHotelLegalSettingsController',
 
 			if (screen === 'financial') {
 				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'ar_invoice_label'];
+				if (!$scope.legalSettings.is_print_invoice_enabled) {
+					if (!$scope.legalSettings.is_print_folio_enabled) {
+						$scope.errorMessage  = ["Both print folio on invoice and print invoice number can't be turned off at same time"];
+						return;
+					}
+				}
 			} else if (screen === 'ar') {
 				unwantedKeys = ['is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 'first_folio_number']
 			}
