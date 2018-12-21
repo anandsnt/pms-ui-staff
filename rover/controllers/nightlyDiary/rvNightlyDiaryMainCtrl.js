@@ -267,9 +267,15 @@ angular.module('sntRover')
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
-                var clickedBookRoom = (roomId, date) => {
-                    console.log('here');
-                    console.log(roomId,date);
+                // Handle book room button actions.
+                var clickedBookRoom = (roomId, date, roomsList) => {
+                    var roomTypeId = _.where(roomsList, {id: roomId})[0].room_type_id;
+
+                    $state.go('rover.reservation.search', {
+                        selectedArrivalDate: date,
+                        selectedRoomTypeId: roomTypeId,
+                        fromState: 'DIARY'
+                    });
                 };
 
                 /*
