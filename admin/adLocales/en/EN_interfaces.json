@@ -115,5 +115,6 @@
 	"CLIENT_SECRET": "Client Secret",
   "GL_ACCOUNT": "GL Account",
   "VAT_CODE": "VAT Code",
-  "COST_CENTER": "Cost Center"
+  "COST_CENTER": "Cost Center",
+	"SETTLING_ACC": "Settling Account Number"
 
