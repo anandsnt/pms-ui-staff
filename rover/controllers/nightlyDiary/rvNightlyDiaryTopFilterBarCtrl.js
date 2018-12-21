@@ -128,6 +128,13 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
+        // To toggle Booked/Available button.
+        $scope.toggleBookedOrAvailable = function() {
+            $scope.diaryData.showAvailableRooms = !($scope.diaryData.showAvailableRooms);
+            $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
+        };
+       
+
         /*
          * Method to calculate from date and to date after shifting.
          * @param {Boolean} - isRightShift : whether shift to future date or previous date.

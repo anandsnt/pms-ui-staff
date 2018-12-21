@@ -90,6 +90,9 @@ angular.module('sntRover')
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
+                        showAvailableRooms: false,
+                        availableFreeSlots: [],
+                        isRightFilterActive: true,
                         isAvailableRoomSlotActive: false,
                         availableSlotsForAssignRooms: {
                             availableRoomList: [],
@@ -132,7 +135,12 @@ angular.module('sntRover')
                         handlePaginationData(data);
                         $scope.diaryData.datesGridData = data.dateList;
                         $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
-                        updateDiaryView();
+                        if ($scope.diaryData.showAvailableRooms) {
+                            callbackForBookedOrAvailableListner();
+                        }
+                        else {
+                            updateDiaryView();
+                        }
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
                         }
@@ -444,6 +452,40 @@ angular.module('sntRover')
                     fetchRoomListDataAndReservationListData();
                 });
 
+                /**
+                 * utility method to call available slots API
+                 */
+                var callbackForBookedOrAvailableListner = function () {
+                    if ($scope.diaryData.showAvailableRooms) {
+                        var successCallBackFunction = function (response) {
+                            $scope.errorMessage = '';
+                            $scope.diaryData.availableFreeSlots = response;
+                            updateDiaryView();
+                        };
+
+                        let options = {
+                            params: {
+                                start_date: $scope.diaryData.fromDate,
+                                no_of_days: $scope.diaryData.numberOfDays,
+                                page: $scope.diaryData.paginationData.page,
+                                per_page: $scope.diaryData.paginationData.perPage
+                            },
+                            successCallBack: successCallBackFunction
+                        };
+
+                        $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableFreeSlots, options);
+                    }
+                    else{
+                        updateDiaryView();
+                    }
+                };
+
+
+                /* Handle event emitted from child controllers.
+                 * To toggle available and booked.
+                 */
+                listeners['TOGGLE_BOOKED_AVAIALBLE'] = $scope.$on('TOGGLE_BOOKED_AVAIALBLE', callbackForBookedOrAvailableListner);
+
                 // destroying listeners
                 angular.forEach(listeners, function (listener) {
                     $scope.$on('$destroy', listener);
@@ -463,6 +505,7 @@ angular.module('sntRover')
                         unAssignedRoomSelect
                     };
                 };
+
 
                 if (isFromStayCard) {
                     var params = RVNightlyDiarySrv.getCache();
@@ -511,6 +554,8 @@ angular.module('sntRover')
                         reservationsList: $scope.diaryData.reservationsList.rooms,
                         isAvailableRoomSlotActive: $scope.diaryData.isAvailableRoomSlotActive,
                         availableSlotsForAssignRooms: $scope.diaryData.availableSlotsForAssignRooms,
+                        showAvailableRooms: $scope.diaryData.showAvailableRooms,
+                        availableFreeSlots: $scope.diaryData.availableFreeSlots,
                         roomsList: $scope.diaryData.diaryRoomsList,
                         diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                         currentBusinessDate: $rootScope.businessDate,
