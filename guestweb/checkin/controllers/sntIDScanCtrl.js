@@ -159,6 +159,11 @@
 				nextPageActions();
 			};
 
+			$scope.skipIdScan = function() {
+				$rootScope.idScanSkipped = true;
+				nextPageActions();
+			};
+
 			$scope.toggleSkip = function() {
 				$scope.idScanData.idScanSkipped = !$scope.idScanData.idScanSkipped;
 			};

@@ -190,4 +190,16 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'offerAddonOptionsController',
 		title: 'Addons'
 	});
+
+	$stateProvider.state('sntIDScan', {
+		url: '/sntIDScan/:params',
+		templateUrl: '/assets/common_templates/partials/checkin/idScan/idScanMain.html',
+		controller: 'sntIDScanCtrl'
+	});
+
+	$stateProvider.state('sntIDScanUseMobile', {
+		url: '/sntIDScanUseMobile/:is_external_verification/:skip_checkin_verification',
+		templateUrl: '/assets/common_templates/partials/checkin/idScan/gwIdScanUseMobile.html',
+		controller: 'sntIDScanUseMobileCtrl'
+	});
 }]);

@@ -32,8 +32,11 @@
             <p class="main-text final-text">Pre Check-in Complete</p>
             <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
             <br/><br/>
-            <p class="sub-main-text top-spacing">{{responseData.confirmation_message}}
+            <p class="sub-main-text top-spacing" ng-hide="idScanSkipped">{{responseData.confirmation_message}}
             </p>
+            <p class="sub-main-text top-spacing" ng-show="idScanSkipped">Your precheckin is completed. You will have to submit your ID(s) to a front desk agent to complete your checkin.
+            </p>
+            <p class="sub-main-text"  ng-show="idScanSkipped">Feel free to call us at {{ hotelPhone }}</p>
             <br/><br/>
             <p class="sub-main-text top-spacing" ng-if="mobileMarketingOn">
                  <description template="{{mobileAppText}}">

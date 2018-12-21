@@ -5,6 +5,6 @@
    <p ng-show="idScanData.idScanSkipped" class="sub-main-text no-text-case margin-top-20">If you opt out now, you will still required to submit it to staff before you can check in. Please confirm if you really want to skip ID SCAN.</p>
 </div>
 <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">Proceed to ID Scan</a>
-<a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="doneButtonClicked()">Confirm skip</a>
+<a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="skipIdScan()">Confirm skip</a>
 <a class="btn btn-template margin-top-20" ng-show="!idScanData.idScanSkipped" ng-click="captureFrontImage()" value="Scan">Scan</a>
 <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">Skip</a>
