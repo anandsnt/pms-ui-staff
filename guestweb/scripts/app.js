@@ -246,14 +246,13 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		var absUrl = $location.$$absUrl;
 		var isInvokedFromApp = absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1;
 		var theme = reservationAndhotelData.hotel_theme;
-		isInvokedFromApp = true;
 
-		var isIDScanOnAndDeviceIsNotMobile = function(){
+		var isIDScanOnAndDeviceIsNotMobile = function() {
 			return $state.href('sntIDScan') !== null &&
-				   $state.href('sntIDScanUseMobile') &&
-				   $rootScope.id_collection_enabled &&
-				   // $rootScope.id_collection_mandatory &&
-				   !sntIDCollectionUtilsSrv.isInMobile();
+				$state.href('sntIDScanUseMobile') &&
+				$rootScope.id_collection_enabled &&
+				// $rootScope.id_collection_mandatory &&
+				!sntIDCollectionUtilsSrv.isInMobile();
 		};
 
 		var navigatePageBasedOnUrlAndType = function() {
@@ -289,14 +288,6 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			}
 		};
 
-		$scope.navigateToNextscreen = function() {
-			$rootscope.skipIDScan = true;
-			if(reservationAndhotelData.checkin_url_verification === "true"){
-				$state.go('externalCheckinVerification');
-			} else {
-				navigatePageBasedOnUrlAndType();
-			}
-		};
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
