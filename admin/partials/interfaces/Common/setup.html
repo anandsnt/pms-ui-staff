@@ -14,6 +14,18 @@
                         styleclass="full-width"></ad-textbox>
         </fieldset>
     </div>
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Account <span>Configuration</span></h3>
+            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}}</em>
+        </div>
+        <fieldset class="holder left">
+            <ad-textbox inputtype="number" value="config.settling_account_number"
+                        required="yes"
+                        label="{{'SETTLING_ACC'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
 
     <fieldset class="holder full-width">
         <div class="form-title">
