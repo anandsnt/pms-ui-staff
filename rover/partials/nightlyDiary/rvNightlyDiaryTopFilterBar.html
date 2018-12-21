@@ -45,7 +45,7 @@
     </div>
 
     <!-- Reservations or Available Slots View -->
-    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()"> 
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.showAvailableRooms }"> 
         <div class="switch-button" ng-class="{'on' : !diaryData.showAvailableRooms }"> <!-- Remove class 'on' when L48 is not checked -->
             <input id="diary-availability" value="" type="checkbox" checked /> <!-- Showing existing reservations when checked. Showing Available slots when not checked -->
             <label class="data-off">
