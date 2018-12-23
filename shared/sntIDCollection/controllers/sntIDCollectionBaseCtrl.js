@@ -16,7 +16,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.deviceConfig = {
 		useExtCamera: false,
-		useiOSAppCamera: false
+		useiOSAppCamera: false,
+		useExtCamForFR: false
 	};
 
 	var stopVideoStream = function() {
@@ -38,8 +39,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.setConfigurations = function(config) {
-		$scope.deviceConfig.useExtCamera = config.useExtCamera;
-		$scope.deviceConfig.useiOSAppCamera = config.useiOSAppCamera;
+		$scope.deviceConfig = config;
 	};
 
 	var getImageDetails = function() {
@@ -329,6 +329,43 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		.catch(function() {
 			$scope.$emit('EXT_CAMERA_FAILED');
 		});
+	};
+
+	$scope.startFacialRecognitionUsingExtCamera = function() {
+		$scope.screenData.extCamForSelfieActivated = false;
+		$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+		var video = document.querySelector('#fr-id-video');
+		var cameraId = localStorage.getItem('FR_CAMERA_ID');
+
+		$scope.$emit('FR_CAMERA_STARTING');
+		navigator.mediaDevices.getUserMedia({
+			video: {
+				deviceId: cameraId ? {
+					exact: cameraId
+				} : undefined,
+				width: 2560,
+				height: 1920
+			}
+		}).
+		then(function handleSuccess(stream) {
+			window.localVideoStream = stream;
+			video.srcObject = stream;
+			$scope.screenData.extCamForSelfieActivated = true;
+			$scope.$emit('EXT_CAMERA_STARTED');
+			$scope.$digest();
+		})
+		.catch(function() {
+			$scope.$emit('EXT_CAMERA_FAILED');
+		});
+	};
+
+	$scope.captureFaceImageUsingExtCamera = function() {
+		var video = document.querySelector('#fr-id-video'); 
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, 2560, 1920);
+
+		verifyFaceImageWithId(imageData, unmodifiedFrontImage);
+		$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+	    $scope.$emit('FR_ANALYSIS_STARTED');
 	};
 
     $scope.stopExtCamera = function(type) {

@@ -1,4 +1,4 @@
-<section id="main" class="centered" role="main">
+<section id="main" ng-class="{ 'centered': !screenData.extCamForSelfieActivated }" role="main">
    <div id="content" ng-hide="screenData.facialRecognitionInProgress">
       <h1 translate>
          TAKE_SELFIE_INSTRUCTIONS
@@ -6,10 +6,14 @@
       <h2 translate>
          TAKE_SELFIE_SUB_INSTRUCTIONS
       </h2>
+       <video id="fr-id-video" style="height:50%; width:auto; margin:0 auto; display: block;" ng-show="screenData.extCamForSelfieActivated" autoplay></video>
    </div>
    <div ng-hide="screenData.facialRecognitionInProgress">
       <div id="actions" class="footer-centered">
-         <button type="button" class="button next" touch-press="startFacialRecognition()" translate>
+         <button type="button" class="button next" touch-press="startFacialRecognition()" ng-hide="deviceConfig.useExtCamForFR" translate>
+         TAKE_SELFIE
+         </button>
+         <button type="button" class="button next" touch-press="captureFaceImageUsingExtCamera()" ng-show="deviceConfig.useExtCamForFR" translate>
          TAKE_SELFIE
          </button>
       </div>

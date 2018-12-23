@@ -404,6 +404,7 @@ sntZestStation.controller('zsAdminCtrl', [
             };
             
             localStorage.setItem('ID_SCAN_CAMERA_ID', $scope.selectedCamera);
+            localStorage.setItem('FR_CAMERA_ID', $scope.selectedFRCamera);
             $scope.callAPI(zsGeneralSrv.saveSettings, options);
         };
 
@@ -533,6 +534,7 @@ sntZestStation.controller('zsAdminCtrl', [
         };
 
         $scope.selectedCamera = localStorage.getItem('ID_SCAN_CAMERA_ID');
+        $scope.selectedFRCamera = localStorage.getItem('FR_CAMERA_ID');
 
         // initialize
         (function() {
