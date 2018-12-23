@@ -143,7 +143,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry with-label" ng-show="zestStationData.useExtCamera">
+                <div class="entry with-label" ng-show="zestStationData.useExtCamera && zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification'">
                     <label>ID scan Camera for selfie</label>
                     <div class="entry select">
                         <select ng-model="selectedFRCamera" class="placeholder" ng-options="camera.id as camera.label for camera in zestStationData.connectedCameras">
