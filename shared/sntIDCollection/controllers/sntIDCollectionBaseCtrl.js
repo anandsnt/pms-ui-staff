@@ -114,12 +114,14 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var facialRecognitionFailed = function() {
 			$scope.$emit('FR_FAILED');
 			$scope.screenData.scanMode = screenModes.facial_recognition_failed;
+			stopVideoStream();
 		};
 
 		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
 			// alert(response.FacialMatchConfidenceRating);
 			if (response && response.FacialMatch && response.FacialMatchConfidenceRating > 95) {
 				$scope.$emit('FR_SUCCESS');
+				stopVideoStream();
 			} else {
 				facialRecognitionFailed();
 			}
