@@ -1316,7 +1316,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$refresh.style.webkitTransform  = translateDiff;
 
 					notifyPullDownAction(diff);
-				} else if ( !ngScope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+				} else if ( !ngScope.disableNextBtn && nowY < startY && parseInt(this.scrollTop + .5) === parseInt(scrollBarOnBot)) {
 					commonEx();
 					$load.classList.add('show');
 
@@ -1392,7 +1392,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 					notifyPullDownAction();
 					resetIndicators();
-				} else if ( !ngScope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+				} else if ( !ngScope.disableNextBtn && nowY < startY && parseInt(this.scrollTop + .5) === parseInt(scrollBarOnBot)) {
 					commonEx();
 
 					if ( abs(diff) > trigger ) {

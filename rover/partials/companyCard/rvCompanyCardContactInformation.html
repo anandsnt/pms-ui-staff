@@ -50,7 +50,7 @@
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <div class="entry">
-                <label for="company-corporate-vat">{{'TAX_ID' | translate}}<strong ng-if = " contactInformation.mandatoryFields.mandatory_on_ar_account && contactInformation.mandatoryFields.tax_id_mandatory"></strong></label>
+                <label for="company-corporate-vat">{{'TAX_ID' | translate}}<strong ng-if = " contactInformation.mandatoryFields.mandatory_on_ar_account && contactInformation.mandatoryFields.tax_id_mandatory">*</strong></label>
                 <input id="company-corporate-vat" ng-model="contactInformation.account_details.tax_number" placeholder = "Enter Tax ID" type="text" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"/>
             </div>
 
