@@ -3,8 +3,11 @@
       <h1 translate>
          GID_ADMIN_VERIFY_HEADER
       </h1>
-      <h2 translate>
+      <h2 ng-hide="idScanData.staffVerified" translate>
          GID_ADMIN_VERIFY_SUB_HEADER
+      </h2>
+      <h2 ng-show="idScanData.staffVerified" translate>
+         GID_GO_TO_SCAN_MODE
       </h2>
       <ul id="selection" class="editable">
          <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)'>
