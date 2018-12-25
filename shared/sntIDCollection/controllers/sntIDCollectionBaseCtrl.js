@@ -407,9 +407,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
 		$scope.startExtCameraCapture('back-image');
 	};
-	$scope.$on('$destroy', function() {
-		stopVideoStream();
-    });
+
+	$scope.$on('STOP_EXT_CAM', stopVideoStream);
+	$scope.$on('$destroy', stopVideoStream);
 
 	(function() {
 		resetScreenData();

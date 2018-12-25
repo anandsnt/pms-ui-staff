@@ -386,6 +386,7 @@
 					$scope.idScanData.staffVerified = false;
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
+				$scope.$emit('STOP_EXT_CAM');
 			};
 			// Back button will be only shown when staff is reviewwing
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, goBackToScanAgain);
