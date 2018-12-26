@@ -382,7 +382,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.imageSide = 0;
 		var video = document.querySelector('#id-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, 2560, 1920);
-
+		
+		unmodifiedFrontImage = imageData;
 		$scope.screenData.frontSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		getDocInstance();
