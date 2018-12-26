@@ -202,4 +202,10 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/common_templates/partials/checkin/idScan/gwIdScanUseMobile.html',
 		controller: 'sntIDScanUseMobileCtrl'
 	});
+	
+	$stateProvider.state('guestNotEligible', {
+		url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/checkin/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	});
 }]);
