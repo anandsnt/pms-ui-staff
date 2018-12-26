@@ -28,8 +28,8 @@
                 </p>
             </div>
 
-            <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">PROCEED TO ID SCAN</a>
-            <a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="doneButtonClicked()">CONFIRM SKIP</a>
-            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">SKIP</a>
-            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">DONE</a>
+            <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">Poceed to ID Scan</a>
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="skipIdScan()">Confrim Skip</a>
+            <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">Skip</a>
+            <a class="btn btn-template margin-top-20" ng-show="areAllGuestsApproved()" ng-click="doneButtonClicked()">Done</a>
 </div>

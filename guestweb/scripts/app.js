@@ -34,8 +34,8 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		$state.go('noOptionAvailable');
 	});
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window', 'checkinDetailsService', 'sntIDCollectionSrv',
-	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window, checkinDetailsService, sntIDCollectionSrv) {
+sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window', 'checkinDetailsService', 'sntIDCollectionSrv', 'sntIDCollectionUtilsSrv',
+	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window, checkinDetailsService, sntIDCollectionSrv, sntIDCollectionUtilsSrv) {
 
 		loadAssets('/assets/favicon.png', 'icon', 'image/png');
 		loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
@@ -247,6 +247,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		var isInvokedFromApp = absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1;
 		var theme = reservationAndhotelData.hotel_theme;
 
+		var isIDScanOnAndDeviceIsNotMobile = function() {
+			return $state.href('sntIDScan') !== null &&
+				$state.href('sntIDScanUseMobile') &&
+				$rootScope.id_collection_enabled &&
+				// $rootScope.id_collection_mandatory &&
+				!sntIDCollectionUtilsSrv.isInMobile();
+		};
+
 		var navigatePageBasedOnUrlAndType = function() {
 			// If zestweb is loaded inside  mobile App in webview
 			// customize style - like hide header and footer and other styles
@@ -257,13 +265,29 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 				$rootScope.outStandingBalance = reservationAndhotelData.reservation_details.outstanding_balance;
 				$rootScope.payment_method_used = reservationAndhotelData.reservation_details.payment_method_used;
 				$rootScope.paymentDetails = reservationAndhotelData.reservation_details.payment_details;
-				// navigate to next page
-				$state.go('checkinReservationDetails');
+
+				if (isIDScanOnAndDeviceIsNotMobile()) {
+					$state.go('sntIDScanUseMobile', {
+						is_external_verification: false,
+						skip_checkin_verification: true
+					});
+				} else {
+					// navigate to next page
+					$state.go('checkinReservationDetails');
+				}
 				customizeStylesBasedOnUrlType(theme);
 			} else {
-				$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
+				if (isIDScanOnAndDeviceIsNotMobile()) {
+					$state.go('sntIDScanUseMobile', {
+						is_external_verification: false,
+						skip_checkin_verification: false
+					});
+				} else {
+					$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
+				}
 			}
 		};
+
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
@@ -272,7 +296,13 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (reservationAndhotelData.checkin_url_verification === "true" && reservationAndhotelData.is_zest_checkin === "false") {
 			$state.go('guestCheckinTurnedOff');
 		} else if (reservationAndhotelData.checkin_url_verification === "true") {
-			$state.go('externalCheckinVerification'); // external checkin URL available and is on
+			if (isIDScanOnAndDeviceIsNotMobile()) {
+				$state.go('sntIDScanUseMobile', {
+					is_external_verification: true
+				});
+			} else {
+				$state.go('externalCheckinVerification'); // external checkin URL available and is on
+			}
 		} else if (reservationAndhotelData.is_external_verification === "true") {
 			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true' || (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action))) {

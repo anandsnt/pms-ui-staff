@@ -32,8 +32,13 @@
         <div class="col-md-4 no-section-side-padding top-spacing">
             <p class="main-text final-text marigin-top-40">Pre Check-in Complete</p>
             <p class="sub-text margin-top-20">Reservation #:{{confirmationNumber}}</p>
-            <p class="sub-main-text margin-top-40">{{responseData.confirmation_message}}
+            <p class="sub-main-text margin-top-40" ng-hide="idScanSkipped">{{responseData.confirmation_message}}
             </p>
+            <p class="sub-main-text top-spacing" ng-show="idScanSkipped">Your pre check-in is complete. We look forward to welcoming you at our hotel.</p>
+            <p class="sub-main-text" ng-show="idScanSkipped">
+            When arriving at the hotel, please have your picture IDs ready to present at the front desk. Thank you.
+            </p>
+            <p class="sub-main-text"  ng-show="idScanSkipped">Please feel free to call us at {{ hotelPhone }}</p>
             <br/>
             <br/>
             <p class="sub-main-text top-spacing" ng-if="mobileMarketingOn">

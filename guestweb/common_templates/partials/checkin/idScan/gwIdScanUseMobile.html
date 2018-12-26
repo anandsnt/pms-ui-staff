@@ -1,0 +1,22 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row" ng-hide="isPosting || netWorkError">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="text-align: center;">
+            <p class="main-text"></p>
+            <p class="sub-main-text"> To check in, you will need a picture ID scanned. To scan your picture IDs using web check-in, please use a mobile device with a camera. You may continue on this device, and present picture IDs at the front desk to complete the check-in.
+            </p>
+            <p class="sub-main-text">Please feel free to call us at {{ hotelPhone }}</p>
+            <button style="padding:0px; height:70px"; class="btn btn-template early-checkin-button margin-top-20" ng-click="proceedWithoutIdScan()">Continue without ID scan</button>
+             <!-- <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="abortCheckin()"> Abort</a> -->
+        </div>
+        <div class="col-md-3">
+        </div>                   
+    </div>
+</div>
