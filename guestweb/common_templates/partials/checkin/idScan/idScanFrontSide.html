@@ -1,10 +1,10 @@
 
 <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
-   <p class="main-text"> Scan your Id</p>
-   <p ng-show="!idScanData.idScanSkipped" class="sub-main-text"> Place your ID in front of the camera with front side facing camera and press Scan</p>
+   <p class="main-text">Scan your Id</p>
+   <p ng-show="!idScanData.idScanSkipped" class="sub-main-text"> Place your ID in front of the camera with front side facing camera and press Continue</p>
    <p ng-show="idScanData.idScanSkipped" class="sub-main-text no-text-case margin-top-20">If you opt out now, you will still required to submit it to staff before you can check in. Please confirm if you really want to skip ID SCAN.</p>
 </div>
 <a class="btn btn-template margin-top-20" ng-show="idScanData.idScanSkipped" ng-click="toggleSkip()">Proceed to ID Scan</a>
 <a class="btn btn-template margin-top-20 grey-btn" ng-show="idScanData.idScanSkipped" ng-click="skipIdScan()">Confirm skip</a>
-<a class="btn btn-template margin-top-20" ng-show="!idScanData.idScanSkipped" ng-click="captureFrontImage()" value="Scan">Scan</a>
+<a class="btn btn-template margin-top-20" ng-show="!idScanData.idScanSkipped" ng-click="captureFrontImage()" value="Scan">Continue</a>
 <a class="btn btn-template margin-top-20 grey-btn" ng-show="!idScanData.idScanSkipped && !areAllGuestsApproved() && !id_collection_mandatory" ng-click="toggleSkip()">Skip</a>
