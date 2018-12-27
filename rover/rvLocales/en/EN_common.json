@@ -85,7 +85,7 @@
     "DEVICE_FIRMWARE_VERSION": "Firmware Ver.",
     "DEVICE_SERIAL_NO": "Serial No.",
     "EMAIL_STATUS_TO": "Email status to:",
-    "SEND_LOG_FILES": "Send log files",
+    "SEND_LOG_FILES": "Send device logs",
     "DOWNLOAD": "Download",
     "GUEST_FIRST_NAME" : "Name",
     "GUEST_LAST_NAME" : "Last Name",
