@@ -324,11 +324,15 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else {
 			if (reservationAndhotelData.error_occured) {
 				$state.go('errorOccured');
-			} else {
+			} else if (reservationAndhotelData.reservation_status === 'CHECKEDIN') {
 				if (isInvokedFromApp) {
 					customizeStylesBasedOnUrlType(theme);
 				}
+				// Need to checkout only checked in reservation
 				$state.go('checkoutRoomVerification');
+			} else {
+				// Unknown status like CANCELED, NOSHOW, so we show them error page
+				$state.go('errorOccured');
 			}
 		}
 
