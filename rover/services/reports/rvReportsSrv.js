@@ -42,10 +42,16 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Reservations': [
                 'YESTERDAY'
              ],
+						 'Synxis - Reservations': [
+                'YESTERDAY'
+             ],
              'Rooms': [
                 'TODAY'
              ],
              'Future Reservations': [
+                'TODAY'
+             ],
+						 'Synxis - Upcoming Reservation Export (Future Reservation Export)': [
                 'TODAY'
              ],
              'Last Week Reservations': [
@@ -431,7 +437,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         // Get the time periods for each of the reports in the schedule reports
         service.getScheduleReportTimePeriods = function( title ) {
         	return SCHEDULE_REPORT_TIMEPERIODS[title];
-        }; 
+        };
         // Set the report inbox print clicked state
         service.setPrintClicked = (val) => {
         	this.printClicked = val;
@@ -443,7 +449,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         };
 
         // Process and apply filter flags on the selected report
-        service.processSelectedReport = (report, config) => {            
+        service.processSelectedReport = (report, config) => {
 
             // apply certain flags based on the report name
             applyFlags.init( report );

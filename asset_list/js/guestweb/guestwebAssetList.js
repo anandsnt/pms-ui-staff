@@ -12,7 +12,8 @@ module.exports = {
 				jsLibRoot + 'angular-ui-router.min.js',
 				jsLibRoot + 'bootstrap.min.js',
 				jsLibRoot + 'ui-bootstrap-tpls-0.10.0.js',
-				jsLibRoot + 'oclazyload/ocLazyLoad.min.js'
+				jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
+				sharedRoot + 'lib/js/moment.min.js'
 			],
 			nonMinifiedFiles: [
 				guestwebroot + 'scripts/util.js',
@@ -26,6 +27,10 @@ module.exports = {
 				guestwebroot + 'ccAndRoom/**/*.js',
 				guestwebroot + 'preCheckin/**/*.js',
 				guestwebroot + 'preCheckin/services/**/*.js',
+				sharedRoot + 'sntIDCollection/sntIDCollectionApp.js',
+                sharedRoot + 'sntIDCollection/services/*.js',
+                sharedRoot + 'sntIDCollection/constants/*.js',
+                sharedRoot + 'sntIDCollection/controllers/*.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]	

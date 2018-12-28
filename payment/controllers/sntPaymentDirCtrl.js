@@ -829,7 +829,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmedDBpayment) {
                     $scope.$emit('HIDE_BILL_PAYMENT_POPUP');
-                    confirmDirectBillPayment();
+                    confirmDirectBillPayment(params.postData);
                     return;
                 }
 
@@ -1331,7 +1331,8 @@ angular.module('sntPay').controller('sntPaymentController',
             }
 
             $scope.onPaymentSuccess = function (response) {
-                $scope.paymentAttempted = true;
+                $scope.paymentAttempted = !($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
+                
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
 

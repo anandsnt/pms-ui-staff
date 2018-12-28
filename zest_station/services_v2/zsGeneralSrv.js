@@ -71,7 +71,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'anthony': 'The Anthony',
             'stewart': 'Stewart Aparthotel',
             'university-inn': 'University Inn',
-            'cedar-court': 'Cedar Court Hotels'
+            'cedar-court': 'Cedar Court Hotels',
+            'sister-city': 'Sister City Hotel NY',
+            'twa': 'TWA Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -642,7 +644,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        this.recordIdVerification = function(params) {
+        this.recordReservationActions = function(params) {
 
             var deferred = $q.defer(),
                 url = '/api/reservation_actions';
@@ -712,6 +714,14 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/hotel_settings/configurable_images';
 
             return zsBaseWebSrv.getJSON(url);
+        };
+
+
+        this.getDeviceDetails = function(params) {
+
+            var url = "/api/notifications/device_details";
+
+            return zsBaseWebSrv.getJSON(url, params);
         };
 
     }

@@ -2,31 +2,32 @@
 <div class="scrollable" ng-iscroll="financialSettingsList" ng-iscroll-delay="100">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-    <table class="table-settings">
+    <table class="table-settings wrapper">
         <tbody>
-            <tr ng-hide="true">
+            <tr>
                 <td>Lock Bill</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button on">
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_bill_lock_enabled}">
                         <!-- remove checked when not active-->
-                        <input name="lock-bill" id="lock-bill" value="lock-bill" type="checkbox" checked="">
-                        <span class="switch-icon"></span>
-                    </div>
-                </td>
-            </tr>
-            <tr ng-hide="true">
-                <td>Show Folio Number on Bill</td>
-                <td>
-                    <!-- remove .on when not active -->
-                    <div class="switch-button on">
-                        <!-- remove checked when not active-->
-                        <input name="folio-on-bill" id="folio-on-bill" value="folio-on-bill" type="checkbox" checked="">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_bill_lock_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
             </tr>
             <tr>
+                <td>Print Folio Number on Invoice</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_print_folio_enabled}">
+                        <!-- remove checked when not active-->
+                        <input name="folio-on-bill" id="folio-on-bill" ng-model="legalSettings.is_print_folio_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            
+             <tr>
                 <td>Restrict AR Invoice changes</td>
                 <td>
                     <!-- remove .on when not active -->
@@ -59,10 +60,16 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-hide="true">
+            <tr>
                 <td>Folio Number Prefix</td>
                 <td>
-                    <input type="text" placeholder="Enter Prefix"> 
+                    <input type="text" ng-model="legalSettings.folio_no_prefix" placeholder="Enter Prefix"> 
+                </td>
+            </tr>
+            <tr>
+                <td>First Folio number field</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.first_folio_number" placeholder="Enter First Folio Number"> 
                 </td>
             </tr>
         </tbody>
@@ -70,5 +77,5 @@
 </div>
 <div class="actions">
     <button class="button blank" ng-click="closeDialog()">Cancel</button>
-    <button class="button green" ng-click="saveLegalSettings()">Save Changes</button>
+    <button class="button green" ng-click="saveLegalSettings('financial')">Save Changes</button>
 </div>

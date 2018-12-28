@@ -2,7 +2,8 @@ module.exports = {
 	getList : function() {
 		var controllerRoot 	= 'rover/controllers/',
             sharedJs 		= 'shared/lib/js/',
-			servicesRoot 	= 'rover/services/';
+			servicesRoot 	= 'rover/services/',
+            sharedRoot      = 'shared/';
             
             return {
                 minifiedFiles: [
@@ -37,6 +38,9 @@ module.exports = {
                     controllerRoot + "validateCheckin/**/**.js",
                     controllerRoot + "guestCardBaseCtrl.js",
                     controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",
+                    controllerRoot + 'rvStatisticsBaseCtrl.js',
+                    controllerRoot + 'guests/rvGuestCardStatisticsCtrl.js',
+                    controllerRoot + "rvGuestCompanyTravelAgentStatisticsCtrl.js",
 
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
@@ -57,10 +61,16 @@ module.exports = {
                     servicesRoot + "bill/rvBillCardSrv.js",
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
                     servicesRoot + "guestcard/rvGuestCardActivityLogSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",
                     servicesRoot + "nightlyDiary/**/*.js",
                     servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",
                     servicesRoot + "roomAssignment/rvUpgradesSrv.js",
+                    servicesRoot + "guestcard/rvGuestCardSrv.js",
+                    sharedRoot + "sntIDCollection/sntIDCollectionApp.js",
+                    sharedRoot + "sntIDCollection/services/*.js",
+                    sharedRoot + "sntIDCollection/constants/*.js",
+                    sharedRoot + "sntIDCollection/controllers/*.js",		    
 
                     // Eliminate all spec files
                     '!**/*.spec.js'

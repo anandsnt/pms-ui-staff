@@ -20,7 +20,7 @@
 		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Room assignment content -->
 		<div class="room-assignment-content"
-			 ng-class="{'has-room': reservationData.reservation_card.reservation_status!='CHECKEDIN' && !!reservationData.reservation_card.room_number && !roomAssgnment.inProgress}">
+			 ng-class="{'has-room':  (showUnAssignRoom() || shouldShowChangeRoomTypeBtn()) && !roomAssgnment.inProgress}">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
@@ -78,7 +78,17 @@
 			</div>
 
 		</div>
-		<button id="unassign-room" class="button red" ng-show="showUnAssignRoom()" ng-click="unassignRoom()" >Unassign Room  {{reservationData.reservation_card.room_number}} </button>
+		
+		<div class="room-assignment-actions">
+			<!-- Show this if we have a room assigned.-->
+			<button type="button" class="button red" ng-show="showUnAssignRoom()" ng-click="unassignRoom()">
+				Unassign Room {{reservationData.reservation_card.room_number}}     
+			</button>
+			<!-- show this if the room type dropdown has changed to change the room type-->
+			<button type="button" class="button green" ng-show="shouldShowChangeRoomTypeBtn()" ng-click="changeRoomType()">
+				Change Room Type
+			</button>
+		</div>
 	</div>
 
 </section>

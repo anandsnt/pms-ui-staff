@@ -1,0 +1,420 @@
+/* StayNTouch Zest Station Styles | Sister City Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #0b24fb;
+ 
+    
+@textColor:             @white;
+@backgroundColor:       #0b24fb;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       transparent;
+@transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@font-face {
+    font-family:'LL Akkurat Pro Regular Web';
+        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot');
+        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
+            url("../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff2") format("woff2"),
+            url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    } 
+@fontFamily: 'LL Akkurat Pro Regular Web', sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+@background:            @backgroundColor;
+@backgroundSize:        cover;
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @white;
+        stroke: @white;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @white;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#sister-city {
+    font-weight: 600;
+    * {
+        text-transform: none;
+        font-weight: 600;
+    }
+
+    input,
+    select {
+        border-bottom: 2px solid @white;
+        border-radius: 0;
+
+        &::-webkit-input-placeholder {
+            font-style: normal;
+            color: @white;
+        }
+    
+        &::-moz-placeholder {
+            font-style: normal;
+            color: @white;
+        }
+    
+        &:-ms-input-placeholder {
+            font-style: normal;
+            color: @white;
+        }
+    
+        &:-moz-placeholder {
+            font-style: normal;
+            color: @white;
+        }
+    }
+
+    select {
+        option {
+            color: #000;
+        }
+    }
+
+    .entry {
+
+        &.select { 
+            &:after {
+                border-top-color: @white;
+            }
+        }
+
+        &.action {
+            .button {
+                max-width: 160px;
+            }
+        }
+    } 
+
+    .button {
+        background: transparent;
+        &.transparent {
+            background: transparent;
+            border: none;
+        }
+        &.text-red { color: @white; }
+    }
+
+    #header {
+        height: 133px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 133px);
+        top: 133px;
+
+        .button {
+            font-weight: 600;
+
+            &:not(.option) {
+                border-radius: 0px;
+            }
+    
+            &:not(.only-icon):not(.transparent) {
+                border: 2px solid @white;
+            }
+
+            &.option {
+                &:active,
+                &:hover {
+                    background: @white;
+                    color: @brandColor;
+                }
+            }
+        }
+        .selected {
+            background: @white !important;
+        }
+    }
+
+    #actions {
+        &.pull-right {
+            width: 160px;
+
+            p {
+                strong {
+                    font-size: 18px; 
+                }
+                text-transform: none;
+                color: @textColor;
+            }
+        }
+    }
+    
+    #rate {
+        li {
+            margin-bottom: 5px;
+
+            &.break {
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+                .box-shadow(inset 0 -2px 0 @white);
+            }
+
+            &.sub {
+                color: @white;
+            }
+        }
+    }
+     
+    #logo {
+        .logo {
+            .size(133px, auto);
+        }
+     }
+
+    #options {
+        .icons {
+            fill: @white;
+        }
+
+        .button {
+            background: transparent;
+            border: 2px solid @white;
+    
+            svg {
+                .hide();
+            }
+        }
+    }
+
+    #selection { 
+        li { 
+            .details {
+                background: transparent;
+                color: @white;
+                border-radius: 0px;
+                border: 2px solid @white;
+            } 
+        } 
+    }
+
+    #textual {
+        &:before,
+        &:after {
+            .hide();
+        }
+
+        background: transparent;
+        color: @white;
+        text-transform: none;
+
+        #payment {
+            strong,
+            span {
+                color: @white;
+            }
+        }
+
+        &.pull-left {
+             
+            #calc > #width > .remove(100%, 160px);
+ 
+        }
+
+        &.confirm-card {
+            .label {
+                color: @white;
+            }
+        }
+    }
+
+    #guests {
+        color: @white;
+        strong,
+        span {
+            color: @white;
+        }
+
+        .button {
+            &:not(.only-icon):not(.transparent){
+            padding: 0;
+            line-height: 1;
+            height: auto;
+            border-top:0;
+            border-right: 0;
+            border-left: 0;
+            border-bottom-color: @white;
+            }
+        }
+    }
+
+    .popup {
+        #message-content {
+            .button {
+                color: @brandColor;
+                border: 2px solid @brandColor;
+                border-radius: 0px;
+                &.with-icon {
+                    text-align: center;
+                    padding: 0;
+                    svg { .hide(); }
+                }
+
+                
+            }
+        }
+
+        #languages {
+            .button {
+                color: @black;
+
+                &.active {
+                    color: @brandColor;
+                    border: 2px solid @brandColor;
+                }
+            }
+        }
+    }
+
+    #bill-grid {
+        #grid-head {
+
+            .cell {
+                color: @white;
+                .box-shadow(~'inset 0 2px 0 white, 0 2px 0 white');
+            }
+        }
+    }
+
+    .add-on-list,
+    .add-on { 
+        .button {
+            &.transparent {
+                color: @white;
+            }
+        }
+    }
+
+    .add-on {
+
+        background: @brandColor;
+
+        .add-on-content {
+            color: @white;
+            background: @brandColor;
+
+            .price {
+                strong,
+                small {
+                    color: @white;
+                }
+            }
+        }
+
+        #options { 
+            li {
+                .option {
+                    color: @brandColor;
+                    background: @white;
+                    &.not-selected{
+                        color: @white;
+                        background: transparent;
+                    }
+
+                }
+
+
+                .amount {
+                    color: @white;
+                }
+                > span { color: @white }
+            }
+        }
+        
+    }
+
+    .add-on-list {
+        .add-on {
+            background: @brandColor;
+            color: @white;
+
+            &.selected {
+                border-color: @white;
+                background: @white;
+                color: @brandColor;
+
+                .add-on-content {
+                    background: @white;
+                    color: @brandColor;
+                }
+            }
+        }
+    }
+
+    .input-group {
+        .button,
+        input {
+            color: @white !important;
+            border-radius: 0px;
+        }
+        .button {
+            border: 2px solid @white !important;
+        }
+
+
+
+        input {
+            border-bottom: 2px solid @white;
+            border-top: 2px solid @white;
+            border-right: none !important;
+            border-left: none !important;
+        }
+    }
+
+    .upgrade-list {
+
+        &.upgrade-list-v2 {
+            .upgrade-content {
+                background: transparent;
+                color: @white;
+            }
+
+            .price {
+                small {
+                    color: @white;
+                }
+            }
+        }
+
+    }
+
+    #upgrade {
+        background: transparent;
+        color: @white;
+
+        .upgrade-info {
+            color: @white;
+        }
+
+        .upgrade-price {
+            border-top: 4px solid white;
+        }
+    }
+}

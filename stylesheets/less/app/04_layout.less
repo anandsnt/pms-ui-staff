@@ -663,6 +663,14 @@ body { overflow: hidden; }
 	                .hide();
 	            }
 
+	            .fullscreen-header {
+	                color: @white;
+
+	                .info-subheading {
+	                    color: @white;
+	                }  
+	            }
+
 	            .cards-content {
 	                height: 100%;
 	            }
@@ -682,6 +690,13 @@ body { overflow: hidden; }
 	                    &.transactions {
 	                        .tab-details {
 	                            .calc-height(100,120);
+	                        }
+	                    }
+
+	                    &.card-statistics {
+	                        .statistics-summary,
+	                        .statistics-details {
+	                            .calc-height(100,60);
 	                        }
 	                    }
 	                }
@@ -933,6 +948,18 @@ body { overflow: hidden; }
 
 						&:nth-child(2) { .hide; }
 					}
+
+					&.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width(100, 300 );
+	                        }
+	                        &.options {
+	                            width: 180px;
+	                        }
+	                    }
+	                }
 				}
 
 				&.three-options {

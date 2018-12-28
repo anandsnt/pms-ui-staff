@@ -8,7 +8,8 @@ sntRover.controller('RVAutoChargeController',
         'RVBillCardSrv',
         '$window',
         '$stateParams',
-        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams) {
+        'rvUtilSrv',
+        function($scope, $rootScope, $timeout, RVAutoChargeSrv, ngDialog, $filter, RVBillCardSrv, $window, $stateParams, util) {
 
             BaseCtrl.call(this, $scope);
 
@@ -21,12 +22,16 @@ sntRover.controller('RVAutoChargeController',
                     yearRange: '-10:',
                     maxDate: tzIndependentDate($rootScope.businessDate)
                 },
+                EOD = 'EOD_TAB',
+                DEPOSIT = 'DEPOSIT_TAB',
                 /*
                  * function handle date changes event and Calls API
                  * @return - {None}
                  */
-                dueDateChoosed = function(date) {
-                    $scope.filters.due_date = date;
+                dueDateChoosed = function(date, datePicker) {
+                    var dueDate = new tzIndependentDate(util.get_date_from_date_picker(datePicker));
+
+                    $scope.filters.due_date = $filter('date')(tzIndependentDate(dueDate), 'dd/MM/yyyy');
                     $scope.due_date = date;
                     $scope.fetchAutoCharge();
                 },
@@ -92,56 +97,111 @@ sntRover.controller('RVAutoChargeController',
                  */
                 setParamsAndFetchAutoCharge = function() {
                     if ( isFromStayCard ) {
-                        $scope.filters = {
-                            status: RVAutoChargeSrv.getParams().status,
-                            due_date: RVAutoChargeSrv.getParams().due_date
-                        };
-                        $scope.fetchAutoCharge(RVAutoChargeSrv.getParams().page_no);
+                        $scope.filters = RVAutoChargeSrv.getStateData().filters;
+                        $scope.due_date = RVAutoChargeSrv.getStateData().due_date;
+                        $scope.selectedTab = RVAutoChargeSrv.getStateData().selectedTab;
+                        $scope.fetchAutoCharge($scope.filters.page_no);
                     } else {
                         $scope.filters = {
                             status: 'ALL',
-                            due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat)
+                            due_date: $filter('date')(tzIndependentDate($rootScope.businessDate), 'dd/MM/yyyy')
                         };
+                        $scope.due_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
+                        $scope.selectedTab = DEPOSIT;
                         $scope.fetchAutoCharge();
                     }
+                },
+                /*
+                 * function to set selection value
+                 * @return - [ObjList]
+                 */
+                processAutoChargeSelections = function (autoCharges, value) {
+                    return _.map(autoCharges, function(autoCharge) {
+                        autoCharge.bill_balance = autoCharge.debits - autoCharge.credits;
+
+                        return _.extend(autoCharge, {'isSelected': value});
+                    });
+                },
+                /*
+                 * function reset autocharge selction values
+                 * @return - none
+                 */
+                resetSelections = function () {
+                    $scope.isPartiallySelected = false;
+                    $scope.isAllSelected = false;
+                },
+                /*
+                 * function forms array of selected reservation ids
+                 * @return - [Integer]
+                 */
+                generateSelectedReservationReportIds = function () {
+                    var selectedReservationReportIds = [];
+
+                    _.map($scope.autoCharges,
+                        function(autoCharge) {
+                            if (autoCharge.isSelected) {
+                                selectedReservationReportIds.push(autoCharge.deposit_report_id);
+                            }
+                        });
+                    return selectedReservationReportIds;
                 };
 
+            /*
+             * function handle selection event for auto charge
+             * @return - noe
+             */
+            $scope.handleAutoChargeSelection = function (selection_type) {
+                var declinedAutoCharges = _.filter($scope.autoCharges,
+                    function(autoCharge) {
+                        return autoCharge.is_declined && autoCharge.can_retry_processing;
+                    });
+
+                $scope.isDeclinedAutoChargesPresent = declinedAutoCharges.length !== 0 ;
+                if (selection_type === 'ALL') {
+                    $scope.autoCharges = processAutoChargeSelections($scope.autoCharges, $scope.isAllSelected);
+                    $scope.isPartiallySelected = false;
+                } else {
+                    $scope.isAllSelected = _.every(declinedAutoCharges,
+                        function(autoCharge) {
+                            return autoCharge.isSelected;
+                        });
+                    $scope.isPartiallySelected = _.some(declinedAutoCharges,
+                        function(autoCharge) {
+                            return autoCharge.isSelected;
+                        });
+                }
+            };
             // print the page
             that.printBill = function() {
                 // CICO-9569 to solve the hotel logo issue
                 $('header .logo').addClass('logo-hide');
                 $('header .h2').addClass('text-hide');
-
                 // add the orientation
                 addPrintOrientation();
 
-                /*
-                *	======[ READY TO PRINT ]======
-                */
-                // this will show the popup with full bill
-                $timeout(function() {
-                    /*
-                    *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                    */
+                var printCompletedActions = function() {
+                    $timeout(function() {
+                        // CICO-9569 to solve the hotel logo issue
+                        $('header .logo').removeClass('logo-hide');
+                        $('header .h2').addClass('text-hide');
 
-                    $window.print();
-                    if ( sntapp.cordovaLoaded ) {
-                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                        // remove the orientation after similar delay
+                        removePrintOrientation();
+                    }, 100);
+                };
+
+                $timeout(function() {
+                    if (sntapp.cordovaLoaded) {
+                        cordova.exec(printCompletedActions,
+                            function(error) {
+                                // handle error if needed
+                                printCompletedActions();
+                            }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'P']);
+                    } else {
+                        $window.print();
+                        printCompletedActions();
                     }
-                }, 1000);
-
-                /*
-                *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-                */
-
-                $timeout(function() {
-                    // CICO-9569 to solve the hotel logo issue
-                    $('header .logo').removeClass('logo-hide');
-                    $('header .h2').addClass('text-hide');
-
-                    // remove the orientation after similar delay
-                    removePrintOrientation();
-                }, 1000);
+                }, 100);
             };
 
             // print bill
@@ -149,25 +209,38 @@ sntRover.controller('RVAutoChargeController',
                 $scope.closeDialog();
                 that.printBill();
             };
-
+            $scope.selectHeaderTab = function(value) {
+                $scope.selectedTab = value;
+                $scope.fetchAutoCharge();
+            };
             // Call Api to load Auto Charge Details
             $scope.fetchAutoCharge = function(pageNo) {
                 var params = {
-                    page_no: pageNo || 1,
-                    status: $scope.filters.status,
-                    due_date: $scope.filters.due_date,
-                    per_page: $scope.paginationConfig.perPage
-                };
+                        page_no: pageNo || 1,
+                        status: $scope.filters.status,
+                        due_date: $scope.filters.due_date,
+                        per_page: $scope.paginationConfig.perPage
+                    },
+                    stateData = {
+                        filters: params,
+                        due_date: $scope.due_date,
+                        selectedTab: $scope.selectedTab
+                    };
 
+                RVAutoChargeSrv.setStateData(stateData);
                 var options = {
                     params: params,
                     successCallBack: function(response) {
-                        $scope.autoCharges = response.details;
+                        resetSelections();
+                        $scope.autoCharges = processAutoChargeSelections(response.details, false);
                         $scope.totalCount = response.total_count;
-                        $scope.totalDeposite = response.total_deposit;
-                        $scope.isAutoChargeProcessing = response.auto_charge_deposit_running;
+                        if ( response.total_deposit ) {
+                            $scope.totalDeposite = response.total_deposit;
+                        }
+                        $scope.isAutoChargeProcessing = !!response.auto_charge_deposit_running;
 
                         $timeout(function () {
+                            $scope.handleAutoChargeSelection();
                             $scope.$broadcast('updatePagination', 'AUTO_CHARGE' );
                             $scope.$broadcast('updatePageNo', params.page_no);
                             refreshScroll();
@@ -175,7 +248,30 @@ sntRover.controller('RVAutoChargeController',
                     }
                 };
 
-                $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
+                if ($scope.selectedTab !== EOD ) {
+                    $scope.callAPI(RVAutoChargeSrv.fetchAutoCharge, options);
+                } else {
+                    $scope.callAPI(RVAutoChargeSrv.fetchEodAutoCharge, options);
+                }
+
+            };
+            // Call Api to process declined charges
+            $scope.processSelectedAutoCharges = function() {
+                var params = {
+                        due_date: $scope.filters.due_date,
+                        reservation_reports_ids: generateSelectedReservationReportIds()
+                    },
+                    options = {
+                        params: params,
+                        successCallBack: function() {
+                            $timeout(function () {
+                                $scope.fetchAutoCharge();
+                            }, 3000 );
+
+                        }
+                    };
+
+                $scope.callAPI(RVAutoChargeSrv.processAutoCharges, options);
             };
             /*
              * Initialization

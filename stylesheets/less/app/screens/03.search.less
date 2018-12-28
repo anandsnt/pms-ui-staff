@@ -1038,6 +1038,10 @@
                         padding: 0;
                         height: 60px;
                         #flexbox > .parent( row wrap, flex-start, center, '' );
+
+                        &.prepaid {
+                            padding-left: 45px;
+                        }
                     }
 
                     a {
@@ -1071,13 +1075,19 @@
                             font-size: 14px;
                         }
 
+                        .commissionable {
+                            width: 140px;
+                            font-size: 14px;
+                        }
+
                         .amount {
                             width: 95px;
                         }
 
                         .revenue,
                         .commission,
-                        .amount {
+                        .amount,
+                        .commissionable {
                             text-align: right;
                         }
 

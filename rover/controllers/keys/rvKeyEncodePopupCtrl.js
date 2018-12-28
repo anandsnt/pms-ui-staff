@@ -151,35 +151,41 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	};
 
 	$scope.printPinCode = function() {
-		$('.nav-bar').addClass('no-print');
-		$('.cards-header').addClass('no-print');
-		$('.card-tabs-nav').addClass('no-print');
 
+    $('.nav-bar').addClass('no-print');
+    $('.cards-header').addClass('no-print');
+    $('.card-tabs-nav').addClass('no-print');
 
-		var pinEl = document.createElement("div");
-		
-		pinEl.innerHTML = getPrintContent();
-		// var currenBody = document.body.innerHTML;		
-		document.body.appendChild(pinEl);
+    var pinEl = document.createElement("div");
 
-		// this will show the popup with full report
-		$timeout(function() {
+    pinEl.innerHTML = getPrintContent();
+        // var currenBody = document.body.innerHTML;
+    document.body.appendChild(pinEl);
 
-			/*
-			 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-			 */
+    var printCompletedActions = function() {
+        $timeout(function() {
 
-			$window.print();
-			if (sntapp.cordovaLoaded) {
-				cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-			}
+            $('.nav-bar').removeClass('no-print');
+            $('.cards-header').removeClass('no-print');
+            $('.card-tabs-nav').removeClass('no-print');
+            document.body.removeChild(pinEl);
 
-			$('.nav-bar').removeClass('no-print');
-			$('.cards-header').removeClass('no-print');
-			$('.card-tabs-nav').removeClass('no-print');
-			document.body.removeChild(pinEl);
+        }, 100);
+    };
 
-		}, 100);
+    $timeout(function() {
+        if (sntapp.cordovaLoaded) {
+            cordova.exec(printCompletedActions,
+                function(error) {
+                    // handle error if needed
+                    printCompletedActions();
+                }, 'RVCardPlugin', 'printWebView', ['', '0', '', 'L']);
+        } else {
+            $window.print();
+            printCompletedActions();
+        }
+    }, 100);
+
 	};
 
 	$scope.isPrintKeyEnabled = function() {

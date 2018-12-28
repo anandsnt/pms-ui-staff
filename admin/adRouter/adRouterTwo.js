@@ -933,4 +933,16 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/hkSections'
     });
 
+    $stateProvider.state('admin.idCollection', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/idCollection'
+    });
+
+    $stateProvider.state('admin.cotaMandatoryFields', {
+      templateUrl: '/assets/partials/cards/coTaMandatoryFields.html',
+      controller: 'ADCoTaMandatoryFieldsCtrl',
+      url: '/coTaMandatoryFields'
+    });
+
 });

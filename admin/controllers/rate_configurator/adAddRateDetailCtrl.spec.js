@@ -69,7 +69,7 @@ describe('ADaddRatesDetailCtrl', function() {
             deferred.resolve(response);
             return deferred.promise;
         });
-
+        $scope.init();
         $scope.clickedSyncButton();
         $scope.$digest();
         

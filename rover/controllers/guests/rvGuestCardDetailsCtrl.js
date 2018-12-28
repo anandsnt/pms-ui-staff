@@ -107,6 +107,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
             else if (tab === 'activity-log') {
                 $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            } else if (tab === 'guest-statistics') {
+               $scope.$broadcast('LOAD_GUEST_STATISTICS'); 
             }
             
             if (!$scope.viewState.isAddNewCard) {
@@ -262,6 +264,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             };
 
             $scope.isGuestCardFromMenu = true;
+            $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
 
             $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             $scope.countries = countries;
@@ -283,8 +286,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.loyaltyTabEnabled = false;
             $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
 
-            // Set contact tab as active by default
-            $scope.current = 'guest-contact';
+            // This is set when navigated to staycard from statistics details page
+            if ($stateParams.isBackToStatistics) {
+                $scope.current = 'guest-statistics';
+            } else {
+                // Set contact tab as active by default
+                $scope.current = 'guest-contact';
+            }
 
             $scope.paymentData = {};
             setTitleAndHeading();
@@ -336,37 +344,34 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             // add the orientation
             addPrintOrientation();
 
+            var onPrintCompletion = function() {
+                $timeout(function() {
+                    $scope.printState.clicked = false;
+                    // CICO-9569 to solve the hotel logo issue
+                    $("header .logo").removeClass('logo-hide');
+                    $("header .h2").addClass('text-hide');
+    
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 200);
+            };
+
             /*
             *   ======[ READY TO PRINT ]======
             */
             // this will show the popup with full bill
             $timeout(function() {
-                /*
-                *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                */
-
-                $window.print();
                 if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    cordova.exec(onPrintCompletion, function() {
+                        onPrintCompletion();
+                    }, 'RVCardPlugin', 'printWebView', []);
+                } else {
+                    $window.print();
+                    onPrintCompletion();
                 }
             }, 200);
 
-            /*
-            *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-            */
-
-            $timeout(function() {
-                $scope.printState.clicked = false;
-                // CICO-9569 to solve the hotel logo issue
-                $("header .logo").removeClass('logo-hide');
-                $("header .h2").addClass('text-hide');
-
-                // remove the orientation after similar delay
-                removePrintOrientation();
-            }, 200);
-
         };
-       
 
         init();        
 }]);
