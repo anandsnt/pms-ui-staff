@@ -288,13 +288,28 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.startFacialRecognition = function() {
 
+		var cameraConfig = {
+			'CAPTURE_TIMER': 3,
+			'PREVIEW_TIMER': 3,
+			'CAMERA_TYPE': 'front_camera',
+			'CAMERA_MESSAGES': {
+				'DETECTING_FACE': 'Detecting face, Please position your face straight',
+				'CANCEL': 'Cancel',
+				'TAKING_PHOTO': 'Capturing your headshot',
+				'CAPTURE': 'Capture now',
+				'PROCEEDING_WITH_THE_IMAGE': 'Proceeding with captured image',
+				'RETAKE_PHOTO': 'Recapture',
+				'PROCEED': 'Continue'
+			}
+		};
+
 		if ($scope.deviceConfig.useiOSAppCamera) {
 			cordova.exec(function(response) {
 				processImageFromIos(true, undefined, response.image_base64);
 			}, function(error) {
 				$log.error(error);
 				$scope.$emit('FR_FAILED');
-			}, 'RVCardPlugin', 'captureFacePhoto', [5, 3]);
+			}, 'RVCardPlugin', 'captureFacePhoto', [JSON.stringify(cameraConfig)]);
 		} else {
 			$timeout(function() {
 				angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();

@@ -1981,7 +1981,8 @@ sntZestStation.controller('zsRootCtrl', [
                                 // as of 1.3.4.3, the config for auto-prompt keyboard is enabled
                                 $scope.zestStationData.autoIpadKeyboardEnabled = true;
 
-                                $scope.zestStationData.iOSCameraEnabled = response.iOSVersion && response.iOSVersion >= 11;
+
+                                $scope.zestStationData.iOSCameraEnabled = response.AppVersion && response.AppVersion >= "1.5.1.15";
                             }
 
                         }, function() {
