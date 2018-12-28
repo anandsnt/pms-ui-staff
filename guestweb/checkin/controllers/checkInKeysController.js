@@ -46,6 +46,8 @@
 		$state.go('sntIDScan', {
 				params: JSON.stringify({"mode": "CHECKIN"})
 			});
+	} else if ($rootScope.idScanSkipped) {
+		$scope.idScanSkipped = true;
 	}
 	else {
 		$scope.pageValid = true;
