@@ -146,7 +146,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 var zestStationRoomUpsellOn = $scope.zestStationData.offer_kiosk_room_upsell;
 
                 $scope.$emit('hideLoader');
-                if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
+                if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
                     $state.go('zest_station.roomUpsell');
                 } else if ($scope.zestStationData.station_addon_upsell_active && !$scope.selectedReservation.skipAddon) {
                     $state.go('zest_station.addOnUpsell');
