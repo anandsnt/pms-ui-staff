@@ -16,7 +16,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.deviceConfig = {
 		useExtCamera: false,
-		useiOSAppCamera: false
+		useiOSAppCamera: false,
+		useExtCamForFR: false
 	};
 
 	var stopVideoStream = function() {
@@ -38,8 +39,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 
 	$scope.setConfigurations = function(config) {
-		$scope.deviceConfig.useExtCamera = config.useExtCamera;
-		$scope.deviceConfig.useiOSAppCamera = config.useiOSAppCamera;
+		$scope.deviceConfig = config;
 	};
 
 	var getImageDetails = function() {
@@ -114,12 +114,14 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var facialRecognitionFailed = function() {
 			$scope.$emit('FR_FAILED');
 			$scope.screenData.scanMode = screenModes.facial_recognition_failed;
+			stopVideoStream();
 		};
 
 		sntIDCollectionSrv.verifyFacialMatch(frontSideImage, facialImage).then(function(response) {
 			// alert(response.FacialMatchConfidenceRating);
 			if (response && response.FacialMatch && response.FacialMatchConfidenceRating > 95) {
 				$scope.$emit('FR_SUCCESS');
+				stopVideoStream();
 			} else {
 				facialRecognitionFailed();
 			}
@@ -286,13 +288,28 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	$scope.startFacialRecognition = function() {
 
+		var cameraConfig = {
+			'CAPTURE_TIMER': 3,
+			'PREVIEW_TIMER': 3,
+			'CAMERA_TYPE': 'front_camera',
+			'CAMERA_MESSAGES': {
+				'DETECTING_FACE': 'Detecting face, Please position your face straight',
+				'CANCEL': 'Cancel',
+				'TAKING_PHOTO': 'Capturing your headshot',
+				'CAPTURE': 'Capture now',
+				'PROCEEDING_WITH_THE_IMAGE': 'Proceeding with captured image',
+				'RETAKE_PHOTO': 'Recapture',
+				'PROCEED': 'Continue'
+			}
+		};
+
 		if ($scope.deviceConfig.useiOSAppCamera) {
 			cordova.exec(function(response) {
 				processImageFromIos(true, undefined, response.image_base64);
 			}, function(error) {
 				$log.error(error);
 				$scope.$emit('FR_FAILED');
-			}, 'RVCardPlugin', 'captureFacePhoto', [5, 3]);
+			}, 'RVCardPlugin', 'captureFacePhoto', [JSON.stringify(cameraConfig)]);
 		} else {
 			$timeout(function() {
 				angular.element(document.querySelector('#' + domIDMappings.face_img_upload)).click();
@@ -331,6 +348,43 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		});
 	};
 
+	$scope.startFacialRecognitionUsingExtCamera = function() {
+		$scope.screenData.extCamForSelfieActivated = false;
+		$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+		var video = document.querySelector('#fr-id-video');
+		var cameraId = localStorage.getItem('FR_CAMERA_ID');
+
+		$scope.$emit('FR_CAMERA_STARTING');
+		navigator.mediaDevices.getUserMedia({
+			video: {
+				deviceId: cameraId ? {
+					exact: cameraId
+				} : undefined,
+				width: 2560,
+				height: 1920
+			}
+		}).
+		then(function handleSuccess(stream) {
+			window.localVideoStream = stream;
+			video.srcObject = stream;
+			$scope.screenData.extCamForSelfieActivated = true;
+			$scope.$emit('EXT_CAMERA_STARTED');
+			$scope.$digest();
+		})
+		.catch(function() {
+			$scope.$emit('EXT_CAMERA_FAILED');
+		});
+	};
+
+	$scope.captureFaceImageUsingExtCamera = function() {
+		var video = document.querySelector('#fr-id-video'); 
+		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, 2560, 1920);
+
+		verifyFaceImageWithId(imageData, unmodifiedFrontImage);
+		$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+	    $scope.$emit('FR_ANALYSIS_STARTED');
+	};
+
     $scope.stopExtCamera = function(type) {
         if (type === 'front-image') {
             $scope.screenData.extCamForFrontIDActivated = false;
@@ -343,7 +397,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.imageSide = 0;
 		var video = document.querySelector('#id-video');
 		var imageData = sntIDCollectionUtilsSrv.resizeImage(video, undefined, 2560, 1920);
-
+		
+		unmodifiedFrontImage = imageData;
 		$scope.screenData.frontSideImage = imageData;
 		$scope.$emit('IMAGE_ANALYSIS_STARTED');
 		getDocInstance();
@@ -368,9 +423,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		$scope.screenData.scanMode = 'UPLOAD_BACK_IMAGE';
 		$scope.startExtCameraCapture('back-image');
 	};
-	$scope.$on('$destroy', function() {
-		stopVideoStream();
-    });
+
+	$scope.$on('STOP_EXT_CAM', stopVideoStream);
+	$scope.$on('$destroy', stopVideoStream);
 
 	(function() {
 		resetScreenData();

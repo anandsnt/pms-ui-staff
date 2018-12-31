@@ -86,6 +86,13 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
             $scope.callAPI(rvDeviceStatusSrv.sendLastReceipt, options);
         };
 
+        $scope.sendLogFiles = function() {
+            sntapp.cardReader.doDeviceAction({
+                service: 'RVCardPlugin',
+                action: 'emailDeviceLogs'
+            });
+        };
+
         (function () {
             $scope.screenMode = 'DISPLAY_MESSAGE';
             $scope.screenData = {

@@ -37,7 +37,8 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 				}
 			});
 			var config = {
-				useExtCamera: $scope.connectedCameras.length > 0
+				useExtCamera: $scope.connectedCameras.length,
+				useExtCamForFR: $scope.connectedCameras.length
 			};
 			
 			$scope.setConfigurations(config);
