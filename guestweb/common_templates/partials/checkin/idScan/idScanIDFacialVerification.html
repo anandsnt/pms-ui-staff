@@ -1,0 +1,11 @@
+
+<div class="col-md-12 top-spacing section-container mob-padding-bottom-10" ng-hide="screenData.facialRecognitionInProgress">
+  <p class="main-text">ID Validation</p>
+   <p class="sub-main-text">We need to confirm the validity of the scanned ID. Please face your front camera to take a headshot.</p>
+</div>
+<a  ng-hide="screenData.facialRecognitionInProgress"class="btn btn-template margin-top-20" ng-click="startFacialRecognition()">Continue</a>
+
+<div class="col-md-12 top-spacing section-container mob-padding-bottom-10" ng-show="screenData.facialRecognitionInProgress">
+   <p class="main-text">Facial recongnition in progress</p>
+</div>
+

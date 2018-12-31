@@ -1,7 +1,8 @@
 
 <div class="col-md-12 top-spacing section-container mob-padding-bottom-10">
-   <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'"> Confirm front image</p>
+   <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'">Confirm front image</p>
    <p class="main-text" ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'"> Confirm images</p>
+   <p class="sub-main-text">To confirm captured image(s), press 'Proceed'</p>
    <!-- <img id='image-preview' class='gid-image-preview'
       ng-show='idScanData.selectedGuest.front_image_data'
       data-ng-src="{{idScanData.selectedGuest.front_image_data}}" 
@@ -23,7 +24,7 @@
                </div>
    </div>
 </div>
-<a class="btn btn-template grey-btn" ng-click="startScanning()" value="Go Back">GO BACK</a>
-<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" ng-click="confirmFrontImage()"> PROCEED</a>
-<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" ng-click="confirmImages()"> PROCEED</a>
+<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES'" ng-click="confirmImages()">Proceed</a>
+<a class="btn btn-template margin-top-10 " ng-show="screenData.scanMode == 'CONFIRM_FRONT_IMAGE'" ng-click="confirmFrontImage()"> Proceed</a>
+<a class="btn btn-template grey-btn margin-top-10" ng-click="startScanning()" value="Go Back">Go back</a>
 

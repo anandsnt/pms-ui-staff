@@ -759,7 +759,7 @@
 
    "TAKE_SELFIE_INSTRUCTIONS": "Please stand in front of the front camera to take your picture",
    "TAKE_SELFIE_SUB_INSTRUCTIONS": "",
-   "TAKE_SELFIE": "Continue",
+   "TAKE_SELFIE": "Take selfie",
    "FACIAL_VERIFICATION_IN_PROGRESS": "Facial recongnition in progress",
    "FACIAL_VERIFICATION_IN_PROGRESS_SUB": "Please wait while the system is processing",
    "FACIAL_RECOGNITION_FAILED_SEE_STAFF_OPTIONALLY": "Facial recongnition failed. Please retry or contact a staff",

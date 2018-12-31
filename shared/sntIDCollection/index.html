@@ -190,7 +190,8 @@
                      <button type="button" class="btn btn-primary" ng-click="confirmImages()">PROCEED</button>
                   </div>
                    <div class="form-group">
-                     <button type="button" class="btn btn-primary" ng-click="startFacialRecognition()">FACIAL RECOGNITION</button>
+                     <button type="button" class="btn btn-primary"  ng-hide="deviceConfig.useExtCamForFR" ng-click="startFacialRecognition()">FACIAL RECOGNITION</button>
+                     <button type="button" class="btn btn-primary"  ng-show="deviceConfig.useExtCamForFR" ng-click="startFacialRecognitionUsingExtCamera()">FACIAL RECOGNITION</button>
                   </div>
                   <div class="form-group">
                      <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
@@ -206,10 +207,25 @@
                <div class="jumbotron text-center">
                   <p class="title">FACIAL RECOGNTION FAILED</p>
                   <div class="form-group">
-                     <button type="button" class="btn btn-primary" ng-click="startFacialRecognition()">RETRY</button>
+                     <button type="button" class="btn btn-primary" ng-hide="deviceConfig.useExtCamForFR" ng-click="startFacialRecognition()">RETRY</button>
+                     <button type="button" class="btn btn-primary"  ng-show="deviceConfig.useExtCamForFR" ng-click="startFacialRecognitionUsingExtCamera()">RETRY</button>
                   </div>
                   <div class="form-group">
                      <button type="button" class="btn btn-primary" ng-click="startScanning()">START NEW SCAN</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="container-fluid contents" ng-show="screenData.scanMode == 'FACIAL_RECOGNITION_MODE'">
+         <div class="row content">
+            <div class="col-md-12">
+               <div class="jumbotron text-center">
+                  <p class="title">Please capture your selfie</p>
+                  <video width="640" height="480" id="fr-id-video" autoplay></video>
+                  <br/><br/>
+                  <div class="jumbotron text-center">
+                     <buton type="button" class="btn btn-primary" ng-click="captureFaceImageUsingExtCamera()">Capture</button>
                   </div>
                </div>
             </div>
