@@ -501,6 +501,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             var onPropertyFetchSuccess = function(data) {
 
                 $scope.multiProperies = data.multi_properties;
+                $scope.$emit('hideLoader');
             };
 
             var requestData = {};
