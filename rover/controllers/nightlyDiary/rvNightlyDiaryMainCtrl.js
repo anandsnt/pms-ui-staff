@@ -525,7 +525,7 @@ angular.module('sntRover')
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    if (params.selected_floor_ids.length > 0 || params.selected_room_type_ids.length > 0) {
+                    if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0 ) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.showFilterPanel = true;
                         $scope.diaryData.filterList = params.filterList;

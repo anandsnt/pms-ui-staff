@@ -993,6 +993,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onRoomTypeChange = function(tabIndex) {
+            var roomTypeChanged = ( $scope.reservationData.tabs[tabIndex].roomTypeId !== $stateParams.selectedRoomTypeId );
+            
+            if ($scope.previousState.name === "rover.nightlyDiary" && roomTypeChanged) {
+                ngDialog.open({
+                    template: '/assets/partials/reservation/alerts/roomTypeValidation.html',
+                    closeByDocument: false,
+                    closeByEscape: false
+                });
+            }
+
             var index = 0,
                 currentRoomCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
                 roomType = parseInt($scope.reservationData.tabs[tabIndex].roomTypeId, 10) || "",
@@ -1052,6 +1062,35 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                $scope.companySearchText = "";
                $scope.codeSearchText = "";
             }
+        };
+
+        // CICO-59170 : Back button Navigations
+        if ($scope.previousState.name === "rover.nightlyDiary") {
+            // setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'ROOM DIARY',
+                name: 'rover.nightlyDiary',
+                param: {
+                    start_date: $stateParams.selectedArrivalDate
+                }
+            };
+
+            $scope.isNightsActive = true;
+            $scope.reservationData.numNights = 1;
+            $scope.switchNightsHours();
+
+            // data send frm room diary
+            var stateParamData = {
+                selectedRoomTypeId: $stateParams.selectedRoomTypeId,
+                selectedArrivalDate: $stateParams.selectedArrivalDate
+            };
+
+            console.log(stateParamData);
+        }
+
+        // Close popup.
+        $scope.closeDialog = function() {
+            ngDialog.close();
         };
 
     }
