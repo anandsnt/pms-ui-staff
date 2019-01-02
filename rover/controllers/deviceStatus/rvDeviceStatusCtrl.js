@@ -89,7 +89,13 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
         $scope.sendLogFiles = function() {
             sntapp.cardReader.doDeviceAction({
                 service: 'RVCardPlugin',
-                action: 'emailDeviceLogs'
+                action: 'emailDeviceLogs',
+                successCallBack: function() {
+                    // do nothing
+                },
+                failureCallBack: function() {
+                    // do nothing
+                }
             });
         };
 
