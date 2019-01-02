@@ -104,6 +104,7 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
             $scope.screenData = {
                 'emailId': ''
             };
+            $scope.isIpad = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
             $scope.clearErrorMessage();
             $scope.setScroller('deviceMessage', {
                 snap: false,
