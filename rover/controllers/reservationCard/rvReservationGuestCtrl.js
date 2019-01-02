@@ -491,6 +491,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
         // Checks whether the accompany guest label should be shown or not
         $scope.showAccompanyingGuestLabel = function() {
+            // Initial loading doesn't contain the accompanying_guests_details
+            $scope.guestData.accompanying_guests_details = $scope.guestData.accompanying_guests_details || [];
             return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count + $scope.guestData.accompanying_guests_details.length) > 1;
         };
 
