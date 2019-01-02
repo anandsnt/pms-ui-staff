@@ -135,7 +135,6 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onWebHookTypeChange = function (value, webHook) {
             webHook.canEditEvents = canEditEvents($scope.meta.deliveryTypes, webHook.delivery_type);
-            debugger
             $scope.state.new.availableEvents = $scope.meta[webHook.delivery_type] ?
                                     $scope.meta[webHook.delivery_type].events :
                                     buildWebHookSupportingEvents(webHook.delivery_type);
