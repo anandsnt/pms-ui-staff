@@ -32,9 +32,14 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
                 $scope.dimissLoaderAndDialog();
                 $rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty, 'fromReservationCard');
             },
+            loyaltyAddFailureCallback = function(errorMessage) {
+                $scope.$emit('hideLoader');
+			    $scope.errorMessage = errorMessage;
+            },
             options = {
                 params: params,
-                successCallBack: successCallbackaddLoyaltyProgram
+                successCallBack: successCallbackaddLoyaltyProgram,
+                failureCallBack: loyaltyAddFailureCallback
             };
 
         $scope.callAPI(RVLoyaltyProgramSrv.addLoyaltyProgram, options);
