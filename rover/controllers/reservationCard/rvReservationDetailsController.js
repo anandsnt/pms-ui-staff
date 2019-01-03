@@ -147,7 +147,7 @@ sntRover.controller('reservationDetailsController',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
 					activeTab: "DIARY",
-					isFromStayCard: true
+					origin: 'STAYCARD'
 				}
 			};
 		} else if ($stateParams.isFromDiary && !$rootScope.isReturning()) {

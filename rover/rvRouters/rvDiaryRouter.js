@@ -28,14 +28,14 @@ angular
     });
 
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
+        url: '/nightlyDiary/?reservation_id&start_date&origin',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {
             roomsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -47,7 +47,7 @@ angular
             datesList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -65,7 +65,7 @@ angular
             reservationsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -80,7 +80,7 @@ angular
             unassignedReservationList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {

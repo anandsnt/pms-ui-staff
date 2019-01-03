@@ -33,6 +33,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.loyaltyPrograms = loyaltyPrograms.data;
         $scope.flyerPrograms = flyerPrograms.data;
         $scope.codeSearchText = "";
+        $scope.validationMsg = "";
 
         /*
          * To setup departure time based on arrival time and hours selected
@@ -352,14 +353,46 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         };
 
+        // CICO-59170 : showValidationPopup
+        var showValidationPopup = function () {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/reseravtionFromDiaryValidation.html',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        };
+
+        // CICO-59170 : check Diary Availability
+        var validateDateForAvailability = function() {
+
+            var validateDateForAvailabilitySuccess = function( data ) {
+                $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ data.rooms[0].available_dates.length +' nights. By booking more nights room number will be unassigned.';
+                showValidationPopup();
+            },
+            options = {
+                params: {
+                    "start_date": $scope.reservationData.arrivalDate,
+                    "no_of_days": $scope.reservationData.numNights,
+                    "room_id": $stateParams.selectedRoomId
+                },
+                successCallBack: validateDateForAvailabilitySuccess
+            }
+            $scope.callAPI(RVReservationBaseSearchSrv.checkDiaryAvailability, options };
+        };
+
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.departureDateOptions.maxDate = getMaxDepartureDate($scope.reservationData.arrivalDate);
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
             $scope.errorMessage = [];
-        };
 
+            // CICO-59170
+            if ($scope.previousState.name === "rover.nightlyDiary") {
+                validateDateForAvailability();
+            }
+        };
 
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
@@ -367,6 +400,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.errorMessage = [];
             // CICO-31353
             clearGroupSelection();
+
+            // CICO-59170
+            if ($scope.previousState.name === "rover.nightlyDiary") {
+                validateDateForAvailability();
+            }
         };
         /*  The following method helps to initiate the staydates object across the period of
          *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
@@ -996,11 +1034,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var roomTypeChanged = ( $scope.reservationData.tabs[tabIndex].roomTypeId !== $stateParams.selectedRoomTypeId );
             
             if ($scope.previousState.name === "rover.nightlyDiary" && roomTypeChanged) {
-                ngDialog.open({
-                    template: '/assets/partials/reservation/alerts/roomTypeValidation.html',
-                    closeByDocument: false,
-                    closeByEscape: false
-                });
+                $scope.validationMsg = 'Room number will be unassigned by changing the room type';
+                showValidationPopup();
             }
 
             var index = 0,
@@ -1071,18 +1106,23 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 title: 'ROOM DIARY',
                 name: 'rover.nightlyDiary',
                 param: {
-                    start_date: $stateParams.selectedArrivalDate
+                    start_date: $stateParams.selectedArrivalDate,
+                    origin: 'RESERVATION_BASE_SEARCH'
                 }
             };
 
-            $scope.isNightsActive = true;
-            $scope.reservationData.numNights = 1;
-            $scope.switchNightsHours();
+            $timeout( function() {
+                $scope.isNightsActive = true;
+                $scope.reservationData.numNights = 1;
+                $scope.switchNightsHours();
+            }, 500);
 
             // data send frm room diary
             var stateParamData = {
                 selectedRoomTypeId: $stateParams.selectedRoomTypeId,
-                selectedArrivalDate: $stateParams.selectedArrivalDate
+                selectedArrivalDate: $stateParams.selectedArrivalDate,
+                selectedRoomId: $stateParams.selectedRoomId,
+                fromState: $stateParams.fromState
             };
 
             console.log(stateParamData);
@@ -1090,6 +1130,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         // Close popup.
         $scope.closeDialog = function() {
+            $scope.validationMsg = "";
             ngDialog.close();
         };
 

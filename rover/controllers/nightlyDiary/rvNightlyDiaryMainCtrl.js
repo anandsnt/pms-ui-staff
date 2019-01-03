@@ -36,7 +36,7 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
-                var isFromStayCard = $stateParams.isFromStayCard === 'true',
+                var isFromStayCard = $stateParams.origin === 'STAYCARD',
                     listeners = {};
 
                 /*
@@ -274,7 +274,8 @@ angular.module('sntRover')
                     $state.go('rover.reservation.search', {
                         selectedArrivalDate: date,
                         selectedRoomTypeId: roomTypeId,
-                        fromState: 'DIARY'
+                        fromState: 'NIGHTLY_DIARY',
+                        selectedRoomId: roomId
                     });
                 };
 
@@ -491,7 +492,6 @@ angular.module('sntRover')
                     }
                 };
 
-
                 /* Handle event emitted from child controllers.
                  * To toggle available and booked.
                  */
@@ -518,8 +518,7 @@ angular.module('sntRover')
                     };
                 };
 
-
-                if (isFromStayCard) {
+                var mapCachedDataFromSrv = function() {
                     var params = RVNightlyDiarySrv.getCache();
 
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
@@ -534,6 +533,17 @@ angular.module('sntRover')
                         $scope.diaryData.hideRoomType = params.hideRoomType;
                         $scope.diaryData.hideFloorList = params.hideFloorList;
                     }
+                }
+
+                if (isFromStayCard) {
+                    mapCachedDataFromSrv();
+                }
+
+                // CICO-59170 : When coming back from RESERVATION_BASE_SEARCH screen
+                // Enable Avaialble Book slot mode.
+                if ($stateParams.origin === 'RESERVATION_BASE_SEARCH') {
+                    $scope.diaryData.showAvailableRooms = true;
+                    callbackForBookedOrAvailableListner();
                 }
 
                 // Initial State
