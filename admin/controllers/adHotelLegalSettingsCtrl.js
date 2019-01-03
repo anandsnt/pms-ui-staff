@@ -40,6 +40,7 @@ admin.controller('adHotelLegalSettingsController',
 				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'ar_invoice_label'];
 				if (!$scope.legalSettings.is_print_invoice_enabled) {
 					if (!$scope.legalSettings.is_print_folio_enabled) {
+						$scope.legalSettings.is_print_folio_enabled = !$scope.legalSettings.is_print_folio_enabled;
 						$scope.errorMessage  = ["Both print folio on invoice and print invoice number can't be turned off at same time"];
 						return;
 					}
