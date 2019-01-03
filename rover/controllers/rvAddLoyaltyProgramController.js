@@ -34,7 +34,7 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
             },
             loyaltyAddFailureCallback = function(errorMessage) {
                 $scope.$emit('hideLoader');
-			    $scope.errorMessage = errorMessage;
+                $scope.errorMessage = errorMessage;
             },
             options = {
                 params: params,
@@ -176,6 +176,6 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
         return levels;
     };
 
-	// CICO-21206
+    // CICO-21206
     $scope.setupLoyaltyPrograms();
 }]);
