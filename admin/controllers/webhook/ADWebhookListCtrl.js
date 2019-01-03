@@ -13,6 +13,11 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                     }
                 });
             },
+            buildWebhookData = function () {
+              _.each($scope.meta.deliveryTypes, function (type) {
+                buildWebHookSupportingEvents(type.delivery_type);
+              });
+            },
             buildWebHookSupportingEvents = function (deliveryType) {
               var supportedEvents = webHookSupportingEvents(deliveryType, $scope.meta.deliveryTypes);
 
@@ -101,6 +106,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             } else {
                 loadMeta(function () {
                     resetNewWebhook();
+                    buildWebhookData();
                     $scope.state.mode = 'ADD';
                 });
             }
@@ -187,16 +193,20 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onSelect = function (idx, webHook) {
             var showEdit = function () {
+                if (!$scope.meta[webHook.deliveryType]) {
+                  buildWebhookData();
+                }
+                
                 $scope.state.editRef = angular.copy(webHook);
-                webHook.availableEvents = $scope.meta[webHook.deliveryType] ?
-                                          $scope.meta[webHook.deliveryType].events :
+                webHook.availableEvents = $scope.meta[webHook.delivery_type] ?
+                                          getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions) :
                                           getTreeSelectorData($scope.meta.events, webHook.subscriptions);
                 webHook.selectedEvents = webHook.subscriptions.join(', ');
                 webHook.canEditEvents = canEditEvents($scope.meta.deliveryTypes, webHook.delivery_type);
                 $scope.state.selected = idx;
             };
 
-            if ($scope.state.meta) {
+            if ($scope.meta) {
                 showEdit();
             } else {
                 loadMeta(showEdit);
