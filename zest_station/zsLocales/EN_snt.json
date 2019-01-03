@@ -585,7 +585,7 @@
 
 
    "GID_ADMIN_VERIFY_HEADER": "Verify Passport",
-   "GID_ADMIN_VERIFY_SUB_HEADER": "Reservation Details",
+   "GID_ADMIN_VERIFY_SUB_HEADER": "Click on the guest tile to start scanning",
 
    "GID_REVIEW_RES_DETAILS": "Reservation Details",
 
@@ -759,10 +759,11 @@
 
    "TAKE_SELFIE_INSTRUCTIONS": "Please stand in front of the front camera to take your picture",
    "TAKE_SELFIE_SUB_INSTRUCTIONS": "",
-   "TAKE_SELFIE": "Continue",
+   "TAKE_SELFIE": "Take selfie",
    "FACIAL_VERIFICATION_IN_PROGRESS": "Facial recongnition in progress",
    "FACIAL_VERIFICATION_IN_PROGRESS_SUB": "Please wait while the system is processing",
    "FACIAL_RECOGNITION_FAILED_SEE_STAFF_OPTIONALLY": "Facial recongnition failed. Please retry or contact a staff",
    "RETAKE_SELFIE": "Retake",
-   "GID_FACIAL_RECOGNITION_FAILED": "FR FAILED"
+   "GID_FACIAL_RECOGNITION_FAILED": "FR FAILED",
+   "GID_GO_TO_SCAN_MODE": "(Use back button to allow guests to re-scan)"
 }

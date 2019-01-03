@@ -1,8 +1,17 @@
-angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'rvUtilSrv',
-    function ($q, BaseWebSrvV2, rvUtilSrv) {
+angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'rvUtilSrv', '$rootScope', 'dateFilter', '$filter',
+    function ($q, BaseWebSrvV2, rvUtilSrv, $rootScope, dateFilter, $filter) {
 
     var self = this,
-        filterState = null;
+        filterState = null,
+        dayMap = [
+            $filter('translate')('SUNDAY'),
+            $filter('translate')('MONDAY'),
+            $filter('translate')('TUESDAY'),
+            $filter('translate')('WEDNESDAY'),
+            $filter('translate')('THURSDAY'),
+            $filter('translate')('SATURDAY'),
+            $filter('translate')('FRIDAY')
+        ];
 
     self.searchPerPage = 50;
     self.page = 1;
@@ -19,28 +28,80 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
         });
         return deferred.promise;
     };
-    this.getActionsTasksList = function (data) {
-        var deferred = $q.defer();
-        var url = "/api/action_tasks?associated_id=" + data.id + '&associated_type=Reservation';
 
-        BaseWebSrvV2.getJSON(url).then(function (data) {
-            deferred.resolve(data);
-        }, function (data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
-    this.getActionsManagerTasksList = function (data) {
-        var deferred = $q.defer();
-        var url = "/api/action_tasks?associated_type=Reservation";
 
-        BaseWebSrvV2.getJSON(url).then(function (data) {
-            deferred.resolve(data);
-        }, function (data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
+        this.getActionsTasksList = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/action_tasks?associated_id=' + data.id + '&associated_type=Reservation';
+
+            BaseWebSrvV2.getJSON(url).
+                then(function(data) {
+                    data.data.forEach(function(action) {
+                        action.assigned = action.assigned_to !== null;
+
+
+                        if (typeof action.due_at === typeof 'string') {
+                            var splitDueTimeString = action.due_at_str.split('T');
+
+                            // 24 hr format for the dropdown in the right panel
+                            action.due_at_time_str = dateFilter(splitDueTimeString[0] + 'T' + splitDueTimeString[1].split(/[+-]/)[0], 'hh:mm a');
+                            // 12 hr format for binding in the list
+
+                            action.due_at_time = dateFilter(splitDueTimeString[0] + 'T' + splitDueTimeString[1].split(/[+-]/)[0], 'HH:mm');
+                            action.due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
+                            action.hasDate = true;
+                        } else {
+                            action.hasDate = false;
+                        }
+
+                        if (action.action_status === 'COMPLETED') {
+                            action.isCompleted = true;
+
+                            let completedTime = moment(action.completed_at);
+
+                            action.date_completed = completedTime.format($rootScope.dateFormat.toUpperCase());
+                            action.time_completed = completedTime.format('HH:MM:A');
+
+                            action.completed_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
+                        }
+
+                        if (action.created_at) {
+                            action.created_at_time = $filter('date')(action.created_at, 'hh:mm a');
+                            action.created_at_date = $filter('date')(action.created_at, $rootScope.dateFormat);
+                        }
+
+                    });
+
+                    data.action_count = data.data.length;
+                    data.pending_action_count = _.countBy(data.data, 'completed_at')["null"];
+                    data.pending_action_count = data.pending_action_count || 0;
+                    data.className = self.getActionsClassName(data.action_count, data.pending_action_count);
+
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+    this.getActionsClassName = function(total, pending) {
+        let className = '';
+
+        if (total === 0) {
+            return 'none';
+        }
+
+        if (pending === 0) {
+            className = 'all-completed';
+        } else if (total === pending) {
+            className = 'only-pending';
+        } else {
+            className = 'pending';
+        }
+
+        return className;
     };
+
     this.syncActionCount = function (id) {
         var deferred = $q.defer();
         var url = "/api/action_tasks/sync_with_external_pms?reservation_id=" + id;
@@ -243,13 +304,48 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
         filterState = angular.copy(params);
     };
 
-    self.getFilterState = function (params) {
+    self.getFilterState = function () {
         return filterState;
     };
 
-    self.clearFilterState = function (params) {
+    self.clearFilterState = function () {
         filterState = null;
     };
 
+        self.getDateFromDate = function(d) {
+            var day = new tzIndependentDate(d),
+                dayString = day.getDay();
+
+            return dayMap[day.getDay()] || dayString;
+        };
+
+        self.getTimeFieldValues = function() {
+            return [
+                '0000', '0015', '0030', '0045',
+                '0100', '0115', '0130', '0145',
+                '0200', '0215', '0230', '0245',
+                '0300', '0315', '0330', '0345',
+                '0400', '0415', '0430', '0445',
+                '0500', '0515', '0530', '0545',
+                '0600', '0615', '0630', '0645',
+                '0700', '0715', '0730', '0745',
+                '0800', '0815', '0830', '0845',
+                '0900', '0915', '0930', '0945',
+                '1000', '1015', '1030', '1045',
+                '1100', '1115', '1130', '1145',
+                '1200', '1215', '1230', '1245',
+                '1300', '1315', '1330', '1345',
+                '1400', '1415', '1430', '1445',
+                '1500', '1515', '1530', '1545',
+                '1600', '1615', '1630', '1645',
+                '1700', '1715', '1730', '1745',
+                '1800', '1815', '1830', '1845',
+                '1900', '1915', '1930', '1945',
+                '2000', '2015', '2030', '2045',
+                '2100', '2115', '2130', '2145',
+                '2200', '2215', '2230', '2245',
+                '2300', '2315', '2330', '2345'
+            ];
+        };
 
 }]);

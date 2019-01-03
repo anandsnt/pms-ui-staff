@@ -5,7 +5,7 @@
 	display the QR code ,else the text enterd in room key delivery in the admin setting will be shown as text.
 */
 (function() {
-	var checkInKeysController = function($scope, $rootScope, $http, $location, checkinDetailsService, checkinKeysService, $state) {
+	var checkInKeysController = function($scope, $rootScope, $http, $location, checkinDetailsService, checkinKeysService, $state, sntIDCollectionUtilsSrv) {
 
 	$scope.pageValid = false;
 	$rootScope.userEmail = ($rootScope.userEmail === null ) ? "" : $rootScope.userEmail;
@@ -42,10 +42,12 @@
 		$state.go('checkinSuccess');
 	}
 	// Collect guest ID
-	else if ($state.href('sntIDScan') !== null && $rootScope.id_collection_enabled && !$rootScope.idScanComplete ) {
+	else if ($state.href('sntIDScan') !== null && $rootScope.id_collection_enabled && !$rootScope.idScanComplete && sntIDCollectionUtilsSrv.isInMobile()) {
 		$state.go('sntIDScan', {
 				params: JSON.stringify({"mode": "CHECKIN"})
 			});
+	} else if ($rootScope.idScanSkipped) {
+		$scope.idScanSkipped = true;
 	}
 	else {
 		$scope.pageValid = true;
@@ -81,7 +83,7 @@
 };
 
 var dependencies = [
-'$scope', '$rootScope', '$http', '$location', 'checkinDetailsService', 'checkinKeysService', '$state',
+'$scope', '$rootScope', '$http', '$location', 'checkinDetailsService', 'checkinKeysService', '$state', 'sntIDCollectionUtilsSrv',
 checkInKeysController
 ];
 
