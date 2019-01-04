@@ -3,7 +3,7 @@
         <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog();
         cancelNewAction();"><span class="icons icon-close"></button>
 
-        <div class="modal-header" ng-hide='!hasActionStatus() && !refreshingToNonEmpty()'>
+        <div class="modal-header">
             <h1>Actions</h1>
             <strong ng-if="$parent.reservationData.reservation_card.room_number">Room {{$parent.reservationData.reservation_card.room_number}}</strong>
             <span class="time">

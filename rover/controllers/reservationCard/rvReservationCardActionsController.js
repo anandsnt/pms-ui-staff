@@ -35,7 +35,7 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         $scope.actionsSyncd = false;
         $scope.editingDescriptionInline = false;
         $scope.lastSelectedItemId = '';
-        $scope.actionSelected = 'selected';
+        $scope.actionSelected = 'none';
         $scope.isRefreshing = false;
 
         var setInitialActionsCount = function() {
@@ -692,6 +692,10 @@ year: year};
                 $scope.actions.pendingCount = data.pending_action_count;
                 $scope.actionsCount = rvActionTasksSrv.getActionsClassName($scope.actions.totalCount, $scope.actions.pendingCount);
 
+                if ($scope.actions.totalCount === 0) {
+                    $scope.actionSelected = 'none';
+                }
+
                 setActionsHeaderInfo();
 
                 // CICO-45902 Removed the timeout here as it is causing delay while adding a new action
@@ -819,7 +823,7 @@ year: year};
 
         $scope.departmentSelect = {};
 
-        $scope.initRefresh = function(del) {
+        var initRefresh = function(del) {
             var deleting = del === 'delete';
 
             $scope.isRefreshing = true;
@@ -844,7 +848,7 @@ year: year};
 
                 params.action_task.id = $scope.selectedAction.id;
                 params.is_complete = true;
-                $scope.initRefresh(del);
+                initRefresh(del);
 
                 var onSuccess = function() {
                     $scope.actions.totalCount--;
@@ -956,7 +960,7 @@ year: year};
 
         // Cancel the action edit operation
         $scope.cancel = function() {
-            $scope.actionSelected = 'selected';
+            $scope.actionSelected = $scope.actions.totalCount ? 'selected' : 'none';
         };
 
         // Checks the permission to edit action

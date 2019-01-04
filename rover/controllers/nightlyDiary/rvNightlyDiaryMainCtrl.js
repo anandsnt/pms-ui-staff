@@ -138,9 +138,7 @@ angular.module('sntRover')
                         if ($scope.diaryData.showAvailableRooms) {
                             callbackForBookedOrAvailableListner();
                         }
-                        else {
-                            updateDiaryView();
-                        }
+                        updateDiaryView();
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
                         }
