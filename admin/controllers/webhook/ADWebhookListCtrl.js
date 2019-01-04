@@ -144,6 +144,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             $scope.state.new.availableEvents = $scope.meta[webHook.delivery_type] ?
                                     $scope.meta[webHook.delivery_type].events :
                                     buildWebHookSupportingEvents(webHook.delivery_type);
+            webHook.availableEvents = getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions);
         };
 
         $scope.onToggleActive = function (webHook) {
@@ -193,8 +194,11 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onSelect = function (idx, webHook) {
             var showEdit = function () {
-                if (!$scope.meta[webHook.deliveryType]) {
+                if (!$scope.meta[webHook.delivery_type]) {
                   buildWebhookData();
+                  $scope.state.new = {
+                    'availableEvents' : getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions)
+                  };
                 }
                 
                 $scope.state.editRef = angular.copy(webHook);
