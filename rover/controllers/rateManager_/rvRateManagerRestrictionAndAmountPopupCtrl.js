@@ -241,9 +241,9 @@ angular.module('sntRover')
          * @return {[type]}     [description]
          */
         $scope.priceStartedToCustomize = (key) => {
-            switch($scope.ngDialogData.mode) {
+            switch ($scope.ngDialogData.mode) {
                 case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
+                    if (util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
                         $scope.priceDetails[key] = $scope.priceDetailsCopy[key];
                     }
                     else if (!util.isNumeric($scope.priceDetails[key])) {
@@ -255,7 +255,7 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    if(util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
+                    if (util.isNumeric($scope.priceDetails[key + '_changing_value'])) {
                         $scope.priceDetails[key] = $scope.priceDetailsCopy[key];
                     }
                     else if (!util.isNumeric($scope.priceDetails[key])) {
