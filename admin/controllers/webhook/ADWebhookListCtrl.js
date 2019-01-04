@@ -141,9 +141,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onWebHookTypeChange = function (value, webHook) {
             webHook.canEditEvents = canEditEvents($scope.meta.deliveryTypes, webHook.delivery_type);
-            $scope.state.new.availableEvents = $scope.meta[webHook.delivery_type] ?
-                                    $scope.meta[webHook.delivery_type].events :
-                                    buildWebHookSupportingEvents(webHook.delivery_type);
+            $scope.state.new.availableEvents = $scope.meta[webHook.delivery_type].events;
             webHook.availableEvents = getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions);
         };
 
@@ -197,7 +195,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                 if (!$scope.meta[webHook.delivery_type]) {
                   buildWebhookData();
                   $scope.state.new = {
-                    'availableEvents' : getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions)
+                    'availableEvents': getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions)
                   };
                 }
                 
