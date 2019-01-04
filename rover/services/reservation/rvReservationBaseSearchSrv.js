@@ -262,8 +262,8 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             var deferred = $q.defer();
             var url = '/api/nightly_diary/availability';
 
-            RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                deferred.resolve(response.results);
+            RVBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);
             });

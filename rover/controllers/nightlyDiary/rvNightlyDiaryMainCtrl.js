@@ -272,8 +272,9 @@ angular.module('sntRover')
                     $state.go('rover.reservation.search', {
                         selectedArrivalDate: date,
                         selectedRoomTypeId: roomTypeId,
-                        fromState: 'NIGHTLY_DIARY',
-                        selectedRoomId: roomId
+                        selectedRoomId: roomId,
+                        startDate: $scope.diaryData.startDate,
+                        fromState: 'NIGHTLY_DIARY'
                     });
                 };
 
