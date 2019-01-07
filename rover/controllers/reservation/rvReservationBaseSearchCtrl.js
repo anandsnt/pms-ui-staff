@@ -294,6 +294,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
                 $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
                 $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
+
+                $scope.reservationData.isFromNightlyDiary = isFromNightlyDiary;
             }
 
             if ($scope.reservationData.departureDate === '') {

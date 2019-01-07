@@ -142,7 +142,7 @@ sntRover.controller('reservationDetailsController',
 				setNavigationBookMark();
 			}
 			$rootScope.setPrevState = {
-				title: 'DIARY',
+				title: 'ROOM DIARY',
 				name: 'rover.nightlyDiary',
 				param: {
 					id: $rootScope.stayCardStateBookMark.previousStateParams.id,

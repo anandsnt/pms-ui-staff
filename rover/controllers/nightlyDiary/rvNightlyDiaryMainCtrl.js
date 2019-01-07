@@ -200,6 +200,19 @@ angular.module('sntRover')
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(null, 1);
                 };
+
+                var showReservationSelected = function () {
+                    var dispatchData = {
+                        type: 'RESERVATION_SELECTED',
+                        selectedReservationId: $scope.currentSelectedReservation.id,
+                        reservationsList: $scope.diaryData.reservationsList.rooms,
+                        selectedRoomId: $scope.diaryData.selectedRoomId,
+                        currentSelectedReservation: $scope.currentSelectedReservation
+                    };
+
+                    store.dispatch(dispatchData);
+                };
+
                 /*
                  * Show selected reservation highlighted and enable edit bar
                  * @param reservation - Current selected reservation
@@ -534,7 +547,7 @@ angular.module('sntRover')
                         $scope.diaryData.hideRoomType = params.hideRoomType;
                         $scope.diaryData.hideFloorList = params.hideFloorList;
                     }
-                }
+                };
 
                 if (isFromStayCard) {
                     mapCachedDataFromSrv();
@@ -545,6 +558,19 @@ angular.module('sntRover')
                 if ($stateParams.origin === 'RESERVATION_BASE_SEARCH') {
                     $scope.diaryData.showAvailableRooms = true;
                     callbackForBookedOrAvailableListner();
+                }
+                if ($stateParams.origin === 'RESERVATION_SUMMARY') {
+                    initiateBasicConfig();
+
+                    let roomId = parseInt($stateParams.room_id);
+                    let reservationId = parseInt($stateParams.reservation_id);
+
+                    let room = _.findWhere($scope.diaryData.diaryRoomsList, { id: roomId });
+
+                    let roomObj = _.findWhere($scope.diaryData.reservationsList.rooms, { id: roomId });
+                    let reservation = (_.findWhere(roomObj.reservations, { id: reservationId }));
+
+                    // selectReservation(null, reservation, room);
                 }
 
                 // Initial State
@@ -590,17 +616,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
-                var showReservationSelected = function () {
-                    var dispatchData = {
-                        type: 'RESERVATION_SELECTED',
-                        selectedReservationId: $scope.currentSelectedReservation.id,
-                        reservationsList: $scope.diaryData.reservationsList.rooms,
-                        selectedRoomId: $scope.diaryData.selectedRoomId,
-                        currentSelectedReservation: $scope.currentSelectedReservation
-                    };
-
-                    store.dispatch(dispatchData);
-                };
+;
                 /*
                  * to render the grid view
                  */
