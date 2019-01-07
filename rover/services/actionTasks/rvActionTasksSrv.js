@@ -89,6 +89,18 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
             return deferred.promise;
         };
 
+    this.fetchReportDetails = function ( params ) {
+        var deferred = $q.defer();
+        var url = "/api/reports/action_manager_report";
+
+        BaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     this.getActionsClassName = function(total, pending) {
         let className = '';
 

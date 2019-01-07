@@ -9,7 +9,7 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
         var deferred = $q.defer(),
             url = '/staff/user_memberships';
 
-        BaseWebSrvV2.postJSON(url, param).then(function(data) {
+        RVBaseWebSrv.postJSON(url, param).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
