@@ -45,6 +45,7 @@ angular.module('stayCardModule', [])
                 selectedArrivalDate: null,
                 selectedRoomTypeId: null,
                 selectedRoomId: null,
+                selectedRoomNo: null,
                 startDate: null,
                 fromState: null
             },

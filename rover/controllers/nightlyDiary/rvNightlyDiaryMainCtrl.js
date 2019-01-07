@@ -267,12 +267,14 @@ angular.module('sntRover')
 
                 // Handle book room button actions.
                 var clickedBookRoom = (roomId, date, roomsList) => {
-                    var roomTypeId = _.where(roomsList, {id: roomId})[0].room_type_id;
+                    var roomTypeId = _.where(roomsList, {id: roomId})[0].room_type_id,
+                        roomNo = _.where(roomsList, {id: roomId})[0].room_no;
 
                     $state.go('rover.reservation.search', {
                         selectedArrivalDate: date,
                         selectedRoomTypeId: roomTypeId,
                         selectedRoomId: roomId,
+                        selectedRoomNo: roomNo,
                         startDate: $scope.diaryData.startDate,
                         fromState: 'NIGHTLY_DIARY'
                     });

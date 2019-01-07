@@ -287,6 +287,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.tabs[0].roomTypeId = $stateParams.selectedRoomTypeId;
                 $scope.reservationData.rooms[0].roomTypeId = $stateParams.selectedRoomTypeId;
             }
+            // CICO-59170 - Populate the value from the state variable
+            if ( isFromNightlyDiary && $stateParams.selectedRoomId ) {
+                $scope.reservationData.tabs[0].room_id = $stateParams.selectedRoomId;
+                $scope.reservationData.rooms[0].room_id = $stateParams.selectedRoomId;
+
+                $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
+                $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
+            }
 
             if ($scope.reservationData.departureDate === '') {
                 $scope.setDepartureDate();
@@ -515,8 +523,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'children': $scope.reservationData.tabs[0]['numChildren'],
                         'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
                         'is_member': !!$scope.reservationData.member.isSelected,
-                        'guestId': $stateParams.guestId ? $stateParams.guestId : '',
-                        'roomId': $stateParams.selectedRoomId
+                        'guestId': $stateParams.guestId ? $stateParams.guestId : ''
                     });
                 }
             }
