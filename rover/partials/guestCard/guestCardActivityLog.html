@@ -1,6 +1,6 @@
-<form ng-controller="RVGuestCardActivityLogController" method="post" name="cc-activity-log" class="form card-tab inner-header activity-log">
+<form ng-controller="RVGuestCardActivityLogController" method="post" name="cc-activity-log" class="form card-tab inner-header activity-log no-print">
 
-     <div class="tab-header with-filters hidden">
+     <div class="tab-header with-filters hidden no-print">
         <div class="search-form has-dates">
             <div class="entry">
                 <div class="select">
@@ -72,7 +72,7 @@
     </div>
 
     <!-- If there are open bills: -->
-    <div class="tab-details scrollable" ng-iscroll="rvGuestCardActivityLogScroll" ng-iscroll-delay="100" ng-class="{ 'with-pagination': showPagination() }">
+    <div class="tab-details scrollable no-print" ng-iscroll="rvGuestCardActivityLogScroll" ng-iscroll-delay="100" ng-class="{ 'with-pagination': showPagination() }">
         <div class="wrapper">
             <table>
                 <thead>
