@@ -1,0 +1,14 @@
+<div id="modal" class="modal-show"  ng-class="{'modal-show': !modalClosing}" role="dialog" style="width:50%;" ng-cloak>
+	<form>
+		<div class="modal-content">
+			<button  ng-click="data.isLoadingUrl = false;closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+			<div class="entry">
+				<label for="password">Enter the URL </label>
+				<input autocomplete="off" ng-model="data.domainURL" name="password" placeholder="Enter URL"/>
+			</div>
+			<div class="action">
+	            <button type="submit" class="button green" ng-click="loadDomainURL()">Continue</button>
+	        </div>
+	 	</div>
+ 	</form>
+</div> 
