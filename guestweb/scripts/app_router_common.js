@@ -202,4 +202,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'sntIDScanUseMobileCtrl'
 	});
 
+
+	$stateProvider.state('guestNotEligible', {
+		url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/checkin/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	});
+
 }]);
