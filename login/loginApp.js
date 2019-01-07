@@ -211,7 +211,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	var loadURLCounter = 0;
 
 	$scope.loadURL = function() {
-		$scope.data.domainURL = "https://"
+		$scope.data.domainURL = "https://";
 		loadURLCounter++;
 		if (loadURLCounter >= 5) {
 			ngDialog.open({
