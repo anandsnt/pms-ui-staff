@@ -559,19 +559,6 @@ angular.module('sntRover')
                     $scope.diaryData.showAvailableRooms = true;
                     callbackForBookedOrAvailableListner();
                 }
-                if ($stateParams.origin === 'RESERVATION_SUMMARY') {
-                    initiateBasicConfig();
-
-                    let roomId = parseInt($stateParams.room_id);
-                    let reservationId = parseInt($stateParams.reservation_id);
-
-                    let room = _.findWhere($scope.diaryData.diaryRoomsList, { id: roomId });
-
-                    let roomObj = _.findWhere($scope.diaryData.reservationsList.rooms, { id: roomId });
-                    let reservation = (_.findWhere(roomObj.reservations, { id: reservationId }));
-
-                    // selectReservation(null, reservation, room);
-                }
 
                 // Initial State
                 var initialState = {
