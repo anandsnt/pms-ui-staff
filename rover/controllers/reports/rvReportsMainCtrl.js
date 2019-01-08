@@ -31,13 +31,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.setTitle(listTitle);
         $scope.heading = listTitle;
         $scope.$emit('updateRoverLeftMenu', 'reports');
-
-        $scope.reportList = payload.reportsResponse.results;
-        $scope.reportCount = payload.reportsResponse.total_count;
-        $scope.codeSettings = payload.codeSettings;
-        $scope.activeUserList = payload.activeUserList;
+        $scope.reportList = angular.copy(payload.reportsResponse.results);
+        $scope.reportCount = angular.copy(payload.reportsResponse.total_count);
+        $scope.codeSettings = angular.copy(payload.codeSettings);
+        $scope.activeUserList = angular.copy(payload.activeUserList);
         $scope.schedulesList = [];
         $scope.schedulableReports = [];
+
+        $scope.refreshReportList = function() {
+            $scope.reportList = angular.copy(payload.reportsResponse.results);
+        };
 
         $scope.selectedReport = {
             report: null
@@ -2894,6 +2897,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.navigateToReportInbox = () => {
             $scope.closeDialog();
             $state.go('rover.reports.inbox');
+        };
+
+        $scope.reload = function() {
+            $state.reload();
         };
 
         // Listener for updating the report header
