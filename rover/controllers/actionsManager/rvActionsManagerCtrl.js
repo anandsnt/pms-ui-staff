@@ -499,12 +499,16 @@ sntRover.controller('RVActionsManagerController',
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = errorData;
             };
+            
+            var apiConfig = {
+                params: getReportParams(),
+                onSuccess: sucessCallback,
+                onFailure: failureCallback
+            };
 
-            var params = getReportParams();
+            setAppliedFilter();            
 
-            setAppliedFilter();
-
-            $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
+            $scope.callAPI(rvActionTasksSrv.fetchReportDetails, apiConfig); 
         };
 
         // Checks whether edit/complete btn should be shown or not

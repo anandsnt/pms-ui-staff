@@ -74,7 +74,7 @@
             <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists">
                 <strong >{{printData.ar_invoice_label}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && hasPrintFolioEnabled">
+            <span ng-if="printData.folio_number && printData.is_print_folio_enabled">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
