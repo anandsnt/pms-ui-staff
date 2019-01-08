@@ -78,10 +78,14 @@ angular
                 return RVNightlyDiarySrv.fetchReservationsList(params);
             },
             unassignedReservationList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
-                var params = {};
+                var params = {}, cacheData = {};
 
                 if ($stateParams.origin === 'STAYCARD') {
-                    params = RVNightlyDiarySrv.getCache();
+                    cacheData = RVNightlyDiarySrv.getCache();
+
+                    params.start_date = cacheData.start_date;
+                    params.no_of_days = cacheData.no_of_days;
+                    params.businessDate = $rootScope.businessDate;
                 }
                 else {
                     if (!!$stateParams.start_date) {
@@ -94,6 +98,7 @@ angular
                     params.no_of_days = 7;
                     params.businessDate = $rootScope.businessDate;
                 }
+                
                 return RVNightlyDiarySrv.fetchUnassignedRoomList(params);
             }
         },
