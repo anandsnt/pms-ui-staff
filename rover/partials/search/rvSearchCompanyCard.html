@@ -93,7 +93,7 @@
                             <input type="checkbox" ng-change="onCardSelection(row)" ng-model="row.selected">
                         </label>
                         <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
-                        <a ng-click="navigateToDetails(row.id, row.account_type)">
+                        <a ng-click="navigateToDetails(row.id, row.account_type)" ng-class="{'no-arrow': viewState.hasInitiatedMergeVerification}">
                             <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
                                 <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
                                 <img ng-src="{{row.company_logo}}" alt="">
@@ -173,12 +173,13 @@
                             <h2>{{viewState.selectedPrimaryCard.account_name}}</h2>
                             <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.account_address)">{{viewState.selectedPrimaryCard.account_address}}</p>
                         </div>
-                       
+
                         <div class="merge-status" ng-class="{'green': viewState.canMerge, 'red': !viewState.canMerge}">
                             {{viewState.mergeStatusText}}
                         </div>
 
-                        <div class="card" ng-repeat="card in viewState.selectedCardsForMerge" ng-if="!card.isPrimary">
+                        <div class="card" ng-repeat="card in viewState.selectedCardsForMerge" ng-if="!card.isPrimary"
+                            ng-class="{'with-button': getErrorMsg(card) !== ''}">
                             <span class="merge-icon">
                                 <div id="loading-spinner" ng-show="showVerifyMergeProcessActivityIndicator" />
                                 <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
@@ -187,6 +188,9 @@
                             <h2>{{card.account_name}}</h2>
                             <p ng-hide="!escapeNull(card.account_address)">{{card.account_address}}</p>
                             <p class="error" ng-if="getErrorMsg(card) !== ''">{{getErrorMsg(card)}}</p>
+                            <button type="button" class="button with-icon only-icon" ng-show="getErrorMsg(card) !== ''" ng-click="removeSelectedCard(card)">
+                                <span class="icons icon-remove-40"></span>
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -195,10 +199,12 @@
 
             <div class="merge-actions" ng-hide="viewState.selectedCardsForMerge.length === 0">
                 <button class="button blank" ng-click="cancelSelections()">Cancel</button>
-                <button class="button {{getMergeActionClassName()}}" ng-click="verifyMerge()" ng-if="!viewState.canMerge"
+                <button class="button {{getMergeActionClassName()}}" ng-click="verifyMerge()" ng-if="!viewState.hasInitiatedMergeVerification"
                     ng-disabled="viewState.selectedCardsForMerge.length === 1">Verify
                     Merge</button>
-                <button class="button green" ng-click="mergeCards()" ng-if="viewState.canMerge">Merge Cards</button>
+                <button class="button" ng-click="mergeCards()" ng-if="viewState.hasInitiatedMergeVerification"
+                    ng-disabled="!isEmpty(viewState.mergeStatusErrors)" ng-class="{'grey': !isEmpty(viewState.mergeStatusErrors) || showVerifyMergeProcessActivityIndicator, 'green': isEmpty(viewState.mergeStatusErrors)}">Merge
+                    Cards</button>
             </div>
         </div>
 

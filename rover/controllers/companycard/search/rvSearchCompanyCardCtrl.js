@@ -247,7 +247,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.getMergeActionClassName = () => {
 			let className = '';
 
-			if ($scope.viewState.selectedCardsForMerge.length === 1 || $scope.showVerifyMergeProcessActivityIndicator || $scope.viewState.mergeStatusErrors.length > 0) {
+			if ($scope.viewState.selectedCardsForMerge.length === 1 || $scope.showVerifyMergeProcessActivityIndicator || !$scope.isEmpty($scope.viewState.mergeStatusErrors)) {
 				className = 'grey';
 			} else if ($scope.viewState.selectedCardsForMerge.length > 1) {
 				className = 'purple';
@@ -424,9 +424,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			}
 
 			// Set the first card in the list as primary, if the given card for deletion is primary
-			if ($scope.viewState.selectedCardsForMerge.length > 0) {
+			if ($scope.viewState.selectedCardsForMerge.length === 1) {
 				$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
+			}
+
+			if ($scope.viewState.mergeStatusErrors && $scope.viewState.mergeStatusErrors[card.id]) {
+				delete $scope.viewState.mergeStatusErrors[card.id];
 			}
 
 		};
@@ -438,7 +442,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.viewState.selectedPrimaryCard = {};
 				$scope.viewState.selectedCardsForMerge = [];
 				$scope.viewState.mergeStatusText = [];
-				$scope.viewState.mergeStatusErrors = [];
+				$scope.viewState.mergeStatusErrors = {};
 				$scope.viewState.hasInitiatedMergeVerification = false;
 		};
 
@@ -457,6 +461,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				return ids;
 		};
 
+		
+
 		// Initialize the co/ta search view
 		var init = () => {
 			// model used in query textbox, we will be using this across
@@ -470,7 +476,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				selectedPrimaryCard: {},
 				mergeStatusText: '',
 				hasInitiatedMergeVerification: false,
-				mergeStatusErrors: []
+				mergeStatusErrors: {}
 			};
 
 			transitionParams = $state.transition && $state.transition.params('from');
@@ -482,7 +488,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.cardFilter = transitionParams.cardType;
 				$scope.queryEntered();
 			}
-			
+
 		};
 
 		init();
