@@ -94,7 +94,7 @@
             		<!-- Bills summary navigation-->
                 	<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
-                			<li ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">===={{billTab.is_void_bill}}
+                			<li ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<a click-touch="getBillData($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}">
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed) && !billTab.is_void_bill && !billTab.is_voided">
 										<span translate>BILL #{{billTab.bill_number}}</span>
