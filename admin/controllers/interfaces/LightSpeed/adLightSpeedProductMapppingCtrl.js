@@ -16,11 +16,11 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     };
 
     var formParamsForExternalMappings = function() {
-        var charge_code_id = $scope.data.selectedChargeCode.value;
+        var charge_code_id = JSON.parse($scope.data.selectedChargeCode).value;
         var selectedProducts = $scope.mappedProducts.map(function (product) {
             return { name: product.name,
-sku: product.sku,
-id: product.id };
+                     sku: product.sku,
+                     id: product.id };
         });
 
         if ($scope.lightspeed.floors_enabled) {
@@ -39,20 +39,20 @@ id: product.id };
     };
 
     $scope.fetchChargeCodes = function() {
-        $scope.callAPI(ADChargeCodesSrv.fetch, {
-            params: {
-              is_no_pagination: true
-            },
-            successCallBack: function successCallBack(response) {
-                $scope.data.selectedChargeCode = response.charge_codes[0];
-                $scope.data.filteredProduct = '';
-                $scope.chargeCodes = response.charge_codes;
-                fetchProducts();
-            },
-            failureCallBack: function failureCallBack() {
-                $scope.errorMessage = ['Error while retrieving Restaurants list.'];
-            }
-        });
+       $scope.callAPI(ADChargeCodesSrv.fetch, {
+           params: {
+             is_no_pagination: true
+           },
+           successCallBack: function successCallBack(response) {
+               $scope.data.filteredProduct = '';
+               $scope.chargeCodes = response.charge_codes;
+               $scope.data.selectedChargeCode = JSON.stringify(response.charge_codes[0]);
+               fetchProducts();
+           },
+           failureCallBack: function failureCallBack() {
+               $scope.errorMessage = ['Error while retrieving Restaurants list.'];
+           }
+       });
     };
 
     var fetchRestaurants = function() {
@@ -124,7 +124,7 @@ id: product.id };
         });
         $scope.mappedProducts = $scope.products.filter(function (product) {
             return $scope.chargeCodeMapings.some(function (chargeCodeMapping) {
-                return parseInt(chargeCodeMapping.external_value) === product.id && $scope.data.selectedChargeCode.charge_code === chargeCodeMapping.value;
+                return parseInt(chargeCodeMapping.external_value) === product.id && JSON.parse($scope.data.selectedChargeCode).charge_code === chargeCodeMapping.value;
             });
         });
         if ($scope.data.filteredProduct.length > 0) {
