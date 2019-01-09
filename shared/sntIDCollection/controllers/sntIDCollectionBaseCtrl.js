@@ -176,7 +176,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 	var retrieveFaceImage = function() {
 		sntIDCollectionSrv.getFaceImage().then(function(response) {
-			console.log(response)
+			$scope.$emit('FACE_IMAGE_RETRIEVED', response);
 		}, function(response) {
 
 		});

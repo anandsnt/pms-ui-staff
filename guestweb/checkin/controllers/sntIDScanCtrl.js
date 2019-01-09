@@ -57,6 +57,15 @@
 				return allGuestsScaned;
 			};
 
+			var saveFaceImage = function() {
+				var apiParams = {
+					'image': $scope.idScanData.selectedGuest.faceImage,
+					'guest_id': $scope.idScanData.selectedGuest.id
+				};
+
+				guestIDScanService.saveFaceImage(apiParams);
+			};
+
 			$scope.acceptID = function() {
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
@@ -73,6 +82,10 @@
 					delete apiParams.nationality_name;
 				}
 				$scope.isLoading = true;
+
+				if ($scope.idScanData.selectedGuest.faceImage) {
+					saveFaceImage();
+				}
 				guestIDScanService.savePassport(apiParams).then(function(response) {
 					$scope.isLoading = false;
 					if (response.status === 'failure') {
@@ -175,6 +188,10 @@
 					$scope.selectGuest($scope.selectedReservation.guest_details[0]);
 				}
 			};
+
+			$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+				$scope.idScanData.selectedGuest.faceImage = response;
+			});
 
 			(function() {
 				
