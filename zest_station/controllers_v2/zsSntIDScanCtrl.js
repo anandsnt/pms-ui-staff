@@ -236,6 +236,9 @@
 					$scope.screenData.facialRecognitionInProgress = false;
 					$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
 					$scope.idScanData.selectedGuest.scannedDetails = data;
+					if ($scope.deviceConfig.useExtCamForFR) {
+						$scope.startFacialRecognitionUsingExtCamera();
+					}
 				} 
 				else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
@@ -365,6 +368,7 @@
 
 			var goBackToScanAgain = function() {
 				var backToGuestListScreenModes = ['FINAL_ID_RESULTS',
+					'FACIAL_RECOGNITION_MODE',
 					'FACIAL_RECOGNTION_FAILED',
 					'UPLOAD_FRONT_IMAGE',
 					'UPLOAD_FRONT_IMAGE_FAILED',
@@ -382,6 +386,7 @@
 					$scope.idScanData.staffVerified = false;
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
+				$scope.$emit('STOP_EXT_CAM');
 			};
 			// Back button will be only shown when staff is reviewwing
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, goBackToScanAgain);
@@ -430,6 +435,9 @@
 			$scope.$on('EXT_CAMERA_FAILED', function() {
 				$scope.$emit('hideLoader');
 			});
+			$scope.$on('FR_CAMERA_STARTING', function(){
+				$scope.$emit('showLoader');
+			});
 
 			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
@@ -461,7 +469,8 @@
 				$scope.setScroller('confirm-images');
 				$scope.setConfigurations({
 					useiOSAppCamera: $scope.zestStationData.iOSCameraEnabled,
-					useExtCamera: $scope.zestStationData.connectedCameras.length > 0
+					useExtCamera: $scope.zestStationData.connectedCameras.length > 0,
+					useExtCamForFR: $scope.zestStationData.connectedCameras.length > 0
 				});
 			}());
 		}

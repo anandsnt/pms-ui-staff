@@ -28,13 +28,17 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
         params.user_membership.membership_level = $scope.selectedLevel;
         $scope.newLoyalty = params.user_membership;
         var successCallbackaddLoyaltyProgram = function(response) {
-                $scope.newLoyalty.id = response.data.id;
+                $scope.newLoyalty.id = response.id;
                 $scope.dimissLoaderAndDialog();
                 $rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty, 'fromReservationCard');
             },
+            loyaltyAddFailureCallback = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+            },
             options = {
                 params: params,
-                successCallBack: successCallbackaddLoyaltyProgram
+                successCallBack: successCallbackaddLoyaltyProgram,
+                failureCallBack: loyaltyAddFailureCallback
             };
 
         $scope.callAPI(RVLoyaltyProgramSrv.addLoyaltyProgram, options);
@@ -171,6 +175,6 @@ sntRover.controller('rvAddLoyaltyProgramController', ['$scope', '$rootScope', '$
         return levels;
     };
 
-	// CICO-21206
+    // CICO-21206
     $scope.setupLoyaltyPrograms();
 }]);

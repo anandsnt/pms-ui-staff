@@ -364,7 +364,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'id': $scope.reservationDetails.companyCard.id
 				};
 
-				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, companyCardFound);
+				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformationAndMandatoryFields, param, companyCardFound);
 			}
 		};
 
@@ -388,7 +388,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'id': $scope.reservationDetails.travelAgent.id
 				};
 
-				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
+				$scope.invokeApi(RVCompanyCardSrv.fetchContactInformationAndMandatoryFields, param, successCallbackOfInitialFetch);
 			}
 		};
 

@@ -29,16 +29,24 @@
     <div class="row" ng-hide="isPosting || netWorkError">
         <div class="col-md-1"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-4 top-spacing" ng-hide="idScanSkipped">
             <p class="main-text final-text">You're checked in!</p>
             <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
+        </div>
+        <div class="col-md-4 top-spacing" ng-show="idScanSkipped">
+            <p class="main-text final-text">Unable to checkin</p>
         </div>
         <div class="horizontal-line-sep-mobile"></div>
         <!-- right side -->
         <div class="col-md-2"><div class="vertical-line">&nbsp;</div></div>
-        <div class="col-md-3 top-spacing sm-no-top-spacing">
+        <div class="col-md-3 top-spacing sm-no-top-spacing" ng-hide="idScanSkipped">
              <p class="sub-main-text">{{responseData.delivery_message}}
              </p>
+        </div>
+         <div class="col-md-3 top-spacing sm-no-top-spacing" ng-show="idScanSkipped">
+             <p class="sub-main-text">Sorry we are unable to checkin without the IDs. When arriving at the hotel, please proceed directly to the front desk, with your picture IDs ready. We look forward to welcoming you.
+             </p>
+             <p class="sub-main-text">Please feel free to call us at <a href="tel: {{hotelPhone}}"class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-1">
         </div>                   

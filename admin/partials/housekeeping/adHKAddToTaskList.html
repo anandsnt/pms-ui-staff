@@ -33,7 +33,7 @@
 				<div class="entry full-width">
 				    <label for="item-type">Room Type <strong>*</strong></label>
 				    <div class="boxes">
-				        <label class="checkbox inline" ng-repeat="item in roomTypesList" style="width: 46% !important">
+				        <label class="checkbox inline" ng-repeat="item in roomTypesList " style="width: 46% !important; margin-left:24px !important">
 				            <span class="icon-form icon-checkbox" ng-class="{'checked' : eachTaskList.room_type_ids[$index]}"></span>
 				            <input type="checkbox" ng-model="eachTaskList.room_type_ids[$index]" ng-change="changedSelectedRooms(item, $index)">
 				            {{ item.name }}
