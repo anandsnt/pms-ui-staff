@@ -402,8 +402,6 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         return deferred.promise;
     };
 
-<<<<<<< HEAD
-=======
     // Generate void bill
     this.generateVoidBill = function(params) {
         var deferred = $q.defer(),
@@ -417,5 +415,4 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         return deferred.promise;
     };    
 
->>>>>>> e29960c... CICO-53720: Void, void and repost
 }]);
