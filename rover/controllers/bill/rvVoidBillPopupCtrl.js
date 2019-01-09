@@ -16,12 +16,12 @@ sntRover.controller('RVVoidBillPopupCtrl',
 				},
 				paramsToService = {
 					'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
-					'data' : {
+					'data': {
 						"void_type": voidType,
-  						"void_reason": $scope.voidData.reason
+						"void_reason": $scope.voidData.reason
 					}
 				},
-			    options = {
+				options = {
 					params: paramsToService,
 					successCallBack: successCallBackOfVoidBill
 				};

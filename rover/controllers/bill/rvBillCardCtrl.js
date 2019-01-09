@@ -2861,53 +2861,59 @@ sntRover.controller('RVbillCardController',
 			"reservation_id": $scope.reservationBillData.reservation_id
 		};
 		/*
-		 * Success Callback of move action
-		 */
-		var createBillSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			// CICO-56584
-			var isBillDataMissing = false;
+	 * Success Callback of create bill
+	 */
+	var createBillSuccessCallback = function(data) {
+		$scope.$emit('hideLoader');
+		// CICO-56584
+		var isBillDataMissing = false;
 
-			for (var i = 0 ; i < (data.bill_number - 1) ; i++) {
-				if (!$scope.reservationBillData.bills[i]) {
-					isBillDataMissing = true;
-				}
+		for (var i = 0 ; i < (data.bill_number - 1) ; i++) {
+			if (!$scope.reservationBillData.bills[i]) {
+				isBillDataMissing = true;
 			}
-			if (isBillDataMissing) {
+		}
+		if (isBillDataMissing) {
 
-				var fetchSuccessCallback = function(reservationBillDataFetched) {
-						$scope.reservationBillData.bills = reservationBillDataFetched.bills;
-					},
-					dataToSend = {
-						params: $scope.reservationBillData.reservation_id,
-						successCallBack: fetchSuccessCallback
-					};
-
-				$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
-			} else {
-				// Update Review status array.
-				$scope.reservationBillData.bills[data.bill_number - 1] = {
-					bill_id: data.id,
-					bill_number: data.bill_number,
-					total_amount: 0
-				};
-				var data = {};
-
-				data.reviewStatus = false;
-				data.billNumber = ($scope.reservationBillData.bills.length + 1).toString();
-				data.billIndex = $scope.reservationBillData.bills.length;
-				$scope.isAllBillsReviewed = false;
-				$scope.reviewStatusArray.push(data);
-				// CICO-43344 : Update emailOptedStatusList array
-				var obj = {
-					billId: data.id,
-					isOptedForEmail: false
+			var fetchSuccessCallback = function(reservationBillDataFetched) {
+					$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+				},
+				dataToSend = {
+					params: $scope.reservationBillData.reservation_id,
+					successCallBack: fetchSuccessCallback
 				};
 
-				$scope.emailOptedStatusList.push(obj);
-			}
-			
-		};
+			$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
+		} else {
+			// Update Review status array.
+			$scope.reservationBillData.bills[data.bill_number - 1] = {
+				bill_id: data.id,
+				bill_number: data.bill_number,
+				total_amount: 0
+			};
+			var data = {};
+
+			data.reviewStatus = false;
+			data.billNumber = ($scope.reservationBillData.bills.length + 1).toString();
+			data.billIndex = $scope.reservationBillData.bills.length;
+			$scope.isAllBillsReviewed = false;
+			$scope.reviewStatusArray.push(data);
+			// CICO-43344 : Update emailOptedStatusList array
+			var obj = {
+				billId: data.id,
+				isOptedForEmail: false
+			};
+
+			$scope.emailOptedStatusList.push(obj);
+		}
+		
+	};
+
+	$scope.createNewBill = function(type) {
+		$scope.movedIndex = $scope.reservationBillData.bills.length;
+		var billData = {
+			"reservation_id": $scope.reservationBillData.reservation_id
+		};		
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
