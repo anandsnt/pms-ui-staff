@@ -4,9 +4,6 @@ sntRover.controller('RVVoidBillPopupCtrl',
 
 		BaseCtrl.call(this, $scope);
 
-<<<<<<< HEAD
-		
-=======
 		$scope.voidData = {};
 		/*
 		 * Void Bill 
@@ -32,6 +29,5 @@ sntRover.controller('RVVoidBillPopupCtrl',
 			$scope.callAPI( RVBillCardSrv.generateVoidBill, options );
 
 		};	
->>>>>>> e29960c... CICO-53720: Void, void and repost
 
 }]);
