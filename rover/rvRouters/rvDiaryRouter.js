@@ -28,14 +28,14 @@ angular
     });
 
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
+        url: '/nightlyDiary/?reservation_id&room_id&start_date&origin',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {
             roomsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -47,7 +47,7 @@ angular
             datesList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -65,7 +65,7 @@ angular
             reservationsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -78,10 +78,14 @@ angular
                 return RVNightlyDiarySrv.fetchReservationsList(params);
             },
             unassignedReservationList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
-                var params = {};
+                var params = {}, cacheData = {};
 
-                if ($stateParams.isFromStayCard) {
-                    params = RVNightlyDiarySrv.getCache();
+                if ($stateParams.origin === 'STAYCARD') {
+                    cacheData = RVNightlyDiarySrv.getCache();
+
+                    params.start_date = cacheData.start_date;
+                    params.no_of_days = cacheData.no_of_days;
+                    params.businessDate = $rootScope.businessDate;
                 }
                 else {
                     if (!!$stateParams.start_date) {
@@ -94,6 +98,7 @@ angular
                     params.no_of_days = 7;
                     params.businessDate = $rootScope.businessDate;
                 }
+                
                 return RVNightlyDiarySrv.fetchUnassignedRoomList(params);
             }
         },

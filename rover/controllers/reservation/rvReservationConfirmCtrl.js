@@ -473,6 +473,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				isfromcreatereservation: false
 			});
 		};
+
 		var allRoomDetailsFetched = function(data) {
 			$scope.$emit("hideLoader");
 		};

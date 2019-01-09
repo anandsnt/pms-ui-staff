@@ -36,7 +36,7 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
-                var isFromStayCard = $stateParams.isFromStayCard === 'true',
+                var isFromStayCard = $stateParams.origin === 'STAYCARD',
                     listeners = {};
 
                 /*
@@ -200,6 +200,19 @@ angular.module('sntRover')
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(null, 1);
                 };
+
+                var showReservationSelected = function () {
+                    var dispatchData = {
+                        type: 'RESERVATION_SELECTED',
+                        selectedReservationId: $scope.currentSelectedReservation.id,
+                        reservationsList: $scope.diaryData.reservationsList.rooms,
+                        selectedRoomId: $scope.diaryData.selectedRoomId,
+                        currentSelectedReservation: $scope.currentSelectedReservation
+                    };
+
+                    store.dispatch(dispatchData);
+                };
+
                 /*
                  * Show selected reservation highlighted and enable edit bar
                  * @param reservation - Current selected reservation
@@ -263,6 +276,21 @@ angular.module('sntRover')
                     };
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
+                };
+
+                // Handle book room button actions.
+                var clickedBookRoom = (roomId, date, roomsList) => {
+                    var roomTypeId = _.where(roomsList, {id: roomId})[0].room_type_id,
+                        roomNo = _.where(roomsList, {id: roomId})[0].room_no;
+
+                    $state.go('rover.reservation.search', {
+                        selectedArrivalDate: date,
+                        selectedRoomTypeId: roomTypeId,
+                        selectedRoomId: roomId,
+                        selectedRoomNo: roomNo,
+                        startDate: $scope.diaryData.startDate,
+                        fromState: 'NIGHTLY_DIARY'
+                    });
                 };
 
                 /*
@@ -478,7 +506,6 @@ angular.module('sntRover')
                     }
                 };
 
-
                 /* Handle event emitted from child controllers.
                  * To toggle available and booked.
                  */
@@ -500,18 +527,18 @@ angular.module('sntRover')
                         selectReservation,
                         extendShortenReservation,
                         checkReservationAvailability,
-                        unAssignedRoomSelect
+                        unAssignedRoomSelect,
+                        clickedBookRoom
                     };
                 };
 
-
-                if (isFromStayCard) {
+                var mapCachedDataFromSrv = function() {
                     var params = RVNightlyDiarySrv.getCache();
 
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    if (params.selected_floor_ids.length > 0 || params.selected_room_type_ids.length > 0) {
+                    if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0 ) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.showFilterPanel = true;
                         $scope.diaryData.filterList = params.filterList;
@@ -520,6 +547,17 @@ angular.module('sntRover')
                         $scope.diaryData.hideRoomType = params.hideRoomType;
                         $scope.diaryData.hideFloorList = params.hideFloorList;
                     }
+                };
+
+                if (isFromStayCard) {
+                    mapCachedDataFromSrv();
+                }
+
+                // CICO-59170 : When coming back from RESERVATION_BASE_SEARCH screen
+                // Enable Avaialble Book slot mode.
+                if ($stateParams.origin === 'RESERVATION_BASE_SEARCH') {
+                    $scope.diaryData.showAvailableRooms = true;
+                    callbackForBookedOrAvailableListner();
                 }
 
                 // Initial State
@@ -565,17 +603,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
-                var showReservationSelected = function () {
-                    var dispatchData = {
-                        type: 'RESERVATION_SELECTED',
-                        selectedReservationId: $scope.currentSelectedReservation.id,
-                        reservationsList: $scope.diaryData.reservationsList.rooms,
-                        selectedRoomId: $scope.diaryData.selectedRoomId,
-                        currentSelectedReservation: $scope.currentSelectedReservation
-                    };
-
-                    store.dispatch(dispatchData);
-                };
+;
                 /*
                  * to render the grid view
                  */

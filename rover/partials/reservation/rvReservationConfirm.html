@@ -46,7 +46,8 @@
                         </div>
                     </div>
                     <div class="room-type">
-                        <h4>{{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="room.roomName">{{room.roomName}} - {{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="!room.roomName">{{room.roomTypeName}}<span></span></h4>
                         <div class="confirmation" ng-hide="room.confirm_no"> <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
                         </div>
@@ -231,10 +232,10 @@
                         <button type="button" id="go-to-search" ng-hide="reservationData.isHourly" class="button white blue-text" ng-click="goToSearchClicked()" translate>
                             SEARCH_RESERVATIONS
                         </button>
-                        <button type="button" id="" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" ng-hide="true"><!--Hidden for now-->
+                        <button type="button" class="button blue-text"  translate ng-click="checkin()" ng-disabled="!enableCheckInButton()" ng-class="{'white': enableCheckInButton(), 'grey': !enableCheckInButton()}" ng-hide="true"><!--Hidden for now-->
                             CHECKIN
                         </button>
-                        <button type="button" id="" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">
+                        <button type="button" class="button white blue-text"  translate ng-click="gotoDiaryScreen()" ng-show="reservationData.isHourly">
                             Diary
                         </button>
                     </div>
