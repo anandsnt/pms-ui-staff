@@ -2854,13 +2854,7 @@ sntRover.controller('RVbillCardController',
 		$scope.billingInfoModalOpened = false;
 	});
 
-
-	$scope.createNewBill = function(type) {
-		$scope.movedIndex = $scope.reservationBillData.bills.length;
-		var billData = {
-			"reservation_id": $scope.reservationBillData.reservation_id
-		};
-		/*
+	/*
 	 * Success Callback of create bill
 	 */
 	var createBillSuccessCallback = function(data) {
