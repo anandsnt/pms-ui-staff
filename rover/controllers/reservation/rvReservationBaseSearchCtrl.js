@@ -204,6 +204,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         rvReservationMainCtrl.callFromChildCtrl(baseData);
 
+        // CICO-59170 : Set and Reset room details for creation flow from room diary.
+        var setRoomDetailsForDiaryFlow = function() {
+            $scope.reservationData.tabs[0].room_id = $stateParams.selectedRoomId;
+            $scope.reservationData.rooms[0].room_id = $stateParams.selectedRoomId;
+
+            $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
+            $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
+        },
+        resetRoomDetailsIfInvalid = function () {
+            $scope.reservationData.tabs[0].room_id = null;
+            $scope.reservationData.rooms[0].room_id = null;
+
+            $scope.reservationData.tabs[0].roomName = null;
+            $scope.reservationData.rooms[0].roomName = null;
+        };
 
         var init = function() {
             $scope.viewState.identifier = "CREATION";
@@ -289,12 +304,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
             // CICO-59170 - Populate the value from the state variable
             if ( isFromNightlyDiary && $stateParams.selectedRoomId ) {
-                $scope.reservationData.tabs[0].room_id = $stateParams.selectedRoomId;
-                $scope.reservationData.rooms[0].room_id = $stateParams.selectedRoomId;
-
-                $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
-                $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
-
+                setRoomDetailsForDiaryFlow();
                 $scope.reservationData.isFromNightlyDiary = isFromNightlyDiary;
             }
 
@@ -377,9 +387,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         // CICO-59170 : check Diary Availability
         var validateDateForAvailability = function() {
-            var validateDateForAvailabilitySuccess = function( data ) {
-                $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ data.rooms[0].available_dates.length +' nights. By booking more nights room number will be unassigned.';
-                showValidationPopup();
+            var diffrenceBtwnDates = function () {
+                var fromDate = moment($scope.reservationData.arrivalDate),
+                    toDate = moment($scope.reservationData.departureDate),
+                    dateDiff = moment.duration(toDate.diff(fromDate)).asDays();
+
+                return dateDiff;
+            },
+            validateDateForAvailabilitySuccess = function( data ) {
+                var noOfAvailableDates = data.rooms[0].available_dates.length;
+
+                if (diffrenceBtwnDates() > noOfAvailableDates) {
+                    $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ noOfAvailableDates +' nights. By booking more nights room number will be unassigned.';
+                    resetRoomDetailsIfInvalid();
+                    showValidationPopup();
+                }
             };
 
             var options = {
@@ -1048,6 +1070,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             
             if (isFromNightlyDiary && roomTypeChanged) {
                 $scope.validationMsg = 'Room number will be unassigned by changing the room type';
+                resetRoomDetailsIfInvalid();
                 showValidationPopup();
             }
 
