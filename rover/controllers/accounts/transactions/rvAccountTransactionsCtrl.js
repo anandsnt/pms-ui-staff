@@ -1162,6 +1162,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.isEmailedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_emailed_once;
 	    	$scope.isPrintedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_printed_once;
 	    	$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
+	    	$scope.reservationBillData = $scope.transactionsDetails;
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',

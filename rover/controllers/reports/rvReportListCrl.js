@@ -240,6 +240,7 @@ sntRover.controller('RVReportListCrl', [
         (function () {
             
             if ($state.params.refresh) {
+                $scope.$parent.refreshReportList();
                 postProcess( $scope.$parent.reportList );
             }
 
