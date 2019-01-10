@@ -1695,6 +1695,16 @@
                     &.check-data-not-set { color: @grey3; }
                 }
             }
+
+            .actions {
+                margin: 10px 0;
+
+                .button { 
+                    width: 100%;
+                    margin-bottom: 0;
+                    .show();
+                }
+            }
             
             .rooms {
                 text-align: center;
@@ -1822,18 +1832,10 @@
 
                 .actions {
                     margin: 10px;
-                    .float;
+                }
 
-                    .button { 
-                        margin-bottom: 0;
-                        .calc-width(50, 5);
-                        .pull-left;
-                        .show;
-
-                        &.white { background-color: @grey1; } 
-
-                        &:first-child { margin-right: 10px; }
-                    }
+                .button {
+                    &.white { background-color: @grey1; } 
                 }
 
                 .add-new-button {
