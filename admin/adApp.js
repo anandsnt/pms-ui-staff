@@ -39,7 +39,10 @@ admin.config([
     'ivhTreeviewOptionsProvider',
     '$qProvider',
     function($httpProvider, $locationProvider, ivhTreeviewOptionsProvider, $qProvider) {
+
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         $httpProvider.interceptors.push('sharedHttpInterceptor');
+
         $locationProvider.html5Mode(true);
         $qProvider.errorOnUnhandledRejections(false);
         ivhTreeviewOptionsProvider.set({
