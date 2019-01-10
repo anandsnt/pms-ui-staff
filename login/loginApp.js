@@ -9,6 +9,7 @@ var login = angular.module('login', [
 
 angular.module('login').config([
     '$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         $httpProvider.interceptors.push('sharedHttpInterceptor');
     }]);
 /*
@@ -228,7 +229,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
 	};
-		
+
 	$scope.onSystemStatusClick = function() {
 		if (sntapp.cordovaLoaded) {
 			ngDialog.open({
@@ -577,7 +578,7 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
                 $scope.submit();
                 e.preventDefault();
                 e.stopPropagation();
-            } 
+            }
 
         }
         document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension
