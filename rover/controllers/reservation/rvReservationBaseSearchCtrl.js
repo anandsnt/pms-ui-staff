@@ -387,10 +387,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         // CICO-59170 : check Diary Availability
         var validateDateForAvailability = function() {
-            var validateDateForAvailabilitySuccess = function( data ) {
-                $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ data.rooms[0].available_dates.length +' nights. By booking more nights room number will be unassigned.';
-                resetRoomDetailsIfInvalid();
-                showValidationPopup();
+            var diffrenceBtwnDates = function () {
+                var fromDate = moment($scope.reservationData.arrivalDate),
+                    toDate = moment($scope.reservationData.departureDate),
+                    dateDiff = moment.duration(toDate.diff(fromDate)).asDays();
+
+                return dateDiff;
+            },
+            validateDateForAvailabilitySuccess = function( data ) {
+                var noOfAvailableDates = data.rooms[0].available_dates.length;
+
+                if (diffrenceBtwnDates() > noOfAvailableDates) {
+                    $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ noOfAvailableDates +' nights. By booking more nights room number will be unassigned.';
+                    resetRoomDetailsIfInvalid();
+                    showValidationPopup();
+                }
             };
 
             var options = {
