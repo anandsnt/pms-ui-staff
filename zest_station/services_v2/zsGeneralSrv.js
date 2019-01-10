@@ -611,7 +611,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchHotelTranslations = function() {
             var deferred = $q.defer(),
-                url = 'zest_station/translations';
+                url = 'zest_station/translations.json';
 
             zsBaseWebSrv2.getJSON(url).then(function(data) {
                 deferred.resolve(data.hotel_translations);

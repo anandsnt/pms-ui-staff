@@ -102,7 +102,7 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
     };
 
     this.getActionsClassName = function(total, pending) {
-        let className = '';
+        var className = '';
 
         if (total === 0) {
             return 'none';
