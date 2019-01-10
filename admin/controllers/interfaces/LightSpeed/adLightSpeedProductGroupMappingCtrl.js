@@ -16,7 +16,7 @@ angular.module('admin').controller('adLightSpeedProductGroupMappingCtrl', ['$sco
     };
 
     var formParamsForExternalMappings = function() {
-        var charge_code_id = JSON.parse($scope.data.selectedChargeCode).value;
+        var charge_code_id = $scope.data.selectedChargeCode;
         var selectedProductGroups = $scope.mappedProductGroups.map(function (productGroup) {
             return {
               name: productGroup.name,
@@ -47,7 +47,7 @@ angular.module('admin').controller('adLightSpeedProductGroupMappingCtrl', ['$sco
            successCallBack: function successCallBack(response) {
                $scope.data.filteredProductGroup = '';
                $scope.chargeCodes = response.charge_codes;
-               $scope.data.selectedChargeCode = JSON.stringify(response.charge_codes[0]);
+               $scope.data.selectedChargeCode = response.charge_codes[0].value;
                fetchProductGroup();
            },
            failureCallBack: function failureCallBack() {
@@ -125,7 +125,9 @@ angular.module('admin').controller('adLightSpeedProductGroupMappingCtrl', ['$sco
         });
         $scope.mappedProductGroups = $scope.productGroups.filter(function (productGroup) {
             return $scope.chargeCodeMapings.some(function (chargeCodeMapping) {
-                return chargeCodeMapping.external_value === productGroup.name && JSON.parse($scope.data.selectedChargeCode).charge_code === chargeCodeMapping.value;
+                var chargeCodeObject = _.findWhere($scope.chargeCodes, {value: $scope.data.selectedChargeCode});
+
+                return chargeCodeMapping.external_value === productGroup.name && chargeCodeObject.charge_code === chargeCodeMapping.value;
             });
         });
         if ($scope.data.filteredProductGroup.length > 0) {

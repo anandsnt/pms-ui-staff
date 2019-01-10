@@ -16,7 +16,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
     };
 
     var formParamsForExternalMappings = function() {
-        var charge_code_id = JSON.parse($scope.data.selectedChargeCode).value;
+        var charge_code_id = $scope.data.selectedChargeCode;
         var selectedProducts = $scope.mappedProducts.map(function (product) {
             return { name: product.name,
                      sku: product.sku,
@@ -46,7 +46,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
            successCallBack: function successCallBack(response) {
                $scope.data.filteredProduct = '';
                $scope.chargeCodes = response.charge_codes;
-               $scope.data.selectedChargeCode = JSON.stringify(response.charge_codes[0]);
+               $scope.data.selectedChargeCode = response.charge_codes[0].value;
                fetchProducts();
            },
            failureCallBack: function failureCallBack() {
@@ -124,7 +124,9 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         });
         $scope.mappedProducts = $scope.products.filter(function (product) {
             return $scope.chargeCodeMapings.some(function (chargeCodeMapping) {
-                return parseInt(chargeCodeMapping.external_value) === product.id && JSON.parse($scope.data.selectedChargeCode).charge_code === chargeCodeMapping.value;
+                var chargeCodeObject = _.findWhere($scope.chargeCodes, {value: $scope.data.selectedChargeCode});
+
+                return parseInt(chargeCodeMapping.external_value) === product.id && chargeCodeObject.charge_code === chargeCodeMapping.value;
             });
         });
         if ($scope.data.filteredProduct.length > 0) {

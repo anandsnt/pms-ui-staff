@@ -25,7 +25,7 @@
         <label>Charge Codes</label>
         <div class="select">
             <select ng-model="data.selectedChargeCode" ng-change="filterMappedAndNonMappedProductGroups()">
-               <option value="{{charge_code}}" ng-repeat="charge_code in chargeCodes">{{charge_code.charge_code}} - {{charge_code.description}}</option>
+               <option value="{{charge_code.value}}" ng-repeat="charge_code in chargeCodes">{{charge_code.charge_code}} - {{charge_code.description}}</option>
             </select>
         </div>
     </div>
