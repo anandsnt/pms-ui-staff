@@ -167,7 +167,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                 $scope.statistics.details.monthly_data.forEach((data, index) => {
                     if (data.month !== monthlyData.month) {
                         $scope.statistics.details.monthly_data[index].isOpen = false;
-                        //data.reservations = [];
+                        data.reservations = [];
                     } 
                 });
                 loadReservations(1, monthlyData);
