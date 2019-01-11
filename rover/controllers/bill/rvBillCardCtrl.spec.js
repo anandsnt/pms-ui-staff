@@ -117,8 +117,7 @@ describe('RVbillCardController', function () {
                 var shouldShowVoidBill = $scope.shouldShowVoidBill();
 
                 expect(shouldShowVoidBill).toBe(false);               
-            });
-            
+            });            
 
         });    
 });
