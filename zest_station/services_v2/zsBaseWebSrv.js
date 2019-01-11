@@ -1,24 +1,10 @@
-
-// To fix the issue with csrf token in ajax requests
-sntZestStation.config(function($httpProvider) {
-	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-	var m = document.getElementsByTagName('meta');
-
-	for (var i in m) {
-		if (m[i].name === 'csrf-token') {
-			$httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
-			break;
-		}
-	}
-});
-
 sntZestStation.service('zsBaseWebSrv', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
 	var webserviceErrorActions = function(url, deferred, errors, status) {
 		var urlStart = url.split('?')[0];
 		// please note the type of error expecting is array
 		// so form error as array if you modifying it
-		
+
 
 if (status === 406) { // 406- Network error
 			deferred.reject(errors);
@@ -116,7 +102,7 @@ if (status === 406) { // 406- Network error
 				httpDict.data.workstation_id = $rootScope.workstation_id;
 			}
 		}
-		
+
 
 		$http(httpDict).success(function(response, status, headers) {
 			// 202 ---> The request has been accepted for processing, but the processing has not been completed.

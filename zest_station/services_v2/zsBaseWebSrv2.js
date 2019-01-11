@@ -1,17 +1,3 @@
-// To fix the issue with csrf token in ajax requests
-sntZestStation.config(function($httpProvider) {
-  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-  var m = document.getElementsByTagName('meta');
-
-  for (var i in m) {
-    if (m[i].name === 'csrf-token') {
-	  $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
-	  break;
-	}
-  }
-});
-
-
 sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
     /**
@@ -55,7 +41,7 @@ sntZestStation.service('zsBaseWebSrv2', ['$http', '$q', '$window', '$rootScope',
 			var urlStart = url.split('?')[0];
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
-			
+
 
 if (status === 406) { // 406- Network error
 				deferred.reject(response.errors);
