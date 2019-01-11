@@ -5,7 +5,7 @@ function($q, ADBaseWebSrvV2) {
 	*/
 	this.fetchCoTaMandatoryFields = function(params) {
 		var deferred = $q.defer(),
-			url = '/admin/co_ta_settings/current_settings';
+			url = '/admin/co_ta_settings/current_settings.json';
 
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
