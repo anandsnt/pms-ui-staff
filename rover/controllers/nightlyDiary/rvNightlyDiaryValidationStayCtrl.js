@@ -22,7 +22,7 @@ sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermission
     * @param {Object} [470 error data with is_house_available ,room_type_available flags ]
     * @return {String} [Overbooking status message]
     */
-   var checkOverBooking = function() {
+    var checkOverBooking = function() {
         var isHouseOverbooked       = !$scope.popupData.data.is_house_available,
             isRoomTypeOverbooked    = !$scope.popupData.data.is_room_type_available,
             canOverbookHouse        = hasPermissionToHouseOverBook(),
@@ -44,9 +44,11 @@ sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermission
         }
 
        return overBookingStatusOutput;
-   };
+    };
 
-   // Disable the overBooking button if there is no permission..
-   $scope.popupData.disableOverBookingButton = checkOverBooking() === 'NO_PERMISSION_TO_OVERBOOK';
+	// Disable the overBooking button if there is no permission..
+	if ($scope.popupData.showOverBookingButton) {
+		$scope.popupData.disableOverBookingButton = checkOverBooking() === 'NO_PERMISSION_TO_OVERBOOK';
+	}
 
 }]);
