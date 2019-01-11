@@ -103,7 +103,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
 
         // Toggle the reservation list view displayed for a month
         $scope.showMonthlyReservations = function (monthlyData) {
-            if (_.isEmpty(monthlyData.reservations)) {
+            if (_.isEmpty(monthlyData.reservations.reservations)) {
                 return false;
             }
             monthlyData.isOpen = !monthlyData.isOpen;
@@ -151,7 +151,7 @@ angular.module('sntRover').controller("RVGuestCardStatisticsController", [
         // Get style for statistics details expanded view
         $scope.getStyleForExpandedView = function (monthlyData) {
             var styleClass = {},
-                count = monthlyData.reservations_count || (monthlyData.reservations && monthlyData.reservations.length);
+                count = monthlyData.reservations_count || (monthlyData.reservations.reservations && monthlyData.reservations.reservations.length);
 
             if (monthlyData.isOpen) {
                 var margin = count * 70 + 30;
