@@ -90,7 +90,7 @@
                     <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible === true || textInQueryBox !== '' ">
                         <label class="checkbox">
                             <span class="icon-form icon-checkbox" ng-class="{'checked': row.selected}"></span>
-                            <input type="checkbox" ng-change="onCardSelection(row)" ng-model="row.selected">
+                            <input type="checkbox" ng-change="onCardSelection(row)" ng-model="row.selected" ng-disabled="viewState.hasInitiatedMergeVerification">
                         </label>
                         <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
                         <a ng-click="navigateToDetails(row.id, row.account_type)" ng-class="{'no-arrow': viewState.hasInitiatedMergeVerification}">

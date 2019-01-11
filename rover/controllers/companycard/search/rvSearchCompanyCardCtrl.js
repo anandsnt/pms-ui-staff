@@ -385,6 +385,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @return {void}
 		 */
 		$scope.navigateToDetails = (id, accountType) => {
+			if ($scope.viewState.hasInitiatedMergeVerification) {
+				return false;
+			}
+
 			let ids = _.map($scope.viewState.selectedCardsForMerge, (card) => {
 				return { id: card.id, isPrimary: card.isPrimary || false };
 			});
