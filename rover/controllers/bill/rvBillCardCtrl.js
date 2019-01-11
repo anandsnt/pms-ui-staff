@@ -2286,7 +2286,7 @@ sntRover.controller('RVbillCardController',
 	$scope.findNextBillToReview = function() {		
 		var billIndex = 0;
 
-		setTimeout(function() {
+		$timeout(function() {
 			var billNumber = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_number;
 			var scroller = $scope.$parent.myScroll['bill-tab-scroller'];
 			
@@ -2869,10 +2869,6 @@ sntRover.controller('RVbillCardController',
 	var createBillSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.refreshScroller('bill-tab-scroller');
-setTimeout(function() {
-	var scroller = $scope.$parent.myScroll['bill-tab-scroller'];
-		scroller.scrollTo(scroller.maxScrollX, scroller.maxScrollY);
-}, 3000)
 		
 		// CICO-56584
 		var isBillDataMissing = false;
