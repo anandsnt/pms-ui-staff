@@ -2286,6 +2286,15 @@ sntRover.controller('RVbillCardController',
 	$scope.findNextBillToReview = function() {		
 		var billIndex = 0;
 
+		setTimeout(function() {
+			var billNumber = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_number;
+			var scroller = $scope.$parent.myScroll['bill-tab-scroller'];
+			
+			if (billNumber > 7) {
+				scroller.scrollTo(-133*(billNumber-6), scroller.maxScrollY);
+			}			
+		}, 100);
+
 		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
 			// Checking last bill balance for stand-alone only.
 			if (typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
@@ -2859,6 +2868,12 @@ sntRover.controller('RVbillCardController',
 	 */
 	var createBillSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
+		$scope.refreshScroller('bill-tab-scroller');
+setTimeout(function() {
+	var scroller = $scope.$parent.myScroll['bill-tab-scroller'];
+		scroller.scrollTo(scroller.maxScrollX, scroller.maxScrollY);
+}, 3000)
+		
 		// CICO-56584
 		var isBillDataMissing = false;
 
@@ -3203,7 +3218,7 @@ sntRover.controller('RVbillCardController',
 	/*
 	 * Should show void bill button
 	 * bill must be locked, payment type must be other than DB, 
-	 * Number of bills must be < 10, balance must be 0.00
+	 * balance must be 0.00
 	 */
 	$scope.shouldShowVoidBill = function() {
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
