@@ -37,6 +37,14 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
             display: 'block'
         };
 
+        let currentBusinessDate = tzIndependentDate(this.props.state.currentBusinessDate);
+        let diff = avialableRoomStartDate.getTime() - currentBusinessDate.getTime();
+
+        if (diff < 0) {
+            style.pointerEvents = 'none';
+            style.background = 'rgba(0, 0, 0, .1)';
+            style.cursor = 'default';
+        }
         return style;
     },
     render() {
