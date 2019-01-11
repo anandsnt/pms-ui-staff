@@ -2270,13 +2270,14 @@ sntRover.controller('RVbillCardController',
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
-		else if ($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType !== "DB") {
+		else if (ActiveBillBalance !== "0.00" && paymentType !== "DB") {
 			// Show payment popup for stand-alone only.
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
 		}
 		else {
 			$scope.reviewStatusArray[index].reviewStatus = true;
+			$scope.getBillData($scope.currentActiveBill + 1);
 			$scope.findNextBillToReview();
 		}
 	};
@@ -2287,7 +2288,7 @@ sntRover.controller('RVbillCardController',
 
 		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
 			// Checking last bill balance for stand-alone only.
-			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
+			if (typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
 				    paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
 
@@ -2853,63 +2854,73 @@ sntRover.controller('RVbillCardController',
 		$scope.billingInfoModalOpened = false;
 	});
 
+	/*
+	 * Success Callback of create bill
+	 */
+	var createBillSuccessCallback = function(data) {
+		$scope.$emit('hideLoader');
+		// CICO-56584
+		var isBillDataMissing = false;
+
+		for (var i = 0 ; i < (data.bill_number - 1) ; i++) {
+			if (!$scope.reservationBillData.bills[i]) {
+				isBillDataMissing = true;
+			}
+		}
+		if (isBillDataMissing) {
+
+			var fetchSuccessCallback = function(reservationBillDataFetched) {
+					$scope.reservationBillData.bills = reservationBillDataFetched.bills;
+				},
+				dataToSend = {
+					params: $scope.reservationBillData.reservation_id,
+					successCallBack: fetchSuccessCallback
+				};
+
+			$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
+		} else {
+			// Update Review status array.
+			$scope.reservationBillData.bills[data.bill_number - 1] = {
+				bill_id: data.id,
+				bill_number: data.bill_number,
+				total_amount: 0
+			};
+			var data = {};
+
+			data.reviewStatus = false;
+			data.billNumber = ($scope.reservationBillData.bills.length + 1).toString();
+			data.billIndex = $scope.reservationBillData.bills.length;
+			$scope.isAllBillsReviewed = false;
+			$scope.reviewStatusArray.push(data);
+			// CICO-43344 : Update emailOptedStatusList array
+			var obj = {
+				billId: data.id,
+				isOptedForEmail: false
+			};
+
+			$scope.emailOptedStatusList.push(obj);
+		}
+		
+	};
 
 	$scope.createNewBill = function(type) {
 		$scope.movedIndex = $scope.reservationBillData.bills.length;
 		var billData = {
 			"reservation_id": $scope.reservationBillData.reservation_id
-		};
-		/*
-		 * Success Callback of move action
-		 */
-		var createBillSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			// CICO-56584
-			var isBillDataMissing = false;
-
-			for (var i = 0 ; i < (data.bill_number - 1) ; i++) {
-				if (!$scope.reservationBillData.bills[i]) {
-					isBillDataMissing = true;
-				}
-			}
-			if (isBillDataMissing) {
-
-				var fetchSuccessCallback = function(reservationBillDataFetched) {
-						$scope.reservationBillData.bills = reservationBillDataFetched.bills;
-					},
-					dataToSend = {
-						params: $scope.reservationBillData.reservation_id,
-						successCallBack: fetchSuccessCallback
-					};
-
-				$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
-			} else {
-				// Update Review status array.
-				$scope.reservationBillData.bills[data.bill_number - 1] = {
-					bill_id: data.id,
-					bill_number: data.bill_number,
-					total_amount: 0
-				};
-				var data = {};
-
-				data.reviewStatus = false;
-				data.billNumber = ($scope.reservationBillData.bills.length + 1).toString();
-				data.billIndex = $scope.reservationBillData.bills.length;
-				$scope.isAllBillsReviewed = false;
-				$scope.reviewStatusArray.push(data);
-				// CICO-43344 : Update emailOptedStatusList array
-				var obj = {
-					billId: data.id,
-					isOptedForEmail: false
-				};
-
-				$scope.emailOptedStatusList.push(obj);
-			}
-			
-		};
+		};		
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
+	/*
+	 * Void bill success
+	 */
+	$scope.addListener('VOID_BILL_GENERATED', function(event, billData) {
+		$scope.closeDialog();
+		angular.forEach(billData, function(value, key) {
+			createBillSuccessCallback(value);
+		});
+		$scope.getBillData($scope.currentActiveBill);
+	});
 
 	/*
 	*Open the terms and conditions dialog after fetching
@@ -2954,7 +2965,7 @@ sntRover.controller('RVbillCardController',
 
 		$scope.reviewStatusArray = [];
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			if (value.total_fees !== undefined) {
+
 				var data = {};
 		        // Bill is reviewed(true) or not-reviewed(false).
 
@@ -2962,7 +2973,7 @@ sntRover.controller('RVbillCardController',
 				data.billNumber = value.bill_number;
 				data.billIndex = key;
 				$scope.reviewStatusArray.push(data);
-			}
+
 		});
 	};
 
@@ -3110,7 +3121,7 @@ sntRover.controller('RVbillCardController',
     /*
     * Checks whether the amount needs to show or not
     */
-    $scope.isBalanceShown = function(is_rate_suppressed) {
+    $scope.isBalanceShown = function(is_rate_suppressed, billData) {
     	return (!is_rate_suppressed || $scope.isSRViewRateBtnClicked);
     };
 
@@ -3188,7 +3199,31 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.reloadCurrentActiveBill = function() {
 		$scope.getBillData($scope.currentActiveBill);
-	};	
+	};
+	/*
+	 * Should show void bill button
+	 * bill must be locked, payment type must be other than DB, 
+	 * Number of bills must be < 10, balance must be 0.00
+	 */
+	$scope.shouldShowVoidBill = function() {
+		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
+		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
+		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 
+		 $scope.reservationBillData.is_void_bill_enabled && 
+		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_voided && 
+		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill;
+	};
+	/*
+	 * Open void bill popup
+	 */
+	$scope.clickedVoidBillButton = function() {
+		ngDialog.open({
+			template: '/assets/partials/bill/rvVoidBillPopup.html',
+			controller: 'RVVoidBillPopupCtrl',
+			className: '',
+			scope: $scope
+		});
+	};
 
 	$scope.$on( '$destroy', updateGenerateFolioFlag );
 	    $scope.putInQueue = false;

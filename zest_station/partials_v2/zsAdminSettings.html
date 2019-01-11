@@ -135,6 +135,22 @@
                         </select>
                     </div>
                 </div>
+                <div class="entry with-label" ng-show="zestStationData.useExtCamera">
+                    <label>ID scan Camera</label>
+                    <div class="entry select">
+                        <select ng-model="selectedCamera" class="placeholder" ng-options="camera.id as camera.label for camera in zestStationData.connectedCameras">
+                            <option value="">Select Camera</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry with-label" ng-show="zestStationData.useExtCamera && zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification'">
+                    <label>ID scan Camera for selfie</label>
+                    <div class="entry select">
+                        <select ng-model="selectedFRCamera" class="placeholder" ng-options="camera.id as camera.label for camera in zestStationData.connectedCameras">
+                            <option value="">Select Camera</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="entry with-label" ng-show="showDebugModeOption">
                     <label>Demo Mode</label>
                     <label class='admin-label-description'>Allows Station to simulate a check-in card swipe and key encoding</label>

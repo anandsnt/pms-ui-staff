@@ -1,0 +1,72 @@
+<div class="form float" ng-if="state.activeTab === 'SETUP'">
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text" value="config.email"
+                        label="{{'EMAIL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </div>
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Account <span>Configuration</span></h3>
+            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}}</em>
+        </div>
+        <fieldset class="holder left">
+            <ad-textbox inputtype="number" value="config.settling_account_number"
+                        required="yes"
+                        label="{{'SETTLING_ACC'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>SFTP <span>Access Configuration</span></h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text" value="config.sftp_host"
+                        label="{{'HOST'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="password"
+                        value="config.sftp_password"
+                        label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text"
+                        value="config.sftp_path"
+                        label="{{'PATH'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text"
+                        value="config.sftp_username"
+                        label="{{'USERNAME'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <div class="actions float">
+        <button type="button" id="cancel" class="button blank add-data-inline"
+                ng-click="goBackToPreviousState()" translate>
+            CANCEL
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green"
+                ng-click="saveInterfaceConfig()" translate>
+            SAVE_CHANGES
+        </button>
+    </div>
+</div>

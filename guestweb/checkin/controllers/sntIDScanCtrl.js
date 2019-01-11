@@ -19,6 +19,21 @@
 
 			$scope.checkinReservationData = checkinDetailsService.getResponseData();
 
+			var recordIDScanActions = function(actionType, key, value) {
+				value = value ? value : $scope.idScanData.selectedGuest.first_name + ' ' + $scope.idScanData.selectedGuest.last_name;
+				var params = {
+					"id": $scope.checkinReservationData.reservation_id,
+					"application": (typeof $rootScope.application !== "undefined") ? $rootScope.application : 'WEB',
+					"action_type": actionType,
+					"details": [{
+						"key": key,
+						"new_value": value
+					}]
+				};
+
+				guestIDScanService.recordReservationActions(params);
+			};
+
 			/* ******************* GUEST LIST *********************** */
 
 			$scope.selectGuest = function(selectedGuest) {
@@ -46,6 +61,7 @@
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
 					$scope.screenData.scanMode = 'GUEST_LIST';
+					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
 				};
 				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
 
@@ -81,14 +97,42 @@
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
 				if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
 					$scope.screenData.scanMode = 'EXPIRATION_DATE_INVALID';
+					recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date) for the guest');
 				} else if (data.expirationStatus === 'Expired') {
 					$scope.screenData.scanMode = 'ID_DATA_EXPIRED';
+					recordIDScanActions('ID_ANALYZING', 'Failed (ID expired) for the guest');
 				} else if (!data.document_number) {
 					$scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
+					recordIDScanActions('ID_ANALYZING', 'Failed (blank ID number) for the guest');
 				} else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
+					if ($rootScope.face_recognition_enabled) {
+						$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
+					} 
 				}
 			});
+
+			$scope.$on('FR_ANALYSIS_STARTED', function() {
+				$scope.screenData.facialRecognitionInProgress = true;
+				$scope.$emit('showLoader');
+			});
+			$scope.$on('FR_FAILED', function() {
+				$scope.screenData.facialRecognitionInProgress = false;
+				$scope.screenData.scanMode = 'FACIAL_RECOGNTION_FAILED';
+				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Failed for the guest');
+			});
+
+			$scope.$on('FR_SUCCESS', function() {
+				$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
+				recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest');
+			});
+
+			$scope.$on('IMAGE_ANALYSIS_FAILED', function(event, data) {
+				var errorMessage = data && Array.isArray(data) ? data[0] + ' for the guest' : 'Failed for the guest';
+
+				recordIDScanActions('ID_IMAGE_PROCESSING', errorMessage);
+			});
+
 
 			$scope.showGuestList = function() {
 				$scope.screenData.scanMode = 'GUEST_LIST';
@@ -115,19 +159,22 @@
 				nextPageActions();
 			};
 
+			$scope.skipIdScan = function() {
+				$rootScope.idScanSkipped = true;
+				nextPageActions();
+			};
+
 			$scope.toggleSkip = function() {
 				$scope.idScanData.idScanSkipped = !$scope.idScanData.idScanSkipped;
 			};
 			
-
-			$scope.$on('CREDENTIALS_VALIDATED', function() {
+			var startScanning = function() {
 				if ($scope.selectedReservation.guest_details.length > 1) {
 					$scope.screenData.scanMode = 'GUEST_LIST';
-				}
-				else {
+				} else {
 					$scope.selectGuest($scope.selectedReservation.guest_details[0]);
 				}
-			});
+			};
 
 			(function() {
 				
@@ -150,7 +197,7 @@
 					verificationMethod: 'NONE', // FR will be added later
 					idScanSkipped: false
 				};
-				$scope.validateSubsription();
+				startScanning();
 				$scope.isLoading = false;
 			}());
 		}

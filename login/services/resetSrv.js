@@ -1,4 +1,4 @@
-login.service('resetSrv', ['$http', '$q', '$window',
+angular.module('login').service('resetSrv', ['$http', '$q', '$window',
     function($http, $q, $window) {
         /*
          * Reset Password

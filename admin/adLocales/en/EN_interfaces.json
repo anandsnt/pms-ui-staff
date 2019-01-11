@@ -16,7 +16,6 @@
 	"USER_NAME" : "User Name",
 	"END_POINT" : "End Point",
 	"ACTIVATE_INACTIVATE" : "Activate / Inactivate",
-	"DISABLE_LEGACY" : "Disable legacy",
 	"CUBILIS_HEADER": "Cubilis",
 	"VERTICALBOOKING_HEADER": "VerticalBooking",
 	"DEFAULT_RATE": "Default Rate",
@@ -99,6 +98,7 @@
 	"PMI_HEADER": "PMI - D2O Interface Setup",
 	"EASI_HEADER": "EASi",
 	"BASWARE_HEADER": "Basware",
+	"HOGIA_HEADER": "Hogia",
 	"MOBILE": "Mobile",
   "ENHANCE_DEPOSIT_NOTES": "Enhance Deposit Notes",
   "PAID_OUT_CHARGE_GROUP": "Paid out charge group",
@@ -107,4 +107,13 @@
   "TAX_CHARGE_CODE_21": "Tax Charge Code 21%",
   "EXPORT": "Export",
   "quicktext_SETUP_HEADER": "Quicktext Setup",
-  "DEFAULT_SOURCE_CODE": "Default Source Code"
+  "DEFAULT_SOURCE_CODE": "Default Source Code",
+	"API_URL": "API URL",
+	"OAUTH_URL": "OAuth URL",
+	"CLIENT_ID": "Client ID",
+	"CLIENT_SECRET": "Client Secret",
+  "GL_ACCOUNT": "GL Account",
+  "VAT_CODE": "VAT Code",
+  "COST_CENTER": "Cost Center",
+	"SETTLING_ACC": "Settling Account Number"
+

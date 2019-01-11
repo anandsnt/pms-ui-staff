@@ -490,11 +490,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		});
 
         // Checks whether the accompany guest label should be shown or not
-
-		var guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.view_scanned_guest_id;
-
         $scope.showAccompanyingGuestLabel = function() {
-            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count) > 1 || guestIdAdminEnabled;
+            // Initial loading doesn't contain the accompanying_guests_details
+            $scope.guestData.accompanying_guests_details = $scope.guestData.accompanying_guests_details || [];
+            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count + $scope.guestData.accompanying_guests_details.length) > 1;
         };
 
 	}

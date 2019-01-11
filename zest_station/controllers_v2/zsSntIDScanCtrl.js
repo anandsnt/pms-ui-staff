@@ -236,6 +236,9 @@
 					$scope.screenData.facialRecognitionInProgress = false;
 					$scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
 					$scope.idScanData.selectedGuest.scannedDetails = data;
+					if ($scope.deviceConfig.useExtCamForFR) {
+						$scope.startFacialRecognitionUsingExtCamera();
+					}
 				} 
 				else {
 					$scope.idScanData.selectedGuest.scannedDetails = data;
@@ -365,6 +368,7 @@
 
 			var goBackToScanAgain = function() {
 				var backToGuestListScreenModes = ['FINAL_ID_RESULTS',
+					'FACIAL_RECOGNITION_MODE',
 					'FACIAL_RECOGNTION_FAILED',
 					'UPLOAD_FRONT_IMAGE',
 					'UPLOAD_FRONT_IMAGE_FAILED',
@@ -382,6 +386,7 @@
 					$scope.idScanData.staffVerified = false;
 					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 				}
+				$scope.$emit('STOP_EXT_CAM');
 			};
 			// Back button will be only shown when staff is reviewwing
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, goBackToScanAgain);
@@ -404,6 +409,35 @@
 				$scope.screenData.scanMode = 'ADMIN_LOGIN';
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
 			};
+
+			/** *************** External camera actions ****** **/
+
+			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
+				$scope.$emit('showLoader');
+				$scope.startExtCameraCapture('front-image');
+			});
+			$scope.$on('FRONT_IMAGE_CONFIRMED', function() {
+				if ($scope.screenData.scanMode === 'UPLOAD_BACK_IMAGE' && $scope.deviceConfig.useExtCamera) {
+					$scope.$emit('showLoader');
+					$scope.startExtCameraCapture('back-image');
+				}
+			});
+			$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+				$scope.screenData.scanMode = 'ANALYSING_ID_DATA';
+			});
+
+			$scope.$on('EXT_CAMERA_STARTED', function() {
+				$timeout(function() {
+					$scope.$emit('hideLoader');
+				}, 3000);
+			});
+
+			$scope.$on('EXT_CAMERA_FAILED', function() {
+				$scope.$emit('hideLoader');
+			});
+			$scope.$on('FR_CAMERA_STARTING', function(){
+				$scope.$emit('showLoader');
+			});
 
 			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
@@ -433,6 +467,11 @@
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
+				$scope.setConfigurations({
+					useiOSAppCamera: $scope.zestStationData.iOSCameraEnabled,
+					useExtCamera: $scope.zestStationData.connectedCameras.length > 0,
+					useExtCamForFR: $scope.zestStationData.connectedCameras.length > 0
+				});
 			}());
 		}
 	]);

@@ -118,8 +118,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
 				$scope.$emit("saveContactInformation");
 			}
-
-
+			$scope.$broadcast("CLEAR_ERROR_MESSAGE");
 		};
 
 		/* -------AR account starts here-----------*/
@@ -309,6 +308,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 
 			$timeout(function() {
+                $scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 				$scope.activateSelectedTab();				
 			}, 1000);
 		};
@@ -516,7 +516,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				'id': id
 			};
 
-			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
+			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformationAndMandatoryFields, data, successCallbackOfInitialFetch);
 		}
 
 

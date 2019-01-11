@@ -67,7 +67,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     _.each(data.commission_details, function(element, index) {
                         _.extend(element, {is_checked: false});
                     });
-                    $scope.selectedHotelCurrency = getCurrencySign(data.currency.value);
+                    $scope.currencySymbol = getCurrencySign(data.currency.value);
                     $scope.commissionDetails = data.commission_details;
                     $scope.commissionSummary.totalCommissionableRevenue = data.total_commissionable_revenue;
                     $scope.commissionSummary.totalReservationsRevenue = data.total_reservations_revenue;
@@ -83,6 +83,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     refreshScroll();
                     hideLoaderIfWasStarted();
                     $scope.filterData.commissionsLoaded = true;
+                    clearCurrentSelection();
                 },
                 onCommissionFetchFailure = function(error) {
                     $scope.$emit('hideLoader');
@@ -211,6 +212,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 $scope.prePaidCommissions = _.filter($scope.prePaidCommissions, function(value) {
                     return value.reservation_id != commission.reservation_id;
                 });
+                // If any one of the items is unselected, set the all select flag to false
+                $scope.filterData.selectAll = false;
             }
             if ($scope.selectedCommissions.length == 0 && $scope.prePaidCommissions.length == 0) {
                 fetchCommissionDetails(false);
@@ -222,11 +225,19 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 updateCommissionSummary(commissionList);
             }
 
+            // Check if all the items have been selected, if selected toggle on the select all checbox
+            var isAllCommissionsSelected = _.every($scope.commissionDetails, function(commissionDetail) {
+                return commissionDetail.is_checked;
+            });
+
             // TODO: Adding the fix to solve the selection issue. The code above this comment needs to be revisisted
             if ($scope.selectedCommissions.length === 0 && $scope.prePaidCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
-            }            
+            } else if (isAllCommissionsSelected) {            
+                $scope.filterData.selectAll = true;
+                $scope.toggleSelection();
+            }
         };
 
     // Updates the checked status of the current  page records while making the whole selection
@@ -311,12 +322,13 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         };
 
-        $scope.toggleHoldStatus = function(commission) {
-
+        $scope.toggleHoldStatus = function($event, commission) {
             if (commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid") {
                 $scope.errorMessage = ['Only transactions on \'UNPAID\' status can be set to On Hold'];
+                $event.stopPropagation();
                 return;
             }
+
             var commissionToUpdate = {};
 
             commissionToUpdate.reservation_id = commission.reservation_id;
@@ -381,6 +393,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 $( '#print-orientation' ).remove();
             };
 
+        $scope.$on("CLEAR_ERROR_MESSAGE", function() {
+            $scope.errorMessage = '';
+        });
     // To print the current screen details.
         $scope.clickedPrintButton = function() {
 
@@ -486,6 +501,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             var onPropertyFetchSuccess = function(data) {
 
                 $scope.multiProperies = data.multi_properties;
+                $scope.$emit('hideLoader');
             };
 
             var requestData = {};
@@ -504,6 +520,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
                 $scope.shouldShowPropertyDropDown = true;
                 fetchMultiProperties();
+            } else {
+                $scope.shouldShowPropertyDropDown = false;
+                init();
             }
         
         });
@@ -535,7 +554,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             toggleCommission: false,
             commssionRecalculationValue: '',
              // By default set the value to current hotel
-                selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
+            selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
             commissionsLoaded: false
             };
         // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID

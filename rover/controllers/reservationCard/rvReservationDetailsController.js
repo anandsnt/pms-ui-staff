@@ -453,7 +453,9 @@ sntRover.controller('reservationDetailsController',
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
 
-			$scope.$emit("guestTabUpdated", {"shouldShowGuestDetails": $scope.shouldShowGuestDetails});
+			$scope.$emit("SHOW_GUEST_ID_LIST", {
+				"shouldShowGuestDetails": isFromCheckin
+			});
 
 		};
 
@@ -474,12 +476,15 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.shouldShowTimeDetails = false;
 		$scope.toggleTime = function() {
-			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;
-			if ($scope.shouldShowTimeDetails) {
-				$scope.shouldShowGuestDetails = false;
-			}
+			$scope.showEditDates = false;
+			$scope.shouldShowTimeDetails = !$scope.shouldShowTimeDetails;	
 		};
 
+		$scope.showEditDates = false;
+		$scope.toggleReservationDates = function() {
+			$scope.shouldShowTimeDetails = false;
+			$scope.showEditDates = !$scope.showEditDates;
+		};
 
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
@@ -1700,18 +1705,21 @@ sntRover.controller('reservationDetailsController',
 		if (!$scope.hotelDetails.id_collection.rover.enabled) {
 			return false;
 		}
-		if (!$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true)) {
+		if ($scope.guestData && !$scope.isGuestIdUploaded($scope.guestData.primary_guest_details, true)) {
 			return true;
 		}
 		if (!$scope.hotelDetails.id_collection.rover.scan_all_guests) {
 			return false;
 		}
 		var guestIdRequired = false;
-		_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
-			if (!$scope.isGuestIdUploaded(guestInfo, false)) {
-				guestIdRequired = true;
-			}
-		});
+		if ($scope.guestData) {
+			_.each($scope.guestData.accompanying_guests_details, function (guestInfo) {
+				if (!$scope.isGuestIdUploaded(guestInfo, false)) {
+					guestIdRequired = true;
+				}
+			});
+		}
+		
 		return guestIdRequired;
 	};
 

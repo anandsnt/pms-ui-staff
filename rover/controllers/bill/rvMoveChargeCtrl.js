@@ -207,12 +207,12 @@ sntRover.controller('RVMoveChargeCtrl',
 			};
 			var chargesMovedSuccess = function(response) {
 				$scope.$emit("hideLoader");
+				response.data.toBill = $scope.targetBillId;
 				$scope.$emit('moveChargeSuccsess', response.data);
 				$scope.closeDialog();
 			};
 			var failureCallback = function(data) {
-				console.log("@failureCallback");
-				console.log(data);
+
                 $scope.errorMessage = data;
                 $scope.$emit('hideLoader');
             };

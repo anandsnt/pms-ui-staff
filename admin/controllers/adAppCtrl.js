@@ -870,11 +870,11 @@ admin.controller('ADAppCtrl', [
         };
 
         $scope.logout = function() {
-            var redirUrl = '/logout/';
-
-            $timeout(function() {
-                $window.location.href = redirUrl;
-            }, 300);
+            ADAppSrv.signOut().finally(function() {
+                $timeout(function () {
+                    $window.location.href = '/logout';
+                });
+            });
         };
 
         $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
@@ -893,4 +893,17 @@ admin.controller('ADAppCtrl', [
             index = _.isUndefined(index) ? $scope.selectedIndex : index;
             return index;
         };
-}]);
+
+        (function() {
+            if (!adminMenuData.menus.length) {
+                var staffURL = '/staff/h/';
+
+                $('body').addClass('no-animation');
+                $('#admin-header').css({'z-index': '0'});
+                $('section.content-scroll').css({'overflow': 'visible'});
+
+                staffURL += sntAuthorizationSrv.getProperty();
+                $window.location.href = staffURL;
+            }
+        })();
+    }]);

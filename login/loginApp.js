@@ -1,9 +1,21 @@
-var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll', 'ngDialog', 'clickTouch']);
+var login = angular.module('login', [
+    'ui.router',
+    'documentTouchMovePrevent',
+    'ngSanitize',
+    'ng-iscroll',
+    'ngDialog',
+    'clickTouch',
+    'sharedHttpInterceptor']);
 
+angular.module('login').config([
+    '$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        $httpProvider.interceptors.push('sharedHttpInterceptor');
+    }]);
 /*
  * Set page Titles
  */
-login.run(function($rootScope) {
+angular.module('login').run(function($rootScope) {
     $rootScope.$on('$stateChangeStart',
             function(event, toState, toParams, fromState, fromParams) {
             $rootScope.title = toState.title;
@@ -11,7 +23,7 @@ login.run(function($rootScope) {
 });
 
 
-login.controller('loginRootCtrl', ['$scope', function($scope) {
+angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) {
 	$scope.hasLoader = false;
 	$scope.signingIn = false;
 	$scope.$on("signingIn", function(event) {
@@ -23,7 +35,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope) {
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
+angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout) {
 	 $scope.data = {};
 
 	 if (localStorage.email) {
@@ -195,7 +207,28 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         } else {
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
-    };
+	};
+
+	var loadURLCounter = 0;
+
+	$scope.loadURL = function() {
+		$scope.data.domainURL = "https://";
+		loadURLCounter++;
+		if (loadURLCounter >= 5) {
+			ngDialog.open({
+				template: '/assets/partials/loadURL.html',
+				scope: $scope
+			});
+			$scope.data.isLoadingUrl = true;
+		}
+		$timeout(function() {
+			loadURLCounter = 0;
+		}, 5000);
+	};
+
+	$scope.loadDomainURL = function() {
+		$window.location = $scope.data.domainURL;
+	};
 
 	$scope.onSystemStatusClick = function() {
 		if (sntapp.cordovaLoaded) {
@@ -209,12 +242,11 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
 			$window.open('https://status.stayntouch.com', '_blank');
 		}
 	};
-
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
  */
-login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
+angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
@@ -418,7 +450,7 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
 
 }]);
 
-login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
+angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
         // when using stationlogin on touch-screen, a keyboard should prompt
         // also, we will set a localStorage flag to relay to zest station, we are inside an app
         // only chrome-apps + electron app should be using " /stationlogin#/stationlogin " to enter rover/zest station
@@ -546,7 +578,7 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
                 $scope.submit();
                 e.preventDefault();
                 e.stopPropagation();
-            } 
+            }
 
         }
         document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension
