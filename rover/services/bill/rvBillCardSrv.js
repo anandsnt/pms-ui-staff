@@ -402,4 +402,17 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         return deferred.promise;
     };
 
+    // Generate void bill
+    this.generateVoidBill = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/bills/' + params.bill_id + '/void_bill';
+
+        BaseWebSrvV2.postJSON(url, params.data).then(function(response) {        	
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };    
+
 }]);

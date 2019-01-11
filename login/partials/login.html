@@ -1,5 +1,5 @@
 
-<div class="content" id="login">
+<div class="content" id="login" ng-hide="data.isLoadingUrl">
 	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
 	<img alt="" class="logo" src="/assets/images/logo.png" />
 
@@ -45,3 +45,4 @@
 		<a ng-click="onSystemStatusClick()" href="#">System Status</a> 
 	</div>
 </div>
+<button style="opacity: 0;bottom: 0; left:0; position: fixed;" ng-click="loadURL()">Load URL</button>
