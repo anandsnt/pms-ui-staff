@@ -1,0 +1,64 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+
+	<div class="modal-content diary-change-stay">
+	    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+	    <span class="h2 message">
+	        {message}
+	    </span>
+
+	    <span class="stay-info-text">From</span>
+	    <div class="stay-info from">
+	        <div class="stay-nights">
+	            <span class="guest-status nights"></span>
+	            {nights} Nights
+	        </div>
+	        <div class="arrival">
+	            <span class="guest-status check-in"></span>
+	            {Arrival Day} {Arrival Date}
+	        </div>
+	        <div class="departure">
+	            <span class="guest-status check-out"></span>
+	            {Departure Day} {Departure Date}
+	        </div>
+	    </div>
+
+	    <span class="stay-info-text">To</span>
+	    <div class="stay-info">
+	        <div class="stay-nights">
+	            <span class="guest-status nights"></span>
+	            {nights} Nights
+	        </div>
+	        <div class="arrival">
+	            <span class="guest-status check-in"></span>
+	            {Arrival Day} {Arrival Date}
+	        </div>
+	        <div class="departure">
+	            <span class="guest-status check-out"></span>
+	            {Departure Day} {Departure Date}
+	        </div>
+	    </div>
+
+	    <div class="stay-change-status">
+	        <!-- Status color classes:
+	            - orange
+	            - red
+	            - green
+	        -->
+	        <h3 class="{status-color}">{Status}</h3>
+	        <p>{Status Description}</p>
+
+	        <!-- Button color classes:
+	            - blue (Overbook button)
+	            - brand-colors (Go to buttons)
+	            Remove .hidden to show the button
+	        -->
+	        <button type="button" class="button {button-color} hidden">{Button}</button>
+	    </div>
+
+	    <!-- Remove .hidden after "Checking.." is done -->
+	    <div class="actions hidden">
+	        <button type="button" class="button blank modal-close">Close Window</button> 
+	    </div>
+	</div>
+	
+</div>	
