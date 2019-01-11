@@ -16,7 +16,6 @@
 	"USER_NAME" : "User Name",
 	"END_POINT" : "End Point",
 	"ACTIVATE_INACTIVATE" : "Activate / Inactivate",
-	"DISABLE_LEGACY" : "Disable legacy",
 	"CUBILIS_HEADER": "Cubilis",
 	"VERTICALBOOKING_HEADER": "VerticalBooking",
 	"DEFAULT_RATE": "Default Rate",
@@ -115,5 +114,6 @@
 	"CLIENT_SECRET": "Client Secret",
   "GL_ACCOUNT": "GL Account",
   "VAT_CODE": "VAT Code",
-  "COST_CENTER": "Cost Center"
+  "COST_CENTER": "Cost Center",
+	"SETTLING_ACC": "Settling Account Number"
 

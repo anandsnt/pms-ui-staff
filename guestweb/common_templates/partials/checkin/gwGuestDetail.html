@@ -72,13 +72,16 @@
                 <br>
                 <!-- birthday -->
                 <div class="row margin-top-10">
-                    <p class="sub-text left-align">
+                    <p class="sub-text left-align" ng-hide="guestBirthdateMandatory">
                         BIRTHDAY&nbsp;(OPTIONAL)
+                    </p>
+                    <p class="sub-text left-align" ng-show="guestBirthdateMandatory">
+                        BIRTHDAY&nbsp;(MANDATORY)
                     </p>
                     <div class="row">
                         <div class="eta-container">
                             <div class="select-style">
-                                <select ng-model="guestDetails.month" ng-options="month as month for month in months">
+                                <select ng-model="guestDetails.month" ng-options="month as month for month in months" ng-change="yearOrMonthChanged()">
                                     <option value="">MM</option>
                                 </select>
                             </div>
@@ -92,7 +95,7 @@
                         </div>
                         <div class="eta-container">
                             <div class="select-style">
-                                <select ng-model="guestDetails.year" ng-options="year as year for year in years">
+                                <select ng-model="guestDetails.year" ng-options="year as year for year in years" ng-change="yearOrMonthChanged()">
                                     <option value="" selected="">YY</option>
                                 </select>
                             </div>

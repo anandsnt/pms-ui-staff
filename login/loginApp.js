@@ -9,6 +9,7 @@ var login = angular.module('login', [
 
 angular.module('login').config([
     '$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         $httpProvider.interceptors.push('sharedHttpInterceptor');
     }]);
 /*
@@ -34,7 +35,7 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
+angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout) {
 	 $scope.data = {};
 
 	 if (localStorage.email) {
@@ -207,7 +208,28 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
 	};
-		
+
+	var loadURLCounter = 0;
+
+	$scope.loadURL = function() {
+		$scope.data.domainURL = "https://";
+		loadURLCounter++;
+		if (loadURLCounter >= 5) {
+			ngDialog.open({
+				template: '/assets/partials/loadURL.html',
+				scope: $scope
+			});
+			$scope.data.isLoadingUrl = true;
+		}
+		$timeout(function() {
+			loadURLCounter = 0;
+		}, 5000);
+	};
+
+	$scope.loadDomainURL = function() {
+		$window.location = $scope.data.domainURL;
+	};
+
 	$scope.onSystemStatusClick = function() {
 		if (sntapp.cordovaLoaded) {
 			ngDialog.open({
@@ -556,7 +578,7 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
                 $scope.submit();
                 e.preventDefault();
                 e.stopPropagation();
-            } 
+            }
 
         }
         document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension

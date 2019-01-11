@@ -37,11 +37,15 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
             BaseWebSrvV2.getJSON(url).
                 then(function(data) {
                     data.data.forEach(function(action) {
+                        var completedTime,
+                            splitDueTimeString,
+                            splitCompletedTimeString;
+
                         action.assigned = action.assigned_to !== null;
 
 
                         if (typeof action.due_at === typeof 'string') {
-                            var splitDueTimeString = action.due_at_str.split('T');
+                            splitDueTimeString = action.due_at_str.split('T');
 
                             // 24 hr format for the dropdown in the right panel
                             action.due_at_time_str = dateFilter(splitDueTimeString[0] + 'T' + splitDueTimeString[1].split(/[+-]/)[0], 'hh:mm a');
@@ -57,12 +61,13 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
                         if (action.action_status === 'COMPLETED') {
                             action.isCompleted = true;
 
-                            let completedTime = moment(action.completed_at);
+                            completedTime = moment(action.completed_at);
+                            splitCompletedTimeString = action.completed_at.split('T');
 
                             action.date_completed = completedTime.format($rootScope.dateFormat.toUpperCase());
                             action.time_completed = completedTime.format('HH:MM:A');
 
-                            action.completed_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
+                            action.completed_date = dateFilter(splitCompletedTimeString[0], $rootScope.dateFormat);
                         }
 
                         if (action.created_at) {
@@ -84,8 +89,20 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
             return deferred.promise;
         };
 
+    this.fetchReportDetails = function ( params ) {
+        var deferred = $q.defer();
+        var url = "/api/reports/action_manager_report";
+
+        BaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     this.getActionsClassName = function(total, pending) {
-        let className = '';
+        var className = '';
 
         if (total === 0) {
             return 'none';

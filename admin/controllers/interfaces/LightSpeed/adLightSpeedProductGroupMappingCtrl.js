@@ -16,7 +16,7 @@ angular.module('admin').controller('adLightSpeedProductGroupMappingCtrl', ['$sco
     };
 
     var formParamsForExternalMappings = function() {
-        var charge_code_id = $scope.data.selectedChargeCode.value;
+        var charge_code_id = $scope.data.selectedChargeCode;
         var selectedProductGroups = $scope.mappedProductGroups.map(function (productGroup) {
             return {
               name: productGroup.name,
@@ -40,21 +40,21 @@ angular.module('admin').controller('adLightSpeedProductGroupMappingCtrl', ['$sco
     };
 
     $scope.fetchChargeCodes = function() {
-        $scope.callAPI(ADChargeCodesSrv.fetch, {
-            params: {
-              is_no_pagination: true
-            },
-            successCallBack: function successCallBack(response) {
-                $scope.data.selectedChargeCode = response.charge_codes[0];
-                $scope.data.filteredProductGroup = '';
-                $scope.chargeCodes = response.charge_codes;
-                fetchProductGroup();
-            },
-            failureCallBack: function failureCallBack() {
-                $scope.errorMessage = ['Error while retrieving Restaurants list.'];
-            }
-        });
-    };
+       $scope.callAPI(ADChargeCodesSrv.fetch, {
+           params: {
+             is_no_pagination: true
+           },
+           successCallBack: function successCallBack(response) {
+               $scope.data.filteredProductGroup = '';
+               $scope.chargeCodes = response.charge_codes;
+               $scope.data.selectedChargeCode = response.charge_codes[0].value;
+               fetchProductGroup();
+           },
+           failureCallBack: function failureCallBack() {
+               $scope.errorMessage = ['Error while retrieving Restaurants list.'];
+           }
+       });
+   };
 
     var fetchRestaurants = function() {
         $scope.callAPI(adLightSpeedPOSSetupSrv.fetchRestaurants, {
@@ -125,7 +125,9 @@ angular.module('admin').controller('adLightSpeedProductGroupMappingCtrl', ['$sco
         });
         $scope.mappedProductGroups = $scope.productGroups.filter(function (productGroup) {
             return $scope.chargeCodeMapings.some(function (chargeCodeMapping) {
-                return chargeCodeMapping.external_value === productGroup.name && $scope.data.selectedChargeCode.charge_code === chargeCodeMapping.value;
+                var chargeCodeObject = _.findWhere($scope.chargeCodes, {value: $scope.data.selectedChargeCode});
+
+                return chargeCodeMapping.external_value === productGroup.name && chargeCodeObject.charge_code === chargeCodeMapping.value;
             });
         });
         if ($scope.data.filteredProductGroup.length > 0) {
