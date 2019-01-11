@@ -2291,7 +2291,7 @@ sntRover.controller('RVbillCardController',
 				scroller = $scope.$parent.myScroll['bill-tab-scroller'];
 			
 			if (billNumber > 7) {
-				scroller.scrollTo(-133*(billNumber-6), scroller.maxScrollY);
+				scroller.scrollTo(-133 * (billNumber - 6), scroller.maxScrollY);
 			}			
 		}, 100);
 
