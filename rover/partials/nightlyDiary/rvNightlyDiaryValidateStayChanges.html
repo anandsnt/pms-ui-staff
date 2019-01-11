@@ -1,9 +1,10 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 
 	<div class="modal-content diary-change-stay">
-	    <button id="modal-close" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+	    	<span class="icons icon-close invert"></button>
 	    <span class="h2 message">
-	        {message}
+	        Extend Stay Failed!
 	    </span>
 
 	    <span class="stay-info-text">From</span>
@@ -44,7 +45,7 @@
 	            - red
 	            - green
 	        -->
-	        <h3 class="{status-color}">{Status}</h3>
+	        <h3 class="red">{{popupData.message}}</h3>
 	        <p>{Status Description}</p>
 
 	        <!-- Button color classes:
@@ -52,13 +53,13 @@
 	            - brand-colors (Go to buttons)
 	            Remove .hidden to show the button
 	        -->
-	        <button type="button" class="button {button-color} hidden">{Button}</button>
+	        <button ng-if="popupData.showOverBookingButton" type="button" class="button blue">Overbooking</button>
 	    </div>
 
 	    <!-- Remove .hidden after "Checking.." is done -->
 	    <div class="actions hidden">
-	        <button type="button" class="button blank modal-close">Close Window</button> 
+	        <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close Window</button> 
 	    </div>
 	</div>
-	
+
 </div>	

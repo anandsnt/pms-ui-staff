@@ -300,7 +300,8 @@ angular.module('sntRover')
                     ngDialog.open({
                         template: '/assets/partials/nightlyDiary/rvNightlyDiaryValidateStayChanges.html',
                         scope: $scope,
-                        className: ''
+                        className: '',
+                        controller: 'rvNightlyDiaryValidationStayCtrl'
                     });
                 };
 
