@@ -3206,13 +3206,7 @@ sntRover.controller('RVbillCardController',
 	 * Number of bills must be < 10, balance must be 0.00
 	 */
 	$scope.shouldShowVoidBill = function() {
-
-		console.log($scope.reservationBillData.bills[$scope.currentActiveBill].is_active)
-		console.log($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount)
-		console.log($scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type)
-		console.log($scope.reservationBillData.is_void_bill_enabled)
-		console.log($scope.reservationBillData.bills[$scope.currentActiveBill].is_active)
-		console.log($scope.reservationBillData.bills[$scope.currentActiveBill].is_active)
+		
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 

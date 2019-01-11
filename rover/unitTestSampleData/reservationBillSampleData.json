@@ -19,6 +19,7 @@
     "is_promotions_and_email_set": false,
     "required_signature_at": "CHECKIN",
     "is_auto_assign_ar_numbers": "false",
+    "is_void_bill_enabled": true,
     "room_ready_status": "DIRTY",
     "use_inspected": "true",
     "use_pickup": "false",
