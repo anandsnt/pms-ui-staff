@@ -17,7 +17,7 @@
                 </label>
             </div>
         </div>
-        <div class="entry switch switch-merge" ng-show="!viewState.isViewSelected">
+        <div class="entry switch switch-merge" ng-if="!viewState.isViewSelected">
             <div class="switch-button" ng-class="{'on': viewState.isCompanyCardSelected}">
                 <input id="cards-merge-cota-switch" type="checkbox" ng-model="viewState.isCompanyCardSelected"
                     ng-change="onTravelAgentCompanyCardSwitch()">
@@ -74,7 +74,7 @@
         </div>
     </section>
 
-    <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && results.length > 0 && textInQueryBox !== ''}">
+    <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && (results.length > 0  || viewState.selectedCardsForMerge.length > 0)}">
         <ul class="find-cards-header" ng-hide="textInQueryBox === '' || results.length === 0">
             <li class="card">Card Details</li>
             <!-- hide if showing archived cards -->

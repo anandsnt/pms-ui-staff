@@ -99,7 +99,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.queryEntered = _.debounce(function () {
 			if ($scope.textInQueryBox === "") {
 				$scope.results = [];
-				self.resetSelectionsForMerge();
+				//self.resetSelectionsForMerge();
 				refreshScroller();
 			} else {
 				displayFilteredResults();
@@ -193,11 +193,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			if (!$scope.viewState.isViewSelected) {
 				$scope.viewState.isCompanyCardSelected = true;
 				self.resetSelectionsForMerge();
-				refreshScroller();
 			}
-			$scope.cardFilter = filterValues.ALL;
-			$scope.textInQueryBox = '';
 			$scope.viewState.canMerge = null;
+			$scope.queryEntered();
 		};
 
 		/**
@@ -220,6 +218,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 					}
 					return !card.selected;
 				});
+
+				if ($scope.viewState.selectedCardsForMerge.length > 0) {
+					$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
+				}
 			}
 			refreshSelectedCardsScroller();
 		};
@@ -428,13 +430,22 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			}
 
 			// Set the first card in the list as primary, if the given card for deletion is primary
-			if ($scope.viewState.selectedCardsForMerge.length === 1) {
+			if ($scope.viewState.selectedCardsForMerge.length > 0) {
 				$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
 			}
 
 			if ($scope.viewState.mergeStatusErrors && $scope.viewState.mergeStatusErrors[card.id]) {
 				delete $scope.viewState.mergeStatusErrors[card.id];
+			}
+
+			if ($scope.isEmpty($scope.viewState.mergeStatusErrors) && $scope.viewState.selectedCardsForMerge.length > 1) {
+				$scope.viewState.canMerge = true;
+				$scope.viewState.mergeStatusText = mergeStatusText.OK_TO_MERGE;
+			}
+
+			if ($scope.viewState.selectedCardsForMerge.length === 1) {
+				$scope.viewState.hasInitiatedMergeVerification = false;
 			}
 
 		};
