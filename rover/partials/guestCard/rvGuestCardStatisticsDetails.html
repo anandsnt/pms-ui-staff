@@ -17,10 +17,10 @@
                 <!-- if we don't have data in the month add .no-data -->
                 <!-- if we click on it, add .open -->
                 <!-- add CSS => margin-bottom: {margin}px, where 'margin' is ( number of reservations * 70 ) + 30-->
-                <div class="row" ng-repeat="monthlyData in statistics.details.monthly_data" ng-class="{'no-data': monthlyData.reservations.length === 0, 'open': monthlyData.isOpen}"
+                <div class="row" ng-repeat="monthlyData in statistics.details.monthly_data" ng-class="{'no-data': monthlyData.reservations.reservations.length === 0, 'open': monthlyData.isOpen}"
                     ng-style="getStyleForExpandedView(monthlyData)" ng-click="showMonthlyReservations(monthlyData)">
                     <!-- If we have data in the month -->
-                    <span class="icons icon-double-arrow black" ng-show="monthlyData.reservations.length > 0"></span>
+                    <span class="icons icon-double-arrow black" ng-show="monthlyData.reservations.reservations.length > 0"></span>
                     {{monthlyData.month}} {{monthlyData.year}}
                 </div>
             </div>
@@ -83,7 +83,7 @@
                     <!-- remove .hidden when clicked on the month's row-->
                     <div class="statistics-reservations" ng-class="{'hidden': !monthlyData.isOpen}">
                         <ul class="search-results">
-                            <li class="reservation transaction" ng-repeat="reservation in monthlyData.reservations">
+                            <li class="reservation transaction" ng-repeat="reservation in monthlyData.reservations.reservations">
                                 <a class="faux-anchor" ng-click="navigateToStayCard(reservation)" ng-class="{'no-arrow': shouldShowNavigation()}">
                                     <div class="data">
                                         <!-- add .grey if we have no room/cancelled-->

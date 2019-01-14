@@ -297,7 +297,7 @@
 						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-disabled="!billData.is_active">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
-							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+							<option value="{{reservationBillData.bills.length+1}}">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 						</select>
 					</div>
 				</td>

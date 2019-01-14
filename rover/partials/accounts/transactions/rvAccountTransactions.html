@@ -56,7 +56,7 @@
 							<button ng-if="($index === transactionsDetails.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
 						<!-- Add new bill-->
-						<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
+						<li class="new-bill" ng-show="isStandAlone">
 							<button type="button" class="button with-icon only-icon brand-colors" click-touch="createNewBill()">
 								<span class="icons icon-plus"></span>
 							</button>
@@ -257,7 +257,7 @@
 												<select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" iscroll-stop-propagation>
 													<option value="" disabled>Move to bill</option>
 													<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
-													<option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+													<option value="{{transactionsDetails.bills.length+1}}">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 												</select>
 											</div>
 										</td>
