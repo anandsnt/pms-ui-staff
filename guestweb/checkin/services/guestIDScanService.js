@@ -33,9 +33,9 @@
 
 		var saveFaceImage = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/guest_details/' + params.guest_id;;
+				url = '/api/guest_details/' + params.guest_id + '.json';
 
-			$http.post(url, params).success(function(response) {
+			$http.put(url, params).success(function(response) {
 					deferred.resolve(response);
 				}.bind(this))
 				.error(function() {
