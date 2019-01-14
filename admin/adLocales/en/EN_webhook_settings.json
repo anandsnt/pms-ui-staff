@@ -13,7 +13,7 @@
 "update_inventory": "UPDATE INVENTORY",
 "create_reservation": "NEW RESERVATION",
 "cancel_reservation": "CANCEL RESERVATION",
-"new_group": "NEW GROUP",
+"create_group": "NEW GROUP",
 "edit_group": "EDIT GROUP",
 "create_guest": "CREATE GUEST",
 "edit_guest": "EDIT GUEST",
