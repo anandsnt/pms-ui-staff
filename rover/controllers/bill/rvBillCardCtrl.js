@@ -3217,6 +3217,7 @@ sntRover.controller('RVbillCardController',
 	 * balance must be 0.00
 	 */
 	$scope.shouldShowVoidBill = function() {
+		
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 
