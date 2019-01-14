@@ -460,6 +460,36 @@
 				$scope.idScanData.selectedGuest.faceImage = response;
 			});
 
+			$scope.detachGuest = function(guest_id) {
+				$scope.detachingGuest = _.find($scope.selectedReservation.guest_details, function(guest) {
+					return guest.id === guest_id;
+				});
+				$scope.detachingGuest.reason = '';
+				$scope.detachingGuest.showWarning = true;
+			};
+
+			$scope.confirmGuestDetaching = function() {
+				var successCallback = function() {
+					$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
+						return guest.id !== $scope.detachingGuest.id;
+					});
+					setPageNumberDetails();
+					$scope.detachingGuest.showWarning = false;
+				};
+
+				var options = {
+					params: {
+						"id": stateParams.reservation_id,
+						"guest_id": $scope.detachingGuest.id,
+						"note":$scope.detachingGuest.reason,
+						"application": "KIOSK"
+					},
+					successCallBack: successCallback
+				};
+
+				$scope.callAPI(zsGeneralSrv.detachGuest, options);
+			};
+
 			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
