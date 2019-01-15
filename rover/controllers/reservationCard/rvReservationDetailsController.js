@@ -1833,4 +1833,10 @@ sntRover.controller('reservationDetailsController',
 
 	};
 
+	$scope.$on('PRIMARY_GUEST_ID_CHANGED', function(event, data) {
+		if (data && data.faceImage) {
+			$scope.guestData.primary_guest_details.image = data.faceImage;
+		}
+	});
+
 }]);
