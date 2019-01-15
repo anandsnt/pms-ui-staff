@@ -1,0 +1,44 @@
+<div class="form float" ng-if="state.activeTab === 'SETUP'">
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <fieldset class="holder full-width">
+        <div class="form-title full-width">
+            <h3><span translate>VECTRON_SUB_TITLE</span></h3>
+        </div>
+        <div class="entry">
+            <label><span translate>VECTRON_ACTIVATE_INACTIVATE</span></label>
+            <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }" ng-click="toggleEnabled()">
+                <input type="checkbox" name="vectron-setup-active" id="vectron-setup-active">
+                <span class="switch-icon"></span>
+            </div>
+        </div>
+        <div ng-if="config.enabled">
+            <fieldset class="holder full-width">
+                <fieldset class="holder left">
+                    <ad-textbox inputtype="text" value="config.hotel_code" name="name" id="name" label="{{'VECTRON_HOTEL_CODE' | translate}}" styleclass="full-width"></ad-textbox>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <ad-textbox inputtype="text" value="config.authentication_token" name="authentication-token" id="authentication-token" label="{{'VECTRON_AUTHENTICATION_TOKEN' | translate}}"
+                                readonly="yes">
+                    </ad-textbox>
+                    <button type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                        REGENERATE
+                    </button>
+                </fieldset>
+
+            </fieldset>
+        </div>
+    </fieldset>
+    <div class="actions float">
+        <button type="button" id="cancel" class="button blank add-data-inline"
+                ng-click="goBackToPreviousState()" translate>
+            CANCEL
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green"
+                ng-click="saveSetup()" translate>
+            SAVE_CHANGES
+        </button>
+    </div>
+</div>

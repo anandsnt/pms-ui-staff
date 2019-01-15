@@ -256,6 +256,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.vectronSetup', {
+        templateUrl: '/assets/partials/interfaces/Vectron/adVectronSetup.html',
+        controller: 'ADVectronSetupCtrl',
+        url: '/vectron/setup',
+        resolve: {
+            vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.ifc_revenue_centers', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenterConfig.html',
         controller: 'adComtrolRevenueCenterCtrl',
