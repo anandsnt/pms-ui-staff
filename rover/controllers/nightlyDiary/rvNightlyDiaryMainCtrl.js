@@ -301,6 +301,7 @@ angular.module('sntRover')
                         template: '/assets/partials/nightlyDiary/rvNightlyDiaryValidateStayChanges.html',
                         scope: $scope,
                         className: '',
+                        closeByDocument: true,
                         controller: 'rvNightlyDiaryValidationStayCtrl'
                     });
                 };
@@ -394,7 +395,8 @@ angular.module('sntRover')
                 var openMessagePopup = function () {
                     ngDialog.open({
                         template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',
-                        scope: $scope
+                        scope: $scope,
+                        closeByDocument: true
                     });
                 };
 
