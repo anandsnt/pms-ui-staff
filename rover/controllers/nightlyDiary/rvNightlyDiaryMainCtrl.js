@@ -311,8 +311,6 @@ angular.module('sntRover')
                 var checkReservationAvailability = (arrivalDate, DepartureDate) => {
                     let successCallBackStayChanges = function (response) {
 
-                        console.log(response);
-
                         $scope.popupData = {
                             data: response,
                             showOverBookingButton: false,
@@ -333,7 +331,7 @@ angular.module('sntRover')
                             // Show popup
                             // Show message
                             // overbooking button
-                            $scope.popupData.showOverBookingButton = true;
+                            // $scope.popupData.showOverBookingButton = true;
                             openMessagePopupForValidationStayChanges();
                         }
                     };

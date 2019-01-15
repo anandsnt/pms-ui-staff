@@ -1,7 +1,5 @@
 sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermissionSrv', 'ngDialog', function($scope, rvPermissionSrv, ngDialog) {
 
-	console.log($scope.popupData);
-
     /**
      * if the user has enough permission to over book House
      * @return {Boolean}
