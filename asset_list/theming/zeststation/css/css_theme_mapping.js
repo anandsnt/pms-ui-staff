@@ -57,7 +57,8 @@ module.exports = {
             'university-inn': [themeCSSRoot + 'university-inn.less'],
             'cedar-court': [themeCSSRoot + 'cedar-court.less'],
             'sister-city': [themeCSSRoot + 'sister-city.less'],
-            'twa': [themeCSSRoot + 'twa.less']
+            'twa': [themeCSSRoot + 'twa.less'],
+            'carrollton-inn': [themeCSSRoot + 'carrollton-inn.less']
         };
     }
 };

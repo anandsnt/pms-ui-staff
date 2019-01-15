@@ -19,6 +19,7 @@
     "is_promotions_and_email_set": false,
     "required_signature_at": "CHECKIN",
     "is_auto_assign_ar_numbers": "false",
+    "is_void_bill_enabled": true,
     "room_ready_status": "DIRTY",
     "use_inspected": "true",
     "use_pickup": "false",
@@ -49,6 +50,9 @@
         "is_moved_to_ar": false,
         "is_control_code_exist": false,
         "is_account_attached": false,
+        "is_void_bill_enabled": true,
+        "is_voided": true,
+        "is_void_bill": false,
         "account_id": null,
         "bill_number": "1",
         "total_amount": "65.00",
@@ -603,6 +607,7 @@
         "is_moved_to_ar": false,
         "is_control_code_exist": false,
         "is_account_attached": false,
+
         "account_id": null,
         "bill_number": "3",
         "total_amount": "10.00",
@@ -764,6 +769,425 @@
             "fees_details": []
         }],
         "days": [],
+        "ar_number": null
+    }, 
+    {
+        "is_transactions_exist": true,
+        "is_routing_exist": false,
+        "bill_id": 113087,
+        "is_active": false,
+        "is_folio_number_exists": true,
+        "is_printed_once": true,
+        "is_emailed_once": true,
+        "is_payment_exist": true,
+        "is_moved_to_ar": false,
+        "is_control_code_exist": false,
+        "is_account_attached": false,
+        "is_void_bill_enabled": true,
+        "is_voided": false,
+        "is_void_bill": false,
+        "account_id": null,
+        "bill_number": "1",
+        "total_amount": "65.00",
+        "total_payments": "102.00",
+        "credit_card_details": {
+            "payment_type": "CA",
+            "payment_type_description": "Cash Payment",
+            "card_code": "",
+            "card_number": "",
+            "card_expiry": "",
+            "payment_id": 268612,
+            "card_name": null,
+            "is_swiped": false,
+            "fees_information": {},
+            "auth_color_code": "black"
+        },
+        "guest_or_company_name": "",
+        "has_crossed_credit_limit": false,
+        "is_allow_direct_debit": true,
+        "group_items": [{
+            "title": "Tax",
+            "amount": "10.91",
+            "expense_details": [{
+                "expense": "0.91",
+                "location": "Inclusive Tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173777
+            }, {
+                "expense": "10.0",
+                "location": "Swatch Bharath Tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173764
+            }]
+        }, {
+            "title": "Room",
+            "amount": "19.09",
+            "expense_details": [{
+                "expense": "5.0",
+                "location": "Room rent with tourist tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173778
+            }, {
+                "expense": "9.09",
+                "location": "Accommodation Charge with Incl Tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173776
+            }, {
+                "expense": "5.0",
+                "location": "Room rent with tourist tax",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173775
+            }]
+        }, {
+            "title": "Add-On",
+            "amount": "35.00",
+            "expense_details": [{
+                "expense": "10.0",
+                "location": "Parking",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173765
+            }, {
+                "expense": "25.0",
+                "location": "Add-On",
+                "date": "2017-12-08",
+                "transaction_id": null,
+                "id": 173763
+            }]
+        }],
+        "is_rate_suppressed": false,
+        "total_fees": [{
+            "total_amount": "65.00",
+            "balance_amount": "0.00",
+            "is_rate_suppressed": false,
+            "fees_date": "2017-12-08",
+            "fees_details": [{
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "12.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173507,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": false,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "ADDON",
+                    "id": 3,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "ADDON"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Pepsi",
+                    "fees_desc": "Add-On",
+                    "charge_code": "AD1234",
+                    "charge_code_type": "ADDON",
+                    "fees_amount": "25.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173763,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "TAX",
+                    "id": 1,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "TAX"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": true,
+                    "item_description": null,
+                    "fees_desc": "Swatch Bharath Tax",
+                    "charge_code": "Swatch Bharath Tax",
+                    "charge_code_type": "TAX",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173764,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "OTHERS",
+                    "id": 4,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "OTHERS"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": "Parking",
+                    "fees_desc": "Parking",
+                    "charge_code": "Parking",
+                    "charge_code_type": "OTHERS",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173765,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": "",
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "33.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173769,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "10.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173772,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-02-24T12:29:22Z",
+                    "description": "ROOM",
+                    "id": 5,
+                    "updated_at": "2014-02-24T12:29:22Z",
+                    "value": "ROOM"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Room rent with tourist tax",
+                    "charge_code": "4507",
+                    "charge_code_type": "ROOM",
+                    "fees_amount": "5.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173775,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": null,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-02-24T12:29:22Z",
+                    "description": "ROOM",
+                    "id": 5,
+                    "updated_at": "2014-02-24T12:29:22Z",
+                    "value": "ROOM"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Accommodation Charge with Incl Tax",
+                    "charge_code": "Accommodation Charge with Incl Tax",
+                    "charge_code_type": "ROOM",
+                    "fees_amount": "10.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173776,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": null,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-02-24T12:29:22Z",
+                    "description": "ROOM",
+                    "id": 5,
+                    "updated_at": "2014-02-24T12:29:22Z",
+                    "value": "ROOM"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Room rent with tourist tax",
+                    "charge_code": "4507",
+                    "charge_code_type": "ROOM",
+                    "fees_amount": "5.00",
+                    "is_rate_suppressed": false
+                }],
+                "credits": "",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173778,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": null,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "25.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173779,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }, {
+                "type": {
+                    "created_at": "2014-01-03T14:50:34Z",
+                    "description": "PAYMENT",
+                    "id": 2,
+                    "updated_at": "2014-01-03T14:50:34Z",
+                    "value": "PAYMENT"
+                },
+                "date": "2017-12-08",
+                "description": [{
+                    "parent_transaction_exist": false,
+                    "item_description": null,
+                    "fees_desc": "Cash Payment",
+                    "charge_code": "201",
+                    "charge_code_type": "PAYMENT",
+                    "card_number": null
+                }],
+                "credits": "22.00",
+                "is_rate_suppressed": false,
+                "transaction_id": null,
+                "id": 173780,
+                "item_ids": [],
+                "reference_text": "",
+                "reference_text_on_edit": null,
+                "show_ref_on_invoice": true,
+                "adjustment_reason": null,
+                "is_description_edited": false
+            }]
+        }],
+        "days": [{
+            "date": "2017-12-08",
+            "amount": "5.00",
+            "is_rate_suppressed": false,
+            "rate_name": "Rate with Tourist Tax",
+            "rate_description": "Rate with Tourist Tax",
+            "room_type_name": "Studio",
+            "room_type_description": ""
+        }, {
+            "date": "2017-12-09",
+            "amount": "5.00",
+            "is_rate_suppressed": false,
+            "rate_name": "Rate with Tourist Tax",
+            "rate_description": "Rate with Tourist Tax",
+            "room_type_name": "Studio",
+            "room_type_description": ""
+        }],
         "ar_number": null
     }],
     "number_of_bills": 5,

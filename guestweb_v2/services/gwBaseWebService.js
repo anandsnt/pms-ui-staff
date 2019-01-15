@@ -1,17 +1,3 @@
-// To fix the issue with csrf token in ajax requests
-sntGuestWeb.config(function($httpProvider) {
-  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-  var m = document.getElementsByTagName('meta');
-
-  for (var i in m) {
-    if (m[i].name === 'csrf-token') {
-	  $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
-	  break;
-	}
-  }
-});
-
-
 sntGuestWeb.service('GWBaseWebSrv', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
 
     /**
