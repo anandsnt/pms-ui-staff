@@ -7,8 +7,8 @@
 	        Extend Stay Failed!
 	    </span>
 
-	    <span class="stay-info-text">From</span>
-	    <div class="stay-info from">
+	    <span class="stay-info-text hidden">From</span>
+	    <div class="stay-info from hidden">
 	        <div class="stay-nights">
 	            <span class="guest-status nights"></span>
 	            {nights} Nights
@@ -23,8 +23,8 @@
 	        </div>
 	    </div>
 
-	    <span class="stay-info-text">To</span>
-	    <div class="stay-info">
+	    <span class="stay-info-text hidden">To</span>
+	    <div class="stay-info hidden">
 	        <div class="stay-nights">
 	            <span class="guest-status nights"></span>
 	            {nights} Nights
@@ -46,14 +46,14 @@
 	            - green
 	        -->
 	        <h3 class="red">{{popupData.message}}</h3>
-	        <p>{Status Description}</p>
-
+	        <p ng-if="!popupData.showOverBookingButton">For stay extension options please go to the Stay card</p>
+	        <p ng-if="popupData.showOverBookingButton">Overbook or Try different dates</p>
 	        <!-- Button color classes:
 	            - blue (Overbook button)
 	            - brand-colors (Go to buttons)
 	            Remove .hidden to show the button
 	        -->
-	        <button ng-if="popupData.showOverBookingButton" type="button" class="button blue">Overbooking</button>
+	        <button ng-if="popupData.showOverBookingButton" type="button" class="button blue">Overbook</button>
 	    </div>
 
 	    <!-- Remove .hidden after "Checking.." is done -->
