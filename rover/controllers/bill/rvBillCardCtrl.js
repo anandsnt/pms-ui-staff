@@ -629,6 +629,7 @@ sntRover.controller('RVbillCardController',
 	$scope.getBillData = function(billIndex) {
 		
 		var getBillDataSuccess = function(data) {
+
 			$scope.reservationBillData.bills[billIndex] = data;
 			if (callGenerateFolioNumberApiAfterSuccessfullTransferCharge) {
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false;
@@ -646,7 +647,7 @@ sntRover.controller('RVbillCardController',
 					that.callGenerateFolioNumberApi();
 				}
 			}	
-				
+			$scope.refreshScroller('bill-tab-scroller');
 			},
 			dataToSend = {
 				params: reservationBillData.bills[billIndex].bill_id,
@@ -1185,6 +1186,8 @@ sntRover.controller('RVbillCardController',
 
 	// just fetch the bills again ;)
 	var postchargeAdded = $scope.$on('postcharge.added', function(event, data) {
+
+		$scope.refreshScroller('bill-tab-scroller');
 
 		// cos' we are gods, and this is what we wish
 		// just kidding.. :P
