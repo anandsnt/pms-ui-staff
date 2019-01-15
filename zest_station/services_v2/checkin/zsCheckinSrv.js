@@ -603,5 +603,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
 
         };
+        
+        this.saveFaceImage = function(params) {
+            var url = '/staff/guest_cards/' + params.guest_id + '.json';
+            
+            return zsBaseWebSrv.putJSON(url, params);
+        };
     }
 ]);
