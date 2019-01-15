@@ -74,7 +74,7 @@
 
         <div class="entry">
             <label for="reason">REASON</label>
-            <textarea id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('reason', 'scroll-up')" click-touch="showOnScreenKeyboard('reason', 'scroll-up')" enter-press="lastNameEntered()" style="height: 100%;"></textarea>
+            <textarea id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('reason', 'scroll-up')" click-touch="showOnScreenKeyboard('reason', 'scroll-up')" enter-press="lastNameEntered()"></textarea>
         </div>
         <div class="actions">
             <button type="button" class="button transparent"touch-press='detachingGuest.showWarning = false' translate>CANCEL</button>
