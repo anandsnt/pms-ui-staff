@@ -481,7 +481,7 @@
 					params: {
 						"id": stateParams.reservation_id,
 						"guest_id": $scope.detachingGuest.id,
-						"note":$scope.detachingGuest.reason,
+						"note": $scope.detachingGuest.reason,
 						"application": "KIOSK"
 					},
 					successCallBack: successCallback
