@@ -92,5 +92,32 @@ describe('RVbillCardController', function () {
                 expect(isDisabled).toBe(true);               
             });
 
+            it('should hide void bill if bill is voided', function() {
+                $scope.roverObj.noReprintReEmailInvoice = true;
+                $scope.currentActiveBill = 0;
+
+                var shouldShowVoidBill = $scope.shouldShowVoidBill();
+
+                expect(shouldShowVoidBill).toBe(false);               
+            });
+
+            it('should show void bill if bill is settled, locked and not voided', function() {
+                $scope.roverObj.noReprintReEmailInvoice = true;
+                $scope.currentActiveBill = 5;
+
+                var shouldShowVoidBill = $scope.shouldShowVoidBill();
+
+                expect(shouldShowVoidBill).toBe(true);               
+            });
+
+            it('should show void bill if bill is settled, but not locked and not voided', function() {
+                $scope.roverObj.noReprintReEmailInvoice = true;
+                $scope.currentActiveBill = 4;
+
+                var shouldShowVoidBill = $scope.shouldShowVoidBill();
+
+                expect(shouldShowVoidBill).toBe(false);               
+            });            
+
         });    
 });

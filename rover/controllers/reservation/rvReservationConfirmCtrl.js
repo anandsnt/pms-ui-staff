@@ -474,6 +474,17 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			});
 		};
 
+		// CICO-60529 : Navigate back to Room Diary
+		$scope.gotoNightlyDiary = function() {
+			var stateParams = {
+				origin: 'RESERVATION_SUMMARY',
+				reservation_id: $scope.reservationData.reservationId,
+				room_id: $scope.reservationData.rooms[0].room_id
+			};
+
+			$state.go('rover.nightlyDiary', stateParams );
+		};
+
 		var allRoomDetailsFetched = function(data) {
 			$scope.$emit("hideLoader");
 		};

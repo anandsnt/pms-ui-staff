@@ -39,7 +39,9 @@ describe("RVGuestCardStatisticsController", function() {
 
     it("Get margin bottom when the 3 reservations are shown in the expanded monthly view", function() {
         var monthlyData = {
-            reservations: [1, 2, 3],
+            reservations: {
+             reservations: [1, 2, 3]
+            },
             isOpen: true
         };
 
@@ -48,7 +50,9 @@ describe("RVGuestCardStatisticsController", function() {
 
     it("Get margin bottom when reservation view is in collapsed state", function() {
         var monthlyData = {
-            reservations: [1, 2, 3],
+            reservations: {
+                reservations: [1, 2, 3]
+            },
             isOpen: false
         };
         

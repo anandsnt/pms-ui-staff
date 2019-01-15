@@ -49,13 +49,13 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-hide="true">
+            <tr>
                 <td>Void Bill</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button on">
+                    <div class="switch-button" ng-click="clickedVoidButton()" ng-class="{'on' : legalSettings.is_void_bill_enabled}">
                         <!-- remove checked when not active-->
-                        <input name="void-bill" id="void-bill" value="void-bill" type="checkbox" checked="">
+                        <input name="void-bill" id="void-bill" value="void-bill" type="checkbox" ng-model="legalSettings.is_void_bill_enabled">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
