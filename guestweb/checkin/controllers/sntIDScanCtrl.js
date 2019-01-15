@@ -58,9 +58,11 @@
 			};
 
 			var saveFaceImage = function() {
+				var avatar = $scope.idScanData.selectedGuest.faceImage.split(',').length > 1 ? $scope.idScanData.selectedGuest.faceImage.split(',')[1] : '';
 				var apiParams = {
-					'image': $scope.idScanData.selectedGuest.faceImage,
-					'guest_id': $scope.idScanData.selectedGuest.id
+					'avatar': avatar,
+					'guest_id': $scope.idScanData.selectedGuest.id,
+					'reservation_id': $scope.checkinReservationData.reservation_id
 				};
 
 				guestIDScanService.saveFaceImage(apiParams);

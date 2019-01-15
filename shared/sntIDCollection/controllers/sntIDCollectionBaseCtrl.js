@@ -177,8 +177,9 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	var retrieveFaceImage = function() {
 		sntIDCollectionSrv.getFaceImage().then(function(response) {
 			$scope.$emit('FACE_IMAGE_RETRIEVED', response);
-		}, function(response) {
-
+			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
+		}, function() {
+			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
 		});
 	};
 
@@ -197,9 +198,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			idDetailsForPms.expirationStatus = sntIDCollectionUtilsSrv.isIDExpired(response.Alerts) ? 'Expired' : 'Unexpired';
 
 			$scope.$emit('FINAL_RESULTS', idDetailsForPms);
-			retrieveFaceImage();
-			
-			sntIDCollectionSrv.deleteDocInstance().then(function() {}, function() {});
+			retrieveFaceImage();			
 		}, function(response) {
 			$log.error(response);
 			$scope.screenData.scanMode = screenModes.analysing_id_data_failed;

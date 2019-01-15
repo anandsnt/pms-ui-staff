@@ -187,8 +187,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		};
 
 		var saveFaceImage = function() {
+			
+			var avatar = faceImage.split(',').length > 1 ? faceImage.split(',')[1] : '';
 			var apiParams = {
-				'image': faceImage,
+				'avatar': avatar,
 				'guest_id': $scope.guestIdData.guest_id
 			};
 
@@ -196,6 +198,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 				params: apiParams,
 				loader: 'NONE'
 			});
+			$scope.closeGuestIdModal();
 		};
 
 		$scope.saveGuestIdDetails = function(action, imageType) {
@@ -242,16 +245,23 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							birthday: $filter('date')(new Date($scope.guestIdData.date_of_birth), 'yyyy-MM-dd')
 						};
 
+						if (faceImage) {
+							dataToUpdate.faceImage = faceImage;
+						}
+
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
-					$scope.closeGuestIdModal();
+					if (faceImage) {
+						saveFaceImage();
+					} else {
+						$scope.closeGuestIdModal();
+					}
+					
 				};
 			}
 
-			if (faceImage) {
-				saveFaceImage();
-			}
+			
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
 				successCallBack: saveSuccessCallBack,

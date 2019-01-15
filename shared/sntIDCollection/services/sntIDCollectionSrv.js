@@ -404,7 +404,7 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		return deferred.promise;
 	};
 
-	this.getFaceImage = function(side) {
+	this.getFaceImage = function() {
 		var deferred = $q.defer();
 		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Field/Image?key=Photo';
 		var requestGetDocument = createRequestObject('GET', url);
