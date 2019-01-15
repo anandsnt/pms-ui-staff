@@ -583,15 +583,15 @@ sntRover.controller('RVPostChargeControllerV2',
 						/*
 						 * Success Callback of create bill action
 						 */
-						var createBillSuccessCallback = function(data) {
+						var createBillSuccessCallback = function(successData) {
 							$scope.$emit('hideLoader');
 							// Fetch data again to refresh the screen with new data
 							$scope.invokeApi(RVPostChargeSrvV2.postCharges, updateParam, callback);
 							// Update Review status array.
 							if (!$scope.isOutsidePostCharge) {
-								$scope.reservationBillData.bills[data.bill_number - 1] = {
-									bill_id: data.id,
-									bill_number: data.bill_number,
+								$scope.reservationBillData.bills[successData.bill_number - 1] = {
+									bill_id: successData.id,
+									bill_number: successData.bill_number,
 									total_amount: 0
 								};
 
