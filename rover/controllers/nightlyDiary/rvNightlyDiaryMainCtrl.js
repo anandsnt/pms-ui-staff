@@ -331,7 +331,7 @@ angular.module('sntRover')
                             // Show popup
                             // Show message
                             // overbooking button
-                            // $scope.popupData.showOverBookingButton = true;
+                            $scope.popupData.showOverBookingButton = true;
                             openMessagePopupForValidationStayChanges();
                         }
                     };
@@ -374,6 +374,7 @@ angular.module('sntRover')
                         $scope.extendShortenReservationDetails,
                         successCallBack);
                 };
+                
                 /*
                  * Show selected reservation highlighted and enable edit bar
                  * @param reservation - Current selected reservation

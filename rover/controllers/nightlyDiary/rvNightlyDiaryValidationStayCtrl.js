@@ -47,6 +47,11 @@ sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermission
 	// Disable the overBooking button if there is no permission..
 	if ($scope.popupData.showOverBookingButton) {
 		$scope.popupData.disableOverBookingButton = checkOverBooking() === 'NO_PERMISSION_TO_OVERBOOK';
-	}
+	} 
+
+    // Handle overbook button click actions.
+    $scope.clickedOverBookButton = function() {
+        $scope.$emit('SAVE_RESERVATION_EDITING');
+    };
 
 }]);
