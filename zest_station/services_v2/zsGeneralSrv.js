@@ -729,5 +729,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.signOut = function() {
             return zsBaseWebSrv.getJSON('/logout');
         };
+
+        this.detachGuest = function(params) {
+            var url = '/zest_station/reservations/' + params.id + '/detach_accompanying_guest';
+
+            return zsBaseWebSrv.postJSON(url, params);
+        };
     }
 ]);
