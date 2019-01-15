@@ -104,6 +104,26 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
   		};
 
+  		/*
+		 * Open void bill popup
+		 */
+		$scope.clickedVoidBillButton = function() {
+			$scope.isFromAccounts = true;
+			ngDialog.open({
+				template: '/assets/partials/bill/rvVoidBillPopup.html',
+				controller: 'RVVoidBillPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+		/*
+		 * Void bill success
+		 */
+		$scope.addListener('VOID_BILL_GENERATED', function(event, billData) {
+			$scope.closeDialog();
+			getTransactionDetails();
+		});
+
   		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
 				var billTabsData = $scope.transactionsDetails.bills,
