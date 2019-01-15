@@ -148,6 +148,19 @@
 				}, 0);
 			};
 
+			var saveFaceImage = function() {
+				var avatar = $scope.idScanData.selectedGuest.faceImage.split(',').length > 1 ? $scope.idScanData.selectedGuest.faceImage.split(',')[1] : '';
+				var apiParams = {
+					'avatar': avatar,
+					'guest_id': $scope.idScanData.selectedGuest.id
+				};
+				
+				$scope.callAPI(zsCheckinSrv.saveFaceImage, {
+					params: apiParams,
+					loader: 'NONE'
+				});
+			};
+
 			$scope.acceptID = function() {
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
@@ -166,6 +179,10 @@
 				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
 				if (apiParams.nationality_name) {
 					delete apiParams.nationality_name;
+				}
+
+				if ($scope.idScanData.selectedGuest.faceImage) {
+					saveFaceImage();
 				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
@@ -437,6 +454,10 @@
 			});
 			$scope.$on('FR_CAMERA_STARTING', function(){
 				$scope.$emit('showLoader');
+			});
+
+			$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+				$scope.idScanData.selectedGuest.faceImage = response;
 			});
 
 			(function() {
