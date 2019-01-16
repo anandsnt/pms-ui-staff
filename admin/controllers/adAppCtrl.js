@@ -303,6 +303,10 @@ admin.controller('ADAppCtrl', [
                             title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
                             action: "rover.reports.scheduleReportsAndExports",
                             menuIndex: "schedule_report_export"
+                        }, {
+                            title: "MENU_REPORT_ANALYTICS",
+                            action: "rover.reportAnalytics",
+                            menuIndex: "schedule_report_export"
                         }]
                     }];
                 // menu for mobile views

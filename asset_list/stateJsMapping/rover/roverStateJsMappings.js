@@ -137,6 +137,10 @@ module.exports = {
 				filename: roverJsListRoot + 'guestCardDetailsJsAssetList.js',
                 modules: true,
 				babelify: true
+			},
+			'rover.reportAnalytics': {
+				filename: roverJsListRoot + 'reportsAnalyticsAssetsList.js',
+				babelify: true
 			}
 		};
 	}
