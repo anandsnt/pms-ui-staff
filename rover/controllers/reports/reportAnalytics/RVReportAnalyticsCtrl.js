@@ -17,27 +17,26 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 				jwt = $window.localStorage.getItem('jwt'),
 				iFrameUrl = '/sisense/analytics/iframe?hotel_uuid=' + hotelUUID + '&auth_token=' + jwt;
 
+			document.getElementById('report-iframe').onload = () => {
+				sntActivity.stop('ANALYTICS_IFRAME_LOADING');
+			};
+			document.getElementById('report-iframe').onerror = () => {
+				sntActivity.stop('ANALYTICS_IFRAME_LOADING');
+			};
 			document.getElementById("report-iframe").src = iFrameUrl;
-
-			document.getElementById('report-iframe').onload = function() {
-				sntActivity.stop('ANALYTICS_IFRAME_LOADING');
-			};
-			document.getElementById('report-iframe').onerror = function() {
-				sntActivity.stop('ANALYTICS_IFRAME_LOADING');
-			};
 		};
 
 		let listenToiFrameEvents = () => {
-			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-			let eventer = window[eventMethod];
-			let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent",
+				eventer = window[eventMethod],
+				messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
-			angular.element($window).on(messageEvent, function(e) {
+			angular.element($window).on(messageEvent, (e) => {
 				let responseData = e.data || e.originalEvent.data;
 
 				if (responseData === "logout_app") {
-					RVDashboardSrv.signOut().finally(function() {
-						$timeout(function() {
+					RVDashboardSrv.signOut().finally(() => {
+						$timeout(() => {
 							$window.location.href = '/logout';
 						});
 					});
