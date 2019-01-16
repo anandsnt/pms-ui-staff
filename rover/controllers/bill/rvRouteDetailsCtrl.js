@@ -435,14 +435,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             } else {
                 data.splice(0, 1);
                 $scope.bills = $scope.excludeExistingBills(data);
-                if ($scope.newBillNumber <= 10) {
-                    var newBill = {};
 
-                    newBill.id = 'new';
-                    newBill.is_active = true;
-                    newBill.bill_number = '' + $scope.newBillNumber + '(new)';
-                    $scope.bills.push(newBill);
-                }
+                var newBill = {};
+
+                newBill.id = 'new';
+                newBill.is_active = true;
+                newBill.bill_number = '' + $scope.newBillNumber + '(new)';
+                $scope.bills.push(newBill);
                 $scope.$parent.bills = $scope.bills;
             }
             $scope.selectedEntity.to_bill = $scope.selectedEntity.is_new ? $scope.bills[0].id : $scope.selectedEntity.to_bill;
