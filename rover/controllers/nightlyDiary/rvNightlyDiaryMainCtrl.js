@@ -138,7 +138,9 @@ angular.module('sntRover')
                         if ($scope.diaryData.showAvailableRooms) {
                             callbackForBookedOrAvailableListner();
                         }
-                        updateDiaryView();
+                        else {
+                            updateDiaryView();
+                        }
                         if (roomId) {
                             $scope.$broadcast('CLOSE_SEARCH_RESULT');
                         }
@@ -151,9 +153,9 @@ angular.module('sntRover')
                             'selected_floor_ids': $scope.diaryData.selectedFloors
                         };
 
-                    if ( $scope.diaryData.isAvailableRoomSlotActive ) {
+                    if ($scope.diaryData.isAvailableRoomSlotActive) {
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
-                        
+
                         postData.selected_room_type_ids = [roomTypeId];
                     }
 
@@ -246,7 +248,7 @@ angular.module('sntRover')
                     }
                 };
 
-                var resetUnassignedList = function() {
+                var resetUnassignedList = function () {
                     $scope.diaryData.isAvailableRoomSlotActive = false;
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                     $scope.diaryData.availableSlotsForAssignRooms = {};
@@ -263,25 +265,25 @@ angular.module('sntRover')
                         $scope.errorMessage = '';
                         $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
                     },
-                    postData = {
-                        "reservation_id": reservationDetails.reservationId,
-                        "room_number": roomDetails.room_number,
-                        "without_rate_change": true,
-                        "is_preassigned": false,
-                        "forcefully_assign_room": false
-                    },
-                    options = {
-                        params: postData,
-                        successCallBack: successCallBackAssignRoom
-                    };
+                        postData = {
+                            "reservation_id": reservationDetails.reservationId,
+                            "room_number": roomDetails.room_number,
+                            "without_rate_change": true,
+                            "is_preassigned": false,
+                            "forcefully_assign_room": false
+                        },
+                        options = {
+                            params: postData,
+                            successCallBack: successCallBackAssignRoom
+                        };
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
                 // Handle book room button actions.
                 var clickedBookRoom = (roomId, date, roomsList) => {
-                    var roomTypeId = _.where(roomsList, {id: roomId})[0].room_type_id,
-                        roomNo = _.where(roomsList, {id: roomId})[0].room_no;
+                    var roomTypeId = _.where(roomsList, { id: roomId })[0].room_type_id,
+                        roomNo = _.where(roomsList, { id: roomId })[0].room_no;
 
                     $state.go('rover.reservation.search', {
                         selectedArrivalDate: date,
@@ -486,7 +488,9 @@ angular.module('sntRover')
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableFreeSlots = response;
-                            updateDiaryView();
+                            $timeout(function () {
+                                updateDiaryView();
+                            }, 700);
                         };
 
                         let options = {
@@ -494,14 +498,16 @@ angular.module('sntRover')
                                 start_date: $scope.diaryData.fromDate,
                                 no_of_days: $scope.diaryData.numberOfDays,
                                 page: $scope.diaryData.paginationData.page,
-                                per_page: $scope.diaryData.paginationData.perPage
+                                per_page: $scope.diaryData.paginationData.perPage,
+                                selected_room_type_ids: $scope.diaryData.selectedRoomTypes,
+                                selected_floor_ids: $scope.diaryData.selectedFloors
                             },
                             successCallBack: successCallBackFunction
                         };
 
                         $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableFreeSlots, options);
                     }
-                    else{
+                    else {
                         updateDiaryView();
                     }
                 };
@@ -532,13 +538,13 @@ angular.module('sntRover')
                     };
                 };
 
-                var mapCachedDataFromSrv = function() {
+                var mapCachedDataFromSrv = function () {
                     var params = RVNightlyDiarySrv.getCache();
 
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
-                    if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0 ) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
+                    if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.showFilterPanel = true;
                         $scope.diaryData.filterList = params.filterList;
@@ -603,7 +609,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
-;
+                ;
                 /*
                  * to render the grid view
                  */
