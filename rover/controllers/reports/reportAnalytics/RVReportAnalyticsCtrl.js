@@ -27,7 +27,7 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 			};
 		};
 
-		var listenToChildEvents = function() {
+		var listenToiFrameEvents = function() {
 			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 			var eventer = window[eventMethod];
 			var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
@@ -47,7 +47,7 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 
 		(function() {
 			loadIframe();
-			listenToChildEvents();
+			listenToiFrameEvents();
 		}());
 
 		$scope.$on("$destroy", () => {
