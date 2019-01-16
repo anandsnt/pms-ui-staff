@@ -18,7 +18,11 @@ admin.controller('ADVectronSetupCtrl', [
         };
 
         $scope.onClickRegenerate = function() {
-            //generate New token
+            $scope.callAPI(adVectronSetupSrv.resetAuthToken, {
+                onSuccess: function(response) {
+                    $scope.config.authentication_token = response.authentication_token;
+                }
+            });
         };
 
         /**

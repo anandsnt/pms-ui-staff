@@ -9,12 +9,8 @@ admin.controller('adVectronSetupMappingCtrl', [
             mode: 'LIST',
             mappingTypes: [
                 {
-                    name: 'gl_account',
-                    text: 'GL Account Number'
-                },
-                {
-                    name: 'vat_code',
-                    text: 'VAT Code'
+                    name: 'charge_code',
+                    text: 'Charge Code'
                 }]
         };
 
@@ -26,24 +22,19 @@ admin.controller('adVectronSetupMappingCtrl', [
             return {
                 typeof: '',
                 value: '',
-                external_value: '',
-                meta_data: {
-                    'cost_center': ''
-                }
+                external_value: ''
             };
         }
 
         $scope.onClickAdd = function() {
-            if (!$scope.state.meta) {
-                $scope.callAPI(adVectronSetupSrv.fetchMeta, {
-                    successCallBack: function(meta) {
-                        $scope.state.meta = meta;
-                        $scope.state.mode = 'ADD';
+            if (!$scope.state.chargeCodes) {
+                $scope.callAPI(adVectronSetupSrv.getAllChargeCodes, {
+                    successCallBack: function(response) {
+                        $scope.state.chargeCodes = response.data.charge_codes;
                     }
                 });
-            } else {
-                $scope.state.mode = 'ADD';
             }
+            $scope.state.mode = 'ADD';
         };
 
 
@@ -107,20 +98,16 @@ admin.controller('adVectronSetupMappingCtrl', [
 
         $scope.onEditMapping = function(mapping) {
             resetAllEdits();
-            if (!$scope.state.meta) {
-                $scope.callAPI(adVectronSetupSrv.fetchMeta, {
-                    successCallBack: function(meta) {
-                        $scope.state.meta = meta;
-                        $scope.mapping = angular.copy(mapping);
-                        mapping.editing = true;
-                        $scope.state.mode = 'EDIT';
+            if (!$scope.state.chargeCodes) {
+                $scope.callAPI(adVectronSetupSrv.getAllChargeCodes, {
+                    successCallBack: function(response) {
+                        $scope.state.chargeCodes = response.data.charge_codes;
                     }
                 });
-            } else {
-                $scope.mapping = angular.copy(mapping);
-                mapping.editing = true;
-                $scope.state.mode = 'EDIT';
             }
+            $scope.mapping = angular.copy(mapping);
+            mapping.editing = true;
+            $scope.state.mode = 'EDIT';
         };
 
 

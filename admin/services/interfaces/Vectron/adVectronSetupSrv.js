@@ -23,5 +23,14 @@ admin.service('adVectronSetupSrv', [
             return ADBaseWebSrvV2.putJSON('/ifc/vectron/mappings/' + params.id, params);
         };
 
+        service.resetAuthToken = function() {
+            return ADBaseWebSrvV2.putJSON('/api/integrations/vectron/reset_auth_token');
+
+        };
+
+        service.saveMapping = function(params) {
+            return ADBaseWebSrvV2.postJSON('/ifc/vectron/mappings', params);
+        };
+
     }])
 ;

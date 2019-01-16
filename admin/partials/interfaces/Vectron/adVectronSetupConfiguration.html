@@ -23,8 +23,11 @@
                     <ad-textbox inputtype="text" value="config.authentication_token" name="authentication-token" id="authentication-token" label="{{'VECTRON_AUTHENTICATION_TOKEN' | translate}}"
                                 readonly="yes">
                     </ad-textbox>
-                    <button type="button" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                    <button type="button" ng-show="config.authentication_token" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
                         REGENERATE
+                    </button>
+                    <button type="button" ng-hide="config.authentication_token" style="margin: 24px 0 0 10px" class="button blue sm-refresh-btn" ng-click="onClickRegenerate()">
+                        GENERATE
                     </button>
                 </fieldset>
 
