@@ -3,17 +3,17 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		var self = this,
 			transitionParams = null;
 
-		const filterValues = {
+		var filterValues = {
 			ALL: 'ALL',
 			AR_ONLY: 'AR_ONLY'
 		};
 		
-		const mergeStatusText = {
+		var mergeStatusText = {
 			VERIFYING_MERGE: 'Verifying Merge',
 			OK_TO_MERGE: 'Ok to Merge',
 			MERGE_NOT_POSSIBLE: 'Merge not possible'
 		};
-		const scrollers = {
+		var scrollers = {
 			SELECTED_CARDS_FOR_MERGE_SCROLL: 'selected_cards_for_merge_scroll',
 			COMPANY_CARD_SCROLL: 'company_card_scroll'
 		};
@@ -24,9 +24,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.hasArNumber = false;
 		$scope.$emit("updateRoverLeftMenu", "cards");
 
-		var applyPreviousSelections = () => {			
+		var applyPreviousSelections = function() {			
 			if (transitionParams && transitionParams.selectedIds && transitionParams.selectedIds.length > 0) {
-				$scope.results.forEach((card) => {
+				$scope.results.forEach(function(card) {
 					var selectedCard = _.find(transitionParams.selectedIds, {id: card.id});
 
 					if (selectedCard) {
@@ -99,7 +99,6 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.queryEntered = _.debounce(function () {
 			if ($scope.textInQueryBox === "") {
 				$scope.results = [];
-				self.resetSelectionsForMerge();
 				refreshScroller();
 			} else {
 				displayFilteredResults();
@@ -189,15 +188,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		/**
 		 * Handles the switching between merge and normal search view
 		 */
-		$scope.onViewChange = () => {
+		$scope.onViewChange = function() {
 			if (!$scope.viewState.isViewSelected) {
 				$scope.viewState.isCompanyCardSelected = true;
 				self.resetSelectionsForMerge();
-				refreshScroller();
 			}
-			$scope.cardFilter = filterValues.ALL;
-			$scope.textInQueryBox = '';
 			$scope.viewState.canMerge = null;
+			$scope.queryEntered();
 		};
 
 		/**
@@ -205,7 +202,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @param {Object} card - contains the details of CC/TA card
 		 * @return {void}
 		 */
-		$scope.onCardSelection = (card) => {
+		$scope.onCardSelection = function(card) {
 			if (!$scope.viewState.selectedCardsForMerge.length) {
 				card.isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = card;
@@ -214,12 +211,18 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			if (card.selected) {
 				$scope.viewState.selectedCardsForMerge.push(card);				
 			} else {
-				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (card) => {
+				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(card) {
 					if (!card.selected) {
 						card.isPrimary = false;
+						$scope.viewState.selectedPrimaryCard = {};
 					}
 					return !card.selected;
 				});
+
+				if ($scope.viewState.selectedCardsForMerge.length > 0) {
+					$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
+					$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
+				}
 			}
 			refreshSelectedCardsScroller();
 		};
@@ -229,8 +232,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @param {Number} id - id of the card
 		 * @return {void}
 		 */
-		$scope.onPrimaryGuestSelectionChange = (id) => {
-			$scope.viewState.selectedCardsForMerge.forEach((card) => {
+		$scope.onPrimaryGuestSelectionChange = function(id) {
+			$scope.viewState.selectedCardsForMerge.forEach(function(card) {
 				if (card.id === id) {
 					card.isPrimary = true;
 					$scope.viewState.selectedPrimaryCard = card;
@@ -244,10 +247,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * Get the merge btn class name based on the current state of the merge process
 		 * @return {String} className  - style class
 		 */
-		$scope.getMergeActionClassName = () => {
-			let className = '';
+		$scope.getMergeActionClassName = function() {
+			var className = '';
 
-			if ($scope.viewState.selectedCardsForMerge.length === 1 || $scope.showVerifyMergeProcessActivityIndicator || $scope.viewState.mergeStatusErrors.length > 0) {
+			if ($scope.viewState.selectedCardsForMerge.length === 1 || $scope.showVerifyMergeProcessActivityIndicator || !$scope.isEmpty($scope.viewState.mergeStatusErrors)) {
 				className = 'grey';
 			} else if ($scope.viewState.selectedCardsForMerge.length > 1) {
 				className = 'purple';
@@ -258,8 +261,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		/**
 		 * Verifying whether the cards selected are eligible for merging
 		 */
-		$scope.verifyMerge = () => {
-			let onVerificationSuccess = (data) => {
+		$scope.verifyMerge = function() {
+			var onVerificationSuccess = function(data) {
 				if (data.can_merge) {
 					$scope.viewState.canMerge = data.can_merge;
 					$scope.viewState.mergeStatusText = mergeStatusText.OK_TO_MERGE;
@@ -271,13 +274,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				refreshSelectedCardsScroller();
 
 			},
-				onVerificationFailure = () => {
+				onVerificationFailure = function() {
 
 				};
 			
 			$scope.showVerifyMergeProcessActivityIndicator = true;
 
-			let postData = {
+			var postData = {
 				card_ids: self.getNonPrimaryCardIds()
 			};
 
@@ -296,12 +299,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @param {Object} card selected card
 		 * @return {Boolean} 
 		 */
-		$scope.hasMergeVerificationErrors = (card) => {
+		$scope.hasMergeVerificationErrors = function(card) {
 			if (_.isEmpty($scope.viewState.mergeStatusErrors)) {
 				return false;
 			}
 
-			let errorMsgs = $scope.viewState.mergeStatusErrors[card.id];
+			var errorMsgs = $scope.viewState.mergeStatusErrors[card.id];
 
 			return errorMsgs && errorMsgs.length > 0;
 		};
@@ -311,12 +314,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @param {Object} card holds the card details
 		 * @return {String} errorMsgs - contains all the validation error messages
 		 */
-		$scope.getErrorMsg = (card) => {
+		$scope.getErrorMsg = function(card) {
 			if (_.isEmpty($scope.viewState.mergeStatusErrors)) {
 				return '';
 			}
 
-			let errorMsgs = $scope.viewState.mergeStatusErrors[card.id];
+			var errorMsgs = $scope.viewState.mergeStatusErrors[card.id];
 
 			if (errorMsgs) {
 				errorMsgs = errorMsgs.join(',');
@@ -329,7 +332,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		/**
 		 * Handles the switch between cc/ta views
 		 */
-		$scope.onTravelAgentCompanyCardSwitch = () => {
+		$scope.onTravelAgentCompanyCardSwitch = function() {
 			self.resetSelectionsForMerge();
 			$scope.results = [];
 			$scope.viewState.canMerge = null;
@@ -339,33 +342,36 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		/**
 		 * Handle the cancel action on the merge view
 		 */
-		$scope.cancelSelections = () => {
-			let selectedIds = _.pluck($scope.viewState.selectedCardsForMerge, 'id');
+		$scope.cancelSelections = function() {
+			var selectedIds = _.pluck($scope.viewState.selectedCardsForMerge, 'id');
 
-			$scope.results.forEach((card) => {
+			$scope.results.forEach(function(card) {
 				if (selectedIds.indexOf(card.id) !== -1 ) {
 					card.selected = false;
 					card.isPrimary = false;
 				}
 			});
 			self.resetSelectionsForMerge();
+			$scope.viewState.isViewSelected = true;
+			$scope.cardFilter = filterValues.ALL;
+			$scope.queryEntered();
 
 		};
 
 		/**
 		 * Perform merging of cards
 		 */
-		$scope.mergeCards = () => {
-			let postData = {
+		$scope.mergeCards = function() {
+			var postData = {
 				card_ids: self.getNonPrimaryCardIds(),
 				primary_card_id: $scope.viewState.selectedPrimaryCard.id,
 				card_type: $scope.viewState.isCompanyCardSelected ? 'COMPANY' : 'TRAVELAGENT'
 			},
-			onMergeSuccess = () => {
+			onMergeSuccess = function() {
 				self.resetSelectionsForMerge();
 				$scope.queryEntered();
 			},
-			onMergeFailure = (error) => {
+			onMergeFailure = function(error) {
 				$scope.viewState.mergeStatusText = error;
 				$scope.viewState.canMerge  = false;
 			};
@@ -384,8 +390,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @param {String} accountType CC/TA
 		 * @return {void}
 		 */
-		$scope.navigateToDetails = (id, accountType) => {
-			let ids = _.map($scope.viewState.selectedCardsForMerge, (card) => {
+		$scope.navigateToDetails = function(id, accountType) {
+			if ($scope.viewState.hasInitiatedMergeVerification) {
+				return false;
+			}
+
+			var ids = _.map($scope.viewState.selectedCardsForMerge, function(card) {
 				return { id: card.id, isPrimary: card.isPrimary || false };
 			});
 
@@ -405,9 +415,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @param {Object} card the card to be removed
 		 * @return {void}
 		 */
-		$scope.removeSelectedCard = (card) => {
+		$scope.removeSelectedCard = function(card) {
 			// Remove the cards from the list
-			$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, (cardDetails) => {
+			$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(cardDetails) {
 				return cardDetails.id === card.id;
 			});
 
@@ -429,24 +439,37 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
 			}
 
+			if ($scope.viewState.mergeStatusErrors && $scope.viewState.mergeStatusErrors[card.id]) {
+				delete $scope.viewState.mergeStatusErrors[card.id];
+			}
+
+			if ($scope.isEmpty($scope.viewState.mergeStatusErrors) && $scope.viewState.selectedCardsForMerge.length > 1) {
+				$scope.viewState.canMerge = true;
+				$scope.viewState.mergeStatusText = mergeStatusText.OK_TO_MERGE;
+			}
+
+			if ($scope.viewState.selectedCardsForMerge.length === 1) {
+				$scope.viewState.hasInitiatedMergeVerification = false;
+			}
+
 		};
 
 		/**
 		 * Resetting the values of variables 
 		 */
-		self.resetSelectionsForMerge = () => {
+		self.resetSelectionsForMerge = function() {
 				$scope.viewState.selectedPrimaryCard = {};
 				$scope.viewState.selectedCardsForMerge = [];
 				$scope.viewState.mergeStatusText = [];
-				$scope.viewState.mergeStatusErrors = [];
+				$scope.viewState.mergeStatusErrors = {};
 				$scope.viewState.hasInitiatedMergeVerification = false;
 		};
 
 		/**
 		 * Get non-primary cards ids
 		 */
-		self.getNonPrimaryCardIds = () => {
-				let selectedNonPrimaryCards = _.reject($scope.viewState.selectedCardsForMerge, (card) => {
+		self.getNonPrimaryCardIds = function() {
+				var selectedNonPrimaryCards = _.reject($scope.viewState.selectedCardsForMerge, function(card) {
 					return card.isPrimary;
 				}),
 				ids = [];
@@ -457,8 +480,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				return ids;
 		};
 
+		
+
 		// Initialize the co/ta search view
-		var init = () => {
+		var init = function() {
 			// model used in query textbox, we will be using this across
 			$scope.textInQueryBox = "";
 			$scope.results = [];
@@ -470,7 +495,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				selectedPrimaryCard: {},
 				mergeStatusText: '',
 				hasInitiatedMergeVerification: false,
-				mergeStatusErrors: []
+				mergeStatusErrors: {}
 			};
 
 			transitionParams = $state.transition && $state.transition.params('from');
@@ -482,7 +507,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.cardFilter = transitionParams.cardType;
 				$scope.queryEntered();
 			}
-			
+
 		};
 
 		init();
