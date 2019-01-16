@@ -317,9 +317,11 @@ angular.module('sntRover')
                             showOverBookingButton: false,
                             message: ''
                         };
+                        let proceedSave = false;
 
                         if (response.is_room_available && response.message === '') {
                             // Proceed without any popup, save changes and updated.
+                            proceedSave = true;
                         }
                         else if (!response.is_room_available || !response.is_no_restrictions_exist || (response.is_group_reservation && !response.is_group_available)) {
                             // Show popup
@@ -334,6 +336,18 @@ angular.module('sntRover')
                             // overbooking button
                             // $scope.popupData.showOverBookingButton = true;
                             openMessagePopupForValidationStayChanges();
+                        }
+
+                        if (proceedSave) {
+                            $scope.extendShortenReservationDetails = {
+                                'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
+                                    .format('YYYY-MM-DD'),
+                                'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
+                                    .format('YYYY-MM-DD'),
+                                'reservation_id': $scope.currentSelectedReservation.id,
+                                'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: $scope.currentSelectedRoom.id })).room_no
+                            };
+                            console.log($scope.extendShortenReservationDetails);
                         }
                     };
 
