@@ -133,7 +133,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * Void bill success
 		 */
-		$scope.addListener('VOID_BILL_GENERATED', function(event, billData) {
+		$scope.addListener('VOID_BILL_GENERATED', function() {
 			$scope.closeDialog();
 			getTransactionDetails();
 		});
