@@ -88,5 +88,11 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return RVBaseWebSrvV2.postJSON(url, params);
         };
 
+        this.saveFaceImage = function(params) {
+            var url = '/staff/guest_cards/' + params.guest_id + '.json';
+
+            return RVBaseWebSrvV2.putJSON(url, params);
+        };
+
     }
 ]);

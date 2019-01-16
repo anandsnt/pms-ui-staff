@@ -86,11 +86,25 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
             $scope.callAPI(rvDeviceStatusSrv.sendLastReceipt, options);
         };
 
+        $scope.sendLogFiles = function() {
+            sntapp.cardReader.doDeviceAction({
+                service: 'RVCardPlugin',
+                action: 'emailDeviceLogs',
+                successCallBack: function() {
+                    // do nothing
+                },
+                failureCallBack: function() {
+                    // do nothing
+                }
+            });
+        };
+
         (function () {
             $scope.screenMode = 'DISPLAY_MESSAGE';
             $scope.screenData = {
                 'emailId': ''
             };
+            $scope.isIpad = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
             $scope.clearErrorMessage();
             $scope.setScroller('deviceMessage', {
                 snap: false,

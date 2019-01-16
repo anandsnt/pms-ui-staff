@@ -4,10 +4,6 @@
         <fieldset class="holder left">
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
-            <!-- TODO: Remove below toggle button once windusurfer new-gen is a blockbuster -->
-            <ad-toggle-button is-checked="config.disable_legacy"
-                              ng-if="availableSettings.indexOf('disable_legacy') > -1"
-                              label="{{'DISABLE_LEGACY'| translate}}"></ad-toggle-button>
         </fieldset>
     </div>
 

@@ -47,16 +47,24 @@
 				<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
 					<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
 						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}" click-touch="setActiveBill($index)">
-								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
+							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}" click-touch="setActiveBill($index)" >
+								<div class="price" ng-hide="billTab.is_void_bill || billTab.is_voided"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
+								</div>
+								<div class="price" ng-show="billTab.is_void_bill">
+										<span translate>BILL</span>
+										VOID
+								</div>
+								<div class="price" ng-show="billTab.is_voided">
+									<span translate>BILL </span>
+									VOIDED
 								</div>
 								<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
 							</a>
 							<button ng-if="($index === transactionsDetails.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
 						<!-- Add new bill-->
-						<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
+						<li class="new-bill" ng-show="isStandAlone">
 							<button type="button" class="button with-icon only-icon brand-colors" click-touch="createNewBill()">
 								<span class="icons icon-plus"></span>
 							</button>
@@ -76,6 +84,10 @@
 										<span class="icons icon-charge"></span>
 										{{'ADD_CHARGE' |translate}}
 									</button>
+									<button type="button" class="button with-icon red" ng-show="shouldShowVoidBill()" ng-click="clickedVoidBillButton()"> <!-- Click opens {modals/void-bill.html} -->
+		                                    <span class="icons icon-blocked-white"></span> 
+		                                    Void<br/>Bill
+		                            </button>
 								</li>
 
 								<li class="days">
@@ -257,7 +269,7 @@
 												<select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" iscroll-stop-propagation>
 													<option value="" disabled>Move to bill</option>
 													<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
-													<option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+													<option value="{{transactionsDetails.bills.length+1}}">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 												</select>
 											</div>
 										</td>

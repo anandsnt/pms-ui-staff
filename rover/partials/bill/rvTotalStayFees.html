@@ -2,11 +2,17 @@
 <div class="overview" ng-repeat="totalFees in billData.total_fees" >
 	<button class="toggle with-rate" type="button" ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 		<span class="title" translate>GUEST_BALANCE</span>		
-		<span class="value" ng-show="isBalanceShown(totalFees.is_rate_suppressed)" ng-class="getBalanceClass(totalFees.balance_amount)">
+		<span class="value" ng-show="isBalanceShown(totalFees.is_rate_suppressed, billData) && !billData.is_void_bill && !billData.is_voided" ng-class="getBalanceClass(totalFees.balance_amount)">
 			<span class="currency">{{currencySymbol}}</span>{{totalFees.balance_amount | number: precisonTwo}}
 		</span>
-		<span class="value" ng-show="!isBalanceShown(totalFees.is_rate_suppressed)" ng-class="getBalanceClass(totalFees.balance_amount)">
+		<span class="value" ng-show="!isBalanceShown(totalFees.is_rate_suppressed, billData) && !billData.is_void_bill && !billData.is_voided" ng-class="getBalanceClass(totalFees.balance_amount)">
 			{{'SUPPRESSED_RATES_TEXT' | translate}}
+		</span>
+		<span class="value" ng-show="billData.is_void_bill" ng-class="getBalanceClass(totalFees.balance_amount)">
+			VOID
+		</span>
+		<span class="value" ng-show="billData.is_voided" ng-class="getBalanceClass(totalFees.balance_amount)">
+			VOIDED
 		</span>
 	</button>
 	<button type="button" class="button with-icon green" click-touch='showAdvancedBillDialog()' ng-show="( showPayButton ) || allowPmtWithGiftCard === true" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
@@ -291,7 +297,7 @@
 						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-disabled="!billData.is_active">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
-							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+							<option value="{{reservationBillData.bills.length+1}}">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 						</select>
 					</div>
 				</td>

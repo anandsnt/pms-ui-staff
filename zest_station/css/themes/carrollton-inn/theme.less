@@ -1,0 +1,174 @@
+/* StayNTouch Zest Station Styles | Chalet View Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #4f004b;
+
+@black:                 #000;
+    
+@textColor:             #000;
+@backgroundColor:       #eae3da;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+@background:            @backgroundColor;
+@backgroundSize:        cover;
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @white;
+        stroke: @white;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+}
+
+.logo-svg{
+    background-image: url("../css/themes/carrollton-inn/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 390px;
+    height: 87px;
+    background-position: center;
+    margin-top: 40px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#carrollton-inn {
+
+    input,
+    select {
+        color: @white;
+    }
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    #actions {
+        &.pull-right {
+            p {
+                strong {
+                    font-size: 18px;
+                    font-weight: 400; 
+                }
+            }
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+     
+    #logo {
+        .logo {
+            .size(auto, 390px);
+        }
+     }
+
+     #options {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #textual {
+        #rate {
+            li {
+                &.total {
+                    color: #000;
+                }
+            }
+        }
+    }
+
+    #guests {
+        color: #707070;
+        .button {
+            background-color: #000;
+        }
+    }
+
+    .add-on { 
+        .add-on-content { 
+            .price { 
+                .action  {
+                    input {
+                        color: @textColor;
+                    }
+                }
+            }
+
+            #options {
+                     
+                ul {
+
+                    li {
+                 
+                        .option {
+                            #rounded > .round(120px);
+                            .square(120px); 
+                                 
+                        }
+
+                    }
+                }
+            }
+        }
+    } 
+
+    .add-on-list {
+
+        &:not(.add-on-list-columns) {
+            .add-on {
+                .add-on-content {
+                    #flexbox > .parent(column, '', '', '');
+             
+                }
+            }
+        }
+        
+    }
+}
