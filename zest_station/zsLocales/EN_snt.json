@@ -765,5 +765,9 @@
    "FACIAL_RECOGNITION_FAILED_SEE_STAFF_OPTIONALLY": "Facial recongnition failed. Please retry or contact a staff",
    "RETAKE_SELFIE": "Retake",
    "GID_FACIAL_RECOGNITION_FAILED": "FR FAILED",
-   "GID_GO_TO_SCAN_MODE": "(Use back button to allow guests to re-scan)"
+   "GID_GO_TO_SCAN_MODE": "(Use back button to allow guests to re-scan)",
+   "DETACHING_GUEST": "Are you sure you want to detach the guest ",
+   "DETACH_GUEST": "Confirm",
+   "REASON": "Reason",
+   "REASON_PLACEHOLDER": "Enter Reason Here"
 }

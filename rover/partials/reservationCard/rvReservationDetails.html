@@ -217,7 +217,7 @@
                 <div class="wrapper accompany-guest-wrapper">
                     <div class="entry">
                         <figure class="guest-image">
-                            <img ng-src="{{::guestData.primary_guest_details.image}}" alt="" />
+                            <img ng-src="{{ guestData.primary_guest_details.image }}" alt="" />
                             <span ng-if="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
                             <span class="icons icon-adult" ng-if="guestData.primary_guest_details.guest_type === 'ADULT'"></span>
                             <span class="icons icon-student" ng-if="guestData.primary_guest_details.guest_type === 'CHILDREN'"></span>

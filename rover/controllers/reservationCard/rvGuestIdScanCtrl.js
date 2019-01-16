@@ -17,6 +17,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		});
 
 		$scope.screenData.showBackSideScan = false;
+		var faceImage;
 
 		var dateInHotelsFormat = function(date) {
 			var dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
@@ -185,6 +186,21 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 		};
 
+		var saveFaceImage = function() {
+			
+			var avatar = faceImage.split(',').length > 1 ? faceImage.split(',')[1] : '';
+			var apiParams = {
+				'avatar': avatar,
+				'guest_id': $scope.guestIdData.guest_id
+			};
+
+			$scope.callAPI(RVGuestCardsSrv.saveFaceImage, {
+				params: apiParams,
+				loader: 'NONE'
+			});
+			$scope.closeGuestIdModal();
+		};
+
 		$scope.saveGuestIdDetails = function(action, imageType) {
 
 			var apiParams = angular.copy($scope.guestIdData);
@@ -229,13 +245,23 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							birthday: $filter('date')(new Date($scope.guestIdData.date_of_birth), 'yyyy-MM-dd')
 						};
 
+						if (faceImage) {
+							dataToUpdate.faceImage = faceImage;
+						}
+
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
-					$scope.closeGuestIdModal();
+					if (faceImage) {
+						saveFaceImage();
+					} else {
+						$scope.closeGuestIdModal();
+					}
+					
 				};
 			}
 
+			
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
 				successCallBack: saveSuccessCallBack,
@@ -407,6 +433,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		});
 		$scope.$on('EXT_CAMERA_FAILED', function() {
 			$scope.$emit('hideLoader');
+		});
+
+		$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+			faceImage = response;
 		});
 
 	}
