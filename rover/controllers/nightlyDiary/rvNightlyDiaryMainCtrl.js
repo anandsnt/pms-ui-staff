@@ -294,50 +294,67 @@ angular.module('sntRover')
                 };
 
                 /*
+                 * Show Stay Changes validation popup.
+                 */
+                var openMessagePopupForValidationStayChanges = function () {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryValidateStayChanges.html',
+                        scope: $scope,
+                        className: '',
+                        closeByDocument: true,
+                        controller: 'rvNightlyDiaryValidationStayCtrl'
+                    });
+                };
+
+                /*
                  * Function to check room availability.
                  */
                 var checkReservationAvailability = (arrivalDate, DepartureDate) => {
-                    let params = {
-                        'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
-                            .format('YYYY-MM-DD'),
-                        'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
-                            .format('YYYY-MM-DD'),
-                        'reservation_id': $scope.currentSelectedReservation.id,
-                        'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: $scope.currentSelectedRoom.id })).room_no
-                    },
-                        successCallBack = function (response) {
-                            $scope.$emit('hideLoader');
-                            if (response.status === 'failure') {
-                                $scope.messages = response.errors;
-                                openMessagePopup();
-                            } else {
-                                if (response.data.availability_status === 'room_available') {
-                                    $scope.extendShortenReservationDetails = params;
-                                } else {
-                                    switch (response.data.availability_status) {
-                                        case 'to_be_unassigned': $scope.messages = ['PREASSIGNED'];
-                                            break;
-                                        case 'maintenance': $scope.messages = ['MAINTENANCE'];
-                                            break;
-                                        case 'do_not_move': $scope.messages = ['ROOM_IS_SET_TO_DO_NOT_MOVE'];
-                                            break;
-                                        case 'room_ooo': $scope.messages = ['ROOM_OOO'];
-                                            break;
-                                        default: $scope.messages = ["ROOM_TYPE_NOT_AVAILABLE"];
-                                    }
-                                    openMessagePopup();
-                                }
-                            }
+                    let successCallBackStayChanges = function (response) {
+
+                        $scope.popupData = {
+                            data: response,
+                            showOverBookingButton: false,
+                            message: ''
                         };
 
-                    $scope.invokeApi(RVNightlyDiarySrv.checkUpdateAvaibale,
-                        params,
-                        successCallBack);
+                        if (response.is_room_available && response.message === '') {
+                            // Proceed without any popup, save changes and updated.
+                        }
+                        else if (!response.is_room_available || !response.is_no_restrictions_exist || (response.is_group_reservation && !response.is_group_available)) {
+                            // Show popup
+                            // Show message
+                            // No overbooking button
+                            $scope.popupData.message = response.message;
+                            openMessagePopupForValidationStayChanges();
+                        }
+                        else {
+                            // Show popup
+                            // Show message
+                            // overbooking button
+                            // $scope.popupData.showOverBookingButton = true;
+                            openMessagePopupForValidationStayChanges();
+                        }
+                    };
+
+                    let options = {
+                        params: {
+                            'new_arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
+                                .format('YYYY-MM-DD'),
+                            'new_dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
+                                .format('YYYY-MM-DD'),
+                            'reservation_id': $scope.currentSelectedReservation.id,
+                            'room_id': $scope.currentSelectedRoom.id
+                        },
+                        successCallBack: successCallBackStayChanges
+                    };
+
+                    $scope.callAPI(RVNightlyDiarySrv.validateStayChanges, options);
                 };
+
                 /*
                  * Function to cancel message popup.
                  */
-
                 $scope.closeDialog = function () {
                     cancelReservationEditing();
                     ngDialog.close();
@@ -378,7 +395,8 @@ angular.module('sntRover')
                 var openMessagePopup = function () {
                     ngDialog.open({
                         template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',
-                        scope: $scope
+                        scope: $scope,
+                        closeByDocument: true
                     });
                 };
 
