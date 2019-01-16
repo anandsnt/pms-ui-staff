@@ -1,6 +1,6 @@
 admin.controller('ADVectronSetupCtrl', [
-    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv', '$window',
-    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv, $window) {
+    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv',
+    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'VECTRON';
