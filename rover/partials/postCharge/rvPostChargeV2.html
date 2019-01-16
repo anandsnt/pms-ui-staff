@@ -240,7 +240,7 @@
 						    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
 						        {{ no }}
 						    </option>
-						    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="fetchedData.bill_numbers.length<10 && isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+						    <option value="{{fetchedData.bill_numbers.length+1}}" ng-show="isStandAlone">{{fetchedData.bill_numbers.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 						</select>
 					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->

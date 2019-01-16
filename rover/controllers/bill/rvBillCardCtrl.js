@@ -629,6 +629,7 @@ sntRover.controller('RVbillCardController',
 	$scope.getBillData = function(billIndex) {
 		
 		var getBillDataSuccess = function(data) {
+
 			$scope.reservationBillData.bills[billIndex] = data;
 			if (callGenerateFolioNumberApiAfterSuccessfullTransferCharge) {
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false;
@@ -646,7 +647,7 @@ sntRover.controller('RVbillCardController',
 					that.callGenerateFolioNumberApi();
 				}
 			}	
-				
+			$scope.refreshScroller('bill-tab-scroller');
 			},
 			dataToSend = {
 				params: reservationBillData.bills[billIndex].bill_id,
@@ -1185,6 +1186,8 @@ sntRover.controller('RVbillCardController',
 
 	// just fetch the bills again ;)
 	var postchargeAdded = $scope.$on('postcharge.added', function(event, data) {
+
+		$scope.refreshScroller('bill-tab-scroller');
 
 		// cos' we are gods, and this is what we wish
 		// just kidding.. :P
@@ -2286,6 +2289,15 @@ sntRover.controller('RVbillCardController',
 	$scope.findNextBillToReview = function() {		
 		var billIndex = 0;
 
+		$timeout(function() {
+			var billNumber = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_number,
+				scroller = $scope.$parent.myScroll['bill-tab-scroller'];
+			
+			if (billNumber > 7) {
+				scroller.scrollTo(-133 * (billNumber - 6), scroller.maxScrollY);
+			}			
+		}, 100);
+
 		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
 			// Checking last bill balance for stand-alone only.
 			if (typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
@@ -2859,6 +2871,8 @@ sntRover.controller('RVbillCardController',
 	 */
 	var createBillSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
+		$scope.refreshScroller('bill-tab-scroller');
+		
 		// CICO-56584
 		var isBillDataMissing = false;
 
@@ -3203,9 +3217,10 @@ sntRover.controller('RVbillCardController',
 	/*
 	 * Should show void bill button
 	 * bill must be locked, payment type must be other than DB, 
-	 * Number of bills must be < 10, balance must be 0.00
+	 * balance must be 0.00
 	 */
 	$scope.shouldShowVoidBill = function() {
+		
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 
