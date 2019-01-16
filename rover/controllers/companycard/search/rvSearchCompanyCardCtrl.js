@@ -99,7 +99,6 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.queryEntered = _.debounce(function () {
 			if ($scope.textInQueryBox === "") {
 				$scope.results = [];
-				//self.resetSelectionsForMerge();
 				refreshScroller();
 			} else {
 				displayFilteredResults();

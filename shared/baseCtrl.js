@@ -331,8 +331,6 @@ BaseCtrl = function($scope) {
         });
     });
 
-    $scope.isEmpty = function(object) {
-        return angular.equals({}, object);
-    }
+    $scope.isEmpty = isEmpty;
 
 };
