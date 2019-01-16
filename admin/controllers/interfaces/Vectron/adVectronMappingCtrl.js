@@ -114,7 +114,7 @@ admin.controller('adVectronSetupMappingCtrl', [
 
         $scope.onClickUpdate = function() {
             $scope.callAPI(adVectronSetupSrv.updateMapping, {
-                params: _.omit($scope.mapping, ['editing', 'created_at', 'integration_id', 'property_id', 'updated_at']),
+                params: _.omit($scope.mapping, ['editing']),
                 onSuccess: function() {
                     $scope.reloadTable();
                     $scope.state.mode = 'LIST';
