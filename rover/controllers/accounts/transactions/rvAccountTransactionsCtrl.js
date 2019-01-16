@@ -117,6 +117,20 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
 		};
 		/*
+		 * Should show void bill button
+		 * bill must be locked, payment type must be other than DB, 
+		 * balance must be 0.00
+		 */
+		$scope.shouldShowVoidBill = function() {
+			
+			return !$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active && 
+			$scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === '0.0' && 
+			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_db_payment_exists && 
+			 $scope.transactionsDetails.is_void_bill_enabled && 
+			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_voided && 
+			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill;
+		};
+		/*
 		 * Void bill success
 		 */
 		$scope.addListener('VOID_BILL_GENERATED', function(event, billData) {
