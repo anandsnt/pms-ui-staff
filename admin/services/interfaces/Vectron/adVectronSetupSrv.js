@@ -24,7 +24,7 @@ admin.service('adVectronSetupSrv', [
         };
 
         service.resetAuthToken = function() {
-            return ADBaseWebSrvV2.putJSON('/api/integrations/vectron/reset_auth_token');
+            return ADBaseWebSrvV2.postJSON('/api/integrations/vectron/reset_auth_token');
 
         };
 

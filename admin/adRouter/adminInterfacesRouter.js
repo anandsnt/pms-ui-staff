@@ -262,7 +262,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/vectron/setup',
         resolve: {
             vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+                return adInterfacesCommonConfigSrv.fetchConfiguration('vectron');
             }]
         }
     });

@@ -64,14 +64,14 @@ admin.controller('adVectronSetupMappingCtrl', [
 
         $scope.fetchTableData = function($defer, params) {
             var getParams = $scope.calculateGetParams(params),
-                fetchSuccessOfItemList = function(data) {
+                fetchSuccessOfItemList = function(response) {
                     $scope.$emit('hideLoader');
                     $scope.currentClickedElement = -1;
-                    $scope.totalCount = data.total_count;
-                    $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-                    $scope.data = data.results;
+                    $scope.totalCount = response.total_count;
+                    $scope.totalPage = Math.ceil(response.total_count / $scope.displyCount);
+                    $scope.data = response.data;
                     $scope.currentPage = params.page();
-                    params.total(data.total_count);
+                    params.total(response.total_count);
                     $defer.resolve($scope.data);
                 };
 
@@ -83,6 +83,7 @@ admin.controller('adVectronSetupMappingCtrl', [
                 params: mapping.id,
                 onSuccess: function() {
                     $scope.reloadTable();
+                    $scope.state.mode = 'LIST';
                 }
             });
         };
@@ -116,6 +117,7 @@ admin.controller('adVectronSetupMappingCtrl', [
                 params: _.omit($scope.mapping, ['editing', 'created_at', 'integration_id', 'property_id', 'updated_at']),
                 onSuccess: function() {
                     $scope.reloadTable();
+                    $scope.state.mode = 'LIST';
                 }
             });
         };
