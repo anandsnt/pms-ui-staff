@@ -7,13 +7,13 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 	'sntActivity',
 	'$window',
 	'$timeout',
-	function($scope, $rootScope, $state, sntAuthorizationSrv, RVDashboardSrv, sntActivity, $window, $timeout) {
+	($scope, $rootScope, $state, sntAuthorizationSrv, RVDashboardSrv, sntActivity, $window, $timeout) => {
 
 		BaseCtrl.call(this, $scope);
 
-		var loadIframe = function() {
+		let loadIframe = () => {
 			sntActivity.start('ANALYTICS_IFRAME_LOADING');
-			var hotelUUID = sntAuthorizationSrv.getProperty(),
+			let hotelUUID = sntAuthorizationSrv.getProperty(),
 				jwt = $window.localStorage.getItem('jwt'),
 				iFrameUrl = '/sisense/analytics/iframe?hotel_uuid=' + hotelUUID + '&auth_token=' + jwt;
 
@@ -27,13 +27,13 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 			};
 		};
 
-		var listenToiFrameEvents = function() {
-			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-			var eventer = window[eventMethod];
-			var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+		let listenToiFrameEvents = () => {
+			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+			let eventer = window[eventMethod];
+			let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
 			angular.element($window).on(messageEvent, function(e) {
-				var responseData = e.data || e.originalEvent.data;
+				let responseData = e.data || e.originalEvent.data;
 
 				if (responseData === "logout_app") {
 					RVDashboardSrv.signOut().finally(function() {
