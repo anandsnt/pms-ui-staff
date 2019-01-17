@@ -74,8 +74,7 @@ angular.module('admin').controller('adLightSpeedCopyMapppingCtrl', ['$scope', 'a
         $scope.callAPI(adLightSpeedPOSSetupSrv.saveCopyMapings, {
             params: formParamsForCopyMappings(),
             successCallBack: function successCallBack() {
-                $scope.popupMessage = 'Please be patient, this may take a few minutes';
-                initialize();
+                $scope.showSaveCopyMappingsSuccessPopup();
             },
             failureCallBack: function failureCallBack() {
                 $scope.errorMessage = ['Error while saving external mappings'];
@@ -113,7 +112,16 @@ angular.module('admin').controller('adLightSpeedCopyMapppingCtrl', ['$scope', 'a
     };
 
     $scope.showSaveCopyMappingsPopup = function() {
-        $scope.popupMessage = 'This copy will replace any previous mappings. Do you want to proceed??';
+        $scope.showProceedButton = true;
+        ngDialog.open({
+            template: '/assets/partials/interfaces/LightSpeed/adLightSpeedCopyMappingPopup.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope
+        });
+    };
+
+    $scope.showSaveCopyMappingsSuccessPopup = function() {
+        $scope.showProceedButton = false;
         ngDialog.open({
             template: '/assets/partials/interfaces/LightSpeed/adLightSpeedCopyMappingPopup.html',
             className: 'ngdialog-theme-default',
