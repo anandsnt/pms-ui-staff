@@ -72,12 +72,13 @@
     <div class="popup-content form">
         <h2>{{ 'DETACHING_GUEST' | translate }} <strong class="highlight">{{ detachingGuest.last_name }}, {{ detachingGuest.first_name }}</strong> ?</h2>
 
-        <div class="entry">
+        <div class="entry input">
             <label for="reason">REASON</label>
-            <textarea id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('reason', 'scroll-up')" click-touch="showOnScreenKeyboard('reason', 'scroll-up')" enter-press="lastNameEntered()"></textarea>
+            <textarea ng-if="!isIpad" id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('reason', 'scroll-up')" click-touch="showOnScreenKeyboard('reason', 'scroll-up')" enter-press="confirmGuestDetaching()" touch-press></textarea>
+            <textarea ng-if="isIpad" id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" enter-press="confirmGuestDetaching()"></textarea>
         </div>
         <div class="actions">
-            <button type="button" class="button transparent"touch-press='detachingGuest.showWarning = false' translate>CANCEL</button>
+            <button type="button" class="button transparent" touch-press='detachingGuest.showWarning = false' translate>CANCEL</button>
             <button type="button" class="button" touch-press='confirmGuestDetaching()' translate>DETACH_GUEST</button>
         </div>
         
