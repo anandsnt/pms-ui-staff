@@ -40,12 +40,26 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				});
 			}
 			transitionParams = null;
+		},
+		// Marks the card as already selected if it is added to merge cards screen
+		markAlreadySelectedCards = function() {
+			if ($scope.viewState.selectedCardsForMerge.length > 0) {
+				$scope.results.forEach(function(card) {
+					var selectedCard = _.find($scope.viewState.selectedCardsForMerge, {id: card.id});
+
+					if (selectedCard) {
+						card.selected = true;
+						card.isPrimary = selectedCard.isPrimary;						
+					}
+				});
+			}
 		};
 
 		var successCallBackofInitialFetch = function (data) {
 			$scope.$emit("hideLoader");
 			$scope.results = data.accounts;
 			applyPreviousSelections();
+			markAlreadySelectedCards();
 			setTimeout(function () {
 				refreshScroller();
 			}, 750);
@@ -211,13 +225,15 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			if (card.selected) {
 				$scope.viewState.selectedCardsForMerge.push(card);				
 			} else {
-				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(card) {
-					if (!card.selected) {
+				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(selectedCard) {
+					
+					if (selectedCard.id === card.id) {
 						card.isPrimary = false;
 						$scope.viewState.selectedPrimaryCard = {};
 					}
-					return !card.selected;
+					return selectedCard.id === card.id;
 				});
+
 
 				if ($scope.viewState.selectedCardsForMerge.length > 0) {
 					$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
