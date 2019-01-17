@@ -15,7 +15,7 @@ sntRover.controller('RVVoidBillPopupCtrl',
 					$scope.$emit("VOID_BILL_GENERATED", data.bills);
 				},
 				paramsToService = {
-					'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
+					'bill_id': ($scope.isFromAccounts) ? $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id : $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
 					'data': {
 						"void_type": voidType,
 						"void_reason": $scope.voidData.reason
