@@ -48,6 +48,7 @@ angular.module('sntRover').controller('RVReportAnalyticsCtrl', ['$scope',
 			listenToiFrameEvents();
 
             $scope.setTitle('Analytics');
+            $scope.$emit("updateRoverLeftMenu", "reportAnalytics");
 		})();
 
 		$scope.$on("$destroy", function() {

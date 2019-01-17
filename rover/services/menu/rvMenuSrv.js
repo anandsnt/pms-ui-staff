@@ -354,7 +354,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_REPORT_ANALYTICS",
 		            action: "rover.reportAnalytics",
-		            menuIndex: "schedule_report_export"
+		            menuIndex: "reportAnalytics"
 		        }]
             }            
 		];
