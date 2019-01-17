@@ -31,12 +31,12 @@
          </li> -->
 
           <li ng-repeat='guest in pageData.viewableItems track by $index'>
-              <span touch-press='selectGuest(guest)' class="details" style="width: 100%; margin-right: 5px;">
-                  {{guest.last_name}}, {{guest.first_name}}
+              <div touch-press='selectGuest(guest)' class="details" style="width: 100%; margin-right: 5px;">
+                  <span>{{guest.last_name}}, {{guest.first_name}}</span>
                   <span style="right: 180px; position: absolute;">
                      {{guest.idScanStatus}}
                   </span>
-              </span>
+              </div>
               <button type="button" class="button remove-btn" touch-press='detachGuest(guest.id)' ng-hide='guest.is_primary'>
                   DETACH
               </button>
