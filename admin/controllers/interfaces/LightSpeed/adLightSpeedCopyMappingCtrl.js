@@ -53,11 +53,13 @@ angular.module('admin').controller('adLightSpeedCopyMapppingCtrl', ['$scope', 'a
     };
 
     var formParamsForCopyMappings = function() {
-        var selectedFloors = _.filter($scope.data.floorList,
-            function(floor) {
-                return floor.isSelected;
-            }),
-            selectedFloorIds = _.pluck(selectedFloors, 'id');
+        var selectedFloorIds = [];
+
+        _.each($scope.data.floorList, function(floor) {
+            if (floor.isSelected) {
+                selectedFloorIds.push(floor.id);
+            }
+        });
 
         return {
             'floor_id': $scope.data.selectedFloor.id,
@@ -69,7 +71,7 @@ angular.module('admin').controller('adLightSpeedCopyMapppingCtrl', ['$scope', 'a
     };
 
     $scope.saveCopyMappings = function () {
-        $scope.callAPI(adLightSpeedPOSSetupSrv.saveCopyCodeMapings, {
+        $scope.callAPI(adLightSpeedPOSSetupSrv.saveCopyMapings, {
             params: formParamsForCopyMappings(),
             successCallBack: function successCallBack() {
                 $scope.popupMessage = 'Please be patient, this may take a few minutes';

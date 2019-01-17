@@ -192,7 +192,7 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
         service.saveCopyMapings = function(params) {
             var deferred = $q.defer(),
-                url = 'api/hotel_settings/lightspeed/copy_mappings';
+                url = 'api/lightspeed/copy_mappings';
 
             ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
