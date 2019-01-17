@@ -23,6 +23,10 @@
                     ng-class="{'orange' : state.activeTab === 'PAYMENT_MAPPINGS', 'white' : state.activeTab !== 'PAYMENT_MAPPINGS'}">
                 PAYMENT MAPPINGS
             </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('COPY_MAPPINGS')"
+                    ng-class="{'orange' : state.activeTab === 'COPY_MAPPINGS', 'white' : state.activeTab !== 'COPY_MAPPINGS'}">
+                COPY MAPPINGS
+            </button>
         </div>
     </header>
     <section class="content-scroll">
@@ -136,6 +140,13 @@
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
                 <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpeedPaymentMappping.html'"></ng-include>
+            </section>
+        </div>
+        <div class="form float" ng-if="state.activeTab === 'COPY_MAPPINGS'">
+            <section ng-controller="adLightSpeedCopyMapppingCtrl">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+                <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpeedCopyMapping.html'"></ng-include>
             </section>
         </div>
     </section>
