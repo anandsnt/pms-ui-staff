@@ -421,6 +421,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				return cardDetails.id === card.id;
 			});
 
+			var isDeleteCardPrimary = !!card.isPrimary;
+
 			if (card.isPrimary) {
 				card.isPrimary = false;
 				$scope.viewState.selectedPrimaryCard = {};
@@ -434,7 +436,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			}
 
 			// Set the first card in the list as primary, if the given card for deletion is primary
-			if ($scope.viewState.selectedCardsForMerge.length > 0) {
+			if (isDeleteCardPrimary && $scope.viewState.selectedCardsForMerge.length > 0) {
 				$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
 			}
