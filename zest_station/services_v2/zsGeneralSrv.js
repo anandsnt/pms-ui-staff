@@ -74,7 +74,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'cedar-court': 'Cedar Court Hotels',
             'sister-city': 'Sister City Hotel NY',
             'twa': 'TWA Hotel',
-            'carrollton-inn': 'Carrollton Inn'
+            'carrollton-inn': 'Carrollton Inn',
+            'match': 'Hotel the Match'
         };
 
         this.isThemeConfigured = function(theme) {
