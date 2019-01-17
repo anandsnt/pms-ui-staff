@@ -148,6 +148,19 @@
 				}, 0);
 			};
 
+			var saveFaceImage = function() {
+				var avatar = $scope.idScanData.selectedGuest.faceImage.split(',').length > 1 ? $scope.idScanData.selectedGuest.faceImage.split(',')[1] : '';
+				var apiParams = {
+					'avatar': avatar,
+					'guest_id': $scope.idScanData.selectedGuest.id
+				};
+				
+				$scope.callAPI(zsCheckinSrv.saveFaceImage, {
+					params: apiParams,
+					loader: 'NONE'
+				});
+			};
+
 			$scope.acceptID = function() {
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
@@ -166,6 +179,10 @@
 				apiParams.guest_id = $scope.idScanData.selectedGuest.id;
 				if (apiParams.nationality_name) {
 					delete apiParams.nationality_name;
+				}
+
+				if ($scope.idScanData.selectedGuest.faceImage) {
+					saveFaceImage();
 				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
 					params: apiParams,
@@ -438,6 +455,40 @@
 			$scope.$on('FR_CAMERA_STARTING', function(){
 				$scope.$emit('showLoader');
 			});
+
+			$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+				$scope.idScanData.selectedGuest.faceImage = response;
+			});
+
+			$scope.detachGuest = function(guest_id) {
+				$scope.detachingGuest = _.find($scope.selectedReservation.guest_details, function(guest) {
+					return guest.id === guest_id;
+				});
+				$scope.detachingGuest.reason = '';
+				$scope.detachingGuest.showWarning = true;
+			};
+
+			$scope.confirmGuestDetaching = function() {
+				var successCallback = function() {
+					$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
+						return guest.id !== $scope.detachingGuest.id;
+					});
+					setPageNumberDetails();
+					$scope.detachingGuest.showWarning = false;
+				};
+
+				var options = {
+					params: {
+						"id": stateParams.reservation_id,
+						"guest_id": $scope.detachingGuest.id,
+						"note": $scope.detachingGuest.reason,
+						"application": "KIOSK"
+					},
+					successCallBack: successCallback
+				};
+
+				$scope.callAPI(zsGeneralSrv.detachGuest, options);
+			};
 
 			(function() {
 				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();

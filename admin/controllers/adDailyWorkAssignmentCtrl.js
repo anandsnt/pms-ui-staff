@@ -289,8 +289,7 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 
 			var params = {
 				name: $scope.eachWorkShift.name,
-				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
-				hotel_id: $rootScope.hotelId
+				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00'				
 			};
 
 			$scope.invokeApi(ADDailyWorkAssignmentSrv.postWorkShift, params, callback, onSaveFailure);
@@ -309,7 +308,6 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			var params = {
 				name: $scope.eachWorkShift.name,
 				time: $rootScope.businessDate + ' ' + $scope.eachWorkShift.hours + ':' + $scope.eachWorkShift.mins + ':00',
-				hotel_id: $rootScope.hotelId,
 				id: $scope.eachWorkShift.id
 			};
 
