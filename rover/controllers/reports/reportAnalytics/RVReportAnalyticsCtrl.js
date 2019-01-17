@@ -1,5 +1,4 @@
-sntRover.controller('RVReportAnalyticsCtrl', [
-	'$scope',
+angular.module('sntRover').controller('RVReportAnalyticsCtrl', ['$scope',
 	'$rootScope',
 	'$state',
 	'sntAuthorizationSrv',
@@ -7,36 +6,36 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 	'sntActivity',
 	'$window',
 	'$timeout',
-	($scope, $rootScope, $state, sntAuthorizationSrv, RVDashboardSrv, sntActivity, $window, $timeout) => {
+	function($scope, $rootScope, $state, sntAuthorizationSrv, RVDashboardSrv, sntActivity, $window, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
-		let loadIframe = () => {
+		var loadIframe = function loadIframe() {
 			sntActivity.start('ANALYTICS_IFRAME_LOADING');
-			let hotelUUID = sntAuthorizationSrv.getProperty(),
+			var hotelUUID = sntAuthorizationSrv.getProperty(),
 				jwt = $window.localStorage.getItem('jwt'),
 				iFrameUrl = '/sisense/analytics/iframe?hotel_uuid=' + hotelUUID + '&auth_token=' + jwt;
 
-			document.getElementById('report-iframe').onload = () => {
+			document.getElementById('report-iframe').onload = function() {
 				sntActivity.stop('ANALYTICS_IFRAME_LOADING');
 			};
-			document.getElementById('report-iframe').onerror = () => {
+			document.getElementById('report-iframe').onerror = function() {
 				sntActivity.stop('ANALYTICS_IFRAME_LOADING');
 			};
 			document.getElementById("report-iframe").src = iFrameUrl;
 		};
 
-		let listenToiFrameEvents = () => {
-			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent",
+		var listenToiFrameEvents = function listenToiFrameEvents() {
+			var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent",
 				eventer = window[eventMethod],
 				messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
-			angular.element($window).on(messageEvent, (e) => {
-				let responseData = e.data || e.originalEvent.data;
+			angular.element($window).on(messageEvent, function(e) {
+				var responseData = e.data || e.originalEvent.data;
 
 				if (responseData === "logout_app") {
-					RVDashboardSrv.signOut().finally(() => {
-						$timeout(() => {
+					RVDashboardSrv.signOut().finally(function() {
+						$timeout(function() {
 							$window.location.href = '/logout';
 						});
 					});
@@ -47,11 +46,12 @@ sntRover.controller('RVReportAnalyticsCtrl', [
 		(function() {
 			loadIframe();
 			listenToiFrameEvents();
-		}());
 
-		$scope.$on("$destroy", () => {
+            $scope.setTitle('Analytics');
+		})();
+
+		$scope.$on("$destroy", function() {
 			angular.element($window).off(messageEvent);
 		});
-
 	}
 ]);

@@ -140,7 +140,7 @@ module.exports = {
 			},
 			'rover.reportAnalytics': {
 				filename: roverJsListRoot + 'reportsAnalyticsAssetsList.js',
-				babelify: true
+				babelify: false
 			}
 		};
 	}
