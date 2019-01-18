@@ -10,13 +10,11 @@
          GID_GO_TO_SCAN_MODE
       </h2>
       <ul id="selection" class="editable">
-         <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)'>
+       <!--   <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)'>
             <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
                <span class="passport-scan-status">
                {{guest.idScanStatus}}
                </span>
-               <!-- guest icons, adult, student, infant -->
-               <!-- primaryGuest is always an adult , and wont have guest_type included -->
                <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
                <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
@@ -30,7 +28,20 @@
                {{guest.first_name}}    
                </span>
             </span>
-         </li>
+         </li> -->
+
+          <li ng-repeat='guest in pageData.viewableItems track by $index'>
+              <div touch-press='selectGuest(guest)' class="details" style="width: 100%; margin-right: 5px;">
+                  <span>{{guest.last_name}}, {{guest.first_name}}</span>
+                  <span style="right: 180px; position: absolute;">
+                     {{guest.idScanStatus}}
+                  </span>
+              </div>
+              <button type="button" class="button remove-btn" touch-press='detachGuest(guest.id)' ng-hide='guest.is_primary'>
+                  DETACH
+              </button>
+          </li>
+
       </ul>
    </div>
    <div>
@@ -55,3 +66,22 @@
       </div>
    </div>
 </section>
+
+ <!-- Popup -->
+<div id="popup" class="popup" ng-class="{'open':detachingGuest.showWarning}">
+    <div class="popup-content form">
+        <h2>{{ 'DETACHING_GUEST' | translate }} <strong class="highlight">{{ detachingGuest.last_name }}, {{ detachingGuest.first_name }}</strong> ?</h2>
+
+        <div class="entry input">
+            <label for="reason">REASON</label>
+            <textarea ng-if="!isIpad" id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('reason', 'scroll-up')" click-touch="showOnScreenKeyboard('reason', 'scroll-up')" enter-press="confirmGuestDetaching()" touch-press></textarea>
+            <textarea ng-if="isIpad" id="reason" rows="4" ng-model="detachingGuest.reason" placeholder="{{ 'REASON_PLACEHOLDER' | translate }}" enter-press="confirmGuestDetaching()"></textarea>
+        </div>
+        <div class="actions">
+            <button type="button" class="button transparent" touch-press='detachingGuest.showWarning = false' translate>CANCEL</button>
+            <button type="button" class="button" touch-press='confirmGuestDetaching()' translate>DETACH_GUEST</button>
+        </div>
+        
+    </div>
+</div>
+<div id="popup-overlay" ng-class="{'open':detachingGuest.showWarning}"></div>

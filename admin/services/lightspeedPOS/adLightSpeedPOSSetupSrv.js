@@ -190,6 +190,19 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
+        service.saveCopyMapings = function(params) {
+            var deferred = $q.defer(),
+                url = 'api/hotel_settings/lightspeed/copy_mappings';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
         service.fetchPostingAccountMapings = function (params) {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/lightspeed/posting_account_mappings.json';

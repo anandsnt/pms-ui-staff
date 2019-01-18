@@ -1625,6 +1625,10 @@
             &.large {
                  width: 640px;
             }
+            &.form {
+                width: 640px;
+                padding-bottom: 180px;  
+            }
         }
 
         iframe {
@@ -1633,6 +1637,11 @@
         }
 
         .logo { .hide(); }
+
+        .button.transparent {
+            color: @black;
+            background-color: fade(@black, 10);
+        }
 
         #languages {
             .button {
@@ -1731,6 +1740,44 @@
                         .show;
                     }
                 }
+            }
+        }
+
+        .form {
+
+            h2 {
+                margin-bottom: 40px;
+            }
+
+            .highlight {
+                color: @brandColor;
+                font-weight: 700;
+            }
+
+            label {
+                display: table;
+                text-transform: uppercase;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+
+            .entry {
+                width: 100%;
+
+                &:not(:last-child) {
+                    margin-bottom: 20px;
+                }
+            }
+
+            .actions {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                padding: 20px 20px 0;
+                .box-shadow(inset 0 1px 0 fade(@black, 10));
+                .size(100px, 100%);
+                #flexbox > .flex();
+                #flexbox > .parent(row wrap, space-between, '', '');
             }
         }
 

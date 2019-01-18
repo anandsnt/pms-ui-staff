@@ -8,7 +8,7 @@
                 <td>Lock Bill</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button" ng-class="{'on' : legalSettings.is_bill_lock_enabled}">
+                    <div ng-click="modifyVoidButton()" class="switch-button" ng-class="{'on' : legalSettings.is_bill_lock_enabled}">
                         <!-- remove checked when not active-->
                         <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_bill_lock_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
@@ -53,7 +53,7 @@
                 <td>Void Bill</td>
                 <td>
                     <!-- remove .on when not active -->
-                    <div class="switch-button" ng-click="clickedVoidButton()" ng-class="{'on' : legalSettings.is_void_bill_enabled}">
+                    <div class="switch-button" ng-click="modifyVoidButton()" ng-class="{'on' : legalSettings.is_void_bill_enabled}">
                         <!-- remove checked when not active-->
                         <input name="void-bill" id="void-bill" value="void-bill" type="checkbox" ng-model="legalSettings.is_void_bill_enabled">
                         <span class="switch-icon"></span>
