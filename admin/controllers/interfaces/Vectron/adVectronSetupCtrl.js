@@ -17,12 +17,21 @@ admin.controller('ADVectronSetupCtrl', [
             $scope.config.enabled = !$scope.config.enabled;
         };
 
+        $scope.closeDialog = function() {
+            ngDialog.close();
+        };
+
         $scope.onClickRegenerate = function() {
-            ngDialog.open({
-                template: '/assets/partials/interfaces/Vectron/adVectronGenerateTokenPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope
-            });
+            if(!$scope.config.authentication_token) {
+                $scope.generateAuthToken();
+            } else {
+                ngDialog.open({
+                    template: '/assets/partials/interfaces/Vectron/adVectronGenerateTokenPopup.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope
+                });
+            }
+
         };
         /**
          * Genearete Auth token
@@ -32,6 +41,7 @@ admin.controller('ADVectronSetupCtrl', [
             $scope.callAPI(adVectronSetupSrv.resetAuthToken, {
                 onSuccess: function(response) {
                     $scope.config.authentication_token = response.authentication_token;
+                    $scope.closeDialog();
                 }
             });
         };
