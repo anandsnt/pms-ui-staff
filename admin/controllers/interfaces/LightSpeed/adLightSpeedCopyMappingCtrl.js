@@ -83,6 +83,13 @@ angular.module('admin').controller('adLightSpeedCopyMapppingCtrl', ['$scope', 'a
     };
 
     $scope.checkBoxSelected = function(selection) {
+
+        if (selection === 'ALL') {
+            _.each($scope.data.floorList, function(floor) {
+                floor.isSelected = $scope.data.isAllSelected;
+            });
+        }
+
         var allSelected = _.every($scope.data.floorList, function (floor) {
             return floor.isSelected;
         });
@@ -90,12 +97,6 @@ angular.module('admin').controller('adLightSpeedCopyMapppingCtrl', ['$scope', 'a
         $scope.someSelected = _.some($scope.data.floorList, function (floor) {
             return floor.isSelected;
         });
-
-        if (selection === 'ALL') {
-            _.each($scope.data.floorList, function(floor) {
-                floor.isSelected = $scope.data.isAllSelected;
-            });
-        }
 
         if (selection !== 'ALL' && $scope.someSelected) {
             $scope.data.isAllSelected = false;
