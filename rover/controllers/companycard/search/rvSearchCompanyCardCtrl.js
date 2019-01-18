@@ -35,7 +35,6 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 						if (card.isPrimary) {
 							$scope.viewState.selectedPrimaryCard = card;	
 						}
-						$scope.viewState.selectedCardsForMerge.push(card);
 					}
 				});
 			}
@@ -411,15 +410,11 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				return false;
 			}
 
-			var ids = _.map($scope.viewState.selectedCardsForMerge, function(card) {
-				return { id: card.id, isPrimary: card.isPrimary || false };
-			});
-
 			$state.go('rover.companycarddetails', {
 				id: id,
 				type: accountType,
 				query: $scope.textInQueryBox,
-				selectedIds: ids || [],
+				selectedIds: $scope.viewState.selectedCardsForMerge || [],
 				isMergeViewSelected: !$scope.viewState.isViewSelected,
 				activeSubView: $scope.viewState.isCompanyCardSelected ? 'CC' : 'TA',
 				cardType: $scope.cardFilter
@@ -523,6 +518,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.textInQueryBox = transitionParams.query;				
 				$scope.viewState.isCompanyCardSelected = transitionParams.activeSubView === 'CC';
 				$scope.cardFilter = transitionParams.cardType;
+				$scope.viewState.selectedCardsForMerge = transitionParams.selectedIds;
 				$scope.queryEntered();
 			}
 
