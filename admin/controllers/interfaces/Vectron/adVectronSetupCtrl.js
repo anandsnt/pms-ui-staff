@@ -1,6 +1,6 @@
 admin.controller('ADVectronSetupCtrl', [
-    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv',
-    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv) {
+    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv', 'ngDialog',
+    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'VECTRON';
@@ -18,6 +18,17 @@ admin.controller('ADVectronSetupCtrl', [
         };
 
         $scope.onClickRegenerate = function() {
+            ngDialog.open({
+                template: '/assets/partials/interfaces/Vectron/adVectronGenerateTokenPopup.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+        };
+        /**
+         * Genearete Auth token
+         * @return {void}
+         */
+        $scope.generateAuthToken = function() {
             $scope.callAPI(adVectronSetupSrv.resetAuthToken, {
                 onSuccess: function(response) {
                     $scope.config.authentication_token = response.authentication_token;

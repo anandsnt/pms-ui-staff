@@ -1,0 +1,15 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <form id="new-payment" class="modal-content form new-content ng-pristine ng-valid" method="post" name="new-payment">
+        <button id="modal-close" class="modal-close" ng-click="closeDialog()" type="button">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <strong class="h2 message ng-scope" translate>
+            You are about to replace the interface authentication, which would require changes on the interface
+            PC onsite.Are you sure want to proceed?
+        </strong>
+        <div class="actions float">
+            <button id="cancel" class="button blank modal-close ng-scope" ng-click="closeDialog()" type="button" translate>CANCEL</button>
+            <button id="saveCopy" class="button green modal-close ng-scope" ng-click="generateAuthToken()" type="button" translate>GENERATE</button>
+        </div>
+    </form>
+</div>
