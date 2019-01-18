@@ -22,7 +22,7 @@ admin.controller('ADVectronSetupCtrl', [
         };
 
         $scope.onClickRegenerate = function() {
-            if(!$scope.config.authentication_token) {
+            if (!$scope.config.authentication_token) {
                 $scope.generateAuthToken();
             } else {
                 ngDialog.open({
