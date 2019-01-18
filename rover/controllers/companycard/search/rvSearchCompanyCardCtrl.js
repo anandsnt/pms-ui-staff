@@ -216,25 +216,29 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * @return {void}
 		 */
 		$scope.onCardSelection = function(card) {
-			if (!$scope.viewState.selectedCardsForMerge.length) {
+			if ($scope.viewState.selectedCardsForMerge.length === 0 && card.selected) {
 				card.isPrimary = true;
 				$scope.viewState.selectedPrimaryCard = card;
-				
 			}
+
 			if (card.selected) {
 				$scope.viewState.selectedCardsForMerge.push(card);				
 			} else {
+				var isCardPrimary = card.isPrimary;
+
 				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(selectedCard) {
 					
 					if (selectedCard.id === card.id) {
 						card.isPrimary = false;
-						$scope.viewState.selectedPrimaryCard = {};
+						if (isCardPrimary) {
+							$scope.viewState.selectedPrimaryCard = {};	
+						}
 					}
 					return selectedCard.id === card.id;
 				});
 
 
-				if ($scope.viewState.selectedCardsForMerge.length > 0) {
+				if (isCardPrimary && $scope.viewState.selectedCardsForMerge.length > 0) {
 					$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
 					$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
 				}
