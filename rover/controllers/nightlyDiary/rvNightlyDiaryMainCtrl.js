@@ -485,6 +485,7 @@ angular.module('sntRover')
                  */
                 var callbackForBookedOrAvailableListner = function () {
                     if ($scope.diaryData.showAvailableRooms) {
+                        resetUnassignedList();
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableFreeSlots = response;
@@ -508,7 +509,7 @@ angular.module('sntRover')
                         $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableFreeSlots, options);
                     }
                     else {
-                        updateDiaryView();
+                        fetchRoomListDataAndReservationListData();
                     }
                 };
 
