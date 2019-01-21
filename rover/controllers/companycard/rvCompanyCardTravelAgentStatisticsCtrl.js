@@ -123,6 +123,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                         refreshPagination();
                         $timeout(function () {
                             reloadScroller();
+                            $scope.getScroller(MONTHLY_DATA_SCROLLER).scrollToElement('.res-active', 500, 0, 0);
                         }, 1000);
                         isDetailedViewScrollReady();
                     },
