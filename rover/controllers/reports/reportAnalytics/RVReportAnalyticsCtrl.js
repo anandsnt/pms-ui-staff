@@ -41,6 +41,9 @@ angular.module('sntRover').controller('RVReportAnalyticsCtrl', ['$scope',
 					});
 				}
 			});
+			$scope.$on("$destroy", function() {
+				angular.element($window).off(messageEvent);
+			});
 		};
 
 		(function() {
@@ -50,9 +53,5 @@ angular.module('sntRover').controller('RVReportAnalyticsCtrl', ['$scope',
             $scope.setTitle('Analytics');
             $scope.$emit("updateRoverLeftMenu", "reportAnalytics");
 		})();
-
-		$scope.$on("$destroy", function() {
-			angular.element($window).off(messageEvent);
-		});
 	}
 ]);
