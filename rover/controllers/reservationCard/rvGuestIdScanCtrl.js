@@ -236,6 +236,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 					var idType = $scope.guestIdData.document_type && $scope.guestIdData.document_type === 'ID_CARD' ? 1 : 3;
 					var nationalityId = $scope.guestIdData.nationality_id ? parseInt($scope.guestIdData.nationality_id) : '';
+					var needToSaveFaceImage = $scope.hotelDetails.id_collection &&
+						$scope.hotelDetails.id_collection.rover &&
+						$scope.hotelDetails.id_collection.rover.save_id_face_image &&
+						faceImage;
 
 					if ($scope.guestIdData.is_primary_guest) {
 						var dataToUpdate = {
@@ -245,14 +249,14 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							birthday: $filter('date')(new Date($scope.guestIdData.date_of_birth), 'yyyy-MM-dd')
 						};
 
-						if (faceImage) {
+						if (needToSaveFaceImage) {
 							dataToUpdate.faceImage = faceImage;
 						}
 
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
-					if (faceImage) {
+					if (needToSaveFaceImage) {
 						saveFaceImage();
 					} else {
 						$scope.closeGuestIdModal();
