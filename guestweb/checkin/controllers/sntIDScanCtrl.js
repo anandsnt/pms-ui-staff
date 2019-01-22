@@ -85,7 +85,7 @@
 				}
 				$scope.isLoading = true;
 
-				if ($scope.idScanData.selectedGuest.faceImage) {
+				if ($rootScope.saveIdFaceImage && $scope.idScanData.selectedGuest.faceImage) {
 					saveFaceImage();
 				}
 				guestIDScanService.savePassport(apiParams).then(function(response) {
