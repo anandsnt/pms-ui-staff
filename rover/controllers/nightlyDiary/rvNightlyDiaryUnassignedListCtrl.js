@@ -90,10 +90,10 @@ angular.module('sntRover')
             var availableRoomList = $scope.diaryData.availableSlotsForAssignRooms.availableRoomList,
                 unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
-            // Update reservatio section...
+            // Update reservation section...
             availableRoomList = _.reject( availableRoomList,
                 function(obj) {
-                    return obj.room_id === room.room_id; 
+                    return obj.room_id === room.room_id;
                 }
             );
 
