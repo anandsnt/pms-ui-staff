@@ -90,10 +90,10 @@ angular.module('sntRover')
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
-                        showAvailableRooms: false,
-                        availableFreeSlots: [],
+                        isBookRoomViewActive: false,
+                        availableSlotsForBookRooms: [],
                         isRightFilterActive: true,
-                        isAvailableRoomSlotActive: false,
+                        isAssignRoomViewActive: false,
                         availableSlotsForAssignRooms: {
                             availableRoomList: [],
                             fromDate: null,
@@ -135,7 +135,7 @@ angular.module('sntRover')
                         handlePaginationData(data);
                         $scope.diaryData.datesGridData = data.dateList;
                         $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
-                        if ($scope.diaryData.showAvailableRooms) {
+                        if ($scope.diaryData.isBookRoomViewActive) {
                             callbackForBookedOrAvailableListner();
                         }
                         updateDiaryView();
@@ -151,7 +151,7 @@ angular.module('sntRover')
                             'selected_floor_ids': $scope.diaryData.selectedFloors
                         };
 
-                    if ( $scope.diaryData.isAvailableRoomSlotActive ) {
+                    if ( $scope.diaryData.isAssignRoomViewActive ) {
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
                         
                         postData.selected_room_type_ids = [roomTypeId];
@@ -247,7 +247,7 @@ angular.module('sntRover')
                 };
 
                 var resetUnassignedList = function() {
-                    $scope.diaryData.isAvailableRoomSlotActive = false;
+                    $scope.diaryData.isAssignRoomViewActive = false;
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                     $scope.diaryData.availableSlotsForAssignRooms = {};
                 };
@@ -502,9 +502,9 @@ angular.module('sntRover')
                  * To toggle unassigned list and filter.
                  */
                 listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData, shouldHide) {
-                    $scope.diaryData.isAvailableRoomSlotActive = true;
+                    $scope.diaryData.isAssignRoomViewActive = true;
                     if (shouldHide) {
-                        $scope.diaryData.isAvailableRoomSlotActive = false;
+                        $scope.diaryData.isAssignRoomViewActive = false;
                     }
                     $scope.diaryData.availableSlotsForAssignRooms = newData;
                     fetchRoomListDataAndReservationListData();
@@ -514,10 +514,10 @@ angular.module('sntRover')
                  * utility method to call available slots API
                  */
                 var callbackForBookedOrAvailableListner = function () {
-                    if ($scope.diaryData.showAvailableRooms) {
+                    if ($scope.diaryData.isBookRoomViewActive) {
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
-                            $scope.diaryData.availableFreeSlots = response;
+                            $scope.diaryData.availableSlotsForBookRooms = response;
                             updateDiaryView();
                         };
 
@@ -588,7 +588,7 @@ angular.module('sntRover')
                 // CICO-59170 : When coming back from RESERVATION_BASE_SEARCH screen
                 // Enable Avaialble Book slot mode.
                 if ($stateParams.origin === 'RESERVATION_BASE_SEARCH') {
-                    $scope.diaryData.showAvailableRooms = true;
+                    $scope.diaryData.isBookRoomViewActive = true;
                     callbackForBookedOrAvailableListner();
                 }
 
@@ -597,7 +597,7 @@ angular.module('sntRover')
                     roomsList: roomsList.rooms,
                     reservationsList: reservationsList.rooms,
                     availableSlotsForAssignRooms: {},
-                    isAvailableRoomSlotActive: false,
+                    isAssignRoomViewActive: false,
                     diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                     numberOfDays: $scope.diaryData.numberOfDays,
                     currentBusinessDate: $rootScope.businessDate,
@@ -620,10 +620,10 @@ angular.module('sntRover')
                         type: 'DIARY_VIEW_CHANGED',
                         numberOfDays: $scope.diaryData.numberOfDays,
                         reservationsList: $scope.diaryData.reservationsList.rooms,
-                        isAvailableRoomSlotActive: $scope.diaryData.isAvailableRoomSlotActive,
+                        isAssignRoomViewActive: $scope.diaryData.isAssignRoomViewActive,
                         availableSlotsForAssignRooms: $scope.diaryData.availableSlotsForAssignRooms,
-                        showAvailableRooms: $scope.diaryData.showAvailableRooms,
-                        availableFreeSlots: $scope.diaryData.availableFreeSlots,
+                        isBookRoomViewActive: $scope.diaryData.isBookRoomViewActive,
+                        availableSlotsForBookRooms: $scope.diaryData.availableSlotsForBookRooms,
                         roomsList: $scope.diaryData.diaryRoomsList,
                         diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                         currentBusinessDate: $rootScope.businessDate,
