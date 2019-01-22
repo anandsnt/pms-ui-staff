@@ -166,6 +166,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (!sntIDCollectionSrv.isInDevEnv) {
 			sntIDCollectionSrv.setAcuantCredentialsForProduction(reservationAndhotelData.acuant_credentials);
 		}
+		$rootScope.saveIdFaceImage = reservationAndhotelData.save_id_face_image;
 
 		// Marketting apps
 		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;
