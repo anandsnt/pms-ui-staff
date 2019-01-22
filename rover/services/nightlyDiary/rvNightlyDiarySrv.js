@@ -112,6 +112,23 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         };
 
         /*
+         * To check room is available between dates
+         * @param {data} object
+         * return object
+         */
+        this.validateStayChanges = function (params) {
+            var url = '/api/nightly_diary/validate_stay_change',
+                deferred = $q.defer ();
+
+            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data.result);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        /*
          * updating the reservation
          * @param {data} object
          * return object

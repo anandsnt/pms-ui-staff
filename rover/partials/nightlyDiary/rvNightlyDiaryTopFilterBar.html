@@ -45,8 +45,8 @@
     </div>
 
     <!-- Reservations or Available Slots View -->
-    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.showAvailableRooms }"> 
-        <div class="switch-button" ng-class="{'on' : !diaryData.showAvailableRooms }"> <!-- Remove class 'on' when L48 is not checked -->
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive }"> 
+        <div class="switch-button" ng-class="{'on' : !diaryData.isBookRoomViewActive }"> <!-- Remove class 'on' when L48 is not checked -->
             <input id="diary-availability" value="" type="checkbox" checked /> <!-- Showing existing reservations when checked. Showing Available slots when not checked -->
             <label class="data-off">
                 <span class="value" data-long="Reserved">Res.</span>
@@ -57,7 +57,7 @@
                 <span class="value" data-long="Available">Avl.</span>
             </label>
         </div>
-        <div class="notice" ng-show="diaryData.showAvailableRooms">
+        <div class="notice" ng-show="diaryData.isBookRoomViewActive">
             Select Room and Arrival Date
         </div>
     </div>
@@ -65,8 +65,8 @@
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
 
     <!-- Show / Hide Filters -->
-    <div class="entry filters" ng-class="{'show-one': diaryData.showAvailableRooms }">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showAvailableRooms}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+    <div class="entry filters" ng-class="{'show-one': diaryData.isBookRoomViewActive }">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.isBookRoomViewActive}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
             <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>
