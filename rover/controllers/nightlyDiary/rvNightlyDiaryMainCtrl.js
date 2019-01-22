@@ -642,7 +642,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
-                ;
+                
                 /*
                  * to render the grid view
                  */
