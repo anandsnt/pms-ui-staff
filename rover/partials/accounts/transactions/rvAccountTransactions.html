@@ -47,9 +47,17 @@
 				<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
 					<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
 						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}" click-touch="setActiveBill($index)">
-								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
+							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}" click-touch="setActiveBill($index)" >
+								<div class="price" ng-hide="billTab.is_void_bill || billTab.is_voided"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
+								</div>
+								<div class="price" ng-show="billTab.is_void_bill">
+										<span translate>BILL</span>
+										VOID
+								</div>
+								<div class="price" ng-show="billTab.is_voided">
+									<span translate>BILL </span>
+									VOIDED
 								</div>
 								<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
 							</a>
@@ -76,6 +84,10 @@
 										<span class="icons icon-charge"></span>
 										{{'ADD_CHARGE' |translate}}
 									</button>
+									<button type="button" class="button with-icon red" ng-show="shouldShowVoidBill()" ng-click="clickedVoidBillButton()"> <!-- Click opens {modals/void-bill.html} -->
+		                                    <span class="icons icon-blocked-white"></span> 
+		                                    Void<br/>Bill
+		                            </button>
 								</li>
 
 								<li class="days">
