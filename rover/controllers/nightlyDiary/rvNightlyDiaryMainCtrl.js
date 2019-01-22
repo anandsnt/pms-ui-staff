@@ -91,7 +91,7 @@ angular.module('sntRover')
                         hideRoomType: true,
                         hideFloorList: true,
                         isBookRoomViewActive: false,
-                        availableFreeSlots: [],
+                        availableSlotsForBookRooms: [],
                         isRightFilterActive: true,
                         isAssignRoomViewActive: false,
                         availableSlotsForAssignRooms: {
@@ -485,7 +485,7 @@ angular.module('sntRover')
                     if ($scope.diaryData.isBookRoomViewActive) {
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
-                            $scope.diaryData.availableFreeSlots = response;
+                            $scope.diaryData.availableSlotsForBookRooms = response;
                             updateDiaryView();
                         };
 
@@ -591,7 +591,7 @@ angular.module('sntRover')
                         isAssignRoomViewActive: $scope.diaryData.isAssignRoomViewActive,
                         availableSlotsForAssignRooms: $scope.diaryData.availableSlotsForAssignRooms,
                         isBookRoomViewActive: $scope.diaryData.isBookRoomViewActive,
-                        availableFreeSlots: $scope.diaryData.availableFreeSlots,
+                        availableSlotsForBookRooms: $scope.diaryData.availableSlotsForBookRooms,
                         roomsList: $scope.diaryData.diaryRoomsList,
                         diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                         currentBusinessDate: $rootScope.businessDate,

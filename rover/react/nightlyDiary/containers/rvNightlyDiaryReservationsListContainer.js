@@ -5,9 +5,9 @@ let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
     roomsList.map((room) => {
         room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
         if (state.isBookRoomViewActive) {
-            state.availableFreeSlots.forEach(function (item) {
+            state.availableSlotsForBookRooms.forEach(function (item) {
                 if (item.room_id === room.id) {
-                    room.availableFreeSlots = item.available_dates;
+                    room.availableSlotsForBookRooms = item.available_dates;
                 }
             });
         }

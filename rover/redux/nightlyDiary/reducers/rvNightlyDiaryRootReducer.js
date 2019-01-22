@@ -8,7 +8,7 @@ const nightlyDiaryRootReducer = (state, action) => (
         isAssignRoomViewActive: action.isAssignRoomViewActive,
         availableSlotsForAssignRooms: action.availableSlotsForAssignRooms,
         isBookRoomViewActive: action.isBookRoomViewActive,
-        availableFreeSlots: action.availableFreeSlots,
+        availableSlotsForBookRooms: action.availableSlotsForBookRooms,
         callBackFromAngular: callBackReducer(state, action),
         paginationData: paginationDataReducer(state, action),
         selectedReservationId: (action.type === 'RESERVATION_SELECTED' || action.type === 'CANCEL_RESERVATION_EDITING')
