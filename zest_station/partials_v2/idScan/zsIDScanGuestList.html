@@ -10,7 +10,7 @@
          GID_GO_TO_SCAN_MODE
       </h2>
       <ul id="selection" class="editable">
-       <!--   <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)'>
+       <li ng-repeat='guest in pageData.viewableItems track by $index' touch-press='selectGuest(guest)' ng-if="!zestStationData.is_standalone">
             <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
                <span class="passport-scan-status">
                {{guest.idScanStatus}}
@@ -28,9 +28,9 @@
                {{guest.first_name}}    
                </span>
             </span>
-         </li> -->
+         </li>
 
-          <li ng-repeat='guest in pageData.viewableItems track by $index'>
+          <li ng-repeat='guest in pageData.viewableItems track by $index'  ng-if="zestStationData.is_standalone">
               <div touch-press='selectGuest(guest)' class="details" style="width: 100%; margin-right: 5px;">
                   <span>{{guest.last_name}}, {{guest.first_name}}</span>
                   <span style="right: 180px; position: absolute;">
