@@ -252,8 +252,8 @@ const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     gridDays: state.numberOfDays,
     newArrivalPosition: state.newArrivalPosition,
     newDeparturePosition: state.newDeparturePosition,
-    isAvailableRoomSlotActive: state.isAvailableRoomSlotActive,
-    showAvailableOnly: state.showAvailableRooms
+    isAssignRoomViewActive: state.isAssignRoomViewActive,
+    showAvailableOnly: state.isBookRoomViewActive
 });
 
 const mapDispatchToNightlyDiaryReservationContainerProps = (stateProps) => {
