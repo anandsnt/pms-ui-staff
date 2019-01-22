@@ -4,7 +4,7 @@ let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
 
     roomsList.map((room) => {
         room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
-        if (state.showAvailableRooms) {
+        if (state.isBookRoomViewActive) {
             state.availableFreeSlots.forEach(function (item) {
                 if (item.room_id === room.id) {
                     room.availableFreeSlots = item.available_dates;
@@ -20,7 +20,7 @@ const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
     selectedReservationId: state.selectedReservationId,
     selectedRoomId: state.selectedRoomId,
-    showUnAssignedRooms: state.isAvailableRoomSlotActive,
+    showUnAssignedRooms: state.isAssignRoomViewActive,
     state: state
 });
 
