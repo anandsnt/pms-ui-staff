@@ -4,6 +4,17 @@
 @gridWidth: 840;
 @filtersWidth: ~'calc(100% - @{containerEl}px)';
 
+@sidebarWidth: ~'calc(100vw - @{containerWidth}px)';
+@sidebarPosition: ~'calc(-100vw - @{containerWidth}px)';
+
+@filterSidebarWidth: 260;
+@unassignedSidebarWidth: 320;
+
+@doubleSidebarContainer: (@containerWidth + @filterSidebarWidth);
+@unassignedWidth: ~'calc(100vw - @{doubleSidebarContainer}px)';
+@unassignedPosition: ~'calc(-100vw - @{containerWidth}px)';
+@unassignedTransition: ~'calc(-100vw - @{doubleSidebarContainer}px)';
+
 @breakpointNoRooms: 840;
 @breakpointSingleSidebar: 1280;
 @breakpointDoubleSidebar: 1600;
@@ -1439,134 +1450,31 @@
         } */
     }
 
-    /* Sidebar - Blocks - Unassigned ***/
+    /* Sidebar - Blocks - Unassigned 
+       (For other design styles check .diary-unassigned in 17.diary.less ***/
     .diary-nightly-unassigned {
-        min-width: 320px;
+        z-index: 80;
+        padding: 0;
 
-        .unassigned-labels {
-            font-size: 13px;
-            line-height: 30px;
-            padding: 0 10px;
-            #flexbox > .parent(row wrap, '', '', '');
-        }
-
-        .unassigned-list {
-            .calc-height(100, 90);
-
-            .wrapper {
-                padding: 0 10px 10px 10px;
-            }
-        }
-
-        /* Columns ***/
-        .data {
-            padding-right: 5px;
-            .calc-width(100, 100);
-            #flexbox > .parent(row wrap, '', '', '');
-        }
-
-        .nights {
-            width: 40px;
-            text-align: right;
-        }
-
-        .arrival {
-            width: 60px;
-        }
-
-        /* Row ***/
-        .guest {
-            position: relative;
-            color: @black;
-            line-height: 1;
-            padding: 5px 10px;
-            background-color: @white;
-            cursor: @draggable, pointer;
-            cursor: @draggable 16 16, pointer;
-            .box-shadow();
-            #flexbox > .parent(row wrap, '', center, '');
-            #border-radius > .rounded();
-
-            .vip {
-                font-size: 8px;
-                line-height: 14px;
-                margin-left: 4px;
-                .square(14px);
-            }
-
-            .name,
-            .nights {
-                font-size: 14px;
-                font-weight: 600;
-            }
-
-            .arrival,
-            .room {
-                font-size: 13px;
-            }
-
-            .name,
-            .room {
-                .nowrap();
-            }
-
-            .name {
-                .calc-max-width(100, 20);
-            }
-
-            .room {
-                text-align: left;
-                padding: 0;
-                height: auto;
-                background-color: transparent;
-                .box-shadow(none);
-            }
-
-            &:not(.no-status) {
-                color: @white;
-            }
-
-            &.check-in,
-            &.pre-check-in {
-                padding-left: 25px;
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    background: @icons2x 7px -77px no-repeat;
-                    background-size: 90px;
-                    .size(100%, 20px);
-                    .show();
-                }
-            }
-
-            &.check-in {
-                background-color: @green;
-            }
-
-            &.pre-check-in {
-                background-color: @logoPrimary;
-            }
-
-            &:not(:last-child) {
-                margin-bottom: 10px;
-            }
-
-            &:active {
-                cursor: @dragging, move;
-                cursor: @dragging 16 16, move;
-            }
-        }
-
-        /* Screen big enough to show two columns ***/
-        @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
-            width: ~'calc(100% - @{breakpointSingleSidebar}px)';
+        /* Filters OR Unassigned */
+        @media screen and (max-width: ~'@{breakpointSingleSidebar}px') {
+            width: ~'@{unassignedSidebarWidth}px';
+            right: ~'-@{unassignedSidebarWidth}px';
 
             &.visible {
-                .translate3d(-665px, 0, 0);
+                .translate3d(~'-@{unassignedSidebarWidth}px', 0, 0);
             }
+        }
+
+        /* Filters AND Unassigned ***/
+        @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
+            width: @unassignedWidth;
+            right: @unassignedPosition;
+
+            &.visible {
+                .translate3d(@unassignedTransition, 0, 0);
+            }
+            
         }
     }
 
@@ -1776,6 +1684,111 @@
 
                 .name {
                     line-height: 15px;
+                }
+            }
+        }
+    }
+
+    /* Assigning rooms */
+    &.assigning-rooms {
+        .reservation {
+            &:not(.unassigned) {
+                background: rgba(0,0,0,.1);
+                cursor: default;
+                .box-shadow(none);
+
+                &:before,
+                .name,
+                .reservation-data,
+                .reservation-icons {
+                    display: none !important;
+                }
+            }
+
+            &.unassigned {
+                .show();
+            }
+        }
+
+        &.hide-unnassigned {
+            .reservation {
+                &.unassigned {
+                    .hide();
+                }
+            }
+        }
+
+        &.diary-days-21 {
+            .reservation {
+                &.unassigned {
+                    .name {
+                        width: 10px;
+                        background-image: @arrowWhiteRight;    
+                        background-size: 10px 10px, 100%, 100%;
+                        background-repeat: no-repeat, repeat;
+                        background-position: right center;
+                        .hide-text();
+
+                        @media @highdpi { 
+                            background-image: @arrowWhiteRight2x;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Showing available slots to book */
+    &.showing-available {
+        .diary-nightly-unassigned {
+            .hide();
+        }
+
+        .reservation {
+            &:not(.unassigned) {
+                background: rgba(0,0,0,.1);
+                cursor: default;
+                .box-shadow(none);
+
+                &:before,
+                .name,
+                .reservation-data,
+                .reservation-icons {
+                    display: none !important;
+                }                
+            }
+
+            &.unassigned {
+                .gradient( @greenStart, @greenEnd );
+                .show();
+
+                &:hover,
+                &:active { 
+                    .gradient(@greenEnd, @greenStart);
+                }
+                
+                .name {
+                    background-image: @arrowWhiteRight;    
+                    background-size: 10px 10px, 100%, 100%;
+                    background-repeat: no-repeat, repeat;
+                    background-position: right center;
+                    padding-right: 15px;
+ 
+                    @media @highdpi { 
+                        background-image: @arrowWhiteRight2x;
+                    }
+                }
+            }
+        }
+
+        &.diary-days-21 {
+            .reservation {
+                &.unassigned {
+                    .name {
+                        padding-right: 0;
+                        width: 10px;
+                        .hide-text();
+                    }
                 }
             }
         }
