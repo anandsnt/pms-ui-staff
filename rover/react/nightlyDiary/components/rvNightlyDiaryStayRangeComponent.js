@@ -112,11 +112,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
         e.stopPropagation ();
         if (state.isArrivalDragging) {
             state.isArrivalDragging = false;
-            this.calculateArrivalDate();
+            setTimeout(this.calculateArrivalDate, 500);
         }
         if (state.isDepartureDragging) {
             state.isDepartureDragging = false;
-            this.calculateDepartureDate();
+            setTimeout(this.calculateDepartureDate, 500);
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
