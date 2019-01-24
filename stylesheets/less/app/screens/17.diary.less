@@ -1049,6 +1049,63 @@
                 }
             }
 
+             /* Sidebar ***/
+            .diary-sidebar {
+                position: absolute;
+                top: 0;
+                right: -320px;
+                text-transform: uppercase;
+                padding: 0 10px;
+                z-index: 90;
+                .size(100%, 320px);
+                .background(@white);
+                .transition();
+
+                /* Title ***/
+                .sidebar-header {
+                    text-align: center;
+                    line-height: 1;
+                    padding: 20px 10px 0 10px;
+                    height: 60px;
+
+                    h2 {
+                        font-size: 18px;
+                        font-weight: 600;
+                    }
+
+                    p {
+                        color: @grey3;
+                        font-size: 13px;
+                        margin: 0;
+                    }
+                } 
+
+                /* Content ***/
+                .scrollable {
+                    position: relative;
+
+                    .iScrollVerticalScrollbar {
+                        top: 0;
+                        bottom: 0;
+                        right: 0;
+
+                        .iScrollIndicator {
+                            background-color:rgba(0,0,0,0.15);
+                        }
+                    }
+                }
+
+                &.visible {
+                    .translate3d(-320px, 0, 0);
+                    .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
+                }
+            }
+
+            /* Sidebar - Unassigned ***/
+            .diary-unassigned {
+                padding: 0;
+            }
+
             /* Reservation edit ***/
             &.editing { .calc-height(100, 150); }
 
@@ -1168,54 +1225,10 @@
 
             /* 24-hours grid ***/
             &.hours-24 {
-                .sidebar-right {
-                    &#room-diary-rooms { 
-                        .occupancy-block { 
-                            height: 24px;
-                            margin-bottom: 0;
+                /*
+                Here was the place of .sidebar-right. 
+                */
 
-                            .occupancy-status{
-                               line-height: 24px;
-                               padding: 0 60px 0 10px;
-                               .float;
-                                font-size: 12px;
-
-                                .guest-name {
-                                    .pull-left();
-                                    .calc-width(100, 95 );
-                                }
-                               .room-type {
-                                    padding-right: 5px;
-                                    .pull-right();
-                                    font-size: 11px;
-                                    text-align: right;
-                                    width: 90px;
-                               }
-                               &:before {
-                                    background-size: 20px 20px !important;
-                                }
-                            }
-
-                            .occupancy-time { 
-                                width: 60px;
-                                line-height: 24px;
-                                padding: 0px 5px;
-                                font-size: 12px;
-                                font-weight: normal;
-                                text-align: left;
-                                .duration {
-                                    .pull-left();
-                                }
-                                .eta {
-                                    font-size: 12px;
-                                    .pull-right();
-                                    padding-top: 1px;
-                                }
-                            }
-                        
-                        }
-                    }
-                 }
                 .diary-rooms {
                     .room-title {
                         height: 24px;
@@ -1377,3 +1390,203 @@
             }
         }
     }
+
+/* Sidebar - Unassigned (Both Daily and Nightly Diary) ***/
+.diary-unassigned {
+
+    .diary-nightly-search-form {
+        width: 100%;
+        height: 50px;
+
+        .entry {
+            &.date {
+                padding-top: 0;
+                width: 100%;
+
+                .label {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    font-size: 12px;
+                    padding-left: 10px;
+                }
+
+                .date-range {
+                    text-transform: none;
+                    width: 100%;
+                    padding-top: 7px;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .scrollable {
+        .iScrollVerticalScrollbar {
+            right: 2px;
+        }
+    }
+
+    .sidebar-header {
+        height: 70px;
+        padding-top: 15px;
+    }
+
+    .unassigned-list {
+        .calc-height(100, 200);
+
+        &.no-actions {
+            .calc-height(100, 130);
+        }
+
+        .wrapper {
+            padding: 0 10px 10px 10px;
+        }
+    }
+
+    .unassigned-actions {
+        margin: 20px 0px 0 0px;
+        padding: 10px;
+        height: 60px;
+        .box-shadow(0 -1px 0 rgba(0,0,0,.15));
+
+        .checkbox {
+            margin: 0;
+        }
+    }
+
+    /* Columns ***/
+    .data {
+        padding-right: 5px;
+        .calc-width(100, 100);
+        #flexbox > .parent(row wrap, '', '', '');
+    }
+
+    /* Row ***/
+    .guest {
+        position: relative;
+        color: @black;
+        height: 40px;
+        line-height: 1;
+        padding: 5px 10px;
+        background-color: @white;
+        cursor: pointer;
+        .box-shadow();
+        #flexbox > .parent(row wrap, '', center, '');
+        #border-radius > .rounded();
+
+        .vip {
+            font-size: 8px;
+            line-height: 14px;
+            margin-left: 4px;
+            .square(14px);
+        }
+
+        .type {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+            opacity: 0.5;
+            color: @black;
+        }
+
+        .name,
+        .nights {
+            font-weight: 600;
+        }
+
+        .arrival,
+        .guest-room {
+            font-size: 13px;
+        }
+
+        .name,
+        .guest-room {
+            .nowrap();
+        }
+
+        .name { 
+            font-size: 14px;
+            .calc-max-width(100, 20);
+        }
+
+        .nights {
+            width: 80px;
+            font-size: 13px;
+            text-align: right;
+
+            span {
+                display: block;
+                font-size: 13px;
+                opacity: 0.5;
+                color: @black;
+                font-weight: 400;
+            }
+        }
+
+        .guest-room {
+            text-align: left;
+            padding: 0;
+            height: auto;
+            background-color: transparent;
+            .box-shadow(none);
+            opacity: 0.5;
+            color: @black;
+            width: 100%;
+        }
+
+        &:not(.no-status) {
+            color: @white;
+        }
+
+        &.check-in,
+        &.pre-check-in {
+            padding-left: 25px;
+            
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                background: @icons2x 7px -77px no-repeat;
+                background-size: 90px;
+                .size(100%, 20px);
+                .show();
+            }
+
+            &.blocked:not(.selected) {
+
+                &:after {
+                    background-position: 8px -453px;
+                    background-size: 100px;
+                }
+            }
+        }
+
+        &.check-in {
+            background-color: @green;
+        }
+
+        &.pre-check-in {
+            background-color: @logoPrimary;
+        }
+
+        &.blocked:not(.selected) {
+            background-color: @grey2;
+
+            .name,
+            .nights {
+                color: @black;
+            }
+        }
+
+        &.selected {
+            color: @white;
+            .gradient (@logoGradientStart, @logoGradientEnd);
+        }
+        
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        } 
+    }
+}
