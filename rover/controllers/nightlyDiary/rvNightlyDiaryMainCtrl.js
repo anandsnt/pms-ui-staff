@@ -517,6 +517,7 @@ angular.module('sntRover')
                  */
                 var callbackForBookedOrAvailableListner = function () {
                     if ($scope.diaryData.isBookRoomViewActive) {
+                        resetUnassignedList();
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableSlotsForBookRooms = response;
@@ -540,7 +541,7 @@ angular.module('sntRover')
                         $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableFreeSlots, options);
                     }
                     else {
-                        updateDiaryView();
+                        fetchRoomListDataAndReservationListData();
                     }
                 };
 
@@ -641,7 +642,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
-                ;
+                
                 /*
                  * to render the grid view
                  */

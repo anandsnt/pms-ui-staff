@@ -181,7 +181,10 @@
 					delete apiParams.nationality_name;
 				}
 
-				if ($scope.idScanData.selectedGuest.faceImage) {
+				if ($scope.zestStationData.hotelSettings.id_collection  &&
+				    $scope.zestStationData.hotelSettings.id_collection.rover &&
+				    $scope.zestStationData.hotelSettings.id_collection.rover.save_id_face_image &&
+				    $scope.idScanData.selectedGuest.faceImage) {
 					saveFaceImage();
 				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
