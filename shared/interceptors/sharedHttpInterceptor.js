@@ -67,6 +67,18 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
                 }
 
+                if (response.data.hasOwnProperty('business_date')) {
+                    console.log(response.data.business_date);
+                    console.log("-----")
+                    console.log($rootScope.businessDate)
+                    if (response.data.business_date !== $rootScope.businessDate) {
+                        console.log("just in")
+                        $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+                    }
+                }
+
+                
+
                 if (jwt) {
                     $window.localStorage.setItem('jwt', jwt);
                 }
@@ -77,9 +89,6 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 if (rejection.status === 401) { // 401- Unauthorized
                     // so lets redirect to login page
                     $window.location.href = '/logout';
-                }
-                if (rejection.status === 430) {
-                    $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup(rejection.data.errors[0]);
                 }
                 if (rejection.status === 520 && rejection.config.url !== '/admin/test_pms_connection') {
                     $rootScope.showOWSError && $rootScope.showOWSError();
