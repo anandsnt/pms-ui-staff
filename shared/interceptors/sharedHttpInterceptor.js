@@ -67,17 +67,11 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
                 }
 
-                if (response.data.hasOwnProperty('business_date')) {
-                    console.log(response.data.business_date);
-                    console.log("-----")
-                    console.log($rootScope.businessDate)
-                    if (response.data.business_date !== $rootScope.businessDate) {
-                        console.log("just in")
+                if (response.headers.hasOwnProperty('business_date')) {
+                    if (response.headers.business_date !== $rootScope.businessDate) {
                         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
                     }
                 }
-
-                
 
                 if (jwt) {
                     $window.localStorage.setItem('jwt', jwt);
