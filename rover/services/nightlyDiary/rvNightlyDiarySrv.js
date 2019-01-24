@@ -112,6 +112,23 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         };
 
         /*
+         * To check room is available between dates
+         * @param {data} object
+         * return object
+         */
+        this.validateStayChanges = function (params) {
+            var url = '/api/nightly_diary/validate_stay_change',
+                deferred = $q.defer ();
+
+            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data.result);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        /*
          * updating the reservation
          * @param {data} object
          * return object
@@ -167,4 +184,77 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
 
             return deferred.promise;
         };
-    }]);
+
+        /*
+         * Fetch unassigned reservation lists
+         * @param {data} object
+         * return object
+         */
+        this.fetchUnassignedRoomList = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/unassigned_reservations',
+                businessDate = params.businessDate;
+
+            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+                angular.forEach(data.reservations, function(item) {
+                    item.statusClass = item.arrival_date === businessDate ? 'check-in' : 'no-status';
+                });
+                deferred.resolve(data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        /*
+         * Fetch Available Rooms
+         * @param {data} object
+         * return object
+         */
+        this.retrieveAvailableRooms = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/rooms/retrieve_available_rooms';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        /*
+         * Fetch Available free slots for booking reservation
+         * @param {data} object
+         * return object
+         */
+        this.retrieveAvailableFreeSlots = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/availability';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.rooms);
+                }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        /*
+         * Assign Room in Diary
+         * @param {data} object
+         * return object
+         */
+        this.assignRoom = function(params) {
+            var deferred = $q.defer(),
+                url = '/staff/reservation/modify_reservation';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+    }
+]);

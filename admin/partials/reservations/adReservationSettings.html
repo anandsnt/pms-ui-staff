@@ -7,7 +7,7 @@
 	<section class="content-scroll">
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 
-		<form style="overflow-y:auto;" class="form float" >
+		<form style="overflow-y:auto;" class="form float form_add_new_rate" >
 			<fieldset class="holder full-width">
 				<fieldset class="holder left"  ng-if="isStandAlone">
 					<div style="height:20px;"></div>
@@ -194,7 +194,31 @@
 				</fieldset>
 
 				<fieldset class="holder left" ng-if="isStandAlone">
-					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on" ></ad-toggle-button>
+					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on"></ad-toggle-button>
+
+					<div class="entry" >
+						<label>Day Use</label>
+						<div class="switch-button single" ng-class="{ on: reservationSettingsData.day_use_enabled }" ng-click="toggleDayUse()">
+	                    	<input type="checkbox">
+	                        <span class="switch-icon"></span>
+	                	</div>
+		            </div>
+
+		            <div class="entry" >
+						<label>Hourly Rates for Day Use</label>
+						<div class="switch-button single" ng-class="{ on: reservationSettingsData.hourly_rates_for_day_use_enabled }" ng-click="toggleHourlyRatesForDayUse()">
+		                    <input type="checkbox">
+		                       <span class="switch-icon"></span>
+		                </div>
+					</div>
+					
+	                <div class="entry" ng-show="reservationSettingsData.hourly_rates_for_day_use_enabled">
+	                	<label translate>Hourly Availability Calculation</label>
+	                	<div class="switch">
+		                    <span ng-click="toggleHourlyAvailability('FULL')" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'FULL' || reservationSettingsData.hourly_availability_calculation == ''}">FULL</span>
+		                    <span ng-click="toggleHourlyAvailability('LIMITED')" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'LIMITED'}">LIMITED</span>
+		                </div>
+	                </div>
 					<ad-toggle-button label="{{'ADDONS_FOR_RESERVATIONS' | translate}}" is-checked="reservationSettingsData.is_addon_on" ></ad-toggle-button>
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
 

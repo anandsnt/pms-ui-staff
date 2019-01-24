@@ -43,7 +43,11 @@ angular.module('stayCardModule', [])
             params: {
                 guestId: null,
                 selectedArrivalDate: null,
-                selectedRoomTypeId: null
+                selectedRoomTypeId: null,
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                startDate: null,
+                fromState: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',

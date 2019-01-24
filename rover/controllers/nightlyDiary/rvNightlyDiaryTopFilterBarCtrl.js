@@ -16,6 +16,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+        var listeners = {};
 
         /*
          * Utility method to shift date.
@@ -76,12 +77,12 @@ angular.module('sntRover')
         };
 
         var init = function() {
-
             $scope.diaryData.fromDate = $filter('date')(tzIndependentDate($scope.diaryData.fromDate), 'yyyy-MM-dd');
             $scope.diaryData.toDate   = getDateShift( $scope.diaryData.fromDate, $scope.diaryData.numberOfDays, true, true);
             $scope.diaryData.firstMonthDateList = [];
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
+            $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
 
         // Show calendar popup.
@@ -94,7 +95,7 @@ angular.module('sntRover')
             });
         };
         // Catching event from date picker controller while date is changed.
-        $scope.$on('DATE_CHANGED', function () {
+        listeners['DATE_CHANGED'] = $scope.$on('DATE_CHANGED', function () {
             var isRightShift = true;
 
             if ($scope.diaryData.numberOfDays === 7) {
@@ -103,10 +104,11 @@ angular.module('sntRover')
             else {
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
             }
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
-        $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
+        listeners['FETCH_COMPLETED_DATE_LIST_DATA'] = $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
             $scope.diaryData.hasMultipleMonth = checkDateRangeHaveMultipleMonths();
         });
 
@@ -122,8 +124,16 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
+
+        // To toggle Booked/Available button.
+        $scope.toggleBookedOrAvailable = function() {
+            $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
+            $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
+        };
+       
 
         /*
          * Method to calculate from date and to date after shifting.
@@ -153,6 +163,7 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
@@ -161,33 +172,67 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
+            $scope.diaryData.fromDate = $rootScope.businessDate;
             init();
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
         };
 
-        // To toggle filter panel view.
-        $scope.togglePanelView = function() {
-            // if ($scope.diaryData.showFilterPanel) {
-            //     $scope.diaryData.showFilterPanel = false;
-            //     $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
-            // } else {
-            //     $scope.diaryData.showFilterPanel = true;
-            // }
-            $scope.diaryData.showFilterPanel = !$scope.diaryData.showFilterPanel;
-            $scope.diaryData.showUnassignedReservations = false;
+        // To toggle filter and unassigned list.
+        $scope.toggleFilter = function(activeTab) {
+            if ($scope.diaryData.rightFilter !== activeTab) {
+                $scope.diaryData.rightFilter = activeTab;
+            }
+            if (activeTab === 'UNASSIGNED_RESERVATION') {
+                $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+            }
         };
 
-        // Handle click on unassigned filter button
-        $scope.toggleUnassignedReservations = function() {
-            $scope.diaryData.showUnassignedReservations = !$scope.diaryData.showUnassignedReservations;
-            $scope.diaryData.showFilterPanel = false;
+        // Handle Nigthtly/Hourly toggle
+        $scope.toggleHourlyNightly = false;
+        $scope.navigateToHourlyDiary = function() {
+            $state.go("rover.diary");
+            $scope.toggleHourlyNightly = true;
+        };
+
+        /*
+         *  Utility method to check whether we need to show Toggle DIARY H/N
+         *  Based on settings values inside Reservation settings.
+         */
+        $scope.hideToggleMenu = function() {
+            
+            /**
+             *  A = settings.day_use_enabled (true / false)
+             *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+             *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+             *
+             *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+             *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             */
+
+            var diaryConfig = $rootScope.hotelDiaryConfig,
+                hideToggleMenu = false;
+
+            // A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+            if ( !diaryConfig.dayUseEnabled ) {
+                hideToggleMenu = true;
+            }
+
+            return hideToggleMenu;
         };
 
         init();
 
+        // destroying listeners
+        angular.forEach(listeners, function(listener) {
+            $scope.$on('$destroy', listener);
+        });
 }]);

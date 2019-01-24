@@ -76,12 +76,40 @@ admin.controller('ADAppCtrl', [
 	    // flag to decide show neighbours screen
 	    var isNeighboursEnabled = false;
 
+        /*
+         *  Utility method to check whether we need to show DIARY menu
+         *  Based on settings values inside Reservation settings.
+         */
+        var showHourlyDiaryMenu = function() {
+            
+            /**
+             *  A = settings.day_use_enabled (true / false)
+             *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+             *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+             *
+             *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+             *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             */
+
+            var diaryConfig = $rootScope.hotelDiaryConfig,
+                showHourlyDiaryMenu = false;
+
+            // A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+            if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.hourlyAvailabilityCalculation === 'FULL' ) {
+                showHourlyDiaryMenu = true;
+            }
+
+            return showHourlyDiaryMenu;
+        };
+
         var setupLeftMenu = function() {
             var shouldHideNightlyDiaryMenu = true,
                 shouldHideSellLimitMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
-                shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideNightlyDiaryMenu  = (!$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv) || showHourlyDiaryMenu();
                 shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
@@ -110,7 +138,7 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_ROOM_DIARY',
                                 action: 'rover.diary',
                                 standAlone: true,
-                                hidden: !$rootScope.isHourlyRatesEnabled
+                                hidden: !$rootScope.isHourlyRatesEnabled && !showHourlyDiaryMenu()
                             }, {
                                 title: 'MENU_ROOM_DIARY',
                                 action: 'rover.nightlyDiary',
@@ -153,7 +181,7 @@ admin.controller('ADAppCtrl', [
                         action: '',
                         iconClass: 'icon-groups',
                         menuIndex: 'menuGroups',
-                        hidden: $rootScope.isHourlyRatesEnabled,
+                        hidden: $rootScope.isHourlyRatesEnabled || shouldHideNightlyDiaryMenu,
                         submenu: [{
                             title: 'MENU_CREATE_GROUP',
                             action: 'rover.groups.config',
@@ -656,13 +684,16 @@ admin.controller('ADAppCtrl', [
 			$rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
             $rootScope.hotelDateFormat = data.date_format.value;
 			$scope.$emit('hideLoader');
+            $rootScope.dayUseEnabled = data.day_use_enabled;
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
+            $rootScope.hourlyRatesForDayUseEnabled = data.hourly_rates_for_day_use_enabled;
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
 			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            
             // CICO-51146
             $rootScope.isBackgroundReportsEnabled = data.background_report;
             // CICO-55154
@@ -692,6 +723,17 @@ admin.controller('ADAppCtrl', [
 			$rootScope.mliEmvEnabled = data.mli_emv_enabled && data.payment_gateway === 'MLI';
 
             $rootScope.mliAndCBAEnabled = data.payment_gateway === 'MLI' && data.mli_cba_enabled;
+
+            /*
+             *   A = settings.day_use_enabled (true / false)
+             *   B = settings.hourly_rates_for_day_use_enabled (true / false)
+             *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+             */
+            $rootScope.hotelDiaryConfig = {
+                dayUseEnabled: data.day_use_enabled,
+                hourlyRatesForDayUseEnabled: data.hourly_rates_for_day_use_enabled,
+                hourlyAvailabilityCalculation: data.hourly_availability_calculation
+            };
 
 			setupLeftMenu();
 
