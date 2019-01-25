@@ -128,8 +128,6 @@ angular.module('sntRover')
                 // Method to update room list data.
                 var fetchRoomListDataAndReservationListData = function (roomId, offset) {
                     var successCallBackFetchRoomList = function (data) {
-                        $scope.$emit('hideLoader');
-                        $scope.errorMessage = '';
                         $scope.diaryData.diaryRoomsList = data.roomList.rooms;
                         $scope.diaryData.reservationsList = data.reservationList;
                         handlePaginationData(data);
@@ -163,7 +161,13 @@ angular.module('sntRover')
                         postData.room_id = roomId;
                         $scope.diaryData.selectedRoomId = roomId;
                     }
-                    $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
+
+                    var options = {
+                        params: postData,
+                        successCallBack: successCallBackFetchRoomList
+                    };
+
+                    $scope.callAPI(RVNightlyDiarySrv.fetchRoomsListAndReservationList, options );
                 };
 
                 // Method to fetch Unassigned reservations list.
@@ -521,7 +525,7 @@ angular.module('sntRover')
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableSlotsForBookRooms = response;
-                            if ($scope.diaryData.availableSlotsForAssignRooms.hasOwnProperty('availableRoomList')) {
+                            if ($scope.diaryData.availableSlotsForAssignRooms.hasOwnProperty('reservationId')) {
                                 // Reset unassigned reservation list selection.
                                 resetUnassignedList();
                                 // fetch full data (res,room lists) as before it was filtered with room type id
