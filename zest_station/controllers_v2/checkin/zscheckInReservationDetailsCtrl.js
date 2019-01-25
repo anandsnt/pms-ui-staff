@@ -96,7 +96,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                     params: {
                         'id': $scope.selectedReservation.id, 
-                        'log_action': $rootScope.checkin_reservation_id != $scope.selectedReservation.id
+                        'log_action': $rootScope.checkin_reservation_id !== $scope.selectedReservation.id
                     },
                     'successCallBack': onSuccessFetchReservationDetails
                 });
