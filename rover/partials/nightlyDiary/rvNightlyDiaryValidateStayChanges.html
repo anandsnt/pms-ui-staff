@@ -52,7 +52,7 @@
 	            - brand-colors (Go to buttons)
 	            Remove .hidden to show the button
 	        -->
-	        <button ng-if="popupData.showOverBookingButton" ng-class="{'grey overlay': disableOverBookingButton, 'blue': !disableOverBookingButton }" type="button" class="button" ng-click="clickedOverBookButton()">Overbook</button>
+	        <button ng-if="popupData.showOverBookingButton" ng-class="{'grey overlay': popupData.disableOverBookingButton, 'blue': !popupData.disableOverBookingButton }" type="button" class="button" ng-click="clickedOverBookButton()">Overbook</button>
 	    </div>
 
 	    <!-- Remove .hidden after "Checking.." is done -->
