@@ -336,6 +336,7 @@ angular.module('sntRover')
                             // Show popup
                             // Show message
                             // overbooking button
+                            $scope.popupData.message = response.message;
                             $scope.popupData.showOverBookingButton = true;
                             openMessagePopupForValidationStayChanges();
                         }
@@ -384,7 +385,6 @@ angular.module('sntRover')
                         $timeout(function () {
                             fetchRoomListDataAndReservationListData();
                         }, 700);
-
                     };
 
                     $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates,
@@ -517,13 +517,19 @@ angular.module('sntRover')
                  */
                 var callbackForBookedOrAvailableListner = function () {
                     if ($scope.diaryData.isBookRoomViewActive) {
-                        resetUnassignedList();
+                        $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableSlotsForBookRooms = response;
-                            $timeout(function () {
+                            if ($scope.diaryData.availableSlotsForAssignRooms.hasOwnProperty('availableRoomList')) {
+                                // Reset unassigned reservation list selection.
+                                resetUnassignedList();
+                                // fetch full data (res,room lists) as before it was filtered with room type id
+                                fetchRoomListDataAndReservationListData();
+                            }
+                            else {
                                 updateDiaryView();
-                            }, 700);
+                            }
                         };
 
                         let options = {
