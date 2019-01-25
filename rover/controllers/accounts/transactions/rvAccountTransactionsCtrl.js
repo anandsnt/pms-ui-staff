@@ -501,11 +501,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 */
 			var moveToBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				var newBillValueId = _.findWhere($scope.transactionsDetails.bills, {
-                    bill_number: parseInt(newBillValue)
-                }).bill_id;
 
-				dataToMove.toBill = parseInt(newBillValueId);
+				dataToMove.toBill = parseInt(data.bill_id);
+				$scope.transactionsDetails.bills[data.bill_number - 1] = {
+					bill_id: data.bill_id,
+					bill_number: data.bill_number
+				};
 				// Fetch data again to refresh the screen with new data
 				getTransactionDetails(dataToMove);
 			};
