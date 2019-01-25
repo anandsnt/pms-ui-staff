@@ -67,7 +67,7 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
                 }
 
-                if (response.headers.hasOwnProperty('business_date')) {
+                if (response.headers('business_date')) {
                     if (response.headers.business_date !== $rootScope.businessDate) {
                         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
                     }
