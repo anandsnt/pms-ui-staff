@@ -33,9 +33,8 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
     '$rootScope',
     '$q',
     '$window',
-    'sntAuthorizationSrv',
-    '$timeout',
-    function($rootScope, $q, $window, sntAuthorizationSrv, $timeout) {
+    'sntAuthorizationSrv'
+    function($rootScope, $q, $window, sntAuthorizationSrv) {
 
         return {
             request: function(config) {
@@ -69,9 +68,7 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 }
 
                 if (response.headers('Business-Date') && $rootScope.businessDate && (response.headers('Business-Date') !== $rootScope.businessDate)) {
-                    $timeout (function() {
-                        $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
-                    }, 2000);    
+                    $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
                 }
 
                 if (jwt) {
