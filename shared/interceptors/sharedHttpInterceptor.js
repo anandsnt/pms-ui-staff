@@ -34,7 +34,8 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
     '$q',
     '$window',
     'sntAuthorizationSrv',
-    function($rootScope, $q, $window, sntAuthorizationSrv) {
+    '$timeout',
+    function($rootScope, $q, $window, sntAuthorizationSrv, $timeout) {
 
         return {
             request: function(config) {
@@ -67,10 +68,10 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
                 }
 
-                if (response.headers('business_date')) {
-                    if (response.headers.business_date !== $rootScope.businessDate) {
+                if (response.headers('Business-Date') && $rootScope.businessDate && (response.headers('Business-Date') !== $rootScope.businessDate)) {
+                    $timeout (function() {
                         $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
-                    }
+                    }, 2000);    
                 }
 
                 if (jwt) {
