@@ -1,27 +1,22 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
     <div class="inline-edit">
         <header class="content-title float">
-            <h2 translate> Company / Travel Agent Mandatory fields</h2>
+            <h2 translate> COMPANY_TRAVEL_AGENT_FIELDS</h2>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <div class="header-title" style="padding-top: 20px; font-size: 12px;">
-              <em>Mandatory during AR number creation</em>
-            </div>
+            
         </header>
         <section class="content-scroll">
         <form class="form float" >
             <fieldset class="holder full-width">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry">
-                <label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : coTaMandatoryFields.mandatory_on_ar_account }"></span>
-                    Mandatory during AR number creation
-                    <input type="checkbox" ng-click="clickedMandatoryCheck()" ng-model="coTaMandatoryFields.mandatory_on_ar_account">
-                </label>
-            </div>
-            <table id="languages" class="grid datatable" ng-show="coTaMandatoryFields.mandatory_on_ar_account">
+            
+            <table id="languages" class="grid datatable">
                 <thead>
                     <tr>
-                        <th class="header">Field Name</th>
-                        <th class="header">Status</th>
+                        <th class="header" translate>FIELD_NAME</th>
+                        <th class="header" translate>VISIBLE</th>
+                        <th class="header" translate>MANDATORY_DURING_AR_NUMBER_CREATION</th>
+                        <th class="header" translate>MANDATORY_DURING_CARD_CREATION</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,8 +26,24 @@
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.address_line1_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory.is_visible }" ng-click="clickedStatus(coTaMandatoryFields.address_line1_mandatory.is_visible)">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.address_line1_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -44,8 +55,24 @@
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.city_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.city_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.city_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -55,10 +82,26 @@
                         <td header-class="width-90">
                              Postal Code
                         </td>
-                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                       <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.postal_code_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.postal_code_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -70,8 +113,24 @@
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.country_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.country_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.country_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -83,8 +142,24 @@
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_phone_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_phone_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_phone_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_phone_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -94,10 +169,26 @@
                         <td header-class="width-90">
                              Contact E-mail address
                         </td>
-                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                       <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_email_address_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_email_address_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_email_address_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_email_address_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -109,8 +200,24 @@
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_name_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_name_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_name_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_name_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
@@ -122,25 +229,115 @@
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.tax_id_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.tax_id_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.tax_id_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.tax_id_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_account_creation">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr >
                         <td header-class="width-90">
                             E-Invoice
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.e_invoice_mandatory }">
-                                    <input type="checkbox" ng-model="coTaMandatoryFields.e_invoice_mandatory">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.e_invoice_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.e_invoice_mandatory.is_visible">
                                     <span class="switch-icon"></span>
                                 </div>
                             </div>
                         </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td header-class="width-90">
+                            Registered Tax Office
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.regd_tax_office_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.regd_tax_office_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <tr >
+                        <td header-class="width-90">
+                            Organization ID for CO / TA 
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.organization_id_mandatory.is_visible }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.organization_id_mandatory.is_visible">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry float-right">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation }">
+                                    <input type="checkbox" ng-model="coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr> 
                     </tr>                     
                 </tbody>
             </table>
