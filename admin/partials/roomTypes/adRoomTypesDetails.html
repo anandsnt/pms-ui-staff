@@ -67,6 +67,12 @@
 		            </li>
 		        </ul>
 		    </div>
+		    <ad-checkbox
+                 is-checked="roomTypeData.is_available_for_day_use"
+                 is-hide="!dayUseEnabled || roomTypeData.is_suite"
+                 label="{{ 'AVAILABLE_FOR_DAY_USE' | translate}}"
+                 div-class="full-width">
+			</ad-checkbox>
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
