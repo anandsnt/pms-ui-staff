@@ -33,7 +33,7 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
     '$rootScope',
     '$q',
     '$window',
-    'sntAuthorizationSrv'
+    'sntAuthorizationSrv',
     function($rootScope, $q, $window, sntAuthorizationSrv) {
 
         return {
