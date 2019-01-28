@@ -14,7 +14,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			cardType: ""
 		};
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+			staycardState = 'rover.reservation.staycard.reservationcard.reservationdetails';
 
 
 		$scope.setHeadingTitle = function(heading) {
@@ -780,6 +781,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					$scope.newCardData = cardData;
 					that.attachCompanyTACardRoutings(card, cardData);
 					ngDialog.close();
+					if ($state.current.name === staycardState) {
+						$state.reload($state.current.name);
+					}
 				},
 				onReplaceFailure = function(error) {
 
