@@ -45,7 +45,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
-		    ALLOWED_RESV_LIMIT = 92;
+		    ALLOWED_RESV_LIMIT = $rootScope.maxStayLength;
 
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
