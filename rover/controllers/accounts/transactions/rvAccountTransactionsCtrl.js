@@ -948,8 +948,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					}
 					else
 					{
-						window.print();
-						accountsPrintCompleted();
+						$timeout(function() {
+							window.print();
+							accountsPrintCompleted();
+						}, 700); // CICO-61122 
 					}
 
 				}, 100);
