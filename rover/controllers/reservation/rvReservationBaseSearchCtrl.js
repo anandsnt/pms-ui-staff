@@ -546,6 +546,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren'],
                         'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
+                        'isFromNightlyDiary': isFromNightlyDiary,
+                        'roomTypeIdFromNightlyDiary': $stateParams.selectedRoomTypeId,
                         'is_member': !!$scope.reservationData.member.isSelected,
                         'guestId': $stateParams.guestId ? $stateParams.guestId : ''
                     });
