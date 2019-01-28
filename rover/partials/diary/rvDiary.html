@@ -6,18 +6,27 @@
     <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
         <div class="entry edit" ng-show="gridProps.edit.active">
             <div class="guest">
-                <h1 ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
-                    {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
-                </h1>
-                <h1 ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
-                    {{gridProps.edit.originalItem.account_name}}
-                </h1>
+                <figure class="guest-image">
+                    <img src="" alt="">
+                </figure>
+                <div class="guest-info">
+                     <h2 class="name" ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                        {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
+                    </h2>
+                    <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                        {{gridProps.edit.originalItem.account_name}}
+                    </h2>
+                    <span class="room">
+                        <span class="currency">{currency}</span>{Rate}
+                        {Room Type}
+                    </span>
+                </div>
+                <button type="button" class="button orange" ng-click="openStayCard()">StayCard</button>
             </div>
             <div class="actions">
-                <button class="button white" ng-click="unassignRoom()">Unassign</button>
-                <button class="button white" ng-click="openStayCard()">StayCard</button>
-                <button class="button green" ng-click="editSave()">Save</button>
-                <button class="button gray" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button red" ng-click="unassignRoom()">Unassign Room</button>
+                <button type="button" class="button green" ng-click="editSave()">Save Changes</button>
             </div>
         </div>
         <div class="entry switch">
