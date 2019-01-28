@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', 'configurableImagesData', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv, configurableImagesData) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', 'configurableImagesData', '$window', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv, configurableImagesData, $window) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
@@ -248,8 +248,9 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $timeout(function() {
             $scope.downloadPromptFileName = lang + '.json';
             var link = document.getElementById('download-link-popup'); // ie. en-download-link
+            var jwt = $window.localStorage.getItem('jwt');
 
-            link.href = 'staff/locales/download/' + lang + '?hotel_uuid=' + sntAuthorizationSrv.getProperty();
+            link.href = 'staff/locales/download/' + lang + '?hotel_uuid=' + sntAuthorizationSrv.getProperty() + '&auth_token=' + jwt;
         }, 500);
         ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',

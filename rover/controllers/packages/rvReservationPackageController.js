@@ -11,7 +11,9 @@ sntRover.controller('RVReservationPackageController',
 					RVReservationPackageSrv,
 					$state, $timeout, ngDialog, RVReservationStateService) {
 
-	var reservationId = $scope.reservationData.reservation_card.reservation_id;
+	var reservationId = $scope.reservationData.reservation_card.reservation_id,
+		shouldReloadState = false;
+		
 	var successCallBack = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
@@ -33,6 +35,9 @@ sntRover.controller('RVReservationPackageController',
 		// to add stjepan's popup showing animation
 		$rootScope.modalOpened = false;
 		$timeout(function() {
+			if (shouldReloadState) {
+				$state.reload($state.current.name);
+			}
 			ngDialog.close();
 		}, 300);
 	};
@@ -62,6 +67,7 @@ sntRover.controller('RVReservationPackageController',
 				$scope.reservationData.reservation_card.is_package_exist = false;
 				$scope.closeAddOnPopup();
 			}
+			shouldReloadState = true;
 		};
 		var addonArray = [];
 

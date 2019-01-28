@@ -804,7 +804,7 @@ sntRover.controller('RVbillCardController',
 			$scope.shouldGenerateFolioNumber = true;
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
-	 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+	 		if ($scope.shouldGenerateFolioNumber) {
 				callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = true;
 				toBillIndex = parseInt(newBillValue) - 1;
@@ -1199,7 +1199,7 @@ sntRover.controller('RVbillCardController',
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);	
@@ -1953,7 +1953,7 @@ sntRover.controller('RVbillCardController',
 	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
 		$scope.shouldGenerateFolioNumber = false;
-		if (balanceAmount === "0.00" && ($scope.reservationBillData.reservation_status === "CHECKEDOUT" || $scope.reservationBillData.reservation_status === "NOSHOW") && !isFolioNumberExists) {
+		if (balanceAmount === "0.00" && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
 				if ($scope.reservationBillData.is_bill_lock_enabled) {
@@ -2852,7 +2852,7 @@ sntRover.controller('RVbillCardController',
 		}
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
@@ -3036,7 +3036,7 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = true;
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);

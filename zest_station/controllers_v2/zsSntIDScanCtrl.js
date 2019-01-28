@@ -181,7 +181,10 @@
 					delete apiParams.nationality_name;
 				}
 
-				if ($scope.idScanData.selectedGuest.faceImage) {
+				if ($scope.zestStationData.hotelSettings.id_collection  &&
+				    $scope.zestStationData.hotelSettings.id_collection.rover &&
+				    $scope.zestStationData.hotelSettings.id_collection.rover.save_id_face_image &&
+				    $scope.idScanData.selectedGuest.faceImage) {
 					saveFaceImage();
 				}
 				$scope.callAPI(zsCheckinSrv.savePassport, {
@@ -323,7 +326,10 @@
 			};
 
 			$scope.doneButtonClicked = function() {
-				if ($scope.idScanData.verificationMethod === 'STAFF') {
+				// record which staff reviewed the IDs for staff verification settings as well as for facial recognition failure
+				// continued with staff verification
+				if ($scope.idScanData.verificationMethod === 'STAFF' || 
+				    ($scope.idScanData.verificationMethod === 'FR' && $scope.idScanData.staffVerified && verfiedStaffId)) {
 					recordIDApproval();
 				} else {
 					nextPageActions();
