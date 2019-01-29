@@ -18,10 +18,10 @@
             </div>
             <!-- Stay type (nights/hours) -->
             <div id="type" class="entry">
-                <label for="nights-number" ng-if="shouldShowToggle">Staying <span>for</span></label>
-                <label for="nights-number" ng-if="!shouldShowToggle && shouldShowNights">Nights</label>
-                <label for="nights-number" ng-if="!shouldShowToggle && shouldShowHours">Hours</label>
-                <div class="switch-button on" ng-show="shouldShowToggle" ng-class="{ 'on': !isNightsActive }">
+                <label for="nights-number" ng-if="::shouldShowToggle">Staying <span>for</span></label>
+                <label for="nights-number" ng-if="::!shouldShowToggle && shouldShowNights">Nights</label>
+                <label for="nights-number" ng-if="::!shouldShowToggle && shouldShowHours">Hours</label>
+                <div class="switch-button on" ng-show="::shouldShowToggle" ng-class="{ 'on': !isNightsActive }">
                     <input name="stay-type" id="stay-type" value="" type="checkbox" ng-model="isNightsActive" ng-click="switchNightsHours()" />
                     <label class="data-off">
                         <span class="value">Hours</span>
