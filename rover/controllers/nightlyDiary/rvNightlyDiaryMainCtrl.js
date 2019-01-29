@@ -329,7 +329,7 @@ angular.module('sntRover')
                             // Proceed without any popup, save changes and updated.
                             proceedSave = true;
                         }
-                        else if (!response.is_room_available || !response.is_no_restrictions_exist || (response.is_group_reservation && !response.is_group_available)) {
+                        else if (!response.is_room_available || !response.is_no_restrictions_exist || (response.is_group_reservation && !response.is_group_available) || !response.is_rate_available) {
                             // Show popup
                             // Show message
                             // No overbooking button
