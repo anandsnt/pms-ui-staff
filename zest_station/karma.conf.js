@@ -58,6 +58,7 @@ module.exports = function(config) {
             sharedRoot + 'directives/enterPress/enterPress.js',
             sharedRoot + 'directives/clickTouch/clickTouch.js',
             sharedRoot + 'directives/activityIndicator/sntActivityIndicator.js',
+            sharedRoot + 'sntCanvasUtil/**/*.js',
             jsLibRoot + 'date.js',
             sharedRoot + 'cordova.js',
             zestRoot + 'zsApp.js',
