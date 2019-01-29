@@ -782,9 +782,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					ngDialog.close();
 					if ($state.current.name === staycardState) {
 						if (card === 'company') {
-							$scope.$broadcast('UPDATE_COMPANY_NAME_IN_STAYCARD', {name : cardData.account_name});
+							$scope.$broadcast('UPDATE_COMPANY_NAME_IN_STAYCARD', {name: cardData.account_name});
 						} else if (card === 'travel_agent') { 
-							$scope.$broadcast('UPDATE_TA_NAME_IN_STAYCARD', {name : cardData.account_name});
+							$scope.$broadcast('UPDATE_TA_NAME_IN_STAYCARD', {name: cardData.account_name});
 						}
 					}
 					
