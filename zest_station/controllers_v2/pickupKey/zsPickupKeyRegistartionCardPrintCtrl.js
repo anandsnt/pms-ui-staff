@@ -61,9 +61,9 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                     $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
                     $scope.addReasonToOOSLog('DISPENSE_KEY_PRINT_FAIL');
                     $scope.zestStationData.workstationStatus = 'out-of-order';
-                    $scope.runDigestCycle();
                 }
 
+                $scope.runDigestCycle();
                 $scope.trackEvent('PUK - Error', 'Print-Status');
                 $scope.trackEvent('PUK', 'Flow-End-Success');
                 $scope.trackSessionActivity('PUK', 'Print-Error', 'R' + $stateParams.reservation_id, 'FLOW_END_SUCCESS', true);
