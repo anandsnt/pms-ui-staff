@@ -2153,7 +2153,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// mark 'isSameCard' as true on '$scope.reservationData'
 		$scope.setSameCardNgo = function() {
 			$scope.reservationData.isSameCard = true;
-			$state.go('rover.reservation.search');
+			$state.go('rover.reservation.search', { fromState: $scope.stateCheck.isFromNightlyDiary ? 'NIGHTLY_DIARY' : null });
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENER
