@@ -20,7 +20,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.$parent.hideSidebar = false;
 
         // Limit Max number of days to 92
-        var RESV_LIMIT = 92;
+        var RESV_LIMIT = $rootScope.maxStayLength;
 
         $scope.setScroller('search_reservation', {
             preventDefault: false
