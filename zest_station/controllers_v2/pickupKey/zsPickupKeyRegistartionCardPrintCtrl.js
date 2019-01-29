@@ -55,10 +55,14 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 $scope.showDoneButton = true;
                 setMessage(printSuccess);
                 errorMessage = _.isUndefined(errorMessage) ? 'DISPENSE_KEY_PRINT_FAIL' : errorMessage;
-                $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
-                $scope.addReasonToOOSLog('DISPENSE_KEY_PRINT_FAIL');
-                $scope.zestStationData.workstationStatus = 'out-of-order';
-                $scope.runDigestCycle();
+                $scope.zestStationData.consecutivePrintFailure++;
+
+                if ($scope.zestStationData.consecutivePrintFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
+                    $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                    $scope.addReasonToOOSLog('DISPENSE_KEY_PRINT_FAIL');
+                    $scope.zestStationData.workstationStatus = 'out-of-order';
+                    $scope.runDigestCycle();
+                }
 
                 $scope.trackEvent('PUK - Error', 'Print-Status');
                 $scope.trackEvent('PUK', 'Flow-End-Success');
@@ -66,7 +70,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
             };
             var printSuccessActions = function() {
-
+                $scope.zestStationData.consecutivePrintFailure = 0;
                 $scope.$emit('hideLoader');
                 $scope.showDoneButton = true;
                 var printSuccess = true;
