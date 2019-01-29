@@ -17,7 +17,7 @@
                     <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
                         {{gridProps.edit.originalItem.account_name}}
                     </h2>
-                    <span class="room">
+                    <span class="room hidden">
                         <span class="currency">{currency}</span>{Rate}
                         {Room Type}
                     </span>
@@ -26,7 +26,7 @@
             </div>
             <div class="actions">
                 <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
-                <button type="button" class="button red" ng-click="unassignRoom()">Unassign Room</button>
+                <button type="button" class="button red hidden" ng-click="unassignRoom()">Unassign Room</button>
                 <button type="button" class="button green" ng-click="editSave()">Save Changes</button>
             </div>
         </div>
@@ -66,9 +66,7 @@
             <div class="entry-data">
                 <input ui-date="dateOptions" ng-model="duplicte_arrival_date" id="arrival-date" type="text" class="datepicker" readonly>
                 <strong class="date">
-                    {{gridProps.filter.arrival_date.getDate()}}
-                    {{gridProps.filter.arrival_date.toComponents().date.monthName}}
-                    {{gridProps.filter.arrival_date.getFullYear()}}
+                    {{ gridProps.filter.arrival_date | date: 'd MMM yyyy'}}
                 </strong>
             </div>
         </div>
@@ -152,7 +150,7 @@
 
         <!-- Filters -->
         <div class="entry filters">
-            <button type="button" class="button white with-icon only-icon">
+            <button type="button" class="button white with-icon only-icon hidden">
                 <span class="count">{Count of unassigned res.}</span>
                 <span class="icons icon-filter-room"></span>
             </button>
