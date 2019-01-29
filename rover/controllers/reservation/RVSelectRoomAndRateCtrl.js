@@ -52,7 +52,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			showLessRooms: !$stateParams.room_type_id,
 			maxRoomsToShow: 0,
 			selectedRoomType: -1,
-			stayDates: {}
+			stayDates: {},
+			isFromNightlyDiary: $stateParams.isFromNightlyDiary,
+			roomTypeIdFromNightlyDiary: $stateParams.roomTypeIdFromNightlyDiary
 		};
 
 		$scope.display = {
@@ -1770,10 +1772,36 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			return chosen;
 		};
 
+		// CICO-61893 : showValidationPopup
+        var showValidationPopup = function () {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/reseravtionFromDiaryValidation.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        },
+        // CICO-61893 : Reset the room details if the user changes the room type.
+        resetRoomDetailsIfInvalid = function () {
+            TABS[0].room_id = null;
+            ROOMS[0].room_id = null;
+            TABS[0].roomName = null;
+            ROOMS[0].roomName = null;
+        };
+
 		$scope.onRoomTypeChange = function($event) {
 			var tabIndex = $scope.viewState.currentTab,
 				roomType = parseInt($scope.stateCheck.preferredType, 10) || '',
 				roomIndex;
+
+			var roomTypeChanged = ( roomType !== $scope.stateCheck.roomTypeIdFromNightlyDiary );
+
+			if ($scope.stateCheck.isFromNightlyDiary && roomTypeChanged) {
+                $scope.validationMsg = 'Room number will be unassigned by changing the room type';
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
 
 			TABS[tabIndex].roomTypeId = roomType;
 
@@ -2125,7 +2153,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// mark 'isSameCard' as true on '$scope.reservationData'
 		$scope.setSameCardNgo = function() {
 			$scope.reservationData.isSameCard = true;
-			$state.go('rover.reservation.search');
+			$state.go('rover.reservation.search', { fromState: $scope.stateCheck.isFromNightlyDiary ? 'NIGHTLY_DIARY' : null });
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENER

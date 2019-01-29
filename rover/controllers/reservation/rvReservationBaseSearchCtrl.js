@@ -20,7 +20,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.$parent.hideSidebar = false;
 
         // Limit Max number of days to 92
-        var RESV_LIMIT = 92;
+        var RESV_LIMIT = $rootScope.maxStayLength;
 
         $scope.setScroller('search_reservation', {
             preventDefault: false
@@ -546,6 +546,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren'],
                         'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
+                        'isFromNightlyDiary': isFromNightlyDiary,
+                        'roomTypeIdFromNightlyDiary': $stateParams.selectedRoomTypeId,
                         'is_member': !!$scope.reservationData.member.isSelected,
                         'guestId': $stateParams.guestId ? $stateParams.guestId : ''
                     });
