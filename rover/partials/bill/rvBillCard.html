@@ -96,13 +96,21 @@
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
                 			<li ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
 								<a click-touch="getBillData($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}">
-									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
+									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed) && !billTab.is_void_bill && !billTab.is_voided">
 										<span translate>BILL #{{billTab.bill_number}}</span>
 										<span class="currency">{{currencySymbol}}</span>{{billTab.total_amount | number: precisonZero}}
 									</div>
-									<div class="price" ng-show="!isBalanceShown(billTab.is_rate_suppressed)">
+									<div class="price" ng-show="!isBalanceShown(billTab.is_rate_suppressed) && !billTab.is_void_bill && !billTab.is_voided">
 										<span translate>BILL #{{billTab.bill_number}}</span>
 										{{'SUPPRESSED_RATES_TEXT' | translate}}
+									</div>
+									<div class="price" ng-show="billTab.is_void_bill">
+										<span translate>BILL</span>
+										VOID
+									</div>
+									<div class="price" ng-show="billTab.is_voided">
+										<span translate>BILL </span>
+										VOIDED
 									</div>
 									<div class="payment" ng-show="billTab.credit_card_details.payment_type !== 'CC' && billTab.is_active">
 										{{billTab.credit_card_details.payment_type_description}}
@@ -116,7 +124,7 @@
 								</a>
 								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist && billTab.is_active && !billTab.is_control_code_exist && !billTab.is_folio_number_exists" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 							</li>
-							<li class="new-bill" ng-show="reservationBillData.bills.length < 10 && isStandAlone">
+							<li class="new-bill" ng-show="isStandAlone">
 								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
 									<span class="icons icon-plus"></span>
 								</button>
@@ -139,15 +147,19 @@
 											<span class="icons icon-charge"></span>
 											Add Charge
 										</button>
-									</li>
-									<!-- Advanced Bill -->
-									<li class="add-new" ng-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
-									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly">
-										<button type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
+										<button g-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
+									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly" type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
 											<span class="icons icon-charge"></span>
 											Advanced Bill
 										</button>
+										<button type="button" class="button with-icon red" ng-show="shouldShowVoidBill()" ng-click="clickedVoidBillButton()"> <!-- Click opens {modals/void-bill.html} -->
+		                                    <span class="icons icon-blocked-white"></span> 
+		                                    Void<br/>Bill
+		                                </button>
+
 									</li>
+									<!-- Advanced Bill -->
+									
 									<!-- For checkin date -->
 									<li click-touch="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<div class="toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')">
@@ -294,6 +306,7 @@
 					<!--Reverse checkout doesn't need signature-->
 					<div id="signature"
 						iscroll-stop-propagation
+						 snt-convert-canvas-event
 						ui-jq="jSignature"
 						ui-options="signaturePluginOptions"
 						ng-mouseover="disableScroll()"

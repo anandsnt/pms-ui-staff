@@ -5,7 +5,7 @@
 
         <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-                <a translate>CONTACT_INFORMATION</a>
+                <a translate>SUMMARY</a>
             </li>
             <li class="with-filters" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                 <a translate>CONTRACTS</a>

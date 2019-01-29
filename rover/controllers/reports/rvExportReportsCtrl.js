@@ -619,8 +619,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
                 $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
             } else {
-                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                                                    .calendar();
+                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
+
+                var todayDate = moment().startOf('day'),
+                    daysDiff = moment.duration(todayDate.diff($scope.scheduleParams.export_date)).asDays();
+                
+                if (daysDiff < 7) {
+                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.format("L");
+                } else {
+                    $scope.scheduleParams.export_date = $scope.scheduleParams.export_date.calendar();
+                }
             }
 
             if ( angular.isDefined($scope.selectedEntityDetails.time) ) {

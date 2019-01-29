@@ -70,7 +70,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
          * @return {*|promise|{then, catch, finally}|e}
          */
         this.fetchReservationDetails = function(param) {
-            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id,
+            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id + '&log_action=' + param.log_action,
                 deferred = $q.defer();
 
             // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
@@ -602,6 +602,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
 
+        };
+        
+        this.saveFaceImage = function(params) {
+            var url = '/staff/guest_cards/' + params.guest_id + '.json';
+            
+            return zsBaseWebSrv.putJSON(url, params);
         };
     }
 ]);

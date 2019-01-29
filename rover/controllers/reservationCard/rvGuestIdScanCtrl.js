@@ -17,6 +17,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		});
 
 		$scope.screenData.showBackSideScan = false;
+		var faceImage;
 
 		var dateInHotelsFormat = function(date) {
 			var dateFormat = $rootScope.dateFormat ? $rootScope.dateFormat.toUpperCase() : 'MM-DD-YYYY';
@@ -185,6 +186,21 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			}
 		};
 
+		var saveFaceImage = function() {
+			
+			var avatar = faceImage.split(',').length > 1 ? faceImage.split(',')[1] : '';
+			var apiParams = {
+				'avatar': avatar,
+				'guest_id': $scope.guestIdData.guest_id
+			};
+
+			$scope.callAPI(RVGuestCardsSrv.saveFaceImage, {
+				params: apiParams,
+				loader: 'NONE'
+			});
+			$scope.closeGuestIdModal();
+		};
+
 		$scope.saveGuestIdDetails = function(action, imageType) {
 
 			var apiParams = angular.copy($scope.guestIdData);
@@ -220,6 +236,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 					var idType = $scope.guestIdData.document_type && $scope.guestIdData.document_type === 'ID_CARD' ? 1 : 3;
 					var nationalityId = $scope.guestIdData.nationality_id ? parseInt($scope.guestIdData.nationality_id) : '';
+					var needToSaveFaceImage = $scope.hotelDetails.id_collection &&
+						$scope.hotelDetails.id_collection.rover &&
+						$scope.hotelDetails.id_collection.rover.save_id_face_image &&
+						faceImage;
 
 					if ($scope.guestIdData.is_primary_guest) {
 						var dataToUpdate = {
@@ -229,13 +249,23 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 							birthday: $filter('date')(new Date($scope.guestIdData.date_of_birth), 'yyyy-MM-dd')
 						};
 
+						if (needToSaveFaceImage) {
+							dataToUpdate.faceImage = faceImage;
+						}
+
 						$scope.$emit('PRIMARY_GUEST_ID_CHANGED', dataToUpdate);
 					}
 
-					$scope.closeGuestIdModal();
+					if (needToSaveFaceImage) {
+						saveFaceImage();
+					} else {
+						$scope.closeGuestIdModal();
+					}
+					
 				};
 			}
 
+			
 			$scope.callAPI(RVGuestCardsSrv.saveGuestIdDetails, {
 				params: apiParams,
 				successCallBack: saveSuccessCallBack,
@@ -407,6 +437,10 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 		});
 		$scope.$on('EXT_CAMERA_FAILED', function() {
 			$scope.$emit('hideLoader');
+		});
+
+		$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+			faceImage = response;
 		});
 
 	}

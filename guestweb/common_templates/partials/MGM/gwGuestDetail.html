@@ -72,8 +72,11 @@
                 <br>
                 <!-- birthday -->
                 <div class="row margin-top-10">
-                    <p class="sub-text left-align">
+                    <p class="sub-text left-align" ng-hide="guestBirthdateMandatory">
                         BIRTHDAY&nbsp;(OPTIONAL)
+                    </p>
+                    <p class="sub-text left-align" ng-show="guestBirthdateMandatory">
+                        BIRTHDAY&nbsp;(MANDATORY)
                     </p>
                     <div class="row">
                         <div class="eta-container">
