@@ -5,7 +5,7 @@
     <form method="get" name="create-reservation" id="create-reservation" class="wrapper" role="search">
         <!-- Date / Time -->
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div id="dates" class="row">
+        <div id="dates" class="row" ng-class="{'with-toggle': shouldShowToggle}">
             <!-- Arrival date -->
             <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
@@ -18,8 +18,10 @@
             </div>
             <!-- Stay type (nights/hours) -->
             <div id="type" class="entry">
-                <label for="nights-number">Staying <span>for</span></label>
-                <div class="switch-button on" ng-show="shouldShowToggle" ng-class="{ 'on': !isNightsActive }">
+                <label for="nights-number" ng-if="::shouldShowToggle">Staying <span>for</span></label>
+                <label for="nights-number" ng-if="::!shouldShowToggle && shouldShowNights">Nights</label>
+                <label for="nights-number" ng-if="::!shouldShowToggle && shouldShowHours">Hours</label>
+                <div class="switch-button on" ng-show="::shouldShowToggle" ng-class="{ 'on': !isNightsActive }">
                     <input name="stay-type" id="stay-type" value="" type="checkbox" ng-model="isNightsActive" ng-click="switchNightsHours()" />
                     <label class="data-off">
                         <span class="value">Hours</span>
@@ -33,8 +35,8 @@
                 <div class="entry-data">
                     <!-- Option for having 2 separate input fields for nights/hours entry. If nights is default, nights should be hidden until switch button is tapped.
                     Feel free to use just one input field id you want to -->
-                    <input type="text" ng-show="shouldShowNights && maxStayLength <= 92" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()"/>
-                    <input type="text" ng-show="shouldShowNights && maxStayLength > 92" name="nights-number" id="nights-number" type="tel"  ng-model="reservationData.numNights" ng-change="setDepartureDate()"/>
+                    <input type="text" ng-show="shouldShowNights && maxStayLength <= 99" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()"/>
+                    <input type="text" ng-show="shouldShowNights && maxStayLength > 99" name="nights-number" id="nights-number" type="tel"  maxlength="3" ng-model="reservationData.numNights" ng-change="setDepartureDate()"/>
                     <input type="text" ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()" />
                 </div>
             </div>

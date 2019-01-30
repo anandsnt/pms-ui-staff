@@ -25,4 +25,5 @@
 "create_account": "CREATE COMPANY/TRAVEL AGENT ACCOUNT",
 "edit_account": "EDIT COMPANY/TRAVEL AGENT ACCOUNT",
 "complete_end_of_day": "END OF DAY COMPLETION",
-"update_sell_limit" : "UPDATE SELL LIMIT"
+"update_sell_limit" : "UPDATE SELL LIMIT",
+"checkedout" : "CHECKED OUT"
