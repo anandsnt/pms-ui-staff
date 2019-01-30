@@ -206,6 +206,14 @@ const NightlyDiaryStayRangeComponent = createClass ({
                         .add(addDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 
+        if (differenceInDays !== 0) {
+            props.showOrHideSaveChangesButton(true);
+        }
+        else {
+            props.showOrHideSaveChangesButton(false); 
+        }
+
+
         // If flag moved to set for 0 night stay
         if (state.departurePosition === state.oneNightDeparturePosition) {
 
@@ -249,6 +257,13 @@ const NightlyDiaryStayRangeComponent = createClass ({
             currentDay = moment(props.currentSelectedReservation.arrivalDate, state.dateFormat.toUpperCase())
                         .add(differenceInDays, 'days')
                         .format(state.dateFormat.toUpperCase());
+
+        if (differenceInDays !== 0) {
+            props.showOrHideSaveChangesButton(true, true);
+        }
+        else {
+            props.showOrHideSaveChangesButton(false, true); 
+        }
 
         props.extendShortenReservation(curentPosition, state.departurePosition);
         props.checkReservationAvailability(state.arrivalDate, state.departureDate);

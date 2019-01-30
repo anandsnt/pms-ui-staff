@@ -94,6 +94,11 @@ angular.module('sntRover')
                         availableSlotsForBookRooms: [],
                         isRightFilterActive: true,
                         isAssignRoomViewActive: false,
+                        showSaveChangeButtonAfterShortenOrExtent: {
+                            arrivalChanged: false,
+                            departureChanged: false,
+                            show: false
+                        },
                         availableSlotsForAssignRooms: {
                             availableRoomList: [],
                             fromDate: null,
@@ -151,7 +156,7 @@ angular.module('sntRover')
                             'selected_floor_ids': $scope.diaryData.selectedFloors
                         };
 
-                    if ( $scope.diaryData.isAssignRoomViewActive ) {
+                    if ($scope.diaryData.isAssignRoomViewActive) {
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
@@ -167,7 +172,7 @@ angular.module('sntRover')
                         successCallBack: successCallBackFetchRoomList
                     };
 
-                    $scope.callAPI(RVNightlyDiarySrv.fetchRoomsListAndReservationList, options );
+                    $scope.callAPI(RVNightlyDiarySrv.fetchRoomsListAndReservationList, options);
                 };
 
                 // Method to fetch Unassigned reservations list.
@@ -226,6 +231,8 @@ angular.module('sntRover')
                 var selectReservation = (e, reservation, room) => {
                     var srvParams = {};
 
+                    $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
+
                     if (!$scope.diaryData.isEditReservationMode) {
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = reservation;
@@ -252,7 +259,7 @@ angular.module('sntRover')
                     }
                 };
 
-                var resetUnassignedList = function() {
+                var resetUnassignedList = function () {
                     $scope.diaryData.isAssignRoomViewActive = false;
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                     $scope.diaryData.availableSlotsForAssignRooms = {};
@@ -439,6 +446,24 @@ angular.module('sntRover')
                 };
 
                 /*
+                 * Function to show/hide change save after extend/shorten reservation
+                 */
+                var showOrHideSaveChangesButton = function (bool, isArrival) {
+                    if (isArrival) {
+                        $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.arrivalChanged = bool;
+                    }
+                    else {
+                        $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.departureChanged = bool;
+                    }
+                    if ( $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.arrivalChanged || $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.departureChanged) {
+                        $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = true;
+                    }
+                    else {
+                        $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
+                    }
+                };
+
+                /*
                  * Cancel button click edit bar
                  */
                 listeners['CANCEL_RESERVATION_EDITING'] = $scope.$on("CANCEL_RESERVATION_EDITING", function () {
@@ -577,7 +602,8 @@ angular.module('sntRover')
                         extendShortenReservation,
                         checkReservationAvailability,
                         unAssignedRoomSelect,
-                        clickedBookRoom
+                        clickedBookRoom,
+                        showOrHideSaveChangesButton
                     };
                 };
 
@@ -652,7 +678,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
-                
+
                 /*
                  * to render the grid view
                  */

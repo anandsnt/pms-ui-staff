@@ -28,6 +28,7 @@ let convertCurrentSelectedReservation = (currentSelectedReservation, selectedRes
 const mapStateToNightlyDiaryStayRangeContainerProps = (state) => ({
     currentSelectedReservation: convertCurrentSelectedReservation(state.currentSelectedReservation, state.selectedReservationId, state.dateFormat),
     extendShortenReservation: state.callBackFromAngular.extendShortenReservation,
+    showOrHideSaveChangesButton: state.callBackFromAngular.showOrHideSaveChangesButton,
     checkReservationAvailability: state.callBackFromAngular.checkReservationAvailability,
     numberOfDays: state.numberOfDays,
     isPmsProductionEnvironment: state.isPmsProductionEnvironment
