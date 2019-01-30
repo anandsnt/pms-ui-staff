@@ -1,22 +1,19 @@
-<div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-nightly-unassigned" ng-class="{'visible': diaryData.rightFilter === 'UNASSIGNED_RESERVATION'}">
+<div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-unassigned diary-nightly-unassigned" ng-class="{'visible': diaryData.rightFilter === 'UNASSIGNED_RESERVATION'}">
     <div class="sidebar-header">
-        <h2>Unassigned</h2>
+        <h2>Unassigned Reservations</h2>
+        <p>Select reservation to assign a room</p>
     </div>
-    <div class="unassigned-labels">
-        <div class="data">Name / Room Type</div>
-        <div class="arrival">Arrival</div>
-        <div class="nights">Nights</div>
-    </div>
-    <div class="unassigned-list scrollable scroll-vertical">
+    <div class="unassigned-list no-actions scrollable scroll-vertical">
         <div class="wrapper">
             <div class="guest {{reservation.statusClass}}" ng-class="{'selected': selectedItem.reservation_id === reservation.reservation_id }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
                 <div class="data">
                     <strong class="name">{{reservation.last_name}} {{reservation.first_name}}</strong>
                     <strong class="name" ng-if="escapeNull(reservation.last_name) == '' && escapeNull(reservation.first_name) == '' " translate>PENDING</strong>
                     <span ng-if="reservation.is_vip" class="vip">VIP</span>
-                    <span class="room">{{reservation.room_type_name}}</span>
+                    <span class="guest-room">{{reservation.room_type_name}}</span>
                 </div>
-                <div class="arrival">{{reservation.arrival_date | date:dateFormat}}</div>
+                <div class="type hidden">{D || N}</div>
+                <div class="hidden arrival">{{reservation.arrival_date | date:dateFormat}}</div>
                 <div class="nights">{{reservation.number_of_nights}}</div>
             </div>
         </div>

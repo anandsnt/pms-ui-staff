@@ -4,26 +4,37 @@
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
+        
         <div class="entry edit" ng-show="gridProps.edit.active">
             <div class="guest">
-                <h1 ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
-                    {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
-                </h1>
-                <h1 ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
-                    {{gridProps.edit.originalItem.account_name}}
-                </h1>
+                <figure class="guest-image">
+                    <img src="" alt="">
+                </figure>
+                <div class="guest-info">
+                     <h2 class="name" ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                        {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
+                    </h2>
+                    <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                        {{gridProps.edit.originalItem.account_name}}
+                    </h2>
+                    <span class="room hidden">
+                        <span class="currency">{currency}</span>{Rate}
+                        {Room Type}
+                    </span>
+                </div>
+                <button type="button" class="button orange" ng-click="openStayCard()">StayCard</button>
             </div>
             <div class="actions">
-                <button class="button white" ng-click="unassignRoom()">Unassign</button>
-                <button class="button white" ng-click="openStayCard()">StayCard</button>
-                <button class="button green" ng-click="editSave()">Save</button>
-                <button class="button gray" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button red hidden" ng-click="unassignRoom()">Unassign Room</button>
+                <button type="button" class="button green" ng-click="editSave()">Save Changes</button>
             </div>
         </div>
-        <div class="entry switch">
-            <label for="diary-hours-days">DAY/NIGHT USE</label>
-            <div class="switch-button" ng-class="{'on': toggleHourlyNightly}">
-                <input ng-click="navigateToNightlyDiary()" name="diary-hours-days" id="diary-hours-days" value="" type="checkbox" checked />
+
+        <!-- Day or Night Use Diary -->
+        <div class="entry switch switch-view">
+            <div class="switch-button" ng-class="{'on': toggleHourlyNightly}"> <!-- Remove class 'on' when L4 is not checked -->
+                <input ng-click="navigateToNightlyDiary()" id="diary-hours-days" type="checkbox"> <!-- When checked showing this (Day Use) diary. When not checked showing Night Use Diary. -->
                 <label class="data-off">
                     <span class="value">D</span>
                     <span class="switch-icon">N</span>
@@ -34,10 +45,11 @@
                 </label>
             </div>
         </div>
-        <div class="entry switch display">
-            <label for="diary-range">Show <span>(Hours)</span></label>
-            <div class="switch-button" ng-class="{on: gridProps.viewport.hours === 12}">
-                <input name="diary-view-range" id="diary-view-range" value="" type="checkbox" checked ng-click="gridProps.filter.toggleRange()" />
+
+        <!-- 12 of 24 Hours View -->
+        <div class="entry switch switch-view">
+            <div class="switch-button" ng-class="{on: gridProps.viewport.hours === 12}"> <!-- Add class 'on' when L19 is checked -->
+                <input ng-click="gridProps.filter.toggleRange()" id="diary-view-range" type="checkbox"> <!-- When checked showing 12 hours view. When not checked showing 24 hours view -->
                 <label class="data-off">
                     <span class="value">12</span>
                     <span class="switch-icon">24</span>
@@ -48,31 +60,31 @@
                 </label>
             </div>
         </div>
+
+        <!-- Arrival Date -->
         <div class="entry date">
-            <label for="arrival-date">Date</label>
             <div class="entry-data">
-                <!-- we are using calendar's model as duplicate_arrival_date,
-                actual data model is gridProps.filter.arrival_date -->
-                <input name="arrival-date" ui-date="dateOptions" ng-model="duplicte_arrival_date" id="arrival-date" type="text" class="datepicker"  readonly /> <!--ng-model="gridProps.filter.arrival_date" -->
-                <strong id="arrival-date-day" class="day">{{gridProps.filter.arrival_date.getDate()}}</strong>
-                <span id="arrival-date-month" class="month">{{gridProps.filter.arrival_date.toComponents().date.monthName}}</span>
-                <span id="arrival-date-year" class="year">{{gridProps.filter.arrival_date.getFullYear()}}</span>
+                <input ui-date="dateOptions" ng-model="duplicte_arrival_date" id="arrival-date" type="text" class="datepicker" readonly>
+                <strong class="date">
+                    {{ gridProps.filter.arrival_date | date: 'd MMM yyyy'}}
+                </strong>
             </div>
-        </div>  
+        </div>
+        
+        <!-- Arrival Time -->
         <div class="entry time">
-            <label for="arrival-time">Arrival Time</label>
             <div class="select">
                 <select id="arrival-time"
                         name="arrival-time"
                         ng-model="gridProps.filter.arrival_time"
                         ng-options="arrival_time as arrival_time for arrival_time in gridProps.filter.arrival_times" ng-change="clickedOnArrivalTime()">
                     <option value="" selected="selected">Select</option>
-                    <!--<option value={{arrival_time}}>{{arrival_time}}</option> -->
                 </select>
             </div>
         </div>
+
+        <!-- Rate to Book -->
         <div class="entry rate">
-            <label for="rate-type">Rate Type</label>
             <div class="faux-select" ng-click="gridProps.filter.toggleRates()">
                 {{gridProps.filter.rate_type}} Rate
             </div>
@@ -123,8 +135,9 @@
 
             </div>
         </div>
+
+        <!-- Room Type to Book -->
         <div class="entry room">
-            <label for="room-type">Room Type</label>
             <div class="select">
                 <select id="room-type"
                         name="room-type"
@@ -134,16 +147,18 @@
                 </select>
             </div>
         </div>
-        <div class="entry reset">
-            <label for="diary-reset">Re-Set</label>
+
+        <!-- Filters -->
+        <div class="entry filters">
+            <button type="button" class="button white with-icon only-icon hidden">
+                <span class="count">{Count of unassigned res.}</span>
+                <span class="icons icon-filter-room"></span>
+            </button>
             <button type="button" class="button white with-icon only-icon" ng-click="resetEverything()">
                 <span class="icons icon-reset"></span>
             </button>
         </div>
 
-        <!--<div class="actions">
-            <button type="button" class="button green" ng-click="onUpdate()">Update</button>
-        </div>-->
     </form>
 
     <!-- Diary Content -->
