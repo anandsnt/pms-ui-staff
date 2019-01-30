@@ -1,8 +1,6 @@
 @containerWidth: 1024;
-@containerEl: @containerWidth + 3;
-@roomsWidth: 183;
 @gridWidth: 840;
-@filtersWidth: ~'calc(100% - @{containerEl}px)';
+@roomsWidth: (@containerWidth - @gridWidth);
 
 @sidebarWidth: ~'calc(100vw - @{containerWidth}px)';
 @sidebarPosition: ~'calc(-100vw - @{containerWidth}px)';
@@ -44,8 +42,8 @@
 /* Reservation Search + Dates + Filters ***/
 .diary-nightly-search-form {
     position: relative;
+    padding: 0 10px;
     background: rgba(0,0,0,.1);
-    .show();
     .size(60px, 100%);
     #flexbox > .parent(row wrap, '', '', '');
 
@@ -624,13 +622,12 @@
         background-color: @white;
         text-transform: uppercase;
         cursor: pointer;
-        padding: 5px;
+        padding: 7px 5px;
         .size(40px, 100%);
         .box-shadow(inset 0 -1px 0 rgba(0,0,0,0.15));
-        #flexbox > .parent(column wrap, center, '', '' );
 
         &.highlighted {
-            background-color: fade(@orange, 30%);
+            background-color: fade(@logoPrimary, 30%);
         }
 
         &.not-clickable {
@@ -639,16 +636,16 @@
     }
 
     .room-number {
-        font-size: 18px;
+        font-size: 18px; 
         line-height: 14px;
         font-weight: 600;
         width: 100%;
         .show();
-        
+
         &.clean,
         &.inspected{ color: @green; }
 
-        &.pickup { color: @orange; }
+        &.pickup { color: @logoPrimary; }
 
         &.dirty { color: @red; }
         &.out { color: @grey3; }
@@ -750,7 +747,6 @@
                 .icon-suite-white {
                     display: inline-block;
                     vertical-align: middle;
-                    .size(20px, 25px);
                 }
             }
         }
@@ -837,9 +833,7 @@
     .grid-stay-range {
         position: absolute;
         top: 0;
-        /*left: ~'@{roomsWidth}px';
-        left: ~"calc(100% - @{gridWidth}px)";*/
-        left: ~"calc(100% - @{gridWidth}px)";
+        left: ~'calc(100% - @{gridWidth}px)';
         width: ~'@{gridWidth}px';
         height: 40px;
         z-index: 201;
@@ -930,30 +924,6 @@
         @media screen and (min-width: ~'@{containerWidth}px') {
             left: ~'@{roomsWidth}px';
         }
-
-
-
-        /*@media screen and (min-width: 1024px) {
-            left: ~'@{roomsWidth}px';
-        }*/
-
-        /*@media screen and (max-width: 840px) {
-            left: 0;
-        }
-
-        @media screen and (min-width: 1024px) {
-            left: ~"@{roomsWidth}px";
-        }*/
-
-        /* Screen big enough to show one column
-        @media screen and (min-width: ~'@{gridSingleSidebar}px') {
-            left: ~"calc(100% - @{gridSingleSidebar}px)";
-        } ***/
-
-        /* Screen big enough to show two columns
-        @media screen and (min-width: ~'@{gridDualSidebar}px') {
-            left: ~"calc(100% - @{gridDualSidebar}px)";
-        } ***/
     }
 
     /* Grid - Room Search Results ***/
@@ -972,6 +942,7 @@
         .iScrollVerticalScrollbar {
             top:0;
             right: 10px;
+            right: auto;
 
             .iScrollIndicator { background:rgba(0,0,0,0.1); }
         }
@@ -979,16 +950,6 @@
         &.visible {
             .show();
         }
-
-        /* Screen big enough to show one column
-        @media screen and (min-width: ~'@{gridSingleSidebar}px') {
-            .calc-width(100, @gridSingleSidebar);
-        } ***/
-
-        /* Screen big enough to show two columns
-        @media screen and (min-width: ~'@{gridDualSidebar}px') {
-            .calc-width(100, @gridDualSidebar);
-        } ***/
     }
 
     /* Grid Content - Rooms & Reservations ***/
@@ -1032,10 +993,6 @@
             .grid-reservations {
                 padding: 40px 0;
             }
-        }
-
-        @media screen and (min-width: ~'@{containerWidth}px') {
-            width: ~'@{containerEl}px';
         }
     }
 
@@ -1171,7 +1128,7 @@
         }
 
         /* Clickable reservations ***/
-        &:not(.oos):not(.ooo):not(.blocked):not(.departed) {
+        &:not(.oos):not(.ooo):not(.departed):not(.dayuse) {
             cursor: pointer;
             z-index: 2;
         }
@@ -1280,6 +1237,20 @@
         &.oos {
             background-color: @grey2;
             color: @grey3;
+        }
+
+        &.dayuse {
+            z-index: 4;
+            .gradient(#6895e4, #375fa3);
+
+            .reservation-data {
+                .square(100%);
+                #flexbox > .parent(row wrap, center, '', '');
+            }
+
+            .icons {
+                .square(12px);
+            }
         }
 
         /* Past Reservation ***/
@@ -1395,17 +1366,28 @@
             background-color: @purpleStart;
             color: @white;
         }
+
+        /** Unassigned room - available reservation */
+        &.unassigned {
+            justify-content: center;
+            color: @white;
+            .box-shadow(~"0px 1px 1px rgba(0,0,0,.3)");
+            .gradient (@logoGradientStart, @logoGradientEnd );
+            .hide();
+
+            .reservation-data {
+                justify-content: center;
+            }
+        }
     }
 
     /* Sidebar ***/
     .diary-nightly-sidebar {
         position: absolute;
         top: 0;
-        right: -413px;
         text-transform: uppercase;
         padding: 0 10px;
-        z-index: 80;
-        .size(100%, ~'@{filtersWidth}');
+        height: 100%;
         .background(@white);
         .transition();
 
@@ -1444,14 +1426,23 @@
         }
 
         &.visible {
-            .translate3d(-413px, 0, 0);
             .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
         }
+
+        /* Filters OR Unassigned ***/
+        @media screen and (min-width: ~'@{breakpointSingleSidebar}px') and (max-width: ~'@{breakpointDoubleSidebar}px') {
+            width: @sidebarWidth;
+            right: @sidebarPosition;
+
+            &.visible {
+                .translate3d(@sidebarPosition, 0, 0);
+            }
+        } 
     }
 
     /* Sidebar - Blocks - Filters ***/
     .diary-nightly-filters {
-        min-width: 256px;
+        z-index: 90;
 
         .filters-list {
             .calc-height(100, 140);
@@ -1584,15 +1575,18 @@
             }
         }
 
-        /* Screen big enough to show two columns ***/
-        /* Commenting for now to fix CICO-40330 */
-        /* @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
-            width: 256px;
-        } */
+        /* Filters OR Unassigned + Filters AND Unassigned ***/
+        @media screen and (max-width: ~'@{breakpointSingleSidebar}px'), screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
+            width: ~'@{filterSidebarWidth}px';
+            right: ~'-@{filterSidebarWidth}px';
+
+            &.visible {
+                .translate3d(~'-@{filterSidebarWidth}px', 0, 0);
+            }
+        }
     }
 
-    /* Sidebar - Blocks - Unassigned 
-       (For other design styles check .diary-unassigned in 17.diary.less ***/
+    /* Sidebar - Blocks - Unassigned (For other design styles check .diary-unassigned in 17.diary.less) ***/
     .diary-nightly-unassigned {
         z-index: 80;
         padding: 0;
@@ -1657,13 +1651,14 @@
             .extend-height(100, 60);
             .show();
 
-             /* Fixed Width from this point ***/
+            /* Fixed Width from this point ***/
             @media screen and (min-width: ~'@{containerWidth}px') {
                 left: ~'@{roomsWidth}px';
                 .calc-width(100, @roomsWidth);
             }
         }
-
+        
+        /* PMS Uses scroll-vertical, this is a fix to stop scrolling on overlay*/
         .grid-content {
             &.scroll-vertical {
                 overflow-y: hidden !important;

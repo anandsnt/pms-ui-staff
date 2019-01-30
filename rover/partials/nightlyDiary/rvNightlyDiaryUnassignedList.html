@@ -1,4 +1,4 @@
-<div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-unassigned diary-nightly-unassigned" ng-class="{'visible': diaryData.rightFilter === 'UNASSIGNED_RESERVATION'}">
+<div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-unassigned diary-nightly-unassigned" ng-class="(diaryData.innerWidth >= 1600 || diaryData.rightFilter == 'UNASSIGNED_RESERVATION')? 'visible' : '' ">
     <div class="sidebar-header">
         <h2>Unassigned Reservations</h2>
         <p>Select reservation to assign a room</p>
