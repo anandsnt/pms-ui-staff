@@ -61,7 +61,63 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             })
             .then(function() {                 
                 return that.fetchContactInformationMandatoryFields().then(function(response) {
-                    returnData.mandatoryFields = response;
+                    returnData.mandatoryFields = {
+    "address_line1_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "city_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "postal_code_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "country_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "contact_phone_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "contact_email_address_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "contact_name_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "tax_id_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "e_invoice_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "regd_tax_office_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": true,
+        "is_mandatory_on_account_creation": true
+    },
+    "organization_id_mandatory": {
+        "is_visible": true,
+        "is_mandatory_on_ar_account_creation": false,
+        "is_mandatory_on_account_creation": true
+    }
+};
                 });
             })
             .then(function() {
