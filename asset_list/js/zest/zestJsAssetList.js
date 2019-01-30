@@ -59,6 +59,7 @@ module.exports = {
                     sharedRoot + 'sntIDCollection/services/*.js',
                     sharedRoot + 'sntIDCollection/constants/*.js',
                     sharedRoot + 'sntIDCollection/controllers/*.js',
+                    sharedRoot + 'sntCanvasUtil/**/*.js',
                 	// sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
 					zestRoot + 'zsUtils.js',

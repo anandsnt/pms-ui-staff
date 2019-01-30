@@ -418,7 +418,17 @@
                                 <form id="signature-pad" class="complete-registration form signature-pad-layout">
                                     <div>
                                         <div class="sig">
-                                            <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" click-touch="disableScroll()" ng-mouseleave="enableScroll()" style="background: #d9d9d9;text-align: center;">
+                                            <div width='100%'
+                                                 snt-convert-canvas-event
+                                                 class='station-sign'
+                                                 id="signature"
+                                                 ui-jq="jSignature"
+                                                 ui-options="signaturePluginOptions"
+                                                 ng-mouseover="disableScroll()"
+                                                 click-touch="disableScroll()"
+                                                 ng-mouseleave="enableScroll()"
+                                                 style="background: #d9d9d9;
+                                                 text-align: center;">
                                             </div>
                                         </div>
                                     </div>

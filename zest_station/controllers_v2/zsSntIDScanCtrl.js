@@ -326,7 +326,10 @@
 			};
 
 			$scope.doneButtonClicked = function() {
-				if ($scope.idScanData.verificationMethod === 'STAFF') {
+				// record which staff reviewed the IDs for staff verification settings as well as for facial recognition failure
+				// continued with staff verification
+				if ($scope.idScanData.verificationMethod === 'STAFF' || 
+				    ($scope.idScanData.verificationMethod === 'FR' && $scope.idScanData.staffVerified && verfiedStaffId)) {
 					recordIDApproval();
 				} else {
 					nextPageActions();

@@ -14,7 +14,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			cardType: ""
 		};
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+			staycardState = 'rover.reservation.staycard.reservationcard.reservationdetails';
 
 
 		$scope.setHeadingTitle = function(heading) {
@@ -32,7 +33,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 		// fetching country list
 		$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, {}, successCallbackOfCountryListFetch);
-
 
 		$scope.initGuestCard = function(guestData) {
 			if (!guestData) {
@@ -780,6 +780,15 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					$scope.newCardData = cardData;
 					that.attachCompanyTACardRoutings(card, cardData);
 					ngDialog.close();
+					if ($state.current.name === staycardState) {
+						if (card === 'company') {
+							$scope.$broadcast('UPDATE_COMPANY_NAME_IN_STAYCARD', {name: cardData.account_name});
+						} else if (card === 'travel_agent') { 
+							$scope.$broadcast('UPDATE_TA_NAME_IN_STAYCARD', {name: cardData.account_name});
+						}
+					}
+					
+					
 				},
 				onReplaceFailure = function(error) {
 
