@@ -63,6 +63,9 @@ angular.module('sntRover')
 			}
 		};
 
+		//flag for showing save changes button after reservation extend or shorten
+		$scope.showSaveChangesAfterEditing = false;
+
 
 		/**
 		 * decide what the behaviour and title of back button on diary
@@ -716,6 +719,8 @@ angular.module('sntRover')
 	    		edit  = props.edit,
 	    		selectedTypeCount;
 
+			$scope.showSaveChangesAfterEditing = false;
+			
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
@@ -1055,13 +1060,27 @@ angular.module('sntRover')
 		})();
 
 
+		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture) {
+			if (originalItem.arrival !== newArrival || originalItem.departure !== newDeparture) {
+				$scope.showSaveChangesAfterEditing = true;
+			}
+			else {
+				$scope.showSaveChangesAfterEditing = false;
+			}
+		};
+
+
 	    var successCallBackOfResizeExistingReservation = function(data, successParams) {
 	    	var avData 		= data.availability,
 	    		props  		= $scope.gridProps,
 	    		oItem 		= props.edit.originalItem,
 	    		oRowItem 	= props.edit.originalRowItem,
 	    		lastArrTime = this.availability.resize.last_arrival_time,
-	    		lastDepTime = this.availability.resize.last_departure_time;
+				lastDepTime = this.availability.resize.last_departure_time;
+				
+
+			//to show save change button ,only if there is change in time
+			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {
