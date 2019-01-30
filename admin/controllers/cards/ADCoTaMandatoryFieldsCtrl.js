@@ -200,7 +200,7 @@ function($scope, $state, ADCoTaMandatorySrv) {
 	},
 	"organization_id_mandatory": {
 		"is_visible": true,
-		"is_mandatory_on_ar_account_creation": false,
+		"is_mandatory_on_ar_account_creation": true,
 		"is_mandatory_on_account_creation": true
 	}
 };
