@@ -359,7 +359,7 @@ angular.module('sntRover')
                                 'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
                                     .format('YYYY-MM-DD'),
                                 'reservation_id': $scope.currentSelectedReservation.id,
-                                'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: $scope.currentSelectedRoom.id })).room_no
+                                'room_number': $scope.currentSelectedReservation.room_no
                             };
                             console.log($scope.extendShortenReservationDetails);
                         }
