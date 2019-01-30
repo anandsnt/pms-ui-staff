@@ -278,8 +278,6 @@ sntRover.controller('reservationDetailsController',
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
 				guestIdList = response;
-				console.log(response);
-
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -1398,6 +1396,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.showAuthAmountPopUp = function() {
 
 			var fetchCreditCardAuthInfoSuccess = function( data ) {
+				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 				$scope.authData.billData = data.bill_data;
@@ -1425,6 +1424,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			var fetchCreditCardAuthInfoFaliure = function( errorMessage ) {
+				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
@@ -1436,7 +1436,7 @@ sntRover.controller('reservationDetailsController',
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
-
+			sntActivity.start('FETCH_AUTH_DETAILS');
 			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 		};
 
@@ -1497,6 +1497,9 @@ sntRover.controller('reservationDetailsController',
 				$scope.$emit('hideLoader');
 				authSuccess(response);
 				if ($scope.authData.isManual) {
+					$scope.authData.isManual = false; // reset 
+					$scope.authData.authAmount = ''; // reset
+					$scope.authData.manualAuthCode = ''; // reset
 					ngDialog.close(); // reload popup with new data from the API
 					$scope.showAuthAmountPopUp();
 				}
