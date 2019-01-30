@@ -1,0 +1,18 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <form id="new-payment" class="modal-content form new-content ng-pristine ng-valid" method="post" name="new-payment">
+        <button id="modal-close" class="modal-close" ng-click="closeDialog()" type="button">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <strong class="h2 message ng-scope" ng-show="showProceedButton" translate>
+            This copy will replace any previous mappings. Do you want to proceed??
+        </strong>
+        <strong class="h2 message ng-scope" ng-show="!showProceedButton" translate>
+            Please be patient, this may take a few minutes
+        </strong>
+        <div class="actions float">
+            <button id="cancel" class="button blank modal-close ng-scope" ng-click="closeDialog()" type="button" translate>CANCEL</button>
+            <button id="saveCopy" class="button green modal-close ng-scope" ng-show="showProceedButton" ng-click="saveCopyMappings()" type="button" translate>PROCEED</button>
+            <button id="dismiss" class="button green modal-close ng-scope" ng-show="!showProceedButton" ng-click="closeDialog()" type="button" translate>OK</button>
+        </div>
+    </form>
+</div>

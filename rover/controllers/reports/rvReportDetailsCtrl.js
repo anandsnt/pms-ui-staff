@@ -1372,7 +1372,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 'id': reservation.reservation_id,
                 'confirmationId': reservation.confirm_no,
-                'isrefresh': false
+                'isrefresh': true
             });
         };
 

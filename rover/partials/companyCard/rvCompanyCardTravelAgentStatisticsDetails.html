@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <!-- remove .hidden when clicked on the month's row-->
-                    <div class="statistics-reservations" ng-show="monthlyData.isOpen">
+                    <div class="statistics-reservations" ng-show="monthlyData.isOpen" ng-class="{'res-active': monthlyData.isOpen}">
                         <ul class="search-results">
                             <li class="reservation transaction" ng-repeat="reservation in monthlyData.reservations">
                                 <a class="faux-anchor" ng-click="navigateToStayCard(reservation)" ng-class="{'no-arrow': shouldShowNavigation()}">
@@ -121,6 +121,7 @@
                                 </a>
                             </li>
                         </ul>
+                        <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
                     </div>
                 </span>
             </div>

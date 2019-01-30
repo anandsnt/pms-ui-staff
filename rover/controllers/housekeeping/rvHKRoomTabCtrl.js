@@ -278,20 +278,18 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
          * @returns {void}
          */
         $scope.checkWhetherRoomStatusChangePossible = function() {
-            // As per requirement initially we are restricting this feature to hourly hotels only
-            if (!$rootScope.isHourlyRateOn) {
-                $scope.update ();
-                return;
-            }
-
+            
             // for hourly hotels as of now
             var params = {
                 from_date: getApiFormattedDate($scope.updateService.from_date),
                 to_date: getApiFormattedDate($scope.updateService.to_date),
-                room_id: $scope.roomDetails.id,
-                begin_time: $scope.updateService.begin_time,
-                end_time: $scope.updateService.end_time
+                room_id: $scope.roomDetails.id
             };
+
+            if ($rootScope.isHourlyRateOn) {
+                params.begin_time = $scope.updateService.begin_time;
+                params.end_time = $scope.updateService.end_time;
+            }
 
             var options = {
                 params: params,

@@ -96,9 +96,15 @@ var scrollContentsUpIfNeeded = function(scrollUp) {
 	if (scrollUp && !$( "body" ).hasClass( "showing-keyboard" )) {
 		$("body").addClass("showing-keyboard");
 	}
+	if (scrollUp && document.getElementById("popup") && !$("#popup").hasClass("lift-popup")) {
+		$("#popup").addClass("lift-popup");
+	}
 	return;
 };
 
 var scrollContentsDown = function() {
 	$("body").removeClass("showing-keyboard");
+	if (document.getElementById("popup")) {
+		$("#popup").removeClass("lift-popup");
+	}
 };

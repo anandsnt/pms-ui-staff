@@ -166,6 +166,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (!sntIDCollectionSrv.isInDevEnv) {
 			sntIDCollectionSrv.setAcuantCredentialsForProduction(reservationAndhotelData.acuant_credentials);
 		}
+		$rootScope.saveIdFaceImage = reservationAndhotelData.save_id_face_image;
 
 		// Marketting apps
 		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;
@@ -324,11 +325,15 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else {
 			if (reservationAndhotelData.error_occured) {
 				$state.go('errorOccured');
-			} else {
+			} else if (reservationAndhotelData.reservation_status === 'CHECKEDIN') {
 				if (isInvokedFromApp) {
 					customizeStylesBasedOnUrlType(theme);
 				}
+				// Need to checkout only checked in reservation
 				$state.go('checkoutRoomVerification');
+			} else {
+				// Unknown status like CANCELED, NOSHOW, so we show them error page
+				$state.go('errorOccured');
 			}
 		}
 
