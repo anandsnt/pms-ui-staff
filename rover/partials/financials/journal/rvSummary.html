@@ -22,7 +22,7 @@
         </div>
 
         <div class="journal-grid print-details" ng-show="data.summaryData.deposit_balance.active">
-            <table class="grid-items">
+           <!--  <table class="grid-items">
                 <thead>
                     <tr>
                         <th scope="col" translate>ROOM_LABEL</th>
@@ -56,7 +56,70 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
+
+
+
+
+
+                <table class="grid-items">
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th class="cell-reservation">Reservation</th>
+                            <th>Invoice / Folio No.</th>
+                            <th>Date & Time</th>
+                            <th class="cell-details">Details</th>
+                            <th class="cell-charges">Charge</th>
+                            <th class="align-right">Debit</th>
+                            <th class="align-right">Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in data.summaryData.deposit_balance.transactions">
+                            <td>{{item.room}}</td>
+                            <td>
+                                <strong class="cell-row">{{item.name}}</strong>
+                                <span class="cell-row">{{item.reservation_number}}</span>
+                                <!-- If split to accompanying guest, show acc.guest name (only in Guest Balance):--> 
+                                <em class="cell-row grey-text" >{{item.accompany_guest_name}}</em>
+                                
+                            </td>
+                            <td>{{item.invoice_or_folio}}</td>
+                            <td>
+                                <span class="cell-row">{{item.date}}</span>
+                                <span class="cell-row grey-text">{{item.time}}</span>
+                            </td>
+                            <td>
+                                <span class="cell-row" ng-bind-html="item.details"></span>
+                               <!-- ... repeat L104 for each details entry
+                                 If adjusted, show like this: 
+                                <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                            </td>
+                            <td>
+                                <strong class="cell-row">{{item.charge_code}}</strong>
+                                <span class="cell-row grey-text">{{item.charge_desc}}</span>
+                            </td>
+                            <td class="align-right">
+                                <span class="currency">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
+                            </td>
+                            <td class="align-right">
+                                <span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
+                            </td>
+                        </tr>
+                        ... repeat L99-129 for each posting
+                        <!-- Pagination -->
+                        <tr class="pagination">
+                            <td colspan="8">
+                                <rv-pagination page-options="depositPagination" page-data="data.summaryData.deposit_balance"></rv-pagination>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+
         </div>
 
         <div class="journal-summary">
@@ -188,6 +251,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <!-- Print footer -->
 <ul class="journal-footer-print summary">
