@@ -185,12 +185,20 @@ angular.module('sntRover')
         };
 
         // To toggle filter and unassigned list.
-        $scope.toggleFilter = function(activeTab) {
-            if ($scope.diaryData.rightFilter !== activeTab) {
-                $scope.diaryData.rightFilter = activeTab;
-            }
-            if (activeTab === 'UNASSIGNED_RESERVATION') {
+        $scope.toggleFilter = function( activeTab ) {
+
+            // While switch from Filter Bar to Unassigned List Bar, Clear filters and Refresh Diary.
+            if ( $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION') {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+            }
+
+            // If iPad ( width < 1280 ) , we will hide side bars if we click on current active button.
+            // For other resoltions ( > 1280 ) we will toggle bw/n UNASSIGNED_RESERVATIONLIST , Filter bar.
+            if ($scope.diaryData.innerWidth < 1280 && $scope.diaryData.rightFilter === activeTab) {
+                $scope.diaryData.rightFilter = '';
+            }
+            else if ( $scope.diaryData.rightFilter !== activeTab ) {
+                $scope.diaryData.rightFilter = activeTab;
             }
         };
 

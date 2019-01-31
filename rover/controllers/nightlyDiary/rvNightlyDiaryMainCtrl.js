@@ -523,11 +523,13 @@ angular.module('sntRover')
                  *  Refresh diary data - rooms and reservations after applying filter.
                  */
                 listeners['RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY'] = $scope.$on('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
-                    resetUnassignedList();
-                    $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.paginationData.page = 1;
-                    fetchRoomListDataAndReservationListData();
-                    cancelReservationEditing();
+                    if ( $scope.diaryData.selectedRoomTypes.length > 0 || $scope.diaryData.selectedFloors.length > 0 ) {
+                        resetUnassignedList();
+                        $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                        $scope.diaryData.paginationData.page = 1;
+                        fetchRoomListDataAndReservationListData();
+                        cancelReservationEditing();
+                    }
                 });
 
                 /* Handle event emitted from child controllers.
