@@ -63,7 +63,7 @@ angular.module('sntRover')
 			}
 		};
 
-		//flag for showing save changes button after reservation extend or shorten
+		// Flag for showing save changes button after reservation extend or shorten
 		$scope.showSaveChangesAfterEditing = false;
 
 		/**
