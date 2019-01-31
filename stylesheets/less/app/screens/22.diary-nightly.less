@@ -551,7 +551,7 @@
 
     .guest {
         padding-right: 10px;
-        .calc-max-width(100, 380);
+        .calc-max-width(100, 520);
 
         .button {
             width: 100px;
@@ -561,7 +561,7 @@
 
     .actions {
         margin-left: auto;
-        max-width: 380px;
+        max-width: 520px;
         .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
     }
 
@@ -967,11 +967,7 @@
 
         .wrapper {
             min-height: 100%;
-            #flexbox > .parent(row wrap, '', '', '');
-        }
-
-        .iScrollVerticalScrollbar {
-            right: 10px;
+            #flexbox > .parent(row nowrap, '', '', '');
         }
 
         &.top-pagination {
