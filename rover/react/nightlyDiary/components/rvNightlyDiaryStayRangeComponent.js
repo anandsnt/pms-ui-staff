@@ -266,7 +266,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
         }
 
         props.extendShortenReservation(curentPosition, state.departurePosition);
-        props.checkReservationAvailability(state.arrivalDate, state.departureDate);
+        props.checkReservationAvailability(currentDay, state.departureDate);
 
         this.setState({
             arrivalStyle: {
