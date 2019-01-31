@@ -63,6 +63,8 @@ angular.module('sntRover')
 			}
 		};
 
+		// Flag for showing save changes button after reservation extend or shorten
+		$scope.showSaveChangesAfterEditing = false;
 
 		/**
 		 * decide what the behaviour and title of back button on diary
@@ -716,6 +718,8 @@ angular.module('sntRover')
 	    		edit  = props.edit,
 	    		selectedTypeCount;
 
+			$scope.showSaveChangesAfterEditing = false;
+			
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
@@ -1053,7 +1057,21 @@ angular.module('sntRover')
 				}
 			};
 		})();
-
+                
+        /*
+         *  Logic to show/hide save changes based on any changes occured via ext-shortening
+         *  @param {Object} - [ original item ]
+         *  @param {String} - [ new arrival data ]
+         *  @param {String} - [ new departure data ]
+         */
+		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture) {
+			if (originalItem.arrival !== newArrival || originalItem.departure !== newDeparture) {
+				$scope.showSaveChangesAfterEditing = true;
+			}
+			else {
+				$scope.showSaveChangesAfterEditing = false;
+			}
+		};
 
 	    var successCallBackOfResizeExistingReservation = function(data, successParams) {
 	    	var avData 		= data.availability,
@@ -1061,7 +1079,10 @@ angular.module('sntRover')
 	    		oItem 		= props.edit.originalItem,
 	    		oRowItem 	= props.edit.originalRowItem,
 	    		lastArrTime = this.availability.resize.last_arrival_time,
-	    		lastDepTime = this.availability.resize.last_departure_time;
+				lastDepTime = this.availability.resize.last_departure_time;
+				
+			// To show save change button ,only if there is change in time
+			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {
