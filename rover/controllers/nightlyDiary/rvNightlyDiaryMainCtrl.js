@@ -84,7 +84,6 @@ angular.module('sntRover')
                         showUnassignedPanel: false,
                         showUnassignedReservations: false,
                         innerWidth: screen.width,
-                        showFilterPanel: screen.width > 1279,
                         selectedRoomTypes: [],
                         selectedFloors: [],
                         isFromStayCard: false,
@@ -93,7 +92,6 @@ angular.module('sntRover')
                         hideFloorList: true,
                         isBookRoomViewActive: false,
                         availableSlotsForBookRooms: [],
-                        isRightFilterActive: true,
                         isAssignRoomViewActive: false,
                         showSaveChangeButtonAfterShortenOrExtent: {
                             arrivalChanged: false,
@@ -501,7 +499,6 @@ angular.module('sntRover')
                 */
                 listeners['REFRESH_DIARY_ROOMS_AND_RESERVATIONS'] = $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function (event, roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.showFilterPanel = true;
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(roomId);
                 });
@@ -618,7 +615,6 @@ angular.module('sntRover')
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
                     if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
-                        $scope.diaryData.showFilterPanel = true;
                         $scope.diaryData.filterList = params.filterList;
                         $scope.diaryData.selectedRoomCount = params.selectedRoomCount;
                         $scope.diaryData.selectedFloorCount = params.selectedFloorCount;
