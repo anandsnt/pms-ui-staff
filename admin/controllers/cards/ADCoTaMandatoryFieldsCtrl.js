@@ -3,7 +3,6 @@ function($scope, $state, ADCoTaMandatorySrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.fieldsAlwaysVisible = ["address_line1_mandatory", "city_mandatory", "postal_code_mandatory", "country_mandatory", "contact_phone_mandatory", "contact_email_address_mandatory", "contact_name_mandatory", "tax_id_mandatory"];
 
-
 	/*
 	 * Save Mandatory fields
 	 */
@@ -32,7 +31,10 @@ function($scope, $state, ADCoTaMandatorySrv) {
 			};
 		}
 	};
-
+	/*
+	 * Clicked visible status
+	 * @param fieldName field name
+	 */
 	$scope.clickedStatus = function(fieldName) {
 		if (!(_.contains($scope.fieldsAlwaysVisible, fieldName))) {
 			switch (fieldName) {
@@ -60,6 +62,11 @@ function($scope, $state, ADCoTaMandatorySrv) {
 			}
 		}
 	};
+	/*
+	 * Clicked mandatory on ARaccount creation
+	 * @param fieldName field name
+	 * @param isFieldVisible is field visible or not
+	 */
 	$scope.clickedMandatoryOnArAccountCreation = function (isFieldVisible, fieldName) {
 		
 		if (isFieldVisible) {
@@ -101,6 +108,11 @@ function($scope, $state, ADCoTaMandatorySrv) {
 			}
 		}
 	};
+	/*
+	 * Clicked mandatory on ARaccount creation
+	 * @param fieldName field name
+	 * @param isFieldVisible is field visible or not
+	 */
 	$scope.clickedMandatoryOnAccountCreation = function (isFieldVisible, fieldName) {
 		if (isFieldVisible) {
 
