@@ -67,6 +67,10 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
                 }
 
+                if (response.headers('Business-Date') && $rootScope.businessDate && (response.headers('Business-Date') !== $rootScope.businessDate)) {
+                    $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+                }
+
                 if (jwt) {
                     $window.localStorage.setItem('jwt', jwt);
                 }
@@ -77,9 +81,6 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 if (rejection.status === 401) { // 401- Unauthorized
                     // so lets redirect to login page
                     $window.location.href = '/logout';
-                }
-                if (rejection.status === 430) {
-                    $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup(rejection.data.errors[0]);
                 }
                 if (rejection.status === 520 && rejection.config.url !== '/admin/test_pms_connection') {
                     $rootScope.showOWSError && $rootScope.showOWSError();
