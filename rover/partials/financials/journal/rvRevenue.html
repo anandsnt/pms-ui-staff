@@ -37,7 +37,7 @@
                         </a>
 
                         <!-- Third level - transactions  -->
-                        <table ng-show="level2.active" class="grid-items">
+                        <!-- <table ng-show="level2.active" class="grid-items">
                             <thead ng-show="level2.transactions.length > 0">
                                 <tr>
                                     <th scope="col" translate>ROOM_LABEL</th>
@@ -61,13 +61,66 @@
                                 </tr>
 
                                 <!-- Pagination row -->
-                                <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
+                                <!-- <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
                                     <td colspan="7" ng-if="level2.chargeCodePagination">
                                         <rv-pagination page-options="level2.chargeCodePagination" page-data="level2.total_count"></rv-pagination>
                                     </td>
                                 </tr>
                             </tbody>
+                        </table> --> 
+
+
+
+
+
+
+
+                        <table ng-show="level2.active" class="grid-items">
+                            <thead ng-show="level2.transactions.length > 0">
+                                <tr>
+                                    <th>Room</th>
+                                    <th class="cell-reservation">Reservation</th>
+                                    <th>Invoice / Folio No.</th>
+                                    <th>Date & Time</th>
+                                    <th class="cell-details">Details</th>
+                                    <th class="align-right">Debit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(index3 ,level3) in level2.transactions">
+                                    <td>{{level3.room}}<br/>{{level3.account_no}}</td>
+                                    <td>
+                                        <strong class="cell-row">{{level3.name}}<br/>{{level3.account_name}}</strong>
+                                        <em class="cell-row grey-text" >{{level3.accompany_guest_name}}</em>
+                                        <span class="cell-row">{{level3.reservation_number}}</span>
+                                    </td>
+                                    <td>{{level3.invoice_or_folio}}</td>
+                                    <td>
+                                        <span class="cell-row">{{level3.date}}</span>
+                                        <span class="cell-row grey-text">{{level3.time}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="cell-row" ng-bind-html="level3.details"></span>
+                                        <!-- If adjusted, show like this: 
+                                        <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
+                                    </td>
+                                    <td class="align-right">
+                                        <span class="currency">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}
+                                    </td>
+                                </tr>
+                                
+                                <!-- Pagination -->
+                                <tr class="pagination">
+                                    <td colspan="6" ng-if="level2.chargeCodePagination">
+                                        <rv-pagination page-options="level2.chargeCodePagination" page-data="level2.total_count"></rv-pagination>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
+
+
+
+
 
                     </div>
                 </div>
