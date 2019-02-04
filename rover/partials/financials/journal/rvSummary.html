@@ -90,46 +90,6 @@
         </div>
 
         <div class="journal-grid print-details" ng-show="data.summaryData.guest_balance.active">
-            <!-- <table class="grid-items">
-                <thead>
-                    <tr>
-                        <th scope="col" translate>ROOM_LABEL</th>
-                        <th scope="col" translate>NAME</th>
-                        <th scope="col" translate>RESERVATION_NUMBER</th>
-                        <th scope="col" translate>TYPE</th>
-                        <th scope="col" translate>DETAILS</th>
-                        <th scope="col" translate>DATE_AND_TIME</th>
-                        <th scope="col" translate>CHARGE_CODE</th>
-                        <th scope="col" translate>CHARGE_DESCRIPTION</th>
-                        <th scope="col" translate>DEBIT</th>
-                        <th scope="col" translate>CREDIT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in data.summaryData.guest_balance.transactions">
-                        <td>{{item.room}}</td>
-                        <td>{{item.name}}<br /><em>{{item.accompany_guest_name}}</em></td>
-                        <td>{{item.reservation_number}}</td>
-                        <td>{{item.type}}</td>
-                        <td class="details" ng-bind-html="item.details"></td>
-                        <td>{{item.time}}</td>
-                        <td>{{item.charge_code}}</td>
-                        <td>{{item.charge_desc}}</td>
-                        <td>{{item.debit | number: precisonTwo}}</td>
-                        <td>{{item.credit | number: precisonTwo}}</td>
-                    </tr>
-                    <tr class="pagination" ng-show="data.summaryData.guest_balance.total_count > perPage && data.summaryData.guest_balance.transactions.length > 0">
-                        <td colspan="10">
-                            <rv-pagination page-options="guestPagination" page-data="data.summaryData.guest_balance"></rv-pagination>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
-
-
-
-
-
             <table class="grid-items">
                 <thead>
                     <tr>
@@ -184,8 +144,6 @@
                     </tr>
                 </tbody>
             </table>
-
-
         </div>
 
         <div class="journal-summary">
@@ -200,44 +158,6 @@
         </div>
 
         <div class="journal-grid print-details" ng-show="data.summaryData.ar_balance.active">
-            <!-- <table class="grid-items">
-                <thead>
-                    <tr>
-                        <th scope="col" translate>ROOM_LABEL</th>
-                        <th scope="col" translate>NAME</th>
-                        <th scope="col" translate>RESERVATION_NUMBER</th>
-                        <th scope="col" translate>TYPE</th>
-                        <th scope="col" translate>DETAILS</th>
-                        <th scope="col" translate>DATE_AND_TIME</th>
-                        <th scope="col" translate>CHARGE_CODE</th>
-                        <th scope="col" translate>CHARGE_DESCRIPTION</th>
-                        <th scope="col" translate>DEBIT</th>
-                        <th scope="col" translate>CREDIT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in data.summaryData.ar_balance.transactions">
-                        <td>{{item.room}}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.reservation_number}}</td>
-                        <td>{{item.type}}</td>
-                        <td class="details" ng-bind-html="item.details"></td>
-                        <td>{{item.time}}</td>
-                        <td>{{item.charge_code}}</td>
-                        <td>{{item.charge_desc}}</td>
-                        <td>{{item.debit | number: precisonTwo}}</td>
-                        <td>{{item.credit | number: precisonTwo}}</td>
-                    </tr>
-                    <tr class="pagination" ng-show="data.summaryData.ar_balance.total_count > perPage && data.summaryData.ar_balance.transactions.length > 0">
-                        <td colspan="10">
-                            <rv-pagination page-options="arPagination" page-data="data.summaryData.ar_balance"></rv-pagination>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
-
-
-
             <table class="grid-items">
                 <thead>
                     <tr>
@@ -292,9 +212,6 @@
                     </tr>
                 </tbody>
             </table>
-
-
-            
         </div>
 
         <div class="journal-summary totals">
@@ -328,11 +245,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 
 <!-- Print footer -->
 <ul class="journal-footer-print summary">
