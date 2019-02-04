@@ -72,6 +72,32 @@
                     <input type="text" ng-model="legalSettings.first_folio_number" placeholder="Enter First Folio Number"> 
                 </td>
             </tr>
+            <tr>
+                <td>Number of original invoices</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.no_of_original_invoices" placeholder="Enter Number of original invoices"> 
+                </td>
+            </tr>
+
+            <tr>
+                <td>Number of original emails</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.no_of_original_emails" placeholder="Enter Number of original emails"> 
+                </td>
+            </tr>
+
+            <tr>
+                <td>Copy Counter</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.copy_counter}">
+                        <!-- remove checked when not active-->
+                        <input name="no-reprint" id="no-reprint" ng-model="legalSettings.copy_counter" value="no-reprint" type="checkbox" >
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            
         </tbody>
     </table>
 </div>
