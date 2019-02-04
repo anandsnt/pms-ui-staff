@@ -63,8 +63,7 @@ angular.module('sntRover')
             },
             postData = {
                 'reservation_id': selectedItem.reservation_id,
-                'room_type_ids': [selectedItem.room_type_id],
-                'is_from_diary': true,
+                'selected_room_type_ids': [selectedItem.room_type_id],
                 'include_dueout': true
             },
             options = {

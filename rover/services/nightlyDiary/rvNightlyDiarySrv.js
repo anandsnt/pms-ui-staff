@@ -213,7 +213,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          */
         this.retrieveAvailableRooms = function(params) {
             var deferred = $q.defer(),
-                url = '/api/rooms/retrieve_available_rooms';
+                url = '/api/nightly_diary/retrieve_available_rooms';
 
             BaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data.data);
