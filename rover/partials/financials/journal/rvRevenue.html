@@ -37,44 +37,6 @@
                         </a>
 
                         <!-- Third level - transactions  -->
-                        <!-- <table ng-show="level2.active" class="grid-items">
-                            <thead ng-show="level2.transactions.length > 0">
-                                <tr>
-                                    <th scope="col" translate>ROOM_LABEL</th>
-                                    <th scope="col" translate>NAME</th>
-                                    <th scope="col" translate>RESERVATION_NUMBER</th>
-                                    <th scope="col" translate>TYPE</th>
-                                    <th scope="col" translate>DETAILS</th>
-                                    <th scope="col" translate>DATE_AND_TIME</th>
-                                    <th scope="col" translate>DEBIT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="(index3 ,level3) in level2.transactions">
-                                    <td>{{level3.room}}<br/>{{level3.account_no}}</td>
-                                    <td>{{level3.name}}<br/>{{level3.account_name}}<br /><em>{{level3.accompany_guest_name}}</em></td>
-                                    <td>{{level3.reservation_number}}</td>
-                                    <td>{{level3.type}}</td>
-                                    <td ng-bind-html="level3.details"></td>
-                                    <td>{{level3.time}}</td>
-                                    <td><span class="currency">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}</td>
-                                </tr>
-
-                                <!-- Pagination row -->
-                                <!-- <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
-                                    <td colspan="7" ng-if="level2.chargeCodePagination">
-                                        <rv-pagination page-options="level2.chargeCodePagination" page-data="level2.total_count"></rv-pagination>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> --> 
-
-
-
-
-
-
-
                         <table ng-show="level2.active" class="grid-items">
                             <thead ng-show="level2.transactions.length > 0">
                                 <tr>
@@ -117,11 +79,6 @@
                                 </tr>
                             </tbody>
                         </table>
-
-
-
-
-
                     </div>
                 </div>
 
