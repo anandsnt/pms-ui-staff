@@ -110,10 +110,13 @@
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>
             </div>
-            <div class="entry full-width">
+            <div class="entry">
                 <section ng-show="shouldShowMemberRates()">
                     <ad-toggle-button is-checked="rateData.is_member_rate" label="MEMBER RATE"></ad-toggle-button>
                 </section>
+            </div>
+            <div class="entry" ng-show="isStandAlone">
+                <ad-toggle-button is-checked="rateData.is_public_rate" label="PUBLIC RATE"></ad-toggle-button>
             </div>
         </fieldset>
         <!-- CICO-18040 PROMOTION FREE FORM ENTRY TO BE HIDDEN -->
