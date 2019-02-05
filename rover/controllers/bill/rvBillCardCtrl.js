@@ -2676,6 +2676,28 @@ sntRover.controller('RVbillCardController',
 			$scope.isPrintRegistrationCard = false;
 			$scope.printBillCardActive = true;
 			$scope.$emit('hideLoader');
+
+			// successData.print_counter  = 3;
+			// successData.email_counter  = 3;
+			// successData.no_of_original_invoices  = 3;
+			// successData.no_of_original_emails  = 3;
+			// successData.is_copy_counter  = true;
+			// successData.is_void_bill  = true;
+			// successData._is_voided  = true;
+
+			if (($scope.reservationBillData.is_bill_lock_enabled && successData.print_counter < successData.no_of_original_invoices) 
+				|| (!$scope.reservationBillData.is_bill_lock_enabled && $scope.reservationBillData.reservation_status !== "CHECKEDOUT") 
+				|| (!$scope.reservationBillData.is_bill_lock_enabled && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && successData.print_counter < successData.no_of_original_invoices)) 
+			{
+				successData.invoiceLabel = successData.translation.invoice;
+			} 
+			else if (($scope.reservationBillData.is_bill_lock_enabled && successData.print_counter >= successData.no_of_original_invoices)
+					|| (!$scope.reservationBillData.is_bill_lock_enabled && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && successData.print_counter >= successData.no_of_original_invoices))
+			{
+				successData.invoiceLabel = successData.translation.copy_of_invoice;
+			}
+
+			
 			$scope.printData = successData;
 			$scope.errorMessage = "";
 

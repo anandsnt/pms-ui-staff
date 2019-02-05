@@ -183,8 +183,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var printButtonClass = "blue";
 
-        if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
-            if ($scope.isPrintedOnce) {
+        if ($scope.reservationBillData.print_counter >= $scope.reservationBillData.no_of_original_invoices && $scope.roverObj.noReprintReEmailInvoice) {
+
                 printButtonClass = "grey";
             }
         }
@@ -197,10 +197,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var isPrintButtonDisabled = false;
 
-        if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
-            if ($scope.isPrintedOnce) {
-                isPrintButtonDisabled = true;
-            }
+        if ($scope.reservationBillData.print_counter >= $scope.reservationBillData.no_of_original_invoices && $scope.roverObj.noReprintReEmailInvoice) {   
+            isPrintButtonDisabled = true;
         }
         return isPrintButtonDisabled;
     };
@@ -214,10 +212,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if (!$scope.data.to_address) {
             emailButtonClass = "grey";
-        } else if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
-            if ($scope.isEmailedOnce) {
-                emailButtonClass = "grey";
-            }
+        } else if ($scope.reservationBillData.email_counter >= $scope.reservationBillData.no_of_original_emails && $scope.roverObj.noReprintReEmailInvoice) {
+            emailButtonClass = "grey";
         }
         return emailButtonClass;
     };
@@ -230,10 +226,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if (!$scope.data.to_address) {
             isEmailButtonDisabled = true;
-        } else if (!$scope.isSettledBill && $scope.isFolioNumberExists && $scope.roverObj.noReprintReEmailInvoice) {
-            if ($scope.isEmailedOnce) {
-                isEmailButtonDisabled = true;
-            }
+        } else if ($scope.reservationBillData.email_counter >= $scope.reservationBillData.no_of_original_emails && $scope.roverObj.noReprintReEmailInvoice) {
+
+            isEmailButtonDisabled = true;
         }
         return isEmailButtonDisabled;
     };
