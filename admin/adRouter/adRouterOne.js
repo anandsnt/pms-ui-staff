@@ -195,12 +195,23 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         });
 
         $stateProvider.state('admin.zestStationIDCollection', {
-            templateUrl: '/assets/partials/idCollection/adStationIdCollectionSetup.html',
+            templateUrl: '/assets/partials/idCollection/adArchiveScannedGuestIdentification.html',
             controller: 'adStationIdCollectionSetupCtrl',
             url: '/zestStationIDCollection',
             resolve: {
                 config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
+                }]
+            }
+        });
+
+        $stateProvider.state('admin.archiveScannedGuestIdentification', {
+            templateUrl: '/assets/partials/idCollection/adArchiveScannedGuestIdentification.html',
+            controller: 'adArchiveScannedGuestIdentifiactionCtrl',
+            url: '/zestStationIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('idCollectionArchive');
                 }]
             }
         });
