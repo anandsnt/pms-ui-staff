@@ -39,6 +39,10 @@ angular.module('admin').controller('adLightSpeedPOSSetupCtrl',
                  $scope.lightspeed.floors_enabled = !$scope.lightspeed.floors_enabled;
             };
 
+            $scope.toggleStopEODChargeImportEnabled = function() {
+                 $scope.lightspeed.stop_eod_charge_import_enabled = !$scope.lightspeed.stop_eod_charge_import_enabled;
+            };
+
             $scope.saveLightSpeedPOSSetup = function(cb) {
                 var params = {
                     lightspeed: _.omit(dclone($scope.lightspeed), 'charge_code_name', 'payment_charge_code_name')
