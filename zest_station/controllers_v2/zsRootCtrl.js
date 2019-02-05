@@ -1958,6 +1958,7 @@ sntZestStation.controller('zsRootCtrl', [
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
+            $scope.zestStationData.consecutivePrintFailure = 0;
             $scope.cardReader = new CardOperation();
             
             // reset number of keys to be made

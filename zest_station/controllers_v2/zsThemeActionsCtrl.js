@@ -25,7 +25,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
             $scope.icons = {
                 url: {
-                    active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
+                    active_screen_icon: $scope.zestStationData.theme === 'yotel' ? iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg' : '',
                     booknow: iconBasePath + '/calendar.svg', // TODO, need generic icon for default (css update needed)
 
                     checkin: iconBasePath + '/checkin.svg',
