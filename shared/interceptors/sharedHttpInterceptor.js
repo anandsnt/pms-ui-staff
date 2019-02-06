@@ -32,6 +32,7 @@ angular.module('sharedHttpInterceptor', []).
              */
             function getRequestIdentifier(config) {
                 var str = config.method + config.url;
+
                 if (config.params && typeof config.params === 'object') {
                     str += angular.toJson(config.params);
                 }
