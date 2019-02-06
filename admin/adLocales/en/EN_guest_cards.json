@@ -26,4 +26,9 @@
 "CODE_NAME_PLACEHOLDER":"Enter program code",
 "LEVELS":"Levels",
 "ADD_NEW_LEVEL":"Add new level",
-"FIND_GUESTS": "Find Guests"
+"FIND_GUESTS": "Find Guests",
+"COMPANY_TRAVEL_AGENT_FIELDS": "Company / Travel Agent fields",
+"FIELD_NAME": "Field Name",
+"STATUS": "Status",
+"MANDATORY_DURING_AR_NUMBER_CREATION": "Mandatory During AR number creation",
+"MANDATORY_DURING_CARD_CREATION": "Mandatory during Card creation"
