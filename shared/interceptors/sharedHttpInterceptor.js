@@ -68,14 +68,13 @@ angular.module('sharedHttpInterceptor', []).
              * Modified $http service
              */
             function $duplicateRequestsFilter(config) {
+                // Get unique request identifier
+                var identifier = getRequestIdentifier(config);
 
                 // Ignore for this request?
                 if (config.ignoreDuplicateRequest) {
                     return $http(config);
                 }
-
-                // Get unique request identifier
-                var identifier = getRequestIdentifier(config);
 
                 // Check if such a request is pending already
                 if (pendingRequests[identifier]) {
