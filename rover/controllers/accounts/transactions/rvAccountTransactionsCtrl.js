@@ -104,6 +104,40 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
   		};
 
+  		/*
+		 * Open void bill popup
+		 */
+		$scope.clickedVoidBillButton = function() {
+			$scope.isFromAccounts = true;
+			ngDialog.open({
+				template: '/assets/partials/bill/rvVoidBillPopup.html',
+				controller: 'RVVoidBillPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+		/*
+		 * Should show void bill button
+		 * bill must be locked, payment type must be other than DB, 
+		 * balance must be 0.00
+		 */
+		$scope.shouldShowVoidBill = function() {
+			
+			return !$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active && 
+			$scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === '0.0' && 
+			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_db_payment_exists && 
+			 $scope.transactionsDetails.is_void_bill_enabled && 
+			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_voided && 
+			!$scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill;
+		};
+		/*
+		 * Void bill success
+		 */
+		$scope.addListener('VOID_BILL_GENERATED', function() {
+			$scope.closeDialog();
+			getTransactionDetails();
+		});
+
   		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
 				var billTabsData = $scope.transactionsDetails.bills,
@@ -914,8 +948,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					}
 					else
 					{
-						window.print();
-						accountsPrintCompleted();
+						$timeout(function() {
+							window.print();
+							accountsPrintCompleted();
+						}, 700); // CICO-61122 
 					}
 
 				}, 100);

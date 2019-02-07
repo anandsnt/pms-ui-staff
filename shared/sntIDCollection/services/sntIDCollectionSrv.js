@@ -404,4 +404,31 @@ angular.module('sntIDCollection').service('sntIDCollectionSrv', function($q, $fi
 		return deferred.promise;
 	};
 
+	this.getFaceImage = function() {
+		var deferred = $q.defer();
+		var url = acuantCredentials.assureIDConnectEndpoint + 'AssureIDService/Document/' + that.instanceID + '/Field/Image?key=Photo';
+		var requestGetDocument = createRequestObject('GET', url);
+
+		requestGetDocument.responseType = 'arraybuffer';
+		requestGetDocument.send();
+		requestGetDocument.onload = function() {
+			if (requestGetDocument.status === 200) {
+				var base64String = sntIDCollectionUtilsSrv.base64ArrayBuffer(requestGetDocument.response);
+
+				deferred.resolve(base64String);
+			} else {
+				deferred.reject(['Document getFaceImage failed']);
+			}
+		};
+		requestGetDocument.onerror = function() {
+			deferred.reject(['Document getFaceImage failed']);
+		};
+		requestGetDocument.ontimeout = function() {
+			deferred.reject(operationTimedOutMsg);
+		};
+
+		return deferred.promise;
+	};
+
+
 });

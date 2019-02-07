@@ -59,7 +59,7 @@
                 
                 &#arriving,
                 &#departing {
-                    #pixel-to-percent > .width(230, 640);
+                    #pixel-to-percent > .width(250, 640);
 
                     .entry-data {
                         background: @white @calendar no-repeat 90% 20px;
@@ -112,16 +112,10 @@
 
                 &#type {
                     position: relative;
-                    #pixel-to-percent > .width(140, 640);
+                    #pixel-to-percent > .width(100, 640);
 
                     .entry-data {
                         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-
-                        input { 
-                            position: relative;
-                            padding-right: 90px;
-                            text-align: center;
-                        }
                     }
 
                     .switch-button {
@@ -192,6 +186,28 @@
 
                     select { 
                         option { font-size: 16px; }
+                    }
+                }
+            }
+
+            &.with-toggle {
+                .entry {
+
+                    &#arriving,
+                    &#departing {
+                        #pixel-to-percent > .width(220, 640);
+                    }
+
+                    &#type {
+                        #pixel-to-percent > .width(160, 640);
+
+                        .entry-data {
+                            input { 
+                                position: relative;
+                                padding-right: 90px;
+                                text-align: center;
+                            }
+                        }
                     }
                 }
             }

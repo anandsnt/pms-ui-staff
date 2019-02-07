@@ -95,10 +95,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             } else {
                 $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                     params: {
-                        'id': $scope.selectedReservation.id
+                        'id': $scope.selectedReservation.id, 
+                        'log_action': $rootScope.checkin_reservation_id !== $scope.selectedReservation.id
                     },
                     'successCallBack': onSuccessFetchReservationDetails
                 });
+                $rootScope.checkin_reservation_id = $scope.selectedReservation.id;
             }
 
         };

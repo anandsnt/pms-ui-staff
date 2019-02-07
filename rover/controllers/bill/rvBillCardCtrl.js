@@ -629,6 +629,7 @@ sntRover.controller('RVbillCardController',
 	$scope.getBillData = function(billIndex) {
 		
 		var getBillDataSuccess = function(data) {
+
 			$scope.reservationBillData.bills[billIndex] = data;
 			if (callGenerateFolioNumberApiAfterSuccessfullTransferCharge) {
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false;
@@ -646,7 +647,7 @@ sntRover.controller('RVbillCardController',
 					that.callGenerateFolioNumberApi();
 				}
 			}	
-				
+			$scope.refreshScroller('bill-tab-scroller');
 			},
 			dataToSend = {
 				params: reservationBillData.bills[billIndex].bill_id,
@@ -803,7 +804,7 @@ sntRover.controller('RVbillCardController',
 			$scope.shouldGenerateFolioNumber = true;
 			var reservationStatus = $scope.reservationBillData.reservation_status;
 
-	 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+	 		if ($scope.shouldGenerateFolioNumber) {
 				callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 				callGenerateFolioNumberApiAfterSuccessfullTransferCharge = true;
 				toBillIndex = parseInt(newBillValue) - 1;
@@ -1186,6 +1187,8 @@ sntRover.controller('RVbillCardController',
 	// just fetch the bills again ;)
 	var postchargeAdded = $scope.$on('postcharge.added', function(event, data) {
 
+		$scope.refreshScroller('bill-tab-scroller');
+
 		// cos' we are gods, and this is what we wish
 		// just kidding.. :P
 		$scope.isRefreshOnBackToStaycard = true;
@@ -1196,7 +1199,7 @@ sntRover.controller('RVbillCardController',
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);	
@@ -1950,7 +1953,7 @@ sntRover.controller('RVbillCardController',
 	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
 		$scope.shouldGenerateFolioNumber = false;
-		if (balanceAmount === "0.00" && ($scope.reservationBillData.reservation_status === "CHECKEDOUT" || $scope.reservationBillData.reservation_status === "NOSHOW") && !isFolioNumberExists) {
+		if (balanceAmount === "0.00" && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
 				if ($scope.reservationBillData.is_bill_lock_enabled) {
@@ -2285,6 +2288,15 @@ sntRover.controller('RVbillCardController',
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function() {		
 		var billIndex = 0;
+
+		$timeout(function() {
+			var billNumber = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_number,
+				scroller = $scope.$parent.myScroll['bill-tab-scroller'];
+			
+			if (billNumber > 7) {
+				scroller.scrollTo(-133 * (billNumber - 6), scroller.maxScrollY);
+			}			
+		}, 100);
 
 		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
 			// Checking last bill balance for stand-alone only.
@@ -2840,7 +2852,7 @@ sntRover.controller('RVbillCardController',
 		}
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
@@ -2859,6 +2871,8 @@ sntRover.controller('RVbillCardController',
 	 */
 	var createBillSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
+		$scope.refreshScroller('bill-tab-scroller');
+		
 		// CICO-56584
 		var isBillDataMissing = false;
 
@@ -3022,7 +3036,7 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = true;
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+ 		if ($scope.shouldGenerateFolioNumber) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);
@@ -3203,9 +3217,10 @@ sntRover.controller('RVbillCardController',
 	/*
 	 * Should show void bill button
 	 * bill must be locked, payment type must be other than DB, 
-	 * Number of bills must be < 10, balance must be 0.00
+	 * balance must be 0.00
 	 */
 	$scope.shouldShowVoidBill = function() {
+		
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 

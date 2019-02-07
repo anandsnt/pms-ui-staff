@@ -73,7 +73,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'university-inn': 'University Inn',
             'cedar-court': 'Cedar Court Hotels',
             'sister-city': 'Sister City Hotel NY',
-            'twa': 'TWA Hotel'
+            'twa': 'TWA Hotel',
+            'carrollton-inn': 'Carrollton Inn',
+            'match': 'Hotel the Match'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -726,6 +728,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.signOut = function() {
             return zsBaseWebSrv.getJSON('/logout');
+        };
+
+        this.detachGuest = function(params) {
+            var url = '/zest_station/reservations/' + params.id + '/detach_accompanying_guest';
+
+            return zsBaseWebSrv.postJSON(url, params);
         };
     }
 ]);

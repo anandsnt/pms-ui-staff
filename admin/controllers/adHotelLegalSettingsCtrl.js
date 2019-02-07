@@ -70,6 +70,9 @@ admin.controller('adHotelLegalSettingsController',
 			$scope.successMessage = "";
 			$scope.errorMessage = "";
 		};
+		$scope.modifyVoidButton = function() {
+			$scope.legalSettings.is_void_bill_enabled = ($scope.legalSettings.is_void_bill_enabled && $scope.legalSettings.is_bill_lock_enabled);
+		};
 		/*
 		 * Initial loading
 		 */

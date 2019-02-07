@@ -1,0 +1,206 @@
+/* StayNTouch Zest Station Styles | First Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #ef4d37;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+.logo-svg{
+    background-image: url("../css/themes/match/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 342px;
+    height: 100px;
+    background-position: center;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#match {
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        .logo {
+            width: auto;
+            height: 100px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: #f3f3f3;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: #000;
+        }
+    } 
+
+    #upgrade {
+        background: #f3f3f3;
+
+        .upgrade-price {
+            background: @brandColor;
+            color: @white;
+        }
+    }
+
+    .upgrade-list {
+        &.upgrade-list-v2 { 
+            .upgrade-content {
+                background: #f3f3f3;
+            }
+        }
+    }
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color:  #f3f3f3;
+
+                .add-on-content {
+                    background: #f3f3f3;
+                }
+            }
+            
+        }
+        
+        @media screen and (max-height: 850px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+    }
+
+    #textual {
+        background: #f3f3f3;
+         
+
+        &:before,
+        &:after {
+            background: #f3f3f3;
+        }
+
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+}
