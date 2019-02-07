@@ -1,18 +1,138 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveConfig"
-                             header-caption="{{'STATION_ID_COLLECTION_SETUP_HEADER'|translate}}">
-    <div class="entry holder-left">
-        <label><span translate>ACTIVATE_INACTIVATE</span></label>
-        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
-             ng-click="toggleEnabled()">
-            <input type="checkbox">
-            <span class="switch-icon"></span>
-        </div></br></br>
-    </div>
+<!--<ad-common-parts-in-form-dir on-save-button-click="saveConfig"-->
+                             <!--header-caption="{{'STATION_ID_COLLECTION_SETUP_HEADER'|translate}}">-->
+    <!--<div class="entry holder-left">-->
+        <!--<label><span translate>ACTIVATE_INACTIVATE</span></label>-->
+        <!--<div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"-->
+             <!--ng-click="toggleEnabled()">-->
+            <!--<input type="checkbox">-->
+            <!--<span class="switch-icon"></span>-->
+        <!--</div></br></br>-->
+    <!--</div>-->
 
     <div class="entry holder-right">
-        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="handleClick()" translate>
-            SAVE_CHANGES
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="signIn()" translate>
+            Auth
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="signOut()" translate>
+            Out
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="disconnect()" translate>
+            revoke
         </button>
     </div>
 
-</ad-common-parts-in-form-dir>
+<!--</ad-common-parts-in-form-dir>-->
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>STATION_ID_COLLECTION_SETUP_HEADER</h2>
+        <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+    </header>
+    <section class="content-scroll">
+        <form class="form float">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3><span>Archive</span> Activation</h3>
+                </div>
+                <div class="entry">
+                    <label>Activate / Inactivate</label>
+                    <!-- Add .on when active -->
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled || isAccepted }"
+                         ng-click="toggleEnabled()">
+                        <input type="checkbox">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+
+                <!-- Remove .hidden when disclaimer is accepted -->
+                <div class="entry" ng-show="MODE =='SAVE ' || MODE=='ACCEPTED'">
+                    <label>Disclaimer Acknowleged by</label>
+                    <strong>{First & Last Name}</strong>, {Position}
+                    <span class="entry-description disclaimer">{ Date & Time of acknowlegement | exp. 01-11-2019 1:23PM }</span>
+                </div>
+
+                <!-- Remove hidden to show disclaimer when the switch was activated -->
+                <div class="entry full-width" ng-show ="MODE =='CONFIGURE'">
+                    <label>Disclaimer</label>
+                    <div class="notice disclaimer">
+                        <span class="icons icon-action-notice"></span>
+                        <p><strong>Files will be copied daily, in unencrypted format on your external drive.</strong></p>
+                        <p><strong>Rover will use its internal, encrypted, and temporary storage to display information in Rover, during, and for a limited period of time, after the guest's stay.</strong></p>
+                        <p><strong>Hotel is responsible to adhere to and enforce PCI-DSS, GDPR, and any other legal requirements related to the security and the retention of banking and personal guest information.</strong></p>
+                        <hr/>
+                        <p>I acknowledge understanding the implications of long term storage. StayNTouch, Shijigroup, or any of their affiliates are NOT responsible for any breaches of confidentiality linked to the external ID archive. To proceed, please enter your name and position, and click “Accept and Continue”</p>
+                    </div>
+                </div>
+
+                <!-- Remove hidden to show disclaimer when the switch was activated -->
+                <div class="entry full-width" ng-show ="MODE =='CONFIGURE'">
+                    <div class="entry">
+                        <label for="first-name">First name <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                    </div>
+                    <div class="entry">
+                        <label for="first-name">Last name <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_last_name' name="last-name" id="last-name" placeholder="Enter last name" value="" required="">
+                    </div>
+                    <div class="entry">
+                        <label for="first-name">Position <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_position' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Remove .hidden when the disclaimer was acknowleged -->
+            <fieldset class="holder full-width" ng-show="MODE=='ACCEPTED'">
+                <div class="form-title">
+                    <h3><span>Archive</span> Storage</h3>
+                </div>
+
+                <!-- Show this notice/option when an option isclicked --
+                <div class="archive-storage-option notice { success | error }">
+                    <img src="{archive-option-logo}" alt="" />
+                    <div class="option-content">
+                        <strong>Connect to {Option}</strong>
+                        <p>{Text}</p>
+                    </div>
+                    <button class="button white red-text">
+                        <!--
+                            'icon-status':
+                             - icon-connect - when .error
+                             - icon-disconnect  when .succes
+                        --
+                        <span class="icons {icon-status}"></span>
+                        { Connect | Disconnect }
+                    </button>
+                </div>
+                -->
+
+                <!-- If Success on connection, add .hidden -->
+                <!-- If error, show only those options that are not current -->
+                <div class="archive-storage-options">
+                    <button type="button" class="archive-storage-option" ng-click="gapiSignIn()">
+                        <img src="/assets/images/archive-option-gdrive.png" alt="" />
+                        <strong>Google Drive </strong>
+                    </button>
+                    <!--<button type="button" class="archive-storage-option" ng-click="dropBoxSignIn()">-->
+                        <!--<img src="/assets/images/archive-option-aws.png" alt="" />-->
+                        <!--<strong>Connect to Amazone S3</strong>-->
+                    <!--</button>-->
+                    <!--<button type="button" geclass="archive-storage-option">-->
+                        <!--<img src="/assets/images/archive-option-dropbox.png" alt="" />-->
+                        <!--<strong>Connect to Drop Box</strong>-->
+                    <!--</button>-->
+                    <button type="button" class="archive-storage-option" ng-click="signOut()">
+                        <img src="/assets/images/archive-option-dropbox.png" alt="" />
+                        <strong>Connect to Drop Box</strong>
+                    </button>
+                </div>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" class="button blank">Cancel</button>
+                <button type="button" class="button green" ng-hide="MODE=='ACCEPTED'" ng-click = "buttonClicked('ACCEPTED')">Accept and Continue</button>
+                <button type="button" class="button green" ng-hide="MODE=='SAVE'" ng-click = "buttonClicked('SAVE')">Save Changes</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+

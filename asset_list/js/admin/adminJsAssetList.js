@@ -28,6 +28,7 @@ module.exports = {
 				jsLibRoot + 'treeview/ivh-treeview.min.js',
 				jsLibRoot + 'moment.min.js',
 				jsLibRoot + 'gapi.min.js',
+				jsLibRoot + 'dropbox-sdk.min.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			],

@@ -210,8 +210,8 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             controller: 'adArchiveScannedGuestIdentifiactionCtrl',
             url: '/zestStationIDCollection',
             resolve: {
-                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchConfiguration('idCollectionArchive');
+                config: ['ACGIIntegrationSrv', function (ACGIIntegrationSrv) {
+                    return ACGIIntegrationSrv.fetchConfiguration();
                 }]
             }
         });
