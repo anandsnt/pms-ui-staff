@@ -23,7 +23,9 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             return deferred.promise;
         };
 
-        this.fetchLengthSegments = function(deferred) {
+        this.fetchLengthSegments = function() {
+            var deferred = $q.defer();
+
             if (isEmpty(segmentData)) {
                 var url = '/api/segments?is_active=true';
 
@@ -40,16 +42,20 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                  that.reservationData.demographics.segments = segmentData.segments;
                  deferred.resolve(that.reservationData);
             }
+
+            return deferred.promise;
         };
 
-        this.fetchDemographicMarketSegments = function(deferred) {
+        this.fetchDemographicMarketSegments = function() {
+            var deferred = $q.defer();
 
             if (isEmpty(demographicsData)) {
                  var url = '/api/market_segments?is_active=true';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     demographicsData.is_use_markets = that.reservationData.demographics.is_use_markets = data.is_use_markets;
-                    demographicsData.markets        = that.reservationData.demographics.markets = data.markets;
+                    demographicsData.markets  = that.reservationData.demographics.markets = data.markets;
+                    deferred.resolve(that.reservationData);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
@@ -57,17 +63,22 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             else {
                     that.reservationData.demographics.is_use_markets = demographicsData.is_use_markets;
                     that.reservationData.demographics.markets = demographicsData.markets;
+                    deferred.resolve(that.reservationData);
             }
 
+            return deferred.promise;
         };
 
-        this.fetchDemographicSources = function(deferred) {
+        this.fetchDemographicSources = function() {
+            var deferred = $q.defer();
+
             if (isEmpty(sourcesData)) {
                 var url = '/api/sources?is_active=true'; // TODO: Whether we need active list only or all
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     sourcesData.is_use_sources = that.reservationData.demographics.is_use_sources = data.is_use_sources;
                     sourcesData.sources        = that.reservationData.demographics.sources        = data.sources;
+                    deferred.resolve(that.reservationData);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
@@ -75,11 +86,13 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             else {
                     that.reservationData.demographics.is_use_sources = sourcesData.is_use_sources;
                     that.reservationData.demographics.sources = sourcesData.sources;
+                    deferred.resolve(that.reservationData);
             }
 
+            return deferred.promise;
         };
 
-        this.fetchDemographicOrigins = function(deferred) {
+        this.fetchDemographicOrigins = function() {
             var originsSuccessCallback = function(data) {
                 that.reservationData.demographics.origins = data.booking_origins;
                 that.reservationData.demographics.origins = [];
@@ -90,7 +103,9 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                         that.reservationData.demographics.origins.push(data.booking_origins[i]);
                     }
                 }
+                deferred.resolve(that.reservationData);
             };
+            var deferred = $q.defer();
 
             if (isEmpty(originsData)) {
                 var url = '/api/booking_origins';
@@ -105,6 +120,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 originsSuccessCallback(originsData);
             }
 
+            return deferred.promise;
         };
 
         this.fetchDemographicReservationTypes = function(deferred) {
@@ -116,7 +132,9 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                             that.reservationData.demographics.reservationTypes.push(data.reservation_types[i]);
                         }
                     }
+                    deferred.resolve(that.reservationData); 
             };
+            var deferred = $q.defer();
 
             if (isEmpty(reservationTypes)) {
                 var url = '/api/reservation_types.json?is_active=true';
@@ -135,13 +153,21 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchInitialData = function() {
             // Please be care. Only last function should resolve the data
-            var deferred = $q.defer();
+            var deferred = $q.defer(),
+                promises = [];
 
-            that.fetchDemographicMarketSegments(deferred);
-            that.fetchDemographicOrigins(deferred);
-            that.fetchDemographicSources(deferred);
-            that.fetchDemographicReservationTypes(deferred);
-            that.fetchLengthSegments(deferred);
+            promises.push(that.fetchDemographicMarketSegments());
+            promises.push(that.fetchDemographicOrigins());
+            promises.push(that.fetchDemographicSources());
+            promises.push(that.fetchDemographicReservationTypes());
+            promises.push(that.fetchLengthSegments());
+
+            $q.all(promises).then(function() {
+                deferred.resolve(that.reservationData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
             return deferred.promise;
         };
 
