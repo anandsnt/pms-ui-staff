@@ -123,7 +123,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             return deferred.promise;
         };
 
-        this.fetchDemographicReservationTypes = function(deferred) {
+        this.fetchDemographicReservationTypes = function() {
             var reservationTypesCallback = function(data) {
                 that.reservationData.demographics.reservationTypes = [];
                     // We need only the active reservation types
