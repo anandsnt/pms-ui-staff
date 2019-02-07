@@ -2698,7 +2698,7 @@ sntRover.controller('RVbillCardController',
 				if (successData.is_copy_counter) {
 					copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices) + 1;					
 				}
-				successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount)
+				successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 			}
 
 			

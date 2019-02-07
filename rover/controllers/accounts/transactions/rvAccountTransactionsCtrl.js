@@ -953,7 +953,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					if (responseData.is_copy_counter) {
 						copyCount = parseInt(responseData.print_counter) - parseInt(responseData.no_of_original_invoices) + 1;					
 					}
-					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount)
+					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
 				}
 
 				$scope.printData = responseData;
