@@ -7,6 +7,8 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             $scope.config.guest_id_archive_enabled = !$scope.config.guest_id_archive_enabled;
             if ($scope.config.guest_id_archive_enabled) {
                 $scope.MODE = 'CONFIGURE';
+            } else {
+                $scope.config.guest_id_archive_platform_token = null;
             }
         };
 
@@ -17,6 +19,11 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             $scope.MODE = mode;
         };
 
+        $scope.dropBoxSignIn = function() {
+            $scope.config.guest_id_archive_platform = 'dropbox';
+            $scope.MODE = 'DROPBOX';
+        };
+
         $scope.update = function(isSignedIn) {
             $scope.GoogleAuth.grantOfflineAccess()
                 .then(function(res) {
@@ -24,11 +31,8 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         $scope.config.guest_id_archive_platform_token = res.code;
                     }
                 });
+            $scope.MODE = 'SAVE';
         };
-
-        $scope.dropBoxSignIn = function() {
-            DROPBOX.call(this, $scope);
-        }
 
         $scope.gapiSignIn = function() {
             $scope.config.guest_id_archive_platform = 'google_drive';

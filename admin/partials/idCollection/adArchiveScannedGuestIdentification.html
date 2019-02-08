@@ -51,7 +51,7 @@
                 </div>
 
                 <!-- Remove hidden to show disclaimer when the switch was activated -->
-                <div class="entry full-width" ng-show ="MODE =='CONFIGURE'">
+                <div class="entry full-width" ng-show ="MODE =='CONFIGURE' && config.guest_id_archive_enabled">
                     <label>Disclaimer</label>
                     <div class="notice disclaimer">
                         <span class="icons icon-action-notice"></span>
@@ -80,13 +80,15 @@
                 </div>
             </fieldset>
 
-            <!-- Remove .hidden when the disclaimer was acknowleged -->
-            <fieldset class="holder full-width" ng-show="MODE=='ACCEPTED'">
-                <div class="form-title">
-                    <h3><span>Archive</span> Storage</h3>
+            <fieldset class="holder full-width">
+                <div class="entry full-width" ng-show ="MODE =='DROPBOX'">
+                    <div class="entry">
+                        <label for="first-name">Access Token <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_platform_token' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                    </div>
                 </div>
-
-                <!-- Show this notice/option when an option isclicked --
+            </fieldset>
+            <fieldset class="holder full-width" ng-show="config.guest_id_archive_enabled && !!config.guest_id_archive_platform_token">
                 <div class="archive-storage-option notice { success | error }">
                     <img src="{archive-option-logo}" alt="" />
                     <div class="option-content">
@@ -94,16 +96,40 @@
                         <p>{Text}</p>
                     </div>
                     <button class="button white red-text">
-                        <!--
-                            'icon-status':
-                             - icon-connect - when .error
-                             - icon-disconnect  when .succes
-                        --
+
+                        <!--'icon-status':-->
+                        <!-- - icon-connect - when .error-->
+                        <!-- - icon-disconnect  when .succes-->
+
                         <span class="icons {icon-status}"></span>
                         { Connect | Disconnect }
                     </button>
                 </div>
-                -->
+            </fieldset>
+
+            <!-- Remove .hidden when the disclaimer was acknowleged -->
+            <fieldset class="holder full-width" ng-show="MODE=='ACCEPTED'">
+                <div class="form-title">
+                    <h3><span>Archive</span> Storage</h3>
+                </div>
+
+
+                <div class="archive-storage-option notice { success | error }" ng-show="!config.guest_id_archive_platform_token">
+                    <img src="{archive-option-logo}" alt="" />
+                    <div class="option-content">
+                        <strong>Connect to {Option}</strong>
+                        <p>{Text}</p>
+                    </div>
+                    <button class="button white red-text">
+
+                            <!--'icon-status':-->
+                               <!-- - icon-connect - when .error-->
+                               <!-- - icon-disconnect  when .succes-->
+
+                        <span class="icons {icon-status}"></span>
+                        { Connect | Disconnect }
+                    </button>
+                </div>
 
                 <!-- If Success on connection, add .hidden -->
                 <!-- If error, show only those options that are not current -->
@@ -116,10 +142,10 @@
                         <!--<img src="/assets/images/archive-option-aws.png" alt="" />-->
                         <!--<strong>Connect to Amazone S3</strong>-->
                     <!--</button>-->
-                    <!--<button type="button" geclass="archive-storage-option">-->
-                        <!--<img src="/assets/images/archive-option-dropbox.png" alt="" />-->
-                        <!--<strong>Connect to Drop Box</strong>-->
-                    <!--</button>-->
+                    <button type="button" geclass="archive-storage-option" ng-click="dropBoxSignIn()">
+                        <img src="/assets/images/archive-option-dropbox.png" alt="" />
+                        <strong>Connect to Drop Box</strong>
+                    </button>
                     <button type="button" class="archive-storage-option" ng-click="signOut()">
                         <img src="/assets/images/archive-option-dropbox.png" alt="" />
                         <strong>Connect to Drop Box</strong>
@@ -128,8 +154,10 @@
             </fieldset>
             <div class="actions float">
                 <button type="button" class="button blank">Cancel</button>
-                <button type="button" class="button green" ng-hide="MODE=='ACCEPTED'" ng-click = "buttonClicked('ACCEPTED')">Accept and Continue</button>
-                <button type="button" class="button green" ng-hide="MODE=='SAVE'" ng-click = "buttonClicked('SAVE')">Save Changes</button>
+                <button type="button" class="button green" ng-show="MODE =='CONFIGURE'" ng-click = "buttonClicked('ACCEPTED')">Accept and Continue</button>
+                <button type="button" class="button green" ng-show="MODE =='ACCEPTED'" ng-click = "buttonClicked('SAVE')">Save Changes</button>
+                <button type="button" class="button green" ng-show="MODE =='DROPBOX'" ng-click = "buttonClicked('SAVE')">Save Changes</button>
+                <button type="button" class="button green" ng-show="!config.guest_id_archive_enabled" ng-click = "buttonClicked('SAVE')">Save Changes</button>
             </div>
         </form>
     </section>
