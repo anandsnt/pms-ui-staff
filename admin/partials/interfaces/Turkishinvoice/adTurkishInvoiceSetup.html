@@ -1,0 +1,46 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+    </div>
+
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Export<span> Settings</span></h3>
+        </div>
+        <fieldset class="holder left">
+            <section>
+                <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
+                <ad-textbox inputtype="text" value="config.ftp_host" label="FTP Host"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_path" label="FTP Path"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_username" label="FTP User Name"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="password" value="config.ftp_password" label="FTP Password"
+                            styleclass="full-width"></ad-textbox>
+            </section>
+        </fieldset>
+        <fieldset class="holder right">
+            <section>
+                <ad-form-title full-width="true" form-title="Bank Information"></ad-form-title>
+                <ad-textbox inputtype="text" value="config.bank_name" label="Bank Name"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.branch_name" label="Branch Name"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.iban_code" label="IBAN Code"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.swift_code" label="Swift Code"
+                            styleclass="full-width"></ad-textbox>
+            </section>
+        </fieldset>
+    </fieldset>
+</ad-common-parts-in-form-dir>
