@@ -1,7 +1,5 @@
-angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'ACGIIntegrationSrv', 'ngDialog',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, ACGIIntegrationSrv, ngDialog) {
-
-        var interfaceIdentifier = 'idCollectionArchive';
+angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'ACGIIntegrationSrv',
+    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, ACGIIntegrationSrv) {
 
         $scope.toggleEnabled = function() {
             $scope.config.guest_id_archive_enabled = !$scope.config.guest_id_archive_enabled;
@@ -37,7 +35,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         $scope.gapiSignIn = function() {
             $scope.config.guest_id_archive_platform = 'google_drive';
             GAPI.call(this, $scope);
-        }
+        };
 
         $scope.saveConfig = function() {
             $scope.callAPI(ACGIIntegrationSrv.saveConfiguration, {

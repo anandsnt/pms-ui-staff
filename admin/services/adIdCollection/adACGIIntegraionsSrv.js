@@ -1,7 +1,8 @@
-admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'adExternalInterfaceCommonSrv', 'adAxbaseSrv',
-    function($http, $q, ADBaseWebSrvV2, $log, adExternalInterfaceCommonSrv, adAxbaseSrv) {
+admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2',
+    function($http, $q, ADBaseWebSrvV2) {
 
         var service = this;
+
         /**
          *
          * @param {String} interfaceIdentifier unique string identifier for the interface
