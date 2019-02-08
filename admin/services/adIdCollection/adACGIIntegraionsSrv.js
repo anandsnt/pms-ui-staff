@@ -11,8 +11,6 @@ admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         service.fetchConfiguration = function() {
             return ADBaseWebSrvV2.getJSON('/admin/guest_id_archive_setup/guest_id_archive_options.json');
         };
-
-
         /**
          *
          * @param {Object} params used to build the API endpoint
