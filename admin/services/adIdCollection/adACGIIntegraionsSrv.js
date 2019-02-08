@@ -1,7 +1,8 @@
-admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'adExternalInterfaceCommonSrv', 'adAxbaseSrv',
-    function($http, $q, ADBaseWebSrvV2, $log, adExternalInterfaceCommonSrv, adAxbaseSrv) {
+admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2',
+    function($http, $q, ADBaseWebSrvV2) {
 
         var service = this;
+
         /**
          *
          * @param {String} interfaceIdentifier unique string identifier for the interface
@@ -10,8 +11,6 @@ admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'a
         service.fetchConfiguration = function() {
             return ADBaseWebSrvV2.getJSON('/admin/guest_id_archive_setup/guest_id_archive_options.json');
         };
-
-
         /**
          *
          * @param {Object} params used to build the API endpoint

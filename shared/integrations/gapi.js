@@ -30,19 +30,9 @@ GAPI = function ($scope) {
             $scope.GoogleAuth.isSignedIn.listen($scope.update);
 
             // Handle initial sign-in state. (Determine if user is already signed in.)
-            var user = $scope.GoogleAuth.currentUser.get();
-
             $scope.GoogleAuth.signIn();
         });
     };
-
-    $scope.updateSigninStatus = function (isSignedIn) {
-        console.log($scope.GoogleAuth.currentUser.get());
-    };
-
-    // $scope.signIn = function () {
-    //     $scope.GoogleAuth.signIn();
-    // };
 
     $scope.signOut = function() {
         $scope.GoogleAuth.signOut();

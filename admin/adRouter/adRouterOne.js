@@ -195,7 +195,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
         });
 
         $stateProvider.state('admin.zestStationIDCollection', {
-            templateUrl: '/assets/partials/idCollection/adArchiveScannedGuestIdentification.html',
+            templateUrl: '/assets/partials/idCollection/adStationIdCollectionSetup.html',
             controller: 'adStationIdCollectionSetupCtrl',
             url: '/zestStationIDCollection',
             resolve: {
