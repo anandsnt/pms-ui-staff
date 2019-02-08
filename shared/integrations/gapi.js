@@ -17,9 +17,9 @@ GAPI = function ($scope) {
         // Get API key and client ID from API Console.
         // 'scope' field specifies space-delimited list of access scopes.
         gapi.client.init({
-            'apiKey': 'AIzaSyA3W6wqAIx9_YE1JoYkZASRRc1URiMiEtI',
+            'apiKey': $scope.config.gapi_client.api_key,
             'discoveryDocs': [discoveryUrl],
-            'clientId': '1024013218567-uh3t69o29galfu7l0ei8f19c0iea36ip.apps.googleusercontent.com',
+            'clientId': $scope.config.gapi_client.client_id,
             'scope': SCOPE,
             'access_type': 'offline',
             'response_type': 'code token'
