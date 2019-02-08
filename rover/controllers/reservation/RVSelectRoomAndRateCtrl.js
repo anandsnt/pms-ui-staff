@@ -956,7 +956,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				navigateOut();
 			},
-			populateStayDates = function(stayDetails, rateId, roomIndex) {
+			populateStayDates = function(stayDetails, rateId, roomIndex, roomTypeId) {
                 var businessDate = tzIndependentDate($rootScope.businessDate);
 
 				_.each(ROOMS[roomIndex].stayDates, function(details, date) {
@@ -977,6 +977,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
 								.ratesMeta[rateId].is_suppress_rate_on.toString();						
 						}
+						details.roomTypeId = roomTypeId;
                 }
 				});
 			},
@@ -1152,7 +1153,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.showStayDateDetails = function(selectedDate) {
 			// by pass departure stay date from stay dates manipulation
-			if (selectedDate === DEPARTURE_DATE) {
+			if (selectedDate === DEPARTURE_DATE || selectedDate.shouldDisable) {
 				return false;
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
@@ -1571,7 +1572,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if (!currentRoom.rateId) {
 							currentRoom.rateId = [];
 						}
-						currentRoom.rateId.push(rateId);
+						currentRoom.rateId.push(rateIId);
 					}
 
 					// see if the done button has to be enabled
@@ -1604,7 +1605,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rateTotal: rateInfo.totalAmount
 						});
 
-						populateStayDates(secondary.dates, rateId, i);
+						populateStayDates(secondary.dates, rateId, i, roomTypeId);
 
 						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 
