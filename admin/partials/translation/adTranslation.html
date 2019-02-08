@@ -52,7 +52,7 @@
             <tbody>
                 <tr ng-repeat="translation in $data">
                     <td data-title="'Label'" sortable="'name'">
-                        <span class="bold">{{translation.name}}</span>
+                        <span class="bold">{{translation.name}}<em ng-if="translation.name === 'Copy of Invoice'" class="status">(Please use #count to replace the count)</em></span>
                     </td>
 
                     <td data-title="'Translation'"  sortable="'value'">

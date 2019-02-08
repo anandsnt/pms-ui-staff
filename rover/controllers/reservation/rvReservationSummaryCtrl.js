@@ -1392,6 +1392,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.shouldShowSource = $scope.otherData.sources.length > 0;
             $scope.shouldShowOriginOfBooking = $scope.otherData.origins.length > 0;
             $scope.shouldShowSegments = $scope.otherData.segments.length > 0;
+            console.log("******");
+            console.log($scope.otherData.reservationTypes);
+            console.log($scope.otherData.markets);
+            console.log($scope.otherData.sources);
+            console.log($scope.otherData.origins);
+            console.log($scope.otherData.segments);
 
             $scope.demographics = ($scope.reservationData.rooms[index] && $scope.reservationData.rooms[index].demographics) || angular.copy($scope.reservationData.demographics);
             // CICO-18594 - Urgent fix
