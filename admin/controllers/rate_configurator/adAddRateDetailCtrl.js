@@ -251,6 +251,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_hourly_rate': $scope.rateData.is_hourly_rate,
                 'commission_details': commissions,
                 'is_member': $scope.rateData.is_member_rate ? $scope.rateData.is_member_rate : false,
+                'is_public_rate': $scope.rateData.is_public_rate,
                 'is_pms_only': $scope.rateData.is_pms_only,
                 'is_channel_only': $scope.rateData.is_channel_only,
                 'code': $scope.rateData.code,
