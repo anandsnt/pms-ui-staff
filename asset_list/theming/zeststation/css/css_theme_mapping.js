@@ -59,7 +59,8 @@ module.exports = {
             'sister-city': [themeCSSRoot + 'sister-city.less'],
             'twa': [themeCSSRoot + 'twa.less'],
             'carrollton-inn': [themeCSSRoot + 'carrollton-inn.less'],
-            'match': [themeCSSRoot + 'match.less']
+            'match': [themeCSSRoot + 'match.less'],
+            'liason': [themeCSSRoot + 'liason.less']
         };
     }
 };

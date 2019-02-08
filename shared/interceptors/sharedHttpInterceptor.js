@@ -73,7 +73,7 @@ angular.module('sharedHttpInterceptor', []).
                 var identifier = getRequestIdentifier(config);
 
                 // Ignore for this request?
-                if (config.ignoreDuplicateRequest) {
+                if (config.ignoreDuplicateRequest || angular.version.minor < 3) {
                     return $http(config);
                 }
 
