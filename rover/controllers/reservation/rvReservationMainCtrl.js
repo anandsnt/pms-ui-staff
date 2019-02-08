@@ -657,6 +657,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             //
             $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
             $scope.otherData.segments = baseData.demographics.segments;
+
+            console.log("***callFromChildCtrl");
+            console.log(baseData.demographics.markets);
+            console.log(baseData.demographics.sources);
+            console.log(baseData.demographics.origins);
+            console.log(baseData.demographics.segments);
+
         };
 
         var openRateAdjustmentPopup = function(room, index, lastReason) {
