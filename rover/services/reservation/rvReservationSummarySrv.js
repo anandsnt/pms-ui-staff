@@ -31,16 +31,12 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     segmentData = data;
-                    that.reservationData.demographics.is_use_segments = data.is_use_segments;
-                    that.reservationData.demographics.segments = data.segments;
-                    deferred.resolve(that.reservationData);
+                    deferred.resolve(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
             } else {
-                 that.reservationData.demographics.is_use_segments = segmentData.is_use_segments;
-                 that.reservationData.demographics.segments = segmentData.segments;
-                 deferred.resolve(that.reservationData);
+                 deferred.resolve(segmentData);
             }
 
             return deferred.promise;
@@ -53,17 +49,14 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                  var url = '/api/market_segments?is_active=true';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    demographicsData.is_use_markets = that.reservationData.demographics.is_use_markets = data.is_use_markets;
-                    demographicsData.markets  = that.reservationData.demographics.markets = data.markets;
-                    deferred.resolve(that.reservationData);
+                    demographicsData = data;
+                    deferred.resolve(demographicsData);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
             }
             else {
-                    that.reservationData.demographics.is_use_markets = demographicsData.is_use_markets;
-                    that.reservationData.demographics.markets = demographicsData.markets;
-                    deferred.resolve(that.reservationData);
+                deferred.resolve(demographicsData);
             }
 
             return deferred.promise;
@@ -76,17 +69,14 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 var url = '/api/sources?is_active=true'; // TODO: Whether we need active list only or all
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    sourcesData.is_use_sources = that.reservationData.demographics.is_use_sources = data.is_use_sources;
-                    sourcesData.sources        = that.reservationData.demographics.sources        = data.sources;
-                    deferred.resolve(that.reservationData);
+                    sourcesData = data;
+                    deferred.resolve(sourcesData);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
             }
             else {
-                    that.reservationData.demographics.is_use_sources = sourcesData.is_use_sources;
-                    that.reservationData.demographics.sources = sourcesData.sources;
-                    deferred.resolve(that.reservationData);
+                deferred.resolve(sourcesData);
             }
 
             return deferred.promise;
@@ -94,16 +84,16 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchDemographicOrigins = function() {
             var originsSuccessCallback = function(data) {
-                that.reservationData.demographics.origins = data.booking_origins;
-                that.reservationData.demographics.origins = [];
                 // We need only the booking origins activated in the admin
-                that.reservationData.demographics.is_use_origins = data.is_use_origins;
+                originsData.is_use_origins = data.is_use_origins;
+                originsData.origins = [];
                 for (var i in data.booking_origins) {
                     if (data.booking_origins[i].is_active) {
-                        that.reservationData.demographics.origins.push(data.booking_origins[i]);
+                        originsData.origins.push(data.booking_origins[i]);
                     }
                 }
-                deferred.resolve(that.reservationData);
+                
+                deferred.resolve(originsData);
             };
             var deferred = $q.defer();
 
@@ -111,13 +101,12 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 var url = '/api/booking_origins';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    originsData  = data;
                     originsSuccessCallback(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
             } else {
-                originsSuccessCallback(originsData);
+                deferred.resolve(originsData);
             }
 
             return deferred.promise;
@@ -125,14 +114,15 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.fetchDemographicReservationTypes = function() {
             var reservationTypesCallback = function(data) {
+                reservationTypes = [];
                 that.reservationData.demographics.reservationTypes = [];
                     // We need only the active reservation types
                     for (var i in data.reservation_types) {
                         if (data.reservation_types[i].is_active) {
-                            that.reservationData.demographics.reservationTypes.push(data.reservation_types[i]);
+                            reservationTypes.push(data.reservation_types[i]);
                         }
                     }
-                    deferred.resolve(that.reservationData); 
+                    deferred.resolve(reservationTypes); 
             };
             var deferred = $q.defer();
 
@@ -140,29 +130,39 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 var url = '/api/reservation_types.json?is_active=true';
 
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    reservationTypes = data;
                     reservationTypesCallback(data);
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
             } else {
-                reservationTypesCallback(reservationTypes);
+                deferred.resolve(reservationTypes);
             }
+
+            return deferred.promise;
 
         };
 
         this.fetchInitialData = function() {
-            // Please be care. Only last function should resolve the data
             var deferred = $q.defer(),
-                promises = [];
+                promises = {};
 
-            promises.push(that.fetchDemographicMarketSegments());
-            promises.push(that.fetchDemographicOrigins());
-            promises.push(that.fetchDemographicSources());
-            promises.push(that.fetchDemographicReservationTypes());
-            promises.push(that.fetchLengthSegments());
+            promises['marketsData'] = that.fetchDemographicMarketSegments();
+            promises['originsData'] = that.fetchDemographicOrigins();
+            promises['sourcesData'] = that.fetchDemographicSources();
+            promises['reservationTypesData'] = that.fetchDemographicReservationTypes();
+            promises['segmentsData'] = that.fetchLengthSegments();
 
-            $q.all(promises).then(function() {
+            $q.all(promises).then(function(response) {
+                that.reservationData.demographics.is_use_markets = response.marketsData.is_use_markets;
+                that.reservationData.demographics.markets = response.marketsData.markets;
+                that.reservationData.demographics.is_use_origins = response.originsData.is_use_origins;
+                that.reservationData.demographics.origins = response.originsData.origins;
+                that.reservationData.demographics.is_use_sources = response.sourcesData.is_use_sources;
+                that.reservationData.demographics.sources = response.sourcesData.sources;
+                that.reservationData.demographics.is_use_segments = response.segmentsData.is_use_segments;
+                that.reservationData.demographics.segments = response.segmentsData.segments;
+                that.reservationData.demographics.reservationTypes = response.reservationTypesData;
+
                 deferred.resolve(that.reservationData);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
