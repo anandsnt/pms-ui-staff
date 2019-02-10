@@ -1,25 +1,53 @@
 angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'ACGIIntegrationSrv',
     function($scope, $rootScope, config, adInterfacesCommonConfigSrv, ACGIIntegrationSrv) {
 
-        $scope.toggleEnabled = function() {
-            $scope.config.guest_id_archive_enabled = !$scope.config.guest_id_archive_enabled;
-            if ($scope.config.guest_id_archive_enabled) {
-                $scope.MODE = 'CONFIGURE';
-            } else {
-                $scope.config.guest_id_archive_platform_token = null;
-            }
-        };
+        var TURN_ON = false,
+            updateMode = function() {
+                if (!$scope.config.guest_id_archive_enabled) {
+                    $scope.MODE = 'CONFIGURE';
+                } else if ( $scope.config.guest_id_archive_enabled && TURN_ON) {
+                    $scope.MODE = 'CONFIGURE_ON';
+                } else if ($scope.config.guest_id_archive_platform_token) {
+                    $scope.MODE = 'CONFIGURED';
+                } else {
+                    $scope.MODE = 'DISCONNECTED';
+                }
+            },
+            updateConnectedDetails = function() {
+                if ($scope.config.guest_id_archive_platform === 'dropbox') {
+                    $scope.connctedDetails.name = 'Drop Box';
+                    $scope.connctedDetails.iconUrl = '/assets/images/archive-option-dropbox.png';
+                } else {
+                    $scope.connctedDetails.name = 'Google Drive';
+                    $scope.connctedDetails.iconUrl = '/assets/images/archive-option-gdrive.png';
+                }
+                $scope.connctedDetails.isConnected = true;
+            },
+            init = function() {
+                $scope.config = config.data;
+                $scope.connctedDetails = {};
+                updateMode();
+                updateConnectedDetails();
+            };
 
-        $scope.buttonClicked = function( mode ) {
-            if (mode === 'SAVE') {
-                $scope.saveConfig();
+        $scope.toggleEnabled = function() {
+            if ( !$scope.config.guest_id_archive_enabled ) {
+                $scope.config.guest_id_archive_enabled = true;
+                TURN_ON = true;
+                init();
+            } else {
+                $scope.config.guest_id_archive_enabled = false;
+                $scope.config.guest_id_archive_first_name = '';
+                $scope.config.guest_id_archive_last_name = '';
+                $scope.config.guest_id_archive_platform = '';
+                $scope.config.guest_id_archive_platform_token = '';
+                $scope.config.guest_id_archive_position = '';
             }
-            $scope.MODE = mode;
         };
 
         $scope.dropBoxSignIn = function() {
             $scope.config.guest_id_archive_platform = 'dropbox';
-            $scope.MODE = 'DROPBOX';
+            $scope.MODE = 'ACCESS_TOKEN';
         };
 
         $scope.update = function(isSignedIn) {
@@ -29,7 +57,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         $scope.config.guest_id_archive_platform_token = res.code;
                     }
                 });
-            $scope.MODE = 'SAVE';
+            $scope.MODE = 'ACCESS_TOKEN';
         };
 
         $scope.gapiSignIn = function() {
@@ -47,12 +75,17 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                 }
             });
         };
+        $scope.disConnect = function() {
+            $scope.config.guest_id_archive_platform_token = '';
+            $scope.config.guest_id_archive_platform = '';
+            $scope.config.guest_id_archive_enabled = false;
+            $scope.MODE = 'DISCONNECTED';
+        };
+        $scope.acceptTerms = function() {
+            $scope.MODE = 'CHOOSE_PLATFORM';
+        };
 
-        (function() {
-            //    init
-            $scope.config = config.data;
-            $scope.isAccepted = false;
 
-        })();
+        init();
     }
 ]);
