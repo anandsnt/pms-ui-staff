@@ -1699,6 +1699,95 @@
 .add-room-type{
   margin: 22px 0px 0px 30px;
 }
+
+/* Archive Storage Options  ==============================*/
+    .archive-storage-options {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-row-gap: 20px;
+    }
+
+    .archive-storage-option {
+        background: @grey1;
+        padding: 20px;
+        height: 60px;
+        text-align: left;
+        width: 100%;
+        #flexbox > .parent( row wrap, '', center, center );
+        .box-shadow();
+
+        strong {
+            font-size: 18px;
+            font-weight: 600;
+            .calc-width( 100, 40 );
+            .nowrap();
+        }
+
+        .option-content {
+            line-height: 1;
+            .calc-width( 100, 180 );
+
+            strong {
+                width: 100%;
+            }
+        }
+
+        p {
+            font-size: 14px;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        img {
+            width: 25px;
+            height: auto;
+            margin-right: 15px;
+        }
+
+        button {
+            margin-left: auto;
+        }
+
+        &.notice {
+            margin-bottom: 20px;
+            height: auto;
+
+            &.error {
+                background: #f8d5d5;
+                color: #be2020;
+                border-color: #e63838;
+            }
+
+            &.success {
+                background: #e5efdb;
+                color: #63972f;
+                border-color: #89bd55;
+            }
+
+            .button {
+                min-width: 130px;
+                padding: 0 15px;
+                font-size: 14px;
+                #flexbox > .parent( row, flex-start, center, center );
+
+                .icons {
+                    margin-right: 10px;
+                    .square(18px);
+
+                    &.icon-connect { height: 15px; }
+                }
+            }
+        }
+    }
+
+    @media only screen and (min-width : 769px) { 
+        .archive-storage-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+        }
+    } 
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
