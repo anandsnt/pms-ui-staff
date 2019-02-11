@@ -27,6 +27,7 @@ module.exports = {
 				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js',
 				jsLibRoot + 'treeview/ivh-treeview.min.js',
 				jsLibRoot + 'moment.min.js',
+				jsLibRoot + 'gapi.min.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			],
@@ -62,6 +63,7 @@ module.exports = {
 				sharedRoot + 'directives/uiColorpicker/uiColorpicker.js',
 				sharedRoot + 'directives/onScroll/onScroll.js',
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js',
+				sharedRoot + 'integrations/*.js',
 				adminRoot + 'constants/**/*.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
