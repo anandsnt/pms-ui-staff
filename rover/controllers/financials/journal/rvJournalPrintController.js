@@ -282,8 +282,10 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 				}
 				else
 				{
-					window.print();
-					journalPrintCompleted();
+					$timeout(function() {
+						window.print();
+						journalPrintCompleted();
+					}, 700);
 				}
 			}, 100);
 
