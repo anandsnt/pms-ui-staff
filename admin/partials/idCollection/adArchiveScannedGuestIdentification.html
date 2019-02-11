@@ -6,7 +6,64 @@
     </header>
     <section class="content-scroll">
         <form class="form float">
-            <fieldset class="holder full-width">
+            <fieldset class="holder full-width" ng-show="MODE == 'CONFIGURED'">
+                <div class="form-title">
+                    <h3><span>Archive</span> Activation</h3>
+                </div>
+                <div class="entry">
+                    <label>Activate / Inactivate</label>
+                    <!-- Add .on when active -->
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled}"
+                         ng-click="toggleEnabled()">
+                        <input type="checkbox">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+
+                <!-- Remove .hidden when disclaimer is accepted -->
+                <div class="entry" ng-show="MODE =='CONFIGURED'">
+                    <label>Disclaimer Acknowleged by</label>
+                    <strong>{{config.guest_id_archive_first_name}} {{config.guest_id_archive_last_name}}</strong>, {{config.guest_id_archive_position}}
+                    <!--<span class="entry-description disclaimer">{ Date & Time of acknowlegement | exp. 01-11-2019 1:23PM }</span>-->
+                </div>
+                <div class="archive-storage-option notice { success | error }">
+                    <img ng-src="{{connctedDetails.iconUrl}}" alt="" />
+                    <div class="option-content">
+                        <strong>Connect to {{config.guest_id_archive_platform}}</strong>
+                        <p></p>
+                    </div>
+                    <button class="button white red-text" ng-click="disConnect()">
+                        <span class="icons" ng-class="{'error': !connctedDetails.isConnected, 'succes': connctedDetails.isConnected}"></span>
+                        {{connctedDetails.isConnected? 'DISCONNECT': 'CONNECT'}}
+                    </button>
+                </div>
+
+            </fieldset>
+            <div class="actions float" ng-show="MODE == 'CONFIGURED'" >
+                <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
+                <button type="button" class="button green" ng-click = "saveConfig()">Save</button>
+            </div>
+
+            <fieldset class="holder full-width" ng-show="MODE=='DISCONNECTED'">
+                <div class="form-title">
+                    <h3><span>Archive</span> Activation</h3>
+                </div>
+                <div class="entry">
+                    <label>Activate / Inactivate</label>
+                    <!-- Add .on when active -->
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled }"
+                         ng-click="toggleEnabled()">
+                        <input type="checkbox">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions float" ng-show="MODE=='DISCONNECTED'" >
+                <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
+                <button type="button" class="button green" ng-click = "saveConfig">Save</button>
+            </div>
+
+            <fieldset class="holder full-width" ng-show ="MODE =='CONFIGURE'">
                 <div class="form-title">
                     <h3><span>Archive</span> Activation</h3>
                 </div>
@@ -19,16 +76,23 @@
                         <span class="switch-icon"></span>
                     </div>
                 </div>
+            </fieldset>
 
-                <!-- Remove .hidden when disclaimer is accepted -->
-                <div class="entry" ng-show="MODE =='SAVE ' || MODE=='ACCEPTED'">
-                    <label>Disclaimer Acknowleged by</label>
-                    <strong>{First & Last Name}</strong>, {Position}
-                    <span class="entry-description disclaimer">{ Date & Time of acknowlegement | exp. 01-11-2019 1:23PM }</span>
+            <fieldset class="holder full-width" ng-show ="MODE =='CONFIGURE_ON'">
+                <div class="form-title">
+                    <h3><span>Archive</span> Activation</h3>
                 </div>
-
+                <div class="entry">
+                    <label>Activate / Inactivate</label>
+                    <!-- Add .on when active -->
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled || isAccepted }"
+                         ng-click="toggleEnabled()">
+                        <input type="checkbox">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
                 <!-- Remove hidden to show disclaimer when the switch was activated -->
-                <div class="entry full-width" ng-show ="MODE =='CONFIGURE' && config.guest_id_archive_enabled">
+                <div class="entry full-width">
                     <label>Disclaimer</label>
                     <div class="notice disclaimer">
                         <span class="icons icon-action-notice"></span>
@@ -41,7 +105,7 @@
                 </div>
 
                 <!-- Remove hidden to show disclaimer when the switch was activated -->
-                <div class="entry full-width" ng-show ="MODE =='CONFIGURE'">
+                <div class="entry full-width">
                     <div class="entry">
                         <label for="first-name">First name <strong>*</strong></label>
                         <input type="text" ng-model='config.guest_id_archive_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
@@ -56,58 +120,30 @@
                     </div>
                 </div>
             </fieldset>
+            <div class="actions float" ng-show ="MODE =='CONFIGURE_ON'">
+                <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
+                <button type="button" class="button green"ng-click = "acceptTerms()">Accept and Continue</button>
+            </div>
 
-            <fieldset class="holder full-width">
-                <div class="entry full-width" ng-show ="MODE =='DROPBOX'">
+            <fieldset class="holder full-width" ng-show ="MODE =='ACCESS_TOKEN'">
+                <div class="entry full-width">
                     <div class="entry">
                         <label for="first-name">Access Token <strong>*</strong></label>
                         <input type="text" ng-model='config.guest_id_archive_platform_token' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="holder full-width" ng-show="config.guest_id_archive_enabled && !!config.guest_id_archive_platform_token">
-                <div class="archive-storage-option notice { success | error }">
-                    <img src="{archive-option-logo}" alt="" />
-                    <div class="option-content">
-                        <strong>Connect to {Option}</strong>
-                        <p>{Text}</p>
-                    </div>
-                    <button class="button white red-text">
+            <div class="actions float" ng-show="MODE == 'ACCESS_TOKEN'" >
+                <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
+                <button type="button" class="button green" ng-click = "saveConfig()">Save</button>
+            </div>
 
-                        <!--'icon-status':-->
-                        <!-- - icon-connect - when .error-->
-                        <!-- - icon-disconnect  when .succes-->
-
-                        <span class="icons {icon-status}"></span>
-                        { Connect | Disconnect }
-                    </button>
-                </div>
-            </fieldset>
 
             <!-- Remove .hidden when the disclaimer was acknowleged -->
-            <fieldset class="holder full-width" ng-show="MODE=='ACCEPTED'">
+            <fieldset class="holder full-width" ng-show="MODE=='CHOOSE_PLATFORM'">
                 <div class="form-title">
                     <h3><span>Archive</span> Storage</h3>
                 </div>
-
-
-                <div class="archive-storage-option notice { success | error }" ng-show="!config.guest_id_archive_platform_token">
-                    <img src="{archive-option-logo}" alt="" />
-                    <div class="option-content">
-                        <strong>Connect to {Option}</strong>
-                        <p>{Text}</p>
-                    </div>
-                    <button class="button white red-text">
-
-                            <!--'icon-status':-->
-                               <!-- - icon-connect - when .error-->
-                               <!-- - icon-disconnect  when .succes-->
-
-                        <span class="icons {icon-status}"></span>
-                        { Connect | Disconnect }
-                    </button>
-                </div>
-
                 <!-- If Success on connection, add .hidden -->
                 <!-- If error, show only those options that are not current -->
                 <div class="archive-storage-options">
@@ -123,19 +159,8 @@
                         <img src="/assets/images/archive-option-dropbox.png" alt="" />
                         <strong>Connect to Drop Box</strong>
                     </button>
-                    <button type="button" class="archive-storage-option" ng-click="signOut()">
-                        <img src="/assets/images/archive-option-dropbox.png" alt="" />
-                        <strong>Connect to Drop Box</strong>
-                    </button>
                 </div>
             </fieldset>
-            <div class="actions float">
-                <button type="button" class="button blank">Cancel</button>
-                <button type="button" class="button green" ng-show="MODE =='CONFIGURE'" ng-click = "buttonClicked('ACCEPTED')">Accept and Continue</button>
-                <button type="button" class="button green" ng-show="MODE =='ACCEPTED'" ng-click = "buttonClicked('SAVE')">Save Changes</button>
-                <button type="button" class="button green" ng-show="MODE =='DROPBOX'" ng-click = "buttonClicked('SAVE')">Save Changes</button>
-                <button type="button" class="button green" ng-show="!config.guest_id_archive_enabled" ng-click = "buttonClicked('SAVE')">Save Changes</button>
-            </div>
         </form>
     </section>
 </div>
