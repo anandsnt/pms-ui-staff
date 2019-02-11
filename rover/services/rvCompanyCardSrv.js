@@ -89,6 +89,30 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        this.fetchCommissionDetailsAndMandatoryFields = function() {
+            var deferred = $q.defer(),
+                returnData = {};
+
+            $q.when().then(function() {
+                return that.fetchCommissionDetail().then(function(response) {
+                    returnData = response;
+                });
+            })
+            .then(function() {                 
+                return that.fetchContactInformationMandatoryFields().then(function(response) {
+                    returnData.mandatoryFields = response;
+                });
+            })
+            .then(function() {
+                deferred.resolve(returnData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+
+        };
+
         /**
          * Fetch multiproperties under this chain
          * @return {promise|{then, catch, finally}|*|e} Promise

@@ -5,6 +5,8 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
     function($scope, $filter, $rootScope, ngDialog,
              rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv,
              dateFilter, $timeout, sntActivity, rvPermissionSrv) {
+
+        BaseCtrl.call(this, $scope);
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -1009,6 +1011,15 @@ year: year};
         $scope.getActionStatusClass = function(action) {
             return action.action_status === 'delete' ? action.originalStatus : action.action_status;
         };
+
+        $scope.addListener('UPDATE_COMPANY_NAME_IN_STAYCARD', function(event, data) {
+            $scope.reservationData.reservation_card.company_card_name = data.name;
+        });
+
+        $scope.addListener('UPDATE_TA_NAME_IN_STAYCARD', function(event, data) {
+            $scope.reservationData.reservation_card.travel_agent_card_name = data.name;
+        });
+        
 
         (function() {
             var scrollOptions = {

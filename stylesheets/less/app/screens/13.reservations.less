@@ -59,7 +59,7 @@
                 
                 &#arriving,
                 &#departing {
-                    #pixel-to-percent > .width(230, 640);
+                    #pixel-to-percent > .width(250, 640);
 
                     .entry-data {
                         background: @white @calendar no-repeat 90% 20px;
@@ -112,16 +112,10 @@
 
                 &#type {
                     position: relative;
-                    #pixel-to-percent > .width(140, 640);
+                    #pixel-to-percent > .width(100, 640);
 
                     .entry-data {
                         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-
-                        input { 
-                            position: relative;
-                            padding-right: 90px;
-                            text-align: center;
-                        }
                     }
 
                     .switch-button {
@@ -192,6 +186,28 @@
 
                     select { 
                         option { font-size: 16px; }
+                    }
+                }
+            }
+
+            &.with-toggle {
+                .entry {
+
+                    &#arriving,
+                    &#departing {
+                        #pixel-to-percent > .width(220, 640);
+                    }
+
+                    &#type {
+                        #pixel-to-percent > .width(160, 640);
+
+                        .entry-data {
+                            input { 
+                                position: relative;
+                                padding-right: 90px;
+                                text-align: center;
+                            }
+                        }
                     }
                 }
             }
@@ -1695,6 +1711,16 @@
                     &.check-data-not-set { color: @grey3; }
                 }
             }
+
+            .actions {
+                margin: 10px 0;
+
+                .button { 
+                    width: 100%;
+                    margin-bottom: 0;
+                    .show();
+                }
+            }
             
             .rooms {
                 text-align: center;
@@ -1822,18 +1848,10 @@
 
                 .actions {
                     margin: 10px;
-                    .float;
+                }
 
-                    .button { 
-                        margin-bottom: 0;
-                        .calc-width(50, 5);
-                        .pull-left;
-                        .show;
-
-                        &.white { background-color: @grey1; } 
-
-                        &:first-child { margin-right: 10px; }
-                    }
+                .button {
+                    &.white { background-color: @grey1; } 
                 }
 
                 .add-new-button {
