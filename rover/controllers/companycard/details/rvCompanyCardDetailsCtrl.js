@@ -477,6 +477,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOffetchCommissionDetail = function(data) {
 			$scope.$emit("hideLoader");
+			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
 			$scope.contactInformation["commission_details"] = data.commission_details;
 		};
 
@@ -509,7 +510,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
-			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetail, data, successCallbackOffetchCommissionDetail);
+			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetailsAndMandatoryFields, data, successCallbackOffetchCommissionDetail);
 		}
 		// we are checking for edit screen
 		else if (typeof id !== 'undefined' && id !== "") {
