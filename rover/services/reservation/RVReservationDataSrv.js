@@ -503,7 +503,8 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
                 rate: {
                     id: item.rate_id
                 },
-                rateDetails: item.rate
+                rateDetails: item.rate,
+                roomTypeId: item.room_type_id
             };
 				// TODO : Extend for each stay dates
             roomDetails.rateId.push(item.rate_id);
