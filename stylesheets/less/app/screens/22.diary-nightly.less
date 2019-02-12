@@ -1824,7 +1824,7 @@
     /* Assigning rooms */
     &.assigning-rooms {
         .reservation {
-            &:not(.unassigned) {
+            &:not(.unassigned):not(.editing) {
                 background: rgba(0,0,0,.1);
                 cursor: default;
                 .box-shadow(none);
