@@ -492,7 +492,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
                 date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
                 dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
                 day: dateFilter(new tzIndependentDate(item.date), 'dd'),
-                shouldDisable: true
+                shouldDisable: tzIndependentDate(item.date) < tzIndependentDate ($rootScope.businessDate) 
             });
             roomDetails.stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
                 guests: {

@@ -1138,7 +1138,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			} else {
                 // CICO-44156 - Reset selected rates when the show   stay dates option is set to off
                 $scope.stateCheck.preferredType = "";
-                $scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+				$scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+				if ($scope.reservationData.inHouse) {
+					$scope.stateCheck.preferredType = $stateParams.room_type_id; 
+				}
                 resetRates();
             }
 
@@ -1572,7 +1575,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						if (!currentRoom.rateId) {
 							currentRoom.rateId = [];
 						}
-						currentRoom.rateId.push(rateIId);
+						currentRoom.rateId.push(rateId);
 					}
 
 					// see if the done button has to be enabled
