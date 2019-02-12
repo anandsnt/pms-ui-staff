@@ -317,6 +317,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			fetchRatesList = function(roomTypeId, rateId, page, cb) {
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, 'guests');
 
+				if ($scope.reservationData.inHouse) {
+					roomTypeId = $stateParams.room_type_id;	
+				}
+
 				var payLoad = {
 					page: page,
 					from_date: ARRIVAL_DATE,
@@ -1608,7 +1612,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rateTotal: rateInfo.totalAmount
 						});
 
-						populateStayDates(secondary.dates, rateId, i, roomTypeId);
+						populateStayDates(secondary.dates, rateId, i, roomId);
 
 						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 

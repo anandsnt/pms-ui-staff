@@ -854,6 +854,12 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
+			var roomTypeId = $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId;
+
+			if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
+			}
+
 			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
 				to_date: departure || reservationMainData.departureDate,
@@ -863,7 +869,7 @@ sntRover.controller('reservationDetailsController',
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
 				group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
 				borrow_for_groups: $scope.borrowForGroups,
-				room_type_id: $scope.reservationData.reservation_card.room_type_id,//$scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
                 children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
 			});
