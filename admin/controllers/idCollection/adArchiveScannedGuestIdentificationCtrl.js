@@ -57,6 +57,8 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         $scope.config.guest_id_archive_platform_token = res.code;
                     }
                 });
+            $scope.GoogleAuth.signOut();
+            $scope.GoogleAuth.disconnect();
             $scope.MODE = 'ACCESS_TOKEN';
         };
 
