@@ -508,7 +508,7 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
 				// TODO : Extend for each stay dates
             roomDetails.rateId.push(item.rate_id);
             if (index === 0) {
-                roomDetails.roomTypeId = stayCard.room_type_id;
+                roomDetails.roomTypeId = stayCard.reservation_status === 'CHECKEDIN' ? stayCard.room_type_id : item.room_type_id;
                 roomDetails.room_id = stayCard.room_id;
                 roomDetails.roomTypeName = stayCard.room_type_description;
                 RVReservationStateService.bookMark.lastPostedRate = item.rate_id;
