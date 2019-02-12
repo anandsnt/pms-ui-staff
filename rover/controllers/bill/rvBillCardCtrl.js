@@ -2678,11 +2678,14 @@ sntRover.controller('RVbillCardController',
 			$scope.$emit('hideLoader');
 
 
-			if (successData.no_of_original_invoices === null) {
-				successData.invoiceLabel = successData.translation.invoice;
+			if ($scope.isInformationalInvoice) {
+				successData.invoiceLabel = successData.translation.information_invoice_label;
 			}
+			else if (successData.no_of_original_invoices === null) {
+				successData.invoiceLabel = successData.translation.invoice;
+			} 
 			else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-				successData.invoiceLabel = successData.translation.void_bill_label;
+				successData.invoiceLabel = successData.translation.void_invoice;
 			} 
 			else if (($scope.reservationBillData.is_bill_lock_enabled && parseInt(successData.print_counter) < parseInt(successData.no_of_original_invoices)) 
 				|| (!$scope.reservationBillData.is_bill_lock_enabled && $scope.reservationBillData.reservation_status !== "CHECKEDOUT") 
