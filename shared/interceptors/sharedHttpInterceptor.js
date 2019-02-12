@@ -73,7 +73,7 @@ angular.module('sharedHttpInterceptor', []).
                 var identifier = getRequestIdentifier(config);
 
                 // Ignore for this request?
-                if (config.ignoreDuplicateRequest || angular.version.minor < 3) {
+                if (config.ignoreDuplicateRequest) {
                     return $http(config);
                 }
 
@@ -97,10 +97,11 @@ angular.module('sharedHttpInterceptor', []).
                 }
 
                 // Create promise using $http and make sure it's reset when resolved
-                pendingRequests[identifier] = $http(config).
-                    finally(function() {
-                        delete pendingRequests[identifier];
-                    });
+                pendingRequests[identifier] = $http(config);
+
+                pendingRequests[identifier].finally(function() {
+                    delete pendingRequests[identifier];
+                });
 
                 // Return promise
                 return pendingRequests[identifier];
