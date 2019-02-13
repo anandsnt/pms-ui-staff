@@ -28,7 +28,18 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                 $scope.connctedDetails = {};
                 updateMode();
                 updateConnectedDetails();
+                GAPI.call(this, $scope);
             };
+
+        $scope.enableAcceptButton = function() {
+            if ($scope.config.guest_id_archive_position.length >= 3
+                && $scope.config.guest_id_archive_last_name.length >= 3
+                && $scope.config.guest_id_archive_first_name.length >= 3) {
+                return true;
+            } 
+            return false;
+
+        };
 
         $scope.toggleEnabled = function() {
             if ( !$scope.config.guest_id_archive_enabled ) {
@@ -37,11 +48,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                 init();
             } else {
                 $scope.config.guest_id_archive_enabled = false;
-                $scope.config.guest_id_archive_first_name = '';
-                $scope.config.guest_id_archive_last_name = '';
-                $scope.config.guest_id_archive_platform = '';
-                $scope.config.guest_id_archive_platform_token = '';
-                $scope.config.guest_id_archive_position = '';
+                $scope.MODE = 'DISCONNECTED';
             }
         };
 
@@ -59,15 +66,13 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         setTimeout(function () {
                             $scope.$apply();
                         }, 700);
-                    } else {
-                        $scope.GoogleAuth.signIn();
                     }
                 });
         };
 
         $scope.gapiSignIn = function() {
             $scope.config.guest_id_archive_platform = 'google_drive';
-            GAPI.call(this, $scope);
+            $scope.GoogleAuth.signIn();
         };
 
         $scope.saveConfig = function() {
@@ -81,9 +86,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             });
         };
         $scope.disConnect = function() {
-            $scope.config.guest_id_archive_platform_token = '';
-            $scope.config.guest_id_archive_platform = '';
-            $scope.config.guest_id_archive_enabled = false;
+            $scope.config.guest_id_archive_enabled = true;
             $scope.MODE = 'CONFIGURE_ON';
         };
         $scope.acceptTerms = function() {

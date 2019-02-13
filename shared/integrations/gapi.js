@@ -38,12 +38,7 @@ GAPI = function ($scope) {
             'response_type': 'code token'
         }).then(function () {
             $scope.GoogleAuth = gapi.auth2.getAuthInstance();
-
-            // Listen for sign-in state changes.
             $scope.GoogleAuth.isSignedIn.listen($scope.update);
-
-            // Handle initial sign-in state. (Determine if user is already signed in.)
-            $scope.GoogleAuth.signIn();
         });
     };
 
