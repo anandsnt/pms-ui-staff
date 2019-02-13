@@ -124,7 +124,7 @@
             <div class="actions float" ng-show ="MODE =='CONFIGURE_ON'">
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
                 <button type="button" class="button" ng-click = "acceptTerms()"
-                        ng-class="{'green': enableAcceptButton()}" ng-disabled="enableAcceptButton()">Accept and Continue</button>
+                        ng-class="{'green': enableAcceptButton()}" ng-disabled="!enableAcceptButton()">Accept and Continue</button>
             </div>
 
             <fieldset class="holder full-width" ng-show ="MODE =='ACCESS_TOKEN'">
@@ -137,7 +137,7 @@
             </fieldset>
             <div class="actions float" ng-show="MODE == 'ACCESS_TOKEN'" >
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
-                <button type="button" class="button" ng-click = "saveConfig()" ng-class="{'green': validateToken()}" ng-disabled="validateToken()">Save</button>
+                <button type="button" class="button" ng-click = "saveConfig()" ng-class="{'green': validateToken()}" ng-disabled="!validateToken()">Save</button>
             </div>
 
 
