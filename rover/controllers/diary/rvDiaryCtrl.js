@@ -215,7 +215,6 @@ angular.module('sntRover')
 		var onDateSelectionFromDatepicker = function(date_string, date_picker_obj) {
 			var isOnEditMode = $scope.gridProps.edit.active,
 				going_date = new Date (date_string);
-				propertyTime.hotel_time.date = going_date;
 
 			if (!isOnEditMode) {
 				$scope.gridProps.filter.arrival_date = going_date;
@@ -2630,9 +2629,7 @@ angular.module('sntRover')
 	// Handle Nigthtly/Hourly toggle
 	$scope.toggleHourlyNightly = true;
 	$scope.navigateToNightlyDiary = function() {
-		$state.go("rover.nightlyDiary",{
-			start_date: propertyTime.hotel_time.date
-		});
+		$state.go("rover.nightlyDiary");
 		$scope.toggleHourlyNightly = false;
 	};
 
