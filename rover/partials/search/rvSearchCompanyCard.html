@@ -6,7 +6,7 @@
             <!-- add .disabled if showing archived -->
             <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
                 <!-- Add disabled="disabled" if showing archived -->
-                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()">
+                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()" ng-disabled="!hasMergeViewPermission">
                 <label class="data-off">
                     <span class="value">View</span>
                     <span class="switch-icon">Merge</span>
@@ -182,8 +182,9 @@
                             ng-class="{'with-button': getErrorMsg(card) !== ''}">
                             <span class="merge-icon">
                                 <div id="loading-spinner" ng-show="showVerifyMergeProcessActivityIndicator" />
-                                <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
-                                <span class="icons icon-action icon-completed" ng-if="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
+                                Val {{hasMergeVerificationErrors(card)}} {{showVerifyMergeProcessActivityIndicator}}
+                                <span class="icons icon-action icon-unassigned" ng-show="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
+                                <span class="icons icon-action icon-completed" ng-show="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                             </span>
                             <h2>{{card.account_name}}</h2>
                             <p ng-hide="!escapeNull(card.account_address)">{{card.account_address}}</p>
