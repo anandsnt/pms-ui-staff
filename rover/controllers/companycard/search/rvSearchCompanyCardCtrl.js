@@ -204,8 +204,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.onViewChange = function() {
 			if (!$scope.viewState.isViewSelected) {
 				$scope.viewState.isCompanyCardSelected = true;
-				self.resetSelectionsForMerge();
 			}
+			self.resetSelectionsForMerge();
 			$scope.viewState.canMerge = null;
 			$scope.queryEntered();
 		};
