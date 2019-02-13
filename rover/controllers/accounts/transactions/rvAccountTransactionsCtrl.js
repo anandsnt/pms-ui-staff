@@ -933,7 +933,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				var responseData = response.data;
 
 
-				if (responseData.no_of_original_invoices === null) {
+				if ($scope.isInformationalInvoice) {
+					responseData.invoiceLabel = responseData.translation.information_invoice;
+				}
+				else if (responseData.no_of_original_invoices === null) {
 					responseData.invoiceLabel = responseData.translation.invoice;
 				}
 				else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
