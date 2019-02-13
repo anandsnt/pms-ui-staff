@@ -15,8 +15,8 @@ angular
             payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime) {
                 var start_date = propertyTime.hotel_time.date;
 
-                if ($stateParams.checkin_date) {
-                    start_date = $stateParams.checkin_date
+                if (!!$stateParams.checkin_date) {
+                    start_date = $stateParams.checkin_date;
                     propertyTime.hotel_time.date = start_date;
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
