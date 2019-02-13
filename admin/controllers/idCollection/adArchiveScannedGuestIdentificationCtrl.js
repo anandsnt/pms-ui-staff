@@ -34,7 +34,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         $scope.enableAcceptButton = function() {
             if ($scope.config.guest_id_archive_position.length >= 3
                 && $scope.config.guest_id_archive_last_name.length >= 3
-                && $scope.config.guest_id_archive_first_name.length >= 3) {
+                && $scope.config.guest_id_archive_first_name.length >= 2) {
                 return true;
             } 
             return false;
