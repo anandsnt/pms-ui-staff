@@ -2676,6 +2676,34 @@ sntRover.controller('RVbillCardController',
 			$scope.isPrintRegistrationCard = false;
 			$scope.printBillCardActive = true;
 			$scope.$emit('hideLoader');
+
+
+			if ($scope.isInformationalInvoice) {
+				successData.invoiceLabel = successData.translation.information_invoice_label;
+			}
+			else if (successData.no_of_original_invoices === null) {
+				successData.invoiceLabel = successData.translation.invoice;
+			} 
+			else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
+				successData.invoiceLabel = successData.translation.void_invoice;
+			} 
+			else if (($scope.reservationBillData.is_bill_lock_enabled && parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
+				|| (!$scope.reservationBillData.is_bill_lock_enabled && parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) 
+			{
+				successData.invoiceLabel = successData.translation.invoice;
+			} 
+			else if (($scope.reservationBillData.is_bill_lock_enabled && parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					|| (!$scope.reservationBillData.is_bill_lock_enabled && parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)))
+			{
+				var copyCount = "";
+
+				if (successData.is_copy_counter) {
+					copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+				}
+				successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+			}
+
+			
 			$scope.printData = successData;
 			$scope.errorMessage = "";
 

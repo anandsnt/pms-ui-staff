@@ -50,6 +50,8 @@ admin.controller('adHotelLegalSettingsController',
 			}
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
+			$scope.legalSettings.no_of_original_invoices = parseInt($scope.legalSettings.no_of_original_invoices);
+			$scope.legalSettings.no_of_original_emails = parseInt($scope.legalSettings.no_of_original_emails);
 			var	options = {
 				params: {
 					'hotel_id': $scope.data.id,
