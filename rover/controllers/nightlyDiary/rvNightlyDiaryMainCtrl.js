@@ -27,7 +27,6 @@ angular.module('sntRover')
                 unassignedReservationList
             ) {
 
-
                 BaseCtrl.call(this, $scope);
                 // CICO-36654 fix for touch events not getting detected iPad.
                 document.removeEventListener('touchmove', window.touchmovepreventdefault, false);
@@ -54,7 +53,9 @@ angular.module('sntRover')
                         srvParams = RVNightlyDiarySrv.getCache();
                     }
                     else {
-                        srvParams.start_date = moment(tzIndependentDate($stateParams.start_date)).subtract(1, 'days')
+                        var startDate = !!$stateParams.start_date ? $stateParams.start_date : $rootScope.businessDate;
+                        
+                        srvParams.start_date = moment(tzIndependentDate(startDate)).subtract(1, 'days')
                             .format($rootScope.momentFormatForAPI);
                         srvParams.no_of_days = 7;
                         srvParams.page = 1;
