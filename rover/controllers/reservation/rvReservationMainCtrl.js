@@ -830,6 +830,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     roomTypeId = '';
                 
                 _.each(currentRoom.stayDates, function(staydetailInfo, date) {
+                    // CICO-59948 For inhouse reservation, set room type id to that of the current stay dates
                     if ($scope.reservationData.inHouse) {
                         roomTypeId =  staydetailInfo.roomTypeId || '';                        
                     } else {

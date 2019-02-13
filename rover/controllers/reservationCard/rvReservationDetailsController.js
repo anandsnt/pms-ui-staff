@@ -855,7 +855,7 @@ sntRover.controller('reservationDetailsController',
 
 		var navigateToRoomAndRates = function(arrival, departure) {
 			var roomTypeId = $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId;
-
+			// CICO-59948 For in-house reservation, set the room type id as the current room type id(API response)
 			if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
 				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
 			}
