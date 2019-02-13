@@ -937,21 +937,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					responseData.invoiceLabel = responseData.translation.invoice;
 				}
 				else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
-					responseData.invoiceLabel = responseData.translation.void_bill_label;
+					responseData.invoiceLabel = responseData.translation.void_invoice;
 				} 
-				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) < parseInt(responseData.no_of_original_invoices)) 
+				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) <= parseInt(responseData.no_of_original_invoices)) 
 					|| (!$scope.transactionsDetails.is_bill_lock_enabled) 
-					|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) < parseInt(responseData.no_of_original_invoices))) 
+					|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) <= parseInt(responseData.no_of_original_invoices))) 
 				{
 					responseData.invoiceLabel = responseData.translation.invoice;
 				} 
-				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) >= parseInt(responseData.no_of_original_invoices))
-						|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) >= parseInt(responseData.no_of_original_invoices)))
+				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) > parseInt(responseData.no_of_original_invoices))
+						|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) > parseInt(responseData.no_of_original_invoices)))
 				{
 					var copyCount = "";
 
 					if (responseData.is_copy_counter) {
-						copyCount = parseInt(responseData.print_counter) - parseInt(responseData.no_of_original_invoices) + 1;					
+						copyCount = parseInt(responseData.print_counter) - parseInt(responseData.no_of_original_invoices);					
 					}
 					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
 				}
