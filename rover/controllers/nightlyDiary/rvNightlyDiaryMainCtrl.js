@@ -474,7 +474,7 @@ angular.module('sntRover')
                 listeners['SAVE_RESERVATION_EDITING'] = $scope.$on("SAVE_RESERVATION_EDITING", function () {
                     saveReservationEditing();
                     console.log("save and close popup");
-                    if (!!$scope.popupData && $scope.popupData.disableOverBookingButton) {
+                    if (!!$scope.popupData && !$scope.popupData.disableOverBookingButton) {
                         ngDialog.close();                        
                     }
                 });
