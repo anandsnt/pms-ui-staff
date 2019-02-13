@@ -9,6 +9,19 @@ GAPI = function ($scope) {
     };
 
     var initClient = function() {
+
+
+        var auth = gapi.auth2.getAuthInstance();
+
+        if (auth) {
+            auth.signOut();
+            auth.disconnect();
+        }
+
+        if ($scope.GoogleAuth) {
+            $scope.GoogleAuth.signOut();
+            $scope.GoogleAuth.disconnect();
+        }
         // Retrieve the discovery document for version 3 of Google Drive API.
         // In practice, your app can retrieve one or more discovery documents.
         var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
@@ -25,12 +38,7 @@ GAPI = function ($scope) {
             'response_type': 'code token'
         }).then(function () {
             $scope.GoogleAuth = gapi.auth2.getAuthInstance();
-
-            // Listen for sign-in state changes.
             $scope.GoogleAuth.isSignedIn.listen($scope.update);
-
-            // Handle initial sign-in state. (Determine if user is already signed in.)
-            $scope.GoogleAuth.signIn();
         });
     };
 
