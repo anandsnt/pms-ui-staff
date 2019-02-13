@@ -323,7 +323,7 @@ angular.module('sntRover')
                 /*
                  * Function to check room availability.
                  */
-                var checkReservationAvailability = (arrivalDate, DepartureDate) => {
+                var checkReservationAvailability = (arrivalDate, departureDate) => {
                     let successCallBackStayChanges = function (response) {
 
                         $scope.popupData = {
@@ -350,6 +350,7 @@ angular.module('sntRover')
                             // overbooking button
                             $scope.popupData.message = response.message;
                             $scope.popupData.showOverBookingButton = true;
+                            proceedSave = true;
                             openMessagePopupForValidationStayChanges();
                         }
 
@@ -357,7 +358,7 @@ angular.module('sntRover')
                             $scope.extendShortenReservationDetails = {
                                 'arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
                                     .format('YYYY-MM-DD'),
-                                'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
+                                'dep_date': moment(departureDate, $rootScope.dateFormat.toUpperCase())
                                     .format('YYYY-MM-DD'),
                                 'reservation_id': $scope.currentSelectedReservation.id,
                                 'room_number': $scope.currentSelectedReservation.room_no
@@ -369,7 +370,7 @@ angular.module('sntRover')
                         params: {
                             'new_arrival_date': moment(arrivalDate, $rootScope.dateFormat.toUpperCase())
                                 .format('YYYY-MM-DD'),
-                            'new_dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
+                            'new_dep_date': moment(departureDate, $rootScope.dateFormat.toUpperCase())
                                 .format('YYYY-MM-DD'),
                             'reservation_id': $scope.currentSelectedReservation.id,
                             'room_id': $scope.currentSelectedRoom.id
@@ -474,7 +475,6 @@ angular.module('sntRover')
                  */
                 listeners['SAVE_RESERVATION_EDITING'] = $scope.$on("SAVE_RESERVATION_EDITING", function () {
                     saveReservationEditing();
-                    console.log("save and close popup");
                     if (!!$scope.popupData && !$scope.popupData.disableOverBookingButton) {
                         ngDialog.close();                        
                     }
