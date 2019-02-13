@@ -319,6 +319,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			fetchRatesList = function(roomTypeId, rateId, page, cb) {
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, 'guests');
 
+				// CICO-59948 - For in-house reservation, we should the rates corresponding to the current room type
+				if ($scope.reservationData.inHouse) {
+					roomTypeId = $stateParams.room_type_id;	
+				}
+
 				var payLoad = {
 					page: page,
 					from_date: ARRIVAL_DATE,
@@ -958,7 +963,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				navigateOut();
 			},
-			populateStayDates = function(stayDetails, rateId, roomIndex) {
+			populateStayDates = function(stayDetails, rateId, roomIndex, roomTypeId) {
                 var businessDate = tzIndependentDate($rootScope.businessDate);
 
 				_.each(ROOMS[roomIndex].stayDates, function(details, date) {
@@ -979,7 +984,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
 								.ratesMeta[rateId].is_suppress_rate_on.toString();						
 						}
-                }
+						// CICO-59948 Updating the selected room type for the stay dates from business date onwards
+						details.roomTypeId = roomTypeId;
+                	}
 				});
 			},
 			saveAndGotoStayCard = function() {
@@ -1139,7 +1146,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			} else {
                 // CICO-44156 - Reset selected rates when the show   stay dates option is set to off
                 $scope.stateCheck.preferredType = "";
-                $scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+				$scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+				// CICO-59948 For inhouse reservation, set the preffered room type as the curret room type
+				if ($scope.reservationData.inHouse) {
+					$scope.stateCheck.preferredType = $stateParams.room_type_id; 
+				}
                 resetRates();
             }
 
@@ -1154,7 +1165,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.showStayDateDetails = function(selectedDate) {
 			// by pass departure stay date from stay dates manipulation
-			if (selectedDate === DEPARTURE_DATE) {
+			// Disable the past dates on the stay dates grid, so that it can'be updated
+			if (selectedDate === DEPARTURE_DATE || selectedDate.shouldDisable) {
 				return false;
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
@@ -1606,7 +1618,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rateTotal: rateInfo.totalAmount
 						});
 
-						populateStayDates(secondary.dates, rateId, i);
+						populateStayDates(secondary.dates, rateId, i, roomId);
 
 						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 
