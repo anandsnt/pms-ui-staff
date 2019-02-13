@@ -313,7 +313,8 @@ angular.module('sntRover')
                         template: '/assets/partials/nightlyDiary/rvNightlyDiaryValidateStayChanges.html',
                         scope: $scope,
                         className: '',
-                        closeByDocument: true,
+                        closeByDocument: false,
+                        closeByEscape: false,
                         controller: 'rvNightlyDiaryValidationStayCtrl'
                     });
                 };
@@ -360,7 +361,6 @@ angular.module('sntRover')
                                 'reservation_id': $scope.currentSelectedReservation.id,
                                 'room_number': $scope.currentSelectedReservation.room_no
                             };
-                            console.log($scope.extendShortenReservationDetails);
                         }
                     };
 
@@ -473,6 +473,10 @@ angular.module('sntRover')
                  */
                 listeners['SAVE_RESERVATION_EDITING'] = $scope.$on("SAVE_RESERVATION_EDITING", function () {
                     saveReservationEditing();
+                    console.log("save and close popup");
+                    if (!!$scope.popupData && $scope.popupData.disableOverBookingButton) {
+                        ngDialog.close();                        
+                    }
                 });
 
                 /* Handle event emitted from child controllers.
