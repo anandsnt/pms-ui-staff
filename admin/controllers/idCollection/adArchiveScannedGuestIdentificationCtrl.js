@@ -55,11 +55,14 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                 .then(function(res) {
                     if (isSignedIn) {
                         $scope.config.guest_id_archive_platform_token = res.code;
+                        $scope.MODE = 'ACCESS_TOKEN';
+                        setTimeout(function () {
+                            $scope.$apply();
+                        }, 700);
+                    } else {
+                        $scope.GoogleAuth.signIn();
                     }
                 });
-            $scope.GoogleAuth.signOut();
-            $scope.GoogleAuth.disconnect();
-            $scope.MODE = 'ACCESS_TOKEN';
         };
 
         $scope.gapiSignIn = function() {
@@ -81,7 +84,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             $scope.config.guest_id_archive_platform_token = '';
             $scope.config.guest_id_archive_platform = '';
             $scope.config.guest_id_archive_enabled = false;
-            $scope.MODE = 'DISCONNECTED';
+            $scope.MODE = 'CONFIGURE_ON';
         };
         $scope.acceptTerms = function() {
             $scope.MODE = 'CHOOSE_PLATFORM';

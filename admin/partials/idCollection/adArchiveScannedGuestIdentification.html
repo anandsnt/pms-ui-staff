@@ -5,6 +5,7 @@
         <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
     </header>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard ng-scope"></div>
         <form class="form float">
             <fieldset class="holder full-width" ng-show="MODE == 'CONFIGURED'">
                 <div class="form-title">
@@ -108,15 +109,15 @@
                 <div class="entry full-width">
                     <div class="entry">
                         <label for="first-name">First name <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                        <input type="text" ng-model='config.guest_id_archive_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" minlength=3 required="">
                     </div>
                     <div class="entry">
-                        <label for="first-name">Last name <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_last_name' name="last-name" id="last-name" placeholder="Enter last name" value="" required="">
+                        <label for="last-name">Last name <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_last_name' name="last-name" id="last-name" placeholder="Enter last name" minlength=3 value="" required="">
                     </div>
                     <div class="entry">
-                        <label for="first-name">Position <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_position' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                        <label for="position-name">Position <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_position' name="position-name" id="position-name" placeholder="Enter Position" minlength=3 value="" required="">
                     </div>
                 </div>
             </fieldset>
@@ -128,8 +129,8 @@
             <fieldset class="holder full-width" ng-show ="MODE =='ACCESS_TOKEN'">
                 <div class="entry full-width">
                     <div class="entry">
-                        <label for="first-name">Access Token <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_platform_token' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                        <label for="token">Access Token <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_platform_token' name="token" id="token" placeholder="Enter token" value="" required="">
                     </div>
                 </div>
             </fieldset>
