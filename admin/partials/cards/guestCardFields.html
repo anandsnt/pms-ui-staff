@@ -19,12 +19,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td header-class="width-90" translate="">
+                        <td header-class="width-90" translate>
                             NAME_OF_FATHER 
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry overlay">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory.is_visible }" ng-click="clickedStatus('address_line1_mandatory')">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_father_name_visible }" ng-click="clickedStatus('is_father_name_visible')">
                                     <input type="checkbox">
                                     <span class="switch-icon"></span>
                                 </div>
@@ -33,12 +33,12 @@
                        
                     </tr>
                     <tr>
-                        <td header-class="width-90">
-                            City
+                        <td header-class="width-90" translate>
+                            NAME_OF_MOTHER
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry overlay">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory.is_visible }" ng-click="clickedStatus('city_mandatory')">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_mother_name_visible }" ng-click="clickedStatus('is_mother_name_visible')">
                                     <input type="checkbox">
                                     <span class="switch-icon"></span>
                                 </div>
@@ -47,12 +47,12 @@
                        
                     </tr>
                     <tr>
-                        <td header-class="width-90">
-                             Postal Code
+                        <td header-class="width-90" translate>
+                             PLACE_OF_BIRTH
                         </td>
                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry overlay">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory.is_visible }" ng-click="clickedStatus('postal_code_mandatory')">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_birth_place_visible }" ng-click="clickedStatus('is_birth_place_visible')">
                                     <input type="checkbox">
                                     <span class="switch-icon"></span>
                                 </div>
@@ -61,12 +61,12 @@
                         
                     </tr>
                     <tr>
-                        <td header-class="width-90">
-                             Country
+                        <td header-class="width-90" translate>
+                             GENDER
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry overlay">
-                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country_mandatory.is_visible }" ng-click="clickedStatus('country_mandatory')">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_gender_visible }" ng-click="clickedStatus('is_gender_visible')">
                                     <input type="checkbox">
                                     <span class="switch-icon"></span>
                                 </div>
@@ -79,7 +79,7 @@
         </fieldset>
              <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" translate="">Cancel</button>
-                <button type="button" ng-click="saveMandatoryFields()" class="button green">
+                <button type="button" ng-click="saveGuestCardFields()" class="button green">
                     Save Changes
                 </button>
             </div>
