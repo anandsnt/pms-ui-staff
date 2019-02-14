@@ -8,7 +8,6 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
             if ($scope.selectedView === 'edit') {
                 var splitDueTimeString = $scope.selectedAction.due_at_str.split("T"),
                     dueAtTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm"),
-                    dueAtDate = $filter('date')($scope.selectedAction.due_at_str, 'yyyy-MM-dd'),
                     assignedTo = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id,
                     department = '';
 
