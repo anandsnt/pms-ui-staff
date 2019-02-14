@@ -152,6 +152,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         
         $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
+        printRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedPrint(printRequest);
     };
     /*

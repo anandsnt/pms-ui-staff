@@ -66,8 +66,8 @@
                                         <!-- If adjusted, show like this: 
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                     </td>
-                                    <td class="align-right" ng-show="item.debit !== '' && item.debit !== null">
-                                        <span class="currency">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}
+                                    <td class="align-right" >
+                                        <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}
                                     </td>
                                 </tr>
                                 

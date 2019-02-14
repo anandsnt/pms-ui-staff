@@ -93,8 +93,8 @@
                                         <!-- If adjusted, show like this: 
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                     </td>
-                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
-                                        <span class="currency">{{currencySymbol}}</span> {{level3.credit | number: precisonTwo}}
+                                    <td class="align-right" >
+                                        <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span> {{level3.credit | number: precisonTwo}}
                                     </td>
                                 </tr>
                                 <!-- Pagination -->
@@ -139,8 +139,8 @@
                                         <!-- If adjusted, show like this: 
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                     </td>
-                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
-                                        <span class="currency">{{currencySymbol}}</span> {{level2.credit | number: precisonTwo}}
+                                    <td class="align-right" >
+                                        <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span> {{level2.credit | number: precisonTwo}}
                                     </td>
                                 </tr>
                                 <!-- Pagination -->
