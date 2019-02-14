@@ -42,7 +42,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         };
 
         $scope.validateToken = function() {
-            if ($scope.config.guest_id_archive_platform_token.length) {
+            if ($scope.config && $scope.config.guest_id_archive_platform_token && $scope.config.guest_id_archive_platform_token.length) {
                 return true;
             }
             return false;
