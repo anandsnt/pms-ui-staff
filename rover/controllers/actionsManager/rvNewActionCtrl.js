@@ -1,5 +1,5 @@
-sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'dateFilter', 'rvActionTasksSrv', '$filter',
-    function ($scope, $rootScope, rvUtilSrv, dateFilter, rvActionTasksSrv, $filter) {
+sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'dateFilter', 'rvActionTasksSrv',
+    function ($scope, $rootScope, rvUtilSrv, dateFilter, rvActionTasksSrv) {
         BaseCtrl.call(this, $scope);
         var init = function() {
 
