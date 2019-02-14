@@ -75,7 +75,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sister-city': 'Sister City Hotel NY',
             'twa': 'TWA Hotel',
             'carrollton-inn': 'Carrollton Inn',
-            'match': 'Hotel the Match'
+            'match': 'Hotel the Match',
+            'liason': 'Liason DC'
         };
 
         this.isThemeConfigured = function(theme) {

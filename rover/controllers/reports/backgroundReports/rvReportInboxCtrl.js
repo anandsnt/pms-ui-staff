@@ -12,6 +12,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'RVreportsSubSrv',
     'RVReportUtilsFac',
     '$q',
+    'RVReportMsgsConst',
     function (
         $rootScope, 
         $scope,
@@ -25,7 +26,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         reportNames,
         reportsSubSrv,
         reportUtils,
-        $q) {
+        $q, reportMsgs) {
 
         var self = this;
 
@@ -410,6 +411,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             reportsSrv.setPrintClicked(true);                       
             
         };
+
+        $scope.addListener(reportMsgs['REPORT_API_FAILED'], function(event, data) {
+            $scope.errorMessage = data;
+        });
 
         // Initialize
         self.init = () => { 

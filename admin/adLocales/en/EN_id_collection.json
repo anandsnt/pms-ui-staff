@@ -1,6 +1,7 @@
 
 
 "STATION_ID_COLLECTION_SETUP_HEADER": "Zest Station ID Collection Setup",
+"GUEST_WEB_ID_COLLECTION_SETUP": "Guest ID archive setup",
 "ZEST_WEB_ID_COLLECTION_SETUP_HEADER": "Zest Web ID Collection Setup",
 "ROVER_ID_COLLECTION_SETUP_HEADER": "Rover ID Collection Setup",
 "SCAN_ALL_GUESTS_LABEL": "Scan all guests",

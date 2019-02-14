@@ -931,7 +931,36 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			var printBillSuccess = function(response) {
 				$scope.$emit('hideLoader');
-				$scope.printData = response.data;
+				var responseData = response.data;
+
+
+				if ($scope.isInformationalInvoice) {
+					responseData.invoiceLabel = responseData.translation.information_invoice;
+				}
+				else if (responseData.no_of_original_invoices === null) {
+					responseData.invoiceLabel = responseData.translation.invoice;
+				}
+				else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
+					responseData.invoiceLabel = responseData.translation.void_invoice;
+				} 
+				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) <= parseInt(responseData.no_of_original_invoices)) 
+					|| (!$scope.transactionsDetails.is_bill_lock_enabled) 
+					|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) <= parseInt(responseData.no_of_original_invoices))) 
+				{
+					responseData.invoiceLabel = responseData.translation.invoice;
+				} 
+				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) > parseInt(responseData.no_of_original_invoices))
+						|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) > parseInt(responseData.no_of_original_invoices)))
+				{
+					var copyCount = "";
+
+					if (responseData.is_copy_counter) {
+						copyCount = parseInt(responseData.print_counter) - parseInt(responseData.no_of_original_invoices);					
+					}
+					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
+				}
+
+				$scope.printData = responseData;
 				$scope.errorMessage = "";
 
 				$('.nav-bar').addClass('no-print');
@@ -949,8 +978,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					}
 					else
 					{
-						window.print();
-						accountsPrintCompleted();
+						$timeout(function() {
+							window.print();
+							accountsPrintCompleted();
+						}, 700); // CICO-61122 
 					}
 
 				}, 100);

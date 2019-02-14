@@ -36,7 +36,7 @@
     <div id="stay-days" class="stay-days" ng-class="{'open': stateCheck.stayDatesMode}" ng-hide="borrowForGroups">
         <div id="stay-days-listing" class="days scrollable" ng-iscroll="stayDates">
             <ul class="wrapper" style="width:{{(stateCheck.dateButtonContainerWidth)}}px">
-                <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last, 'active' : (!$last && stateCheck.dateModeActiveDate == stayday.date)}" click-touch="showStayDateDetails(stayday.date)">
+                <li ng-repeat="stayday in reservationData.stayDays" ng-class="{'booked': reservationData.rooms[0].stayDates[stayday.date].rate.id != '','check-in':$first,'check-out':$last, 'active' : (!$last && stateCheck.dateModeActiveDate == stayday.date), 'overlay': stayday.shouldDisable}" click-touch="showStayDateDetails(stayday.date)">
                     <span class="day">{{stayday.dayOfWeek}}</span>
                     <span class="date">{{stayday.day}}</span>
                     <span ng-if="$first || $last" class="guest-status small-icon" ng-class="{'check-in':$first,'check-out':$last}"></span>

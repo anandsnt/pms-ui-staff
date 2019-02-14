@@ -84,20 +84,22 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 var actionStatus = 'failed';
 
                 errorMessage = _.isUndefined(errorMessage) ? 'CHECKIN_PRINT_FAIL' : errorMessage;
-                if ($stateParams.key_success === 'true') {
-                    $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
-                    $scope.addReasonToOOSLog('CHECKIN_PRINT_FAIL');
-                } else {
-                    $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
-                    $scope.addReasonToOOSLog('CHECKIN_KEY_FAIL_PRINT_FAIL');
+                $scope.zestStationData.consecutivePrintFailure++;
+                if ($scope.zestStationData.consecutivePrintFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
+                    if ($stateParams.key_success === 'true') {
+                        $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                        $scope.addReasonToOOSLog('CHECKIN_PRINT_FAIL');
+                    } else {
+                        $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
+                        $scope.addReasonToOOSLog('CHECKIN_KEY_FAIL_PRINT_FAIL');
+                    }
+                    $scope.zestStationData.workstationStatus = 'out-of-order';
                 }
-                $scope.zestStationData.workstationStatus = 'out-of-order';
-
 
                 nextPageActions(printopted, emailopted, actionStatus);
             };
             var printSuccessActions = function() {
-
+                $scope.zestStationData.consecutivePrintFailure = 0;
                 $scope.$emit('hideLoader');
                 $scope.runDigestCycle();
                 var printopted = true;
