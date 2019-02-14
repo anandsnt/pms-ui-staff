@@ -241,6 +241,13 @@ module.exports = {
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
                 precheckinPartials + '*.html'],
+            'guestweb_liason_dc': [ 'guestweb/**/common_templates/partials/checkin/**.html',
+                'guestweb/**/common_templates/partials/checkout/**.html',
+                'guestweb/**/common_templates/partials/gwNoOption.html',
+                'guestweb/**/common_templates/partials/liason/**.html',
+                checkoutNowPartials + '*.html',
+                checkinPartials + '*.html',
+                precheckinPartials + '*.html'],
         };
     }
 };
