@@ -1,18 +1,18 @@
 admin.controller('ADGuestCardFieldsCtrl', ['$scope', '$state', 'ADGuestCardSrv',
 function($scope, $state, ADGuestCardSrv) {
 	BaseCtrl.call(this, $scope);
-	$scope.fieldsAlwaysVisible = ["address_line1_mandatory", "city_mandatory", "postal_code_mandatory", "country_mandatory", "contact_phone_mandatory", "contact_email_address_mandatory", "contact_name_mandatory", "tax_id_mandatory"];
+	//$scope.fieldsAlwaysVisible = ["address_line1_mandatory", "city_mandatory", "postal_code_mandatory", "country_mandatory", "contact_phone_mandatory", "contact_email_address_mandatory", "contact_name_mandatory", "tax_id_mandatory"];
 
 	// /*
 	//  * Save Mandatory fields
 	//  */
-	// $scope.saveMandatoryFields = function() {
-	// 	var options = {
-	// 		params: $scope.coTaMandatoryFields			
-	// 	};
+	$scope.saveGuestCardFields = function() {
+		var options = {
+			params: $scope.guestCardFields			
+		};
 
-	// 	$scope.callAPI(ADCoTaMandatorySrv.saveCoTaMandatoryFields, options);
-	// };
+		$scope.callAPI(ADGuestCardSrv.saveGuestCardFields, options);
+	};
 	// /*
 	//  * Set all fields false;
 	//  */
@@ -35,33 +35,27 @@ function($scope, $state, ADGuestCardSrv) {
 	 * Clicked visible status
 	 * @param fieldName field name
 	 */
-	// $scope.clickedStatus = function(fieldName) {
-	// 	if (!(_.contains($scope.fieldsAlwaysVisible, fieldName))) {
-	// 		switch (fieldName) {
-	// 			case "e_invoice_mandatory":
-	// 				$scope.coTaMandatoryFields.e_invoice_mandatory.is_visible = !$scope.coTaMandatoryFields.e_invoice_mandatory.is_visible;
-	// 				if (!$scope.coTaMandatoryFields.e_invoice_mandatory.is_visible) {
-	// 					$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation = false;
-	// 					$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_account_creation = false;
-	// 				}
-	// 				break;
-	// 			case "regd_tax_office_mandatory":
-	// 				$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_visible = !$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_visible;
-	// 				if (!$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_visible) {
-	// 					$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation = false;
-	// 					$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_account_creation = false;
-	// 				}
-	// 				break;
-	// 			case "organization_id_mandatory":
-	// 				$scope.coTaMandatoryFields.organization_id_mandatory.is_visible = !$scope.coTaMandatoryFields.organization_id_mandatory.is_visible;
-	// 				if (!$scope.coTaMandatoryFields.organization_id_mandatory.is_visible) {
-	// 					$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation = false;
-	// 					$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation = false;
-	// 				}
-	// 				break;
-	// 		}
-	// 	}
-	// };
+	$scope.clickedStatus = function(fieldName) {
+	
+			switch (fieldName) {
+				case "is_father_name_visible":
+					$scope.guestCardFields.is_father_name_visible = !$scope.guestCardFields.is_father_name_visible;
+					
+					break;
+				case "regd_tax_office_mandatory":
+					$scope.guestCardFields.is_mother_name_visible = !$scope.guestCardFields.is_mother_name_visible;
+					
+					break;
+				case "organization_id_mandatory":
+					$scope.guestCardFields.is_birth_place_visible = !$scope.guestCardFields.is_birth_place_visible;
+
+				case "is_gender_visible":
+					$scope.guestCardFields.is_gender_visible = !$scope.guestCardFields.is_gender_visible;
+					
+					break;
+			}
+	
+	};
 	/*
 	 * Clicked mandatory on ARaccount creation
 	 * @param fieldName field name
@@ -159,7 +153,12 @@ function($scope, $state, ADGuestCardSrv) {
 	$scope.loadGuestCardFields =  function() {
 
 		var successCallBack = function(data) {
-			$scope.guestCardFields = data;
+			$scope.guestCardFields = {
+  is_father_name_visible: true,
+  is_mother_name_visible: true,
+  is_birth_place_visible: true,
+  is_gender_visible: true 
+};
 		},
 		options = {
 			onSuccess: successCallBack

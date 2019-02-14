@@ -1,5 +1,5 @@
-admin.service('ADCoTaMandatorySrv', ['$q', 'ADGuestCardSrv',
-function($q, ADGuestCardSrv) {
+admin.service('ADGuestCardSrv', ['$q', 'ADBaseWebSrvV2',
+function($q, ADBaseWebSrvV2) {
    /*
 	* To fetch mandatory fields
 	*/
@@ -17,9 +17,9 @@ function($q, ADGuestCardSrv) {
 	/*
 	* To fetch mandatory fields
 	*/
-	this.saveCoTaMandatoryFields = function(params) {
+	this.saveGuestCardFields = function(params) {
 		var deferred = $q.defer(),
-			url = '/admin/co_ta_settings/save_mandatory';
+			url = '/admin/guest_card_settings/save';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
