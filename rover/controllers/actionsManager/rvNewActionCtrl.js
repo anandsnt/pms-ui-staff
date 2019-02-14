@@ -17,7 +17,6 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 }               
                
                _.extend($scope.selectedAction, {                    
-                    dueDate: dueAtDate,
                     dueTime: dueAtTime,
                     note: $scope.selectedAction.description,
                     department: department
