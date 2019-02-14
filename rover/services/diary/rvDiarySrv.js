@@ -356,14 +356,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         _.each(inactiveRooms, function(value, index) {
 
                            if (value.room_id === room.id) {
-                                hour = value.from_time.split(":")[0];
-                                min = value.from_time.split(":")[1];
+                                hour = value.from_time === null ? 0 : value.from_time.split(":")[0];
+                                min = value.from_time === null ? 0 : value.from_time.split(":")[1];
                                 startTime = new tzIndependentDate(value.from_date);
                                 startTime.setHours (hour, min, 0);
 
                                 // end time
-                                hour = value.to_time.split(":")[0];
-                                min = value.to_time.split(":")[1];
+                                hour = value.to_time === null ? 0 : value.to_time.split(":")[0];
+                                min = value.to_time === null ? 0 : value.to_time.split(":")[1];
                                 endTime = new tzIndependentDate(value.to_date);
                                 endTime.setHours (hour, min, 0);
 

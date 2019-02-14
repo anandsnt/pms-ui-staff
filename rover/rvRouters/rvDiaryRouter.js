@@ -6,8 +6,13 @@ angular
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            propertyTime: function(RVReservationBaseSearchSrv) {
-                return RVReservationBaseSearchSrv.fetchCurrentTime();
+            propertyTime: function(RVReservationBaseSearchSrv, $stateParams) {
+                if (!!$stateParams.checkin_date) {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime($stateParams.checkin_date);
+                }
+                else {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime();
+                }
             },
             baseSearchData: function(RVReservationBaseSearchSrv) {
                 return RVReservationBaseSearchSrv.fetchBaseSearchData();
@@ -17,7 +22,6 @@ angular
 
                 if (!!$stateParams.checkin_date) {
                     start_date = $stateParams.checkin_date;
-                    propertyTime.hotel_time.date = start_date;
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
             }
