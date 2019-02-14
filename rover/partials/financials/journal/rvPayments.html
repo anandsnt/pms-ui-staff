@@ -93,7 +93,7 @@
                                         <!-- If adjusted, show like this: 
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                     </td>
-                                    <td class="align-right">
+                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
                                         <span class="currency">{{currencySymbol}}</span> {{level3.credit | number: precisonTwo}}
                                     </td>
                                 </tr>
@@ -139,7 +139,7 @@
                                         <!-- If adjusted, show like this: 
                                         <span class="cell-row"><em class="adjusted">Adjustment</em> - {Adjustment Reason}</span>-->
                                     </td>
-                                    <td class="align-right">
+                                    <td class="align-right" ng-show="item.credit !== '' && item.credit !== null">
                                         <span class="currency">{{currencySymbol}}</span> {{level2.credit | number: precisonTwo}}
                                     </td>
                                 </tr>
