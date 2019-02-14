@@ -42,7 +42,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     }).state('checkOutConfirmation', {
         url: '/checkOutConfirmation',
         controller: 'checkOutConfirmationController',
-        templateUrl: '/assets/common_templates/partials/checkout/liason/gwCheckout.html',
+        templateUrl: '/assets/common_templates/partials/liason/gwCheckout.html',
         title: 'Confirm - Check-out Now'
     });
 
@@ -50,7 +50,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
     $stateProvider.state('checkOutOptions', {
         url: '/checkOutOptions',
-        templateUrl: '/assets/common_templates/partials/checkout/liason/gwCheckoutoptions.html',
+        templateUrl: '/assets/common_templates/partials/liason/gwCheckoutoptions.html',
         controller: 'checkOutLandingController',
         title: 'Check-out'
     }).state('checkOutLaterOptions', {
