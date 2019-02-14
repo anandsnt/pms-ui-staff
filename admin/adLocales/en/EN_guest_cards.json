@@ -31,4 +31,9 @@
 "FIELD_NAME": "Field Name",
 "STATUS": "Status",
 "MANDATORY_DURING_AR_NUMBER_CREATION": "Mandatory During AR number creation",
-"MANDATORY_DURING_CARD_CREATION": "Mandatory during Card creation"
+"MANDATORY_DURING_CARD_CREATION": "Mandatory during Card creation",
+"GUEST_CARD_FIELDS": "Guest Card Fields",
+"NAME_OF_FATHER": "Name of Father",
+"NAME_OF_MOTHER": "Name of Mother",
+"PLACE_OF_BIRTH": "Place Of Birth",
+"GENDER": "Gender"

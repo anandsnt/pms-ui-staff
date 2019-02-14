@@ -1,0 +1,91 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div class="inline-edit">
+        <header class="content-title float">
+            <h2 translate> GUEST_CARD_FIELDS</h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            
+        </header>
+        <section class="content-scroll">
+        <form class="form float" >
+            <fieldset class="holder full-width">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            
+            <table id="languages" class="grid datatable">
+                <thead>
+                    <tr>
+                        <th class="header" translate>FIELD_NAME</th>
+                        <th class="header" translate>VISIBLE</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td header-class="width-90" translate="">
+                            NAME_OF_FATHER 
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry overlay">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.address_line1_mandatory.is_visible }" ng-click="clickedStatus('address_line1_mandatory')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                       
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                            City
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry overlay">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.city_mandatory.is_visible }" ng-click="clickedStatus('city_mandatory')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                       
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Postal Code
+                        </td>
+                       <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry overlay">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.postal_code_mandatory.is_visible }" ng-click="clickedStatus('postal_code_mandatory')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td header-class="width-90">
+                             Country
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry overlay">
+                                <div class="switch-button single" ng-class="{ on: coTaMandatoryFields.country_mandatory.is_visible }" ng-click="clickedStatus('country_mandatory')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                    </tr>                
+                </tbody>
+            </table>
+        </fieldset>
+             <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" translate="">Cancel</button>
+                <button type="button" ng-click="saveMandatoryFields()" class="button green">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+       
+
+    </div>
+</section>
