@@ -103,6 +103,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="actions">
+                    <button type="button" class="button white brand-text" ng-click="setDemographics(false)">Demographics</button>
+                </div>
                 <!-- This here is dynamic content, depending on actual room booked -->
                 <div class="rooms" ng-repeat="room in reservationData.rooms track by $index"
                      ng-init="roomIndex = $index ; showAccompanyingGuests = false">
@@ -166,11 +169,6 @@
                                 ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}"
                                 ng-disabled="!room.confirm_no && !reservationData.confirmNum"
                                 ng-click="openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}
-                        </button>
-                        <button type="button" class="button white brand-text"
-                                ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}"
-                                ng-disabled="!room.confirm_no && !reservationData.confirmNum"
-                                ng-click="setDemographics(false, $index)">Demographics
                         </button>
                     </div>
 

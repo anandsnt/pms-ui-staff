@@ -231,6 +231,11 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
                 reservations: reservationList
             };
 
+            $scope.setScroller('reservation-list-scroller', {
+                tap: true,
+                preventDefault: false
+            });
+            
             ngDialog.open({
                 template: '/assets/partials/housekeeping/popups/roomTab/rvRoomTabReservationExist.html',
                 className: '',

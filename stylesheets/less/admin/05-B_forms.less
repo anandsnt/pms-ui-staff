@@ -118,6 +118,28 @@
         .notice {
             padding: 10px;
             margin: 0 0 20px 0;
+
+            &.disclaimer {
+                padding-left: 90px;
+                position: relative;
+                background-color: #f2e499;
+                color: #a38b0f;
+
+                .icon-action-notice {
+                    position: absolute;
+                    left: 20px;
+                    width: 50px;
+                    height: 50px;
+                    top: 15px;
+                }
+
+                hr {
+                    background: #a38b0f;
+                    height: 1px;
+                    border: none;
+                    margin-bottom: 15px;
+                }
+            }
         }
 
         .entry {
@@ -263,6 +285,10 @@
                 color: @grey3;
                 font-size: 14px;
                 .show();
+
+                .disclaimer {
+                    line-height: 1;
+                }
             }
 
             .color-preview { 

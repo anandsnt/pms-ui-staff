@@ -6,7 +6,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// inheriting some useful things
         BaseCtrl.call(this, $scope);
 
-        var RESV_LIMIT = 92;
+        var RESV_LIMIT = $rootScope.maxStayLength;
 
 		// set a back button on header
         $rootScope.setPrevState = {

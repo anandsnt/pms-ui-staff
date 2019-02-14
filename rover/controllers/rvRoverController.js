@@ -217,6 +217,8 @@ sntRover.controller('roverController', [
         $rootScope.isHLPActive = hotelDetails.is_hlp_active;
         $rootScope.isPromoActive = hotelDetails.is_promotion_active;
 
+        $rootScope.maxStayLength = hotelDetails.max_stay_length;
+
         // set MLI Merchant Id
         try {
             sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
@@ -253,7 +255,6 @@ sntRover.controller('roverController', [
         $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
         $rootScope.adminRole = $scope.userInfo.user_role;
         $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-
 
         // self executing check
         $rootScope.isMaintenanceStaff = (function (roles) {
