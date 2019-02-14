@@ -1,6 +1,6 @@
 GAPI = function ($scope) {
     $scope.GoogleAuth = null;
-    var SCOPE = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+    var SCOPE = 'https://www.googleapis.com/auth/drive';
 
     var handleClientLoad = function() {
         // Load the API's client and auth2 modules.
