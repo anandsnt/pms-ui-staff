@@ -58,11 +58,11 @@ admin.controller('adHotelLegalSettingsController',
 					'data': $scope.legalSettings
 				},
 				successCallBack: function(data) {
-					if (data.errors.length === 0) {
+					if (data.warnings.length === 0) {
 						$scope.successMessage = "Saved Succesfully!";
 					}
 					$scope.legalSettings = $scope.legalSettingsCopy;
-					$scope.errorMessage = data.errors;
+					$scope.errorMessage = data.warnings;
 				}
 			};
 
