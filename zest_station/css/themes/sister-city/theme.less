@@ -19,10 +19,10 @@
 
 @font-face {
     font-family:'LL Akkurat Pro Regular Web';
-        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot');
-        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
-            url("../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff2") format("woff2"),
-            url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff') format('woff');
+        src: url('../../type/lineto-akkurat-pro-regular.eot');
+        src: url('../../type/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
+            url("../../type/lineto-akkurat-pro-regular.woff2") format("woff2"),
+            url('../../type/lineto-akkurat-pro-regular.woff') format('woff');
         font-weight: normal;
         font-style: normal;
     } 
@@ -60,13 +60,22 @@
 
 #sister-city {
     font-weight: 600;
+
     * {
         text-transform: none;
         font-weight: 600;
+        line-height: 21px;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 21px;
+        line-height: 24px;
     }
 
     input,
-    select {
+    select,
+    textarea {
         border-bottom: 2px solid @white;
         border-radius: 0;
 
@@ -97,6 +106,17 @@
         }
     }
 
+    // PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/sister-city/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 133px;
+        background-position: center;
+        margin-top: 7.9%;
+    }
+
     .entry {
 
         &.select { 
@@ -114,6 +134,9 @@
 
     .button {
         background: transparent;
+        font-size: 16px;
+        line-height: 21px;
+
         &.transparent {
             background: transparent;
             border: none;
@@ -148,12 +171,13 @@
                 }
             }
         }
-        .selected {
-            background: @white !important;
-        }
     }
 
     #actions {
+        .button {
+            font-size: 16px;
+            line-height: 21px;
+        }
         &.pull-right {
             width: 160px;
 
@@ -185,7 +209,7 @@
      
     #logo {
         .logo {
-            .size(133px, auto);
+            .size(auto, 156px);
         }
      }
 
@@ -202,6 +226,54 @@
                 .hide();
             }
         }
+
+        li {
+            text-transform: none;
+            font-size: 31px;
+            line-height: 36px;
+
+            *:not(.icon-text) {
+                font-size: 31px;
+                line-height: 36px;
+            }
+
+            &:not(.icon-text):not(.break) > span {
+                font-size: 16px;
+                line-height: 21px;
+            }
+
+            &.break > span {
+                font-size: 28px;
+            }
+        }
+
+        .purchase-option {
+            li {
+                font-size: 21px;
+                line-height: 24px;
+
+                *:not(.icon-text){
+                    font-size: 21px;
+                    line-height: 24px;
+                }
+            }
+        }
+        
+        /* Popup fixes start */
+        li {
+            &.radio-option {
+
+                input[type=radio]:checked + .option {
+                    opacity: 1;
+                    background: @white;
+                }
+
+                input[type=radio]:checked + .option path {
+                    fill: @brandColor;
+                }
+            }
+        }
+        /* Popup fixes end */       
     }
 
     #selection { 
@@ -243,6 +315,14 @@
                 color: @white;
             }
         }
+
+        #rate {
+            li {
+                &.total {
+                    color: @white;
+                }
+            }
+        }
     }
 
     #guests {
@@ -266,20 +346,43 @@
     }
 
     .popup {
-        #message-content {
-            .button {
-                color: @brandColor;
-                border: 2px solid @brandColor;
-                border-radius: 0px;
-                &.with-icon {
-                    text-align: center;
-                    padding: 0;
-                    svg { .hide(); }
-                }
+        /* Popup fixes start */
+        textarea {
+            background: @backgroundColor;
+        }
 
-                
+        .button {
+            color: @brandColor;
+            border-radius: 0px;
+
+            &:not(.transparent) {
+                border: 2px solid @brandColor;
+            }
+
+            &.with-icon {
+                text-align: center;
+                padding: 0;
+                svg { .hide(); }
             }
         }
+
+        #message-action {
+            .button {
+                border-color: transparent;
+            }
+        }
+
+        .add-on {
+            .action {
+                .button {
+                    &:not(.transparent) {
+                        color: @white;
+                        border: 2px solid @white;
+                    }
+                }
+            }
+        }
+        /* Popup fixes end */
 
         #languages {
             .button {
@@ -318,7 +421,6 @@
 
         .add-on-content {
             color: @white;
-            background: @brandColor;
 
             .price {
                 strong,
@@ -377,8 +479,6 @@
         .button {
             border: 2px solid @white !important;
         }
-
-
 
         input {
             border-bottom: 2px solid @white;
