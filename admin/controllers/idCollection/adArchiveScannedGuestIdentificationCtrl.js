@@ -64,10 +64,11 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             $scope.MODE = 'ACCESS_TOKEN';
         };
 
-        $scope.update = function(isSignedIn) {
+        $scope.gapiSignIn = function() {
+            $scope.config.guest_id_archive_platform = 'google_drive';
             $scope.GoogleAuth.grantOfflineAccess()
                 .then(function(res) {
-                    if (isSignedIn) {
+                    if (res.code) {
                         $scope.config.guest_id_archive_platform_token = res.code;
                         $scope.MODE = 'ACCESS_TOKEN';
                         setTimeout(function () {
@@ -75,11 +76,6 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         }, 700);
                     }
                 });
-        };
-
-        $scope.gapiSignIn = function() {
-            $scope.config.guest_id_archive_platform = 'google_drive';
-            $scope.GoogleAuth.signIn();
         };
 
         $scope.saveConfig = function() {
