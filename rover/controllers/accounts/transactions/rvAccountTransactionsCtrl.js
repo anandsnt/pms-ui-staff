@@ -929,10 +929,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var printBillCard = function(requestParams) {
 
+
 			var printBillSuccess = function(response) {
 				$scope.$emit('hideLoader');
-				var responseData = response.data;
-
+				var responseData = response.data,
+					copyCount = "",
+					timeDelay = 700;
 
 				if ($scope.isInformationalInvoice) {
 					responseData.invoiceLabel = responseData.translation.information_invoice;
@@ -943,19 +945,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
 					responseData.invoiceLabel = responseData.translation.void_invoice;
 				} 
-				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) <= parseInt(responseData.no_of_original_invoices)) 
-					|| (!$scope.transactionsDetails.is_bill_lock_enabled) 
-					|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) <= parseInt(responseData.no_of_original_invoices))) 
+				else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
 				{
 					responseData.invoiceLabel = responseData.translation.invoice;
 				} 
-				else if (($scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) > parseInt(responseData.no_of_original_invoices))
-						|| (!$scope.transactionsDetails.is_bill_lock_enabled && parseInt(responseData.print_counter) > parseInt(responseData.no_of_original_invoices)))
+				else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
 				{
-					var copyCount = "";
-
 					if (responseData.is_copy_counter) {
-						copyCount = parseInt(responseData.print_counter) - parseInt(responseData.no_of_original_invoices);					
+						copyCount = parseInt(responseData.print_counter, 10) - parseInt(responseData.no_of_original_invoices, 10);					
 					}
 					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
 				}
@@ -981,7 +978,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$timeout(function() {
 							window.print();
 							accountsPrintCompleted();
-						}, 700); // CICO-61122 
+						}, timeDelay); // CICO-61122 
 					}
 
 				}, 100);
