@@ -461,8 +461,9 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.saveAccGuestDetails = function() {
 			setTimeout(function() {
-
-				if(document.activeElement.getAttribute("type") != "text") {
+				// CICO-60110 - Save the accompany guests only while in staycard. 
+				// The additional check is to prevent the save while navigating to some other states
+				if(document.activeElement.getAttribute("type") != "text" && $state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
@@ -871,7 +872,8 @@ sntRover.controller('reservationDetailsController',
 				borrow_for_groups: $scope.borrowForGroups,
 				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+                is_member: $scope.guestData.primary_guest_details.is_member
 			});
 		}
 
