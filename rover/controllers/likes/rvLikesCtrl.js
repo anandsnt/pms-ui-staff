@@ -266,10 +266,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 		$scope.changedRadioComboPreference = function(index) {
 			_.each($scope.guestLikesData.preferences[index]['values'], function(item) {
-				item.isChecked = false;
 
 				if ( item.id === $scope.guestLikesData.preferences[index]['isChecked'] ) {
-					item.isChecked = true;
+					item.isChecked = !item.isChecked;
+					if (!item.isChecked) {
+						$scope.guestCardData.likes.preferences[index].isChecked = "";
+					}
+				} else {
+					item.isChecked = false;	
 				}
 			});
 		};
