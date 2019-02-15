@@ -45,7 +45,7 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
                 if ($scope.clickedOn === 'FROM') {
                   $scope.data.fromDate = $scope.date;
                   $scope.data.toDate = $scope.date;
-                   $scope.broadcast('fromDateChanged', $scope.fromDate);
+                   $scope.broadcast('fromDateChanged', $scope.data.fromDate);
                 }
                 else if ($scope.clickedOn === 'TO') {
                   $scope.data.toDate = $scope.date;
