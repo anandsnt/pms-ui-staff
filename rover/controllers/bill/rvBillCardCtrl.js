@@ -2679,7 +2679,7 @@ sntRover.controller('RVbillCardController',
 
 
 			if ($scope.isInformationalInvoice) {
-				successData.invoiceLabel = successData.translation.information_invoice_label;
+				successData.invoiceLabel = successData.translation.information_invoice;
 			}
 			else if (successData.no_of_original_invoices === null) {
 				successData.invoiceLabel = successData.translation.invoice;
