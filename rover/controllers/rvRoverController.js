@@ -1126,6 +1126,10 @@ sntRover.controller('roverController', [
             $scope.formMenu();
         });
 
+        $scope.broadcast = function(eventIdentifier, payLoad) {
+            $scope.$broadcast(eventIdentifier, payLoad);
+        };
+
         (function() {
             if ($window.dataLayer) {
                 $window.dataLayer.push({
