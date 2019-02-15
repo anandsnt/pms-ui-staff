@@ -122,12 +122,14 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
-
-        this.fetchCurrentTime = function() {
-            var deferred = $q.defer();
-            var url = '/api/hotel_current_time';
+        this.fetchCurrentTime = function(start_date) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_current_time';
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                if (start_date) {
+                    data.hotel_time.date = start_date;
+                }
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
