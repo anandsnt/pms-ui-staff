@@ -139,20 +139,5 @@ describe('ADSntAppsListCtrl', function() {
             expect(adAppVersionsSrv.uploadBuild).toHaveBeenCalled();
         });
 
-        it('if the build is empty, Don\'t proceed with Build Upload', function() {
-            $scope.fileName = 'setup-v1.5.0.3-installer.exe';
-            $scope.selectedApp.build = '';
-            $scope.checkIfVersionIsValid();
-            $scope.$digest();
-            expect(adAppVersionsSrv.uploadBuild).not.toHaveBeenCalled();
-        });
-
-        it('if the app type is not correct, Don\'t proceed with Build Upload', function() {
-            $scope.fileName = 'setup-v1.5.0.3-installer.pkg';
-            $scope.checkIfVersionIsValid();
-            $scope.$digest();
-            expect(adAppVersionsSrv.uploadBuild).not.toHaveBeenCalled();
-        });
-
     });
 });
