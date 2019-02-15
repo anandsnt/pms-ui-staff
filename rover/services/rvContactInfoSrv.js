@@ -76,6 +76,8 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             return deferred.promise;
         };
 
+        service.fetchGuestDetails 
+
         service.getGuestDetails = function() {
             var deferred = $q.defer();
             var url = '/api/guest_details/' + _guest.id;
@@ -88,15 +90,75 @@ angular.module('sntRover').service('RVContactInfoSrv', [
                 $log.debug('Guest not set!');
                 deferred.reject(['Guest not set']);
             } else {
-                rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    _guest.isFetched = true;
-                    deferred.resolve(data);
-                }, function(data) {
-                    deferred.reject(data);
+                // rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                //     _guest.isFetched = true;
+                //     deferred.resolve(data);
+                // }, function(data) {
+                //     deferred.reject(data);
+                // });
+                $q.when().then(function() {
+                    return service.fetchGuestDetails().then(function(response) {
+                        _guest.isFetched = true;
+                        returnData = response;
+                    });
+                })
+                .then(function() {                 
+                    return that.fetchContactInformationMandatoryFields().then(function(response) {
+                        returnData.mandatoryFields = response;
+                    });
+                })
+                .then(function() {
+                    deferred.resolve(returnData);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
                 });
+
             }
             return deferred.promise;
         };
+
+
+
+
+
+        this.fetchContactInformationMandatoryFields = function() {
+            var deferred = $q.defer(),
+                url = '/admin/co_ta_settings/current_settings.json';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchContactInformationAndMandatoryFields = function(data) {
+            var deferred = $q.defer(),
+                returnData = {};
+
+            $q.when().then(function() {
+                return that.fetchContactInformation(data).then(function(response) {
+                    returnData = response;
+                });
+            })
+            .then(function() {                 
+                return that.fetchContactInformationMandatoryFields().then(function(response) {
+                    returnData.mandatoryFields = response;
+                });
+            })
+            .then(function() {
+                deferred.resolve(returnData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
+
+
+
 
         /**
          * Remove guest details except first name and last name
