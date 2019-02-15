@@ -651,6 +651,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             ));
 
                         }, function(err) {
+                            q.reject(err);
                         });
 
                     return q.promise;
