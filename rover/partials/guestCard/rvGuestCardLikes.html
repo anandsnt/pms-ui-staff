@@ -51,12 +51,12 @@
                   <div class="check-block" ng-repeat="x in getHalfArrayPref(preferences.values) track by $index">
                       <label class="radio"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }">
                           <span class="icon-form icon-radio"  ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2].id }"></span>
-                          <input type="radio" name="preferences.name"  ng-model="preferences.isChecked" ng-value="preferences.values[$index*2].id" ng-change="changedRadioComboPreference( $parent.$index )" />
+                          <input type="radio" name="preferences.name"  ng-model="preferences.isChecked" ng-value="preferences.values[$index*2].id" ng-click="changedRadioComboPreference( $parent.$index )" />
                           {{ preferences.values[$index*2].details }}
                       </label>
                       <label class="radio" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }">
                           <span class="icon-form icon-radio" ng-class="{ 'checked': preferences.isChecked === preferences.values[$index*2+1].id }"></span>
-                          <input type="radio" name="preferences.name" ng-model="preferences.isChecked" ng-value="preferences.values[$index*2+1].id" ng-change="changedRadioComboPreference( $parent.$index )" />
+                          <input type="radio" name="preferences.name" ng-model="preferences.isChecked" ng-value="preferences.values[$index*2+1].id" ng-click="changedRadioComboPreference( $parent.$index )" />
                           {{ preferences.values[$index*2+1].details }}
                       </label>
                   </div>
