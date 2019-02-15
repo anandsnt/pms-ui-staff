@@ -61,6 +61,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
 
         $scope.dropBoxSignIn = function() {
             $scope.config.guest_id_archive_platform = 'dropbox';
+            $scope.config.guest_id_archive_platform_token = "";
             $scope.MODE = 'ACCESS_TOKEN';
         };
 
