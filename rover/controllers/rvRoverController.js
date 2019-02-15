@@ -1126,7 +1126,7 @@ sntRover.controller('roverController', [
             $scope.formMenu();
         });
 
-        $scope.broadcast = function(eventIdentifier, payLoad) {
+        $scope.broadcastFromRoot = function(eventIdentifier, payLoad) {
             $scope.$broadcast(eventIdentifier, payLoad);
         };
 
