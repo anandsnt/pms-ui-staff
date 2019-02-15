@@ -232,9 +232,18 @@
             font-size: 31px;
             line-height: 36px;
 
-            &:not(.break) > span {
+            *:not(.icon-text) {
+                font-size: 31px;
+                line-height: 36px;
+            }
+
+            &:not(.icon-text):not(.break) > span {
                 font-size: 16px;
                 line-height: 21px;
+            }
+
+            &.break > span {
+                font-size: 28px;
             }
         }
 
@@ -242,6 +251,11 @@
             li {
                 font-size: 21px;
                 line-height: 24px;
+
+                *:not(.icon-text){
+                    font-size: 21px;
+                    line-height: 24px;
+                }
             }
         }
         
