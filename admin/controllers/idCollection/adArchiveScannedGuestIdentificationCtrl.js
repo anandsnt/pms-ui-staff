@@ -66,8 +66,9 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         };
 
         $scope.gapiSignIn = function() {
-            $scope.config.guest_id_archive_platform = 'google_drive';
-            $scope.GoogleAuth.grantOfflineAccess()
+            if ($scope.GoogleAuth) {
+                $scope.config.guest_id_archive_platform = 'google_drive';
+                $scope.GoogleAuth.grantOfflineAccess()
                 .then(function(res) {
                     if (res.code) {
                         $scope.config.guest_id_archive_platform_token = res.code;
@@ -77,6 +78,12 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         }, 700);
                     }
                 });
+            } else {
+                GAPI.call(this, $scope);
+                $scope.errorMessage = ["Google client failed to load...please try again"];
+            }
+            
+            
         };
 
         $scope.saveConfig = function() {
