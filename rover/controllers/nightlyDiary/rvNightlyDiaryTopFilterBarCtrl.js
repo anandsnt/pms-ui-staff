@@ -205,8 +205,7 @@ angular.module('sntRover')
         $scope.toggleHourlyNightly = false;
         $scope.navigateToHourlyDiary = function() {
             $state.go("rover.diary", {
-                checkin_date: moment(tzIndependentDate($scope.diaryData.fromDate)).add(1, 'days')
-                .format($rootScope.momentFormatForAPI)
+                checkin_date: $scope.diaryData.fromDate
             });
             $scope.toggleHourlyNightly = true;
         };
