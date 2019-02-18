@@ -43,13 +43,13 @@
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 
-			<rv-textbox value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.is_father_name_visible" value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
 
-			<rv-textbox value="guestCardData.contactInfo.mother_name" label = "Name of Mother" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mother_name, '')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.is_mother_name_visible" value="guestCardData.contactInfo.mother_name" label = "Name of Mother" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mother_name, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
 
-			<rv-textbox value="guestCardData.contactInfo.birth_place" label = "Place of Birth" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.birth_place, 'margin')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.is_birth_place_visible" value="guestCardData.contactInfo.birth_place" label = "Place of Birth" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.birth_place, guestCardData.contactInfo.is_father_name_visible && guestCardData.contactInfo.is_mother_name_visible ? 'margin' : '')}}"></rv-textbox>
 
-			<rv-textbox value="guestCardData.contactInfo.gender" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, '')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.is_gender_visible" value="guestCardData.contactInfo.gender" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
 
 			
 			
