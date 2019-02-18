@@ -9,8 +9,9 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		this.fetchMaids = function(params) {
 			var deferred = $q.defer(),
-				url = 'api/work_statistics/employees_list',
-				params = params || {};
+				url = 'api/work_statistics/employees_list';
+
+			params = params || {};
 
 			RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				_.each(data.results, function(d) {
