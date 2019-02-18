@@ -48,21 +48,20 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 
     fetchDepartments();
 
-    $rootScope.$on('REFRESHREVENUECONTENT', function() {
+    $scope.addListener('REFRESHREVENUECONTENT', function() {
         refreshRevenueScroller();
     });
 
-    $rootScope.$on('fromDateChanged', function() {
+    $scope.addListener('fromDateChanged', function() {
         initRevenueData("");
-        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged', function() {
+    $scope.addListener('toDateChanged', function() {
         initRevenueData("");
     });
-    
+
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
+    $scope.addListener('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initRevenueData(data.origin);

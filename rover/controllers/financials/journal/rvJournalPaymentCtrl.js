@@ -9,7 +9,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }, 500);
     };
 
-    $rootScope.$on('REFRESHPAYMENTCONTENT', function() {
+    $scope.addListener('REFRESHPAYMENTCONTENT', function() {
         refreshPaymentScroll();
     });
 
@@ -40,17 +40,16 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 
 	initPaymentData("");
 
-    $rootScope.$on('fromDateChanged', function() {
+    $scope.addListener('fromDateChanged', function() {
         initPaymentData("");
-        $rootScope.$broadcast('REFRESH_SUMMARY_DATA', $scope.data.fromDate);
     });
 
-    $rootScope.$on('toDateChanged', function() {
+    $scope.addListener('toDateChanged', function() {
         initPaymentData("");
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates
-    $rootScope.$on('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
+    $scope.addListener('REFRESH_REVENUE_PAYMENT_DATA', function( event, data ) {
         $scope.data.fromDate = data.date;
         $scope.data.toDate   = data.date;
         initPaymentData(data.origin);
