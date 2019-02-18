@@ -7,11 +7,12 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		var srv = this;
 
-		this.fetchMaids = function() {
+		this.fetchMaids = function(params) {
 			var deferred = $q.defer();
-			var url = 'api/work_statistics/employees_list';
+				url = 'api/work_statistics/employees_list',
+				params = params || {};
 
-			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+			RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				_.each(data.results, function(d) {
 					d.ticked = false;
 					d.checkboxDisabled = false;
