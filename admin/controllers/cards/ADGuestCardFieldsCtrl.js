@@ -31,8 +31,10 @@ function($scope, $state, ADGuestCardSrv) {
 					$scope.guestCardFields.is_birth_place_visible = !$scope.guestCardFields.is_birth_place_visible;
 					break;
 				case "is_gender_visible":
-					$scope.guestCardFields.is_gender_visible = !$scope.guestCardFields.is_gender_visible;
-					
+					$scope.guestCardFields.is_gender_visible = !$scope.guestCardFields.is_gender_visible;					
+					break;
+				case "is_registration_number_visible":
+					$scope.guestCardFields.is_registration_number_visible = !$scope.guestCardFields.is_registration_number_visible;					
 					break;
 			}
 	
