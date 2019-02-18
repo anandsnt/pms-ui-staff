@@ -61,6 +61,17 @@
 #sister-city {
     font-weight: 600;
 
+    // PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/sister-city/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 133px;
+        background-position: center;
+        margin-top: 7.9%;
+    }
+
     * {
         text-transform: none;
         font-weight: 600;
@@ -104,17 +115,6 @@
         option {
             color: #000;
         }
-    }
-
-    // PMS Zest Station logo
-    .logo-svg{
-        background-image: url("../css/themes/sister-city/logo.svg");
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 100%;
-        height: 133px;
-        background-position: center;
-        margin-top: 7.9%;
     }
 
     .entry {
@@ -213,6 +213,11 @@
         }
      }
 
+    #signature {
+        background: transparent;
+        color: #fff;
+    }
+
     #options {
         .icons {
             fill: @white;
@@ -241,10 +246,10 @@
                 font-size: 16px;
                 line-height: 21px;
             }
-
-            &.break > span {
+            &.break { .hide(); }
+            /*&.break > span {
                 font-size: 28px;
-            }
+            }*/
         }
 
         .purchase-option {
@@ -456,6 +461,7 @@
         .add-on {
             background: @brandColor;
             color: @white;
+            border-radius: 0;
 
             &.selected {
                 border-color: @white;
@@ -490,6 +496,20 @@
 
     .upgrade-list {
 
+        li { 
+            border: none;
+            border-radius: 0;
+        }
+
+        h2,
+        .price {
+            text-align: center;
+        }
+
+        .upgrade-content {
+            background-color: @brandColor;
+        }
+
         &.upgrade-list-v2 {
             .upgrade-content {
                 background: transparent;
@@ -516,5 +536,9 @@
         .upgrade-price {
             border-top: 4px solid white;
         }
+    }
+
+    .ui-datepicker {
+        top: 60% !important;
     }
 }
