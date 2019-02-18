@@ -108,6 +108,7 @@ angular.module('housekeepingModule', [])
                         page: 1,
                         per_page: 9999
                     };
+                    
                     return RVWorkManagementSrv.fetchMaids(params);
                 },
                 workTypes: function(RVWorkManagementSrv) {
