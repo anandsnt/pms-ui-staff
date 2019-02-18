@@ -230,9 +230,11 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		};
 
 
-		this.fetchHKStaffs = function() {
-			var deferred = $q.defer();
-			var url = 'api/work_statistics/employees_list';
+		this.fetchHKStaffs = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_statistics/employees_list';
+				
+			params = params || {};
 
 			var processData = function(data) {
 				var results = [],
@@ -258,7 +260,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				};
 			};
 
-			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+			RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				deferred.resolve( processData(data) );
 			}, function(data) {
 				deferred.reject(data);
