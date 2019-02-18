@@ -153,7 +153,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 report_id: $scope.selectedEntityDetails.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: 1,
+                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1,
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
@@ -493,7 +493,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Stays Export': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Reservations': true,
-                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
+                'Police Report Export': true
             };
 
             var forRunOnceOnly = {
@@ -509,14 +510,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Stays Export': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Reservations': true,
-                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
+                'Police Report Export': true
             };
 
             var forWeekly = {
                 'Future Reservations': true,
                 'Last Week Reservations': true,
                 'Clairvoyix Reservations Export': true,
-                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
+                'Police Report Export': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -524,13 +527,15 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Nationality Statistics': true,
                 'Commissions': true,
                 'Clairvoyix Reservations Export': true,
-                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
+                'Police Report Export': true
             };
 
             var forHourly = {
                 'Future Reservations': true,
                 'Clairvoyix Reservations Export': true,
-                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true
+                'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
+                'Police Report Export': true
             };
 
             if ( forHourly[item.report.title] ) {
