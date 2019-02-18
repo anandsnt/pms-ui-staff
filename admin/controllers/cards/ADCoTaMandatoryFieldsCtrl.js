@@ -13,24 +13,7 @@ function($scope, $state, ADCoTaMandatorySrv) {
 
 		$scope.callAPI(ADCoTaMandatorySrv.saveCoTaMandatoryFields, options);
 	};
-	/*
-	 * Set all fields false;
-	 */
-	$scope.clickedMandatoryCheck = function() {
-		if (!$scope.coTaMandatoryFields.mandatory_on_ar_account) {
-			$scope.coTaMandatoryFields = {
-				tax_id_mandatory: false,
-				contact_name_mandatory: false,
-				address_line1_mandatory: false,
-				city_mandatory: false,
-				postal_code_mandatory: false,
-				country_mandatory: false,
-				contact_phone_mandatory: false,
-				contact_email_address_mandatory: false,
-				e_invoice_mandatory: false
-			};
-		}
-	};
+	
 	/*
 	 * Clicked visible status
 	 * @param fieldName field name
