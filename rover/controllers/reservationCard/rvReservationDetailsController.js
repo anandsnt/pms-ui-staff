@@ -872,7 +872,8 @@ sntRover.controller('reservationDetailsController',
 				borrow_for_groups: $scope.borrowForGroups,
 				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+                is_member: $scope.guestData.primary_guest_details.is_member
 			});
 		}
 
