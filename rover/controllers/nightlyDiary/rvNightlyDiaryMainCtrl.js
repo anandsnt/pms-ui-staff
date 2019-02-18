@@ -53,10 +53,13 @@ angular.module('sntRover')
                         srvParams = RVNightlyDiarySrv.getCache();
                     }
                     else {
-                        var startDate = !!$stateParams.start_date ? $stateParams.start_date : $rootScope.businessDate;
-                        
-                        srvParams.start_date = moment(tzIndependentDate(startDate)).subtract(1, 'days')
-                            .format($rootScope.momentFormatForAPI);
+                        if ($stateParams.start_date) {
+                            srvParams.start_date = tzIndependentDate($stateParams.start_date);
+                        }
+                        else {
+                            srvParams.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                                .format($rootScope.momentFormatForAPI);
+                        }
                         srvParams.no_of_days = 7;
                         srvParams.page = 1;
                         srvParams.per_page = 50;
