@@ -104,7 +104,11 @@ angular.module('housekeepingModule', [])
             controller: 'RVWorkManagementCtrl',
             resolve: {
                 employees: function(RVWorkManagementSrv) {
-                    return RVWorkManagementSrv.fetchMaids();
+                    var params = {
+                        page: 1,
+                        per_page: 9999
+                    };
+                    return RVWorkManagementSrv.fetchMaids(params);
                 },
                 workTypes: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchWorkTypes();
