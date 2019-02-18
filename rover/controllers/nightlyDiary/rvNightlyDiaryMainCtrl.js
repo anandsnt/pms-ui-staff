@@ -97,6 +97,7 @@ angular.module('sntRover')
                         isBookRoomViewActive: false,
                         availableSlotsForBookRooms: [],
                         isAssignRoomViewActive: false,
+                        isRoomMoveViewActive: false,
                         showSaveChangeButtonAfterShortenOrExtent: {
                             arrivalChanged: false,
                             departureChanged: false,
