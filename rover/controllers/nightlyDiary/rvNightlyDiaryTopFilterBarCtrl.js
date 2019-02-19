@@ -182,6 +182,7 @@ angular.module('sntRover')
             init();
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         };
 
         // To toggle filter and unassigned list.

@@ -48,7 +48,7 @@ angular.module('sntRover')
                         roomTypeId: selectedItem.room_type_id
                     };
 
-                    $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
+                    $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
                 }
             },
             failureCallBackMethod = function(errorMessage) {
@@ -86,25 +86,9 @@ angular.module('sntRover')
         };
 
         listeners['SUCCESS_ROOM_ASSIGNMENT'] = $scope.$on('SUCCESS_ROOM_ASSIGNMENT', function(e, room ) {
-            var availableRoomList = $scope.diaryData.availableSlotsForAssignRooms.availableRoomList,
-                unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
+            var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
-            // Update reservation section...
-            availableRoomList = _.reject( availableRoomList,
-                function(obj) {
-                    return obj.room_id === room.room_id;
-                }
-            );
-
-            var newData = {
-                availableRoomList: availableRoomList,
-                fromDate: $scope.selectedItem.arrival_date,
-                nights: $scope.selectedItem.number_of_nights,
-                reservationId: $scope.selectedItem.reservation_id,
-                roomTypeId: $scope.selectedItem.room_type_id
-            };
-
-            $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData, true );
+            $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
 
             // Update unassigned reservation list...
             unassignedReservationList = _.reject( unassignedReservationList,

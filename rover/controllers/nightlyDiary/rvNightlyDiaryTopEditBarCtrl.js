@@ -68,7 +68,7 @@ angular.module('sntRover')
                             roomTypeId: selectedItem.room_type_id
                         };
 
-                        $scope.$emit('SHOW_AVALAILABLE_ROOM_SLOTS', newData );
+                        $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
                     }
                 },
                 failureCallBackMethod = function(errorMessage) {
@@ -95,7 +95,7 @@ angular.module('sntRover')
                 $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
             };
 
-            // Handle room move button click.
+            // CICO-36015 Handle room move button click.
             $scope.moveRoomButtonClick = function() {
 
                 $scope.diaryData.isRoomMoveViewActive = true;
@@ -110,7 +110,7 @@ angular.module('sntRover')
                 retrieveAvailableRooms(selectedItem);
             };
 
-            // Handle cancel room move button click.
+            // CICO-36015 Handle cancel room move button click.
             $scope.cancelMoveRoomButtonClick = function() {
                 $scope.diaryData.isRoomMoveViewActive = false;
             };

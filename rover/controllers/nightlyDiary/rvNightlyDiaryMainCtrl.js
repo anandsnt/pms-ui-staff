@@ -541,12 +541,19 @@ angular.module('sntRover')
                 /* Handle event emitted from child controllers.
                  * To toggle unassigned list and filter.
                  */
-                listeners['SHOW_AVALAILABLE_ROOM_SLOTS'] = $scope.$on('SHOW_AVALAILABLE_ROOM_SLOTS', function (event, newData, shouldHide) {
+                listeners['SHOW_ASSIGN_ROOM_SLOTS'] = $scope.$on('SHOW_ASSIGN_ROOM_SLOTS', function (event, newData) {
                     $scope.diaryData.isAssignRoomViewActive = true;
-                    if (shouldHide) {
-                        $scope.diaryData.isAssignRoomViewActive = false;
-                    }
                     $scope.diaryData.availableSlotsForAssignRooms = newData;
+                    fetchRoomListDataAndReservationListData();
+                });
+
+                /* Handle event emitted from child controllers.
+                 * To toggle unassigned list and filter.
+                 */
+                listeners['HIDE_ASSIGN_ROOM_SLOTS'] = $scope.$on('HIDE_ASSIGN_ROOM_SLOTS', function () {
+                    $scope.diaryData.isAssignRoomViewActive = false;
+                    $scope.diaryData.isRoomMoveViewActive = false;
+                    $scope.diaryData.availableSlotsForAssignRooms = {};
                     fetchRoomListDataAndReservationListData();
                 });
 
