@@ -51,4 +51,4 @@ const mapStateToNightlyDiaryUnAssignedContainerProps = (state) => ({
 
 const NightlyDiaryUnAssignedContainer = connect(
     mapStateToNightlyDiaryUnAssignedContainerProps
-)(NightlyDiaryUnAssignedComponent);
+)(NightlyDiaryAssignRoomComponent);
