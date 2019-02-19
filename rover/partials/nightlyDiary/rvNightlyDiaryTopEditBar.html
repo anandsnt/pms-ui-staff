@@ -13,11 +13,11 @@
     </div>
     <div class="actions">
         <!-- Cancels editing, hides edit screen and stay-range, shows search -->
-        <button type="button" class="button blank" ng-click="cancelEditReservation()" ng-hide="diaryData.isRoomMoveViewActive">Cancel</button>
-        <button type="button" class="button purple" ng-click="moveRoomButtonClick()" ng-hide="diaryData.isRoomMoveViewActive || diaryData.showSaveChangeButtonAfterShortenOrExtent.show">Move Room</button>
-        <button type="button" class="button blank" ng-click="cancelMoveRoomButtonClick()" ng-show="diaryData.isRoomMoveViewActive">Cancel Move Room</button>
+        <button type="button" class="button blank" ng-click="cancelEditReservation()" ng-hide="diaryData.isMoveRoomViewActive">Cancel</button>
+        <button type="button" class="button purple" ng-click="moveRoomButtonClick()" ng-hide="diaryData.isMoveRoomViewActive || diaryData.showSaveChangeButtonAfterShortenOrExtent.show">Move Room</button>
+        <button type="button" class="button blank" ng-click="cancelMoveRoomButtonClick()" ng-show="diaryData.isMoveRoomViewActive">Cancel Move Room</button>
         <!-- Removes the reservation from the grid and moves it to the Unassigned sidebar (filter) -->
-        <button type="button" class="button white red-text" ng-if="!diaryData.showSaveChangeButtonAfterShortenOrExtent.show" ng-hide="diaryData.isRoomMoveViewActive">Unassign Room</button>
-        <button type="button" class="button green" ng-click="saveEditedReservation()" ng-if="diaryData.showSaveChangeButtonAfterShortenOrExtent.show" ng-hide="diaryData.isRoomMoveViewActive">Save Changes</button>
+        <button type="button" class="button white red-text" ng-if="!diaryData.showSaveChangeButtonAfterShortenOrExtent.show" ng-hide="diaryData.isMoveRoomViewActive">Unassign Room</button>
+        <button type="button" class="button green" ng-click="saveEditedReservation()" ng-if="diaryData.showSaveChangeButtonAfterShortenOrExtent.show" ng-hide="diaryData.isMoveRoomViewActive">Save Changes</button>
     </div>
 </div>

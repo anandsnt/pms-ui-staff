@@ -97,7 +97,7 @@ angular.module('sntRover')
                         isBookRoomViewActive: false,
                         availableSlotsForBookRooms: [],
                         isAssignRoomViewActive: false,
-                        isRoomMoveViewActive: false,
+                        isMoveRoomViewActive: false,
                         showSaveChangeButtonAfterShortenOrExtent: {
                             arrivalChanged: false,
                             departureChanged: false,
@@ -160,7 +160,7 @@ angular.module('sntRover')
                             'selected_floor_ids': $scope.diaryData.selectedFloors
                         };
 
-                    if ($scope.diaryData.isAssignRoomViewActive) {
+                    if ($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) {
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
@@ -556,7 +556,7 @@ angular.module('sntRover')
                  */
                 listeners['HIDE_ASSIGN_ROOM_SLOTS'] = $scope.$on('HIDE_ASSIGN_ROOM_SLOTS', function () {
                     $scope.diaryData.isAssignRoomViewActive = false;
-                    $scope.diaryData.isRoomMoveViewActive = false;
+                    $scope.diaryData.isMoveRoomViewActive = false;
                     $scope.diaryData.availableSlotsForAssignRooms = {};
                     fetchRoomListDataAndReservationListData();
                 });
@@ -660,6 +660,7 @@ angular.module('sntRover')
                     reservationsList: reservationsList.rooms,
                     availableSlotsForAssignRooms: {},
                     isAssignRoomViewActive: false,
+                    isMoveRoomViewActive: false,
                     diaryInitialDayOfDateGrid: $scope.diaryData.fromDate,
                     numberOfDays: $scope.diaryData.numberOfDays,
                     currentBusinessDate: $rootScope.businessDate,
@@ -672,7 +673,7 @@ angular.module('sntRover')
                     dateFormat: $rootScope.dateFormat,
                     isPmsProductionEnvironment: $rootScope.isPmsProductionEnv
                 };
-                
+
                 const store = configureStore(initialState);
                 const { render } = ReactDOM;
                 const { Provider } = ReactRedux;
@@ -684,6 +685,7 @@ angular.module('sntRover')
                         numberOfDays: $scope.diaryData.numberOfDays,
                         reservationsList: $scope.diaryData.reservationsList.rooms,
                         isAssignRoomViewActive: $scope.diaryData.isAssignRoomViewActive,
+                        isMoveRoomViewActive: $scope.diaryData.isMoveRoomViewActive,
                         availableSlotsForAssignRooms: $scope.diaryData.availableSlotsForAssignRooms,
                         isBookRoomViewActive: $scope.diaryData.isBookRoomViewActive,
                         availableSlotsForBookRooms: $scope.diaryData.availableSlotsForBookRooms,

@@ -98,7 +98,7 @@ angular.module('sntRover')
             // CICO-36015 Handle room move button click.
             $scope.moveRoomButtonClick = function() {
 
-                $scope.diaryData.isRoomMoveViewActive = true;
+                $scope.diaryData.isMoveRoomViewActive = true;
 
                 var selectedItem = {
                     arrival_date: $scope.currentSelectedReservation.arrival_date,
