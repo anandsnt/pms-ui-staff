@@ -501,11 +501,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 */
 			var moveToBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				var newBillValueId = _.findWhere($scope.transactionsDetails.bills, {
-                    bill_number: parseInt(newBillValue)
-                }).bill_id;
 
-				dataToMove.toBill = parseInt(newBillValueId);
+				dataToMove.toBill = parseInt(data.bill_id);
+				$scope.transactionsDetails.bills[data.bill_number - 1] = {
+					bill_id: data.bill_id,
+					bill_number: data.bill_number
+				};
 				// Fetch data again to refresh the screen with new data
 				getTransactionDetails(dataToMove);
 			};
@@ -928,9 +929,35 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var printBillCard = function(requestParams) {
 
+
 			var printBillSuccess = function(response) {
 				$scope.$emit('hideLoader');
-				$scope.printData = response.data;
+				var responseData = response.data,
+					copyCount = "",
+					timeDelay = 700;
+
+				if ($scope.isInformationalInvoice) {
+					responseData.invoiceLabel = responseData.translation.information_invoice;
+				}
+				else if (responseData.no_of_original_invoices === null) {
+					responseData.invoiceLabel = responseData.translation.invoice;
+				}
+				else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
+					responseData.invoiceLabel = responseData.translation.void_invoice;
+				} 
+				else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
+				{
+					responseData.invoiceLabel = responseData.translation.invoice;
+				} 
+				else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
+				{
+					if (responseData.is_copy_counter) {
+						copyCount = parseInt(responseData.print_counter, 10) - parseInt(responseData.no_of_original_invoices, 10);					
+					}
+					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
+				}
+
+				$scope.printData = responseData;
 				$scope.errorMessage = "";
 
 				$('.nav-bar').addClass('no-print');
@@ -948,8 +975,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					}
 					else
 					{
-						window.print();
-						accountsPrintCompleted();
+						$timeout(function() {
+							window.print();
+							accountsPrintCompleted();
+						}, timeDelay); // CICO-61122 
 					}
 
 				}, 100);

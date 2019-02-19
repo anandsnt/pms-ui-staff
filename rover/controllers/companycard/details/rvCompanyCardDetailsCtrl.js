@@ -157,8 +157,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					}
 					return;
 				} else {
-					saveContactInformation($scope.contactInformation);
-					$scope.$broadcast("ContactTabActivated");
+					if (tabToSwitch === 'cc-ar-accounts') {
+						$scope.showARTab();
+					} else {
+						saveContactInformation($scope.contactInformation);
+						$scope.$broadcast("ContactTabActivated");
+					}
+					
 				}
 
 			}
@@ -255,10 +260,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					$scope.$broadcast('setgenerateNewAutoAr', true);
 					$scope.switchTabTo('', 'cc-ar-transactions');
 				}, 500);
+				$timeout(function() {
+					$scope.$broadcast('BACK_FROM_STAY_CARD');
+				}, 1000);
 			}
-			$timeout(function() {
-				$scope.$broadcast('BACK_FROM_STAY_CARD');
-			}, 1000);
+			
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {
@@ -432,6 +438,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.addListener("MANDATORY_CHECK_FAILED", function(event, errorMessage) {
 			$scope.$broadcast("setCardContactErrorMessage",  errorMessage);
 			$scope.isArTabAvailable = false;
+			$scope.switchTabTo('', 'cc-contact-info');
 		});
 
 
@@ -476,6 +483,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOffetchCommissionDetail = function(data) {
 			$scope.$emit("hideLoader");
+			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
+			$scope.contactInformation.emailStyleClass = $scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_visible ? 'margin' : 'full-width';
 			$scope.contactInformation["commission_details"] = data.commission_details;
 		};
 
@@ -500,15 +509,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (typeof $stateParams.query !== "undefined" && $stateParams.query !== "") {
 				$scope.contactInformation.account_details = {};
 				$scope.contactInformation.account_details.account_name = $stateParams.query;
-			}
-			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
+			}			
 
 			// setting as null dictionary, will help us in saving..
 
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
-			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetail, data, successCallbackOffetchCommissionDetail);
+			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetailsAndMandatoryFields, data, successCallbackOffetchCommissionDetail);
 		}
 		// we are checking for edit screen
 		else if (typeof id !== 'undefined' && id !== "") {

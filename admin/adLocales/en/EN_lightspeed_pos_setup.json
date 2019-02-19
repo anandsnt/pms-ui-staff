@@ -17,4 +17,6 @@
 "LS_PRODUCT_MAPPINGS": "Lighspeed Product Mappings",
 "LS_PRODUCT_GROUP_MAPPINGS": "Lighspeed Product Group Mappings",
 "LS_PAYMENT_MAPPINGS": "Lighspeed Payment Mappings",
-"ENABLE_FLOORS":"Enable Floors"
+"ENABLE_FLOORS":"Enable Floors",
+"LS_ENABLE_STOP_EOD_CHARGE_IMPORT":"Turn off End of Day Charge Import",
+"LS_COPY_MAPPINGS":"Lighspeed Copy Mappings"

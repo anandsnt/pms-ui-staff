@@ -123,6 +123,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
                         refreshPagination();
                         $timeout(function () {
                             reloadScroller();
+                            $scope.getScroller(MONTHLY_DATA_SCROLLER).scrollToElement('.res-active', 500, 0, 0);
                         }, 1000);
                         isDetailedViewScrollReady();
                     },
@@ -239,11 +240,7 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
         };
 
         // Set up the data required during initialization
-        var setUpData = function () {
-            $scope.statistics = {
-                summary: {},
-                details: {}
-            };
+        var setUpData = function () {            
             $scope.accountId = getAccountId();
             $scope.currentYear = $scope.getCurrentYear();
             populateYearDropDown();
@@ -365,6 +362,10 @@ angular.module('sntRover').controller("RVCompanyCardTravelAgentStatisticsControl
         // Initialize the controller
         var init = function () {
             $scope.activeView = "summary";
+            $scope.statistics = {
+                summary: {},
+                details: {}
+            };
             $scope.filterData = {
                 selectedYear: $scope.getCurrentYear() - 1
             };

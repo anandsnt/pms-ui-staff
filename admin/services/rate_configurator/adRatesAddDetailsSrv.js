@@ -1,5 +1,5 @@
-admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
-    function ($q, ADBaseWebSrvV2) {
+admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2', 'ADRatesSrv',
+    function ($q, ADBaseWebSrvV2, ADRatesSrv) {
 
         this.addRatesDetailsData = {};
         var that = this;
@@ -235,6 +235,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
             var url = "/api/rates/" + param.rateId;
 
             ADBaseWebSrvV2.putJSON(url, data).then(function (data) {
+                ADRatesSrv.setUpCommissionData(data);
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);

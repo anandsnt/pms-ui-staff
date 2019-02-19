@@ -45,7 +45,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
-		    ALLOWED_RESV_LIMIT = 92;
+		    ALLOWED_RESV_LIMIT = $rootScope.maxStayLength;
 
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
@@ -461,8 +461,9 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.saveAccGuestDetails = function() {
 			setTimeout(function() {
-
-				if(document.activeElement.getAttribute("type") != "text") {
+				// CICO-60110 - Save the accompany guests only while in staycard. 
+				// The additional check is to prevent the save while navigating to some other states
+				if(document.activeElement.getAttribute("type") != "text" && $state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
@@ -854,6 +855,12 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
+			var roomTypeId = $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId;
+			// CICO-59948 For in-house reservation, set the room type id as the current room type id(API response)
+			if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
+			}
+
 			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
 				to_date: departure || reservationMainData.departureDate,
@@ -863,9 +870,10 @@ sntRover.controller('reservationDetailsController',
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
 				group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
 				borrow_for_groups: $scope.borrowForGroups,
-				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+                is_member: $scope.guestData.primary_guest_details.is_member
 			});
 		}
 

@@ -1,7 +1,124 @@
 // specifically written for this application
 // adding an OWS check Interceptor here and business date change
 // but should be moved to higher up above in root level
-angular.module('sharedHttpInterceptor', []);
+angular.module('sharedHttpInterceptor', []).
+    config(function($provide) {
+        $provide.decorator('$http', function($delegate, $q) {
+            var pendingRequests = {};
+            var $http = $delegate;
+
+            /**
+             * Generates a hash of the API call so that duplicates can be identified
+             * @param {string} str configuration of the http call as string
+             * @returns {string} hash
+             */
+            function hash(str) {
+                var h = 0,
+                    size = str.length;
+
+                if (size === 0) {
+                    return h;
+                }
+                for (var i = 0, n; i < size; ++i) {
+                    n = str.charCodeAt(i);
+                    h = ((h << 5) - h) + n;
+                    h = h & h;
+                }
+                return h >>> 0;
+            }
+
+            /**
+             * Helper to generate a unique identifier for a request
+             */
+            function getRequestIdentifier(config) {
+                var str = config.method + config.url;
+
+                if (config.params && typeof config.params === 'object') {
+                    str += angular.toJson(config.params);
+                }
+                if (config.data && typeof config.data === 'object') {
+                    str += angular.toJson(config.data);
+                }
+                return hash(str);
+            }
+
+            /**
+             *
+             * @param config
+             */
+            function log(config, attempts) {
+                var style = 'background: orange; color: white; display: block;',
+                    request = config.method + ': ' + config.url;
+
+                // using console.warn as $log provider won't be ready by the time this configuration runs
+                // https://stackoverflow.com/questions/28620927/angularjs-provider-dependency-injection-using-log-in-provider
+                console.warn('%c' + '[WARN_DUP_REQ][' + attempts + ']>>> ' + request, style);
+
+                if (window['dataLayer']) {
+                    window['dataLayer'].push({
+                        event: 'sntDuplicateRequest',
+                        attributes: {
+                            request: config.method + ': ' + config.url,
+                            count: attempts
+                        }
+                    });
+                }
+            }
+
+            /**
+             * Modified $http service
+             */
+            function $duplicateRequestsFilter(config) {
+                // Get unique request identifier
+                var identifier = getRequestIdentifier(config);
+
+                // Ignore for this request?
+                if (config.ignoreDuplicateRequest) {
+                    return $http(config);
+                }
+
+                // Check if such a request is pending already
+                if (pendingRequests[identifier]) {
+
+                    pendingRequests[identifier].attempts = pendingRequests[identifier].attempts || 0;
+                    // increment the attempts count
+                    pendingRequests[identifier].attempts++;
+                    log(config, pendingRequests[identifier].attempts);
+
+                    if (config.rejectDuplicateRequest) {
+                        return $q.reject({
+                            data: '',
+                            headers: {},
+                            status: config.rejectDuplicateStatusCode || 400,
+                            config: config
+                        });
+                    }
+                    return pendingRequests[identifier];
+                }
+
+                // Create promise using $http and make sure it's reset when resolved
+                pendingRequests[identifier] = $http(config);
+
+                pendingRequests[identifier].finally(function() {
+                    delete pendingRequests[identifier];
+                });
+
+                // Return promise
+                return pendingRequests[identifier];
+            }
+
+            // Map rest of methods
+            Object.keys($http).
+                filter(function(key) {
+                    return (typeof $http[key] === 'function');
+                }).
+                forEach(function(key) {
+                    $duplicateRequestsFilter[key] = $http[key];
+                });
+
+            return $duplicateRequestsFilter;
+        });
+    });
 
 angular.module('sharedHttpInterceptor').service('sntAuthorizationSrv', [
     '$q',
@@ -67,6 +184,10 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                     $rootScope.isEodProcessRunning = response.data.is_eod_process_running;
                 }
 
+                if (response.headers('Business-Date') && $rootScope.businessDate && (response.headers('Business-Date') !== $rootScope.businessDate)) {
+                    $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup();
+                }
+
                 if (jwt) {
                     $window.localStorage.setItem('jwt', jwt);
                 }
@@ -77,9 +198,6 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 if (rejection.status === 401) { // 401- Unauthorized
                     // so lets redirect to login page
                     $window.location.href = '/logout';
-                }
-                if (rejection.status === 430) {
-                    $rootScope.showBussinessDateChangedPopup && $rootScope.showBussinessDateChangedPopup(rejection.data.errors[0]);
                 }
                 if (rejection.status === 520 && rejection.config.url !== '/admin/test_pms_connection') {
                     $rootScope.showOWSError && $rootScope.showOWSError();

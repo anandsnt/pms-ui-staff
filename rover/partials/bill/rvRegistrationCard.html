@@ -155,7 +155,8 @@
             <td><strong>{{ printRegCardData.translation['city'] }}</strong><br />
                <span> {{printRegCardData.guest_details['city']}}</span></td>
             <td><strong>{{ printRegCardData.translation['state'] }}/{{ printRegCardData.translation['postal_code'] }}</strong><br />
-                {{printRegCardData.guest_details['state']}}/{{printRegCardData.guest_details['postal_code']}}</td>
+                {{printRegCardData.guest_details['state']}}<span  ng-if="printRegCardData.guest_details['postal_code'] && printRegCardData.guest_details['state'] && printRegCardData.guest_details['postal_code']!=='' && printRegCardData.guest_details['state']!=='' && printRegCardData.guest_details['postal_code']!==null && printRegCardData.guest_details['state']!==null"> / </span>{{printRegCardData.guest_details['postal_code']}}
+            </td>
             <td><strong>{{ printRegCardData.translation['country'] }}</strong><br />
                 {{printRegCardData.guest_details['country_name']}}</td>
         </tr>        

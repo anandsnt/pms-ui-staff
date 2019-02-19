@@ -3,25 +3,29 @@
         <h2 translate>LIGHT_SPEED_POS_SETUP_HEADER</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
         <div class="actions float pull-right">
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('SETUP')"
+            <button type="button" class="button add-data-inline ls-header toggle-tab" ng-click="toggleForm('SETUP')"
                     ng-class="{'orange' : state.activeTab === 'SETUP', 'white' : state.activeTab !== 'SETUP'}">
                 ACCESS CONFIGURATION
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('RESTAURANT')"
+            <button type="button" class="button add-data-inline ls-header toggle-tab" ng-click="toggleForm('RESTAURANT')"
                     ng-class="{'orange' : state.activeTab === 'RESTAURANT', 'white' : state.activeTab !== 'RESTAURANT'}">
                 RESTAURANTS
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('PRODUCT_MAPPINGS')"
+            <button type="button" class="button add-data-inline ls-header toggle-tab" ng-click="toggleForm('PRODUCT_MAPPINGS')"
                     ng-class="{'orange' : state.activeTab === 'PRODUCT_MAPPINGS', 'white' : state.activeTab !== 'PRODUCT_MAPPINGS'}">
                 PRODUCT MAPPINGS
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('PRODUCT_GROUP_MAPPINGS')"
+            <button type="button" class="button add-data-inline ls-header toggle-tab" ng-click="toggleForm('PRODUCT_GROUP_MAPPINGS')"
                     ng-class="{'orange' : state.activeTab === 'PRODUCT_GROUP_MAPPINGS', 'white' : state.activeTab !== 'PRODUCT_GROUP_MAPPINGS'}">
                 PRODUCT GROUP MAPPINGS
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('PAYMENT_MAPPINGS')"
+            <button type="button" class="button add-data-inline ls-header toggle-tab" ng-click="toggleForm('PAYMENT_MAPPINGS')"
                     ng-class="{'orange' : state.activeTab === 'PAYMENT_MAPPINGS', 'white' : state.activeTab !== 'PAYMENT_MAPPINGS'}">
                 PAYMENT MAPPINGS
+            </button>
+            <button type="button" class="button add-data-inline ls-header toggle-tab" ng-click="toggleForm('COPY_MAPPINGS')"
+                    ng-class="{'orange' : state.activeTab === 'COPY_MAPPINGS', 'white' : state.activeTab !== 'COPY_MAPPINGS'}">
+                COPY MAPPINGS
             </button>
         </div>
     </header>
@@ -87,7 +91,7 @@
                                                   entry-div-class="full-width"></ad-charge-code-auto-complete>
                 </fieldset>
                 <fieldset class="holder right">
-                    <div class="entry full-width">
+                    <div class="entry full-width" ng-if="lightspeed.enabled">
                         <label><span translate>ENABLE_FLOORS</span></label>
                         <div name="active-inactive-toggle" class="switch-button single"
                              ng-class="{ on: lightspeed.floors_enabled }" ng-click="toggleFloorEnabled()">
@@ -96,7 +100,17 @@
                         </div>
                     </div>
                 </fieldset>
-
+                <fieldset class="holder left">
+                    <div class="entry full-width" ng-if="lightspeed.enabled">
+                        <label><span translate>LS_ENABLE_STOP_EOD_CHARGE_IMPORT</span></label>
+                        <div name="active-inactive-toggle" class="switch-button single"
+                             ng-class="{ on: lightspeed.stop_eod_charge_import_enabled }"
+                             ng-click="toggleStopEODChargeImportEnabled()">
+                            <input type="checkbox">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+                </fieldset>
             </fieldset>
 
             <div class="actions float">
@@ -136,6 +150,13 @@
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
                 <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpeedPaymentMappping.html'"></ng-include>
+            </section>
+        </div>
+        <div class="form float" ng-if="state.activeTab === 'COPY_MAPPINGS'">
+            <section ng-controller="adLightSpeedCopyMapppingCtrl">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+                <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpeedCopyMapping.html'"></ng-include>
             </section>
         </div>
     </section>

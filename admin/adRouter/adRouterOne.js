@@ -205,6 +205,17 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
         });
 
+        $stateProvider.state('admin.archiveScannedGuestIdentification', {
+            templateUrl: '/assets/partials/idCollection/adArchiveScannedGuestIdentification.html',
+            controller: 'adArchiveScannedGuestIdentifiactionCtrl',
+            url: '/zestStationIDCollection',
+            resolve: {
+                config: ['ACGIIntegrationSrv', function (ACGIIntegrationSrv) {
+                    return ACGIIntegrationSrv.fetchConfiguration();
+                }]
+            }
+        });
+
         $stateProvider.state('admin.roverIDCollection', {
             templateUrl: '/assets/partials/idCollection/adRoverIdCollectionSetup.html',
             controller: 'adRoverIdCollectionSetupCtrl',
