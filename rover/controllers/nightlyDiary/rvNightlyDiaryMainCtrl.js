@@ -407,6 +407,7 @@ angular.module('sntRover')
                         $scope.extendShortenReservationDetails,
                         successCallBack);
                 };
+
                 /*
                  * Show selected reservation highlighted and enable edit bar
                  * @param reservation - Current selected reservation
@@ -421,6 +422,7 @@ angular.module('sntRover')
 
                     store.dispatch(dispatchData);
                 };
+
                 /*
                 * Show messages
                 */
@@ -538,8 +540,10 @@ angular.module('sntRover')
                     }
                 });
 
-                /* Handle event emitted from child controllers.
-                 * To toggle unassigned list and filter.
+                /* 
+                 *  To Show 'ASSIGN' or 'MOVE' room button in Diary.
+                 *  {object} [event]
+                 *  {object} [avaialble slots for ASSIGN/MOVE - data object]
                  */
                 listeners['SHOW_ASSIGN_ROOM_SLOTS'] = $scope.$on('SHOW_ASSIGN_ROOM_SLOTS', function (event, newData) {
                     $scope.diaryData.isAssignRoomViewActive = true;
@@ -547,8 +551,8 @@ angular.module('sntRover')
                     fetchRoomListDataAndReservationListData();
                 });
 
-                /* Handle event emitted from child controllers.
-                 * To toggle unassigned list and filter.
+                /*  
+                 *  To Hide 'ASSIGN' or 'MOVE' room button in Diary.
                  */
                 listeners['HIDE_ASSIGN_ROOM_SLOTS'] = $scope.$on('HIDE_ASSIGN_ROOM_SLOTS', function () {
                     $scope.diaryData.isAssignRoomViewActive = false;
@@ -668,6 +672,7 @@ angular.module('sntRover')
                     dateFormat: $rootScope.dateFormat,
                     isPmsProductionEnvironment: $rootScope.isPmsProductionEnv
                 };
+                
                 const store = configureStore(initialState);
                 const { render } = ReactDOM;
                 const { Provider } = ReactRedux;
