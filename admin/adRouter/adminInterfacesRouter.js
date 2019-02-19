@@ -642,6 +642,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.turkishinvoiceSetup', {
+        templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
+        controller: 'adInterfaceCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'turkishinvoice';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('turkishinvoice');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.revControlSetup', {
         templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
         controller: 'adCRSCommonCtrl',

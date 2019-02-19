@@ -35,9 +35,13 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		return reservationRoomClass;
 	};
 
-	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly) {
+	$scope.getRoomStatusClass = function(reservationStatus, roomStatus, foStatus, roomReadyStatus, checkinInspectedOnly, serviceStatus) {
 
-		var reservationRoomStatusClass = "";
+        var reservationRoomStatusClass = "";
+        
+        if (serviceStatus === 'OUT_OF_SERVICE' || serviceStatus === 'OUT_OF_ORDER') {
+            return 'room-grey';   
+        }
 
 		if (reservationStatus === 'CHECKING_IN') {
 
