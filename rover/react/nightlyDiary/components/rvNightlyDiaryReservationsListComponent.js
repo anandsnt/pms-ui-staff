@@ -11,7 +11,7 @@ const isRoomIsAvailable = (roomId, state) => {
     });
     if (flagforAvailable) {
         return (
-            <NightlyDiaryUnAssignedContainer roomDetails={roomDetails} />
+            <NightlyDiaryAssignRoomContainer roomDetails={roomDetails} />
         );
     }
 

@@ -1,6 +1,6 @@
 const { connect } = ReactRedux;
 
-let calculateUnassignedRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, uarData, numberOfDays) => {
+let calculateAssignRoomPositionAndDuration = (diaryInitialDayOfDateGrid, uarData, numberOfDays) => {
     let nightDuration = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / numberOfDays;
     let diaryInitialDate = tzIndependentDate(diaryInitialDayOfDateGrid);
     let unassignedRoomStartDate = tzIndependentDate(uarData.fromDate);
@@ -41,14 +41,14 @@ let calculateUnassignedRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, ua
     return returnData;
 };
 
-const mapStateToNightlyDiaryUnAssignedContainerProps = (state) => ({
-    uar_data: calculateUnassignedRoomsPositionAndDuration(
+const mapStateToNightlyDiaryAssignRoomContainerProps = (state) => ({
+    uar_data: calculateAssignRoomPositionAndDuration(
         state.diaryInitialDayOfDateGrid, state.availableSlotsForAssignRooms, state.numberOfDays
     ),
     assignRoom: state.callBackFromAngular.unAssignedRoomSelect,
     availableSlotsForAssignRooms: state.availableSlotsForAssignRooms
 });
 
-const NightlyDiaryUnAssignedContainer = connect(
-    mapStateToNightlyDiaryUnAssignedContainerProps
+const NightlyDiaryAssignRoomContainer = connect(
+    mapStateToNightlyDiaryAssignRoomContainerProps
 )(NightlyDiaryAssignRoomComponent);
