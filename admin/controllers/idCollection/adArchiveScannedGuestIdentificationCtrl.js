@@ -42,7 +42,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         };
 
         $scope.validateToken = function() {
-            if ($scope.config.guest_id_archive_platform_token.length) {
+            if ($scope.config && $scope.config.guest_id_archive_platform_token && $scope.config.guest_id_archive_platform_token.length) {
                 return true;
             }
             return false;
@@ -61,13 +61,16 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
 
         $scope.dropBoxSignIn = function() {
             $scope.config.guest_id_archive_platform = 'dropbox';
+            $scope.config.guest_id_archive_platform_token = "";
             $scope.MODE = 'ACCESS_TOKEN';
         };
 
-        $scope.update = function(isSignedIn) {
-            $scope.GoogleAuth.grantOfflineAccess()
+        $scope.gapiSignIn = function() {
+            if ($scope.GoogleAuth) {
+                $scope.config.guest_id_archive_platform = 'google_drive';
+                $scope.GoogleAuth.grantOfflineAccess()
                 .then(function(res) {
-                    if (isSignedIn) {
+                    if (res.code) {
                         $scope.config.guest_id_archive_platform_token = res.code;
                         $scope.MODE = 'ACCESS_TOKEN';
                         setTimeout(function () {
@@ -75,11 +78,12 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                         }, 700);
                     }
                 });
-        };
-
-        $scope.gapiSignIn = function() {
-            $scope.config.guest_id_archive_platform = 'google_drive';
-            $scope.GoogleAuth.signIn();
+            } else {
+                GAPI.call(this, $scope);
+                $scope.errorMessage = ["Google client failed to load...please try again"];
+            }
+            
+            
         };
 
         $scope.saveConfig = function() {
