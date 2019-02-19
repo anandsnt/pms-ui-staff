@@ -1,10 +1,11 @@
 <!--</ad-common-parts-in-form-dir>-->
 <div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
-        <h2 translate>STATION_ID_COLLECTION_SETUP_HEADER</h2>
+        <h2 translate>GUEST_WEB_ID_COLLECTION_SETUP</h2>
         <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
     </header>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'" class="error-notification-dashboard ng-scope"></div>
         <form class="form float">
             <fieldset class="holder full-width" ng-show="MODE == 'CONFIGURED'">
                 <div class="form-title">
@@ -60,7 +61,7 @@
             </fieldset>
             <div class="actions float" ng-show="MODE=='DISCONNECTED'" >
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
-                <button type="button" class="button green" ng-click = "saveConfig">Save</button>
+                <button type="button" class="button green" ng-click = "saveConfig()">Save</button>
             </div>
 
             <fieldset class="holder full-width" ng-show ="MODE =='CONFIGURE'">
@@ -111,31 +112,32 @@
                         <input type="text" ng-model='config.guest_id_archive_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
                     </div>
                     <div class="entry">
-                        <label for="first-name">Last name <strong>*</strong></label>
+                        <label for="last-name">Last name <strong>*</strong></label>
                         <input type="text" ng-model='config.guest_id_archive_last_name' name="last-name" id="last-name" placeholder="Enter last name" value="" required="">
                     </div>
                     <div class="entry">
-                        <label for="first-name">Position <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_position' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                        <label for="position-name">Position <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_position' name="position-name" id="position-name" placeholder="Enter Position" value="" required="">
                     </div>
                 </div>
             </fieldset>
             <div class="actions float" ng-show ="MODE =='CONFIGURE_ON'">
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
-                <button type="button" class="button green"ng-click = "acceptTerms()">Accept and Continue</button>
+                <button type="button" class="button" ng-click = "acceptTerms()"
+                        ng-class="{'green': enableAcceptButton()}" ng-disabled="!enableAcceptButton()">Accept and Continue</button>
             </div>
 
             <fieldset class="holder full-width" ng-show ="MODE =='ACCESS_TOKEN'">
                 <div class="entry full-width">
                     <div class="entry">
-                        <label for="first-name">Access Token <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_platform_token' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                        <label for="token">Access Token <strong>*</strong></label>
+                        <input type="text" ng-model='config.guest_id_archive_platform_token' name="token" id="token" placeholder="Enter token" value="" required="">
                     </div>
                 </div>
             </fieldset>
             <div class="actions float" ng-show="MODE == 'ACCESS_TOKEN'" >
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
-                <button type="button" class="button green" ng-click = "saveConfig()">Save</button>
+                <button type="button" class="button" ng-click = "saveConfig()" ng-class="{'green': validateToken()}" ng-disabled="!validateToken()">Save</button>
             </div>
 
 

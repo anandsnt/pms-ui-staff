@@ -125,7 +125,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         $scope.mappedProducts = $scope.products.filter(function (product) {
             return $scope.chargeCodeMapings.some(function (chargeCodeMapping) {
                 if ($scope.data.selectedChargeCode === null) {
-                   $scope.data.selectedChargeCode = $scope.chargeCodes[0].value;
+                    $scope.data.selectedChargeCode = $scope.chargeCodes[0].value;
                 }
                 var chargeCodeObject = _.findWhere($scope.chargeCodes, {value: $scope.data.selectedChargeCode});
 
