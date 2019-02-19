@@ -229,7 +229,8 @@ angular.module('sntRover')
         function prepareChargeGroupsCodes (results) {
             var chargeGroupsCodes = [];
             var i, j, k, l = 51;
-            var cgEntries = _.where(results, { is_charge_group: true });
+            var cgEntriesWithoutSort = _.where(results, { is_charge_group: true }),
+                cgEntries = _.sortBy(cgEntriesWithoutSort, 'charge_group_id');
 
             for (i = 0, j = cgEntries.length; i < j; i++) {
                 if ( cgEntries[i].is_charge_group ) {
