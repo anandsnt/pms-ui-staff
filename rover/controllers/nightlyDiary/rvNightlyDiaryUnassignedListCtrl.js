@@ -89,8 +89,6 @@ angular.module('sntRover')
         listeners['SUCCESS_ROOM_ASSIGNMENT'] = $scope.$on('SUCCESS_ROOM_ASSIGNMENT', function(e, room ) {
             var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
-            $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
-
             // Update unassigned reservation list...
             unassignedReservationList = _.reject( unassignedReservationList,
                 function(obj) {
@@ -101,6 +99,8 @@ angular.module('sntRover')
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
             $scope.selectedItem = {};
+
+            $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         });
 
         listeners['RESET_UNASSIGNED_LIST_SELECTION'] = $scope.$on('RESET_UNASSIGNED_LIST_SELECTION', function() {

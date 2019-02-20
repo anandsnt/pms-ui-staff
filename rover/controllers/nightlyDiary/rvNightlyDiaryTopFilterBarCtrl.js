@@ -133,7 +133,6 @@ angular.module('sntRover')
             $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
             $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
         };
-       
 
         /*
          * Method to calculate from date and to date after shifting.

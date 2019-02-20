@@ -164,6 +164,7 @@ angular.module('sntRover')
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
+                        postData.page = 1;
                     }
 
                     if (roomId) {
@@ -185,15 +186,15 @@ angular.module('sntRover')
                         $scope.errorMessage = '';
                         $scope.diaryData.unassignedReservationList = data;
                     },
-                        postData = {
-                            'start_date': $scope.diaryData.fromDate,
-                            'no_of_days': $scope.diaryData.numberOfDays,
-                            'businessDate': $rootScope.businessDate
-                        },
-                        options = {
-                            params: postData,
-                            successCallBack: successCallBackFetchList
-                        };
+                    postData = {
+                        'start_date': $scope.diaryData.fromDate,
+                        'no_of_days': $scope.diaryData.numberOfDays,
+                        'businessDate': $rootScope.businessDate
+                    },
+                    options = {
+                        params: postData,
+                        successCallBack: successCallBackFetchList
+                    };
 
                     $scope.callAPI(RVNightlyDiarySrv.fetchUnassignedRoomList, options);
                 };
@@ -269,30 +270,63 @@ angular.module('sntRover')
                     $scope.diaryData.availableSlotsForAssignRooms = {};
                 };
 
+                var hideAssignOrMoveRoomSlots = function() {
+                    $scope.diaryData.isMoveRoomViewActive = false;
+                    $scope.diaryData.availableSlotsForAssignRooms = {};
+                    cancelReservationEditing();
+                    fetchRoomListDataAndReservationListData();
+                };
+
                 /*
-                 * Handle ASSIGN button click.
-                 * @param roomDetails - Current selected room details
-                 * @param reservationDetails - Current selected reservation details
-                 * @return {}
+                 *  Handle API call to update reservation MOVE or ASSIGN
+                 *  @param {object}  [roomDetails - Current selected room details]
+                 *  @param {object}  [reservationDetails - Current selected reservation details]
+                 *  @param {string}  [type - 'MOVE' or 'ASSIGN']
+                 *  @return {}
                  */
-                var unAssignedRoomSelect = (roomDetails, reservationDetails) => {
+                var callAPIforAssignOrMoveRoom = function( roomDetails, reservationDetails, type ) {
                     var successCallBackAssignRoom = function () {
                         $scope.errorMessage = '';
-                        $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
+                        if (type === 'ASSIGN') {
+                            $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
+                        }
+                        else if(type === 'MOVE') {
+                            hideAssignOrMoveRoomSlots();
+                        }
                     },
-                        postData = {
-                            "reservation_id": reservationDetails.reservationId,
-                            "room_number": roomDetails.room_number,
-                            "without_rate_change": true,
-                            "is_preassigned": false,
-                            "forcefully_assign_room": false
-                        },
-                        options = {
-                            params: postData,
-                            successCallBack: successCallBackAssignRoom
-                        };
+                    postData = {
+                        "reservation_id": reservationDetails.reservationId,
+                        "room_number": roomDetails.room_number,
+                        "without_rate_change": true,
+                        "is_preassigned": false,
+                        "forcefully_assign_room": false
+                    },
+                    options = {
+                        params: postData,
+                        successCallBack: successCallBackAssignRoom
+                    };
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
+                };
+
+                /*
+                 *  Handle ASSIGN button click.
+                 *  @param {object} [roomDetails - Current selected room details]
+                 *  @param {object} [reservationDetails - Current selected reservation details]
+                 *  @return {}
+                 */
+                var clickedAssignRoom = (roomDetails, reservationDetails) => {
+                    callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'ASSIGN');
+                };
+
+                /*
+                 *  Handle MOVE TO button click.
+                 *  @param {object} [roomDetails - Current selected room details]
+                 *  @param {object} [reservationDetails - Current selected reservation details]
+                 *  @return {}
+                 */
+                var clickedMoveRoom = (roomDetails, reservationDetails) => {
+                    callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'MOVE');
                 };
 
                 // Handle book room button actions.
@@ -626,7 +660,8 @@ angular.module('sntRover')
                         selectReservation,
                         extendShortenReservation,
                         checkReservationAvailability,
-                        unAssignedRoomSelect,
+                        clickedAssignRoom,
+                        clickedMoveRoom,
                         clickedBookRoom,
                         showOrHideSaveChangesButton
                     };

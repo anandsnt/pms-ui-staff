@@ -45,7 +45,7 @@ const mapStateToNightlyDiaryMoveRoomContainerProps = (state) => ({
     uar_data: calculateMoveRoomPositionAndDuration(
         state.diaryInitialDayOfDateGrid, state.availableSlotsForAssignRooms, state.numberOfDays
     ),
-    moveRoom: state.callBackFromAngular.unAssignedRoomSelect,
+    moveRoom: state.callBackFromAngular.clickedMoveRoom,
     availableSlotsForAssignRooms: state.availableSlotsForAssignRooms
 });
 
