@@ -209,4 +209,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Guest Details'
 	});
 
+	$stateProvider.state('unableToCheckn', {
+		url: '/unableToCheckn/:reason',
+		templateUrl:'/assets/common_templates/partials/checkin/gwReservationInEligibleToCheckin.html',
+		controller: 'unableToChecknCtrl',
+		title: 'Unable to Checkin'
+	});
+
 }]);

@@ -79,8 +79,29 @@
 				$rootScope.payment_method_used = res_data.payment_method_used;
 				$rootScope.paymentDetails = res_data.payment_details;
 
-				// navigate to next page
-				$state.go('checkinReservationDetails');
+				if ($rootScope.excludeRoutingReservations && $state.href("unableToCheckn") !== null) {
+
+					$scope.isLoading = true;
+					checkinConfirmationService.isReservationEligibleToCheckin({
+						'reservation_id': $rootScope.reservationID
+					}).then(function(response) {
+						$scope.isLoading = false;
+						if (!response.is_eligible_to_checkin) {
+							$state.go('unableToCheckn', {
+								'reason': response.reason
+							});
+						} else {
+							// navigate to next page
+							$state.go('checkinReservationDetails');
+						}
+					}, function() {
+						$rootScope.netWorkError = true;
+						$scope.isLoading = false;
+					});
+				} else {
+					// navigate to next page
+					$state.go('checkinReservationDetails');
+				}
 				
 			}, function() {
 				$rootScope.netWorkError = true;

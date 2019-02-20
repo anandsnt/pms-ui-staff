@@ -31,8 +31,7 @@
 			controller: ModalInstanceCtrl
 		};
 
-		if ($scope.pageValid) {
-
+		var setupPageActions = function() {
 			// next page actions
 			var verificationSuccessActions = function(response) {
 				// display options for room upgrade screen
@@ -65,7 +64,7 @@
 					if (response.status === 'failure') {
 						$rootScope.netWorkError = true;
 					} else {
-						verificationSuccessActions(response.data);	
+						verificationSuccessActions(response.data);
 					}
 				}, function() {
 					$rootScope.netWorkError = true;
@@ -76,7 +75,7 @@
 				$scope.isPosting = false;
 				$rootScope.netWorkError = false;
 			}
-			
+
 			// next button clicked actions
 			$scope.nextButtonClicked = function() {
 				var data = {
@@ -129,6 +128,28 @@
 				dateToSend = ($filter('date')(dateToSend, 'MM-dd-yyyy'));
 				$scope.closeCalender();
 			};
+		};
+
+		if ($rootScope.excludeRoutingReservations && $state.href("unableToCheckn") !== null) {
+
+			$scope.isPosting = true;
+			checkinConfirmationService.isReservationEligibleToCheckin({
+				'reservation_id': $rootScope.reservationID
+			}).then(function(response) {
+				$scope.isPosting = false;
+				if (!response.is_eligible_to_checkin) {
+					$state.go('unableToCheckn', {
+						'reason': response.reason
+					});
+				} else {
+					setupPageActions();
+				}
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isPosting = false;
+			});
+		} else {
+			setupPageActions();
 		}
 	};
 
