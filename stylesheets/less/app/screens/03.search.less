@@ -13,6 +13,318 @@
         } 
     }
 
+    .merge-cards {
+        background: rgba( 0, 0, 0, 0.05 );
+        position: absolute;
+        top: 0px;
+        right: 0;
+        padding: 30px 20px 20px;
+        .size(100%, 340px);
+        .box-shadow(inset 1px 0px 1px rgba(0, 0, 0, 0.1));
+        .hide();
+
+        .merge-header {
+            text-align: center;
+            text-transform: uppercase;
+            height: 80px;
+
+            h2 {
+                font-weight: 600;
+                font-size: 19px;
+            }
+
+            p {
+                font-size: 14px;
+                line-break: 14px;
+                margin-top: 5px;
+                color: @grey3;
+            }
+        }
+
+        .merge-content {
+            .calc-height( 100, 150 );
+
+            &.scrollable {
+                position: relative;
+
+                .wrapper {
+                    height: auto;
+                    padding-bottom: 10px;
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 5px;
+                    bottom: 25px;
+
+                    .iScrollIndicator {
+                        background: rgba( 0, 0, 0, 0.1 );
+                    }
+                }
+            }
+
+            .merge-status {
+                padding: 20px 0;
+                position: relative;
+                line-height: 20px;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                text-align: center;
+                color: @grey3;
+                .size(60px,100%);
+
+                &.green {
+                    color: @green;
+                }
+
+                &.red {
+                    color: @red;
+                }
+
+                &:after,
+                &:before {
+                    position: absolute;
+                    content: '';
+                    background: rgba(0, 0, 0, 0.1 );
+                    width: 2px;
+                    height: 20px;
+                    margin: auto;
+                    left: 0;
+                    right: 0;
+                }
+
+                &:after {
+                    bottom: 0;
+                }
+
+                &:before {
+                    top: 0;
+                }
+            }
+
+            .card {
+                position: relative;
+                width: 100%;
+                padding: 10px 10px 10px 50px;
+                background: @white;
+                margin-bottom: 1px;
+                min-height: 50px;
+                .box-shadow(1px 1px 0 rgba(0, 0, 0, 0.15));
+                #flexbox > .parent( column, center, '', '' );
+
+                &.with-button {
+                    padding-right: 50px;
+
+                    &.with-label {
+                        label {
+                            padding-right: 50px;
+                        }
+                    }
+
+                    .button {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        background: @grey1;
+                        z-index: 999;
+                        .box-shadow();
+                        .square(30px);
+
+                        .icons {
+                            background-size: 80px;
+                            &.icon-remove-40 {
+                                background-position: 4px -2503px;
+                            }
+                        }
+                    }
+                }
+
+                &.with-label {
+                    background: transparent;
+                    padding: 0;
+                    .box-shadow(none);
+                }
+
+                .merge-icon {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    background: @grey1;
+                    .square(30px);
+
+                    #loading-spinner {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                        margin: 0;
+                        background: transparent;
+
+                        &:after {
+                            position: absolute;
+                            top: 7px;
+                            left: 7px;
+                            border: 2px solid;
+                            border-color: #f6991b rgba(255, 255, 255, 0.4);
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+
+                    .guest-image {
+                        .square( 100% );
+                    }
+
+                    .icons {
+                        width: 100%;
+                        height: 100%;
+                        background-size: 80px;
+
+                        &.icon-action {
+                            &.icon-unassigned {
+                                background-position: 7px -4740px;
+                            }
+
+                            &.icon-completed {
+                                background-position: 7px -4900px;
+                            }
+                        }
+
+                        &.guest-image {
+                            background-size: 100px;
+                            &.icon-company {
+                                background-position: 8px -2926px;
+                                background-color: @ccard;
+                            }
+
+                            &.icon-travel-agent {
+                                background-position: 8px -3026px;
+                                background-color: @tacard;
+                            }
+                        }
+                    }
+                }
+
+                .primary {
+                    font-size: 14px;
+                    line-height: 14px;
+                    text-transform: uppercase;
+
+                    &.company {
+                        color: @ccard;
+                    }
+
+                    &.travel-agent {
+                        color: @tacard;
+                    }
+
+                    &.guest {
+                        color: @gcard;
+                    }
+                }
+
+                h2 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    line-height: 18px;
+                    white-space: initial;
+                }
+
+                p {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: @grey3;
+                    white-space: initial;
+                    margin: 0;
+
+                    &.error {
+                        color: @red;
+                    }
+                }
+
+                label {
+                    &.radio {
+                        position: relative;
+                        width: 100%;
+                        min-height: 50px;
+                        margin: 0 0 10px 0;
+                        padding: 10px 10px 10px 40px;
+
+                        .primary {
+                            .hide(); 
+                        }
+
+                        &.checked {
+                            .primary { .show(); }
+                        }
+                    }
+                }
+
+                &.no-address {
+                    label {
+                        &:not(.checked) {
+                            
+                            .icon-form {
+                                top: 0;
+                                bottom: 0;
+                                margin: auto;
+                            }
+
+                            h2 {
+                                line-height: 30px;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+
+            &.no-content {
+                padding: 0;
+                .calc-height( 100, 80 );
+
+                .icon-no-content {
+                    background-size: 50px;
+                    height: 50px;
+                    width: 50px;
+
+                    &.icon-cards {
+                        background-position: 0 -384px;
+                    }
+                }
+
+                .h1 {
+                    font-size: 24px;
+                    margin: 0;
+                }
+
+                .h2 {
+                    font-size: 18px;
+                }
+            }
+        }
+
+        .merge-actions {
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            height: 90px;
+            background: rgba( 0, 0, 0, 0.1 );
+            padding: 20px;
+            text-align: center;
+            .box-shadow(inset 0px 1px 1px rgba(0, 0, 0, 0.1));
+
+            button {
+                line-height: 50px;
+                &:first-child {
+                    margin-right: 20px;
+                }
+            }
+        }
+    }
+
     #find-cards {
         .find-cards-header {
             padding: 20px 20px 10px;
@@ -156,310 +468,6 @@
             }
         }
 
-        .merge-cards {
-            background: rgba( 0, 0, 0, 0.05 );
-            position: absolute;
-            top: 0px;
-            right: 0;
-            padding: 30px 20px 20px;
-            .size(100%, 340px);
-            .box-shadow(inset 1px 0px 1px rgba(0, 0, 0, 0.1));
-            .hide();
-
-            .merge-header {
-                text-align: center;
-                text-transform: uppercase;
-                height: 80px;
-
-                h2 {
-                    font-weight: 600;
-                    font-size: 19px;
-                }
-
-                p {
-                    font-size: 14px;
-                    line-break: 14px;
-                    margin-top: 5px;
-                    color: @grey3;
-                }
-            }
-
-            .merge-content {
-                .calc-height( 100, 150 );
-
-                &.scrollable {
-                    position: relative;
-
-                    .wrapper {
-                        height: auto;
-                        padding-bottom: 10px;
-                    }
-
-                    .iScrollVerticalScrollbar {
-                        top: 5px;
-                        bottom: 25px;
-
-                        .iScrollIndicator {
-                            background: rgba( 0, 0, 0, 0.1 );
-                        }
-                    }
-                }
-
-                .merge-status {
-                    padding: 20px 0;
-                    position: relative;
-                    line-height: 20px;
-                    font-weight: 600;
-                    font-size: 14px;
-                    text-transform: uppercase;
-                    text-align: center;
-                    color: @grey3;
-                    .size(60px,100%);
-
-                    &.green {
-                        color: @green;
-                    }
-
-                    &.red {
-                        color: @red;
-                    }
-
-                    &:after,
-                    &:before {
-                        position: absolute;
-                        content: '';
-                        background: rgba(0, 0, 0, 0.1 );
-                        width: 2px;
-                        height: 20px;
-                        margin: auto;
-                        left: 0;
-                        right: 0;
-                    }
-
-                    &:after {
-                        bottom: 0;
-                    }
-
-                    &:before {
-                        top: 0;
-                    }
-                }
-
-                .card {
-                    position: relative;
-                    width: 100%;
-                    padding: 10px 10px 10px 50px;
-                    background: @white;
-                    margin-bottom: 1px;
-                    min-height: 50px;
-                    .box-shadow(1px 1px 0 rgba(0, 0, 0, 0.15));
-                    #flexbox > .parent( column, center, '', '' );
-
-                    &.with-button {
-                        padding-right: 50px;
-
-                        &.with-label {
-                            label {
-                                padding-right: 50px;
-                            }
-                        }
-
-                        .button {
-                            position: absolute;
-                            top: 10px;
-                            right: 10px;
-                            background: @grey1;
-                            z-index: 999;
-                            .box-shadow();
-                            .square(30px);
-
-                            .icons {
-                                background-size: 80px;
-                                &.icon-remove-40 {
-                                    background-position: 4px -2503px;
-                                }
-                            }
-                        }
-                    }
-
-                    &.with-label {
-                        background: transparent;
-                        padding: 0;
-                        .box-shadow(none);
-                    }
-
-                    .merge-icon {
-                        position: absolute;
-                        top: 10px;
-                        left: 10px;
-                        background: @grey1;
-                        .square(30px);
-
-                        #loading-spinner {
-                            position: absolute;
-                            width: 100%;
-                            height: 100%;
-                            top: 0;
-                            left: 0;
-                            margin: 0;
-                            background: transparent;
-
-                            &:after {
-                                position: absolute;
-                                top: 7px;
-                                left: 7px;
-                                border: 2px solid;
-                                border-color: #f6991b rgba(255, 255, 255, 0.4);
-                                width: 15px;
-                                height: 15px;
-                            }
-                        }
-
-                        .icons {
-                            width: 100%;
-                            height: 100%;
-                            background-size: 80px;
-
-                            &.icon-action {
-                                &.icon-unassigned {
-                                    background-position: 7px -4740px;
-                                }
-
-                                &.icon-completed {
-                                    background-position: 7px -4900px;
-                                }
-                            }
-
-                            &.guest-image {
-                                background-size: 100px;
-                                &.icon-company {
-                                    background-position: 8px -2926px;
-                                    background-color: @ccard;
-                                }
-
-                                &.icon-travel-agent {
-                                    background-position: 8px -3026px;
-                                    background-color: @tacard;
-                                }
-                            }
-                        }
-                    }
-
-                    .primary {
-                        font-size: 14px;
-                        line-height: 14px;
-                        text-transform: uppercase;
-
-                        &.company {
-                            color: @ccard;
-                        }
-
-                        &.travel-agent {
-                            color: @tacard;
-                        }
-                    }
-
-                    h2 {
-                        font-size: 18px;
-                        font-weight: 600;
-                        line-height: 18px;
-                        white-space: initial;
-                    }
-
-                    p {
-                        font-size: 14px;
-                        line-height: 18px;
-                        color: @grey3;
-                        white-space: initial;
-                        margin: 0;
-
-                        &.error {
-                            color: @red;
-                        }
-                    }
-
-                    label {
-                        &.radio {
-                            position: relative;
-                            width: 100%;
-                            min-height: 50px;
-                            margin: 0 0 10px 0;
-                            padding: 10px 10px 10px 40px;
-    
-                            .primary {
-                                .hide(); 
-                            }
-    
-                            &.checked {
-                                .primary { .show(); }
-                            }
-                        }
-                    }
-
-                    &.no-address {
-                        label {
-                            &:not(.checked) {
-                                
-                                .icon-form {
-                                    top: 0;
-                                    bottom: 0;
-                                    margin: auto;
-                                }
-
-                                h2 {
-                                    line-height: 30px;
-                                }
-                                
-                            }
-                        }
-                    }
-                }
-
-                &.no-content {
-                    padding: 0;
-                    .calc-height( 100, 80 );
-
-                    .icon-no-content {
-                        background-size: 50px;
-                        height: 50px;
-                        width: 50px;
-
-                        &.icon-cards {
-                            background-position: 0 -384px;
-                        }
-                    }
-
-                    .h1 {
-                        font-size: 24px;
-                        margin: 0;
-                    }
-
-                    .h2 {
-                        font-size: 18px;
-                    }
-                }
-            }
-
-            .merge-actions {
-                bottom: 0;
-                left: 0;
-                position: absolute;
-                width: 100%;
-                height: 90px;
-                background: rgba( 0, 0, 0, 0.1 );
-                padding: 20px;
-                text-align: center;
-                .box-shadow(inset 0px 1px 1px rgba(0, 0, 0, 0.1));
-
-                button {
-                    line-height: 50px;
-                    &:first-child {
-                        margin-right: 20px;
-                    }
-                }
-            }
-        }
-
         &.show-merge {
             padding-right: 340px;
 
@@ -486,6 +494,67 @@
         }
     }
 
+    #find-guests {
+        .search-results {
+            li:not(.no-content) {
+                label {
+                    &.checkbox { 
+                        position: absolute;
+                        top: 0px;
+                        bottom: 0;
+                        left: 5px;
+                        margin: auto;
+                        padding: 0;
+                        .box-shadow(none);
+                        .square(40px);
+                        .hide();
+                    }
+                }
+
+                &.reservation {
+                    position: relative;
+                }
+            }
+        }
+        &.no-results {
+            .scrollable:not(.merge-content) {
+                height: 100%;
+            }
+        }
+        &:not(.no-results) {
+            .scrollable {
+                position: relative;
+                &:not(.merge-content) {
+                    height: 100%;
+                }
+            }
+        }
+        &.show-merge {
+            padding-right: 340px;
+
+            .merge-cards { .show(); }
+            .find-cards-header {
+                li {
+                    &.rate { .hide(); }
+                }
+            }
+            .search-results {
+                li:not(.no-content) {
+                    &.all-cards {
+                        label {
+                            &.checkbox { .show(); }
+                        }
+                        .data { .calc-width(100, 185); }
+                        .rate { .hide(); }
+                        a {
+                            padding-left: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     .search-results {
         position: relative;
 
@@ -2187,7 +2256,7 @@
                 position: relative;
 
                 .data {
-                    margin-right: 20px; 
+                    margin-right: 20px;
                     .calc-width(50, 130);
 
                     h2 {
@@ -2216,8 +2285,10 @@
                         }
                     }
                 }
+
                 .rate {
-                    line-height: 50px;
+                    line-height: 30px;
+                    font-size: 16px;
                     .calc-width(50, 130);
                 }
 

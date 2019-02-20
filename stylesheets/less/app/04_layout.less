@@ -1979,6 +1979,43 @@ body { overflow: hidden; }
 	                    }
 	                }
 	            }
+
+	            /* Guest Search (used with card-search) **/
+	            &.guest-search {
+	                
+	                .entry {
+	                    
+	                    &.search {
+	                        .calc-width( 100, 150 );
+	                    }
+	                }
+
+	                &.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 260 );
+	                        }
+	                    }
+	                }
+
+	                &.show-merge {
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 150 );
+	                        }
+	                    }
+
+	                    &.enable-adding {
+
+	                        .entry {
+	                            &.search {
+	                                .calc-width( 100, 260 );
+	                            }
+	                        }
+	                    }
+	                }
+	            }
 	        }
 		}
 	}
