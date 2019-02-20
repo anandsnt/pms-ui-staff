@@ -19,7 +19,7 @@ const NightlyDiaryMoveRoomComponent = createClass({
                 onClick={() => this.props.moveRoom(this.props.roomDetails, this.props.availableSlotsForAssignRooms)}
             >
                 <div className="reservation-data">
-                    MOVE
+                    MOVE TO
                 <span className="name">{this.props.roomDetails.room_number}</span>
                 </div>
             </div>
