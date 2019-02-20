@@ -38,7 +38,6 @@ GAPI = function ($scope) {
             'response_type': 'code token'
         }).then(function () {
             $scope.GoogleAuth = gapi.auth2.getAuthInstance();
-            $scope.GoogleAuth.isSignedIn.listen($scope.update);
         });
     };
 
