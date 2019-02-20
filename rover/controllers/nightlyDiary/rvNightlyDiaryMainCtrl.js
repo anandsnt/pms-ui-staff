@@ -546,7 +546,12 @@ angular.module('sntRover')
                  *  {object} [avaialble slots for ASSIGN/MOVE - data object]
                  */
                 listeners['SHOW_ASSIGN_ROOM_SLOTS'] = $scope.$on('SHOW_ASSIGN_ROOM_SLOTS', function (event, newData) {
-                    $scope.diaryData.isAssignRoomViewActive = true;
+                    if (newData.type === 'MOVE_ROOM') {
+                        $scope.diaryData.isMoveRoomViewActive = true;
+                    }
+                    else if (newData.type === 'ASSIGN_ROOM') {
+                        $scope.diaryData.isAssignRoomViewActive = true;
+                    }
                     $scope.diaryData.availableSlotsForAssignRooms = newData;
                     fetchRoomListDataAndReservationListData();
                 });

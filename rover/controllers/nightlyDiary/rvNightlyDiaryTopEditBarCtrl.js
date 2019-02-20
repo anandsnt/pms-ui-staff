@@ -65,7 +65,8 @@ angular.module('sntRover')
                             fromDate: selectedItem.arrival_date,
                             nights: selectedItem.number_of_nights,
                             reservationId: selectedItem.reservation_id,
-                            roomTypeId: selectedItem.room_type_id
+                            roomTypeId: selectedItem.room_type_id,
+                            type: 'MOVE_ROOM'
                         };
 
                         $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
