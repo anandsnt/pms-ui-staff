@@ -1,4 +1,5 @@
 input,
+textarea,
 select,
 .button:not(.ng-hide) {
     font-family: @fontFamily;
@@ -18,11 +19,21 @@ li {
     }
 }
 
-input {
+input,
+textarea {
     color: @textColor;
     background: @inputBackground;
+    width: 100%;
+}
+
+input {
     padding: 0 20px;
-    .size(64px, 100%);
+    height: 64px;   
+}
+
+textarea {
+    padding: 20px;
+    resize: none;
 }
 
 select {
@@ -123,6 +134,15 @@ select {
     &.short {
         width: 60% !important;
         margin: 0 auto;
+    }
+
+    &.no-action {
+        .action { .hide(); }
+        .entry {
+            &.input {
+                width: 100%;
+            }
+        }
     }
 }
 

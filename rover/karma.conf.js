@@ -36,6 +36,7 @@ module.exports = function(config) {
             '../shared/directives/**/*.js',
             '../shared/sntTransitionManager/**/*.js',
             '../shared/lib/js/Utils.js',
+            '../shared/sntCanvasUtil/**/*.js',
             './rvApp.js',
             './rvSntApp.js',
             './rvCacheVaultModule.js',

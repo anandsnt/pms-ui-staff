@@ -50,17 +50,19 @@ admin.controller('adHotelLegalSettingsController',
 			}
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
+			$scope.legalSettings.no_of_original_invoices = parseInt($scope.legalSettings.no_of_original_invoices);
+			$scope.legalSettings.no_of_original_emails = parseInt($scope.legalSettings.no_of_original_emails);
 			var	options = {
 				params: {
 					'hotel_id': $scope.data.id,
 					'data': $scope.legalSettings
 				},
 				successCallBack: function(data) {
-					if (data.errors.length === 0) {
+					if (data.warnings.length === 0) {
 						$scope.successMessage = "Saved Succesfully!";
 					}
 					$scope.legalSettings = $scope.legalSettingsCopy;
-					$scope.errorMessage = data.errors;
+					$scope.errorMessage = data.warnings;
 				}
 			};
 
@@ -70,7 +72,7 @@ admin.controller('adHotelLegalSettingsController',
 			$scope.successMessage = "";
 			$scope.errorMessage = "";
 		};
-		$scope.clickedVoidButton = function() {
+		$scope.modifyVoidButton = function() {
 			$scope.legalSettings.is_void_bill_enabled = ($scope.legalSettings.is_void_bill_enabled && $scope.legalSettings.is_bill_lock_enabled);
 		};
 		/*

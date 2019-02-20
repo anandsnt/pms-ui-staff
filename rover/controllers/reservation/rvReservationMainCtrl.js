@@ -657,6 +657,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             //
             $scope.otherData.segmentsEnabled = baseData.demographics.is_use_segments;
             $scope.otherData.segments = baseData.demographics.segments;
+
         };
 
         var openRateAdjustmentPopup = function(room, index, lastReason) {
@@ -825,9 +826,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 });
             },
             setReservationStayDateDetails = function (data, currentRoom) {
-                var reservationStayDetails = [];
+                var reservationStayDetails = [],
+                    roomTypeId = '';
                 
                 _.each(currentRoom.stayDates, function(staydetailInfo, date) {
+                    // CICO-59948 For inhouse reservation, set room type id to that of the current stay dates
+                    if ($scope.reservationData.inHouse) {
+                        roomTypeId =  staydetailInfo.roomTypeId || '';                        
+                    } else {
+                        roomTypeId = currentRoom.roomTypeId;
+                    }
                     reservationStayDetails.push({
                         date: date,
                         // In case of the last day, send the first day's occupancy
@@ -837,7 +845,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                             return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                         })(),
-                        room_type_id: currentRoom.roomTypeId,
+                        room_type_id: roomTypeId,
                         room_id: currentRoom.room_id,
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),

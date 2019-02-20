@@ -60,7 +60,7 @@
 
     <fieldset class="holder right">
         <div class="entry full-width">
-            <ad-textarea rows="5"
+            Feature Settings <ad-textarea rows="5"
                          div-class="full-width"
                          text-area-class="full-width"
                          value="config.emails"
@@ -68,6 +68,40 @@
                          placeholder="">
             </ad-textarea>
         </div>
+    </fieldset>
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Feature Settings</h3>
+        </div>
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.stay_info_after_checkout"
+                              label="{{'STAY_INFO_AFTER_CHECKOUT'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder">
+            <ad-toggle-button is-checked="config.routed_charges"
+                              label="{{'CRM_ROUTE_CHARGES_LABEL'| translate}}"></ad-toggle-button>
+            <p class="holder full-width"><em>{{'CRM_ROUTE_CHARGES_DESCRIPTION'| translate}}</em></p>
+        </fieldset>
+        <fieldset class="holder left">
+            <div class="entry full-width">
+                <label>STAY INFO REVENUE</label>
+                <div class="switch-container">
+                    <div class="switch-button with-text"
+                         ng-class="{'on' : config.send_detailed_revenue}">
+                        <input type="checkbox" ng-model="config.send_detailed_revenue"/>
+                        <label class="data-off">
+                            <span class="button orange">GROUPED</span>
+                            <span class="value">DETAILED</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="value">GROUPED</span>
+                            <span class="button orange">DETAILED</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
     </fieldset>
 </ad-common-parts-in-form-dir>
 

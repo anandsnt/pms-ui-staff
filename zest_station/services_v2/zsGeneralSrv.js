@@ -75,7 +75,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sister-city': 'Sister City Hotel NY',
             'twa': 'TWA Hotel',
             'carrollton-inn': 'Carrollton Inn',
-            'match': 'Hotel the Match'
+            'match': 'Hotel the Match',
+            'liason': 'Liason DC'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -728,6 +729,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.signOut = function() {
             return zsBaseWebSrv.getJSON('/logout');
+        };
+
+        this.detachGuest = function(params) {
+            var url = '/zest_station/reservations/' + params.id + '/detach_accompanying_guest';
+
+            return zsBaseWebSrv.postJSON(url, params);
         };
     }
 ]);

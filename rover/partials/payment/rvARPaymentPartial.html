@@ -6,7 +6,7 @@
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
            type="number" value="{{payment.amount}}" 
-           class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
+           class="amount" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
 

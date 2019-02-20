@@ -233,6 +233,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         var manipulateAdditionalDetails = function(data) {
             // hourly rate?
             $scope.rateData.is_hourly_rate = data.is_hourly_rate;
+            $scope.rateData.is_public_rate = data.is_public_rate;
 
             // rules and restrictions
             $scope.rateData.min_advanced_booking = data.min_advanced_booking;

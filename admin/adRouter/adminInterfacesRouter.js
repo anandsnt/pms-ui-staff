@@ -256,6 +256,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.vectronSetup', {
+        templateUrl: '/assets/partials/interfaces/Vectron/adVectronSetup.html',
+        controller: 'ADVectronSetupCtrl',
+        url: '/vectron/setup',
+        resolve: {
+            vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('vectron');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.ifc_revenue_centers', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenterConfig.html',
         controller: 'adComtrolRevenueCenterCtrl',
@@ -628,6 +639,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
                 }]
+        }
+    });
+
+    $stateProvider.state('admin.turkishinvoiceSetup', {
+        templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
+        controller: 'adInterfaceCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'turkishinvoice';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('turkishinvoice');
+            }]
         }
     });
 
