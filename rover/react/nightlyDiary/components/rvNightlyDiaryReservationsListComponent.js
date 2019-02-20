@@ -1,6 +1,4 @@
 const isRoomAvailable = (roomId, state, type) => {
-    console.log(state);
-    console.log(type);
     const unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
     let flagforAvailable = false;
     let roomDetails = {};
@@ -11,9 +9,14 @@ const isRoomAvailable = (roomId, state, type) => {
             roomDetails = item;
         }
     });
-    if (flagforAvailable) {
+    if (flagforAvailable && type === 'ASSIGN') {
         return (
             <NightlyDiaryAssignRoomContainer roomDetails={roomDetails} />
+        );
+    }
+    if (flagforAvailable && type === 'MOVE') {
+        return (
+            <NightlyDiaryMoveRoomContainer roomDetails={roomDetails} />
         );
     }
 
