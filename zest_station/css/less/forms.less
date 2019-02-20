@@ -135,6 +135,15 @@ select {
         width: 60% !important;
         margin: 0 auto;
     }
+
+    &.no-action {
+        .action { .hide(); }
+        .entry {
+            &.input {
+                width: 100%;
+            }
+        }
+    }
 }
 
 .entry {
