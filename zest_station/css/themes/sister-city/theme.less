@@ -66,10 +66,10 @@
         background-image: url("../css/themes/sister-city/logo.svg");
         background-repeat: no-repeat;
         background-size: contain;
-        width: 100%;
-        height: 133px;
+        width: 156px;
+        height: 118px;
         background-position: center;
-        margin-top: 7.9%;
+        margin-top: 5%;
     }
 
     * {
@@ -82,11 +82,18 @@
     h1 {
         font-size: 21px;
         line-height: 24px;
+
+        * {
+            font-size: 21px;
+            line-height: 24px;
+        }
     }
 
     input,
     select,
-    textarea {
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
         border-bottom: 2px solid @white;
         border-radius: 0;
 
@@ -137,6 +144,11 @@
         font-size: 16px;
         line-height: 21px;
 
+        * {
+            font-size: 16px;
+            line-height: 21px;
+        }
+
         &.transparent {
             background: transparent;
             border: none;
@@ -177,6 +189,11 @@
         .button {
             font-size: 16px;
             line-height: 21px;
+
+            * {
+                font-size: 16px;
+                line-height: 21px;
+            }
         }
         &.pull-right {
             width: 160px;
@@ -242,9 +259,23 @@
                 line-height: 36px;
             }
 
+            .cc-details {
+                font-size: 16px;
+                    line-height: 21px;
+                * {
+                    font-size: 16px;
+                    line-height: 21px;
+                }
+            }
+
             &:not(.icon-text):not(.break) > span {
                 font-size: 16px;
                 line-height: 21px;
+
+                * {
+                    font-size: 16px;
+                    line-height: 21px;
+                }
             }
             &.break { .hide(); }
             /*&.break > span {
@@ -355,6 +386,7 @@
         textarea {
             background: @backgroundColor;
         }
+ 
 
         .button {
             color: @brandColor;
@@ -539,6 +571,6 @@
     }
 
     .ui-datepicker {
-        top: 60% !important;
+        top: 70% !important;
     }
 }
