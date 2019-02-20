@@ -104,7 +104,12 @@ angular.module('housekeepingModule', [])
             controller: 'RVWorkManagementCtrl',
             resolve: {
                 employees: function(RVWorkManagementSrv) {
-                    return RVWorkManagementSrv.fetchMaids();
+                    var params = {
+                        page: 1,
+                        per_page: 9999
+                    };
+
+                    return RVWorkManagementSrv.fetchMaids(params);
                 },
                 workTypes: function(RVWorkManagementSrv) {
                     return RVWorkManagementSrv.fetchWorkTypes();
@@ -143,7 +148,12 @@ angular.module('housekeepingModule', [])
                     return RVHkRoomStatusSrv.fetchActiveWorksheetEmp();
                 },
                 fetchHKStaffs: function(RVWorkManagementSrv) {
-                    return RVWorkManagementSrv.fetchHKStaffs();
+                    var params = {
+                        page: 1,
+                        per_page: 9999
+                    };
+
+                    return RVWorkManagementSrv.fetchHKStaffs(params);
                 },
                 allRoomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchAllRoomTypes();

@@ -44,6 +44,7 @@ module.exports = {
                 // sharedRoot + 'cordova.js',
                 sharedRoot + 'sntTransitionManager/**/*.js',
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
+                sharedRoot + 'sntCanvasUtil/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',

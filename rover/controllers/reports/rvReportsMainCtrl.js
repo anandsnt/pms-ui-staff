@@ -2362,9 +2362,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.errorMessage = response;
                 $scope.$emit('hideLoader');
-
+                
                 $log.info(reportMsgs['REPORT_API_FAILED']);
-                $rootScope.$broadcast(reportMsgs['REPORT_API_FAILED']);
+                $rootScope.$broadcast(reportMsgs['REPORT_API_FAILED'], response);
             };
 
             $scope.clearErrorMessage();

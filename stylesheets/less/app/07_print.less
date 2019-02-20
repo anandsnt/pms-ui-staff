@@ -3662,7 +3662,7 @@
 /* Journal                  ==============================*/
     .journal-header,
     .journal-print,
-    .journal-groups { .hide; }
+    .journal-groups,
     .grid-footer { .hide; }
 
     /* Header / Footer ***/
@@ -3791,119 +3791,142 @@
                 }
 
                 li {
-                    span:not(currency) { font-weight: 400; }
+                    span:not(.currency) { font-weight: 400; }
                 }
             }
         }
 
-        /* Revenue / Payment ***/
+        /* Grids ***/
         .journal-grid {
 
             .grid-header {
-                padding: 0 4pt;
+                padding: 0 8pt;
                 background: @grey1;
-                .float;
+                #flexbox > .parent(row wrap, flex-end, center, '');
 
                 li {
                     font-weight: 600;
                     padding: 4pt 0;
                     margin: 0;
-                    .pull-left;
 
-                    &.value { width: 80px; }
-                }
-
-                &.revenue {
-                    li {
-                        &.name { .calc-width(80, 40); }
-                        &.number { .calc-width(20, 40); }
+                    &.name {
+                        margin-right: auto;
                     }
-                }
 
-                &.payment {
-                    li {
-                        &.name { .calc-width(40, 30); }
-                        &.code { .calc-width(30, 30); }
-                        &.number { .calc-width(30, 30); }
+                    &.code,
+                    &.number,
+                    &.value {
+                        text-align: right;
+                        width: 2cm;
                     }
                 }
             }
 
             .grid-footer {
+                text-align: right;
                 font-weight: 600;
+                line-height: 30px;
+                margin: 0;
+                padding-right: 8pt;
 
-                &.payment {
-                    padding-left: -webkit-calc(~"90% - 50px");
-                    padding-left: -moz-calc(~"90% - 50px");
-                    padding-left: calc(~"90% - 50px");
-
-                    span { margin-left: 20px; }
-                }
+                span:not(.currency) { margin-right: 4pt; }
             }
 
             .toggle {
                 color: @textColor;
-                padding: 4pt;
+                padding: 4pt 4pt 4pt 8pt;
                 margin: 0;
-                page-break-inside: avoid;
-                .show;
-                .float;
+                break-inside: avoid;
+                background: transparent;
+                border-bottom: 1px solid @grey2;
+                #flexbox > .parent(row wrap, flex-end, center, '');
 
-                strong,
-                span:not(.currency) { .pull-left; }
+                .name {
+                    font-weight: 600;
+                    padding-right: 4pt;
+                    margin-right: auto;
+                }
 
-                .name { font-weight: 600; }
-                .value { width: 80px; }
+                .code,
+                .number,
+                .value {
+                    text-align: right;
+                    padding-right: 4pt;
+                    width: 2cm;
+                }
 
-                &.has-arrow { background-image: none; }
+                > .code {
+                    text-align: left;
+                }
+
+                > .name + .code {
+                    text-align: right;
+                }
             }
 
-            /* 1st level ***/
+            /* 1st Level ***/
             .grid-group {
-                display: inline;
-
-                > .toggle {
-                    border-bottom: 1px solid @grey2;
-
-                    &.revenue-title {
-                        .name { .calc-width(80, 40); }
-                        .number { .calc-width(20, 40); }
-                    }
-
-                    &.payment-title {
-                        .name { .calc-width(40, 30); }
-                        .code { .calc-width(30, 30); }
-                        .number { .calc-width(30, 30); }
-                    }
+                > .toggle.active {
+                    font-weight: 600;
+                    background: @grey1;
                 }
             }
 
-            /* 2nd level ***/
+            /* 2nd Level ***/
             .grid-charge {
-                .hide;
+                > .toggle.active:not(:first-child) {
+                    margin-top: .5cm;
+                }
 
-                > .toggle {
-                    border-bottom: 1px solid @grey2;
-
-                    .code { width: 80px; }
-                    .name { .calc-width(100, 160); }
+                .grid-items:not(:last-child) {
+                    margin-bottom: .5cm;
                 }
             }
 
-            /* 3rd level **/
+            /* 3rd Level ***/
             .grid-items {
-                .hide;
+                table-layout: fixed;
 
-                thead {
-                    th {
-                        background: transparent;
-                        font-weight: 400;
-                        color: @grey3;
-                        padding: 4pt 8pt 4pt 0;
+                th,
+                td {
+                    line-height: 1;
+                    padding: 4pt 0 4pt 8pt;
+
+                    &.align-right {
+                        text-align: right;
+                    }
+
+                    &:last-child {
+                        padding-right: 8pt;
                     }
                 }
 
-                td:last-child { width: 80px; }
+                th {
+                    color: @grey3;
+                    vertical-align: middle;
+                    background: transparent;
+
+                    &:not([class*="cell-"]) {
+                        width: 2cm;
+                    }
+                }
+
+                td {
+                    vertical-align: top;
+
+                    strong {
+                        font-weight: 600;
+                    }
+
+                    .grey-text,
+                    .adjusted {
+                        color: @grey3;
+                    }
+                }
+
+                .cell-row {
+                    .show();
+                }
 
                 input {
                     font-size: 8pt;
@@ -3922,8 +3945,11 @@
                 .pagination { .hide; }
             }
 
+            /* Print ***/
             &.print-details {
-                .grid-header { background: transparent; }
+                .grid-header { 
+                    background: transparent; 
+                }
 
                 .grid-group {
                     > .toggle {
@@ -3944,6 +3970,43 @@
                     &.hidden { display: table !important; }
                 }
             }
+        }
+
+        /* Summary ***/
+        &.summary {
+            padding: 0 2cm;
+
+            .journal-grid {
+                .grid-items {
+                    margin-left: 0;
+                    width: 100%;
+                }
+
+                &:not(:last-child) {
+                    margin-bottom: 1cm;
+                }
+            }
+        }
+
+        /* Journal Ledger Print ***/
+        .report-content {
+            display: none !important;
+            
+            .charge-code {
+                display: none !important;
+            }
+
+            &.print-details {
+                .charge-code {
+                    display: table-row !important;
+                }
+            }
+        }
+        
+        /* Summary by Ledger ***/
+        &.print-ledger {
+            .report-content { display: block !important; }
+            .wrapper { display: none !important; }
         }
 
         /* Cashier ***/
@@ -4062,9 +4125,6 @@
                 }
             }
         }
-
-        /* Summary ***/
-        &.summary { padding: 0 2cm; }
     }
 
 /* Registration             ==============================*/
