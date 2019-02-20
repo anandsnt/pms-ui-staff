@@ -1,4 +1,6 @@
-const isRoomIsAvailable = (roomId, state) => {
+const isRoomAvailable = (roomId, state, type) => {
+    console.log(state);
+    console.log(type);
     const unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
     let flagforAvailable = false;
     let roomDetails = {};
@@ -18,7 +20,7 @@ const isRoomIsAvailable = (roomId, state) => {
     return false;
 };
 
-const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showUnAssignedRooms, state }) => {
+const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showAssignRooms, showMoveRooms, state }) => {
 
     return (
         <div className={roomRowClass}>
@@ -45,9 +47,15 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                                 : ''
                         }
                         {
-                            showUnAssignedRooms ?
+                            showAssignRooms ?
 
-                                isRoomIsAvailable(item.id, state)
+                                isRoomAvailable(item.id, state, 'ASSIGN')
+                                : ''
+                        }
+                        {
+                            showMoveRooms ?
+
+                                isRoomAvailable(item.id, state, 'MOVE')
                                 : ''
                         }
                         {
