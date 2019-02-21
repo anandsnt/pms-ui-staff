@@ -10,14 +10,24 @@
 				<ad-textbox value="prefetchData.code" label = "{{'CHARGE_CODE'| translate}}" placeholder = "{{'CHARGE_CODE_PLACEHOLDER'| translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "{{'DESCRIPTION'| translate}} " placeholder = "{{'DESC_PLACEHOLDER' | translate }}" required="true"></ad-textarea>
+				
+				<div class="entry">
+						<label translate>NO_MANUAL_POSTINGS</label>
+
+						<div id="div-upsell-rooms" class="switch-button single"
+						ng-class="{ on : prefetchData.allow_manual_posting }">
+							<input type="checkbox" name="upsell-rooms" ng-model="prefetchData.allow_manual_posting">
+							<span class="switch-icon"></span>
+						</div>
+					</div>
                                 
-                                <div class="entry" style="margin-bottom:15px;" ng-show='isStandAlone' ng-hide='!isStandAlone'>    
-                                    <ad-dropdown  label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "yes" div-class="full-width"></ad-dropdown>
-                                </div>
-                                
-                                <div class="entry" style="margin-bottom:15px;" ng-show='!isStandAlone' ng-hide='isStandAlone'>
-                                    <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "no" div-class="full-width"></ad-dropdown>
-                                </div>  
+                <div class="entry" style="margin-bottom:15px;" ng-show='isStandAlone' ng-hide='!isStandAlone'>    
+                    <ad-dropdown  label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "yes" div-class="full-width"></ad-dropdown>
+                </div>
+                
+                <div class="entry" style="margin-bottom:15px;" ng-show='!isStandAlone' ng-hide='isStandAlone'>
+                    <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "no" div-class="full-width"></ad-dropdown>
+                </div>  
                                 
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
 

@@ -13,4 +13,5 @@
 "SELECT_CHARGE_CODE":"Select Charge Code",
 "FAVOURITE":"Favorite",
 "POSITIVE_SIGN": "+",
-"NEGATIVE_SIGN": "-"
+"NEGATIVE_SIGN": "-",
+"NO_MANUAL_POSTINGS": "No manual postings"
