@@ -14,7 +14,11 @@ describe('ADGuestCardFieldsCtrl', function() {
             $q = _$q_;
             $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
-            $scope.guestCardFields = {"is_father_name_visible": true, "is_mother_name_visible": false, "is_birth_place_visible": true, "is_gender_visible": false, "is_registration_number_visible": false};
+            $scope.guestCardFields = {"is_father_name_visible": true, 
+                                      "is_mother_name_visible": false, 
+                                      "is_birth_place_visible": true, 
+                                      "is_gender_visible": false, 
+                                      "is_registration_number_visible": false};
         });
 
         $controller('ADGuestCardFieldsCtrl', {
