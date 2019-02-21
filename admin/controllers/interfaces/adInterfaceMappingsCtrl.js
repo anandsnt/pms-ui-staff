@@ -118,6 +118,7 @@ admin.controller('adInterfaceMappingsCtrl', [
 
         $scope.onClickUpdate = function() {
             var params = _.omit($scope.mapping, ['editing']);
+
             params.interface = $scope.interface;
 
             $scope.callAPI(adInterfaceMappingSrv.updateMapping, {
