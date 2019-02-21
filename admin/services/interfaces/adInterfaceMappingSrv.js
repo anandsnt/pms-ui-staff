@@ -7,19 +7,19 @@ admin.service('adInterfaceMappingSrv', [
         };
 
         service.createMapping = function(params) {
-            var interface = params.interface.toLowerCase();
+            var integration = params.interface.toLowerCase();
 
             delete params.interface;
 
-            return ADBaseWebSrvV2.postJSON('/ifc/' + interface + '/mappings', params);
+            return ADBaseWebSrvV2.postJSON('/ifc/' + integration + '/mappings', params);
         };
 
         service.fetchMappings = function(params) {
-            var interface = params.interface.toLowerCase();
+            var integration = params.interface.toLowerCase();
 
             delete params.interface;
 
-            return ADBaseWebSrvV2.getJSON('/ifc/' + interface + '/mappings', params);
+            return ADBaseWebSrvV2.getJSON('/ifc/' + integration + '/mappings', params);
         };
 
         service.deleteMapping = function(params) {
@@ -27,11 +27,11 @@ admin.service('adInterfaceMappingSrv', [
         };
 
         service.updateMapping = function(params) {
-            var interface = params.interface.toLowerCase();
+            var integration = params.interface.toLowerCase();
 
             delete params.interface;
 
-            return ADBaseWebSrvV2.putJSON('/ifc/' + interface + '/mappings/' + params.id, params);
+            return ADBaseWebSrvV2.putJSON('/ifc/' + integration + '/mappings/' + params.id, params);
         };
     }])
 ;
