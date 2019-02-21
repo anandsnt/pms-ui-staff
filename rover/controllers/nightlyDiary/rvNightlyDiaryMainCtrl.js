@@ -35,8 +35,7 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
-                var isFromStayCard = $stateParams.origin === 'STAYCARD',
-                    listeners = {};
+                var isFromStayCard = $stateParams.origin === 'STAYCARD';
 
                 /*
                  * utility method Initiate controller
@@ -507,13 +506,13 @@ angular.module('sntRover')
                 /*
                  * Cancel button click edit bar
                  */
-                listeners['CANCEL_RESERVATION_EDITING'] = $scope.$on("CANCEL_RESERVATION_EDITING", function () {
+                $scope.addListener('CANCEL_RESERVATION_EDITING', function () {
                     cancelReservationEditing();
                 });
                 /*
                  * Save button click edit bar
                  */
-                listeners['SAVE_RESERVATION_EDITING'] = $scope.$on("SAVE_RESERVATION_EDITING", function () {
+                $scope.addListener('SAVE_RESERVATION_EDITING', function () {
                     saveReservationEditing();
                     if (!!$scope.popupData && !$scope.popupData.disableOverBookingButton) {
                         ngDialog.close();                        
@@ -524,7 +523,7 @@ angular.module('sntRover')
                  * To update diary data - rooms & reservations according to changed date constraints.
                  * @param {Number} RoomId - selected room id from search filters.
                 */
-                listeners['UPDATE_RESERVATIONLIST'] = $scope.$on('UPDATE_RESERVATIONLIST', function (event, roomId) {
+                $scope.addListener('UPDATE_RESERVATIONLIST', function (event, roomId) {
                     if (!!roomId) {
                         $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                     }
@@ -532,7 +531,7 @@ angular.module('sntRover')
                     fetchRoomListDataAndReservationListData(roomId);
                 });
 
-                listeners['UPDATE_UNASSIGNED_RESERVATIONLIST'] = $scope.$on('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
+                $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
                     resetUnassignedList();
                     fetchUnassignedReservationList();
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
@@ -542,7 +541,7 @@ angular.module('sntRover')
                  * To refresh diary data - rooms & reservations.
                  * @param {Number} RoomId - selected room id from search filters.
                 */
-                listeners['REFRESH_DIARY_ROOMS_AND_RESERVATIONS'] = $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function (event, roomId) {
+                $scope.addListener('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function (event, roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
                     cancelReservationEditing();
                     fetchRoomListDataAndReservationListData(roomId);
@@ -552,7 +551,7 @@ angular.module('sntRover')
                  * Handle event emitted from child controller.
                  * To refresh diary data - rooms and reservations after applying filter.
                  */
-                listeners['REFRESH_DIARY_SCREEN'] = $scope.$on('REFRESH_DIARY_SCREEN', function () {
+                $scope.addListener('REFRESH_DIARY_SCREEN', function () {
                     $scope.diaryData.paginationData.page = 1;
                     fetchRoomListDataAndReservationListData();
                     cancelReservationEditing();
@@ -564,7 +563,7 @@ angular.module('sntRover')
                  *  Reset filter selections and,
                  *  Refresh diary data - rooms and reservations after applying filter.
                  */
-                listeners['RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY'] = $scope.$on('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
+                $scope.addListener('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
                     if ( $scope.diaryData.selectedRoomTypes.length > 0 || $scope.diaryData.selectedFloors.length > 0 ) {
                         resetUnassignedList();
                         $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
@@ -579,7 +578,7 @@ angular.module('sntRover')
                  *  {object} [event]
                  *  {object} [avaialble slots for ASSIGN/MOVE - data object]
                  */
-                listeners['SHOW_ASSIGN_ROOM_SLOTS'] = $scope.$on('SHOW_ASSIGN_ROOM_SLOTS', function (event, newData) {
+                $scope.addListener('SHOW_ASSIGN_ROOM_SLOTS', function (event, newData) {
                     if (newData.type === 'MOVE_ROOM') {
                         $scope.diaryData.isMoveRoomViewActive = true;
                     }
@@ -593,7 +592,7 @@ angular.module('sntRover')
                 /*  
                  *  To Hide 'ASSIGN' or 'MOVE' room button in Diary.
                  */
-                listeners['HIDE_ASSIGN_ROOM_SLOTS'] = $scope.$on('HIDE_ASSIGN_ROOM_SLOTS', function () {
+                $scope.addListener('HIDE_ASSIGN_ROOM_SLOTS', function () {
                     $scope.diaryData.isAssignRoomViewActive = false;
                     $scope.diaryData.isMoveRoomViewActive = false;
                     $scope.diaryData.availableSlotsForAssignRooms = {};
@@ -642,12 +641,7 @@ angular.module('sntRover')
                 /* Handle event emitted from child controllers.
                  * To toggle available and booked.
                  */
-                listeners['TOGGLE_BOOKED_AVAIALBLE'] = $scope.$on('TOGGLE_BOOKED_AVAIALBLE', callbackForBookedOrAvailableListner);
-
-                // destroying listeners
-                angular.forEach(listeners, function (listener) {
-                    $scope.$on('$destroy', listener);
-                });
+                $scope.addListener('TOGGLE_BOOKED_AVAIALBLE', callbackForBookedOrAvailableListner);
 
                 /**
                  * utility method to pass callbacks from
