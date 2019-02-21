@@ -457,17 +457,6 @@ angular.module('sntRover')
                 };
 
                 /*
-                * Show messages
-                */
-                var openMessagePopup = function () {
-                    ngDialog.open({
-                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryMessages.html',
-                        scope: $scope,
-                        closeByDocument: true
-                    });
-                };
-
-                /*
                  * Function to cancel editing of a reservation
                  */
                 var cancelReservationEditing = function () {
