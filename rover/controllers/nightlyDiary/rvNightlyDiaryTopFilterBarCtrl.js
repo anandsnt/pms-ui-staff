@@ -203,8 +203,13 @@ angular.module('sntRover')
         // Handle Nigthtly/Hourly toggle
         $scope.toggleHourlyNightly = false;
         $scope.navigateToHourlyDiary = function() {
+            var dateToSend = $rootScope.businessDate;
+
+            if ($stateParams.start_date) {
+                dateToSend = $scope.diaryData.fromDate;
+            }
             $state.go("rover.diary", {
-                checkin_date: $scope.diaryData.fromDate
+                checkin_date: dateToSend
             });
             $scope.toggleHourlyNightly = true;
         };
