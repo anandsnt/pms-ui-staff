@@ -1,5 +1,4 @@
-const { createClass, PropTypes } = React;
-const { findDOMNode } = ReactDOM;
+const { createClass } = React;
 
 const NightlyDiaryAvailableRoomListComponent = createClass({
     getStyles() {
@@ -26,7 +25,7 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
         }
         avialableRoomPosition = avialableRoomPosition + 'px';
         let width = nightDuration;
-        
+
         if (this.props.state.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
             width = width - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
         } else if (this.props.state.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
