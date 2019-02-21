@@ -159,7 +159,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
-				$scope.prefetchData.allow_manual_posting = (typeof data.allow_manual_posting === "undefined") ? false : data.allow_manual_posting;
+				$scope.prefetchData.allow_manual_posting = angular.isUndefined(data.allow_manual_posting) ? false : data.allow_manual_posting;
 				$scope.prefetchData.selected_fees_code = $scope.prefetchData.selected_fees_code || '';
 				$scope.addIDForPaymentTypes();
                 $scope.stateAttributes.selectedPaymentType = getPaymentTypeCompositeID({
@@ -290,7 +290,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				item.calculation_rule_list = $scope.generateCalculationRule(index);
 				item.calculation_rules = [];
 				if (item.calculation_rule_list.length !== 0 && item.selected_calculation_rule) {
-					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule)].charge_code_id_list;
+					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule, 10)].charge_code_id_list;
 				}
 			});
             
