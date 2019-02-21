@@ -13,7 +13,6 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
         $scope.selectedItem = {};
-        var listeners = {};
 
         // Handle validation popup close.
         $scope.closeDialog = function() {
@@ -86,7 +85,7 @@ angular.module('sntRover')
             retrieveAvailableRooms(item);
         };
 
-        listeners['SUCCESS_ROOM_ASSIGNMENT'] = $scope.$on('SUCCESS_ROOM_ASSIGNMENT', function(e, room ) {
+        $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function(e, room ) {
             var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
             // Update unassigned reservation list...
@@ -103,12 +102,8 @@ angular.module('sntRover')
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         });
 
-        listeners['RESET_UNASSIGNED_LIST_SELECTION'] = $scope.$on('RESET_UNASSIGNED_LIST_SELECTION', function() {
+        $scope.addListener('RESET_UNASSIGNED_LIST_SELECTION', function() {
              $scope.selectedItem = {};
         });
 
-        // destroying listeners
-        angular.forEach(listeners, function (listener) {
-            $scope.$on('$destroy', listener);
-        });
 }]);
