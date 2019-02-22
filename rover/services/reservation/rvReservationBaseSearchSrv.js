@@ -127,7 +127,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 url = '/api/hotel_current_time';
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
-                if (start_date) {
+                if (start_date && typeof start_date === 'string') {
                     data.hotel_time.date = start_date;
                 }
                 deferred.resolve(data);
