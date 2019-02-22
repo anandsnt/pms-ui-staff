@@ -1,4 +1,4 @@
-const isRoomIsAvailable = (roomId, state) => {
+const isRoomAvailable = (roomId, state, type) => {
     const unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
     let flagforAvailable = false;
     let roomDetails = {};
@@ -9,16 +9,21 @@ const isRoomIsAvailable = (roomId, state) => {
             roomDetails = item;
         }
     });
-    if (flagforAvailable) {
+    if (flagforAvailable && type === 'ASSIGN') {
         return (
-            <NightlyDiaryUnAssignedContainer roomDetails={roomDetails} />
+            <NightlyDiaryAssignRoomContainer roomDetails={roomDetails} />
+        );
+    }
+    if (flagforAvailable && type === 'MOVE') {
+        return (
+            <NightlyDiaryMoveRoomContainer roomDetails={roomDetails} />
         );
     }
 
     return false;
 };
 
-const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showUnAssignedRooms, state }) => {
+const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, roomRowClass, showAssignRooms, showMoveRooms, state }) => {
 
     return (
         <div className={roomRowClass}>
@@ -45,9 +50,15 @@ const NightlyDiaryReservationsListComponent = ({ reservationsListToComponent, ro
                                 : ''
                         }
                         {
-                            showUnAssignedRooms ?
+                            showAssignRooms ?
 
-                                isRoomIsAvailable(item.id, state)
+                                isRoomAvailable(item.id, state, 'ASSIGN')
+                                : ''
+                        }
+                        {
+                            showMoveRooms ?
+
+                                isRoomAvailable(item.id, state, 'MOVE')
                                 : ''
                         }
                         {

@@ -3,9 +3,13 @@ const {connect} = ReactRedux;
  * To convert current selected reservation params to use in stay range component
  * @param object currentSelectedReservation
  */
-let convertCurrentSelectedReservation = (currentSelectedReservation, selectedReservationId, dateFormat) => {
+let convertCurrentSelectedReservation = (currentSelectedReservation, selectedReservationId, dateFormat, isMoveRoomViewActive) => {
 
     let stayRangeArrivalClass = "grid-stay-range";
+
+    if (isMoveRoomViewActive) {
+        stayRangeArrivalClass += " disable-element";
+    }
 
     if (selectedReservationId) {
         currentSelectedReservation.arrivalStyle = {};
@@ -26,12 +30,13 @@ let convertCurrentSelectedReservation = (currentSelectedReservation, selectedRes
 
 
 const mapStateToNightlyDiaryStayRangeContainerProps = (state) => ({
-    currentSelectedReservation: convertCurrentSelectedReservation(state.currentSelectedReservation, state.selectedReservationId, state.dateFormat),
+    currentSelectedReservation: convertCurrentSelectedReservation(state.currentSelectedReservation, state.selectedReservationId, state.dateFormat, state.isMoveRoomViewActive),
     extendShortenReservation: state.callBackFromAngular.extendShortenReservation,
     showOrHideSaveChangesButton: state.callBackFromAngular.showOrHideSaveChangesButton,
     checkReservationAvailability: state.callBackFromAngular.checkReservationAvailability,
     numberOfDays: state.numberOfDays,
-    isPmsProductionEnvironment: state.isPmsProductionEnvironment
+    isPmsProductionEnvironment: state.isPmsProductionEnvironment,
+    isMoveRoomViewActive: state.isMoveRoomViewActive
 
 });
 

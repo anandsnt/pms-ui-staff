@@ -398,7 +398,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 var noOfAvailableDates = data.rooms[0].available_dates.length;
 
                 if (diffrenceBtwnDates() > noOfAvailableDates) {
-                    $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ noOfAvailableDates +' nights. By booking more nights room number will be unassigned.';
+                    $scope.validationMsg = 'Room ' + data.rooms[0].room_no + ' can be booked only for ' + noOfAvailableDates + ' nights. By booking more nights room number will be unassigned.';
                     resetRoomDetailsIfInvalid();
                     showValidationPopup();
                 }

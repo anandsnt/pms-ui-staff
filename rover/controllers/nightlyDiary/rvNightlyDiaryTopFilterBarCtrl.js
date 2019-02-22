@@ -16,7 +16,6 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
-        var listeners = {};
 
         /*
          * Utility method to shift date.
@@ -95,7 +94,7 @@ angular.module('sntRover')
             });
         };
         // Catching event from date picker controller while date is changed.
-        listeners['DATE_CHANGED'] = $scope.$on('DATE_CHANGED', function () {
+        $scope.addListener('DATE_CHANGED', function () {
             var isRightShift = true;
 
             if ($scope.diaryData.numberOfDays === 7) {
@@ -108,7 +107,7 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
-        listeners['FETCH_COMPLETED_DATE_LIST_DATA'] = $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
+        $scope.addListener('FETCH_COMPLETED_DATE_LIST_DATA', function() {
             $scope.diaryData.hasMultipleMonth = checkDateRangeHaveMultipleMonths();
         });
 
@@ -133,7 +132,6 @@ angular.module('sntRover')
             $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
             $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
         };
-       
 
         /*
          * Method to calculate from date and to date after shifting.
@@ -178,10 +176,12 @@ angular.module('sntRover')
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
-            $scope.diaryData.fromDate = $rootScope.businessDate;
+            $scope.diaryData.fromDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
             init();
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         };
 
         // To toggle filter and unassigned list.
@@ -204,8 +204,13 @@ angular.module('sntRover')
         // Handle Nigthtly/Hourly toggle
         $scope.toggleHourlyNightly = false;
         $scope.navigateToHourlyDiary = function() {
+            var dateToSend = $rootScope.businessDate;
+
+            if ($stateParams.start_date) {
+                dateToSend = $scope.diaryData.fromDate;
+            }
             $state.go("rover.diary", {
-                checkin_date: $scope.diaryData.fromDate
+                checkin_date: dateToSend
             });
             $scope.toggleHourlyNightly = true;
         };
@@ -240,8 +245,4 @@ angular.module('sntRover')
 
         init();
 
-        // destroying listeners
-        angular.forEach(listeners, function(listener) {
-            $scope.$on('$destroy', listener);
-        });
 }]);

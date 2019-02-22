@@ -213,7 +213,6 @@ const NightlyDiaryStayRangeComponent = createClass ({
             props.showOrHideSaveChangesButton(false); 
         }
 
-
         // If flag moved to set for 0 night stay
         if (state.departurePosition === state.oneNightDeparturePosition) {
 
