@@ -63,16 +63,18 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             }
         };
 
-        $scope.dropBoxSignIn = function() {
-            $scope.config.guest_id_archive_platform = 'dropbox';
+        var setPlatform = function(platform) {
+            $scope.config.guest_id_archive_platform = platform;
             $scope.config.guest_id_archive_platform_token = "";
             $scope.MODE = 'ACCESS_TOKEN';
+        }
+
+        $scope.dropBoxSignIn = function() {
+            setPlatform("dropbox");
         };
 
         $scope.connectToS3 = function() {
-            $scope.config.guest_id_archive_platform = 's3';
-            $scope.config.guest_id_archive_platform_token = "";
-            $scope.MODE = 'ACCESS_TOKEN';
+            setPlatform("s3")
         };
 
         $scope.gapiSignIn = function() {
