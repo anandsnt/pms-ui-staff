@@ -8,7 +8,7 @@ module.exports = {
 				roverRoot + "controllers/guests/*.js",				
 				roverRoot + "services/guestcard/rvGuestCardSrv.js",
 				roverRoot + "services/guestcard/rvGuestCardActivityLogSrv.js",
-
+				roverRoot + "controllers/rvMergeCardsCtrl.js",
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]
