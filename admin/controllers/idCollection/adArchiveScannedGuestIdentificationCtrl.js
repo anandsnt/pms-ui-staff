@@ -67,14 +67,14 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             $scope.config.guest_id_archive_platform = platform;
             $scope.config.guest_id_archive_platform_token = "";
             $scope.MODE = 'ACCESS_TOKEN';
-        }
+        };
 
         $scope.dropBoxSignIn = function() {
             setPlatform("dropbox");
         };
 
         $scope.connectToS3 = function() {
-            setPlatform("s3")
+            setPlatform("s3");
         };
 
         $scope.gapiSignIn = function() {
