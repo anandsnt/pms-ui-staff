@@ -141,6 +141,31 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
+    //
+    // $stateProvider.state('admin.derbysoftSetup', {
+    //     templateUrl: '/assets/partials/interfaces/DerbySoft/adDerbySoftSetup.html',
+    //     controller: 'adCRSCommonCtrl',
+    //     // url: '/interfaces/setup/:id',
+    //     onEnter: ['$stateParams', function($stateParams) {
+    //         $stateParams.id = 'derbysoft';
+    //     }],
+    //     resolve: {
+    //         config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+    //             return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
+    //         }]
+    //     }
+    // });
+
+    $stateProvider.state('admin.derbysoftSetup', {
+        templateUrl: '/assets/partials/interfaces/DerbySoft/adDerbySoftSetup.html',
+        controller: 'ADDerbySoftSetupCtrl',
+        url: '/derbysoft/setup',
+        resolve: {
+            vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
+            }]
+        }
+    });
 
     $stateProvider.state('admin.verticalBookingSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
