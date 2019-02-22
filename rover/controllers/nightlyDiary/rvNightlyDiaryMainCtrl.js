@@ -289,7 +289,7 @@ angular.module('sntRover')
                         if (type === 'ASSIGN') {
                             $scope.$broadcast('SUCCESS_ROOM_ASSIGNMENT', roomDetails);
                         }
-                        else if(type === 'MOVE') {
+                        else if (type === 'MOVE') {
                             hideAssignOrMoveRoomSlots();
                         }
                     },

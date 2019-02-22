@@ -85,7 +85,7 @@ angular.module('sntRover')
             retrieveAvailableRooms(item);
         };
 
-        $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function(e, room ) {
+        $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function() {
             var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
             // Update unassigned reservation list...

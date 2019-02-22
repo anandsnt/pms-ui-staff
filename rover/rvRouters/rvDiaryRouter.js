@@ -10,9 +10,8 @@ angular
                 if (!!$stateParams.checkin_date) {
                     return RVReservationBaseSearchSrv.fetchCurrentTime($stateParams.checkin_date);
                 }
-                else {
-                    return RVReservationBaseSearchSrv.fetchCurrentTime();
-                }
+                
+                return RVReservationBaseSearchSrv.fetchCurrentTime();
             },
             baseSearchData: function(RVReservationBaseSearchSrv) {
                 return RVReservationBaseSearchSrv.fetchBaseSearchData();
