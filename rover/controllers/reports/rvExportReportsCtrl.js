@@ -817,7 +817,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         $scope.runScheduleNow = function () {
             var params = {
-                id: $scope.selectedEntityDetails.id
+                id: $scope.selectedEntityDetails.id,
+                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1
             };
 
             var getFtpAddress = function (id) {

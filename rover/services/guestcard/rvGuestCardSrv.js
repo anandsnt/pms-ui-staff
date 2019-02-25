@@ -3,6 +3,8 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
     'rvBaseWebSrvV2',
     function ($q, RVBaseWebSrvV2) {
 
+        var guestFieldData = {};
+
         this.PER_PAGE_COUNT = 50;
 
         /**
@@ -15,11 +17,22 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 url = '/api/guest_details';
 
             RVBaseWebSrvV2.getJSON(url, data).then(function (data) {
+                guestFieldData = {
+                    "is_father_name_visible": data.is_father_name_visible,
+                    "is_gender_visible": data.is_gender_visible,
+                    "is_mother_name_visible": data.is_mother_name_visible,
+                    "is_registration_number_visible": data.is_registration_number_visible,
+                    "is_birth_place_visible": data.is_birth_place_visible
+                };
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.setGuestFields = function() {
+            return guestFieldData;
         };
 
         /**
