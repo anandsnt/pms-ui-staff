@@ -30,7 +30,10 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             });
             return deferred.promise;
         };
-
+        /*
+         * CICO-63251
+         * @return object
+         */
         this.setGuestFields = function() {
             return guestFieldData;
         };
