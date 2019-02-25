@@ -216,7 +216,7 @@ angular.module('sntRover')
         };
 
         /*
-         *  Utility method to check whether we need to show Toggle DIARY H/N
+         *  Utility method to check whether we need to show Toggle DIARY D/N
          *  Based on settings values inside Reservation settings.
          */
         $scope.hideToggleMenu = function() {

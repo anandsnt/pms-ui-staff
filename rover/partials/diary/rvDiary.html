@@ -32,7 +32,7 @@
         </div>
 
         <!-- Day or Night Use Diary -->
-        <div class="entry switch switch-view">
+        <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
             <div class="switch-button" ng-class="{'on': toggleHourlyNightly}"> <!-- Remove class 'on' when L4 is not checked -->
                 <input ng-click="navigateToNightlyDiary()" id="diary-hours-days" type="checkbox"> <!-- When checked showing this (Day Use) diary. When not checked showing Night Use Diary. -->
                 <label class="data-off">
