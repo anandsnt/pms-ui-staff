@@ -1,4 +1,4 @@
-sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
+sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog, $timeout) {
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
@@ -175,6 +175,22 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         emailRequest.to_address = $scope.data.to_address;
         emailRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
+    };
+
+    $scope.clickedFinalInvoiceButton = function() {
+        $scope.isInvoiceStepOneActive = false;
+        $timeout(function() {
+            $scope.isInvoiceStepTwoActive  = true;
+        }, 500);
+        
+    };
+
+    $scope.clickedProceedButton = function() {
+        $scope.isInvoiceStepTwoActive  = false;
+        
+        $timeout(function() {
+            $scope.isInvoiceStepThreeActive = true;
+        }, 500);
     };
 
     /*
