@@ -1,0 +1,105 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div class="inline-edit">
+        <header class="content-title float">
+            <h2 translate> GUEST_CARD_FIELDS</h2>
+            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            
+        </header>
+        <section class="content-scroll">
+        <form class="form float" >
+            <fieldset class="holder full-width">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            
+            <table id="languages" class="grid datatable">
+                <thead>
+                    <tr>
+                        <th class="header" translate>FIELD_NAME</th>
+                        <th class="header" translate>VISIBLE</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td header-class="width-90" translate>
+                            NAME_OF_FATHER 
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_father_name_visible }" ng-click="clickedStatus('is_father_name_visible')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                       
+                    </tr>
+                    <tr>
+                        <td header-class="width-90" translate>
+                            NAME_OF_MOTHER
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_mother_name_visible }" ng-click="clickedStatus('is_mother_name_visible')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                       
+                    </tr>
+                    <tr>
+                        <td header-class="width-90" translate>
+                             PLACE_OF_BIRTH
+                        </td>
+                       <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_birth_place_visible }" ng-click="clickedStatus('is_birth_place_visible')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td header-class="width-90" translate>
+                             GENDER
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_gender_visible }" ng-click="clickedStatus('is_gender_visible')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td header-class="width-90" translate>
+                             VEHICLE_REGISTRATION_NUMBER
+                        </td>
+                        <td data-item="2" data-title="'Status'" class="" header-class="width-10">
+                            <div class="entry">
+                                <div class="switch-button single" ng-class="{ on: guestCardFields.is_registration_number_visible }" ng-click="clickedStatus('is_registration_number_visible')">
+                                    <input type="checkbox">
+                                    <span class="switch-icon"></span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                    </tr>                  
+                </tbody>
+            </table>
+        </fieldset>
+             <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" translate="">Cancel</button>
+                <button type="button" ng-click="saveGuestCardFields()" class="button green">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+       
+
+    </div>
+</section>
