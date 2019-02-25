@@ -237,7 +237,7 @@ angular.module('sntRover')
                     var srvParams = {};
 
                     $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
-                    $scope.diaryData.hideMoveButton = reservation.do_not_move;
+                    $scope.diaryData.hideMoveButton = reservation.no_room_move;
                     if (!$scope.diaryData.isEditReservationMode) {
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = reservation;
