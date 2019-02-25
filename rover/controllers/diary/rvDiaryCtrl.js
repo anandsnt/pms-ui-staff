@@ -2632,7 +2632,7 @@ angular.module('sntRover')
 	$scope.toggleHourlyNightly = true;
 	$scope.navigateToNightlyDiary = function() {
 		$state.go("rover.nightlyDiary", {
-			start_date: propertyTime.hotel_time.date
+			start_date: $scope.gridProps.filter.arrival_date
 		});
 		$scope.toggleHourlyNightly = false;
 	};
