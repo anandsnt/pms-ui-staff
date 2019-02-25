@@ -7,7 +7,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                     $scope.MODE = 'CONFIGURE';
                 } else if ( $scope.config.guest_id_archive_enabled && TURN_ON) {
                     $scope.MODE = 'CONFIGURE_ON';
-                } else if ($scope.config.guest_id_archive_platform_token) {
+                } else if ($scope.config.guest_id_archive_platform) {
                     $scope.MODE = 'CONFIGURED';
                 } else {
                     $scope.MODE = 'DISCONNECTED';
@@ -17,6 +17,9 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
                 if ($scope.config.guest_id_archive_platform === 'dropbox') {
                     $scope.connctedDetails.name = 'Drop Box';
                     $scope.connctedDetails.iconUrl = '/assets/images/archive-option-dropbox.png';
+                } else if ($scope.config.guest_id_archive_platform === 's3') {
+                    $scope.connctedDetails.name = 'AWS';
+                    $scope.connctedDetails.iconUrl = '/assets/images/archive-option-aws.png';
                 } else {
                     $scope.connctedDetails.name = 'Google Drive';
                     $scope.connctedDetails.iconUrl = '/assets/images/archive-option-gdrive.png';
@@ -42,7 +45,8 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         };
 
         $scope.validateToken = function() {
-            if ($scope.config && $scope.config.guest_id_archive_platform_token && $scope.config.guest_id_archive_platform_token.length) {
+            if ($scope.config && (($scope.config.guest_id_archive_platform_token && $scope.config.guest_id_archive_platform_token.length)
+                || ($scope.config.aws_secret_access_key && $scope.config.aws_access_key_id))) {
                 return true;
             }
             return false;
@@ -59,10 +63,18 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             }
         };
 
-        $scope.dropBoxSignIn = function() {
-            $scope.config.guest_id_archive_platform = 'dropbox';
+        var setPlatform = function(platform) {
+            $scope.config.guest_id_archive_platform = platform;
             $scope.config.guest_id_archive_platform_token = "";
             $scope.MODE = 'ACCESS_TOKEN';
+        };
+
+        $scope.dropBoxSignIn = function() {
+            setPlatform("dropbox");
+        };
+
+        $scope.connectToS3 = function() {
+            setPlatform("s3");
         };
 
         $scope.gapiSignIn = function() {
