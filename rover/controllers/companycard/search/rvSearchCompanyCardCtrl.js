@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout', 'RVCompanyCardSrv', '$state',
-	function ($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout, RVCompanyCardSrv, $state) {
+angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout', 'RVCompanyCardSrv', '$state', 'rvPermissionSrv',
+	function ($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout, RVCompanyCardSrv, $state, rvPermissionSrv) {
 		var self = this,
 			transitionParams = null;
 
@@ -204,8 +204,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.onViewChange = function() {
 			if (!$scope.viewState.isViewSelected) {
 				$scope.viewState.isCompanyCardSelected = true;
-				self.resetSelectionsForMerge();
 			}
+			self.resetSelectionsForMerge();
 			$scope.viewState.canMerge = null;
 			$scope.queryEntered();
 		};
@@ -525,6 +525,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.viewState.selectedCardsForMerge = transitionParams.selectedIds;
 				$scope.queryEntered();
 			}
+			$scope.hasMergeViewPermission = rvPermissionSrv.getPermissionValue('MERGE');
 
 		};
 

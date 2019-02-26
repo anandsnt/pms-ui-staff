@@ -6,7 +6,7 @@
             <!-- add .disabled if showing archived -->
             <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
                 <!-- Add disabled="disabled" if showing archived -->
-                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()">
+                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()" ng-disabled="!hasMergeViewPermission">
                 <label class="data-off">
                     <span class="value">View</span>
                     <span class="switch-icon">Merge</span>
@@ -181,7 +181,7 @@
                         <div class="card" ng-repeat="card in viewState.selectedCardsForMerge" ng-if="!card.isPrimary"
                             ng-class="{'with-button': getErrorMsg(card) !== ''}">
                             <span class="merge-icon">
-                                <div id="loading-spinner" ng-show="showVerifyMergeProcessActivityIndicator" />
+                                <div id="loading-spinner" ng-show="showVerifyMergeProcessActivityIndicator"></div>
                                 <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                                 <span class="icons icon-action icon-completed" ng-if="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                             </span>
