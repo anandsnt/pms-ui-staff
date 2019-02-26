@@ -182,7 +182,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         emailRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
-
+    /*
+     * Clicked final invoice button - initial popup
+     */
     $scope.clickedFinalInvoiceButton = function() {
         $scope.isInvoiceStepOneActive = false;
         $timeout(function() {
@@ -190,7 +192,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         }, 500);
         
     };
-
+    /*
+     * Clicked Proceed button
+     */
     $scope.clickedProceedButton = function() {
         $scope.isInvoiceStepTwoActive  = false;
         
@@ -198,7 +202,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.isInvoiceStepThreeActive = true;
         }, 500);
     };
-
+    /*
+     * Once print done show the popup of success message
+     */
     var updateWindow = $scope.$on("UPDATE_WINDOW", function() {
         $scope.isInvoiceStepFourActive  = false;
 
