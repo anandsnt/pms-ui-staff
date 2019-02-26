@@ -355,6 +355,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return undefined
 		 */
 		var onTransactionFetchSuccess = function(data, moveChargeData) {
+
 			$scope.hasPrintFolioEnabled = data.is_print_folio_enabled;
 			$scope.transactionsDetails = data;
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
@@ -444,9 +445,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 *
 		 */
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
-
-			$scope.shouldGenerateFolioNumber = true;	
+				
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
+			if ($scope.isFromPaymentScreen) {
+				$scope.shouldGenerateFolioNumber = true;
+			}
 			getTransactionDetails();
 		});
 
@@ -916,7 +919,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedPrint = function(requestParams) {
-			//$scope.closeDialog();
 			printBillCard(requestParams);
 		};
 
@@ -924,9 +926,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
-			
-			$scope.$broadcast("UPDATE_WINDOW");
-			//$scope.switchTabTo('TRANSACTIONS');
+			if ($scope.shouldGenerateFinalInvoice) {
+				$scope.$broadcast("UPDATE_WINDOW");
+			} else {
+				$scope.closeDialog();
+			}
         };
 
 		var printBillCard = function(requestParams) {
@@ -1420,10 +1424,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
 
-		var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
-			$scope.shouldGenerateFolioNumber = true;
-		});
+		// var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
+		// 	$scope.shouldGenerateFolioNumber = true;
+		// });
 
-		$scope.$on( '$destroy', updateGenerateFolioFlag );
+		// $scope.$on( '$destroy', updateGenerateFolioFlag );
 	}
 ]);
