@@ -1207,25 +1207,22 @@
         .sidebar-right {
             position: absolute;
             top: 0;
-            right: -270px;
-            padding-left: 25px;
-            width: 295px;
+            right: -295px;
             z-index: 99999;
             .size(100%, 295px);
-            .calc-height(100, 150);
             .transition(right, .2s, cubic-bezier(.10, .10, .25, .90));
             .show();
             
             .rightMenuHandle {
                 position: absolute;
                 top: 20px;
-                left: 0;
+                left: -25px;
                 cursor: e-resize !important;
                 z-index: 90;
                 background-color: @grey1;
                 background-image: @icons;
-                background-repeat: no-repeat, repeat;
-                background-position: 5px -3807px, 0 0;
+                background-repeat: no-repeat;
+                background-position: 7px -3807px;
                 .size(50px, 25px);
                 #border-radius > .left(5px);
 
@@ -1352,10 +1349,7 @@
 
             &.open {
                 right: 0;
-
-                .scrollable {
-                    .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
-                }
+                .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
             }
         }
 
