@@ -916,7 +916,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedPrint = function(requestParams) {
-			$scope.closeDialog();
+			//$scope.closeDialog();
 			printBillCard(requestParams);
 		};
 
@@ -924,7 +924,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
-			$scope.switchTabTo('TRANSACTIONS');
+			
+			$scope.$broadcast("UPDATE_WINDOW");
+			//$scope.switchTabTo('TRANSACTIONS');
         };
 
 		var printBillCard = function(requestParams) {
@@ -1222,23 +1224,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNo = billNo;
 			$scope.isSettledBill = isActiveBill;
 			$scope.isInformationalInvoice = false;
-			$scope.isEmailedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_emailed_once;
-	    	$scope.isPrintedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_printed_once;
-	    	$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
-	    	$scope.reservationBillData = $scope.transactionsDetails;
+			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
+			$scope.reservationBillData = $scope.transactionsDetails;
 
-	    	if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.transactionsDetails.is_bill_lock_enabled && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
-	    		$scope.isInvoiceStepOneActive = true;
-	    		$scope.isInvoiceStepThreeActive = false;
-	    		$scope.shouldGenerateFinalInvoice = true;
-	    	} else {
-	    		$scope.isInvoiceStepOneActive = false;
-	    		$scope.isInvoiceStepThreeActive = true;
-	    		$scope.shouldGenerateFinalInvoice = false;
-	    	}
+			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.transactionsDetails.is_bill_lock_enabled && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
+				$scope.isInvoiceStepOneActive = true;
+				$scope.isInvoiceStepThreeActive = false;
+				$scope.shouldGenerateFinalInvoice = true;
+			} else {
+				$scope.isInvoiceStepOneActive = false;
+				$scope.isInvoiceStepThreeActive = true;
+				$scope.shouldGenerateFinalInvoice = false;
+			}
 			$scope.isInvoiceStepTwoActive  = false;
-	    	$scope.isInvoiceStepFourActive  = false;
-	    	$scope.isInvoiceStepFiveActive  = false;
+			$scope.isInvoiceStepFourActive  = false;
+			$scope.isInvoiceStepFiveActive  = false;
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',
