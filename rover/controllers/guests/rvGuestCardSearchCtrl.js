@@ -6,8 +6,9 @@ angular.module('sntRover').controller('guestCardSearchController',
   'ngDialog',
   '$timeout',
   '$state',
-  '$filter',  
-   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $filter) {
+  '$filter',
+  'rvPermissionSrv',  
+   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $filter, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
         var self = this,
@@ -255,6 +256,8 @@ angular.module('sntRover').controller('guestCardSearchController',
                 $scope.textInQueryBox = $stateParams.textInQueryBox;
                 $scope.queryEntered();
             }
+
+            $scope.hasMergeViewPermission = rvPermissionSrv.getPermissionValue('MERGE');
         };
 
         // Checks whether search results should be shown or not

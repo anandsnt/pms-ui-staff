@@ -20,8 +20,10 @@
                         <input type="radio" ng-model="selectedItem.isPrimary" ng-click="onPrimaryGuestSelectionChange(selectedItem.id)"
                             name="card_primary">
                         <span class="primary" ng-class="{'company': escapeNull(selectedItem.account_type) === 'COMPANY', 'company': escapeNull(selectedItem.account_type) === 'TRAVELAGENT', 'guest': !selectedItem.account_type}">Primary</span>
-                        <h2>{{getGuestName(selectedItem.first_name, selectedItem.last_name)}}</h2>
-                        <p ng-hide="!escapeNull(selectedItem.address.city) && !escapeNull(selectedItem.address.state)">{{selectedItem.address.city}} {{selectedItem.address.state}}</p>
+                        <h2 ng-if="isGuestCard">{{getGuestName(selectedItem.first_name, selectedItem.last_name)}}</h2>
+                        <h2 ng-if="!isGuestCard">{{selectedItem.account_name}}</h2>
+                        <p ng-hide="(!escapeNull(selectedItem.address.city) && !escapeNull(selectedItem.address.state) ) || !isGuestCard">{{selectedItem.address.city}} {{selectedItem.address.state}}</p>
+                        <p ng-hide="!escapeNull(selectedItem.account_address) || isGuestCard">{{selectedItem.account_address}}</p>
                     </label>
                     <button type="button" class="button with-icon only-icon" ng-click="removeSelectedCard(selectedItem)">
                         <span class="icons icon-remove-40"></span>
@@ -32,14 +34,16 @@
             <div ng-if="viewState.hasInitiatedMergeVerification">
                 <div class="card">
                     <div class="merge-icon">
-                        <figure class="guest-image" ng-if="!escapeNull(viewState.selectedPrimaryCard.account_type)">
+                        <figure class="guest-image" ng-if="isGuestCard">
                             <img src="{{viewState.selectedPrimaryCard.image_url}}" />
                         </figure>
-                        <span class="guest-image icons" ng-class="{'icon-company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}" ng-if="escapeNull(viewState.selectedPrimaryCard.account_type)"></span>
+                        <span class="guest-image icons" ng-class="{'icon-company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}" ng-if="!isGuestCard"></span>
                     </div>
-                    <span class="primary" ng-class="{'company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT', 'guest': !viewState.selectedPrimaryCard.account_type}">Primary</span>
-                    <h2>{{getGuestName(viewState.selectedPrimaryCard.first_name, viewState.selectedPrimaryCard.last_name)}}</h2>
-                    <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.address.city) && !escapeNull(viewState.selectedPrimaryCard.address.state)">{{viewState.selectedPrimaryCard.address.city}} {{viewState.selectedPrimaryCard.address.state}}</p>
+                    <span class="primary" ng-class="{'company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT', 'guest': isGuestCard}">Primary</span>
+                    <h2 ng-if="isGuestCard">{{getGuestName(viewState.selectedPrimaryCard.first_name, viewState.selectedPrimaryCard.last_name)}}</h2>
+                    <h2 ng-if="!isGuestCard">{{viewState.selectedPrimaryCard.account_name}}</h2>
+                    <p ng-hide=" (!escapeNull(viewState.selectedPrimaryCard.address.city) && !escapeNull(viewState.selectedPrimaryCard.address.state) ) || !isGuestCard">{{viewState.selectedPrimaryCard.address.city}} {{viewState.selectedPrimaryCard.address.state}}</p>
+                    <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.account_address) || isGuestCard">{{viewState.selectedPrimaryCard.account_address}}</p>
                 </div>
 
                 <div class="merge-status" ng-class="{'green': viewState.canMerge, 'red': !viewState.canMerge}">
@@ -52,8 +56,10 @@
                         <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                         <span class="icons icon-action icon-completed" ng-if="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                     </span>
-                    <h2>{{getGuestName(card.first_name, card.last_name)}}</h2>
-                    <p ng-hide="!escapeNull(card.address.city) && !escapeNull(card.address.state)">{{card.address.city}} {{card.address.state}}</p>
+                    <h2 ng-if="isGuestCard">{{getGuestName(card.first_name, card.last_name)}}</h2>
+                    <h2 ng-if="!isGuestCard">{{card.account_name}}</h2>
+                    <p ng-hide="(!escapeNull(card.address.city) && !escapeNull(card.address.state)) || !isGuestCard">{{card.address.city}} {{card.address.state}}</p>
+                    <p ng-hide="!escapeNull(card.account_address) || isGuestCard">{{card.account_address}}</p>
                     <p class="error" ng-if="getErrorMsg(card) !== ''">{{getErrorMsg(card)}}</p>
                     <button type="button" class="button with-icon only-icon" ng-show="getErrorMsg(card) !== ''"
                         ng-click="removeSelectedCard(card)">
