@@ -1,27 +1,39 @@
 admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesCommonConfigSrv',
     function($scope, config, adInterfacesCommonConfigSrv) {
+        BaseCtrl.call(this, $scope);
 
-        var interfaceIdentifier = 'accountview';
+        $scope.interface = 'ACCOUNTVIEW';
 
-        $scope.toggleEnabled = function() {
-            config.enabled = !config.enabled;
+        $scope.state = {
+            activeTab: 'SETUP'
         };
 
-        $scope.saveInterfaceConfig = function() {
+        $scope.toggleEnabled = function() {
+            $scope.config.enabled = !$scope.config.enabled;
+        };
+
+        /**
+         *
+         * @return {undefined}
+         */
+        $scope.toggleMappings = function() {
+            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
+        };
+
+        /**
+         * when we clicked on save button
+         * @return {undefined}
+         */
+        $scope.saveSetup = function() {
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
                     config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
-                },
-                onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                    interfaceIdentifier: $scope.interface
                 }
             });
         };
 
         (function() {
-            //    init
-            $scope.interface = interfaceIdentifier.toUpperCase();
             $scope.config = config;
         })();
     }
