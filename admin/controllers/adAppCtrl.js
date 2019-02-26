@@ -732,11 +732,11 @@ admin.controller('ADAppCtrl', [
             $rootScope.hotelDiaryConfig = {
                 dayUseEnabled: data.day_use_enabled,
                 hourlyRatesForDayUseEnabled: data.hourly_rates_for_day_use_enabled,
-                hourlyAvailabilityCalculation: data.hourly_availability_calculation
+                hourlyAvailabilityCalculation: data.hourly_availability_calculation,
+                isDiaryMergeEnabled: data.is_diary_merge_enabled
             };
 
 			setupLeftMenu();
-
 		};
 		/*
 		 * Function to get the current hotel language
