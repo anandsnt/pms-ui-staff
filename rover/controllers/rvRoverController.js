@@ -618,6 +618,18 @@ sntRover.controller('roverController', [
                 });
         };
 
+        var openCurrencyExchangePopup  = function() {
+            jsMappings.fetchAssets(['rover.financials'])
+                .then(function () {
+                    $scope.$emit('hideLoader');
+                    ngDialog.open({
+                        template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
+                        //controller: 'RVEndOfDayModalController',
+                        className: 'end-of-day-popup ngdialog-theme-plain'
+                    });
+                });
+        };
+
         var openPostChargePopup = function () {
             // Show a loading message until promises are not resolved
             $scope.$emit('showLoader');
@@ -672,6 +684,8 @@ sntRover.controller('roverController', [
             }
             else if (subMenu === 'deviceStatus') {
                 $scope.fetchDeviceStatus();
+            } else if (subMenu === 'currencyExchange') {
+                openCurrencyExchangePopup();
             }
         };
 

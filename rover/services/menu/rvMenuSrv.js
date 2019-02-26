@@ -57,6 +57,14 @@ angular.module('sntRover').service('rvMenuSrv',
     	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
     };
     /**
+     * Decide whether the task management submenu is to be shown in housekeeping menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowCurrencyExchangeInFinancialsMenu = function() {
+        return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled;
+    };
+    /**
      * Decide whether the QuickText submenu is to be shown
      * will use the hotel details API response
      * @return {Boolean}
@@ -314,7 +322,15 @@ angular.module('sntRover').service('rvMenuSrv',
                     title: "AUTO_CHARGE",
                     action: "rover.financials.autoCharge",
                     menuIndex: "autoCharge"
-                }]
+                },
+                {
+                	title: "MENU_CURRENY_EXCHANGE",
+		            action: "",
+		            actionPopup: true,
+		            menuIndex: "currencyExchange"
+                }
+
+                ]
             }, {
                 title: "MENU_ACTIONS",
                 action: "",

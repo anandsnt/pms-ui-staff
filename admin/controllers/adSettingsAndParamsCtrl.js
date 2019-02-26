@@ -24,6 +24,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.emailRecipientsForEodReports = settingsAndParamsData.email_recipients_for_eod_reports;
     $scope.check_guest_auth_for_interface_postings = settingsAndParamsData.check_guest_auth_for_interface_postings;
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
+    $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
 
     /**
     * To handle save button action
