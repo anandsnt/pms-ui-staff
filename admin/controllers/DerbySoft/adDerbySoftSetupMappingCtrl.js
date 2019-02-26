@@ -39,7 +39,6 @@ admin.controller('adDerbySoftSetupMappingCtrl', [
                 });
                 $scope.callAPI(adDerbySoftSetupSrv.getAllCancellationCodes, {
                     successCallBack: function(response) {
-                        console.log(response);
                         $scope.state.cancellationCodes = response.data;
                     }
                 });
@@ -52,7 +51,6 @@ admin.controller('adDerbySoftSetupMappingCtrl', [
                 });
                 $scope.callAPI(adDerbySoftSetupSrv.getAllTaxCodes, {
                     successCallBack: function(response) {
-                        console.log(response);
                         $scope.state.taxCodes = response.data;
                     }
                 });
