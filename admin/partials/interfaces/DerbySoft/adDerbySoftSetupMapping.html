@@ -1,6 +1,6 @@
 <div class="form float" ng-if="state.activeTab === 'MAPPING'">
 
-    <div class="entry full-width" ng-controller="adVectronSetupMappingCtrl">
+    <div class="entry full-width" ng-controller="adDerbySoftSetupMappingCtrl">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
@@ -13,7 +13,7 @@
 
         <form ng-show="state.mode=='ADD'"
               class="form float"
-              ng-include="'/assets/partials/interfaces/Vectron/adVectronMappingDetailView.html'">
+              ng-include="'/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html'">
         </form>
 
         <section ng-show="state.mode !=='ADD'">
@@ -39,7 +39,7 @@
                         <a class="icons icon-delete large-icon" ng-click="onClickDelete(mappingRow)"></a>
                     </td>
                     <td colspan="5" ng-show="mappingRow.editing"
-                        ng-include="'/assets/partials/interfaces/Vectron/adVectronMappingDetailView.html'"></td>
+                        ng-include="'/assets/partials/interfacesDerbySoft/adDerbySoftnMappingDetailView.html'"></td>
                 </tr>
                 </tbody>
             </table>

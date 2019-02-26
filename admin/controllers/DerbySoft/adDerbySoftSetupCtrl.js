@@ -1,6 +1,6 @@
 admin.controller('ADDerbySoftSetupCtrl', [
-    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv', 'ngDialog',
-    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv, ngDialog) {
+    '$scope', 'derbysoftSetupValues', 'adInterfacesCommonConfigSrv', 'adDerbySoftSetupSrv', 'ngDialog',
+    function($scope, derbysoftSetupValues, adInterfacesCommonConfigSrv, adDerbySoftSetupSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'DERBYSOFT';
@@ -20,25 +20,13 @@ admin.controller('ADDerbySoftSetupCtrl', [
         $scope.closeDialog = function() {
             ngDialog.close();
         };
-
-        $scope.onClickRegenerate = function() {
-            if (!$scope.config.authentication_token) {
-                $scope.generateAuthToken();
-            } else {
-                ngDialog.open({
-                    template: '/assets/partials/interfaces/Vectron/adVectronGenerateTokenPopup.html',
-                    className: 'ngdialog-theme-default',
-                    scope: $scope
-                });
-            }
-
-        };
+        
         /**
          * Genearete Auth token
          * @return {void}
          */
         $scope.generateAuthToken = function() {
-            $scope.callAPI(adVectronSetupSrv.resetAuthToken, {
+            $scope.callAPI(adDerbySoftSetupSrv.resetAuthToken, {
                 onSuccess: function(response) {
                     $scope.config.authentication_token = response.authentication_token;
                     $scope.closeDialog();
@@ -82,6 +70,6 @@ admin.controller('ADDerbySoftSetupCtrl', [
          * @return {undefined}
          */
         (function() {
-            $scope.config = vectronSetupValues;
+            $scope.config = derbysoftSetupValues;
         })();
     }]);
