@@ -117,7 +117,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         var validateSchedule = function() {
             var hasTimePeriod = function() {
-                return angular.isDefined($scope.scheduleParams.time_period_id) && !(_.isNull($scope.scheduleParams.time_period_id));
+                return angular.isDefined($scope.scheduleParams.time_period_id) && !_.isNull($scope.scheduleParams.time_period_id);
             };
 
             var hasFrequency = function() {
