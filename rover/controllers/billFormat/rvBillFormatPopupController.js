@@ -160,9 +160,15 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * show proceed popup - if infrasec enabled
      */
     $scope.clickedPrintBill = function() {
-
-        $scope.printBill();
-
+        if ($scope.shouldGenerateFinalInvoice) {
+            $scope.isInvoiceStepThreeActive  = false;
+        
+            $timeout(function() {
+                $scope.isInvoiceStepFourActive = true;
+            }, 500);
+        } else {
+            $scope.printBill();
+        }
     };
     
     /*
@@ -192,6 +198,14 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.isInvoiceStepThreeActive = true;
         }, 500);
     };
+
+    var updateWindow = $scope.$on("UPDATE_WINDOW", function() {
+        $scope.isInvoiceStepFourActive  = false;
+
+        $timeout(function() {
+            $scope.isInvoiceStepFiveActive = true;
+        }, 500);
+    });
 
     /*
      * Function to get print button class
@@ -262,6 +276,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.changeCompanyCardInvoiceToggle = function() {
         $scope.isCompanyCardInvoice = !$scope.isCompanyCardInvoice;
     };
+    $scope.$on('$destroy', updateWindow);
 
     init();
 
