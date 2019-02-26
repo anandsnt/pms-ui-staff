@@ -12,10 +12,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVSearchSrv',
   'idTypesList',
   'rvPermissionSrv',
+  'RVGuestCardsSrv',
   '$timeout',
   '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, $timeout, $window) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -266,6 +267,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
         $scope.$on('$destroy', resetHeaderDataListener);        
 
         var init = function () {
+
             $scope.viewState = {
                 isAddNewCard: !$stateParams.guestId
             };
@@ -273,7 +275,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.isGuestCardFromMenu = true;
             $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
 
-            $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
+            
+            if (!$stateParams.guestId) {
+                $scope.guestCardData = {};
+                $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();
+            } else {
+                $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
+            }
             $scope.countries = countries;
             $scope.idTypeList = idTypesList;
 
