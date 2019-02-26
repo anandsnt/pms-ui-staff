@@ -5,11 +5,11 @@
         <button class="icons icon-search">Search</button>
         <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="{{searchPlaceHolder}}" type="search" autocomplete="off" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div>
-    <div class="entry options" ng-hide="true">
+    <div class="entry options">
         <label class="checkbox inline">
-            <span class="icon-form icon-checkbox"></span>
-            <input type="checkbox" />
-            No Control Number
+            <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_folio_number_only}"></span>
+            <input type="checkbox" ng-model="invoiceSearchData.no_folio_number_only" ng-click="searchInvoice()"/>
+            No Folio Number
         </label>
     </div>
 </form>

@@ -77,7 +77,7 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div class="form">
-            <fieldset class="holder full-width" ng-if="filterType.value !== 'Ingenico Firmware'">
+            <fieldset class="holder full-width" ng-if="filterType.value !== 'Ingenico Firmware' || filterType.value !== 'Ingenico Configuration'">
                  <div class="form-subtitle-title">
                         <h6>
                             <span>The file extension should be <span ng-show="filterType.value === 'Rover Service Mac'">".pkg"</span> <span ng-hide="filterType.value === 'Rover Service Mac'">".exe"</span>. The name should include the build version in the format "-vx.x.x-".</span> 
