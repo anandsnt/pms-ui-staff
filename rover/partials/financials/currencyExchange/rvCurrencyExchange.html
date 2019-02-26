@@ -18,7 +18,7 @@
                     <thead>
                         <tr>
                             <th class="date">Date</th>
-                            <th class="input"><strong>Rate for {Primary Currency Symbol}{Exchange Amount, e.g. 1.00}</strong></th>
+                            <th class="input"><strong>Rate for <span class="currency">{{currencySymbol}}</span>1.00</strong></th>
                             <th class="copy">Copy</th>
                         </tr>
                     </thead>
@@ -28,8 +28,8 @@
                                 <strong>{Day of Week}, {Date}</strong>
                             </td>
                             <td>
-                                <span class="currency">{Second Currency Symbol}</span>
-                                <input type="text" value="{Exchange Rate}"> <!-- Add attr 'disabled' if it's for past date -->
+                                <span class="currency">{{localCurrencySymbol}}</span>
+                                <input type="text" value=""> <!-- Add attr 'disabled' if it's for past date -->
                             </td>
                             <td>
                                 <span class="admin-icons icon-mover-right">Copy</span> <!-- Add class 'hidden' if Exchange Rate for this day is not defined or if it's a past date -->

@@ -140,6 +140,7 @@ sntRover.controller('roverController', [
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+        $rootScope.localCurrencySymbol = "$";//getCurrencySign(hotelDetails.local_currency.value);
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
@@ -624,7 +625,7 @@ sntRover.controller('roverController', [
                     $scope.$emit('hideLoader');
                     ngDialog.open({
                         template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
-                        //controller: 'RVEndOfDayModalController',
+                        controller: 'RVCurrencyExchangeModalController',
                         className: 'end-of-day-popup ngdialog-theme-plain'
                     });
                 });
