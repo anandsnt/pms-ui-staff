@@ -626,7 +626,7 @@ sntRover.controller('roverController', [
                     ngDialog.open({
                         template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
                         controller: 'RVCurrencyExchangeModalController',
-                        className: 'end-of-day-popup ngdialog-theme-plain'
+                        className: ''
                     });
                 });
         };
