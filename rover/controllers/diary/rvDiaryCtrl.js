@@ -2632,9 +2632,36 @@ angular.module('sntRover')
 	$scope.toggleHourlyNightly = true;
 	$scope.navigateToNightlyDiary = function() {
 		$state.go("rover.nightlyDiary", {
-			start_date: propertyTime.hotel_time.date
+			start_date: $scope.gridProps.filter.arrival_date
 		});
 		$scope.toggleHourlyNightly = false;
 	};
+
+	/*
+     *  Utility method to check whether we need to show Toggle DIARY D/N
+     *  Based on settings values inside Reservation settings.
+     */
+    $scope.hideToggleMenu = function() {
+        
+        /**
+         *  A = settings.day_use_enabled (true / false)
+         *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         *
+         *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+         *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+         *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+         *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+         */
+
+        var hideToggleMenu = false;
+
+        // For Hourly hotels we are hiding the Navigations to Nightly Diary.
+        if ( $rootScope.isHourlyRateOn ) {
+            hideToggleMenu = true;
+        }
+
+        return hideToggleMenu;
+    };
 
 }]);

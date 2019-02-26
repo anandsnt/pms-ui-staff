@@ -84,6 +84,7 @@ angular.module('sntRover')
                         unassignedReservationList: unassignedReservationList,
                         hasOverlay: false,
                         isEditReservationMode: false,
+                        hideMoveButton: false,
                         showUnassignedPanel: false,
                         showUnassignedReservations: false,
                         innerWidth: screen.width,
@@ -236,7 +237,7 @@ angular.module('sntRover')
                     var srvParams = {};
 
                     $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
-
+                    $scope.diaryData.hideMoveButton = reservation.no_room_move;
                     if (!$scope.diaryData.isEditReservationMode) {
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = reservation;

@@ -484,7 +484,7 @@
     .diary-container {
         position: relative;
         overflow: hidden;
-        .calc-height(100, 90);
+        .calc-height(100, 60);
         .float;
 
         .diary-timeline {
@@ -1203,6 +1203,162 @@
             padding: 0;
         }
 
+        /* Sidebar - OLD UNASSIGNED HOURLY DESIGN ***/
+        .sidebar-right {
+            position: absolute;
+            top: 0;
+            right: -270px;
+            padding-left: 25px;
+            width: 295px;
+            z-index: 99999;
+            .size(100%, 295px);
+            .calc-height(100, 150);
+            .transition(right, .2s, cubic-bezier(.10, .10, .25, .90));
+            .show();
+            
+            .rightMenuHandle {
+                position: absolute;
+                top: 20px;
+                left: 0;
+                cursor: e-resize !important;
+                z-index: 90;
+                background-color: @grey1;
+                background-image: @icons;
+                background-repeat: no-repeat, repeat;
+                background-position: 5px -3807px, 0 0;
+                .size(50px, 25px);
+                #border-radius > .left(5px);
+
+                @media @highdpi {
+                    background-image: @icons2x;
+                    background-size: 120px, 40px;
+                }
+
+                &.not-empty {
+                    background-color: @red;
+                }
+            }
+
+            .sidebar-header {
+                background-color: @grey1;
+                text-align: center;
+                padding: 20px 15px 15px 15px;
+                height: 80px;
+
+                p,h2 {
+                    text-transform: uppercase;
+                }
+
+                h2 {
+                    color: @black;
+                    font-size: 21px;
+                    font-weight: 600;
+                }
+
+                p {
+                    line-height: 14px;
+                    color: @grey3;
+                    font-size: 14px;    
+                }
+            }
+
+            .scrollable {
+                position: relative;
+                padding: 5px;
+                .calc-height(100, 80);
+                .background(@white);
+
+                .wrapper { 
+                    padding: 0 0 5px 0; 
+                }
+                
+                .iScrollVerticalScrollbar {
+                    top: 10px; 
+                    bottom: 10px;
+                    right: 8px;
+
+                    .iScrollIndicator { background: rgba(0,0,0,.2); }
+                }
+
+                &.dragging {
+                    overflow: visible !important;
+                }
+            }
+
+            .occupancy-block {
+                .diary-content > .diary-container > .diary-grid > .occupancy-block;
+                position: relative;
+                margin-bottom: 5px;
+                height: 60px;
+
+                span { 
+                    float: none;
+                }
+
+                .occupancy-status,
+                .occupancy-time {
+                    height: 100%;
+                } 
+
+                .occupancy-status {
+                    width: 100%;
+                    line-height: 1;
+                    padding: 15px 60px 15px 10px;
+                    .box-shadow(inset 0px 1px 1px 1px rgba(0,0,0,.2));
+
+                    .guest-name {
+                        .nowrap();
+                    }
+
+                    .room-type {
+                        .nowrap();
+                        font-weight: normal;
+                    }
+
+                    &:before {
+                        background-size: 40px 40px !important;
+                    }
+                }
+
+                .occupancy-time {
+                    width: 55px;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: rgba(0,0,0,0.1);
+                    text-align: center;
+                    padding: 15px 10px;
+                    font-size: 18px;
+                    text-transform: none;
+                    line-height: 1;
+                    color: white;
+                    font-weight: 600;
+                    z-index: 99;
+
+                    .eta {
+                        font-size: 14px;
+                        font-weight: normal;
+                    }
+                }
+
+                &.deposit-required {
+                    .occupancy-time {
+                        .box-shadow(inset -1px 2px 1px 0px rgba(0, 0, 0, 0.2));
+                        background: @yellow;
+                        color: @red;
+                    }
+                }
+            }
+
+            &.open {
+                right: 0;
+
+                .scrollable {
+                    .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
+                }
+            }
+        }
+
         /* 12 hours grid ***/
         &.hours-12 {
 
@@ -1500,11 +1656,55 @@
                     span { height: 24px; }
                 }
             }
+
+            /* Sidebar - OLD UNASSIGNED HOURLY DESIGN ***/
+            .sidebar-right {
+                .occupancy-block { 
+                    height: 24px;
+                    margin-bottom: 0;
+
+                    .occupancy-status{
+                        font-size: 12px;
+                        line-height: 24px;
+                        padding: 0 60px 0 10px;
+                        .float;
+                        
+                        .guest-name {
+                            .pull-left();
+                            .calc-width(100, 95 );
+                        }
+
+                        .room-type {
+                            font-size: 11px;
+                            text-align: right;
+                            width: 90px;
+                            .pull-right();
+                        }
+                        
+                        &:before {
+                            background-size: 20px 20px !important;
+                        }
+                    }
+
+                    .occupancy-time { 
+                        line-height: 24px;
+                        padding: 0px 5px;
+                        font-size: 12px;
+                        font-weight: normal;
+                        text-align: left;
+                        
+                        .eta {
+                            font-size: 12px;
+                            .pull-right();
+                        }
+                    }                
+                }
+            }
         }
     }
 }
 
-/* Sidebar - Unassigned ***/
+/* Sidebar - Unassigned (NEW DESIGN) - DELETE L1206-L1360 and L1660-L1702 when this is implemented ***/
 .diary-unassigned {
 
     .diary-nightly-search-form {
