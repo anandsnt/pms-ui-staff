@@ -94,5 +94,39 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return RVBaseWebSrvV2.putJSON(url, params);
         };
 
+        /**
+         * Verify whether the given guest cards are eligible for being merged
+         * @param {Object} params contains array of ids of the guest cards
+         * @return {Promise} promise
+         */
+        this.verifyGuestCardMerge = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/guest_details/validate_card_merge';
+
+            RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
+        };
+
+        /**
+         * Merge the non-primary cards to primary card
+         * @param {Object} params contains primary card id, non-primary card ids and card type
+         * @return {Promise} promise
+         */
+        this.mergeCards = function(params)  {
+            var deferred = $q.defer(),
+                url = '/api/guest_details/merge_cards';
+
+            RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
+        };
+
     }
 ]);

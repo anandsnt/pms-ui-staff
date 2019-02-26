@@ -48,7 +48,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 					if (selectedCard) {
 						card.selected = true;
-						card.isPrimary = selectedCard.isPrimary;						
+						card.isPrimary = selectedCard.isPrimary;
+						if (card.isPrimary) {
+							$scope.viewState.selectedPrimaryCard = card;	
+						}						
 					}
 				});
 			}

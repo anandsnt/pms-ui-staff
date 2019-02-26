@@ -32,11 +32,14 @@
             <div ng-if="viewState.hasInitiatedMergeVerification">
                 <div class="card">
                     <div class="merge-icon">
-                        <span class="guest-image icons" ng-class="{'icon-company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}"></span>
+                        <figure class="guest-image" ng-if="!escapeNull(viewState.selectedPrimaryCard.account_type)">
+                            <img src="{{viewState.selectedPrimaryCard.image_url}}" />
+                        </figure>
+                        <span class="guest-image icons" ng-class="{'icon-company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}" ng-if="escapeNull(viewState.selectedPrimaryCard.account_type)"></span>
                     </div>
-                    <span class="primary" ng-class="{'company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT'}">Primary</span>
-                    <h2>{{viewState.selectedPrimaryCard.account_name}}</h2>
-                    <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.account_address)">{{viewState.selectedPrimaryCard.account_address}}</p>
+                    <span class="primary" ng-class="{'company' : escapeNull(viewState.selectedPrimaryCard.account_type)=='COMPANY', 'travel-agent': escapeNull(viewState.selectedPrimaryCard.account_type)=='TRAVELAGENT', 'guest': !viewState.selectedPrimaryCard.account_type}">Primary</span>
+                    <h2>{{getGuestName(viewState.selectedPrimaryCard.first_name, viewState.selectedPrimaryCard.last_name)}}</h2>
+                    <p ng-hide="!escapeNull(viewState.selectedPrimaryCard.address.city) && !escapeNull(viewState.selectedPrimaryCard.address.state)">{{viewState.selectedPrimaryCard.address.city}} {{viewState.selectedPrimaryCard.address.state}}</p>
                 </div>
 
                 <div class="merge-status" ng-class="{'green': viewState.canMerge, 'red': !viewState.canMerge}">
@@ -49,8 +52,8 @@
                         <span class="icons icon-action icon-unassigned" ng-if="hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                         <span class="icons icon-action icon-completed" ng-if="!hasMergeVerificationErrors(card) && !showVerifyMergeProcessActivityIndicator"></span>
                     </span>
-                    <h2>{{card.account_name}}</h2>
-                    <p ng-hide="!escapeNull(card.account_address)">{{card.account_address}}</p>
+                    <h2>{{getGuestName(card.first_name, card.last_name)}}</h2>
+                    <p ng-hide="!escapeNull(card.address.city) && !escapeNull(card.address.state)">{{card.address.city}} {{card.address.state}}</p>
                     <p class="error" ng-if="getErrorMsg(card) !== ''">{{getErrorMsg(card)}}</p>
                     <button type="button" class="button with-icon only-icon" ng-show="getErrorMsg(card) !== ''"
                         ng-click="removeSelectedCard(card)">

@@ -4,18 +4,18 @@
     <form method="get" action="" class="search-form card-search guest-search" role="search" ng-class="{'enable-adding': viewState.isViewSelected && textInQueryBox !== '', 'show-merge': !viewState.isViewSelected}">
         <div class="entry switch">
             <!-- add .disabled if showing archived -->
-            <div class="switch-button on" ng-class="{'on': viewState.isViewSelected}">
-                <!-- Add disabled="disabled" if showing archived -->
-                <input id="cards-merge-switch" value="" type="checkbox"  ng-model="viewState.isViewSelected" ng-change="onViewChange()">
-                <label class="data-off">
-                    <span class="value">View</span>
-                    <span class="switch-icon">Merge</span>
-                </label>
-                <label class="data-on">
-                    <span class="switch-icon">View</span>
-                    <span class="value">Merge</span>
-                </label>
-            </div>
+            <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
+                    <!-- Add disabled="disabled" if showing archived -->
+                    <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()">
+                    <label class="data-off">
+                        <span class="value">View</span>
+                        <span class="switch-icon">Merge</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">View</span>
+                        <span class="value">Merge</span>
+                    </label>
+                </div>
         </div>
         <div class="entry search">
             <button class="clear-query" ng-class="{'visible': textInQueryBox != ''}" ng-click="clearResults()" type="button">
@@ -39,7 +39,7 @@
                             <span class="icon-form icon-checkbox" ng-class="{'checked': guest.selected}"></span>
                             <input type="checkbox" ng-change="onCardSelection(guest)" ng-model="guest.selected" ng-disabled="viewState.hasInitiatedMergeVerification">
                         </label>
-                        <a ui-sref="rover.guest.details({guestId: guest.id, query: textInQueryBox})">
+                        <a ng-click="navigateToDetails(guest.id)">
                             <figure class="guest-image">
                                 <img src="{{guest.image_url}}" alt="" />
                                 <span class="stay-count" ng-if="guest.stay_count > 0 && isStandAlone">{{::guest.stay_count}}</span>
