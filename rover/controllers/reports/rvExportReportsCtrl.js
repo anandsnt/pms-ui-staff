@@ -117,7 +117,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
         var validateSchedule = function() {
             var hasTimePeriod = function() {
-                return angular.isDefined($scope.scheduleParams.time_period_id);
+                return angular.isDefined($scope.scheduleParams.time_period_id) && !_.isNull($scope.scheduleParams.time_period_id);
             };
 
             var hasFrequency = function() {
@@ -239,7 +239,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 report_id: $scope.selectedEntityDetails.report.id,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
-                format_id: 1,
+                format_id: ($scope.selectedEntityDetails.report.title === 'Police Report Export') ? 3 : 1,
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
