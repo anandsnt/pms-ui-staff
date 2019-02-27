@@ -118,7 +118,6 @@ admin.controller('ADAdminUserDetailsCtrl',
 	 	var successCallbackRender = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			// $scope.image = "/assets/images/preview_image.png";
 		};
 
 	 	$scope.invokeApi(ADAdminUserSrv.getAddNewDetails, $scope.isAdminSnt, successCallbackRender);
