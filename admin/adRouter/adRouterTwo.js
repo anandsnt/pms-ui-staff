@@ -951,4 +951,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       url: '/coTaMandatoryFields'
     });
 
+    $stateProvider.state('admin.guestCardFields', {
+      templateUrl: '/assets/partials/cards/guestCardFields.html',
+      controller: 'ADGuestCardFieldsCtrl',
+      url: '/adGuestCardFields'
+    });
 });
