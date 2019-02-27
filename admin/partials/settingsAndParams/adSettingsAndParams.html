@@ -98,9 +98,9 @@
                         <div class="entry" ng-if="is_multi_currency">
 							<label for="hotel-currency"> Hotel Invoice Currency <strong>*</strong> </label>
 							<div class="select">
-							<select convert-to-number ng-model="local_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
+							<select convert-to-number ng-model="invoice_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
 									<option value=""> Invoice Currency </option>
-									<option ng-model="currency.code" ng-repeat="currency in data.currency_list"  value="{{currency.code}}">{{currency.code}}</option>
+									<option ng-repeat="currency in currency_list" value="{{currency.code}}">{{currency.code}}</option>
 								</select>
 							</div>
 						</div>
