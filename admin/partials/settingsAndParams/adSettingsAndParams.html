@@ -96,11 +96,11 @@
                         <ad-toggle-button div-class="full-width" is-checked="is_multi_currency" label="{{'CHECK_AUTH_INTERFACE' | translate }}"></ad-toggle-button>
 
                         <div class="entry" ng-if="is_multi_currency">
-							<label for="hotel-currency"> Hotel Invoice Currency <strong>*</strong> </label>
+							<label> Hotel Invoice Currency <strong>*</strong> </label>
 							<div class="select">
-							<select convert-to-number ng-model="local_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
-									<option value=""> Invoice Currency </option>
-									<option ng-model="currency.code" ng-repeat="currency in data.currency_list"  value="{{currency.code}}">{{currency.code}}</option>
+								<select class="placeholder" ng-model="selected_local_currency_id">
+									<option value="" ng-selected="selected_local_currency_id == ''"translate>SELECT_CHARGE_CODE</option>
+									<option ng-selected="selected_local_currency_id == currency.id" value="{{currency.id}}" ng-repeat="currency in currency_list" >{{currency.code}}</option>
 								</select>
 							</div>
 						</div>
