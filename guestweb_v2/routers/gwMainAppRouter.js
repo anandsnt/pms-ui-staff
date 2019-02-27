@@ -26,7 +26,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 // if the guestweb is accessed normaly, ie invoked using
                 // the mail sent from the hotel admin
 
-                if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {
+                if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1 ||
+                        absUrl.indexOf("/checkin/home?guest_web_token=") !== -1) {
                    setAPiURLfromWindowUrl();
                 }
                 // invoked when forgot password or email verification is
@@ -38,7 +39,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
                     apiUrl = startingUrl + ".json" + remainingURl;
                 }
-                else if ( absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
+                else if ( absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
                     setAPiURLfromWindowUrl();
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
