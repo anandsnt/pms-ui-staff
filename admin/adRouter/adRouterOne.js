@@ -32,11 +32,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url: '/users/:id'
 		});
 
-        $stateProvider.state('admin.adminUsers', {
-            templateUrl: '/assets/partials/adminUsers/adAdminUserList.html',
-            controller: 'ADAdminUserListCtrl',
-            url: '/admin/admin_users'
-        });
+		$stateProvider.state('admin.adminUsers', {
+			templateUrl: '/assets/partials/adminUsers/adAdminUsersList.html',
+			controller: 'ADAdminUserListCtrl',
+			url: '/adminusers'
+		});
 
 		$stateProvider.state('admin.serviceproviderusers', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderUsersList.html',
@@ -60,6 +60,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
+			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
+		});
+		
+		$stateProvider.state('admin.adminuserdetails', {
+			templateUrl: '/assets/partials/adminUsers/adAdminUserDetails.html',
+			controller: 'ADAdminUserDetailsCtrl',
 			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
 		});
 

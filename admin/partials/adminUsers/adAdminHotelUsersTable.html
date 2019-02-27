@@ -1,0 +1,46 @@
+<table id="users_list_table" class="grid datatable table" ng-table="tableParams" template-pagination="custom/pager">
+	<tr ng-repeat="user in $data">
+		<td data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.adminuserdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: false , manual_id_scan_enabled: manualIDScanEnabled})"  class="title">{{user.full_name}} </a></td>
+		<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
+		<td data-title="'Department'" >{{user.department}}</td>
+		<td data-title="'Last Login'" ><span class="login">{{user.last_login_date | date : dateFormat}} {{user.last_login_time}}</span></td>
+		<td data-title="'Active'" user="2" id="activate-inactivate-button_2" header-class="activate"  class="activate activate-inactivate-button">
+			<div class="entry" ng-show="user.can_delete">
+				<label for=""></label>
+				<div class="switch-button single" ng-class="{ on : user.is_active == 'true' }" ng-click="activateInactivate(user.id, user.is_active, $index)">
+					<input type="checkbox" value="" name="" id="">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+		</td>
+		<td data-title="'Locked'" class="delete" header-class="delete">
+			<button type="button" ui-sref="admin.adminuserdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="icons icon-lock" ng-if="user.is_locked === 'true'">Locked</button>
+		</td>
+		<!-- As a quick fix for defect CICO-33728 -->
+		<!-- <td data-title="'Delete'" class="delete" header-class="delete">
+			<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>
+		</td> -->
+	</tr>
+</table>
+<!--Custom pagination footer goes here-->
+<script type="text/ng-template" id="custom/pager">
+	<div class = "pager">
+		<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+		<span ng-show="totalCount==0">Showing 0 items</span>
+		<ul class="ng-cloak">
+			<li ng-repeat="page in pages"
+				ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+				ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+
+				<a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+				<a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+				<a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+
+				<a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+				<a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+				<a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+			</li>
+		</ul>
+	</div>
+</script>
+<!--end-->
