@@ -29,6 +29,9 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
             case "admin.idCollection":
                 $scope.sectionTitle = "ID Collection";
                 break;
+            case "admin.archivalTransfer":
+                $scope.sectionTitle = "Archival Transfer";
+                break;    
             default:
                 $scope.sectionTitle = "Interfaces Setup";
         }
