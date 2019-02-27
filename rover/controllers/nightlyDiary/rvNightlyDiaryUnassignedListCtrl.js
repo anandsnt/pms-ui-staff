@@ -42,7 +42,7 @@ angular.module('sntRover')
                     var newData = {
                         availableRoomList: data.rooms,
                         fromDate: selectedItem.arrival_date,
-                        nights: selectedItem.number_of_nights,
+                        nights: selectedItem.no_of_nights,
                         reservationId: selectedItem.reservation_id,
                         roomTypeId: selectedItem.room_type_id,
                         type: 'ASSIGN_ROOM'
