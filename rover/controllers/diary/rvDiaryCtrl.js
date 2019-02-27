@@ -1061,13 +1061,14 @@ angular.module('sntRover')
 		})();
                 
         /*
-         *  Logic to show/hide save changes based on any changes occured via ext-shortening
+         *  Logic to show/hide save changes based on any changes occured via ext-shortening or room move
          *  @param {Object} - [ original item ]
          *  @param {String} - [ new arrival data ]
          *  @param {String} - [ new departure data ]
+         *	@param {Boolean}- [ to check room move hanppend ]
          */
-		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture) {
-			if (originalItem.arrival !== newArrival || originalItem.departure !== newDeparture) {
+		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture, isMoveRoomAction) {
+			if ( originalItem.arrival !== newArrival || originalItem.departure !== newDeparture || isMoveRoomAction ) {
 				$scope.showSaveChangesAfterEditing = true;
 			}
 			else {
@@ -1081,10 +1082,11 @@ angular.module('sntRover')
 	    		oItem 		= props.edit.originalItem,
 	    		oRowItem 	= props.edit.originalRowItem,
 	    		lastArrTime = this.availability.resize.last_arrival_time,
-				lastDepTime = this.availability.resize.last_departure_time;
+				lastDepTime = this.availability.resize.last_departure_time,
+				isMoveRoomAction = (successParams.params.room_id !== oItem.room_id);
 				
 			// To show save change button ,only if there is change in time
-			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure);
+			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {
