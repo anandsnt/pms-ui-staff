@@ -32,6 +32,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url: '/users/:id'
 		});
 
+        $stateProvider.state('admin.adminUsers', {
+            templateUrl: '/assets/partials/adminUsers/adAdminUserList.html',
+            controller: 'ADAdminUserListCtrl',
+            url: '/admin/admin_users'
+        });
+
 		$stateProvider.state('admin.serviceproviderusers', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderUsersList.html',
 			controller: 'ADServiceProviderUserListCtrl',
