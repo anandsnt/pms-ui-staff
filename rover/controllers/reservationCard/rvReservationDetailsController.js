@@ -912,8 +912,7 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.goToRoomAndRates = function(state) {
-			$scope.data.guest_details.is_member
-			$scope.guestData
+
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
 				return false;
