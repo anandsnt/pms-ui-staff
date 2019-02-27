@@ -26,7 +26,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.check_guest_auth_for_interface_postings = settingsAndParamsData.check_guest_auth_for_interface_postings;
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
-    $scope.selected_local_currency_id = settingsAndParamsData.local_currency_id;
+    $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
 
     /**
     * To handle save button action
@@ -50,11 +50,15 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'email_recipients_for_eod_reports': $scope.emailRecipientsForEodReports,
             'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
             'auto_charge_deposit': $scope.auto_charge_deposit,
-            'local_currency': $scope.local_currency,
-            'local_currency_id': $scope.selected_local_currency_id
+            'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
+            'invoice_currency': $scope.invoice_currency
         };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
+    };
+
+    $scope.test = function() {
+        console.log($scope.invoice_currency);
     };
 
 
