@@ -4,8 +4,9 @@ sntRover.controller('RVCurrencyExchangeModalController',
         '$filter',
         '$timeout',
         'rvUtilSrv',
+        'ngDialog',
         'RVMultiCurrencyExchangeSrv',
-        function($scope, $rootScope, $filter, $timeout, util, RVMultiCurrencyExchangeSrv) {
+        function($scope, $rootScope, $filter, $timeout, util, ngDialog, RVMultiCurrencyExchangeSrv) {
 
 
             BaseCtrl.call(this, $scope);
@@ -55,13 +56,13 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
                     var params = {
                         'start_date': moment(tzIndependentDate($scope.start_date)).format($rootScope.momentFormatForAPI),
-                        'end_date': moment(tzIndependentDate($scope.start_date)).format($rootScope.momentFormatForAPI)
+                        'end_date': moment(tzIndependentDate($scope.end_date)).format($rootScope.momentFormatForAPI)
                     };
 
                     $scope.invokeApi(RVMultiCurrencyExchangeSrv.fetchExchangeRates, params, successCallBackFetchAccountsReceivables );
                 },
-                isDateDisabled = function(){
-                   return false;
+                isDateDisabled = function(startDate) {
+                   return startDate < moment($rootScope.businessDate);
                 },
                 constructExchangeRateArray = function(date) {
                     var startDate = moment(date),
@@ -71,7 +72,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                         ExchangeRateArray[i] = {
                             day : startDate.format('dddd'),
                             date : $filter('date')(tzIndependentDate(startDate.calendar()), $rootScope.dateFormat),
-                            exchange_rate : null,
+                            conversion_rate : null,
                             isDisabled : isDateDisabled(startDate)
                         };
                         startDate = startDate.add(1, 'days');
@@ -80,24 +81,28 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     return ExchangeRateArray;
                 };
     
-            $scope.exchangeRates = {};
-            $scope.exchangeRates.data = [{ 'date': '20-02-2019',
-                'conversion_rate': 12.33 }, { 'date': '21-02-2019',
-                    'conversion_rate': 12.33 }, { 'date': '22-02-2019',
-                        'conversion_rate': 12.33 }, { 'date': '23-02-2019',
-                            'conversion_rate': 12.33 }, { 'date': '24-02-2019',
-                                'conversion_rate': 12.33 }, { 'date': '25-02-2019',
-                                    'conversion_rate': 13.33 }];
+            // $scope.exchangeRates = {};
+            // $scope.exchangeRates.data = [{ 'date': '09-01-2019',
+            //     'conversion_rate': 12.33 }, { 'date': '10-01-2019',
+            //         'conversion_rate': 12.33 }, { 'date': '11-01-2019',
+            //             'conversion_rate': 12.33 }, { 'date': '12-01-2019',
+            //                 'conversion_rate': 12.33 }, { 'date': '13-01-2019',
+            //                     'conversion_rate': 12.33 }, { 'date': '14-01-2019',
+            //                         'conversion_rate': 13.33 }];
 
 
-            angular.forEach($scope.exchangeRates.data, function(item, index) {
-                item.day = moment(item.date, 'DD-MM-YYYY').format('dddd');
-            });
+            // angular.forEach($scope.exchangeRates.data, function(item, index) {
+            //     item.day = moment(item.date, 'DD-MM-YYYY').format('dddd');
+            // });
 
             $scope.save = function() {
                 var successCallBackFetchAccountsReceivables = function(data) {
                     //$scope.exchangeRates = data;
                 };
+
+                angular.forEach($scope.exchangeRates, function(item, index) {
+                    item.date = moment(tzIndependentDate(item.date)).format($rootScope.momentFormatForAPI);
+                });
 
                 var params = {
                     exchange_rates: $scope.exchangeRates

@@ -54,7 +54,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
-            'invoice_currency': $scope.invoice_currency
+            'invoice_currency': parseInt($scope.invoice_currency)
 
         };
 
