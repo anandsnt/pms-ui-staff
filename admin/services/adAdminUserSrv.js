@@ -1,5 +1,5 @@
-admin.service('ADAdminUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADHotelListSrv',
-	function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADHotelListSrv) {
+admin.service('ADAdminUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2',
+	function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
 
 	var that = this;
@@ -47,10 +47,6 @@ admin.service('ADAdminUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 	this.getAddNewDetails = function(isSNTAdmin) {
 		var deferred = $q.defer();
 		var url = '/admin/users/new.json';
-
-        if (isSNTAdmin) {
-            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
-        }
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -126,28 +122,6 @@ admin.service('ADAdminUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 
 	};
 
-	/**
-    * To delete user
-    * @param {object} data - data to delete
-    * @return {object}
-    */
-	this.deleteUser = function(data) {
-
-		var deferred = $q.defer();
-		var url = '/admin/users/' + data.id;
-		var itemToRemove = data.index;
-
-		delete data["index"];
-
-		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
-			that.usersArray.users.splice(itemToRemove, 1);
-		    deferred.resolve(data);
-		}, function(data) {
-		    deferred.reject(data);
-		});
-		return deferred.promise;
-
-	};
 
 
    /**
