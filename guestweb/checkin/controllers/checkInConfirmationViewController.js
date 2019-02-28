@@ -31,7 +31,8 @@
 			controller: ModalInstanceCtrl
 		};
 
-		var setupPageActions = function() {
+		if ($scope.pageValid) {
+
 			// next page actions
 			var verificationSuccessActions = function(response) {
 				// display options for room upgrade screen
@@ -64,7 +65,7 @@
 					if (response.status === 'failure') {
 						$rootScope.netWorkError = true;
 					} else {
-						verificationSuccessActions(response.data);
+						verificationSuccessActions(response.data);	
 					}
 				}, function() {
 					$rootScope.netWorkError = true;
@@ -75,7 +76,7 @@
 				$scope.isPosting = false;
 				$rootScope.netWorkError = false;
 			}
-
+			
 			// next button clicked actions
 			$scope.nextButtonClicked = function() {
 				var data = {
@@ -128,12 +129,11 @@
 				dateToSend = ($filter('date')(dateToSend, 'MM-dd-yyyy'));
 				$scope.closeCalender();
 			};
-		};
-
-		if ($state.href("unableToCheckn") !== null && !$rootScope.eligibleToCheckin) {
-			$state.go('unableToCheckn', {
-				'reason': $rootScope.inEligibilityReason
-			});
+			if ($state.href("unableToCheckn") !== null && !$rootScope.eligibleToCheckin) {
+				$state.go('unableToCheckn', {
+					'reason': $rootScope.inEligibilityReason
+				});
+			}
 		}
 	};
 
