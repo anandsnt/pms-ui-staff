@@ -2,7 +2,6 @@
 	<tr ng-repeat="user in $data">
 		<td data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.adminuserdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: false , manual_id_scan_enabled: manualIDScanEnabled})"  class="title">{{user.full_name}} </a></td>
 		<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
-		<td data-title="'Department'" >{{user.department}}</td>
 		<td data-title="'Last Login'" ><span class="login">{{user.last_login_date | date : dateFormat}} {{user.last_login_time}}</span></td>
 		<td data-title="'Active'" user="2" id="activate-inactivate-button_2" header-class="activate"  class="activate activate-inactivate-button">
 			<div class="entry" ng-show="user.can_delete">
@@ -16,10 +15,6 @@
 		<td data-title="'Locked'" class="delete" header-class="delete">
 			<button type="button" ui-sref="admin.adminuserdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: true})" class="icons icon-lock" ng-if="user.is_locked === 'true'">Locked</button>
 		</td>
-		<!-- As a quick fix for defect CICO-33728 -->
-		<!-- <td data-title="'Delete'" class="delete" header-class="delete">
-			<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>
-		</td> -->
 	</tr>
 </table>
 <!--Custom pagination footer goes here-->

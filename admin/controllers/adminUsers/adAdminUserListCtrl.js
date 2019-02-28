@@ -1,9 +1,7 @@
-admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADAdminUserSrv', 'ngTableParams', 'ADHotelListSrv', 'ADMPUserSettingsSrv', 'ngDialog', function($scope, $rootScope, $q, $state, $stateParams, ADAdminUserSrv, ngTableParams, ADHotelListSrv, ADMPUserSettingsSrv, ngDialog) {
+admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADAdminUserSrv', 'ngTableParams', function($scope, $rootScope, $q, $state, $stateParams, ADAdminUserSrv, ngTableParams) {
     BaseCtrl.call(this, $scope);
-    $scope.hotelId = $stateParams.id;
-    $scope.isAdminSnt = false;
-    $scope.$emit('changedSelectedMenu', 0);
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
+
     /*
     * Failure callback function common to multiple API- invoke functions.
     */
@@ -19,6 +17,7 @@ admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state',
     $scope.flagObject = {};
     $scope.flagObject.showIncludeInactiveCheckbox = true;
 
+
     /*
     * To fetch the list of users
     * @param {params} ng-table parameters
@@ -31,6 +30,7 @@ admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state',
         if ($scope.showInactiveUser) {
             getParams.include_inactive = $scope.showInactiveUser;
         }
+
         /*
         * Success Callback of for Fetching User details API
         */
@@ -44,7 +44,6 @@ admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state',
             params.total(data.total_count);
             $defer.resolve($scope.data);
         };
-
         $scope.invokeApi(ADAdminUserSrv.fetch, getParams, successCallbackFetch, failureCallback);
 
     };
@@ -80,7 +79,7 @@ admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state',
             $scope.flagObject.showIncludeInactiveCheckbox = false;
         } else {
             $scope.flagObject.showIncludeInactiveCheckbox = true;
-        }              
+        }
     };
 
     $scope.reloadTable = function() {
@@ -100,30 +99,14 @@ admin.controller('ADAdminUserListCtrl', ['$scope', '$rootScope', '$q', '$state',
             'id': userId
         };
         var successCallbackActivateInactivate = function(data) {
-            $scope.data[index].is_active = currentStatus === 'true' ? 'false' : 'true';
-            $scope.$emit('hideLoader');
+            $scope.reloadTable();
         };
 
         $scope.invokeApi(ADAdminUserSrv.activateInactivate, data, successCallbackActivateInactivate);
     };
-    /*
-    * To delete user
-    * @param {int} index of the selected user
-    * @param {string} user id
-    */
-    $scope.deleteUser = function(index, userId) {
-        var data = {
-            'id': userId,
-            'index': index
-        };
-        var successDelete = function() {
-            $scope.$emit('hideLoader');
-            // To refresh the user list
-            $scope.listUsers();
-        };
 
-        $scope.invokeApi(ADAdminUserSrv.deleteUser, data, successDelete );
-    };
+
+
     // Reload table data upon closing the subscription popup.
     $scope.$on('ngDialog.closing', function () {
         $scope.reloadTable();
