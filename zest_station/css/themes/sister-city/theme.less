@@ -240,6 +240,16 @@
             fill: @white;
         }
 
+        &.large-icons {
+            li {
+                .option {
+                    width: 100px !important;
+                    height: 100px !important;
+                }
+
+            }
+        }
+
         .button {
             background: transparent;
             border: 2px solid @white;
@@ -257,6 +267,10 @@
             *:not(.icon-text) {
                 font-size: 31px;
                 line-height: 36px;
+            }
+            .option {
+                width: 100px !important;
+                height: 100px !important;
             }
 
             .cc-details {
@@ -309,7 +323,8 @@
                 }
             }
         }
-        /* Popup fixes end */       
+
+        /* Popup fixes end */
     }
 
     #selection { 
@@ -449,6 +464,14 @@
             &.transparent {
                 color: @white;
             }
+        }
+
+        li {
+            border: none !important;
+        }
+
+        .add-on-content {
+            background-color: @brandColor;
         }
     }
 
