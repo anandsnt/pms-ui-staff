@@ -8,8 +8,8 @@
         </div>
 
         <div class="filters">
-            <input id="start-date" type="text" class="datepicker" value="{Start Date}" readonly /> <!-- Add attr 'disabled' when changes are made but not saved. Remove it when changes are canceled or saved -->
-            <input id="end-date" type="text" class="datepicker" value="{End Date}" readonly /> <!-- Add attr 'disabled' when changes are made but not saved. Remove it when changes are canceled or saved -->
+            <input id="start-date" class="datepicker" readonly type="text" ui-date="startDateOptions" value="{{start_date}}" />
+            <input id="end-date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date}}" />
         </div>
 
         <div id="exchange-grid" class="scrollable"> <!-- iScroll here -->
@@ -23,7 +23,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                                                <!-- ... repeat L25-L36 for every day in selected date range -->
+                        <tr ng-repeat="exchangeRate in exchangeRates">
+                            <td>
+                                <strong>{{exchangeRate.day}}, {{exchangeRate.date}}</strong>
+                            </td>
+                            <td>
+                                <span class="currency">{{}}</span>
+                                <input type="text" ng-model="exchangeRate.conversion_rate"><!-- Add attr 'disabled' if it's for past date -->
+                            </td>
+                            <td>
+                                <span class="admin-icons icon-mover-right" ng-hide="exchangeRate.isDisabled">Copy</span> <!-- Add class 'hidden' if Exchange Rate for this day is not defined or if it's a past date -->
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -31,6 +42,7 @@
 
         <div class="actions">
             <button type="button" class="button blank modal-close">Close window</button>
+            <button type="button" class="button white green-text" ng-click="save()">Save changes</button>
             <!-- When users modify exchange rates, hide L44 and show this instead:
                 <button type="button" class="button blank">Cancel</button> // Click on this reverts changes but does not close the popup
                 <button type="button" class="button white green-text">Save changes</button> // Click on this saves changes but does not close the popup
