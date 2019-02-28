@@ -71,7 +71,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			ROOMS = $scope.reservationData.rooms,
 			ARRIVAL_DATE = $scope.reservationData.arrivalDate,
 			DEPARTURE_DATE = $scope.reservationData.departureDate,
-			scrollPosition = 0;
+			scrollPosition = 0,
+			isRoomTypeChangePopupShown = false;
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ***************************
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PRIVATE METHODS
@@ -1808,8 +1809,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 			var roomTypeChanged = ( roomType !== $scope.stateCheck.roomTypeIdFromNightlyDiary );
 
-			if ($scope.stateCheck.isFromNightlyDiary && roomTypeChanged) {
+			if ($scope.stateCheck.isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown) {
                 $scope.validationMsg = 'Room number will be unassigned by changing the room type';
+                isRoomTypeChangePopupShown = true;
                 resetRoomDetailsIfInvalid();
                 showValidationPopup();
             }
