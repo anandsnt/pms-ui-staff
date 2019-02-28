@@ -845,6 +845,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.$emit("hideLoader");
                 $scope.guestSearchIntiated = true;
                 $scope.searchedGuests = [];
+                $scope.guestCardData.contactInfo = data;
                 if (data.results.length > 0) {
                     angular.forEach(data.results, function(item) {
                         var guestData = {};
@@ -1893,7 +1894,7 @@ angular.module('sntRover').controller('guestCardController', [
         $scope.createNewGuest = function() {
             // create an empty dataModel for the guest
             var contactInfoData = {
-                'contactInfo': {},
+                'contactInfo': $scope.guestCardData.contactInfo,
                 'countries': $scope.countries,
                 'userId': "",
                 'avatar': "",

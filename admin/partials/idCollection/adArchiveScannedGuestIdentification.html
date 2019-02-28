@@ -30,7 +30,7 @@
                 <div class="archive-storage-option notice { success | error }">
                     <img ng-src="{{connctedDetails.iconUrl}}" alt="" />
                     <div class="option-content">
-                        <strong>Connect to {{config.guest_id_archive_platform}}</strong>
+                        <strong>Connected to {{config.guest_id_archive_platform}}</strong>
                         <p></p>
                     </div>
                     <button class="button white red-text" ng-click="disConnect()">
@@ -129,7 +129,15 @@
 
             <fieldset class="holder full-width" ng-show ="MODE =='ACCESS_TOKEN'">
                 <div class="entry full-width">
-                    <div class="entry">
+                    <div class="entry" ng-show="config.guest_id_archive_platform=='s3'">
+                        <label for="token">AWS ACCESS KEY ID<strong>*</strong></label>
+                        <input type="text" ng-model='config.aws_access_key_id' name="token" id="token" placeholder="Enter ID" value="" required="">
+                    </div>
+                    <div class="entry" ng-show="config.guest_id_archive_platform=='s3'">
+                        <label for="token">AWS SECRET ACCESS KEY<strong>*</strong></label>
+                        <input type="text" ng-model='config.aws_secret_access_key' name="token" id="token" placeholder="Enter Secret" value="" required="">
+                    </div>
+                    <div class="entry" ng-hide="config.guest_id_archive_platform=='s3'">
                         <label for="token">Access Token <strong>*</strong></label>
                         <input type="text" ng-model='config.guest_id_archive_platform_token' name="token" id="token" placeholder="Enter token" value="" required="">
                     </div>
@@ -160,6 +168,11 @@
                     <button type="button" class="archive-storage-option" ng-click="dropBoxSignIn()">
                         <img src="/assets/images/archive-option-dropbox.png" alt="" />
                         <strong>Connect to Drop Box</strong>
+                    </button>
+
+                    <button type="button" class="archive-storage-option" ng-click="connectToS3()">
+                        <img src="/assets/images/archive-option-aws.png" alt="" />
+                        <strong>Connect to S3</strong>
                     </button>
                 </div>
             </fieldset>
