@@ -17,6 +17,8 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
 
+        var isDateChangedFromInitialState = false;
+
         /*
          * Utility method to shift date.
          * @param {String}  - startDate : base date to be shifted.
@@ -105,6 +107,7 @@ angular.module('sntRover')
             }
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
+            isDateChangedFromInitialState = true;
         });
         // Catching event from main controller, when API is completed.
         $scope.addListener('FETCH_COMPLETED_DATE_LIST_DATA', function() {
@@ -154,6 +157,7 @@ angular.module('sntRover')
                 $scope.diaryData.fromDate = getDateShift(fromDate, 21, isRightShift, false);
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, nextShift, true);
             }
+            isDateChangedFromInitialState = true;
         };
 
         // To handle click on left date shift.
@@ -204,10 +208,12 @@ angular.module('sntRover')
         // Handle Nigthtly/Hourly toggle
         $scope.toggleHourlyNightly = false;
         $scope.navigateToHourlyDiary = function() {
-            var dateToSend = $rootScope.businessDate;
+            var dateToSend = $scope.diaryData.fromDate,
+                businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
 
-            if ($stateParams.start_date) {
-                dateToSend = $scope.diaryData.fromDate;
+            if ($scope.diaryData.fromDate === businessDateMinusOne && !isDateChangedFromInitialState) {
+                dateToSend = $rootScope.businessDate;
             }
             $state.go("rover.diary", {
                 checkin_date: dateToSend
