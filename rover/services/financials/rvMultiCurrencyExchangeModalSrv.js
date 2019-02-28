@@ -12,14 +12,14 @@ angular.module('sntRover').service('RVMultiCurrencyExchangeSrv', ['$http', '$q',
         var url = "/api/exchange_rates/current_exchange_rates";
 
         BaseWebSrvV2.getJSON(url, params).then(function (data) {
-            // var data1 = [{ 'date': '20-02-2019',
-            //     'exchange_rate': 12.33 }, { 'date': '21-02-2019',
-            //     'exchange_rate': 12.33 }, { 'date': '22-02-2019',
-            //     'exchange_rate': 12.33 }, { 'date': '23-02-2019',
-            //     'exchange_rate': 12.33 }, { 'date': '24-02-2019',
-            //     'exchange_rate': 12.33 }, { 'date': '25-02-2019',
-            //     'exchange_rate': 13.33 }];
-            deferred.resolve(data);
+            var data1 = [{ 'date': '2019-01-09',
+                'conversion_rate': 12.33 },{ 'date': '2019-01-10',
+                'conversion_rate': 12.33 },{ 'date': '2019-01-11',
+                'conversion_rate': 12.33 }, { 'date': '2019-01-12',
+                'conversion_rate': 12.33 }, { 'date': '2019-01-15',
+                'conversion_rate': 12.33 }, { 'date': '2019-01-16',
+                'conversion_rate': 13.33 }];
+            deferred.resolve(data1);
         }, function (data) {
             deferred.reject(data);
         });

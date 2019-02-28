@@ -11,6 +11,8 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
             BaseCtrl.call(this, $scope);
 
+            $scope.exchangeRatesData = [];
+
             var commonDateOptions = {
                     dateFormat: $rootScope.jqDateFormat,
                     changeYear: true,
@@ -28,6 +30,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     $scope.start_date = $filter('date')(startDate, $rootScope.dateFormat);
                     $scope.end_date = $filter('date')(tzIndependentDate(moment(startDate).add(7, 'days')
                     .calendar()), $rootScope.dateFormat);
+                    fetchExhangeRates();
                     $timeout(function() {
                         $rootScope.apply();
                     }, 100);
@@ -43,7 +46,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     $scope.end_date = $filter('date')(endDate, $rootScope.dateFormat);
                     $scope.start_date = $filter('date')(tzIndependentDate(moment(endDate).subtract(7, 'days')
                     .calendar()), $rootScope.dateFormat);
-
+                    fetchExhangeRates();
                     $timeout(function() {
                         $rootScope.apply();
                     }, 200);
@@ -52,11 +55,12 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
                     var successCallBackFetchAccountsReceivables = function(data) {
                         if (data.length > 0) {
-                            $scope.exchangeRates = data;
-                            angular.forEach($scope.exchangeRates, function(item, index) {
-                                item.day = moment(tzIndependentDate(item.date)).format("dddd");
-                                item.isDisabled = isDateDisabled(item.date)
-                            });
+                            $scope.exchangeRatesData = data;
+                            // angular.forEach($scope.exchangeRates, function(item, index) {
+                            //     item.day = moment(tzIndependentDate(item.date)).format("dddd");
+                            //     item.isDisabled = isDateDisabled(item.date)
+                            // });
+                            $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                         } else {
                             $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                         }
@@ -71,17 +75,19 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     $scope.invokeApi(RVMultiCurrencyExchangeSrv.fetchExchangeRates, params, successCallBackFetchAccountsReceivables );
                 },
                 isDateDisabled = function(startDate) {
-                   return startDate < moment($rootScope.businessDate);
+                   return startDate < $rootScope.businessDate;
                 },
                 constructExchangeRateArray = function(date) {
                     var startDate = moment(date),
                         ExchangeRateArray = [];
 
                     for (var i = 0; i < 7; i++) {
+                        var currentItemData = _.findWhere($scope.exchangeRatesData, {"date": moment(tzIndependentDate(startDate)).format($rootScope.momentFormatForAPI)});
+
                         ExchangeRateArray[i] = {
                             day : startDate.format('dddd'),
                             date : $filter('date')(tzIndependentDate(startDate.calendar()), $rootScope.dateFormat),
-                            conversion_rate : null,
+                            conversion_rate : currentItemData != undefined ? currentItemData.conversion_rate : null,
                             isDisabled : isDateDisabled(startDate)
                         };
                         startDate = startDate.add(1, 'days');
@@ -91,7 +97,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 };
     
 
-            $scope.save = function() {
+            $scope.saveExchangeRate = function() {
                 var successCallBackFetchAccountsReceivables = function(data) {
                     //$scope.exchangeRates = data;
                 };
