@@ -130,16 +130,16 @@
 			};
 		};
 
-		if ($rootScope.excludeRoutingReservations && $state.href("unableToCheckn") !== null) {
+		if ($state.href("unableToCheckn") !== null) {
 
 			$scope.isPosting = true;
 			checkinConfirmationService.isReservationEligibleToCheckin({
 				'reservation_id': $rootScope.reservationID
 			}).then(function(response) {
 				$scope.isPosting = false;
-				if (!response.is_eligible_to_checkin) {
+				if (!response.eligible_for_checkin) {
 					$state.go('unableToCheckn', {
-						'reason': response.reason
+						'reason': response.ineligibility_reason
 					});
 				} else {
 					setupPageActions();
