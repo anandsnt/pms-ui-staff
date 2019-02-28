@@ -30,6 +30,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.currency_list  = settingsAndParamsData.currency_list;
     $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
 
+
     /**
     * To handle save button action
     *
@@ -54,6 +55,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
             'invoice_currency': $scope.invoice_currency
+
         };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);

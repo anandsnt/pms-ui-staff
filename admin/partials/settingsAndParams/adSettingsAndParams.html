@@ -94,13 +94,13 @@
                             <h3><span translate>MULTI_CURRENCY</span></h3>
                         </div>
                         <ad-toggle-button div-class="full-width" is-checked="is_multi_currency_enabled" label="{{'CHECK_AUTH_INTERFACE' | translate }}"></ad-toggle-button>
-
                         <div class="entry" ng-show="is_multi_currency_enabled">
 							<label> Hotel Invoice Currency <strong>*</strong> </label>
 							<div class="select">
 								adSettingsAndParamsCtrl.js			<select class="placeholder" ng-model="invoice_currency">
 									<option value="" ng-selected="invoice_currency == ''"translate>Select Invoice Currency</option>
 									<option ng-selected="invoice_currency == c.id" value="{{c.id}}" ng-repeat="c in currency_list" >{{c.code}}</option>
+
 								</select>
 							</div>
 						</div>
