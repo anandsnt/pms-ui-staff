@@ -18,7 +18,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 var setAPiURLfromWindowUrl = function(startingUrl) {
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
-                    var startingUrl = startingUrl || absUrl.substring(0, offset);
+
+                    startingUrl = startingUrl || absUrl.substring(0, offset);
                     // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
@@ -35,14 +36,15 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 // invoked when forgot password or email verification is
                 // requested from the zest apps
-                else if (absUrl.indexOf("/guest_web/home/user_activation") !== -1) {
+                else if (absUrl.indexOf('/guest_web/home/user_activation') !== -1 ||
+                    absUrl.indexOf('/checkin/user_activation') !== -1) {
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
-                    var startingUrl = absUrl.substring(0, offset);
+
                     // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
-                        remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
+                    remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
                     apiUrl = "/guest_web/home/activate_user.json" + remainingURl;
                 }
                 else if ( absUrl.indexOf("/checkin?guest_web_token=") !== -1) {

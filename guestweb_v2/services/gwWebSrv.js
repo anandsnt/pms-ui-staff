@@ -32,7 +32,6 @@
                     absUrl.indexOf("/checkin/home?guest_web_token=") !== -1) {
 				var offset = absUrl.indexOf("?");
 				var remainingURl = absUrl.substring(offset, absUrl.length);
-				var startingUrl = absUrl.substring(0, offset);
 
 				apiUrl =  "/guest_web/home/index_data" + remainingURl;
 

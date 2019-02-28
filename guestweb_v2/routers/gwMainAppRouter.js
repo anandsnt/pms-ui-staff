@@ -32,7 +32,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 // invoked when forgot password or email verification is
                 // requested from the zest apps
-                else if (absUrl.indexOf("/guest_web/home/user_activation") !== -1) {
+                else if (absUrl.indexOf("/guest_web/home/user_activation") !== -1 ||
+                    absUrl.indexOf('/checkin/user_activation') !== -1) {
                     var offset = absUrl.indexOf("?");
                     var remainingURl = absUrl.substring(offset, absUrl.length);
                     var startingUrl = absUrl.substring(0, offset);
