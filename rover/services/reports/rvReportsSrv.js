@@ -100,6 +100,9 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Clairvoyix Reservations Export': [
                 'TODAY'
+             ],
+             'Police Report Export': [
+				'TODAY'
              ]
         };
 
