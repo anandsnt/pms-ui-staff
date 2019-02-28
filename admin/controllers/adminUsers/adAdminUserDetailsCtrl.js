@@ -40,7 +40,7 @@ admin.controller('ADAdminUserDetailsCtrl',
                 var params = $scope.data;
                 var unwantedKeys = ['user_roles', 'user_id', 'user_department', 'shifts', 'shift_id',
                     'roles', 'pin_code', 'default_dashboard_id', 'departments',
-                    'hk_section_id', 'hk_sections', 'is_chain_admin', 'is_multi_property', 'kiosk_manual_id_scan'];
+                    'hk_section_id', 'hk_sections', 'is_chain_admin', 'is_multi_property', 'kiosk_manual_id_scan', 'user_photo'];
 
                 var data = dclone($scope.data, unwantedKeys);
 
