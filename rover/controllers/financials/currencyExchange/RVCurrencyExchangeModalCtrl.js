@@ -51,7 +51,16 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 fetchExhangeRates = function() {
 
                     var successCallBackFetchAccountsReceivables = function(data) {
-                        //$scope.exchangeRates = data;
+                        if (data.length > 0) {
+                            $scope.exchangeRates = data;
+                            angular.forEach($scope.exchangeRates, function(item, index) {
+                                item.day = moment(tzIndependentDate(item.date)).format("dddd");
+                                item.isDisabled = isDateDisabled(item.date)
+                            });
+                        } else {
+                            $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
+                        }
+                        $scope.refreshScroller("CURRENCY_SCROLLER");
                     };
 
                     var params = {
@@ -81,19 +90,6 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     return ExchangeRateArray;
                 };
     
-            // $scope.exchangeRates = {};
-            // $scope.exchangeRates.data = [{ 'date': '09-01-2019',
-            //     'conversion_rate': 12.33 }, { 'date': '10-01-2019',
-            //         'conversion_rate': 12.33 }, { 'date': '11-01-2019',
-            //             'conversion_rate': 12.33 }, { 'date': '12-01-2019',
-            //                 'conversion_rate': 12.33 }, { 'date': '13-01-2019',
-            //                     'conversion_rate': 12.33 }, { 'date': '14-01-2019',
-            //                         'conversion_rate': 13.33 }];
-
-
-            // angular.forEach($scope.exchangeRates.data, function(item, index) {
-            //     item.day = moment(item.date, 'DD-MM-YYYY').format('dddd');
-            // });
 
             $scope.save = function() {
                 var successCallBackFetchAccountsReceivables = function(data) {
@@ -132,7 +128,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
                 $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(7, 'days')
                 .calendar()), $rootScope.dateFormat);
-                $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
+                // $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                 setStartDateOptions();
                 setEndDateOptions();
                 fetchExhangeRates();
