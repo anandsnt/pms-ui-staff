@@ -54,8 +54,8 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     };
 
                     var params = {
-                        'start_date': $scope.start_date,
-                        'end_date': $scope.end_date
+                        'start_date': moment(tzIndependentDate($scope.start_date)).format($rootScope.momentFormatForAPI),
+                        'end_date': moment(tzIndependentDate($scope.start_date)).format($rootScope.momentFormatForAPI)
                     };
 
                     $scope.invokeApi(RVMultiCurrencyExchangeSrv.fetchExchangeRates, params, successCallBackFetchAccountsReceivables );
@@ -106,6 +106,22 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 $scope.invokeApi(RVMultiCurrencyExchangeSrv.saveExchangeRates, params, successCallBackFetchAccountsReceivables );
 
             }
+
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false,
+                showScrollbar: true
+            };
+
+            $scope.setScroller("CURRENCY_SCROLLER", scrollerOptions);
+
+            $scope.closeDialog = function() {
+            // to add stjepan's popup showing animation
+                $rootScope.modalOpened = false;
+                $timeout(function() {
+                    ngDialog.close();
+                }, 200);
+            };
 
             var init = function() {
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
