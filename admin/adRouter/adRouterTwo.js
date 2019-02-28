@@ -939,10 +939,21 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       url: '/idCollection'
     });
 
+    $stateProvider.state('admin.archivalTransfer', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/archivalTransfer'
+    });
+
     $stateProvider.state('admin.cotaMandatoryFields', {
       templateUrl: '/assets/partials/cards/coTaMandatoryFields.html',
       controller: 'ADCoTaMandatoryFieldsCtrl',
       url: '/coTaMandatoryFields'
     });
 
+    $stateProvider.state('admin.guestCardFields', {
+      templateUrl: '/assets/partials/cards/guestCardFields.html',
+      controller: 'ADGuestCardFieldsCtrl',
+      url: '/adGuestCardFields'
+    });
 });
