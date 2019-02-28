@@ -4,10 +4,9 @@ admin.controller('ADAdminUserDetailsCtrl',
 	'$stateParams',
 	'ADAdminUserSrv',
 	'$rootScope',
-	'ADUserRolesSrv',
 	'$timeout',
 	'$window',
-	function($scope, $state, $stateParams, ADAdminUserSrv, $rootScope, ADUserRolesSrv, $timeout, $window) {
+	function($scope, $state, $stateParams, ADAdminUserSrv, $rootScope, $timeout, $window) {
 
 	BaseCtrl.call(this, $scope);
 

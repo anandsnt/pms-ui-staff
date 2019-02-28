@@ -1,24 +1,14 @@
 <section id="replacing-div-first" class="content current admin-scrollfix" div-touch-move-stop-propogate>
 	<div id="users_list" data-view="UsersListView">
 		<!-- Hotels list -->
-		<section ng-click="clickedOutside($event)">
+		<section>
 			<header class="content-title float">
 				<h2>Users</h2>
 				<span class="count">({{totalCount}})</span>
-				<a id="add_new_user" class="action add" ui-sref="admin.adminuserdetails({ page: 'add', id: '', hotelId: hotelId ,manual_id_scan_enabled: manualIDScanEnabled})" ng-hide="flagObject.showAllUsers===true">Add New</a>
-				<a id="find_existing_user" class="action link" ng-show="isAdminSnt" ui-sref="admin.linkexisting({id:hotelId})" >Link Existing</a>
-
-				<ul class="filters chain-toggle" ng-if="flagObject.isChainAdmin">
-					<li ng-click="clickedUserFilter('hotel-user')" ng-class="{ active : !flagObject.showAllUsers }">Hotel Users</li>
-					<li ng-click="clickedUserFilter('all-users')" ng-class="{ active : flagObject.showAllUsers }">All Users</li>
-				</ul>
-
+				<a id="add_new_user" class="action add" ui-sref="admin.adminuserdetails({ page: 'add', id: ''})" ng-hide="flagObject.showAllUsers===true">Add New</a>
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
-				<div ng-if="flagObject.isChainAdmin && flagObject.showAllUsers" ng-include="'/assets/partials/users/adMPAllUserFilters.html'" includeReplace></div>
-
 				<!--Per_page and search starts here-->
 				<span class="count-show">Show</span>
 				<div class="select table-count rates-table-count">
@@ -43,9 +33,6 @@
 				
 				<!--Per_page and search ends here-->
 				<div ng-if="!flagObject.showAllUsers" ng-include="'/assets/partials/adminUsers/adAdminHotelUsersTable.html'" includeReplace></div>
-
-				<div ng-if="flagObject.isChainAdmin && flagObject.showAllUsers" ng-include="'/assets/partials/users/adAllUsersTable.html'" includeReplace></div>
-
 			</section>
 		</section>
 	</div>

@@ -78,21 +78,6 @@
 					</div>
 
 				</fieldset>
-
-				<fieldset class="holder left" ng-show="isAdminSnt && data.is_multi_property" >
-					<ad-checkbox is-checked="data.is_chain_admin" top-label="{{'CHAIN_ADMIN'| translate}}" div-class="full-width" is-disabled="!data.is_multi_property"></ad-checkbox>
-				</fieldset>
-
-				<fieldset class="holder left">
-					<div class="entry full-width">
-							<label for="defaultdashboard" >{{'DEFAULT_DASHBOARD'|translate}}<strong > * </strong></label>
-		                <div class="select">
-		                    <select id="defaultdashboard" ng-required="true" class="placeholder" ng-model = "data.default_dashboard_id" ng-options="dashboard.dashboard_id as dashboard.dashboard_name for dashboard in dashboardOptions" >
-		                      <option value="" disabled translate>SELECT_DEFAULT_DASHBOARD</option>
-		                    </select>
-		                </div>
-		            </div>
-				</fieldset>
 				<div class="actions float">
 					<button type="button" id="cancel" class="button blank add-data-inline" ui-sref='admin.adminUsers'>
 						Cancel
