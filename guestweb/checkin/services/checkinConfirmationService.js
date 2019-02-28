@@ -59,27 +59,11 @@
 				return deferred.promise;
 			};
 
-			var isReservationEligibleToCheckin = function(data) {
-				var deferred = $q.defer();
-				var url = '/guest_web/reservations/' + data.reservation_id + '/checkin_eligibility?guest_web_token=' + $rootScope.accessToken;
-
-				$http.get(url, {
-						params: data
-					}).success(function(response) {
-						deferred.resolve(response);
-					})
-					.error(function() {
-						deferred.reject();
-					});
-				return deferred.promise;
-			};
-
 			return {
 				responseData: responseData,
 				verifyCheckinReservation: verifyCheckinReservation,
 				searchReservation: searchReservation,
-				getToken: getToken,
-				isReservationEligibleToCheckin: isReservationEligibleToCheckin
+				getToken: getToken
 			};
 		};
 

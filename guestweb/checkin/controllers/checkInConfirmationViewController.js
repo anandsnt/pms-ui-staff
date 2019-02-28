@@ -130,26 +130,10 @@
 			};
 		};
 
-		if ($state.href("unableToCheckn") !== null) {
-
-			$scope.isPosting = true;
-			checkinConfirmationService.isReservationEligibleToCheckin({
-				'reservation_id': $rootScope.reservationID
-			}).then(function(response) {
-				$scope.isPosting = false;
-				if (!response.eligible_for_checkin) {
-					$state.go('unableToCheckn', {
-						'reason': response.ineligibility_reason
-					});
-				} else {
-					setupPageActions();
-				}
-			}, function() {
-				$rootScope.netWorkError = true;
-				$scope.isPosting = false;
+		if ($state.href("unableToCheckn") !== null && !$rootScope.eligibleToCheckin) {
+			$state.go('unableToCheckn', {
+				'reason': $rootScope.inEligibilityReason
 			});
-		} else {
-			setupPageActions();
 		}
 	};
 

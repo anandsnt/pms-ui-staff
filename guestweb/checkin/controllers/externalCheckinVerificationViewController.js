@@ -79,24 +79,9 @@
 				$rootScope.payment_method_used = res_data.payment_method_used;
 				$rootScope.paymentDetails = res_data.payment_details;
 
-				if ($state.href("unableToCheckn") !== null) {
-
-					$scope.isLoading = true;
-					checkinConfirmationService.isReservationEligibleToCheckin({
-						'reservation_id': $rootScope.reservationID
-					}).then(function(response) {
-						$scope.isLoading = false;
-						if (!response.eligible_for_checkin) {
-							$state.go('unableToCheckn', {
-								'reason': response.ineligibility_reason
-							});
-						} else {
-							// navigate to next page
-							$state.go('checkinReservationDetails');
-						}
-					}, function() {
-						$rootScope.netWorkError = true;
-						$scope.isLoading = false;
+				if ($state.href("unableToCheckn") !== null && !res_data.eligible_for_checkin) {
+					$state.go('unableToCheckn', {
+						'reason': res_data.ineligibility_reason
 					});
 				} else {
 					// navigate to next page
