@@ -205,10 +205,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             }
         });
 
-        $stateProvider.state('admin.archiveScannedGuestIdentification', {
-            templateUrl: '/assets/partials/idCollection/adArchiveScannedGuestIdentification.html',
-            controller: 'adArchiveScannedGuestIdentifiactionCtrl',
-            url: '/zestStationIDCollection',
+        $stateProvider.state('admin.archivalTransferSetup', {
+            templateUrl: '/assets/partials/archivalSetup/adArchivalTransferSetup.html',
+            controller: 'adArchivalTransferSetupCtrl',
+            url: '/archivalTransferSetup',
             resolve: {
                 config: ['ACGIIntegrationSrv', function (ACGIIntegrationSrv) {
                     return ACGIIntegrationSrv.fetchConfiguration();
