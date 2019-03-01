@@ -123,7 +123,7 @@
                 <td></td>
                 <td><strong >{{printData.translation.total_fees}}</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.total_fees}}</strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_total_fees !== null">
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_total_fees}}
                     </div>
                 </td>
