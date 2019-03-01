@@ -1,12 +1,12 @@
-/* StayNTouch Zest Station Styles | Bunk Theme */
+/* StayNTouch Zest Station Styles | Row NYC Theme */
 
 /* 1. COLORS
 ==========================================================*/
     @brandColor:            #3eb397;
  
     
-    @textColor:             @white;
-    @backgroundColor:       @black;
+    @textColor:             @black;
+    @backgroundColor:       @white;
     
     @actionColor:           @white;
     @actionBackground:      @brandColor;
@@ -20,22 +20,22 @@
 
 /* 3. IMAGES
 ==========================================================*/
-    @background:            #000;
-    @backgroundSize:        cover;
+    @background:            #fff;
+    @backgroundSize:        contain;
 
     @headerIconsColor:      @white;
     @headerIconsActive:     @brandColor;
 
     .icons { 
         &.icon-create-key {
-            fill: @white;
-            stroke: @white;
+            fill: @brandColor;
+            stroke: @brandColor;
         }
 
-        &.icon-no-print { stroke: @white; }
+        &.icon-no-print { stroke: @brandColor; }
 
         &.icon-oos {
-            fill: @white;
+            fill: @brandColor;
         }
 
         &.icon-arrow-left,
@@ -50,14 +50,20 @@
     
     #bunk {
 
+        input,
+        select,
+        textarea {
+            color: @white;
+        }
+
         .logo-svg{
-            background-image: url("../css/themes/bunk/logo.svg");
+            background-image: url("../../../images/zeststation/bunk/logo.svg");
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
             height: 100px;
             width: 175px;
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
         #header {
@@ -87,10 +93,6 @@
                 }
             }
         }
-
-        .button.transparent {
-            background-color: fade(@white, 40);
-        }
          
         #logo {
             .logo {
@@ -102,6 +104,29 @@
         .popup #message-content .button {
             .icons {
                 fill: @white;
+            }
+        }
+
+        #textual {
+           background: #f5f5f5;
+
+           &:before,
+           &:after {
+            background: #f5f5f5;
+           }
+        }
+
+        #selection {
+            .details {
+                background: #f5f5f5;
+            }
+        }
+
+        .popup {
+            .button {
+                &.transparent {
+                    background: rgba(0,0,0,.1);
+                }
             }
         }
 
@@ -123,6 +148,13 @@
                 &.transparent {
                     background-color: fade(@black, 10);
                 }
+            }
+        }
+
+        .add-on {
+            &:not(.selected) {
+                background-color: #f5f5f5;
+                border-color: #f5f5f5;
             }
         }
     }
