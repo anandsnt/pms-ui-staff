@@ -89,6 +89,23 @@
                         <ad-toggle-button div-class="full-width" is-checked="auto_charge_deposit" label="{{'AUTO_CHARGE_DEPOSIT' | translate }}"></ad-toggle-button>
                     </fieldset>
 
+                    <fieldset class="holder left pull-left">
+                        <div class="form-title full-width">
+                            <h3><span translate>MULTI_CURRENCY</span></h3>
+                        </div>
+                        <ad-toggle-button div-class="full-width" is-checked="is_multi_currency_enabled" label="{{'ENABLE_MULTIPLE_CURRENCIES' | translate }}"></ad-toggle-button>
+
+                        <div class="entry" ng-show="is_multi_currency_enabled">
+							<label> Hotel Invoice Currency <strong>*</strong> </label>
+							<div class="select">
+								<select class="placeholder" ng-model="invoice_currency">
+									<option value="" ng-selected="invoice_currency == ''"translate>Select Invoice Currency</option>
+									<option ng-selected="invoice_currency == c.id" value="{{c.id}}" ng-repeat="c in currency_list" >{{c.code}}</option>
+								</select>
+							</div>
+						</div>
+                    </fieldset>
+
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
 							CANCEL
