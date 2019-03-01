@@ -619,7 +619,7 @@ sntRover.controller('roverController', [
                 });
         };
 
-        var openCurrencyExchangePopup  = function() {
+        var openCurrencyExchangePopup = function() {
             jsMappings.fetchAssets(['rover.financials'])
                 .then(function () {
                     $scope.$emit('hideLoader');

@@ -489,23 +489,23 @@ angular.module('sntRover').service('rvMenuSrv',
 		var menu = [
 			{
 				title: "SETTINGS",
-		        menuIndex: "settings",
-		        action: "",
-		        submenu: [
+				menuIndex: "settings",
+				action: "",
+				submenu: [
 					{
 						title: "CAHNGE_PASSWORD",
 						action: "",
 						menuIndex: "changePassword",
 						actionPopup: true
-		        	},
+					},
 					{
 						title: "SETTINGS",
 						action: "",
 						menuIndex: "adminSettings",
 						actionPopup: true
-		        	}
+					}
 				]
-		    }];
+			}];
 
         // if the device is iPad, add extra menu Item to see details
         if ((sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) ||
@@ -669,7 +669,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		return returnValue;
 	};
 
-	/**
+	/*
 	* function to check permissions against a menu
 	* @param {string}, menu index
 	* @return {boolean}
