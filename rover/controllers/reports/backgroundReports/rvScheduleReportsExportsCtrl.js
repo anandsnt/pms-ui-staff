@@ -154,7 +154,7 @@ angular.module('sntRover')
 
                 if (query.length < 3) {
                     for (i = 0, j = source.length; i < j; i++) {
-                        source[i].filteredOut = false;
+                        source[i].filteredOut = source.report.title === 'Police Report Export';
                     }
 
                     refreshScroller();
@@ -169,7 +169,7 @@ angular.module('sntRover')
                     title = $scope.reportViewStore.showingAllReport ?
                         source[i].title.toLowerCase() : source[i].report.description.toLowerCase();
 
-                    source[i].filteredOut = title.indexOf(query) === -1;
+                    source[i].filteredOut = title.indexOf(query) === -1 || source[i].report.title === 'Police Report Export';
                 }
 
                 refreshScroller();

@@ -91,7 +91,7 @@
                                                   entry-div-class="full-width"></ad-charge-code-auto-complete>
                 </fieldset>
                 <fieldset class="holder right">
-                    <div class="entry full-width">
+                    <div class="entry full-width" ng-if="lightspeed.enabled">
                         <label><span translate>ENABLE_FLOORS</span></label>
                         <div name="active-inactive-toggle" class="switch-button single"
                              ng-class="{ on: lightspeed.floors_enabled }" ng-click="toggleFloorEnabled()">
@@ -100,7 +100,17 @@
                         </div>
                     </div>
                 </fieldset>
-
+                <fieldset class="holder left">
+                    <div class="entry full-width" ng-if="lightspeed.enabled">
+                        <label><span translate>LS_ENABLE_STOP_EOD_CHARGE_IMPORT</span></label>
+                        <div name="active-inactive-toggle" class="switch-button single"
+                             ng-class="{ on: lightspeed.stop_eod_charge_import_enabled }"
+                             ng-click="toggleStopEODChargeImportEnabled()">
+                            <input type="checkbox">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+                </fieldset>
             </fieldset>
 
             <div class="actions float">
