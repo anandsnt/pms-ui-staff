@@ -2,7 +2,7 @@ angular
 .module('diaryModule', [])
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     $stateProvider.state('rover.diary', {
-        url: '/diary/?reservation_id&checkin_date',
+        url: '/diary/?reservation_id&checkin_date&origin',
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {

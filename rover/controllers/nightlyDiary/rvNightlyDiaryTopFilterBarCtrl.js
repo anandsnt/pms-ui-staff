@@ -216,7 +216,8 @@ angular.module('sntRover')
                 dateToSend = $rootScope.businessDate;
             }
             $state.go("rover.diary", {
-                checkin_date: dateToSend
+                checkin_date: dateToSend,
+                origin: 'NIGHTLY_DIARY'
             });
             $scope.toggleHourlyNightly = true;
         };
