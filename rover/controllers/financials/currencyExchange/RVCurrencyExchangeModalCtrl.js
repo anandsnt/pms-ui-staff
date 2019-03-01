@@ -94,7 +94,9 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     return ExchangeRateArray;
                 };
     
-
+            /*
+             * Save Exchange Rates
+             */
             $scope.saveExchangeRate = function() {
                 var successCallBackFetchAccountsReceivables = function(data) {
                     $scope.closeDialog();
@@ -111,7 +113,10 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 $scope.invokeApi(RVMultiCurrencyExchangeSrv.saveExchangeRates, params, successCallBackFetchAccountsReceivables );
 
             };
-
+            /*
+             * copy amount to next row
+             * @param clickedIndex Index of the clicked item
+             */
             $scope.copyToNext = function(clickedIndex) {
                 $scope.exchangeRates[clickedIndex+1].conversion_rate = $scope.exchangeRates[clickedIndex].conversion_rate;
             };
@@ -123,14 +128,18 @@ sntRover.controller('RVCurrencyExchangeModalController',
             };
 
             $scope.setScroller("CURRENCY_SCROLLER", scrollerOptions);
-
+            /*
+             * To close dialog box
+             */
             $scope.closeDialog = function() {
                 $rootScope.modalOpened = false;
                 $timeout(function() {
                     ngDialog.close();
                 }, 200);
             };
-
+            /*
+             * Initialization method
+             */
             var init = function() {
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
                 $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(7, 'days')
