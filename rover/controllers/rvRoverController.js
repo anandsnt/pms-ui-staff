@@ -140,6 +140,7 @@ sntRover.controller('roverController', [
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+        $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
         $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled ? getCurrencySign(hotelDetails.selected_invoice_currency.value) : '';
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
