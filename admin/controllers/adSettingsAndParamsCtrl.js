@@ -27,7 +27,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
     $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
-    $scope.currency_list  = settingsAndParamsData.currency_list;
+    $scope.currency_list = settingsAndParamsData.currency_list;
     $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
 
 
@@ -54,7 +54,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
-            'invoice_currency': parseInt($scope.invoice_currency)
+            'invoice_currency': parseInt($scope.invoice_currency, 10)
 
         };
 

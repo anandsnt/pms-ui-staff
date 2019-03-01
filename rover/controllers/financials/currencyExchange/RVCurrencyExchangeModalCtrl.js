@@ -12,8 +12,9 @@ sntRover.controller('RVCurrencyExchangeModalController',
             BaseCtrl.call(this, $scope);
 
             $scope.exchangeRatesData = [];
-
-            var commonDateOptions = {
+            var delay = 200,
+                noOfDays = 7,
+                commonDateOptions = {
                     dateFormat: $rootScope.jqDateFormat,
                     changeYear: true,
                     changeMonth: true,
@@ -28,12 +29,12 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     var startDate = new tzIndependentDate(util.get_date_from_date_picker(datePicker));
 
                     $scope.start_date = $filter('date')(startDate, $rootScope.dateFormat);
-                    $scope.end_date = $filter('date')(tzIndependentDate(moment(startDate).add(7, 'days')
+                    $scope.end_date = $filter('date')(tzIndependentDate(moment(startDate).add(noOfDays, 'days')
                     .calendar()), $rootScope.dateFormat);
                     fetchExhangeRates();
                     $timeout(function() {
                         $rootScope.apply();
-                    }, 100);
+                    }, delay);
                 },
                 setEndDateOptions = function () {
                     $scope.endDateOptions = _.extend({
@@ -44,12 +45,12 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     var endDate = new tzIndependentDate(util.get_date_from_date_picker(datePicker));
 
                     $scope.end_date = $filter('date')(endDate, $rootScope.dateFormat);
-                    $scope.start_date = $filter('date')(tzIndependentDate(moment(endDate).subtract(7, 'days')
+                    $scope.start_date = $filter('date')(tzIndependentDate(moment(endDate).subtract(noOfDays, 'days')
                     .calendar()), $rootScope.dateFormat);
                     fetchExhangeRates();
                     $timeout(function() {
                         $rootScope.apply();
-                    }, 200);
+                    }, delay);
                 },
                 fetchExhangeRates = function() {
 
@@ -78,14 +79,14 @@ sntRover.controller('RVCurrencyExchangeModalController',
                         startDateString = moment(startDate).format("YYYY-MM-DD"),                  
                         ExchangeRateArray = [];
 
-                    for (var i = 0; i < 7; i++) {
+                    for (var i = 0; i < noOfDays; i++) {
                         var currentItemData = _.findWhere($scope.exchangeRatesData, {"date": moment(tzIndependentDate(startDate)).format($rootScope.momentFormatForAPI)});
 
                         ExchangeRateArray[i] = {
-                            day : startDate.format('dddd'),
-                            date : $filter('date')(tzIndependentDate(startDate.calendar()), $rootScope.dateFormat),
-                            conversion_rate : currentItemData != undefined ? currentItemData.conversion_rate : null,
-                            isDisabled : isDateDisabled(startDateString)
+                            day: startDate.format('dddd'),
+                            date: $filter('date')(tzIndependentDate(startDate.calendar()), $rootScope.dateFormat),
+                            conversion_rate: angular.isUndefined(currentItemData) ? null : currentItemData.conversion_rate,
+                            isDisabled: isDateDisabled(startDateString)
                         };
                         startDate = startDate.add(1, 'days');
                         startDateString = moment(startDate).format("YYYY-MM-DD");
@@ -98,11 +99,11 @@ sntRover.controller('RVCurrencyExchangeModalController',
              * Save Exchange Rates
              */
             $scope.saveExchangeRate = function() {
-                var successCallBackFetchAccountsReceivables = function(data) {
+                var successCallBackFetchAccountsReceivables = function() {
                     $scope.closeDialog();
                 };
 
-                angular.forEach($scope.exchangeRates, function(item, index) {
+                angular.forEach($scope.exchangeRates, function(item) {
                     item.date = moment(tzIndependentDate(item.date)).format($rootScope.momentFormatForAPI);
                 });
 
@@ -118,7 +119,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
              * @param clickedIndex Index of the clicked item
              */
             $scope.copyToNext = function(clickedIndex) {
-                $scope.exchangeRates[clickedIndex+1].conversion_rate = $scope.exchangeRates[clickedIndex].conversion_rate;
+                $scope.exchangeRates[clickedIndex + 1].conversion_rate = $scope.exchangeRates[clickedIndex].conversion_rate;
             };
 
             var scrollerOptions = {
@@ -128,6 +129,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
             };
 
             $scope.setScroller("CURRENCY_SCROLLER", scrollerOptions);
+
             /*
              * To close dialog box
              */
@@ -135,14 +137,14 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 $rootScope.modalOpened = false;
                 $timeout(function() {
                     ngDialog.close();
-                }, 200);
+                }, delay);
             };
             /*
              * Initialization method
              */
             var init = function() {
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
-                $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(7, 'days')
+                $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(noOfDays, 'days')
                 .calendar()), $rootScope.dateFormat);
                 setStartDateOptions();
                 setEndDateOptions();

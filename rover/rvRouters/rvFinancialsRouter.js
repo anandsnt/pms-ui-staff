@@ -62,9 +62,4 @@ angular.module('FinancialsModule', [])
             isFromStayCard: null
         }
     });
-    $stateProvider.state('rover.financials.currencyExchange', {
-        url: '/currencyExchange',
-        templateUrl: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html'
-        //controller: 'RVCurrencyExchangeController'
-    });
 });

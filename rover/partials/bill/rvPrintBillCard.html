@@ -12,13 +12,13 @@
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled">
+            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
             <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists">
                 <strong >{{printData.ar_invoice_label}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && printData.is_print_folio_enabled">
+            <span ng-if="printData.folio_number && printData.is_print_folio_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
@@ -68,13 +68,13 @@
     <div class="info-bottom float">
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled">
+            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
             <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists">
                 <strong >{{printData.ar_invoice_label}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && printData.is_print_folio_enabled">
+            <span ng-if="printData.folio_number && printData.is_print_folio_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
@@ -123,7 +123,7 @@
                 <td></td>
                 <td><strong >{{printData.translation.total_fees}}</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.total_fees}}</strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_total_fees !== null">
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_total_fees}}
                     </div>
                 </td>
@@ -133,7 +133,7 @@
                 <td></td>
                 <td><strong >{{printData.translation.total_credits}}<strong></td>
                 <td><strong>{{currencySymbol}}{{printData.credits}} </strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_credits !== null">
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_credits}}
                     </div>
                 </td>
@@ -144,7 +144,7 @@
                 <td></td>
                 <td><strong >{{printData.translation.balance}}</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.balance}} </strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_balance !== null">
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_balance}}
                     </div>
                 </td>
@@ -154,7 +154,7 @@
                 <td></td>
                 <td ><strong>{{printData.translation.net_amount}}</strong></td>
                 <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_net_amount !== null">
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_net_amount}}
                     </div>
                 </td>
@@ -180,7 +180,7 @@
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
                 </td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
                     </div>
                 </td>
@@ -197,7 +197,7 @@
                 <td class="align-right"></td>
                 <td class="align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}
 
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.invoice_currency_amount !== null">
                         {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
                     </div>
                 </td>
@@ -219,17 +219,17 @@
         <tr ng-repeat="item in printData.extended_tax_breakdown.details">
             <td class="text-align-left">{{ item.description }}</td>
             <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_gross_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_gross_amount}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ item.net_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_net_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_net_amount}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ item.tax_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_tax_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_tax_amount}}
                 </div>
             </td>
@@ -239,17 +239,17 @@
         <tr>
             <td class="text-align-left" >{{printData.translation.total}}</td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_total_gross_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_total_gross_amount}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_total_net_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_total_net_amount}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_total_tax_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_total_tax_amount}}
                 </div>
             </td>
