@@ -56,10 +56,6 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     var successCallBackFetchAccountsReceivables = function(data) {
                         if (data.length > 0) {
                             $scope.exchangeRatesData = data;
-                            // angular.forEach($scope.exchangeRates, function(item, index) {
-                            //     item.day = moment(tzIndependentDate(item.date)).format("dddd");
-                            //     item.isDisabled = isDateDisabled(item.date)
-                            // });
                             $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                         } else {
                             $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
@@ -79,6 +75,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 },
                 constructExchangeRateArray = function(date) {
                     var startDate = moment(date),
+                        startDateString = moment(startDate).format("YYYY-MM-DD"),                  
                         ExchangeRateArray = [];
 
                     for (var i = 0; i < 7; i++) {
@@ -88,9 +85,10 @@ sntRover.controller('RVCurrencyExchangeModalController',
                             day : startDate.format('dddd'),
                             date : $filter('date')(tzIndependentDate(startDate.calendar()), $rootScope.dateFormat),
                             conversion_rate : currentItemData != undefined ? currentItemData.conversion_rate : null,
-                            isDisabled : isDateDisabled(startDate)
+                            isDisabled : isDateDisabled(startDateString)
                         };
                         startDate = startDate.add(1, 'days');
+                        startDateString = moment(startDate).format("YYYY-MM-DD");
                     }
 
                     return ExchangeRateArray;
@@ -99,7 +97,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
             $scope.saveExchangeRate = function() {
                 var successCallBackFetchAccountsReceivables = function(data) {
-                    //$scope.exchangeRates = data;
+                    $scope.closeDialog();
                 };
 
                 angular.forEach($scope.exchangeRates, function(item, index) {
@@ -112,7 +110,11 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
                 $scope.invokeApi(RVMultiCurrencyExchangeSrv.saveExchangeRates, params, successCallBackFetchAccountsReceivables );
 
-            }
+            };
+
+            $scope.copyToNext = function(clickedIndex) {
+                $scope.exchangeRates[clickedIndex+1].conversion_rate = $scope.exchangeRates[clickedIndex].conversion_rate;
+            };
 
             var scrollerOptions = {
                 tap: true,
@@ -123,7 +125,6 @@ sntRover.controller('RVCurrencyExchangeModalController',
             $scope.setScroller("CURRENCY_SCROLLER", scrollerOptions);
 
             $scope.closeDialog = function() {
-            // to add stjepan's popup showing animation
                 $rootScope.modalOpened = false;
                 $timeout(function() {
                     ngDialog.close();
@@ -134,7 +135,6 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
                 $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(7, 'days')
                 .calendar()), $rootScope.dateFormat);
-                // $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                 setStartDateOptions();
                 setEndDateOptions();
                 fetchExhangeRates();

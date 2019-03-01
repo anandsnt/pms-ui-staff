@@ -32,7 +32,7 @@
                                 <input type="text" ng-model="exchangeRate.conversion_rate" ng-disabled="{{exchangeRate.isDisabled}}"><!-- Add attr 'disabled' if it's for past date -->
                             </td>
                             <td>
-                                <span class="admin-icons icon-mover-right" ng-hide="exchangeRate.isDisabled">Copy</span> <!-- Add class 'hidden' if Exchange Rate for this day is not defined or if it's a past date -->
+                                <span class="admin-icons icon-mover-right" ng-hide="exchangeRate.isDisabled" ng-click="copyToNext($index)">Copy</span> <!-- Add class 'hidden' if Exchange Rate for this day is not defined or if it's a past date -->
                             </td>
                         </tr>
                     </tbody>
