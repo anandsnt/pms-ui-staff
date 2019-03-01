@@ -167,8 +167,10 @@ angular.module('sntRover')
 			}
 		};
 
-		decideBackBtn($rootScope, $rootScope.diaryState);
-
+		// CICO-63369 : Hide back button while we switch bw/n diaries.
+		if ($stateParams.origin !== 'NIGHTLY_DIARY') {
+			decideBackBtn($rootScope, $rootScope.diaryState);
+		}
 
 	// adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
