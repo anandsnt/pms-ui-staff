@@ -22,7 +22,7 @@
                       required="yes"
                       label-properties="['name', 'description']"
                       label-in-drop-down="Select Value"
-                      list="state.cancellationPolicies"
+                      list="state.meta.CANCELLATION_POLICIES.results"
                       label="{{'SNT_VALUE'| translate}}"
                       skip-number-conversion="true"
                       div-class="full-width">
@@ -33,7 +33,7 @@
                       required="yes"
                       label-properties="['id', 'code']"
                       label-in-drop-down="Select Value"
-                      list="state.taxChargeCodes"
+                      list="state.meta.TAX_CHARGE_CODES.charge_codes"
                       label="{{'SNT_VALUE'| translate}}"
                       skip-number-conversion="true"
                       div-class="full-width">
@@ -46,7 +46,7 @@
                     required="yes"
                     label-properties="['code', 'description']"
                     label-in-drop-down="Select DerbySoft Value"
-                    list="state.cancellationCodes"
+                    list="state.meta.CANCELLATION_CODES"
                     label="{{'DerbySoft Value'| translate}}"
                     skip-number-conversion="true"
                     div-class="full-width">
@@ -57,7 +57,7 @@
                     required="yes"
                     label-properties="['code', 'description']"
                     label-in-drop-down="Select DerbySoft Value"
-                    list="state.taxCodes"
+                    list="state.meta.TAX_CODES"
                     label="{{'DerbySoft Value'| translate}}"
                     skip-number-conversion="true"
                     div-class="full-width">

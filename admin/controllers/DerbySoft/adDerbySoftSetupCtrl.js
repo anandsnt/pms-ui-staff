@@ -1,6 +1,6 @@
 admin.controller('ADDerbySoftSetupCtrl', [
-    '$scope', 'derbysoftSetupValues', 'adInterfacesCommonConfigSrv', 'adDerbySoftSetupSrv', 'ngDialog',
-    function($scope, derbysoftSetupValues, adInterfacesCommonConfigSrv, adDerbySoftSetupSrv, ngDialog) {
+    '$scope', 'derbysoftSetupValues', 'adInterfacesCommonConfigSrv', 'adIFCInterfaceMappingSrv', 'ngDialog',
+    function($scope, derbysoftSetupValues, adInterfacesCommonConfigSrv, adIFCInterfaceMappingSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'DERBYSOFT';
@@ -8,6 +8,8 @@ admin.controller('ADDerbySoftSetupCtrl', [
         $scope.state = {
             activeTab: 'SETUP'
         };
+
+        $scope.mappingTypes = ['cancellation_policies', 'tax_codes']
 
         /**
          * when clicked on check box to enable/diable GoMomentIvy
@@ -20,13 +22,14 @@ admin.controller('ADDerbySoftSetupCtrl', [
         $scope.closeDialog = function() {
             ngDialog.close();
         };
-        
+
         /**
          * Genearete Auth token
          * @return {void}
          */
         $scope.generateAuthToken = function() {
-            $scope.callAPI(adDerbySoftSetupSrv.resetAuthToken, {
+            $scope.callAPI(adIFCInterfaceMappingSrv.resetAuthToken, {
+                interface: $scope.interface.toLowerCase(),
                 onSuccess: function(response) {
                     $scope.config.authentication_token = response.authentication_token;
                     $scope.closeDialog();
