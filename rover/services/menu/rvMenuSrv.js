@@ -323,12 +323,13 @@ angular.module('sntRover').service('rvMenuSrv',
                     action: "rover.financials.autoCharge",
                     menuIndex: "autoCharge"
                 },
-                {
-                	title: "MENU_CURRENY_EXCHANGE",
-		            action: "",
-		            actionPopup: true,
-		            menuIndex: "currencyExchange"
-                }
+				{
+					title: "MENU_CURRENY_EXCHANGE",
+					action: "",
+					actionPopup: true,
+					menuIndex: "currencyExchange",
+					hidden: !shouldShowCurrencyExchangeInFinancialsMenu()
+				}
 
                 ]
             }, {
