@@ -48,8 +48,8 @@ admin.service('adIFCInterfaceMappingSrv', [
             return interfaceswithNumericExternalValues.indexOf(interfaceIdentifier) >= 0;
         };
 
-        service.resetAuthToken = function(interface) {
-            return ADBaseWebSrvV2.postJSON('/api/integrations/' + interface + '/reset_auth_token');
+        service.resetAuthToken = function(mapping_interface) {
+            return ADBaseWebSrvV2.postJSON('/api/integrations/' + mapping_interface + '/reset_auth_token');
 
         };
 
