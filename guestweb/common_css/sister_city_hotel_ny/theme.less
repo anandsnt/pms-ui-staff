@@ -1,6 +1,7 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
+@fontFamily: 'LL Akkurat Pro Regular Web', sans-serif;
 html,
 body {
   height: auto;
@@ -9,6 +10,7 @@ body {
 
 body {
   background-color: #0032F6;
+  font-family: @fontFamily;
 }
 
 .back-text {
@@ -30,13 +32,13 @@ input[type=text],
 input[type=tel],
 input[type=password],
 input[type=email] {
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
 }
 
 .sub-main-text {
   color: #fff;
-  font-size: 18px !important;
+  font-size: 18px!important;
 }
 
 .header-bar {
@@ -78,6 +80,11 @@ input[type=email] {
 .light-text {
   color: #fff;
 }
+.cvv-input-field {
+  &.query-text {
+    color: grey !important;
+  }
+}
 
 .btn,
 .btn:hover {
@@ -87,12 +94,12 @@ input[type=email] {
 }
 
 .dual-button {
-  font-size: 35px;
+  font-size: 30px;
   font-weight: 300;
 }
 
 .btn-template {
-  font-size: 35px;
+  font-size: 24px;
   font-weight: 300;
   padding: 4%;
 }
@@ -147,19 +154,23 @@ input[type=email] {
 }
 
 .down-arrow-button {
-  background-image: url('/assets/guestweb/common_images/black/down_arrow.png');
+  background-image: url('/assets/guestweb/common_images/white/down_arrow.png');
 }
 
 .right-arrow-button {
-  background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
+  background-image: url('/assets/guestweb/common_images/white/right_arrow.png');
 }
 
-.upgrade-details .upgrades-btn {
-  background:#0032F6;
+.upgrade-details
+.upgrades-btn {
+  background-color: #0032F6;
+  color: #fff;
+  text-align: left;
 }
 
 .proceed-to-checkin {
-  background: #fff;
+  background-color: #0032F6;
+  border: 2px solid #fff;
 }
 
 .upgrades-label {
@@ -320,15 +331,12 @@ input[type=email] {
   }
 }
 
-.btn-template {
-  font-size: 30px;
-}
 input{
   background: #fff none repeat scroll 0 0;
   box-shadow: none !important;
 }
 .bill-hotel-logo{
-  background:#0032F6;
+  background:#fff;
 }
 .grey-btn,
 .grey-btn:hover {
