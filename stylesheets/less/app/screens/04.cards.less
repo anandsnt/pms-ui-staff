@@ -2931,26 +2931,32 @@
                             .float;
 
                             li {
-                                color: @white;
-                                font-size: 14px;
+                                color: @grey4;
+                                font-size: 13px;
                                 line-height: 35px;
+                                font-weight: 600;
                                 margin: 0 5px 0 0;
+                                text-transform: uppercase;
                                 .pull-left;
 
                                 &.sort {
                                     cursor: pointer;
                                     padding: 0 20px 0 10px;
                                     background-color: @grey2;
-                                    background-position: 95% 50%;
+                                    background-position: calc(~'100% - 10px') 50%;
                                     background-repeat: no-repeat;
                                     .nowrap();
                                     .box-shadow(1px 1px 0 rgba(0,0,0,.3));
 
                                     &.sorting-asc,
-                                    &.sorting-desc { background-color: darken(@grey2, 10); }
-                                    
-                                    &.sorting-asc { background-image: @arrowSortAsc; }
-                                    &.sorting-desc { background-image: @arrowSortDesc; }
+                                    &.sorting-desc { 
+                                        color: @white;
+                                        background-color: darken(@grey2, 20); 
+                                        background-size: 14px;
+                                    }
+
+                                    &.sorting-asc { background-image: @arrowSortAsc2x; }
+                                    &.sorting-desc { background-image: @arrowSortDesc2x; }
                                 }
 
                                 &.check {
@@ -2962,8 +2968,8 @@
                                         padding: 0;
                                         .size(35px, 60px);
 
-                                        .icon-form { 
-                                            top: 7px; 
+                                        .icon-form {
+                                            top: 7px;
                                             left: 20px;
                                         }
 
