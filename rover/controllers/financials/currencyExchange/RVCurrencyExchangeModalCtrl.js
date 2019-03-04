@@ -156,7 +156,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 if (daysDiff < checkDaysDiff) {
                     $scope.end_date = $filter('date')(tzIndependentDate(endDate.format("L")), $rootScope.dateFormat);
                 } else {
-                    $scope.end_date =  $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(noOfDays, 'days')
+                    $scope.end_date = $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(noOfDays, 'days')
                 .calendar()), $rootScope.dateFormat);
                 }
                 setStartDateOptions();
