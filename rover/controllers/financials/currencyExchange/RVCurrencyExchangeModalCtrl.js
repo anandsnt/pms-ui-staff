@@ -88,12 +88,13 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
                         ExchangeRateArray[i] = {
                             day: startDate.format('dddd'),
-                            date: $filter('date')(tzIndependentDate(startDate.calendar()), $rootScope.dateFormatForAPI),
+                            date: $filter('date')(tzIndependentDate(startDateString), $rootScope.dateFormatForAPI),
                             conversion_rate: angular.isUndefined(currentItemData) ? null : currentItemData.conversion_rate,
                             isDisabled: isDateDisabled(startDateString)
                         };
                         startDate = startDate.add(1, 'days');
                         startDateString = moment(startDate).format("YYYY-MM-DD");
+
                     }
 
                     return ExchangeRateArray;
