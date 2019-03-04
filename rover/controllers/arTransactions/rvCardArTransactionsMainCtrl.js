@@ -736,7 +736,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
         var arTransactionPrintCompleted = function() {
 			$("header .logo").removeClass('logo-hide');
-			 $(".add-new-button").show();
+			 $(".add-new-button").removeClass('no-print');
             // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
             $scope.$emit("PRINT_AR_STATEMENT", false);
             // remove the orientation after similar delay
@@ -750,7 +750,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 $scope.errorMessage = "";
                 // hide hotel logo
                 $("header .logo").addClass('logo-hide');
-                $(".add-new-button").hide();
+                $(".add-new-button").addClass('no-print');
                 // inoder to set class 'print-statement' on rvCompanyCardDetails.html
                 $scope.$emit("PRINT_AR_STATEMENT", true);
                 // add the orientation
