@@ -65,8 +65,8 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     };
 
                     var params = {
-                        'start_date': moment(tzIndependentDate($scope.start_date)).format($rootScope.momentFormatForAPI),
-                        'end_date': moment(tzIndependentDate($scope.end_date)).format($rootScope.momentFormatForAPI)
+                        'start_date': $filter('date')($scope.start_date, $rootScope.momentFormatForAPI),
+                        'end_date': $filter('date')($scope.end_date, $rootScope.momentFormatForAPI)
                     };
 
                     $scope.invokeApi(RVMultiCurrencyExchangeSrv.fetchExchangeRates, params, successCallBackFetchAccountsReceivables );

@@ -9,6 +9,7 @@
     "ROOM_KEY_COMMUNICATIONS":"Room key communications",
     "PAYMENT_GATEWAY_SETTINGS":"Payment Gateway Settings",
     "CHECK_AUTH_INTERFACE":"Check guest authorization for interface postings",
-    "MULTI_CURRENCY": "Multi Currency"
+    "MULTI_CURRENCY": "Multi Currency",
+    "ENABLE_MULTIPLE_CURRENCIES": "Enable Multiple Currencies"
 
 
