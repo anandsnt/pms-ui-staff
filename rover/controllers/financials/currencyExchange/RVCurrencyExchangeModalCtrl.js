@@ -79,7 +79,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                    return startDate < $rootScope.businessDate;
                 },
                 constructExchangeRateArray = function(date) {
-                    var startDate = moment(date, ),
+                    var startDate = moment(date),
                         startDateString = moment(startDate).format("YYYY-MM-DD"),                  
                         ExchangeRateArray = [];
 
