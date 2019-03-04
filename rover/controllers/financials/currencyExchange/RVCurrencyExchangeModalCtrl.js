@@ -15,6 +15,9 @@ sntRover.controller('RVCurrencyExchangeModalController',
             var delay = 200,
                 noOfDays = 7,
                 endDate,
+                todayDate,
+                daysDiff,
+                checkDaysDiff = 7,
                 commonDateOptions = {
                     dateFormat: $rootScope.jqDateFormat,
                     changeYear: true,
@@ -144,15 +147,13 @@ sntRover.controller('RVCurrencyExchangeModalController',
              * Initialization method
              */
             var init = function() {
-
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormat);
 
-                endDate = moment(tzIndependentDate($rootScope.businessDate)).add(noOfDays, 'days');
-                                                          
-                var todayDate = moment().startOf('day'),
-                     daysDiff = moment.duration(todayDate.diff(endDate)).asDays();
+                endDate = moment(tzIndependentDate($rootScope.businessDate)).add(noOfDays, 'days');                                                          
+                todayDate = moment().startOf('day');
+                daysDiff = moment.duration(todayDate.diff(endDate)).asDays();
 
-                if (daysDiff < 7) {
+                if (daysDiff < checkDaysDiff) {
                     $scope.end_date = $filter('date')(tzIndependentDate(endDate.format("L")), $rootScope.dateFormat);
                 } else {
                     $scope.end_date =  $filter('date')(tzIndependentDate(moment($rootScope.businessDate).add(noOfDays, 'days')
