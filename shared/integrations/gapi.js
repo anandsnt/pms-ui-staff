@@ -14,14 +14,9 @@ GAPI = function ($scope) {
         var auth = gapi.auth2.getAuthInstance();
 
         if (auth) {
-            auth.signOut();
-            auth.disconnect();
+            $scope.GoogleAuth = auth;
         }
-
-        if ($scope.GoogleAuth) {
-            $scope.GoogleAuth.signOut();
-            $scope.GoogleAuth.disconnect();
-        }
+                
         // Retrieve the discovery document for version 3 of Google Drive API.
         // In practice, your app can retrieve one or more discovery documents.
         var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
