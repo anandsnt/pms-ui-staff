@@ -186,7 +186,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
-					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected : ""
+					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected || $stateParams.is_member : ""
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
@@ -317,6 +317,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			fetchRatesList = function(roomTypeId, rateId, page, cb) {
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, 'guests');
 
+				// CICO-59948 - For in-house reservation, we should the rates corresponding to the current room type
+				if ($scope.reservationData.inHouse) {
+					roomTypeId = $stateParams.room_type_id;	
+				}
+
 				var payLoad = {
 					page: page,
 					from_date: ARRIVAL_DATE,
@@ -354,7 +359,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
 					payLoad.group_id = $scope.reservationData.group.id || $scope.reservationData.allotment.id;
 					payLoad.promotion_code = $stateParams.promotion_code;
-					payLoad.is_member = !!$scope.reservationData.member.isSelected;
+					payLoad.is_member = !!$scope.reservationData.member.isSelected || $stateParams.is_member;
 					payLoad.promotion_id = $scope.reservationData.promotionId;
 				}
 				payLoad.is_promotion_selected = ($scope.reservationData.promotionId) ? true : false;
@@ -956,7 +961,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				navigateOut();
 			},
-			populateStayDates = function(stayDetails, rateId, roomIndex) {
+			populateStayDates = function(stayDetails, rateId, roomIndex, roomTypeId) {
                 var businessDate = tzIndependentDate($rootScope.businessDate);
 
 				_.each(ROOMS[roomIndex].stayDates, function(details, date) {
@@ -977,7 +982,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
 								.ratesMeta[rateId].is_suppress_rate_on.toString();						
 						}
-                }
+						// CICO-59948 Updating the selected room type for the stay dates from business date onwards
+						details.roomTypeId = roomTypeId;
+                	}
 				});
 			},
 			saveAndGotoStayCard = function() {
@@ -1137,7 +1144,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			} else {
                 // CICO-44156 - Reset selected rates when the show   stay dates option is set to off
                 $scope.stateCheck.preferredType = "";
-                $scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+				$scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+				// CICO-59948 For inhouse reservation, set the preffered room type as the curret room type
+				if ($scope.reservationData.inHouse) {
+					$scope.stateCheck.preferredType = $stateParams.room_type_id; 
+				}
                 resetRates();
             }
 
@@ -1152,7 +1163,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		$scope.showStayDateDetails = function(selectedDate) {
 			// by pass departure stay date from stay dates manipulation
-			if (selectedDate === DEPARTURE_DATE) {
+			// Disable the past dates on the stay dates grid, so that it can'be updated
+			if (selectedDate === DEPARTURE_DATE || selectedDate.shouldDisable) {
 				return false;
 			}
 			$scope.stateCheck.dateModeActiveDate = selectedDate;
@@ -1427,16 +1439,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								roomId = ROOMS[roomIndex].roomTypeId;
 
 							details.rate.id = rateId;
-							details.rate.name = $scope.reservationData.ratesMeta[rateId].name;
-
-							var rateAmount = Number(parseFloat($scope.stateCheck.stayDates[date].amount).toFixed(2));
-
-							details.rateDetails = {
-								actual_amount: rateAmount,
-								modified_amount: rateAmount
-							};
 
 							if (rateId) {
+								details.rate.name = $scope.reservationData.ratesMeta[rateId].name;
+								var rateAmount = Number(parseFloat($scope.stateCheck.stayDates[date].amount).toFixed(2));
+
+								details.rateDetails = {
+									actual_amount: rateAmount,
+									modified_amount: rateAmount
+								};
 								details.rateDetails.is_discount_allowed = $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
 									.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString();// API returns true / false as a string ... Hence true in a string to maintain consistency
 								details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
@@ -1604,7 +1615,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							rateTotal: rateInfo.totalAmount
 						});
 
-						populateStayDates(secondary.dates, rateId, i);
+						populateStayDates(secondary.dates, rateId, i, roomId);
 
 						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 

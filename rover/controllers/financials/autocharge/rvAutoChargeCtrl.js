@@ -134,16 +134,19 @@ sntRover.controller('RVAutoChargeController',
                  * function forms array of selected reservation ids
                  * @return - [Integer]
                  */
-                generateSelectedReservationReportIds = function () {
-                    var selectedReservationReportIds = [];
+                generateRetryData = function () {
+                    var retryData = [];
 
                     _.map($scope.autoCharges,
                         function(autoCharge) {
                             if (autoCharge.isSelected) {
-                                selectedReservationReportIds.push(autoCharge.deposit_report_id);
+                                retryData.push({
+                                    reservation_id: autoCharge.reservation_id,
+                                    amount: autoCharge.deposit_paid
+                                });
                             }
                         });
-                    return selectedReservationReportIds;
+                    return retryData;
                 };
 
             /*
@@ -259,7 +262,7 @@ sntRover.controller('RVAutoChargeController',
             $scope.processSelectedAutoCharges = function() {
                 var params = {
                         due_date: $scope.filters.due_date,
-                        reservation_reports_ids: generateSelectedReservationReportIds()
+                        retry_data: generateRetryData()
                     },
                     options = {
                         params: params,

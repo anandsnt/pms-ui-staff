@@ -1,24 +1,21 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
-                             header-caption="{{interface + '_HEADER' | translate}}">
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2>{{interface + '_HEADER' | translate}}</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleMappings()"
+                    ng-class="{'orange' : state.activeTab === 'SETUP', 'white' : state.activeTab !== 'SETUP'}">
+                CONFIGURATION
+            </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleMappings()"
+                    ng-class="{'orange' : state.activeTab === 'MAPPING', 'white' : state.activeTab !== 'MAPPING'}">
+                MAPPINGS
+            </button>
+        </div>
+    </header>
 
-    <fieldset class="holder left">
-        <ad-toggle-button is-checked="config.enabled"
-                          label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
-    </fieldset>
-
-    <fieldset class="holder left">
-        <ad-textbox inputtype="text"
-                    value="config.balancing_account"
-                    label="{{'BALANCING_ACCOUNT'| translate}}"
-                    styleclass="full-width">
-        </ad-textbox>
-        <ad-textarea rows="4"
-                     div-class="full-width"
-                     text-area-class="full-width"
-                     value="config.email_addresses"
-                     label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
-                     placeholder="">
-        </ad-textarea>
-    </fieldset>
-
-</ad-common-parts-in-form-dir>
+    <section class="content-scroll">
+        <ng-include src="'/assets/partials/interfaces/AccountView/adAccountViewSetting.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/adMapping.html'"></ng-include>
+    </section>
+</div>
