@@ -8,8 +8,8 @@
         </div>
 
         <div class="filters">
-            <input id="start-date" class="datepicker" readonly type="text" ui-date="startDateOptions" value="{{start_date}}" />
-            <input id="end-date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date}}" />
+            <input id="start-date" class="datepicker" readonly type="text" ui-date="startDateOptions" value="{{start_date | date: dateFormat }}" />
+            <input id="end-date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date | date: dateFormat}}" />
         </div>
 
         <div id="exchange-grid" class="scrollable" ng-iscroll="CURRENCY_SCROLLER"> <!-- iScroll here -->
@@ -25,7 +25,7 @@
                     <tbody>
                         <tr ng-repeat="exchangeRate in exchangeRates">
                             <td>
-                                <strong>{{exchangeRate.day}}, {{exchangeRate.date}}</strong>
+                                <strong>{{exchangeRate.day}}, {{exchangeRate.date | date: dateFormat}}</strong>
                             </td>
                             <td>
                                 <span class="currency">{{invoiceCurrencySymbol}}</span>
