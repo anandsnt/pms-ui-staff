@@ -147,7 +147,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
             /*
              * Initialization method
              */
-            var init = function() {//$rootScope.businessDate = "2019-03-01"
+            var init = function() {
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormatForAPI);
 
                 endDate = moment(tzIndependentDate($rootScope.businessDate)).add(noOfDays, 'days');                                                          
