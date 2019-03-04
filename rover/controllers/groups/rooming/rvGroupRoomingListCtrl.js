@@ -1890,7 +1890,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         };
         $scope.updateGroupReservationsGuestData = function() {
             $scope.isUpdateReservation = true;
-            $scope.totalCountForUpdate = $scope.selected_reservations.length;
+            var uniqueReservations = _.uniq($scope.selected_reservations, function(reservation) {
+                return reservation.id;
+            });
+
+            $scope.totalCountForUpdate = uniqueReservations.length;
 
 
             ngDialog.open({
