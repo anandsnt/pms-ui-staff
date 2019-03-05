@@ -721,7 +721,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 // add filtered out and occurance
                 _.each($scope.$parent.$parent.schedulesList, function(item) {
-                    item.filteredOut = false;
+
+                    item.filteredOut = item.report.title === 'Police Report Export';
                     item.occurance = findOccurance(item);
                 });
 
@@ -737,9 +738,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                         },
                         sort_fields: each.sort_fields,
                         active: false,
-                        filteredOut: false
+                        filteredOut: each.title === 'Police Report Export'
                     });
+
                 });
+
 
                 // sort schedulable reports by report name
                 $scope.$parent.$parent.schedulableReports = _.sortBy(
