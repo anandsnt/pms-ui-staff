@@ -4,32 +4,6 @@
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
-        
-        <div class="entry edit" ng-show="gridProps.edit.active">
-            <div class="guest">
-                <figure class="guest-image">
-                    <img src="" alt="">
-                </figure>
-                <div class="guest-info">
-                     <h2 class="name" ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
-                        {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
-                    </h2>
-                    <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
-                        {{gridProps.edit.originalItem.account_name}}
-                    </h2>
-                    <span class="room hidden">
-                        <span class="currency">{currency}</span>{Rate}
-                        {Room Type}
-                    </span>
-                </div>
-                <button type="button" class="button orange" ng-click="openStayCard()">StayCard</button>
-            </div>
-            <div class="actions">
-                <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
-                <button type="button" class="button red" ng-click="unassignRoom()" ng-if="!showSaveChangesAfterEditing">Unassign Room</button>
-                <button type="button" class="button green" ng-click="editSave()" ng-if="showSaveChangesAfterEditing">Save Changes</button>
-            </div>
-        </div>
 
         <!-- Day or Night Use Diary -->
         <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -47,7 +21,7 @@
         </div>
 
         <!-- 12 of 24 Hours View -->
-        <div class="entry switch switch-view">
+        <div class="entry switch switch-view show-editing">
             <div class="switch-button" ng-class="{on: gridProps.viewport.hours === 12}"> <!-- Add class 'on' when L19 is checked -->
                 <input ng-click="gridProps.filter.toggleRange()" id="diary-view-range" type="checkbox"> <!-- When checked showing 12 hours view. When not checked showing 24 hours view -->
                 <label class="data-off">
@@ -62,7 +36,7 @@
         </div>
 
         <!-- Arrival Date -->
-        <div class="entry date">
+        <div class="entry date show-editing">
             <div class="entry-data">
                 <input ui-date="dateOptions" ng-model="duplicte_arrival_date" id="arrival-date" type="text" class="datepicker" readonly>
                 <strong class="date">
@@ -157,6 +131,32 @@
             <button type="button" class="button white with-icon only-icon" ng-click="resetEverything()">
                 <span class="icons icon-reset"></span>
             </button>
+        </div>
+
+        <div class="entry edit show-editing" ng-show="gridProps.edit.active">
+            <div class="guest">
+                <figure class="guest-image hidden">
+                    <img src="" alt="">
+                </figure>
+                <div class="guest-info">
+                     <h2 class="name" ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                        {{gridProps.edit.originalItem.reservation_primary_guest_full_name}}
+                    </h2>
+                    <h2 class="name" ng-show="!gridProps.edit.originalItem.reservation_primary_guest_full_name">
+                        {{gridProps.edit.originalItem.account_name}}
+                    </h2>
+                    <span class="room hidden">
+                        <span class="currency">{currency}</span>{Rate}
+                        {Room Type}
+                    </span>
+                </div>
+                <button type="button" class="button orange" ng-click="openStayCard()">StayCard</button>
+            </div>
+            <div class="actions">
+                <button type="button" class="button blank" ng-click="editCancel()">Cancel</button>
+                <button type="button" class="button red" ng-click="unassignRoom()" ng-if="!showSaveChangesAfterEditing">Unassign Room</button>
+                <button type="button" class="button green" ng-click="editSave()" ng-if="showSaveChangesAfterEditing">Save Changes</button>
+            </div>
         </div>
 
     </form>
