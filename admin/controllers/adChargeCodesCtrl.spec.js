@@ -7,7 +7,7 @@ describe('ADChargeCodesCtrl', function() {
     beforeEach(function() {
         module('admin');
 
-        inject(function (_$controller_, _$rootScope_ , _ADChargeCodesSrv_) {
+        inject(function (_$controller_, _$rootScope_, _ADChargeCodesSrv_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             ADChargeCodesSrv = _ADChargeCodesSrv_;
