@@ -846,7 +846,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                         })(),
                         room_type_id: roomTypeId,
-                        room_id: currentRoom.room_id,
+                        room_id: $scope.reservationData.inHouse ? staydetailInfo.roomId : currentRoom.room_id,
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),

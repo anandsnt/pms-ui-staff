@@ -1,7 +1,7 @@
 <!--</ad-common-parts-in-form-dir>-->
 <div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
-        <h2 translate>GUEST_WEB_ID_COLLECTION_SETUP</h2>
+        <h2 translate>Archival Transfer Setup</h2>
         <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
     </header>
     <section class="content-scroll">
@@ -14,7 +14,7 @@
                 <div class="entry">
                     <label>Activate / Inactivate</label>
                     <!-- Add .on when active -->
-                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled}"
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.archival_transfer_enabled}"
                          ng-click="toggleEnabled()">
                         <input type="checkbox">
                         <span class="switch-icon"></span>
@@ -24,13 +24,13 @@
                 <!-- Remove .hidden when disclaimer is accepted -->
                 <div class="entry" ng-show="MODE =='CONFIGURED'">
                     <label>Disclaimer Acknowleged by</label>
-                    <strong>{{config.guest_id_archive_first_name}} {{config.guest_id_archive_last_name}}</strong>, {{config.guest_id_archive_position}}
+                    <strong>{{config.archival_admin_first_name}} {{config.archival_admin_last_name}}</strong>, {{config.archival_admin_position}}
                     <!--<span class="entry-description disclaimer">{ Date & Time of acknowlegement | exp. 01-11-2019 1:23PM }</span>-->
                 </div>
                 <div class="archive-storage-option notice { success | error }">
                     <img ng-src="{{connctedDetails.iconUrl}}" alt="" />
                     <div class="option-content">
-                        <strong>Connect to {{config.guest_id_archive_platform}}</strong>
+                        <strong>Connected to {{config.archival_tranfer_platform}}</strong>
                         <p></p>
                     </div>
                     <button class="button white red-text" ng-click="disConnect()">
@@ -38,7 +38,13 @@
                         {{connctedDetails.isConnected? 'DISCONNECT': 'CONNECT'}}
                     </button>
                 </div>
+            </fieldset>
 
+            <fieldset class="holder full-width" ng-show="MODE == 'CONFIGURED'">
+                <div class="form-title">
+                    <h3><span>Registerd Archives</span> </h3>
+                </div>
+                <ad-checkbox is-checked="config.guest_id_archive_enabled" label="Scanned Ids" div-class="full-width"></ad-checkbox>
             </fieldset>
             <div class="actions float" ng-show="MODE == 'CONFIGURED'" >
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
@@ -52,7 +58,7 @@
                 <div class="entry">
                     <label>Activate / Inactivate</label>
                     <!-- Add .on when active -->
-                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled }"
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.archival_transfer_enabled }"
                          ng-click="toggleEnabled()">
                         <input type="checkbox">
                         <span class="switch-icon"></span>
@@ -71,7 +77,7 @@
                 <div class="entry">
                     <label>Activate / Inactivate</label>
                     <!-- Add .on when active -->
-                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled || isAccepted }"
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.archival_transfer_enabled }"
                          ng-click="toggleEnabled()">
                         <input type="checkbox">
                         <span class="switch-icon"></span>
@@ -86,7 +92,7 @@
                 <div class="entry">
                     <label>Activate / Inactivate</label>
                     <!-- Add .on when active -->
-                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.guest_id_archive_enabled || isAccepted }"
+                    <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.archival_transfer_enabled }"
                          ng-click="toggleEnabled()">
                         <input type="checkbox">
                         <span class="switch-icon"></span>
@@ -109,15 +115,15 @@
                 <div class="entry full-width">
                     <div class="entry">
                         <label for="first-name">First name <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
+                        <input type="text" ng-model='config.archival_admin_first_name' name="first-name" id="first-name" placeholder="Enter first name" value="" required="">
                     </div>
                     <div class="entry">
                         <label for="last-name">Last name <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_last_name' name="last-name" id="last-name" placeholder="Enter last name" value="" required="">
+                        <input type="text" ng-model='config.archival_admin_last_name' name="last-name" id="last-name" placeholder="Enter last name" value="" required="">
                     </div>
                     <div class="entry">
                         <label for="position-name">Position <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_position' name="position-name" id="position-name" placeholder="Enter Position" value="" required="">
+                        <input type="text" ng-model='config.archival_admin_position' name="position-name" id="position-name" placeholder="Enter Position" value="" required="">
                     </div>
                 </div>
             </fieldset>
@@ -129,15 +135,23 @@
 
             <fieldset class="holder full-width" ng-show ="MODE =='ACCESS_TOKEN'">
                 <div class="entry full-width">
-                    <div class="entry">
+                    <div class="entry" ng-show="config.archival_tranfer_platform=='s3'">
+                        <label for="token">AWS ACCESS KEY ID<strong>*</strong></label>
+                        <input type="text" ng-model='config.aws_access_key_id' name="token" id="token" placeholder="Enter ID" value="" required="">
+                    </div>
+                    <div class="entry" ng-show="config.archival_tranfer_platform=='s3'">
+                        <label for="token">AWS SECRET ACCESS KEY<strong>*</strong></label>
+                        <input type="text" ng-model='config.aws_secret_access_key' name="token" id="token" placeholder="Enter Secret" value="" required="">
+                    </div>
+                    <div class="entry" ng-hide="config.archival_tranfer_platform=='s3'">
                         <label for="token">Access Token <strong>*</strong></label>
-                        <input type="text" ng-model='config.guest_id_archive_platform_token' name="token" id="token" placeholder="Enter token" value="" required="">
+                        <input type="text" ng-model='config.archival_tranfer_platform_token' name="token" id="token" placeholder="Enter token" value="" required="">
                     </div>
                 </div>
             </fieldset>
             <div class="actions float" ng-show="MODE == 'ACCESS_TOKEN'" >
                 <button type="button" class="button blank" ng-click="goBackToPreviousState()">Cancel</button>
-                <button type="button" class="button" ng-click = "saveConfig()" ng-class="{'green': validateToken()}" ng-disabled="!validateToken()">Save</button>
+                <button type="button" class="button" ng-click = "confirmCredentials()" ng-class="{'green': validateToken()}" ng-disabled="!validateToken()">Continue</button>
             </div>
 
 
@@ -149,17 +163,18 @@
                 <!-- If Success on connection, add .hidden -->
                 <!-- If error, show only those options that are not current -->
                 <div class="archive-storage-options">
-                    <!-- <button type="button" class="archive-storage-option" ng-click="gapiSignIn()">
+                    <button type="button" class="archive-storage-option" ng-click="gapiSignIn()">
                         <img src="/assets/images/archive-option-gdrive.png" alt="" />
                         <strong>Google Drive </strong>
-                    </button> -->
-                    <!--<button type="button" class="archive-storage-option" ng-click="dropBoxSignIn()">-->
-                        <!--<img src="/assets/images/archive-option-aws.png" alt="" />-->
-                        <!--<strong>Connect to Amazone S3</strong>-->
-                    <!--</button>-->
+                    </button>
                     <button type="button" class="archive-storage-option" ng-click="dropBoxSignIn()">
                         <img src="/assets/images/archive-option-dropbox.png" alt="" />
-                        <strong>Connect to Drop Box</strong>
+                        <strong>Connect to Dropbox</strong>
+                    </button>
+
+                    <button type="button" class="archive-storage-option" ng-click="connectToS3()">
+                        <img src="/assets/images/archive-option-aws.png" alt="" />
+                        <strong>Connect to S3</strong>
                     </button>
                 </div>
             </fieldset>

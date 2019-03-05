@@ -5,7 +5,7 @@
         <div class="search-form has-dates" ng-class="{'open': isAddingMode && !groupConfigData.summary.is_cancelled}">
             <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->
             <div class="entry filter">
-                <button type="button" class="button icons icon-add-60" ng-click="toggleDisplayingMode()" ng-class="{'icon-add-60': isAddingMode, 'icon-remove-60': !isAddingMode , 'hidden' : !!groupConfigData.summary.is_cancelled}">
+                <button type="button" class="button icons icon-add-60" ng-click="toggleDisplayingMode()" ng-class="{'icon-add-60': !isAddingMode, 'icon-remove-60': isAddingMode , 'hidden' : !!groupConfigData.summary.is_cancelled}">
                     <!-- Remove class "icon-add-60" with "icon-remove-60" when clicked -->
                     {{'GROUP_ADD_RESERVATIONS'|translate}}
                 </button>
@@ -100,7 +100,7 @@
         <!-- Don't show this <li> if there are no rooms selected -->
          <li>
              <!-- This button opens modal ../modals/rooming-list/add-or-edit.html -->
-            <button type="button" ng-class="{'grey': shouldDisableAutoRoomAssignButton(), 'brand-colors': !shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()" class="button purple" ng-click="updateGroupReservationsGuestData()">Edit Names</button>
+            <button type="button" ng-class="{'grey': shouldDisableAutoRoomAssignButton()}" ng-disabled="shouldDisableAutoRoomAssignButton()" class="button purple" ng-click="updateGroupReservationsGuestData()">Edit Names</button>
         </li>
         <li>
             <!-- Don't show if there are no rooms in the rooming list -->
@@ -223,10 +223,18 @@
                     </label>
                 </div>
                 <a ng-click="clickedOnReservation(reservation)">
+                    <figure class="guest-image" ng-class="{'accompany': reservation.is_accompanying_guest}">
+                        <img ng-repeat="image in reservation.guest_images track by $index" ng-src="{{image}}" >
+                        <span class="stay-count" ng-if="reservation.stay_count > 0">{{reservation.stay_count}}</span>
+                        <span class="vip" ng-if="reservation.is_vip">VIP</span>
+                    </figure>
                     <div class="data">
-                        <h2 ng-show="!isGuestBlank(reservation)" style="text-transform: none">
+                        <h2 ng-show="!isGuestBlank(reservation) && !reservation.is_accompanying_guest" style="text-transform: none">
                             <span ng-bind-html="escapeNull(reservation.lastname)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.firstname)|highlight:query:false"></span>
                         </h2>
+                        <h2 ng-show="!isGuestBlank(reservation) && reservation.is_accompanying_guest" style="text-transform: none">
+                                <span ng-bind-html="escapeNull(reservation.accompanying_guest_last_name)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.accompanying_guest_first_name)|highlight:query:false"></span>
+                            </h2>
                         <h2 ng-show="isGuestBlank(reservation)">
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
