@@ -38,6 +38,14 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return guestFieldData;
         };
 
+        /*
+         * CICO-63251
+         * @return object
+         */
+        this.setGuestFields = function() {
+            return guestFieldData;
+        };
+
         /**
          * Fetch guest card statistics summary
          * @param {Object} params request params
