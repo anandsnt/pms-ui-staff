@@ -70,7 +70,7 @@ sntRover.controller('RVInvoiceSearchController',
 					},
 					params = {
 						'query': $scope.invoiceSearchData.query,
-						'no_control_number': true,
+						'no_folio_number_only': $scope.invoiceSearchData.no_folio_number_only,
 						'page_no': page || 1,
 						'per_page': PER_PAGE
 					},
@@ -276,6 +276,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchFlags.showFindInvoice = true;
 			$scope.invoiceSearchFlags.isQueryEntered = false;
 			$scope.invoiceSearchFlags.isClickedReservation = true;
+			$scope.invoiceSearchData.no_folio_number_only = false;
 			$scope.totalResultCount = 0;
 			$scope.printData = {};
 			$scope.invoiceSearchPagination = {

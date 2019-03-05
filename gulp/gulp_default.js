@@ -80,6 +80,8 @@ module.exports = function(gulp, $, options) {
 
         if (argv['prod'] || argv['production']) {
             process.env.BUILD_ENV = 'prod';
+        } else if (argv['env']) {
+            process.env.BUILD_ENV = argv['env'];
         }
 
         // Inject gtm tags only if option is provided
