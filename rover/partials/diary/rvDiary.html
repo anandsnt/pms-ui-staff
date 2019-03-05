@@ -4,8 +4,6 @@
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
-        
-        
 
         <!-- Day or Night Use Diary -->
         <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
@@ -137,7 +135,7 @@
 
         <div class="entry edit show-editing" ng-show="gridProps.edit.active">
             <div class="guest">
-                <figure class="guest-image">
+                <figure class="guest-image hidden">
                     <img src="" alt="">
                 </figure>
                 <div class="guest-info">
