@@ -41,7 +41,7 @@ angular.module('sntActivityIndicator', [])
                 updateIndicator = function () {
                     $timeout(function () {
                         $rootScope.hasLoader = activities.length;
-                    }, 300);
+                    });
                 };
 
             service.start = function (activity) {
