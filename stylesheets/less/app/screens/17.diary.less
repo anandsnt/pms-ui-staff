@@ -265,7 +265,6 @@
 
                     .button {
                         width: 100px;
-                        padding: 0 10px;
                     }
                 }
 
@@ -277,6 +276,7 @@
 
                 .button {
                     font-size: 14px;
+                    padding: 0 10px;
                     margin-left: 10px;
 
                     &.blank {
@@ -470,11 +470,13 @@
             .entry {
                 &.edit {
                     margin-right: 0;
-                    width: 100%;
+                    padding-left: 10px;
+                    .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
+                    .calc-width(100, 255);
                     #flexbox > .parent(row wrap, space-between, center, '');
                 }
 
-                &:not(.edit) {
+                &:not(.show-editing) {
                     .hide();
                 }
             }
