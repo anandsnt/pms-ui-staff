@@ -28,7 +28,8 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
     $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
     $scope.currency_list = settingsAndParamsData.currency_list;
-    $scope.invoice_currency = settingsAndParamsData.invoice_currency; 
+    $scope.selected_invoice_currency = settingsAndParamsData.selected_invoice_currency; 
+    $scope.invoice_currency = angular.isDefined($scope.selected_invoice_currency) ? $scope.selected_invoice_currency.id : '';
 
 
     /**

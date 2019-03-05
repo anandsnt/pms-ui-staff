@@ -13,7 +13,7 @@
 
         <form ng-show="state.mode=='ADD'"
               class="form float"
-              ng-include="'/assets/partials/interfaces/Common/mapping.html'">
+              ng-include src="fetchMappingPartial()">
         </form>
 
         <section ng-show="state.mode !=='ADD'">
