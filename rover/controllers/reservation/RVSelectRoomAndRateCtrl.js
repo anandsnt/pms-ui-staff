@@ -186,7 +186,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
-					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected : ""
+					is_member: ($scope.stateCheck.activeView == 'RECOMMENDED') ? !!$scope.reservationData.member.isSelected || $stateParams.is_member : ""
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
@@ -359,7 +359,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.travel_agent_id = $scope.reservationData.travelAgent.id;
 					payLoad.group_id = $scope.reservationData.group.id || $scope.reservationData.allotment.id;
 					payLoad.promotion_code = $stateParams.promotion_code;
-					payLoad.is_member = !!$scope.reservationData.member.isSelected;
+					payLoad.is_member = !!$scope.reservationData.member.isSelected || $stateParams.is_member;
 					payLoad.promotion_id = $scope.reservationData.promotionId;
 				}
 				payLoad.is_promotion_selected = ($scope.reservationData.promotionId) ? true : false;

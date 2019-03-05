@@ -79,8 +79,14 @@
 				$rootScope.payment_method_used = res_data.payment_method_used;
 				$rootScope.paymentDetails = res_data.payment_details;
 
-				// navigate to next page
-				$state.go('checkinReservationDetails');
+				if ($state.href("unableToCheckn") !== null && !res_data.eligible_for_checkin) {
+					$state.go('unableToCheckn', {
+						'reason': res_data.ineligibility_reason
+					});
+				} else {
+					// navigate to next page
+					$state.go('checkinReservationDetails');
+				}
 				
 			}, function() {
 				$rootScope.netWorkError = true;
