@@ -115,7 +115,7 @@ angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$r
         };
         $scope.disConnect = function() {
             $scope.config.archival_transfer_enabled = true;
-            $scope.MODE = 'CONFIGURE_ON';
+            $scope.MODE = 'CONFIGURE_ON';                
         };
         $scope.acceptTerms = function() {
             $scope.MODE = 'CHOOSE_PLATFORM';
