@@ -1854,8 +1854,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+
+            var isRoomDetailsInvalidated = $scope.reservationData.tabs[0].room_id === null;
+
             // CICO-62890 : Fix issue on change room count.
-            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount) {
+            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount && !isRoomDetailsInvalidated) {
                 $scope.validationMsg = 'Room number will be unassigned by changing the room count';
                 isShowPopopForRoomCount = true;
                 resetRoomDetailsIfInvalid();
