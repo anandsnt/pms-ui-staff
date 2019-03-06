@@ -249,7 +249,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
 		var absUrl = $location.$$absUrl;
-		var isInvokedFromApp = absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1;
+		var isInvokedFromApp = absUrl.indexOf("/checkin?guest_web_token=") !== -1;
 		var theme = reservationAndhotelData.hotel_theme;
 
 		var isIDScanOnAndDeviceIsNotMobile = function() {
