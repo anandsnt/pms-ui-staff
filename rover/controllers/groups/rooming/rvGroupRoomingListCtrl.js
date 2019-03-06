@@ -628,7 +628,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {Boolean} [description]
          */
         $scope.whetherAllReservationsSelected = function() {
-            return ($scope.selected_reservations.length === $scope.reservations.length);
+            var uniqueReservations = _.uniq($scope.reservations, function(reservation) {
+                return reservation.id;
+            });
+             
+            return ($scope.selected_reservations.length === uniqueReservations.length);
         };
 
         /**
@@ -641,7 +645,15 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if (allSelected) {
                 $scope.selected_reservations = [];
             } else {
-                $scope.selected_reservations = _.extend([], $scope.reservations);
+                var uniqueReservations = _.uniq($scope.reservations, function(reservation) {
+                    return reservation.id;
+                });
+                
+                _.each(uniqueReservations, function(reservation) {
+                    reservation.is_accompanying_guest = false;
+                });
+
+                $scope.selected_reservations = _.extend([], uniqueReservations);
             }
         };
 
