@@ -1,4 +1,4 @@
-sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermissionSrv', 'ngDialog', function($scope, rvPermissionSrv, ngDialog) {
+sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermissionSrv', function($scope, rvPermissionSrv) {
 
     /**
      * if the user has enough permission to over book House
@@ -29,7 +29,7 @@ sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermission
             overBookingStatusOutput = '';
 
         if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
-        	overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
+            overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
         }
         else if (isRoomTypeOverbooked && canOverbookRoomType && (!isHouseOverbooked || (isHouseOverbooked && canOverbookHouse) )) {
             overBookingStatusOutput = 'ROOMTYPE_OVERBOOK';
@@ -47,7 +47,6 @@ sntRover.controller('rvNightlyDiaryValidationStayCtrl', ['$scope', 'rvPermission
 	// Disable the overBooking button if there is no permission..
 	if ($scope.popupData.showOverBookingButton) {
 		$scope.popupData.disableOverBookingButton = checkOverBooking() === 'NO_PERMISSION_TO_OVERBOOK';
-        console.log($scope.popupData);
 	} 
 
     // Handle overbook button click actions.

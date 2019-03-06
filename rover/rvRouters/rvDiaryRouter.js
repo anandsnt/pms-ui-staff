@@ -2,11 +2,15 @@ angular
 .module('diaryModule', [])
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     $stateProvider.state('rover.diary', {
-        url: '/diary/?reservation_id&checkin_date',
+        url: '/diary/?reservation_id&checkin_date&origin',
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            propertyTime: function(RVReservationBaseSearchSrv) {
+            propertyTime: function(RVReservationBaseSearchSrv, $stateParams) {
+                if (!!$stateParams.checkin_date) {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime($stateParams.checkin_date);
+                }
+                
                 return RVReservationBaseSearchSrv.fetchCurrentTime();
             },
             baseSearchData: function(RVReservationBaseSearchSrv) {
@@ -15,7 +19,7 @@ angular
             payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime) {
                 var start_date = propertyTime.hotel_time.date;
 
-                if ($stateParams.checkin_date) {
+                if (!!$stateParams.checkin_date) {
                     start_date = $stateParams.checkin_date;
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());

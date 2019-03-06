@@ -20,7 +20,8 @@ const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     roomRowClass: "grid-reservations firstday-" + getWeekDayName((new Date(state.diaryInitialDayOfDateGrid)).getDay(), 3),
     selectedReservationId: state.selectedReservationId,
     selectedRoomId: state.selectedRoomId,
-    showUnAssignedRooms: state.isAssignRoomViewActive,
+    showAssignRooms: state.isAssignRoomViewActive,
+    showMoveRooms: state.isMoveRoomViewActive,
     state: state
 });
 

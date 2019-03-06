@@ -33,7 +33,7 @@
             <button type="button" class="button transparent" click-touch="skipRoomUpsell()">
                 <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_SKIP')" editable-text="ROOM_UPGRADE_SKIP"></text>
             </button>
-            <p class="text" ng-show="showPageNumberDetails">
+            <p class="text room-upgrades-pagination" ng-show="showPageNumberDetails">
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_1')" editable-text="ROOM_UPSELL_FOOTER_1"></text>
                 &nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_2')" editable-text="ROOM_UPSELL_FOOTER_2"></text>

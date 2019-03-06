@@ -1,6 +1,6 @@
 const { createClass } = React;
 
-const NightlyDiaryUnAssignedComponent = createClass({
+const NightlyDiaryAssignRoomComponent = createClass({
     getStyles() {
         const width = this.props.uar_data.style.width;
         const position = this.props.uar_data.style.transform;

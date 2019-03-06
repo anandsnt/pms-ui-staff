@@ -27,8 +27,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         });
 
         // default max value if max_adults, max_children, max_infants is not configured
-        var defaultMaxvalue = 5;
-        var isFromNightlyDiary = $stateParams.fromState === "NIGHTLY_DIARY";
+        var defaultMaxvalue = 5,
+            isFromNightlyDiary = $stateParams.fromState === "NIGHTLY_DIARY",
+            isRoomTypeChangePopupShown = false;
 
         $scope.activeCodes = activeCodes.promotions;
         $scope.loyaltyPrograms = loyaltyPrograms.data;
@@ -398,7 +399,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 var noOfAvailableDates = data.rooms[0].available_dates.length;
 
                 if (diffrenceBtwnDates() > noOfAvailableDates) {
-                    $scope.validationMsg = 'Room '+ data.rooms[0].room_no +'can be booked only for '+ noOfAvailableDates +' nights. By booking more nights room number will be unassigned.';
+                    $scope.validationMsg = 'Room ' + data.rooms[0].room_no + ' can be booked only for ' + noOfAvailableDates + ' nights. By booking more nights room number will be unassigned.';
                     resetRoomDetailsIfInvalid();
                     showValidationPopup();
                 }
@@ -1070,8 +1071,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.onRoomTypeChange = function(tabIndex) {
             var roomTypeChanged = ( $scope.reservationData.tabs[tabIndex].roomTypeId !== $stateParams.selectedRoomTypeId );
             
-            if (isFromNightlyDiary && roomTypeChanged) {
+            if (isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown) {
                 $scope.validationMsg = 'Room number will be unassigned by changing the room type';
+                isRoomTypeChangePopupShown = true;
                 resetRoomDetailsIfInvalid();
                 showValidationPopup();
             }

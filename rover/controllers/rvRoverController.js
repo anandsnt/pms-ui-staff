@@ -151,6 +151,8 @@ sntRover.controller('roverController', [
         $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+        $rootScope.isMultiCurrencyEnabled = hotelDetails.is_multi_currency_enabled;
+        $rootScope.invoiceCurrencySymbol = hotelDetails.is_multi_currency_enabled ? getCurrencySign(hotelDetails.selected_invoice_currency.value) : '';
         // CICO-35453 Currency Format
         $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
@@ -629,6 +631,18 @@ sntRover.controller('roverController', [
                 });
         };
 
+        var openCurrencyExchangePopup = function() {
+            jsMappings.fetchAssets(['rover.financials'])
+                .then(function () {
+                    $scope.$emit('hideLoader');
+                    ngDialog.open({
+                        template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
+                        controller: 'RVCurrencyExchangeModalController',
+                        className: ''
+                    });
+                });
+        };
+
         var openPostChargePopup = function () {
             // Show a loading message until promises are not resolved
             $scope.$emit('showLoader');
@@ -683,6 +697,8 @@ sntRover.controller('roverController', [
             }
             else if (subMenu === 'deviceStatus') {
                 $scope.fetchDeviceStatus();
+            } else if (subMenu === 'currencyExchange') {
+                openCurrencyExchangePopup();
             }
         };
 
@@ -1136,6 +1152,10 @@ sntRover.controller('roverController', [
         document.addEventListener('WS_CONNECTION_LOST', function () {
             $scope.formMenu();
         });
+
+        $scope.broadcastFromRoot = function(eventIdentifier, payLoad) {
+            $scope.$broadcast(eventIdentifier, payLoad);
+        };
 
         (function() {
             if ($window.dataLayer) {

@@ -19,10 +19,10 @@
 
 @font-face {
     font-family:'LL Akkurat Pro Regular Web';
-        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot');
-        src: url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
-            url("../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff2") format("woff2"),
-            url('../../type/zeststation/sister-city/lineto-akkurat-pro-regular.woff') format('woff');
+        src: url('../../type/lineto-akkurat-pro-regular.eot');
+        src: url('../../type/lineto-akkurat-pro-regular.eot?#iefix') format('embedded-opentype'),
+            url("../../type/lineto-akkurat-pro-regular.woff2") format("woff2"),
+            url('../../type/lineto-akkurat-pro-regular.woff') format('woff');
         font-weight: normal;
         font-style: normal;
     } 
@@ -60,13 +60,40 @@
 
 #sister-city {
     font-weight: 600;
+
+    // PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/sister-city/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 156px;
+        height: 118px;
+        background-position: center;
+        margin-top: 5%;
+    }
+
     * {
         text-transform: none;
         font-weight: 600;
+        line-height: 21px;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 21px;
+        line-height: 24px;
+
+        * {
+            font-size: 21px;
+            line-height: 24px;
+        }
     }
 
     input,
-    select {
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
         border-bottom: 2px solid @white;
         border-radius: 0;
 
@@ -99,6 +126,12 @@
 
     .entry {
 
+        input,
+        select {
+            font-size: 30px;
+            line-height: 30px;
+        }
+
         &.select { 
             &:after {
                 border-top-color: @white;
@@ -110,10 +143,29 @@
                 max-width: 160px;
             }
         }
+
+        /* Datepicker */
+        &.input {
+            .icon-date {
+                .hide();
+            }
+
+            .hasDatepicker {
+                border: none;
+            }
+        }
     } 
 
     .button {
         background: transparent;
+        font-size: 16px;
+        line-height: 21px;
+
+        * {
+            font-size: 16px;
+            line-height: 21px;
+        }
+
         &.transparent {
             background: transparent;
             border: none;
@@ -148,12 +200,18 @@
                 }
             }
         }
-        .selected {
-            background: @white !important;
-        }
     }
 
     #actions {
+        .button {
+            font-size: 16px;
+            line-height: 21px;
+
+            * {
+                font-size: 16px;
+                line-height: 21px;
+            }
+        }
         &.pull-right {
             width: 160px;
 
@@ -164,6 +222,9 @@
                 text-transform: none;
                 color: @textColor;
             }
+        }
+        .room-upgrades-pagination {
+            display: none !important;
         }
     }
     
@@ -185,13 +246,28 @@
      
     #logo {
         .logo {
-            .size(133px, auto);
+            .size(auto, 156px);
         }
      }
+
+    #signature {
+        background: transparent;
+        color: #fff;
+    }
 
     #options {
         .icons {
             fill: @white;
+        }
+
+        &.large-icons {
+            li {
+                .option {
+                    width: 100px !important;
+                    height: 100px !important;
+                }
+
+            }
         }
 
         .button {
@@ -202,6 +278,77 @@
                 .hide();
             }
         }
+
+        li {
+            text-transform: none;
+            font-size: 31px;
+            line-height: 36px;
+
+            *:not(.icon-text) {
+                font-size: 31px;
+                line-height: 36px;
+            }
+            .option {
+                width: 100px !important;
+                height: 100px !important;
+            }
+
+            .cc-details {
+                font-size: 16px;
+                    line-height: 21px;
+                * {
+                    font-size: 16px;
+                    line-height: 21px;
+                }
+            }
+
+            &:not(.icon-text):not(.break) > span {
+                font-size: 16px;
+                line-height: 21px;
+
+                * {
+                    font-size: 16px;
+                    line-height: 21px;
+                }
+            }
+            &.break { .hide(); }
+            /*&.break > span {
+                font-size: 28px;
+            }*/
+            .option {
+                .square(100px);
+                border-radius: 100px;
+            }
+        }
+
+        .purchase-option {
+            li {
+                font-size: 21px;
+                line-height: 24px;
+
+                *:not(.icon-text){
+                    font-size: 21px;
+                    line-height: 24px;
+                }
+            }
+        }
+        
+        /* Popup fixes start */
+        li {
+            &.radio-option {
+
+                input[type=radio]:checked + .option {
+                    opacity: 1;
+                    background: @white;
+                }
+
+                input[type=radio]:checked + .option path {
+                    fill: @brandColor;
+                }
+            }
+        }
+
+        /* Popup fixes end */
     }
 
     #selection { 
@@ -243,6 +390,14 @@
                 color: @white;
             }
         }
+
+        #rate {
+            li {
+                &.total {
+                    color: @white;
+                }
+            }
+        }
     }
 
     #guests {
@@ -266,20 +421,44 @@
     }
 
     .popup {
-        #message-content {
-            .button {
-                color: @brandColor;
-                border: 2px solid @brandColor;
-                border-radius: 0px;
-                &.with-icon {
-                    text-align: center;
-                    padding: 0;
-                    svg { .hide(); }
-                }
+        /* Popup fixes start */
+        textarea {
+            background: @backgroundColor;
+        }
+ 
 
-                
+        .button {
+            color: @brandColor;
+            border-radius: 0px;
+
+            &:not(.transparent) {
+                border: 2px solid @brandColor;
+            }
+
+            &.with-icon {
+                text-align: center;
+                padding: 0;
+                svg { .hide(); }
             }
         }
+
+        #message-action {
+            .button {
+                border-color: transparent;
+            }
+        }
+
+        .add-on {
+            .action {
+                .button {
+                    &:not(.transparent) {
+                        color: @white;
+                        border: 2px solid @white;
+                    }
+                }
+            }
+        }
+        /* Popup fixes end */
 
         #languages {
             .button {
@@ -310,6 +489,14 @@
                 color: @white;
             }
         }
+
+        li {
+            border: none !important;
+        }
+
+        .add-on-content {
+            background-color: @brandColor;
+        }
     }
 
     .add-on {
@@ -318,7 +505,6 @@
 
         .add-on-content {
             color: @white;
-            background: @brandColor;
 
             .price {
                 strong,
@@ -354,6 +540,7 @@
         .add-on {
             background: @brandColor;
             color: @white;
+            border-radius: 0;
 
             &.selected {
                 border-color: @white;
@@ -378,8 +565,6 @@
             border: 2px solid @white !important;
         }
 
-
-
         input {
             border-bottom: 2px solid @white;
             border-top: 2px solid @white;
@@ -389,6 +574,25 @@
     }
 
     .upgrade-list {
+
+        li { 
+            border: none;
+            border-radius: 0;
+        }
+
+        h2,
+        .price {
+            text-align: center;
+        }
+
+        .upgrade-content {
+            background-color: @brandColor;
+
+            h2 {
+                font-size: 31px;
+                line-height: 36px;
+            }
+        }
 
         &.upgrade-list-v2 {
             .upgrade-content {
@@ -416,5 +620,28 @@
         .upgrade-price {
             border-top: 4px solid white;
         }
+    }
+
+    .ui-datepicker {
+        top: 65% !important;
+        .ui-datepicker-header {
+            * {
+                font-size: 16px;
+                line-height: 60px;
+            }
+        }
+        tbody {
+            td {
+                line-height: 70px;
+
+                a {
+                    line-height: 70px;
+                }
+            }
+        }
+    }
+
+    #skipEmailInputBtn {
+        margin-top: 20px !important;
     }
 }

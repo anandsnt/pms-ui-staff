@@ -157,8 +157,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					}
 					return;
 				} else {
-					saveContactInformation($scope.contactInformation);
-					$scope.$broadcast("ContactTabActivated");
+					if (tabToSwitch === 'cc-ar-accounts') {
+						$scope.showARTab();
+					} else {
+						saveContactInformation($scope.contactInformation);
+						$scope.$broadcast("ContactTabActivated");
+					}
+					
 				}
 
 			}
@@ -433,6 +438,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.addListener("MANDATORY_CHECK_FAILED", function(event, errorMessage) {
 			$scope.$broadcast("setCardContactErrorMessage",  errorMessage);
 			$scope.isArTabAvailable = false;
+			$scope.switchTabTo('', 'cc-contact-info');
 		});
 
 

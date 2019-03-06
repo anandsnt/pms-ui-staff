@@ -402,7 +402,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @return {[type]}      [description]
          */
         var successCallBackOfAddReservations = function(data) {
-            $scope.selected_reservations = data.results;
+            // CICO-61438 - The last reservation which is added is selected for edit
+            $scope.selected_reservations = data.results.length > 0 ? [data.results[data.results.length - 1]] : [];
             $scope.updateGroupReservationsGuestData();
 
         };
@@ -1890,7 +1891,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         };
         $scope.updateGroupReservationsGuestData = function() {
             $scope.isUpdateReservation = true;
-            $scope.totalCountForUpdate = $scope.selected_reservations.length;
+            var uniqueReservations = _.uniq($scope.selected_reservations, function(reservation) {
+                return reservation.id;
+            });
+
+            $scope.totalCountForUpdate = uniqueReservations.length;
 
 
             ngDialog.open({

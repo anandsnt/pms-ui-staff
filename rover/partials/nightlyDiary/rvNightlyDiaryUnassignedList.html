@@ -5,16 +5,19 @@
     </div>
     <div class="unassigned-list no-actions scrollable scroll-vertical">
         <div class="wrapper">
-            <div class="guest {{reservation.statusClass}}" ng-class="{'selected': selectedItem.reservation_id === reservation.reservation_id }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
+            <div class="guest {{reservation.statusClass}}" ng-class="{'selected': selectedItem.reservation_id === reservation.reservation_id, 'blocked disable-element': reservation.is_hourly }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
                 <div class="data">
                     <strong class="name">{{reservation.last_name}} {{reservation.first_name}}</strong>
                     <strong class="name" ng-if="escapeNull(reservation.last_name) == '' && escapeNull(reservation.first_name) == '' " translate>PENDING</strong>
                     <span ng-if="reservation.is_vip" class="vip">VIP</span>
                     <span class="guest-room">{{reservation.room_type_name}}</span>
                 </div>
-                <div class="type hidden">{D || N}</div>
-                <div class="hidden arrival">{{reservation.arrival_date | date:dateFormat}}</div>
-                <div class="nights">{{reservation.number_of_nights}}</div>
+
+                <div class="type" ng-if="reservation.is_hourly">D</div>
+                <div class="nights" ng-if="reservation.is_hourly">{{reservation.total_hours}} HOURS<span>{{reservation.arrival_time}}</span></div>
+
+                <div class="type" ng-if="!reservation.is_hourly">N</div>
+                <div class="nights" ng-if="!reservation.is_hourly">{{reservation.no_of_nights}} NIGHTS</div>
             </div>
         </div>
     </div>

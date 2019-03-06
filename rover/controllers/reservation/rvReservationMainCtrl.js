@@ -826,9 +826,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 });
             },
             setReservationStayDateDetails = function (data, currentRoom) {
-                var reservationStayDetails = [];
+                var reservationStayDetails = [],
+                    roomTypeId = '';
                 
                 _.each(currentRoom.stayDates, function(staydetailInfo, date) {
+                    // CICO-59948 For inhouse reservation, set room type id to that of the current stay dates
+                    if ($scope.reservationData.inHouse) {
+                        roomTypeId =  staydetailInfo.roomTypeId || '';                        
+                    } else {
+                        roomTypeId = currentRoom.roomTypeId;
+                    }
                     reservationStayDetails.push({
                         date: date,
                         // In case of the last day, send the first day's occupancy
@@ -838,8 +845,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                             return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                         })(),
-                        room_type_id: currentRoom.roomTypeId,
-                        room_id: currentRoom.room_id,
+                        room_type_id: roomTypeId,
+                        room_id: staydetailInfo.roomId || '',
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
@@ -1806,6 +1813,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
         };
 
+        // CICO-62890 : showValidationPopup
+        var showValidationPopup = function () {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/reseravtionFromDiaryValidation.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        },
+        resetRoomDetailsIfInvalid = function () {
+            $scope.reservationData.tabs[0].room_id = null;
+            $scope.reservationData.rooms[0].room_id = null;
+
+            $scope.reservationData.tabs[0].roomName = null;
+            $scope.reservationData.rooms[0].roomName = null;
+        },
+        isShowPopopForRoomCount = false;
 
         $scope.onRoomCountChange = function(tabIndex) {
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
@@ -1828,6 +1853,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
+            }
+            // CICO-62890 : Fix issue on change room count.
+            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount) {
+                $scope.validationMsg = 'Room number will be unassigned by changing the room count';
+                isShowPopopForRoomCount = true;
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
             }
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();

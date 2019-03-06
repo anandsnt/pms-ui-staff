@@ -60,11 +60,11 @@
                                 <strong class="cell-row">{{item.charge_code}}</strong>
                                 <span class="cell-row grey-text">{{item.charge_desc}}</span>
                             </td>
-                            <td class="align-right">
-                                <span class="currency">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
+                            <td class="align-right" >
+                                <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
                             </td>
-                            <td class="align-right">
-                                <span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
+                            <td class="align-right" >
+                                <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
                             </td>
                     </tr>
                 </tbody>
@@ -121,11 +121,11 @@
                             <strong class="cell-row">{{item.charge_code}}</strong>
                             <span class="cell-row grey-text">{{item.charge_desc}}</span>
                         </td>
-                        <td class="align-right">
-                            <span class="currency">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
+                        <td class="align-right" >
+                            <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
                         </td>
-                        <td class="align-right">
-                            <span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
+                        <td class="align-right" >
+                            <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
                         </td>
                     </tr>
                 </tbody>
@@ -182,11 +182,11 @@
                             <strong class="cell-row">{{item.charge_code}}</strong>
                             <span class="cell-row grey-text">{{item.charge_desc}}</span>
                         </td>
-                        <td class="align-right">
-                            <span class="currency">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
+                        <td class="align-right" >
+                            <span class="currency" ng-show="item.debit !== '' && item.debit !== null">{{currencySymbol}}</span>{{item.debit | number: precisonTwo}}
                         </td>
-                        <td class="align-right">
-                            <span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
+                        <td class="align-right" >
+                            <span class="currency" ng-show="item.credit !== '' && item.credit !== null">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}
                         </td>
                     </tr>
                 </tbody>

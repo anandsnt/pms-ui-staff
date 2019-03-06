@@ -37,7 +37,7 @@ admin.controller('adHotelLegalSettingsController',
 			var unwantedKeys = [];
 
 			if (screen === 'financial') {
-				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'ar_invoice_label'];
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'next_ar_invoice_number', 'ar_invoice_label'];
 				if (!$scope.legalSettings.is_print_invoice_enabled) {
 					if (!$scope.legalSettings.is_print_folio_enabled) {
 						$scope.legalSettings.is_print_folio_enabled = !$scope.legalSettings.is_print_folio_enabled;
@@ -58,11 +58,11 @@ admin.controller('adHotelLegalSettingsController',
 					'data': $scope.legalSettings
 				},
 				successCallBack: function(data) {
-					if (data.errors.length === 0) {
+					if (data.warnings.length === 0) {
 						$scope.successMessage = "Saved Succesfully!";
 					}
 					$scope.legalSettings = $scope.legalSettingsCopy;
-					$scope.errorMessage = data.errors;
+					$scope.errorMessage = data.warnings;
 				}
 			};
 

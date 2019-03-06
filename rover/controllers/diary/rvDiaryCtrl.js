@@ -167,8 +167,10 @@ angular.module('sntRover')
 			}
 		};
 
-		decideBackBtn($rootScope, $rootScope.diaryState);
-
+		// CICO-63369 : Hide back button while we switch bw/n diaries.
+		if ($stateParams.origin !== 'NIGHTLY_DIARY') {
+			decideBackBtn($rootScope, $rootScope.diaryState);
+		}
 
 	// adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
@@ -215,6 +217,8 @@ angular.module('sntRover')
 		var onDateSelectionFromDatepicker = function(date_string, date_picker_obj) {
 			var isOnEditMode = $scope.gridProps.edit.active,
 				going_date = new Date (date_string);
+
+			propertyTime.hotel_time.date = going_date;
 
 			if (!isOnEditMode) {
 				$scope.gridProps.filter.arrival_date = going_date;
@@ -1059,13 +1063,14 @@ angular.module('sntRover')
 		})();
                 
         /*
-         *  Logic to show/hide save changes based on any changes occured via ext-shortening
+         *  Logic to show/hide save changes based on any changes occured via ext-shortening or room move
          *  @param {Object} - [ original item ]
          *  @param {String} - [ new arrival data ]
          *  @param {String} - [ new departure data ]
+         *	@param {Boolean}- [ to check room move hanppend ]
          */
-		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture) {
-			if (originalItem.arrival !== newArrival || originalItem.departure !== newDeparture) {
+		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture, isMoveRoomAction) {
+			if ( originalItem.arrival !== newArrival || originalItem.departure !== newDeparture || isMoveRoomAction ) {
 				$scope.showSaveChangesAfterEditing = true;
 			}
 			else {
@@ -1079,10 +1084,11 @@ angular.module('sntRover')
 	    		oItem 		= props.edit.originalItem,
 	    		oRowItem 	= props.edit.originalRowItem,
 	    		lastArrTime = this.availability.resize.last_arrival_time,
-				lastDepTime = this.availability.resize.last_departure_time;
+				lastDepTime = this.availability.resize.last_departure_time,
+				isMoveRoomAction = (successParams.params.room_id !== oItem.room_id);
 				
 			// To show save change button ,only if there is change in time
-			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure);
+			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {
@@ -2629,8 +2635,37 @@ angular.module('sntRover')
 	// Handle Nigthtly/Hourly toggle
 	$scope.toggleHourlyNightly = true;
 	$scope.navigateToNightlyDiary = function() {
-		$state.go("rover.nightlyDiary");
+		$state.go("rover.nightlyDiary", {
+			start_date: $scope.gridProps.filter.arrival_date
+		});
 		$scope.toggleHourlyNightly = false;
 	};
+
+	/*
+     *  Utility method to check whether we need to show Toggle DIARY D/N
+     *  Based on settings values inside Reservation settings.
+     */
+    $scope.hideToggleMenu = function() {
+        
+        /**
+         *  A = settings.day_use_enabled (true / false)
+         *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         *
+         *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+         *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+         *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+         *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+         */
+
+        var hideToggleMenu = false;
+
+        // For Hourly hotels we are hiding the Navigations to Nightly Diary.
+        if ( $rootScope.isHourlyRateOn ) {
+            hideToggleMenu = true;
+        }
+
+        return hideToggleMenu;
+    };
 
 }]);

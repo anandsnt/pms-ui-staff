@@ -6,6 +6,7 @@ const nightlyDiaryRootReducer = (state, action) => (
         numberOfDays: (action.type === 'DIARY_VIEW_CHANGED') ? action.numberOfDays : state.numberOfDays,
         currentBusinessDate: (action.type === 'DIARY_VIEW_CHANGED') ? action.currentBusinessDate : state.currentBusinessDate,
         isAssignRoomViewActive: action.isAssignRoomViewActive,
+        isMoveRoomViewActive: action.isMoveRoomViewActive,
         availableSlotsForAssignRooms: action.availableSlotsForAssignRooms,
         isBookRoomViewActive: action.isBookRoomViewActive,
         availableSlotsForBookRooms: action.availableSlotsForBookRooms,
