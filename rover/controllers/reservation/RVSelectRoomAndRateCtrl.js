@@ -1807,9 +1807,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				roomType = parseInt($scope.stateCheck.preferredType, 10) || '',
 				roomIndex;
 
-			var roomTypeChanged = ( roomType !== $scope.stateCheck.roomTypeIdFromNightlyDiary );
+			var roomTypeChanged = ( roomType !== $scope.stateCheck.roomTypeIdFromNightlyDiary ),
+				isRoomDetailsInvalidated = TABS[0].room_id === null;
 
-			if ($scope.stateCheck.isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown) {
+			if ($scope.stateCheck.isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown && !isRoomDetailsInvalidated) {
                 $scope.validationMsg = 'Room number will be unassigned by changing the room type';
                 isRoomTypeChangePopupShown = true;
                 resetRoomDetailsIfInvalid();
