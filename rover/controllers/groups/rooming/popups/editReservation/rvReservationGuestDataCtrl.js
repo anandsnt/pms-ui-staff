@@ -84,7 +84,10 @@ angular.module('sntRover').controller('rvReservationGuestDataPopupCtrl', [
         var guestData = [];
 
         _.each($scope.selected_reservations, function(eachData, resIndex) {
-            guestData.push(dclone(eachData, unWantedKeysToRemove));
+            if (!eachData.is_accompanying_guest) {
+                guestData.push(dclone(eachData, unWantedKeysToRemove));
+            }
+            
         });
         var data = {};
 
