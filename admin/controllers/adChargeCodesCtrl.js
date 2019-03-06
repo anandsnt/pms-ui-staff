@@ -1,11 +1,6 @@
 admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog',
     function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog) {
 
-        var CHARGE_CODE_TYPE_TAX = 1;
-        var CHARGE_CODE_TYPE_PAYMENT = 2;
-        var CHARGE_CODE_TYPE_FEES = 6;
-        var CHARGE_CODE_TYPE_TOURIST = 8;
-
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
 		$scope.currentClickedElement = -1;
@@ -77,7 +72,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.$digest();
 			}
 		};
-		
+
 		var scrollTop = function() {
 			$(".content-scroll").scrollTop(0);
 			$scope.$emit('hideLoader');
@@ -102,7 +97,6 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var fetchNewDetailsSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
-				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
 				$scope.prefetchData.allow_manual_posting = false;
@@ -293,7 +287,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule, 10)].charge_code_id_list;
 				}
 			});
-            
+
 			var unwantedKeys = ["charge_code_types", "payment_types", "charge_groups", "link_with", "amount_types", "tax_codes", "post_types", "symbolList"];
 			var postData = dclone($scope.prefetchData, unwantedKeys);
 
@@ -504,36 +498,23 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
          * @return {Boolean} hide or not
          */
         $scope.shouldHideAddTaxOption = function () {
-            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
-            var isTaxSelected = selectedType === CHARGE_CODE_TYPE_TAX;
-            var isPaymentSelected = selectedType === CHARGE_CODE_TYPE_PAYMENT;
-            var isTouristSelected = selectedType === CHARGE_CODE_TYPE_TOURIST;
-
-            return $scope.isPmsConfigured || isTaxSelected || isPaymentSelected || isTouristSelected;
+            return $scope.isPmsConfigured || $scope.isTaxSelected() || $scope.isPaymentSelected() || $scope.isTouristTaxSelected();
         };
 
         $scope.isTaxSelected = function () {
-            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
-
-            return selectedType === CHARGE_CODE_TYPE_TAX;
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('TAX');
         };
 
         $scope.isPaymentSelected = function () {
-            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
-            
-            return selectedType === CHARGE_CODE_TYPE_PAYMENT;
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('PAYMENT');
         };
 
         $scope.isTouristTaxSelected = function () {
-            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
-            
-            return selectedType === CHARGE_CODE_TYPE_TOURIST;
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('TOURIST TAX');
         };
 
         $scope.isFeesSelected = function () {
-            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
-            
-            return selectedType === CHARGE_CODE_TYPE_FEES;
+            return parseInt($scope.prefetchData.selected_charge_code_type, 10) === ADChargeCodesSrv.getChargeCodeTypeValue('FEES');
         };
 
         /**

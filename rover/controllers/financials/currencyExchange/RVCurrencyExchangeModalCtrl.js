@@ -134,6 +134,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
             };
 
             $scope.setScroller("CURRENCY_SCROLLER", scrollerOptions);
+
             /*
              * To close dialog box
              */

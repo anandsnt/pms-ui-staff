@@ -740,8 +740,13 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             // Added to resolve the issue - CICO-23144 - QA comment
             // updating from one popup not updating in other
             _.each($scope.selected_reservations, function(eachData, resIndex) {
+                var reservationIndex;
 
-                var reservationIndex = _.findIndex(data.results, {"id": eachData.id});
+                if (eachData.is_accompanying_guest) {
+                    reservationIndex = _.findIndex(data.results, {"id": eachData.id, "accompanying_guest_id": eachData.accompanying_guest_id});
+                } else {
+                    reservationIndex = _.findIndex(data.results, {"id": eachData.id, "is_accompanying_guest": false});
+                }
 
                 if (reservationIndex != -1) {
                     $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
