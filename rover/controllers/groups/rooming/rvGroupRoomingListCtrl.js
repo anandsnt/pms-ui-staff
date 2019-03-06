@@ -341,6 +341,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             // we have to populate possible number of rooms & occupancy against a
             $scope.changedSelectedRoomType();
+
         };
 
 
@@ -580,10 +581,11 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
          * @param {Object} reservation [description]
          */
         $scope.addOrRemoveFromSelectedReservation = function(reservation) {
-            var isReservaionInSelectedReservation = _.findWhere($scope.selected_reservations, {
-                id: reservation.id,
-                is_accompanying_guest: false
-            });
+                var isReservaionInSelectedReservation = _.findWhere($scope.selected_reservations, {
+                    id: reservation.id,
+                    is_accompanying_guest: false
+                }),
+                selectedReservation = JSON.parse(JSON.stringify(reservation));
 
             if (isReservaionInSelectedReservation) {
                 var index = _.indexOf(_.pluck($scope.selected_reservations, "id"), reservation.id);
@@ -592,6 +594,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             } else {
                 if (reservation.is_accompanying_guest) {
                     reservation = _.find($scope.reservations, {'id': reservation.id, 'is_accompanying_guest': false});
+                    if (!reservation) {
+                        reservation = selectedReservation;
+                        reservation.is_accompanying_guest = false; 
+                    }
                 }
                 $scope.selected_reservations.push(reservation);
                 // We have to show in the same order - in popup
@@ -740,19 +746,19 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $scope.$broadcast("updatePagination", PAGINATION_ID);
             }, 100);
 
+            // Reset the selected reservations, as the records may span across pages
+            if ($scope.totalResultCount > $scope.perPage) {
+                $scope.selected_reservations = []; 
+            }
+
             // Added to resolve the issue - CICO-23144 - QA comment
             // updating from one popup not updating in other
             _.each($scope.selected_reservations, function(eachData, resIndex) {
-                var reservationIndex;
-
-                if (eachData.is_accompanying_guest) {
-                    reservationIndex = _.findIndex(data.results, {"id": eachData.id, "accompanying_guest_id": eachData.accompanying_guest_id});
-                } else {
-                    reservationIndex = _.findIndex(data.results, {"id": eachData.id, "is_accompanying_guest": false});
-                }
+                var reservationIndex = _.findIndex(data.results, {"id": eachData.id});
 
                 if (reservationIndex != -1) {
                     $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
+                    $scope.selected_reservations[resIndex].is_accompanying_guest = false;
                 }
 
             });
