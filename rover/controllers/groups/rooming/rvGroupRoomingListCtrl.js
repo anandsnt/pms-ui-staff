@@ -645,9 +645,10 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             if (allSelected) {
                 $scope.selected_reservations = [];
             } else {
-                var uniqueReservations = _.uniq($scope.reservations, function(reservation) {
-                    return reservation.id;
-                });
+                var allReservations = JSON.parse(JSON.stringify($scope.reservations)),
+                    uniqueReservations = _.uniq(allReservations, function(reservation) {
+                        return reservation.id;
+                    });
                 
                 _.each(uniqueReservations, function(reservation) {
                     reservation.is_accompanying_guest = false;
@@ -769,8 +770,12 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 var reservationIndex = _.findIndex(data.results, {"id": eachData.id});
 
                 if (reservationIndex != -1) {
-                    $scope.selected_reservations[resIndex] = $scope.reservations[reservationIndex];
-                    $scope.selected_reservations[resIndex].is_accompanying_guest = false;
+                    var selectedReservation = JSON.parse(JSON.stringify($scope.reservations[reservationIndex]));
+
+                    selectedReservation.is_accompanying_guest = false;
+
+                    $scope.selected_reservations[resIndex] = selectedReservation;
+
                 }
 
             });
