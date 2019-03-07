@@ -70,7 +70,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
     $stateProvider.state('checkinConfirmation', {
             url: '/checkinConfirmation',
-            templateUrl: '/assets/common_templates/partials/checkin/gwCheckin.html',
+            templateUrl: '/assets/common_templates/partials/hotel_hiho/gwCheckin.html',
             controller: 'checkInConfirmationViewController',
             title: 'Check-in'
         }).state('checkinReservationDetails', {

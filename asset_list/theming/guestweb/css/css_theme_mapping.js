@@ -6,6 +6,7 @@ module.exports = {
 
         return {
             'guestweb_clarion_collection': [ themeCSSRoot + 'guestweb_clarion_collection.css'],
+            'guestweb_la_copa_inn': [ themeCSSRoot + 'guestweb_la_copa_inn.css'],
             'guestweb_hotel_e': [ themeCSSRoot + 'guestweb_hotel_e.css'],
             'guestweb_liason_dc': [ themeCSSRoot + 'guestweb_liason_dc.css'],
             'guestweb_adrift_hotel': [ themeCSSRoot + 'guestweb_adrift_hotel.css'],
