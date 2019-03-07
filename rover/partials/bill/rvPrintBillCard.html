@@ -168,6 +168,9 @@
                 </td>
                 <td>
                     {{currencySymbol}}{{item.amount | number: precisonTwo}}
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_net_amount !== null">
+                        {{invoiceCurrencySymbol}}{{item.invoice_currency_amount}}
+                    </div>
                 </td>
             </tr>
         </tfoot>
