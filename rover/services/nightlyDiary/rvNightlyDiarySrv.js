@@ -1,7 +1,8 @@
 angular.module('sntRover').service('RVNightlyDiarySrv',
     ['$q',
     'BaseWebSrvV2',
-    function($q, BaseWebSrvV2) {
+    '$rootScope',
+    function($q, BaseWebSrvV2, $rootScope) {
 
         var that = this;
 
@@ -193,7 +194,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         this.fetchUnassignedReservationList = function(params) {
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/unassigned_reservations',
-                businessDate = params.businessDate;
+                businessDate = $rootScope.businessDate;
 
             BaseWebSrvV2.getJSON(url, params).then(function(data) {
                 angular.forEach(data.reservations, function(item) {

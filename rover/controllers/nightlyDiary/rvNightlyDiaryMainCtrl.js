@@ -181,24 +181,6 @@ angular.module('sntRover')
                     $scope.callAPI(RVNightlyDiarySrv.fetchRoomsListAndReservationList, options);
                 };
 
-                // Method to fetch Unassigned reservations list.
-                var fetchUnassignedReservationList = function () {
-                    var successCallBackFetchList = function (data) {
-                        $scope.errorMessage = '';
-                        $scope.diaryData.unassignedReservationList = data;
-                    },
-                    postData = {
-                        'date': $scope.diaryData.arrivalDate,
-                        'businessDate': $rootScope.businessDate
-                    },
-                    options = {
-                        params: postData,
-                        successCallBack: successCallBackFetchList
-                    };
-
-                    $scope.callAPI(RVNightlyDiarySrv.fetchUnassignedReservationList, options);
-                };
-
                 /*
                  * Handle Next Button in Dairy.
                  * @return {}
@@ -523,7 +505,7 @@ angular.module('sntRover')
 
                 $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
                     resetUnassignedList();
-                    fetchUnassignedReservationList();
+                    $scope.$broadcast('FETCH_UNASSIGNED_LIST_DATA');
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
 
