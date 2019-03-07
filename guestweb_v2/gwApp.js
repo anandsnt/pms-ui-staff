@@ -90,7 +90,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         } else if (reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length > 0) {
             var absUrl = $location.$$absUrl;
 
-            if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
+            if (absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
                 reservationAndhotelDetails.skip_checkin_verification && reservationAndhotelDetails.reservation_details) {
                 GwCheckinSrv.setcheckinData(reservationAndhotelDetails.reservation_details);
                 GwWebSrv.zestwebData.termsAndConditions = reservationAndhotelDetails.reservation_details.terms_and_conditions;
