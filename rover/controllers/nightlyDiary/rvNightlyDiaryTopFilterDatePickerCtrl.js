@@ -1,4 +1,4 @@
-sntRover.controller('RVNightlyDiaryDatePickerController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
+sntRover.controller('RVNightlyDiaryTopFilterDatePickerController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
 
 	var minDateSelected = '';
 

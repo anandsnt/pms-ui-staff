@@ -90,7 +90,7 @@ angular.module('sntRover')
         $scope.clickedDatePicker = function() {
             ngDialog.open({
                 template: '/assets/partials/nightlyDiary/rvNightlyDiaryDatePicker.html',
-                controller: 'RVNightlyDiaryDatePickerController',
+                controller: 'RVNightlyDiaryTopFilterDatePickerController',
                 className: 'single-date-picker',
                 scope: $scope
             });
