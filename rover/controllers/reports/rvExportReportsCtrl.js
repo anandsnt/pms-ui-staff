@@ -721,6 +721,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 // add filtered out and occurance
                 _.each($scope.$parent.$parent.schedulesList, function(item) {
+
                     item.filteredOut = false;
                     item.occurance = findOccurance(item);
                 });
@@ -739,7 +740,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                         active: false,
                         filteredOut: false
                     });
+
                 });
+
 
                 // sort schedulable reports by report name
                 $scope.$parent.$parent.schedulableReports = _.sortBy(
