@@ -116,4 +116,5 @@
   "VAT_CODE": "VAT Code",
   "COST_CENTER": "Cost Center",
 	"SETTLING_ACC": "Settling Account Number",
-	"GL_ACCOUNT": "GL Account for Direct Bill"
+	"GL_ACCOUNT": "GL Account for Direct Bill",
+	"TURKISHINVOICE_HEADER": "Turkish E-Invoice Setup"
