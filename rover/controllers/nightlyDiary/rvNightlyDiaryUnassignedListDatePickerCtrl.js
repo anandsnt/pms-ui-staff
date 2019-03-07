@@ -1,6 +1,7 @@
 sntRover.controller('RVNightlyDiaryUnassignedListDatePickerController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
 
-	var minDateSelected = $scope.diaryData.fromDate;
+	var minDateSelected = $scope.diaryData.fromDate,
+		maxDateSelected = $scope.diaryData.toDate;
 
 	$scope.date = $scope.diaryData.arrivalDate;
 
@@ -8,8 +9,9 @@ sntRover.controller('RVNightlyDiaryUnassignedListDatePickerController', ['$scope
 		$scope.dateOptions = {
 			changeYear: true,
 			changeMonth: true,
-			minDate: minDateSelected,
-			yearRange: "-100:+5",
+			minDate: tzIndependentDate(minDateSelected),
+           	maxDate: tzIndependentDate(maxDateSelected),
+			// yearRange: "-100:+5",
 			onSelect: function() {
 				$scope.diaryData.arrivalDate = $scope.date;
 				$scope.$emit('UNASSIGNED_LIST_DATE_CHANGED');

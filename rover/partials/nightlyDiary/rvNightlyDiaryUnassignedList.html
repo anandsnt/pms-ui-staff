@@ -1,7 +1,7 @@
 <div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-unassigned diary-nightly-unassigned" ng-class="(diaryData.innerWidth >= 1600 || diaryData.rightFilter == 'UNASSIGNED_RESERVATION')? 'visible' : '' ">
     <div class="diary-nightly-search-form">
         <div class="entry date">
-            <button type="button" class="button white with-icon only-icon" ng-click="clickedDateLeftShift()">
+            <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': diaryData.arrivalDate <=  diaryData.fromDate }" ng-click="clickedDateLeftShift()">
                 <span class="icons icon-double-arrow black"></span>
             </button>
             <div class="entry-data" ng-click="clickedDatePicker()">
@@ -9,7 +9,7 @@
                 <span class="label">Arrival Date</span>
                 <span class="date-range">{{ diaryData.arrivalDate | date: 'd LLLL yyyy' }}</span>
             </div>
-            <button type="button" class="button white with-icon only-icon" ng-click="clickedDateRightShift()">
+            <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': diaryData.arrivalDate >=  diaryData.toDate }" ng-click="clickedDateRightShift()">
                 <span class="icons icon-double-arrow black rotate-right"></span>
             </button>
         </div>

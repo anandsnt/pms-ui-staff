@@ -141,4 +141,18 @@ angular.module('sntRover')
             });
         };
 
+        // To handle click on left date shift.
+        $scope.clickedDateLeftShift = function() {
+            $scope.diaryData.arrivalDate = moment(tzIndependentDate($scope.diaryData.arrivalDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+            fetchUnassignedReservationList();
+        };
+
+        // To handle click on right date shift.
+        $scope.clickedDateRightShift = function() {
+            $scope.diaryData.arrivalDate = moment(tzIndependentDate($scope.diaryData.arrivalDate)).add(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+            fetchUnassignedReservationList();
+        };
+
 }]);
