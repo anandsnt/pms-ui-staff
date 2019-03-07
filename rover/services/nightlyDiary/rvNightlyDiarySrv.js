@@ -190,7 +190,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * @param {data} object
          * return object
          */
-        this.fetchUnassignedRoomList = function(params) {
+        this.fetchUnassignedReservationList = function(params) {
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/unassigned_reservations',
                 businessDate = params.businessDate;

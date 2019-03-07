@@ -71,6 +71,7 @@ angular.module('sntRover')
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
                         fromDate: srvParams.start_date,
+                        arrivalDate: srvParams.start_date,
                         toDate: '',
                         paginationData: {
                             perPage: 50,
@@ -187,8 +188,7 @@ angular.module('sntRover')
                         $scope.diaryData.unassignedReservationList = data;
                     },
                     postData = {
-                        'start_date': $scope.diaryData.fromDate,
-                        'no_of_days': $scope.diaryData.numberOfDays,
+                        'date': $scope.diaryData.arrivalDate,
                         'businessDate': $rootScope.businessDate
                     },
                     options = {
@@ -196,7 +196,7 @@ angular.module('sntRover')
                         successCallBack: successCallBackFetchList
                     };
 
-                    $scope.callAPI(RVNightlyDiarySrv.fetchUnassignedRoomList, options);
+                    $scope.callAPI(RVNightlyDiarySrv.fetchUnassignedReservationList, options);
                 };
 
                 /*
