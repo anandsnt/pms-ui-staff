@@ -1,7 +1,6 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
-@fontFamily: 'LL Akkurat Pro Regular Web', sans-serif;
 html,
 body {
   height: auto;
@@ -9,12 +8,11 @@ body {
 }
 
 body {
-  background-color: #0032F6;
-  font-family: @fontFamily;
+  background-color: #E4F1F3;
 }
 
 .back-text {
-  color: #fff;
+  color: #000;
   display: none !important;
 }
 
@@ -25,33 +23,23 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #fff;
+  color: #363d40;
 }
 
 input[type=text],
 input[type=tel],
 input[type=password],
 input[type=email] {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
 }
 
 .sub-main-text {
-  color: #fff;
-  font-size: 18px !important;
+  color: #363d40;
 }
 
 .header-bar {
-  background:#0032F6;
-}
-
-.addon-container {
-  background: #0032F6 !important;
-  border: 1px solid #fff;
-}
-
-.selected {
-  background: #797878 !important;
+  background:#fff;
 }
 
 .logo-image {
@@ -66,11 +54,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #fff;
+  color: #363d40;
 }
 
 .view-bill {
-  color: #fff;
+  color: #363d40;
 }
 
 .sub-text,
@@ -78,67 +66,54 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #fff;
-}
-.cvv-input-field {
-  .query-text {
-    color: grey !important;
-  }
+  color: #363d40;
 }
 
 .btn,
 .btn:hover {
-  background:#0032F6;
+  background:#004354;
   color: @white;
-  border: 2px solid #fff;
 }
 
 .dual-button {
-  font-size: 30px;
+  font-size: 35px;
   font-weight: 300;
 }
 
 .btn-template {
-  font-size: 24px;
+  font-size: 35px;
   font-weight: 300;
   padding: 4%;
 }
 
 .dark-button,
 .dark-button:hover {
-  background:#0032F6;
-  border: 2px solid #fff;
-  border-left: 0px;
+  background:#004354;
 }
 
 .light-button,
 .light-button:hover {
-  background: #0032F6;
-  border: 2px solid #fff;
+  background: #005869;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #0032F6;
+  background: #005869;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#0032F6;
-  border: 2px solid #fff;
-  border-left: 0px;
+  background:#004354;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #0032F6;
-  border: 2px solid #fff;
-  border-left: 0px;
+  background: #003240;
 }
 
 .no-thanks,
 .no-thanks:hover {
-  color: #fff;
+  color: #000;
   text-decoration: underline;
   text-transform: none;
 }
@@ -154,40 +129,30 @@ input[type=email] {
 }
 
 .down-arrow-button {
-  background-image: url('/assets/guestweb/common_images/white/down_arrow.png');
+  background-image: url('/assets/guestweb/common_images/black/down_arrow.png');
 }
 
 .right-arrow-button {
-  background-image: url('/assets/guestweb/common_images/white/right_arrow.png');
+  background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
 }
 
-.upgrade-details {
-  background-color: #0032F6 !important;
-  color: #fff !important;
-  text-align: left !important;
-}
-
-.upgrades-btn {
-  background-color: #0032F6 !important;
-  color: #fff !important;
-  text-align: left !important;
+.upgrade-details .upgrades-btn {
+  background:#004354;
 }
 
 .proceed-to-checkin {
-  background-color: #0032F6;
-  border: 2px solid #fff;
-  text-align: center;
+  background: #004354;
 }
 
 .upgrades-label {
-  color: #fff;
+  color: #BA7A55;
 }
 
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#0032F6;
+  color:#004354;
   color: transparent;
 }
 
@@ -197,8 +162,8 @@ input[type=email] {
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#0032F6 !important;
-  color: #000;
+  background-color:#004354 !important;
+  color: #fff;
 }
 
 .pickadate-head {
@@ -239,7 +204,7 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#0032F6;
+  background-color:#004354;
 }
 
 .calendar-back {
@@ -254,7 +219,7 @@ input[type=email] {
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #0032F6;
+  color: #005869;
 }
 
 .date-picker-wrap {
@@ -284,7 +249,7 @@ input[type=email] {
 
 .res-details-heading,
 .res-details-heading:hover {
-  color: #0032F6;
+  color: #003240;
 }
 
 .back-to-checkout {
@@ -303,7 +268,7 @@ input[type=email] {
   .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges
+  .accept-charges,
   {
     width: 300px;
     padding: 4% 0%;
@@ -337,17 +302,12 @@ input[type=email] {
   }
 }
 
+.btn-template {
+  font-size: 30px;
+}
 input{
   background: #fff none repeat scroll 0 0;
-  box-shadow: none !important;
 }
 .bill-hotel-logo{
   background:#fff;
-}
-.grey-btn,
-.grey-btn:hover {
-  background: #0032F6 !important;
-}
-.text-comment {
-  color: #333 !important;
 }
