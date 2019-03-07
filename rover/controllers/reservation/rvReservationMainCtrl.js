@@ -846,7 +846,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                         })(),
                         room_type_id: roomTypeId,
-                        room_id: staydetailInfo.roomId || '',
+                        room_id: $scope.reservationData.inHouse ? staydetailInfo.roomId : currentRoom.room_id,
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
@@ -1843,6 +1843,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }))),
                 totalCount = (lastIndex - firstIndex) + 1;
 
+            var isRoomDetailsInvalidated = $scope.reservationData.tabs[0].room_id === null;
+
+            // CICO-62890 : Fix issue on change room count.
+            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount && !isRoomDetailsInvalidated) {
+                $scope.validationMsg = 'Room number will be unassigned by changing the room count';
+                isShowPopopForRoomCount = true;
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
+
             if (totalCount < currentCount) {
                 var copy,
                     i;
@@ -1854,13 +1864,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
-            // CICO-62890 : Fix issue on change room count.
-            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount) {
-                $scope.validationMsg = 'Room number will be unassigned by changing the room count';
-                isShowPopopForRoomCount = true;
-                resetRoomDetailsIfInvalid();
-                showValidationPopup();
-            }
+            
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };

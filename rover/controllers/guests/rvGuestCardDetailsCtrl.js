@@ -268,7 +268,6 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.isGuestCardFromMenu = true;
             $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
 
-            
             if (!$stateParams.guestId) {
                 $scope.guestCardData = {};
                 $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();

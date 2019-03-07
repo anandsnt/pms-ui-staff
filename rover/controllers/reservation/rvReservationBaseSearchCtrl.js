@@ -1069,9 +1069,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onRoomTypeChange = function(tabIndex) {
-            var roomTypeChanged = ( $scope.reservationData.tabs[tabIndex].roomTypeId !== $stateParams.selectedRoomTypeId );
+            var roomTypeChanged = ( $scope.reservationData.tabs[tabIndex].roomTypeId !== $stateParams.selectedRoomTypeId ),
+                isRoomDetailsInvalidated = $scope.reservationData.tabs[0].room_id === null;
             
-            if (isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown) {
+            if (isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown && !isRoomDetailsInvalidated) {
                 $scope.validationMsg = 'Room number will be unassigned by changing the room type';
                 isRoomTypeChangePopupShown = true;
                 resetRoomDetailsIfInvalid();
