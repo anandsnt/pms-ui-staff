@@ -597,9 +597,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             };
 
-            var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate;
-            var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
-            var exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
+            var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
+                endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
+                exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
 
             // saved emails/FTP
             var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
