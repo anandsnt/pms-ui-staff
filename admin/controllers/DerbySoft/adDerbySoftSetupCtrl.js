@@ -29,7 +29,7 @@ admin.controller('ADDerbySoftSetupCtrl', [
          */
         $scope.generateAuthToken = function() {
             $scope.callAPI(adIFCInterfaceMappingSrv.resetAuthToken, {
-                mapping_interface: $scope.interface.toLowerCase(),
+                params: $scope.interface.toLowerCase(),
                 onSuccess: function(response) {
                     $scope.config.authentication_token = response.authentication_token;
                     $scope.closeDialog();
