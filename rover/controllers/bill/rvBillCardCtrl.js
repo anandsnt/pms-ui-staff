@@ -465,10 +465,8 @@ sntRover.controller('RVbillCardController',
 		if ($scope.clickedButton === 'checkinButton') {
 			width = width + 230;
 		}
-		if ($scope.reservationBillData.bills.length < 10) {
-			width = width + 50;
-		}
-		width =  133 * $scope.reservationBillData.bills.length + width + 60;
+
+		width =  133 * $scope.reservationBillData.bills.length + width + 160;
 		return width;
 	};
 
