@@ -855,6 +855,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     });
                 });
 
+                // For inhouse reservation, setting departure date data to that of the previous date
+                if ($scope.reservationData.inHouse) {
+                    var departureDate = reservationStayDetails[reservationStayDetails.length - 1].date;
+
+                    reservationStayDetails[reservationStayDetails.length - 1] = JSON.parse(JSON.stringify(reservationStayDetails[reservationStayDetails.length - 2]));
+                    reservationStayDetails[reservationStayDetails.length - 1].date = departureDate;
+                }
+
                 return reservationStayDetails;
             },
             setPromotionDetails = function (data, roomIndex, applicableRate) {
