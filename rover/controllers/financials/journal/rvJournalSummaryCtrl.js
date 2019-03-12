@@ -122,7 +122,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
             $scope.errorMessage = "";
             refreshSummaryScroller();
-            $scope.$broadcast('updatePagination', balance_type);
+           
+            $timeout (function() {
+                 $scope.$broadcast('updatePagination', balance_type);
+            }, 800);
             $scope.$emit('hideLoader');
         };
 
