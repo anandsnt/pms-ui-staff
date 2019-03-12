@@ -654,7 +654,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
   					item.isMultipleReservation = true;
   				} else if ((item.reservations.length === 1)) {
   					item.reservationData = "#" + item.reservations[0].confirm_no;
-  					item.GuestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;
+					  item.GuestName = (function() {
+										 var guestName = "";
+
+										 if (item.reservations[0].last_name && item.reservations[0].first_name) {
+											guestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;  
+										 } else if (item.reservations[0].last_name && !item.reservations[0].first_name) {
+											guestName = item.reservations[0].last_name + ", ";
+										 } else if (!item.reservations[0].last_name && item.reservations[0].first_name) {
+											guestName = ', ' +  item.reservations[0].first_name;
+										 }
+
+										 return guestName;
+					  				  })();
+					  
   					item.isMultipleReservation = false;
   				}
 			});
