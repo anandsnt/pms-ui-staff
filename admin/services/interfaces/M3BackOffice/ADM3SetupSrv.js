@@ -1,5 +1,5 @@
 admin.service('ADM3SetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
-	
+
 	/**
 	 * to get the letsahre configraton values
 	 * @return {undefined}
@@ -31,4 +31,8 @@ admin.service('ADM3SetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 		});
 		return deferred.promise;
 	};
+
+	this.sync = function(params) {
+		return ADBaseWebSrvV2.postJSON('/api/hotel_settings/m3accounting/sync', params);
+	}
 }]);

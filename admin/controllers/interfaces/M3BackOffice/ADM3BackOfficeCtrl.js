@@ -1,4 +1,6 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'ADM3SetupSrv', function($scope, m3AccountingSetupValues, ADM3SetupSrv) {
+admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'ADM3SetupSrv', '$filter',
+    function($scope, m3AccountingSetupValues, ADM3SetupSrv, $filter) {
+
     BaseCtrl.call(this, $scope);
 
     $scope.chosenSelectedReports = [],
@@ -149,6 +151,19 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
         $scope.m3Accounting.selected_reports = [];
         resetChosenReports();
     };
+
+    $scope.exportData = function() {
+      $scope.callAPI(ADM3SetupSrv.sync, {
+         params: {
+            from_date: $filter('date')($scope.m3Accounting.fromDate, 'yyyy-MM-dd'),
+            to_date: $filter('date')($scope.m3Accounting.toDate, 'yyyy-MM-dd')
+         },
+         onSuccess: function () {
+             $scope.errorMessage = '';
+             $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+         }
+       });
+    }
 
     /**
      * Initialization stuffs
