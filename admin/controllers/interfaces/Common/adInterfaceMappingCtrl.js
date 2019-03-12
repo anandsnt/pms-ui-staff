@@ -74,7 +74,6 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.mapping = fetchEmptyMapping();
                 }
             });
-            debugger
         };
 
         /*
