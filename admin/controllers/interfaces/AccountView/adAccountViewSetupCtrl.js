@@ -28,7 +28,11 @@ admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesSet
             $scope.callAPI(adInterfacesSetupSrv.updateSettings, {
                 params: {
                     settings: $scope.config,
-                    interface: $scope.interface.toLowerCase()
+                    integration: $scope.interface.toLowerCase()
+                },
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
                 }
             });
         };

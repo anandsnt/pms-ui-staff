@@ -5,17 +5,17 @@ admin.service('adInterfacesSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
          * @param {String} interfaceIdentifier unique string identifier for the interface
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to fetch the configuration
          */
-        this.getSettings = function(interfaceName) {
+        this.getSettings = function(integration) {
             let errorText = '',
                 deferred = $q.defer();
 
-            if (!interfaceName) {
+            if (!integration) {
                 errorText = 'MISSING PARAMETER: fetchConfigurations service expects interface identifier';
                 $log.error(errorText);
                 deferred.reject([errorText]);
             }
 
-            return ADBaseWebSrvV2.getJSON('ifc/' + interfaceName + '/settings');
+            return ADBaseWebSrvV2.getJSON('ifc/' + integration + '/settings');
         };
 
         this.synchronize = function(params) {
@@ -29,7 +29,7 @@ admin.service('adInterfacesSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
          * Should put all values to interface for update/create
          */
         this.updateSettings = function(params) {
-            return ADBaseWebSrvV2.putJSON('ifc/proxy/settings/update_all', params.settings);
+            return ADBaseWebSrvV2.putJSON('ifc/proxy/settings/update_all_by_integration', params);
         };
     }
 ]);
