@@ -5,7 +5,7 @@
 			{{errorMessage[0]}}
 	</span>
 	<span ng-switch-default>
-		<span ng-repeat="message in errorMessage['errors'] track by $index" >
+		<span ng-repeat="message in errorMessage track by $index" >
 			<span ng-if=!$last>{{message}}, </span>
 			<span ng-if=$last> {{message}} </span>
 		</span>
