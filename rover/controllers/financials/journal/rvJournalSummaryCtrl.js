@@ -1,5 +1,7 @@
 sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJournalSrv', '$timeout', function($scope, $rootScope, RVJournalSrv, $timeout) {
 	BaseCtrl.call(this, $scope);
+    var timeDelay = 800;
+
     $scope.errorMessage = "";
     $scope.perPage = 50;
 
@@ -7,7 +9,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
     var refreshSummaryScroller = function () {
         setTimeout(function() {
             $scope.refreshScroller('summary_content');
-        }, 500);
+        }, timeDelay);
     };
 
     $scope.addListener('REFRESHSUMMARYCONTENT', function () {
@@ -125,7 +127,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
            
             $timeout (function() {
                  $scope.$broadcast('updatePagination', balance_type);
-            }, 800);
+            }, timeDelay);
             $scope.$emit('hideLoader');
         };
 
