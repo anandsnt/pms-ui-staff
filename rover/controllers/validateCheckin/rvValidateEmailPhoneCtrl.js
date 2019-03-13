@@ -286,7 +286,9 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
 			var unwantedKeys = ["phone"]; // remove unwanted keys for API
 
-			$scope.saveData = dclone($scope.saveData, unwantedKeys);
+            $scope.saveData = dclone($scope.saveData, unwantedKeys);
+            // CICO-63407 - Exclude the update of the demographics in the service
+            $scope.saveData.ignoreDemographicsUpdate = true;
 			$scope.invokeApi(RVValidateCheckinSrv.saveGuestDataAndReservationDemographics, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
     /* 
