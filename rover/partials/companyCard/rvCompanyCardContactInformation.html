@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="entry commission" ng-show="contactInformation.commission_details.is_on">
+            <div class="entry commission" ng-show="contactInformation.commission_details.is_on && account_type == 'TRAVELAGENT'">
                 <label class="checkbox"
                        ng-class="{'checked': contactInformation.commission_details.is_global_commission}"
                        ng-show="contactInformation.is_global_enabled">
