@@ -74,7 +74,7 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.state.mode = 'LIST';
                     $scope.mapping = fetchEmptyMapping();
                 },
-                errorCallBack: function(response) {
+                failureCallBack: function(response) {
                     $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });
