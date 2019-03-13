@@ -1,6 +1,8 @@
 sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog, $timeout) {
 
     BaseCtrl.call(this, $scope);
+    var delay = 200;
+
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
@@ -45,6 +47,16 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         return params;
 
+    };
+    /*
+     * To close dialog box
+     */
+    $scope.closeDialog = function() {                
+
+        $rootScope.modalOpened = false;
+        $timeout(function() {
+            ngDialog.close();
+        }, delay);
     };
     /**
      * handles Generate toggle visibilty
@@ -155,12 +167,25 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         printRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedPrint(printRequest);
     };
+    
+    /*
+     * click action Continue button
+     * 
+     */
+    $scope.clickedContinueButtonPrintOrEmail = function() {
+        if ($scope.isClickedPrint) {
+            $scope.printBill();
+        } else {
+            $scope.sendEmail();
+        }
+    };
     /*
      * click action Print button
      * show proceed popup - if infrasec enabled
      */
     $scope.clickedPrintBill = function() {
         if ($scope.shouldGenerateFinalInvoice) {
+            $scope.isClickedPrint = true;
             $scope.isInvoiceStepThreeActive  = false;
         
             $timeout(function() {
@@ -170,17 +195,31 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.printBill();
         }
     };
-    
-    /*
-    *  Function which get invoked when the email btn from bill format popup is clicked
-    */
-    $scope.emailBill = function() {
+
+    $scope.sendEmail = function() {
         var emailRequest = getPrintEmailRequestParams();
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
         emailRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
+    };
+    
+    /*
+    *  Function which get invoked when the email btn from bill format popup is clicked
+    */
+    $scope.emailBill = function() {
+
+        if ($scope.shouldGenerateFinalInvoice) {
+            $scope.isClickedPrint = false;
+            $scope.isInvoiceStepThreeActive  = false;
+        
+            $timeout(function() {
+                $scope.isInvoiceStepFourActive = true;
+            }, 500);
+        } else {
+            $scope.sendEmail();            
+        }
     };
     /*
      * Clicked final invoice button - initial popup
@@ -197,11 +236,23 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      */
     $scope.clickedProceedButton = function() {
         $scope.isInvoiceStepTwoActive  = false;
+        $scope.isInvoiceStepFourActive  = false;
         
         $timeout(function() {
             $scope.isInvoiceStepThreeActive = true;
         }, 500);
     };
+    /*
+     * Clicked cancel button of proceed screen
+     */
+    $scope.clickedCancelButtonProceedScreen = function() {
+        $scope.isInvoiceStepTwoActive  = false;
+        
+        $timeout(function() {
+            $scope.isInvoiceStepOneActive = true;
+        }, 500);
+    };
+    
     /*
      * Once print done show the popup of success message
      */

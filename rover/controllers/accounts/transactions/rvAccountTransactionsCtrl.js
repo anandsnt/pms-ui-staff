@@ -897,7 +897,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					// Handle mail Sent Success
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
-					$scope.showEmailSentStatusPopup();
+					
+					if ($scope.shouldGenerateFinalInvoice) {
+						$scope.$broadcast("UPDATE_WINDOW");
+					} else {
+						$scope.showEmailSentStatusPopup();
+					}
 					$scope.switchTabTo('TRANSACTIONS');
 				},
 				mailFailed = function(errorMessage) {
@@ -905,6 +910,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$scope.status = "alert";
 					$scope.showEmailSentStatusPopup();
 				};
+
+			if ($scope.shouldGenerateFinalInvoice) {
+				params.is_final_invoice = true;
+			}
 
 			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 				successCallBack: mailSent,
@@ -914,7 +923,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedEmail = function(requestParams) {
-			$scope.closeDialog();
 			$scope.sendEmail(requestParams);
 		};
 
@@ -931,6 +939,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} else {
 				$scope.closeDialog();
 			}
+			$scope.switchTabTo('TRANSACTIONS');
         };
 
 		var printBillCard = function(requestParams) {
@@ -994,6 +1003,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 			};
+
+			if ($scope.shouldGenerateFinalInvoice) {
+				requestParams.is_final_invoice = true;
+			}
 
 			$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
 		};
@@ -1230,7 +1243,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.isInformationalInvoice = false;
 			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.reservationBillData = $scope.transactionsDetails;
-
 			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.transactionsDetails.is_bill_lock_enabled && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
 				$scope.isInvoiceStepOneActive = true;
 				$scope.isInvoiceStepThreeActive = false;
