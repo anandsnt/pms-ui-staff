@@ -260,20 +260,19 @@ angular.module('sntRover').controller('rvGuestDetailsController',
         $scope.$on('$destroy', resetHeaderDataListener);        
 
         var init = function () {
+
             $scope.viewState = {
                 isAddNewCard: !$stateParams.guestId
             };
 
             $scope.isGuestCardFromMenu = true;
             $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
-
             if (!$stateParams.guestId) {
                 $scope.guestCardData = {};
                 $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();
             } else {
                 $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             }
-
             $scope.countries = countries;
             $scope.idTypeList = idTypesList;
 

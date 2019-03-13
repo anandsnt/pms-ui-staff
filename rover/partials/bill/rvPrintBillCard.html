@@ -242,6 +242,7 @@
         <tr>
             <td class="text-align-left" >{{printData.translation.total}}</td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
+
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_gross_amount !== null">
                     {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_gross_amount}}
                 </div>

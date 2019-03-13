@@ -188,6 +188,10 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.upsellDisplayOrderAmountFirst =  (reservationAndhotelData.addon_upsell_display_order === 'amount_then_post_type'); 
 
 		$rootScope.sellLcoAsAddons = reservationAndhotelData.is_sell_late_checkout_as_addon;
+		$rootScope.eligibleToCheckin = reservationAndhotelData.eligible_for_checkin;
+		if (!$rootScope.eligibleToCheckin) {
+			$rootScope.inEligibilityReason = reservationAndhotelData.ineligibility_reason;
+		}
 		
 		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count

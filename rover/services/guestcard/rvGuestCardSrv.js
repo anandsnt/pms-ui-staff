@@ -3,7 +3,6 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
     'rvBaseWebSrvV2',
     function ($q, RVBaseWebSrvV2) {
 
-
         var guestFieldData = {};
 
         this.PER_PAGE_COUNT = 50;
@@ -30,6 +29,13 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+        /*
+         * CICO-63251
+         * @return object
+         */
+        this.setGuestFields = function() {
+            return guestFieldData;
         };
 
         /*
