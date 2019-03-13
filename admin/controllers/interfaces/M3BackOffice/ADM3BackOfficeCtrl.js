@@ -163,7 +163,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
              $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
          }
        });
-    }
+    };
 
     /**
      * Initialization stuffs

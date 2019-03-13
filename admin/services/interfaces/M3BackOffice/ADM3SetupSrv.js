@@ -34,5 +34,5 @@ admin.service('ADM3SetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, 
 
 	this.sync = function(params) {
 		return ADBaseWebSrvV2.postJSON('/api/hotel_settings/m3accounting/sync', params);
-	}
+	};
 }]);
