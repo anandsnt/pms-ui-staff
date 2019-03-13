@@ -129,6 +129,11 @@
 				dateToSend = ($filter('date')(dateToSend, 'MM-dd-yyyy'));
 				$scope.closeCalender();
 			};
+			if ($state.href("unableToCheckn") !== null && !$rootScope.eligibleToCheckin) {
+				$state.go('unableToCheckn', {
+					'reason': $rootScope.inEligibilityReason
+				});
+			}
 		}
 	};
 
