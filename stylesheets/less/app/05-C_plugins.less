@@ -604,6 +604,41 @@
                     .message { margin-bottom: 10px; }
                     .text { text-transform: none; margin-bottom: 30px; }
                 }
+
+                &.diary-times {
+                    width: 380px;
+                    padding-bottom: 20px;
+
+                    .message { margin-bottom: 10px; }
+
+                    .text { 
+                        text-transform: none; 
+                    }
+
+                    label {
+                        margin-bottom: 0;
+                    }
+
+                    .fields {
+                        .float();
+                    }
+
+                    .entry {
+                        margin-bottom: 20px;
+                        .calc-width(50, 5);
+
+                        &.margin {
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .actions {
+                        margin-top: 0;
+                        text-align: center;
+                        padding-top: 19px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                    }
+                }
             }
 
             /* Confirmation modal window ***/
