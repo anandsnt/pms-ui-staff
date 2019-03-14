@@ -538,7 +538,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Future Reservations': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Synxis - Reservations': true
             };
 
             if ( forHourly[item.report.title] ) {

@@ -351,9 +351,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.$on('FINAL_RESULTS', function(evt, data) {
 			$scope.$emit('hideLoader');
-			if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-				idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
-			} else if (data.expirationStatus === 'Expired') {
+			// Commented below code to avoid failures w/o expiry date
+			// if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+			// 	idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
+			// } 
+			if (data.expirationStatus === 'Expired') {
 				idScanFailureActions('ID IS EXPIRED. PLEASE RETRY OR USE ANOTHER ID.');
 			} else if (!data.document_number) {
 				idScanFailureActions('FAILED TO ANALYZE THE DOCUMENT. PLEASE RETRY OR USE ANOTHER ID.');

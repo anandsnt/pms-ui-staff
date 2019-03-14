@@ -18,7 +18,7 @@
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.value"
                       ng-show="mapping.typeof==='cancellation_policies'"
-                      valueproperty="name"
+                      valueproperty="id"
                       required="yes"
                       label-properties="['name', 'description']"
                       label-in-drop-down="Select Value"
@@ -31,7 +31,7 @@
                       ng-show="mapping.typeof==='tax_codes'"
                       valueproperty="id"
                       required="yes"
-                      label-properties="['id', 'code']"
+                      label-properties="['code', 'description']"
                       label-in-drop-down="Select Value"
                       list="state.meta.TAX_CHARGE_CODES.charge_codes"
                       label="{{'SNT_VALUE'| translate}}"
@@ -47,7 +47,7 @@
                     label-properties="['code', 'description']"
                     label-in-drop-down="Select DerbySoft Value"
                     list="state.meta.CANCELLATION_CODES"
-                    label="{{'DerbySoft Value'| translate}}"
+                    label="{{'EXTERNAL_VALUE'| translate}}"
                     skip-number-conversion="true"
                     div-class="full-width">
   </ad-dropdown-name>
@@ -58,7 +58,7 @@
                     label-properties="['code', 'description']"
                     label-in-drop-down="Select DerbySoft Value"
                     list="state.meta.TAX_CODES"
-                    label="{{'DerbySoft Value'| translate}}"
+                    label="{{'EXTERNAL_VALUE'| translate}}"
                     skip-number-conversion="true"
                     div-class="full-width">
   </ad-dropdown-name>
