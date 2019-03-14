@@ -467,7 +467,10 @@ sntRover.controller('RVbillCardController',
 		}
 
 		width = 133 * $scope.reservationBillData.bills.length + width + 160;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d052ab... CICO-62020: Code factor issues
 		return width;
 	};
 
