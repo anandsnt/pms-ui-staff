@@ -3110,7 +3110,14 @@ sntRover.controller('RVbillCardController',
     	$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
     	$scope.isEmailedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once;
     	$scope.isPrintedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once;
-    	$scope.isFolioNumberExists = $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists;
+    	$scope.isFolioNumberExists = $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists;  	
+    	$scope.isInvoiceStepOneActive = false;
+		$scope.isInvoiceStepThreeActive = true;
+		$scope.shouldGenerateFinalInvoice = false;
+		$scope.isInvoiceStepTwoActive  = false;
+		$scope.isInvoiceStepFourActive  = false;
+		$scope.isInvoiceStepFiveActive  = false;
+
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
     		controller: 'rvBillFormatPopupCtrl',
