@@ -532,7 +532,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Belgium Natioality Export': true
+                'Belgium Nationality Export': true
             };
 
             var forHourly = {
