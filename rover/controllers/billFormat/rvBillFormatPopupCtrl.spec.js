@@ -3,17 +3,11 @@ describe('rvBillFormatPopupCtrl', function () {
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('groupConfigSampleData.json'),
         groupConfigSampleData = fixtures['groupConfigSampleData.json'];
-        // fixtures = loadJSONFixtures('reservationSampleData.json'),
-        // reservationSampleData = fixtures['reservationSampleData.json'],
-        // reservationBillSampleDataFixtures = loadJSONFixtures('reservationBillSampleData.json'),
-        // reservationBillSampleData = reservationBillSampleDataFixtures['reservationBillSampleData.json']; 
 
     var $controller,
         $timeout,
         $scope,
-        $q,
         $rootScope,
-        RVBillCardSrv,
         rvBillFormatPopupCtrl;
 
         describe('Bill print or email', function () {
@@ -21,10 +15,8 @@ describe('rvBillFormatPopupCtrl', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _$q_, _$rootScope_, _RVBillCardSrv_, _$timeout_) {
-                    $controller = _$controller_;
-                    RVBillCardSrv = _RVBillCardSrv_;
-                    $q = _$q_;
+                inject(function (_$controller_, _$rootScope_, _$timeout_) {
+                    $controller = _$controller_;                    
                     $rootScope = _$rootScope_;
                     $timeout = _$timeout_;
 
@@ -36,7 +28,6 @@ describe('rvBillFormatPopupCtrl', function () {
 
                 rvBillFormatPopupCtrl = $controller('rvBillFormatPopupCtrl', {
                     $scope: $scope
-                    // reservationBillData: reservationBillSampleData
                 });
 
                 angular.extend($scope, {

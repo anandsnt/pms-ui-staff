@@ -1435,11 +1435,5 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
-
-		// var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
-		// 	$scope.shouldGenerateFolioNumber = true;
-		// });
-
-		// $scope.$on( '$destroy', updateGenerateFolioFlag );
 	}
 ]);
