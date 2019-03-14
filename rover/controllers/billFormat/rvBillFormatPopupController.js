@@ -1,8 +1,10 @@
 sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog, $timeout) {
 
-    BaseCtrl.call(this, $scope);
-    var delay = 200;
+    
+    var delay = 200,
+        delayScreen = 500;
 
+    BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
@@ -48,6 +50,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         return params;
 
     };
+
     /*
      * To close dialog box
      */
@@ -186,11 +189,11 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.clickedPrintBill = function() {
         if ($scope.shouldGenerateFinalInvoice) {
             $scope.isClickedPrint = true;
-            $scope.isInvoiceStepThreeActive  = false;
+            $scope.isInvoiceStepThreeActive = false;
         
             $timeout(function() {
                 $scope.isInvoiceStepFourActive = true;
-            }, 500);
+            }, delayScreen);
         } else {
             $scope.printBill();
         }
@@ -212,11 +215,11 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         if ($scope.shouldGenerateFinalInvoice) {
             $scope.isClickedPrint = false;
-            $scope.isInvoiceStepThreeActive  = false;
+            $scope.isInvoiceStepThreeActive = false;
         
             $timeout(function() {
                 $scope.isInvoiceStepFourActive = true;
-            }, 500);
+            }, delayScreen);
         } else {
             $scope.sendEmail();            
         }
@@ -228,40 +231,40 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $scope.isInvoiceStepOneActive = false;
         $timeout(function() {
             $scope.isInvoiceStepTwoActive  = true;
-        }, 500);
+        }, delayScreen);
         
     };
     /*
      * Clicked Proceed button
      */
     $scope.clickedProceedButton = function() {
-        $scope.isInvoiceStepTwoActive  = false;
-        $scope.isInvoiceStepFourActive  = false;
+        $scope.isInvoiceStepTwoActive = false;
+        $scope.isInvoiceStepFourActive = false;
         
         $timeout(function() {
             $scope.isInvoiceStepThreeActive = true;
-        }, 500);
+        }, delayScreen);
     };
     /*
      * Clicked cancel button of proceed screen
      */
     $scope.clickedCancelButtonProceedScreen = function() {
-        $scope.isInvoiceStepTwoActive  = false;
+        $scope.isInvoiceStepTwoActive = false;
         
         $timeout(function() {
             $scope.isInvoiceStepOneActive = true;
-        }, 500);
+        }, delayScreen);
     };
     
     /*
      * Once print done show the popup of success message
      */
     var updateWindow = $scope.$on("UPDATE_WINDOW", function() {
-        $scope.isInvoiceStepFourActive  = false;
+        $scope.isInvoiceStepFourActive = false;
 
         $timeout(function() {
             $scope.isInvoiceStepFiveActive = true;
-        }, 500);
+        }, delayScreen);
     });
 
     /*

@@ -1243,7 +1243,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.isInformationalInvoice = false;
 			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.reservationBillData = $scope.transactionsDetails;
-			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.transactionsDetails.is_bill_lock_enabled && $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
+			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" 
+				&& $scope.transactionsDetails.is_bill_lock_enabled 
+				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
 				$scope.isInvoiceStepOneActive = true;
 				$scope.isInvoiceStepThreeActive = false;
 				$scope.shouldGenerateFinalInvoice = true;
@@ -1252,9 +1254,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.isInvoiceStepThreeActive = true;
 				$scope.shouldGenerateFinalInvoice = false;
 			}
-			$scope.isInvoiceStepTwoActive  = false;
-			$scope.isInvoiceStepFourActive  = false;
-			$scope.isInvoiceStepFiveActive  = false;
+			$scope.isInvoiceStepTwoActive = false;
+			$scope.isInvoiceStepFourActive = false;
+			$scope.isInvoiceStepFiveActive = false;
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',
