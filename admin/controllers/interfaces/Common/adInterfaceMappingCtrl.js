@@ -11,7 +11,8 @@ admin.controller('adInterfaceMappingCtrl', [
         };
 
         var mappingPartials = {
-            'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html'
+            'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
+            'HOGIA': '/assets/partials/interfaces/common/mapping.html'
         };
 
         $scope.state = {
@@ -72,6 +73,9 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.reloadTable();
                     $scope.state.mode = 'LIST';
                     $scope.mapping = fetchEmptyMapping();
+                },
+                failureCallBack: function(response) {
+                    $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });
         };
