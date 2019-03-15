@@ -13,7 +13,7 @@
 
         <form ng-show="state.mode=='ADD'"
               class="form float"
-              ng-include="'/assets/partials/interfaces/Common/mapping.html'">
+              ng-include src="fetchMappingPartial()">
         </form>
 
         <section ng-show="state.mode !=='ADD'">
@@ -39,7 +39,7 @@
                         <a class="icons icon-delete large-icon" ng-click="onClickDelete(mappingRow)"></a>
                     </td>
                     <td colspan="4" ng-show="mappingRow.editing"
-                        ng-include="'/assets/partials/interfaces/Common/mapping.html'"></td>
+                        ng-include="fetchMappingPartial()"></td>
                 </tr>
                 </tbody>
             </table>
