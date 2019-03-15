@@ -90,7 +90,7 @@ angular.module('sntRover')
         $scope.clickedDatePicker = function() {
             ngDialog.open({
                 template: '/assets/partials/nightlyDiary/rvNightlyDiaryDatePicker.html',
-                controller: 'RVNightlyDiaryDatePickerController',
+                controller: 'RVNightlyDiaryTopFilterDatePickerController',
                 className: 'single-date-picker',
                 scope: $scope
             });
@@ -108,6 +108,7 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
             isDateChangedFromInitialState = true;
+            $scope.diaryData.arrivalDate = $scope.diaryData.fromDate;
         });
         // Catching event from main controller, when API is completed.
         $scope.addListener('FETCH_COMPLETED_DATE_LIST_DATA', function() {

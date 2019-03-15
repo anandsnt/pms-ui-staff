@@ -86,24 +86,19 @@ angular
 
                 if ($stateParams.origin === 'STAYCARD') {
                     cacheData = RVNightlyDiarySrv.getCache();
-
-                    params.start_date = cacheData.start_date;
-                    params.no_of_days = cacheData.no_of_days;
-                    params.businessDate = $rootScope.businessDate;
+                    params.date = cacheData.start_date;
                 }
                 else {
                     if (!!$stateParams.start_date) {
-                        params.start_date = $stateParams.start_date;
+                        params.date = $stateParams.start_date;
                     }
                     else {
-                        params.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                        params.date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                             .format($rootScope.momentFormatForAPI);
                     }
-                    params.no_of_days = 7;
-                    params.businessDate = $rootScope.businessDate;
                 }
                 
-                return RVNightlyDiarySrv.fetchUnassignedRoomList(params);
+                return RVNightlyDiarySrv.fetchUnassignedReservationList(params);
             }
         },
         lazyLoad: function($transition$) {

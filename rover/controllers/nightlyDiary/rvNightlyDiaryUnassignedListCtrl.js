@@ -102,8 +102,57 @@ angular.module('sntRover')
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         });
 
+        // Method to fetch Unassigned reservations list.
+        var fetchUnassignedReservationList = function () {
+            var successCallBackFetchList = function (data) {
+                $scope.errorMessage = '';
+                $scope.diaryData.unassignedReservationList = data;
+            },
+            postData = {
+                'date': $scope.diaryData.arrivalDate
+            },
+            options = {
+                params: postData,
+                successCallBack: successCallBackFetchList
+            };
+
+            $scope.callAPI(RVNightlyDiarySrv.fetchUnassignedReservationList, options);
+        };
+
         $scope.addListener('RESET_UNASSIGNED_LIST_SELECTION', function() {
-             $scope.selectedItem = {};
+            $scope.selectedItem = {};
         });
+
+        $scope.addListener('FETCH_UNASSIGNED_LIST_DATA', function() {
+            fetchUnassignedReservationList();
+        });
+
+        $scope.addListener('UNASSIGNED_LIST_DATE_CHANGED', function() {
+            fetchUnassignedReservationList();
+        });
+
+        // Show calendar popup.
+        $scope.clickedDatePicker = function() {
+            ngDialog.open({
+                template: '/assets/partials/nightlyDiary/rvNightlyDiaryDatePicker.html',
+                controller: 'RVNightlyDiaryUnassignedListDatePickerController',
+                className: 'single-date-picker',
+                scope: $scope
+            });
+        };
+
+        // To handle click on left date shift.
+        $scope.clickedDateLeftShift = function() {
+            $scope.diaryData.arrivalDate = moment(tzIndependentDate($scope.diaryData.arrivalDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+            fetchUnassignedReservationList();
+        };
+
+        // To handle click on right date shift.
+        $scope.clickedDateRightShift = function() {
+            $scope.diaryData.arrivalDate = moment(tzIndependentDate($scope.diaryData.arrivalDate)).add(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+            fetchUnassignedReservationList();
+        };
 
 }]);

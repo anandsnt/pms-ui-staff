@@ -71,6 +71,7 @@ angular.module('sntRover')
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
                         fromDate: srvParams.start_date,
+                        arrivalDate: srvParams.start_date,
                         toDate: '',
                         paginationData: {
                             perPage: 50,
@@ -178,25 +179,6 @@ angular.module('sntRover')
                     };
 
                     $scope.callAPI(RVNightlyDiarySrv.fetchRoomsListAndReservationList, options);
-                };
-
-                // Method to fetch Unassigned reservations list.
-                var fetchUnassignedReservationList = function () {
-                    var successCallBackFetchList = function (data) {
-                        $scope.errorMessage = '';
-                        $scope.diaryData.unassignedReservationList = data;
-                    },
-                    postData = {
-                        'start_date': $scope.diaryData.fromDate,
-                        'no_of_days': $scope.diaryData.numberOfDays,
-                        'businessDate': $rootScope.businessDate
-                    },
-                    options = {
-                        params: postData,
-                        successCallBack: successCallBackFetchList
-                    };
-
-                    $scope.callAPI(RVNightlyDiarySrv.fetchUnassignedRoomList, options);
                 };
 
                 /*
@@ -523,7 +505,7 @@ angular.module('sntRover')
 
                 $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
                     resetUnassignedList();
-                    fetchUnassignedReservationList();
+                    $scope.$broadcast('FETCH_UNASSIGNED_LIST_DATA');
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
 
