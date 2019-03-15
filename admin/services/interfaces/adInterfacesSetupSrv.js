@@ -6,7 +6,7 @@ admin.service('adInterfacesSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to fetch the configuration
          */
         this.getSettings = function(integration) {
-            let errorText = '',
+            var errorText = '',
                 deferred = $q.defer();
 
             if (!integration) {
