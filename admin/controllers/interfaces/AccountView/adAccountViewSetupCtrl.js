@@ -1,5 +1,5 @@
-admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesSetupSrv',
-    function($scope, config, adInterfacesSetupSrv) {
+admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesCommonConfigSrv',
+    function($scope, config, adInterfacesCommonConfigSrv) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'ACCOUNTVIEW';
@@ -25,14 +25,10 @@ admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesSet
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesSetupSrv.updateSettings, {
+            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
-                    settings: $scope.config,
-                    integration: $scope.interface.toLowerCase()
-                },
-                onSuccess: function() {
-                    $scope.errorMessage = '';
-                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                    config: $scope.config,
+                    interfaceIdentifier: $scope.interface
                 }
             });
         };

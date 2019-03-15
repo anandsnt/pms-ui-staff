@@ -248,10 +248,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.accountViewSetup', {
         templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
         controller: 'adAccountViewSetupCtrl',
-        url: '/accountview/setup',
+        url: '/revinate/setup',
         resolve: {
-            config: ['adInterfacesSetupSrv', function(adInterfacesSetupSrv) {
-                return adInterfacesSetupSrv.getSettings('accountview');
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('accountview');
             }]
         }
     });

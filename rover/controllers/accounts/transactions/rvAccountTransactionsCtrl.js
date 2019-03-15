@@ -355,7 +355,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @return undefined
 		 */
 		var onTransactionFetchSuccess = function(data, moveChargeData) {
-
 			$scope.hasPrintFolioEnabled = data.is_print_folio_enabled;
 			$scope.transactionsDetails = data;
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
@@ -445,11 +444,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 *
 		 */
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
-				
+
+			$scope.shouldGenerateFolioNumber = true;	
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
-			if ($scope.isFromPaymentScreen) {
-				$scope.shouldGenerateFolioNumber = true;
-			}
 			getTransactionDetails();
 		});
 
@@ -897,12 +894,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					// Handle mail Sent Success
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
-					
-					if ($scope.shouldGenerateFinalInvoice) {
-						$scope.$broadcast("UPDATE_WINDOW");
-					} else {
-						$scope.showEmailSentStatusPopup();
-					}
+					$scope.showEmailSentStatusPopup();
 					$scope.switchTabTo('TRANSACTIONS');
 				},
 				mailFailed = function(errorMessage) {
@@ -910,10 +902,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$scope.status = "alert";
 					$scope.showEmailSentStatusPopup();
 				};
-
-			if ($scope.shouldGenerateFinalInvoice) {
-				params.is_final_invoice = true;
-			}
 
 			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 				successCallBack: mailSent,
@@ -923,10 +911,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.clickedEmail = function(requestParams) {
+			$scope.closeDialog();
 			$scope.sendEmail(requestParams);
 		};
 
 		$scope.clickedPrint = function(requestParams) {
+			$scope.closeDialog();
 			printBillCard(requestParams);
 		};
 
@@ -934,11 +924,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
-			if ($scope.shouldGenerateFinalInvoice) {
-				$scope.$broadcast("UPDATE_WINDOW");
-			} else {
-				$scope.closeDialog();
-			}
 			$scope.switchTabTo('TRANSACTIONS');
         };
 
@@ -1003,10 +988,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 			};
-
-			if ($scope.shouldGenerateFinalInvoice) {
-				requestParams.is_final_invoice = true;
-			}
 
 			$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
 		};
@@ -1241,22 +1222,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNo = billNo;
 			$scope.isSettledBill = isActiveBill;
 			$scope.isInformationalInvoice = false;
-			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
-			$scope.reservationBillData = $scope.transactionsDetails;
-			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" 
-				&& $scope.transactionsDetails.is_bill_lock_enabled 
-				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
-				$scope.isInvoiceStepOneActive = true;
-				$scope.isInvoiceStepThreeActive = false;
-				$scope.shouldGenerateFinalInvoice = true;
-			} else {
-				$scope.isInvoiceStepOneActive = false;
-				$scope.isInvoiceStepThreeActive = true;
-				$scope.shouldGenerateFinalInvoice = false;
-			}
-			$scope.isInvoiceStepTwoActive = false;
-			$scope.isInvoiceStepFourActive = false;
-			$scope.isInvoiceStepFiveActive = false;
+			$scope.isEmailedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_emailed_once;
+	    	$scope.isPrintedOnce = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_printed_once;
+	    	$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
+	    	$scope.reservationBillData = $scope.transactionsDetails;
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',
@@ -1437,5 +1406,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
+
+		var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
+			$scope.shouldGenerateFolioNumber = true;
+		});
+
+		$scope.$on( '$destroy', updateGenerateFolioFlag );
 	}
 ]);
