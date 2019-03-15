@@ -137,17 +137,8 @@
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_credits}}
                     </div>
                 </td>
-            </tr>            
-            <tr>
-                <td></td>
-                <td></td>
-                <td ><strong>{{printData.translation.net_amount}}</strong></td>
-                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
-                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_net_amount !== null">
-                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_net_amount}}
-                    </div>
-                </td>
             </tr>
+
             <tr>
                 <td></td>
                 <td></td>
@@ -155,6 +146,16 @@
                 <td><strong>{{currencySymbol}}{{printData.balance}} </strong>
                     <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_balance !== null">
                         {{invoiceCurrencySymbol}}{{printData.invoice_currency_balance}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td ><strong>{{printData.translation.net_amount}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong>
+                    <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.invoice_currency_net_amount !== null">
+                        {{invoiceCurrencySymbol}}{{printData.invoice_currency_net_amount}}
                     </div>
                 </td>
             </tr>
