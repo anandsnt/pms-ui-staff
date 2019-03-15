@@ -206,6 +206,15 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 		};
 
+		$scope.clickedCreateArAccountButton = function() {
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyCardMandatoryFieldsPopup.html',
+				className: 'ngdialog-theme-default1 calendar-single1',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
 
 		$scope.showARTab = function() {
 
