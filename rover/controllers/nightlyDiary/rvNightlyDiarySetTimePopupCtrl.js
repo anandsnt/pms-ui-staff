@@ -1,10 +1,13 @@
 sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope) {
 
-    console.log($scope.setTimePopupData);
-
     // Handle save and continue button click actions.
     $scope.saveAndContinueClicked = function() {
-        // $scope.$emit('SAVE_RESERVATION_EDITING');
+        var timeObj = {
+            arrival_time: $scope.setTimePopupData.selectedArrivalTime,
+            departure_time: $scope.setTimePopupData.selectedDepartureTime
+        };
+
+        $scope.$emit('SET_TIME_AND_SAVE', timeObj);
     };
 
     var generateTimeDuration = function(minArrivalTime, maxDepartureTime) {
@@ -31,8 +34,8 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         for (var i = 0; startTime < endTime; i++) {
           hh = Math.floor(startTime / 60); // getting hours of day in 0-24 format
           mm = (startTime % 60); // getting minutes of the hour in 0-55 format
-          twelveHrFormat = ("0" + (hh % 12)).slice(-2) + ':' + ("0" + mm).slice(-2) + " " + ap[Math.floor(hh / 12)]; // data in [00:00 - 12:00 AM/PM format]
-          twentyFourHrFormat = ("0" + (hh)).slice(-2) + ':' + ("0" + mm).slice(-2); // data in [00:00 - 24:00 format]
+          twelveHrFormat = (("0" + hh %12).slice(-2) === '00' ? '12' : ("0" + hh %12).slice(-2)) + ':' + ("0" + mm).slice(-2) + " " + ap[Math.floor(hh / 12)]; // data in [12:00 AM- 12:00 PM format]
+          twentyFourHrFormat = ("0" + hh).slice(-2) + ':' + ("0" + mm).slice(-2); // data in [00:00 - 24:00 format]
           obj = {
             "12": twelveHrFormat,
             "24": twentyFourHrFormat
@@ -40,8 +43,14 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
           times.push(obj);
           startTime = startTime + timeInterval;
         }
-
-        console.log(times);
+        return times;
     };
+
+    if ($scope.setTimePopupData.type === 'ASSIGN') {
+        $scope.setTimePopupData.selectedDepartureTime = '';
+        $scope.setTimePopupData.selectedArrivalTime = '';
+        $scope.setTimePopupData.arrivalTimeList = generateTimeDuration($scope.setTimePopupData.data.min_arrival_time, null);
+        $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
+    }
 
 }]);

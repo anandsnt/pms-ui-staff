@@ -5,7 +5,8 @@
 
 	    <span class="icons icon-popup-alert"></span>
 	    <span class="h2 message">Day use reservation occupies this room.</span>
-	    <em class="text">Pick arrival/departure times for {'new' or 'this'} reservation.</em>
+	    <em class="text" ng-if="setTimePopupData.type === 'ASSIGN'">Pick arrival/departure times for this reservation.</em>
+	    <em class="text" ng-if="setTimePopupData.type === 'BOOK'">Pick arrival/departure times for new reservation.</em>
 
 	    <div class="fields">
 	        
@@ -22,28 +23,26 @@
 	        <div class="entry margin">
 	            <label for="arrival">Arrival Time</label>
 	            <div class="select">
-	                <select id="arrival" class="placeholder"> <!-- Remove class 'placeholder' when option is selected -->
+	                <select id="arrival" ng-class="{'placeholder': setTimePopupData.selectedArrivalTime === ''}" ng-model="setTimePopupData.selectedArrivalTime"> <!-- Remove class 'placeholder' when option is selected -->
 	                    <option value="" selected>Set Arrival Time</option>
-	                    <option value="{HH:MM AM or PM}">{HH:MM AM or PM}</option> <!-- Show only available time slots here with 30 minute intervals. So 1:00 PM, 1:30 PM, 2:00 PM etc. No 15 or 45 min mark -->
-	                    ... repeat L26 for every Arrival Time option
+	                    <option ng-repeat="time in setTimePopupData.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
 	                </select>
 	            </div>
 	        </div>
 
 	        <div class="entry">
-	            <label for="departure">Departure Time </label>
+	            <label for="departure">Departure Time</label>
 	            <div class="select">
-	                <select id="arrival" class="placeholder"> <!-- Remove class 'placeholder' when option is selected -->
+	                <select id="arrival" ng-class="{'placeholder': setTimePopupData.selectedDepartureTime === ''}" ng-model="setTimePopupData.selectedDepartureTime">
 	                    <option value="" selected>Set Departure Time</option>
-	                    <option value="{HH:MM AM or PM}">{HH:MM AM or PM}</option> <!-- Show only available time slots here with 30 minute intervals. So 1:00 PM, 1:30 PM, 2:00 PM etc. No 15 or 45 min mark -->
-	                    ... repeat L37 for every Departure Time option
+	                    <option ng-repeat="time in setTimePopupData.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
 	                </select>
 	            </div>
 	        </div>
 	    </div>
 
 	    <div class="actions">
-	        <button type="button" class="button green" ng-click="saveAndContinueClicked()">Save & Continue</button>
+	        <button type="button" class="button green" ng-class="{'overlay': setTimePopupData.selectedArrivalTime === '' || setTimePopupData.selectedDepartureTime === ''}" ng-click="saveAndContinueClicked()">Save & Continue</button>
 	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
 	    </div>
 	</div>
