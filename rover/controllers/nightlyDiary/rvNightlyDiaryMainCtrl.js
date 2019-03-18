@@ -281,7 +281,9 @@ angular.module('sntRover')
                         "room_number": roomDetails.room_number,
                         "without_rate_change": true,
                         "is_preassigned": false,
-                        "forcefully_assign_room": false
+                        "forcefully_assign_room": false,
+                        "arrival_time": '',
+                        "departure_time": ''
                     },
                     options = {
                         params: postData,
@@ -291,6 +293,46 @@ angular.module('sntRover')
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
+                var showDiarySetTimePopup = function(roomDetails, reservationDetails, type) {
+
+                    var params = {
+                        reservation_id: reservationDetails.reservationId,      
+                        room_id: roomDetails.room_id,
+                        start_date: reservationDetails.fromDate,
+                        no_of_days: reservationDetails.nights
+                    };
+
+                    $scope.setTimePopupData = {
+                        showPopup: true,
+                        type: type,
+                        noOfNights: 5,
+                        data: {
+                           'availability_exist_without_overlapping': true,
+                           'min_arrival_time': '10:00',
+                           'max_departure_time': '23:00',
+
+                           'default_checkout_time': '22:15',
+                           'available_dates': [
+                                 "2017-05-21", "2017-05-22", "2017-05-23", "2017-05-24", "2017-05-25", "2017-05-26"
+                            ]
+                        }
+                    };
+
+                    if ($scope.setTimePopupData.showPopup) {
+                        ngDialog.open({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiarySetTimePopup.html',
+                            scope: $scope,
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: false,
+                            controller: 'rvNightlyDiarySetTimePopupCtrl'
+                        });
+                    }
+                    else {
+                        callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, type);
+                    }
+                };
+
                 /*
                  *  Handle ASSIGN button click.
                  *  @param {object} [roomDetails - Current selected room details]
@@ -298,7 +340,8 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedAssignRoom = (roomDetails, reservationDetails) => {
-                    callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'ASSIGN');
+                    showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                    // callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'ASSIGN');
                 };
 
                 /*

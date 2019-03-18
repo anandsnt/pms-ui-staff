@@ -1,0 +1,51 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+
+	<div class="modal-content form alert diary-times">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+	    <span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">Day use reservation occupies this room.</span>
+	    <em class="text">Pick arrival/departure times for {'new' or 'this'} reservation.</em>
+
+	    <div class="fields">
+	        
+	        <div class="entry margin hidden">
+	            <label for="nights">No. of Nights</label>
+	            <div class="select">
+	                <select id="nights">
+	                    <option value="1" selected>1</option>
+	                    ... repeat L15 for up to 19
+	                </select>
+	            </div>
+	        </div>
+
+	        <div class="entry margin">
+	            <label for="arrival">Arrival Time</label>
+	            <div class="select">
+	                <select id="arrival" class="placeholder"> <!-- Remove class 'placeholder' when option is selected -->
+	                    <option value="" selected>Set Arrival Time</option>
+	                    <option value="{HH:MM AM or PM}">{HH:MM AM or PM}</option> <!-- Show only available time slots here with 30 minute intervals. So 1:00 PM, 1:30 PM, 2:00 PM etc. No 15 or 45 min mark -->
+	                    ... repeat L26 for every Arrival Time option
+	                </select>
+	            </div>
+	        </div>
+
+	        <div class="entry">
+	            <label for="departure">Departure Time </label>
+	            <div class="select">
+	                <select id="arrival" class="placeholder"> <!-- Remove class 'placeholder' when option is selected -->
+	                    <option value="" selected>Set Departure Time</option>
+	                    <option value="{HH:MM AM or PM}">{HH:MM AM or PM}</option> <!-- Show only available time slots here with 30 minute intervals. So 1:00 PM, 1:30 PM, 2:00 PM etc. No 15 or 45 min mark -->
+	                    ... repeat L37 for every Departure Time option
+	                </select>
+	            </div>
+	        </div>
+	    </div>
+
+	    <div class="actions">
+	        <button type="button" class="button green" ng-click="saveAndContinueClicked()">Save & Continue</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</div>
+
+</div>	
