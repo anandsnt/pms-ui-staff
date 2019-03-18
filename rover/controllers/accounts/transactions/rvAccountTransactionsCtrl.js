@@ -897,7 +897,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$scope.showEmailSentStatusPopup();
 				};
 
-			if ($scope.shouldGenerateFinalInvoice) {
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				params.is_final_invoice = true;
 			}
 
@@ -937,7 +937,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					copyCount = "",
 					timeDelay = 700;
 
-				if ($scope.isInformationalInvoice) {
+				if ($scope.billFormat.isInformationalInvoice) {
 					responseData.invoiceLabel = responseData.translation.information_invoice;
 				}
 				else if (responseData.no_of_original_invoices === null) {
@@ -1213,7 +1213,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * Based on checkbox in popup
 		 */
 		var updateCheckBoxValue = $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
-			$scope.isInformationalInvoice = isInformationalInvoice;
+			$scope.billFormat.isInformationalInvoice = isInformationalInvoice;
 		});
 
 		// To destroy listener
@@ -1226,7 +1226,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.showFormatBillPopup = function(billNo, isActiveBill) {
 			$scope.billNo = billNo;
 			$scope.isSettledBill = isActiveBill;
-			$scope.isInformationalInvoice = false;
+			$scope.billFormat = {};
+			$scope.billFormat.isInformationalInvoice = false;
 			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.reservationBillData = $scope.transactionsDetails;
 			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_transactions_exist 
