@@ -2630,6 +2630,11 @@ sntRover.controller('RVbillCardController',
 			$scope.showEmailSentStatusPopup();
 		};
 
+		
+		if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+			data.is_final_invoice = true;
+		}
+
 		$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 	};
 

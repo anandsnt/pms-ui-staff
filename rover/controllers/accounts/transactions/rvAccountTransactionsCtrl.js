@@ -898,7 +898,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
 					
-					if ($scope.shouldGenerateFinalInvoice) {
+					if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 						$scope.$broadcast("UPDATE_WINDOW");
 					} else {
 						$scope.showEmailSentStatusPopup();
@@ -934,7 +934,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
-			if ($scope.shouldGenerateFinalInvoice) {
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				$scope.$broadcast("UPDATE_WINDOW");
 			} else {
 				$scope.closeDialog();
@@ -1004,7 +1004,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.errorMessage = errorData;
 			};
 
-			if ($scope.shouldGenerateFinalInvoice) {
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				requestParams.is_final_invoice = true;
 			}
 
