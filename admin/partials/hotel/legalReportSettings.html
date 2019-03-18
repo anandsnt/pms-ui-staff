@@ -7,10 +7,17 @@
             <tr>
                 <td>Turkish Police Export</td>
                 <td>
-                    <!-- remove .on when not active -->
                     <div class="switch-button" ng-class="{'on' : legalSettings.is_police_report_enabled}">
-                        <!-- remove checked when not active-->
                         <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_police_report_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Belgium Nationality Export</td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_belgium_export_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_belgium_export_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
