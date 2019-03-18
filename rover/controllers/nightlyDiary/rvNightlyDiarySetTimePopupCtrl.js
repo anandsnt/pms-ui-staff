@@ -9,7 +9,12 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
 
         $scope.$emit('SET_TIME_AND_SAVE', timeObj);
     };
-
+    /*
+     *  generateTimeDuration
+     *  @param {string} - [minArrivalTime] 
+     *  @param {string} - [maxDepartureTime]
+     *  @return {Array} - [List of time objects having 12hr and 24hr formats]
+     */
     var generateTimeDuration = function(minArrivalTime, maxDepartureTime) {
         var timeInterval = 15, // minutes interval
             startTime = 0, // start time

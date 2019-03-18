@@ -266,7 +266,7 @@ angular.module('sntRover')
                  *  @param {string}  [type - 'MOVE' or 'ASSIGN']
                  *  @return {}
                  */
-                var callAPIforAssignOrMoveRoom = function( roomDetails, reservationDetails, type ) {
+                var callAPIforAssignOrMoveRoom = function( roomDetails, reservationDetails, type, timeObj) {
                     var successCallBackAssignRoom = function () {
                         $scope.errorMessage = '';
                         if (type === 'ASSIGN') {
@@ -281,18 +281,28 @@ angular.module('sntRover')
                         "room_number": roomDetails.room_number,
                         "without_rate_change": true,
                         "is_preassigned": false,
-                        "forcefully_assign_room": false,
-                        "arrival_time": '',
-                        "departure_time": ''
+                        "forcefully_assign_room": false
                     },
                     options = {
                         params: postData,
                         successCallBack: successCallBackAssignRoom
                     };
 
+                    if (timeObj) {
+                        postData.arrival_time = timeObj.arrival_time;
+                        postData.departure_time = timeObj.departure_time;
+                    }
+
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
 
+                /*
+                 *  Show DiarySetTimePopup.
+                 *  @param {object} [roomDetails - Current selected room details]
+                 *  @param {object} [reservationDetails - Current selected reservation details]
+                 *  @param {string}  [type - 'MOVE' or 'ASSIGN']
+                 *  @return {}
+                 */
                 var showDiarySetTimePopup = function(roomDetails, reservationDetails, type) {
 
                     var params = {
@@ -305,6 +315,8 @@ angular.module('sntRover')
                     $scope.setTimePopupData = {
                         showPopup: true,
                         type: type,
+                        roomDetails: roomDetails,
+                        reservationDetails: reservationDetails,
                         noOfNights: 5,
                         data: {
                            'availability_exist_without_overlapping': true,
@@ -341,8 +353,14 @@ angular.module('sntRover')
                  */
                 var clickedAssignRoom = (roomDetails, reservationDetails) => {
                     showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
-                    // callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'ASSIGN');
                 };
+
+                /*
+                 * Set time from rvNightlyDiarySetTimePopup.
+                 */
+                $scope.addListener('SET_TIME_AND_SAVE', function ( e, timeObj) {
+                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, 'ASSIGN', timeObj);
+                });
 
                 /*
                  *  Handle MOVE TO button click.
