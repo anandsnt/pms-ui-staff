@@ -1,0 +1,8 @@
+<div class="entry" ng-class="entryDivClass">
+    <label>
+        {{label}}
+        <strong ng-show="required"> * </strong></label>
+    </label>
+    <input type="text" ng-model="charge_code_name" placeholder="Charge code" auto-complete ng-readonly="isDisabled"
+           auto-complete-options="chargeCodeAutocompleteOptions" ul-class="ui-autocomplete">
+</div>
