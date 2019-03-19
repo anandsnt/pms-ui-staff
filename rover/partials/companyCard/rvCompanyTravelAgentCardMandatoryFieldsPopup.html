@@ -1,0 +1,33 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+
+    <div id="check-in-data" class="modal-content form check-in-data ar-create">
+        <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+        
+        <span class="h2 message">Provide Required Data</span>
+        <span class="text">All fields are mandatory</span>
+        
+        <fieldset>
+            <legend>{Section}</legend>
+            <div class="fields">
+                 
+                <div class="entry">
+                    <label>
+                        {Label | use <span></span> for greyed text in brackets}
+                        <strong class="required">*</strong>
+                    </label>
+                    <input type="text" value="" placeholder="{placeholder}" />
+                </div>
+               ... repeat for each field
+
+            </div>
+        </fieldset>
+        ... repeat for each fieldset (section)
+          
+
+
+        <div class="actions">
+            <button class="button blank modal-close">Cancel</button>
+            <button class="button green">Submit</button>
+        </div>
+    </div>
+</div>

@@ -208,8 +208,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.clickedCreateArAccountButton = function() {
 			ngDialog.open({
-				template: '/assets/partials/companyCard/rvCompanyCardMandatoryFieldsPopup.html',
+				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
 				className: 'ngdialog-theme-default1 calendar-single1',
+				controller: 'companyTravelAgentMandatoryFieldsController',
 				closeByDocument: false,
 				scope: $scope
 			});
