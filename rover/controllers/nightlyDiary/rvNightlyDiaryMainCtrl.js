@@ -308,19 +308,11 @@ angular.module('sntRover')
                  */
                 var showDiarySetTimePopup = function(roomDetails, reservationDetails, type) {
 
-                    var params = {
-                        reservation_id: reservationDetails.reservationId,      
-                        room_id: roomDetails.room_id,
-                        start_date: reservationDetails.fromDate,
-                        no_of_days: reservationDetails.nights
-                    };
-
                     $scope.setTimePopupData = {
-                        showPopup: true,
+                        showPopup: false,
                         type: type,
                         roomDetails: roomDetails,
                         reservationDetails: reservationDetails,
-                        noOfNights: 5,
                         data: {
                            'availability_exist_without_overlapping': true,
                            'min_arrival_time': '10:00',
@@ -332,6 +324,32 @@ angular.module('sntRover')
                             ]
                         }
                     };
+
+                    var successCallBackFetchAvailableTimeSlots = function (data) {
+                        console.log(data);
+                        $scope.setTimePopupData.data = data;
+                        $scope.setTimePopupData.showPopup = true;
+                    },
+                    postData = {
+                        "reservation_id": reservationDetails.reservationId,
+                        "room_id": roomDetails.room_id,
+                        "start_date": reservationDetails.fromDate,
+                        "no_of_days": reservationDetails.nights
+                    },
+                    options = {
+                        params: postData,
+                        successCallBack: successCallBackFetchAvailableTimeSlots
+                    };
+
+                    var params = {
+                        reservation_id: reservationDetails.reservationId,      
+                        room_id: roomDetails.room_id,
+                        start_date: reservationDetails.fromDate,
+                        no_of_days: reservationDetails.nights
+                    };
+
+                    // API call to get available slots.
+                    $scope.callAPI(RVNightlyDiarySrv.fetchAvailableTimeSlots, options);
 
                     if ($scope.setTimePopupData.showPopup) {
                         ngDialog.open({

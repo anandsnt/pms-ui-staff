@@ -257,5 +257,22 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+
+        /*
+         * Assign Room in Diary
+         * @param {data} object
+         * return object
+         */
+        this.fetchAvailableTimeSlots = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/available_time_slots';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
     }
 ]);
