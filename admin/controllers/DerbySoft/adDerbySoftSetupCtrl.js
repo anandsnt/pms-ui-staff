@@ -9,7 +9,7 @@ admin.controller('ADDerbySoftSetupCtrl', [
             activeTab: 'SETUP'
         };
 
-        $scope.mappingTypes = ['cancellation_policies', 'tax_codes'];
+        $scope.mappingTypes = ['cancellation_policy', 'tax_code'];
 
         /**
          * when clicked on check box to enable/diable GoMomentIvy
