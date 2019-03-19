@@ -8478,6 +8478,19 @@
             /* Used in AR Create Modal for creating the AR account. Going alongside .check-in-data */
             &.ar-create {
 
+                .scrollable {
+                    height: 400px;
+                    position: relative;
+
+                    .iScrollVerticalScrollbar {
+                        right: 0;
+
+                        .iScrollIndicator {
+                            background: @grey2;
+                        }
+                    }
+                }
+
                 fieldset {
                     &:not(:nth-of-type(1)) {
                         border-top: 1px solid rgba(0, 0, 0, 0.15);
