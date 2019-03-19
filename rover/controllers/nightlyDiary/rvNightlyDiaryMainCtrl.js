@@ -275,6 +275,9 @@ angular.module('sntRover')
                         else if (type === 'MOVE') {
                             hideAssignOrMoveRoomSlots();
                         }
+                        if (timeObj) {
+                            ngDialog.close();
+                        }
                     },
                     postData = {
                         "reservation_id": reservationDetails.reservationId,
