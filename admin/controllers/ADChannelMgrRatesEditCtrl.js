@@ -1,6 +1,8 @@
 angular.module('admin')
     .controller('ADChannelMgrRatesEditCtrl', ['$scope', '$rootScope', '$stateParams', 'ADChannelMgrSrv',
         function ($scope, $rootScope, $stateParams, ADChannelMgrSrv) {
+            BaseCtrl.call(this, $scope);
+
             $scope.selectedUnAssignedRoomIndex = -1;
             $scope.selectedAssignedRoomIndex = -1;
 

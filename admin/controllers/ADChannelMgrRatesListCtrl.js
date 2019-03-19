@@ -1,7 +1,9 @@
 angular.module('admin')
     .controller('ADChannelMgrRatesListCtrl', ['$scope', '$rootScope', '$stateParams', 'ADChannelMgrSrv', 'ngTableParams', 'ADRatesSrv',
         function ($scope, $rootScope, $stateParams, ADChannelMgrSrv, ngTableParams, ADRatesSrv) {
+            var controller = this;
 
+            BaseCtrl.call(this, $scope);
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
             $scope.state = {
@@ -9,13 +11,14 @@ angular.module('admin')
                 interfaceName: $stateParams.description
             };
 
+
             /**
              * Removes roomTypes already assigned from the complete list of roomTypes configured for a rate
              * @param {array} roomTypes list of all roomTypes configured for the rate
              * @param {array} assigned list of already assigned roomTypes
              * @returns {*} array of room types that can be assigned
              */
-            function removeAssignedRoomTypes(roomTypes, assigned) {
+            controller.removeAssignedRoomTypes = function (roomTypes, assigned) {
                 var assignedIds = [];
 
                 if (!assigned.length) {
@@ -53,12 +56,14 @@ angular.module('admin')
                     mapping.editing = false;
                 });
 
-                ADRatesSrv.fetchRoomTypes(mapping.rate_id)
-                    .then(function (response) {
+                $scope.callAPI(ADRatesSrv.fetchRoomTypes, {
+                    params: mapping.rate_id,
+                    onSuccess: function (response) {
                         mapping.editing = true;
                         $scope.currentMapping = angular.copy(mapping);
-                        $scope.currentMapping.availableRoomTypes = removeAssignedRoomTypes(response.results, mapping.room_types);
-                    });
+                        $scope.currentMapping.availableRoomTypes = controller.removeAssignedRoomTypes(response.results, mapping.room_types);
+                    }
+                });
             };
 
             $scope.onClickAdd = function () {
