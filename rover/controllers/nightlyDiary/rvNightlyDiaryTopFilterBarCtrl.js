@@ -127,7 +127,6 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
-            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
@@ -181,7 +180,7 @@ angular.module('sntRover')
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
-            $scope.diaryData.fromDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+            $scope.diaryData.fromDate = $scope.diaryData.arrivalDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
             init();
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');

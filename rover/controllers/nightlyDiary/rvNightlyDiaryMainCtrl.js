@@ -504,6 +504,7 @@ angular.module('sntRover')
                 });
 
                 $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
+                    $scope.diaryData.arrivalDate = $scope.diaryData.fromDate;
                     resetUnassignedList();
                     $scope.$broadcast('FETCH_UNASSIGNED_LIST_DATA');
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
