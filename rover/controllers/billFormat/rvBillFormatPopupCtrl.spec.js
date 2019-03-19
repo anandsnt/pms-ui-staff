@@ -24,6 +24,8 @@ describe('rvBillFormatPopupCtrl', function () {
                     // $scope.reservation = reservationSampleData;
                     $scope.groupConfigData = groupConfigSampleData;
                     $rootScope.roverObj = {};
+                    $scope.billFormat = {};
+                    $scope.billFormat.isInformationalInvoice = false;
                 });
 
                 rvBillFormatPopupCtrl = $controller('rvBillFormatPopupCtrl', {
@@ -38,7 +40,8 @@ describe('rvBillFormatPopupCtrl', function () {
 
             }); 
             // -------------------------------------------
-            it('call print bill if print button clicked', function() {
+            it('call print bill if print button clicked', function() {                
+
                 spyOn($scope, 'printBill');
 
                 $scope.isClickedPrint = true;
