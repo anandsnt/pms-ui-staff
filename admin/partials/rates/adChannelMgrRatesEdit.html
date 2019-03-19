@@ -63,20 +63,31 @@
             <div class="entry movers rates_mover" ng-class="{'overlay' : rateData.is_global_contract}">
 
 			<span class="top_mover">
-				<span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()"
-                      ng-class="{active: selectedUnAssignedRoomIndex > -1}" data-type="source">unassign room(s)</span>
+				<span class="icons icon-mover-right to-target"
+                      data-type="target"
+                      ng-click="moveSelected('ASSIGN')"
+                      ng-class="{active: selectedUnAssignedRoomIndex > -1}"
+                      data-type="source">
+                    unassign room(s)
+                </span>
 				<span class="icons icon-mover-left to-source" data-type="source"
-                      ng-click="topMoveleftClicked()"
+                      ng-click="moveSelected('UNASSIGN')"
                       ng-class="{active: selectedAssignedRoomIndex > -1}">Assign room(s)</span>
 			</span>
                 <span>
 				<div class="green_gradient icons">
-					<span class="to-source green_mover icons_rates" data-type="source"
-                          ng-click="bottomMoverightClicked()">Assign room(s)</span>
+					<span class="to-source green_mover icons_rates"
+                          data-type="source"
+                          ng-click="moveAll('ASSIGN')">
+                        Assign room(s)
+                    </span>
 				</div>
 				<div class="red_gradient icons">
-					<span class="to-target  red_mover icons_rates" data-type="target" ng-click="bottomMoveleftClicked()"
-                    >unassign room(s)</span>
+					<span class="to-target  red_mover icons_rates"
+                          data-type="target"
+                          ng-click="moveAll('UNASSIGN')">
+                        unassign room(s)
+                    </span>
 				</div>
 			</span>
             </div>
