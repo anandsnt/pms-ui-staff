@@ -164,4 +164,5 @@
     "NEW_GUEST": "New Guest",
     "GUEST_CARD": "Guest Card",
     "CREATE_RESERVATION": "New Reservation",
-    "FIND_GUESTS": "Find Guests"
+    "FIND_GUESTS": "Find Guests",
+    "REVERSE_CHECKIN": "Reverse Check In"

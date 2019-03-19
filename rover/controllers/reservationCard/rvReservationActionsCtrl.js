@@ -14,7 +14,8 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
         'RVPaymentSrv',
     'RVContactInfoSrv',
-    'rvUtilSrv',
+	'rvUtilSrv',
+	'RVBillCardSrv',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -30,7 +31,8 @@ sntRover.controller('reservationActionsController', [
 		RVReservationSummarySrv,
                 RVPaymentSrv,
         RVContactInfoSrv,
-        rvUtilSrv) {
+		rvUtilSrv,
+		RVBillCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
@@ -1331,6 +1333,80 @@ sntRover.controller('reservationActionsController', [
                 clickedButton: 'viewBillButton',
                 userId: $scope.guestCardData.userId
             });
-        };
+		};
+
+		var refreshStaycard = function() {
+			$state.reload($state.$current.name);
+		};
+
+		$scope.updateRoomStatus = function() {
+			// If we chose the room status as ready, then we should make an API call to change the HK status
+			if ($scope.roomStatus.isReady) {
+				/*
+				* "hkstatus_id": 1 for CLEAN
+				* "hkstatus_id": 2 for INSPECTED
+				*/
+				var requestData = {
+					room_no: $scope.reservationData.reservation_card.room_number
+				};
+
+				if ($scope.reservationData.reservation_card.checkin_inspected_only === "true") {
+					requestData.hkstatus_id = 2;
+				}
+				else {
+					requestData.hkstatus_id = 1;
+				}
+
+				var houseKeepingStatusUpdateSuccess = function() {
+						refreshStaycard();
+						ngDialog.close();
+					},
+					houseKeepingStatusUpdateFailure = function(errorMsg) {
+						$scope.errorMessage = errorMsg;
+						ngDialog.close();
+					};
+
+				$scope.callAPI(RVBillCardSrv.changeHousekeepingStatus, {
+					successCallBack: houseKeepingStatusUpdateSuccess,
+					failureCallBack: houseKeepingStatusUpdateFailure,
+					params: requestData
+				});
+
+			} else {
+				refreshStaycard();
+				ngDialog.close();
+			}
+		};
+
+		var openRoomStatusChangePopup = function() {
+			$scope.roomStatus = {
+				isReady: false
+			};
+
+			ngDialog.open({
+				template: '/assets/partials/reservationCard/rvRoomStatusChangePopup.html',
+				className: '',
+				scope: $scope,
+				closeByDocument: false,
+				closeByEscape: false
+			});
+		};
+		
+		$scope.performReverseCheckIn = function() {
+			var onSuccess = function() {
+					openRoomStatusChangePopup();
+				},
+				onFailure = function(errorMsg) {
+					$scope.errorMessage = errorMsg;
+				};
+
+			$scope.callAPI(RVReservationCardSrv.reverseCheckIn, {
+				successCallBack: onSuccess,
+				failureCallBack: onFailure,
+				params: {
+					reservationId: $scope.reservationData.reservation_card.reservation_id
+				}
+			});
+		};
 	}
 ]);
