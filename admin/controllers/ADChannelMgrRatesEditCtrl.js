@@ -39,52 +39,34 @@ angular.module('admin')
                 }
             };
 
-            $scope.topMoverightClicked = function () {
-
-                if ($scope.selectedUnAssignedRoomIndex > -1) {
-                    var temp = $scope.currentMapping.availableRoomTypes[$scope.selectedUnAssignedRoomIndex];
-
-                    $scope.currentMapping.room_types.push(temp);
-                    $scope.currentMapping.availableRoomTypes.splice($scope.selectedUnAssignedRoomIndex, 1);
+            $scope.moveSelected = function (action) {
+                if (action === 'ASSIGN' && $scope.selectedUnAssignedRoomIndex > -1) {
+                    $scope.currentMapping.room_types = $scope.currentMapping.room_types
+                        .concat($scope.currentMapping.availableRoomTypes
+                            .splice($scope.selectedUnAssignedRoomIndex, 1));
                     $scope.selectedUnAssignedRoomIndex = -1;
-                }
-            };
-            /*
-             * To handle click action for selected room type
-             *
-             */
-            $scope.topMoveleftClicked = function () {
-                if ($scope.selectedAssignedRoomIndex > -1) {
-                    var temp = $scope.currentMapping.room_types[$scope.selectedAssignedRoomIndex];
-
-                    $scope.currentMapping.availableRoomTypes.push(temp);
-                    $scope.currentMapping.room_types.splice($scope.selectedAssignedRoomIndex, 1);
+                } else if (action === 'UNASSIGN' && $scope.selectedAssignedRoomIndex > -1) {
+                    $scope.currentMapping.availableRoomTypes = $scope.currentMapping.availableRoomTypes
+                        .concat($scope.currentMapping.room_types
+                            .splice($scope.selectedAssignedRoomIndex, 1));
                     $scope.selectedAssignedRoomIndex = -1;
                 }
             };
-            /*
-             * To handle click action to move all assigned room types
-             *
-             */
 
-            $scope.bottomMoverightClicked = function () {
-                if ($scope.currentMapping.availableRoomTypes.length > 0) {
-                    angular.forEach($scope.currentMapping.availableRoomTypes, function (item) {
-                        $scope.currentMapping.room_types.push(item);
-                    });
+
+            $scope.moveAll = function (action) {
+                if (action === 'ASSIGN') {
+                    $scope.currentMapping.room_types = $scope.currentMapping.room_types
+                        .concat($scope.currentMapping.availableRoomTypes);
                     $scope.currentMapping.availableRoomTypes = [];
-                }
-                $scope.selectedUnAssignedRoomIndex = -1;
-            };
-
-            $scope.bottomMoveleftClicked = function () {
-                if ($scope.currentMapping.room_types.length > 0) {
-                    angular.forEach($scope.currentMapping.room_types, function (item) {
-                        $scope.currentMapping.availableRoomTypes.push(item);
-                    });
+                    $scope.selectedUnAssignedRoomIndex = -1;
+                } else if (action === 'UNASSIGN') {
+                    $scope.currentMapping.availableRoomTypes = $scope.currentMapping
+                        .availableRoomTypes.concat($scope.currentMapping.room_types);
                     $scope.currentMapping.room_types = [];
+                    $scope.selectedAssignedRoomIndex = -1;
                 }
-                $scope.selectedAssignedRoomIndex = -1;
+
             };
 
             $scope.reachedAssignedRoomTypes = function () {
@@ -104,4 +86,5 @@ angular.module('admin')
             };
 
         }]
-    );
+    )
+;
