@@ -11,7 +11,6 @@ sntRover.controller('RVNightlyDiaryUnassignedListDatePickerController', ['$scope
 			changeMonth: true,
 			minDate: tzIndependentDate(minDateSelected),
            	maxDate: tzIndependentDate(maxDateSelected),
-			// yearRange: "-100:+5",
 			onSelect: function() {
 				$scope.diaryData.arrivalDate = $scope.date;
 				$scope.$emit('UNASSIGNED_LIST_DATE_CHANGED');

@@ -71,7 +71,7 @@ angular.module('sntRover')
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
                         fromDate: srvParams.start_date,
-                        arrivalDate: srvParams.start_date,
+                        arrivalDate: $rootScope.businessDate,
                         toDate: '',
                         paginationData: {
                             perPage: 50,
@@ -503,8 +503,9 @@ angular.module('sntRover')
                     fetchRoomListDataAndReservationListData(roomId);
                 });
 
-                $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function () {
+                $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function (event, action) {
                     resetUnassignedList();
+                    $scope.diaryData.arrivalDate = (action === 'RESET') ? $rootScope.businessDate : $scope.diaryData.fromDate;
                     $scope.$broadcast('FETCH_UNASSIGNED_LIST_DATA');
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
                 });
