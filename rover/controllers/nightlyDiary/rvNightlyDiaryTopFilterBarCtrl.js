@@ -180,11 +180,11 @@ angular.module('sntRover')
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
-            $scope.diaryData.fromDate = $scope.diaryData.arrivalDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+            $scope.diaryData.fromDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
             init();
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
-            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST', 'RESET');
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         };
 

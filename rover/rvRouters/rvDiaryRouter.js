@@ -93,8 +93,7 @@ angular
                         params.date = $stateParams.start_date;
                     }
                     else {
-                        params.date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                            .format($rootScope.momentFormatForAPI);
+                        params.date = $rootScope.businessDate;
                     }
                 }
                 
