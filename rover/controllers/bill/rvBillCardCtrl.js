@@ -3104,7 +3104,8 @@ sntRover.controller('RVbillCardController',
 
     $scope.showFormatBillPopup = function(billNo) {
 		$scope.billNo = billNo;
-		$scope.isInformationalInvoice = false;
+		$scope.billFormat = {};
+		$scope.billFormat.isInformationalInvoice = false;
 		$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
 		$scope.isEmailedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once;
 		$scope.isPrintedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once;
