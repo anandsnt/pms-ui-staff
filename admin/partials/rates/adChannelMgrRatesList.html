@@ -1,7 +1,7 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
     <div>
         <header class="content-title float">
-            <h2> Edit&nbsp;<font class="h2-grey">{{selectedInterface.description}}</font></h2>
+            <h2> CHANNEL MANAGER RATES <font class="h2-grey">{{state.interfaceName}}</font></h2>
             <a ng-click="goBackToPreviousState()" class="action back">Back</a>
             <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
             <a id="import-channel-rates" class="action import ng-binding"
@@ -10,7 +10,6 @@
                 IMPORT ALL CHANNEL RATES
             </a>
         </header>
-
 
 
         <section class="content-scroll">
@@ -23,25 +22,39 @@
                 </tbody>
             </table>
 
+            <div class="select table-count rates-table-count" ng-show="state.mode === 'LIST' && totalCount > 0">
+                <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+            </div>
+            <span class="count-entries">entries</span>
+
+            <div class="entry table-search" ng-show="state.mode === 'LIST' && totalCount > 0">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                       function-to-fire="searchEntered"/>
+            </div>
+
             <!--ng-table component -->
-            <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-show="state.mode === 'LIST' && totalCount > 0">
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager"
+                   ng-show="state.mode === 'LIST' && totalCount > 0">
                 <tbody>
                 <tr ng-repeat="rate in $data"
                     ng-class="{'selected': room.isSelected}">
                     <td data-title="'RATE_NAME'"
-                        sortable="'rate_name'"
                         header-class="width-80"
                         ng-hide="rate.editing"
                         ng-click="editRate(rate)">
-                        <div class="arrow-down-icon">
-                            <img src="/assets/cssimg/arrow-down.png" ng-hide='rate.editing'>
-                        </div>
-                        {{rate.rate_name}}
+                        <a class="edit-data">
+                            <div class="arrow-down-icon">
+                                <img src="/assets/cssimg/arrow-down.png" ng-hide='rate.editing'>
+                            </div>
+                            {{rate.rate_name}}
+                        </a>
                     </td>
 
                     <td data-title="'ACTIVE'" header-class="width-10"
                         ng-hide="rate.editing"
-                        ng-click="editRate(rate)">
+                        ng-click="toggleActivate(rate)">
                         <div class="entry" ng-click="toggleActive(rate)">
                             <div class="switch-button single" ng-class="{'on': rate.active}">
                                 <input type="checkbox" ng-checked="rate.active">
@@ -50,7 +63,7 @@
                         </div>
                     </td>
                     <td data-title="'DELETE'" header-class="width-10" class="delete" ng-hide="rate.editing">
-                        <a class="icons icon-delete large-icon" ng-click="onClickDelete(rate)"></a>
+                        <a class="icons icon-delete large-icon" ng-click="delete(rate)"></a>
                     </td>
                     <td colspan="3" ng-show="rate.editing"
                         ng-include="'/assets/partials/rates/adChannelMgrRatesEdit.html'"></td>

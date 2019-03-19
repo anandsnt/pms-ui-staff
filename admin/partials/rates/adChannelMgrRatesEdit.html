@@ -3,32 +3,38 @@
     <form class="form">
         <fieldset class="holder full-width">
             <div class="arrow-up-icon">
-                <h3>
+                <h3 ng-if="state.mode === 'LIST'">
                     <img src="/assets/cssimg/arrow-up.png">
-                    {{'EDIT_RATE_RULE' | translate}}
+                    {{'EDIT' | translate}}
+                </h3>
+                <h3 ng-if="state.mode === 'ADD'">
+                    <img src="/assets/cssimg/arrow-up.png">
+                    {{'ADD' | translate}}
                 </h3>
             </div>
         </fieldset>
 
-        <fieldset class="holder left">
-            <ad-rate-auto-complete exclude-payments="true"
-                                   ng-model="currentMapping.rate_name"
-                                   selected-charge-code-id="currentMapping.rate_id"
-                                   label="Rate Name"
-                                   is-disabled="state.mode !== 'ADD'"
-                                   entry-div-class="full-width">
-            </ad-rate-auto-complete>
+        <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>Rate</h3>
+            </div>
+
+            <fieldset class="holder left">
+                <ad-rate-auto-complete ng-model="currentMapping.rate_name"
+                                       selected-rate-id="currentMapping.rate_id"
+                                       label="Rate Name"
+                                       is-disabled="state.mode !== 'ADD'"
+                                       entry-div-class="full-width">
+                </ad-rate-auto-complete>
+            </fieldset>
         </fieldset>
 
         <fieldset class="holder full-width">
             <div class="form-title">
                 <h3>
-                    <span>Room</span>
-                    Types
+                    Room
+                    <span>Types</span>
                 </h3>
-                <em class="status">
-                    <span>Assign at least 1 room type</span>
-                </em>
             </div>
 
             <div class="entry has-sortable">
@@ -58,10 +64,10 @@
 
 			<span class="top_mover">
 				<span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()"
-                      ng-class="{active: selectedUnAssignedRoomIndex!=-1}" data-type="source">unassign room(s)</span>
+                      ng-class="{active: selectedUnAssignedRoomIndex > -1}" data-type="source">unassign room(s)</span>
 				<span class="icons icon-mover-left to-source" data-type="source"
                       ng-click="topMoveleftClicked()"
-                      ng-class="{active: selectedAssignedRoomIndex!=-1}">Assign room(s)</span>
+                      ng-class="{active: selectedAssignedRoomIndex > -1}">Assign room(s)</span>
 			</span>
                 <span>
 				<div class="green_gradient icons">
