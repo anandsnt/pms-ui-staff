@@ -1,6 +1,10 @@
 angular.module('admin')
-    .controller('ADChannelMgrRatesEditCtrl', ['$scope', '$rootScope', '$stateParams', 'ADChannelMgrSrv', 'ADRatesSrv',
-        function ($scope, $rootScope, $stateParams, ADChannelMgrSrv, ADRatesSrv) {
+    .controller('ADChannelMgrRatesEditCtrl', ['$scope', '$rootScope', '$stateParams', 'ADChannelMgrSrv',
+        function ($scope, $rootScope, $stateParams, ADChannelMgrSrv) {
+            $scope.selectedUnAssignedRoomIndex = -1;
+            $scope.selectedAssignedRoomIndex = -1;
+
+
             $scope.stopEditing = function (rate) {
                 if ($scope.state.mode === 'ADD') {
                     $scope.state.mode = 'LIST';
@@ -35,17 +39,69 @@ angular.module('admin')
                 }
             };
 
-            $scope.addListener('RATE_SELECTED', function (event, data) {
-                $scope.callAPI(ADRatesSrv.fetchRoomTypes, {
-                    params: data.id,
-                    onSuccess: function (response) {
-                        $scope.currentMapping.rate_id = data.id;
-                        $scope.currentMapping.rate_name = data.name;
-                        $scope.currentMapping.room_types = [];
-                        $scope.currentMapping.availableRoomTypes = response.results;
-                    }
-                });
-            });
+            $scope.topMoverightClicked = function () {
+
+                if ($scope.selectedUnAssignedRoomIndex > -1) {
+                    var temp = $scope.currentMapping.availableRoomTypes[$scope.selectedUnAssignedRoomIndex];
+
+                    $scope.currentMapping.room_types.push(temp);
+                    $scope.currentMapping.availableRoomTypes.splice($scope.selectedUnAssignedRoomIndex, 1);
+                    $scope.selectedUnAssignedRoomIndex = -1;
+                }
+            };
+            /*
+             * To handle click action for selected room type
+             *
+             */
+            $scope.topMoveleftClicked = function () {
+                if ($scope.selectedAssignedRoomIndex > -1) {
+                    var temp = $scope.currentMapping.room_types[$scope.selectedAssignedRoomIndex];
+
+                    $scope.currentMapping.availableRoomTypes.push(temp);
+                    $scope.currentMapping.room_types.splice($scope.selectedAssignedRoomIndex, 1);
+                    $scope.selectedAssignedRoomIndex = -1;
+                }
+            };
+            /*
+             * To handle click action to move all assigned room types
+             *
+             */
+
+            $scope.bottomMoverightClicked = function () {
+                if ($scope.currentMapping.availableRoomTypes.length > 0) {
+                    angular.forEach($scope.currentMapping.availableRoomTypes, function (item) {
+                        $scope.currentMapping.room_types.push(item);
+                    });
+                    $scope.currentMapping.availableRoomTypes = [];
+                }
+                $scope.selectedUnAssignedRoomIndex = -1;
+            };
+
+            $scope.bottomMoveleftClicked = function () {
+                if ($scope.currentMapping.room_types.length > 0) {
+                    angular.forEach($scope.currentMapping.room_types, function (item) {
+                        $scope.currentMapping.availableRoomTypes.push(item);
+                    });
+                    $scope.currentMapping.room_types = [];
+                }
+                $scope.selectedAssignedRoomIndex = -1;
+            };
+
+            $scope.reachedAssignedRoomTypes = function () {
+                $scope.selectedAssignedRoomIndex = -1;
+            };
+
+            $scope.reachedUnAssignedRoomTypes = function () {
+                $scope.selectedUnAssignedRoomIndex = -1;
+            };
+
+            $scope.unAssignedRoomSelected = function ($event, index) {
+                $scope.selectedUnAssignedRoomIndex = (index === $scope.selectedUnAssignedRoomIndex) ? -1 : index;
+            };
+
+            $scope.assignedRoomSelected = function ($event, index) {
+                $scope.selectedAssignedRoomIndex = (index === $scope.selectedAssignedRoomIndex) ? -1 : index;
+            };
 
         }]
     );

@@ -5,9 +5,16 @@ angular.module('admin')
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
             $scope.state = {
-                mode: 'LIST'
+                mode: 'LIST',
+                interfaceName: $stateParams.description
             };
 
+            /**
+             * Removes roomTypes already assigned from the complete list of roomTypes configured for a rate
+             * @param {array} roomTypes list of all roomTypes configured for the rate
+             * @param {array} assigned list of already assigned roomTypes
+             * @returns {*} array of room types that can be assigned
+             */
             function removeAssignedRoomTypes(roomTypes, assigned) {
                 var assignedIds = [];
 
@@ -22,9 +29,9 @@ angular.module('admin')
                 });
             }
 
-            $scope.fetchTableData = function($defer, params) {
+            $scope.fetchTableData = function ($defer, params) {
                 var getParams = $scope.calculateGetParams(params),
-                    fetchSuccessOfItemList = function(data) {
+                    fetchSuccessOfItemList = function (data) {
                         $scope.$emit('hideLoader');
                         $scope.currentClickedElement = -1;
                         $scope.totalCount = data.total_count;
@@ -46,11 +53,12 @@ angular.module('admin')
                     mapping.editing = false;
                 });
 
-                ADRatesSrv.fetchRoomTypes(mapping.rate_id).then(function (response) {
-                    mapping.editing = true;
-                    $scope.currentMapping = angular.copy(mapping);
-                    $scope.currentMapping.availableRoomTypes = removeAssignedRoomTypes(response.results, mapping.room_types);
-                });
+                ADRatesSrv.fetchRoomTypes(mapping.rate_id)
+                    .then(function (response) {
+                        mapping.editing = true;
+                        $scope.currentMapping = angular.copy(mapping);
+                        $scope.currentMapping.availableRoomTypes = removeAssignedRoomTypes(response.results, mapping.room_types);
+                    });
             };
 
             $scope.onClickAdd = function () {
@@ -65,13 +73,44 @@ angular.module('admin')
                 $scope.state.mode = 'ADD';
             };
 
+            $scope.addListener('RATE_SELECTED', function (event, data) {
+                $scope.callAPI(ADRatesSrv.fetchRoomTypes, {
+                    params: data.id,
+                    onSuccess: function (response) {
+                        $scope.currentMapping.rate_id = data.id;
+                        $scope.currentMapping.rate_name = data.name;
+                        $scope.currentMapping.room_types = [];
+                        $scope.currentMapping.availableRoomTypes = response.results;
+                    }
+                });
+            });
+
+            $scope.toggleActivate = function (mapping) {
+                $scope.callAPI(ADChannelMgrSrv.toggleMappingStatus, {
+                    params: _.extend(mapping, {
+                        channelId: $stateParams.id,
+                        id: mapping.id,
+                        active: !mapping.active
+                    })
+                });
+            };
+
+            $scope.delete = function (mapping) {
+                $scope.callAPI(ADChannelMgrSrv.deleteRateOnChannel, {
+                    params: {
+                        channelId: $stateParams.id,
+                        id: mapping.id
+                    },
+                    onSuccess: function () {
+                        $scope.reloadTable($scope.currentPage);
+                    }
+                });
+            };
+
             (function () {
                 $scope.tableParams = new ngTableParams({
                     page: 1, // show first page
-                    count: $scope.displyCount, // count per page
-                    sorting: {
-                        room_no: 'asc' // initial sorting
-                    }
+                    count: $scope.displyCount // count per page
                 }, {
                     total: 0, // length of data
                     getData: $scope.fetchTableData

@@ -18,7 +18,7 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             });
             return deferred.promise;
         };
-        
+
         this.fetchManagers = function (data) {
             var deferred = $q.defer();
 
@@ -93,19 +93,12 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
                 });
                 return deferred.promise;
         };
-        this.deleteRateOnChannel = function(data) {
-                var deferred = $q.defer();
-                var url = '/api/channel_managers/' + data.channel_manager_id + '/channel_manager_rates/' + data.channel_manager_rate_id;
 
-                ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
-                        deferred.resolve(data);
-                }, function(data) {
-                        deferred.reject(data);
-                });
-                return deferred.promise;
+        this.deleteRateOnChannel = function (params) {
+            return ADBaseWebSrvV2.deleteJSON('/api/channel_managers/' + params.channelId + '/channel_manager_rates/' + params.id);
         };
 
-        this.fetchManagerDetails = function(data) {
+        this.fetchManagerDetails = function (data) {
             return ADBaseWebSrvV2.getJSON('/api/channel_managers/' + data.id);
         };
 
@@ -113,6 +106,12 @@ admin.service('ADChannelMgrSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv
             return ADBaseWebSrvV2.postJSON('/api/channel_managers/' + params.channelId + '/channel_manager_rates', {
                 rate_id: params.rate,
                 room_type_ids: params.roomTypes
+            });
+        };
+
+        this.toggleMappingStatus = function (params) {
+            return ADBaseWebSrvV2.putJSON('/api/channel_managers/' + params.channelId + '/channel_manager_rates/' + params.id, {
+                active: params.active
             });
         };
 

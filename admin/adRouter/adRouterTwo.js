@@ -35,7 +35,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.channelManagerEditRates', {
         templateUrl: '/assets/partials/rates/adChannelMgrRatesList.html',
         controller: 'ADChannelMgrRatesListCtrl',
-        url: '/channelManagerEditRates/:id'
+        url: '/channelManagerEditRates/:id/:description'
     });
 
     $stateProvider.state('admin.ratetypes', {
