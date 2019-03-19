@@ -19,7 +19,7 @@ var GridRowItem = React.createClass({
 		var rootElement = $(this.getDOMNode());
 
 		rootElement.droppable({
-			accept: ".unassigned-list-item",
+			accept: ".guest",
 			drop: this.__onDrop.bind(this),
 			over: this.__onDragOver.bind(this),
 			out: this.__setDragOver.bind(this, false)
