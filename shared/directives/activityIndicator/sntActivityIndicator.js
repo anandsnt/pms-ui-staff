@@ -19,6 +19,10 @@ angular.module('sntActivityIndicator', [])
                             hideLoader: 0
                         };
 
+                        $scope.$on('resetLoader', function () {
+                            sntActivity.resetLoader();
+                        });
+
                         $scope.$on('showLoader', function () {
                             stats.showLoader++;
                             sntActivity.handleLegacyShow();
@@ -70,6 +74,11 @@ angular.module('sntActivityIndicator', [])
             };
 
             service.handleLegacyHide = function () {
+                updateIndicator();
+            };
+
+            service.resetLoader = function () {
+                activities = [];
                 updateIndicator();
             };
 
