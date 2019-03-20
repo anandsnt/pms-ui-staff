@@ -35,6 +35,10 @@ angular.module('snt.transitionManager',
                     transitionsSrv.isBackNavigation(transition)) {
                     transition.options().custom['isBack'] = true;
                 }
+
+                if (transition.options().custom && transition.options().custom['fromMenuBar']) {
+                    transitionsSrv.reset();
+                }
             });
 
         }
@@ -80,6 +84,14 @@ angular.module('snt.transitionManager',
                 idx = idx || transitions.length - 1;
 
                 return transitions[idx];
+            };
+
+            /**
+             * Resets the transitions array when the user jumps to a module from the menu
+             * @returns {undefined} void
+             */
+            service.reset = function () {
+                transitions = transitions.splice(0, 1);
             };
 
             /**
