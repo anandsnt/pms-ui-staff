@@ -1,0 +1,131 @@
+<section class="" style='position: relative' ng-controller="ADChannelMgrRatesEditCtrl">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <form class="form">
+        <fieldset class="holder full-width">
+            <div class="arrow-up-icon">
+                <h3 ng-if="state.mode === 'LIST'">
+                    <img src="/assets/cssimg/arrow-up.png">
+                    {{'EDIT' | translate}}
+                </h3>
+                <h3 ng-if="state.mode === 'ADD'">
+                    <img src="/assets/cssimg/arrow-up.png">
+                    {{'ADD' | translate}}
+                </h3>
+            </div>
+        </fieldset>
+
+        <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>Rate</h3>
+            </div>
+
+            <fieldset class="holder left">
+                <ad-rate-auto-complete ng-model="currentMapping.rate_name"
+                                       selected-rate-id="currentMapping.rate_id"
+                                       label="Rate Name"
+                                       is-disabled="state.mode !== 'ADD'"
+                                       entry-div-class="full-width">
+                </ad-rate-auto-complete>
+            </fieldset>
+        </fieldset>
+
+        <fieldset class="holder full-width">
+            <div class="form-title">
+                <h3>
+                    Room
+                    <span>Types</span>
+                </h3>
+            </div>
+
+            <div class="entry has-sortable">
+                <label class="center_align">
+                    <em class="rate_roomtype_text">Available Room Types</em>
+                </label>
+
+                <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
+                    ng-model="currentMapping.availableRoomTypes" style="overflow-y: scroll !important;"
+                    jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept:'.assigned-room-types'}">
+                    <li ng-repeat="roomType in currentMapping.availableRoomTypes"
+                        data-drag="true"
+                        ng-model="currentMapping.availableRoomTypes"
+                        jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                        class="non-assigned-room-types li-draggable"
+                        ng-click="unAssignedRoomSelected($event, $index)"
+                        ng-class='{selected: selectedUnAssignedRoomIndex === $index}'>
+                        <span class="icons icon-handle"></span>
+                        <span class="icons icon-handle"></span>
+                        {{roomType.name}}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="entry movers rates_mover" ng-class="{'overlay' : rateData.is_global_contract}">
+
+			<span class="top_mover">
+				<span class="icons icon-mover-right to-target"
+                      data-type="target"
+                      ng-click="moveSelected('ASSIGN')"
+                      ng-class="{active: selectedUnAssignedRoomIndex > -1}"
+                      data-type="source">
+                    unassign room(s)
+                </span>
+				<span class="icons icon-mover-left to-source" data-type="source"
+                      ng-click="moveSelected('UNASSIGN')"
+                      ng-class="{active: selectedAssignedRoomIndex > -1}">Assign room(s)</span>
+			</span>
+                <span>
+				<div class="green_gradient icons">
+					<span class="to-source green_mover icons_rates"
+                          data-type="source"
+                          ng-click="moveAll('ASSIGN')">
+                        Assign room(s)
+                    </span>
+				</div>
+				<div class="red_gradient icons">
+					<span class="to-target  red_mover icons_rates"
+                          data-type="target"
+                          ng-click="moveAll('UNASSIGN')">
+                        unassign room(s)
+                    </span>
+				</div>
+			</span>
+            </div>
+            <div class="entry has-sortable" ng-class="{'overlay' : rateData.is_global_contract}">
+                <label class="center_align">
+                    <span class="assigned_room_text">Assigned Room Types</span></label>
+                <ul class="boxes sortable ui-sortable short-list"
+                    data-type="target"
+                    data-drop="true"
+                    ng-model="currentMapping.room_types"
+                    jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes'}"
+                    data-jqyoui-options="{accept:'.non-assigned-room-types'}">
+                    <li ng-repeat="roomType in currentMapping.room_types"
+                        ng-click="assignedRoomSelected($event,$index)"
+                        ng-class='{selected: selectedAssignedRoomIndex === $index}'
+                        class="assigned-room-types li-draggable"
+                        data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                        data-drag="true"
+                        ng-model="currentMapping.room_types"
+                        jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                        <span class="icons icon-handle"></span>
+                        <span class="icons icon-handle"></span>
+                        {{roomType.name}}
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+
+
+        <div class="actions">
+            <button type="button" id="cancel" class="button blank add-data-inline" ng-click='stopEditing(rate)'>
+                Cancel
+            </button>
+            <button type="button" id="save" class="button green add-data-inline"
+                    ng-class="{'grey overlay': !currentMapping.rate_name}" ng-click="save()">
+                SAVE
+            </button>
+        </div>
+
+    </form>
+</section>
