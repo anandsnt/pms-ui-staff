@@ -1,7 +1,7 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
     <div>
         <header class="content-title float">
-            <h2> CHANNEL MANAGER RATES <font class="h2-grey">{{state.interfaceName}}</font></h2>
+            <h2> CHANNEL MANAGER RATES&nbsp; <font class="h2-grey">{{state.interfaceName}}</font></h2>
             <a ng-click="goBackToPreviousState()" class="action back">Back</a>
             <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
             <a id="import-channel-rates" class="action import ng-binding"
@@ -22,10 +22,12 @@
                 </tbody>
             </table>
 
-            <div class="select table-count rates-table-count" ng-show="state.mode === 'LIST' && totalCount > 0">
-                <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
-            </div>
-            <span class="count-entries">entries</span>
+            <section ng-show="totalCount > 0">
+                <div class="select table-count rates-table-count" ng-show="state.mode === 'LIST'">
+                    <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+                </div>
+                <span class="count-entries">entries</span>
+            </section>
 
             <div class="entry table-search" ng-show="state.mode === 'LIST' && totalCount > 0">
                 <span class="search-text">Search</span>
@@ -70,6 +72,28 @@
                 </tr>
                 </tbody>
             </table>
+
+            <!--Custom pagination footer goes here-->
+            <script type="text/ng-template" id="custom/pager">
+                <div class="pager" ng-show="totalCount > 0">
+                    <span ng-show="totalCount > 0">Showing {{ startCount }} to {{ endCount }} of {{ totalCount }} items</span>
+                    <span ng-show="totalCount == 0">Showing 0 items</span>
+                    <ul class="ng-cloak">
+                        <li ng-repeat="page in pages"
+                            ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                            ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+
+                            <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                            <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                            <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+
+                            <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                            <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                            <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                        </li>
+                    </ul>
+                </div>
+            </script>
         </section>
     </div>
 </section>
