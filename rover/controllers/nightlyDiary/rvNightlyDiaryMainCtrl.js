@@ -313,16 +313,7 @@ angular.module('sntRover')
                         type: type,
                         roomDetails: roomDetails,
                         reservationDetails: reservationDetails,
-                        data: {
-                           'availability_exist_without_overlapping': true,
-                           'min_arrival_time': '10:00',
-                           'max_departure_time': '23:00',
-
-                           'default_checkout_time': '22:15',
-                           'available_dates': [
-                                 "2017-05-21", "2017-05-22", "2017-05-23", "2017-05-24", "2017-05-25", "2017-05-26"
-                            ]
-                        }
+                        data: {}
                     };
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
