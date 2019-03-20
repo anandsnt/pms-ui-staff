@@ -2,4 +2,6 @@
 "DERBYSOFT_ACTIVATE_INACTIVATE": "Activated",
 "DERBYSOFT_AUTHENTICATION_TOKEN": "Authentication Token",
 "DERBYSOFT_HOTEL_CODE": "Hotel Code",
-"DERBYSOFT_HEADER": "DerbySoft Setup"
+"DERBYSOFT_HEADER": "DerbySoft Setup",
+"cancellation_policy": "Cancellation Policy",
+"tax_code": "Tax Code"
