@@ -153,6 +153,12 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		$scope.$on("REMOVE_VALIDATION", function() {
 			$scope.shouldValidate = false;
 		});
+		$scope.$on("ADD_VALIDATION", function() {
+			$scope.shouldValidate = true;
+		});
+		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS", function(e, data) {
+			$scope.arAccountDetails = data;
+		});
 
 		/**
 		 * recieving function for save AR accounts with data

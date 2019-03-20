@@ -207,6 +207,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
+
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
 				className: 'ngdialog-theme-default1 calendar-single1',
@@ -219,7 +220,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.clickedCreateArAccountButton = function() {
 			$scope.isMandatoryPopupOpen = true;
 			if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
-				createArAccountCheck = true;
 				$scope.isArTabAvailable = true;		
 				$scope.$broadcast("REMOVE_VALIDATION");			
 				$scope.$broadcast('setgenerateNewAutoAr', true);
@@ -239,8 +239,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			saveContactInformation($scope.contactInformation);
 		};
 
-		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {			
-			$scope.arAccountDetails = data;
+		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {
+			$scope.$broadcast("ADD_VALIDATION");
+			$scope.arAccountDetails = data;		
+			$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);
+			
 			$scope.$broadcast("saveArAccount");
 			$scope.switchTabTo('', 'cc-ar-accounts');
 		});
@@ -306,6 +309,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
 			if ($scope.isMandatoryPopupOpen) {
+				$scope.arAccountDetails.payment_due_days = null;
+				$scope.arAccountDetails.ar_number = data.newArNumber;
 				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
 			}
 		});
