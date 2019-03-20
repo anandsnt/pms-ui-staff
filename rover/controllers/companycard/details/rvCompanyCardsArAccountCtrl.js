@@ -19,6 +19,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		var init = function() {
 			$scope.ARData = {};
 			$scope.ARData.note = "";
+			$scope.shouldValidate = true;
 		};
 
 		init();
@@ -80,7 +81,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
                 dataNotUpdated = true;
                 presentArDetails = presentArDetailsAfterEdit;
             }
-			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
+            if ($scope.shouldValidate) {
+            	dataToSend.should_validate = true;
+            }
+			if (($scope.$parent.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
 			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
@@ -145,6 +149,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			$scope.invokeApi(RVCompanyCardSrv.deleteARNote, dataToSend, deleteARNoteSuccess);
 
 		};
+
+		$scope.$on("REMOVE_VALIDATION", function() {
+			$scope.shouldValidate = false;
+		});
 
 		/**
 		 * recieving function for save AR accounts with data

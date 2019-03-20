@@ -206,8 +206,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 		};
 
-		$scope.clickedCreateArAccountButton = function() {
-			$scope.isMandatoryPopupOpen = true;
+		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
 				className: 'ngdialog-theme-default1 calendar-single1',
@@ -217,6 +216,22 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			});
 		};
 
+		$scope.clickedCreateArAccountButton = function() {
+			$scope.isMandatoryPopupOpen = true;
+			if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
+				createArAccountCheck = true;
+				$scope.isArTabAvailable = true;		
+				$scope.$broadcast("REMOVE_VALIDATION");			
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				$scope.$broadcast("saveArAccount");
+			} else {
+				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
+			}				
+		};
+
+		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function(){
+			$scope.isMandatoryPopupOpen = false;
+		});
 
 		$scope.showARTab = function() {
 
@@ -224,10 +239,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			saveContactInformation($scope.contactInformation);
 		};
 
-		$scope.$on("saveArAccountFromMandatoryPopup", function() {
-			$scope.showARTab();
-			$scope.arAccountDetails
-			//$scope.$broadcast("saveArAccount");
+		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {			
+			$scope.arAccountDetails = data;
+			$scope.$broadcast("saveArAccount");
+			$scope.switchTabTo('', 'cc-ar-accounts');
 		});
 
 		/*
@@ -290,6 +305,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
+			if ($scope.isMandatoryPopupOpen) {
+				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
+			}
 		});
 
 		$scope.deleteArAccount = function() {

@@ -10,15 +10,15 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
         $scope.setScroller('companyTravelAgentMandatory'); 
 
         $scope.closeDialog = function() {
-            $scope.isMandatoryPopupOpen = false;
+            $scope.$emit("UPDATE_MANDATORY_POPUP_OPEN_FLAG");
             ngDialog.close();
         }
 
         $scope.saveCoTaMandatoryData = function() {
-            $scope.isMandatoryPopupOpen = false;
+                       
             $scope.$emit("saveContactInformation");
-
             $scope.$emit("saveArAccountFromMandatoryPopup", $scope.arAccountDetails);
+            $scope.closeDialog();
         }     
 
         $scope.shouldEnableSubmitButton = function() {
@@ -35,10 +35,14 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
                     && !isEmpty($scope.contactInformation.account_details.reg_tax_office) 
                     && !isEmpty($scope.contactInformation.primary_contact_details.contact_first_name) 
                     && !isEmpty($scope.contactInformation.primary_contact_details.contact_last_name) 
+                    && (!isEmpty($scope.arAccountDetails.ar_number) 
+                        || ($scope.arAccountDetails.ar_number !== '' 
+                        && $scope.arAccountDetails.ar_number !== null)) 
+                    && !isEmpty($scope.arAccountDetails.payment_due_days);
         };
 
         var init = function() {
-            $scope.arAccountDetails = {};
+            // $scope.arAccountDetails = {};
 
             $timeout(function() {
                 $scope.refreshScroller('companyTravelAgentMandatory');
