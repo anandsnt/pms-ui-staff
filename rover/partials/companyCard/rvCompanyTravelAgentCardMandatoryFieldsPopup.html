@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="actions">
-            <button class="button blank modal-close">Cancel</button>
+            <button class="button blank modal-close" ng-click="closeDialog()">Cancel</button>
             <button class="button" ng-click="saveCoTaMandatoryData()" ng-class="{'green': shouldEnableSubmitButton(), 'grey': !shouldEnableSubmitButton()}" ng-disabled="!shouldEnableSubmitButton()">Submit</button>
         </div>
     </div>
