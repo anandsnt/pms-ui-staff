@@ -17,8 +17,8 @@
 </fieldset>
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.value"
-                      ng-show="mapping.typeof==='cancellation_policies'"
-                      valueproperty="name"
+                      ng-show="mapping.typeof==='cancellation_policy'"
+                      valueproperty="id"
                       required="yes"
                       label-properties="['name', 'description']"
                       label-in-drop-down="Select Value"
@@ -28,10 +28,10 @@
                       div-class="full-width">
     </ad-dropdown-name>
     <ad-dropdown-name savemodel="mapping.value"
-                      ng-show="mapping.typeof==='tax_codes'"
-                      valueproperty="id"
+                      ng-show="mapping.typeof==='tax_code'"
+                      valueproperty="code"
                       required="yes"
-                      label-properties="['id', 'code']"
+                      label-properties="['code', 'description']"
                       label-in-drop-down="Select Value"
                       list="state.meta.TAX_CHARGE_CODES.charge_codes"
                       label="{{'SNT_VALUE'| translate}}"
@@ -41,24 +41,24 @@
 </fieldset>
 <fieldset class="holder right">
   <ad-dropdown-name savemodel="mapping.external_value"
-                    ng-show="mapping.typeof==='cancellation_policies'"
+                    ng-show="mapping.typeof==='cancellation_policy'"
                     valueproperty="code"
                     required="yes"
                     label-properties="['code', 'description']"
                     label-in-drop-down="Select DerbySoft Value"
                     list="state.meta.CANCELLATION_CODES"
-                    label="{{'DerbySoft Value'| translate}}"
+                    label="{{'EXTERNAL_VALUE'| translate}}"
                     skip-number-conversion="true"
                     div-class="full-width">
   </ad-dropdown-name>
   <ad-dropdown-name savemodel="mapping.external_value"
-                    ng-show="mapping.typeof==='tax_codes'"
+                    ng-show="mapping.typeof==='tax_code'"
                     valueproperty="code"
                     required="yes"
                     label-properties="['code', 'description']"
                     label-in-drop-down="Select DerbySoft Value"
                     list="state.meta.TAX_CODES"
-                    label="{{'DerbySoft Value'| translate}}"
+                    label="{{'EXTERNAL_VALUE'| translate}}"
                     skip-number-conversion="true"
                     div-class="full-width">
   </ad-dropdown-name>

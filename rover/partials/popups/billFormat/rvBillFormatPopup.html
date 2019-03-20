@@ -1,7 +1,35 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
+    <div class="modal-content form format-bill types" ng-show="isInvoiceStepOneActive">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></button>
+        <span class="icons icon-popup-alert hidden"></span>
+        <strong class="h2 message">Choose Invoice Type</strong>
 
-    <div class="modal-content form format-bill">
-        <button id="modal-close" type="button"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
+        <button type="button" id="inform-invoice" class="button blue" ng-click="clickedInformationalButton()"> <!-- Opens format-bill.html -->
+             Informational Invoice
+        </button>
+
+        <button type="button" id="final-invoice" class="button orange" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
+            Final Invoice 
+        </button>
+
+        <button type="button" class="button blank modal-close inline" ng-click="closeDialog()">Close Window</button> 
+        <button type="button" id="cancel" class="button blank hidden inline">Cancel</button> 
+         
+    </div>
+
+
+    <div class="modal-content alert" ng-show="isInvoiceStepTwoActive">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message">Guest Invoice will be closed</span>
+
+        <button type="button" class="button green" ng-click="clickedProceedButton()">Proceed</button> <!-- When clicked proceed with emailing or printing the invoice, depending on what was selected in previous popup-->
+        <button type="button" class="button blank" ng-click="clickedCancelButtonProceedScreen()">Cancel</button> <!-- When clicked return to previous popup, {format-bill.html} -->
+    </div>
+
+    <div class="modal-content form format-bill" ng-show="isInvoiceStepThreeActive"> 
+        <button id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
 
         <strong class="h2 message">Format Bill</strong>
 
@@ -47,11 +75,11 @@
                 </select>
             </div>
         </div>
-        <div class="entry full-width">
-            <label class="checkbox inline" ng-class="{checked: isInformationalInvoice, disabled: isInformationalInvoiceDisabled}">
-                <span class="icon-form icon-checkbox" ng-class="{checked: isInformationalInvoice, disabled: isInformationalInvoiceDisabled}">
+        <div class="entry full-width" ng-if="!shouldGenerateFinalInvoice">
+            <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
+                <span class="icon-form icon-checkbox" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
                 </span>
-                <input id="enable-split" ng-disabled="isInformationalInvoiceDisabled" ng-model="isInformationalInvoice" value="1" type="checkbox" />
+                <input id="enable-split" ng-disabled="billFormat.isInformationalInvoiceDisabled" ng-model="billFormat.isInformationalInvoice" type="checkbox" />
                 {{ 'INFORMATIONAL_INVOICE' | translate }}
             </label>
         </div>
@@ -68,6 +96,25 @@
             </button>
             <button type="button" class="button blank inline" ng-click="closeDialog()">Cancel</button>
         </div>
+    </div>
+
+    <div class="modal-content alert" ng-show="isInvoiceStepFourActive">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message">Guest Invoice will be closed</span>
+
+        <button type="button" class="button green" ng-click="clickedContinueButtonPrintOrEmail()">Continue</button> <!-- When clicked proceed with emailing or printing the invoice, depending on what was selected in previous popup-->
+        <button type="button" class="button blank" ng-click="clickedProceedButton()">Cancel</button> <!-- When clicked return to previous popup, {format-bill.html} -->
+    </div>
+
+    <div class="modal-content alert" ng-show="isInvoiceStepFiveActive">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span class="icons icon-popup-success"></span>
+        <span class="h2 message">Guest Invoice is now closed</span>
+
+        <button type="button" class="button blank" ng-click="closeDialog()">Close window</button> 
     </div>
     
 </div>
