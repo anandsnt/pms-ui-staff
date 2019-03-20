@@ -1,33 +1,74 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 
     <div id="check-in-data" class="modal-content form check-in-data ar-create">
-        <button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
         
         <span class="h2 message">Provide Required Data</span>
         <span class="text">All fields are mandatory</span>
-        
-        <fieldset>
-            <legend>{Section}</legend>
-            <div class="fields">
-                 
-                <div class="entry">
-                    <label>
-                        {Label | use <span></span> for greyed text in brackets}
-                        <strong class="required">*</strong>
-                    </label>
-                    <input type="text" value="" placeholder="{placeholder}" />
-                </div>
-               ... repeat for each field
+        <div class="scrollable" ng-iscroll="companyTravelAgentMandatory" ng-iscroll-delay="2000">
+            <div class="wrapper">
+                <fieldset ng-if="shouldShowAddress || shouldShowCity || shouldShowPostalCode || shouldShowCountry || shouldShowPhone || shouldShowEmail || (contactInformation.mandatoryFields.e_invoice_mandatory.is_visible && shouldShowEInvoice)">
+                    <legend ng-hide="account_type == 'TRAVELAGENT'" translate>COMAPNY_INFO</legend>
+                    <legend ng-show="account_type == 'TRAVELAGENT'" translate>TA_INFO</legend>
+                    
+                    <div class="fields">
+                                           
+                            <rv-textbox ng-if="shouldShowAddress" value="contactInformation.address_details.street1" label="Address Line 1" placeholder = "Enter Address Line 1" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>
+                           <rv-textbox ng-if="shouldShowCity"  value="contactInformation.address_details.city" label="City" placeholder = "Enter City" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>
+                           <rv-textbox ng-if="shouldShowPostalCode" value="contactInformation.address_details.postal_code" label="Postal code"  placeholder = "Enter Postal code" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>
+                           <div class="entry" ng-if="shouldShowCountry">
+                                <label for="company-country">{{'COUNTRY' | translate}}<strong ng-if = "contactInformation.mandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation" >*</strong></label>
+                                <div class="select">
+                                    <select ng-model="contactInformation.address_details.country_id" ng-options="country.id as country.value for country in countries" >        
+                                       <option value="" translate>SELECT_COUNTRY</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <rv-textbox ng-if="shouldShowPhone" value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Contact Phone" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>
+                            <rv-textbox ng-if="shouldShowEmail" value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter Contact Email Address" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>
+                            <rv-textbox ng-if="contactInformation.mandatoryFields.e_invoice_mandatory.is_visible && shouldShowEInvoice" value="contactInformation.e_invoice_address" styleclass="margin"  label="E-Invoice Address" placeholder = "Enter E-Invoice Address" maxlength="30" required = "{{contactInformation.mandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>       
 
+                    </div>
+                </fieldset>
+                <fieldset ng-if="(contactInformation.mandatoryFields.organization_id_mandatory.is_visible && shouldShowOrganization) || shouldShowTaxNumber || (contactInformation.mandatoryFields.regd_tax_office_mandatory.is_visible && shouldShowRegisteredTaxOffice)">
+                    <legend ng-hide="account_type == 'TRAVELAGENT'" translate>EXTENDED_COMPANY_DETAILS</legend>
+                    <legend ng-show="account_type == 'TRAVELAGENT'" translate>EXTENDED_TA_DETAILS</legend>
+                    <div class="fields">
+                                           
+                        <rv-textbox ng-if="contactInformation.mandatoryFields.organization_id_mandatory.is_visible && shouldShowOrganization" value="contactInformation.account_details.organization_id" label="Organization Id" placeholder = "Enter Organization Id" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}" maxlength="50"></rv-textbox>
+
+                        <rv-textbox ng-if="shouldShowTaxNumber" value="contactInformation.account_details.tax_number" label="Tax Id" placeholder = "Enter Tax Id" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}" maxlength="100"></rv-textbox>
+
+                        <rv-textbox ng-if="contactInformation.mandatoryFields.regd_tax_office_mandatory.is_visible && shouldShowRegisteredTaxOffice" value="contactInformation.account_details.reg_tax_office" label="Registered Tax Office" placeholder = "Enter Tax Office" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}" maxlength="100"></rv-textbox>     
+
+                    </div>
+                </fieldset>
+                <fieldset ng-if="shouldShowPrimaryContactFirstName || shouldShowPrimaryContactLastName">
+                    <legend translate>PRIMARY_CONTACT_DETAILS</legend>
+
+                    <div class="fields">
+                                           
+                        <rv-textbox ng-if="shouldShowPrimaryContactFirstName" value="contactInformation.primary_contact_details.contact_first_name" label="First name" placeholder = "Enter Contact First Name" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>
+                        <rv-textbox ng-if="shouldShowPrimaryContactLastName" value="contactInformation.primary_contact_details.contact_last_name" label="Last Name" placeholder = "Enter Contact Last Name" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())" required = "{{contactInformation.mandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation ? 'yes' : 'no'}}"></rv-textbox>     
+
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend translate>AR Account</legend>
+
+                    <div class="fields">
+                                           
+                        <rv-textbox value="arAccountDetails.ar_number" label="AR number" placeholder = "Enter AR number" styleclass="margin" required = "yes"></rv-textbox>
+                        <rv-textbox value="arAccountDetails.payment_due_days" label="Payment due days" placeholder = "Enter payment due days"  required = "yes"></rv-textbox>     
+
+                    </div>
+                </fieldset>
             </div>
-        </fieldset>
-        ... repeat for each fieldset (section)
-          
-
-
+        </div>
         <div class="actions">
             <button class="button blank modal-close">Cancel</button>
-            <button class="button green">Submit</button>
+            <button class="button" ng-click="saveCoTaMandatoryData()" ng-class="{'green': shouldEnableSubmitButton(), 'grey': !shouldEnableSubmitButton()}" ng-disabled="!shouldEnableSubmitButton()">Submit</button>
         </div>
     </div>
 </div>
