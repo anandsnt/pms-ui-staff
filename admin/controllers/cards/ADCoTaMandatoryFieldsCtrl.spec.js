@@ -61,19 +61,7 @@ describe('ADCoTaMandatoryFieldsCtrl', function() {
     });
     // =======================
     it('Clicked status toggle when organization id visibility is true', function() {
-
-        $scope.clickedStatus('organization_id_mandatory');
-
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_visible).toBe(false);
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation).toBe(false);
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation).toBe(false);
-
-    });
-
-    // ========================
-
-    it('Clicked status toggle when organization id visibility is true', function() {
-
+        console.log($scope.coTaMandatoryFields.organization_id_mandatory)
         $scope.clickedStatus('organization_id_mandatory');
 
         expect($scope.coTaMandatoryFields.organization_id_mandatory.is_visible).toBe(false);

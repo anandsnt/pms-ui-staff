@@ -41,6 +41,7 @@ function($scope, $state, ADCoTaMandatorySrv) {
 						$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation = false;
 						$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation = false;
 					}
+					break;
 				case "payment_due_days_mandatory":
 					$scope.coTaMandatoryFields.payment_due_days_mandatory.is_visible = !$scope.coTaMandatoryFields.payment_due_days_mandatory.is_visible;
 					if (!$scope.coTaMandatoryFields.payment_due_days_mandatory.is_visible) {
