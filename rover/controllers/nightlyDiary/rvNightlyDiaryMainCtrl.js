@@ -326,9 +326,8 @@ angular.module('sntRover')
                     };
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
-                        console.log(data);
                         $scope.setTimePopupData.data = data;
-                        $scope.setTimePopupData.showPopup = !data.availability_exist_without_overlapping;
+                        $scope.setTimePopupData.showPopup = data.is_overlapping_reservations_exists;
                         $scope.setTimePopupData.selectedDepartureTime = data.max_departure_time;
                         $scope.setTimePopupData.selectedArrivalTime = data.min_arrival_time;
 
