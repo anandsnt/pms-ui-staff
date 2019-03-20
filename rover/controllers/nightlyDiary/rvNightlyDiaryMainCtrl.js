@@ -328,7 +328,23 @@ angular.module('sntRover')
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         console.log(data);
                         $scope.setTimePopupData.data = data;
-                        $scope.setTimePopupData.showPopup = true;
+                        $scope.setTimePopupData.showPopup = !data.availability_exist_without_overlapping;
+                        $scope.setTimePopupData.selectedDepartureTime = data.max_departure_time;
+                        $scope.setTimePopupData.selectedArrivalTime = data.min_arrival_time;
+
+                        if ($scope.setTimePopupData.showPopup) {
+                            ngDialog.open({
+                                template: '/assets/partials/nightlyDiary/rvNightlyDiarySetTimePopup.html',
+                                scope: $scope,
+                                className: '',
+                                closeByDocument: false,
+                                closeByEscape: false,
+                                controller: 'rvNightlyDiarySetTimePopupCtrl'
+                            });
+                        }
+                        else {
+                            callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, type);
+                        }
                     },
                     postData = {
                         "reservation_id": reservationDetails.reservationId,
@@ -350,20 +366,6 @@ angular.module('sntRover')
 
                     // API call to get available slots.
                     $scope.callAPI(RVNightlyDiarySrv.fetchAvailableTimeSlots, options);
-
-                    if ($scope.setTimePopupData.showPopup) {
-                        ngDialog.open({
-                            template: '/assets/partials/nightlyDiary/rvNightlyDiarySetTimePopup.html',
-                            scope: $scope,
-                            className: '',
-                            closeByDocument: false,
-                            closeByEscape: false,
-                            controller: 'rvNightlyDiarySetTimePopupCtrl'
-                        });
-                    }
-                    else {
-                        callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, type);
-                    }
                 };
 
                 /*
