@@ -155,12 +155,6 @@ describe('reservationActionsController', function () {
                     $scope: $scope
                 });
 
-                // angular.extend($scope, {
-                //     'refreshScroll': function() {
-                //         return true;
-                //     }
-                // });
-
             }); 
 
             it('should invoke the success callback during reverse check-in success', function() {
