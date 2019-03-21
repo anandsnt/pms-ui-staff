@@ -44,8 +44,8 @@ function ADBaseTableCtrl($scope, ngTableParams) {
         $scope.reloadTable();
     };
 
-    $scope.reloadTable = function() {
-        $scope.tableParams.page(1);
+    $scope.reloadTable = function(pageNumber) {
+        $scope.tableParams.page(pageNumber || 1);
         $scope.tableParams.reload();
     };
 
