@@ -313,7 +313,7 @@
                 }
             }
 
-            &:not(:last-child) {
+            &:not(:last-child):not(.filters) {
                 margin-right: 10px;
             }
         }
@@ -493,7 +493,7 @@
             position: absolute;
             top: 0;
             left: 120px;
-            z-index: 1090;
+            z-index: 80;
             height: 80px;
             background: darken(@darkBlue, 40);
             cursor: default;
@@ -719,7 +719,7 @@
             left: 0;
             padding: 10px;
             background: @grey1;
-            z-index: 1099;
+            z-index: 90;
             .box-shadow(2px 5px 5px rgba(0,0,0,.15));
             .size(90px, 120px);
 
@@ -784,7 +784,7 @@
             left: 0;
             width: 120px;
             background: @grey1;
-            z-index: 1099;
+            z-index: 90;
             cursor: default;
             .box-shadow(2px 5px 5px rgba(0,0,0,.15));
             .calc-height(100, 90);
@@ -828,7 +828,7 @@
             position: absolute;
             top: 90px;
             left: 120px;
-            z-index: 1049;
+            z-index: 70;
             .calc-height(100, 90);
             .calc-width(100, 120);
 
@@ -1205,156 +1205,6 @@
             padding: 0;
         }
 
-        /* Sidebar - OLD UNASSIGNED HOURLY DESIGN ***/
-        .sidebar-right {
-            position: absolute;
-            top: 0;
-            right: -295px;
-            z-index: 99999;
-            .size(100%, 295px);
-            .transition(right, .2s, cubic-bezier(.10, .10, .25, .90));
-            .show();
-            
-            .rightMenuHandle {
-                position: absolute;
-                top: 20px;
-                left: -25px;
-                cursor: e-resize !important;
-                z-index: 90;
-                background-color: @grey1;
-                background-image: @icons;
-                background-repeat: no-repeat;
-                background-position: 7px -3807px;
-                .size(50px, 25px);
-                #border-radius > .left(5px);
-
-                @media @highdpi {
-                    background-image: @icons2x;
-                    background-size: 120px, 40px;
-                }
-
-                &.not-empty {
-                    background-color: @red;
-                }
-            }
-
-            .sidebar-header {
-                background-color: @grey1;
-                text-align: center;
-                padding: 20px 15px 15px 15px;
-                height: 80px;
-
-                p,h2 {
-                    text-transform: uppercase;
-                }
-
-                h2 {
-                    color: @black;
-                    font-size: 21px;
-                    font-weight: 600;
-                }
-
-                p {
-                    line-height: 14px;
-                    color: @grey3;
-                    font-size: 14px;    
-                }
-            }
-
-            .scrollable {
-                position: relative;
-                padding: 5px;
-                .calc-height(100, 80);
-                .background(@white);
-
-                .wrapper { 
-                    padding: 0 0 5px 0; 
-                }
-                
-                .iScrollVerticalScrollbar {
-                    top: 10px; 
-                    bottom: 10px;
-                    right: 8px;
-
-                    .iScrollIndicator { background: rgba(0,0,0,.2); }
-                }
-
-                &.dragging {
-                    overflow: visible !important;
-                }
-            }
-
-            .occupancy-block {
-                .diary-content > .diary-container > .diary-grid > .occupancy-block;
-                position: relative;
-                margin-bottom: 5px;
-                height: 60px;
-
-                span { 
-                    float: none;
-                }
-
-                .occupancy-status,
-                .occupancy-time {
-                    height: 100%;
-                } 
-
-                .occupancy-status {
-                    width: 100%;
-                    line-height: 1;
-                    padding: 15px 60px 15px 10px;
-                    .box-shadow(inset 0px 1px 1px 1px rgba(0,0,0,.2));
-
-                    .guest-name {
-                        .nowrap();
-                    }
-
-                    .room-type {
-                        .nowrap();
-                        font-weight: normal;
-                    }
-
-                    &:before {
-                        background-size: 40px 40px !important;
-                    }
-                }
-
-                .occupancy-time {
-                    width: 55px;
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    background-color: rgba(0,0,0,0.1);
-                    text-align: center;
-                    padding: 15px 10px;
-                    font-size: 18px;
-                    text-transform: none;
-                    line-height: 1;
-                    color: white;
-                    font-weight: 600;
-                    z-index: 99;
-
-                    .eta {
-                        font-size: 14px;
-                        font-weight: normal;
-                    }
-                }
-
-                &.deposit-required {
-                    .occupancy-time {
-                        .box-shadow(inset -1px 2px 1px 0px rgba(0, 0, 0, 0.2));
-                        background: @yellow;
-                        color: @red;
-                    }
-                }
-            }
-
-            &.open {
-                right: 0;
-                .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
-            }
-        }
-
         /* 12 hours grid ***/
         &.hours-12 {
 
@@ -1700,7 +1550,7 @@
     }
 }
 
-/* Sidebar - Unassigned (NEW DESIGN) - DELETE L1206-L1360 and L1660-L1702 when this is implemented ***/
+/* Sidebar - Unassigned ***/
 .diary-unassigned {
 
     .diary-nightly-search-form {

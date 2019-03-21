@@ -710,6 +710,15 @@ angular.module('sntRover')
 			setFocusOnCorporateSearchText ();
 		};
 
+		$scope.onUnassignedRoomToggle = function() {
+		    if ($scope.gridProps.unassignedRoomList.open) {
+                $scope.gridProps.unassignedRoomList.open = false;
+                $scope.renderGrid();
+            } else {
+                $scope.gridProps.unassignedRoomList.fetchList();
+            };
+        };
+
 	    /* _________________________________________________________
 		    BEGIN EVENT HOOKS
 		  ________________________________________________________

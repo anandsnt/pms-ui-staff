@@ -127,7 +127,6 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
-            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
@@ -185,7 +184,7 @@ angular.module('sntRover')
                 .format($rootScope.momentFormatForAPI);
             init();
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
-            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST', 'RESET');
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         };
 

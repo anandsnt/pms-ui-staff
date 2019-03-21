@@ -259,13 +259,30 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
         };
 
         /*
-         * Assign Room in Diary
+         * Fetch available time slots in Diary
          * @param {data} object
          * return object
          */
         this.fetchAvailableTimeSlots = function(params) {
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/available_time_slots';
+
+            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        /*
+         * Un-Assign Room in Diary
+         * @param {data} object
+         * return object
+         */
+        this.unAssignRoom = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/'+ params.id +'/unassign_room';
 
             BaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
