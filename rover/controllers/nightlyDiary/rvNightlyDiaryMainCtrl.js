@@ -372,7 +372,7 @@ angular.module('sntRover')
                  * Set time from rvNightlyDiarySetTimePopup.
                  */
                 $scope.addListener('SET_TIME_AND_SAVE', function ( e, timeObj) {
-                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, 'ASSIGN', timeObj);
+                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, $scope.setTimePopupData.type, timeObj);
                 });
 
                 /*
@@ -382,7 +382,7 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedMoveRoom = (roomDetails, reservationDetails) => {
-                    callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'MOVE');
+                    showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
                 };
 
                 // Handle book room button actions.

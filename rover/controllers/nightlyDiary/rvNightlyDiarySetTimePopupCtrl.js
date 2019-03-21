@@ -51,7 +51,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         return times;
     };
 
-    if ($scope.setTimePopupData.type === 'ASSIGN') {
+    if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
         $scope.setTimePopupData.arrivalTimeList = generateTimeDuration($scope.setTimePopupData.data.min_arrival_time, null);
         $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
     }
