@@ -126,6 +126,12 @@
 
     .entry {
 
+        input,
+        select {
+            font-size: 30px;
+            line-height: 30px;
+        }
+
         &.select { 
             &:after {
                 border-top-color: @white;
@@ -135,6 +141,17 @@
         &.action {
             .button {
                 max-width: 160px;
+            }
+        }
+
+        /* Datepicker */
+        &.input {
+            .icon-date {
+                .hide();
+            }
+
+            .hasDatepicker {
+                border: none;
             }
         }
     } 
@@ -206,6 +223,9 @@
                 color: @textColor;
             }
         }
+        .room-upgrades-pagination {
+            display: none !important;
+        }
     }
     
     #rate {
@@ -240,6 +260,16 @@
             fill: @white;
         }
 
+        &.large-icons {
+            li {
+                .option {
+                    width: 100px !important;
+                    height: 100px !important;
+                }
+
+            }
+        }
+
         .button {
             background: transparent;
             border: 2px solid @white;
@@ -258,6 +288,10 @@
                 font-size: 31px;
                 line-height: 36px;
             }
+            .option {
+                width: 100px !important;
+                height: 100px !important;
+            }
 
             .cc-details {
                 font-size: 16px;
@@ -268,7 +302,8 @@
                 }
             }
 
-            &:not(.icon-text):not(.break) > span {
+            &:not(.icon-text):not(.break) > span,
+            &:not(.icon-text):not(.break) > .span {
                 font-size: 16px;
                 line-height: 21px;
 
@@ -281,6 +316,10 @@
             /*&.break > span {
                 font-size: 28px;
             }*/
+            .option {
+                .square(100px);
+                border-radius: 100px;
+            }
         }
 
         .purchase-option {
@@ -309,7 +348,8 @@
                 }
             }
         }
-        /* Popup fixes end */       
+
+        /* Popup fixes end */
     }
 
     #selection { 
@@ -450,6 +490,14 @@
                 color: @white;
             }
         }
+
+        li {
+            border: none !important;
+        }
+
+        .add-on-content {
+            background-color: @brandColor;
+        }
     }
 
     .add-on {
@@ -540,6 +588,11 @@
 
         .upgrade-content {
             background-color: @brandColor;
+
+            h2 {
+                font-size: 31px;
+                line-height: 36px;
+            }
         }
 
         &.upgrade-list-v2 {
@@ -571,6 +624,25 @@
     }
 
     .ui-datepicker {
-        top: 70% !important;
+        top: 65% !important;
+        .ui-datepicker-header {
+            * {
+                font-size: 16px;
+                line-height: 60px;
+            }
+        }
+        tbody {
+            td {
+                line-height: 70px;
+
+                a {
+                    line-height: 70px;
+                }
+            }
+        }
+    }
+
+    #skipEmailInputBtn {
+        margin-top: 20px !important;
     }
 }

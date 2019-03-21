@@ -281,7 +281,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
-            params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
+            if ( $scope.scheduleParams.export_date ) {
+                params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
+            }
+            
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -528,14 +531,16 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Commissions': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Belgium Nationality Export': true
             };
 
             var forHourly = {
                 'Future Reservations': true,
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
-                'Police Report Export': true
+                'Police Report Export': true,
+                'Synxis - Reservations': true
             };
 
             if ( forHourly[item.report.title] ) {
@@ -594,8 +599,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 }
             };
 
-            var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate;
-            var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
+            var startsOn = $scope.selectedEntityDetails.starts_on || $rootScope.businessDate,
+                endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate,
+                exportDate = $scope.selectedEntityDetails.export_date || $rootScope.businessDate;
 
             // saved emails/FTP
             var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
@@ -669,6 +675,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.exportCalenderOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate)
             }, datePickerCommon);
+            $scope.scheduleParams.export_date = reportUtils.processDate(exportDate).today;
 
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
@@ -721,6 +728,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
                 // add filtered out and occurance
                 _.each($scope.$parent.$parent.schedulesList, function(item) {
+
                     item.filteredOut = false;
                     item.occurance = findOccurance(item);
                 });
@@ -739,7 +747,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                         active: false,
                         filteredOut: false
                     });
+
                 });
+
 
                 // sort schedulable reports by report name
                 $scope.$parent.$parent.schedulableReports = _.sortBy(

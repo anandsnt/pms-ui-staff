@@ -2198,6 +2198,7 @@ body { overflow: hidden; }
 /* Guest image 				==============================*/
 	.guest-image {
 		position: relative;
+		text-align: center;
 		#border-radius > .rounded();
 		.square(40px);
 		.pull-left;
@@ -2210,21 +2211,22 @@ body { overflow: hidden; }
 		}
 
 		.global-card {
-        position: absolute;
-        top: -5px;
-        left: -5px;
-    }
+	        position: absolute;
+	        top: -5px;
+	        left: -5px;
+	    }
 
-    .stay-count {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-    }
+	    .stay-count {
+	        position: absolute;
+	        top: -5px;
+	        right: -5px;
+	    }
 
 		img {
-			width: 100%;
-			height: auto;
-			#border-radius > .rounded();
+			max-width: 100%;
+	        max-height: 100%;
+	        .square(auto);
+	        #border-radius > .rounded();
 		}
 
 		&.accompany {

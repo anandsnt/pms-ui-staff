@@ -1,23 +1,23 @@
-angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'ACGIIntegrationSrv',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, ACGIIntegrationSrv) {
+angular.module('admin').controller('adArchivalTransferSetupCtrl', ['$scope', '$rootScope', 'config', 'ACGIIntegrationSrv',
+    function($scope, $rootScope, config, ACGIIntegrationSrv) {
 
         var TURN_ON = false,
             updateMode = function() {
-                if (!$scope.config.guest_id_archive_enabled) {
+                if (!$scope.config.archival_transfer_enabled) {
                     $scope.MODE = 'CONFIGURE';
-                } else if ( $scope.config.guest_id_archive_enabled && TURN_ON) {
+                } else if ( $scope.config.archival_transfer_enabled && TURN_ON) {
                     $scope.MODE = 'CONFIGURE_ON';
-                } else if ($scope.config.guest_id_archive_platform) {
+                } else if ($scope.config.archival_tranfer_platform) {
                     $scope.MODE = 'CONFIGURED';
                 } else {
                     $scope.MODE = 'DISCONNECTED';
                 }
             },
             updateConnectedDetails = function() {
-                if ($scope.config.guest_id_archive_platform === 'dropbox') {
-                    $scope.connctedDetails.name = 'Drop Box';
+                if ($scope.config.archival_tranfer_platform === 'dropbox') {
+                    $scope.connctedDetails.name = 'Dropbox';
                     $scope.connctedDetails.iconUrl = '/assets/images/archive-option-dropbox.png';
-                } else if ($scope.config.guest_id_archive_platform === 's3') {
+                } else if ($scope.config.archival_tranfer_platform === 's3') {
                     $scope.connctedDetails.name = 'AWS';
                     $scope.connctedDetails.iconUrl = '/assets/images/archive-option-aws.png';
                 } else {
@@ -35,9 +35,9 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             };
 
         $scope.enableAcceptButton = function() {
-            if ($scope.config.guest_id_archive_position.length >= 3
-                && $scope.config.guest_id_archive_last_name.length >= 3
-                && $scope.config.guest_id_archive_first_name.length >= 2) {
+            if ($scope.config.archival_admin_position.length >= 3
+                && $scope.config.archival_admin_last_name.length >= 3
+                && $scope.config.archival_admin_first_name.length >= 2) {
                 return true;
             } 
             return false;
@@ -45,7 +45,7 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         };
 
         $scope.validateToken = function() {
-            if ($scope.config && (($scope.config.guest_id_archive_platform_token && $scope.config.guest_id_archive_platform_token.length)
+            if ($scope.config && (($scope.config.archival_tranfer_platform_token && $scope.config.archival_tranfer_platform_token.length)
                 || ($scope.config.aws_secret_access_key && $scope.config.aws_access_key_id))) {
                 return true;
             }
@@ -53,20 +53,25 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
         };
 
         $scope.toggleEnabled = function() {
-            if ( !$scope.config.guest_id_archive_enabled ) {
-                $scope.config.guest_id_archive_enabled = true;
+            if ( !$scope.config.archival_transfer_enabled ) {
+                $scope.config.archival_transfer_enabled = true;
                 TURN_ON = true;
                 init();
             } else {
-                $scope.config.guest_id_archive_enabled = false;
+                $scope.config.archival_transfer_enabled = false;
                 $scope.MODE = 'DISCONNECTED';
             }
         };
 
         var setPlatform = function(platform) {
-            $scope.config.guest_id_archive_platform = platform;
-            $scope.config.guest_id_archive_platform_token = "";
+            $scope.config.archival_tranfer_platform = platform;
+            $scope.config.archival_tranfer_platform_token = "";
             $scope.MODE = 'ACCESS_TOKEN';
+        };
+
+        $scope.confirmCredentials = function() {
+            updateConnectedDetails();
+            $scope.MODE = 'CONFIGURED';
         };
 
         $scope.dropBoxSignIn = function() {
@@ -79,11 +84,11 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
 
         $scope.gapiSignIn = function() {
             if ($scope.GoogleAuth) {
-                $scope.config.guest_id_archive_platform = 'google_drive';
+                $scope.config.archival_tranfer_platform = 'google_drive';
                 $scope.GoogleAuth.grantOfflineAccess()
                 .then(function(res) {
                     if (res.code) {
-                        $scope.config.guest_id_archive_platform_token = res.code;
+                        $scope.config.archival_tranfer_platform_token = res.code;
                         $scope.MODE = 'ACCESS_TOKEN';
                         setTimeout(function () {
                             $scope.$apply();
@@ -109,8 +114,8 @@ angular.module('admin').controller('adArchiveScannedGuestIdentifiactionCtrl', ['
             });
         };
         $scope.disConnect = function() {
-            $scope.config.guest_id_archive_enabled = true;
-            $scope.MODE = 'CONFIGURE_ON';
+            $scope.config.archival_transfer_enabled = true;
+            $scope.MODE = 'CONFIGURE_ON';                
         };
         $scope.acceptTerms = function() {
             $scope.MODE = 'CHOOSE_PLATFORM';

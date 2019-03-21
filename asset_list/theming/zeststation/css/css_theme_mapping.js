@@ -60,7 +60,9 @@ module.exports = {
             'twa': [themeCSSRoot + 'twa.less'],
             'carrollton-inn': [themeCSSRoot + 'carrollton-inn.less'],
             'match': [themeCSSRoot + 'match.less'],
-            'liason': [themeCSSRoot + 'liason.less']
+            'liason': [themeCSSRoot + 'liason.less'],
+            'clarion-collection': [themeCSSRoot + 'clarion-collection.less'],
+            'la-copa': [themeCSSRoot + 'la-copa.less']
         };
     }
 };
