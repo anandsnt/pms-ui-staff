@@ -1,0 +1,50 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+
+	<div class="modal-content form alert diary-times">
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+	    <span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">Day use reservation occupies this room.</span>
+	    <em class="text" ng-if="setTimePopupData.type === 'ASSIGN'">Pick arrival/departure times for this reservation.</em>
+	    <em class="text" ng-if="setTimePopupData.type === 'BOOK'">Pick arrival/departure times for new reservation.</em>
+
+	    <div class="fields">
+	        
+	        <div class="entry margin hidden">
+	            <label for="nights">No. of Nights</label>
+	            <div class="select">
+	                <select id="nights">
+	                    <option value="1" selected>1</option>
+	                    ... repeat L15 for up to 19
+	                </select>
+	            </div>
+	        </div>
+
+	        <div class="entry margin">
+	            <label for="arrival">Arrival Time</label>
+	            <div class="select">
+	                <select id="arrival" ng-class="{'placeholder': setTimePopupData.selectedArrivalTime === ''}" ng-model="setTimePopupData.selectedArrivalTime"> <!-- Remove class 'placeholder' when option is selected -->
+	                    <option value="" selected>Set Arrival Time</option>
+	                    <option ng-repeat="time in setTimePopupData.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
+	                </select>
+	            </div>
+	        </div>
+
+	        <div class="entry">
+	            <label for="departure">Departure Time</label>
+	            <div class="select">
+	                <select id="arrival" ng-class="{'placeholder': setTimePopupData.selectedDepartureTime === ''}" ng-model="setTimePopupData.selectedDepartureTime">
+	                    <option value="" selected>Set Departure Time</option>
+	                    <option ng-repeat="time in setTimePopupData.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
+	                </select>
+	            </div>
+	        </div>
+	    </div>
+
+	    <div class="actions">
+	        <button type="button" class="button green" ng-class="{'overlay': setTimePopupData.selectedArrivalTime === '' || setTimePopupData.selectedDepartureTime === ''}" ng-click="saveAndContinueClicked()">Save & Continue</button>
+	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
+	    </div>
+	</div>
+
+</div>	
