@@ -96,6 +96,7 @@
                         <span class="icons icon-guest-travelagent" ng-hide="isEmpty(account.travel_agent)">
                             {{account.travel_agent}}
                         </span>
+                        <span class="icons icon-group" ng-if="!isEmpty(account.group)">{{account.group}}</span>
                     </div>
                     <div class="info">
                         <strong ng-class="getClassAgainstBalance(account)"><span class="currency currency-decoration">{{currencySymbol}}</span>{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->

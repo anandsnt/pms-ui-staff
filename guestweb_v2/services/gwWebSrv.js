@@ -28,12 +28,12 @@
 			// if the guestweb is accessed normaly, ie invoked using
 			// the mail sent from the hotel admin
 
-			if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {
+			if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1 ||
+                    absUrl.indexOf("/checkin/home?guest_web_token=") !== -1) {
 				var offset = absUrl.indexOf("?");
 				var remainingURl = absUrl.substring(offset, absUrl.length);
-				var startingUrl = absUrl.substring(0, offset);
 
-				apiUrl = startingUrl + "_data" + remainingURl;
+				apiUrl =  "/guest_web/home/index_data" + remainingURl;
 
 			} else if (absUrl.indexOf("checkin") !== -1) {
 				// to strip away state URLS

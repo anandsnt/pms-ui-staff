@@ -16,7 +16,7 @@
                 <div class="upgrade-content">
                     <h2>{{room.upgrade_room_type_name}}</h2>
                     <div class="price">
-                        <strong>+${{room.upsell_amount}}</strong>
+                        <strong>+{{ zestStationData.currencySymbol }}{{ room.upsell_amount }}</strong>
                         <small>
                             <text data-ng-bind-html="getTagValue('PER_NIGHT')" editable-text="PER_NIGHT"></text>
                             <br>
@@ -66,7 +66,7 @@
             <div class="upgrade-price">
                 <h2>{{selectedRoom.upgrade_room_type_name}}</h2>
                 <div class="price">
-                    <strong>+${{selectedRoom.upsell_amount}}</strong>
+                    <strong>+{{ zestStationData.currencySymbol }}{{ selectedRoom.upsell_amount }}</strong>
                     <small>
                         <text data-ng-bind-html="getTagValue('PER_NIGHT')" editable-text="PER_NIGHT"></text>
                         <text data-ng-bind-html="getTagValue('TAX_TEXT')" editable-text="TAX_TEXT"></text>

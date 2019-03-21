@@ -50,7 +50,6 @@ admin.service('adIFCInterfaceMappingSrv', [
 
         service.resetAuthToken = function(mapping_interface) {
             return ADBaseWebSrvV2.postJSON('/api/integrations/' + mapping_interface + '/reset_auth_token');
-
         };
 
         service.fetchMeta = function(interfaceIdentifier) {

@@ -9,7 +9,7 @@ admin.controller('ADDerbySoftSetupCtrl', [
             activeTab: 'SETUP'
         };
 
-        $scope.mappingTypes = ['cancellation_policies', 'tax_codes'];
+        $scope.mappingTypes = ['cancellation_policy', 'tax_code'];
 
         /**
          * when clicked on check box to enable/diable GoMomentIvy
@@ -29,7 +29,7 @@ admin.controller('ADDerbySoftSetupCtrl', [
          */
         $scope.generateAuthToken = function() {
             $scope.callAPI(adIFCInterfaceMappingSrv.resetAuthToken, {
-                mapping_interface: $scope.interface.toLowerCase(),
+                params: $scope.interface.toLowerCase(),
                 onSuccess: function(response) {
                     $scope.config.authentication_token = response.authentication_token;
                     $scope.closeDialog();

@@ -20,7 +20,7 @@
                         <input placeholder="" ng-init="focusedCompanyCard = false" ng-focus="focusedCompanyCard = true" ng-blur="focusedCompanyCard = false" ng-class="{'active': focusedCompanyCard}" class="masked-input icons icon-gc-company" auto-complete auto-options="companyAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onCompanyCardChange()" ng-model="accountConfigData.summary.company.name" style="width:{{ ((accountConfigData.summary.company && accountConfigData.summary.company.name && accountConfigData.summary.company.name.length) || 2) * 9 + 45}}px">
                         <!-- Search only companies -->
                         <input placeholder="" ng-init="focusedTravelAgent = false" ng-focus="focusedTravelAgent = true" ng-blur="focusedTravelAgent = false" ng-class="{'active': focusedTravelAgent}" class="masked-input icons icon-gc-ta" auto-complete auto-options="travelAgentAutoCompleteOptions" data-card-type="" type="text" value="" autocomplete="off" ng-change="onTravelAgentCardChange()" ng-model="accountConfigData.summary.travel_agent.name" style="width:{{ ((accountConfigData.summary.travel_agent && accountConfigData.summary.travel_agent.name && accountConfigData.summary.travel_agent.name.length) || 2) * 9 + 45}}px">
-                        <!-- Search only travel agents -->
+                        <span class="masked-input icons icon-gc-group">{{accountConfigData.summary.group.name}}</span>
                     </div>
                 </form>
                 <div class="card-actions" ng-hide="isInAddMode()">

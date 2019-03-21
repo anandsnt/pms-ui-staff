@@ -5,6 +5,11 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_maison_de_la_luz': [ themeCSSRoot + 'guestweb_maison_de_la_luz.css'],
+            'guestweb_ruby_hospitality': [ themeCSSRoot + 'guestweb_ruby_hospitality.css'],
+            'guestweb_merrion_row_hotel_and_public_house': [ themeCSSRoot + 'guestweb_merrion_row_hotel_and_public_house.css'],
+            'guestweb_clarion_collection': [ themeCSSRoot + 'guestweb_clarion_collection.css'],
+            'guestweb_la_copa_inn': [ themeCSSRoot + 'guestweb_la_copa_inn.css'],
             'guestweb_hotel_e': [ themeCSSRoot + 'guestweb_hotel_e.css'],
             'guestweb_liason_dc': [ themeCSSRoot + 'guestweb_liason_dc.css'],
             'guestweb_adrift_hotel': [ themeCSSRoot + 'guestweb_adrift_hotel.css'],

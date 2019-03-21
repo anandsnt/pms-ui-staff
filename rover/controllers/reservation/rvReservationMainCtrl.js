@@ -846,7 +846,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                         })(),
                         room_type_id: roomTypeId,
-                        room_id: staydetailInfo.roomId || '',
+                        room_id: $scope.reservationData.inHouse ? staydetailInfo.roomId : currentRoom.room_id,
                         adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
                         children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
                         infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
@@ -854,6 +854,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                     });
                 });
+
+                // For inhouse reservation, setting departure date data to that of the previous date
+                if ($scope.reservationData.inHouse) {
+                    var departureDate = reservationStayDetails[reservationStayDetails.length - 1].date;
+
+                    reservationStayDetails[reservationStayDetails.length - 1] = JSON.parse(JSON.stringify(reservationStayDetails[reservationStayDetails.length - 2]));
+                    reservationStayDetails[reservationStayDetails.length - 1].date = departureDate;
+                }
 
                 return reservationStayDetails;
             },
