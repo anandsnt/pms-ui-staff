@@ -353,7 +353,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param  {[type]} data [description]
 		 * @return undefined
 		 */
-		var onTransactionFetchSuccess = function(data, moveChargeData) {
+		var onTransactionFetchSuccess = function(data) {
 
 			$scope.hasPrintFolioEnabled = data.is_print_folio_enabled;
 			$scope.transactionsDetails = data;
@@ -385,10 +385,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * success method move charge
 		 */
-		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event, moveChargeData) {
+		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function(event) {
 
 			var chargesMoved = function(data) {
-					onTransactionFetchSuccess(data, moveChargeData);
+					onTransactionFetchSuccess(data);
 				},
 				params = {
 					"account_id": $scope.accountConfigData.summary.posting_account_id
@@ -407,9 +407,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * API calling method to get the transaction details
 		 * @return - undefined
 		 */
-		var getTransactionDetails = function(moveChargeData) {
+		var getTransactionDetails = function() {
 			var transactionSuccess = function(data) {
-					onTransactionFetchSuccess(data, moveChargeData);
+					onTransactionFetchSuccess(data);
 				},
 				params = {
 					"account_id": $scope.accountConfigData.summary.posting_account_id
