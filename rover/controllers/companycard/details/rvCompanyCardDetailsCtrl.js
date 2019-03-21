@@ -208,12 +208,47 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 		};
 
+		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
+
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
+				className: 'ngdialog-theme-default1 calendar-single1',
+				controller: 'companyTravelAgentMandatoryFieldsController',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
+		$scope.clickedCreateArAccountButton = function() {
+			$scope.isMandatoryPopupOpen = true;
+			if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
+				$scope.isArTabAvailable = true;		
+				$scope.$broadcast("REMOVE_VALIDATION");			
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				$scope.$broadcast("saveArAccount");
+			} else {
+				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
+			}				
+		};
+
+		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function() {
+			$scope.isMandatoryPopupOpen = false;
+		});
 
 		$scope.showARTab = function() {
 
 			createArAccountCheck = true;
 			saveContactInformation($scope.contactInformation);
 		};
+
+		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {
+			$scope.$broadcast("ADD_VALIDATION");
+			$scope.arAccountDetails = data;		
+			$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);
+			
+			$scope.$broadcast("saveArAccount");
+			$scope.switchTabTo('', 'cc-ar-accounts');
+		});
 
 		/*
 		*	CICO-45240
@@ -281,6 +316,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
+			if ($scope.isMandatoryPopupOpen) {
+				$scope.arAccountDetails.payment_due_days = null;
+				$scope.arAccountDetails.ar_number = data.newArNumber;
+				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
+			}
 		});
 
 		$scope.deleteArAccount = function() {
@@ -658,6 +698,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.$on("OUTSIDECLICKED", function(event) {
 
 			event.preventDefault();
+
+			if ($scope.isMandatoryPopupOpen) {
+				return;
+			}
 
 			if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
 				// On addMode and contact info not yet saved
