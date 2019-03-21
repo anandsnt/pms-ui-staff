@@ -147,8 +147,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADDerbySoftSetupCtrl',
         url: '/derbysoft/setup',
         resolve: {
-            derbysoftSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
+            }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('derbysoft');
             }]
         }
     });
