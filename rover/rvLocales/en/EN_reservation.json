@@ -165,4 +165,6 @@
     "GUEST_CARD": "Guest Card",
     "CREATE_RESERVATION": "New Reservation",
     "FIND_GUESTS": "Find Guests",
-    "REVERSE_CHECKIN": "Reverse Check In"
+    "REVERSE_CHECKIN": "Reverse Check In",
+    "CHECK_IN_REVERSED": "Check In Reversed",
+    "PLEASE_SET_ROOM_STATUS": "Please set room status"

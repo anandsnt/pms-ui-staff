@@ -71,7 +71,7 @@ module.exports = {
                     sharedRoot + "sntIDCollection/services/*.js",
                     sharedRoot + "sntIDCollection/constants/*.js",
                     sharedRoot + "sntIDCollection/controllers/*.js",
-                    servicesRoot + "bill/rvBillCardSrv.js"		    
+                    servicesRoot + "bill/rvBillCardSrv.js",		    
 
                     // Eliminate all spec files
                     '!**/*.spec.js'
