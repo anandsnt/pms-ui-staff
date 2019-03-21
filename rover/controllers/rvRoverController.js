@@ -938,6 +938,7 @@ sntRover.controller('roverController', [
         $rootScope.showTimeoutError = function () {
             // Hide loading message
             $scope.$emit('hideLoader');
+            $scope.$emit('resetLoader');
             ngDialog.open({
                 template: '/assets/partials/errorPopup/rvTimeoutError.html',
                 className: 'ngdialog-theme-default1 modal-theme1',
