@@ -40,7 +40,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
 
-		var callGenerateFolioNumberApiAfterSuccessfullMoveCharge = false;
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data) {
@@ -375,20 +374,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				}
 			}
 
-			if (callGenerateFolioNumberApiAfterSuccessfullMoveCharge) {
-				callGenerateFolioNumberApiAfterSuccessfullMoveCharge = false;
-				
-				var billIndex = _.indexOf($scope.transactionsDetails.bills, _.findWhere($scope.transactionsDetails.bills, {
-                        bill_id: moveChargeData.toBill
-                    })),
-				    movedToBillData = $scope.transactionsDetails.bills[billIndex];
-
-			    if (movedToBillData.balance_amount === "0.0") {
-					that.generateFolioNumber(movedToBillData.bill_id, movedToBillData.balance_amount, movedToBillData.is_folio_number_exists, billIndex);
-				}
-			}
 			configSummaryDateFlags();
 			loadDefaultBillDateData();
+			$scope.shouldGenerateFolioNumber = false;
 
 			$scope.refreshScroller('bill-tab-scroller');
 			$scope.refreshScroller('billDays');
@@ -410,7 +398,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					successCallBack: chargesMoved
 				};
 
-			callGenerateFolioNumberApiAfterSuccessfullMoveCharge = true;
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		});
 
@@ -522,7 +509,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.errorMessage = data.errorMessage;
 			};
 			
-			callGenerateFolioNumberApiAfterSuccessfullMoveCharge = true;
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );
 		};
 
@@ -1244,7 +1230,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billFormat.isInformationalInvoice = false;
 			$scope.isFolioNumberExists = $scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.reservationBillData = $scope.transactionsDetails;
-			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" 
+			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_transactions_exist 
+				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" 
 				&& $scope.transactionsDetails.is_bill_lock_enabled 
 				&& $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active) {
 				$scope.isInvoiceStepOneActive = true;
