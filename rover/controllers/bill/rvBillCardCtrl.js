@@ -465,10 +465,9 @@ sntRover.controller('RVbillCardController',
 		if ($scope.clickedButton === 'checkinButton') {
 			width = width + 230;
 		}
-		if ($scope.reservationBillData.bills.length < 10) {
-			width = width + 50;
-		}
-		width =  133 * $scope.reservationBillData.bills.length + width + 60;
+
+		width = 133 * $scope.reservationBillData.bills.length + width + 160;
+
 		return width;
 	};
 
@@ -3105,12 +3104,19 @@ sntRover.controller('RVbillCardController',
     });
 
     $scope.showFormatBillPopup = function(billNo) {
-    	$scope.billNo = billNo;
-    	$scope.isInformationalInvoice = false;
-    	$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
-    	$scope.isEmailedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once;
-    	$scope.isPrintedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once;
-    	$scope.isFolioNumberExists = $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists;
+		$scope.billNo = billNo;
+		$scope.isInformationalInvoice = false;
+		$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
+		$scope.isEmailedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once;
+		$scope.isPrintedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once;
+		$scope.isFolioNumberExists = $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists;  	
+		$scope.isInvoiceStepOneActive = false;
+		$scope.isInvoiceStepThreeActive = true;
+		$scope.shouldGenerateFinalInvoice = false;
+		$scope.isInvoiceStepTwoActive = false;
+		$scope.isInvoiceStepFourActive = false;
+		$scope.isInvoiceStepFiveActive = false;
+
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
     		controller: 'rvBillFormatPopupCtrl',
