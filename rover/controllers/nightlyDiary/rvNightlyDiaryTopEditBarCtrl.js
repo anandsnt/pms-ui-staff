@@ -113,5 +113,23 @@ angular.module('sntRover')
                 $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
             };
 
+            // CICO-62103 Handle Unassign Room button click.
+            $scope.unAssignRoomButtonClick = function() {
+                var successCallBack = function(data) {
+                    $scope.errorMessage = '';
+                    $scope.$emit('UPDATE_RESERVATIONLIST');
+                },
+                postData = {
+                    'id': $scope.currentSelectedReservation.id,
+                    'is_from_diary': true
+                },
+                options = {
+                    params: postData,
+                    successCallBack: successCallBack
+                };
+
+                $scope.callAPI(RVNightlyDiarySrv.unAssignRoom, options );
+            };
+
         }
 ]);
