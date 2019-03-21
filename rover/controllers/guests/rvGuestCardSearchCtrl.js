@@ -11,8 +11,7 @@ angular.module('sntRover').controller('guestCardSearchController',
    function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $filter, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
-        var self = this,
-            transitionParams = null;
+        var transitionParams = null;
 
         var GUEST_CARD_SCROLL = "guest_card_scroll",
             DEBOUNCE_SEARCH_DELAY = 600, // // Delay the function execution by this much ms
@@ -76,7 +75,7 @@ angular.module('sntRover').controller('guestCardSearchController',
         var onSearchSuccess = function (data) {
                 $scope.results = data.results;
                 $scope.totalResultCount = data.total_count;             
-			    markAlreadySelectedCards();
+	            markAlreadySelectedCards();
                 setTimeout(function() {
                     $scope.$broadcast('updatePagination', GUEST_CARD_SEARCH_PAGINATION_ID );
                     refreshScroller();

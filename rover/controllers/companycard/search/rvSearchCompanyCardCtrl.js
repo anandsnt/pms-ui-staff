@@ -1,7 +1,6 @@
 angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 'RVCompanyCardSearchSrv', '$stateParams', 'ngDialog', '$timeout', 'RVCompanyCardSrv', '$state', 'rvPermissionSrv',
 	function ($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog, $timeout, RVCompanyCardSrv, $state, rvPermissionSrv) {
-		var self = this,
-			transitionParams = null;
+		var transitionParams = null;
 
 		var filterValues = {
 			ALL: 'ALL',
