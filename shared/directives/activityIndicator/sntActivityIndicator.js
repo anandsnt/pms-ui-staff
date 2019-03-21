@@ -3,7 +3,7 @@ angular.module('sntActivityIndicator', [])
         function () {
             return {
                 restrict : 'E',
-                template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ' +
+                template: '<div ng-show="hasLoader" id="loading" class="no-print"><div id="loading-spinner" ></div></div> ' +
                 '<div ng-show="showTerminalActivity" id="loading">' +
                 '    <div id="six-payment-loader">' +
                 '        <div class="centeralign alert-box">' +
