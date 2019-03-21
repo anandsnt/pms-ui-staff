@@ -413,6 +413,20 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
             deferred.reject(data);
         });
         return deferred.promise;
-    };    
+    };  
+    // Final invoice
+    this.settleFinalInvoice = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
+
+			BaseWebSrvV2.postJSON(url).then(function(data) {
+
+			   	 deferred.resolve(data);
+			}, function(data) {
+			    deferred.reject(data);
+			});
+
+		return deferred.promise;
+	};  
 
 }]);
