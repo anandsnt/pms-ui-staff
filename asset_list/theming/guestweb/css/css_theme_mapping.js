@@ -5,6 +5,8 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_maison_de_la_luz': [ themeCSSRoot + 'guestweb_maison_de_la_luz.css'],
+            'guestweb_ruby_hospitality': [ themeCSSRoot + 'guestweb_ruby_hospitality.css'],
             'guestweb_merrion_row_hotel_and_public_house': [ themeCSSRoot + 'guestweb_merrion_row_hotel_and_public_house.css'],
             'guestweb_clarion_collection': [ themeCSSRoot + 'guestweb_clarion_collection.css'],
             'guestweb_la_copa_inn': [ themeCSSRoot + 'guestweb_la_copa_inn.css'],
