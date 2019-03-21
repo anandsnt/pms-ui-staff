@@ -116,7 +116,7 @@ angular.module('sntRover')
             // CICO-62103 Handle Unassign Room button click.
             $scope.unAssignRoomButtonClick = function() {
                 var successCallBack = function(data) {
-                    $scope.errorMessage = '';
+                    $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST', 'REFRESH');
                     $scope.$emit('UPDATE_RESERVATIONLIST');
                 },
                 postData = {
