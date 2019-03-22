@@ -17,7 +17,7 @@
 </fieldset>
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.value"
-                      ng-show="mapping.typeof==='cancellation_policy'"
+                      ng-show="mapping.typeof==='cancellation_code'"
                       valueproperty="id"
                       required="yes"
                       label-properties="['name', 'description']"
@@ -41,7 +41,7 @@
 </fieldset>
 <fieldset class="holder right">
   <ad-dropdown-name savemodel="mapping.external_value"
-                    ng-show="mapping.typeof==='cancellation_policy'"
+                    ng-show="mapping.typeof==='cancellation_code'"
                     valueproperty="code"
                     required="yes"
                     label-properties="['code', 'description']"
