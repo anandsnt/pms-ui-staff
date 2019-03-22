@@ -190,8 +190,10 @@ angular.module('sntRover')
 
         // To toggle filter and unassigned list.
         $scope.toggleFilter = function( activeTab ) {
+            var filterHasValue = ( $scope.diaryData.selectedRoomTypes.length > 0 || $scope.diaryData.selectedFloors.length > 0 );
+
             // While switch from Filter Bar to Unassigned List Bar, Clear filters and Refresh Diary.
-            if ( $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION') {
+            if ( filterHasValue && $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION') {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             }
 

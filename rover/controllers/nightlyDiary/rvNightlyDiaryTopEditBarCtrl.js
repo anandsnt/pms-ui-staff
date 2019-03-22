@@ -119,13 +119,17 @@ angular.module('sntRover')
                     $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST', 'REFRESH');
                     $scope.$emit('UPDATE_RESERVATIONLIST');
                 },
+                failureCallBack = function(errorMessage) {
+                    $scope.$emit('SHOW_ERROR_MESSAGE', errorMessage[0]);
+                },
                 postData = {
                     'id': $scope.currentSelectedReservation.id,
                     'is_from_diary': true
                 },
                 options = {
                     params: postData,
-                    successCallBack: successCallBack
+                    successCallBack: successCallBack,
+                    failureCallBack: failureCallBack
                 };
 
                 $scope.callAPI(RVNightlyDiarySrv.unAssignRoom, options );

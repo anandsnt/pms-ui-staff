@@ -20,7 +20,7 @@
     </div>
     <div class="unassigned-list no-actions scrollable scroll-vertical">
         <div class="wrapper">
-            <div class="guest {{reservation.statusClass}}" ng-class="{'selected': selectedItem.reservation_id === reservation.reservation_id, 'blocked disable-element': reservation.is_hourly }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
+            <div class="guest {{reservation.statusClass}}" ng-class="{'selected': selectedItem.reservation_id === reservation.reservation_id, 'blocked disable-element': reservation.is_hourly || (!reservation.is_hourly && reservation.no_of_nights === 0 ) }" ng-repeat="reservation in diaryData.unassignedReservationList.reservations" ng-click="clickedUnassignedItem($index)">
                 <div class="data">
                     <strong class="name">{{reservation.last_name}} {{reservation.first_name}}</strong>
                     <strong class="name" ng-if="escapeNull(reservation.last_name) == '' && escapeNull(reservation.first_name) == '' " translate>PENDING</strong>

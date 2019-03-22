@@ -613,13 +613,11 @@ angular.module('sntRover')
                  *  Refresh diary data - rooms and reservations after applying filter.
                  */
                 $scope.addListener('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
-                    if ( $scope.diaryData.selectedRoomTypes.length > 0 || $scope.diaryData.selectedFloors.length > 0 ) {
-                        resetUnassignedList();
-                        $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                        $scope.diaryData.paginationData.page = 1;
-                        fetchRoomListDataAndReservationListData();
-                        cancelReservationEditing();
-                    }
+                    resetUnassignedList();
+                    $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                    $scope.diaryData.paginationData.page = 1;
+                    fetchRoomListDataAndReservationListData();
+                    cancelReservationEditing();
                 });
 
                 /* 
@@ -647,7 +645,21 @@ angular.module('sntRover')
                     $scope.diaryData.availableSlotsForAssignRooms = {};
                     fetchRoomListDataAndReservationListData();
                 });
-
+                /*  
+                 *  To Hide 'ASSIGN' or 'MOVE' room button in Diary.
+                 */
+                $scope.addListener('SHOW_ERROR_MESSAGE', function (event, errorMessage) {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryErrorMessage.html',
+                        scope: $scope,
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        data: {
+                            errorMessage: errorMessage
+                        }
+                    });
+                });
                 /**
                  * utility method to call available slots API
                  */
