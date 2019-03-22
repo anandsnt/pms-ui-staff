@@ -5,7 +5,7 @@
 
 	    <span class="icons icon-popup-alert"></span>
 	    <span class="h2 message">Day use reservation occupies this room.</span>
-	    <em class="text" ng-if="setTimePopupData.type === 'ASSIGN'">Pick arrival/departure times for this reservation.</em>
+	    <em class="text" ng-if="setTimePopupData.type === 'ASSIGN' || setTimePopupData.type === 'MOVE'">Pick arrival/departure times for this reservation.</em>
 	    <em class="text" ng-if="setTimePopupData.type === 'BOOK'">Pick arrival/departure times for new reservation.</em>
 
 	    <div class="fields">
