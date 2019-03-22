@@ -1,12 +1,12 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content alert diary-assigned">
-	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialogAndRefresh()"><span class="icons icon-close invert"></span></button>
 
 	    <span class="icons icon-popup-alert"></span>
 	    <span class="h2 message">Suite Room Type Assigned</span>
 	    <em class="text">Assign room via Room Assignment Screen</em>
 
 	    <button type="button" class="button grey green modal-close">Go to Room Assignment</button>
-	    <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close Window</button>
+	    <button type="button" class="button blank modal-close" ng-click="closeDialogAndRefresh()">Close Window</button>
 	</div>
 </div>

@@ -15,9 +15,11 @@ angular.module('sntRover')
         $scope.selectedItem = {};
 
         // Handle validation popup close.
-        $scope.closeDialog = function() {
+        $scope.closeDialogAndRefresh = function() {
             $scope.selectedItem = {};
-            $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+            if ($scope.diaryData.isAssignRoomViewActive) {
+                $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+            }
             ngDialog.close();
         };
 
@@ -84,7 +86,13 @@ angular.module('sntRover')
         $scope.clickedUnassignedItem = function( index ) {
             var item = $scope.diaryData.unassignedReservationList.reservations[index];
 
-            retrieveAvailableRooms(item);
+            if (item.reservation_id === $scope.selectedItem.reservation_id) {
+                $scope.selectedItem = {};
+                $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+            }
+            else {
+                retrieveAvailableRooms(item);
+            }
         };
 
         $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function() {
