@@ -74,6 +74,6 @@
         <a ng-if="isReinstateVisible()" ng-click="checkReinstationAvailbility()" class="button white green-text bottom-button">
 			{{::('REINSTATE' | translate)}}
 		</a>
-        </a>
+        <button type="button" class="button white red-text bottom-button" ng-if="reservationData.reservation_card.can_reverse_checkin" ng-click="performReverseCheckIn()">{{::('REVERSE_CHECKIN' | translate)}}</button> 
     </div>
 </div>
