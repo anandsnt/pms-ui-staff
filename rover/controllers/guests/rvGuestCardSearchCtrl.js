@@ -75,7 +75,7 @@ angular.module('sntRover').controller('guestCardSearchController',
         var onSearchSuccess = function (data) {
                 $scope.results = data.results;
                 $scope.totalResultCount = data.total_count;             
-	            markAlreadySelectedCards();
+                markAlreadySelectedCards();
                 setTimeout(function() {
                     $scope.$broadcast('updatePagination', GUEST_CARD_SEARCH_PAGINATION_ID );
                     refreshScroller();
@@ -144,68 +144,68 @@ angular.module('sntRover').controller('guestCardSearchController',
         };
 
         /**
-		 * Handles the switching between merge and normal search view
-		 */
-		$scope.onViewChange = function() {
-			if (!$scope.viewState.isViewSelected) {
-				$scope.$broadcast('RESET_SELECTIONS_FOR_MERGE');
-			}
-			$scope.viewState.canMerge = null;
-			$scope.queryEntered();
+         * Handles the switching between merge and normal search view
+         */
+        $scope.onViewChange = function() {
+            if (!$scope.viewState.isViewSelected) {
+                $scope.$broadcast('RESET_SELECTIONS_FOR_MERGE');
+            }
+            $scope.viewState.canMerge = null;
+            $scope.queryEntered();
         };
 
         /**
-		 * Handles the selection of cards for merge from the search results
-		 * @param {Object} card - contains the details of guest card
-		 * @return {void}
-		 */
-		$scope.onCardSelection = function(card) {
-			if ($scope.viewState.selectedCardsForMerge.length === 0 && card.selected) {
-				card.isPrimary = true;
-				$scope.viewState.selectedPrimaryCard = card;
-			}
+         * Handles the selection of cards for merge from the search results
+         * @param {Object} card - contains the details of guest card
+         * @return {void}
+         */
+        $scope.onCardSelection = function(card) {
+            if ($scope.viewState.selectedCardsForMerge.length === 0 && card.selected) {
+                card.isPrimary = true;
+                $scope.viewState.selectedPrimaryCard = card;
+            }
 
-			if (card.selected) {
-				$scope.viewState.selectedCardsForMerge.push(card);				
-			} else {
-				var isCardPrimary = card.isPrimary;
+            if (card.selected) {
+                $scope.viewState.selectedCardsForMerge.push(card);				
+            } else {
+                var isCardPrimary = card.isPrimary;
 
-				$scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(selectedCard) {
-					
-					if (selectedCard.id === card.id) {
-						card.isPrimary = false;
-						if (isCardPrimary) {
-							$scope.viewState.selectedPrimaryCard = {};	
-						}
-					}
-					return selectedCard.id === card.id;
-				});
+                $scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(selectedCard) {
+                    
+                    if (selectedCard.id === card.id) {
+                        card.isPrimary = false;
+                        if (isCardPrimary) {
+                            $scope.viewState.selectedPrimaryCard = {};	
+                        }
+                    }
+                    return selectedCard.id === card.id;
+                });
 
 
-				if (isCardPrimary && $scope.viewState.selectedCardsForMerge.length > 0) {
-					$scope.viewState.selectedCardsForMerge[0].isPrimary = true;
-					$scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
-				}
+                if (isCardPrimary && $scope.viewState.selectedCardsForMerge.length > 0) {
+                    $scope.viewState.selectedCardsForMerge[0].isPrimary = true;
+                    $scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
+                }
             }
             $scope.$broadcast('REFRESH_SELECTED_CARDS_FOR_MERGE_SCROLLER');
         };
         
-		// Marks the card as already selected if it is added to merge cards screen
-		var markAlreadySelectedCards = function() {
-			if ($scope.viewState.selectedCardsForMerge.length > 0) {
-				$scope.results.forEach(function(card) {
-					var selectedCard = _.find($scope.viewState.selectedCardsForMerge, {id: card.id});
+        // Marks the card as already selected if it is added to merge cards screen
+        var markAlreadySelectedCards = function() {
+            if ($scope.viewState.selectedCardsForMerge.length > 0) {
+                $scope.results.forEach(function(card) {
+                    var selectedCard = _.find($scope.viewState.selectedCardsForMerge, {id: card.id});
 
-					if (selectedCard) {
-						card.selected = true;
+                    if (selectedCard) {
+                        card.selected = true;
                         card.isPrimary = selectedCard.isPrimary;
                         if (card.isPrimary) {
-							$scope.viewState.selectedPrimaryCard = card;	
-						}						
-					}
-				});
-			}
-		};
+                            $scope.viewState.selectedPrimaryCard = card;	
+                        }						
+                    }
+                });
+            }
+        };
         
         // Initialize the controller variables
         var init = function () {
@@ -218,13 +218,13 @@ angular.module('sntRover').controller('guestCardSearchController',
             $scope.isGuestCard = true;
 
             $scope.viewState = {
-				isViewSelected: true,
-				selectedCardsForMerge: [],
-				selectedPrimaryCard: {},
-				mergeStatusText: '',
-				hasInitiatedMergeVerification: false,
-				mergeStatusErrors: {}
-			};
+                isViewSelected: true,
+                selectedCardsForMerge: [],
+                selectedPrimaryCard: {},
+                mergeStatusText: '',
+                hasInitiatedMergeVerification: false,
+                mergeStatusErrors: {}
+            };
 
             var scrollerOptions = {
                 tap: true,
@@ -243,12 +243,12 @@ angular.module('sntRover').controller('guestCardSearchController',
 
             transitionParams = $state.transition && $state.transition.params('from');
 
-			if (transitionParams && transitionParams.isMergeViewSelected) {
-				$scope.viewState.isViewSelected = !transitionParams.isMergeViewSelected;
-				$scope.textInQueryBox = transitionParams.query;				
-				$scope.viewState.selectedCardsForMerge = transitionParams.selectedIds;
-				$scope.queryEntered();
-			}
+            if (transitionParams && transitionParams.isMergeViewSelected) {
+                $scope.viewState.isViewSelected = !transitionParams.isMergeViewSelected;
+                $scope.textInQueryBox = transitionParams.query;				
+                $scope.viewState.selectedCardsForMerge = transitionParams.selectedIds;
+                $scope.queryEntered();
+            }
 
             // While coming back to search screen from DISCARD button
             else if ($stateParams.textInQueryBox) {
@@ -270,23 +270,23 @@ angular.module('sntRover').controller('guestCardSearchController',
         };
         
         /**
-		 * 
-		 * @param {Number} id identifier for the card
-		 * @param {String} accountType CC/TA
-		 * @return {void}
-		 */
-		$scope.navigateToDetails = function(guestId) {
-			if ($scope.viewState.hasInitiatedMergeVerification) {
-				return false;
-			}
+         * 
+         * @param {Number} id identifier for the card
+         * @param {String} accountType CC/TA
+         * @return {void}
+         */
+        $scope.navigateToDetails = function(guestId) {
+            if ($scope.viewState.hasInitiatedMergeVerification) {
+                return false;
+            }
 
-			$state.go('rover.guest.details', {
-				guestId: guestId,
-				query: $scope.textInQueryBox,
-				selectedIds: $scope.viewState.selectedCardsForMerge || [],
-				isMergeViewSelected: !$scope.viewState.isViewSelected				
-			});
-		};
+            $state.go('rover.guest.details', {
+                guestId: guestId,
+                query: $scope.textInQueryBox,
+                selectedIds: $scope.viewState.selectedCardsForMerge || [],
+                isMergeViewSelected: !$scope.viewState.isViewSelected				
+            });
+        };
 
         init();
     }

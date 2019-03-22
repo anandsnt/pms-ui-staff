@@ -308,6 +308,9 @@ sntRover.controller('roverController', [
         });
         $scope.searchBackButtonCaption = '';
 
+        // Temporary hack to enable the merge options only for pilot properties
+        $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
+
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that

@@ -6,7 +6,7 @@
             <!-- add .disabled if showing archived -->
             <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
                 <!-- Add disabled="disabled" if showing archived -->
-                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()" ng-disabled="!hasMergeViewPermission">
+                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()" ng-disabled="!isCardMergeEnabled || !hasMergeViewPermission">
                 <label class="data-off">
                     <span class="value">View</span>
                     <span class="switch-icon">Merge</span>
