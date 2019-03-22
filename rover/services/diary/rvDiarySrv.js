@@ -1065,9 +1065,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 this.fetchUnassignedRoomList = function(params) {
                     var deferred = $q.defer();
-                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date,
+                        businessDate = $rootScope.businessDate;
 
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        angular.forEach(data.reservations, function(reservation) {
+                            reservation.statusClass = reservation.arrival_date === businessDate ? 'guest check-in' : 'guest no-status';
+                        });
                         deferred.resolve(data.reservations);
                     }, function(error) {
                         deferred.reject(error);
