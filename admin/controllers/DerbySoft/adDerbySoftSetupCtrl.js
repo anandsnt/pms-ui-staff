@@ -1,6 +1,6 @@
 admin.controller('ADDerbySoftSetupCtrl', [
-    '$scope', 'derbysoftSetupValues', 'adInterfacesCommonConfigSrv', 'adIFCInterfaceMappingSrv', 'ngDialog',
-    function($scope, derbysoftSetupValues, adInterfacesCommonConfigSrv, adIFCInterfaceMappingSrv, ngDialog) {
+    '$scope', 'config', 'adInterfacesCommonConfigSrv', 'adIFCInterfaceMappingSrv', 'ngDialog', 'mappingTypes',
+    function($scope, config, adInterfacesCommonConfigSrv, adIFCInterfaceMappingSrv, ngDialog, mappingTypes) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'DERBYSOFT';
@@ -8,8 +8,6 @@ admin.controller('ADDerbySoftSetupCtrl', [
         $scope.state = {
             activeTab: 'SETUP'
         };
-
-        $scope.mappingTypes = ['cancellation_policy', 'tax_code'];
 
         /**
          * when clicked on check box to enable/diable GoMomentIvy
@@ -73,6 +71,7 @@ admin.controller('ADDerbySoftSetupCtrl', [
          * @return {undefined}
          */
         (function() {
-            $scope.config = derbysoftSetupValues;
+            $scope.config = config;
+            $scope.mappingTypes = mappingTypes.data;
         })();
     }]);
