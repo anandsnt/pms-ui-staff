@@ -204,9 +204,9 @@ var UnassignedRoomPanel = React.createClass({
             containerClassName = containerClassName + ' dragging';
         }
 
-        var __getItemClassName = function(index) {
+        var __getItemClassName = function(room, index) {
             return index.toString() === self.state.selectedIndex ?
-        'guest check-in selected' : 'guest check-in';
+                room.statusClass + ' selected' : room.statusClass;
         };
 
         var unassignedList;
@@ -217,7 +217,7 @@ var UnassignedRoomPanel = React.createClass({
                 var occupancyBlock = {
                     key: i,
                     id: 'ob-' + i,
-                    className: __getItemClassName(i)
+                    className: __getItemClassName(room, i)
                 };
 
                 occupancyBlock[self.clickEvent] = self.__onListSelect.bind(self, i);
@@ -248,13 +248,14 @@ var UnassignedRoomPanel = React.createClass({
                         React.DOM.div(
                             {
                                 className: 'type'
+
                             }, room.is_hourly ? 'D' : 'N'
                         ),
                         React.DOM.div(
                             {
                                 className: 'nights'
                             }, room.is_hourly ?
-                                self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time).hhs + ' Hours'
+                                self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time).hh + ' Hours'
                                 : room.no_of_nights + ' Nights',
                             room.is_hourly ? React.DOM.span(
                                 {
