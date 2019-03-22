@@ -615,6 +615,18 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchCountries = function(params) {
+            params = params || {};
+
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: ' /ui/country_list',
+                resKey: '',
+                params: params
+            });
+        };        
+
         // Search groups based on query string
         service.fetchGroups = function(params) {
 
