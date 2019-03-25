@@ -153,22 +153,22 @@ angular.module('admin').controller('adIntegrationSyncCtrl', ['$scope', '$rootSco
         };
 
         (function () {
-            // $scope.errorMessage = $scope.successMessage = '';
-            // $scope.fromDate = null;
-            // $scope.toDate = null;
-            //
-            // // Disable toggle if either of the lists is empty!
-            // $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
-            //     !$scope.config.historical_data_sync_items;
-            //
-            // $scope.startDatePickerOptions = Object.assign({
-            //     onSelect: fromDateSelected
-            // }, commonDatePickerOptions);
-            // $scope.endDatePickerOptions = Object.assign({
-            //     onSelect: toDateSelected
-            // }, commonDatePickerOptions);
-            //
-            // $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
+            $scope.errorMessage = $scope.successMessage = '';
+            $scope.fromDate = null;
+            $scope.toDate = null;
+
+            // Disable toggle if either of the lists is empty!
+            $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
+                !$scope.config.historical_data_sync_items;
+
+            $scope.startDatePickerOptions = Object.assign({
+                onSelect: fromDateSelected
+            }, commonDatePickerOptions);
+            $scope.endDatePickerOptions = Object.assign({
+                onSelect: toDateSelected
+            }, commonDatePickerOptions);
+
+            $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
 
         })();
     }
