@@ -1,0 +1,65 @@
+<fieldset class="holder full-width">
+    <div class="form-title">
+        <h3 ng-if="::!isExport">Synchronize <span>Data</span></h3>
+        <h3 ng-if="::isExport">Export <span>Data</span></h3>
+    </div>
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+    <fieldset class="holder left">
+
+        <ad-checkbox ng-if="config.historical_data_sync_items && !isExport"
+                     is-checked="syncHistoricalData"
+                     is-disabled="disableSyncHistoricalDataToggle"
+                     change="onToggleHistoricalSync"
+                     label="{{ 'SYNC_HISTORICAL_DATA' | translate}}"
+                     div-class="full-width">
+        </ad-checkbox>
+
+        <div class="entry has-datepicker margin" ng-show = "isExport">
+            <label>{{'DATE' | translate}}
+            </label>
+            <input type="text" ui-date="startDatePickerOptions"
+                   ng-model="fromDate"
+                   placeholder="Select Date"
+                   class="date-picker-input-small"
+                   readonly>
+        </div>
+
+        <div class="entry has-datepicker margin" ng-show = "!isExport">
+            <label>{{'FROM_DATE' | translate}}
+            </label>
+            <input type="text" ui-date="startDatePickerOptions"
+                   ng-model="fromDate"
+                   placeholder="Select Start Date"
+                   class="date-picker-input-small"
+                   readonly>
+        </div>
+        <div class="entry has-datepicker margin" ng-show = "!isExport">
+            <label>{{'TO_DATE' | translate}}
+            </label>
+            <input type="text" ui-date="endDatePickerOptions"
+                   ng-model="toDate"
+                   placeholder="Select End Date"
+                   class="date-picker-input-small"
+                   readonly>
+        </div>
+
+        <div class="entry full-width">
+            <label>
+                {{isExport? '': 'Synchronize'}}
+            </label>
+            <button type="button" like-type="common" class="button ng-binding blue sm-refresh-btn"
+                    ng-click="startSync()"
+                    ng-class="{'grey' : !fromDate || !toDate}"
+                    ng-disabled="!fromDate || !toDate"
+                    translate>
+                {{isExport? 'EXPORT': 'SYNC'}}
+            </button>
+        </div>
+    </fieldset>
+    <fieldset class="holder right" ng-if="::!isExport">
+        <ad-checkbox ng-repeat="item in syncItems" is-checked="item.isSelected" label="{{item.id | uppercase}}"
+                     div-class="full-width"></ad-checkbox>
+    </fieldset>
+</fieldset>
