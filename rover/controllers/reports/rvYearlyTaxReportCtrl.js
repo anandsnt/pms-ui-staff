@@ -24,6 +24,7 @@ angular.module('sntRover')
             that = this;
         
         that.arrayToPromise = [];
+        
         /*
          * Building data to queue promises
          * @vatType = vat type
@@ -189,10 +190,12 @@ angular.module('sntRover')
                 promises = [];
 
                 angular.forEach(arrayToPromise, function(item) {
+
                     var postParamsToApi = {
                             "year": $scope.chosenReport.year,
                             "with_vat_id": (item.accountVatType === 'WITH_VAT_ID'),
-                            "account_type_id": item.accountTypeId
+                            "account_type_id": item.accountTypeId,
+                            "country_ids": $scope.appliedFilter.country_ids
                         },
                         paramsToService = {
                             "postParamsToApi": postParamsToApi,

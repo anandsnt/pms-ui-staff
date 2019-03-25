@@ -377,6 +377,11 @@
     data="uiChosenReport.hasTravelAgentsSearch.data"
     options="uiChosenReport.hasTravelAgentsSearch.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasIncludeCountry && uiChosenReport.hasIncludeCountry.data.length"
+    label="Country"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasIncludeCountry.data"
+    options="uiChosenReport.hasIncludeCountry.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"
