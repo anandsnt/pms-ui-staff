@@ -1179,6 +1179,7 @@ sntRover.controller('RVbillCardController',
 		}
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
+		
 		$scope.getBillData($scope.currentActiveBill);	
 	});
 
