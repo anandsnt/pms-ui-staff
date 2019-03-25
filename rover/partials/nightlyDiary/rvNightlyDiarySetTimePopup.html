@@ -10,12 +10,11 @@
 
 	    <div class="fields">
 	        
-	        <div class="entry margin hidden">
+	        <div class="entry margin" ng-if="setTimePopupData.type === 'BOOK'">
 	            <label for="nights">No. of Nights</label>
 	            <div class="select">
-	                <select id="nights">
-	                    <option value="1" selected>1</option>
-	                    ... repeat L15 for up to 19
+	                <select id="nights" ng-model="setTimePopupData.selectedCount" ng-change="daysCountChanged()">
+	                    <option value="{{item.day}}" ng-repeat="item in setTimePopupData.processData">{{item.day}}</option>
 	                </select>
 	            </div>
 	        </div>
