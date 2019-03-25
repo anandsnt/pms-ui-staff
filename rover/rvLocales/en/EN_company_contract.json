@@ -116,4 +116,6 @@
     "RESERVATION_COMMISSIONS_WARNING": "Commission may exist for the TA card. Please review the commission calculation.",
     "CONTRACTED_RATE_EXISTS_WARNING": "Contracted rate exists on selected card. Update rate on reservation?",
     "CONTRACTED_RATE_EXISTS_AND_COMMISSION_WARNING": "Contracted rate exists on selected card. Please review commission calculation.",
-    "TA_CARD_CANT_BE_REMOVED_WARNING_FOR_COMMISSIONS": "The Travel agent can't be detached due to the commission status."
+    "TA_CARD_CANT_BE_REMOVED_WARNING_FOR_COMMISSIONS": "The Travel agent can't be detached due to the commission status.",
+
+    "MERGE_CARDS": "Merge Cards"

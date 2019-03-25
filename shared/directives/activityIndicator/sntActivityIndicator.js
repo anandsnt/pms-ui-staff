@@ -3,7 +3,7 @@ angular.module('sntActivityIndicator', [])
         function () {
             return {
                 restrict : 'E',
-                template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ' +
+                template: '<div ng-show="hasLoader" id="loading" class="no-print"><div id="loading-spinner" ></div></div> ' +
                 '<div ng-show="showTerminalActivity" id="loading">' +
                 '    <div id="six-payment-loader">' +
                 '        <div class="centeralign alert-box">' +
@@ -18,6 +18,10 @@ angular.module('sntActivityIndicator', [])
                             showLoader: 0,
                             hideLoader: 0
                         };
+
+                        $scope.$on('resetLoader', function () {
+                            sntActivity.resetLoader();
+                        });
 
                         $scope.$on('showLoader', function () {
                             stats.showLoader++;
@@ -70,6 +74,11 @@ angular.module('sntActivityIndicator', [])
             };
 
             service.handleLegacyHide = function () {
+                updateIndicator();
+            };
+
+            service.resetLoader = function () {
+                activities = [];
                 updateIndicator();
             };
 

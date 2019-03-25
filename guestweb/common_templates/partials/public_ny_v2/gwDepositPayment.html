@@ -32,10 +32,10 @@
                 <p class="main-text text-left" ng-bind="screenDetails.title"></p>
                 <p class="sub-main-text text-left" ng-bind="screenDetails.description"></p>
                 <p class="sub-main-text text-left">Deposit Amount:</p>
-                <p class="sub-main-text text-left">{{depositAmount}}</p>
+                <p class="sub-main-text text-left">{{ depositAmount  | number:2 }}</p>
             </div>
             <div class="row">
-                <a class="btn btn-template early-checkin-button margin-top-10" ng-click="payNow()"> Pay {{depositAmount}}</a>
+                <a class="btn btn-template early-checkin-button margin-top-10" ng-click="payNow()"> Pay {{ depositAmount  | number:2 }}</a>
                 <a class="btn btn-template early-checkin-button margin-top-10" ng-click="cancelActions()">Cancel</a>
             </div>
         </div>

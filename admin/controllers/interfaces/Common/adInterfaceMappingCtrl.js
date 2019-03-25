@@ -6,7 +6,7 @@ admin.controller('adInterfaceMappingCtrl', [
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         var mappingText = {
-          'cancellation_policy': 'Cancellation Policies',
+          'cancellation_code': 'Cancellation Codes',
           'tax_code': 'Tax Codes'
         };
 

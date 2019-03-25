@@ -772,5 +772,39 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+
+        /**
+         * Verify whether the given cc/ta are eligible for being merged
+         * @param {Object} params contains array of ids of the cc/ta
+         * @return {Promise} promise
+         */
+        this.verifyTravelAgentCompanyCardMerge = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/validate_card_merge';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
+        };
+
+        /**
+         * Merge the non-primary cards to primary card
+         * @param {Object} params contains primary card id, non-primary card ids and card type
+         * @return {Promise} promise
+         */
+        this.mergeCards = function(params)  {
+            var deferred = $q.defer(),
+                url = '/api/accounts/merge_cards';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise; 
+        };
     }
 ]);

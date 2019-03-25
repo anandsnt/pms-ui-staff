@@ -133,7 +133,7 @@
 					
 					<!-- Posting Amount -->
 	                <div class="title">
-	                    {{'CREDIT_LIMIT' | translate}}<span>({{currencySymbol}})</span>
+	                    {{'CREDIT_LIMIT' | translate}}<span class="currency">({{currencySymbol}})</span>
 	                </div>
 	                <div class="entry">
 	                    <input type="text" ng-model="selectedEntity.credit_limit" ng-disabled="!hasPermissionToEditCreditLimit();"/>
