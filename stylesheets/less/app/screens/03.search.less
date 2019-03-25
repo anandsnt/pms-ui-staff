@@ -93,7 +93,7 @@
                     right: 0;
                 }
 
-                &:after {
+                &:after {
                     bottom: 0;
                 }
 
@@ -256,12 +256,12 @@
                         }
 
                         &.checked {
-                            .primary { .show(); }
+                            .primary { .show(); }
                         }
                     }
                 }
 
-                &.no-address {
+                &.no-address {
                     label {
                         &:not(.checked) {
                             
@@ -533,21 +533,19 @@
             padding-right: 340px;
 
             .merge-cards { .show(); }
+            .find-cards-header {
+                li {
+                    &.rate { .hide(); }
+                }
+            }
             .search-results {
                 li:not(.no-content) {
-                    &.reservation {
+                    &.all-cards {
                         label {
                             &.checkbox { .show(); }
                         }
-                        .data {
-                            .calc-width( 100, 280 );
-                        }
-
-                        .last-stay {
-                            width: 200px;
-                            float: right;
-                        }
-                        
+                        .data { .calc-width(100, 185); }
+                        .rate { .hide(); }
                         a {
                             padding-left: 50px;
                         }
@@ -1410,11 +1408,11 @@
                                     }
                                 }
 
-                                &.description {
+                                &.description {
                                     padding-left: 9px;
                                 }
 
-                                &.description + td {
+                                &.description + td {
                                     padding-right: 12px;
                                     text-align: right;
                                     li {
@@ -1454,64 +1452,99 @@
                 /* Group Rooming List ***/
                 &.rooming-list {
                     position: relative;
-
+                    
                     .check {
                         top: 10px;
                         left: 10px;
                     }
 
                     a,
-                    .faux-anchor { padding: 10px 0 0 0; }                   
+                    .faux-anchor { 
+                        padding: 10px 10px 10px 65px;
+                        height: 60px;
+                        #flexbox > .parent(row wrap, '', center, '' );
+                    }
+
+                    .guest-image {
+                        margin-right: 5px;
+                        .square(40px);
+
+                        &.accompany {
+                            img {
+                                width: 30px;
+
+                                &:nth-child(2) {
+                                    top: 10px;
+                                    left: 10px;
+                                }
+                            }
+                        }
+                    }
 
                     .data {
-                        margin: 0 5px 0 65px;
-                        .calc-width(33, 51);
+                        padding-right: 5px;
+                        margin-right: 5px;
+                        .calc-width(33, 74);
 
-                        h2 { 
+                        h2 {
                             font-size: 20px;
                             line-height: 20px;
-                            margin: 0; 
+                            margin: 0;
                         }
 
-                        .room { 
-                            font-weight: 600; 
+                        span {
+                            line-height: 20px;
+                        }
 
-                            &.unassigned { color: @grey3; text-transform: uppercase; }
+                        .room {
+                            font-weight: 600;
+
+                            &.unassigned { 
+                                color: @grey3; 
+                                text-transform: uppercase; 
+                            }
                         }
 
                         .confirmation { font-weight: 400; }
                     }
 
                     .reservation-info {
+                        line-height: 30px;
                         margin-right: 5px;
-                        .calc-width(34, 57);
+                        float: none;
+                        height: 30px;
+                        .calc-width(34, 28);
+                        #flexbox > .parent(row wrap, '', '', '' );
 
-                        time { line-height: 30px; }
-
-                        .arrival-departure { 
-                            padding: 5px 0;
-                            margin-right: 5px;
-                            width: 50%;
+                        .arrival-departure,
+                        .departing {
+                            margin: 0;
+                            padding: 0 5px;
+                            float: none;
+                            height: 30px;
                         }
 
-                        .departing { 
-                            padding: 5px 0;
-                            .calc-width(50, 5); 
+                        .arrival-departure {
+                            width: 51%;
+                        }
+
+                        .departing {
+                            width: 49%;
                         }
                     }
 
                     .room-info {
                         text-transform: uppercase;
-                        margin: 5px 5px 0 0;
-                        .calc-width(20, 29);
-                        .pull-left;
+                        padding-left: 5px;
+                        margin-right: 5px;
+                        .calc-width(20, 15);
 
-                        .room-type { 
+                        .room-type {
                             font-weight: 600;
                             .nowrap();
-                            .show; 
+                            .show;
                         }
-                        
+
                         .room-occupancy {
                             font-size: 14px;
                         }
@@ -1519,18 +1552,17 @@
 
                     .rate {
                         line-height: 40px;
+                        padding-left: 5px;
                         margin-right: 5px;
-                        .calc-width(13, 28);
-                        .pull-left;
+                        .calc-width(13, 19);
                     }
 
                     .reservation-status {
-                        width: 80px;
-                        .pull-left;
+                        width: 70px;
 
                         .guest-status {
                             float: none;
-                            margin: 5px auto 0;
+                            margin: 0 auto;
                             .square(30px);
                         }
                     }
@@ -1619,7 +1651,7 @@
                             font-size: 14px;
                         }
 
-                        .commissionable {
+                        .commissionable {
                             width: 140px;
                             font-size: 14px;
                         }
@@ -2274,7 +2306,7 @@
                         color: @grey3;
                         .nowrap();
                         width: 100%;
-                        
+
                         &.icon-location {
                             background-size: 100px;
                             background-position: -3px -32px;
@@ -2711,12 +2743,15 @@
                         &:last-child { margin-right: 0; }
                     }
 
+                    .confirmation {
+                        color: @textColor;
+                        font-weight: 600;
+                    }
+
                     .icons {
                         color: @grey3;
                         padding-left: 20px;
                     }
-
-                    .confirmation { color: @textColor; }
                 }
 
                 .info {
