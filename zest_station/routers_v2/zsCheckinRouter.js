@@ -79,7 +79,7 @@ sntZestStation.config(['$stateProvider',
 
         $stateProvider.state('zest_station.add_remove_guests', {
             url: '/checkInAddRemoveGuest',
-            params:{
+            params: {
                 pickup_key_mode: ''
             },
             templateUrl: '/assets/partials_v2/checkin/zsCheckInAddRemoveGuest.html',
