@@ -6,25 +6,27 @@ angular.module('sntRover').controller('guestCardSearchController',
   'ngDialog',
   '$timeout',
   '$state',
-  '$filter',  
-   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $filter) {
+  '$filter',
+  'rvPermissionSrv',  
+   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $filter, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
+        var transitionParams = null;
 
         var GUEST_CARD_SCROLL = "guest_card_scroll",
             DEBOUNCE_SEARCH_DELAY = 600, // // Delay the function execution by this much ms
-            GUEST_CARD_SEARCH_PAGINATION_ID = "guest_card_search";        
+            GUEST_CARD_SEARCH_PAGINATION_ID = "guest_card_search";
         
         // Refresh the guest card search scroller
         var refreshScroller = function() {
-            if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(GUEST_CARD_SCROLL) ) {
-                $scope.myScroll[GUEST_CARD_SCROLL].scrollTo(0, 0, 100);
-            }
+                if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(GUEST_CARD_SCROLL) ) {
+                    $scope.myScroll[GUEST_CARD_SCROLL].scrollTo(0, 0, 100);
+                }
 
-            $timeout(function() {
-                $scope.refreshScroller(GUEST_CARD_SCROLL);
-            }, 300);
-        };
+                $timeout(function() {
+                    $scope.refreshScroller(GUEST_CARD_SCROLL);
+                }, 300);
+            };
 
         /**
          * Make the search string highlighted
@@ -48,7 +50,7 @@ angular.module('sntRover').controller('guestCardSearchController',
          */
         $scope.queryEntered = _.debounce(function() {
             if ($scope.textInQueryBox === "") {
-                $scope.guestSearch.results = []; 
+                $scope.results = []; 
                 $scope.$apply();                               
             } else {
                 displayFilteredResults();
@@ -62,7 +64,7 @@ angular.module('sntRover').controller('guestCardSearchController',
         // Clear search results
         $scope.clearResults = function() {
             $scope.textInQueryBox = "";
-            $scope.guestSearch.results = [];
+            $scope.results = [];
         };
         
         /**
@@ -71,16 +73,16 @@ angular.module('sntRover').controller('guestCardSearchController',
          * @return {undefined}
          */
         var onSearchSuccess = function (data) {
-                $scope.guestSearch.results = data.results;
+                $scope.results = data.results;
                 $scope.totalResultCount = data.total_count;             
-
+                markAlreadySelectedCards();
                 setTimeout(function() {
                     $scope.$broadcast('updatePagination', GUEST_CARD_SEARCH_PAGINATION_ID );
                     refreshScroller();
                 }, 500);
             },
             onSearchFailure = function () {
-                $scope.guestSearch.results = [];
+                $scope.results = [];
             },
             getRequestParams = function (pageNo) {
                 var params = {
@@ -109,7 +111,7 @@ angular.module('sntRover').controller('guestCardSearchController',
          */
         var displayFilteredResults = function() {
             if (!$scope.textInQueryBox.length) {
-                 $scope.guestSearch.results = [];
+                 $scope.results = [];
                 // we have changed data, so we are refreshing the scrollerbar
                 refreshScroller();
             } else {
@@ -140,6 +142,70 @@ angular.module('sntRover').controller('guestCardSearchController',
             $scope.heading = title;
             $scope.setTitle (title);            
         };
+
+        /**
+         * Handles the switching between merge and normal search view
+         */
+        $scope.onViewChange = function() {
+            if (!$scope.viewState.isViewSelected) {
+                $scope.$broadcast('RESET_SELECTIONS_FOR_MERGE');
+            }
+            $scope.viewState.canMerge = null;
+            $scope.queryEntered();
+        };
+
+        /**
+         * Handles the selection of cards for merge from the search results
+         * @param {Object} card - contains the details of guest card
+         * @return {void}
+         */
+        $scope.onCardSelection = function(card) {
+            if ($scope.viewState.selectedCardsForMerge.length === 0 && card.selected) {
+                card.isPrimary = true;
+                $scope.viewState.selectedPrimaryCard = card;
+            }
+
+            if (card.selected) {
+                $scope.viewState.selectedCardsForMerge.push(card);				
+            } else {
+                var isCardPrimary = card.isPrimary;
+
+                $scope.viewState.selectedCardsForMerge = _.reject($scope.viewState.selectedCardsForMerge, function(selectedCard) {
+                    
+                    if (selectedCard.id === card.id) {
+                        card.isPrimary = false;
+                        if (isCardPrimary) {
+                            $scope.viewState.selectedPrimaryCard = {};	
+                        }
+                    }
+                    return selectedCard.id === card.id;
+                });
+
+
+                if (isCardPrimary && $scope.viewState.selectedCardsForMerge.length > 0) {
+                    $scope.viewState.selectedCardsForMerge[0].isPrimary = true;
+                    $scope.viewState.selectedPrimaryCard = $scope.viewState.selectedCardsForMerge[0];
+                }
+            }
+            $scope.$broadcast('REFRESH_SELECTED_CARDS_FOR_MERGE_SCROLLER');
+        };
+        
+        // Marks the card as already selected if it is added to merge cards screen
+        var markAlreadySelectedCards = function() {
+            if ($scope.viewState.selectedCardsForMerge.length > 0) {
+                $scope.results.forEach(function(card) {
+                    var selectedCard = _.find($scope.viewState.selectedCardsForMerge, {id: card.id});
+
+                    if (selectedCard) {
+                        card.selected = true;
+                        card.isPrimary = selectedCard.isPrimary;
+                        if (card.isPrimary) {
+                            $scope.viewState.selectedPrimaryCard = card;	
+                        }						
+                    }
+                });
+            }
+        };
         
         // Initialize the controller variables
         var init = function () {
@@ -147,10 +213,18 @@ angular.module('sntRover').controller('guestCardSearchController',
             // model used in query textbox, we will be using this across
             $scope.textInQueryBox = "";
             $scope.$emit("updateRoverLeftMenu", "guests");
-            $scope.guestSearch = {
-                results: []
-            };
+            $scope.results = [];
             $scope.totalResultCount = 0;
+            $scope.isGuestCard = true;
+
+            $scope.viewState = {
+                isViewSelected: true,
+                selectedCardsForMerge: [],
+                selectedPrimaryCard: {},
+                mergeStatusText: '',
+                hasInitiatedMergeVerification: false,
+                mergeStatusErrors: {}
+            };
 
             var scrollerOptions = {
                 tap: true,
@@ -167,22 +241,52 @@ angular.module('sntRover').controller('guestCardSearchController',
                 api: $scope.search
             };
 
+            transitionParams = $state.transition && $state.transition.params('from');
+
+            if (transitionParams && transitionParams.isMergeViewSelected) {
+                $scope.viewState.isViewSelected = !transitionParams.isMergeViewSelected;
+                $scope.textInQueryBox = transitionParams.query;				
+                $scope.viewState.selectedCardsForMerge = transitionParams.selectedIds;
+                $scope.queryEntered();
+            }
+
             // While coming back to search screen from DISCARD button
-            if ($stateParams.textInQueryBox) {
+            else if ($stateParams.textInQueryBox) {
                 $scope.textInQueryBox = $stateParams.textInQueryBox;
                 $scope.queryEntered();
             }
+
+            $scope.hasMergeViewPermission = rvPermissionSrv.getPermissionValue('MERGE');
         };
 
         // Checks whether search results should be shown or not
         $scope.shouldHideSearchResults = function () {
-            return $scope.guestSearch.results.length === 0 || $scope.textInQueryBox === "";
+            return $scope.results.length === 0 || $scope.textInQueryBox === "";
         }; 
 
         // Checks whether the pagination directive should be shown or not
         $scope.shouldHidePagination = function () {
-            return ( ($scope.totalResultCount < $scope.guestCardPagination.perPage) && $scope.guestSearch.results.length > 0);
-        };      
+            return ( ($scope.totalResultCount < $scope.guestCardPagination.perPage) && $scope.results.length > 0);
+        };
+        
+        /**
+         * 
+         * @param {Number} id identifier for the card
+         * @param {String} accountType CC/TA
+         * @return {void}
+         */
+        $scope.navigateToDetails = function(guestId) {
+            if ($scope.viewState.hasInitiatedMergeVerification) {
+                return false;
+            }
+
+            $state.go('rover.guest.details', {
+                guestId: guestId,
+                query: $scope.textInQueryBox,
+                selectedIds: $scope.viewState.selectedCardsForMerge || [],
+                isMergeViewSelected: !$scope.viewState.isViewSelected				
+            });
+        };
 
         init();
     }

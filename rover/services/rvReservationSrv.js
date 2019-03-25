@@ -353,6 +353,23 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+		/**
+		 * Service to perform the reverse check-in process
+		 * @param {Object} param reservation id
+		 * @return {Promise}
+		 */
+		this.reverseCheckIn = function(param) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + param.reservationId + '/reverse_check_in';
+
+			rvBaseWebSrvV2.postJSON(url).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		};
+
 
 	}
 ]);
