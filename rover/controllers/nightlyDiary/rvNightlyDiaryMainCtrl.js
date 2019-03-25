@@ -319,7 +319,7 @@ angular.module('sntRover')
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
-                        $scope.setTimePopupData.showPopup = data.is_overlapping_reservations_exists;
+                        $scope.setTimePopupData.showPopup = data.is_overlapping_reservations_exists || type === 'BOOK';
                         $scope.setTimePopupData.selectedDepartureTime = data.max_departure_time;
                         $scope.setTimePopupData.selectedArrivalTime = data.min_arrival_time;
 
@@ -338,21 +338,19 @@ angular.module('sntRover')
                         }
                     },
                     postData = {
-                        "reservation_id": reservationDetails.reservationId,
                         "room_id": roomDetails.room_id,
                         "start_date": reservationDetails.fromDate,
-                        "no_of_days": reservationDetails.nights
-                    },
-                    options = {
-                        params: postData,
-                        successCallBack: successCallBackFetchAvailableTimeSlots
+                        "no_of_days": 19
                     };
 
-                    var params = {
-                        reservation_id: reservationDetails.reservationId,      
-                        room_id: roomDetails.room_id,
-                        start_date: reservationDetails.fromDate,
-                        no_of_days: reservationDetails.nights
+                    if (type === 'ASSIGN' || type === 'MOVE') {
+                        postData.reservation_id = reservationDetails.reservationId;
+                        postData.no_of_days = reservationDetails.nights;
+                    }
+
+                    var options = {
+                        params: postData,
+                        successCallBack: successCallBackFetchAvailableTimeSlots
                     };
 
                     // API call to get available slots.
@@ -388,6 +386,12 @@ angular.module('sntRover')
 
                 // Handle book room button actions.
                 var clickedBookRoom = (roomId, date, roomsList) => {
+                    var roomDetails = {
+                        room_id: roomId
+                    },
+                    reservationDetails = {
+                        fromDate: date
+                    };
 
                     showDiarySetTimePopup(roomDetails, reservationDetails, 'BOOK');
 

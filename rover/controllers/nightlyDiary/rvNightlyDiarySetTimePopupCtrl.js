@@ -80,14 +80,16 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
     }
     else if ($scope.setTimePopupData.type === 'BOOK') {
+        $scope.setTimePopupData.selectedArrivalTime = '';
+        $scope.setTimePopupData.selectedDepartureTime = '';
         generateDataForBookAction();
     }
 
     $scope.daysCountChanged = function() {
         console.log($scope.setTimePopupData.selectedCount);
 
-        $scope.setTimePopupData.arrivalTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount-1];
-        $scope.setTimePopupData.departureTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount-1];
+        $scope.setTimePopupData.arrivalTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount-1].arrivalTimeList;
+        $scope.setTimePopupData.departureTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount-1].departureTimeList;
     };
 
 }]);
