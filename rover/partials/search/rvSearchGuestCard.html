@@ -34,7 +34,7 @@
         <div class="scrollable" ng-iscroll="guest_card_scroll" >
             <div class="wrapper">
                 <ul id="guest-search-results" class="search-results">
-                    <li class="reservation identify-guest" ng-repeat="guest in results" ng-hide="shouldHideSearchResults()">
+                    <li class="reservation identify-guest all-cards" ng-repeat="guest in results" ng-hide="shouldHideSearchResults()">
                         <label class="checkbox">
                             <span class="icon-form icon-checkbox" ng-class="{'checked': guest.selected}"></span>
                             <input type="checkbox" ng-change="onCardSelection(guest)" ng-model="guest.selected" ng-disabled="viewState.hasInitiatedMergeVerification">
