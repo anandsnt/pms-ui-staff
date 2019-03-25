@@ -40,7 +40,7 @@ describe('rvBillFormatPopupCtrl', function () {
 
             }); 
             // -------------------------------------------
-            it('call print bill if print button clicked', function() {                
+            it('call print bill if print button clicked', function() {
 
                 spyOn($scope, 'printBill');
 

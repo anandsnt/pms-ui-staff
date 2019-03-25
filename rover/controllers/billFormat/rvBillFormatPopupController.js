@@ -235,8 +235,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $scope.isInvoiceStepOneActive = false;
         $timeout(function() {
             $scope.isInvoiceStepTwoActive  = true;
-        }, delayScreen);
-        
+        }, delayScreen);        
     };
     /*
      * Clicked Proceed button

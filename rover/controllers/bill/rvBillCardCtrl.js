@@ -3119,12 +3119,6 @@ sntRover.controller('RVbillCardController',
 		$scope.isEmailedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_emailed_once;
 		$scope.isPrintedOnce = $scope.reservationBillData.bills[$scope.currentActiveBill].is_printed_once;
 		$scope.isFolioNumberExists = $scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists;  	
-		// $scope.isInvoiceStepOneActive = false;
-		// $scope.isInvoiceStepThreeActive = true;
-		// $scope.shouldGenerateFinalInvoice = false;
-		// $scope.isInvoiceStepTwoActive = false;
-		// $scope.isInvoiceStepFourActive = false;
-		// $scope.isInvoiceStepFiveActive = false;
 
 		if ($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00" 
 			&& $scope.reservationBillData.is_bill_lock_enabled 
