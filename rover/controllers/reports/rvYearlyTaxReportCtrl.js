@@ -190,7 +190,7 @@ angular.module('sntRover')
                 promises = [];
 
                 angular.forEach(arrayToPromise, function(item) {
-                    console.log($scope.appliedFilter.country_ids)
+
                     var postParamsToApi = {
                             "year": $scope.chosenReport.year,
                             "with_vat_id": (item.accountVatType === 'WITH_VAT_ID'),
