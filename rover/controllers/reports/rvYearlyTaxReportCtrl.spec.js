@@ -66,6 +66,8 @@ describe('RVYearlyTaxReportDetailsController', function () {
                     $rootScope = _$rootScope_;
 
                     $scope = _$rootScope_.$new();
+                    $scope.appliedFilter = {};
+                    $scope.appliedFilter.country_ids = [2,22];
                 });
 
 
