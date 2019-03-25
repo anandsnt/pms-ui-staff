@@ -51,9 +51,43 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         return times;
     };
 
+    var generateDataForBookAction = function() {
+        var data = $scope.setTimePopupData.data;
+
+        if (data && data.available_dates) {
+            for (var i = 1; i <= data.available_dates.length; i++ ) {
+                var obj = {
+                    day: i,
+                    arrivalTimeList: [],
+                    departureTimeList: []
+                };
+
+                if (i === data.available_dates) {
+                    obj.arrivalTimeList = generateTimeDuration(data.min_arrival_time, null);
+                    obj.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
+                }
+                else {
+                    obj.arrivalTimeList = generateTimeDuration(data.min_arrival_time, null);
+                    obj.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.default_checkout_time);
+                }
+                $scope.setTimePopupData.processData.push(obj);
+            }
+        }
+    };
+
     if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
         $scope.setTimePopupData.arrivalTimeList = generateTimeDuration($scope.setTimePopupData.data.min_arrival_time, null);
         $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
     }
+    else if ($scope.setTimePopupData.type === 'BOOK') {
+        generateDataForBookAction();
+    }
+
+    $scope.daysCountChanged = function() {
+        console.log($scope.setTimePopupData.selectedCount);
+
+        $scope.setTimePopupData.arrivalTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount-1];
+        $scope.setTimePopupData.departureTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount-1];
+    };
 
 }]);
