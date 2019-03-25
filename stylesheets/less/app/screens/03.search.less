@@ -533,19 +533,19 @@
             padding-right: 340px;
 
             .merge-cards { .show(); }
-            .find-cards-header {
-                li {
-                    &.rate { .hide(); }
-                }
-            }
             .search-results {
                 li:not(.no-content) {
-                    &.all-cards {
+                    &.reservation {
                         label {
                             &.checkbox { .show(); }
                         }
-                        .data { .calc-width(100, 185); }
-                        .rate { .hide(); }
+                        .data {
+                             .calc-width(100, 280); 
+                        }
+                        .last-stay {
+                            width: 200px;
+                            float: right;
+                        }
                         a {
                             padding-left: 50px;
                         }
