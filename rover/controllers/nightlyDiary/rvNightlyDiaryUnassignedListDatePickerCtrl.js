@@ -1,6 +1,6 @@
 sntRover.controller('RVNightlyDiaryUnassignedListDatePickerController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
 
-	var minDateSelected = $scope.diaryData.fromDate,
+	var minDateSelected = $scope.diaryData.fromDate < $rootScope.businessDate ? $rootScope.businessDate : $scope.diaryData.fromDate,
 		maxDateSelected = $scope.diaryData.toDate;
 
 	$scope.date = $scope.diaryData.arrivalDate;

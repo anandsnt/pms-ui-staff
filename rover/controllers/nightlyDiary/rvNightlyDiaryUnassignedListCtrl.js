@@ -13,7 +13,8 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
         $scope.selectedItem = {};
-
+        $scope.businessDate = $rootScope.businessDate;
+        
         // Handle validation popup close.
         $scope.closeDialogAndRefresh = function() {
             $scope.selectedItem = {};
