@@ -883,7 +883,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					// Handle mail Sent Success
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
-					
+
 					if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 						$scope.$broadcast("UPDATE_WINDOW");
 					} else {
