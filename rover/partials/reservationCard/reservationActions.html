@@ -59,21 +59,20 @@
     <a class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'" ng-click="navigateToBillAndCharges()">Bill &amp; Charges</a>
     <!-- show smartbands -->
     <a class="button staycard-button icon-smartband" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
-    <div class="bottom-buttons">
-        <!-- Feature Only available for STANDALONE pms -->
-        <!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
-        <!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-        <a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
-			{{::('CANCEL_RESERVATION' | translate)}}
-		</a>
-        <a ng-if="shouldShowResendCancellation(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-confirmation" ng-click="onResendCancellationClicked()" translate>
-            {{::('RESEND_CANCELLATION' | translate)}}
-        </a>
-        <a class="button staycard-button icon-confirmation" ng-click="popupForConfirmation()" ng-show="showConfirmation(reservationData.reservation_card.reservation_status)"> 				{{'CONFIRMATION' | translate}}
-        </a>
-        <a ng-if="isReinstateVisible()" ng-click="checkReinstationAvailbility()" class="button white green-text bottom-button">
-			{{::('REINSTATE' | translate)}}
-		</a>
-        <button type="button" class="button white red-text bottom-button" ng-if="reservationData.reservation_card.can_reverse_checkin" ng-click="performReverseCheckIn()">{{::('REVERSE_CHECKIN' | translate)}}</button> 
-    </div>
+    <a class="button staycard-button icon-confirmation" ng-click="popupForConfirmation()" ng-show="showConfirmation(reservationData.reservation_card.reservation_status)"> 				{{'CONFIRMATION' | translate}}
+    </a>
+    <!-- Feature Only available for STANDALONE pms -->
+    <!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
+    <!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
+    <a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
+        {{::('CANCEL_RESERVATION' | translate)}}
+    </a>
+    <a ng-if="shouldShowResendCancellation(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-confirmation" ng-click="onResendCancellationClicked()" translate>
+        {{::('RESEND_CANCELLATION' | translate)}}
+    </a>
+    <a ng-if="isReinstateVisible()" ng-click="checkReinstationAvailbility()" class="button white green-text bottom-button">
+        {{::('REINSTATE' | translate)}}
+    </a>
+    <button type="button" class="button white red-text bottom-button" ng-if="isStandAlone && !isHourlyRateOn && reservationData.reservation_card.can_reverse_checkin" ng-click="performReverseCheckIn()">{{::('REVERSE_CHECKIN' | translate)}}</button> 
+    
 </div>
