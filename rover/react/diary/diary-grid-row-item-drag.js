@@ -269,13 +269,6 @@ var GridRowItemDrag = React.createClass({
 					props.iscroll.timeline.enable();
 					props.angular_evt.onSelect(props.row_data, data, !data.selected, 'edit');	// TODO Make proxy fn, and move this to diary-content
 				});
-
-                var data = props.data,
-                    status = props.meta.occupancy.status;
-
-                if (data[status] === 'available') {
-                    this.props.unassignedRoomList.dropReservation(data['room_id']);
-                }
 			}
 		}
 

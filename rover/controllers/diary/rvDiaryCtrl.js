@@ -613,9 +613,6 @@ angular.module('sntRover')
 
 				this.dragData = options;
 			},
-            unSelectAnUnassigned: function() {
-                $scope.clearAvailability();
-            },
 			dropReservation: function(roomId) {
 				$scope.saveReservationOnDrop(this.dragData, roomId);
 			},
