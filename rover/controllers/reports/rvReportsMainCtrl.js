@@ -227,7 +227,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_52: false,
             item_53: false,
             item_54: false,
-            item_55: false
+            item_55: false,
+            item_56: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1042,7 +1043,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'segments': [],
                     'market_ids': [],
                     'tax_exempt_type_ids': [],
-                    'group_code': []
+                    'group_code': [],
+                    'country_ids': []
                 };
             }
 
@@ -1863,6 +1865,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all reservation status are selected
                     if (changeAppliedFilter && report['hasTravelAgentsSearch']['data'].length === selected.length) {
                         $scope.appliedFilter.travel_agent_ids = ['All Travel Agents'];
+                    }
+                }
+            }
+
+            // include country ids
+            if (report.hasOwnProperty('hasIncludeCountry')) {
+                selected = _.where(report['hasIncludeCountry']['data'], {selected: true});
+
+                if (selected.length > 0) {
+                    key = reportParams['COUNTRY'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function (each) {
+                        params[key].push(each.id.toString());
+                        /**/
+                        if (changeAppliedFilter) {
+                            $scope.appliedFilter.country_ids.push(each.id);
+                        }
+                    });
+
+                    // in case if all reservation status are selected
+                    if (changeAppliedFilter && report['hasIncludeCountry']['data'].length === selected.length) {
+                        $scope.appliedFilter.hasIncludeCountry = ['All countries'];
                     }
                 }
             }
