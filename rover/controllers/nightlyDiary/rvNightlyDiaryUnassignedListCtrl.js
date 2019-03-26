@@ -144,6 +144,9 @@ angular.module('sntRover')
 
         $scope.addListener('UNASSIGNED_LIST_DATE_CHANGED', function() {
             fetchUnassignedReservationList();
+            if ($scope.diaryData.isAssignRoomViewActive) {
+                unSelectUnassignedListItem();
+            }
         });
 
         // Show calendar popup.
