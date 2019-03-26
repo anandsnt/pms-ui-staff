@@ -56,20 +56,6 @@ var UnassignedRoomPanel = React.createClass({
         };
     },
 
-    _dragStart: function(event) {
-        this.props.iscroll.unassignedList.disable();
-        this.setState({
-            dragInProgress: true
-        });
-    },
-
-    _dragEnd: function(event) {
-        this.props.iscroll.unassignedList.enable();
-        this.setState({
-            dragInProgress: null
-        });
-    },
-
     __onListSelect: function(index) {
 
         var item = this.props.unassignedRoomList.data[index];
@@ -93,18 +79,6 @@ var UnassignedRoomPanel = React.createClass({
 
             stay_span: this.__getTimeDiff(item.arrival_date, item.arrival_time, item.departure_date, item.departure_time)
         });
-
-        // enable draggable
-        $('.guest.ui-draggable').draggable('disable');
-        $('#ob-' + index).draggable({
-            start: this._dragStart,
-            stop: this._dragEnd,
-            containment: '.diary-grid',
-            zIndex: 1100,
-            revert: true,
-            revertDuration: 200
-        });
-        $('#ob-' + index).draggable('enable');
     },
 
     getInitialState: function() {
@@ -176,11 +150,22 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if ( nextProps.edit.active || (nextProps.edit.passive && nextProps.unassignedRoomList.selectedReservations.length) ) {
+        var unassignedRoomListProp = nextProps.unassignedRoomList;
+
+        if ( nextProps.edit.active
+            || (nextProps.edit.passive && unassignedRoomListProp.selectedReservations.length)) {
             this.setState({
                 selectedIndex: null,
                 dragInProgress: null
             });
+        }
+
+        if ( !unassignedRoomListProp.open) {
+            this.setState({
+                selectedIndex: null,
+                dragInProgress: null
+            });
+            unassignedRoomListProp.unSelectAnUnassigned();
         }
     },
 
