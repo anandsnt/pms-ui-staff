@@ -49,6 +49,9 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }
                 else if ( absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
                     setAPiURLfromWindowUrl();
+                    // Correct the URL set by the above method to point to the API endpoints
+                    // With CICO-63376 all API endpoints reside at /guest_web/ and the UI assets reside at /checkin and /checkout
+                    apiUrl.replace('/checkin/reservation/', '/guest_web/');
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
                 else if (absUrl.indexOf("checkin") !== -1) {
