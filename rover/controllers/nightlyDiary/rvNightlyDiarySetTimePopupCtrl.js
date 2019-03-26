@@ -18,7 +18,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
     var generateTimeDuration = function(minArrivalTime, maxDepartureTime) {
         var timeInterval = 15, // minutes interval
             startTime = 0, // start time
-            endTime = (24 * 60) - 15, // end time
+            endTime = (24 * 60) - timeInterval, // end time
             ap = ['AM', 'PM'], // AM-PM
 
             times = [], // time array - output array
