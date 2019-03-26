@@ -313,7 +313,7 @@ sntRover.controller('RVroomAssignmentController', [
         if (reservationStatus === "CHECKEDIN") {
             	$scope.moveInHouseRooms();
        	} else {
-    	    if (selectedRoomObject && (oldRoomType !== selectedRoomObject.room_type_code)) {
+    	    if ((selectedRoomObject && (oldRoomType !== selectedRoomObject.room_type_code)) || !$scope.assignedRoom) {
 				$scope.oldRoomType = oldRoomType;
 				$scope.openApplyChargeDialog();
 			} else {
