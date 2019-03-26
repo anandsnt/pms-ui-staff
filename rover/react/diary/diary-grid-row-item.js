@@ -8,7 +8,22 @@ var GridRowItem = React.createClass({
 			isDragOver: false
 		};
 	},
+
+	__setDragOver: function (bool) {
+		this.setState({
+			isDragOver: typeof bool === typeof true ? bool : false
+		});
+	},
+
 	componentDidMount: function () {
+		var rootElement = $(this.getDOMNode());
+
+		rootElement.droppable({
+			accept: ".guest",
+			drop: this.__onDrop.bind(this),
+			over: this.__onDragOver.bind(this),
+			out: this.__setDragOver.bind(this, false)
+		});
 	},
 
 	componentWillReceiveProps: function (nextProps) {
@@ -31,7 +46,7 @@ var GridRowItem = React.createClass({
 				currentResizeItem: nextProps.currentResizeItem,
 				currentResizeItemRow: nextProps.currentResizeItemRow
 			});
-        } else if ((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem) || (this.props.edit.active && !editing)) {
+		} else if ((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem) || (this.props.edit.active && !editing)) {
 			this.setState({
 				editing: false,
 				resizing: false,
@@ -243,7 +258,6 @@ var GridRowItem = React.createClass({
 			display: display,
 			viewport: props.viewport,
 			edit: props.edit,
-            unassignedRoomList: props.unassignedRoomList,
 			iscroll: props.iscroll,
 			angular_evt: props.angular_evt,
 			__onDragStart: props.__onDragStart,
@@ -279,5 +293,26 @@ var GridRowItem = React.createClass({
 				className: 'maintenance',
 				style: houseKeepingTaskStyle
 			}, ' '));
+	},
+
+	__onDrop: function (e, ui) {
+		var data = this.props.data;
+		var status = this.props.meta.occupancy.status;
+
+		if (data[status] === 'available') {
+			e.preventDefault();
+			ui.helper.fadeOut();
+			this.props.unassignedRoomList.dropReservation(data['room_id']);
+		}
+	},
+	__onDragOver: function (e) {
+		var data = this.props.data;
+		var status = this.props.meta.occupancy.status;
+
+		if (data[status] === 'available') {
+			e.preventDefault();
+		}
+
+		this.__setDragOver(true);
 	}
 });
