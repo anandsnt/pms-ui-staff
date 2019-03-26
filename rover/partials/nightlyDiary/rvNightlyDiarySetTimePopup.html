@@ -23,8 +23,8 @@
 	        <div class="entry margin">
 	            <label for="arrival">Arrival Time</label>
 	            <div class="select">
-	                <select id="arrival" ng-class="{'placeholder': setTimePopupData.selectedArrivalTime === ''}" ng-model="setTimePopupData.selectedArrivalTime"> <!-- Remove class 'placeholder' when option is selected -->
-	                    <option value="" selected>Set Arrival Time</option>
+	                <select ng-class="{'placeholder': setTimePopupData.selectedArrivalTime === ''}" ng-model="setTimePopupData.selectedArrivalTime">
+	                    <option value="">Set Arrival Time</option>
 	                    <option ng-repeat="time in setTimePopupData.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
 	                </select>
 	            </div>
@@ -33,8 +33,8 @@
 	        <div class="entry">
 	            <label for="departure">Departure Time</label>
 	            <div class="select">
-	                <select id="arrival" ng-class="{'placeholder': setTimePopupData.selectedDepartureTime === ''}" ng-model="setTimePopupData.selectedDepartureTime">
-	                    <option value="" selected>Set Departure Time</option>
+	                <select ng-class="{'placeholder': setTimePopupData.selectedDepartureTime === ''}" ng-model="setTimePopupData.selectedDepartureTime">
+	                    <option value="">Set Departure Time</option>
 	                    <option ng-repeat="time in setTimePopupData.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
 	                </select>
 	            </div>
