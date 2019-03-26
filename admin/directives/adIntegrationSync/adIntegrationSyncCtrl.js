@@ -1,5 +1,5 @@
 angular.module('admin').controller('adIntegrationSyncCtrl', ['$scope', '$rootScope', 'adInterfacesSetupSrv', 'dateFilter',
-    function ($scope, $rootScope, adInterfacesCommonConfigSrv, dateFilter) {
+    function ($scope, $rootScope, adInterfacesSetupSrv, dateFilter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -72,7 +72,7 @@ angular.module('admin').controller('adIntegrationSyncCtrl', ['$scope', '$rootSco
 
         $scope.startSync = function () {
             var items = _.pluck(_.filter($scope.syncItems, {isSelected: true}), 'id'),
-                payLoad;
+                payload;
 
             $scope.errorMessage = $scope.successMessage = '';
 
@@ -82,24 +82,27 @@ angular.module('admin').controller('adIntegrationSyncCtrl', ['$scope', '$rootSco
                 return;
             }
 
-            payLoad = {
-                start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
-                items: items
+            payload = {
+                integration_name: $scope.interface.toLowerCase(),
+                options: {
+                    start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI)
+                }
             };
 
+            if (items.length > 0 ) {
+                payload.options.items = items;
+            }
+
             if (!$scope.isExport) {
-                payLoad['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+                payload.options.end_date = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
             }
 
             if ($scope.syncHistoricalData) {
-                payLoad['sync_type'] = 'historical';
+                payload.options.sync_type = 'historical';
             }
 
             $scope.callAPI(adInterfacesSetupSrv.synchronize, {
-                params: {
-                    payLoad: payLoad,
-                    interfaceIdentifier: $scope.interface
-                },
+                params: payload,
                 onSuccess: function () {
                     $scope.errorMessage = '';
                     $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
