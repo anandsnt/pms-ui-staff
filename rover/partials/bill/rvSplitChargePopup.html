@@ -4,7 +4,7 @@
         <fieldset id="split-charge" name="split-charge" class="split-charge">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="h2 message" translate>SPLIT_CHARGE</span>
-            <span class="text">{{selectedTransaction.desc}} <strong>{{currencySymbol}}{{selectedTransaction.amount | number:2}}</strong></span>
+            <span class="text">{{selectedTransaction.desc}} <strong class="currency">{{currencySymbol}}{{selectedTransaction.amount | number:2}}</strong></span>
 
             <!-- Form -->
             <div class="entry full-width with-switch">
@@ -13,11 +13,11 @@
                     <input name="split-type" id="split-type" value="" ng-change="showSpiltValues()" type="checkbox" ng-model="splitTypeisAmount"/>
                     <label class="data-off">
                         <span class="switch-icon">%</span>
-                        <span class="value">{{currencySymbol}}</span>
+                        <span class="value currency">{{currencySymbol}}</span>
                     </label>
                     <label class="data-on">
                         <span class="value">%</span>
-                        <span class="switch-icon">{{currencySymbol}}</span>
+                        <span class="switch-icon currency">{{currencySymbol}}</span>
                     </label>
                 </div>
                 <input name="split-value" id="split-value" ng-change="showSpiltValues()"placeholder="{{'ENTER_SPLIT_VALUE_PLACEHOLDER' | translate}}" ng-model="splitValue" type="text" />

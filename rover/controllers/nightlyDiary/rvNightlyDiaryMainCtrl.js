@@ -283,8 +283,9 @@ angular.module('sntRover')
                         "reservation_id": reservationDetails.reservationId,
                         "room_number": roomDetails.room_number,
                         "without_rate_change": true,
-                        "is_preassigned": false,
-                        "forcefully_assign_room": false
+                        "is_preassigned": true,
+                        "forcefully_assign_room": false,
+                        "is_from_nightly_diary": true
                     },
                     options = {
                         params: postData,

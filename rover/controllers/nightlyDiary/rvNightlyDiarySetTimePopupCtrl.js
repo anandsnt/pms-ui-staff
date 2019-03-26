@@ -18,7 +18,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
     var generateTimeDuration = function(minArrivalTime, maxDepartureTime) {
         var timeInterval = 15, // minutes interval
             startTime = 0, // start time
-            endTime = 24 * 60, // end time
+            endTime = (24 * 60) - timeInterval, // end time
             ap = ['AM', 'PM'], // AM-PM
 
             times = [], // time array - output array
@@ -36,7 +36,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         }
 
         // loop to increment the time and push results in times array
-        for (var i = 0; startTime < endTime; i++) {
+        for (var i = 0; startTime <= endTime; i++) {
           hh = Math.floor(startTime / 60); // getting hours of day in 0-24 format
           mm = (startTime % 60); // getting minutes of the hour in 0-55 format
           twelveHrFormat = (("0" + hh %12).slice(-2) === '00' ? '12' : ("0" + hh %12).slice(-2)) + ':' + ("0" + mm).slice(-2) + " " + ap[Math.floor(hh / 12)]; // data in [12:00 AM- 12:00 PM format]

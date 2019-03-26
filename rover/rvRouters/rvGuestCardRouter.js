@@ -18,7 +18,9 @@ function(
         $stateProvider.state('rover.guest.search', {
             url: '/cardsearch',
             params: {
-                textInQueryBox: ''
+                textInQueryBox: '',
+                selectedIds: [],
+                isMergeViewSelected: null
             },
             templateUrl: '/assets/partials/search/rvSearchGuestCard.html',
             controller: 'guestCardSearchController'
@@ -30,7 +32,9 @@ function(
                 guestId: '',
                 query: '',
                 isBackToStatistics: null,
-                selectedStatisticsYear: null
+                selectedStatisticsYear: null,
+                selectedIds: [],
+                isMergeViewSelected: null
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',

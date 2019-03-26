@@ -1,84 +1,137 @@
-<div id="page-main-second"  ng-click="clickedOnSearchArea()" class="" style="">
-    <!-- Search form -->
+<div id="page-main-second" ng-click="clickedOnSearchArea()" class="" style="">
     <div ng-include="'/assets/partials/common/header.html'"></div>
-    <form name="find-cards-search-form" id="find-cards-search-form" class="search-form enable-adding has-options single-option" role="search">
-   <!--  <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}"> -->
+    <form name="find-cards-search-form" id="find-cards-search-form" class="search-form card-search" role="search"
+        ng-class="{'enable-adding': viewState.isViewSelected && textInQueryBox !== '', 'show-merge': !viewState.isViewSelected}">
+        <div class="entry switch">
+            <!-- add .disabled if showing archived -->
+            <div class="switch-button" ng-class="{'on': viewState.isViewSelected}">
+                <!-- Add disabled="disabled" if showing archived -->
+                <input id="cards-merge-switch" value="" type="checkbox" ng-model="viewState.isViewSelected" ng-change="onViewChange()" ng-disabled="!isCardMergeEnabled || !hasMergeViewPermission">
+                <label class="data-off">
+                    <span class="value">View</span>
+                    <span class="switch-icon">Merge</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">View</span>
+                    <span class="value">Merge</span>
+                </label>
+            </div>
+        </div>
+        <div class="entry switch switch-merge" ng-if="!viewState.isViewSelected">
+            <div class="switch-button" ng-class="{'on': viewState.isCompanyCardSelected}">
+                <input id="cards-merge-cota-switch" type="checkbox" ng-model="viewState.isCompanyCardSelected"
+                    ng-change="onTravelAgentCompanyCardSwitch()">
+                <label class="data-off">
+                    <span class="value">
+                        <span class="icons icon-company"></span>
+                    </span>
+                    <span class="switch-icon">
+                        <span class="icons icon-travel-agent"></span>
+                    </span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon">
+                        <span class="icons icon-company"></span>
+                    </span>
+                    <span class="value">
+                        <span class="icons icon-travel-agent"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
         <div class="entry search">
             <button type="button" id="clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
                 <span class="icons icon-clear-search">Clear query</span>
             </button>
             <button type="submit" name="submit" class="icons icon-search">Search</button>
-            <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">            
+            <input type="text" class="query" placeholder="Name, IATA # or Corporate ID" name="query" id="query"
+                autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
         </div>
         <div class="entry options">
-            <!-- Add .checked when checked. -->
-            <label class="checkbox inline" ng-class="{'checked': hasArNumber}">
-                <!-- Add .checked when checked. -->
-                <span class="icon-form icon-checkbox" ng-class="{'checked': hasArNumber}"></span>
-                <!-- Add checked="checked" -->
-                <input type="checkbox" ng-model="hasArNumber" ng-class="{'checked': hasArNumber}" ng-click="queryEntered()">
-                AR Accounts Only
-            </label>
-        </div>
-        <button type="button" ng-show="textInQueryBox!=''" class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</button>
-    </form>
-
-    <section id="find-cards" class="content scrollable" ng-iscroll="company_card_scroll" >
-        
-        <!-- Results / content -->
-        <div class="wrapper">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <ul id="search-cards-results" class="search-results" >
-                 <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
-                    <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
-                    <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type, query :textInQueryBox})">
-                        <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
-                            <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
-                            <img ng-src="{{row.company_logo}}" alt="">
-                        </figure>
-
-                        <div ng-if="escapeNull(row.company_logo)==''">
-                            <div class="guest-image icons"
-                                 ng-class="{'icon-company' : escapeNull(row.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(row.account_type)=='TRAVELAGENT'}">
-                                <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
-                            </div>
-                        </div>
-
-                        <div class="data" ng-class="{'no-address': escapeNull(row.account_address)===''}">
-                            <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
-                            <span class="icons icon-location" ng-if = "escapeNull(row.account_address)!==''">{{row.account_address}}</span>
-                        </div>
-
-                        <div class="rate" ng-if="row.current_contracts.length > 0">
-                            <span class="label">Rate</span>
-                            {{row.current_contracts[0].based_on.name}}
-                        </div>
-                        <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple Contracts</span>
-                    </a>
-                </li>
-                <!-- No results / no content when searched query not found-->
-                <li class="no-content" ng-show="results.length==0 && textInQueryBox!=''">
-                    <div class="info">
-                        <span class="icon-no-content icon-cards"></span>
-                        <strong class="h1">No matches have been found</strong>
-                        <span class="h2"> Do you want to create a new Company or Travel Agent card ? <br/>
-                            <a class="open-modal" ng-click="addNewCard()">Add a New Card</a>
-                        </span>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
-
-        <!-- No results / no content -->
-        <div id="search-cards-no-results" class="no-content" ng-show="results.length==0 && textInQueryBox==''">
-            <div class="info">
-                <span class="icon-no-content icon-cards"></span>
-                <strong class="h1">Find Cards</strong>
-            <span class="h2">Search by <strong>Name</strong>, <strong>IATA #</strong> or <strong>Corporate ID</strong></span>
+            <div class="select with-label">
+                <label for="showing-cards">Showing</label>
+                <select id="showing-cards" ng-model="cardFilter" ng-change="queryEntered()">
+                    <option value="ALL">All Active Cards</option>
+                    <option value="AR_ONLY">AR Accounts Only</option>
+                </select>
             </div>
         </div>
+        <a class="add-new-button" ng-show="textInQueryBox!=''" ng-click="addNewCard()">+ Add new</a>
+    </form>
 
+    <section id="find-cards" class="content scrollable no-results" role="complementary" ng-show="textInQueryBox === ''">
+        <div class="wrapper">
+            <ul id="cards-search-results" class="search-results">
+                <li class="no-content">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">Find Cards</strong>
+                        <span class="h2">Search by <strong>Name</strong>, <strong>IATA #</strong> or <strong>Corporate
+                                ID</strong></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
 
+    <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && (results.length > 0  || viewState.selectedCardsForMerge.length > 0)}">
+        <ul class="find-cards-header" ng-hide="textInQueryBox === '' || results.length === 0">
+            <li class="card">Card Details</li>
+            <!-- hide if showing archived cards -->
+            <li class="rate">Rate</li>
+            <!-- hide if showing archived cards -->
+            <li class="contract">Contract</li>
+        </ul>
+        <!-- Results / content -->
+        <div class="scrollable" ng-iscroll="company_card_scroll">
+            <div class="wrapper">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <ul id="search-cards-results" class="search-results">
+                    <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible === true || textInQueryBox !== '' ">
+                        <label class="checkbox">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked': row.selected}"></span>
+                            <input type="checkbox" ng-change="onCardSelection(row)" ng-model="row.selected" ng-disabled="viewState.hasInitiatedMergeVerification">
+                        </label>
+                        <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->
+                        <a ng-click="navigateToDetails(row.id, row.account_type)" ng-class="{'no-arrow': viewState.hasInitiatedMergeVerification}">
+                            <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
+                                <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
+                                <img ng-src="{{row.company_logo}}" alt="">
+                            </figure>
+
+                            <div ng-if="escapeNull(row.company_logo)==''">
+                                <div class="guest-image icons" ng-class="{'icon-company' : escapeNull(row.account_type)=='COMPANY', 'icon-travel-agent': escapeNull(row.account_type)=='TRAVELAGENT'}">
+                                    <span class="global-card" ng-if="row.is_global_enabled">Gl</span>
+                                </div>
+                            </div>
+
+                            <div class="data" ng-class="{'no-address': escapeNull(row.account_address)===''}">
+                                <h2 ng-bind-html="getHighlightedHTML(row.account_name, textInQueryBox)"></h2>
+                                <span class="icons icon-location" ng-if="escapeNull(row.account_address)!==''">{{row.account_address}}</span>
+                            </div>
+
+                            <div class="rate" ng-if="row.current_contracts.length > 0">
+                                <span class="label">Rate</span>
+                                {{row.current_contracts[0].based_on.name}}
+                            </div>
+                            <span ng-if="row.current_contracts.length > 1" class="icons icon-contracts">Multiple
+                            </span>
+                            <span class="icons icon-contracts active" ng-if="row.current_contracts.length === 1">Active</span>
+                        </a>
+                    </li>
+                    <li class="no-content" ng-show="results.length === 0 && textInQueryBox !== ''">
+                        <div class="info">
+                            <span class="icon-no-content icon-cards"></span>
+                            <strong class="h1">No matches have been found</strong>
+                            <span class="h2"> Do you want to create a new Company or Travel Agent card ? <br />
+                                <a class="open-modal" ng-click="addNewCard()">Add a New Card</a>
+                            </span>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <span ng-include="'/assets/partials/search/rvMergeCards.html'" ng-controller="mergeCardsController"></span>
     </section>
 </div>
