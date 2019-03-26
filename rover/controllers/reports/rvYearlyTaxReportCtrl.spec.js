@@ -66,6 +66,8 @@ describe('RVYearlyTaxReportDetailsController', function () {
                     $rootScope = _$rootScope_;
 
                     $scope = _$rootScope_.$new();
+                    $scope.appliedFilter = {};
+                    $scope.appliedFilter.country_ids = [2, 22];
                 });
 
 
@@ -106,7 +108,8 @@ describe('RVYearlyTaxReportDetailsController', function () {
                     "accountTypeId": 2,
                     "accountVatType": "WITH_VAT_ID",
                     "isCollapsed": false,
-                    "isPrint": false
+                    "isPrint": false,
+                    "country_ids": [2, 12]
                 }];
 
                 spyOn(RVreportsSubSrv, 'getRevenueAndTax').and.callFake(function () {
