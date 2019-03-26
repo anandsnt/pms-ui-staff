@@ -95,6 +95,7 @@ angular.module('sntRover')
                 scope: $scope
             });
         };
+
         // Catching event from date picker controller while date is changed.
         $scope.addListener('DATE_CHANGED', function () {
             var isRightShift = true;
@@ -108,7 +109,6 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
             isDateChangedFromInitialState = true;
-            $scope.diaryData.arrivalDate = $scope.diaryData.fromDate;
         });
         // Catching event from main controller, when API is completed.
         $scope.addListener('FETCH_COMPLETED_DATE_LIST_DATA', function() {
@@ -194,6 +194,9 @@ angular.module('sntRover')
 
             // While switch from Filter Bar to Unassigned List Bar, Clear filters and Refresh Diary.
             if ( filterHasValue && $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION') {
+                $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
+            }
+            else if (activeTab === 'RESERVATION_FILTER' && $scope.diaryData.isAssignRoomViewActive) {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             }
 

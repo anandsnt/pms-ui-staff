@@ -13,6 +13,7 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
         $scope.selectedItem = {};
+        $scope.businessDate = $rootScope.businessDate;
 
         // Handle validation popup close.
         $scope.closeDialogAndRefresh = function() {
@@ -79,6 +80,11 @@ angular.module('sntRover')
             $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
         };
 
+        var unSelectUnassignedListItem = function() {
+            $scope.selectedItem = {};
+            $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+        };
+
         /**
          *  Handle unassigned reservation items
          *  @param {int} - [index value of reservations]
@@ -87,8 +93,7 @@ angular.module('sntRover')
             var item = $scope.diaryData.unassignedReservationList.reservations[index];
 
             if (item.reservation_id === $scope.selectedItem.reservation_id) {
-                $scope.selectedItem = {};
-                $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+                unSelectUnassignedListItem();
             }
             else {
                 retrieveAvailableRooms(item);
@@ -139,6 +144,9 @@ angular.module('sntRover')
 
         $scope.addListener('UNASSIGNED_LIST_DATE_CHANGED', function() {
             fetchUnassignedReservationList();
+            if ($scope.diaryData.isAssignRoomViewActive) {
+                unSelectUnassignedListItem();
+            }
         });
 
         // Show calendar popup.
@@ -156,6 +164,9 @@ angular.module('sntRover')
             $scope.diaryData.arrivalDate = moment(tzIndependentDate($scope.diaryData.arrivalDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
             fetchUnassignedReservationList();
+            if ($scope.diaryData.isAssignRoomViewActive) {
+                unSelectUnassignedListItem();
+            }
         };
 
         // To handle click on right date shift.
@@ -163,6 +174,9 @@ angular.module('sntRover')
             $scope.diaryData.arrivalDate = moment(tzIndependentDate($scope.diaryData.arrivalDate)).add(1, 'days')
                 .format($rootScope.momentFormatForAPI);
             fetchUnassignedReservationList();
+            if ($scope.diaryData.isAssignRoomViewActive) {
+                unSelectUnassignedListItem();
+            }
         };
 
 }]);

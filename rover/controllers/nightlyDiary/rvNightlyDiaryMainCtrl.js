@@ -283,8 +283,9 @@ angular.module('sntRover')
                         "reservation_id": reservationDetails.reservationId,
                         "room_number": roomDetails.room_number,
                         "without_rate_change": true,
-                        "is_preassigned": false,
-                        "forcefully_assign_room": false
+                        "is_preassigned": true,
+                        "forcefully_assign_room": false,
+                        "is_from_nightly_diary": true
                     },
                     options = {
                         params: postData,
@@ -372,7 +373,7 @@ angular.module('sntRover')
                  * Set time from rvNightlyDiarySetTimePopup.
                  */
                 $scope.addListener('SET_TIME_AND_SAVE', function ( e, timeObj) {
-                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, 'ASSIGN', timeObj);
+                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, $scope.setTimePopupData.type, timeObj);
                 });
 
                 /*
@@ -382,7 +383,7 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedMoveRoom = (roomDetails, reservationDetails) => {
-                    callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, 'MOVE');
+                    showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
                 };
 
                 // Handle book room button actions.
@@ -580,7 +581,7 @@ angular.module('sntRover')
                 $scope.addListener('UPDATE_UNASSIGNED_RESERVATIONLIST', function (event, action) {
                     resetUnassignedList();
                     if (action !== 'REFRESH') {
-                        $scope.diaryData.arrivalDate = (action === 'RESET') ? $rootScope.businessDate : $scope.diaryData.fromDate;
+                        $scope.diaryData.arrivalDate = ($scope.diaryData.fromDate <= $rootScope.businessDate || action === 'RESET') ? $rootScope.businessDate : $scope.diaryData.fromDate;
                     }
                     $scope.$broadcast('FETCH_UNASSIGNED_LIST_DATA');
                     $scope.$broadcast('RESET_UNASSIGNED_LIST_SELECTION');
