@@ -879,33 +879,37 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/* ----------- edit/remove/split ends here ---------------*/
 		// CICO-13903
 		$scope.sendEmail = function(params) {
-			var mailSent = function(data) {
-					// Handle mail Sent Success
-					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-					$scope.status = "success";
-					
-					if ($scope.shouldGenerateFinalInvoice) {
-						$scope.$broadcast("UPDATE_WINDOW");
-					} else {
-						$scope.showEmailSentStatusPopup();
-					}
-					$scope.switchTabTo('TRANSACTIONS');
-				},
-				mailFailed = function(errorMessage) {
-					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-					$scope.status = "alert";
-					$scope.showEmailSentStatusPopup();
-				};
-
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				params.is_final_invoice = true;
-			}
+				finalInvoiceSettlement(params, false);
+			} else {
+				var mailSent = function(data) {
+						// Handle mail Sent Success
+						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+						$scope.status = "success";
 
-			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
-				successCallBack: mailSent,
-				failureCallBack: mailFailed,
-				params: params
-			});
+						if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+							$scope.$broadcast("UPDATE_WINDOW");
+						} else {
+							$scope.showEmailSentStatusPopup();
+						}
+						$scope.switchTabTo('TRANSACTIONS');
+					},
+					mailFailed = function(errorMessage) {
+						$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+						$scope.status = "alert";
+						$scope.showEmailSentStatusPopup();
+					};
+
+				if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+					params.is_final_invoice = true;
+				}
+
+				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
+					successCallBack: mailSent,
+					failureCallBack: mailFailed,
+					params: params
+				});
+			}
 		};
 
 		/*
@@ -940,7 +944,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         	$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
-			if ($scope.shouldGenerateFinalInvoice) {
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				$scope.$broadcast("UPDATE_WINDOW");
 			} else {
 				$scope.closeDialog();
@@ -1013,9 +1017,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 				$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
 
-			if ($scope.shouldGenerateFinalInvoice) {
-				requestParams.is_final_invoice = true;
 			}
+
 			
 		};
 
