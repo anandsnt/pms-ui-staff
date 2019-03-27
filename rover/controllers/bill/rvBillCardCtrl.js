@@ -636,6 +636,9 @@ sntRover.controller('RVbillCardController',
 			if (isDuringCheckoutPayment) {
 				$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
 			}
+			if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
+				that.callGenerateFolioNumberApi();
+			}
 	
 			$scope.refreshScroller('bill-tab-scroller');
 			},
