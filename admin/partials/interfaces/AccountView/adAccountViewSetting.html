@@ -32,10 +32,12 @@
         </div>
     </fieldset>
 
-    <ad-integration-sync historical-date-range-days="30"
-                         interface="{{interface}}"
-                         config="config">
-    </ad-integration-sync>
+    <ad-sync-block ng-if="config.enabled"
+                   historical-date-range-days="30"
+                   interface="accountview"
+                   config="config"
+                   proxy="true">
+    </ad-sync-block>
 
     <div class="actions float">
         <button type="button" id="cancel" class="button blank add-data-inline"
