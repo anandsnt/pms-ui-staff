@@ -1,5 +1,5 @@
-angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', 'adInterfacesCommonConfigSrv', 'dateFilter',
-    function ($scope, $rootScope, adInterfacesCommonConfigSrv, dateFilter) {
+angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', 'adInterfacesCommonConfigSrv', 'adIFCSrv', 'dateFilter',
+    function ($scope, $rootScope, adInterfacesCommonConfigSrv, adIFCSrv, dateFilter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -68,6 +68,9 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 }
 
                 return arr;
+            },
+            synchronize = function(params) {
+                return adIFCSrv.post('property', 'synchronize_integration', params);
             };
 
         $scope.startSync = function () {
@@ -82,29 +85,58 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 return;
             }
 
-            payLoad = {
-                start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
-                items: items
-            };
+            if ($scope.proxy) {
+                payload = {
+                    integration_name: $scope.interface.toLowerCase(),
+                    options: {
+                        start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI)
+                    }
+                };
 
-            if (!$scope.isExport) {
-                payLoad['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
-            }
-
-            if ($scope.syncHistoricalData) {
-                payLoad['sync_type'] = 'historical';
-            }
-
-            $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
-                params: {
-                    payLoad: payLoad,
-                    interfaceIdentifier: $scope.interface
-                },
-                onSuccess: function () {
-                    $scope.errorMessage = '';
-                    $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+                if (items.length > 0 ) {
+                    payload.options.items = items;
                 }
-            });
+
+                if (!$scope.isExport) {
+                    payload.options.end_date = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+                }
+
+                if ($scope.syncHistoricalData) {
+                    payload.options.sync_type = 'historical';
+                }
+
+                $scope.callAPI(synchronize, {
+                    params: payload,
+                    onSuccess: function () {
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+                    }
+                });
+            } else {
+                payload = {
+                    start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
+                    items: items
+                };
+
+                if (!$scope.isExport) {
+                    payload['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+                }
+
+                if ($scope.syncHistoricalData) {
+                    payload['sync_type'] = 'historical';
+                }
+
+                $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
+                    params: {
+                        payLoad: payload,
+                        interfaceIdentifier: $scope.interface
+                    },
+                    onSuccess: function () {
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+                    }
+                });
+            }
         };
 
         $scope.onToggleHistoricalSync = function (adCheckbox) {
@@ -164,6 +196,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.startDatePickerOptions = Object.assign({
                 onSelect: fromDateSelected
             }, commonDatePickerOptions);
+
             $scope.endDatePickerOptions = Object.assign({
                 onSelect: toDateSelected
             }, commonDatePickerOptions);
