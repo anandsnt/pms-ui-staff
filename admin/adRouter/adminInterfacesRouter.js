@@ -632,8 +632,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }],
         resolve: {
             config: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchConfiguration('hogia');
+                'adInterfacesSetupSrv', function(adInterfacesSetupSrv) {
+                    return adInterfacesSetupSrv.getSettings('hogia');
                 }],
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
