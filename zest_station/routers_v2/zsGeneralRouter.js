@@ -75,7 +75,10 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		});
 
         $stateProvider.state('zest_station.speakToStaff', {
-            url: '/speakToStaff/:message',
+            url: '/speakToStaff',
+            params: {
+                message: ''
+            },
             templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
             controller: 'zsSpeakToStaffCtrl',
          	jumper: true,
@@ -103,13 +106,24 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         });
 
         $stateProvider.state('zest_station.manualKeyPickup', {
-        	url: '/manualKeyPickUp/:reservation_id/:room_no/:first_name/:guest_id/:email/:mode',
+        	url: '/manualKeyPickUp',
+            params: {
+                reservation_id: '',
+                room_no: '',
+                first_name: '',
+                guest_id: '',
+                email: '',
+                mode: ''
+            },
             templateUrl: '/assets/partials_v2/zsManualKeyPickup.html',
             controller: 'zsManualKeyPickUpCtrl'
         });
 
         $stateProvider.state('zest_station.sntIDScan', {
-        	url: '/sntIDScan/:params',
+        	url: '/sntIDScan',
+            params: {
+                params: ''
+            },
             templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
             controller: 'zsSntIDScanCtrl'
         });
