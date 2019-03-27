@@ -43,7 +43,7 @@ admin.controller('adInterfaceMappingCtrl', [
                 value: '',
                 external_value: ''
             };
-        };
+        }
 
         $scope.fetchMappingPartial = function() {
             return mappingPartials[$scope.interface];
@@ -77,7 +77,6 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.mapping = fetchEmptyMapping();
                 },
                 failureCallBack: function(response) {
-                    console.log(response);
                     $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });
