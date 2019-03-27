@@ -293,8 +293,8 @@ angular.module('sntRover')
                     };
 
                     if (timeObj) {
-                        postData.arrival_time = timeObj.arrival_time;
-                        postData.departure_time = timeObj.departure_time;
+                        postData.arrival_time = timeObj.arrival_time['24'];
+                        postData.departure_time = timeObj.departure_time['24'];
                     }
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
@@ -380,8 +380,8 @@ angular.module('sntRover')
                             selectedRoomNo: $scope.setTimePopupData.roomDetails.roomNo,
                             startDate: $scope.diaryData.startDate,
                             fromState: 'NIGHTLY_DIARY',
-                            selectedArrivalTime: timeObj.arrival_time,
-                            selectedDepartureTime: timeObj.departure_time
+                            selectedArrivalTime: timeObj.arrival_time['12'],
+                            selectedDepartureTime: timeObj.departure_time['12']
                         });
                     }
                     else {
