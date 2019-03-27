@@ -165,7 +165,6 @@ var UnassignedRoomPanel = React.createClass({
                 selectedIndex: null,
                 dragInProgress: null
             });
-            unassignedRoomListProp.unSelectAnUnassigned();
         }
     },
 

@@ -613,9 +613,6 @@ angular.module('sntRover')
 
 				this.dragData = options;
 			},
-            unSelectAnUnassigned: function() {
-                $scope.clearAvailability();
-            },
 			dropReservation: function(roomId) {
 				$scope.saveReservationOnDrop(this.dragData, roomId);
 			},
@@ -716,6 +713,8 @@ angular.module('sntRover')
 		$scope.onUnassignedRoomToggle = function() {
 		    if ($scope.gridProps.unassignedRoomList.open) {
                 $scope.gridProps.unassignedRoomList.open = false;
+                $scope.resetEdit();
+                $scope.clearAvailability();
                 $scope.renderGrid();
             } else {
                 $scope.gridProps.unassignedRoomList.fetchList();
