@@ -370,7 +370,23 @@ angular.module('sntRover')
                  * Set time from rvNightlyDiarySetTimePopup.
                  */
                 $scope.addListener('SET_TIME_AND_SAVE', function ( e, timeObj) {
-                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, $scope.setTimePopupData.type, timeObj);
+                    if ($scope.setTimePopupData.type === 'BOOK') {
+                        ngDialog.close();
+                        // Navigation to Reservation Creation Screen.
+                        $state.go('rover.reservation.search', {
+                            selectedArrivalDate: $scope.setTimePopupData.reservationDetails.fromDate,
+                            selectedRoomTypeId: $scope.setTimePopupData.roomDetails.roomTypeId,
+                            selectedRoomId: $scope.setTimePopupData.roomDetails.room_id,
+                            selectedRoomNo: $scope.setTimePopupData.roomDetails.roomNo,
+                            startDate: $scope.diaryData.startDate,
+                            fromState: 'NIGHTLY_DIARY',
+                            selectedArrivalTime: timeObj.arrival_time,
+                            selectedDepartureTime: timeObj.departure_time
+                        });
+                    }
+                    else {
+                        callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, $scope.setTimePopupData.type, timeObj);
+                    }
                 });
 
                 /*
@@ -385,26 +401,19 @@ angular.module('sntRover')
 
                 // Handle book room button actions.
                 var clickedBookRoom = (roomId, date, roomsList) => {
+                    var roomTypeId = _.where(roomsList, { id: roomId })[0].room_type_id,
+                        roomNo = _.where(roomsList, { id: roomId })[0].room_no;
+
                     var roomDetails = {
-                        room_id: roomId
+                        room_id: roomId,
+                        roomNo: roomNo,
+                        roomTypeId: roomTypeId
                     },
                     reservationDetails = {
                         fromDate: date
                     };
 
                     showDiarySetTimePopup(roomDetails, reservationDetails, 'BOOK');
-
-                    /*var roomTypeId = _.where(roomsList, { id: roomId })[0].room_type_id,
-                        roomNo = _.where(roomsList, { id: roomId })[0].room_no;
-
-                    $state.go('rover.reservation.search', {
-                        selectedArrivalDate: date,
-                        selectedRoomTypeId: roomTypeId,
-                        selectedRoomId: roomId,
-                        selectedRoomNo: roomNo,
-                        startDate: $scope.diaryData.startDate,
-                        fromState: 'NIGHTLY_DIARY'
-                    });*/
                 };
 
                 /*
