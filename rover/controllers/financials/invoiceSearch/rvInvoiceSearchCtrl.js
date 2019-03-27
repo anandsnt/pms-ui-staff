@@ -244,16 +244,16 @@ sntRover.controller('RVInvoiceSearchController',
 							successData.invoiceLabel = successData.translation.void_invoice;
 						} 
 						else if (($scope.reservationBillData.is_bill_lock_enabled 
-							&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices)) 
+							&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10)) 
 							|| (!$scope.reservationBillData.is_bill_lock_enabled 
-								&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices))) 
+								&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10))) 
 						{
 							successData.invoiceLabel = successData.translation.invoice;
 						} 
 						else if (($scope.reservationBillData.is_bill_lock_enabled 
-							&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices))
+							&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices, 10))
 								|| (!$scope.reservationBillData.is_bill_lock_enabled 
-									&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices)))
+									&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices, 10)))
 						{
 							var copyCount = "";
 
