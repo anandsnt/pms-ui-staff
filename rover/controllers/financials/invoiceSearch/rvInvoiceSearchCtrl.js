@@ -141,26 +141,26 @@ sntRover.controller('RVInvoiceSearchController',
 				"no_of_original_invoices": $scope.invoiceSearchData.reservationsList.no_of_original_invoices
 			};
 			$scope.reservationBillData.bills = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills;
+			
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$scope.invoiceSearchFlags.isClickedReservation = true;
 				$scope.reservationBillData.reservation_id = $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id;
 
 			} else {
 				// We have to show toggle in popup
-				// $scope.reservationBillData = {}; // To handle print in posting accounts
 				$scope.isFromInvoiceSearchScreen = true;
 				$scope.clickedInvoiceData = $scope.invoiceSearchData.reservationsList.results[parentIndex];
 				$scope.invoiceSearchFlags.isClickedReservation = false;
 			}
 
-
-
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_transactions_exist 
 				&& $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].balance === 0 
 				&& $scope.invoiceSearchData.reservationsList.is_bill_lock_enabled 
 				&& $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_active 
-				&& ($scope.invoiceSearchFlags.isClickedReservation ? $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.reservation_status === 'CHECKING_OUT' 
-					|| $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.reservation_status === 'CHECKEDIN' : true)) {
+				&& ($scope.invoiceSearchFlags.isClickedReservation ? 
+					$scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.reservation_status === 'CHECKING_OUT' 
+					|| $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.reservation_status === 'CHECKEDIN' 
+					: true)) {
 				$scope.isInvoiceStepOneActive = true;
 				$scope.isInvoiceStepThreeActive = false;
 				$scope.shouldGenerateFinalInvoice = true;
@@ -172,10 +172,6 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.isInvoiceStepTwoActive = false;
 			$scope.isInvoiceStepFourActive = false;
 			$scope.isInvoiceStepFiveActive = false;
-
-
-
-
 			$scope.isSettledBill = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_active;
 			$scope.isEmailedOnce = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_emailed_once;
 			$scope.isPrintedOnce = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_printed_once;
@@ -200,7 +196,9 @@ sntRover.controller('RVInvoiceSearchController',
 					}				
 				},
 				options = {
-					params: {"bill_id": $scope.invoiceSearchData.reservationsList.results[$scope.currentSelectedItem].bills[$scope.currentActiveBill].bill_id},
+					params: {
+					"bill_id": $scope.invoiceSearchData.reservationsList.results[$scope.currentSelectedItem].bills[$scope.currentActiveBill].bill_id
+					},
 					successCallBack: settleInvoiceSuccess
 				};
 
@@ -246,21 +244,21 @@ sntRover.controller('RVInvoiceSearchController',
 							successData.invoiceLabel = successData.translation.void_invoice;
 						} 
 						else if (($scope.reservationBillData.is_bill_lock_enabled 
-							&& parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
+							&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices)) 
 							|| (!$scope.reservationBillData.is_bill_lock_enabled 
-								&& parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) 
+								&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices))) 
 						{
 							successData.invoiceLabel = successData.translation.invoice;
 						} 
 						else if (($scope.reservationBillData.is_bill_lock_enabled 
-							&& parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+							&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices))
 								|| (!$scope.reservationBillData.is_bill_lock_enabled 
-									&& parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)))
+									&& parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices)))
 						{
 							var copyCount = "";
 
 							if (successData.is_copy_counter) {
-								copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+								copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices);					
 							}
 							successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 						}
@@ -327,7 +325,7 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.clickedEmail = function(data) {
 			$scope.closeDialog();
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				finalInvoiceSettlement(data, true);
+				finalInvoiceSettlement(data, false);
 			} else { 
 				var sendEmailSuccessCallback = function() {
 						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
