@@ -68,9 +68,12 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			return that.updateGuestDetailsDuringCheckin(data).then(function() {
 			});
 		})
-		.then(function() {				 
-			return that.updateDemographicsDuringCheckin(data).then(function() {					
-			});
+		.then(function() {
+			if (!data.ignoreDemographicsUpdate) {
+				return that.updateDemographicsDuringCheckin(data).then(function() {					
+				});
+			}				 
+			
 		})			
 		.then(function() {
 			deferred.resolve(data);

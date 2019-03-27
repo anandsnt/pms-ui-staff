@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="entry commission" ng-show="contactInformation.commission_details.is_on">
+            <div class="entry commission" ng-show="contactInformation.commission_details.is_on && account_type == 'TRAVELAGENT'">
                 <label class="checkbox"
                        ng-class="{'checked': contactInformation.commission_details.is_global_commission}"
                        ng-show="contactInformation.is_global_enabled">
@@ -116,8 +116,8 @@
             <div class="entry with-button full-width">
                 <label for="company-card-arn" translate>ACCOUNTS_RECIEVABLE_NUMBER</label>
                 <input type="text" ng-model="contactInformation.account_details.accounts_receivable_number" placeholder="AR Number" ng-readonly="true" ng-disabled="true">
-                <button ng-click="showARTab($event)" ng-hide="contactInformation.account_details.accounts_receivable_number || isArTabAvailable || !contactInformation.id" class="button green" ng-disabled="!hasPermissionToCreateArAccount()" ng-class="{'grey': !hasPermissionToCreateArAccount()}" translate>CREATE_ACCOUNT</button>
-                <button ng-click="deleteArAccount()" ng-show="contactInformation.account_details.accounts_receivable_number" class="button red" ng-disabled="!hasPermissionToCreateArAccount()" ng-class="{'grey': !hasPermissionToCreateArAccount()}" translate>DELETE_ACCOUNT</button>
+                <button ng-click="clickedCreateArAccountButton($event)" ng-if="!(contactInformation.account_details.accounts_receivable_number || isArTabAvailable || !contactInformation.id)" class="button green" ng-disabled="!hasPermissionToCreateArAccount()" ng-class="{'grey': !hasPermissionToCreateArAccount()}" translate>CREATE_ACCOUNT</button>
+                <button ng-click="deleteArAccount()" ng-if="contactInformation.account_details.accounts_receivable_number" class="button red" ng-disabled="!hasPermissionToCreateArAccount()" ng-class="{'grey': !hasPermissionToCreateArAccount()}" translate>DELETE_ACCOUNT</button>
             </div>
 
             <strong class="h3 margin" translate>PRIMARY_CONTACT_DETAILS</strong>

@@ -58,7 +58,7 @@ admin.controller('adHotelLegalSettingsController',
 			}
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
-			
+
 			var	options = {
 				params: {
 					'hotel_id': $scope.data.id,

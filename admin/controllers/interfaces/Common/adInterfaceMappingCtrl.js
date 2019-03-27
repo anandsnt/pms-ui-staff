@@ -5,16 +5,20 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-        var mappingPartials = {
-          'HOGIA': '/assets/partials/interfaces/common/mapping.html',
-          'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
-        };
 
         var mappingText = {
-            'charge_code': 'Charge Code',
-            'charge_code_department_code': 'Charge Code - Department Code',
-            'market_code': 'Market Code',
-            'market_code_department_code': 'Market Code - Department Code'
+          'cancellation_code': 'Cancellation Codes',
+          'tax_code': 'Tax Codes',
+          'charge_code': 'Charge Code',
+          'charge_code_department_code': 'Charge Code - Department Code',
+          'market_code': 'Market Code',
+          'market_code_department_code': 'Market Code - Department Code'
+        };
+
+        var mappingPartials = {
+            'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
+            'HOGIA': '/assets/partials/interfaces/common/mapping.html',
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
         };
 
         $scope.state = {
@@ -49,6 +53,10 @@ admin.controller('adInterfaceMappingCtrl', [
             return mappingPartials[$scope.interface];
         };
 
+        $scope.fetchMappingPartial = function() {
+            return mappingPartials[$scope.interface];
+        };
+
         $scope.onClickAdd = function() {
             if (!$scope.state.meta) {
                 $scope.callAPI(adIFCInterfaceMappingSrv.fetchMeta, {
@@ -77,7 +85,6 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.mapping = fetchEmptyMapping();
                 },
                 failureCallBack: function(response) {
-                    console.log(response);
                     $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });

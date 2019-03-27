@@ -215,7 +215,7 @@
                         </time>
                         <button type="button" class="icons icon-trash" ng-click="removeGroupNote($event, note.note_id)">Delete post</button>
                     </div>
-                    <p>{{note.description}}</p>
+                    <p ng-bind-html="note.description"></p>
                 </li>
             </ul>
         </div>

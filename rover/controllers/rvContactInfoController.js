@@ -141,7 +141,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
                 RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
         // change date format to be send to API
-                dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+                if ($scope.guestCardData.contactInfo.birthday) {
+                    dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+                } else {
+                    dataToUpdate.birthday = null;
+                }
                 var unwantedKeys = ['avatar']; // remove unwanted keys for API
 
                 dataToUpdate = dclone(dataToUpdate, unwantedKeys);

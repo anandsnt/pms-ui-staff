@@ -1,5 +1,24 @@
 admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
+    var service = this;
+
+    var chargeCodeTypes = [];
+
+    var initializeChargeCodeTypes = function(types) {
+        _.each(types, function(chargeCodeType) {
+            chargeCodeTypes[chargeCodeType.name] = parseInt(chargeCodeType.value, 10);
+        });
+    };
+
+    /**
+     * Returns the VALUE of the charge code type as integer (if invalid returns 1)
+     * @param {string} NAME name of the charge code type
+     * @return {*|number} returns -1 if invalid
+     */
+    service.getChargeCodeTypeValue = function(NAME) {
+        return chargeCodeTypes[NAME] || -1;
+    };
+
 	/**
     *   A getter method to return the charge codes list
     */
@@ -36,6 +55,9 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		var url = '/admin/charge_codes/new';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+            if (!chargeCodeTypes.length) {
+                initializeChargeCodeTypes(data['charge_code_types']);
+            }
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
@@ -50,6 +72,9 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		var url = '/admin/charge_codes/' + data.editId + '/edit.json';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
+            if (!chargeCodeTypes.length) {
+                initializeChargeCodeTypes(data['charge_code_types']);
+            }
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
