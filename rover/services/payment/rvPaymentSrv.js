@@ -99,7 +99,7 @@ angular.module('sntRover').service('RVPaymentSrv', ['$http', '$q', 'RVBaseWebSrv
 
 		var url = '/staff/reservation/link_payment';
 
-		RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			    deferred.resolve(data);
 			}, function(data) {
 			    deferred.reject(data);

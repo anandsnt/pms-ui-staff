@@ -50,7 +50,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 				"forcefully_assign_room": !!$scope.overbooking.isOpted && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') ? true : wanted_to_forcefully_assign, // CICO-47546
 				"is_preassigned": $scope.assignedRoom.is_preassigned,
 				// CICO-55101
-				"change_roomtype_alone": !$scope.assignedRoom,
+				"change_room_type_alone": !$scope.assignedRoom,
 				'room_type': !$scope.assignedRoom ? $scope.getCurrentRoomType().type : ''
 			},
             successCallBack: $scope.successCallbackUpgrade,
@@ -174,7 +174,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
                 upsell_amount: "0", // CICO-44174 Pass 0 in upsell_amount if they select "No Charge".
 				// This will ensure that we override configured upsell amount to $0 if they select "No Charge"
 				// CICO-55101
-				'change_roomtype_alone': !$scope.assignedRoom,
+				'change_room_type_alone': !$scope.assignedRoom,
 				'room_type': !$scope.assignedRoom ? $scope.getCurrentRoomType().type : '' 
 			},
             successCallBack: $scope.successCallbackUpgrade,
