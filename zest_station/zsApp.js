@@ -38,18 +38,15 @@ sntZestStation.config(function($httpProvider, $translateProvider, $locationProvi
     $locationProvider.html5Mode(true);
 });
 
-sntZestStation.run(['$rootScope', '$state', '$stateParams', '$transitions', function($rootScope, $state, $stateParams, $transitions) {
+sntZestStation.run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.cls = {
         'editor': 'false'
     };
 
-    $transitions.onSuccess({}, function(transition) {
-        var fromState = transition.from(),
-            fromParams = transition.params('from');
-
-        $rootScope.previousState = fromState.name;
+    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+        $rootScope.previousState = from.name;
         $rootScope.previousStateParam = fromParams.menu;
         // on state changes hide the keyboard always in case of iPad
         document.activeElement.blur();
