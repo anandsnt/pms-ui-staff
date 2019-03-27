@@ -5,10 +5,18 @@ angular.module('admin').
 
             var interfaceIdentifier = $stateParams.id;
 
+            var configUrls = {
+                "SUNACCOUNTING": '/assets/partials/interfaces/SunAccounting/adSunAccountingSetup.html',
+                "DEFAULT": '/assets/partials/interfaces/Common/setup.html'
+            };
+
             $scope.state = {
                 activeTab: 'SETUP',
-                configUrl: '/assets/partials/interfaces/Common/setup.html',
                 mappingsUrl: '/assets/partials/interfaces/Common/mappingsList.html'
+            };
+
+            $scope.fetchConfigUrl = function() {
+                return configUrls[$scope.interface] ? configUrls[$scope.interface] : configUrls["DEFAULT"];
             };
 
             /**

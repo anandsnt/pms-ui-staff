@@ -6,12 +6,22 @@ admin.service('adIFCInterfaceMappingSrv', [
         var interfaceswithNumericExternalValues = ['HOGIA'];
 
         var metaLists = {
-            'HOGIA': ['CHARGE_CODES']
+            'HOGIA': ['CHARGE_CODES'],
+            'SUNACCOUNTING': ['CHARGE_CODES', 'DEPARTMENT_CODES', 'MARKET_SEGMENTS', 'SEGMENTS']
         };
 
         var metaPromises = {
             'CHARGE_CODES': function() {
                 return ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000');
+            },
+            'DEPARTMENT_CODES': function() {
+                return ADBaseWebSrvV2.getJSON('/admin/departments.json?per_page=1000');
+            },
+            'MARKET_SEGMENTS': function() {
+                return ADBaseWebSrvV2.getJSON('/api/market_segments.json?per_page=1000');
+            },
+            'SEGMENTS': function() {
+                return ADBaseWebSrvV2.getJSON('/api/segments.json?per_page=1000');
             }
         };
 
@@ -44,13 +54,15 @@ admin.service('adIFCInterfaceMappingSrv', [
             metaList.forEach(function(identifier) {
                 promises.push(metaPromises[identifier]().
                     then(function(data) {
-                        meta[identifier] = data.data.charge_codes;
+                        meta[identifier] = data.data ? data.data : data;
                     }));
             });
 
             $q.all(promises).
                 then(function() {
                     deferred.resolve(meta);
+                }, function(err) {
+                    throw err;
                 });
 
             return deferred.promise;

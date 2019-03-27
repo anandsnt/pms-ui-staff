@@ -5,12 +5,24 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+        var mappingPartials = {
+          'HOGIA': '/assets/partials/interfaces/common/mapping.html',
+          'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
+        };
+
+        var mappingText = {
+            'charge_code': 'Charge Code',
+            'charge_code_department_code': 'Charge Code - Department Code',
+            'market_code': 'Market Code',
+            'market_code_department_code': 'Market Code - Department Code'
+        };
+
         $scope.state = {
             mode: 'LIST',
             mappingTypes: $scope.mappingTypes.map(function(mappingType) {
                 return {
                     name: mappingType,
-                    text: mappingType
+                    text: mappingText[mappingType] ? mappingText[mappingType] : mappingType
                 };
             })
         };
@@ -31,7 +43,11 @@ admin.controller('adInterfaceMappingCtrl', [
                 value: '',
                 external_value: ''
             };
-        }
+        };
+
+        $scope.fetchMappingPartial = function() {
+            return mappingPartials[$scope.interface];
+        };
 
         $scope.onClickAdd = function() {
             if (!$scope.state.meta) {
@@ -59,6 +75,10 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.reloadTable();
                     $scope.state.mode = 'LIST';
                     $scope.mapping = fetchEmptyMapping();
+                },
+                failureCallBack: function(response) {
+                    console.log(response);
+                    $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });
         };
