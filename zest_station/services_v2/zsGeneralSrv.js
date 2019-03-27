@@ -77,7 +77,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'carrollton-inn': 'Carrollton Inn',
             'match': 'Hotel the Match',
             'liason': 'Liason DC',
-            'clarion-collection': 'Clarion Collection'
+            'clarion-collection': 'Clarion Collection',
+            'la-copa': 'La Copa Inn',
+            'ruby': 'Ruby Hospitality'
         };
 
         this.isThemeConfigured = function(theme) {
