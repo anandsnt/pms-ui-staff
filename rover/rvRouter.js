@@ -35,7 +35,7 @@ angular.module('sntRover').config([
                     return RVDashboardSrv.fetchUserInfo();
                 },
                 permissions: function(rvPermissionSrv) {
-                    //return rvPermissionSrv.fetchRoverPermissions();
+                    return rvPermissionSrv.fetchRoverPermissions();
                 }
             },
             lazyLoad: function ($transition$) {
