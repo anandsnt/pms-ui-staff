@@ -441,6 +441,13 @@ angular.module('reportsModule')
                     });
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "INCLUDE_LONG_STAYS",
+                        'description': "include_long_stays"
+                    });
+                    break;
+
                 default:
                     // no op
                     break;
@@ -650,6 +657,10 @@ angular.module('reportsModule')
 
                 if (filter.value === 'SHOW_VAT_WITH_RATES') {
                     report['hasShowVatWithRates'] = filter;
+                }
+
+                if (filter.value === 'INCLUDE_LONG_STAYS') {
+                    report['hasShowIncludeLongStays'] = filter;
                 }
 
                 if (filter.value === 'VAT_YEAR') {
