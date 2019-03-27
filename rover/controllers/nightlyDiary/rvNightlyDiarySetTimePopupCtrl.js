@@ -76,6 +76,8 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
     // Initialization of data set based on scenarios.
     var init = function() {
         if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
+            $scope.setTimePopupData.selectedArrivalTime = $scope.setTimePopupData.data.min_arrival_time;
+            $scope.setTimePopupData.selectedDepartureTime = $scope.setTimePopupData.data.max_departure_time;
             $scope.setTimePopupData.arrivalTimeList = generateTimeDuration($scope.setTimePopupData.data.min_arrival_time, null);
             $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
         }
