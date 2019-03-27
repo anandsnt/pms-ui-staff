@@ -86,6 +86,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
             $scope.setTimePopupData.selectedDepartureTime = '';
             $scope.setTimePopupData.selectedCount = '1';
             $scope.setTimePopupData.processData = generateDataForBookAction($scope.setTimePopupData.data);
+            $scope.daysCountChanged();
         }
     };
 
