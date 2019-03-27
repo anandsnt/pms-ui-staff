@@ -135,7 +135,23 @@ angular.module('sntRover').service('rvMenuSrv',
 		return menuToReturn;
     };
 
+    this.showAnalyticsMenu =  true;
 
+	var addAnalyticsMenuConditionally = function(menuList) {
+		if (self.showAnalyticsMenu) {
+			var reportIndex = _.findIndex(menuList, {
+				title: 'MENU_REPORTS'
+			});
+			var analyticsMenu = {
+				title: "MENU_REPORT_ANALYTICS",
+				action: "rover.reportAnalytics",
+				menuIndex: "reportAnalytics"
+			}
+			
+			menuList[reportIndex].submenu.push(analyticsMenu);
+		};
+		return menuList;
+	};
 	/**
 	* method to get menu for rover
 	* @return {array} - List of Menu
@@ -351,13 +367,11 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
 		            action: "rover.reports.scheduleReportsAndExports",
 		            menuIndex: "schedule_report_export"
-		        }, {
-		            title: "MENU_REPORT_ANALYTICS",
-		            action: "rover.reportAnalytics",
-		            menuIndex: "reportAnalytics"
 		        }]
             }            
 		];
+
+		menuList = addAnalyticsMenuConditionally(menuList);
 
 		return processMenuList (menuList);
 	};
@@ -410,6 +424,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
             }
 		];
+		menu = addAnalyticsMenuConditionally(menu);
 
 		return processMenuList (menu);
 	};
