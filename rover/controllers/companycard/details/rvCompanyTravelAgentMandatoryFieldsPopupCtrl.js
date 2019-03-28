@@ -21,7 +21,7 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
         };   
 
         $scope.shouldEnableSubmitButton = function() {
-            return !isEmpty($scope.contactInformation.address_details.street1) 
+            return (!isEmpty($scope.contactInformation.address_details.street1) && $scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation)
                     && !isEmpty($scope.contactInformation.address_details.city) 
                     && !isEmpty($scope.contactInformation.address_details.postal_code) 
                     && $scope.contactInformation.address_details.country_id !== '' 
