@@ -221,14 +221,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.clickedCreateArAccountButton = function() {
 			$scope.isMandatoryPopupOpen = true;
-			if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
-				$scope.isArTabAvailable = true;		
-				$scope.$broadcast("REMOVE_VALIDATION");			
-				$scope.$broadcast('setgenerateNewAutoAr', true);
-				$scope.$broadcast("saveArAccount");
-			} else {
+			// if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
+			// 	$scope.isArTabAvailable = true;		
+			// 	$scope.$broadcast("REMOVE_VALIDATION");			
+			// 	$scope.$broadcast('setgenerateNewAutoAr', true);
+			// 	$scope.$broadcast("saveArAccount");
+			// // } else {
 				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
-			}				
+			// }				
 		};
 
 		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function(e, shouldDeleteARCreated) {
