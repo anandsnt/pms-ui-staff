@@ -7,10 +7,11 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
         BaseCtrl.call(this, $scope);
 
         $scope.setScroller('companyTravelAgentMandatory'); 
+        $scope.shouldDeleteARCreated = true;
 
         $scope.closeDialog = function() {
 
-            $scope.$emit("UPDATE_MANDATORY_POPUP_OPEN_FLAG");
+            $scope.$emit("UPDATE_MANDATORY_POPUP_OPEN_FLAG", $scope.shouldDeleteARCreated);
             ngDialog.close();
         };
 
@@ -18,11 +19,12 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
                        
             $scope.$emit("saveContactInformation");
             $scope.$emit("saveArAccountFromMandatoryPopup", $scope.arAccountDetails);
+            $scope.shouldDeleteARCreated = false;
             $scope.closeDialog();
         };   
 
         $scope.shouldEnableSubmitButton = function() {
-            return ($scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation 
+            var a = ($scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation 
                         ? !isEmpty($scope.contactInformation.address_details.street1)
                         : true) 
                     && ($scope.contactInformation.mandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation 
@@ -62,8 +64,11 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
                         || ($scope.arAccountDetails.ar_number !== '' 
                         && $scope.arAccountDetails.ar_number !== null)) 
                     && ($scope.contactInformation.mandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.arAccountDetails.payment_due_days)
+                        ? ($scope.arAccountDetails.payment_due_days !== '' 
+                            && $scope.arAccountDetails.payment_due_days !== null)
                         : true);
+
+                return a;
         };
 
         var init = function() {

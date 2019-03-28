@@ -231,9 +231,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}				
 		};
 
-		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function() {
+		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function(e, shouldDeleteARCreated) {
 			$scope.isMandatoryPopupOpen = false;
-			if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
+			if ($scope.arAccountDetails.is_auto_assign_ar_numbers && shouldDeleteARCreated) {
                 $scope.deleteARAccountConfirmed();
             }
 		});
