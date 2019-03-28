@@ -233,6 +233,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function() {
 			$scope.isMandatoryPopupOpen = false;
+			if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
+                $scope.deleteARAccountConfirmed();
+            }
 		});
 
 		$scope.showARTab = function() {
@@ -530,7 +533,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * successcall back of commssion detail
 		 */
 		var successCallbackOffetchCommissionDetail = function(data) {
-			$scope.$emit("hideLoader");
+			$scope.$emit("hideLoader");			 
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
 			$scope.contactInformation.emailStyleClass = $scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_visible ? 'margin' : 'full-width';
 			$scope.contactInformation["commission_details"] = data.commission_details;
@@ -564,6 +567,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
+			$scope.contactInformation.address_details = {};
+			$scope.contactInformation.primary_contact_details = {};
 			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetailsAndMandatoryFields, data, successCallbackOffetchCommissionDetail);
 		}
 		// we are checking for edit screen

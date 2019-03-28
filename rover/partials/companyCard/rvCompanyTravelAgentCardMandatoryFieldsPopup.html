@@ -60,7 +60,7 @@
                     <div class="fields">
                                            
                         <rv-textbox value="arAccountDetails.ar_number" label="AR number" placeholder = "Enter AR number" styleclass="margin" required = "yes"></rv-textbox>
-                        <rv-textbox value="arAccountDetails.payment_due_days" label="Payment due days" placeholder = "Enter payment due days"  required = "yes"></rv-textbox>     
+                        <rv-textbox ng-if="shouldShowPayDays" value="arAccountDetails.payment_due_days" label="Payment due days" placeholder = "Enter payment due days"  required = "yes"></rv-textbox>     
 
                     </div>
                 </fieldset>
