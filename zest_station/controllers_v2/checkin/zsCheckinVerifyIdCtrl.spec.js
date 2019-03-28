@@ -124,10 +124,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 }]
             };
             $scope.approveGuest();
+            $scope.$digest();
             expect(zsGeneralSrv.recordReservationActions).not.toHaveBeenCalled();
         });
 
         it('On continuing without any pending guest ID verification, proceed to loging', function() {
+
             $scope.selectedReservation = {
                 guest_details: [{
                     'id': 1,
@@ -143,6 +145,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 }]
             };
             $scope.approveGuest();
+            $scope.$digest();
             expect(zsGeneralSrv.recordReservationActions).toHaveBeenCalled();
         });
     });
