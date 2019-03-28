@@ -9,7 +9,7 @@ admin.directive('adSyncBlock', function () {
                 isExport: '=',
                 historicalDataSyncItems: '=',
                 realTimeDataSyncItems: '=',
-                proxy: '@',
+                proxy: '@'
             },
             templateUrl: '/assets/directives/adSyncBlock/adSyncBlockPartial.html',
             controller: 'adSyncBlockCtrl'
