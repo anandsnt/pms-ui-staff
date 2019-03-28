@@ -3,8 +3,7 @@ module.exports = function(config) {
     const merge = require('deepmerge');
 
     let sharedRoot = '../shared/',
-        jsLegacyLibRoot = sharedRoot + 'lib-legacy/js/',
-        jsLibRoot = sharedRoot + 'lib/js/',
+        jsLibRoot = sharedRoot + 'lib-legacy/js/',
         zestRoot = './',
         paymentRoot = '../payment/';
 
@@ -17,39 +16,39 @@ module.exports = function(config) {
             jsLibRoot + 'jquery.min.js',
             jsLibRoot + 'jquery-ui.min.js',
             jsLibRoot + 'jquery.ui.touch-punch.min.js',
-            jsLibRoot + 'angular.1.7.7.min.js',
-            jsLibRoot + 'angular-route.1.7.7.min.js',
-            jsLibRoot + 'angular-ui-router.1.0.22.min.js',
-            jsLibRoot + 'angular-animate.1.7.7.min.js',
-            jsLibRoot + 'angular-sanitize.1.7.7.min.js',
-            jsLibRoot + 'angular-translate.2.18.1.min.js',
-            jsLibRoot + 'angular-translate-loader-static-files.2.18.1.min.js',
-            sharedRoot + 'lib/js/angular-mocks.1.7.7.js',
-            jsLegacyLibRoot + 'ui-utils.min.js',
-            jsLegacyLibRoot + 'underscore.min.js',
-            jsLegacyLibRoot + 'ngDialog.min.js',
-            jsLegacyLibRoot + 'fastclick.min.js',
-            jsLegacyLibRoot + 'signature/**/*.js',
-            jsLegacyLibRoot + 'fullcalender/**/*.js',
-            jsLegacyLibRoot +
+            jsLibRoot + 'angular.min.js',
+            jsLibRoot + 'angular-route.min.js',
+            jsLibRoot + 'angular-ui-router.min.js',
+            jsLibRoot + 'angular-animate.min.js',
+            jsLibRoot + 'angular-sanitize.min.js',
+            jsLibRoot + 'angular-translate.min.js',
+            jsLibRoot + 'angular-translate-loader-static-files.min.js',
+            sharedRoot + 'lib/js/angular-mocks.js',
+            jsLibRoot + 'ui-utils.min.js',
+            jsLibRoot + 'underscore.min.js',
+            jsLibRoot + 'ngDialog.min.js',
+            jsLibRoot + 'fastclick.min.js',
+            jsLibRoot + 'signature/**/*.js',
+            jsLibRoot + 'fullcalender/**/*.js',
+            jsLibRoot +
             'stationKeyboard/jquery.keyboard.extension-mobile.min.js',
-            jsLegacyLibRoot +
+            jsLibRoot +
             'stationKeyboard/jquery.keyboard.extension-navigation.min.js',
-            jsLegacyLibRoot +
+            jsLibRoot +
             'stationKeyboard/jquery.keyboard.extension-previewkeyset.min.js',
-            jsLegacyLibRoot +
+            jsLibRoot +
             'stationKeyboard/jquery.keyboard.extension-scramble.min.js',
-            jsLegacyLibRoot +
+            jsLibRoot +
             'stationKeyboard/jquery.keyboard.extension-typing.min.js',
-            jsLegacyLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
-            jsLegacyLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
-            jsLegacyLibRoot +
+            jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
+            jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
+            jsLibRoot +
             'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js',
-            jsLegacyLibRoot + 'oclazyload/ocLazyLoad.min.js',
-            jsLegacyLibRoot + 'iscroll.js',
-            jsLegacyLibRoot + 'ng-iscroll.js',
-            jsLegacyLibRoot + 'Utils.js',
-            jsLegacyLibRoot + 'jquery.select-to-autocomplete.js',
+            jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
+            jsLibRoot + 'iscroll.js',
+            jsLibRoot + 'ng-iscroll.js',
+            jsLibRoot + 'Utils.js',
+            jsLibRoot + 'jquery.select-to-autocomplete.js',
             sharedRoot + 'interceptors/**/*.js',
             sharedRoot + 'directives/documentTouchMovePrevent/*.js',
             sharedRoot + 'directives/divTouchMoveStopPropogate/*.js',
@@ -60,7 +59,7 @@ module.exports = function(config) {
             sharedRoot + 'directives/clickTouch/clickTouch.js',
             sharedRoot + 'directives/activityIndicator/sntActivityIndicator.js',
             sharedRoot + 'sntCanvasUtil/**/*.js',
-            jsLegacyLibRoot + 'date.js',
+            jsLibRoot + 'date.js',
             sharedRoot + 'cordova.js',
             zestRoot + 'zsApp.js',
             zestRoot + 'zsUtils.js',
