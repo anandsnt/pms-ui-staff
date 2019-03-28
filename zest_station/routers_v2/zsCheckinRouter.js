@@ -13,15 +13,9 @@ sntZestStation.config(['$stateProvider',
             tags: ['sign_screen']
         });
 
-        // checkin reservation details
+        // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails',
-            params: {
-                pickup_key_mode: '',
-                isQuickJump: '',
-                quickJumpMode: '',
-                previousState: ''
-            },
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode/:previousState',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: true,
@@ -51,15 +45,7 @@ sntZestStation.config(['$stateProvider',
         });
         // select nationality
         $stateProvider.state('zest_station.collectNationality', {
-            url: '/collect_nationality',
-            params: {
-                pickup_key_mode: '',
-                reservation_id: '',
-                room_no: '',
-                first_name: '',
-                guest_id: '',
-                email: ''
-            },
+            url: '/collect_nationality/:pickup_key_mode/:reservation_id/:room_no/:first_name/:guest_id/:email',
             templateUrl: '/assets/partials_v2/checkin/zsCollectNationality.html',
             controller: 'zsCollectNationalityCtrl',
             resolve: {
@@ -78,10 +64,7 @@ sntZestStation.config(['$stateProvider',
         });
 
         $stateProvider.state('zest_station.add_remove_guests', {
-            url: '/checkInAddRemoveGuest',
-            params: {
-                pickup_key_mode: ''
-            },
+            url: '/checkInAddRemoveGuest/:pickup_key_mode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckInAddRemoveGuest.html',
             controller: 'zsCheckInAddRemoveGuestCtrl',
             jumper: true,
@@ -91,29 +74,9 @@ sntZestStation.config(['$stateProvider',
             label: 'Add/Remove Guest'
         });
 
-        // checking credit card swipe
+        // checking credit card swipe                 
         $stateProvider.state('zest_station.checkInCardSwipe', {
-            url: '/checkInReservationCard',
-            params: {
-                isQuickJump: '',
-                mode: '',
-                first_name: '',
-                reservation_id: '',
-                guest_id: '',
-                swipe: '',
-                guest_email: '',
-                guest_email_blacklisted: '',
-                room_no: '',
-                room_status: '',
-                payment_type_id: '',
-                deposit_amount: '',
-                balance_amount: '',
-                pre_auth_amount_for_zest_station: '',
-                authorize_cc_at_checkin: '',
-                confirmation_number: '',
-                pickup_key_mode: '',
-                email: ''
-            },
+            url: '/checkInReservationCard/:isQuickJump/:mode/:first_name/:reservation_id/:guest_id/:swipe/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:payment_type_id/:deposit_amount/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:email',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinCCSwipe.html',
             controller: 'zsCheckinCCSwipeCtrl',
             jumper: true,
@@ -124,28 +87,9 @@ sntZestStation.config(['$stateProvider',
             label: 'Card Swipe'
         });
 
-        // terms and conditions
+        // terms and conditions                
         $stateProvider.state('zest_station.checkInTerms', {
-            url: '/checkInTermsAndConditions',
-            params: {
-                guest_id: '',
-                reservation_id: '',
-                payment_type_id: '',
-                deposit_amount: '',
-                guest_email: '',
-                guest_email_blacklisted: '',
-                room_no: '',
-                room_status: '',
-                first_name: '',
-                balance_amount: '',
-                pre_auth_amount_for_zest_station: '',
-                authorize_cc_at_checkin: '',
-                confirmation_number: '',
-                pickup_key_mode: '',
-                is_from_room_upsell: '',
-                is_from_addons: '',
-                payment_method: ''
-            },
+            url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:is_from_room_upsell/:is_from_addons/:payment_method',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
             controller: 'zsCheckInTermsConditionsCtrl',
             jumper: false,
@@ -154,27 +98,9 @@ sntZestStation.config(['$stateProvider',
             description: 'Terms and Conditions',
             label: 'Terms'
         });
-        // reservation deposit
+        // reservation deposit                
         $stateProvider.state('zest_station.checkInDeposit', {
-            url: '/checkInReservationDeposit',
-            params: {
-                reservation_id: '',
-                mode: '',
-                payment_type_id: '',
-                deposit_amount: '',
-                guest_email: '',
-                guest_email_blacklisted: '',
-                room_no: '',
-                room_status: '',
-                guest_id: '',
-                balance_amount: '',
-                pre_auth_amount_for_zest_station: '',
-                authorize_cc_at_checkin: '',
-                confirmation_number: '',
-                first_name: '',
-                pickup_key_mode: '',
-                email: ''
-            },
+            url: '/checkInReservationDeposit/:reservation_id/:mode/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:guest_id/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:first_name/:pickup_key_mode/:email',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinDeposit.html',
             controller: 'zsCheckinDepositCtrl',
             jumper: true,
@@ -186,14 +112,7 @@ sntZestStation.config(['$stateProvider',
         // pickup key dispense
 
         $stateProvider.state('zest_station.checkinKeyDispense', {
-            url: '/checkinKeyDispense',
-            params: {
-                reservation_id: '',
-                room_no: '',
-                first_name: '',
-                guest_id: '',
-                email: ''
-            },
+            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email',
             templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
@@ -206,17 +125,7 @@ sntZestStation.config(['$stateProvider',
 
         // pickup key dispense
         $stateProvider.state('zest_station.checkinKeySelection', {
-            url: '/checkinKeyDispense',
-            params: {
-                reservation_id: '',
-                room_no: '',
-                first_name: '',
-                guest_id: '',
-                email: '',
-                for_demo: '',
-                isQuickJump: '',
-                quickJumpMode: ''
-            },
+            url: '/checkinKeyDispense/:reservation_id/:room_no/:first_name/:guest_id/:email/:for_demo/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zscheckinKeyDispense.html',
             controller: 'zsCheckinKeyDispenseCtrl',
             jumper: true,
@@ -272,16 +181,7 @@ sntZestStation.config(['$stateProvider',
 
         // signature screen
         $stateProvider.state('zest_station.checkInSignature', {
-            url: '/checkInReservationDeposit',
-            params: {
-                reservation_id: '',
-                email: '',
-                first_name: '',
-                room_no: '',
-                guest_id: '',
-                guest_email_blacklisted: '',
-                passports_scanned: ''
-            },
+            url: '/checkInReservationDeposit/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:passports_scanned',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinSignature.html',
             controller: 'zsCheckinSignatureCtrl',
             jumper: true,
@@ -293,20 +193,7 @@ sntZestStation.config(['$stateProvider',
 
         // passport scanning flow
         $stateProvider.state('zest_station.checkInScanPassport', {
-            url: '/checkInScanPassport',
-            params: {
-                reservation_id: '',
-                email: '',
-                first_name: '',
-                room_no: '',
-                guest_id: '',
-                guest_email_blacklisted: '',
-                signature: '',
-                passports_scanned: '',
-                quickJumpMode: '',
-                isQuickJump: '',
-                from_pickup_key: ''
-            },
+            url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned/:quickJumpMode/:isQuickJump/:from_pickup_key',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinScanPassport.html',
             controller: 'zsCheckinScanPassportCtrl',
             jumper: true,
@@ -378,13 +265,7 @@ sntZestStation.config(['$stateProvider',
 
         // email entry screen
         $stateProvider.state('zest_station.checkInEmailCollection', {
-            url: '/checkInEmailCollection',
-            params: {
-                reservation_id: '',
-                first_name: '',
-                room_no: '',
-                guest_id: ''
-            },
+            url: '/checkInEmailCollection/:reservation_id/:first_name/:room_no/:guest_id',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinEmailCollection.html',
             controller: 'zsCheckinEmailCollectionCtrl',
             jumper: true,
@@ -397,16 +278,7 @@ sntZestStation.config(['$stateProvider',
 
         // email /print entry screen
         $stateProvider.state('zest_station.zsCheckinBillDeliveryOptions', {
-            url: '/checkinBillDeliveryOptions',
-            params: {
-                reservation_id: '',
-                email: '',
-                first_name: '',
-                room_no: '',
-                guest_id: '',
-                key_success: '',
-                key_type: ''
-            },
+            url: '/checkinBillDeliveryOptions/:reservation_id/:email/:first_name/:room_no/:guest_id/:key_success/:key_type',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinRegCardDeliveryOptions.html',
             controller: 'zsCheckinRegCardDeliveryOptionsCtrl',
             jumper: true,
@@ -418,15 +290,7 @@ sntZestStation.config(['$stateProvider',
 
         // checkin final screen
         $stateProvider.state('zest_station.zsCheckinFinal', {
-            url: '/zsCheckinFinal',
-            params: {
-                print_opted: '',
-                email_opted: '',
-                print_status: '',
-                email_status: '',
-                key_success: '',
-                key_type: ''
-            },
+            url: '/zsCheckinFinal/:print_opted/:email_opted/:print_status/:email_status/:key_success/:key_type',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinFinal.html',
             controller: 'zsCheckinFinalCtrl',
             jumper: true,
@@ -438,11 +302,7 @@ sntZestStation.config(['$stateProvider',
 
         // check-in room error
         $stateProvider.state('zest_station.checkinRoomError', {
-            url: '/checkinRoomError',
-            params: {
-                first_name: '',
-                early_checkin_unavailable: ''
-            },
+            url: '/checkinRoomError/:first_name/:early_checkin_unavailable',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomError.html',
             controller: 'zsRoomErrorCtrl',
             jumper: true,
@@ -456,14 +316,7 @@ sntZestStation.config(['$stateProvider',
 
         // early check-in
         $stateProvider.state('zest_station.earlyCheckin', {
-            url: '/checkinEarly',
-            params: {
-                early_checkin_data: '',
-                early_charge_symbol: '',
-                selected_reservation: '',
-                isQuickJump: '',
-                quickJumpMode: ''
-            },
+            url: '/checkinEarly/:early_checkin_data:/:early_charge_symbol/:selected_reservation/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinEarly.html',
             controller: 'zsCheckinEarlyCtrl',
             // These are for navigating directly to a screen
@@ -492,15 +345,7 @@ sntZestStation.config(['$stateProvider',
 
         // early check-in
         $stateProvider.state('zest_station.checkinSuccess', {
-            url: '/checkinSuccess',
-            params: {
-                guest_id: '',
-                reservation_id: '',
-                room_no: '',
-                email: '',
-                first_name: '',
-                guest_email_blacklisted: ''
-            },
+            url: '/checkinSuccess/:guest_id/:reservation_id/:room_no/:email/:first_name/:guest_email_blacklisted',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinSuccess.html',
             controller: 'zsCheckinSuccessCtrl',
             jumper: true,
@@ -512,16 +357,7 @@ sntZestStation.config(['$stateProvider',
 
         // ows msgs
         $stateProvider.state('zest_station.owsMsgsPresent', {
-            url: '/owsMsgPresent',
-            params: {
-                guest_id: '',
-                reservation_id: '',
-                room_no: '',
-                email: '',
-                first_name: '',
-                ows_msgs: '',
-                guest_email_blacklisted: ''
-            },
+            url: '/owsMsgPresent/:guest_id/:reservation_id/:room_no/:email/:first_name/:ows_msgs/:guest_email_blacklisted',
             templateUrl: '/assets/partials_v2/checkin/zsOwsMsgsPresent.html',
             controller: 'zsOwsMsgListingCtrl',
             jumper: false,
@@ -532,11 +368,7 @@ sntZestStation.config(['$stateProvider',
 
         // room upsells
         $stateProvider.state('zest_station.roomUpsell', {
-            url: '/checkinRoomUpsell',
-            params: {
-                isQuickJump: '',
-                quickJumpMode: ''
-            },
+            url: '/checkinRoomUpsell/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
             controller: 'zsCheckinRoomUpsellCtrl',
             jumper: false,
@@ -548,12 +380,7 @@ sntZestStation.config(['$stateProvider',
 
          // addon upsells
         $stateProvider.state('zest_station.addOnUpsell', {
-            url: '/checkinAddon',
-            params: {
-                is_from_room_upsell: null,
-                isQuickJump: null,
-                quickJumpMode: null
-            },
+            url: '/checkinAddon/:is_from_room_upsell/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinAddon.html',
             controller: 'zsCheckinAddonCtrl',
             jumper: false,
@@ -564,27 +391,18 @@ sntZestStation.config(['$stateProvider',
         });
 
         $stateProvider.state('zest_station.checkInMLIAndCBACCCollection', {
-            url: '/checkInMLIAndCBACCCollection',
-            params: {
-                params: ''
-            },
+            url: '/checkInMLIAndCBACCCollection/:params',
             templateUrl: '/assets/partials_v2/checkin/zsCheckInMLIAndCBACCCollection.html',
             controller: 'zsCheckInMLIAndCBACCCollectionCtrl'
         });
 
         $stateProvider.state('zest_station.noCCPresentForCheckin', {
-            url: '/checkInMLIAndCBACCCollection',
-            params: {
-                params: ''
-            },
+            url: '/checkInMLIAndCBACCCollection/:params',
             templateUrl: '/assets/partials_v2/checkin/zsCheckInNoCCAvailable.html'
         });
 
         $stateProvider.state('zest_station.checkInIdVerification', {
-            url: '/checkInIdVerification',
-            params: {
-                params: ''
-            },
+            url: '/checkInIdVerification/:params',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinVerifyId.html',
             controller: 'zsCheckinVerifyIdCtrl'
         });
@@ -602,6 +420,6 @@ sntZestStation.config(['$stateProvider',
                 }
             }
         });
-
+    
     }
 ]);
