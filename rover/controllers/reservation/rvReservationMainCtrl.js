@@ -1613,6 +1613,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
 
                 } else {
+                    // CICO-63737 : Set Arrival, dep time while booking.
+                    if ($scope.reservationData.isFromNightlyDiary) {
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTime;
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTime;
+                        $scope.reservationData.checkinTime = $scope.reservationData.tabs[0].checkinTime;
+                        $scope.reservationData.checkoutTime = $scope.reservationData.tabs[0].checkoutTime;
+                    }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
                 // CICO-16959 We use a flag to indicate if the reservation is extended outside staydate range for the group, if it is a group reservation. Resetting this flag after passing the flag to the API.
