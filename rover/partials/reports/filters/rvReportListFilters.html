@@ -268,6 +268,15 @@
     </label>
 </div>
 
+<div class="entry date-range" ng-show="uiChosenReport.hasShowIncludeLongStays">
+    <label>INCLUDE LONG STAYS</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.include_long_stays}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.include_long_stays}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.include_long_stays">
+        INCLUDE LONG STAYS
+    </label>
+</div>
+
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"
     label="Charge Group(s)"
     on-update="refreshFilterScroll"
@@ -377,6 +386,11 @@
     data="uiChosenReport.hasTravelAgentsSearch.data"
     options="uiChosenReport.hasTravelAgentsSearch.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasIncludeCountry && uiChosenReport.hasIncludeCountry.data.length"
+    label="Country"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasIncludeCountry.data"
+    options="uiChosenReport.hasIncludeCountry.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"

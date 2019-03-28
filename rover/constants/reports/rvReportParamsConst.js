@@ -119,5 +119,7 @@ angular.module('reportsModule')
         "GROUP_CODE": "group_code",
         "TAX_EXEMPT_TYPE": "tax_exempt_type_ids",
         "TA_CC_CARD": "ta_cc_card",
-        "SHOW_VAT_WITH_RATES": "show_vat_with_rates"
+        "SHOW_VAT_WITH_RATES": "show_vat_with_rates",
+        "COUNTRY": "country_ids",
+        "INCLUDE_LONG_STAYS": "include_long_stays"
     });

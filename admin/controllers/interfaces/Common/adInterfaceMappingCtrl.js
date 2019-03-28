@@ -5,12 +5,22 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+        var mappingText = {
+          'cancellation_code': 'Cancellation Codes',
+          'tax_code': 'Tax Codes'
+        };
+
+        var mappingPartials = {
+            'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
+            'HOGIA': '/assets/partials/interfaces/common/mapping.html'
+        };
+
         $scope.state = {
             mode: 'LIST',
             mappingTypes: $scope.mappingTypes.map(function(mappingType) {
                 return {
                     name: mappingType,
-                    text: mappingType
+                    text: mappingText[mappingType] ? mappingText[mappingType] : mappingType
                 };
             })
         };
@@ -32,6 +42,10 @@ admin.controller('adInterfaceMappingCtrl', [
                 external_value: ''
             };
         }
+
+        $scope.fetchMappingPartial = function() {
+            return mappingPartials[$scope.interface];
+        };
 
         $scope.onClickAdd = function() {
             if (!$scope.state.meta) {
@@ -59,6 +73,9 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.reloadTable();
                     $scope.state.mode = 'LIST';
                     $scope.mapping = fetchEmptyMapping();
+                },
+                failureCallBack: function(response) {
+                    $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });
         };

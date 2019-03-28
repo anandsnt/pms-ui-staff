@@ -103,7 +103,22 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Police Report Export': [
 				'TODAY'
-             ]
+			 ],
+			 'Belgium Nationality Export': [
+				'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER' 
+			 ]
         };
 
         var SCHEDULE_REPORT_TIMEPERIODS = {
