@@ -88,21 +88,18 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             if ($scope.proxy) {
                 payload = {
                     integration_name: $scope.interface.toLowerCase(),
-                    options: {
-                        start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI)
-                    }
+                    options: {}
                 };
 
                 if (items.length > 0 ) {
                     payload.options.items = items;
                 }
 
-                if (!$scope.isExport) {
+                if ($scope.isExport) {
+                    payload.options.date = dateFilter($scope.fromDate, $rootScope.dateFormatForAPI);
+                } else {
+                    payload.options.start_date = dateFilter($scope.fromDate, $rootScope.dateFormatForAPI);
                     payload.options.end_date = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
-                }
-
-                if ($scope.syncHistoricalData) {
-                    payload.options.sync_type = 'historical';
                 }
 
                 $scope.callAPI(synchronize, {
@@ -147,7 +144,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.syncHistoricalData = adCheckbox;
 
             if (adCheckbox) {
-                $scope.syncItems = getSyncItems($scope.config.historical_data_sync_items);
+                $scope.syncItems = getSyncItems($scope.historical_data_sync_items);
 
                 $scope.toDate = new Date();
                 fromDate = new Date();
@@ -173,7 +170,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 }
 
             } else {
-                $scope.syncItems = getSyncItems($scope.config.real_time_data_sync_items);
+                $scope.syncItems = getSyncItems($scope.real_time_data_sync_items);
 
                 $scope.startDatePickerOptions.minDate = new Date();
                 $scope.endDatePickerOptions.minDate = new Date();
@@ -189,12 +186,12 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.fromDate = null;
             $scope.toDate = null;
 
-            $scope.real_time_data_sync_items = $scope.proxy ? $scope.real_time_data_sync_items : $scope.config.real_time_data_sync_items;
-            $scope.historical_data_sync_items = $scope.proxy ? $scope.historical_data_sync_items : $scope.config.historical_data_sync_items;
+            $scope.real_time_data_sync_items = $scope.proxy ? $scope.realTimeDataSyncItems : $scope.config.real_time_data_sync_items;
+            $scope.historical_data_sync_items = $scope.proxy ? $scope.historicalDataSyncItems : $scope.config.historical_data_sync_items;
 
             // Disable toggle if either of the lists is empty!
-            $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
-                !$scope.config.historical_data_sync_items;
+            $scope.disableSyncHistoricalDataToggle = !$scope.real_time_data_sync_items ||
+                !$scope.historical_data_sync_items;
 
             $scope.startDatePickerOptions = Object.assign({
                 onSelect: fromDateSelected
@@ -204,7 +201,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 onSelect: toDateSelected
             }, commonDatePickerOptions);
 
-            $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
+            $scope.onToggleHistoricalSync(!$scope.real_time_data_sync_items);
         })();
     }
 ]);
