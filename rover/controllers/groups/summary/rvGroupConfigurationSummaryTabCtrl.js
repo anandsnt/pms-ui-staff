@@ -1391,7 +1391,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         // CICO-24928
         $scope.clickedOnNote = function(note) {
           $scope.groupSummaryData.editingNote = note;
-          $scope.groupSummaryData.newNote = note.description;
+          $scope.groupSummaryData.newNote = note.description.replace(new RegExp('<br/>', 'g'), '\n');
         };
         // CICO-24928
         $scope.cancelEditModeGroupNote = function() {
