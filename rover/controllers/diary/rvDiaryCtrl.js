@@ -711,14 +711,15 @@ angular.module('sntRover')
 		};
 
 		$scope.onUnassignedRoomToggle = function() {
-		    if ($scope.gridProps.unassignedRoomList.open) {
+			if ($scope.gridProps.unassignedRoomList.open) {
                 $scope.gridProps.unassignedRoomList.open = false;
                 $scope.resetEdit();
                 $scope.clearAvailability();
                 $scope.renderGrid();
-            } else {
+            } 
+            else {
                 $scope.gridProps.unassignedRoomList.fetchList();
-            };
+            }
         };
 
 	    /* _________________________________________________________
