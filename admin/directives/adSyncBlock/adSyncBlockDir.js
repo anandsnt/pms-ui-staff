@@ -7,6 +7,8 @@ admin.directive('adSyncBlock', function () {
                 historicalDateRangeDays: '@',
                 excludeToday: '=',
                 isExport: '=',
+                historicalDataSyncItems: '=',
+                realTimeDataSyncItems: '=',
                 proxy: '@',
             },
             templateUrl: '/assets/directives/adSyncBlock/adSyncBlockPartial.html',
