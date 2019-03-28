@@ -75,7 +75,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
         $scope.startSync = function () {
             var items = _.pluck(_.filter($scope.syncItems, {isSelected: true}), 'id'),
-                payLoad;
+                payload;
 
             $scope.errorMessage = $scope.successMessage = '';
 
@@ -189,6 +189,9 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.fromDate = null;
             $scope.toDate = null;
 
+            $scope.real_time_data_sync_items = $scope.proxy ? $scope.real_time_data_sync_items : $scope.config.real_time_data_sync_items;
+            $scope.historical_data_sync_items = $scope.proxy ? $scope.historical_data_sync_items : $scope.config.historical_data_sync_items;
+
             // Disable toggle if either of the lists is empty!
             $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
                 !$scope.config.historical_data_sync_items;
@@ -202,7 +205,6 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             }, commonDatePickerOptions);
 
             $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
-
         })();
     }
 ]);

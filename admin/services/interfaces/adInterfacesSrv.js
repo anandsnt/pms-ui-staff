@@ -1,4 +1,4 @@
-admin.service('adInterfacesSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
+admin.service('adInterfacesSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
     function($http, $q, ADBaseWebSrvV2, $log) {
         /**
          *
