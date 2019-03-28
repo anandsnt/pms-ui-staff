@@ -135,7 +135,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			};
 
 			$scope.invokeApi(RVCompanyCardSrv.fetchArAccountDetails, param, successCallbackFetchArDetails);
-
 		};
 
 		/* -------AR account ends here-----------*/

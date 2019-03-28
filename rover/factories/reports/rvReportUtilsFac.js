@@ -441,6 +441,13 @@ angular.module('reportsModule')
                     });
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "INCLUDE_LONG_STAYS",
+                        'description': "include_long_stays"
+                    });
+                    break;
+
                 default:
                     // no op
                     break;
@@ -640,12 +647,20 @@ angular.module('reportsModule')
                     report['hasIncludeAccountName'] = filter;
                 }
 
+                if ( filter.value === 'COUNTRY' ) {
+                    report['hasIncludeCountry'] = filter;
+                }
+
                 if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
                     report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
                 }
 
                 if (filter.value === 'SHOW_VAT_WITH_RATES') {
                     report['hasShowVatWithRates'] = filter;
+                }
+
+                if (filter.value === 'INCLUDE_LONG_STAYS') {
+                    report['hasShowIncludeLongStays'] = filter;
                 }
 
                 if (filter.value === 'VAT_YEAR') {
@@ -922,6 +937,10 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchTravelAgents()
                         .then( fillTravelAgents );
+                } else if ( 'COUNTRY' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchCountries()
+                        .then( fillCountries );
                 } else {
                     // no op
                 }
@@ -1010,6 +1029,31 @@ angular.module('reportsModule')
                                 hasSearch: true,
                                 key: 'account_name',
                                 defaultValue: 'Select TA'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
+            function fillCountries (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'COUNTRY' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasIncludeCountry = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'value',
+                                defaultValue: 'Select Country'
                             }
                         };
                     }

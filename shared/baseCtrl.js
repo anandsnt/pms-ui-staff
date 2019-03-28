@@ -331,4 +331,6 @@ BaseCtrl = function($scope) {
         });
     });
 
+    $scope.isEmpty = isEmpty;
+
 };

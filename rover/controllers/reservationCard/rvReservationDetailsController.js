@@ -306,8 +306,10 @@ sntRover.controller('reservationDetailsController',
 		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 		$scope.guestCardData.nationality_id = reservationListData.guest_details.nationality_id;
-		$scope.guestCardData.contactInfo.address = {};
-		$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		if (!$scope.guestCardData.contactInfo.address) {
+			$scope.guestCardData.contactInfo.address = {};
+			$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		}
 
 		/**
 		 *	We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -919,8 +921,6 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.goToRoomAndRates = function(state) {
-			$scope.data.guest_details.is_member
-			$scope.guestData
 			// CICO-17693: should be disabled on the Stay Card for Group reservations, until we have the complete functionality working:
 			if ($scope.reservationData.group_id || $scope.reservationData.reservation_card.group_id) {
 				return false;

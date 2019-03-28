@@ -57,6 +57,14 @@ angular.module('sntRover').service('rvMenuSrv',
     	return RVHotelDetailsSrv.hotelDetails.is_show_task_management_in_hk_menu;
     };
     /**
+     * Decide whether the task management submenu is to be shown in housekeeping menu
+     * will use the hotel details API response
+     * @return {Boolean}
+     */
+    var shouldShowCurrencyExchangeInFinancialsMenu = function() {
+        return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled;
+    };
+    /**
      * Decide whether the QuickText submenu is to be shown
      * will use the hotel details API response
      * @return {Boolean}
@@ -330,7 +338,16 @@ angular.module('sntRover').service('rvMenuSrv',
                     title: "AUTO_CHARGE",
                     action: "rover.financials.autoCharge",
                     menuIndex: "autoCharge"
-                }]
+                },
+				{
+					title: "MENU_CURRENY_EXCHANGE",
+					action: "",
+					actionPopup: true,
+					menuIndex: "currencyExchange",
+					hidden: !shouldShowCurrencyExchangeInFinancialsMenu()
+				}
+
+                ]
             }, {
                 title: "MENU_ACTIONS",
                 action: "",
@@ -492,23 +509,23 @@ angular.module('sntRover').service('rvMenuSrv',
 		var menu = [
 			{
 				title: "SETTINGS",
-		        menuIndex: "settings",
-		        action: "",
-		        submenu: [
+				menuIndex: "settings",
+				action: "",
+				submenu: [
 					{
 						title: "CAHNGE_PASSWORD",
 						action: "",
 						menuIndex: "changePassword",
 						actionPopup: true
-		        	},
+					},
 					{
 						title: "SETTINGS",
 						action: "",
 						menuIndex: "adminSettings",
 						actionPopup: true
-		        	}
+					}
 				]
-		    }];
+			}];
 
         // if the device is iPad, add extra menu Item to see details
         if ((sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) ||
@@ -672,7 +689,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		return returnValue;
 	};
 
-	/**
+	/*
 	* function to check permissions against a menu
 	* @param {string}, menu index
 	* @return {boolean}
