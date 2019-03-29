@@ -42,6 +42,15 @@ admin.config([
                 },
                 businessDate: function(ADAppSrv) {
                     return ADAppSrv.fetchHotelBusinessDate();
+                },
+                hotelDetails: function(ADHotelDetailsSrv) {
+                    return ADHotelDetailsSrv.fetchHotelDetails();
+                },
+                userInfo: function(ADAppSrv) {
+                    return ADAppSrv.fetchUserInfo();
+                },
+                permissions: function(adPermissionSrv) {
+                    return adPermissionSrv.fetchRoverPermissions();
                 }
             }
         });
