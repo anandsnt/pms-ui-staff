@@ -208,7 +208,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
-
+			$scope.shouldSaveArDataFromPopup = false;
 			ngDialog.open({
 				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
 				className: 'ngdialog-theme-default1 calendar-single1',
@@ -235,9 +235,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {
 			$scope.arAccountDetails = data;
 			$scope.isArTabAvailable = true;
-			$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
-			$scope.$broadcast("saveArAccount");
+			$scope.shouldSaveArDataFromPopup = true;
 		});
+
+
+
 
 		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE", function(e, data) {
 			$scope.arAccountDetails = data;
@@ -601,6 +603,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
+			if ($scope.shouldSaveArDataFromPopup) {			
+				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
+				$scope.$broadcast("saveArAccount");
+			}
 			if (createArAccountCheck) {
 				createArAccountCheck = false;
 				$scope.$broadcast('setgenerateNewAutoAr', true);
@@ -688,6 +694,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			} else {
+				if ($scope.shouldSaveArDataFromPopup) {			
+					$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
+					$scope.$broadcast("saveArAccount");
+				}
 				if (createArAccountCheck) {
 					$scope.$broadcast('setgenerateNewAutoAr', true);
 				}
