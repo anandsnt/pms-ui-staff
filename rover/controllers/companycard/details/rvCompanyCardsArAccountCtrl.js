@@ -58,10 +58,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 					$scope.$emit("MANDATORY_CHECK_FAILED", $scope.errorMessage);
 
 				} 
-				// else {
-				// 	$scope.$emit('ERRORONARTAB');
-				// 	$scope.switchTabTo('click', 'cc-ar-accounts');
-				// }
 			};
 
 			var dataToSend = $scope.arAccountDetails;
