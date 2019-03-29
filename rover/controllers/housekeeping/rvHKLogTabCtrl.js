@@ -45,8 +45,11 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 					item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
 					item.room_status = _.findWhere(item.details, {key: "room_status"});
 					item.service_status = _.findWhere(item.details, {key: "service_status"});
-					item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
-					item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
+					if (item.service_status) {
+						item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
+						item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
+					}
+					
 				});
 			};
 
