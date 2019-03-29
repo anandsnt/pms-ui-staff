@@ -44,19 +44,19 @@ admin.config([
                     return ADAppSrv.fetchHotelBusinessDate();
                 },
                 hotelDetails: function(ADHotelDetailsSrv, $rootScope) {
-                    if ( $rootScope.isHotelAdmin) {
+                    if ( !$rootScope.isSntAdmin) {
                         return ADHotelDetailsSrv.fetchHotelDetails();
                     }
                     return {};
                 },
                 userInfo: function(ADAppSrv, $rootScope) {
-                    if ( $rootScope.isHotelAdmin) {
+                    if ( !$rootScope.isSntAdmin ) {
                         return ADAppSrv.fetchUserInfo();
                     }
                     return {};
                 },
                 permissions: function(adPermissionSrv, $rootScope) {
-                    if ( $rootScope.isHotelAdmin) {
+                    if ( !$rootScope.isSntAdmin ) {
                         return adPermissionSrv.fetchRoverPermissions();
                     }
                     return {};
