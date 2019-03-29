@@ -228,7 +228,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_53: false,
             item_54: false,
             item_55: false,
-            item_56: false
+            item_56: false,
+            item_57: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -1044,7 +1045,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'market_ids': [],
                     'tax_exempt_type_ids': [],
                     'group_code': [],
-                    'country_ids': []
+                    'country_ids': [],
+                    'include_long_stays': []
                 };
             }
 
@@ -1310,7 +1312,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
                     $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
                 }
-            }   
+            }
+
+            if ( report.hasShowIncludeLongStays ) {
+                key         = reportParams['INCLUDE_LONG_STAYS'];
+                params[key] = report.include_long_stays;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['include_long_stays'] = report.include_long_stays;
+                }
+            } 
 
             if ( report.hasShowVatWithRates ) {
                 key         = reportParams['SHOW_VAT_WITH_RATES'];
