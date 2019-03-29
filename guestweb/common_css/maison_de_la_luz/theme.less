@@ -3,7 +3,7 @@
 @font-face {
   font-family: 'Jannon';
   src: url('/assets/type/Jannon/Jannon.eot');
-  src: url('/assets/type/Jannon/Jannon.eot?#iefix') format('embedded-opentype'), url('/assets/type/Jannon/Jannon.woff') format('woff'), url('/assets/type/Jannon/Jannon.ttf') format('truetype');
+  src: url('/assets/type/Jannon/Jannon.eot?#iefix') format('embedded-opentype'), url('/assets/type/Jannon/Jannon.woff2') format('woff2'), url('/assets/type/Jannon/Jannon.woff') format('woff'), url('/assets/type/Jannon/Jannon.ttf') format('truetype');
 }
 
 @import "../style.less";
@@ -79,7 +79,7 @@ input[type=email] {
 
 .btn,
 .btn:hover {
-  background:#464F6A;
+  background:#484e6b;
   color: @white;
 }
 
@@ -96,6 +96,7 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
+  padding: 12% 5% !important;
   background:rgba(72,78,107,1);
 }
 
@@ -270,6 +271,17 @@ input[type=email] {
   height: 40px;
 }
 
+.pull-left {
+  float: none !important;
+}
+
+.checkout-icon,.late-checkout-icon {
+  display: none !important;
+}
+.for {
+  text-transform: uppercase !important;
+}
+
 @media (max-width: 990px) {
   .logo-image {
     margin: 9% auto 7%;
@@ -280,6 +292,7 @@ input[type=email] {
   }
   .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
+    display: none;
   }
   .accept-charges {
     width: 300px;
