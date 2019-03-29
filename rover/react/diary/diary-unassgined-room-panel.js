@@ -1,13 +1,4 @@
 var UnassignedRoomPanel = React.createClass({
-    __onToggle: function() {
-        this.props.unassignedRoomList.fetchList();
-
-        this.props.iscroll.unassignedList.enable();
-        this.setState({
-            selectedIndex: null,
-            dragInProgress: null
-        });
-    },
 
     __getTimeDiff: function(arrivalDate, arrivalTime, departureDate, departureTime) {
         var arrival = {},
@@ -17,13 +8,14 @@ var UnassignedRoomPanel = React.createClass({
             fullArrivalDate,
             fullDepartureDate,
             difference,
-            fraction;
+            hour_difference,
+            min_difference;
 
         var arrivalTimeFix, departureTimeFix;
 
         if ( ! arrivalTime || ! departureTime ) {
-            arrivalTimeFix = "00:00";
-            departureTimeFix = "04:00";
+            arrivalTimeFix = '00:00';
+            departureTimeFix = '04:00';
         } else {
             arrivalTimeFix = arrivalTime;
             departureTimeFix = departureTime;
@@ -64,20 +56,6 @@ var UnassignedRoomPanel = React.createClass({
         };
     },
 
-    _dragStart: function(event) {
-        this.props.iscroll.unassignedList.disable();
-        this.setState({
-            dragInProgress: true
-        });
-    },
-
-    _dragEnd: function(event) {
-        this.props.iscroll.unassignedList.enable();
-        this.setState({
-            dragInProgress: null
-        });
-    },
-
     __onListSelect: function(index) {
 
         var item = this.props.unassignedRoomList.data[index];
@@ -101,18 +79,6 @@ var UnassignedRoomPanel = React.createClass({
 
             stay_span: this.__getTimeDiff(item.arrival_date, item.arrival_time, item.departure_date, item.departure_time)
         });
-
-        // enable draggable
-        $('.unassigned-list-item.ui-draggable').draggable('disable');
-        $('#ob-' + index).draggable({
-            start: this._dragStart,
-            stop: this._dragEnd,
-            containment: '.diary-grid',
-            zIndex: 1100,
-            revert: true,
-            revertDuration: 200
-        });
-        $('#ob-' + index).draggable('enable');
     },
 
     getInitialState: function() {
@@ -125,6 +91,7 @@ var UnassignedRoomPanel = React.createClass({
     componentDidUpdate: function() {
         var iscroll = this.props.iscroll;
 
+        this.props.iscroll.unassignedList.enable();
         iscroll.unassignedList.refresh();
     },
 
@@ -183,7 +150,17 @@ var UnassignedRoomPanel = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        if ( nextProps.edit.active || (nextProps.edit.passive && nextProps.unassignedRoomList.selectedReservations.length) ) {
+        var unassignedRoomListProp = nextProps.unassignedRoomList;
+
+        if ( nextProps.edit.active
+            || (nextProps.edit.passive && unassignedRoomListProp.selectedReservations.length)) {
+            this.setState({
+                selectedIndex: null,
+                dragInProgress: null
+            });
+        }
+
+        if ( !unassignedRoomListProp.open) {
             this.setState({
                 selectedIndex: null,
                 dragInProgress: null
@@ -195,12 +172,14 @@ var UnassignedRoomPanel = React.createClass({
         var self = this,
             unassignedRoomListProp = this.props.unassignedRoomList;
 
-        var panelClassName = 'sidebar-right',
-            containerClassName = 'sidebar-content scrollable',
-            handleClassName = "rightMenuHandle";
+        // var panelClassName = 'sidebar-right',
+        var panelClassName = 'diary-sidebar diary-unassigned',
+            containerClassName = 'unassigned-list scrollable',
+            handleClassName = 'rightMenuHandle';
 
         if (unassignedRoomListProp && unassignedRoomListProp.open) {
-            panelClassName = panelClassName + ' open';
+            panelClassName = panelClassName + ' visible';
+            this.props.iscroll.unassignedList.enable();
         }
         if (unassignedRoomListProp && unassignedRoomListProp.isUnassignedPresent) {
             handleClassName = handleClassName + ' not-empty';
@@ -209,18 +188,20 @@ var UnassignedRoomPanel = React.createClass({
             containerClassName = containerClassName + ' dragging';
         }
 
-        var __getItemClassName = function(index) {
-            return index.toString() === self.state.selectedIndex ? 'occupancy-status editing occupied check-in' : 'occupancy-status occupied check-in';
+        var __getItemClassName = function(room, index) {
+            return index.toString() === self.state.selectedIndex ?
+                room.statusClass + ' selected' : room.statusClass;
         };
 
         var unassignedList;
 
         if ( unassignedRoomListProp ) {
             unassignedList = unassignedRoomListProp.data.map(function(room, i) {
+
                 var occupancyBlock = {
                     key: i,
                     id: 'ob-' + i,
-                    className: 'occupancy-block unassigned-list-item'
+                    className: __getItemClassName(room, i)
                 };
 
                 occupancyBlock[self.clickEvent] = self.__onListSelect.bind(self, i);
@@ -228,25 +209,43 @@ var UnassignedRoomPanel = React.createClass({
                 return (
                     React.DOM.div(
                         occupancyBlock,
-                        React.DOM.span({
-                                className: __getItemClassName(i)
+                        React.DOM.div(
+                            {
+                                className: 'data'
                             },
-                            React.DOM.span({
-                                className: 'guest-name'
-                            }, room.guests),
-                            React.DOM.span({
-                                className: 'room-type'
-                            }, room.room_type_name),
-                            React.DOM.span({
-                                    className: 'occupancy-time'
-                                },
-                                React.DOM.span({
-                                    className: 'duration'
-                                }, self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time).hhs ),
-                                React.DOM.span({
-                                    className: 'eta'
-                                }, room.arrival_time)
+                            React.DOM.div(
+                                {
+                                    className: 'name'
+                                }, room.guests
+                            ),
+                            room.is_vip ? React.DOM.span(
+                                {
+                                    className: 'vip'
+                                }
+                            ) : '',
+                            React.DOM.span(
+                                {
+                                    className: 'guest-room'
+                                }, room.room_type_name
                             )
+                        ),
+                        React.DOM.div(
+                            {
+                                className: 'type'
+
+                            }, room.is_hourly ? 'D' : 'N'
+                        ),
+                        React.DOM.div(
+                            {
+                                className: 'nights'
+                            }, room.is_hourly ?
+                                self.__getTimeDiff(room.arrival_date, room.arrival_time, room.departure_date, room.departure_time).hh + ' Hours'
+                                : room.no_of_nights + ' Nights',
+                            room.is_hourly ? React.DOM.span(
+                                {
+                                },
+                                room.arrival_time
+                            ) : ''
                         )
                     )
                 );
@@ -255,25 +254,25 @@ var UnassignedRoomPanel = React.createClass({
 
         return (
             React.DOM.div({
-                    id: 'room-diary-rooms',
-                    className: panelClassName
-                },
+                id: 'room-diary-rooms',
+                className: panelClassName
+            },
                 React.DOM.a({
                     className: handleClassName,
                     onClick: this.__onToggle
                 }),
                 React.DOM.div({
-                        className: 'sidebar-header'
-                    },
+                    className: 'sidebar-header'
+                },
                     React.DOM.h2({
                     }, 'Unassigned Rooms'),
                     React.DOM.p({
                     }, 'Drag & Drop To Assign a Room')
                 ),
                 React.DOM.div({
-                        id: 'unassigned-list',
-                        className: containerClassName
-                    },
+                    id: 'unassigned-list',
+                    className: containerClassName
+                },
                     React.DOM.div({
                         className: 'wrapper'
                     }, unassignedList)

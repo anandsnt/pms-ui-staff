@@ -356,14 +356,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         _.each(inactiveRooms, function(value, index) {
 
                            if (value.room_id === room.id) {
-                                hour = value.from_time.split(":")[0];
-                                min = value.from_time.split(":")[1];
+                                hour = value.from_time === null ? 0 : value.from_time.split(":")[0];
+                                min = value.from_time === null ? 0 : value.from_time.split(":")[1];
                                 startTime = new tzIndependentDate(value.from_date);
                                 startTime.setHours (hour, min, 0);
 
                                 // end time
-                                hour = value.to_time.split(":")[0];
-                                min = value.to_time.split(":")[1];
+                                hour = value.to_time === null ? 0 : value.to_time.split(":")[0];
+                                min = value.to_time === null ? 0 : value.to_time.split(":")[1];
                                 endTime = new tzIndependentDate(value.to_date);
                                 endTime.setHours (hour, min, 0);
 
@@ -651,6 +651,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             ));
 
                         }, function(err) {
+                            q.reject(err);
                         });
 
                     return q.promise;
@@ -1064,9 +1065,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 this.fetchUnassignedRoomList = function(params) {
                     var deferred = $q.defer();
-                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date,
+                        businessDate = $rootScope.businessDate;
 
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        angular.forEach(data.reservations, function(reservation) {
+                            reservation.statusClass = reservation.arrival_date === businessDate ? 'guest check-in' : 'guest no-status';
+                        });
                         deferred.resolve(data.reservations);
                     }, function(error) {
                         deferred.reject(error);

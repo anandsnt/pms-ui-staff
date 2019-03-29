@@ -43,7 +43,11 @@ angular.module('stayCardModule', [])
             params: {
                 guestId: null,
                 selectedArrivalDate: null,
-                selectedRoomTypeId: null
+                selectedRoomTypeId: null,
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                startDate: null,
+                fromState: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
@@ -110,6 +114,8 @@ angular.module('stayCardModule', [])
                 children: '',
                 promotion_id: '',
                 room_type_id: null,
+                roomTypeIdFromNightlyDiary: null,
+                isFromNightlyDiary: false,
                 is_member: '',
                 guestId: ''
             },

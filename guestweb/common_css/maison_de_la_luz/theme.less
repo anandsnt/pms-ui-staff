@@ -1,8 +1,15 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
+@font-face {
+  font-family: 'Jannon';
+  src: url('/assets/type/Jannon/Jannon.eot');
+  src: url('/assets/type/Jannon/Jannon.eot?#iefix') format('embedded-opentype'), url('/assets/type/Jannon/Jannon.woff') format('woff'), url('/assets/type/Jannon/Jannon.ttf') format('truetype');
+}
+
 @import "../style.less";
 html,
 body {
+  font-family: 'Jannon';
   height: auto;
   min-height: 100%;
 }
@@ -23,7 +30,7 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #363d40;
+  color: #484e6b;
 }
 
 input[type=text],
@@ -35,7 +42,8 @@ input[type=email] {
 }
 
 .sub-main-text {
-  color: #363d40;
+  color: #484e6b;
+  font-weight: 500;
 }
 
 .header-bar {
@@ -54,11 +62,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #363d40;
+  color: #484e6b;
 }
 
 .view-bill {
-  color: #363d40;
+  color: #484e6b;
 }
 
 .sub-text,
@@ -66,7 +74,7 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #363d40;
+  color: #484e6b;
 }
 
 .btn,
@@ -88,38 +96,39 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
-  background:#464F6A;
+  background:rgba(72,78,107,1);
 }
 
 .light-button,
 .light-button:hover {
-  background: #576380;
+  background:rgba(72,78,107,0.8);
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #576380;
+  background: rgba(72,78,107,0.6);
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#464F6A;
+  background:rgba(72,78,107,0.8);
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #343E58;
+  background: rgba(72,78,107,1);
 }
 
 .no-thanks,
 .no-thanks:hover {
-  color: #000;
+  color: #484e6b;
   text-decoration: underline;
   text-transform: none;
 }
 
 .strong-font {
   font-weight: 500;
+  color: #484e6b;
 }
 
 .amount,
@@ -145,7 +154,7 @@ input[type=email] {
 }
 
 .upgrades-label {
-  color: #BA7A55;
+  color: #484e6b;
 }
 
 
@@ -205,6 +214,10 @@ input[type=email] {
 
 .date-picker-header {
   background-color:#464F6A;
+}
+
+.circle-bg {
+  background: none;
 }
 
 .calendar-back {
@@ -268,8 +281,7 @@ input[type=email] {
   .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges,
-  {
+  .accept-charges {
     width: 300px;
     padding: 4% 0%;
   }

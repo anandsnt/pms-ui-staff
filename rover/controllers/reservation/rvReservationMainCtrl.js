@@ -1821,6 +1821,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
         };
 
+        // CICO-62890 : showValidationPopup
+        var showValidationPopup = function () {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/reseravtionFromDiaryValidation.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        },
+        resetRoomDetailsIfInvalid = function () {
+            $scope.reservationData.tabs[0].room_id = null;
+            $scope.reservationData.rooms[0].room_id = null;
+
+            $scope.reservationData.tabs[0].roomName = null;
+            $scope.reservationData.rooms[0].roomName = null;
+        },
+        isShowPopopForRoomCount = false;
 
         $scope.onRoomCountChange = function(tabIndex) {
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
@@ -1833,6 +1851,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }))),
                 totalCount = (lastIndex - firstIndex) + 1;
 
+            var isRoomDetailsInvalidated = $scope.reservationData.tabs[0].room_id === null;
+
+            // CICO-62890 : Fix issue on change room count.
+            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount && !isRoomDetailsInvalidated) {
+                $scope.validationMsg = 'Room number will be unassigned by changing the room count';
+                isShowPopopForRoomCount = true;
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
+
             if (totalCount < currentCount) {
                 var copy,
                     i;
@@ -1844,6 +1872,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+            
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };
