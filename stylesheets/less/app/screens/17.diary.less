@@ -1,5 +1,7 @@
-.diary-content {
+@diarySidebar: 184;
 
+.diary-content {
+   
     .diary-header {
         position: relative;
         padding: 0 10px;
@@ -487,614 +489,582 @@
         position: relative;
         overflow: hidden;
         .calc-height(100, 60);
-        .float;
 
+        /* Grid - Timeline ***/
         .diary-timeline {
             position: absolute;
             top: 0;
-            left: 120px;
+            left: 0;
             z-index: 80;
-            height: 80px;
             background: darken(@darkBlue, 40);
             cursor: default;
             overflow: visible;
+            padding-left: ~'@{diarySidebar}px';
+            .size(60px, 100%);
             .box-shadow(~'inset 0 -20px 0 #fcfcfc, 0 1px 2px rgba(0,0,0,.15)');
-            .calc-width(100, 120);
 
             .outer-wrapper {
-                height: 100%;
+                height: 60px;
+            }
 
-                .wrapper {
-                    color: @white;
-                    .gradient-48hours(@blue, darken(@darkBlue, 40));
-                    .size(60px, 100%);
-                    .float;
+            .wrapper {
+                height: 40px;
+            }
 
-                    .stay-range {
+            .stay-range {
+                position: absolute;
+                top: 5px;
+                left: 0;
+                .size(55px, 100%);
+
+                .set-times {
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    .size(40px, 75px);
+
+                    .title {
                         position: absolute;
-                        top: 5px;
+                        top: 0;
                         left: 0;
-                        width: 100%;
-                        .calc-height(100, 5);
+                        font-size: 12px;
+                        line-height: 16px;
+                        color: @white;
+                        padding: 5px;
+                        z-index: 9;
+                        .box-shadow(1px 0 2px rgba(0,0,0,.3));
+                        .square(100%);
+                        .show;
+                        .gradient(@logoGradientStart, @logoGradientEnd);
+                        #border-radius > .rounded(6px);
 
-                        .set-times {
-                            position: absolute;
-                            text-transform: uppercase;
-                            font-weight: 600;
-                            cursor: pointer;
-                            z-index: 11000;
-                            .size(40px, 70px);
-
-                            .title {
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                font-size: 12px;
-                                line-height: 16px;
-                                color: @white;
-                                padding: 5px;
-                                z-index: 9;
-                                .square(100%);
-                                .show;
-                                .gradient(@logoGradientStart, @logoGradientEnd);
-                                #border-radius > .rounded(6px);
-
-                                .time {
-                                    font-size: 16px;
-                                    .show;
-                                }
-                            }
-
-                            .count {
-                                position: absolute;
-                                top: 0;
-                                right: 0;
-                                color: @logoPrimary;
-                                background: @white;
-                                text-align: right;
-                                font-size: 18px;
-                                line-height: 40px;
-                                padding-right: 10px;
-                                z-index: 1;
-                                .size(40px, 80%);
-                                #border-radius > .right(6px);
-                            }
-
-                            &:after {
-                                content: "";
-                                position: absolute;
-                                bottom: -10px;
-                                left: 0;
-                                .square(0px);
-                                border-top: 10px solid transparent;
-                                border-bottom: 10px solid transparent;
-                                border-left: 10px solid @orangeEnd;
-                            }
-
-                            &.arrival {
-                                width: 100px;
-
-                                .title {
-                                    width: 70px;
-                                    .box-shadow(1px 0 2px rgba(0,0,0,.15));
-                                }
-                            }
-
-                            &.editing {
-
-                                .title { .gradient(@purpleStart, @purpleEnd); }
-
-                                .line {
-                                    position: absolute;
-                                    top: 40px;
-                                    left: 0;
-                                    background: @purpleEnd;
-                                    .size(2000px, 2px);
-                                    .show;
-                                }
-
-                                &.arrival {
-                                    width: 70px;
-
-                                    .title { width: 100%; }
-                                }
-
-                                &:after { border-left: 10px solid @purpleEnd; }
-                            }
-                        }
+                        .time {
+                            font-size: 16px;
+                            .show;
+                        }                        
                     }
 
-                    .hours {
-                        width: 100%;
-
-                        .segment {
-                            position: relative;
-                            font-size: 14px;
-                            line-height: 60px;
-                            font-weight: 600;
-                            vertical-align: middle;
-                            height: 100%;
-                            .pull-left;
-
-                            span {
-                                position: absolute;
-                                bottom: 0;
-                                width: 25%;
-                                z-index: 1;
-
-                                &.date {
-                                    bottom: auto;
-                                    top: -15px;
-                                    left: 0;
-                                    font-weight: 400;
-                                    text-transform: uppercase;
-                                    white-space: nowrap;
-                                    width: 100%;
-                                }
-
-                                &.interval-1 {
-                                    left: 0;
-                                    border-left: 2px solid rgba(255,255,255,.5);
-                                    height: 20px;
-
-                                    &.active { left: -1px; }
-                                }
-
-                                &.interval-2 {
-                                    left: 25%;
-                                    border-left: 1px solid rgba(255,255,255,.3);
-                                    height: 10px;
-
-                                    &.active { #calc-position > .left(25, 1); }
-                                }
-
-                                &.interval-3 {
-                                    left: 50%;
-                                    border-left: 1px solid rgba(255,255,255,.3);
-                                    height: 16px;
-
-                                    &.active { #calc-position > .left(50, 1); }
-                                }
-
-                                &.interval-4 {
-                                    left: 75%;
-                                    border-left: 1px solid rgba(255,255,255,.3);
-                                    height: 10px;
-
-                                    &.active { #calc-position > .left(75, 1); }
-                                }
-
-                                &.active {
-                                    top: 0;
-                                    border-color: @red;
-                                    border-width: 2px;
-                                    .show;
-                                    .size(2000px, auto);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                .resize-wrapper {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                    position: relative;
-                    top: 0px;
-                    left: 0px;
-
-                    .resize-control {
+                    .line {
                         position: absolute;
-                        width: 50px;
-                        height: 100%;
-                        background-color: #fff;
-                        z-index: 9000;
+                        top: 40px;
+                        left: 0;
+                        background: @logoGradientEnd;
+                        .size(2000px, 2px);
+                        .show;
                     }
-                }
 
-                > .occupancy {
-                    background: @white;
-                    overflow: hidden;
-                    .size(20px, 100%);
-                    .float;
+                    .count {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        color: @logoPrimary;
+                        background: @white;
+                        text-align: right;
+                        font-size: 18px;
+                        line-height: 40px;
+                        padding-right: 10px;
+                        z-index: 1;
+                        .size(40px, 80%);
+                        #border-radius > .right(6px);
+                    }
 
-                    li {
-                        font-size: 14px;
-                        line-height: 20px;
-                        font-weight: 600;
-                        vertical-align: middle;
-                        color: @darkBlue;
-                        margin: 0;
-                        height: 100%;
-                        .pull-left;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                        .square(0px);
+                        border-top: 10px solid transparent;
+                        border-bottom: 10px solid transparent;
+                        border-left: 10px solid @logoGradientEnd;
+                    }   
+
+                    &.editing { 
+
+                        .title { 
+                            .gradient(@purpleStart, @purpleEnd); 
+                        }
+
+                        .line {
+                            background: @purpleEnd;
+                        }
+
+                        &:after { border-left: 10px solid @purpleEnd; }
                     }
                 }
             }
-        }
 
+            .hours {
+                color: @white;
+                .gradient-48hours(@blue, darken(@darkBlue, 40));
+                .size(40px, 100%);
+                #flexbox > .parent(row wrap, '', center, '');
+            }
+
+            .segment { 
+                position: relative;
+                font-size: 14px;
+                line-height: 1;
+                font-weight: 600;
+                text-indent: 5px;
+                padding-top: 20px;
+                height: 40px;
+                .show();
+
+                .date,
+                [class*="interval-"] {
+                    position: absolute;
+                    bottom: 0;
+                    width: 25%;
+                    z-index: 1;
+                }
+
+                [class*="interval-"] {
+                    &.active {
+                        top: 0;
+                        border-color: @red;
+                        border-width: 2px;
+                        .show;
+                        .size(2000px, auto);
+                    }
+                }
+
+                .date,
+                .interval-1 {
+                    left: 0;
+                    border-left: 2px solid rgba(255,255,255,.5);
+                }
+
+                .date {
+                    top: 0;
+                    bottom: auto;
+                    text-transform: uppercase;
+                    white-space: nowrap;
+                    text-indent: 5px;
+                    padding-top: 5px;
+                    .size(20px, 100%);
+                }
+
+                .interval-1 { 
+                    height: 20px;
+
+                    &.active { left: -1px; } 
+                }
+
+                .interval-2,
+                .interval-3,
+                .interval-4 {
+                    border-left: 1px solid rgba(255,255,255,.5);
+                    height: 5px; 
+                }
+
+                .interval-2 { 
+                    left: 25%;
+                    
+                    &.active { #calc-position > .left(25, 1); }
+                }
+                
+                .interval-3 { 
+                    left: 50%;
+
+                    &.active { #calc-position > .left(50, 1); }
+                }
+
+                .interval-4 { 
+                    left: 75%;
+
+                    &.active { #calc-position > .left(75, 1); }
+                }
+
+                &:first-child {
+                    .date,
+                    .interval-1 {
+                        border-left-color: transparent;
+                    }
+                }
+            }
+
+            .occupancy {
+                background: @white;
+                overflow: hidden;
+                .size(20px, 100%);
+                .float;
+
+                li {
+                    font-size: 14px;
+                    line-height: 20px;
+                    font-weight: 600;
+                    vertical-align: middle;
+                    color: @darkBlue;
+                    margin: 0;
+                    height: 100%;
+                    text-indent: 5px;
+                    .pull-left;
+                }
+            }
+        }
+    
+        /* Grid - Toggle Open / All Rooms ***/
         .diary-toggle {
             position: absolute;
             top: 0;
             left: 0;
             padding: 10px;
-            background: @grey1;
             z-index: 90;
-            .box-shadow(2px 5px 5px rgba(0,0,0,.15));
-            .size(90px, 120px);
-
+            .background(@white);
+            .box-shadow(0 1px 2px rgba(0,0,0,.15));
+            .size(60px, ~'@{diarySidebar}px');
+        
             .switch-button {
-                #border-radius > .rounded();
-                .size(70px, 100px);
-
-                input {
-                    min-height: 70px;
-                    line-height: 70px;
-                }
-
-                .data-off,
-                .data-on {
-                    padding: 5px;
-                    line-height: 30px;
-                    .size(70px, 100px);
-
-                    .switch-icon,
-                    .value {
-                        text-transform: uppercase;
-                        text-align: center;
-                        float: none;
-                        margin: 0;
-                        .show;
-                        #border-radius > .rounded();
-                        .size(30px, 100%);
-                    }
-
-                    &.data-off {
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                    }
-
-                    &.data-on {
-                        left: 0;
-                        right: 0;
-                        top: 100%;
-                    }
-                }
-
-                &.on {
-                    .data-off {
-                        left: 0;
-                        right: 0;
-                        top: -100%;
-                    }
-
-                    .data-on {
-                        left: 0;
-                        right: 0;
-                        top: 0;
-                    }
-                }
+                .hide();
             }
-        }
+        }  
 
+        /* Grid - Rooms List ***/
         .diary-rooms {
             position: absolute;
-            top: 90px;
+            top: 60px;
             left: 0;
-            width: 120px;
-            background: @grey1;
-            z-index: 90;
+            background-color: @white;
+            z-index: 89;
             cursor: default;
-            .box-shadow(2px 5px 5px rgba(0,0,0,.15));
-            .calc-height(100, 90);
-            .show;
+            width: ~'@{diarySidebar}px';
+            .box-shadow(2px 0 4px rgba(0, 0, 0, .2));
+            .calc-height(100, 60); 
 
-            > .iScrollVerticalScrollbar {
-                right: auto;
-                top: 0;
-                bottom: 10px;
-                left: 10px;
+            .iScrollVerticalScrollbar {
+                .hide();
             }
 
-            > .wrapper {
+            .room-title {
                 position: relative;
-                height: auto;
-                overflow: hidden;
+                font-size: 13px;
+                line-height: 28px;
+                text-transform: uppercase;
+                padding: 0 5px;
+                margin: 2px 0;
+                width: 100%;
+                #flexbox > .parent(row wrap, '', center, '');
+
+                /*&.occupied { 
+                    color: @grey4;
+                    background: @grey1;
+                }*/
+                
+                &.dirty { 
+                    .number {
+                        color: @red;
+                    }
+                }   
+
+                &:not(:first-child) {
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: -2px;
+                        left: 0;
+                        z-index: 11;
+                        .size(2px, ~'calc(100% + 1px)');
+                        .show();
+                        .box-shadow(0 1px 1px rgba(0,0,0,.2));
+                    }
+                }
             }
 
-            li {
-                margin: 5px 0 5px 10px;
+            .number {
+                order: 2;
+                font-size: 18px; 
+                font-weight: 600;
                 text-align: right;
-                text-transform: uppercase;
-                background: @white;
-                overflow: hidden;
+                width: 30%;
+                .nowrap();
+                .show();
 
-                &.occupied {
-                    color: @grey2;
-                    background: @grey1; }
+                &.clean,
+                &.inspected{ color: @green; }
 
-                &.dirty {
-                    color: @red;
-                    background: lighten(@red, 30);
-                }
+                &.pickup { color: @logoPrimary; }
 
-                &:first-child { margin-top: 0; }
-                &:last-child { margin-bottom: 0; }
+                &.dirty { color: @red; }
+
+                &.out { color: @grey3; }
+            }
+
+            .type {
+                order: 1;
+                width: 70%;
+                .show();
+                .nowrap();
             }
         }
-
+        
+        /* Grid - Rservations ***/
         .diary-grid {
             position: absolute;
-            top: 90px;
-            left: 120px;
+            top: 60px;
+            left: ~'@{diarySidebar}px';
             z-index: 70;
-            .calc-height(100, 90);
-            .calc-width(100, 120);
+            .calc-height(100, 60);
+            .calc-width(100, @diarySidebar);
 
-            > .wrapper {
-                position: absolute;
-                overflow: hidden;
-                height: 100%;
+            .iScrollVerticalScrollbar {
+                top: 10px;
+                right: 10px;
+                bottom: 10px;
+                left: auto;
+            }
 
-                > .iScrollVerticalScrollbar { .hide; }
-                > .iScrollHorizontalScrollbar {
-                    top: auto !important;
-                    bottom: 10px !important;
-                    left: 10px;
-                    right: 10px;
-                }
-
-                > .grid {
-                    position: absolute;
-                    height: auto;
-                }
+            .iScrollHorizontalScrollbar { 
+                top: auto;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
             }
 
             .occupancy-block {
                 position: absolute;
-                z-index: 1099;
-                .show;
-                .float;
-
-                &.dragstate {
-                    z-index: 1149;
-                    opacity: 0.45;
-
-                    span {
-                        &.occupied {
-                            cursor: @dragging, move;
-                            cursor: @dragging 16 16, move;
-                        }
-                    }
-                }
+                top: 0;        
+                overflow: hidden;       
+                #flexbox > .parent(row nowrap, '', center, '');
 
                 .deposit-icon {
                     position: absolute;
                     top: 0;
                     left: 0;
-                    float: none;
+                    font-size: 13px;
                     text-indent: 0;
                     text-align: center;
                     background: @yellow;
                     color: @red;
+                    width: 20px;
                 }    
 
                 .icon-diary-lock {
                     position: absolute;
-                    .square(20px);
-                    .show;
+                    top: 0;
+                    right: 0;
+                    background-size: 60px;
+                    background-position: 10px -4541px;
+                    .square(28px);
+                    .show();
                 }
 
-                span {
+                .vip {
+                    display: inline-block;
+                    text-indent: 0;
+                    margin-left: 5px;
+                }
+
+                .occupied,
+                .available,
+                .maintenance {
+                    font-size: 13px;
+                    line-height: 28px;
                     font-weight: 600;
                     text-transform: uppercase;
+                    height: 28px;
+                    .show();
                     .nowrap();
-                    .pull-left;
-                    .show;
+                }
 
-                    &.occupied {
-                        position: relative;
-                        color: @white;
+                .occupied,
+                .available {
+                    color: @white;
+                    text-indent: 14px;
+                    .box-shadow(1px 1px 1px rgba(0,0,0,.2));
+                }
 
-                        &:after,
-                        &:before {
-                            content: "";
+                .occupied {
+                    position: relative;
+                    cursor: pointer;
+
+                    &:not(.departed) {
+                        text-indent: 28px;
+
+                        &:after {
+                            content: '';
                             position: absolute;
-                            background-image: @icons;
+                            top: 0;
+                            left: 0;
+                            background-image: @icons2x;
                             background-repeat: no-repeat;
-                            .show;
-
-                            @media @highdpi {
-                                background-image: @icons2x;
-                                background-size: 120px;
-                            }
+                            background-color: transparent;
+                            background-size: 80px;
+                            z-index: 9;
+                            .square(28px);
+                            .show();
                         }
+                    }
 
+                    &:not(.departed):not(.locked):not(.ooo):not(.oos):not(.blocked) {
                         &:before {
-                            .hide;
-                            #fade > .out();
-                            .icons > .icon-diary-move-reservation();
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            background-image: @icons2x;
+                            background-repeat: no-repeat;
+                            background-size: 60px;
+                            background-position: 8px -2982px;
+                            z-index: 9;
+                            opacity: 0;
+                            .square(28px);
+                            .show();
                         }
 
-                        &.check-in {
-                            .gradient(@greenStart, @greenEnd);
-
-                            &:after {
-                                .guest-status > .check-in;
-                                background-color: transparent;
-                            }
-                        }
-
-                        &.inhouse {
-                            .gradient(@blueStart, @blueEnd);
-
-                            &:after {
-                                .guest-status > .inhouse;
-                                background-color: transparent;
-                            }
-                        }
-
-                        &.check-out,
-                        &.departed {
-                            .gradient(@redStart, @redEnd);
-
-                            &:after {
-                                .guest-status > .check-out;
-                                background-color: transparent;
-                            }
-                        }
-
-                        &.departed,
-                        &.blocked {
-                            color: rgba(255,255,255,.6);
-                            cursor: default;
-
-                            &:after { .opacity(60); }
-
+                        &:not(.editing) {
                             &:before {
-                                top: 0;
-                                left: 0;
-                                right: 0;
-                                bottom: 0;
-                                background-image: none;
-                                #fade > .in();
-                                .opacity(60);
-                                .show;
-                                .candystripe(rgba(255,118,37,.5), -45deg);
+                                .transition();
                             }
-                        }
-
-                        &.blocked {
-                            color: rgba(255,255,255,.6);
-                            cursor: default;
-                            .gradient(@greyStart, @greyEnd);
-
-                            &:after {
-                                .icons > .icon-diary-ooo;
-                                background-color: transparent;
-                            }
-
-                            &:before {
-                                top: 0;
-                                left: 0;
-                                right: 0;
-                                bottom: 0;
-                                background-image: none;
-                                .show;
-                                .candystripe(rgba(0,0,0,.15), -45deg);
-                                #move > .candystripe();
-                            }
-                        }
-
-                        &.ooo,
-                        &.oos {
-                            &:hover {
-                                &:before {
-                                    .hide;
-                                    #fade > .out();
-                                }
-                            }
-                        }
-
-                        &.ooo {
-                            .gradient(@greyStart, @greyEnd);
-
-                            &:after {
-                                .icons > .icon-diary-ooo;
-                                background-color: transparent;
-                            }
-                        }
-
-                        &.oos {
-                            background: @greyStart;
-
-                            &:after {
-                                .icons > .icon-diary-oos;
-                                background-color: transparent;
-                            }
-                        }
-
-                        &.no-show {
-                            color: rgba(255,255,255,.6);
-                            background: @grey3;
-
-                            &:after { .hide; }
                         }
 
                         &.editing {
-                            .gradient(@purpleStart, @purpleEnd);
-
                             &:before {
-                                .show;
-                                #fade > .in();
-                                .icons > .icon-diary-edit-reservation();
-                            }
-
-                            &.no-show { color: @white; }
-                        }
-
-                        &.nightuse {
-                            cursor: default;
-                            background-color: #375fa3;
-
-                            &:after {
-                                .icons > .icon-diary-nightuse();
-                                background-color: transparent;
+                                background-position: 9px -3012px;
                             }
                         }
 
-                        &:not(.nightuse) {
-                            cursor: @draggable, pointer;
-                            cursor: @draggable 16 16, pointer;
-                        }
-
-                        &:hover { 
-                            &:before { 
-                                .show; 
-                                #fade > .in(); 
+                        &.editing,
+                        &:hover {
+                            &:before {
+                                opacity: 1;
                             }
                         }
+
                     }
 
-                    &.available {
-                        color: @white;
-                        cursor: pointer;
-                        .gradient(@orangeStart, @orangeEnd);
-
-
-                        &.reserved {
-                            cursor: default;
-
-                            &:after {
-                                content: "";
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                right: 0;
-                                bottom: 0;
-                                .candystripe(rgba(255,118,37,.5), -45deg);
-                                #move > .candystripe();
-                            }
-                        }
-                    }
-
-                    &.maintenance {
-                        position: relative;
-                        .gradient(@grey4, @gcard);
+                    &.check-in {
+                        background-color: @green;
 
                         &:after {
-                            content: "";
-                            position: absolute;
-                            background-image: @icons;
-                            background-repeat: no-repeat;
-                            .icons > .icon-diary-maintenance;
-                            .show;
+                            background-position: 10px -70px;
+                        }
+                    }
 
-                            @media @highdpi {
-                                background-image: @icons2x;
-                                background-size: 120px;
-                            }
+                    &.inhouse {
+                        background-color: @blue;
+
+                        &:after {
+                            background-position: 10px -125px;
+                        }
+                    }
+
+                    &.check-out {
+                        background-color: @red;
+
+                        &:after {
+                            background-position: 10px -98px;
+                        }
+                    }
+
+                    &.departed {
+                        background-color: @red;
+                        .box-shadow(none);
+                    }
+
+                    &.no-show,
+                    &.cancel,
+                    &.oos,
+                    &.ooo,
+                    &.blocked {
+                        cursor: default;
+                        background-color: lighten(@greyEnd, 10);
+                        .box-shadow(none);
+                    }
+
+                    &.oos {
+                        &:after {
+                            background-position: 7px -4102px;
+                        }
+                    }
+
+                    &.ooo,
+                    &.blocked {
+                        &:after {
+                            background-position: 7px -4062px;
+                        }
+                    }                        
+
+                    &.blocked {
+                        cursor: default;
+
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background-size: 14px 14px;
+                            .candystripe(rgba(0,0,0,.1), -45deg);
+                        }
+                    }
+
+                    &.nightuse {
+                        cursor: default;
+
+                        &:after {
+                            background-position: 7px -3060px;
+                        }
+                    }
+
+                    &.editing { 
+                        cursor: @draggable, pointer;
+                        cursor: @draggable 16 16, pointer;
+                        color: @white;
+                        background-color: @purpleStart;
+                        z-index: 1149;
+                    }
+
+                    &.dragstate {
+                        opacity: 1;
+                    }
+                }
+
+                .available {
+                    cursor: pointer;
+                    .gradient(@logoGradientStart, @logoGradientEnd);
+                    
+                    &.reserved { 
+                        cursor: default;
+
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background-size: 14px 14px;
+                            .candystripe(rgba(255,118,37,.4), -45deg);
+                            #move > .candystripe();
+                        }
+                    }
+                }
+
+                .maintenance { 
+                    position: relative;
+                    .gradient(@grey4, @gcard); 
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        #calc-position > .left(50, 12);
+                        background-image: @icons2x;
+                        background-repeat: no-repeat;
+                        background-size: 60px;
+                        background-position: 5px -2951px;
+                        .square(28px);
+                        .show();
+                    }
+                }
+
+                &.deposit-required {
+                    .occupied {
+                        text-indent: 48px;
+
+                        &:after {
+                            left: 20px;
                         }
                     }
                 }
@@ -1102,48 +1072,27 @@
 
             .grid-row {
                 position: relative;
-                margin: 5px 0;
-                background: @white;
-                width: 100%;
-                .float;
+                margin: 2px 0;
+                .size(28px, 100%);
+                #flexbox > .parent(row wrap, '', '', '');
 
                 .hour {
-                    border-right: 1px solid rgba(0,0,0,.1);
-                    background-size: 100%;
-                    background-image: -moz-linear-gradient(0px 50%, transparent 25%, rgba(0,0,0,.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,.1) 75%, transparent 76%);
-                    background-image: -ms-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, transparent), color-stop(25%,rgba(0,0,0,0.1)), color-stop(26%, transparent), color-stop(50%, transparent), color-stop(50%,rgba(0,0,0,0.1)), color-stop(51%, transparent), color-stop(75%, transparent), color-stop(75%,rgba(0,0,0,0.1)), color-stop(76%, transparent));
-                    background-image: -webkit-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-image: -o-linear-gradient(left, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-image: linear-gradient(to right, transparent 25%, rgba(0,0,0,0.1) 25%, transparent 26%, transparent 50%, rgba(0,0,0,0.1) 50%, transparent 51%, transparent 75%, rgba(0,0,0,0.1) 75%, transparent 76%);
-                    background-repeat: no-repeat;
-                    .pull-left;
+                    height: 100%;
 
                     &:nth-child(odd) { background-color: rgba(0,0,0,.05); }
-
-                    &.drag-over {
-                        border: 2px dotted #417A0E;
-                    }
                 }
 
-                &.occupied { background-color: @grey2; }
-                &.dirty { background: lighten(@red, 35); }
-
-                &:first-child { margin-top: 0; }
-                &:last-child { margin-bottom: 0; }
-
-                &:before {
-                    content: "";
-                    position: absolute;
-                    left: 0px;
-                    top: 0px;
-                    right: 0px;
-                    bottom: 0px;
-                    z-index: 1399;
-                    pointer-events: none;
-                    .square(100%);
-                    .show;
-                    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                &:not(:first-child) {
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: -2px;
+                        left: 0;
+                        z-index: 11;
+                        .size(2px, ~'calc(100% + 1px)');
+                        .show();
+                        .box-shadow(0 1px 1px rgba(0,0,0,.2));
+                    }
                 }
             }
         }
@@ -1205,345 +1154,32 @@
             padding: 0;
         }
 
-        /* 12 hours grid ***/
-        &.hours-12 {
-
-            .diary-rooms {
-                li {
-                    padding: 10px 5px;
-                    height: 60px;
-
-                    span {
-                        line-height: 1em;
-                        .show;
-
-                        &.number {
-                            font-size: 20px;
-                            font-weight: 600;
-                        }
-
-                        &.type { font-size: 13px; }
-                    }
-                }
-            }
-
-            .diary-grid {
-
+        /* Room Assignment ***/
+        &.assigning-rooms {
+            
+            &:not(.hide-unnassigned) {
                 .occupancy-block {
-
-                    .deposit-icon {
-                        font-size: 24px;
-                        width: 40px;
-                    }  
-
-                    .icon-diary-lock {
-                        top: 20px;
-                        right: 20px;
-                    } 
-
-                    span {
-                        line-height: 60px;
-
-                        &.occupied {
-                            text-indent: 40px;
-
-                            &:after {
-                                top: 15px;
-                                left: 5px;
-                                .square(30px);
-                            }
-
-                            &:before {
-                                top: 15px;
-                                right: 5px;
-                                .square(30px);
-                            }
-
-                            &.departed,
-                            &.blocked {
-                                &:before {
-                                    top: 0;
-                                    right: 0;
-                                    background-size: 40px 40px;
-                                    .size(60px, 100%);
-                                }
-                            }
-
-                            &.no-show { text-indent: 20px; }
-
-                            &.ooo,
-                            &.oos,
-                            &.blocked {
-                                text-indent: 50px;
-
-                                &:after {
-                                    top: 15px;
-                                    left: 15px;
-                                    .square(30px);
-                                }
-                            }
-
-                            &.locked { 
-                                &:before {
-                                    right: 50px;
-                                }
-                            }
-                        }
-
-                        &.available {
-                            text-indent: 20px;
-
-                            &.reserved {
-                                &:after { background-size: 40px 40px; }
-                            }
-                        }
-
-                        &.maintenance {
-                            &:after {
-                                #calc-position > .left(50, 15);
-                                #calc-position > .top-minus(50, 12);
-                                .square(30px);
-                            }
-                        }
+                    .occupied {
+                        cursor: default;
+                        -webkit-filter: grayscale(100%);
+                        filter: grayscale(100%);
+                        opacity: .7;
+                        .box-shadow(none);
                     }
 
-                    &.deposit-required {
-                        span {
-                            &.occupied {
-                                text-indent: 70px;
-
-                                &:after { left: 40px; }
-                            }
-                        }
-                    }
-                }
-
-                .grid-row {
-                    line-height: 60px;
-                    height: 60px;
-
-                    span { height: 60px; }
-                }
-            }
-        }
-
-        /* 24-hours grid ***/
-        &.hours-24 {
-
-            .diary-rooms {
-                li {
-                    height: 24px;
-                    padding: 0 5px;
-                    margin: 0;
-                    .float;
-
-                    span {
-                        line-height: 24px;
-
-                        &.number {
-                            font-size: 16px;
-                            font-weight: 600;
-                            width: 35%;
-                            .pull-right;
-                        }
-
-                        &.type {
-                            width: 65%;
-                            font-size: 12px;
-                            .pull-left;
-                        }
+                    .available,
+                    .available + .maintenance {
+                        z-index: 5;
                     }
                 }
             }
 
-            .diary-grid {
-
+            &.hide-unnassigned {
                 .occupancy-block {
-                    
-                    .deposit-icon {
-                        font-size: 14px;
-                        width: 20px;
-                    }         
-
-                    .icon-diary-lock {
-                        top: 0;
-                        right: 0;
-                        background-size: 60px;
-                        background-position: 5px -4543px;
-                    }  
-
-                    span {
-                        font-size: 12px;
-                        line-height: 24px;
-                        height: 24px;
-
-                        &.occupied {
-                            text-indent: 25px;
-
-                            &:after {
-                                top: 0;
-                                left: 5px;
-                                background-size: 80px;
-                                .square(24px);
-                            }
-
-                            &:before {
-                                top: 0;
-                                right: 0;
-                                background-size: 60px;
-                                .square(24px);
-                            }
-
-                            &.check-in {
-                                &:after { background-position: 5px -73px; }
-                            }
-
-                            &.inhouse {
-                                &:after { background-position:  5px -126px; }
-                            }
-
-                            &.check-out,
-                            &.departed {
-                                &:after { background-position: 5px -100px; }
-                            }
-
-                            &.departed,
-                            &.blocked {
-                                &:before {
-                                    top: 0;
-                                    right: 0;
-                                    background-size: 20px 20px;
-                                    .size(24px, 100%);
-                                }
-                            }
-
-                            &.ooo,
-                            &.oos,
-                            &.blocked {
-                                text-indent: 30px;
-
-                                &:after {
-                                    top: 0;
-                                    left: 10px;
-                                    background-size: 60px;
-                                    .square(24px);
-                                }
-                            }
-
-                            &.ooo,
-                            &.blocked {
-                                &:after { background-position: 0 -3044px; }
-                            }
-
-                            &.oos {
-                                &:after { background-position: 0 -3074px; }
-                            }
-
-                            &.editing { 
-                                &:before {
-                                    background-position: 10px -3014px;
-                                }
-
-                                &.no-show { color: @white; }
-                            }
-
-                            &.nightuse {
-                                &:after { background-position: 0 -3062px; }
-                            }
-
-                            &.locked { 
-                                &:before {
-                                    right: 15px;
-                                }
-                            }
-
-                            &:hover { 
-                                &:before { 
-                                    background-position: 5px -2985px;
-                                }
-                            }
-                        }
-
-                        &.available {
-                            text-indent: 10px;
-                            
-                            &.reserved {
-                                &:after { background-size: 20px 20px; }
-                            }
-                        }
-
-                        &.maintenance {
-                            &:after {
-                                top: 0;
-                                background-size: 60px;
-                                background-position: 5px -2955px;
-                                #calc-position > .left(50, 12);
-                                .square(24px);
-                            }
-                        }
+                    .available,
+                    .available + .maintenance {
+                        .hide();
                     }
-
-                    &.deposit-required {
-                        span {
-                            &.occupied {
-                                text-indent: 45px;
-                                
-                                &:after { left: 20px; }
-                            }
-                        }
-                    }
-                }
-
-                .grid-row {
-                    line-height: 24px;
-                    height: 24px;
-                    margin: 0;
-
-                    span { height: 24px; }
-                }
-            }
-
-            /* Sidebar - OLD UNASSIGNED HOURLY DESIGN ***/
-            .sidebar-right {
-                .occupancy-block { 
-                    height: 24px;
-                    margin-bottom: 0;
-
-                    .occupancy-status{
-                        font-size: 12px;
-                        line-height: 24px;
-                        padding: 0 60px 0 10px;
-                        .float;
-                        
-                        .guest-name {
-                            .pull-left();
-                            .calc-width(100, 95 );
-                        }
-
-                        .room-type {
-                            font-size: 11px;
-                            text-align: right;
-                            width: 90px;
-                            .pull-right();
-                        }
-                        
-                        &:before {
-                            background-size: 20px 20px !important;
-                        }
-                    }
-
-                    .occupancy-time { 
-                        line-height: 24px;
-                        padding: 0px 5px;
-                        font-size: 12px;
-                        font-weight: normal;
-                        text-align: left;
-                        
-                        .eta {
-                            font-size: 12px;
-                            .pull-right();
-                        }
-                    }                
                 }
             }
         }
@@ -1630,7 +1266,7 @@
         padding: 5px 10px;
         background-color: @white;
         cursor: pointer;
-        .box-shadow();
+        .box-shadow(1px 1px 1px rgba(0,0,0,.2));
         #flexbox > .parent(row wrap, '', center, '');
         #border-radius > .rounded();
 
@@ -1742,7 +1378,8 @@
 
         &.selected {
             color: @white;
-            .gradient (@logoGradientStart, @logoGradientEnd);
+            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.3));
+            .gradient (@logoGradientEnd, @logoGradientStart);
         }
         
         &:not(:last-child) {
