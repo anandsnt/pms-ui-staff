@@ -722,3 +722,7 @@ var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
     return getTzIndependentDate(d);
 
 };
+
+var isValidEmail = function(email) {
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+}
