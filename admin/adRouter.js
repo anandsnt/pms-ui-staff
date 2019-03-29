@@ -43,14 +43,23 @@ admin.config([
                 businessDate: function(ADAppSrv) {
                     return ADAppSrv.fetchHotelBusinessDate();
                 },
-                hotelDetails: function(ADHotelDetailsSrv) {
-                    return ADHotelDetailsSrv.fetchHotelDetails();
+                hotelDetails: function(ADHotelDetailsSrv, $rootScope) {
+                    if ( $rootScope.isHotelAdmin) {
+                        return ADHotelDetailsSrv.fetchHotelDetails();
+                    }
+                    return {};
                 },
-                userInfo: function(ADAppSrv) {
-                    return ADAppSrv.fetchUserInfo();
+                userInfo: function(ADAppSrv, $rootScope) {
+                    if ( $rootScope.isHotelAdmin) {
+                        return ADAppSrv.fetchUserInfo();
+                    }
+                    return {};
                 },
-                permissions: function(adPermissionSrv) {
-                    return adPermissionSrv.fetchRoverPermissions();
+                permissions: function(adPermissionSrv, $rootScope) {
+                    if ( $rootScope.isHotelAdmin) {
+                        return adPermissionSrv.fetchRoverPermissions();
+                    }
+                    return {};
                 }
             }
         });
