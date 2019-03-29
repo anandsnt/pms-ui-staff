@@ -348,13 +348,6 @@ angular.module('sntRover')
                         successCallBack: successCallBackFetchAvailableTimeSlots
                     };
 
-                    var params = {
-                        reservation_id: reservationDetails.reservationId,      
-                        room_id: roomDetails.room_id,
-                        start_date: reservationDetails.fromDate,
-                        no_of_days: reservationDetails.nights
-                    };
-
                     // API call to get available slots.
                     $scope.callAPI(RVNightlyDiarySrv.fetchAvailableTimeSlots, options);
                 };

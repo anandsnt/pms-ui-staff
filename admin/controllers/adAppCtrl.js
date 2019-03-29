@@ -97,7 +97,7 @@ admin.controller('ADAppCtrl', [
                 showHourlyDiaryMenu = false;
 
             // A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
-            if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.hourlyAvailabilityCalculation === 'FULL' ) {
+            if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.mode === 'FULL' ) {
                 showHourlyDiaryMenu = true;
             }
 
@@ -732,7 +732,7 @@ admin.controller('ADAppCtrl', [
             $rootScope.hotelDiaryConfig = {
                 dayUseEnabled: data.day_use_enabled,
                 hourlyRatesForDayUseEnabled: data.hourly_rates_for_day_use_enabled,
-                hourlyAvailabilityCalculation: data.hourly_availability_calculation,
+                mode: data.hourly_availability_calculation,
                 isDiaryMergeEnabled: data.is_diary_merge_enabled
             };
 

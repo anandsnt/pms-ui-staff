@@ -628,7 +628,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			showHourlyDiaryMenu = false;
 
 		// A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
-		if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.hourlyAvailabilityCalculation === 'FULL' ) {
+		if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.mode === 'FULL' ) {
 			showHourlyDiaryMenu = true;
 		}
 
