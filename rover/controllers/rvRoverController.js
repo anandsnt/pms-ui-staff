@@ -140,7 +140,7 @@ sntRover.controller('roverController', [
         $rootScope.hotelDiaryConfig = {
             dayUseEnabled: hotelDetails.day_use_enabled,
             hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
-            hourlyAvailabilityCalculation: hotelDetails.hourly_availability_calculation
+            mode: hotelDetails.hourly_availability_calculation
         };
 
         /*
