@@ -205,15 +205,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         rvReservationMainCtrl.callFromChildCtrl(baseData);
 
-        // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
-        var extractHhMmAmPm = function( time ) {
-            return {
-                'ampm': time.split(' ')[1],
-                'hh': time.split(' ')[0].split(':')[0],
-                'mm': time.split(' ')[0].split(':')[1]
-            }
-        };
-
         // CICO-59170 : Set and Reset room details for creation flow from room diary.
         var setRoomDetailsForDiaryFlow = function() {
             $scope.reservationData.tabs[0].room_id = $stateParams.selectedRoomId;
@@ -222,8 +213,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
             $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
 
-            $scope.reservationData.tabs[0].checkinTime = extractHhMmAmPm($stateParams.selectedArrivalTime);
-            $scope.reservationData.tabs[0].checkoutTime = extractHhMmAmPm($stateParams.selectedDepartureTime);
+            $scope.reservationData.tabs[0].checkinTimeObj = $stateParams.selectedArrivalTime;
+            $scope.reservationData.tabs[0].checkoutTimeObj = $stateParams.selectedDepartureTime;
         },
         resetRoomDetailsIfInvalid = function () {
             $scope.reservationData.tabs[0].room_id = null;

@@ -1512,6 +1512,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.$emit('hideLoader');
                 };
 
+                // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
+                var extractHhMmAmPm = function( time ) {
+                    return {
+                        'ampm': time.split(' ')[1],
+                        'hh': time.split(' ')[0].split(':')[0],
+                        'mm': time.split(' ')[0].split(':')[1]
+                    }
+                };
+
                 var updateSuccess = function(data) {
                     // CICO-47877 - When there are multiple reservations, we have an array of responses
                     var responseData = data;
@@ -1615,10 +1624,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 } else {
                     // CICO-63737 : Set Arrival, dep time while booking.
                     if ($scope.reservationData.isFromNightlyDiary) {
-                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTime;
-                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTime;
-                        $scope.reservationData.checkinTime = $scope.reservationData.tabs[0].checkinTime;
-                        $scope.reservationData.checkoutTime = $scope.reservationData.tabs[0].checkoutTime;
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
+                        
+                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTimeObj['12']);
+                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTimeObj['12']);
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }

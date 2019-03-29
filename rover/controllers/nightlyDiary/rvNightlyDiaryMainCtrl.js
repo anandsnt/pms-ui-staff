@@ -380,8 +380,8 @@ angular.module('sntRover')
                             selectedRoomNo: $scope.setTimePopupData.roomDetails.roomNo,
                             startDate: $scope.diaryData.startDate,
                             fromState: 'NIGHTLY_DIARY',
-                            selectedArrivalTime: timeObj.arrival_time['12'],
-                            selectedDepartureTime: timeObj.departure_time['12']
+                            selectedArrivalTime: timeObj.arrival_time,
+                            selectedDepartureTime: timeObj.departure_time
                         });
                     }
                     else {
