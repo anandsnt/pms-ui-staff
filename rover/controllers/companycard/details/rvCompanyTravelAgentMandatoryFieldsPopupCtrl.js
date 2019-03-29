@@ -83,7 +83,7 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
 
             if (($scope.contactInformation.address_details.street1 === null 
                 || $scope.contactInformation.address_details.street1 === '') 
-                &&  $scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation) {
+                && $scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation) {
                 $scope.shouldShowAddress = true;
             }
             if (($scope.contactInformation.address_details.city === null 
@@ -93,7 +93,7 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
             }
             if (($scope.contactInformation.address_details.postal_code === null 
                 || $scope.contactInformation.address_details.postal_code === '') 
-                &&  $scope.contactInformation.mandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation){
+                && $scope.contactInformation.mandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation) {
                 $scope.shouldShowPostalCode = true;
             }
             if (($scope.contactInformation.address_details.country_id === null 
@@ -109,7 +109,7 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
 
             if (($scope.contactInformation.address_details.email_address === null 
                 || $scope.contactInformation.address_details.email_address === '') 
-                && $scope.contactInformation.mandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation){
+                && $scope.contactInformation.mandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation) {
                 $scope.shouldShowEmail = true;
             }
             if (($scope.contactInformation.e_invoice_address === null 
@@ -147,7 +147,7 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
 
             if (($scope.arAccountDetails.payment_due_days === null 
                 || $scope.arAccountDetails.payment_due_days === '') 
-                && $scope.contactInformation.mandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation){
+                && $scope.contactInformation.mandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation) {
                 $scope.shouldShowPayDays = true;
             }
 

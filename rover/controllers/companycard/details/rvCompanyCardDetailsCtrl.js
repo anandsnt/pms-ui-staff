@@ -548,7 +548,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 																		"contact_job_title": "",
 																		"contact_phone": "",
 																		"contact_email": ""
-																	}	
+																	};
 			}
 	 
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
@@ -798,7 +798,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 						angular.element('#uplaodCompanyLogo').trigger('click');
 					}, 0, false);
 				}
-			 
+			
 			} else if ($stateParams.type === "COMPANY") {
 				if (!$scope.isUpdateEnabled()) {
 					$timeout(function() {
