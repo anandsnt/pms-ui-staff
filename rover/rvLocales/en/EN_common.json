@@ -92,6 +92,7 @@
     "GUEST_LAST_NAME" : "Last Name",
     "DOB": "Date of Birth",
     "NATIONALITY": "Nationality",
+    "DOCUMENT_NUMBER": "Document Number",
     "ID_NUMBER": "ID Number",
     "ID_EXPIRY": "ID Expiry",
     "STATISTICS": "Statistics"

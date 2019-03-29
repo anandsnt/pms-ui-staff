@@ -48,6 +48,12 @@
                   </label>
                   <input type="text" value='idScanData.selectedGuest.scannedDetails.dob' ng-model='idScanData.selectedGuest.scannedDetails.date_of_birth' class="disabled"/>
                </div>
+               <div class="entry with-label" ng-if="idScanData.selectedGuest.scannedDetails.personal_id_no">
+                  <label translate>
+                  GID_REVIEW_ID_NUMBER
+                  </label>
+                  <input type="text" ng-model='idScanData.selectedGuest.scannedDetails.personal_id_no' class="disabled"/>
+               </div>
                <div class="entry with-label">
                   <label translate>
                   GID_REVIEW_DOC_NUMBER

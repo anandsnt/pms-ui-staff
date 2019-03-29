@@ -49,8 +49,15 @@
                         </div>
                     </li>
                     <!-- ID NUMBER -->
-                    <li>
+                    <li ng-if="guestIdData.personal_id_no">
                         <span>{{ 'ID_NUMBER' | translate}}</span>
+                        <div class="entry">
+                            <input type="text" placeholder="" ng-model="guestIdData.personal_id_no">
+                        </div>
+                    </li>
+                    <!-- DOCUMENT NUMBER -->
+                    <li>
+                        <span>{{ 'DOCUMENT_NUMBER' | translate}}</span>
                         <div class="entry">
                             <input type="text" placeholder="" ng-model="guestIdData.document_number">
                         </div>

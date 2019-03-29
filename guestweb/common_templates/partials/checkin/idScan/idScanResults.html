@@ -45,6 +45,11 @@
          <input type="text" class="input-field padding-1" ng-disabled="true" ng-model="screenData.idDetails.document_class_name" />
       </div>
 
+      <p class="sub-text left-align margin-top-10" ng-if="screenData.idDetails.personal_number">ID Number</p>
+      <div class="row" ng-if="screenData.idDetails.personal_number">
+         <input type="text" class="input-field padding-1" ng-disabled="true" ng-model="screenData.idDetails.personal_number" />
+      </div>
+
       <p class="sub-text left-align margin-top-10">Doument Number</p>
       <div class="row">
          <input type="text" class="input-field padding-1" ng-disabled="true" ng-model="screenData.idDetails.document_number" />
