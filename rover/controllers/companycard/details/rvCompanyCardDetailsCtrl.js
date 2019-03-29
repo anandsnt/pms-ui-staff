@@ -104,12 +104,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/**
 		 * function to handle click operation on company card, mainly used for saving
 		 */
-		$scope.companyCardClicked = function($event) {
-
-			// to check if click is outside the AR accounts Tab
-			if (!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))) {
-				$scope.$broadcast("saveArAccount");
-			}
+		$scope.companyCardClicked = function($event) {			
 
 			$event.stopPropagation();
 
@@ -119,6 +114,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				return;
 			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
 				$scope.$emit("saveContactInformation");
+			}
+			// to check if click is outside the AR accounts Tab
+			if (!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))) {
+				$scope.$broadcast("saveArAccount");
 			}
 			$scope.$broadcast("CLEAR_ERROR_MESSAGE");
 		};
@@ -221,36 +220,27 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.clickedCreateArAccountButton = function() {
 			$scope.isMandatoryPopupOpen = true;
-			// if ($scope.arAccountDetails.is_auto_assign_ar_numbers) {
-			// 	$scope.isArTabAvailable = true;		
-			// 	$scope.$broadcast("REMOVE_VALIDATION");			
-			// 	$scope.$broadcast('setgenerateNewAutoAr', true);
-			// 	$scope.$broadcast("saveArAccount");
-			// // } else {
-				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
-			// }				
+			$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();				
 		};
 
-		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function(e, shouldDeleteARCreated) {
+		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function() {
 			$scope.isMandatoryPopupOpen = false;
-			if ($scope.arAccountDetails.is_auto_assign_ar_numbers && shouldDeleteARCreated) {
-                $scope.deleteARAccountConfirmed();
-            }
 		});
 
 		$scope.showARTab = function() {
-
 			createArAccountCheck = true;
 			saveContactInformation($scope.contactInformation);
 		};
 
 		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {
-			$scope.$broadcast("ADD_VALIDATION");
-			$scope.arAccountDetails = data;		
-			$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);
-			
+			$scope.arAccountDetails = data;
+			$scope.isArTabAvailable = true;
+			$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
 			$scope.$broadcast("saveArAccount");
-			$scope.switchTabTo('', 'cc-ar-accounts');
+		});
+
+		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE", function(e, data) {
+			$scope.arAccountDetails = data;
 		});
 
 		/*
@@ -535,8 +525,30 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOffetchCommissionDetail = function(data) {
 			$scope.$emit("hideLoader");	
 			if (!angular.isDefined($scope.contactInformation.address_details)) {
-				$scope.contactInformation.address_details = {};
-				$scope.contactInformation.primary_contact_details = {};	
+				$scope.contactInformation.address_details = {
+																"street1": "",
+																"street2": "",
+																"street3": "",
+																"city": "",
+																"state": "",
+																"postal_code": "",
+																"country_id": "",
+																"email_address": "",
+																"phone": "",
+																"fax": "",
+																"location": ""
+															};
+	
+			}
+			if (!angular.isDefined($scope.contactInformation.primary_contact_details)) {
+
+				$scope.contactInformation.primary_contact_details = {
+																		"contact_first_name": "",
+																		"contact_last_name": "",
+																		"contact_job_title": "",
+																		"contact_phone": "",
+																		"contact_email": ""
+																	}	
 			}
 	 
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
