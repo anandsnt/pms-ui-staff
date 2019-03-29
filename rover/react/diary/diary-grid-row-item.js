@@ -156,7 +156,7 @@ var GridRowItem = React.createClass({
 			className += ' locked';
 		}
 		if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
-			className = "occupied nightuse";
+			className += " occupied nightuse";
 		}
 
 		return className;
@@ -253,7 +253,6 @@ var GridRowItem = React.createClass({
 			is_room_locked: is_room_locked,
 			currentDragItem: props.currentResizeItem,
 			style: {
-				display: 'block',
 				left: left,
 				opacity: '1'
 			},
