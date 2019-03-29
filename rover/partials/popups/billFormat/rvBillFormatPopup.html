@@ -4,12 +4,12 @@
         <span class="icons icon-popup-alert hidden"></span>
         <strong class="h2 message">Choose Invoice Type</strong>
 
-        <button type="button" id="inform-invoice" class="button blue"> <!-- Opens format-bill.html -->
+        <button type="button" id="inform-invoice" class="button blue" ng-click="clickedInformationalButton()"> <!-- Opens format-bill.html -->
              Informational Invoice
         </button>
 
         <button type="button" id="final-invoice" class="button orange" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
-            Final Invoice 
+            Generate Invoice 
         </button>
 
         <button type="button" class="button blank modal-close inline" ng-click="closeDialog()">Close Window</button> 
@@ -76,10 +76,10 @@
             </div>
         </div>
         <div class="entry full-width" ng-if="!shouldGenerateFinalInvoice">
-            <label class="checkbox inline" ng-class="{checked: isInformationalInvoice, disabled: isInformationalInvoiceDisabled}">
-                <span class="icon-form icon-checkbox" ng-class="{checked: isInformationalInvoice, disabled: isInformationalInvoiceDisabled}">
+            <label class="checkbox inline" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
+                <span class="icon-form icon-checkbox" ng-class="{checked: billFormat.isInformationalInvoice, disabled: billFormat.isInformationalInvoiceDisabled}">
                 </span>
-                <input id="enable-split" ng-disabled="isInformationalInvoiceDisabled" ng-model="isInformationalInvoice" value="1" type="checkbox" />
+                <input id="enable-split" ng-disabled="billFormat.isInformationalInvoiceDisabled" ng-model="billFormat.isInformationalInvoice" type="checkbox" />
                 {{ 'INFORMATIONAL_INVOICE' | translate }}
             </label>
         </div>
