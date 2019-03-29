@@ -603,7 +603,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
-			if ($scope.shouldSaveArDataFromPopup) {			
+			if ($scope.shouldSaveArDataFromPopup) {	
+				$scope.shouldSaveArDataFromPopup = false;	
 				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
 				$scope.$broadcast("saveArAccount");
 			}
@@ -694,7 +695,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			} else {
-				if ($scope.shouldSaveArDataFromPopup) {			
+				if ($scope.shouldSaveArDataFromPopup) {
+					$scope.shouldSaveArDataFromPopup = false;			
 					$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
 					$scope.$broadcast("saveArAccount");
 				}
