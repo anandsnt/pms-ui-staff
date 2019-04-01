@@ -1512,6 +1512,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.$emit('hideLoader');
                 };
 
+                // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
+                var extractHhMmAmPm = function( time ) {
+                    return {
+                        'ampm': time.split(' ')[1],
+                        'hh': time.split(' ')[0].split(':')[0],
+                        'mm': time.split(' ')[0].split(':')[1]
+                    }
+                };
+
                 var updateSuccess = function(data) {
                     // CICO-47877 - When there are multiple reservations, we have an array of responses
                     var responseData = data;
@@ -1613,6 +1622,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
 
                 } else {
+                    // CICO-63737 : Set Arrival, dep time while booking.
+                    if ($scope.reservationData.isFromNightlyDiary) {
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
+                        
+                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTimeObj['12']);
+                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTimeObj['12']);
+                    }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
                 // CICO-16959 We use a flag to indicate if the reservation is extended outside staydate range for the group, if it is a group reservation. Resetting this flag after passing the flag to the API.
