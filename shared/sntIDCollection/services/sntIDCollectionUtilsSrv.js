@@ -169,7 +169,8 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		formatedResults.nationality_name = idDetails.nationality_name ? idDetails.nationality_name : '';
 		formatedResults.expiration_date = idDetails.expiration_date && idDetails.expiration_date !== 'Invalid date' ? idDetails.expiration_date : '';
 		formatedResults.date_of_birth = idDetails.birth_date && idDetails.birth_date !== 'Invalid date' ? idDetails.birth_date : '';
-		formatedResults.personal_id_no = idDetails.personal_number ? angular.copy(idDetails.personal_number) : '';
+
+		var personal_id_no = idDetails.personal_number ? angular.copy(idDetails.personal_number) : '';
 		// if no first and last names are retrieved, assign full name as first name
 		if (!formatedResults.first_name && !formatedResults.last_name && formatedResults.full_name) {
 			formatedResults.first_name = formatedResults.full_name;
@@ -177,6 +178,7 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 
 		idDetails = this.dclone(idDetails, ['photo', 'signature','iDAuthenticationStatus', 'personal_number']);
 		formatedResults.id_scan_result = idDetails;
+		formatedResults.id_scan_result.personal_id_no = personal_id_no ? personal_id_no : '';
 
 		return formatedResults;
 	};
