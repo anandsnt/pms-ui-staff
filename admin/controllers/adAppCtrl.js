@@ -76,16 +76,7 @@ admin.controller('ADAppCtrl', [
 
 	    // flag to decide show neighbours screen
         var isNeighboursEnabled = false;
-
-        /**
-         * Decide whether the task management submenu is to be shown in housekeeping menu
-         * will use the hotel details API response
-         * @return {Boolean}
-         */
-        var shouldShowCurrencyExchangeInFinancialsMenu = function() {
-            return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled;
-        };
-
+        
         /**
          * Get menu list for standalone
          * @param {Boolean} shouldHideNightlyDiaryMenu 
