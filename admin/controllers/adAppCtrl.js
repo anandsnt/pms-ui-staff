@@ -298,6 +298,7 @@ admin.controller('ADAppCtrl', [
                         title: 'MENU_CURRENY_EXCHANGE',
                         action: 'rover.dashboardFromAdmin',
                         menuIndex: "currencyExchange",
+                        hidden: !shouldShowCurrencyExchangeInMenu,
                         actionParams: {
                             type: 'currencyExchange'
                         }
