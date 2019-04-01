@@ -71,10 +71,20 @@ admin.controller('ADAppCtrl', [
 	    $rootScope.businessDate = businessDate;
 
 	    // flag to decide show task management under house keeping: true by default
-	    var showTaskManagementInHKMenu = true;
+	    var showTaskManagementInHKMenu = true,
+            shouldShowCurrencyExchangeInMenu = false;
 
 	    // flag to decide show neighbours screen
         var isNeighboursEnabled = false;
+
+        /**
+         * Decide whether the task management submenu is to be shown in housekeeping menu
+         * will use the hotel details API response
+         * @return {Boolean}
+         */
+        var shouldShowCurrencyExchangeInFinancialsMenu = function() {
+            return RVHotelDetailsSrv.hotelDetails.is_multi_currency_enabled;
+        };
 
         /**
          * Get menu list for standalone
@@ -282,6 +292,15 @@ admin.controller('ADAppCtrl', [
                         title: "AUTO_CHARGE",
                         action: "rover.financials.autoCharge",
                         menuIndex: "autoCharge"
+                    },
+                    {
+
+                        title: 'MENU_CURRENY_EXCHANGE',
+                        action: 'rover.dashboardFromAdmin',
+                        menuIndex: "currencyExchange",
+                        actionParams: {
+                            type: 'currencyExchange'
+                        }
                     }]
                 }, {
                     title: "MENU_ACTIONS",
@@ -681,6 +700,7 @@ admin.controller('ADAppCtrl', [
 			// flag to decide show task management under house keeping: true by default
 			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
 			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled;
+            shouldShowCurrencyExchangeInMenu = data.is_multi_currency_enabled;
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');
