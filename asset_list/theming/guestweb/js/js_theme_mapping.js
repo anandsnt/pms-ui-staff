@@ -127,7 +127,8 @@ module.exports = {
             'guestweb_arc_the_hotel': [ themeJsRoot + 'app_router_common.js'],
 		    'guestweb_hotel_hiho': [ themeJsRoot + 'app_router_hotel_hiho.js'],
             'guestweb_ihg': [ themeJsRoot + 'app_router_ihg.js'],
-            'guestweb_liason_dc': [ themeJsRoot + 'app_router_liason.js']
+            'guestweb_liason_dc': [ themeJsRoot + 'app_router_liason.js'],
+            'guestweb_maison_de_la_luz': [ themeJsRoot + 'app_router_maison_de_la_luz.js']
   //           'guestweb_circle_fairfield': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_foundation_hotel_detroit': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_hotel_royal': [ themeJsRoot + 'app_router_common.js'],
