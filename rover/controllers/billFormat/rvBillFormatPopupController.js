@@ -13,7 +13,6 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
     $scope.billFormat.isInformationalInvoiceDisabled = $scope.isSettledBill 
                                                 && $scope.reservationBillData.is_bill_lock_enabled; 
-
     /*
     *  Get the request params for bill settings info
     */
@@ -298,6 +297,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {   
+
             isPrintButtonDisabled = true;
         }
         return isPrintButtonDisabled;
@@ -317,6 +317,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
+
             emailButtonClass = "grey";
         }
         return emailButtonClass;
