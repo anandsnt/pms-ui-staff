@@ -1,7 +1,7 @@
 angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.accountview', {
-        templateUrl: '/assets/partials/interfaces/Accountview/adAccountview.html',
+        templateUrl: '/assets/partials/interfaces/accountview/accountview.html',
         controller: 'adAccountviewCtrl',
         url: '/accountview',
         resolve: {
