@@ -1,5 +1,5 @@
-angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', 'adInterfacesCommonConfigSrv', 'dateFilter',
-    function ($scope, $rootScope, adInterfacesCommonConfigSrv, dateFilter) {
+angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', 'adInterfacesCommonConfigSrv', 'adIFCSrv', 'dateFilter',
+    function ($scope, $rootScope, adInterfacesCommonConfigSrv, adIFCSrv, dateFilter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -68,11 +68,14 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 }
 
                 return arr;
+            },
+            synchronize = function(params) {
+                return adIFCSrv.post('property', 'synchronize_integration', params);
             };
 
         $scope.startSync = function () {
             var items = _.pluck(_.filter($scope.syncItems, {isSelected: true}), 'id'),
-                payLoad;
+                payload;
 
             $scope.errorMessage = $scope.successMessage = '';
 
@@ -82,29 +85,55 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 return;
             }
 
-            payLoad = {
-                start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
-                items: items
-            };
+            if ($scope.proxy) {
+                payload = {
+                    integration_name: $scope.interface.toLowerCase(),
+                    options: {}
+                };
 
-            if (!$scope.isExport) {
-                payLoad['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
-            }
-
-            if ($scope.syncHistoricalData) {
-                payLoad['sync_type'] = 'historical';
-            }
-
-            $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
-                params: {
-                    payLoad: payLoad,
-                    interfaceIdentifier: $scope.interface
-                },
-                onSuccess: function () {
-                    $scope.errorMessage = '';
-                    $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+                if (items.length > 0 ) {
+                    payload.options.items = items;
                 }
-            });
+
+                if ($scope.isExport) {
+                    payload.options.date = dateFilter($scope.fromDate, $rootScope.dateFormatForAPI);
+                } else {
+                    payload.options.start_date = dateFilter($scope.fromDate, $rootScope.dateFormatForAPI);
+                    payload.options.end_date = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+                }
+
+                $scope.callAPI(synchronize, {
+                    params: payload,
+                    onSuccess: function () {
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+                    }
+                });
+            } else {
+                payload = {
+                    start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
+                    items: items
+                };
+
+                if (!$scope.isExport) {
+                    payload['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+                }
+
+                if ($scope.syncHistoricalData) {
+                    payload['sync_type'] = 'historical';
+                }
+
+                $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
+                    params: {
+                        payLoad: payload,
+                        interfaceIdentifier: $scope.interface
+                    },
+                    onSuccess: function () {
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
+                    }
+                });
+            }
         };
 
         $scope.onToggleHistoricalSync = function (adCheckbox) {
@@ -115,7 +144,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.syncHistoricalData = adCheckbox;
 
             if (adCheckbox) {
-                $scope.syncItems = getSyncItems($scope.config.historical_data_sync_items);
+                $scope.syncItems = getSyncItems($scope.historical_data_sync_items);
 
                 $scope.toDate = new Date();
                 fromDate = new Date();
@@ -141,7 +170,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 }
 
             } else {
-                $scope.syncItems = getSyncItems($scope.config.real_time_data_sync_items);
+                $scope.syncItems = getSyncItems($scope.real_time_data_sync_items);
 
                 $scope.startDatePickerOptions.minDate = new Date();
                 $scope.endDatePickerOptions.minDate = new Date();
@@ -157,19 +186,22 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.fromDate = null;
             $scope.toDate = null;
 
+            $scope.real_time_data_sync_items = $scope.proxy ? $scope.realTimeDataSyncItems : $scope.config.real_time_data_sync_items;
+            $scope.historical_data_sync_items = $scope.proxy ? $scope.historicalDataSyncItems : $scope.config.historical_data_sync_items;
+
             // Disable toggle if either of the lists is empty!
-            $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
-                !$scope.config.historical_data_sync_items;
+            $scope.disableSyncHistoricalDataToggle = !$scope.real_time_data_sync_items ||
+                !$scope.historical_data_sync_items;
 
             $scope.startDatePickerOptions = Object.assign({
                 onSelect: fromDateSelected
             }, commonDatePickerOptions);
+
             $scope.endDatePickerOptions = Object.assign({
                 onSelect: toDateSelected
             }, commonDatePickerOptions);
 
-            $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
-
+            $scope.onToggleHistoricalSync(!$scope.real_time_data_sync_items);
         })();
     }
 ]);
