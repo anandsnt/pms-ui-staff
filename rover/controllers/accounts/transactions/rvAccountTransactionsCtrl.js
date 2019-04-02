@@ -879,10 +879,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/* ----------- edit/remove/split ends here ---------------*/
 		// CICO-13903
 		$scope.sendEmail = function(params) {
-<<<<<<< HEAD
-
-=======
->>>>>>> 302bb1326bc7f5c53d03f5abc5862d73adc1a867
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(params, false);
 			} else {
@@ -904,13 +900,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.showEmailSentStatusPopup();
 					};
 
-<<<<<<< HEAD
-=======
-				if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-					params.is_final_invoice = true;
-				}
-
->>>>>>> 302bb1326bc7f5c53d03f5abc5862d73adc1a867
 				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 					successCallBack: mailSent,
 					failureCallBack: mailFailed,
