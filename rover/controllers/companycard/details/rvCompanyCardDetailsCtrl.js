@@ -577,7 +577,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		if (typeof id !== "undefined" && id === "add") {
 			$scope.contactInformation = {};
 			if (typeof $stateParams.query !== "undefined" && $stateParams.query !== "") {
-				$scope.contactInformation.account_details = {};
+				$scope.contactInformation.account_details = {
+																"organization_id": null,
+																"reg_tax_office": null,
+																"tax_number": null
+															};
 				$scope.contactInformation.account_details.account_name = $stateParams.query;
 			}			
 
