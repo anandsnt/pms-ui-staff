@@ -1,0 +1,195 @@
+/* StayNTouch Zest Station Styles | Merrion Row Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #565a79;
+
+@textColor:             @brandColor;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #f4f4f4;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons {
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+.logo-svg {
+    background-image: url("../css/themes/merrion-row/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height:100px;
+    width: 253px;
+    margin-top: 30px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#merrion-row {
+
+    input,
+    textarea {
+        box-shadow: inset 1px 1px 0 rgba(0,0,0,.1);
+        #rounded > .round(2px);
+    }
+
+    select {
+        box-shadow: 1px 1px 0 rgba(0,0,0,.1);
+        #rounded > .round(2px);
+    }
+
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    #header {
+        height: 145px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 115px);
+        top: 115px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    #logo {
+
+        .logo {
+            width: auto;
+            height: 100px;
+        }
+    }
+
+    #options {
+
+        li {
+
+            font-weight: 900;
+
+            span {
+                font-weight: 400;
+            }
+        }
+
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: fade(@brandColor, 5);
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background: #000;
+        }
+    }
+
+    .add-on {
+        #options {
+            li {
+                .option {
+                    &.not-selected {
+                        .icon-text {
+                            color: @black;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #textual {
+        background-color: #eeeeee;
+
+        &:before,
+        &:after {
+            background-color: #eeeeee;
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #upgrade {
+        background-color: #eeeeee;
+        .upgrade-price {
+            background-color: @brandColor;
+            color: @white;
+        }
+    }
+
+    .add-on {
+
+        &:not(.selected) {
+            background: #eeeeee;
+            border-color: #eeeeee;
+        }
+    }
+}
