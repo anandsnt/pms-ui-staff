@@ -8645,7 +8645,110 @@
                     }
                 }
             }
-        }
+
+            /* Guest Search ***/
+            &.guest-search {
+                padding: 0;
+                .size( 650px, 950px );
+
+                .modal-header {
+                    height: 90px;
+                    padding: 20px;
+                    background: @gcard;
+                    #flexbox > .parent( row, '', center, '' );
+
+                    .guest-image {
+                        margin-right: 10px;
+                    }
+
+                    .data {
+                        max-width: 400px;
+                        .calc-width( 100, 350 );
+                    }
+
+                    .actions {
+                        margin-left: auto;
+                        #flexbox > .parent( row, flex-end, '', '' );
+                        .button {
+                            width: auto;
+                            font-size: 16px;
+
+                            &.blank {
+                                color: white;
+                            }
+
+                            &.green {
+                                background-image: @arrowWhiteRight;    
+                                background-size: 12px 12px;
+                                background-repeat: no-repeat, repeat;
+                                background-position: 85% center;
+                                padding: 0 40px 0 30px;
+
+                                @media @highdpi { 
+                                    background-image: @arrowWhiteRight2x;
+                                }
+                            }
+
+                            &:not(:last-child) {
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+
+                    input {
+                        height: 30px;
+                        line-height: 30px;
+                        font-size: 30px;
+                        font-weight: 700;
+                        color: @orange;
+                        background: rgba( 0, 0, 0, 0.2 );
+                        padding: 0 10px;
+                        .calc-width(50, 10);
+                        .pull-left;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+
+                .modal-body {
+                    .calc-height( 100, 90 );
+
+                    .match-info {
+                        height: 100px;
+                        #flexbox > .parent( column, center, center, center );
+                        
+                        p {
+                            color: @grey3;
+                            text-transform: uppercase;
+                            margin: 0;
+                            
+                            strong {
+                                color: #000;
+                                font-size: 24px;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+
+                    .scrollable {
+                        padding-bottom: 20px;
+                        position: relative;
+                        .calc-height( 100, 100 );
+
+                        .iScrollVerticalScrollbar {
+                            top: 0;
+                        }
+                    }
+
+                    .search-results {
+                        padding-top: 0;
+                        padding-bottom: 20px;
+                    }
+                }
+            }
+        } // end of modals
     }
 
 
