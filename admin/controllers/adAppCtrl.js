@@ -73,11 +73,7 @@ admin.controller('ADAppCtrl', [
 	    // flag to decide show task management under house keeping: true by default
 	    var showTaskManagementInHKMenu = true,
             shouldShowCurrencyExchangeInMenu = false;
-
-	    // flag to decide show neighbours screen
-<<<<<<< HEAD
-	    var isNeighboursEnabled = false;
-
+        
         /*
          *  Utility method to check whether we need to show DIARY menu
          *  Based on settings values inside Reservation settings.
@@ -105,93 +101,8 @@ admin.controller('ADAppCtrl', [
 
             return showHourlyDiaryMenu;
         };
-
-        var setupLeftMenu = function() {
-            var shouldHideNightlyDiaryMenu = true,
-                shouldHideSellLimitMenu = true;
-
-            if (!$rootScope.isHourlyRatesEnabled) {
-                shouldHideNightlyDiaryMenu  = (!$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv) || showHourlyDiaryMenu();
-                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
-            }
-            if ($scope.isStandAlone) {
-                $scope.menu = [
-                    {
-                        title: 'MENU_DASHBOARD',
-                        action: 'rover.dashboard',
-                        menuIndex: 'dashboard',
-                        submenu: [],
-                        iconClass: 'icon-dashboard'
-                    },
-                    {
-                        title: 'MENU_FRONT_DESK',
-                        action: '',
-                        iconClass: 'icon-frontdesk',
-                        submenu: [
-                            {
-                                title: 'MENU_SEARCH_RESERVATIONS',
-                                action: 'rover.search'
-                            },
-                            {
-                                title: 'MENU_CREATE_RESERVATION',
-                                action: 'rover.reservation.search',
-                                standAlone: true
-                            }, {
-                                title: 'MENU_ROOM_DIARY',
-                                action: 'rover.diary',
-                                standAlone: true,
-                                hidden: !$rootScope.isHourlyRatesEnabled && !showHourlyDiaryMenu()
-                            }, {
-                                title: 'MENU_ROOM_DIARY',
-                                action: 'rover.nightlyDiary',
-                                standAlone: true,
-                                hidden: shouldHideNightlyDiaryMenu,
-                                actionParams: {
-                                    start_date: $rootScope.businessDate
-                                }
-                            }, {
-                                title: 'MENU_POST_CHARGES',
-                                action: 'rover.dashboardFromAdmin',
-                                actionParams: {
-                                    type: 'postCharge'
-                                }
-                            }, {
-                                title: 'MENU_CASHIER',
-                                action: 'rover.financials.journal',
-                                actionParams: {
-                                    id: 'CASHIER'
-                                }
-                            }, {
-                                title: "MENU_GUESTS",
-                                action: "rover.guest.search",
-                                menuIndex: "guests"
-                            }, {
-                                title: 'MENU_ACCOUNTS',
-                                action: 'rover.accounts.search',
-                                menuIndex: 'accounts'                                
-                            }, {
-                                title: 'MENU_END_OF_DAY',
-                                action: 'rover.endOfDay.starteod'
-                            }, {
-                                title: 'MENU_SOCIAL_LOBBY',
-                                hidden: !isNeighboursEnabled,
-                                action: 'rover.socialLobby'
-                            }
-                        ]
-                    }, {
-                        title: 'MENU_GROUPS',
-                        action: '',
-                        iconClass: 'icon-groups',
-                        menuIndex: 'menuGroups',
-                        hidden: $rootScope.isHourlyRatesEnabled || shouldHideNightlyDiaryMenu,
-                        submenu: [{
-                            title: 'MENU_CREATE_GROUP',
-                            action: 'rover.groups.config',
-                            actionParams: {
-                                id: 'NEW_GROUP'
-                            },
-                            menuIndex: 'menuCreateGroup'
-=======
+        
+        // flag to decide show neighbours screen
         var isNeighboursEnabled = false;
         
         /**
@@ -224,13 +135,12 @@ admin.controller('ADAppCtrl', [
                             action: 'rover.reservation.search',
                             menuIndex: "createReservation",
                             standAlone: true
->>>>>>> c9b8794654d974075f6227a08ae8444cdc4c92c7
                         }, {
                             title: 'MENU_ROOM_DIARY',
                             action: 'rover.diary',
                             menuIndex: 'diaryReservation',
                             standAlone: true,
-                            hidden: !$rootScope.isHourlyRatesEnabled
+                            hidden: !$rootScope.isHourlyRatesEnabled && !showHourlyDiaryMenu()
                         }, {
                             title: 'MENU_ROOM_DIARY',
                             action: 'rover.nightlyDiary',
@@ -278,7 +188,7 @@ admin.controller('ADAppCtrl', [
                     action: '',
                     iconClass: 'icon-groups',
                     menuIndex: 'menuGroups',
-                    hidden: $rootScope.isHourlyRatesEnabled,
+                    hidden: $rootScope.isHourlyRatesEnabled || shouldHideNightlyDiaryMenu,
                     submenu: [{
                         title: 'MENU_CREATE_GROUP',
                         action: 'rover.groups.config',
@@ -552,7 +462,7 @@ admin.controller('ADAppCtrl', [
                 shouldHideSellLimitMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
-                shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideNightlyDiaryMenu  = (!$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv) || showHourlyDiaryMenu();
                 shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
