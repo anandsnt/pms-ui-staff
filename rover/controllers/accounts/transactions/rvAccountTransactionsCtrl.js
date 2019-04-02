@@ -879,7 +879,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/* ----------- edit/remove/split ends here ---------------*/
 		// CICO-13903
 		$scope.sendEmail = function(params) {
-
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(params, false);
 			} else {
