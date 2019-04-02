@@ -614,7 +614,9 @@ angular.module('sntRover')
 				this.dragData = options;
 			},
 			dropReservation: function(roomId) {
-				$scope.saveReservationOnDrop(this.dragData, roomId);
+                if (this.dragData.reservationId) {
+                    $scope.saveReservationOnDrop(this.dragData, roomId);
+                };
 			},
 			dragEnded: function() {
 				$scope.clearAvailability();
