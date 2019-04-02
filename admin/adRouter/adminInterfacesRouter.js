@@ -10,7 +10,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-    
+
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -624,20 +624,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.hogiaSetup', {
-        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
-        controller: 'adInterfaceConfigurationCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'hogia';
-        }],
+        templateUrl: '/assets/partials/interfaces/hogia/adHogia.html',
+        controller: 'adHogiaCtrl',
+        url: '/hogia',
         resolve: {
             config: [
-                'adInterfacesSetupSrv', function(adInterfacesSetupSrv) {
-                    return adInterfacesSetupSrv.getSettings('hogia');
-                }],
-            mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('hogia');
                 }]
         }
     });
