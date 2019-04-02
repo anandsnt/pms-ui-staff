@@ -26,7 +26,7 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 	initPaymentData();
 
 	// Handle change transaction date
-    $rootScope.$on('transactionDateChanged', function() {
+    $scope.$on('transactionDateChanged', function() {
         initPaymentData();
     });
 
