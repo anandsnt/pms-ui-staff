@@ -629,23 +629,7 @@ sntRover.controller('RVbillCardController',
 		var getBillDataSuccess = function(data) {
 
 			$scope.reservationBillData.bills[billIndex] = data;
-			// if (callGenerateFolioNumberApiAfterSuccessfullTransferCharge) {
-			// 	// callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false;
-			// 	// that.callGenerateFolioNumberApi(toBillIndex);
-			// 	toBillIndex = '';
-
-			// } else {				
-				setBillValue(billIndex);
-				$scope.setActiveBill(billIndex);
-				$scope.setupReviewStatusArray();
-				if (isDuringCheckoutPayment) {
-					$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
-				}
-				// if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
-				// 	that.callGenerateFolioNumberApi();
-				// }
-			// }	
-
+		
 			setBillValue(billIndex);
 			$scope.setActiveBill(billIndex);
 			$scope.setupReviewStatusArray();
@@ -1198,8 +1182,8 @@ sntRover.controller('RVbillCardController',
 		}
 
 		var reservationStatus = $scope.reservationBillData.reservation_status;
-
-		$scope.getBillData($scope.currentActiveBill);
+		
+		$scope.getBillData($scope.currentActiveBill);	
 	});
 
 	var routingAdded = $scope.$on('SHOW_TAX_EXEMPT_ALERT_MESSAGE', function(event, data) {
@@ -3140,7 +3124,7 @@ sntRover.controller('RVbillCardController',
 
 		if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_transactions_exist 
 			&& $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00" 
-			&& $scope.reservationBillData.is_bill_lock_enabled
+			&& $scope.reservationBillData.is_bill_lock_enabled 
 			&& $scope.reservationBillData.bills[$scope.currentActiveBill].is_active 
 			&& ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
                 || $scope.reservationBillData.reservation_status === 'CHECKEDIN')) {
@@ -3370,7 +3354,7 @@ sntRover.controller('RVbillCardController',
      	$scope.refreshScroller('bill-tab-scroller');
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
-
+		
 		// CICO-43344 : Set isOptedForEmail value true for first bill only.
 		$scope.emailOptedStatusList = [];
 		_.each($scope.reservationBillData.bills, function(bill, index) {

@@ -657,6 +657,25 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.sunaccountingSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        controller: 'adInterfaceConfigurationCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'sunaccounting';
+        }],
+        resolve: {
+            config: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('sunaccounting');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.turkishinvoiceSetup', {
         templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
         controller: 'adInterfaceCommonCtrl',

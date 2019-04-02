@@ -901,16 +901,32 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.showEmailSentStatusPopup();
 					};
 
-				if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-					params.is_final_invoice = true;
-				}
-
 				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 					successCallBack: mailSent,
 					failureCallBack: mailFailed,
 					params: params
 				});
 			}
+		};
+
+		/*
+		 * Settle invoice
+		 */
+		var finalInvoiceSettlement = function(data, isPrint) {
+			var settleInvoiceSuccess = function() {
+					$scope.shouldGenerateFinalInvoice = false;
+					if (isPrint) {
+						printBillCard(data);
+					} else {
+						$scope.sendEmail(data);
+					}				
+				},
+				options = {
+					params: {"bill_id": $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id},
+					successCallBack: settleInvoiceSuccess
+				};
+
+			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 		};
 
 		/*

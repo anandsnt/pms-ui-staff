@@ -1,7 +1,7 @@
 admin.controller('ADCoTaMandatoryFieldsCtrl', ['$scope', '$state', 'ADCoTaMandatorySrv',
 function($scope, $state, ADCoTaMandatorySrv) {
 	BaseCtrl.call(this, $scope);
-	$scope.fieldsAlwaysVisible = ["address_line1_mandatory", "city_mandatory", "postal_code_mandatory", "country_mandatory", "contact_phone_mandatory", "contact_email_address_mandatory", "contact_name_mandatory", "tax_id_mandatory"];
+	$scope.fieldsAlwaysVisible = ["address_line1_mandatory", "city_mandatory", "postal_code_mandatory", "country_mandatory", "contact_phone_mandatory", "contact_email_address_mandatory", "contact_name_mandatory", "tax_id_mandatory", "payment_due_days_mandatory"];
 
 	/*
 	 * Save Mandatory fields
@@ -40,13 +40,6 @@ function($scope, $state, ADCoTaMandatorySrv) {
 					if (!$scope.coTaMandatoryFields.organization_id_mandatory.is_visible) {
 						$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation = false;
 						$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation = false;
-					}
-					break;
-				case "payment_due_days_mandatory":
-					$scope.coTaMandatoryFields.payment_due_days_mandatory.is_visible = !$scope.coTaMandatoryFields.payment_due_days_mandatory.is_visible;
-					if (!$scope.coTaMandatoryFields.payment_due_days_mandatory.is_visible) {
-						$scope.coTaMandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation = false;
-						$scope.coTaMandatoryFields.payment_due_days_mandatory.is_mandatory_on_account_creation = false;
 					}
 					break;
 			}

@@ -54,12 +54,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var failureCallback = function(errorMessage) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = errorMessage;
-				if (errorMessage[0] !== 'Please complete required AR Account Information') {
-					$scope.$emit('ERRORONARTAB');
-					$scope.switchTabTo('click', 'cc-ar-accounts');
-				} else {
+				if (errorMessage[0] === 'Please complete required AR Account Information') {
 					$scope.$emit("MANDATORY_CHECK_FAILED", $scope.errorMessage);
-				}
+
+				} 
 			};
 
 			var dataToSend = $scope.arAccountDetails;
@@ -81,12 +79,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
                 dataNotUpdated = true;
                 presentArDetails = presentArDetailsAfterEdit;
             }
-			if ($scope.shouldValidate) {
-				dataToSend.should_validate = true;
-			}
+			
 			if (($scope.$parent.generateNewAutoAr 
 				&& $scope.arAccountDetails.is_auto_assign_ar_numbers) 
-				|| (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
+				|| (dataNotUpdated)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
 			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers 
@@ -154,12 +150,6 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		};
 
-		$scope.$on("REMOVE_VALIDATION", function() {
-			$scope.shouldValidate = false;
-		});
-		$scope.$on("ADD_VALIDATION", function() {
-			$scope.shouldValidate = true;
-		});
 		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS", function(e, data) {
 			$scope.arAccountDetails = data;
 		});
@@ -180,7 +170,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			$scope.arAccountDetails.is_use_main_address = true;
 			$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
 			$scope.arAccountDetails.ar_number = "";
+			$scope.arAccountDetails.payment_due_days = "";
 			$scope.arAccountNotes.ar_notes = [];
+			$scope.$emit('UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE', $scope.arAccountDetails);
+
 		});
 
 
