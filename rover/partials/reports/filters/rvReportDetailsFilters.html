@@ -466,7 +466,7 @@
                 on-update="refreshSidebarScroll"
                 data="chosenReport.hasAccountSearch.data"
                 options="chosenReport.hasAccountSearch.options"></multi-option-selection>
-        </div>
+        </div>        
 
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasTravelAgentsSearch && chosenReport.hasTravelAgentsSearch.data.length" ng-class="{ 'active': filterItemsToggle.item_49 }" ng-click="toggleFilterItems('item_49')">
             <span class="title">Travel Agents</span>
@@ -875,6 +875,16 @@
                  <select name="show-actionables" ng-model="chosenReport.showActionables" ng-options="action.value as action.name for action in chosenReport.hasShowActionables.data"  iscroll-stop-propagation>
                 </select>
             </div>
+        </div>
+        <!-- item 56-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeCountry && chosenReport.hasIncludeCountry.data.length" ng-class="{ 'active': filterItemsToggle.item_56 }" ng-click="toggleFilterItems('item_56')">
+            <span class="title">Country</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasIncludeCountry && chosenReport.hasIncludeCountry.data.length" ng-class="{ 'hidden': !filterItemsToggle.item_56 }">
+            <multi-option-selection label="Select Country"
+                on-update="refreshSidebarScroll"
+                data="chosenReport.hasIncludeCountry.data"
+                options="chosenReport.hasIncludeCountry.options"></multi-option-selection>
         </div>
 
 

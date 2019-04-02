@@ -879,33 +879,58 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/* ----------- edit/remove/split ends here ---------------*/
 		// CICO-13903
 		$scope.sendEmail = function(params) {
-			var mailSent = function(data) {
-					// Handle mail Sent Success
-					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-					$scope.status = "success";
-					
-					if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-						$scope.$broadcast("UPDATE_WINDOW");
-					} else {
-						$scope.showEmailSentStatusPopup();
-					}
-					$scope.switchTabTo('TRANSACTIONS');
-				},
-				mailFailed = function(errorMessage) {
-					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-					$scope.status = "alert";
-					$scope.showEmailSentStatusPopup();
-				};
 
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				params.is_final_invoice = true;
-			}
+				finalInvoiceSettlement(params, false);
+			} else {
+				var mailSent = function(data) {
+						// Handle mail Sent Success
+						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+						$scope.status = "success";
 
-			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
-				successCallBack: mailSent,
-				failureCallBack: mailFailed,
-				params: params
-			});
+						if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+							$scope.$broadcast("UPDATE_WINDOW");
+						} else {
+							$scope.showEmailSentStatusPopup();
+						}
+						$scope.switchTabTo('TRANSACTIONS');
+					},
+					mailFailed = function(errorMessage) {
+						$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+						$scope.status = "alert";
+						$scope.showEmailSentStatusPopup();
+					};
+
+				if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+					params.is_final_invoice = true;
+				}
+
+				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
+					successCallBack: mailSent,
+					failureCallBack: mailFailed,
+					params: params
+				});
+			}
+		};
+
+		/*
+		 * Settle invoice
+		 */
+		var finalInvoiceSettlement = function(data, isPrint) {
+			var settleInvoiceSuccess = function() {
+					$scope.shouldGenerateFinalInvoice = false;
+					if (isPrint) {
+						printBillCard(data);
+					} else {
+						$scope.sendEmail(data);
+					}				
+				},
+				options = {
+					params: {"bill_id": $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id},
+					successCallBack: settleInvoiceSuccess
+				};
+
+			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 		};
 
 		$scope.clickedEmail = function(requestParams) {
@@ -929,72 +954,73 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         };
 
 		var printBillCard = function(requestParams) {
-
-
-			var printBillSuccess = function(response) {
-				$scope.$emit('hideLoader');
-				var responseData = response.data,
-					copyCount = "",
-					timeDelay = 700;
-
-				if ($scope.billFormat.isInformationalInvoice) {
-					responseData.invoiceLabel = responseData.translation.information_invoice;
-				}
-				else if (responseData.no_of_original_invoices === null) {
-					responseData.invoiceLabel = responseData.translation.invoice;
-				}
-				else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
-					responseData.invoiceLabel = responseData.translation.void_invoice;
-				} 
-				else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
-				{
-					responseData.invoiceLabel = responseData.translation.invoice;
-				} 
-				else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
-				{
-					if (responseData.is_copy_counter) {
-						copyCount = parseInt(responseData.print_counter, 10) - parseInt(responseData.no_of_original_invoices, 10);					
-					}
-					responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
-				}
-
-				$scope.printData = responseData;
-				$scope.errorMessage = "";
-
-				$('.nav-bar').addClass('no-print');
-				$('.cards-header').addClass('no-print');
-				$('.card-tabs-nav').addClass('no-print');
-
-				// this will show the popup with full report
-				$timeout(function() {
-
-					if (sntapp.cordovaLoaded) {
-						cordova.exec(accountsPrintCompleted,
-							function(error) {
-								accountsPrintCompleted();
-							}, 'RVCardPlugin', 'printWebView', []);
-					}
-					else
-					{
-						$timeout(function() {
-							window.print();
-							accountsPrintCompleted();
-						}, timeDelay); // CICO-61122 
-					}
-
-				}, 100);
-			};
-
-			var printBillFailure = function(errorData) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = errorData;
-			};
-
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				requestParams.is_final_invoice = true;
+				finalInvoiceSettlement(requestParams, true);
+			} else {
+				var printBillSuccess = function(response) {
+					$scope.$emit('hideLoader');
+					var responseData = response.data,
+						copyCount = "",
+						timeDelay = 700;
+
+					if ($scope.billFormat.isInformationalInvoice) {
+						responseData.invoiceLabel = responseData.translation.information_invoice;
+					}
+					else if (responseData.no_of_original_invoices === null) {
+						responseData.invoiceLabel = responseData.translation.invoice;
+					}
+					else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
+						responseData.invoiceLabel = responseData.translation.void_invoice;
+					} 
+					else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
+					{
+						responseData.invoiceLabel = responseData.translation.invoice;
+					} 
+					else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
+					{
+						if (responseData.is_copy_counter) {
+							copyCount = parseInt(responseData.print_counter, 10) - parseInt(responseData.no_of_original_invoices, 10);					
+						}
+						responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
+					}
+
+					$scope.printData = responseData;
+					$scope.errorMessage = "";
+
+					$('.nav-bar').addClass('no-print');
+					$('.cards-header').addClass('no-print');
+					$('.card-tabs-nav').addClass('no-print');
+
+					// this will show the popup with full report
+					$timeout(function() {
+
+						if (sntapp.cordovaLoaded) {
+							cordova.exec(accountsPrintCompleted,
+								function(error) {
+									accountsPrintCompleted();
+								}, 'RVCardPlugin', 'printWebView', []);
+						}
+						else
+						{
+							$timeout(function() {
+								window.print();
+								accountsPrintCompleted();
+							}, timeDelay); // CICO-61122 
+						}
+
+					}, 100);
+				};
+
+				var printBillFailure = function(errorData) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorData;
+				};			
+
+				$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
+
 			}
 
-			$scope.invokeApi(rvAccountTransactionsSrv.fetchAccountBillsForPrint, requestParams, printBillSuccess, printBillFailure);
+			
 		};
 
 		// Direct Bill payment starts here

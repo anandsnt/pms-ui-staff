@@ -1,4 +1,4 @@
-admin.service('adInterfacesSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
+admin.service('adInterfacesSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
     function($http, $q, ADBaseWebSrvV2, $log) {
         /**
          *
@@ -19,7 +19,7 @@ admin.service('adInterfacesSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
         };
 
         this.synchronize = function(params) {
-            return ADBaseWebSrvV2.postJSON('api/integrations/' + params.interfaceIdentifier + '/sync', params.payLoad);
+            return ADBaseWebSrvV2.postJSON('ifc/proxy/property/synchronize_integration', params);
         };
 
         /**
