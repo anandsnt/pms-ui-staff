@@ -93,6 +93,6 @@
     "DOB": "Date of Birth",
     "NATIONALITY": "Nationality",
     "DOCUMENT_NUMBER": "Document Number",
-    "ID_NUMBER": "ID Number",
+    "PERSONAL_NUMBER": "Personal No.",
     "ID_EXPIRY": "ID Expiry",
     "STATISTICS": "Statistics"

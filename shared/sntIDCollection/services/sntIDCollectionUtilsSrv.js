@@ -177,8 +177,8 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		}
 
 		idDetails = this.dclone(idDetails, ['photo', 'signature','iDAuthenticationStatus', 'personal_number']);
-		formatedResults.id_scan_result = idDetails;
-		formatedResults.id_scan_result.personal_id_no = personal_id_no ? personal_id_no : '';
+		formatedResults.id_scan_info = idDetails;
+		formatedResults.id_scan_info.personal_id_no = personal_id_no ? personal_id_no : '';
 
 		return formatedResults;
 	};

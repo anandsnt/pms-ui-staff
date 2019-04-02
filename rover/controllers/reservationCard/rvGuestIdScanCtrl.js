@@ -326,7 +326,7 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.document_type = data.document_type && data.document_type.toUpperCase() === 'PASSPORT' ? 'PASSPORT' : 'ID_CARD';
 			$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
 			$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
-			$scope.guestIdData.id_scan_result = data.id_scan_result;
+			$scope.guestIdData.id_scan_info = data.id_scan_info;
 
 			var nationality_id = '';
 

@@ -601,7 +601,7 @@
 
    "GID_REVIEW_DOB": "Date of Birth",
    "GID_REVIEW_DOC_NUMBER": "Document Number",
-   "GID_REVIEW_ID_NUMBER": "ID number",
+   "GID_REVIEW_PERSONAL_NUMBER": "Personal No.",
 
    "GID_REVIEW_EXPIRY": "Expiry Date",
    "GID_REVIEW_NATIONALITY": "Nationality",
