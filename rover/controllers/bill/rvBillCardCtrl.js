@@ -2743,7 +2743,7 @@ sntRover.controller('RVbillCardController',
 						window.print();
 						billCardPrintCompleted();
 					}
-				}, 100);
+				}, 700);
 			    
 			};
 
