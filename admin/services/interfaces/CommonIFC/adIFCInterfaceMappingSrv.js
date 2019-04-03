@@ -7,7 +7,7 @@ admin.service('adIFCInterfaceMappingSrv', [
 
         var metaLists = {
             'HOGIA': ['CHARGE_CODES'],
-            'SUNACCOUNTING': ['CHARGE_CODES', 'DEPARTMENT_CODES', 'MARKET_SEGMENTS', 'SEGMENTS'],
+            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES']
         };
 

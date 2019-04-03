@@ -10,7 +10,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-    
+
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -666,9 +666,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }],
         resolve: {
             config: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchConfiguration('sunaccounting');
-                }],
+              'adInterfacesSrv', function(adInterfacesSrv) {
+                  return adInterfacesSrv.getSettings('sunaccounting');
+              }],
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
