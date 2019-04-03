@@ -59,10 +59,11 @@ var GridRowItem = React.createClass({
 		switch (data[meta.status]) {
 			case 'available':
                 if ( showRateAmount ) {
-                        caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
-                    } else{
-                        caption = data[meta.room_type];
-                    }
+                    caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+                } 
+                else {
+                     caption = data[meta.room_type];
+                }
 				break;
 			case 'blocked':
 				caption = 'Web Booking In Progress';
