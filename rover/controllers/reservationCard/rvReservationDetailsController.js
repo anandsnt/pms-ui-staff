@@ -1793,8 +1793,12 @@ sntRover.controller('reservationDetailsController',
 			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
 			$filter('translate')('DOB') + ": " + guestDocData.date_of_birth + "\r\n" +
 			$filter('translate')('NATIONALITY') + ": " + guestDocData.nationality + "\r\n" +
-			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n" +
-			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
+			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n";
+
+		if (guestDocData.id_scan_info && guestDocData.id_scan_info.personal_id_no) {
+			guestInfo = guestInfo + $filter('translate')('PERSONAL_NUMBER') + ": " + guestDocData.id_scan_info.personal_id_no + "\r\n";
+		}
+		guestInfo = guestInfo + $filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
 		return guestInfo;
 	};
