@@ -46,12 +46,24 @@ var GridRowItem = React.createClass({
 
 	__formInnerText: function (data, meta) {
 		var caption,
-			props = this.props,
-			display = props.display;
+			props   = this.props,
+			display = props.display,
+            showRateAmount;
+
+        try {
+                showRateAmount = props.unassignedRoomList.dragData.is_hourly;
+            } catch(e) {
+                showRateAmount = true;
+            }
 
 		switch (data[meta.status]) {
 			case 'available':
-				caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+                if ( showRateAmount ) {
+                    caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+                } 
+                else {
+                     caption = data[meta.room_type];
+                }
 				break;
 			case 'blocked':
 				caption = 'Web Booking In Progress';
