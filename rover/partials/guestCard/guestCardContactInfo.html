@@ -51,9 +51,9 @@
 
 			<rv-textbox ng-if="guestCardData.contactInfo.is_gender_visible" value="guestCardData.contactInfo.gender" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.vehicle_registration_number" label = "Vehicle Registration Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.vehicle_registration_number, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.vehicle_registration_number" label = "Vehicle Registration Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.vehicle_registration_number, getDefaultClass('vehicle_registration_number'))}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.personal_id_no" label = "Personal No." styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.vehicle_registration_number, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>		
+			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.personal_id_no" label = "Personal No." styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.personal_id_no, '')}}"></rv-textbox>		
 			
 		</div> 		
 		<div class="holder right">
