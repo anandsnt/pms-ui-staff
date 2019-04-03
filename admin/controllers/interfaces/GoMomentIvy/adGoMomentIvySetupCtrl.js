@@ -36,7 +36,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
                 },
                 onSuccess: function() {
                     $scope.errorMessage = '';
-                    $scope.successMessage = "SUCCESS: Settings Updated!"
+                    $scope.successMessage = "SUCCESS: Settings Updated!";
                 }
             });
         };
