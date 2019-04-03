@@ -64,8 +64,9 @@ module.exports = {
             'clarion-collection': [themeCSSRoot + 'clarion-collection.less'],
             'la-copa': [themeCSSRoot + 'la-copa.less'],
             'ruby': [themeCSSRoot + 'ruby.less'],
+            'qbic': [themeCSSRoot + 'qbic.less'],
             'merrion-row': [themeCSSRoot + 'merrion-row.less'],
-            'qbic': [themeCSSRoot + 'qbic.less']
+            'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less']
         };
     }
 };
