@@ -121,8 +121,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * Set navigation back to guest card search         
          */
         var setBackNavigation = function() {
+            var backBtnLabel = $filter('translate')('FIND GUESTS');
+
+            if ($stateParams.isMergeViewSelected) {
+                backBtnLabel = $filter('translate')('MERGE_CARDS');
+            } 
                 $rootScope.setPrevState = {
-                    title: $filter('translate')('FIND GUESTS'),
+                    title: backBtnLabel,
                     callback: 'navigateBack',
                     scope: $scope
                 };
@@ -143,7 +148,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
         // Back navigation handler
         $scope.navigateBack = function () {
           $state.go('rover.guest.search', {
-            textInQueryBox: $stateParams.query
+            textInQueryBox: $stateParams.query,
+            selectedIds: $stateParams.selectedIds,
+            isMergeViewSelected: $stateParams.isMergeViewSelected
           });
         };
 
@@ -267,6 +274,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.isGuestCardFromMenu = true;
             $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
+
             if (!$stateParams.guestId) {
                 $scope.guestCardData = {};
                 $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();

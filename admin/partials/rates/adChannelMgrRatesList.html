@@ -4,12 +4,11 @@
             <h2> CHANNEL MANAGER RATES&nbsp; <font class="h2-grey">{{state.interfaceName}}</font></h2>
             <a ng-click="goBackToPreviousState()" class="action back">Back</a>
             <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
-            <div class="entry table-search" ng-show="state.mode === 'LIST'" style="float:right;">
-                <span class="search-text">Search</span>
-                <span class="icons icon-search" name="submit" type="submit"></span>
-                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
-                       function-to-fire="searchEntered"/>
-            </div>
+            <a id="import-channel-rates" class="action import ng-binding"
+               ng-click="importChannelRates($event)"
+               ng-show="is_import_available" style="float:right">
+                IMPORT ALL CHANNEL RATES
+            </a>
         </header>
 
 
@@ -29,6 +28,13 @@
                 </div>
                 <span class="count-entries">entries</span>
             </section>
+
+            <div class="entry table-search" ng-show="state.mode === 'LIST' && totalCount > 0">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                       function-to-fire="searchEntered"/>
+            </div>
 
             <!--ng-table component -->
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager"

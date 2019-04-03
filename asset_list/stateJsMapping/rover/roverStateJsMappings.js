@@ -107,7 +107,7 @@ module.exports = {
 			},
 			'rover.companycardsearch': {
 				filename: roverJsListRoot + 'companyCardSearchJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.companycarddetails': {
 				filename: roverJsListRoot + 'companyCardDetailsJsAssetList.js',

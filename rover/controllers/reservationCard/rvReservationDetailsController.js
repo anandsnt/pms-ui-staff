@@ -306,8 +306,10 @@ sntRover.controller('reservationDetailsController',
 		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 		$scope.guestCardData.nationality_id = reservationListData.guest_details.nationality_id;
-		$scope.guestCardData.contactInfo.address = {};
-		$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		if (!$scope.guestCardData.contactInfo.address) {
+			$scope.guestCardData.contactInfo.address = {};
+			$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		}
 
 		/**
 		 *	We have moved the fetching of 'baseData' form 'rover.reservation' state
