@@ -98,12 +98,22 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
 
     // Handle save and continue button click actions.
     $scope.saveAndContinueClicked = function() {
-        var popupData = $scope.setTimePopupData;
+        var popupData = $scope.setTimePopupData,
+            timeObj = {};
         
-        var timeObj = {
-            arrival_time: _.where(popupData.processData[popupData.selectedCount - 1].arrivalTimeList, { "24": popupData.selectedArrivalTime })[0],
-            departure_time: _.where(popupData.processData[popupData.selectedCount - 1].departureTimeList, { "24": popupData.selectedDepartureTime })[0]
-        };
+        if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
+            timeObj = {
+                arrival_time: popupData.selectedArrivalTime,
+                departure_time: popupData.selectedDepartureTime
+            };
+        }
+        else if ($scope.setTimePopupData.type === 'BOOK') {
+            timeObj = {
+                arrival_time: _.where(popupData.processData[popupData.selectedCount - 1].arrivalTimeList, { "24": popupData.selectedArrivalTime })[0],
+                departure_time: _.where(popupData.processData[popupData.selectedCount - 1].departureTimeList, { "24": popupData.selectedDepartureTime })[0],
+                numNights: $scope.setTimePopupData.selectedCount
+            };
+        }
 
         $scope.$emit('SET_TIME_AND_SAVE', timeObj);
     };
