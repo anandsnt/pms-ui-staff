@@ -6,6 +6,7 @@ module.exports = {
 
         return {
             'guestweb_inn_at_discovery_coast': [ themeCSSRoot + 'guestweb_inn_at_discovery_coast.css'],
+            'guestweb_freehand_chicago': [ themeCSSRoot + 'guestweb_freehand_chicago.css'],
             'guestweb_qbic_hotels': [ themeCSSRoot + 'guestweb_qbic_hotels.css'],
             'guestweb_maison_de_la_luz': [ themeCSSRoot + 'guestweb_maison_de_la_luz.css'],
             'guestweb_ruby_hospitality': [ themeCSSRoot + 'guestweb_ruby_hospitality.css'],
