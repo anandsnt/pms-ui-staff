@@ -293,8 +293,8 @@ angular.module('sntRover')
                     };
 
                     if (timeObj) {
-                        postData.arrival_time = timeObj.arrival_time;
-                        postData.departure_time = timeObj.departure_time;
+                        postData.arrival_time = timeObj.arrival_time['24'];
+                        postData.departure_time = timeObj.departure_time['24'];
                     }
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
@@ -314,14 +314,13 @@ angular.module('sntRover')
                         type: type,
                         roomDetails: roomDetails,
                         reservationDetails: reservationDetails,
-                        data: {}
+                        data: {},
+                        processData: []
                     };
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
-                        $scope.setTimePopupData.showPopup = data.is_overlapping_reservations_exists;
-                        $scope.setTimePopupData.selectedDepartureTime = data.max_departure_time;
-                        $scope.setTimePopupData.selectedArrivalTime = data.min_arrival_time;
+                        $scope.setTimePopupData.showPopup = (data.is_overlapping_reservations_exists || type === 'BOOK');
 
                         if ($scope.setTimePopupData.showPopup) {
                             ngDialog.open({
@@ -338,12 +337,17 @@ angular.module('sntRover')
                         }
                     },
                     postData = {
-                        "reservation_id": reservationDetails.reservationId,
                         "room_id": roomDetails.room_id,
                         "start_date": reservationDetails.fromDate,
-                        "no_of_days": reservationDetails.nights
-                    },
-                    options = {
+                        "no_of_days": 20
+                    };
+
+                    if (type === 'ASSIGN' || type === 'MOVE') {
+                        postData.reservation_id = reservationDetails.reservationId;
+                        postData.no_of_days = reservationDetails.nights;
+                    }
+
+                    var options = {
                         params: postData,
                         successCallBack: successCallBackFetchAvailableTimeSlots
                     };
@@ -366,7 +370,24 @@ angular.module('sntRover')
                  * Set time from rvNightlyDiarySetTimePopup.
                  */
                 $scope.addListener('SET_TIME_AND_SAVE', function ( e, timeObj) {
-                    callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, $scope.setTimePopupData.type, timeObj);
+                    if ($scope.setTimePopupData.type === 'BOOK') {
+                        ngDialog.close();
+                        // Navigation to Reservation Creation Screen.
+                        $state.go('rover.reservation.search', {
+                            selectedArrivalDate: $scope.setTimePopupData.reservationDetails.fromDate,
+                            selectedRoomTypeId: $scope.setTimePopupData.roomDetails.roomTypeId,
+                            selectedRoomId: $scope.setTimePopupData.roomDetails.room_id,
+                            selectedRoomNo: $scope.setTimePopupData.roomDetails.roomNo,
+                            startDate: $scope.diaryData.startDate,
+                            fromState: 'NIGHTLY_DIARY',
+                            selectedArrivalTime: timeObj.arrival_time,
+                            selectedDepartureTime: timeObj.departure_time,
+                            numNights: timeObj.numNights
+                        });
+                    }
+                    else {
+                        callAPIforAssignOrMoveRoom($scope.setTimePopupData.roomDetails, $scope.setTimePopupData.reservationDetails, $scope.setTimePopupData.type, timeObj);
+                    }
                 });
 
                 /*
@@ -384,14 +405,16 @@ angular.module('sntRover')
                     var roomTypeId = _.where(roomsList, { id: roomId })[0].room_type_id,
                         roomNo = _.where(roomsList, { id: roomId })[0].room_no;
 
-                    $state.go('rover.reservation.search', {
-                        selectedArrivalDate: date,
-                        selectedRoomTypeId: roomTypeId,
-                        selectedRoomId: roomId,
-                        selectedRoomNo: roomNo,
-                        startDate: $scope.diaryData.startDate,
-                        fromState: 'NIGHTLY_DIARY'
-                    });
+                    var roomDetails = {
+                        room_id: roomId,
+                        roomNo: roomNo,
+                        roomTypeId: roomTypeId
+                    },
+                    reservationDetails = {
+                        fromDate: date
+                    };
+
+                    showDiarySetTimePopup(roomDetails, reservationDetails, 'BOOK');
                 };
 
                 /*

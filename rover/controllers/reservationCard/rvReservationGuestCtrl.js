@@ -263,7 +263,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             reqParams.children = $scope.guestData.children_count;
 
             var successCallback = function(response) {
-                    $scope.$emit('hideLoader');
+					$scope.$emit('hideLoader');
+
+					// CICO-63171 - Discard the guest change part when the user is not currently in the staycard
+					if ($state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
+						return;
+					}
+
                     if (response.is_rate_changed) {
                         calculateRateForCurrentGuest();
 
@@ -288,8 +294,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.$emit('showLoader');
 
 				if (isOccupancyRateConfigured()) {
-                    var isRateChanged = isRateChangeOcuured();
-
+					var isRateChanged = isRateChangeOcuured();
+					
 					// CICO-13491
 					// If the occupancy Rate is configured and a rate change occured
 					// We have to show the popup for 'Keep Current Rate' & 'Change to new Rate'

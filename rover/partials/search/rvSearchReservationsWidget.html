@@ -38,7 +38,7 @@
 	<div ng-show="totalSearchResults > searchPerPage && results.length > 0 && showSearchResultsArea">
 	   <rv-pagination page-options="dashboardSearchPagination" page-data="totalSearchResults"></rv-pagination>
 	</div>
-	<section ng-attr-id="{{search_area_id}}" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults < searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0, 'hidden': !showSearchResultsArea, 'showing-search': searchAreaIsOpening, 'closing-search': searchAreaIsHiding, 'device-overflow': isFromDevice }" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" >
+	<section ng-attr-id="{{search_area_id}}" class="content scrollable" ng-class="{'no-pagination': ((totalSearchResults <= searchPerPage && results.length > 0) || isSwiped), 'no-results' : results.length == 0, 'hidden': !showSearchResultsArea, 'showing-search': searchAreaIsOpening, 'closing-search': searchAreaIsHiding, 'device-overflow': isFromDevice }" role="complementary" ng-show="showSearchResultsArea" ng-iscroll="result_showing_area" ng-iscroll-delay="1000" >
 	    <div class="wrapper">
 	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <ul id="dashboard-search-results" class="search-results" > <!-- since parent id & class must have roles in displaying the bottom results, we are seperating these -->

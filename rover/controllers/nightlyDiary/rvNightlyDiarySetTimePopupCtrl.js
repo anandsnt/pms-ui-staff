@@ -1,14 +1,5 @@
 sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope) {
 
-    // Handle save and continue button click actions.
-    $scope.saveAndContinueClicked = function() {
-        var timeObj = {
-            arrival_time: $scope.setTimePopupData.selectedArrivalTime,
-            departure_time: $scope.setTimePopupData.selectedDepartureTime
-        };
-
-        $scope.$emit('SET_TIME_AND_SAVE', timeObj);
-    };
     /*
      *  generateTimeDuration
      *  @param {string} - [minArrivalTime] 
@@ -51,9 +42,83 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         return times;
     };
 
-    if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
-        $scope.setTimePopupData.arrivalTimeList = generateTimeDuration($scope.setTimePopupData.data.min_arrival_time, null);
-        $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
-    }
+    /* 
+     *  Generate data set for day count - arrival, dep date mappings.
+     *  @paran {Object} - [ Data object with available_dates[], min_arrival_time,max_departure_time,default_checkout_time]
+     *  @return {Array} - [ List of objects contains arrivalTimeList and departureTimeList ]
+     */
+    var generateDataForBookAction = function( data ) {
+        var generatedList = [];
+
+        if (data && data.available_dates) {
+            for (var i = 1; i <= data.available_dates.length; i++ ) {
+                var obj = {
+                    day: i,
+                    arrivalTimeList: [],
+                    departureTimeList: []
+                };
+
+                if (i === data.available_dates) {
+                    obj.arrivalTimeList = generateTimeDuration(data.min_arrival_time, null);
+                    obj.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
+                }
+                else {
+                    obj.arrivalTimeList = generateTimeDuration(data.min_arrival_time, null);
+                    obj.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.default_checkout_time);
+                }
+                generatedList.push(obj);
+            }
+        }
+
+        return generatedList;
+    };
+
+    // Initialization of data set based on scenarios.
+    var init = function() {
+        if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
+            $scope.setTimePopupData.selectedArrivalTime = $scope.setTimePopupData.data.min_arrival_time;
+            $scope.setTimePopupData.selectedDepartureTime = $scope.setTimePopupData.data.max_departure_time;
+            $scope.setTimePopupData.arrivalTimeList = generateTimeDuration($scope.setTimePopupData.data.min_arrival_time, null);
+            $scope.setTimePopupData.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
+        }
+        else if ($scope.setTimePopupData.type === 'BOOK') {
+            $scope.setTimePopupData.selectedArrivalTime = '';
+            $scope.setTimePopupData.selectedDepartureTime = '';
+            $scope.setTimePopupData.selectedCount = '1';
+            $scope.setTimePopupData.processData = generateDataForBookAction($scope.setTimePopupData.data);
+            $scope.daysCountChanged();
+        }
+    };
+
+    // Handle day count change actions
+    $scope.daysCountChanged = function() {
+        $scope.setTimePopupData.arrivalTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount - 1].arrivalTimeList;
+        $scope.setTimePopupData.departureTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount - 1].departureTimeList;
+        $scope.setTimePopupData.selectedDepartureTime = '';
+    };
+
+    // Handle save and continue button click actions.
+    $scope.saveAndContinueClicked = function() {
+        var popupData = $scope.setTimePopupData,
+            timeObj = {};
+        
+        if ($scope.setTimePopupData.type === 'ASSIGN' || $scope.setTimePopupData.type === 'MOVE') {
+            timeObj = {
+                arrival_time: popupData.selectedArrivalTime,
+                departure_time: popupData.selectedDepartureTime
+            };
+        }
+        else if ($scope.setTimePopupData.type === 'BOOK') {
+            timeObj = {
+                arrival_time: _.where(popupData.processData[popupData.selectedCount - 1].arrivalTimeList, { "24": popupData.selectedArrivalTime })[0],
+                departure_time: _.where(popupData.processData[popupData.selectedCount - 1].departureTimeList, { "24": popupData.selectedDepartureTime })[0],
+                numNights: $scope.setTimePopupData.selectedCount
+            };
+        }
+
+        $scope.$emit('SET_TIME_AND_SAVE', timeObj);
+    };
+
+    init();
 
 }]);

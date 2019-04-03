@@ -194,7 +194,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
          */
         $scope.shouldShowTimeSelector = function() {
             // as per CICO-11840 we will show this for hourly hotels only
-            return $rootScope.isHourlyRateOn && !$scope.inService;
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !$scope.inService;
         };
         /*
          * @param  {Date}
