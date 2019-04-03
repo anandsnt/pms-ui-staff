@@ -339,7 +339,7 @@ angular.module('sntRover')
                     postData = {
                         "room_id": roomDetails.room_id,
                         "start_date": reservationDetails.fromDate,
-                        "no_of_days": 19
+                        "no_of_days": 20
                     };
 
                     if (type === 'ASSIGN' || type === 'MOVE') {
