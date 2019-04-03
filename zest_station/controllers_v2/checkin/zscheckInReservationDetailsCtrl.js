@@ -171,7 +171,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if ($scope.mode === 'LOYALTY_PROGRAMS') {
                 $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             } else if ($scope.mode === 'TERMS_CONDITIONS') {
-                if ($scope.zestStationData.add_loyalty_pgms) {
+                if ($scope.zestStationData.add_loyalty_pgms && ($scope.selectedReservation.reservation_details.loyalty_level.use_ffp || $scope.selectedReservation.reservation_details.loyalty_level.use_hlp)) {
                     $scope.mode = 'LOYALTY_PROGRAMS';
                     $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
                 } else {

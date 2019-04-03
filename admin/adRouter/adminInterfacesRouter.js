@@ -142,6 +142,21 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.derbysoftSetup', {
+        templateUrl: '/assets/partials/interfaces/DerbySoft/adDerbySoftSetup.html',
+        controller: 'ADDerbySoftSetupCtrl',
+        url: '/derbysoft/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
+            }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('derbysoft');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.verticalBookingSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',

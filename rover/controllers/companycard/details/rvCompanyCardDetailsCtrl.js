@@ -64,7 +64,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	        }
 	        else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.searchBackButtonCaption = $filter('translate')('MENU_COMMISIONS');
-			} else {
+			} else if ($stateParams.isMergeViewSelected) {
+				$scope.searchBackButtonCaption = $filter('translate')('MERGE_CARDS');			}
+			else {
 	            $scope.searchBackButtonCaption = $filter('translate')('FIND_CARDS');
 	        }
         };
@@ -102,12 +104,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/**
 		 * function to handle click operation on company card, mainly used for saving
 		 */
-		$scope.companyCardClicked = function($event) {
-
-			// to check if click is outside the AR accounts Tab
-			if (!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))) {
-				$scope.$broadcast("saveArAccount");
-			}
+		$scope.companyCardClicked = function($event) {			
 
 			$event.stopPropagation();
 
@@ -117,6 +114,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				return;
 			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
 				$scope.$emit("saveContactInformation");
+			}
+			// to check if click is outside the AR accounts Tab
+			if (!getParentWithSelector($event, document.getElementById("cc-ar-accounts"))) {
+				$scope.$broadcast("saveArAccount");
 			}
 			$scope.$broadcast("CLEAR_ERROR_MESSAGE");
 		};
@@ -206,12 +207,43 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 		};
 
+		$scope.openCompanyTravelAgentCardMandatoryFieldsPopup = function() {
+			$scope.shouldSaveArDataFromPopup = false;
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyTravelAgentCardMandatoryFieldsPopup.html',
+				className: 'ngdialog-theme-default1 calendar-single1',
+				controller: 'companyTravelAgentMandatoryFieldsController',
+				closeByDocument: false,
+				scope: $scope
+			});
+		};
+
+		$scope.clickedCreateArAccountButton = function() {
+			$scope.isMandatoryPopupOpen = true;
+			$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();				
+		};
+
+		$scope.$on("UPDATE_MANDATORY_POPUP_OPEN_FLAG", function() {
+			$scope.isMandatoryPopupOpen = false;
+		});
 
 		$scope.showARTab = function() {
-
 			createArAccountCheck = true;
 			saveContactInformation($scope.contactInformation);
 		};
+
+		$scope.$on("saveArAccountFromMandatoryPopup", function(e, data) {
+			$scope.arAccountDetails = data;
+			$scope.isArTabAvailable = true;
+			$scope.shouldSaveArDataFromPopup = true;
+		});
+
+
+
+
+		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE", function(e, data) {
+			$scope.arAccountDetails = data;
+		});
 
 		/*
 		*	CICO-45240
@@ -220,11 +252,17 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		*		Back to Balance/Paid tabs -> Back to AR Trans/Company & TA Cards search
 		*/
 		if (!$stateParams.isBackFromStaycard) {
-
-			$rootScope.prevStateBookmarkDataFromAR = {
-				title: $scope.searchBackButtonCaption,
-				name: $rootScope.previousState.name
-			};
+			if ($stateParams.isMergeViewSelected) {
+				$rootScope.prevStateBookmarkDataFromAR = {
+					title: $scope.searchBackButtonCaption,
+					name: $rootScope.previousState.name
+				};
+			} else {
+				$rootScope.prevStateBookmarkDataFromAR = {
+					title: $scope.searchBackButtonCaption,
+					name: $rootScope.previousState.name
+				};
+			}
 
 		}
 		// CICO-11664
@@ -273,6 +311,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.$on('ARNumberChanged', function(e, data) {
 			$scope.contactInformation.account_details.accounts_receivable_number = data.newArNumber;
+			if ($scope.isMandatoryPopupOpen) {
+				$scope.arAccountDetails.payment_due_days = null;
+				$scope.arAccountDetails.ar_number = data.newArNumber;
+				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
+			}
 		});
 
 		$scope.deleteArAccount = function() {
@@ -482,7 +525,34 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * successcall back of commssion detail
 		 */
 		var successCallbackOffetchCommissionDetail = function(data) {
-			$scope.$emit("hideLoader");
+			$scope.$emit("hideLoader");	
+			if (!angular.isDefined($scope.contactInformation.address_details)) {
+				$scope.contactInformation.address_details = {
+																"street1": "",
+																"street2": "",
+																"street3": "",
+																"city": "",
+																"state": "",
+																"postal_code": "",
+																"country_id": "",
+																"email_address": "",
+																"phone": "",
+																"fax": "",
+																"location": ""
+															};
+	
+			}
+			if (!angular.isDefined($scope.contactInformation.primary_contact_details)) {
+
+				$scope.contactInformation.primary_contact_details = {
+																		"contact_first_name": "",
+																		"contact_last_name": "",
+																		"contact_job_title": "",
+																		"contact_phone": "",
+																		"contact_email": ""
+																	};
+			}
+	 
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
 			$scope.contactInformation.emailStyleClass = $scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_visible ? 'margin' : 'full-width';
 			$scope.contactInformation["commission_details"] = data.commission_details;
@@ -516,6 +586,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.arAccountNotes = {};
 			$scope.arAccountDetails = {};
 			presentContactInfo = {};
+			
 			$scope.invokeApi(RVCompanyCardSrv.fetchCommissionDetailsAndMandatoryFields, data, successCallbackOffetchCommissionDetail);
 		}
 		// we are checking for edit screen
@@ -532,6 +603,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
+			if ($scope.shouldSaveArDataFromPopup) {	
+				$scope.shouldSaveArDataFromPopup = false;	
+				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
+				$scope.$broadcast("saveArAccount");
+			}
 			if (createArAccountCheck) {
 				createArAccountCheck = false;
 				$scope.$broadcast('setgenerateNewAutoAr', true);
@@ -619,6 +695,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			} else {
+				if ($scope.shouldSaveArDataFromPopup) {
+					$scope.shouldSaveArDataFromPopup = false;			
+					$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
+					$scope.$broadcast("saveArAccount");
+				}
 				if (createArAccountCheck) {
 					$scope.$broadcast('setgenerateNewAutoAr', true);
 				}
@@ -650,6 +731,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.$on("OUTSIDECLICKED", function(event) {
 
 			event.preventDefault();
+
+			if ($scope.isMandatoryPopupOpen) {
+				return;
+			}
 
 			if ($scope.isAddNewCard && !$scope.isContactInformationSaved) {
 				// On addMode and contact info not yet saved
@@ -725,7 +810,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 						angular.element('#uplaodCompanyLogo').trigger('click');
 					}, 0, false);
 				}
-			 
+			
 			} else if ($stateParams.type === "COMPANY") {
 				if (!$scope.isUpdateEnabled()) {
 					$timeout(function() {

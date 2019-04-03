@@ -79,7 +79,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'liason': 'Liason DC',
             'clarion-collection': 'Clarion Collection',
             'la-copa': 'La Copa Inn',
-            'ruby': 'Ruby Hospitality'
+            'ruby': 'Ruby Hospitality',
+            'merrion-row': 'Merrion Row Hotel And Public House'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -725,7 +726,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.getDeviceDetails = function(params) {
 
-            var url = "/api/notifications/device_details";
+            var url = '/api/notifications/device_details';
 
             return zsBaseWebSrv.getJSON(url, params);
         };
