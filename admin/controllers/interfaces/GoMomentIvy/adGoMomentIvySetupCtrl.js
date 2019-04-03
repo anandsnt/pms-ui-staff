@@ -19,6 +19,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
         /**
          * when button clicked to switch between mappings/settings
          * @return {undefined}
+         * @param {name} name tab name to toggle.
          */
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
