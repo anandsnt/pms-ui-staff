@@ -1,8 +1,12 @@
-admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 'adInterfacesCommonConfigSrv',
-    function($scope, goMomentIvySetupValues, adInterfacesCommonConfigSrv) {
+admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interfaceIdentifier = 'GOMOMENTIVY';
+        $scope.interface = 'GOMOMENTIVY';
+
+        $scope.state = {
+            activeTab: 'SETTING'
+        };
 
         /**
          * when clicked on check box to enable/diable GoMomentIvy
@@ -13,11 +17,11 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
         };
 
         /**
-         * when the save is success
+         * when button clicked to switch between mappings/settings
          * @return {undefined}
          */
-        var successCallBackOfSave = function() {
-            $scope.goBackToPreviousState();
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
         };
 
         /**
@@ -25,12 +29,15 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: $scope.interfaceIdentifier
+                    settings: $scope.config,
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfSave
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "SUCCESS: Settings Updated!"
+                }
             });
         };
 
@@ -39,6 +46,6 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 
          * @return {undefined}
          */
         (function() {
-            $scope.config = goMomentIvySetupValues;
+            $scope.config = config;
         })();
     }]);
