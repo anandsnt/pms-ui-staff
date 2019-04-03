@@ -879,33 +879,53 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/* ----------- edit/remove/split ends here ---------------*/
 		// CICO-13903
 		$scope.sendEmail = function(params) {
-			var mailSent = function(data) {
-					// Handle mail Sent Success
-					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-					$scope.status = "success";
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+				finalInvoiceSettlement(params, false);
+			} else {
+				var mailSent = function(data) {
+						// Handle mail Sent Success
+						$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+						$scope.status = "success";
 
-					if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-						$scope.$broadcast("UPDATE_WINDOW");
-					} else {
+						if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+							$scope.$broadcast("UPDATE_WINDOW");
+						} else {
+							$scope.showEmailSentStatusPopup();
+						}
+						$scope.switchTabTo('TRANSACTIONS');
+					},
+					mailFailed = function(errorMessage) {
+						$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+						$scope.status = "alert";
 						$scope.showEmailSentStatusPopup();
-					}
-					$scope.switchTabTo('TRANSACTIONS');
+					};
+
+				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
+					successCallBack: mailSent,
+					failureCallBack: mailFailed,
+					params: params
+				});
+			}
+		};
+
+		/*
+		 * Settle invoice
+		 */
+		var finalInvoiceSettlement = function(data, isPrint) {
+			var settleInvoiceSuccess = function() {
+					$scope.shouldGenerateFinalInvoice = false;
+					if (isPrint) {
+						printBillCard(data);
+					} else {
+						$scope.sendEmail(data);
+					}				
 				},
-				mailFailed = function(errorMessage) {
-					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-					$scope.status = "alert";
-					$scope.showEmailSentStatusPopup();
+				options = {
+					params: {"bill_id": $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id},
+					successCallBack: settleInvoiceSuccess
 				};
 
-			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				params.is_final_invoice = true;
-			}
-
-			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
-				successCallBack: mailSent,
-				failureCallBack: mailFailed,
-				params: params
-			});
+			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
 		};
 
 		/*
