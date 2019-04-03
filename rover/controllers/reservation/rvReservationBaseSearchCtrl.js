@@ -212,6 +212,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
             $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
+
+            $scope.reservationData.tabs[0].checkinTimeObj = $stateParams.selectedArrivalTime;
+            $scope.reservationData.tabs[0].checkoutTimeObj = $stateParams.selectedDepartureTime;
+
+            $scope.reservationData.numNights = $stateParams.numNights;
         },
         resetRoomDetailsIfInvalid = function () {
             $scope.reservationData.tabs[0].room_id = null;

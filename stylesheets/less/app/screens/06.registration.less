@@ -1,7 +1,7 @@
 /* Registration content ***/
 .registration-content {
     position: relative;
-    .calc-height(100, 50);
+    .calc-height(100, 60);
     
     &.with-complete-registration {
         .calc-height(100, 140);
@@ -57,168 +57,158 @@
         /* Registration summary tabs navigation ***/
         .bill-tabs {
             position: relative;
-            padding-top: 20px;
-            .size(70px, 100%);
-
-            .iScrollHorizontalScrollbar { 
-                left: 0;
-                right: 0;
-                top: 10px;
-            }
+            height: 50px;
+            .calc-width(100, 280);
 
             .wrapper {
-                .float();
-            }
-
-            li {
-                margin: 5px 0 0 0;
-                line-height: 1em;
-                vertical-align: middle;
-                min-width: 95px;
-                height: 45px;
-                background: rgba(0,0,0,.05);
-                .show;
-                .pull-left;
-                .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
-                #border-radius > .top();
-
-                .bill-toggle {
-                    color: @grey4;
-                    text-transform: uppercase;
-                    padding: 10px;
-                    cursor: pointer;
-                    .float;
+                li {
+                    margin: 5px 0 0 0;
+                    line-height: 1em;
+                    vertical-align: middle;
+                    min-width: 95px;
+                    height: 45px;
+                    background: rgba(0,0,0,.05);
                     .show;
-                    .no-transition;
+                    .pull-left;
+                    .box-shadow(~"inset -1px 0 1px rgba(0,0,0,.1)");
+                    #border-radius > .top();
 
-                    .price {
-                        font-weight: 600;
-                        .pull-left;
+                    .bill-toggle {
+                        color: @grey4;
+                        text-transform: uppercase;
+                        padding: 10px;
+                        cursor: pointer;
+                        .float;
+                        .show;
+                        .no-transition;
 
-                        span:not(.currency) { 
-                            font-size: 14px;
-                            font-weight: 400;
-                            .show;
+                        .price {
+                            font-weight: 600;
+                            .pull-left;
+
+                            span:not(.currency) { 
+                                font-size: 14px;
+                                font-weight: 400;
+                                .show;
+                            }
                         }
-                    }
 
-                    .card-logo,
-                    .payment {
-                        font-size: 12px;
-                        line-height: 12px;
-                        margin-left: 20px;
-                        text-align: right;
-                        .pull-left;
-                        .size(20px, 50px);
-                        .opacity(50);
-
-                        img { .size(auto, 40px); }
-                    }
-
-                    &.error,
-                    &.has-icon {
-                        position: relative;
-                        padding-left: 20px;
-                    }
-
-                    &.error {
-                        &:after {
-                            content: "!";
-                            position: absolute;
-                            top: 5px;
-                            left: 5px;
+                        .card-logo,
+                        .payment {
                             font-size: 12px;
-                            line-height: 14px;
-                            text-align: center;
-                            color: @white;
-                            background: @red;
-                            .square(14px);
-                            #border-radius > .rounded(14px);
-                        }
-                    }
-
-                    &.has-icon {
-                        .icons {
-                            background-size: 80px;
-                            .square(14px);
-                            top: 5px;
-                            left: 5px;
-                            position: absolute;
+                            line-height: 12px;
+                            margin-left: 20px;
+                            text-align: right;
+                            .pull-left;
+                            .size(20px, 50px);
                             .opacity(50);
 
-                            &.icon-room-lock {
-                                background-position: 1px -6026px;
-                            }
+                            img { .size(auto, 40px); }
+                        }
+
+                        &.error,
+                        &.has-icon {
+                            position: relative;
+                            padding-left: 20px;
                         }
 
                         &.error {
                             &:after {
-                                top: 25px;
+                                content: "!";
+                                position: absolute;
+                                top: 5px;
+                                left: 5px;
+                                font-size: 12px;
+                                line-height: 14px;
+                                text-align: center;
+                                color: @white;
+                                background: @red;
+                                .square(14px);
+                                #border-radius > .rounded(14px);
+                            }
+                        }
+
+                        &.has-icon {
+                            .icons {
+                                background-size: 80px;
+                                .square(14px);
+                                top: 5px;
+                                left: 5px;
+                                position: absolute;
+                                .opacity(50);
+
+                                &.icon-room-lock {
+                                    background-position: 1px -6026px;
+                                }
+                            }
+
+                            &.error {
+                                &:after {
+                                    top: 25px;
+                                }
                             }
                         }
                     }
-                }
 
-                &.new-bill {
-                    min-width: 45px; 
-                    background: transparent;
-                    padding: 5px 0 0 5px;
-                    .box-shadow(none);
-
-                    .button {
-                        .square(45px);
-                        #border-radius > .bottom(0);
+                    &.new-bill {
+                        min-width: 45px; 
+                        background: transparent;
+                        padding: 5px 0 0 5px;
                         .box-shadow(none);
 
-                        .icons { margin-top: -8px; }
+                        .button {
+                            .square(45px);
+                            #border-radius > .bottom(0);
+                            .box-shadow(none);
 
-                        &:hover,
-                        &:active { 
-                            .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+                            .icons { margin-top: -8px; }
+
+                            &:hover,
+                            &:active { 
+                                .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+                            }
                         }
                     }
-                }
-
-                &.with-button {
-                    #flexbox > .parent(row wrap, '', center, '');
-
-                    .button {
-                        margin-right: 8px;
-                        padding: 0;
-                        background-position: 12px -3929px;
-                        background-color: @white;
-                        .hide();
-                        .square(35px);
-                    }
-                }
-
-                &.ui-tabs-active,
-                &.active {
-                    line-height: 1em;
-                    margin-top: 0;
-                    height: 50px;
-                    background: rgba(0,0,0,.1);
-                    .box-shadow(none);
 
                     &.with-button {
+                        #flexbox > .parent(row wrap, '', center, '');
+
                         .button {
-                            .show();
+                            margin-right: 8px;
+                            padding: 0;
+                            background-position: 12px -3929px;
+                            background-color: @white;
+                            .hide();
+                            .square(35px);
                         }
                     }
 
-                    a {
-                        color: @textColor;
+                    &.ui-tabs-active,
+                    &.active {
+                        line-height: 1em;
+                        margin-top: 0;
+                        height: 50px;
+                        background: rgba(0,0,0,.1);
+                        .box-shadow(none);
 
-                        .card-logo,
-                        .payment,
-                        &.has-icon .icons { .opacity(100); }
+                        &.with-button {
+                            .button {
+                                .show();
+                            }
+                        }
+
+                        a {
+                            color: @textColor;
+
+                            .card-logo,
+                            .payment,
+                            &.has-icon .icons { .opacity(100); }
+                        }
                     }
                 }
             }
 
-            &.with-incoming {
-                .calc-width(100, 280);
-            }
+            .iScrollHorizontalScrollbar { .hide; }
         }
 
         .incoming-billing {
@@ -245,19 +235,7 @@
                 background: rgba(0,0,0,.1);
                 #border-radius > .rounded();
 
-                .scrollable {
-                    height: 50px;
-                }
-                
-                .iScrollHorizontalScrollbar { 
-                    left: 10px;
-                    right: 10px;
-                    top: 64px;
-
-                    .iScrollIndicator {
-                        background-color: rgba(0,0,0,.1);
-                    }
-                }
+                .iScrollHorizontalScrollbar { .hide; }
                 
                 .days {
                     > button,

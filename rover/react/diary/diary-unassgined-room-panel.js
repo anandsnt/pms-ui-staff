@@ -76,6 +76,7 @@ var UnassignedRoomPanel = React.createClass({
             infants: item.infants,
             rate_id: item.rate_id,
             room_type_id: item.room_type_id,
+            is_hourly: item.is_hourly,
 
             stay_span: this.__getTimeDiff(item.arrival_date, item.arrival_time, item.departure_date, item.departure_time)
         });
