@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -71,11 +71,364 @@ admin.controller('ADAppCtrl', [
 	    $rootScope.businessDate = businessDate;
 
 	    // flag to decide show task management under house keeping: true by default
-	    var showTaskManagementInHKMenu = true;
+	    var showTaskManagementInHKMenu = true,
+            shouldShowCurrencyExchangeInMenu = false;
 
 	    // flag to decide show neighbours screen
-	    var isNeighboursEnabled = false;
+        var isNeighboursEnabled = false;
+        
+        /**
+         * Get menu list for standalone
+         * @param {Boolean} shouldHideNightlyDiaryMenu 
+         * @param {Boolean} shouldHideSellLimitMenu 
+         */
+        var getMainMenuForStandAloneRover = function(shouldHideNightlyDiaryMenu, shouldHideSellLimitMenu) {
+            var menu = [
+                {
+                    title: 'MENU_DASHBOARD',
+                    action: 'rover.dashboard',
+                    menuIndex: 'dashboard',
+                    submenu: [],
+                    iconClass: 'icon-dashboard'
+                },
+                {
+                    title: 'MENU_FRONT_DESK',
+                    action: '',
+                    iconClass: 'icon-frontdesk',
+                    menuIndex: "front_desk",
+                    submenu: [
+                        {
+                            title: 'MENU_SEARCH_RESERVATIONS',
+                            action: 'rover.search',
+                            menuIndex: "reservationSearch"
+                        },
+                        {
+                            title: 'MENU_CREATE_RESERVATION',
+                            action: 'rover.reservation.search',
+                            menuIndex: "createReservation",
+                            standAlone: true
+                        }, {
+                            title: 'MENU_ROOM_DIARY',
+                            action: 'rover.diary',
+                            menuIndex: 'diaryReservation',
+                            standAlone: true,
+                            hidden: !$rootScope.isHourlyRatesEnabled
+                        }, {
+                            title: 'MENU_ROOM_DIARY',
+                            action: 'rover.nightlyDiary',
+                            menuIndex: 'nightlyDiaryReservation',
+                            standAlone: true,
+                            hidden: shouldHideNightlyDiaryMenu,
+                            actionParams: {
+                                start_date: $rootScope.businessDate
+                            }
+                        }, {
+                            title: 'MENU_POST_CHARGES',
+                            action: 'rover.dashboardFromAdmin',
+                            menuIndex: "postcharges",
+                            actionParams: {
+                                type: 'postCharge'
+                            }
+                        }, {
+                            title: 'MENU_CASHIER',
+                            action: 'rover.financials.journal',
+                            menuIndex: "cashier",
+                            actionParams: {
+                                id: 'CASHIER'
+                            }
+                        }, {
+                            title: "MENU_GUESTS",
+                            action: "rover.guest.search",
+                            menuIndex: "guests"
+                        }, {
+                            title: 'MENU_ACCOUNTS',
+                            action: 'rover.accounts.search',
+                            menuIndex: 'accounts'                                
+                        }, {
+                            title: 'MENU_END_OF_DAY',
+                            action: 'rover.endOfDay.starteod',
+                            menuIndex: "endOfDay"
+                        }, {
+                            title: 'MENU_SOCIAL_LOBBY',
+                            hidden: !isNeighboursEnabled,
+                            action: 'rover.socialLobby',
+                            menuIndex: "sociallobby"
+                        }
+                    ]
+                }, {
+                    title: 'MENU_GROUPS',
+                    action: '',
+                    iconClass: 'icon-groups',
+                    menuIndex: 'menuGroups',
+                    hidden: $rootScope.isHourlyRatesEnabled,
+                    submenu: [{
+                        title: 'MENU_CREATE_GROUP',
+                        action: 'rover.groups.config',
+                        actionParams: {
+                            id: 'NEW_GROUP'
+                        },
+                        menuIndex: 'menuCreateGroup'
+                    }, {
+                        title: 'MENU_MANAGE_GROUP',
+                        action: 'rover.groups.search',
+                        menuIndex: 'menuManageGroup'
+                    }, {
+                        title: 'MENU_CREATE_ALLOTMENT',
+                        action: 'rover.allotments.config',
+                        actionParams: {
+                            id: 'NEW_ALLOTMENT'
+                        },
+                        menuIndex: 'menuCreateAllotment'
+                    }, {
+                        title: 'MENU_MANAGE_ALLOTMENT',
+                        action: 'rover.allotments.search',
+                        menuIndex: 'menuManageAllotment'
+                    }]
+                }, {
+                    title: 'MENU_CONVERSATIONS',
+                    hidden: true,
+                    action: '',
+                    iconClass: 'icon-conversations',
+                    menuIndex: "conversations",
+                    submenu: [{
+                        title: 'MENU_SOCIAL_LOBBY',
+                        action: ''
+                    }, {
+                        title: 'MENU_MESSAGES',
+                        action: ''
+                    }, {
+                        title: 'MENU_REVIEWS',
+                        action: ''
+                    }]
+                }, {
+                    title: 'MENU_REV_MAN',
+                    action: '',
+                    iconClass: 'icon-revenue',
+                    submenu: [
+                        {
+                            title: 'MENU_RATE_MANAGER',
+                            action: 'rover.rateManager',
+                            menuIndex: 'rateManager'
+                        },
+                        {
+                            title: 'MENU_TA_CARDS',
+                            action: 'rover.companycardsearch',
+                            menuIndex: 'cards'
+                        },
+                        {
+                            title: 'MENU_SELL_LIMITS',
+                            action: 'rover.overbooking',
+                            menuIndex: "overbooking",
+                            actionParams: {
+                                start_date: $rootScope.businessDate
+                            },
+                            standAlone: true,
+                            hidden: shouldHideSellLimitMenu
+                        }
+                    ]
+                }, {
+                    title: 'MENU_HOUSEKEEPING',
+                    action: '',
+                    iconClass: 'icon-housekeeping',
+                    menuIndex: "housekeeping",
+                    submenu: [{
+                        title: 'MENU_ROOM_STATUS',
+                        action: 'rover.housekeeping.roomStatus',
+                        menuIndex: 'roomStatus'
+                    }, {
+                        title: 'MENU_TASK_MANAGEMENT',
+                        action: 'rover.workManagement.start',
+                        menuIndex: 'workManagement',
+                        hidden: ( $rootScope.isHourlyRatesEnabled || !showTaskManagementInHKMenu )
+                    }, {
+                        title: 'MENU_MAINTAENANCE',
+                        action: '',
+                        menuIndex: "maintanance",
+                        hidden: true
+                    }]
+                }, {
+                    title: 'MENU_FINANCIALS',
+                    action: '#',
+                    iconClass: 'icon-financials',
+                    menuIndex: "financials",
+                    submenu: [{
+                        title: 'MENU_JOURNAL',
+                        action: 'rover.financials.journal',
+                        menuIndex: "journals",
+                        actionParams: {
+                            id: 'REVENUE'
+                        }
+                    }, {
+                        title: 'MENU_CC_TRANSACTIONS',
+                        action: 'rover.financials.ccTransactions',
+                        menuIndex: "ccTransactions",
+                        actionParams: {
+                            id: 'REVENUE'
+                        }
+                    }, {
+                        title: 'MENU_ACCOUNTS_RECEIVABLES',
+                        action: 'rover.financials.accountsReceivables',
+                        menuIndex: "accountsReceivables"
+                    }, {
+                        title: 'MENU_COMMISIONS',
+                        action: 'rover.financials.commisions',
+                        menuIndex: "commisions"
+                    },
+                    {
+                        title: "MENU_INVOICE_SEARCH",
+                        action: "rover.financials.invoiceSearch",
+                        menuIndex: "invoiceSearch"
+                    },
+                    {
+                        title: "AUTO_CHARGE",
+                        action: "rover.financials.autoCharge",
+                        menuIndex: "autoCharge"
+                    },
+                    {
 
+                        title: 'MENU_CURRENY_EXCHANGE',
+                        action: 'rover.dashboardFromAdmin',
+                        menuIndex: "currencyExchange",
+                        hidden: !shouldShowCurrencyExchangeInMenu,
+                        actionParams: {
+                            type: 'currencyExchange'
+                        }
+                    }]
+                }, {
+                    title: "MENU_ACTIONS",
+                    action: "",
+                    iconClass: "icon-actions",
+                    menuIndex: "actions",                
+                    submenu: [{
+                        title: "MENU_ACTIONS_MANAGER",
+                        action: "rover.actionsManager",
+                        menuIndex: "actionsManager",
+                        iconClass: "icon-actions"
+                    },
+                    {
+                        title: "QUICKTEXT",
+                        action: "rover.quicktext",
+                        menuIndex: "QuickText",
+                        hidden: !$rootScope.isQuickTextEnabled
+                    }]
+                }, {
+                    title: "MENU_REPORTS",              
+                    action: "",
+                    iconClass: "icon-reports",
+                    menuIndex: "reports",               
+                    submenu: [{
+                        title: "MENU_NEW_REPORT",
+                        action: "rover.reports.dashboard",
+                        menuIndex: "new_report"
+                    }, {
+                        title: "MENU_REPORTS_INBOX",
+                        action: "rover.reports.inbox",
+                        menuIndex: "reports-inbox",
+                        hidden: !$rootScope.isBackgroundReportsEnabled
+                    }, {
+                        title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+                        action: "rover.reports.scheduleReportsAndExports",
+                        menuIndex: "schedule_report_export"
+                    }]
+                }];
+
+            return  adMenuSrv.processMenuList(menu);
+        };
+        
+        /**
+         * Get menu for standalone mobile
+         */
+        var getMobileMenuForStandAloneRover = function() {
+            // menu for mobile views
+            var mobileMenu = [
+                {
+                    title: 'MENU_DASHBOARD',
+                    action: 'rover.dashboard',
+                    menuIndex: 'dashboard',
+                    submenu: [],
+                    iconClass: 'icon-dashboard'
+                }, {
+                    title: 'MENU_ROOM_STATUS',
+                    action: 'rover.housekeeping.roomStatus',
+                    menuIndex: 'roomStatus',
+                    submenu: [],
+                    iconClass: 'icon-housekeeping'
+                }];
+
+            return  adMenuSrv.processMenuList(mobileMenu);
+        };
+
+        /**
+         * Get menu for connected
+         */
+        var getMainMenuForConnectedRover = function() {
+            var menu = [
+                {
+                    title: 'MENU_DASHBOARD',
+                    action: 'rover.dashboard',
+                    menuIndex: 'dashboard',
+                    submenu: [],
+                    iconClass: 'icon-dashboard'
+                }, {
+                    title: 'MENU_HOUSEKEEPING',
+                    action: '',
+                    iconClass: 'icon-housekeeping',
+                    submenu: [{
+                        title: 'MENU_ROOM_STATUS',
+                        action: 'rover.housekeeping.roomStatus',
+                        menuIndex: 'roomStatus'
+                    }]
+                }, {
+                    title: "MENU_REPORTS",              
+                    action: "",
+                    iconClass: "icon-reports",
+                    menuIndex: "reports",               
+                    submenu: [{
+                        title: "MENU_NEW_REPORT",
+                        action: "rover.reports.dashboard",
+                        menuIndex: "new_report"
+                    }, {
+                        title: "MENU_REPORTS_INBOX",
+                        action: "rover.reports.inbox",
+                        menuIndex: "reports-inbox",
+                        hidden: !$rootScope.isBackgroundReportsEnabled
+                    }, {
+                        title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+                        action: "rover.reports.scheduleReportsAndExports",
+                        menuIndex: "schedule_report_export"
+                    }]
+                }
+            ];
+
+            return  adMenuSrv.processMenuList(menu);
+        };
+
+        /**
+         * Get menu for mobile connected 
+         */
+        var getMobileMenuForConnectedRover = function() {
+            // menu for mobile views
+            var mobileMenu = [
+                {
+                    title: 'MENU_DASHBOARD',
+                    action: 'rover.dashboard',
+                    menuIndex: 'dashboard',
+                    iconClass: 'icon-dashboard'
+                }, {
+                    title: 'MENU_ROOM_STATUS',
+                    action: 'rover.housekeeping.roomStatus',
+                    menuIndex: 'roomStatus',
+                    submenu: [],
+                    iconClass: 'icon-housekeeping'
+                }
+            ];
+
+            return  adMenuSrv.processMenuList(mobileMenu);
+        };
+
+        /**
+         * Set up left side menus based on permission and pms type
+         */
         var setupLeftMenu = function() {
             var shouldHideNightlyDiaryMenu = true,
                 shouldHideSellLimitMenu = true;
@@ -85,294 +438,12 @@ admin.controller('ADAppCtrl', [
                 shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
-                $scope.menu = [
-                    {
-                        title: 'MENU_DASHBOARD',
-                        action: 'rover.dashboard',
-                        menuIndex: 'dashboard',
-                        submenu: [],
-                        iconClass: 'icon-dashboard'
-                    },
-                    {
-                        title: 'MENU_FRONT_DESK',
-                        action: '',
-                        iconClass: 'icon-frontdesk',
-                        submenu: [
-                            {
-                                title: 'MENU_SEARCH_RESERVATIONS',
-                                action: 'rover.search'
-                            },
-                            {
-                                title: 'MENU_CREATE_RESERVATION',
-                                action: 'rover.reservation.search',
-                                standAlone: true
-                            }, {
-                                title: 'MENU_ROOM_DIARY',
-                                action: 'rover.diary',
-                                standAlone: true,
-                                hidden: !$rootScope.isHourlyRatesEnabled
-                            }, {
-                                title: 'MENU_ROOM_DIARY',
-                                action: 'rover.nightlyDiary',
-                                standAlone: true,
-                                hidden: shouldHideNightlyDiaryMenu,
-                                actionParams: {
-                                    start_date: $rootScope.businessDate
-                                }
-                            }, {
-                                title: 'MENU_POST_CHARGES',
-                                action: 'rover.dashboardFromAdmin',
-                                actionParams: {
-                                    type: 'postCharge'
-                                }
-                            }, {
-                                title: 'MENU_CASHIER',
-                                action: 'rover.financials.journal',
-                                actionParams: {
-                                    id: 'CASHIER'
-                                }
-                            }, {
-                                title: "MENU_GUESTS",
-                                action: "rover.guest.search",
-                                menuIndex: "guests"
-                            }, {
-                                title: 'MENU_ACCOUNTS',
-                                action: 'rover.accounts.search',
-                                menuIndex: 'accounts'                                
-                            }, {
-                                title: 'MENU_END_OF_DAY',
-                                action: 'rover.endOfDay.starteod'
-                            }, {
-                                title: 'MENU_SOCIAL_LOBBY',
-                                hidden: !isNeighboursEnabled,
-                                action: 'rover.socialLobby'
-                            }
-                        ]
-                    }, {
-                        title: 'MENU_GROUPS',
-                        action: '',
-                        iconClass: 'icon-groups',
-                        menuIndex: 'menuGroups',
-                        hidden: $rootScope.isHourlyRatesEnabled,
-                        submenu: [{
-                            title: 'MENU_CREATE_GROUP',
-                            action: 'rover.groups.config',
-                            actionParams: {
-                                id: 'NEW_GROUP'
-                            },
-                            menuIndex: 'menuCreateGroup'
-                        }, {
-                            title: 'MENU_MANAGE_GROUP',
-                            action: 'rover.groups.search',
-                            menuIndex: 'menuManageGroup'
-                        }, {
-                            title: 'MENU_CREATE_ALLOTMENT',
-                            action: 'rover.allotments.config',
-                            actionParams: {
-                                id: 'NEW_ALLOTMENT'
-                            },
-                            menuIndex: 'menuCreateAllotment'
-                        }, {
-                            title: 'MENU_MANAGE_ALLOTMENT',
-                            action: 'rover.allotments.search',
-                            menuIndex: 'menuManageAllotment'
-                        }]
-                    }, {
-                        title: 'MENU_CONVERSATIONS',
-                        hidden: true,
-                        action: '',
-                        iconClass: 'icon-conversations',
-                        submenu: [{
-                            title: 'MENU_SOCIAL_LOBBY',
-                            action: ''
-                        }, {
-                            title: 'MENU_MESSAGES',
-                            action: ''
-                        }, {
-                            title: 'MENU_REVIEWS',
-                            action: ''
-                        }]
-                    }, {
-                        title: 'MENU_REV_MAN',
-                        action: '',
-                        iconClass: 'icon-revenue',
-                        submenu: [
-                            {
-                                title: 'MENU_RATE_MANAGER',
-                                action: 'rover.rateManager',
-                                menuIndex: 'rateManager'
-                            },
-                            {
-                                title: 'MENU_TA_CARDS',
-                                action: 'rover.companycardsearch',
-                                menuIndex: 'cards'
-                            },
-                            {
-                                title: 'MENU_SELL_LIMITS',
-                                action: 'rover.overbooking',
-                                actionParams: {
-                                    start_date: $rootScope.businessDate
-                                },
-                                standAlone: true,
-                                hidden: shouldHideSellLimitMenu
-                            }
-                        ]
-                    }, {
-                        title: 'MENU_HOUSEKEEPING',
-                        action: '',
-                        iconClass: 'icon-housekeeping',
-                        submenu: [{
-                            title: 'MENU_ROOM_STATUS',
-                            action: 'rover.housekeeping.roomStatus',
-                            menuIndex: 'roomStatus'
-                        }, {
-                            title: 'MENU_TASK_MANAGEMENT',
-                            action: 'rover.workManagement.start',
-                            menuIndex: 'workManagement',
-                            hidden: ( $rootScope.isHourlyRatesEnabled || !showTaskManagementInHKMenu )
-                        }, {
-                            title: 'MENU_MAINTAENANCE',
-                            action: '',
-                            hidden: true
-                        }]
-                    }, {
-                        title: 'MENU_FINANCIALS',
-                        action: '#',
-                        iconClass: 'icon-financials',
-                        submenu: [{
-                            title: 'MENU_JOURNAL',
-                            action: 'rover.financials.journal',
-                            actionParams: {
-                                id: 'REVENUE'
-                            }
-                        }, {
-                            title: 'MENU_CC_TRANSACTIONS',
-                            action: 'rover.financials.ccTransactions',
-                            actionParams: {
-                                id: 'REVENUE'
-                            }
-                        }, {
-                            title: 'MENU_ACCOUNTS_RECEIVABLES',
-                            action: 'rover.financials.accountsReceivables'
-                        }, {
-                            title: 'MENU_COMMISIONS',
-                            action: 'rover.financials.commisions'
-                        },
-                        {
-                            title: "MENU_INVOICE_SEARCH",
-                            action: "rover.financials.invoiceSearch",
-                            menuIndex: "invoiceSearch"
-                        },
-                        {
-                            title: "AUTO_CHARGE",
-                            action: "rover.financials.autoCharge",
-                            menuIndex: "autoCharge"
-                        }]
-                    }, {
-                        title: "MENU_ACTIONS",
-                        action: "",
-                        iconClass: "icon-actions",
-                        menuIndex: "actions",                
-                        submenu: [{
-                            title: "MENU_ACTIONS_MANAGER",
-                            action: "rover.actionsManager",
-                            menuIndex: "actionsManager",
-                            iconClass: "icon-actions"
-                        },
-                        {
-                            title: "QUICKTEXT",
-                            action: "rover.quicktext",
-                            menuIndex: "QuickText",
-                            hidden: !$rootScope.isQuickTextEnabled
-                        }]
-                    }, {
-                        title: "MENU_REPORTS",              
-                        action: "",
-                        iconClass: "icon-reports",
-                        menuIndex: "reports",               
-                        submenu: [{
-                            title: "MENU_NEW_REPORT",
-                            action: "rover.reports.dashboard",
-                            menuIndex: "new_report"
-                        }, {
-                            title: "MENU_REPORTS_INBOX",
-                            action: "rover.reports.inbox",
-                            menuIndex: "reports-inbox",
-                            hidden: !$rootScope.isBackgroundReportsEnabled
-                        }, {
-                            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
-                            action: "rover.reports.scheduleReportsAndExports",
-                            menuIndex: "schedule_report_export"
-                        }]
-                    }];
-                // menu for mobile views
-                $scope.mobileMenu = [
-                    {
-                        title: 'MENU_DASHBOARD',
-                        action: 'rover.dashboard',
-                        menuIndex: 'dashboard',
-                        submenu: [],
-                        iconClass: 'icon-dashboard'
-                    }, {
-                        title: 'MENU_ROOM_STATUS',
-                        action: 'rover.housekeeping.roomStatus',
-                        menuIndex: 'roomStatus',
-                        submenu: [],
-                        iconClass: 'icon-housekeeping'
-                    }];
+                $scope.menu = getMainMenuForStandAloneRover(shouldHideNightlyDiaryMenu, shouldHideSellLimitMenu);
+                $scope.mobileMenu = getMobileMenuForStandAloneRover();
+
             } else {
-                $scope.menu = [
-                    {
-                        title: 'MENU_DASHBOARD',
-                        action: 'rover.dashboard',
-                        menuIndex: 'dashboard',
-                        submenu: [],
-                        iconClass: 'icon-dashboard'
-                    }, {
-                        title: 'MENU_HOUSEKEEPING',
-                        action: '',
-                        iconClass: 'icon-housekeeping',
-                        submenu: [{
-                            title: 'MENU_ROOM_STATUS',
-                            action: 'rover.housekeeping.roomStatus',
-                            menuIndex: 'roomStatus'
-                        }]
-                    }, {
-                        title: "MENU_REPORTS",              
-                        action: "",
-                        iconClass: "icon-reports",
-                        menuIndex: "reports",               
-                        submenu: [{
-                            title: "MENU_NEW_REPORT",
-                            action: "rover.reports.dashboard",
-                            menuIndex: "new_report"
-                        }, {
-                            title: "MENU_REPORTS_INBOX",
-                            action: "rover.reports.inbox",
-                            menuIndex: "reports-inbox",
-                            hidden: !$rootScope.isBackgroundReportsEnabled
-                        }, {
-                            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
-                            action: "rover.reports.scheduleReportsAndExports",
-                            menuIndex: "schedule_report_export"
-                        }]
-                    }
-                ];
-                // menu for mobile views
-                $scope.mobileMenu = [
-                    {
-                        title: 'MENU_DASHBOARD',
-                        action: 'rover.dashboard',
-                        menuIndex: 'dashboard',
-                        iconClass: 'icon-dashboard'
-                    }, {
-                        title: 'MENU_ROOM_STATUS',
-                        action: 'rover.housekeeping.roomStatus',
-                        menuIndex: 'roomStatus',
-                        submenu: [],
-                        iconClass: 'icon-housekeeping'
-                    }
-                ];
+                $scope.menu = getMainMenuForConnectedRover(shouldHideNightlyDiaryMenu);
+                $scope.mobileMenu = getMobileMenuForConnectedRover();
             }
         };
 
@@ -621,6 +692,7 @@ admin.controller('ADAppCtrl', [
 			// flag to decide show task management under house keeping: true by default
 			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
 			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled;
+            shouldShowCurrencyExchangeInMenu = data.is_multi_currency_enabled;
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');

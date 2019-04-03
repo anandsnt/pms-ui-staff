@@ -80,7 +80,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'clarion-collection': 'Clarion Collection',
             'la-copa': 'La Copa Inn',
             'ruby': 'Ruby Hospitality',
-            'merrion-row': 'Merrion Row Hotel And Public House'
+            'qbic': 'Qbic Hotels',
+            'merrion-row': 'Merrion Row Hotel And Public House',
+            'freehand-chicago': 'Freehand Chicago'
         };
 
         this.isThemeConfigured = function(theme) {

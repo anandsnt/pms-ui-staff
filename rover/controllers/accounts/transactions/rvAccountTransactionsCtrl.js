@@ -900,10 +900,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.showEmailSentStatusPopup();
 					};
 
-				if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-					params.is_final_invoice = true;
-				}
-
 				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 					successCallBack: mailSent,
 					failureCallBack: mailFailed,

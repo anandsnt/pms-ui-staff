@@ -1,5 +1,16 @@
 angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
+    $stateProvider.state('admin.accountview', {
+        templateUrl: '/assets/partials/interfaces/accountview/adAccountview.html',
+        controller: 'adAccountviewCtrl',
+        url: '/accountview',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('accountview');
+            }]
+        }
+    });
+    
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -245,17 +256,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('salesforce');
-            }]
-        }
-    });
-
-    $stateProvider.state('admin.accountViewSetup', {
-        templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
-        controller: 'adAccountViewSetupCtrl',
-        url: '/accountview/setup',
-        resolve: {
-            config: ['adInterfacesSetupSrv', function(adInterfacesSetupSrv) {
-                return adInterfacesSetupSrv.getSettings('accountview');
             }]
         }
     });
@@ -653,6 +653,25 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.sunaccountingSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        controller: 'adInterfaceConfigurationCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'sunaccounting';
+        }],
+        resolve: {
+            config: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('sunaccounting');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
                 }]
         }
     });
