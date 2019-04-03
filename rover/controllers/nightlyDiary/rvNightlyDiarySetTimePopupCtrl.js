@@ -94,6 +94,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
     $scope.daysCountChanged = function() {
         $scope.setTimePopupData.arrivalTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount - 1].arrivalTimeList;
         $scope.setTimePopupData.departureTimeList = $scope.setTimePopupData.processData[$scope.setTimePopupData.selectedCount - 1].departureTimeList;
+        $scope.setTimePopupData.selectedDepartureTime = '';
     };
 
     // Handle save and continue button click actions.
