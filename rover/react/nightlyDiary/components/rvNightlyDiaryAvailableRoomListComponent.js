@@ -33,8 +33,7 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
         }
         const style = {
             width: width + 'px',
-            transform: 'translateX(' + avialableRoomPosition + ')',
-            display: 'block'
+            transform: 'translateX(' + avialableRoomPosition + ')'
         };
 
         let currentBusinessDate = tzIndependentDate(this.props.state.currentBusinessDate);

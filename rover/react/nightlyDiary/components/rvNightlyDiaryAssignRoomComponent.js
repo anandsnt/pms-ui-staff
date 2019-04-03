@@ -6,8 +6,7 @@ const NightlyDiaryAssignRoomComponent = createClass({
         const position = this.props.uar_data.style.transform;
         const style = {
             width: width,
-            transform: position,
-            display: 'block'
+            transform: position
         };
 
         return style;
