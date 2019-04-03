@@ -49,7 +49,8 @@ angular.module('stayCardModule', [])
                 startDate: null,
                 fromState: null,
                 selectedArrivalTime: null,
-                selectedDepartureTime: null
+                selectedDepartureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',

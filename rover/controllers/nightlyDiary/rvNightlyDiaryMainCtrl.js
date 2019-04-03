@@ -381,7 +381,8 @@ angular.module('sntRover')
                             startDate: $scope.diaryData.startDate,
                             fromState: 'NIGHTLY_DIARY',
                             selectedArrivalTime: timeObj.arrival_time,
-                            selectedDepartureTime: timeObj.departure_time
+                            selectedDepartureTime: timeObj.departure_time,
+                            numNights: timeObj.numNights
                         });
                     }
                     else {
