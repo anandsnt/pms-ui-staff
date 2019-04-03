@@ -1,5 +1,19 @@
 angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
+<<<<<<< HEAD
+=======
+    $stateProvider.state('admin.accountview', {
+        templateUrl: '/assets/partials/interfaces/accountview/adAccountview.html',
+        controller: 'adAccountviewCtrl',
+        url: '/accountview',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('accountview');
+            }]
+        }
+    });
+
+>>>>>>> 10e5109952... CICO-64601 reconfigure sun accounting UI routing/services
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -638,6 +652,25 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.sunaccountingSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        controller: 'adInterfaceConfigurationCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'sunaccounting';
+        }],
+        resolve: {
+            config: [
+              'adInterfacesSrv', function(adInterfacesSrv) {
+                  return adInterfacesSrv.getSettings('sunaccounting');
+              }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
                 }]
         }
     });

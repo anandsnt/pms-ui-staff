@@ -6,7 +6,9 @@ admin.service('adIFCInterfaceMappingSrv', [
         var interfaceswithNumericExternalValues = ['HOGIA'];
 
         var metaLists = {
-            'HOGIA': ['CHARGE_CODES']
+            'HOGIA': ['CHARGE_CODES'],
+            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
+            'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES']
         };
 
         var metaPromises = {
