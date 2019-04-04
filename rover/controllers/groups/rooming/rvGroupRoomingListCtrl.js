@@ -1998,6 +1998,12 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $scope.groupConfigData.activeTab = "SUMMARY";
                 $stateParams.activeTab = "SUMMARY";
             }
+
+            $scope.emailPrintFilters = {
+                excludeRoomNumber: false,
+                excludeAccompanyingGuests: false,
+                excludeRoomType: false
+            };
             
         }());
 
@@ -2009,6 +2015,22 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             // calling initially required APIs
             callInitialAPIs();
         });
+
+        $scope.shouldShowAssignedRoom = function(reservation) {
+            if ($scope.isPrintClicked) {
+                return !$scope.emailPrintFilters.excludeRoomNumber;
+            }
+            return !$scope.isRoomUnAssigned(reservation); 
+
+        };
+
+        $scope.shouldShowUnAssigned = function(reservation) {
+            if ($scope.isPrintClicked) {
+                return !$scope.emailPrintFilters.excludeRoomNumber;
+            }
+            return $scope.isRoomUnAssigned(reservation); 
+
+        };
 
 
     }

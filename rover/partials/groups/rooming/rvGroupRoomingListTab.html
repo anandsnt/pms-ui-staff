@@ -239,7 +239,7 @@
                             <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
-                        <span class="room" ng-show="!isRoomUnAssigned(reservation)">
+                        <span class="room" ng-show="shouldShowAssignedRoom(reservation) ">
                             <!-- Add class "unassigned" if new room -->
 
                             {{'GROUP_ROOM'|translate}}
@@ -247,7 +247,7 @@
 
                             <!-- If new room, show this instead: Unassigned -->
                         </span>
-                            <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
+                            <span class="room unassigned" ng-show="shouldShowUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
                            {{'GROUP_UNASSIGNED'|translate}}
                         </span> |
                             <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
@@ -263,7 +263,7 @@
                             </div>
                         </div>
                         <div class="room-info">
-                            <strong class="room-type">{{reservation.room_type_name}}</strong>
+                            <strong class="room-type" ng-hide="emailPrintFilters.excludeRoomType && isPrintClicked">{{reservation.room_type_name}}</strong>
                             <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
                         </div>
                         <div class="rate" ng-hide="groupConfigData.summary.hide_rates && isPrintClicked">
