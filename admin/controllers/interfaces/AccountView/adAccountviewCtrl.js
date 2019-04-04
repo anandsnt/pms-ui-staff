@@ -1,11 +1,11 @@
-admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesSetupSrv',
-    function($scope, config, adInterfacesSetupSrv) {
+admin.controller('adAccountviewCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'ACCOUNTVIEW';
 
         $scope.state = {
-            activeTab: 'SETUP'
+            activeTab: 'SETTING'
         };
 
         $scope.toggleEnabled = function() {
@@ -16,8 +16,8 @@ admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesSet
          *
          * @return {undefined}
          */
-        $scope.toggleMappings = function() {
-            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
         };
 
         /**
@@ -25,7 +25,7 @@ admin.controller('adAccountViewSetupCtrl', ['$scope', 'config', 'adInterfacesSet
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesSetupSrv.updateSettings, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     settings: $scope.config,
                     integration: $scope.interface.toLowerCase()
