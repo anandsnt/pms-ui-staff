@@ -77,4 +77,7 @@
     "DEFAULT_EXTERNAL_RATE_CODE":"Default Rate",
     "MAX_ROOM_QUANTITY" :"Max Rooms",
     "EXCLUDE_FROM_RATE" : "Exclude from rate",
-    "NO_DEPOSIT_REQUEST_ON_RESERVATIONS_WITH_ROUTED_CHARGE" : "No deposit request on reservations with routed charge"
+    "NO_DEPOSIT_REQUEST_ON_RESERVATIONS_WITH_ROUTED_CHARGE" : "No deposit request on reservations with routed charge",
+    "DAYS_IN_ADVANCE": "Days In advance",
+    "NO_OF_DAYS_IN_ADVACNE": "No. of Days in advance",
+    "CHOOSE_DAYS_IN_ADVANCE": "Choose days in advance"
