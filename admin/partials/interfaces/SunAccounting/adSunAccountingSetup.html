@@ -23,7 +23,7 @@
                         styleclass="full-width"></ad-textbox>
             <ad-textbox inputtype="text" value="config.ar_ledger_code"
                         required="yes"
-                        label="{{'Accounts Revievable Ledger GL Code'| translate}}"
+                        label="{{'Accounts Recievable Ledger GL Code'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
         <fieldset class="holder right">
@@ -80,11 +80,6 @@
                         styleclass="full-width"></ad-textbox>
         </fieldset>
     </fieldset>
-
-    <ad-sync-block ng-if="config.enabled"
-                   interface="{{interface}}"
-                   config="config">
-    </ad-sync-block>
 
     <div class="actions float">
         <button type="button" id="cancel" class="button blank add-data-inline"
