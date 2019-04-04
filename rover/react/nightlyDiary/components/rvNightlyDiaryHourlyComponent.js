@@ -9,10 +9,10 @@ const NightlyDiaryHourlyComponent = createClass({
                     width: this.props.hourly_data.style.width,
                     transform: this.props.hourly_data.style.transform
                 }}
-                className="reservation dayuse"
+                className={this.props.hourly_data.reservationClass}
             >
                 <div className="reservation-data">
-                    <span className="icons icon-diary-dayuse"></span>
+                    <span className="day-stay-icon"></span>
                 </div>
             </div>
         );
