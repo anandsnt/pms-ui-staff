@@ -1,8 +1,12 @@
-admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adInterfacesCommonConfigSrv',
-    function($scope, checkmateSetupValues, adInterfacesCommonConfigSrv) {
+admin.controller('adCheckmateSetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interfaceIdentifier = 'CHECKMATE';
+        $scope.interface = 'CHECKMATE';
+
+        $scope.state = {
+            activeTab: 'SETTING'
+        };
 
         /**
          * when clicked on check box to enable/disable GoMomentIvy
@@ -13,11 +17,12 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adI
         };
 
         /**
-         * when the save is success
+         * when button clicked to switch between mappings/settings
          * @return {undefined}
+         * @param {name} name tab name to toggle.
          */
-        var successCallBackOfCheckmateSetup = function() {
-            $scope.goBackToPreviousState();
+        $scope.changeTab = function (name) {
+            $scope.state.activeTab = name;
         };
 
         /**
@@ -25,12 +30,15 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adI
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: $scope.interfaceIdentifier
+                    settings: $scope.config,
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfCheckmateSetup
+                onSuccess: function() {
+                    $scope.errorMessge = '';
+                    $scope.successMessage = "SUCCESS: Settings Updated!";
+                }
             });
         };
 
@@ -39,6 +47,6 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adI
          * @return {undefined}
          */
         (function() {
-            $scope.config = checkmateSetupValues;
+            $scope.config = config;
         })();
     }]);
