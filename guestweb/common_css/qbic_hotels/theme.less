@@ -84,18 +84,30 @@ input[type=email] {
 .dark-button:hover {
   color: #EC4C57;
   background-color: transparent !important;
+
+  .late-checkout-icon {
+    background-image: url('/assets/guestweb/img/Qbic/late_checkout.png') !important;
+  }
 }
 
 .light-button,
 .light-button:hover {
   color: #F088BE;
   background-color: transparent !important;
+
+  .checkout-icon {
+    background-image: url('/assets/guestweb/img/Qbic/checkout.png') !important;
+  }
 }
 
 .checkouttime1,
 .checkouttime1:hover {
   color: #F088BE;
   background-color: transparent !important;
+
+  .circle-bg {
+    background: url("/assets/guestweb/img/Qbic/pink.png") no-repeat scroll center top transparent !important;
+  }
 }
 
 .checkouttime2,
@@ -103,12 +115,19 @@ input[type=email] {
   color: #EC4C57;
   background-color: transparent !important;
 
+  .circle-bg {
+    background: url("/assets/guestweb/img/Qbic/red.png") no-repeat scroll center top transparent !important;
+  }
 }
 
 .checkouttime3,
 .checkouttime3:hover {
   color: #225C07;
   background-color: transparent !important;
+
+  .circle-bg {
+    background: url("/assets/guestweb/img/Qbic/green.png") no-repeat scroll center top transparent !important;
+  }
 }
 
 .no-thanks,
@@ -265,11 +284,12 @@ input[type=email] {
   .back-to-checkout {
     display: none;
   }
-  .checkout-icon,.late-checkout-icon {
+
+  .checkout-icon,
+  late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges,
-  {
+  .accept-charges {
     width: 300px;
     padding: 4% 0%;
   }
