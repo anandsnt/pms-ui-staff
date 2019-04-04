@@ -64,7 +64,7 @@
     <!-- Feature Only available for STANDALONE pms -->
     <!-- TODO: Cancellation can be actioned on 'Reserved', 'DueIn' and 'CheckedIn' (reverse check in) status, if no other balance exists and if arrival date = cancellation date. For any other case the cancellation button will not display. -->
     <!-- The 'Cancel Reservation' button should be located at the bottom right of the Stay Card. -->
-    <a ng-if="(isStandAlone &&(reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
+    <a ng-if="(isStandAlone && (reservationData.reservation_card.reservation_status != 'CANCELED' && (reservationData.reservation_card.reservation_status == 'RESERVED' || reservationData.reservation_card.reservation_status == 'CHECKING_IN' || (reservationData.reservation_card.reservation_status == 'CHECKEDIN' && (reservationData.reservation_card.balance_amount | number:2) == 0.00 && actionsCheck.firstDate))))" class="button white red-text bottom-button" ng-click="toggleCancellation()" translate>
         {{::('CANCEL_RESERVATION' | translate)}}
     </a>
     <a ng-if="shouldShowResendCancellation(reservationData.reservation_card.reservation_status)" class="button staycard-button icon-confirmation" ng-click="onResendCancellationClicked()" translate>
