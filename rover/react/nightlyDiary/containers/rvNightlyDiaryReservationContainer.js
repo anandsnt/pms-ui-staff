@@ -206,7 +206,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 
     reservation.status = (reservation.is_pre_checkin) ? "PRE_CHECKIN" : reservation.status;
 
-    let reservationStatusClass = (!isReservationDayStay && !isReservationFuture)
+    let reservationStatusClass = (!isReservationFuture)
         ? getReservationStatusClass(reservation.status)
         : (isReservationFuture) ? 'future' : '';
     let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
