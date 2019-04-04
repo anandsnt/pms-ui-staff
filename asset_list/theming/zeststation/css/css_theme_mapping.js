@@ -65,7 +65,8 @@ module.exports = {
             'la-copa': [themeCSSRoot + 'la-copa.less'],
             'ruby': [themeCSSRoot + 'ruby.less'],
             'qbic': [themeCSSRoot + 'qbic.less'],
-            'merrion-row': [themeCSSRoot + 'merrion-row.less']
+            'merrion-row': [themeCSSRoot + 'merrion-row.less'],
+            'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less']
         };
     }
 };
