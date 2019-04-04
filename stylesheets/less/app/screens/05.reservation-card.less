@@ -583,16 +583,32 @@
         }
     }
 
-    /* Reservation card actions **/
+    /* Reservation Content ***/
+    .reservation-content,
     .reservation-actions {
         position: relative;
-        right: 20px;
-        top: 70px; 
-        bottom: 20px;
-        .show;
-        .calc-height(100, 90);
-        #pixel-to-percent > .width(388, 1588);
-        .pull-right;
+        overflow: hidden;
+        .calc-height(100, 70);
+        .show();
+        .pull-left;
+    }
+
+    /* Reservation card actions **/
+    .reservation-actions {
+        margin-top: 70px;
+        padding-right: 20px;
+        width: 30%;
+
+        .wrapper {
+            padding-bottom: 20px;
+            min-height: 100%;
+        }
+
+        .iScrollVerticalScrollbar { 
+            top: 0;
+            right: 5px;
+            bottom: 0;
+        }
 
         .balance {
             position: relative;
@@ -617,8 +633,7 @@
             padding: 0;
             line-height: 50px;
             margin-bottom: 10px;
-            width: 100%;
-            .show; 
+            .show(); 
 
             &.green,
             &.grey,
@@ -656,32 +671,32 @@
                 &:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
             }
 
-            &.bottom-button {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                font-size: 16px;
-
-                &:nth-last-child(2) { bottom: 50px; }
+            &:not(last-child) { 
+                margin-bottom: 10px; 
             }
+        }
 
-            &:last-child { margin-bottom: 0; }
+        @media only screen and (min-height: 768px) {
+            .bottom-button {
+                position: absolute;
+                bottom: 20px;
+                left: 0;
+                
+                &:nth-last-child(2) { bottom: 70px; }
+                &:nth-last-child(3) { bottom: 130px; }
+                &:nth-last-child(4) { bottom: 190px; }
+            }
         }
     }
 
     /* Reservation card content ***/
     .reservation-content {
-        position: relative;
-        left: 20px;
-        top: 70px;
-        bottom: 20px;
-        overflow: hidden;
-        .calc-height(100, 90);
-        #pixel-to-percent > .width(1090, 1588);
-        .pull-left;
+        margin: 70px 20px 0 20px;
+        .calc-width(70, 40);
 
         /* Scrollable area ***/
         .wrapper { padding: 0 20px 20px 0; }
+        
         .iScrollVerticalScrollbar { 
             top: 0;
             right: 0;
