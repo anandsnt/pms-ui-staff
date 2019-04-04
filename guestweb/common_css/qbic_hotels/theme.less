@@ -84,12 +84,20 @@ input[type=email] {
 .dark-button:hover {
   color: #EC4C57;
   background-color: transparent !important;
+
+  .late-checkout-icon {
+    background-image: url('/assets/guestweb/img/Qbic/late_checkout.png') !important;
+  }
 }
 
 .light-button,
 .light-button:hover {
   color: #F088BE;
   background-color: transparent !important;
+
+  .checkout-icon {
+    background-image: url('/assets/guestweb/img/Qbic/checkout.png') !important;
+  }
 }
 
 .checkouttime1,
@@ -277,14 +285,9 @@ input[type=email] {
     display: none;
   }
 
-  .checkout-icon {
+  .checkout-icon,
+  late-checkout-icon {
     margin-top: 43px;
-    background-image: url('/assets/guestweb/img/Qbic/checkout.png') !important;
-  }
-
-  .late-checkout-icon {
-    margin-top: 43px;
-    background-image: url('/assets/guestweb/img/Qbic/late_checkout.png') !important;
   }
   .accept-charges {
     width: 300px;
