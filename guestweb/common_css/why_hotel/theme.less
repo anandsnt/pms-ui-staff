@@ -1,17 +1,18 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
-@fontFamily: 'Boing', sans-serif;
 html,
 body {
   height: auto;
   min-height: 100%;
-  background: url("/assets/guestweb/img/Qbic/background.png") no-repeat bottom;
-  font-family: @fontFamily;
+}
+
+body {
+  background-color: #fff;
 }
 
 .back-text {
-  color: #225C07;
+  color: #000;
   display: none !important;
 }
 
@@ -22,7 +23,7 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #225C07;
+  color: #363d40;
 }
 
 input[type=text],
@@ -34,13 +35,18 @@ input[type=email] {
 }
 
 .sub-main-text {
-  color: #225C07;
+  color: #363d40;
+}
+
+.header-bar {
+  background:#404A50;
 }
 
 .logo-image {
   max-width: 100%;
   margin: 4% auto 2%;
 }
+
 .template-text,
 .footer-text,
 .balance-amount,
@@ -48,11 +54,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #225C07;
+  color: #363d40;
 }
 
 .view-bill {
-  color: #225C07;
+  color: #363d40;
 }
 
 .sub-text,
@@ -60,13 +66,13 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #225C07;
+  color: #363d40;
 }
 
 .btn,
 .btn:hover {
+  background:#EA2836;
   color: @white;
-  background-color: #F088BD;
 }
 
 .dual-button {
@@ -82,57 +88,32 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
-  color: #EC4C57;
-  background-color: transparent !important;
-
-  .late-checkout-icon {
-    background-image: url('/assets/guestweb/img/Qbic/late_checkout.png') !important;
-  }
+  background:#EB3853;
 }
 
 .light-button,
 .light-button:hover {
-  color: #F088BE;
-  background-color: transparent !important;
-
-  .checkout-icon {
-    background-image: url('/assets/guestweb/img/Qbic/checkout.png') !important;
-  }
+  background: #EB3853;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  color: #F088BE;
-  background-color: transparent !important;
-
-  .circle-bg {
-    background: url("/assets/guestweb/img/Qbic/pink.png") no-repeat scroll center top transparent !important;
-  }
+  background: #EB3853;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  color: #EC4C57;
-  background-color: transparent !important;
-
-  .circle-bg {
-    background: url("/assets/guestweb/img/Qbic/red.png") no-repeat scroll center top transparent !important;
-  }
+  background:#EA2836;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  color: #225C07;
-  background-color: transparent !important;
-
-  .circle-bg {
-    background: url("/assets/guestweb/img/Qbic/green.png") no-repeat scroll center top transparent !important;
-  }
+  background: #D3231B;
 }
 
 .no-thanks,
 .no-thanks:hover {
-  color: #225C07;
+  color: #000;
   text-decoration: underline;
   text-transform: none;
 }
@@ -156,11 +137,11 @@ input[type=email] {
 }
 
 .upgrade-details .upgrades-btn {
-  background:#EC4C57;
+  background:#EA2836;
 }
 
 .proceed-to-checkin {
-  background: #EC4C57;
+  background: #EA2836;
 }
 
 .upgrades-label {
@@ -171,22 +152,22 @@ input[type=email] {
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#EC4C57;
+  color:#EA2836;
   color: transparent;
 }
 
 .pickadate-cell .pickadate-enabled,
 .pickadate-centered-heading {
-  color: #225C07;
+  color: #000;
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#EC4C57 !important;
+  background-color:#EA2836 !important;
   color: #fff;
 }
 
 .pickadate-head {
-  color: #225C07;
+  color: #000000;
 }
 
 .calendar-selection {
@@ -223,7 +204,7 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#EC4C57;
+  background-color:#EA2836;
 }
 
 .calendar-back {
@@ -238,7 +219,7 @@ input[type=email] {
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #F088BE;
+  color: #EB3853;
 }
 
 .date-picker-wrap {
@@ -268,7 +249,7 @@ input[type=email] {
 
 .res-details-heading,
 .res-details-heading:hover {
-  color: #225C07;
+  color: #D3231B;
 }
 
 .back-to-checkout {
@@ -284,12 +265,11 @@ input[type=email] {
   .back-to-checkout {
     display: none;
   }
-
-  .checkout-icon,
-  .late-checkout-icon {
+  .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges {
+  .accept-charges,
+  {
     width: 300px;
     padding: 4% 0%;
   }
@@ -329,5 +309,5 @@ input{
   background: #fff none repeat scroll 0 0;
 }
 .bill-hotel-logo{
-  background:#fff;
+  background:#404A50;
 }
