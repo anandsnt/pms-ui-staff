@@ -40,6 +40,8 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         $scope.actionSelected = 'none';
         $scope.isRefreshing = false;
 
+        $scope.setScroller("reservation-card-actions-scroller");
+
         var setInitialActionsCount = function() {
             $scope.actions.totalCount = $scope.reservationListData.action_count;
             $scope.actions.pendingCount = $scope.reservationListData.pending_action_count;
