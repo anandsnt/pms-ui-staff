@@ -91,8 +91,19 @@
 	                                </select>
 	                            </div>
 	                        </div>
-	                       	<ad-textbox value="selectedSchedule.advance_days" name="name" id="name" label="Days In advance" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
 	                        <ad-textbox value="selectedSchedule.max_no_nights" name="name" id="name" label="Max Number of Nights" placeholder="Max Number of Nights "></ad-textbox>
+	                        <div class="entry">
+	                            <label for="amount-type-id">
+	                                {{'DAYS_IN_ADVANCE'|translate}}
+	                            </label>
+	                            <div class="select">
+	                                <select name="amount-type-id" id="amount-type-id" ng-model="selectedSchedule.advance_days_selection" ng-options="type.id as type.description for type in dayInAdvanceSelections" ng-change="daysInAdvanceSelectionChanged()">
+	                                    <option value="" data-text="Not set" class="placeholder" translate>CHOOSE_DAYS_IN_ADVANCE</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                       	<ad-textbox value="selectedSchedule.advance_days" name="name" id="name" label="{{ 'NO_OF_DAYS_IN_ADVACNE' | translate }}" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}" hide="selectedSchedule.advance_days_selection !== 'custom'"></ad-textbox>
+	                        
 	                        <!--CICO-40120 Leave this comment till this functionality is implemented-->
 							<!--The checkbox mapping auto_charge_on_due_date in the form has been removed as a part of CICO-40120-->
 							<!--The checkbox markup can be obtained from https://github.com/StayNTouch/pms/blob/28163bd6fca31db7dd735ae687f0b57d1cedbfad/app/assets/admin/partials/rulesRestriction/adDepositRequestRules.html#L88-L94-->
