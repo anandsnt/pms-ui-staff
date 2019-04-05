@@ -1298,8 +1298,10 @@
             background-color: @red;
             .box-shadow(none);
 
-            .day-stay-icon {
-                .hide();
+            &:not(.dayuse) {
+                .day-stay-icon {
+                    .hide();
+                }
             }
         }
 
