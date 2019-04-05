@@ -293,8 +293,8 @@ angular.module('sntRover')
                     };
 
                     if (timeObj) {
-                        postData.arrival_time = timeObj.arrival_time['24'];
-                        postData.departure_time = timeObj.departure_time['24'];
+                        postData.arrival_time = timeObj.arrival_time;
+                        postData.departure_time = timeObj.departure_time;
                     }
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
