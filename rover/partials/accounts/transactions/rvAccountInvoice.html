@@ -185,17 +185,17 @@
         <tr ng-repeat="item in printData.extended_tax_breakdown.details">
             <td class="text-align-left">{{ item.description }}</td>
             <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.invoice_currency_gross_amount !== null">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_gross_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_gross_amount | number:2}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ item.net_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.invoice_currency_net_amount !== null">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_net_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_net_amount | number:2}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ item.tax_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.invoice_currency_tax_amount !== null">
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_tax_amount !== null">
                     {{invoiceCurrencySymbol}}{{item.inv_tax_amount | number:2}}
                 </div>
             </td>
