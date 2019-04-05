@@ -66,7 +66,8 @@ module.exports = {
             'ruby': [themeCSSRoot + 'ruby.less'],
             'qbic': [themeCSSRoot + 'qbic.less'],
             'merrion-row': [themeCSSRoot + 'merrion-row.less'],
-            'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less']
+            'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less'],
+            'why': [themeCSSRoot + 'why.less']
         };
     }
 };
