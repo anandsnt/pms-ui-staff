@@ -206,18 +206,18 @@
         <tr>
             <td class="text-align-left" >{{printData.translation.total}}</td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.invoice_currency_total_gross_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.invoice_currency_total_gross_amount | number:2}}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_gross_amount !== null">
+                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_gross_amount | number:2}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.invoice_currency_total_net_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.invoice_currency_total_net_amount | number:2}}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_net_amount !== null">
+                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_net_amount | number:2}}
                 </div>
             </td>
             <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.invoice_currency_total_tax_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.invoice_currency_total_tax_amount | number:2}}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_tax_amount !== null">
+                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_tax_amount | number:2}}
                 </div>
             </td>
         </tr>
