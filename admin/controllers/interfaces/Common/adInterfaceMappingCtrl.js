@@ -12,7 +12,7 @@ admin.controller('adInterfaceMappingCtrl', [
 
         var mappingPartials = {
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
-            'HOGIA': '/assets/partials/interfaces/common/mapping.html'
+            'HOGIA': '/assets/partials/interfaces/Common/mapping.html'
         };
 
         $scope.state = {
