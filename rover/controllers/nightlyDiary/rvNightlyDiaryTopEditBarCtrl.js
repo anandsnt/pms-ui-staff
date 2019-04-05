@@ -14,6 +14,12 @@ angular.module('sntRover')
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
             };
 
+            // Handle validation popup close.
+            $scope.closeDialogAndRefresh = function() {
+                $scope.$emit('CANCEL_RESERVATION_EDITING');
+                ngDialog.close();
+            };
+
             $scope.saveEditedReservation = function() {
                 $scope.$emit('SAVE_RESERVATION_EDITING');
             };
