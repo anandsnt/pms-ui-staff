@@ -632,7 +632,12 @@
         }
 
         &.highlighted {
-            background-color: fade(@logoPrimary, 30%);
+            background-color: #f7dfc3;
+
+            .room-number {
+                background-color: #f7dfc3;
+                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #f7dfc3 10px, #f7dfc3 100%);
+            }
         }
 
         &.not-clickable {
