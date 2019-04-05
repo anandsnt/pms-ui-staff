@@ -1748,7 +1748,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 per_page: 1000,
-                exclude_cancel: $scope.exclude_cancel
+                exclude_cancel: $scope.exclude_cancel,
+                sort_field: $scope.sort_field,
+                sort_dir: $scope.sort_dir
             };
             var options = {
                 params: params,
@@ -1794,11 +1796,19 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     $scope.errorMessage = errorMessage;
                    // $scope.closeDialog();
                 };
+                $scope.emailPrintFilters = {
+                    excludeRoomNumber: false,
+                    excludeAccompanyingGuests: false,
+                    excludeRoomType: false
+                };
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id,
                 "is_include_rate": !$scope.groupConfigData.summary.hide_rates,
-                "exclude_cancel": $scope.exclude_cancel
+                "exclude_cancel": $scope.exclude_cancel,
+                "exclude_room_no": $scope.emailPrintFilters.excludeRoomNumber,
+                "exclude_accompany_guests": $scope.emailPrintFilters.excludeAccompanyingGuests,
+                "exclude_room_type": $scope.emailPrintFilters.excludeRoomType
             };
 
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
@@ -2016,20 +2026,42 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             callInitialAPIs();
         });
 
+        /**
+         * Should show the assigned room section
+         * @param {Object} reservation 
+         * @return {Boolean} 
+         */
         $scope.shouldShowAssignedRoom = function(reservation) {
             if ($scope.isPrintClicked) {
-                return !$scope.emailPrintFilters.excludeRoomNumber;
+                return reservation.room_no ? !$scope.emailPrintFilters.excludeRoomNumber : false;
             }
             return !$scope.isRoomUnAssigned(reservation); 
 
         };
 
+        /**
+         * Should show the unassigned room section
+         * @param {Object} reservation 
+         * @return {Boolean} 
+         */
         $scope.shouldShowUnAssigned = function(reservation) {
             if ($scope.isPrintClicked) {
-                return !$scope.emailPrintFilters.excludeRoomNumber;
+                return !reservation.room_no ? !$scope.emailPrintFilters.excludeRoomNumber : false;
             }
             return $scope.isRoomUnAssigned(reservation); 
 
+        };
+
+        /**
+         * Should hide the accompany guests while printing based on the selection
+         * @param {Object} reservation 
+         * @return {Boolean} 
+         */
+        $scope.shouldHideAccompanyGuests = function(reservation) {
+            if ($scope.isPrintClicked) {
+                return reservation.is_accompanying_guest ? $scope.emailPrintFilters.excludeAccompanyingGuests : false;
+            }
+            return false;
         };
 
 

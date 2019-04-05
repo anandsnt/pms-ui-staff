@@ -214,7 +214,7 @@
         ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
 
         <ul id="rooming-grid-list" class="search-results wrapper">
-            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
+            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend ng-hide="shouldHideAccompanyGuests(reservation)">
 
                 <div class="check">
                     <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}">
