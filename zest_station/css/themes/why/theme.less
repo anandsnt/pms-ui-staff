@@ -1,0 +1,236 @@
+/* StayNTouch Zest Station Styles | Amrath Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #ed1a38;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../type/Montserrat-Regular.eot');
+    src: url('../../type/Montserrat-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../../type/Montserrat-Regular.woff2') format('woff2'),
+        url('../../type/Montserrat-Regular.woff') format('woff'),
+        url('../../type/Montserrat-Regular.svg#Montserrat-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@fontFamily: 'Montserrat', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @white;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#why {
+
+    #header {
+        height: 145px;
+        background: #424c52;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    button {
+        font-size: 1.3em;
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 72px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background: @black;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+
+        &:not(.selected) {
+            .add-on-content {
+                background: #f0f0f0;
+            }
+            border-color: #f0f0f0;
+        }
+        
+    }
+
+    #textual {
+        background: #f0f0f0;
+         
+
+        &:before,
+        &:after {
+            background: #f0f0f0;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .popup {
+        .add-on {
+            .add-on-content {
+                background: @white;
+            }
+        }
+    }
+
+    #upgrade {
+        background-color: #f0f0f0;
+        
+        .upgrade-price {
+            background-color: @brandColor;
+            color: @white;
+        }
+    }
+
+    .upgrade-list {
+        &.upgrade-list-v2 {
+            .upgrade-content {
+                background: #f0f0f0;
+            }
+        }
+    }
+
+    #selection {
+       
+            li {
+                .details {
+                    background: #f0f0f0;
+                  
+                }
+            }
+        
+    }
+}
