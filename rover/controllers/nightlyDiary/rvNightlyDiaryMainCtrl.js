@@ -286,16 +286,17 @@ angular.module('sntRover')
                         "is_preassigned": true,
                         "forcefully_assign_room": false,
                         "is_from_nightly_diary": true
-                    },
-                    options = {
-                        params: postData,
-                        successCallBack: successCallBackAssignRoom
                     };
 
                     if (timeObj) {
                         postData.arrival_time = timeObj.arrival_time;
                         postData.departure_time = timeObj.departure_time;
                     }
+
+                    var options = {
+                        params: postData,
+                        successCallBack: successCallBackAssignRoom
+                    };
 
                     $scope.callAPI(RVNightlyDiarySrv.assignRoom, options);
                 };
