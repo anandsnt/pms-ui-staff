@@ -168,7 +168,7 @@ var GridRowItem = React.createClass({
 			className += ' locked';
 		}
 		if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
-			className += " occupied nightuse";
+			className += ' occupied';
 		}
 
 		return className;

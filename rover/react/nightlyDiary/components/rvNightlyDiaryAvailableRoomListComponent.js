@@ -1,6 +1,17 @@
 const { createClass } = React;
 
 const NightlyDiaryAvailableRoomListComponent = createClass({
+    hideBookButton() {
+        let currentBusinessDate = tzIndependentDate(this.props.state.currentBusinessDate);
+        let avialableRoomStartDate = tzIndependentDate(this.props.date);
+        let diff = avialableRoomStartDate.getTime() - currentBusinessDate.getTime();
+        let isHideBookButton = false;
+
+        if (diff < 0) {
+            isHideBookButton = true;
+        }
+        return isHideBookButton;
+    },
     getStyles() {
         let nightDuration = NIGHTLY_DIARY_CONST.RESERVATION_ROW_WIDTH / this.props.state.numberOfDays;
         let diaryInitialDayOfDateGrid = this.props.state.diaryInitialDayOfDateGrid;
@@ -36,26 +47,21 @@ const NightlyDiaryAvailableRoomListComponent = createClass({
             transform: 'translateX(' + avialableRoomPosition + ')'
         };
 
-        let currentBusinessDate = tzIndependentDate(this.props.state.currentBusinessDate);
-        let diff = avialableRoomStartDate.getTime() - currentBusinessDate.getTime();
-
-        if (diff < 0) {
-            style.pointerEvents = 'none';
-            style.background = 'rgba(0, 0, 0, .1)';
-            style.cursor = 'default';
-        }
         return style;
     },
     render() {
-        return (
-            <div style={this.getStyles()}
-                className="reservation unassigned"
-                onClick={() => this.props.clickedBookRoom(this.props.room.id, this.props.date, this.props.state.roomsList)}
-            >
-                <div className="reservation-data">
-                    <span className="name">BOOK</span>
-                </div>
-            </div>
-        );
+        const isHideBookButton = this.hideBookButton();
+
+        return ( !isHideBookButton && (
+                    <div style={this.getStyles()}
+                        className="reservation unassigned"
+                        onClick={() => this.props.clickedBookRoom(this.props.room.id, this.props.date, this.props.state.roomsList)}
+                    >
+                        <div className="reservation-data">
+                            <span className="name">BOOK</span>
+                        </div>
+                    </div>
+                )
+                );
     }
 });
