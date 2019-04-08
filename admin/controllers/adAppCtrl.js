@@ -104,7 +104,7 @@ admin.controller('ADAppCtrl', [
         
         // flag to decide show neighbours screen
         var isNeighboursEnabled = false;
-        
+
         /**
          * Get menu list for standalone
          * @param {Boolean} shouldHideNightlyDiaryMenu 
