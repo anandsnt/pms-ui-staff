@@ -1017,7 +1017,6 @@
                         cursor: @draggable 16 16, pointer;
                         color: @white;
                         background-color: @purpleStart;
-                        z-index: 1149;
                     }
 
                     &.dragstate {
@@ -1062,6 +1061,10 @@
                         .square(28px);
                         .show();
                     }
+                }
+
+                &.editing {
+                    z-index: 1149;
                 }
 
                 &.deposit-required {
