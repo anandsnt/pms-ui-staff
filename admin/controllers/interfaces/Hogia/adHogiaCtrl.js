@@ -1,25 +1,20 @@
-admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+admin.controller('adHogiaCtrl', ['$scope', 'config', 'adInterfacesSrv',
     function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interface = 'GOMOMENTIVY';
+        $scope.interface = 'HOGIA';
 
         $scope.state = {
             activeTab: 'SETTING'
         };
 
-        /**
-         * when clicked on check box to enable/diable GoMomentIvy
-         * @return {undefined}
-         */
         $scope.toggleEnabled = function() {
             $scope.config.enabled = !$scope.config.enabled;
         };
 
         /**
-         * when button clicked to switch between mappings/settings
+         *
          * @return {undefined}
-         * @param {name} name tab name to toggle.
          */
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
@@ -37,16 +32,13 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
                 },
                 onSuccess: function() {
                     $scope.errorMessage = '';
-                    $scope.successMessage = "SUCCESS: Settings Updated!";
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
                 }
             });
         };
 
-        /**
-         * Initialization stuffs
-         * @return {undefined}
-         */
         (function() {
             $scope.config = config;
         })();
-    }]);
+    }
+]);
