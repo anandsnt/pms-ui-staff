@@ -51,7 +51,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         var generatedList = [];
 
         if (data && data.available_dates) {
-            var count = data.available_dates.length,
+            var count = data.available_dates.length - 1,
                 i,
                 obj = {};
 
