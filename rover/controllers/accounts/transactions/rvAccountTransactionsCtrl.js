@@ -281,7 +281,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				scrollX: true
 			});
 			$scope.setScroller('billDays', {
-				scrollX: true
+				scrollX: true,
+				scrollY: false
 			});
 			$scope.showMoveCharges = $scope.hasPermissionToMoveCharges();
 			$scope.renderData = {}; // payment modal data - naming so as to reuse HTML
