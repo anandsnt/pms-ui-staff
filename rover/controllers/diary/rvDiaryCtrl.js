@@ -368,8 +368,8 @@ angular.module('sntRover')
 				width: undefined,
 				height: undefined,
 				hours: getTotalGridHours( payload.display.x_n ),
-				row_height: 24, // please set to 60 when default changeed to 12 hour mode
-				row_height_margin: 0,
+				row_height: 28, // please set to 60 when default changeed to 12 hour mode
+				row_height_margin: 2,
 				intervals_per_hour: 4,
 				ms_15: 900000,
 				ms_hr: 3600000,
