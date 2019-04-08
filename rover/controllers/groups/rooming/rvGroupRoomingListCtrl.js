@@ -1796,11 +1796,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     $scope.errorMessage = errorMessage;
                    // $scope.closeDialog();
                 };
-                $scope.emailPrintFilters = {
-                    excludeRoomNumber: false,
-                    excludeAccompanyingGuests: false,
-                    excludeRoomType: false
-                };
+                
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id,
