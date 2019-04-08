@@ -26,11 +26,6 @@ let calculateAssignRoomPositionAndDuration = (diaryInitialDayOfDateGrid, uarData
     let numberOfNightsVisibleInGrid = (uarData.nights <= 1) ? 1 : uarData.nights;
     
     durationOfAssignRoom = numberOfNightsVisibleInGrid * nightDuration;
-    if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
-        durationOfAssignRoom = durationOfAssignRoom - 2 * NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
-    } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
-        durationOfAssignRoom = durationOfAssignRoom - 2 * NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
-    }
     var returnData = {};
 
     returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;
