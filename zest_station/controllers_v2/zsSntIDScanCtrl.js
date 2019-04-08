@@ -420,16 +420,6 @@
 				$scope.screenData.scanMode = 'GUEST_LIST';
 			});
 
-			var retrieveIdScanType = function() {
-				if ($scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification') {
-					return 'STAFF';
-				} else if ($scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification') {
-					return 'FR';
-				} else {
-					return 'NONE';
-				}
-			};
-
 			$scope.loginAsStaff = function() {
 				$scope.screenData.scanMode = 'ADMIN_LOGIN';
 				$scope.screenData.adminMode = 'ADMIN_PIN_ENTRY';
@@ -520,7 +510,7 @@
 				$scope.idScanData = {
 					mode: '',
 					selectedGuest: {},
-					verificationMethod: retrieveIdScanType(),
+					verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
 					staffVerified: false
 				};
 				$scope.screenData.scanMode = 'GUEST_LIST';

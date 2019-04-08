@@ -39,7 +39,7 @@ sntZestStation.controller('zsHomeCtrl', [
             clearInterval($scope.activityTimer);
 
             if ($scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
-                console.log("new flow");
+                $state.go('zest_station.findReservationFromId');
             } else {
                 $state.go('zest_station.checkInReservationSearch');
             }
