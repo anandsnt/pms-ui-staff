@@ -37,7 +37,12 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.trackEvent('CI', 'user_selected');
 
             clearInterval($scope.activityTimer);
-            $state.go('zest_station.checkInReservationSearch');
+
+            if ($scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
+                console.log("new flow");
+            } else {
+                $state.go('zest_station.checkInReservationSearch');
+            }
         };
 
 		/*
