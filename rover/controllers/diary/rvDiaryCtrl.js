@@ -334,14 +334,14 @@ angular.module('sntRover')
 			viewport: {
 				hours: 24,
 				width: angular.element($window).width() - 120,
-				height: angular.element($window).height() - 230,
-				row_header_right: 120,
-				timeline_header_height: 80,
-				timeline_height: 60,
+				height: angular.element($window).height() - 180,
+				row_header_right: 184,
+				timeline_header_height: 60,
+				timeline_height: 40,
 				timeline_occupancy_height: 20,
-				timeline_header_bottom: 230,
+				timeline_header_bottom: 180,
 				element: function() {
-					return $('.diary-grid .wrapper');
+                    return $('.diary-grid');
 				}
 			},
 		/* h
