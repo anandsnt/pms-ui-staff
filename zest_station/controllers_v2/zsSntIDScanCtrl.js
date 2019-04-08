@@ -26,6 +26,7 @@
 			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
 			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
 			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
+			var SCAN_ALREADY_COMPLTED = $filter('translate')('GID_SCAN_ALREADY_DONE');
 			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED');
 
 			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
@@ -101,7 +102,9 @@
 				$scope.idScanData.selectedGuest = selectGuest;
 				if ($scope.inDemoMode() && !$scope.idScanData.staffVerified) {
 					demoModeScanActions();
-				} else if ((selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) && selectedGuest.idScanStatus !==  SCANING_PENDING) {
+				} else if ((selectedGuest.idScanStatus === SCAN_ACCEPTED || $scope.idScanData.staffVerified) &&
+						 selectedGuest.idScanStatus !==  SCANING_PENDING || 
+						 selectedGuest.idScanStatus === SCAN_ALREADY_COMPLTED) {
 					$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 					refreshIDdetailsScroller();
 				} else {
@@ -500,7 +503,16 @@
 
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
+					var scannedDetails = zsCheckinSrv.getCurrentReservationIdDetails();
+					if (guestDetail.is_primary && !_.isEmpty(scannedDetails)) {
+
+						guestDetail.scannedDetails = scannedDetails
+						guestDetail.front_image_data = scannedDetails.front_image_data ? scannedDetails.front_image_data :'';
+						guestDetail.back_image_data = scannedDetails.back_image_data ? scannedDetails.back_image_data : '';
+						guestDetail.idScanStatus = SCAN_ALREADY_COMPLTED;
+					}
 				});
+
 				setPageNumberDetails();
 
 				$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);

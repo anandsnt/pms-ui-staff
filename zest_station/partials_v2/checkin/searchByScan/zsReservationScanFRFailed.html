@@ -1,0 +1,38 @@
+<section id="main" role="main" class="centered" click-touch='resetTime()'>
+    <!-- reservation search failed -->
+    <div id="content">
+        <h1 translate>
+            <text data-ng-bind-html="getTagValue('FACIAL_RECOGNITION_FAILED')" editable-text="FACIAL_RECOGNITION_FAILED"></text>
+        </h1>
+        <h2 class="nocaps">
+            <text data-ng-bind-html="getTagValue('FINDING_RESERVATION_FAILED_INSTRUCTIONS')" editable-text="FINDING_RESERVATION_FAILED_INSTRUCTIONS"></text>
+        </h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='startFacialRecognition()' ng-hide="deviceConfig.useExtCamForFR">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                     <button type="button" class="button option" touch-press='startFacialRecognitionUsingExtCamera()' ng-show="deviceConfig.useExtCamForFR">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('RETAKE_SELFIE')" editable-text="RETAKE_SELFIE"></text>
+                </li>
+                <li class="break">
+                    <span>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='searchByName()'>
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
+                    <span>
+                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

@@ -125,6 +125,12 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
             $scope.callAPI(zsCheckinSrv.fetchReservations, options);
         };
 
+        var setDataToCheckinSrv = function(data) {
+            data.front_image_data = $scope.idScanData.selectedGuest.front_image_data;
+            data.back_image_data = $scope.idScanData.selectedGuest.back_image_data;
+            zsCheckinSrv.setCurrentReservationIdDetails(data);
+        };
+
         $scope.$on('FINAL_RESULTS', function(evt, data) {
             if (data.expirationStatus === 'Expired') {
                 $scope.screenData.scanMode = 'ID_DATA_EXPIRED';
@@ -134,11 +140,13 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                 $scope.screenData.facialRecognitionInProgress = false;
                 $scope.screenData.scanMode = 'FACIAL_RECOGNITION_MODE';
                 $scope.idScanData.selectedGuest.scannedDetails = data;
+                setDataToCheckinSrv(data);
                 if ($scope.deviceConfig.useExtCamForFR) {
                     $scope.startFacialRecognitionUsingExtCamera();
                 }
             } else {
                 $scope.idScanData.selectedGuest.scannedDetails = data;
+                setDataToCheckinSrv(data);
                 $scope.screenData.scanMode = 'FINDING_RESERVATION';
                 searchReservationByLastName();
             }

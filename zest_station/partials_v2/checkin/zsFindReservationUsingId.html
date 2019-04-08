@@ -1,38 +1,6 @@
-<section id="main" role="main" class="centered" click-touch='resetTime()'  ng-show="screenData.scanMode == 'SHOW_FIND_RESERVATION_OPTIONS'">
-    <!-- reservation search failed -->
-    <div id="content">
-        <h1>
-            <text data-ng-bind-html="getTagValue('FIND_YOUR_RESERVATION')" editable-text="FIND_YOUR_RESERVATION"></text>
-        </h1>
-        <h2 class="nocaps">
-            <text data-ng-bind-html="getTagValue('FIND_YOUR_RESERVATION_INSTRUCTIONS')" editable-text="FIND_YOUR_RESERVATION_INSTRUCTIONS"></text>
-        </h2>
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='scanId()'>
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    <text data-ng-bind-html="getTagValue('SCAN_ID')" editable-text="SCAN_ID"></text>    
-                </li>
-                <li class="break">
-                    <span>
-                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='searchByName()'>
-                        <div ng-include="icons.url.keyboard"></div>
-                    </button>
-                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
-                    <span>
-                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
-                    </span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</section>
+
+<ng-include src="'/assets/partials_v2/checkin/searchByScan/zsReservationScanOptions.html'" ng-show="screenData.scanMode == 'SHOW_FIND_RESERVATION_OPTIONS'"></ng-include>
+
 <section id="main" class="centered test add_remove_main" role="main"  
    ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE' ||
    screenData.scanMode == 'ANALYSING_BACK_IMAGE'  ||
@@ -47,29 +15,20 @@
 <ng-include src="'/assets/partials_v2/idScan/zsIDScanFrontSide.html'" 
    ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE'"></ng-include>
 
-<ng-include src="'/assets/partials_v2/idScan/zsIDScanFrontImageFailed.html'"  
+<ng-include src="'/assets/partials_v2/checkin/searchByScan/zsReservationScanFrontImageFailed.html'"  
    ng-show="screenData.scanMode == 'UPLOAD_FRONT_IMAGE_FAILED'"></ng-include>
 
 <ng-include src="'/assets/partials_v2/idScan/zsIDScanBackSide.html'" 
    ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE'"></ng-include>
 
-<ng-include src="'/assets/partials_v2/idScan/zsIDScanBackImageFailed.html'"  
+<ng-include src="'/assets/partials_v2/checkin/searchByScan/zsReservationScanBackImageFailed.html'"  
    ng-show="screenData.scanMode == 'UPLOAD_BACK_IMAGE_FAILED'"></ng-include>
 
 <ng-include src="'/assets/partials_v2/idScan/zsIDScanConfirmImages.html'" 
    ng-show="screenData.scanMode == 'CONFIRM_ID_IMAGES' || screenData.scanMode == 'CONFIRM_FRONT_IMAGE'"></ng-include>
 
-<ng-include src="'/assets/partials_v2/idScan/zsIDScanGetResultFailed.html'"  
-   ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'"></ng-include>
-
-<ng-include src="'/assets/partials_v2/idScan/zsIDScanIDExpired.html'"  
-   ng-show="screenData.scanMode == 'ID_DATA_EXPIRED'"></ng-include>
-
-<ng-include src="'/assets/partials_v2/idScan/zsIDScanIDInvalidExpiryDate.html'"  
-   ng-show="screenData.scanMode == 'EXPIRATION_DATE_INVALID'"></ng-include>
-   
-<!-- <ng-include src="'/assets/partials_v2/idScan/zsFacialRecognitionFailed.html'"  
-   ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'"></ng-include> -->
+<ng-include src="'/assets/partials_v2/checkin/searchByScan/zsReservationScanFailed.html'"  
+   ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED' || screenData.scanMode == 'ID_DATA_EXPIRED'"></ng-include>
 
 <ng-include src="'/assets/partials_v2/idScan/zsIDScanFaceImage.html'"  
    ng-show="screenData.scanMode == 'FACIAL_RECOGNITION_MODE'"></ng-include>
@@ -82,79 +41,9 @@
    </div>
 </section>
 
-<section id="main" role="main" class="centered" click-touch='resetTime()'  ng-show="screenData.scanMode == 'FINDING_RESERVATION_FAILED'">
-    <!-- reservation search failed -->
-    <div id="content">
-        <h1>
-            <text data-ng-bind-html="getTagValue('FINDING_RESERVATION_FAILED')" editable-text="FINDING_RESERVATION_FAILED"></text>
-        </h1>
-        <h2 class="nocaps">
-            <text data-ng-bind-html="getTagValue('FINDING_RESERVATION_FAILED_INSTRUCTIONS')" editable-text="FINDING_RESERVATION_FAILED_INSTRUCTIONS"></text>
-        </h2>
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='scanId()'>
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    <text data-ng-bind-html="getTagValue('SCAN_ID')" editable-text="SCAN_ID"></text>    
-                </li>
-                <li class="break">
-                    <span>
-                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='searchByName()'>
-                        <div ng-include="icons.url.keyboard"></div>
-                    </button>
-                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
-                    <span>
-                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
-                    </span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</section>
+<ng-include src="'/assets/partials_v2/checkin/searchByScan/zsReservationScanFindReservationFailed.html'" ng-show="screenData.scanMode == 'FINDING_RESERVATION_FAILED'"></ng-include>
 
-<section id="main" role="main" class="centered" click-touch='resetTime()'  ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'">
-    <!-- reservation search failed -->
-    <div id="content">
-        <h1 translate>
-         FACIAL_RECOGNITION_FAILED
-        </h1>
-        <h2 class="nocaps">
-            <text data-ng-bind-html="getTagValue('FINDING_RESERVATION_FAILED_INSTRUCTIONS')" editable-text="FINDING_RESERVATION_FAILED_INSTRUCTIONS"></text>
-        </h2>
-        <nav id="options" role="nav">
-            <ul role="menu">
-                <li>
-                    <button type="button" class="button option" touch-press='startFacialRecognition()' ng-hide="deviceConfig.useExtCamForFR">
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                     <button type="button" class="button option" touch-press='startFacialRecognitionUsingExtCamera()' ng-show="deviceConfig.useExtCamForFR">
-                        <div ng-include="icons.url.creditcard"></div>
-                    </button>
-                    {{ 'RETAKE_SELFIE' | translate }}  
-                </li>
-                <li class="break">
-                    <span translate>OR_TEXT
-                    </span>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='searchByName()'>
-                        <div ng-include="icons.url.keyboard"></div>
-                    </button>
-                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
-                    <span>
-                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
-                    </span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</section>
+<ng-include src="'/assets/partials_v2/checkin/searchByScan/zsReservationScanFRFailed.html'" ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'"></ng-include>
 
 <section id="main" class="centered test add_remove_main" role="main"  
    ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE' ||

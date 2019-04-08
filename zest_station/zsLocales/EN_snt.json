@@ -779,6 +779,7 @@
    "FINDING_RESERVATION_FAILED": "Unable to find the reservation",
    "FINDING_RESERVATION_FAILED_INSTRUCTIONS": "Sorry, We are unable to retrive your reservation. Please scan a different ID or search by name",
    "FACIAL_RECOGNITION_FAILED_INSTRUCTIONS": "Please retry or search your reservation by name",
-   "FACIAL_RECOGNITION_FAILED": "Facial recongnition failed"
+   "FACIAL_RECOGNITION_FAILED": "Facial recongnition failed",
+   "GID_SCAN_ALREADY_DONE": "Click to approve"
 
 }

@@ -1,0 +1,35 @@
+<section id="main" role="main" class="centered" click-touch='resetTime()'>
+    <!-- reservation search failed -->
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('FINDING_RESERVATION_FAILED')" editable-text="FINDING_RESERVATION_FAILED"></text>
+        </h1>
+        <h2 class="nocaps">
+            <text data-ng-bind-html="getTagValue('FINDING_RESERVATION_FAILED_INSTRUCTIONS')" editable-text="FINDING_RESERVATION_FAILED_INSTRUCTIONS"></text>
+        </h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='scanId()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('SCAN_ID')" editable-text="SCAN_ID"></text>    
+                </li>
+                <li class="break">
+                    <span>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='searchByName()'>
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
+                    <span>
+                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

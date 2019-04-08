@@ -242,6 +242,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			// flush out previous search results
             zsCheckinSrv.setSelectedCheckInReservation([]);
             zsCheckinSrv.setCheckInReservations([]);
+            zsCheckinSrv.setCurrentReservationIdDetails({});
 			// eject if any key card is inserted
             $scope.$emit('EJECT_KEYCARD');
 			// set this to false always on entering home screen

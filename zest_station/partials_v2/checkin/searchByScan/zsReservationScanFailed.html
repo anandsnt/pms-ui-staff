@@ -1,0 +1,34 @@
+<section id="main" class="centered" role="main">
+    <div id="content">
+        <h1 ng-show="screenData.scanMode == 'ID_DATA_EXPIRED'">
+            GI_ID_EXPIRED
+        </h1>
+        <h1 ng-show="screenData.scanMode == 'ANALYSING_ID_DATA_FAILED'">
+            GI_ID_ANALYSING_FAILED
+        </h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="startScanning()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    {{ 'GI_RESTART_SCANNING' | translate }}    
+                </li>
+                <li class="break">
+                    <span>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='searchByName()'>
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
+                    <span>
+                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
