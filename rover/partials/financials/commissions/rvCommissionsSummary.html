@@ -85,8 +85,12 @@
    <div class="commissions-header searching" ng-controller="RVCommisionsHeaderCtrl">
       <ul class="filters" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
          <!-- Add .active to current filter -->
+        <li ng-class="{ 'active' : filterData.filterTab === 'PAID' }" ng-click="setFilterTab('PAID')">
+            {{ 'COMMISSION_PAID' | translate}}
+            <strong>{{commissionsData.bill_count_totals.open}}</strong>
+         </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
-            {{ 'TO_PAY' | translate}}
+            {{ 'COMMISSIONS_PAYABLE' | translate}}
             <strong>{{commissionsData.bill_count_totals.open}}</strong>
          </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'ON_HOLD' }" ng-click="setFilterTab('ON_HOLD')">
@@ -97,6 +101,10 @@
       <!-- Hide if 1 or more agents are selected (checked) -->
       <ul class="commissions-info" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
          <!-- Show if active filter: Payable -->
+         <li ng-show="filterData.filterTab === 'PAID'">
+            <span translate>AMOUNT_PAID</span>
+            <span class="amount">{{ ::currencySymbol }}{{commissionsData.selectedBillsAmount| number: precisonTwo}}</span>
+         </li>
          <li ng-show="filterData.filterTab === 'PAYABLE'">
             <span translate>ELIGIBLE_FOR_PAYMENT</span>
             <span class="amount">{{ ::currencySymbol }}{{commissionsData.selectedBillsAmount| number: precisonTwo}}</span>
@@ -167,7 +175,7 @@
          <li class="expand">
             <span class="icons icon-double-arrow black expand-arrow"></span>
          </li>
-         <li class="check">
+         <li class="check" ng-hide="filterData.filterTab === 'PAID'">
             <!-- If clicked, check all or uncheck all -->
             <!-- Add .checked if checked -->
             <label class="checkbox inline">
@@ -214,7 +222,7 @@
                         <!-- Add .active if expanded -->
                         <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active' : account.isExpanded}"></span>
                      </div>
-                     <div class="check">
+                     <div class="check" ng-hide="filterData.filterTab === 'PAID'">
                         <!-- add .checked when checked -->
                         <label class="checkbox inline">
                            <!-- add .checked when checked -->
@@ -248,7 +256,7 @@
                         <table style="margin-bottom: 60px;">
                            <thead ng-hide="account.reservationsData.reservations.length == 0">
                               <tr>
-                                 <th></th>
+                                 <th ng-hide="filterData.filterTab === 'PAID'"></th>
                                  <th class="name" translate>GUEST</th>
                                  <!-- Show this only if active filter: Payable -->
                                  <th class="amount" translate>COMMISSION_CONF_NO</th>
@@ -266,7 +274,7 @@
                               </tr>
                               <!-- Add class .odd or .even based on the row number -->
                               <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in account.reservationsData.reservations">
-                                 <td>
+                                 <td ng-hide="filterData.filterTab === 'PAID'">
                                     <label class="checkbox inline">
                                       <!-- add .checked when checked -->
                                        <span class="icon-form icon-checkbox" ng-class="{'checked': reservation.isSelected}"></span>

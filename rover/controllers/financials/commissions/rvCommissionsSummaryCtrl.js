@@ -60,8 +60,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if (!$scope.allCommisionsSelected) {
                 $scope.commissionsData.selectedBillsAmount = total_amount;
             } else {
-                var totalAmountForSelectedTab = $scope.filterData.filterTab === 'ON_HOLD' ?
-                    $scope.commissionsData.amount_totals.on_hold : $scope.commissionsData.amount_totals.unpaid;
+                var totalAmountForSelectedTab;
+                if ($scope.filterData.filterTab === 'ON_HOLD') {
+                    totalAmountForSelectedTab = $scope.commissionsData.amount_totals.on_hold;
+                } else if ($scope.filterData.filterTab === 'PAYABLE') {
+                    totalAmountForSelectedTab = $scope.commissionsData.amount_totals.unpaid;
+                } else {
+                    totalAmountForSelectedTab = $scope.commissionsData.amount_totals.paid;
+                }
 
                 $scope.commissionsData.selectedBillsAmount = parseFloat(totalAmountForSelectedTab)
                     - totalBillAmountOnCurrentPage + total_amount;
@@ -278,7 +284,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // main tab switch - On Hold and To pay
         $scope.setFilterTab = function(selectedTab) {
             $scope.commissionsData = {};
-            $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'ON_HOLD' : 'UN_PAID';
+            if (selectedTab === 'ON_HOLD') {
+                $scope.filterData.billStatus.value = 'ON_HOLD';
+            } else if (selectedTab === 'PAYABLE') {
+                $scope.filterData.billStatus.value = 'UN_PAID';
+            } else {
+                $scope.filterData.billStatus.value = 'PAID';
+            }
             $scope.fetchAgentsData();
             $scope.filterData.filterTab = selectedTab;
         };
@@ -579,8 +591,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             updateHeader();
             $scope.errorMessage = '';
             $scope.commissionsData = {};
-            $scope.filterData.filterTab = 'PAYABLE';
-            $scope.filterData.billStatus.value = 'UN_PAID';
+            $scope.filterData.filterTab = 'PAID';
+            $scope.filterData.billStatus.value = 'PAID';
             // side filetr date is to be applied only after the apply filter button is clicked 
             $scope.sideFilterData = {
                 'openSideFilter': false,

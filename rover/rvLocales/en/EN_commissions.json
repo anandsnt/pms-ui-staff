@@ -75,7 +75,9 @@
     "EMAIL_PAYMENT_REPORT_SWITCH": "Email Payment Report",
     "EMAIL_LABEL": "Email",
     "EMAIL_PLACEHOLDER": "Enter An Email",
-    "COMMISSIONS_REPORT_TITLE": "Commission Payment Report"
+    "COMMISSIONS_REPORT_TITLE": "Commission Payment Report",
+    "COMMISSIONS_PAYABLE": "Payable",
+    "AMOUNT_PAID": "Amount Paid"
 
 
 
