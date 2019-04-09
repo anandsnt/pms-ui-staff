@@ -1,6 +1,19 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 
-	<div class="modal-content form alert diary-times">
+	<div class="modal-content alert diary-assigned" ng-if="setTimePopupData.isContinueBookPopup">
+		<button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+
+		<span class="icons icon-popup-alert"></span>
+	    <span class="h2 message">There are reservations with unassigned rooms.</span>
+	    <em class="text">You can still proceed, but it might be good to assign those reservations first.</em>
+
+	    <button type="button" class="button green">Continue with book</button>
+	    <button type="button" class="button blank" ng-click="closeDialog()">Close Window</button>
+	</div>
+
+	<div class="modal-content form alert diary-times" ng-if="!setTimePopupData.isContinueBookPopup">
 	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
 	    <span class="icons icon-popup-alert"></span>
