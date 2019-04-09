@@ -63,7 +63,11 @@ module.exports = {
             'liason': [themeCSSRoot + 'liason.less'],
             'clarion-collection': [themeCSSRoot + 'clarion-collection.less'],
             'la-copa': [themeCSSRoot + 'la-copa.less'],
-            'ruby': [themeCSSRoot + 'ruby.less']
+            'ruby': [themeCSSRoot + 'ruby.less'],
+            'qbic': [themeCSSRoot + 'qbic.less'],
+            'merrion-row': [themeCSSRoot + 'merrion-row.less'],
+            'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less'],
+            'why': [themeCSSRoot + 'why.less']
         };
     }
 };

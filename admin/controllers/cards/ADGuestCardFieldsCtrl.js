@@ -36,6 +36,10 @@ function($scope, $state, ADGuestCardSrv) {
 				case "is_registration_number_visible":
 					$scope.guestCardFields.is_registration_number_visible = !$scope.guestCardFields.is_registration_number_visible;					
 					break;
+				case "is_personal_id_no_visible":
+					$scope.guestCardFields.is_personal_id_no_visible = !$scope.guestCardFields.is_personal_id_no_visible;					
+					break;
+
 			}
 	
 	};

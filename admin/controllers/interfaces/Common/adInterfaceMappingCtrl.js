@@ -17,8 +17,7 @@ admin.controller('adInterfaceMappingCtrl', [
 
         var mappingPartials = {
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
-            'HOGIA': '/assets/partials/interfaces/common/mapping.html',
-            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
+            'HOGIA': '/assets/partials/interfaces/Common/mapping.html'
         };
 
         $scope.state = {

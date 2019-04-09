@@ -50,7 +50,8 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		};
 		var customFormatters = {
 			'Birth Date': dateFormater,
-			'Expiration Date': dateFormater
+			'Expiration Date': dateFormater,
+			'Issue Date': dateFormater
 		};
 
 		angular.forEach(fields, function (_ref) {
@@ -144,6 +145,18 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		return isDocumentExpired;
 	};
 
+	this.dclone = function(object, unwanted_keys) {
+		if (typeof unwanted_keys === "undefined") {
+			unwanted_keys = [];
+		}
+		var newObject = JSON.parse(JSON.stringify(object));
+
+		for (var i = 0; i < unwanted_keys.length; i++) {
+			delete newObject[unwanted_keys[i]];
+		}
+		return newObject;
+	};
+
 	this.formatResults = function (idDetails) {
 		var formatedResults = {};
 
@@ -156,10 +169,16 @@ angular.module('sntIDCollection').service('sntIDCollectionUtilsSrv', function ($
 		formatedResults.nationality_name = idDetails.nationality_name ? idDetails.nationality_name : '';
 		formatedResults.expiration_date = idDetails.expiration_date && idDetails.expiration_date !== 'Invalid date' ? idDetails.expiration_date : '';
 		formatedResults.date_of_birth = idDetails.birth_date && idDetails.birth_date !== 'Invalid date' ? idDetails.birth_date : '';
+
+		var personal_id_no = idDetails.personal_number ? angular.copy(idDetails.personal_number) : '';
 		// if no first and last names are retrieved, assign full name as first name
 		if (!formatedResults.first_name && !formatedResults.last_name && formatedResults.full_name) {
 			formatedResults.first_name = formatedResults.full_name;
 		}
+
+		idDetails = this.dclone(idDetails, ['photo', 'signature','iDAuthenticationStatus', 'personal_number']);
+		formatedResults.id_scan_info = idDetails;
+		formatedResults.id_scan_info.personal_id_no = personal_id_no ? personal_id_no : '';
 
 		return formatedResults;
 	};
