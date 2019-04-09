@@ -42,7 +42,7 @@
                       ng-show="mapping.typeof==='market_code'"
                       valueproperty="name"
                       required="yes"
-                      label-properties="['value', 'name']"
+                      label-properties="['name']"
                       label-in-drop-down="Select Market Code"
                       list="state.meta.MARKET_SEGMENTS.markets"
                       label="{{'SNT_VALUE'| translate}}"
@@ -53,7 +53,7 @@
                       ng-show="mapping.typeof==='market_code_department_code'"
                       valueproperty="name"
                       required="yes"
-                      label-properties="['value', 'name']"
+                      label-properties="['name']"
                       label-in-drop-down="Select Market Code"
                       list="state.meta.MARKET_SEGMENTS.markets"
                       label="{{'SNT_VALUE'| translate}}"
@@ -64,7 +64,7 @@
 <fieldset class="holder right">
   <div class='entry full-width'>
       <ad-textbox inputtype="text"
-                  ng-show="mapping.typeof"
+                  ng-if="mapping.typeof"
                   value="mapping.external_value"
                   label="{{'EXTERNAL_VALUE'| translate}}"
                   styleclass="full-width"></ad-textbox>

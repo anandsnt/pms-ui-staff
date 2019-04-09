@@ -17,7 +17,8 @@ admin.controller('adInterfaceMappingCtrl', [
 
         var mappingPartials = {
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
-            'HOGIA': '/assets/partials/interfaces/Common/mapping.html'
+            'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
         };
 
         $scope.state = {
@@ -64,6 +65,7 @@ admin.controller('adInterfaceMappingCtrl', [
                         $scope.state.meta = meta;
                         $scope.mapping = fetchEmptyMapping();
                         $scope.state.mode = 'ADD';
+                        debugger
                     }
                 });
             } else {
