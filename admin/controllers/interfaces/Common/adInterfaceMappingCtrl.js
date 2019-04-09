@@ -65,7 +65,6 @@ admin.controller('adInterfaceMappingCtrl', [
                         $scope.state.meta = meta;
                         $scope.mapping = fetchEmptyMapping();
                         $scope.state.mode = 'ADD';
-                        debugger
                     }
                 });
             } else {
