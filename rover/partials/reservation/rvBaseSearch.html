@@ -5,7 +5,7 @@
     <form method="get" name="create-reservation" id="create-reservation" class="wrapper" role="search">
         <!-- Date / Time -->
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div id="dates" class="row" ng-class="{'with-toggle': shouldShowToggle, 'overlay': reservationData.isFromNightlyDiary }">
+        <div id="dates" class="row" ng-class="{'with-toggle': shouldShowToggle, 'overlay': (reservationData.isFromNightlyDiary && !hotelDiaryConfig.dayUseEnabled ) }">
             <!-- Arrival date -->
             <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
