@@ -33,6 +33,17 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         var PAGINATION_ID = "GROUP_ROOMING_LIST";
 
         /**
+         * Set email print filter default values
+         */
+        var setEmailPrintFiltersDefaults = function() {
+            $scope.emailPrintFilters = {
+                excludeRoomNumber: false,
+                excludeAccompanyingGuests: false,
+                excludeRoomType: false
+            };
+        };
+
+        /**
          * Has Permission To Create group room block
          * @return {Boolean}
          */
@@ -1768,6 +1779,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
                 // } else {
                     $scope.isAnyPopupOpen = true;
+                    setEmailPrintFiltersDefaults();
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1788,7 +1800,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 return;
             }
             $scope.errorMessage = "";
-            
+
             var mailSent = function(data) {
                     $scope.closeDialogBox();
                     $scope.isAnyPopupOpen = false;
@@ -2006,11 +2018,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $stateParams.activeTab = "SUMMARY";
             }
 
-            $scope.emailPrintFilters = {
-                excludeRoomNumber: false,
-                excludeAccompanyingGuests: false,
-                excludeRoomType: false
-            };
+            setEmailPrintFiltersDefaults();
             
         }());
 
@@ -2060,7 +2068,6 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             }
             return false;
         };
-
 
     }
 ]);
