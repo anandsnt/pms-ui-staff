@@ -1,7 +1,7 @@
 angular.module('admin').
     controller('adInterfaceConfigurationCtrl', [
-        '$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', '$stateParams', 'mappingTypes',
-        function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, mappingTypes) {
+        '$scope', '$rootScope', 'config', 'adInterfacesSrv', 'dateFilter', '$stateParams', 'mappingTypes',
+        function($scope, $rootScope, config, adInterfacesSrv, dateFilter, $stateParams, mappingTypes) {
 
             var interfaceIdentifier = $stateParams.id;
 
@@ -29,13 +29,18 @@ angular.module('admin').
 
 
             $scope.saveInterfaceConfig = function() {
-                $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+                $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        config: $scope.config,
-                        interfaceIdentifier: interfaceIdentifier
+                        settings: $scope.config,
+                        integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
-                        $scope.goBackToPreviousState();
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Settings updated!';
+                    },
+                    onFailure: function(response) {
+                        $scope.successMessage = '';
+                        $scope.errorMessage = response.errors;
                     }
                 });
             };

@@ -10,7 +10,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-    
+
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -68,12 +68,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
+        templateUrl: '/assets/partials/interfaces/GoMomentIvy/adGoMomentIvySetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            goMomentIvySetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('gomomentivy');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('gomomentivy');
             }]
         }
     });
@@ -639,20 +639,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.hogiaSetup', {
-        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
-        controller: 'adInterfaceConfigurationCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'hogia';
-        }],
+        templateUrl: '/assets/partials/interfaces/hogia/adHogia.html',
+        controller: 'adHogiaCtrl',
+        url: '/hogia',
         resolve: {
             config: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchConfiguration('hogia');
-                }],
-            mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('hogia');
                 }]
         }
     });
@@ -666,9 +659,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }],
         resolve: {
             config: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchConfiguration('sunaccounting');
-                }],
+              'adInterfacesSrv', function(adInterfacesSrv) {
+                  return adInterfacesSrv.getSettings('sunaccounting');
+              }],
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
