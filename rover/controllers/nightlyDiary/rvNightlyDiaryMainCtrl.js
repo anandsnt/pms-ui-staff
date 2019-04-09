@@ -35,7 +35,8 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
-                var isFromStayCard = $stateParams.origin === 'STAYCARD';
+                var isFromStayCard = $stateParams.origin === 'STAYCARD',
+                    MAX_NO_OF_DAYS = 21;
 
                 /*
                  * utility method Initiate controller
@@ -340,7 +341,7 @@ angular.module('sntRover')
                     postData = {
                         "room_id": roomDetails.room_id,
                         "start_date": reservationDetails.fromDate,
-                        "no_of_days": 20
+                        "no_of_days": MAX_NO_OF_DAYS
                     };
 
                     if (type === 'ASSIGN' || type === 'MOVE') {
