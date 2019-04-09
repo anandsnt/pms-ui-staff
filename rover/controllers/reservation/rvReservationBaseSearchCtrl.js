@@ -29,7 +29,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5,
             isFromNightlyDiary = $stateParams.fromState === "NIGHTLY_DIARY",
-            isNightlyHotel = !$rootScope.hotelDiaryConfig.dayUseEnabled,
+            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled,
             isRoomTypeChangePopupShown = false;
 
         $scope.activeCodes = activeCodes.promotions;

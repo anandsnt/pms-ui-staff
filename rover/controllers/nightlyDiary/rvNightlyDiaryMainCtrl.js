@@ -337,11 +337,11 @@ angular.module('sntRover')
                             closeByDocument: false,
                             closeByEscape: false
                         });
-                    }
+                    };
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
-                        var isNightlyHotel = !$rootScope.hotelDiaryConfig.dayUseEnabled,
+                        var isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled,
                             diaryMode = $rootScope.hotelDiaryConfig.mode;
 
                         if (type === 'BOOK' && isNightlyHotel) {
@@ -356,7 +356,7 @@ angular.module('sntRover')
                             });
                         }
                         else if (type === 'BOOK' && (diaryMode === 'FULL' || diaryMode === 'LIMITED')) {
-                            if (data.is_unassigned_reservations_exist && data.room_type_availability === 0) {
+                            if (data.is_unassigned_reservations_exist && data.room_type_availability <= 0) {
                                 // There are reservations with unassigned Rooms.
                                 showPopupForReservationWithUnassignedRoom();
                             }
