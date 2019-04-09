@@ -1,5 +1,5 @@
-admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'adComtrolGenericMappingSrv', 'COMTROL_REF',
-    function($scope, genericMappings, adComtrolGenericMappingSrv, COMTROL_REF) {
+admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMappingSrv', 'COMTROL_REF',
+    function($scope, adComtrolGenericMappingSrv, COMTROL_REF) {
 
         // CICO-42895 This value doesn't change
         var _TIP_CHARGE_CODE_EXT_VALUE = 295;
@@ -230,11 +230,15 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
                 }
             };
 
-            if (genericMappings.length) {
-                loadMetaList();
-            }
+          $scope.callAPI(adComtrolGenericMappingSrv.fetch, {
+            onSuccess: function (response) {
+              $scope.mappings = response;
 
-            $scope.mappings = genericMappings;
+              if ($scope.mappings.length) {
+                loadMetaList();
+              }
+            }
+          });
         })();
     }
 ]);
