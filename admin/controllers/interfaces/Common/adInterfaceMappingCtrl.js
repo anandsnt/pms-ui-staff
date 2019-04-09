@@ -21,15 +21,6 @@ admin.controller('adInterfaceMappingCtrl', [
             'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
         };
 
-        var mappingText = {
-            'cancellation_code': 'Cancellation Codes',
-            'tax_code': 'Tax Codes',
-            'charge_code': 'Charge Code',
-            'charge_code_department_code': 'Charge Code - Department Code',
-            'market_code': 'Market Code',
-            'market_code_department_code': 'Market Code - Department Code'
-        };
-
         $scope.state = {
             mode: 'LIST',
             mappingTypes: $scope.mappingTypes.map(function(mappingType) {
@@ -70,6 +61,7 @@ admin.controller('adInterfaceMappingCtrl', [
                         $scope.state.meta = meta;
                         $scope.mapping = fetchEmptyMapping();
                         $scope.state.mode = 'ADD';
+                        debugger
                     }
                 });
             } else {
