@@ -4,12 +4,14 @@
             <h2> CHANNEL MANAGER RATES&nbsp; <font class="h2-grey">{{state.interfaceName}}</font></h2>
             <a ng-click="goBackToPreviousState()" class="action back">Back</a>
             <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
+
             <div class="entry table-search" ng-show="state.mode === 'LIST'" style="float:right;">
                 <span class="search-text">Search</span>
                 <span class="icons icon-search" name="submit" type="submit"></span>
                 <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
                        function-to-fire="searchEntered"/>
             </div>
+
         </header>
 
 

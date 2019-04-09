@@ -214,7 +214,7 @@
         ng-iscroll="rooming_list" ng-iscroll-delay="100"> <!-- Add class "with-pagination" if pagination is used -->
 
         <ul id="rooming-grid-list" class="search-results wrapper">
-            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend>
+            <li class="reservation rooming-list" ng-repeat="reservation in reservations" ngrepeatend ng-hide="shouldHideAccompanyGuests(reservation)">
 
                 <div class="check">
                     <label class="checkbox inline" for="guest-id" ng-class="{'disabled' : !!groupConfigData.summary.is_cancelled}">
@@ -236,22 +236,18 @@
                                 <span ng-bind-html="escapeNull(reservation.accompanying_guest_last_name)|highlight:query:false"></span>, <span ng-bind-html="escapeNull(reservation.accompanying_guest_first_name)|highlight:query:false"></span>
                             </h2>
                         <h2 ng-show="isGuestBlank(reservation)">
-                            <!-- If new room, show this instead: -->
                             <span class="highlight">{{'GROUP_PENDING'|translate}}</span>
                         </h2>
-                        <span class="room" ng-show="!isRoomUnAssigned(reservation)">
-                            <!-- Add class "unassigned" if new room -->
-
+                        <span class="room" ng-show="shouldShowAssignedRoom(reservation) ">
                             {{'GROUP_ROOM'|translate}}
                             <span ng-class="getRoomStatusClass(reservation)" ng-bind-html="escapeNull(reservation.room_no)|highlight:query:false"></span>
-
-                            <!-- If new room, show this instead: Unassigned -->
                         </span>
-                            <span class="room unassigned" ng-show="isRoomUnAssigned(reservation)"> <!-- Add class "unassigned" if new room -->
+                        <span class="room unassigned" ng-show="shouldShowUnAssigned(reservation)"> 
                            {{'GROUP_UNASSIGNED'|translate}}
-                        </span> |
-                            <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
-                        </div>
+                        </span> 
+                        <span ng-show="shouldShowAssignedRoom(reservation) || shouldShowUnAssigned(reservation)">|</span>
+                        <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
+                    </div>
                         <div class="reservation-info">
                             <div class="arrival-departure">
                                 <span class="guest-status check-in">{{'GROUP_CHECK-IN'|translate}}</span>
@@ -263,7 +259,7 @@
                             </div>
                         </div>
                         <div class="room-info">
-                            <strong class="room-type">{{reservation.room_type_name}}</strong>
+                            <strong class="room-type" ng-hide="emailPrintFilters.excludeRoomType && isPrintClicked">{{reservation.room_type_name}}</strong>
                             <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
                         </div>
                         <div class="rate" ng-hide="groupConfigData.summary.hide_rates && isPrintClicked">

@@ -1,0 +1,376 @@
+/* StayNTouch Zest Station Styles | First Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #ff87bb;
+    
+@textColor:             #005e07;
+@backgroundColor:       @white;
+
+@green: #005e07;
+@red: #ff5059;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@font-face {
+    font-family:'Boing';
+        src: url('../../type/Boing-Medium.eot');
+        src: url('../../type/Boing-Medium.eot?#iefix') format('embedded-opentype'),
+            url("../../type/Boing-Medium.woff2") format("woff2"),
+            url('../../type/Boing-Medium.woff') format('woff'),
+            url('../../type/Boing-Medium.ttf') format('truetype'),
+            url('../../type/Boing-Medium.svg#Boing-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+} 
+@fontFamily: 'Boing', Helvetica, Arial, sans-serif;
+
+.logo-svg{
+    background-image: url("../css/themes/qbic/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 241px;
+    height: 95px;
+    background-position: center;
+}
+
+/* 3. IMAGES
+==========================================================*/
+@background: url("../css/themes/qbic/background.png") no-repeat bottom;;
+@backgroundSize: cover;
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#qbic {
+    
+    h1, h2 {
+        text-transform: none;
+    }
+
+    #header {
+        height: 115px;
+
+        .button {
+            .icons {
+                fill: @green;
+            }
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 115px);
+        top: 115px;
+    }
+
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        padding-top: 0px;
+        margin-top: 45px;
+    
+        .logo {
+            width: auto;
+            height: 95px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @brandColor;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li {
+            text-transform: none;
+
+            .button {
+                background: transparent;
+                border: 4px solid @brandColor;
+            }
+
+            .icons {
+                fill: @brandColor;
+            }
+
+            .option {
+                .icons {
+                    .square(62px);
+                }
+            }
+
+            .cc-details {
+                strong,
+                span {
+                    color: @brandColor;
+                }
+            }
+
+            &.radio-option {
+                input[type=radio]:not(:checked) + .button {
+                    border-color: @green;
+                    color: @green;
+                    opacity: 0.5;
+
+                    .icons {
+                        fill: @green;
+                    }
+                }
+            }
+        }
+
+        &:not(.home) {
+            li:not(.break) {
+                color: @brandColor;
+
+                
+            }
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+
+        &.small-icons {
+            li {
+                .option {
+                    .icons {
+                        .square(34px);
+                    }
+                }
+
+                .button {
+                    border-width: 3px;
+                }
+            }
+        }
+
+        &.home {
+            li {
+                
+                &:first-child {
+                    .button {
+                        border-color: @green;
+                        .icons {
+                            fill: @green;
+                        }
+                    }
+                }
+                &:nth-child(2) {
+                    color: @brandColor;
+                }
+
+                &:nth-child(3) {
+                    color: @red;
+                    .button {
+                        border-color: @red;
+                        .icons {
+                            fill: @red;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #actions {
+        &.pull-right {
+            p {
+                strong {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: @white;
+                color: @green;
+            }
+        }
+    }
+
+    #guests {
+        * {
+            color: @green;
+        }
+        .button {
+            color: @white;
+            background-color: #8b8b8b;
+        }
+    } 
+
+    .add-on {
+
+        .add-on-content {
+            color: @green;
+
+            .price {
+                small {
+                    color: @green;
+                }
+            }
+        }
+
+        #options { 
+            li { 
+                .option { 
+                    .icon-text {
+                        padding: 25px 0;
+                    } 
+
+                    &.not-selected {
+                        color: @green;
+                        border-color: @green;
+
+                        .icon-text {
+                            color: @green;
+                        }
+                    }
+                } 
+            } 
+        }
+
+        .input-group {
+            input {
+                color: @brandColor;
+            }
+        }
+
+        &.selected {
+            .add-on-content {
+                color: @white;
+            }
+        }
+    }
+ 
+    #rate {
+        li {
+            &.sub,
+            &.total {
+                color: @green;;
+            }
+        }
+    }
+
+    #textual {
+        color: @green;
+
+        #payment {
+            color: @green;
+
+            strong,
+            span {
+                color: @green;
+            }
+
+            h4 {
+                font-weight: 500;
+            }
+        }
+
+        .button {
+            background-color: @green;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @green;
+                }
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #upgrade {
+        border-color: @brandColor;
+        
+        .upgrade-price {
+            background: @brandColor;
+            color: @white;
+        }
+
+        .upgrade-info {
+            color: @green;
+        }
+    }
+
+    .upgrade-list {
+        &.upgrade-list-v2 {
+            .upgrade-content {
+                color: @green;
+
+                small {
+                    color: @green;
+                }
+            }
+        }
+    }
+
+    .popup {
+        .popup-content {
+            color: @green;
+        }
+    }
+}
