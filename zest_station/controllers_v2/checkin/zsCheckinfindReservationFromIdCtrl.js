@@ -22,11 +22,6 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
         $scope.searchByName = function() {
             $state.go('zest_station.checkInReservationSearch');
         };
-
-        $scope.scanId = function() {
-            $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
-        };
-
         /** *************** External camera actions ****** **/
 
         $scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {

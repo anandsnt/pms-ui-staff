@@ -6,10 +6,10 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" ng-hide="deviceConfig.useExtCamera" touch-press="captureBackImage()">
-                        <div ng-include="icons.url.creditcard"></div>
+                        <div ng-include="icons.url.user_with_id"></div>
                     </button>
                     <button type="button" class="button option" ng-show="deviceConfig.useExtCamera" touch-press="retryBackImageUsingExtCamera()">
-                        <div ng-include="icons.url.creditcard"></div>
+                        <div ng-include="icons.url.user_with_id"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('GI_RETAKE_BACK_IMAGE')" editable-text="GI_RETAKE_BACK_IMAGE"></text>
                 </li>

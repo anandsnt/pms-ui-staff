@@ -11,10 +11,10 @@
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='startFacialRecognition()' ng-hide="deviceConfig.useExtCamForFR">
-                        <div ng-include="icons.url.creditcard"></div>
+                        <div ng-include="icons.url.user_with_id"></div>
                     </button>
                      <button type="button" class="button option" touch-press='startFacialRecognitionUsingExtCamera()' ng-show="deviceConfig.useExtCamForFR">
-                        <div ng-include="icons.url.creditcard"></div>
+                        <div ng-include="icons.url.user_with_id"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('RETAKE_SELFIE')" editable-text="RETAKE_SELFIE"></text>
                 </li>
