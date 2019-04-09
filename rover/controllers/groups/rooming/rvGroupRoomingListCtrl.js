@@ -1788,6 +1788,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 return;
             }
             $scope.errorMessage = "";
+            
             var mailSent = function(data) {
                     $scope.closeDialogBox();
                     $scope.isAnyPopupOpen = false;
