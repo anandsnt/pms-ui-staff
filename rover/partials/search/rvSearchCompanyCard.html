@@ -58,6 +58,7 @@
         </div>
         <a class="add-new-button" ng-show="textInQueryBox!=''" ng-click="addNewCard()">+ Add new</a>
     </form>
+    <rv-pagination page-options="companyCardSearchPagination" page-data="totalResultCount"></rv-pagination>
 
     <section id="find-cards" class="content scrollable no-results" role="complementary" ng-show="textInQueryBox === ''">
         <div class="wrapper">
@@ -74,7 +75,7 @@
         </div>
     </section>
 
-    <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && (results.length > 0  || viewState.selectedCardsForMerge.length > 0)}">
+    <section id="find-cards" class="content" role="complementary" ng-class="{'show-merge': !viewState.isViewSelected && (results.length > 0  || viewState.selectedCardsForMerge.length > 0), 'no-pagination': totalResultCount <= perPage}">
         <ul class="find-cards-header" ng-hide="textInQueryBox === '' || results.length === 0">
             <li class="card">Card Details</li>
             <!-- hide if showing archived cards -->
