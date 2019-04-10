@@ -4,25 +4,12 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
 
         $scope.interface = 'GOMOMENTIVY';
 
-        $scope.state = {
-            activeTab: 'SETTING'
-        };
-
         /**
          * when clicked on check box to enable/diable GoMomentIvy
          * @return {undefined}
          */
         $scope.toggleEnabled = function() {
             $scope.config.enabled = !$scope.config.enabled;
-        };
-
-        /**
-         * when button clicked to switch between mappings/settings
-         * @return {undefined}
-         * @param {name} name tab name to toggle.
-         */
-        $scope.changeTab = function(name) {
-            $scope.state.activeTab = name;
         };
 
         /**
