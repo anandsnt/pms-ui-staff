@@ -8,12 +8,14 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
     'zsUtilitySrv',
     '$timeout',
     'sntIDCollectionSrv',
-    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, sntIDCollectionSrv) {
+    'zsGeneralSrv',
+    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, sntIDCollectionSrv, zsGeneralSrv) {
 
         BaseCtrl.call(this, $scope);
         if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
             sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
         }
+        var reservationId;
 
         $controller('sntIDCollectionBaseCtrl', {
             $scope: $scope
@@ -52,13 +54,25 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
         });
 
         $scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
-            $scope.idScanData.selectedGuest.faceImage = response;
+            var scannedDetails = zsCheckinSrv.getCurrentReservationIdDetails();
+
+            scannedDetails.faceImage = response;
+            setDataToCheckinSrv(scannedDetails);
         });
 
+        var refreshConfrimImagesScroller = function() {
+            $scope.refreshScroller('confirm-images');
+
+            var scroller = $scope.getScroller('confirm-images');
+
+            $timeout(function() {
+                scroller.scrollTo(0, 0, 300);
+            }, 0);
+        };
+
         var recordIDScanActions = function(actionType, key, value) {
-            value = value ? value : $scope.idScanData.selectedGuest.first_name + ' ' + $scope.idScanData.selectedGuest.last_name;
             var params = {
-                "id": stateParams.reservation_id,
+                "id": reservationId,
                 "application": 'KIOSK',
                 "action_type": actionType,
                 "details": [{
@@ -78,16 +92,6 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
             $scope.callAPI(zsGeneralSrv.recordReservationActions, options);
         };
 
-        var refreshConfrimImagesScroller = function() {
-            $scope.refreshScroller('confirm-images');
-
-            var scroller = $scope.getScroller('confirm-images');
-
-            $timeout(function() {
-                scroller.scrollTo(0, 0, 300);
-            }, 0);
-        };
-
         var searchReservationByLastName = function() {
             var reservationSearchFailed = function() {
                 $scope.screenData.scanMode = 'FINDING_RESERVATION_FAILED';
@@ -95,6 +99,21 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
             var reservationSearchSuccess = function(response) {
                 if (response.results && response.results.length === 1) {
                     zsCheckinSrv.setSelectedCheckInReservation(response.results);
+
+                    if (response.results[0].guest_details) {
+                        var primaryGuest = _.find(response.results[0].guest_details, function(guest) {
+                            return guest.is_primary;
+                        });
+                        var guestName = primaryGuest.first_name + primaryGuest.last_name;
+                        reservationId = response.results[0].id;
+
+                        recordIDScanActions('ID_ANALYZING', 'Success for the guest', guestName);
+                        if ($scope.idScanData.verificationMethod === 'FR') {
+                            recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest', guestName);
+                        }
+                    }
+                    
+                    
                     $state.go('zest_station.checkInReservationDetails');
                 } else if (response.results && response.results.length > 1) {
                     // zsCheckinSrv.setCheckInReservations(response.results);

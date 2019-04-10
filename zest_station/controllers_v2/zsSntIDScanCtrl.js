@@ -510,6 +510,7 @@
 						guestDetail.front_image_data = scannedDetails.front_image_data ? scannedDetails.front_image_data :'';
 						guestDetail.back_image_data = scannedDetails.back_image_data ? scannedDetails.back_image_data : '';
 						guestDetail.idScanStatus = SCAN_ALREADY_COMPLTED;
+						guestDetail.faceImage = scannedDetails.faceImage ? scannedDetails.faceImage : '';
 					}
 				});
 
