@@ -53,7 +53,8 @@ angular.module('sntRover')
                     }
                     else {
                         if ($stateParams.start_date) {
-                            srvParams.start_date = tzIndependentDate($stateParams.start_date);
+                            srvParams.start_date = moment(tzIndependentDate($stateParams.start_date))
+                                .format($rootScope.momentFormatForAPI);
                         }
                         else {
                             srvParams.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
