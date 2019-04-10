@@ -1249,7 +1249,8 @@
         &.check-in,
         &.pre-check-in,
         &.inhouse,
-        &.check-out {
+        &.check-out,
+        &.cancel {
             .name {
                 padding-left: 24px;
 
@@ -1331,6 +1332,14 @@
             .box-shadow(none);
         }
 
+        &.no-show {
+            .name {
+                &:after {
+                    .hide();
+                }
+            }
+        }
+
         &.cancel {
             .name {
                 &:after {
@@ -1354,10 +1363,13 @@
 
         /* Past Reservation ***/
         &.passed {
-            #flexbox > .parent('', flex-end, '', '');
+            -webkit-justify-content: flex-end;
+            justify-content: flex-end;
 
             .reservation-data {
                 order: 2;
+                -webkit-justify-content: flex-end;
+                justify-content: flex-end;
 
                 .name {
                     order: 2;
@@ -1376,13 +1388,23 @@
             &.check-in,
             &.pre-check-in,
             &.inhouse,
-            &.check-out {
+            &.check-out,
+            &.no-show,
+            &.cancel {
                 .name {
                     padding: 0 20px 0 5px;
 
                     &:after {
                         left: auto;
                         right: 0;
+                    }
+                }
+            }
+
+            &.cancel {
+                .name {
+                    &:after {
+                        background-position: 2px -171px;
                     }
                 }
             }
@@ -1419,7 +1441,7 @@
                 width: 100%;
                 .hide-text();
 
-                &:after {
+                &:before {
                     content: attr(data-initials);
                     position: absolute;
                     top: 0;

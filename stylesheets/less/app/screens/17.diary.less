@@ -976,6 +976,20 @@
                         .box-shadow(none);
                     }
 
+                    &.no-show {  
+                        text-indent: 14px;                    
+                        
+                        &:after {
+                            .hide();
+                        }
+                    }
+
+                    &.cancel {
+                        &:after {
+                            background-position: 10px -151px;
+                        }
+                    }
+
                     &.oos {
                         &:after {
                             background-position: 7px -4102px;
