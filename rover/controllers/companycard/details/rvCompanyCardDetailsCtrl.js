@@ -26,6 +26,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPrintArStatement = false;
 		$scope.contactInformation = {};
 		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
+		var createArAccountCheck = false;
 
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
@@ -222,6 +223,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.isMandatoryPopupOpen = true;
 				$scope.openCompanyTravelAgentCardMandatoryFieldsPopup();
 			} else {
+				createArAccountCheck = true;
 				$scope.showARTab();
 			}							
 		};
@@ -230,7 +232,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.isMandatoryPopupOpen = false;
 		});
 
-		$scope.showARTab = function() {
+		$scope.showARTab = function() {			
 			saveContactInformation($scope.contactInformation);
 		};
 
@@ -613,6 +615,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
 				$scope.$broadcast("saveArAccount");
 			}
+			if (createArAccountCheck) {
+				createArAccountCheck = false;
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				return;
+			}			
+
 			if (typeof data.id !== 'undefined' && data.id !== "") {
 				// to check if id is defined or not before save
 				var contactInfoAvailable = $scope.contactInformation.id ? true : false;
@@ -698,7 +706,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					$scope.shouldSaveArDataFromPopup = false;			
 					$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
 					$scope.$broadcast("saveArAccount");
-				}		
+				}
+				if (createArAccountCheck) {
+					$scope.$broadcast('setgenerateNewAutoAr', true);
+					$scope.$broadcast("saveArAccount");
+					$scope.isArTabAvailable = true;
+				}
+				createArAccountCheck = false;				
 			}
 		};
 
