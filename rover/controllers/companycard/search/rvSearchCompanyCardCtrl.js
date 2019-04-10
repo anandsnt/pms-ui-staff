@@ -8,7 +8,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		};
 		
 		var COMPANY_CARD_SCROLL = 'company_card_scroll',
-			PER_PAGE = 7;
+			PER_PAGE = 50;
 
 		BaseCtrl.call(this, $scope);
 		$scope.heading = "Find Cards";
@@ -156,9 +156,6 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		* @return {None}
 		*/
 		var successCallBackOfSearch = function (data) {
-			
-				$scope.$emit('hideLoader');
-
 				$scope.results = data.accounts;
 				applyPreviousSelections();
 				markAlreadySelectedCards();
@@ -317,6 +314,19 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 		};
 
+		/**
+		 *  Get style class for the pagination control
+		 */
+		$scope.getStyleClasses = function() {
+			var styleClasses = '';
+
+			if (!$scope.viewState.isViewSelected && ($scope.results.length > 0  || $scope.viewState.selectedCardsForMerge.length > 0) ) {
+				styleClasses = 'show-merge';
+			}
+
+			return styleClasses;
+		};
+
 		// Initialize the co/ta search view
 		var init = function() {
 			// model used in query textbox, we will be using this across
@@ -348,8 +358,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
             $scope.perPage = PER_PAGE;
             $scope.companyCardSearchPagination = {
                id: 'COMPANYCARD_SEARCH',
-                api: $scope.search,
-                perPage: $scope.perPage
+               api: $scope.search,
+               perPage: $scope.perPage
             };
 		};
 
