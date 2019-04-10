@@ -7,7 +7,8 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			AR_ONLY: 'AR_ONLY'
 		};
 		
-		var COMPANY_CARD_SCROLL = 'company_card_scroll';
+		var COMPANY_CARD_SCROLL = 'company_card_scroll',
+			PER_PAGE = 50;
 
 		BaseCtrl.call(this, $scope);
 		$scope.heading = "Find Cards";
@@ -47,16 +48,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				});
 			}
 		};
-
-		var successCallBackofInitialFetch = function (data) {
-			$scope.$emit("hideLoader");
-			$scope.results = data.accounts;
-			applyPreviousSelections();
-			markAlreadySelectedCards();
-			setTimeout(function () {
-				refreshScroller();
-			}, 750);
-		};
+		
 		/**
 		 * function used for refreshing the scroller
 		 */
@@ -71,6 +63,9 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		$scope.setScroller(COMPANY_CARD_SCROLL, scrollerOptions);
 
 		var refreshScroller = function () {
+			if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(COMPANY_CARD_SCROLL) ) {
+				$scope.myScroll[COMPANY_CARD_SCROLL].scrollTo(0, 0, 100);
+			}
 			$timeout(function () {
 				$scope.refreshScroller(COMPANY_CARD_SCROLL);
 			}, 300);
@@ -114,6 +109,76 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		};
 
 		/**
+		 * Get request params for the accounts search
+		 */
+		var getRequestParams = function() {
+			var dataDict = {
+				'query': $scope.textInQueryBox.trim(),
+				'per_page': $scope.perPage,
+				'page': $scope.page
+			};
+
+			dataDict.has_ar_number = false;
+			if ($scope.cardFilter === filterValues.AR_ONLY) {
+				dataDict.has_ar_number = true;
+			}
+
+			if (!$scope.viewState.isViewSelected) {
+				dataDict.account_type = 'COMPANY';
+				if (!$scope.viewState.isCompanyCardSelected) {
+					dataDict.account_type = 'TRAVELAGENT';
+				}
+			}
+
+			return dataDict;
+		};
+
+			/*
+			* to Search for companycards
+			* @return - None
+			*/
+		$scope.search = function (page) {
+			$scope.page = page || 1;
+			$scope.errorMessage = '';
+
+			var options = {
+				params: getRequestParams(),
+				successCallBack: successCallBackOfSearch,
+				failureCallBack: failureCallBackOfSearch
+			};
+
+			$scope.callAPI(RVCompanyCardSearchSrv.fetch, options);
+		};
+
+		/*
+		* on success of search API
+		* @param {Array} - array of objects - accounts
+		* @return {None}
+		*/
+		var successCallBackOfSearch = function (data) {
+				$scope.results = data.accounts;
+				applyPreviousSelections();
+				markAlreadySelectedCards();
+
+				// total result count
+				$scope.totalResultCount = data.total_count;
+				$timeout(function () {
+					$scope.$broadcast('updatePagination', 'COMPANYCARD_SEARCH');
+					refreshScroller();
+				}, 800);
+
+			},
+
+			/*
+			* on success of search API
+			* @param {Array} - error messages
+			* @return {None}
+			*/
+			failureCallBackOfSearch = function (error) {
+				$scope.errorMessage = error;
+			};
+
+		/**
 		 * function to perform filering on results.
 		 * if not fouund in the data, it will request for webservice
 		 */
@@ -145,23 +210,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				}
 				// last hope, we are looking in webservice.
 				if (visibleElementsCount === 0) {
-					var dataDict = {
-						'query': $scope.textInQueryBox.trim()
-					};
-
-					dataDict.has_ar_number = false;
-					if ($scope.cardFilter === filterValues.AR_ONLY) {
-						dataDict.has_ar_number = true;
-					}
-
-					if (!$scope.viewState.isViewSelected) {
-						dataDict.account_type = 'COMPANY';
-						if (!$scope.viewState.isCompanyCardSelected) {
-							dataDict.account_type = 'TRAVELAGENT';
-						}
-					}
-
-					$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
+					$scope.search();
 				}
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
@@ -265,6 +314,19 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			});
 		};
 
+		/**
+		 *  Get style class for the pagination control
+		 */
+		$scope.getStyleClasses = function() {
+			var styleClasses = '';
+
+			if (!$scope.viewState.isViewSelected && ($scope.results.length > 0  || $scope.viewState.selectedCardsForMerge.length > 0) ) {
+				styleClasses = 'show-merge';
+			}
+
+			return styleClasses;
+		};
+
 		// Initialize the co/ta search view
 		var init = function() {
 			// model used in query textbox, we will be using this across
@@ -292,7 +354,13 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 				$scope.queryEntered();
 			}
 			$scope.hasMergeViewPermission = rvPermissionSrv.getPermissionValue('MERGE');
-
+			
+            $scope.perPage = PER_PAGE;
+            $scope.companyCardSearchPagination = {
+               id: 'COMPANYCARD_SEARCH',
+               api: $scope.search,
+               perPage: $scope.perPage
+            };
 		};
 
 		init();
