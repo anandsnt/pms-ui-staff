@@ -12,7 +12,7 @@ angular.module('admin').
 
             var syncItems = {
                 "SUNACCOUNTING": ['Journal and Market Data']
-            }
+            };
 
             $scope.state = {
                 activeTab: 'SETUP',
