@@ -1,0 +1,11 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+    <div class="modal-content alert diary-assigned">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message">There are reservations with unassigned rooms.</span>
+        <span class="notice">No additional availability exists for the selected dates / times.</span>
+
+        <button type="button" class="button blank" ng-click="cancelSelection()">Close Window</button>
+    </div>
+</div>
