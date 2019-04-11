@@ -119,4 +119,8 @@
 	"GL_ACCOUNT": "GL Account for Direct Bill",
 	"TURKISHINVOICE_HEADER": "Turkish E-Invoice Setup",
 	"EDIT_ROOM_TYPES": "Edit Room Types",
-	"ADD_RATE_ROOM_TYPE": "Add Rate and Room Types"
+	"ADD_RATE_ROOM_TYPE": "Add Rate and Room Types",
+	"SIE_HEADER": "SIE Setup",
+	"ORGANIZATION_NAME": "Organization Name",
+	"ORGANIZATION_ID": "Organization ID",
+	"GL_ACCOUNT_SIE": "General Ledger Offset Account #"
