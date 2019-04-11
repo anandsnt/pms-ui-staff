@@ -1526,11 +1526,11 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			if ($scope.authData.isManual) {
-				postData.is_manual = true;
 				postData.auth_code = $scope.authData.manualAuthCode;
+				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			} else {
+				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 			}
-
-			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 		};
 
 		// To handle close/cancel button click after success/declined of auth process.
