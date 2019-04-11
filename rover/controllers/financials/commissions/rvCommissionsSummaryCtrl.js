@@ -57,14 +57,15 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
             });
 
-            if($scope.filterData.filterTab === 'PAID'){
-                //TODO: handle PAID tab when checkbox selection is shown
+            if ($scope.filterData.filterTab === 'PAID') {
+                //  TODO: handle PAID tab when checkbox selection is shown
                 $scope.commissionsData.selectedBillsAmount = $scope.commissionsData.amount_totals.paid;
             }
             else if (!$scope.allCommisionsSelected) {
                 $scope.commissionsData.selectedBillsAmount = total_amount;
             } else {
                 var totalAmountForSelectedTab;
+                
                 if ($scope.filterData.filterTab === 'ON_HOLD') {
                     totalAmountForSelectedTab = $scope.commissionsData.amount_totals.on_hold;
                 } else if ($scope.filterData.filterTab === 'PAYABLE') {
