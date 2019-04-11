@@ -1,14 +1,19 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 
-	<div class="modal-content form alert diary-times">
-	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+	<div class="modal-content alert" ng-class="{'diary-assigned': setTimePopupData.isContinueBookPopup, 'form diary-times': !setTimePopupData.isContinueBookPopup}">
 
+	    <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()">
+	    	<span class="icons icon-close invert"></span>
+	    </button>
 	    <span class="icons icon-popup-alert"></span>
-	    <span class="h2 message">Day use reservation occupies this room.</span>
-	    <em class="text" ng-if="setTimePopupData.type === 'ASSIGN' || setTimePopupData.type === 'MOVE'">Pick arrival/departure times for this reservation.</em>
-	    <em class="text" ng-if="setTimePopupData.type === 'BOOK'">Pick arrival/departure times for new reservation.</em>
 
-	    <div class="fields">
+	    <!-- SET TIME LOGIC-->
+
+	    <span ng-if="!setTimePopupData.isContinueBookPopup" class="h2 message">Day use reservation occupies this room.</span>
+	    <em class="text" ng-if="(setTimePopupData.type === 'ASSIGN' || setTimePopupData.type === 'MOVE') && !setTimePopupData.isContinueBookPopup">Pick arrival/departure times for this reservation.</em>
+	    <em class="text" ng-if="setTimePopupData.type === 'BOOK' && !setTimePopupData.isContinueBookPopup">Pick arrival/departure times for new reservation.</em>
+
+	    <div ng-if="!setTimePopupData.isContinueBookPopup" class="fields">
 	        
 	        <div class="entry margin" ng-if="setTimePopupData.type === 'BOOK'">
 	            <label for="nights">No. of Nights</label>
@@ -40,10 +45,23 @@
 	        </div>
 	    </div>
 
-	    <div class="actions">
-	        <button type="button" class="button green" ng-class="{'overlay': setTimePopupData.selectedArrivalTime === '' || setTimePopupData.selectedDepartureTime === ''}" ng-click="saveAndContinueClicked()">Save & Continue</button>
+	    <div ng-if="!setTimePopupData.isContinueBookPopup" class="actions">
+	        <button type="button" class="button green" ng-class="{'grey disable-element': setTimePopupData.selectedArrivalTime === '' || setTimePopupData.selectedDepartureTime === ''}" ng-click="saveAndContinueClicked()">Save & Continue</button>
 	        <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
 	    </div>
+
+	    <!-- SET TIME LOGIC-->
+
+	    <!-- CONTINUE BOOK LOGIC-->
+
+	    <span ng-if="setTimePopupData.isContinueBookPopup" class="h2 message">There are reservations with unassigned rooms.</span>
+	    <em ng-if="setTimePopupData.isContinueBookPopup" class="text">You can still proceed, but it might be good to assign those reservations first.</em>
+
+	    <button ng-show="setTimePopupData.isContinueBookPopup" type="button" class="button green" ng-click="continueWithBookClicked()">Continue with book</button>
+	    <button ng-if="setTimePopupData.isContinueBookPopup" type="button" class="button blank" ng-click="closeDialog()">Close Window</button>
+
+	    <!-- CONTINUE BOOK LOGIC-->
+
 	</div>
 
 </div>	

@@ -33,6 +33,17 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         var PAGINATION_ID = "GROUP_ROOMING_LIST";
 
         /**
+         * Set email print filter default values
+         */
+        var setEmailPrintFiltersDefaults = function() {
+            $scope.emailPrintFilters = {
+                excludeRoomNumber: false,
+                excludeAccompanyingGuests: false,
+                excludeRoomType: false
+            };
+        };
+
+        /**
          * Has Permission To Create group room block
          * @return {Boolean}
          */
@@ -1748,7 +1759,9 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
                 per_page: 1000,
-                exclude_cancel: $scope.exclude_cancel
+                exclude_cancel: $scope.exclude_cancel,
+                sort_field: $scope.sort_field,
+                sort_dir: $scope.sort_dir
             };
             var options = {
                 params: params,
@@ -1766,6 +1779,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 //     $scope.sendEmail($scope.groupConfigData.summary.contact_email);
                 // } else {
                     $scope.isAnyPopupOpen = true;
+                    setEmailPrintFiltersDefaults();
                     ngDialog.open({
                         template: '/assets/partials/groups/rooming/popups/general/rvRoomingListEmailPrompt.html',
                         className: '',
@@ -1786,6 +1800,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 return;
             }
             $scope.errorMessage = "";
+
             var mailSent = function(data) {
                     $scope.closeDialogBox();
                     $scope.isAnyPopupOpen = false;
@@ -1794,11 +1809,15 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                     $scope.errorMessage = errorMessage;
                    // $scope.closeDialog();
                 };
+                
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id,
                 "is_include_rate": !$scope.groupConfigData.summary.hide_rates,
-                "exclude_cancel": $scope.exclude_cancel
+                "exclude_cancel": $scope.exclude_cancel,
+                "exclude_room_no": $scope.emailPrintFilters.excludeRoomNumber,
+                "exclude_accompany_guests": $scope.emailPrintFilters.excludeAccompanyingGuests,
+                "exclude_room_type": $scope.emailPrintFilters.excludeRoomType
             };
 
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
@@ -1998,6 +2017,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
                 $scope.groupConfigData.activeTab = "SUMMARY";
                 $stateParams.activeTab = "SUMMARY";
             }
+
+            setEmailPrintFiltersDefaults();
             
         }());
 
@@ -2010,6 +2031,43 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             callInitialAPIs();
         });
 
+        /**
+         * Should show the assigned room section
+         * @param {Object} reservation 
+         * @return {Boolean} 
+         */
+        $scope.shouldShowAssignedRoom = function(reservation) {
+            if ($scope.isPrintClicked) {
+                return reservation.room_no ? !$scope.emailPrintFilters.excludeRoomNumber : false;
+            }
+            return !$scope.isRoomUnAssigned(reservation); 
+
+        };
+
+        /**
+         * Should show the unassigned room section
+         * @param {Object} reservation 
+         * @return {Boolean} 
+         */
+        $scope.shouldShowUnAssigned = function(reservation) {
+            if ($scope.isPrintClicked) {
+                return !reservation.room_no ? !$scope.emailPrintFilters.excludeRoomNumber : false;
+            }
+            return $scope.isRoomUnAssigned(reservation); 
+
+        };
+
+        /**
+         * Should hide the accompany guests while printing based on the selection
+         * @param {Object} reservation 
+         * @return {Boolean} 
+         */
+        $scope.shouldHideAccompanyGuests = function(reservation) {
+            if ($scope.isPrintClicked) {
+                return reservation.is_accompanying_guest ? $scope.emailPrintFilters.excludeAccompanyingGuests : false;
+            }
+            return false;
+        };
 
     }
 ]);

@@ -35,7 +35,8 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
-                var isFromStayCard = $stateParams.origin === 'STAYCARD';
+                var isFromStayCard = $stateParams.origin === 'STAYCARD',
+                    MAX_NO_OF_DAYS = 21;
 
                 /*
                  * utility method Initiate controller
@@ -53,7 +54,8 @@ angular.module('sntRover')
                     }
                     else {
                         if ($stateParams.start_date) {
-                            srvParams.start_date = tzIndependentDate($stateParams.start_date);
+                            srvParams.start_date = moment(tzIndependentDate($stateParams.start_date))
+                                .format($rootScope.momentFormatForAPI);
                         }
                         else {
                             srvParams.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
@@ -311,36 +313,77 @@ angular.module('sntRover')
                 var showDiarySetTimePopup = function(roomDetails, reservationDetails, type) {
 
                     $scope.setTimePopupData = {
-                        showPopup: false,
                         type: type,
                         roomDetails: roomDetails,
                         reservationDetails: reservationDetails,
                         data: {},
-                        processData: []
+                        processData: [],
+                        isContinueBookPopup: false
+                    };
+
+                    var triggerSetTimePopup = function() {
+                        ngDialog.open({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiarySetTimePopup.html',
+                            scope: $scope,
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: false,
+                            controller: 'rvNightlyDiarySetTimePopupCtrl'
+                        });
+                    },
+                    showPopupForReservationWithUnassignedRoom = function() {
+                        ngDialog.open({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryReservationWithUnassignedRoom.html',
+                            scope: $scope,
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: false
+                        });
                     };
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
-                        $scope.setTimePopupData.showPopup = (data.is_overlapping_reservations_exists || type === 'BOOK');
+                        var isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled,
+                            diaryMode = $rootScope.hotelDiaryConfig.mode;
 
-                        if ($scope.setTimePopupData.showPopup) {
-                            ngDialog.open({
-                                template: '/assets/partials/nightlyDiary/rvNightlyDiarySetTimePopup.html',
-                                scope: $scope,
-                                className: '',
-                                closeByDocument: false,
-                                closeByEscape: false,
-                                controller: 'rvNightlyDiarySetTimePopupCtrl'
+                        if (type === 'BOOK' && isNightlyHotel) {
+                            // Navigation directly to Reservation Creation Screen if Nightly diary.
+                            $state.go('rover.reservation.search', {
+                                selectedArrivalDate: $scope.setTimePopupData.reservationDetails.fromDate,
+                                selectedRoomTypeId: $scope.setTimePopupData.roomDetails.roomTypeId,
+                                selectedRoomId: $scope.setTimePopupData.roomDetails.room_id,
+                                selectedRoomNo: $scope.setTimePopupData.roomDetails.roomNo,
+                                startDate: $scope.diaryData.startDate,
+                                fromState: 'NIGHTLY_DIARY'
                             });
                         }
-                        else {
+                        else if (type === 'BOOK' && (diaryMode === 'FULL' || diaryMode === 'LIMITED')) {
+                            if (data.is_unassigned_reservations_exist && data.room_type_availability <= 0) {
+                                // There are reservations with unassigned Rooms.
+                                showPopupForReservationWithUnassignedRoom();
+                            }
+                            else if (data.is_unassigned_reservations_exist) {
+                                $scope.setTimePopupData.isContinueBookPopup = true;
+                                triggerSetTimePopup();
+                            }
+                            else {
+                                $scope.setTimePopupData.isContinueBookPopup = false;
+                                triggerSetTimePopup();
+                            }
+                        }
+
+                        // Handle ASSIGN/MOVE button click handle.
+                        if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
+                            triggerSetTimePopup();
+                        }
+                        else if ((type === 'ASSIGN' || type === 'MOVE') && !data.is_overlapping_reservations_exists) {
                             callAPIforAssignOrMoveRoom(roomDetails, reservationDetails, type);
                         }
                     },
                     postData = {
                         "room_id": roomDetails.room_id,
                         "start_date": reservationDetails.fromDate,
-                        "no_of_days": 20
+                        "no_of_days": MAX_NO_OF_DAYS
                     };
 
                     if (type === 'ASSIGN' || type === 'MOVE') {
