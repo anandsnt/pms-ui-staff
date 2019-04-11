@@ -480,7 +480,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.addListener("MANDATORY_CHECK_FAILED", function(event, errorMessage) {
-			//$scope.$broadcast("setCardContactErrorMessage",  errorMessage);
 			$scope.isArTabAvailable = false;
 			$scope.switchTabTo('', 'cc-contact-info');
 			$scope.mandatoryErrorMessage = errorMessage;
