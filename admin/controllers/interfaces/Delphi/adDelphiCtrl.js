@@ -21,7 +21,7 @@ admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesSrv',
          */
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
-        }
+        };
 
         $scope.saveSetup = function() {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
