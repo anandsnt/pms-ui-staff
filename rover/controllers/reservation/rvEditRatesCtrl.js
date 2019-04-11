@@ -40,13 +40,16 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * function to save comment against rate change
 		 * will save comment if something entered
 		 */
-		$scope.saveCommentAgainstRateChange = function() {
+		$scope.saveCommentAgainstRateChange = function(callback) {
 			// proceed only if something entered
 			if ($scope.adjustment_reason.trim() === "") {
 				return;
 			}
 			// forming the API params
-			var params = {};
+			var params = {},
+				onReservationNoteSuccess = function() {
+					callback();
+				};
 
 			params.reservation_id = getReservationID();
 			params.text = $scope.adjustment_reason;
@@ -54,7 +57,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			params.note_topic = 1;
 
 			var options = {
-				params: params
+				params: params,
+				onSuccess: onReservationNoteSuccess
 			};
 
 			$scope.callAPI(RVReservationCardSrv.saveReservationNote, options);
@@ -74,26 +78,28 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 
 				$scope.reservationData.rooms[index] = room;
 
+				var reservationUpdateCallback = function() {
+					if ($scope.reservationData.isHourly && !$stateParams.id) {
+						$scope.computeHourlyTotalandTaxes();
+					} else {
+						$scope.computeTotalStayCost();
+					}
+	
+					if ($stateParams.id) { // IN STAY CARD .. Reload staycard
+						$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
+							"id": getReservationID(),
+							"confirmationId": getConfirmationNumber(),
+							"isrefresh": false
+						});
+					} else {
+						$scope.saveReservation('', '', index);
+					}
+					$scope.closeDialog();
+				};
+
 				// comment box will appear in every box
-				$scope.saveCommentAgainstRateChange();
-
-
-				if ($scope.reservationData.isHourly && !$stateParams.id) {
-					$scope.computeHourlyTotalandTaxes();
-				} else {
-					$scope.computeTotalStayCost();
-				}
-
-				if ($stateParams.id) { // IN STAY CARD .. Reload staycard
-					$scope.saveReservation('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": getReservationID(),
-						"confirmationId": getConfirmationNumber(),
-						"isrefresh": false
-					});
-				} else {
-					$scope.saveReservation('', '', index);
-				}
-				$scope.closeDialog();
+				$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+				
 			} else {
 				$scope.errorMessage = ['Please enter Adjustment Reason'];
 			}
