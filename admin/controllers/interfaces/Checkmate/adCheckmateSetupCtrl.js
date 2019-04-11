@@ -1,8 +1,8 @@
-admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adInterfacesCommonConfigSrv',
-    function($scope, checkmateSetupValues, adInterfacesCommonConfigSrv) {
+admin.controller('adCheckmateSetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interfaceIdentifier = 'CHECKMATE';
+        $scope.interface = 'CHECKMATE';
 
         /**
          * when clicked on check box to enable/disable GoMomentIvy
@@ -13,24 +13,19 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adI
         };
 
         /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfCheckmateSetup = function() {
-            $scope.goBackToPreviousState();
-        };
-
-        /**
          * when we clicked on save button
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: $scope.interfaceIdentifier
+                    settings: $scope.config,
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfCheckmateSetup
+                onSuccess: function() {
+                    $scope.errorMessge = '';
+                    $scope.successMessage = "SUCCESS: Settings Updated!";
+                }
             });
         };
 
@@ -39,6 +34,6 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'checkmateSetupValues', 'adI
          * @return {undefined}
          */
         (function() {
-            $scope.config = checkmateSetupValues;
+            $scope.config = config;
         })();
     }]);
