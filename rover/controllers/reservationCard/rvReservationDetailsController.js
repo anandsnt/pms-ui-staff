@@ -1537,7 +1537,7 @@ sntRover.controller('reservationDetailsController',
 
 			if ($scope.authData.isManual) {
 				postData.auth_code = $scope.authData.manualAuthCode;
-				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+				$scope.invokeApi(RVCCAuthorizationSrv.manualVoiceAuth, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 			} else {
 				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
 			}
