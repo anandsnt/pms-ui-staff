@@ -5,12 +5,28 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+
+        var mappingText = {
+          'cancellation_code': 'Cancellation Codes',
+          'tax_code': 'Tax Codes',
+          'charge_code': 'Charge Code - General Ledger',
+          'charge_code_department_code': 'Charge Code - Department Code',
+          'market_code': 'Market Code - Market Segment',
+          'market_code_department_code': 'Market Code - Department Code'
+        };
+
+        var mappingPartials = {
+            'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
+            'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
+        };
+
         $scope.state = {
             mode: 'LIST',
             mappingTypes: $scope.mappingTypes.map(function(mappingType) {
                 return {
                     name: mappingType,
-                    text: mappingType
+                    text: mappingText[mappingType] ? mappingText[mappingType] : mappingType
                 };
             })
         };
@@ -32,6 +48,14 @@ admin.controller('adInterfaceMappingCtrl', [
                 external_value: ''
             };
         }
+
+        $scope.fetchMappingPartial = function() {
+            return mappingPartials[$scope.interface];
+        };
+
+        $scope.fetchMappingPartial = function() {
+            return mappingPartials[$scope.interface];
+        };
 
         $scope.onClickAdd = function() {
             if (!$scope.state.meta) {
@@ -59,6 +83,9 @@ admin.controller('adInterfaceMappingCtrl', [
                     $scope.reloadTable();
                     $scope.state.mode = 'LIST';
                     $scope.mapping = fetchEmptyMapping();
+                },
+                failureCallBack: function(response) {
+                    $scope.errorMessage = response["errors"] ? response["errors"] : response;
                 }
             });
         };

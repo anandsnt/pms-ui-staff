@@ -5,6 +5,22 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_shelburne_hotel': [ themeCSSRoot + 'guestweb_shelburne_hotel.css'],
+            'guestweb_whittaker_inn': [ themeCSSRoot + 'guestweb_whittaker_inn.css'],
+            'guestweb_ashore_hotel': [ themeCSSRoot + 'guestweb_ashore_hotel.css'],
+            'guestweb_village_hotels': [ themeCSSRoot + 'guestweb_village_hotels.css'],
+            'guestweb_why_hotel': [ themeCSSRoot + 'guestweb_why_hotel.css'],
+            'guestweb_inn_at_discovery_coast': [ themeCSSRoot + 'guestweb_inn_at_discovery_coast.css'],
+            'guestweb_freehand_chicago': [ themeCSSRoot + 'guestweb_freehand_chicago.css'],
+            'guestweb_qbic_hotels': [ themeCSSRoot + 'guestweb_qbic_hotels.css'],
+            'guestweb_maison_de_la_luz': [ themeCSSRoot + 'guestweb_maison_de_la_luz.css'],
+            'guestweb_ruby_hospitality': [ themeCSSRoot + 'guestweb_ruby_hospitality.css'],
+            'guestweb_merrion_row_hotel_and_public_house': [ themeCSSRoot + 'guestweb_merrion_row_hotel_and_public_house.css'],
+            'guestweb_clarion_collection': [ themeCSSRoot + 'guestweb_clarion_collection.css'],
+            'guestweb_la_copa_inn': [ themeCSSRoot + 'guestweb_la_copa_inn.css'],
+            'guestweb_hotel_e': [ themeCSSRoot + 'guestweb_hotel_e.css'],
+            'guestweb_liason_dc': [ themeCSSRoot + 'guestweb_liason_dc.css'],
+            'guestweb_adrift_hotel': [ themeCSSRoot + 'guestweb_adrift_hotel.css'],
             'guestweb_gallivant_ny': [ themeCSSRoot + 'guestweb_gallivant_ny.css'],
             'guestweb_carrollton_inn': [ themeCSSRoot + 'guestweb_carrollton_inn.css'],
             'guestweb_the_hotel_at_auburn_university': [ themeCSSRoot + 'guestweb_the_hotel_at_auburn_university.css'],

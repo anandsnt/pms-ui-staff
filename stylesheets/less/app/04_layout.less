@@ -219,7 +219,6 @@ body { overflow: hidden; }
 
 			/* With search bar ***/
 			&#dashboard,
-            &#find-cards,
             &#reports {
 				top: 120px;
 				.calc-height(100, 120);
@@ -233,6 +232,7 @@ body { overflow: hidden; }
 			/* With pagination **/
 			&#dashboard-search,
 			&#search,
+			&#find-cards,
 			&#find-group,
 			&#find-account,
 			&#find-allotment,
@@ -1789,6 +1789,234 @@ body { overflow: hidden; }
 	                }
 	            }       
 	        }
+
+	        /* CO/TA Card Search ***/
+	        &.card-search {
+	            
+	            .entry {
+	                &.switch {
+	                    width: 140px;
+
+	                    &.switch-merge {
+	                        width: 70px;
+	                        padding-left: 0;
+	                        .box-shadow(none);
+	                        
+	                        .switch-button {
+
+	                            .value {
+	                                .icons {
+	                                    &.icon-company {
+	                                        background-position: 11px -751px;
+	                                    }
+
+	                                    &.icon-travel-agent {
+	                                        background-position: 11px -811px;
+	                                    }
+	                                }
+	                            }
+
+	                            .switch-icon {
+	                                .icons {
+	                                    background-size: 90px;
+	                                    &.icon-company {
+	                                        background-position: 9px -2632px;
+	                                    }
+
+	                                    &.icon-travel-agent {
+	                                        background-position: 8px -2721px;
+	                                    }
+	                                }
+	                            }
+
+	                            .icons {
+	                                width: 100%;
+	                                height: 100%;
+	                            }
+
+	                            .data-on {
+	                                .switch-icon {
+	                                    background-color: @ccard;
+	                                }
+	                            }
+
+	                            .data-off {
+	                                .switch-icon {
+	                                    background-color: @tacard;
+	                                }
+	                            }
+	                        }
+	                    }
+
+	                    .switch-button {
+	                        width: 100%;
+	                        background: rgba(0,0,0,.1);
+	                        #border-radius > .rounded();
+	                        .show;
+	                        .size( 40px, 100% );
+
+	                        input {
+	                            .square(100%);
+	                        }
+
+	                        &:not(.disabled) {
+	                            .data-off,
+	                            .data-on {
+	                                .switch-icon {
+	                                    color: @black;
+	                                }
+	                            }
+	                        }
+	                        
+	                        .data-off,
+	                        .data-on { 
+	                            font-size: 14px;
+	                            line-height: 30px;
+	                            height: 30px;
+	                            text-transform: uppercase;
+
+	                            .switch-icon {
+	                                text-shadow: none;
+	                                .clickable;
+	                                background: @white;
+	                            }
+
+	                            .value { 
+	                                color: @grey3;
+	                                font-weight: 600; 
+	                            }
+
+	                            &.data-off { 
+	                                left: auto;
+	                                right: 0;
+
+	                                .switch-icon { margin: 0 5px 0 0; }
+	                            }
+	                            
+	                            &.data-on { 
+	                                left: auto;
+	                                right: 100%;
+
+	                                .switch-icon { margin: 0 0 0 5px; }
+	                            }
+	                        }
+
+	                        &.on {
+	                            .data-off { left: auto; right: -100%; }
+	                            .data-on { left: auto; right: 0; }
+	                        }
+	                    }
+	                }
+
+	                &.search {
+	                    .calc-width( 100, 340 );
+	                }
+
+	                &.options {
+	                    width: 180px;
+	                    
+	                    .select,
+	                    .input {
+	                        &.with-label {
+
+	                            select {
+	                                padding: 15px 30px 0 10px;
+	                                font-size: 14px;
+	                            }
+
+	                            input {
+	                                padding: 10px 10px 0 10px;
+	                            }
+
+	                            label {
+	                                position: absolute;
+	                                top: 0;
+	                                left: 10px;
+	                                font-size: 12px;
+	                                text-transform: uppercase;
+	                                color: @grey3;
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+
+	            .add-new-button {
+	                position: relative;
+	                &:before {
+	                content: '';
+	                    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1);
+	                    height: 100%;
+	                    width: 1px;
+	                    left: -12px;
+	                    top: 0;
+	                    position: absolute;
+	                }
+	            }
+
+	            &.enable-adding {
+
+	                .entry {
+	                    &.search {
+	                        .calc-width( 100, 450 );
+	                    }
+	                }
+	            }
+
+	            &.show-merge {
+	                .entry {
+	                    &.search {
+	                        .calc-width( 100, 440 );
+	                    }
+	                }
+
+	                &.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 530 );
+	                        }
+	                    }
+	                }
+	            }
+
+	            /* Guest Search (used with card-search) **/
+	            &.guest-search {
+	                
+	                .entry {
+	                    
+	                    &.search {
+	                        .calc-width( 100, 150 );
+	                    }
+	                }
+
+	                &.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 260 );
+	                        }
+	                    }
+	                }
+
+	                &.show-merge {
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 150 );
+	                        }
+	                    }
+
+	                    &.enable-adding {
+
+	                        .entry {
+	                            &.search {
+	                                .calc-width( 100, 260 );
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 
@@ -1806,6 +2034,10 @@ body { overflow: hidden; }
 	        .hide();
 	        .box-shadow(0 -1px 1px rgba(0,0,0,.2));
 	        .size(60px, 100%);
+
+	        &.show-merge {
+	            .calc-width(100, 340);
+	        }
 	    }
 
 	    .numbers-pagination {
@@ -1970,6 +2202,7 @@ body { overflow: hidden; }
 /* Guest image 				==============================*/
 	.guest-image {
 		position: relative;
+		text-align: center;
 		#border-radius > .rounded();
 		.square(40px);
 		.pull-left;
@@ -1982,21 +2215,22 @@ body { overflow: hidden; }
 		}
 
 		.global-card {
-        position: absolute;
-        top: -5px;
-        left: -5px;
-    }
+	        position: absolute;
+	        top: -5px;
+	        left: -5px;
+	    }
 
-    .stay-count {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-    }
+	    .stay-count {
+	        position: absolute;
+	        top: -5px;
+	        right: -5px;
+	    }
 
 		img {
-			width: 100%;
-			height: auto;
-			#border-radius > .rounded();
+			max-width: 100%;
+	        max-height: 100%;
+	        .square(auto);
+	        #border-radius > .rounded();
 		}
 
 		&.accompany {
@@ -3001,6 +3235,10 @@ body { overflow: hidden; }
 				#border-radius > .rounded();
 				.box-shadow();
 				.show;
+
+				p {
+					white-space: pre-wrap;
+				}
 
 				&:hover,
 				&:active { 

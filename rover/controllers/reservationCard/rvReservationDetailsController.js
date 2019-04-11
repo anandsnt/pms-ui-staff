@@ -304,8 +304,10 @@ sntRover.controller('reservationDetailsController',
 		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 		$scope.guestCardData.nationality_id = reservationListData.guest_details.nationality_id;
-		$scope.guestCardData.contactInfo.address = {};
-		$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		if (!$scope.guestCardData.contactInfo.address) {
+			$scope.guestCardData.contactInfo.address = {};
+			$scope.guestCardData.contactInfo.address.country_id = reservationListData.guest_details.country_id;
+		}
 
 		/**
 		 *	We have moved the fetching of 'baseData' form 'rover.reservation' state
@@ -459,8 +461,9 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.saveAccGuestDetails = function() {
 			setTimeout(function() {
-
-				if(document.activeElement.getAttribute("type") != "text") {
+				// CICO-60110 - Save the accompany guests only while in staycard. 
+				// The additional check is to prevent the save while navigating to some other states
+				if(document.activeElement.getAttribute("type") != "text" && $state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails") {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
@@ -852,6 +855,12 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		var navigateToRoomAndRates = function(arrival, departure) {
+			var roomTypeId = $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId;
+			// CICO-59948 For in-house reservation, set the room type id as the current room type id(API response)
+			if ($scope.reservationData.reservation_card.reservation_status === 'CHECKEDIN') {
+				roomTypeId = $scope.reservationData.reservation_card.room_type_id;
+			}
+
 			$state.go(roomAndRatesState, {
 				from_date: arrival || reservationMainData.arrivalDate,
 				to_date: departure || reservationMainData.departureDate,
@@ -861,9 +870,10 @@ sntRover.controller('reservationDetailsController',
 				travel_agent_id: $scope.$parent.reservationData.travelAgent.id,
 				group_id: $scope.borrowForGroups ? '' : $scope.$parent.reservationData.group.id,
 				borrow_for_groups: $scope.borrowForGroups,
-				room_type_id: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].roomTypeId,
+				room_type_id: roomTypeId,
                 adults: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numAdults,
-                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren
+                children: $scope.$parent.reservationData.tabs[$scope.viewState.currentTab].numChildren,
+                is_member: $scope.guestData.primary_guest_details.is_member
 			});
 		}
 
@@ -1814,8 +1824,12 @@ sntRover.controller('reservationDetailsController',
 			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
 			$filter('translate')('DOB') + ": " + guestDocData.date_of_birth + "\r\n" +
 			$filter('translate')('NATIONALITY') + ": " + guestDocData.nationality + "\r\n" +
-			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n" +
-			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
+			$filter('translate')('ID_NUMBER') + ": " + guestDocData.document_number + "\r\n";
+
+		if (guestDocData.id_scan_info && guestDocData.id_scan_info.personal_id_no) {
+			guestInfo = guestInfo + $filter('translate')('PERSONAL_NUMBER') + ": " + guestDocData.id_scan_info.personal_id_no + "\r\n";
+		}
+		guestInfo = guestInfo + $filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
 		return guestInfo;
 	};

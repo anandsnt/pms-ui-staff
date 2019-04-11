@@ -37,7 +37,8 @@
                     Feel free to use just one input field id you want to -->
                     <input type="text" ng-show="shouldShowNights && maxStayLength <= 99" name="nights-number" id="nights-number" type="tel" maxlength="2" ng-model="reservationData.numNights" ng-change="setDepartureDate()"/>
                     <input type="text" ng-show="shouldShowNights && maxStayLength > 99" name="nights-number" id="nights-number" type="tel"  maxlength="3" ng-model="reservationData.numNights" ng-change="setDepartureDate()"/>
-                    <input type="text" ng-show="shouldShowHours" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()" />
+                    <input type="text" ng-show="shouldShowHours && maxStayLength <= 99" name="hours-number" id="hours-number" type="tel" maxlength="2" ng-model="reservationData.resHours" ng-blur="setDepartureHours()" />
+                    <input type="text" ng-show="shouldShowHours && maxStayLength > 99" name="hours-number" id="hours-number" type="tel" maxlength="3" ng-model="reservationData.resHours" ng-blur="setDepartureHours()" />
                 </div>
             </div>
             <!-- Departure date -->

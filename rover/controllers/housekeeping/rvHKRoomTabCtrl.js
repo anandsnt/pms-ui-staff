@@ -361,7 +361,12 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
             if ($scope.showSaved) {
                 $scope.showSaved = false;
             } else {
-                $scope.checkWhetherRoomStatusChangePossible();
+                if ($scope.updateService.room_service_status_id !== 1) {
+                  $scope.checkWhetherRoomStatusChangePossible();  
+                } else {
+                    $scope.update();
+                }
+                
             }
         };
 

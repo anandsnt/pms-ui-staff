@@ -47,7 +47,7 @@
 	"FULL_EXPORT": "Full Export",
 	"SYS_NAME": "System name",
 	"SYS_VERSION": "System Version",
-    "MAPPING_TYPE": "Mapping Type",
+  "MAPPING_TYPE": "Mapping Type",
 	"SNT_VALUE": "SNT Value",
 	"EXTERNAL_VALUE" : "External Value",
 	"SAVE_NEW_MAPPING": "Save New Mapping",
@@ -60,7 +60,7 @@
 	"MAP_SELECTED_ROOMS": "Map Selected Rooms",
 	"DELETE_MAPPING": "Delete Mapping",
 	"SAVE_MAPPING": "Save Mapping",
-	"ACCOUNTVIEW_HEADER": "AccountView Back Office",
+	"ACCOUNTVIEW_HEADER": "Integrations > Back Office > Accountview",
 	"FEATURE_DOWNLOAD_RESERVATION": "Download Reservation",
 	"FEATURE_UPLOAD_INVENTORY": "Upload Inventory",
 	"FEATURE_UPLOAD_RATE": "Upload Rate",
@@ -116,4 +116,7 @@
   "VAT_CODE": "VAT Code",
   "COST_CENTER": "Cost Center",
 	"SETTLING_ACC": "Settling Account Number",
-	"GL_ACCOUNT": "GL Account for Direct Bill"
+	"GL_ACCOUNT": "GL Account for Direct Bill",
+	"TURKISHINVOICE_HEADER": "Turkish E-Invoice Setup",
+	"EDIT_ROOM_TYPES": "Edit Room Types",
+	"ADD_RATE_ROOM_TYPE": "Add Rate and Room Types"

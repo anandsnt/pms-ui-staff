@@ -326,6 +326,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 			$scope.guestIdData.document_type = data.document_type && data.document_type.toUpperCase() === 'PASSPORT' ? 'PASSPORT' : 'ID_CARD';
 			$scope.guestIdData.expiry_date_for_display = $scope.guestIdData.expiration_date ? dateInHotelsFormat($scope.guestIdData.expiration_date) : '';
 			$scope.guestIdData.dob_for_display = $scope.guestIdData.date_of_birth ? dateInHotelsFormat($scope.guestIdData.date_of_birth) : '';
+			$scope.guestIdData.id_scan_info = data.id_scan_info;
+
 			var nationality_id = '';
 
 			if (data.nationality_name) {
@@ -351,9 +353,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.$on('FINAL_RESULTS', function(evt, data) {
 			$scope.$emit('hideLoader');
-			if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
-				idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
-			} else if (data.expirationStatus === 'Expired') {
+			// Commented below code to avoid failures w/o expiry date
+			// if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
+			// 	idScanFailureActions('INVALID EXPIRATION DATE. PLEASE RETRY OR USE ANOTHER ID.');
+			// } 
+			if (data.expirationStatus === 'Expired') {
 				idScanFailureActions('ID IS EXPIRED. PLEASE RETRY OR USE ANOTHER ID.');
 			} else if (!data.document_number) {
 				idScanFailureActions('FAILED TO ANALYZE THE DOCUMENT. PLEASE RETRY OR USE ANOTHER ID.');

@@ -75,7 +75,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sister-city': 'Sister City Hotel NY',
             'twa': 'TWA Hotel',
             'carrollton-inn': 'Carrollton Inn',
-            'match': 'Hotel the Match'
+            'match': 'Hotel the Match',
+            'liason': 'Liason DC',
+            'clarion-collection': 'Clarion Collection',
+            'la-copa': 'La Copa Inn',
+            'ruby': 'Ruby Hospitality',
+            'qbic': 'Qbic Hotels',
+            'merrion-row': 'Merrion Row Hotel And Public House',
+            'freehand-chicago': 'Freehand Chicago',
+            'why': 'Why Hotel',
+            'village': 'Village Hotels'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -721,7 +730,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.getDeviceDetails = function(params) {
 
-            var url = "/api/notifications/device_details";
+            var url = '/api/notifications/device_details';
 
             return zsBaseWebSrv.getJSON(url, params);
         };

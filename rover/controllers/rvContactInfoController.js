@@ -141,7 +141,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
                 RVContactInfoSrv.completeContactInfoClone = JSON.parse(JSON.stringify(dataToUpdate));
         // change date format to be send to API
-                dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+                if ($scope.guestCardData.contactInfo.birthday) {
+                    dataToUpdate.birthday = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+                } else {
+                    dataToUpdate.birthday = null;
+                }
                 var unwantedKeys = ['avatar']; // remove unwanted keys for API
 
                 dataToUpdate = dclone(dataToUpdate, unwantedKeys);
@@ -281,6 +285,33 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             }
 
             return defaultStyleClass;
+        };
+        /*
+         * To get the deafult class 
+         */
+        $scope.getDefaultClass = function(fieldName) {
+            var visibleCount = 0;
+
+            if (fieldName === "vehicle_registration_number") {
+                if ($scope.guestCardData.contactInfo.is_father_name_visible) {
+                    visibleCount++;
+                }
+                if ($scope.guestCardData.contactInfo.is_mother_name_visible) {
+                    visibleCount++;
+                }
+                if ($scope.guestCardData.contactInfo.is_birth_place_visible) {
+                    visibleCount++;
+                }
+                if ($scope.guestCardData.contactInfo.is_gender_visible) {
+                    visibleCount++;
+                }
+
+                if ( visibleCount % 2 === 0) {
+                    return 'margin';
+                }
+
+                return '';
+            }
         };
 
         init();

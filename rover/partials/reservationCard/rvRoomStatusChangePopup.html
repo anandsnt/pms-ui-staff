@@ -1,0 +1,25 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content confirmation">
+        <span class="h2 message">{{::('CHECK_IN_REVERSED' | translate)}}</span>
+        <span class="text">{{::('PLEASE_SET_ROOM_STATUS' | translate)}}</span>
+
+        <div class="status">
+            <label for="room-status">Room</label>
+            <div class="switch-button"  ng-class="{'on': roomStatus.isReady}">
+                <input id="room-status" type="checkbox" ng-model="roomStatus.isReady"/>
+                <label class="data-off">
+                    <span class="switch-icon">Not Ready</span>
+                    <span class="value">Ready</span>
+                </label>
+                <label class="data-on">
+                    <span class="value">Not Ready</span>
+                    <span class="switch-icon">Ready</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button green modal-close" ng-click="updateRoomStatus()">Ok</button>
+        </div>
+    </div>
+</div>

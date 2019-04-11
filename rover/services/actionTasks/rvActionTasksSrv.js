@@ -9,8 +9,8 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
             $filter('translate')('TUESDAY'),
             $filter('translate')('WEDNESDAY'),
             $filter('translate')('THURSDAY'),
-            $filter('translate')('SATURDAY'),
-            $filter('translate')('FRIDAY')
+            $filter('translate')('FRIDAY'),
+            $filter('translate')('SATURDAY')
         ];
 
     self.searchPerPage = 50;

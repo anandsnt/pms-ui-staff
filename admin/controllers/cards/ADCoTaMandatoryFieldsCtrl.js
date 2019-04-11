@@ -1,6 +1,8 @@
 admin.controller('ADCoTaMandatoryFieldsCtrl', ['$scope', '$state', 'ADCoTaMandatorySrv',
 function($scope, $state, ADCoTaMandatorySrv) {
 	BaseCtrl.call(this, $scope);
+	$scope.fieldsAlwaysVisible = ["address_line1_mandatory", "city_mandatory", "postal_code_mandatory", "country_mandatory", "contact_phone_mandatory", "contact_email_address_mandatory", "contact_name_mandatory", "tax_id_mandatory", "payment_due_days_mandatory"];
+
 	/*
 	 * Save Mandatory fields
 	 */
@@ -11,22 +13,133 @@ function($scope, $state, ADCoTaMandatorySrv) {
 
 		$scope.callAPI(ADCoTaMandatorySrv.saveCoTaMandatoryFields, options);
 	};
+	
 	/*
-	 * Set all fields false;
+	 * Clicked visible status
+	 * @param fieldName field name
 	 */
-	$scope.clickedMandatoryCheck = function() {
-		if (!$scope.coTaMandatoryFields.mandatory_on_ar_account) {
-			$scope.coTaMandatoryFields = {
-				tax_id_mandatory: false,
-				contact_name_mandatory: false,
-				address_line1_mandatory: false,
-				city_mandatory: false,
-				postal_code_mandatory: false,
-				country_mandatory: false,
-				contact_phone_mandatory: false,
-				contact_email_address_mandatory: false,
-				e_invoice_mandatory: false
-			};
+	$scope.clickedStatus = function(fieldName) {
+		if (!(_.contains($scope.fieldsAlwaysVisible, fieldName))) {
+			switch (fieldName) {
+				case "e_invoice_mandatory":
+					$scope.coTaMandatoryFields.e_invoice_mandatory.is_visible = !$scope.coTaMandatoryFields.e_invoice_mandatory.is_visible;
+					if (!$scope.coTaMandatoryFields.e_invoice_mandatory.is_visible) {
+						$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation = false;
+						$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_account_creation = false;
+					}
+					break;
+				case "regd_tax_office_mandatory":
+					$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_visible = !$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_visible;
+					if (!$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_visible) {
+						$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation = false;
+						$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_account_creation = false;
+					}
+					break;
+				case "organization_id_mandatory":
+					$scope.coTaMandatoryFields.organization_id_mandatory.is_visible = !$scope.coTaMandatoryFields.organization_id_mandatory.is_visible;
+					if (!$scope.coTaMandatoryFields.organization_id_mandatory.is_visible) {
+						$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation = false;
+						$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation = false;
+					}
+					break;
+			}
+		}
+	};
+	/*
+	 * Clicked mandatory on ARaccount creation
+	 * @param fieldName field name
+	 * @param isFieldVisible is field visible or not
+	 */
+	$scope.clickedMandatoryOnArAccountCreation = function (isFieldVisible, fieldName) {
+		
+		if (isFieldVisible) {
+
+			switch (fieldName) {
+				case "address_line1_mandatory":
+					$scope.coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "city_mandatory":
+					$scope.coTaMandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "postal_code_mandatory":
+					$scope.coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "country_mandatory":
+					$scope.coTaMandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "contact_phone_mandatory":
+					$scope.coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "contact_email_address_mandatory":
+					$scope.coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "contact_name_mandatory":
+					$scope.coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "tax_id_mandatory":
+					$scope.coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "e_invoice_mandatory":
+					$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "regd_tax_office_mandatory":
+					$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "organization_id_mandatory":
+					$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+				case "payment_due_days_mandatory":
+					$scope.coTaMandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation = !$scope.coTaMandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation;
+					break;
+			}
+		}
+	};
+	/*
+	 * Clicked mandatory on ARaccount creation
+	 * @param fieldName field name
+	 * @param isFieldVisible is field visible or not
+	 */
+	$scope.clickedMandatoryOnAccountCreation = function (isFieldVisible, fieldName) {
+		if (isFieldVisible) {
+
+			switch (fieldName) {
+				case "address_line1_mandatory":
+					$scope.coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.address_line1_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "city_mandatory":
+					$scope.coTaMandatoryFields.city_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.city_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "postal_code_mandatory":
+					$scope.coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.postal_code_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "country_mandatory":
+					$scope.coTaMandatoryFields.country_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.country_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "contact_phone_mandatory":
+					$scope.coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.contact_phone_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "contact_email_address_mandatory":
+					$scope.coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.contact_email_address_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "contact_name_mandatory":
+					$scope.coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.contact_name_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "tax_id_mandatory":
+					$scope.coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.tax_id_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "e_invoice_mandatory":
+					$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.e_invoice_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "regd_tax_office_mandatory":
+					$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.regd_tax_office_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "organization_id_mandatory":
+					$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation;
+					break;
+				case "payment_due_days_mandatory":
+					$scope.coTaMandatoryFields.payment_due_days_mandatory.is_mandatory_on_account_creation = !$scope.coTaMandatoryFields.payment_due_days_mandatory.is_mandatory_on_account_creation;
+					break;
+			}
 		}
 	};
 	/*
