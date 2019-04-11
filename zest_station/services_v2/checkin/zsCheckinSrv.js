@@ -11,11 +11,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.checkInReservations = [];
         this.currentReservationIdDetails = {};
 
-        this.setCurrentReservationIdDetails = function(data){
+        this.setCurrentReservationIdDetails = function(data) {
             that.currentReservationIdDetails = data;
         };
 
-        this.getCurrentReservationIdDetails = function(data){
+        this.getCurrentReservationIdDetails = function() {
             return that.currentReservationIdDetails;
         };
 

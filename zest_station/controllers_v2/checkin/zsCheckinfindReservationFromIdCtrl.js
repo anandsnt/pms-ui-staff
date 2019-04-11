@@ -105,6 +105,7 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                             return guest.is_primary;
                         });
                         var guestName = primaryGuest.first_name + primaryGuest.last_name;
+
                         reservationId = response.results[0].id;
 
                         recordIDScanActions('ID_ANALYZING', 'Success for the guest', guestName);
@@ -112,8 +113,6 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                             recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest', guestName);
                         }
                     }
-                    
-                    
                     $state.go('zest_station.checkInReservationDetails');
                 } else if (response.results && response.results.length > 1) {
                     // zsCheckinSrv.setCheckInReservations(response.results);
@@ -130,12 +129,13 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                 is_kiosk: true,
                 due_in: true,
                 last_name: $scope.idScanData.selectedGuest.scannedDetails.last_name
-            }
+            };
             var options = {
                 params: params,
                 successCallBack: reservationSearchSuccess,
                 failureCallBack: reservationSearchFailed
             };
+
             $scope.callAPI(zsCheckinSrv.fetchReservations, options);
         };
 

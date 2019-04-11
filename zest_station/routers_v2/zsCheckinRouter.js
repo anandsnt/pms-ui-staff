@@ -424,8 +424,8 @@ sntZestStation.config(['$stateProvider',
         $stateProvider.state('zest_station.findReservationFromId', {
             url: '/findReservationFromId',
             controller: 'zsCheckinfindReservationFromIdCtrl',
-            templateUrl:'/assets/partials_v2/checkin/zsFindReservationUsingId.html'
-        })
+            templateUrl: '/assets/partials_v2/checkin/zsFindReservationUsingId.html'
+        });
     
     }
 ]);
