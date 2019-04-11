@@ -156,7 +156,7 @@
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) or searching -->
-      <ul class="commissions-info totals" style="display:block" ng-hide="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected())">
+      <ul class="commissions-info totals" style="display:block" ng-hide="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()) || filterData.filterTab === 'PAID'">
          <li>
             <span translate>OPEN_BILLS</span>
             <span class="amount">{{ commissionsData.bill_count_totals.open +commissionsData.bill_count_totals.on_hold  }}</span>
@@ -175,6 +175,7 @@
          <li class="expand">
             <span class="icons icon-double-arrow black expand-arrow"></span>
          </li>
+         <li class="check" ng-show="filterData.filterTab === 'PAID'"></li>
          <li class="check" ng-hide="filterData.filterTab === 'PAID'">
             <!-- If clicked, check all or uncheck all -->
             <!-- Add .checked if checked -->
@@ -196,11 +197,17 @@
          <li ng-show="filterData.filterTab === 'ON_HOLD'" translate>
             COMMISSION_BILLS_ON_HOLD
          </li>
+          <li ng-show="filterData.filterTab === 'PAID'" translate>
+            COMMISSIONS_PAID_BILLS
+         </li>
          <li translate>
             COMMISSION
          </li>
-         <li translate>
+         <li ng-hide="filterData.filterTab === 'PAID'" translate>
             COMMISSION_OWING
+         </li>
+        <li ng-show="filterData.filterTab === 'PAID'" translate>
+            COMMISSION_PAID
          </li>
       </ul>
       <!-- Add .no-results if no results -->
@@ -244,11 +251,11 @@
                         </div>
                         <ul class="info">
                            <li>
-                              {{ ::account.number_of_unpaid_bills }}
+                              {{ ::account.number_of_bills }}
                            </li>
                            <li ng-show="account.commission_info.rate.type == 'amount'">{{ ::currencySymbol }}{{ ::account.commission_info.rate.value | number: precisonTwo }}</li>
                            <li ng-hide="account.commission_info.rate.type == 'amount'">{{ ::account.commission_info.rate.value}}%</li>                           <!-- Remove class .red if 0 -->
-                           <li ng-class="{'red': account.amount_owing > 0 }">{{ ::currencySymbol }}{{ ::account.amount_owing | number: precisonTwo }}</li>
+                           <li ng-class="{'red': account.commission_amount > 0 && filterData.filterTab !== 'PAID'}">{{ ::currencySymbol }}{{ ::account.commission_amount | number: precisonTwo }}</li>
                         </ul>
                      </a>
                      <!-- Remove .hidden when expanded -->
@@ -263,7 +270,8 @@
                                  <th class="amount" translate="">COMMISSION_REVENUE</th>
                                  <th class="amount" translate>COMMISSIONABLE_REVENUE</th>
                                  <th class="amount" translate>COMMISSION</th>
-                                 <th class="owing" translate>COMMISSION_OWING</th>
+                                 <th class="owing" ng-hide="filterData.filterTab === 'PAID'" translate>COMMISSION_OWING</th>
+                                 <th class="owing" ng-show="filterData.filterTab === 'PAID'" translate>COMMISSION_PAID</th>
                               </tr>
                            </thead>
                            <tbody>
@@ -295,7 +303,7 @@
                                     {{ reservation.commission_rate}}
                                  </td>
                                  <!-- Add .red if more than 0 -->
-                                 <td class="owing" ng-class="{'red': reservation.amount_owing>0}">{{ ::currencySymbol }} {{ reservation.amount_owing| number: precisonTwo}}</td>
+                                 <td class="owing" ng-class="{'red': reservation.commission_amount > 0 && filterData.filterTab !== 'PAID'}">{{ ::currencySymbol }} {{ reservation.commission_amount| number: precisonTwo}}</td>
                               </tr>
                            </tbody>
                         </table>

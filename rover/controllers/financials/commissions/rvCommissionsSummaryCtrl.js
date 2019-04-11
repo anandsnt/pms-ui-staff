@@ -41,23 +41,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 totalBillAmountOnCurrentPage = 0;
 
             _.each($scope.commissionsData.accounts, function(account) {
-                totalBillAmountOnCurrentPage += parseFloat(account.amount_owing);
+                totalBillAmountOnCurrentPage += parseFloat(account.commission_amount);
                 if (account.isSelected) {
                     // if account is fully selected, the amount owing will be the total amount
-                    total_amount += parseFloat(account.amount_owing);
+                    total_amount += parseFloat(account.commission_amount);
                 } else {
                     // sum the amounts owing for the selected reservations for the account
                     if (account.reservationsData && account.reservationsData.reservations) {
                         _.each(account.reservationsData.reservations, function (reservation) {
                             if (reservation.isSelected) {
-                                total_amount += parseFloat(reservation.amount_owing);
+                                total_amount += parseFloat(reservation.commission_amount);
                             }
                         });
                     }
                 }
             });
 
-            if (!$scope.allCommisionsSelected) {
+            if($scope.filterData.filterTab === 'PAID'){
+                //TODO: handle PAID tab when checkbox selection is shown
+                $scope.commissionsData.selectedBillsAmount = $scope.commissionsData.amount_totals.paid;
+            }
+            else if (!$scope.allCommisionsSelected) {
                 $scope.commissionsData.selectedBillsAmount = total_amount;
             } else {
                 var totalAmountForSelectedTab;
@@ -69,8 +73,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     totalAmountForSelectedTab = $scope.commissionsData.amount_totals.paid;
                 }
 
-                $scope.commissionsData.selectedBillsAmount = parseFloat(totalAmountForSelectedTab)
-                    - totalBillAmountOnCurrentPage + total_amount;
+                $scope.commissionsData.selectedBillsAmount = parseFloat(totalAmountForSelectedTab) -
+                    totalBillAmountOnCurrentPage + total_amount;
+
             }
         };
 
@@ -151,7 +156,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if (account.isSelected) {
                 // if the account was fully selected and then item is deselected, remove all unpaid bills
                 // from no of bills selected and consider only the no of selected bills on the current page
-                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_unpaid_bills + account.selectedReservations.length;
+                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_bills + account.selectedReservations.length;
             }
 
             // is checked and was not added before
@@ -230,13 +235,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if (account.isSelected) {
                 $scope.noOfTASelected++;
                 // substract all selected Resevations and add all reservations again
-                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.selectedReservations.length + account.number_of_unpaid_bills;
+                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.selectedReservations.length + account.number_of_bills;
             } else if ($scope.noOfTASelected > 0) {
                 $scope.noOfTASelected--;
-                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_unpaid_bills;
+                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_bills;
             } else {
                 $scope.noOfTASelected = 0;
-                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_unpaid_bills;
+                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_bills;
             }
             // check if any one of the entity is selected
             _.each($scope.commissionsData.accounts, function(account) {
@@ -387,6 +392,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }, 100);
                 $scope.initialLoading = false;
                 $scope.sideFilterData.openSideFilter = false; // close the side filter
+                calculateTotalSelectedBillAmount();
             };
 
             $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
