@@ -51,14 +51,18 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         var generatedList = [];
 
         if (data && data.available_dates) {
-            for (var i = 1; i <= data.available_dates.length; i++ ) {
-                var obj = {
+            var count = data.available_dates.length - 1,
+                i,
+                obj = {};
+
+            for (i = 1; i <= count; i++ ) {
+                obj = {
                     day: i,
                     arrivalTimeList: [],
                     departureTimeList: []
                 };
 
-                if (i === data.available_dates) {
+                if (i === count) {
                     obj.arrivalTimeList = generateTimeDuration(data.min_arrival_time, null);
                     obj.departureTimeList = generateTimeDuration(null, $scope.setTimePopupData.data.max_departure_time);
                 }

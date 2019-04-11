@@ -206,7 +206,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
                         .add(addDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 
-        if (differenceInDays !== 0) {
+        if (differenceInDays !== 0 || (differenceInDays === 0 && differenceInPosition < 0)) {
             props.showOrHideSaveChangesButton(true);
         }
         else {

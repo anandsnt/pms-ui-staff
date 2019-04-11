@@ -622,11 +622,22 @@
         text-transform: uppercase;
         padding: 0 5px;
         margin: 2px 0;   
-        .size(28px, ~'@{roomsWidth}px');
+        height: 28px;
+        .calc-width(100, @gridWidth);
         #flexbox > .parent(row nowrap, '', center, '');
 
+        /* Fixed Width from this point ***/
+        @media screen and (min-width: ~'@{containerWidth}px') {
+            width: ~'@{roomsWidth}px';
+        }
+
         &.highlighted {
-            background-color: fade(@logoPrimary, 30%);
+            background-color: #f7dfc3;
+
+            .room-number {
+                background-color: #f7dfc3;
+                background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #f7dfc3 10px, #f7dfc3 100%);
+            }
         }
 
         &.not-clickable {
@@ -1306,7 +1317,7 @@
         }
 
         &.future {
-            background-color: lighten(@green, 5);
+            background-color: @green;
         }
 
         /* No Show, Cancel, OOO, OOS, Web in Progress ***/
@@ -1380,6 +1391,7 @@
         /* Day Use Reservation ***/
         &.dayuse {
             cursor: default;
+            z-index: 1;
 
             .reservation-data {
                 .square(100%);

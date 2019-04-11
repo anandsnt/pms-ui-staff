@@ -508,7 +508,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             var requestData = {};
 
-            requestData.accountId = $scope.accountId;
+            requestData.accountId = $scope.accountId === "add" ? $scope.contactInformation.id : $scope.accountId;
         
             $scope.invokeApi(RVCompanyCardSrv.fetchMultiProperties, requestData, onPropertyFetchSuccess);
 

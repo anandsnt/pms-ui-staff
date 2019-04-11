@@ -746,16 +746,20 @@
                 width: 100%;
                 #flexbox > .parent(row wrap, '', center, '');
 
-                /*&.occupied { 
-                    color: @grey4;
-                    background: @grey1;
-                }*/
+                &.unavailable { 
+                    background-color: @grey2;
+
+                    .number,
+                    .type {
+                        color: @grey3;
+                    }
+                }
                 
                 &.dirty { 
                     .number {
                         color: @red;
                     }
-                }   
+                }    
 
                 &:not(:first-child) {
                     &:before {
@@ -1013,7 +1017,6 @@
                         cursor: @draggable 16 16, pointer;
                         color: @white;
                         background-color: @purpleStart;
-                        z-index: 1149;
                     }
 
                     &.dragstate {
@@ -1060,6 +1063,10 @@
                     }
                 }
 
+                &.editing {
+                    z-index: 1149;
+                }
+
                 &.deposit-required {
                     .occupied {
                         text-indent: 48px;
@@ -1081,6 +1088,10 @@
                     height: 100%;
 
                     &:nth-child(odd) { background-color: rgba(0,0,0,.05); }
+                }
+
+                &.unavailable { 
+                    background-color: @grey2; 
                 }
 
                 &:not(:first-child) {
@@ -1261,11 +1272,11 @@
     /* Row ***/
     .guest {
         position: relative;
-        color: @black;
+        color: @white;
+        background-color: @green;
         height: 40px;
         line-height: 1;
         padding: 5px 10px;
-        background-color: @white;
         cursor: pointer;
         .box-shadow(1px 1px 1px rgba(0,0,0,.2));
         #flexbox > .parent(row wrap, '', center, '');
@@ -1329,10 +1340,6 @@
             opacity: 0.5;
             color: @black;
             width: 100%;
-        }
-
-        &:not(.no-status) {
-            color: @white;
         }
 
         &.check-in,

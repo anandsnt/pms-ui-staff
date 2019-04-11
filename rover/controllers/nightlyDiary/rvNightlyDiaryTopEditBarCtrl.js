@@ -87,6 +87,9 @@ angular.module('sntRover')
                             scope: $scope
                         });
                     }
+                    else {
+                        $scope.$emit('SHOW_ERROR_MESSAGE', errorMessage[0]);
+                    }
                 },
                 postData = {
                     'reservation_id': selectedItem.reservation_id,

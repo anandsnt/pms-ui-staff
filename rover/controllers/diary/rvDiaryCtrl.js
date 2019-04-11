@@ -334,14 +334,14 @@ angular.module('sntRover')
 			viewport: {
 				hours: 24,
 				width: angular.element($window).width() - 120,
-				height: angular.element($window).height() - 230,
-				row_header_right: 120,
-				timeline_header_height: 80,
-				timeline_height: 60,
+				height: angular.element($window).height() - 180,
+				row_header_right: 184,
+				timeline_header_height: 60,
+				timeline_height: 40,
 				timeline_occupancy_height: 20,
-				timeline_header_bottom: 230,
+				timeline_header_bottom: 180,
 				element: function() {
-					return $('.diary-grid .wrapper');
+                    return $('.diary-grid');
 				}
 			},
 		/* h
@@ -368,8 +368,8 @@ angular.module('sntRover')
 				width: undefined,
 				height: undefined,
 				hours: getTotalGridHours( payload.display.x_n ),
-				row_height: 24, // please set to 60 when default changeed to 12 hour mode
-				row_height_margin: 0,
+				row_height: 28, // please set to 60 when default changeed to 12 hour mode
+				row_height_margin: 2,
 				intervals_per_hour: 4,
 				ms_15: 900000,
 				ms_hr: 3600000,
