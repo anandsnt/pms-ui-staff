@@ -16,7 +16,7 @@ admin.service('adIFCInterfaceMappingSrv', [
                 return ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000');
             },
             'MARKET_SEGMENTS': function() {
-                return ADBaseWebSrvV2.getJSON('/api/market_segments.json?per_page=1000');
+                return ADBaseWebSrvV2.getJSON('/api/market_segments.json?per_page=1000&is_active=true');
             },
             'CANCELLATION_POLICIES': function() {
                 return ADBaseWebSrvV2.getJSON('/api/cancellation_policies.json?per_page=1000');
