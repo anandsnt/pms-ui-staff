@@ -22,57 +22,11 @@ sntRover.controller('companyTravelAgentMandatoryFieldsController',
         };   
 
         $scope.shouldEnableSubmitButton = function() {
-            var shouldEnable = ($scope.contactInformation.mandatoryFields.address_line1_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.address_details.street1)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.city_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.address_details.city)
-                        : true)  
-                    && ($scope.contactInformation.mandatoryFields.postal_code_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.address_details.postal_code)
-                        : true)  
-                    && ($scope.contactInformation.mandatoryFields.country_mandatory.is_mandatory_on_ar_account_creation 
-                        ? ($scope.contactInformation.address_details.country_id !== '' 
-                            && $scope.contactInformation.address_details.country_id !== null)
-                        : true)
-                      
-                    && ($scope.contactInformation.mandatoryFields.contact_phone_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.address_details.phone)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.contact_email_address_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.address_details.email_address) 
-                        && (isValidEmail($scope.contactInformation.address_details.email_address))
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.e_invoice_address)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.account_details.organization_id)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.tax_id_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.account_details.tax_number)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.regd_tax_office_mandatory.is_mandatory_on_ar_account_creation 
-                        ? !isEmpty($scope.contactInformation.account_details.reg_tax_office)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.contact_name_mandatory.is_mandatory_on_ar_account_creation 
-                        ? (!isEmpty($scope.contactInformation.primary_contact_details.contact_first_name) 
-                            && !isEmpty($scope.contactInformation.primary_contact_details.contact_last_name))
-                        : true) 
-                    && (!$scope.arAccountDetails.is_auto_assign_ar_numbers 
-                        ? ($scope.arAccountDetails.ar_number !== '' 
-                        && $scope.arAccountDetails.ar_number !== null)
-                        : true) 
-                    && ($scope.contactInformation.mandatoryFields.payment_due_days_mandatory.is_mandatory_on_ar_account_creation 
-                        ? ($scope.arAccountDetails.payment_due_days !== '' 
-                            && $scope.arAccountDetails.payment_due_days !== null)
-                        : true);
-
-                return shouldEnable;
+           return $scope.shouldShowARMandatoryPopup();
         };
 
         var init = function() {
-
+            $scope.errorMessage = angular.isUndefined($scope.mandatoryErrorMessage) ? '' : $scope.mandatoryErrorMessage;
             $timeout(function() {
                 $scope.refreshScroller('companyTravelAgentMandatory');
             }, 200);
