@@ -181,7 +181,7 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
             $scope.screenData.facialRecognitionInProgress = true;
             $scope.$emit('showLoader');
         });
-        $scope.$on('FR_FAILED', function() {
+        $scope.$on('FR_FAILED', function(evt, response) {
             $scope.$emit('hideLoader');
             $scope.screenData.facialRecognitionInProgress = false;
             $scope.screenData.scanMode = 'FACIAL_RECOGNTION_FAILED';

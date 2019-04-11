@@ -164,15 +164,22 @@
 				});
 			};
 
+			var idAppprovalRejectAfterActions = function() {
+				$scope.screenData.scanMode = 'GUEST_LIST';
+				setPageNumberDetails();
+				if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
+					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+				}
+				if ($scope.idScanData.selectedGuest.is_primary) {
+					$scope.idScanData.showPrimaryGuestAlreadyScannedMg = false;
+				}
+			};
+
 			$scope.acceptID = function() {
 				var accpetIdSuccess = function() {
 					$scope.idScanData.selectedGuest.idScanStatus = SCAN_ACCEPTED;
-					$scope.screenData.scanMode = 'GUEST_LIST';
 					recordIDScanActions('ID_ANALYZING', 'Success for the guest');
-					setPageNumberDetails();
-					if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
-						$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-					}
+					idAppprovalRejectAfterActions();
 				};
 				var apiParams = angular.copy($scope.idScanData.selectedGuest.scannedDetails);
 
@@ -203,11 +210,7 @@
 
 			$scope.rejectID = function() {
 				$scope.idScanData.selectedGuest.idScanStatus = SCAN_REJECTED;
-				$scope.screenData.scanMode = 'GUEST_LIST';
-				setPageNumberDetails();
-				if ($scope.idScanData.verificationMethod !== 'STAFF' && !$scope.idScanData.staffVerified) {
-					$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-				}
+				idAppprovalRejectAfterActions();
 			};
 
 			$scope.$on('CLEAR_PREVIOUS_DATA', resetSscannedData);
@@ -501,12 +504,20 @@
 					});
 				}
 
+				$scope.idScanData = {
+					mode: '',
+					selectedGuest: {},
+					verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
+					staffVerified: false,
+					showPrimaryGuestAlreadyScannedMg: false
+				};
+
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
 					var scannedDetails = zsCheckinSrv.getCurrentReservationIdDetails();
-					if (guestDetail.is_primary && !_.isEmpty(scannedDetails)) {
-
-						guestDetail.scannedDetails = scannedDetails
+					if (guestDetail.is_primary && !_.isEmpty(scannedDetails) && guestDetail.last_name === scannedDetails.last_name) {
+						$scope.idScanData.showPrimaryGuestAlreadyScannedMg = true;
+						guestDetail.scannedDetails = scannedDetails;
 						guestDetail.front_image_data = scannedDetails.front_image_data ? scannedDetails.front_image_data :'';
 						guestDetail.back_image_data = scannedDetails.back_image_data ? scannedDetails.back_image_data : '';
 						guestDetail.idScanStatus = SCAN_ALREADY_COMPLTED;
@@ -520,12 +531,6 @@
 				$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 
 				$scope.setScreenIcon('checkin');
-				$scope.idScanData = {
-					mode: '',
-					selectedGuest: {},
-					verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
-					staffVerified: false
-				};
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
