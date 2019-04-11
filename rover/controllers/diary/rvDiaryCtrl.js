@@ -808,9 +808,8 @@ angular.module('sntRover')
 		    		if ( copy.physical_count === 0 || (copy.physical_count - selectedTypeCount === 0 ) ) {
 		    			copy.selected = false;
 
-		    			$scope.message = ['Sorry, There are no more physical rooms of "' + copy.room_type + '" available.'];
 		    			ngDialog.open({
-		    				template: '/assets/partials/diary/rvDiaryConfirmation.html',
+		    				template: '/assets/partials/diary/rvDiaryAvailabilityPopup.html',
 		    				controller: 'RVDiaryConfirmationCtrl',
 		    				scope: $scope
 		    			});
