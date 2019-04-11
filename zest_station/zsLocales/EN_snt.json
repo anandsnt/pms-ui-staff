@@ -781,6 +781,6 @@
    "FACIAL_RECOGNITION_FAILED_INSTRUCTIONS": "Please retry or search your reservation by name",
    "FACIAL_RECOGNITION_FAILED": "Facial recongnition failed",
    "GID_SCAN_ALREADY_DONE": "approve/reject",
-   "PRIMARY_GUEST_ALREADY_SCANNED_MSG": "(Since you have already scanned the primary guest, you either approve or reject the scanned results)"
+   "PRIMARY_GUEST_ALREADY_SCANNED_MSG": "(Since you have already scanned the ID of the primary guest, you can either approve or reject the scanned results)"
 
 }

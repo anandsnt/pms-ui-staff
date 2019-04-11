@@ -209,6 +209,7 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
         });
 
         (function() {
+            zsCheckinSrv.setCurrentReservationIdDetails({});
             $scope.screenData.scanMode = 'SHOW_FIND_RESERVATION_OPTIONS';
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);

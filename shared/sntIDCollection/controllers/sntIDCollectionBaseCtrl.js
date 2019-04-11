@@ -192,11 +192,10 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			$scope.screenData.idDetails.iDAuthenticationStatus = sntIDCollectionUtilsSrv.retrieveAuthenticationStatus(response.Result);
 			$scope.screenData.idDetails.expirationStatus = sntIDCollectionUtilsSrv.isIDExpired(response.Alerts) ? 'Expired' : 'Unexpired';
 
-			var idDetailsForPms = sntIDCollectionUtilsSrv.formatResults($scope.screenData.idDetails);
+			var idDetailsForPms = sntIDCollectionUtilsSrv.formatResults(response.Fields);
 			
 			idDetailsForPms.iDAuthenticationStatus = sntIDCollectionUtilsSrv.retrieveAuthenticationStatus(response.Result);
 			idDetailsForPms.expirationStatus = sntIDCollectionUtilsSrv.isIDExpired(response.Alerts) ? 'Expired' : 'Unexpired';
-
 			$scope.$emit('FINAL_RESULTS', idDetailsForPms);
 			retrieveFaceImage();			
 		}, function(response) {
