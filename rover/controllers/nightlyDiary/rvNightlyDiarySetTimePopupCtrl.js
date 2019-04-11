@@ -123,6 +123,11 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         $scope.$emit('SET_TIME_AND_SAVE', timeObj);
     };
 
+    // Handle continueWithBook button click.
+    $scope.continueWithBookClicked = function() {
+        $scope.setTimePopupData.isContinueBookPopup = false;
+    };
+
     init();
 
 }]);
