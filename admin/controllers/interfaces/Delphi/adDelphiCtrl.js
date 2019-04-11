@@ -12,6 +12,8 @@ admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesSrv',
             config.enabled = !config.enabled;
         };
 
+        $scope.realTimeDataSyncItems = ['link', 'group', 'inventory'];
+
         /**
          * when button clicked to switch between mappings/settings
          * @return {undefined}

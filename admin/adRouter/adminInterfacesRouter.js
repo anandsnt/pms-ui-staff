@@ -205,7 +205,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.delphi', {
-        templateUrl: '/assets/partials/interfaces/Delphi/adDelphi.html',
+        templateUrl: '/assets/partials/interfaces/delphi/adDelphi.html',
         controller: 'adDelphiCtrl',
         url: '/delphi',
         resolve: {
