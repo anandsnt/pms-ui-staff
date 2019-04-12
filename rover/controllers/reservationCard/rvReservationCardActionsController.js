@@ -1045,7 +1045,9 @@ year: year};
             }
 
             setInitialActionsCount();
-            $scope.refreshScroller('reservation-card-actions-scroller');
+            $timeout(function() {
+                $scope.refreshScroller('reservation-card-actions-scroller');
+            }, 500);
         })();
     }
 ]);
