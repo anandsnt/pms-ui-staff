@@ -61,9 +61,9 @@ angular.module('sntRover').service('rvMenuSrv',
      * will use the hotel details API response
      * @return {Boolean}
      */
-    var shouldShowSellLimits = function() {
-    	return RVHotelDetailsSrv.hotelDetails.is_sell_limit_enabled;
-    };
+	var shouldShowSellLimits = function() {
+		return RVHotelDetailsSrv.hotelDetails.is_sell_limit_enabled;
+	};
     /**
      * Decide whether the task management submenu is to be shown in housekeeping menu
      * will use the hotel details API response
@@ -273,10 +273,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.companycardsearch",
 		            menuIndex: "cards"
 		        }, {
-		            title: "MENU_SELL_LIMITS",
-		            action: "rover.overbooking",
-		            menuIndex: "overbooking",
-		            hidden: !shouldShowSellLimits()
+					title: "MENU_SELL_LIMITS",
+					action: "rover.overbooking",
+					menuIndex: "overbooking",
+					hidden: !shouldShowSellLimits()
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
