@@ -87,7 +87,7 @@
          <!-- Add .active to current filter -->
         <li ng-class="{ 'active' : filterData.filterTab === 'PAID' }" ng-click="setFilterTab('PAID')">
             {{ 'COMMISSION_PAID' | translate}}
-            <strong>{{commissionsData.bill_count_totals.open}}</strong>
+            <strong>{{commissionsData.bill_count_totals.paid}}</strong>
          </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
             {{ 'COMMISSIONS_PAYABLE' | translate}}
