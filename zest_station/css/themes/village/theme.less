@@ -1,0 +1,193 @@
+/* StayNTouch Zest Station Styles | Village Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #4ad8bf;
+ 
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @black;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+@background:            #fff;
+@backgroundSize:        contain;
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @brandColor; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+       // stroke: @white;
+    }
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#village {
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea {
+        color: @white;
+    }
+    /* Popup fixes end */
+
+    .logo-svg{
+        background-image: url("../css/themes/village/logo.svg");
+        background-repeat: no-repeat;
+        background-size: 175px 50px;
+        background-position: center;
+        height: 90px;
+        width: 240px;
+        margin-top: 40px;
+    }
+
+    #header {
+        height: 150px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 150px);
+        top: 150px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    #actions {
+        &.pull-right {
+            p {
+                strong {
+                    font-size: 18px;
+                    font-weight: 400; 
+                }
+                color: @textColor;
+            }
+        }
+    }
+     
+    #logo {
+        margin-top: 40px;
+        padding-top: 20px;
+        background-color: #000;
+        .size(90px, 240px);
+        .logo {
+            .size(50px, 175px);
+        }
+    }
+
+    #options,
+    .popup #message-content .button {
+        .icons {
+            //fill: #000;
+        }
+    }
+
+    #textual {
+       background: #f5f5f5;
+
+       &:before,
+       &:after {
+        background: #f5f5f5;
+       }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #selection {
+        .details {
+            background: #f5f5f5;
+            color: @black;
+        }
+    }
+
+    /* Popup fixes start */
+    .popup {
+        .button {
+            &.transparent {
+                background: rgba(0,0,0,.1);
+            }
+        }
+    }
+    /* Popup fixes end */
+
+    #guests {
+        .button {
+            background-color: @black;
+            color: white;
+        }
+    }
+
+    #upgrade {
+        .upgrade-price {
+            background-color: @brandColor;
+        }
+    }
+
+    .add-on-list,
+    .add-on { 
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+        .button {
+            &.transparent {
+                background-color: fade(@black, 10);
+            }
+        }
+    }
+
+    .add-on {
+        &:not(.selected) {
+            background-color: #f5f5f5;
+            border-color: #f5f5f5;
+        }
+
+        #options {
+            li {
+                .option {
+                    &.not-selected {
+                        color: @black;
+                    }
+                }
+            }
+        }
+    }
+}

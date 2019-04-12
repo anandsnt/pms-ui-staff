@@ -808,9 +808,8 @@ angular.module('sntRover')
 		    		if ( copy.physical_count === 0 || (copy.physical_count - selectedTypeCount === 0 ) ) {
 		    			copy.selected = false;
 
-		    			$scope.message = ['Sorry, There are no more physical rooms of "' + copy.room_type + '" available.'];
 		    			ngDialog.open({
-		    				template: '/assets/partials/diary/rvDiaryConfirmation.html',
+		    				template: '/assets/partials/diary/rvDiaryAvailabilityPopup.html',
 		    				controller: 'RVDiaryConfirmationCtrl',
 		    				scope: $scope
 		    			});
@@ -895,6 +894,19 @@ angular.module('sntRover')
 				controller: 'RVDiaryMessageShowingCtrl'
 			});
 	    };
+
+        var openUnAssignedPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/diary/rvDiaryUnAssignedPopup.html',
+                scope: $scope,
+                controller: 'RVDiaryMessageShowingCtrl'
+            });
+        };
+
+        $scope.closeUnAssignedPopup = function() {
+            $scope.resetEverything();
+            $scope.closeDialog();
+        };
 
 	   	/**
 	    * method used to set focus on corporate account choosing textbox
@@ -1199,7 +1211,7 @@ angular.module('sntRover')
 
 	    	// Show some message if unassigned exists.
 	    	if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
-	    		showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+                openUnAssignedPopup();
 	    	}
 	    }.bind($scope.gridProps);
 
@@ -1530,7 +1542,7 @@ angular.module('sntRover')
 
 		// CICO-24243 comment-82523 https://goo.gl/b9HgY1
 		if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
-		 	showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+            openUnAssignedPopup();
 	 	}
 	};
 

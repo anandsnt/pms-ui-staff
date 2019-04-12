@@ -9,7 +9,6 @@ body {
 
 body {
   background-color: #fff;
-  color: #000;
 }
 
 .back-text {
@@ -72,8 +71,8 @@ input[type=email] {
 
 .btn,
 .btn:hover {
-  background:#4AD7BE;
-  color: #000;
+  background:#A77B35;
+  color: @white;
 }
 
 .dual-button {
@@ -89,27 +88,27 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
-  background:#4AD7BE;
+  background:#A77B35;
 }
 
 .light-button,
 .light-button:hover {
-  background: #60DBC5;
+  background: #BA975B;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #60DBC5;
+  background: #BA975B;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#4AD7BE;
+  background:#A77B35;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #48D2B7;
+  background: #575753;
 }
 
 .no-thanks,
@@ -138,29 +137,22 @@ input[type=email] {
 }
 
 .upgrade-details .upgrades-btn {
-  background:#4AD7BE;
-  p {
-    color: #000;
-  }
+  background:#A77B35;
 }
 
 .proceed-to-checkin {
-  background: #4AD7BE;
-  color: #000;
+  background: #A77B35;
 }
 
 .upgrades-label {
   color: #BA7A55;
 }
 
-.white-arrow {
-  background-image: url(/assets/guestweb/common_images/black/right_arrow.png);
-}
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#4AD7BE;
+  color:#A77B35;
   color: transparent;
 }
 
@@ -170,7 +162,7 @@ input[type=email] {
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#4AD7BE !important;
+  background-color:#A77B35 !important;
   color: #fff;
 }
 
@@ -178,10 +170,8 @@ input[type=email] {
   color: #000000;
 }
 
-.departure-date,
-.date-text,
 .calendar-selection {
-  color: #000;
+  color: #fff;
 }
 
 .pickadate-cell li:nth-child(1),
@@ -214,22 +204,22 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#4AD7BE;
+  background-color:#A77B35;
 }
 
 .calendar-back {
-  background-image: url('/assets/guestweb/common_images/black/back_icon.png');
+  background-image: url('/assets/guestweb/common_images/back_icon.png');
 }
 
 .calendar-done {
-  background-image: url('/assets/guestweb/common_images/black/done_black.png');
+  background-image: url('/assets/guestweb/common_images/done_white.png');
 }
 
 .pickadate-prev,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #60DBC5;
+  color: #BA975B;
 }
 
 .date-picker-wrap {
@@ -244,6 +234,14 @@ input[type=email] {
   border-top: 1px solid #9b9b9b;
 }
 
+.departure-date {
+  color: #fff;
+}
+
+.date-text {
+  color: #fff;
+}
+
 .logo-image {
   margin: 1% auto;
   max-width: unset;
@@ -251,25 +249,12 @@ input[type=email] {
 
 .res-details-heading,
 .res-details-heading:hover {
-  color: #48D2B7;
+  color: #575753;
 }
 
 .back-to-checkout {
-  background: url('/assets/guestweb/common_images/black/left_arrow.png') center top no-repeat;
+  background: url(/assets/guestweb/common_images/left_arrow.png) center top no-repeat;
   height: 40px;
-}
-
-.checkout-icon {
-  background-image: url('/assets/guestweb/common_images/checkout-now-black.png');
-}
-.late-checkout-icon {
-  background-image: url('/assets/guestweb/common_images/late-checkout-black.png');
-}
-.circle-bg {
-    background: url('/assets/guestweb/common_images/black/circle-bg.png') center top no-repeat;
-}
-.accept-charge-icon {
-    background-image: url('/assets/guestweb/common_images/black/creditcard_icon.png');
 }
 
 @media (max-width: 990px) {
@@ -283,7 +268,8 @@ input[type=email] {
   .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges {
+  .accept-charges,
+  {
     width: 300px;
     padding: 4% 0%;
   }

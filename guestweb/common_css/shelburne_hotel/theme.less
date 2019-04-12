@@ -5,11 +5,7 @@ html,
 body {
   height: auto;
   min-height: 100%;
-}
-
-body {
-  background-color: #fff;
-  color: #000;
+  background-color: #0A264C;
 }
 
 .back-text {
@@ -24,7 +20,7 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #363d40;
+  color: #fff !important;
 }
 
 input[type=text],
@@ -36,11 +32,11 @@ input[type=email] {
 }
 
 .sub-main-text {
-  color: #363d40;
+  color: #fff;
 }
 
 .header-bar {
-  background:#FFFFFF;
+  background:#0A264C;
 }
 
 .logo-image {
@@ -55,11 +51,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #363d40;
+  color: #fff !important;
 }
 
 .view-bill {
-  color: #363d40;
+  color: #fff;
 }
 
 .sub-text,
@@ -67,13 +63,18 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #363d40;
+  color: #fff;
+}
+
+textarea,
+.addon-container .content-desc p {
+  color: #000 !important;
 }
 
 .btn,
 .btn:hover {
-  background:#4AD7BE;
-  color: #000;
+  background:#A8870A;
+  color: @white;
 }
 
 .dual-button {
@@ -89,32 +90,32 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
-  background:#4AD7BE;
+  background:#A8870A;
 }
 
 .light-button,
 .light-button:hover {
-  background: #60DBC5;
+  background: #B79B2B;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #60DBC5;
+  background: #B79B2B;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#4AD7BE;
+  background:#A8870A;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #48D2B7;
+  background: #937602;
 }
 
 .no-thanks,
 .no-thanks:hover {
-  color: #000;
+  color: #fff;
   text-decoration: underline;
   text-transform: none;
 }
@@ -134,33 +135,26 @@ input[type=email] {
 }
 
 .right-arrow-button {
-  background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
+  background-image: url('/assets/guestweb/common_images/white/right_arrow.png');
 }
 
 .upgrade-details .upgrades-btn {
-  background:#4AD7BE;
-  p {
-    color: #000;
-  }
+  background:#A8870A;
 }
 
 .proceed-to-checkin {
-  background: #4AD7BE;
-  color: #000;
+  background: #A8870A;
 }
 
 .upgrades-label {
   color: #BA7A55;
 }
 
-.white-arrow {
-  background-image: url(/assets/guestweb/common_images/black/right_arrow.png);
-}
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#4AD7BE;
+  color:#A8870A;
   color: transparent;
 }
 
@@ -170,7 +164,7 @@ input[type=email] {
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#4AD7BE !important;
+  background-color:#A8870A !important;
   color: #fff;
 }
 
@@ -178,10 +172,8 @@ input[type=email] {
   color: #000000;
 }
 
-.departure-date,
-.date-text,
 .calendar-selection {
-  color: #000;
+  color: #fff;
 }
 
 .pickadate-cell li:nth-child(1),
@@ -214,22 +206,22 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#4AD7BE;
+  background-color:#A8870A;
 }
 
 .calendar-back {
-  background-image: url('/assets/guestweb/common_images/black/back_icon.png');
+  background-image: url('/assets/guestweb/common_images/back_icon.png');
 }
 
 .calendar-done {
-  background-image: url('/assets/guestweb/common_images/black/done_black.png');
+  background-image: url('/assets/guestweb/common_images/done_white.png');
 }
 
 .pickadate-prev,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #60DBC5;
+  color: #B79B2B;
 }
 
 .date-picker-wrap {
@@ -244,6 +236,14 @@ input[type=email] {
   border-top: 1px solid #9b9b9b;
 }
 
+.departure-date {
+  color: #fff;
+}
+
+.date-text {
+  color: #fff;
+}
+
 .logo-image {
   margin: 1% auto;
   max-width: unset;
@@ -251,25 +251,12 @@ input[type=email] {
 
 .res-details-heading,
 .res-details-heading:hover {
-  color: #48D2B7;
+  color: #937602;
 }
 
 .back-to-checkout {
-  background: url('/assets/guestweb/common_images/black/left_arrow.png') center top no-repeat;
+  background: url(/assets/guestweb/common_images/left_arrow.png) center top no-repeat;
   height: 40px;
-}
-
-.checkout-icon {
-  background-image: url('/assets/guestweb/common_images/checkout-now-black.png');
-}
-.late-checkout-icon {
-  background-image: url('/assets/guestweb/common_images/late-checkout-black.png');
-}
-.circle-bg {
-    background: url('/assets/guestweb/common_images/black/circle-bg.png') center top no-repeat;
-}
-.accept-charge-icon {
-    background-image: url('/assets/guestweb/common_images/black/creditcard_icon.png');
 }
 
 @media (max-width: 990px) {
@@ -323,5 +310,5 @@ input{
   background: #fff none repeat scroll 0 0;
 }
 .bill-hotel-logo{
-  background:#FFFFFF;
+  background:#0A264C;
 }
