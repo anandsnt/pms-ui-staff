@@ -202,7 +202,7 @@ var GridRowItem = React.createClass({
 				+ (show_outstanding_indicator ? ' deposit-required' : '');
 
 		if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
-			row_item_class = "occupancy-block overlay";
+			row_item_class = "occupancy-block overlay" + (show_outstanding_indicator ? ' deposit-required' : '');
 		}
 
 		if (state.editing) {
@@ -235,7 +235,7 @@ var GridRowItem = React.createClass({
 
 		var styleForDepositIcon = {};
 
-		if (!show_outstanding_indicator || !this.props.data.is_hourly) {
+		if (!show_outstanding_indicator) {
 			styleForDepositIcon.display = 'none';
 			styleForDepositIcon.width = '0px';
 		}
