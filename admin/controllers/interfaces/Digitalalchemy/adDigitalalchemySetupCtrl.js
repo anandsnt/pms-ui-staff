@@ -14,6 +14,7 @@ angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$roo
         };
 
         $scope.realTimeDataSyncItems = ['reservation'];
+        $scope.historicalDataSyncItems = ['reservation'];
 
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
