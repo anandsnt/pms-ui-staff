@@ -1,25 +1,41 @@
-angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv) {
+angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv',
+    function($scope, $rootScope, config, adInterfacesSrv) {
+        BaseCtrl.call(this, $scope);
 
-        var interfaceIdentifier = 'digitalalchemy';
+        $scope.interface = 'digitalalchemy';
 
         $scope.sync = {
             start_date: null,
             end_date: null
         };
 
+        $scope.state = {
+            activeTab: 'SETTING'
+        };
+
+        $scope.realTimeDataSyncItems = ['reservation'];
+
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
+        /**
+         * when button clicked to switch between mappings/settings
+         * @return {undefined}
+         * @param {name} name tab name to toggle.
+         */
+        $scope.changeTab = function(name) {
+          $scope.state.activeTab = name;
+        };
 
-        $scope.saveInterfaceConfig = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+        $scope.saveSetup = function() {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
+                    settings: $scope.config,
+                    integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
                 }
             });
         };
@@ -27,7 +43,6 @@ angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$roo
         (function() {
             //    init
             $scope.config = config;
-            $scope.interface = interfaceIdentifier;
         })();
     }
 ]);
