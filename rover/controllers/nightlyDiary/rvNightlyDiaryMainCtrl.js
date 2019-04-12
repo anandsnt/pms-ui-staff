@@ -235,16 +235,9 @@ angular.module('sntRover')
                         };
 
                         showReservationSelected();
-                        if (!isFromStayCard) {
+                        $timeout(function () {
                             $scope.$apply();
-                        } else {
-                            // To fix issue point 3 - QA failed comment - CICO-34410
-                            srvParams = RVNightlyDiarySrv.getCache();
-                            // Selection not showing top bar after unassigning reservation from room assignment
-                            if (srvParams.currentSelectedReservationId === '') {
-                                $scope.$apply();
-                            }
-                        }
+                        }, 10);
                     }
                 };
 
