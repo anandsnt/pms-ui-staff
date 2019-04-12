@@ -617,6 +617,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (createArAccountCheck) {
 				createArAccountCheck = false;
 				$scope.$broadcast('setgenerateNewAutoAr', true);
+				$scope.$broadcast("saveArAccount");
+				$scope.isArTabAvailable = true;
 				return;
 			}			
 
