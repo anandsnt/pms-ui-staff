@@ -48,6 +48,7 @@
     "NO_COMMISSIONS_MSG": "Please switch tab and try again",
     "COMMISSION_BILLS_ON_HOLD": "Bills on Hold",
     "COMMISSIONS_PAYABLE_BILLS": "Payable Bills",
+    "COMMISSIONS_PAID_BILLS": "Paid Bills",
     "TRAVEL_AGENT_INFO": "Travel Agent Info",
     "OPEN_BILLS": "Open Bills",
     "TOTAL_OWING": "Total Owing",
@@ -75,7 +76,10 @@
     "EMAIL_PAYMENT_REPORT_SWITCH": "Email Payment Report",
     "EMAIL_LABEL": "Email",
     "EMAIL_PLACEHOLDER": "Enter An Email",
-    "COMMISSIONS_REPORT_TITLE": "Commission Payment Report"
+    "COMMISSIONS_REPORT_TITLE": "Commission Payment Report",
+    "COMMISSIONS_PAYABLE": "Payable",
+    "AMOUNT_PAID": "Amount Paid",
+    "COMMISSION_PAID": "Paid"
 
 
 

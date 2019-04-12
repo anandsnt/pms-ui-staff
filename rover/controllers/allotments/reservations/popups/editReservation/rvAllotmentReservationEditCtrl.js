@@ -305,8 +305,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
 
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
               'id': reservation.id,
-              'confirmationId': reservation.confirm_no,
-              'isrefresh': false
+              'confirmationId': reservation.confirm_no
             });
           }, 750);
         }
