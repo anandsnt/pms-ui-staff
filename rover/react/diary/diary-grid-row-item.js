@@ -200,11 +200,7 @@ var GridRowItem = React.createClass({
 			show_outstanding_indicator = ((data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present),
 			row_item_class = (data.is_hourly ? 'occupancy-block': 'occupancy-block overlay') + (state.editing ? ' editing' : '')
 				+ (show_outstanding_indicator ? ' deposit-required' : '');
-
-		// if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
-		// 	row_item_class = "occupancy-block overlay" + (show_outstanding_indicator ? ' deposit-required' : '');
-		// }
-
+					
 		if (state.editing) {
 			start_time_ms = state.currentResizeItem[m.start_date];
 			end_time_ms = state.currentResizeItem[m.end_date];
