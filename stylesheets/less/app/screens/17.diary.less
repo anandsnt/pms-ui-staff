@@ -254,16 +254,17 @@
             }
 
             &.edit {
+                overflow: hidden;
                 .hide();
 
                 .guest,
                 .actions {
-                    #flexbox > .parent(row wrap, '', center, '' );
+                    #flexbox > .parent(row nowrap, '', center, '' );
                 }
 
                 .guest {
+                    flex: 1 1 auto;
                     padding-right: 10px;
-                    .calc-max-width(100, 380);
 
                     .button {
                         width: 100px;
@@ -271,8 +272,7 @@
                 }
 
                 .actions {
-                    margin-left: auto;
-                    max-width: 380px;
+                    flex: 0 0 auto;
                     .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
                 }
 
@@ -288,12 +288,13 @@
 
                 .guest-image {
                     margin-right: 10px;
+                    .hide();
                     .square(40px);
                 }
 
                 .guest-info {
                     color: @white;
-                    .calc-max-width(100, 160);
+                    .calc-max-width(100, 110);
 
                     .name,
                     .room {
