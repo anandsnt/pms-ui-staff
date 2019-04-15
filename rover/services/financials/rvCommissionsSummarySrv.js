@@ -82,8 +82,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         'selectedExportType': 'standard',
         'receipientEmail': '',
         'billStatus': {
-            'value': 'UN_PAID',
-            'name': 'UN_PAID'
+            'value': 'PAID',
+            'name': 'PAID'
         },
         'sort_by': {
             'value': 'NAME_ASC',
