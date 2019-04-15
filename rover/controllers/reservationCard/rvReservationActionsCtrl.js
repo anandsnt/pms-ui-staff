@@ -52,9 +52,15 @@ sntRover.controller('reservationActionsController', [
          * -is stand alone hotel
          * - hourly turned off
          */
-        var departureDatePassedbusinessDate = (new Date($scope.reservationData.reservation_card.departure_date) >= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate);
+        var departureDatePassedbusinessDate = new Date($scope.reservationData.reservation_card.departure_date) >= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate,
+            reservationCard = $scope.reservationData.reservation_card;
 
-        $scope.showReverseCheckout = $scope.reservationData.reservation_card.reservation_status === "CHECKEDOUT" && departureDatePassedbusinessDate && rvPermissionSrv.getPermissionValue('REVERSE_CHECK_OUT') && $rootScope.isStandAlone && !$rootScope.isHourlyRateOn;
+        $scope.showReverseCheckout = reservationCard.reservation_status === 'CHECKEDOUT'
+            && departureDatePassedbusinessDate
+            && rvPermissionSrv.getPermissionValue('REVERSE_CHECK_OUT')
+            && $rootScope.isStandAlone
+            && !$rootScope.isHourlyRateOn
+            && reservationCard.is_reverse_checkout_allowed_for_hotel;
         $scope.shouldShowDemographicsInValidationPopup = false;
         $scope.shouldShowGuestInfoInValidationPopup = false;
 
