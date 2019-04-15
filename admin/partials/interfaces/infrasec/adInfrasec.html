@@ -1,4 +1,14 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2>{{interface | translate}}</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+    </header>
+    <section class="content-scroll">
+        <ng-include src="'/assets/partials/interfaces/infrasec/adInfrasecSetting.html'"></ng-include>
+    </section>
+</div>
+
+<!-- <ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
                              header-caption="{{interface + '_HEADER' | translate}}">
     <div class="entry full-width">
         <fieldset class="holder left">
@@ -7,10 +17,10 @@
         </fieldset>
     </div>
 
-    <!--<ad-sync-block ng-if="config.enabled"-->
-                   <!--interface="{{interface}}"-->
-                   <!--config="config">-->
-    <!--</ad-sync-block>-->
+    <ad-sync-block ng-if="config.enabled">
+                   <interface="{{interface}}">
+                   <config="config">
+    </ad-sync-block>
 
     <fieldset class="holder full-width">
         <div class="form-title">
@@ -37,4 +47,4 @@
                         styleclass="full-width"></ad-textbox>
         </fieldset>
     </fieldset>
-</ad-common-parts-in-form-dir>
+</ad-common-parts-in-form-dir> -->
