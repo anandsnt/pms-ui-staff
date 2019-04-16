@@ -12,7 +12,9 @@ sntRover.controller('RVInvoiceSearchController',
 	'$vault',
 	'rvAccountTransactionsSrv',
 	'rvAccountsConfigurationSrv',
-	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, $filter, RVBillCardSrv, $window, $state, $stateParams, $vault, rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
+	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, 
+		$filter, RVBillCardSrv, $window, $state, $stateParams, $vault, 
+		rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -34,9 +36,9 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 		/**
 		* function navigate to staycard/accounts
-		* @return - {None}
+		* @parentIndex index of the item
 		*/
-		$scope.clickedItem = function(parentIndex, billIndex) {
+		$scope.clickedItem = function(parentIndex) {
 			$vault.set('searchQuery', $scope.invoiceSearchData.query);
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
