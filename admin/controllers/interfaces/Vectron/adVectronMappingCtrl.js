@@ -1,17 +1,17 @@
-admin.controller('adVectronSetupMappingCtrl', [
+admin.controller('adVectronMappingCtrl', [
     '$scope', 'adVectronSetupSrv', 'adInterfacesCommonConfigSrv', 'ngTableParams',
     function($scope, adVectronSetupSrv, adInterfacesCommonConfigSrv, ngTableParams) {
         BaseCtrl.call(this, $scope);
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+        // on page load, deafult view will be listing.
         $scope.state = {
-            mode: 'LIST',
-            mappingTypes: [
-                {
-                    name: 'charge_code',
-                    text: 'Charge Code'
-                }]
+            mode: 'LIST'
+        };
+
+        $scope.onClickAdd = function() {
+            $scope.state.mode = 'ADD';
         };
 
         /**
@@ -26,7 +26,21 @@ admin.controller('adVectronSetupMappingCtrl', [
             };
         }
 
-        $scope.onClickAdd = function() {
+        /**
+         * @example titleCase('hello_world') should return 'Hello World'
+         * @param s
+         * @returns {string}
+         */
+        function titleCase(s){
+            return s.charAt(0).toUpperCase() + s.slice(1).replace(/(\_\w)/g, function(m){return ' ' + m[1].toUpperCase();});
+        }
+
+        $scope.mappingTypeText = function(name) {
+            return _.find($scope.state.mappingTypes, function (obj) { return obj.name === name; })['text'];
+        }
+
+        var loadSntValuesByMappingTypes = function() {
+            // fetch charge codes
             if (!$scope.state.chargeCodes) {
                 $scope.callAPI(adVectronSetupSrv.getAllChargeCodes, {
                     successCallBack: function(response) {
@@ -34,8 +48,26 @@ admin.controller('adVectronSetupMappingCtrl', [
                     }
                 });
             }
-            $scope.state.mode = 'ADD';
-        };
+
+            // fetch payment charge codes
+            if (!$scope.state.paymentChargeCodes) {
+                $scope.callAPI(adVectronSetupSrv.getAllPaymentChargeCodes, {
+                    successCallBack: function(response) {
+                        $scope.state.paymentChargeCodes = response.data.charge_codes;
+                    }
+                });
+            }
+
+            // fetch posting accounts
+            if (!$scope.state.postingAccounts) {
+                $scope.callAPI(adVectronSetupSrv.getAllPostingAccounts, {
+                    successCallBack: function(response) {
+                        $scope.state.postingAccounts = response.posting_accounts;
+                    }
+                });
+            }
+
+        }
 
 
         $scope.onClickSaveNew = function() {
@@ -135,6 +167,19 @@ admin.controller('adVectronSetupMappingCtrl', [
         (function() {
             $scope.totalCount = 0;
             $scope.mapping = fetchEmptyMapping();
-            $scope.loadTable();
+            // should fetch mapping types from IFC, as mapping types needs to be translated before rendering in the listing
+            if (!$scope.state.mappingTypes) {
+                $scope.callAPI(adVectronSetupSrv.getAllMappingTypes, {
+                    successCallBack: function(response) {
+                        var dict =[];
+                        _.each(response.data, function(data){
+                            dict.push({ name: data, text: titleCase(data) });
+                        })
+                        $scope.state.mappingTypes = dict;
+                        $scope.loadTable();
+                    }
+                });
+            }
+            loadSntValuesByMappingTypes();
         })();
     }]);
