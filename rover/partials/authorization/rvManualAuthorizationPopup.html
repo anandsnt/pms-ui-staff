@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
     <div class="modal-content form card-authorize" ng-show="!hasShownReleaseConfirm">
     	<button ng-click="closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -78,14 +78,14 @@
                 <input ng-model="authData.authAmount" id="auth-amount" value="" type="number" />
             </div>
 
-            <div class="entry manual_auth full-width hidden">
-                    <label for="{Manual Checkbox ID}" class="checkbox inline"> <!-- Add class 'checked' if checked -->
-                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' if checked -->
-                        <input id="{Manual Checkbox ID}" value="1" type="checkbox" />
+            <div class="entry manual_auth full-width" ng-show="paymentGateway == 'MLI'">
+                    <label class="checkbox inline" ng-class="{ 'checked' : authData.isManual }" ng-click="authData.isManual = !authData.isManual"> <!-- Add class 'checked' if checked -->
+                        <span class="icon-form icon-checkbox" ng-class="{ 'checked' : authData.isManual }"></span> <!-- Add class 'checked' if checked -->
+                        <input value="1" type="checkbox" />
                         {{ 'MANUAL_AUTH' | translate }}
                     </label>
                     <!-- Remove class hidden if Manual Auth. is checked -->
-                    <input type="text" value="" class="hidden" placeholder="Enter Auth Code" />
+                    <input type="text" ng-model="authData.manualAuthCode" ng-class="{ 'hidden' : !authData.isManual }" placeholder="{{'ENTER_MANUAL_AUTH_CODE' | translate }}" />
             </div>
 
             <div class="actions">
