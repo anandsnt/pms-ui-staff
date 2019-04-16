@@ -165,7 +165,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			}
 			
 			menuList[reportIndex].submenu.push(analyticsMenu);
-		};
+		}
 		return menuList;
 	};
 	/**
@@ -450,6 +450,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
             }
 		];
+
 		menu = addAnalyticsMenuConditionally(menu);
 
 		return processMenuList (menu);

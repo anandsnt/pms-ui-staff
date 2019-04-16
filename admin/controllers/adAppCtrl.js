@@ -87,7 +87,7 @@ admin.controller('ADAppCtrl', [
                     title: "MENU_REPORT_ANALYTICS",
                     action: "rover.reportAnalytics",
                     menuIndex: "reportAnalytics"
-                }
+                };
 
                 menuList[reportIndex].submenu.push(analyticsMenu);
             };
