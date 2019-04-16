@@ -162,12 +162,13 @@ angular.module('sntRover').service('rvMenuSrv',
 				title: "MENU_REPORT_ANALYTICS",
 				action: "rover.reportAnalytics",
 				menuIndex: "reportAnalytics"
-			}
+			};
 			
 			menuList[reportIndex].submenu.push(analyticsMenu);
 		}
 		return menuList;
 	};
+
 	/**
 	* method to get menu for rover
 	* @return {array} - List of Menu

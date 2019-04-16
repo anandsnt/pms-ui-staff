@@ -90,7 +90,7 @@ admin.controller('ADAppCtrl', [
                 };
 
                 menuList[reportIndex].submenu.push(analyticsMenu);
-            };
+            }
             return menuList;
         };
 
