@@ -1518,7 +1518,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         'ampm': time.split(' ')[1],
                         'hh': time.split(' ')[0].split(':')[0],
                         'mm': time.split(' ')[0].split(':')[1]
-                    }
+                    };
                 };
 
                 var updateSuccess = function(data) {

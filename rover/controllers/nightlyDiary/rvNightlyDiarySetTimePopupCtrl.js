@@ -30,7 +30,7 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
         for (var i = 0; startTime <= endTime; i++) {
           hh = Math.floor(startTime / 60); // getting hours of day in 0-24 format
           mm = (startTime % 60); // getting minutes of the hour in 0-55 format
-          twelveHrFormat = (("0" + hh %12).slice(-2) === '00' ? '12' : ("0" + hh %12).slice(-2)) + ':' + ("0" + mm).slice(-2) + " " + ap[Math.floor(hh / 12)]; // data in [12:00 AM- 12:00 PM format]
+          twelveHrFormat = (("0" + hh % 12).slice(-2) === '00' ? '12' : ("0" + hh % 12).slice(-2)) + ':' + ("0" + mm).slice(-2) + " " + ap[Math.floor(hh / 12)]; // data in [12:00 AM- 12:00 PM format]
           twentyFourHrFormat = ("0" + hh).slice(-2) + ':' + ("0" + mm).slice(-2); // data in [00:00 - 24:00 format]
           obj = {
             "12": twelveHrFormat,
