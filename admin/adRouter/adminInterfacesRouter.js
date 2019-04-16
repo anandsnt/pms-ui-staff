@@ -608,15 +608,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.avidaSetup', {
-        templateUrl: '/assets/partials/interfaces/Avida/adAvidaSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'avida';
-        }],
+        templateUrl: '/assets/partials/interfaces/avida/adAvida.html',
+        controller: 'adAvidaCtrl',
+        url: '/avida/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('avida');
             }]
         }
     });
