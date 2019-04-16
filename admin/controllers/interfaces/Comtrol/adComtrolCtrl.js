@@ -3,11 +3,15 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
         BaseCtrl.call(this, $scope);
 
         var resetToken = function() {
-            return adIFCSrv.post('authentication', 'reset_token', {integration: 'comtrol'})
+            return adIFCSrv.post('authentication', 'reset_token', {integration: 'comtrol'});
         };
 
         var fetchToken = function() {
-            return adIFCSrv.get('authentication', 'token', {integration: 'comtrol'})
+            return adIFCSrv.get('authentication', 'token', {integration: 'comtrol'});
+        };
+
+        var fetchHotelSetting = function() {
+            return adInterfacesSrv.hotelSettings();
         };
 
         $scope.interface = 'COMTROL';
@@ -43,6 +47,12 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
                     $scope.successMessage = 'SUCCESS: Settings updated!';
                 }
             });
+
+            $scope.callAPI(adInterfacesSrv.updateLocalSettings, {
+                params: {
+                    comtrol_oracode_enabled: $scope.config.enabled && $scope.comtrol_oracode_enabled
+                }
+            });
         };
 
         /**
@@ -69,10 +79,22 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
             });
         };
 
+        $scope.toggleOracodeEnabled = function() {
+            $scope.comtrol_oracode_enabled = !$scope.comtrol_oracode_enabled;
+        };
+
         var loadToken = function () {
             $scope.callAPI(fetchToken, {
                 successCallBack: function (response) {
                     $scope.authentication_token = response.authentication_token;
+                }
+            });
+        };
+
+        var loadOracodeSetting = function () {
+            $scope.callAPI(fetchHotelSetting, {
+                successCallBack: function (response) {
+                    $scope.comtrol_oracode_enabled = response.comtrol_oracode_enabled;
                 }
             });
         };
@@ -83,6 +105,7 @@ admin.controller('adComtrolCtrl', ['$scope', 'config', 'adInterfacesSrv', 'ngDia
 
         (function () {
             $scope.config = config;
+            loadOracodeSetting();
             loadToken();
             $scope.languages = [
                 {id: "0", name: "English"},

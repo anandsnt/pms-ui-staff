@@ -22,6 +22,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.comtrolKey', {
+        templateUrl: '/assets/partials/interfaces/comtrol/adComtrol.html',
+        controller: 'adComtrolCtrl',
+        url: '/comtrol_key',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('comtrol');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
