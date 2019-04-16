@@ -1,0 +1,67 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.add_infants_to_guest_count"
+                              label="{{'INFANTS_INCLUDED'| translate}}"></ad-toggle-button>
+        </fieldset>
+    </div>
+
+    <ad-sync-block ng-if="config.enabled"
+                   historical-date-range-days="30"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Export<span> Settings</span></h3>
+        </div>
+        <fieldset class="holder left">
+            <div id="options" class="entry full-width">
+                <label>
+                    {{ 'DELIVERY' | translate}}
+                </label>
+                <div class="switch-container">
+                    <div class="switch-button with-text"
+                         ng-class="{'on' : config.deliver_by_ftp}">
+                        <input type="checkbox" ng-model="config.deliver_by_ftp"/>
+                        <label class="data-off">
+                            <span class="value">FTP</span>
+                            <span class="button orange">EMAIL</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="button orange">FTP</span>
+                            <span class="value">EMAIL</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-form-title full-width="true" form-title="Export Email Delivery"></ad-form-title>
+            <ad-textarea rows="4"
+                         div-class="full-width"
+                         text-area-class="full-width"
+                         value="config.email"
+                         label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
+                         placeholder="">
+            </ad-textarea>
+            <section ng-hide="!config.deliver_by_ftp">
+                <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
+                <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password"
+                            styleclass="full-width"></ad-textbox>
+            </section>
+        </fieldset>
+    </fieldset>
+</ad-common-parts-in-form-dir>
