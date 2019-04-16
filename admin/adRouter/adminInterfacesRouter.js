@@ -563,12 +563,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.infrasecSetup', {
-        templateUrl: '/assets/partials/interfaces/infrasec/adInfrasec.html',
-        controller: 'adInfrasecCtrl',
-        url: '/infrasec/setup',
+        templateUrl: '/assets/partials/interfaces/Infrasec/adInfrasecSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'infrasec';
+        }],
         resolve: {
-            config: ['adInterfacesSrv', function(adInterfacesSrv) {
-                return adInterfacesSrv.getSettings('infrasec');
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('infrasec');
             }]
         }
     });
