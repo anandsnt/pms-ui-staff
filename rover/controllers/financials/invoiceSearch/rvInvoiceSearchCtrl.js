@@ -36,7 +36,7 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 		/**
 		* function navigate to staycard/accounts
-		* @param parentIndex index of the item
+		* @param {integer} parentIndex int index of the item
 		* @returns nothing to return
 		*/
 		$scope.clickedItem = function(parentIndex) {
