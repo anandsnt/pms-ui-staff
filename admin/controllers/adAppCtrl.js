@@ -463,7 +463,7 @@ admin.controller('ADAppCtrl', [
 
             if (!$rootScope.isHourlyRatesEnabled) {
                 shouldHideNightlyDiaryMenu  = (!$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv) || showHourlyDiaryMenu();
-                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled;
             }
             if ($scope.isStandAlone) {
                 $scope.menu = getMainMenuForStandAloneRover(shouldHideNightlyDiaryMenu, shouldHideSellLimitMenu);
