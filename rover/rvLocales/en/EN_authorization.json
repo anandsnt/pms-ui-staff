@@ -9,4 +9,5 @@
 "MANUAL_AUTH" : "Manual Auth.",
 "AUTHORIZE" : "Authorize",
 "RELEASE" : "Release",
-"CREDIT_CARD_AUTHORIZATION" : "Credit Card Authorization"
+"CREDIT_CARD_AUTHORIZATION" : "Credit Card Authorization",
+"ENTER_MANUAL_AUTH_CODE": "Enter Auth Code"

@@ -79,12 +79,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
+        templateUrl: '/assets/partials/interfaces/Checkmate/adCheckmateSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            checkmateSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('checkmate');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('checkmate');
             }]
         }
     });
@@ -239,12 +239,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.digitalalchemySetup', {
-        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        templateUrl: '/assets/partials/interfaces/digitalalchemy/adDigitalalchemy.html',
         controller: 'adDigitalalchemySetupCtrl',
         url: '/digitalalchemy/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('digitalalchemy');
             }]
         }
     });
@@ -563,15 +563,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.infrasecSetup', {
-        templateUrl: '/assets/partials/interfaces/Infrasec/adInfrasecSetup.html',
-        controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'infrasec';
-        }],
+        templateUrl: '/assets/partials/interfaces/infrasec/adInfrasec.html',
+        controller: 'adInfrasecCtrl',
+        url: '/infrasec/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('infrasec');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('infrasec');
             }]
         }
     });
@@ -651,7 +648,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.sunaccountingSetup', {
-        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
         controller: 'adInterfaceConfigurationCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
@@ -665,6 +662,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.sieSetup', {
+        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+        controller: 'adSieCtrl',
+        url: '/sie',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('sie');
                 }]
         }
     });
