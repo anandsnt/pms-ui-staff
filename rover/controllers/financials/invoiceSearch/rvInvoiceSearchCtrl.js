@@ -36,7 +36,8 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 		/**
 		* function navigate to staycard/accounts
-		* @parentIndex index of the item
+		* @param parentIndex index of the item
+		* @returns nothing to return
 		*/
 		$scope.clickedItem = function(parentIndex) {
 			$vault.set('searchQuery', $scope.invoiceSearchData.query);
@@ -53,9 +54,7 @@ sntRover.controller('RVInvoiceSearchController',
 					activeTab: 'ACCOUNT'
 				});
 			}		
-		};
-
-		
+		};		
 
 		// To refresh the scroll
 		const refreshScroll = function() {
