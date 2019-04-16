@@ -82,7 +82,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				 * Hence, for the scenario where we have a guest id, and we are coming into the summary screen in case of hourly reservations, we will have to make this call and fetch
 				 * the guest details
                  */
-                if ($rootScope.isHourlyRateOn && $state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
+                if ($stateParams.mode === "EDIT_HOURLY" || ($rootScope.isHourlyRateOn && $state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails')) {
                     $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
                         successCallBack: function(data) {
                             fetchGuestCardDataSuccessCallback(data);
