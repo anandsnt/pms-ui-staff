@@ -2687,7 +2687,8 @@ angular.module('sntRover')
         var hideToggleMenu = false;
 
         // For Hourly hotels we are hiding the Navigations to Nightly Diary.
-        if ( $rootScope.isHourlyRateOn ) {
+        // CICO-64919 : Hiding Navigation to Night Diary for FULL hotels.
+        if ( $rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL' ) {
             hideToggleMenu = true;
         }
 
