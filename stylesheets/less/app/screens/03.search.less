@@ -3107,27 +3107,51 @@
 
             /* Invoice ***/
             &.invoice-item {
-                padding: 10px;
-                background-color: @white;
-                #border-radius > .rounded();
-                .box-shadow();
 
                 .bill {
+                    position: relative;
+                    padding: 0 10px;
                     display: grid;
                     grid-template-columns: 30px calc(~'100% - 470px') 370px 40px;
                     grid-column-gap: 10px;
+                    background-color: @white;
+                    .box-shadow();
+                    #border-radius > .rounded();
 
-                    &:not(:last-child) {
-                        padding-bottom: 5px;
-                        margin-bottom: 5px;
-                        box-shadow: 0 1px 0 rgba(0,0,0,.1);
+                    &.has-arrow {
+                        cursor: pointer;
+                        background-position: calc(~'100% - 80px') 50%;
+                        .transition();
+
+                        &:hover,
+                        &:active { 
+                            .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
+                        }
                     }
+
+                    @i: 0;
+                    @increment: 1;
+                    
+                    .loop (@i) when (@i <= 20) {
+                        &:nth-child(@{i}) {
+                            z-index: (21 - @i);
+                        }
+                        .loop((@i + @increment));
+                    }
+
+                    .loop(@i);
+                }
+
+                .guest-image,
+                .group-info,
+                .data {
+                    margin: 10px 0;
+                    height: 30px;
                 }
 
                 .guest-image {
                     grid-column: 1;
-                    margin: 5px 0;
-                    .square(30px);
+                    width: 30px;
 
                     &.icons {
                         background-size: 80px;
@@ -3166,14 +3190,12 @@
                     text-align: center;
                     color: @grey3;
                     background-color: @grey1;
-                    margin: 5px 0;
-                    .square(30px);
+                    width: 30px;
                 }
 
                 .data {
                     grid-column: 2;
-                    margin: 5px 0;
-                    height: 30px;
+                    position: relative;
                     #flexbox > .parent(row wrap, '', center, '');
 
                     h2 {
@@ -3219,13 +3241,21 @@
                         &.icon-guest-travelagent {
                             background-position: 0 -614px;
                         }
-                    }                    
+                    }   
+
+                    &.has-arrow {
+                        cursor: pointer;
+                        background-position: 100% 50%;
+                    }             
                 }
 
                 .invoice-info {
                     grid-column: 3;
                     width: 380px;
                     text-align: right;
+                    padding: 5px 30px 5px 0;
+                    .box-shadow(1px 0 0 rgba(0,0,0,.1));
+                    .size(50px, 370px);
                     #flexbox > .parent(row wrap, '', center, '');
 
                     .number {
@@ -3242,10 +3272,22 @@
                         } 
                     }
 
-                    .button {
-                        .square(40px);
+                    
+
+                    .highlight {
+                        font-weight: 600;
                     }
-                }                
+                } 
+
+                .button {
+                    grid-column: 4;
+                    margin: 5px 0;
+                    .square(40px);
+                }  
+
+                &:not(:last-child) {
+                    margin-bottom: 20px;
+                }               
             }
         }
     }
