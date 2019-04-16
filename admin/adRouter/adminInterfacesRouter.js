@@ -205,12 +205,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.delphi', {
-        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        templateUrl: '/assets/partials/interfaces/delphi/adDelphi.html',
         controller: 'adDelphiCtrl',
-        url: '/delphi/setup',
+        url: '/delphi',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('delphi');
             }]
         }
     });
@@ -239,12 +239,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.digitalalchemySetup', {
-        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        templateUrl: '/assets/partials/interfaces/digitalalchemy/adDigitalalchemy.html',
         controller: 'adDigitalalchemySetupCtrl',
         url: '/digitalalchemy/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('digitalalchemy');
             }]
         }
     });
@@ -665,6 +665,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.sieSetup', {
+        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+        controller: 'adSieCtrl',
+        url: '/sie',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('sie');
                 }]
         }
     });

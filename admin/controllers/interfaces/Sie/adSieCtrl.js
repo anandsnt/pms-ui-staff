@@ -1,28 +1,29 @@
-admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesSrv',
+admin.controller('adSieCtrl', ['$scope', 'config', 'adInterfacesSrv',
     function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.interface = 'DELPHI';
+        $scope.interface = 'SIE';
 
         $scope.state = {
             activeTab: 'SETTING'
         };
 
         $scope.toggleEnabled = function() {
-            config.enabled = !config.enabled;
+            $scope.config.enabled = !$scope.config.enabled;
         };
 
-        $scope.realTimeDataSyncItems = ['link', 'group', 'inventory'];
-
         /**
-         * when button clicked to switch between mappings/settings
+         *
          * @return {undefined}
-         * @param {name} name tab name to toggle.
          */
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
         };
 
+        /**
+         * when we clicked on save button
+         * @return {undefined}
+         */
         $scope.saveSetup = function() {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
