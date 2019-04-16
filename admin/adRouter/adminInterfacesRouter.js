@@ -563,12 +563,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.infrasecSetup', {
-        templateUrl: '/assets/partials/interfaces/infrasec/adInfrasec.html',
-        controller: 'adInfrasecCtrl',
-        url: '/infrasec/setup',
+        templateUrl: '/assets/partials/interfaces/Infrasec/adInfrasecSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'infrasec';
+        }],
         resolve: {
-            config: ['adInterfacesSrv', function(adInterfacesSrv) {
-                return adInterfacesSrv.getSettings('infrasec');
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('infrasec');
             }]
         }
     });
@@ -608,15 +611,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.avidaSetup', {
-        templateUrl: '/assets/partials/interfaces/Avida/adAvidaSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'avida';
-        }],
+        templateUrl: '/assets/partials/interfaces/avida/adAvida.html',
+        controller: 'adAvidaCtrl',
+        url: '/avida/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('avida');
             }]
         }
     });
@@ -662,18 +662,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
-                }]
-        }
-    });
-
-    $stateProvider.state('admin.sieSetup', {
-        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
-        controller: 'adSieCtrl',
-        url: '/sie',
-        resolve: {
-            config: [
-                'adInterfacesSrv', function(adInterfacesSrv) {
-                    return adInterfacesSrv.getSettings('sie');
                 }]
         }
     });
