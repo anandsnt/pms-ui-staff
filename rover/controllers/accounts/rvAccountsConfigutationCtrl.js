@@ -90,7 +90,15 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						isBackFromStaycard: true
 					}
 				};
-			}
+			} else if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+            	$rootScope.setPrevState = {
+	                title: 'INVOICE SEARCH',
+	                name: 'rover.financials.invoiceSearch',
+	                param: {
+	                    isFromStayCard: true
+	                }
+            };
+        }
       // setting title and things
 			setTitle();
 		};
@@ -369,6 +377,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			// back navigation
 			setBackNavigation();
+
+			if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+				$scope.switchTabTo("TRANSACTIONS");
+			}
 		};
 
 		initGroupConfig();

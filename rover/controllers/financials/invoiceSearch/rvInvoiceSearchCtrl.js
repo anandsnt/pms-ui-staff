@@ -7,9 +7,12 @@ sntRover.controller('RVInvoiceSearchController',
 	'$filter',
 	'RVBillCardSrv',
 	'$window',
+	'$state',
+	'$stateParams',
+	'$vault',
 	'rvAccountTransactionsSrv',
 	'rvAccountsConfigurationSrv',
-	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, $filter, RVBillCardSrv, $window, rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
+	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, $filter, RVBillCardSrv, $window, $state, $stateParams, $vault, rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -29,6 +32,28 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.setTitle(title);
 			$scope.$parent.heading = title;
 		};
+		/**
+		* function navigate to staycard/accounts
+		* @return - {None}
+		*/
+		$scope.clickedItem = function(parentIndex, billIndex) {
+			$vault.set('searchQuery', $scope.invoiceSearchData.query);
+			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
+				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+					id: $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id,
+					confirmationId: $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.number,
+					isrefresh: true,
+					searchQuery: $scope.invoiceSearchData.query
+				});
+			} else {
+				$state.go('rover.accounts.config', {
+					id: $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id,
+					activeTab: 'ACCOUNT'
+				});
+			}		
+		};
+
+		
 
 		// To refresh the scroll
 		const refreshScroll = function() {
@@ -354,8 +379,8 @@ sntRover.controller('RVInvoiceSearchController',
 		 * Initialization
 		 */
 		that.init = () => {
-			$scope.invoiceSearchData = {};
-			$scope.invoiceSearchData.query = '';
+			$scope.invoiceSearchData = {};			
+			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
 			$scope.invoiceSearchFlags.isQueryEntered = false;
@@ -372,6 +397,7 @@ sntRover.controller('RVInvoiceSearchController',
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);
+			$scope.searchInvoice(1);
 		};
 		
 		that.init();
