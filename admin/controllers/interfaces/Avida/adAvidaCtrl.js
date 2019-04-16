@@ -21,7 +21,7 @@ admin.controller('adAvidaCtrl', ['$scope', 'config', 'adInterfacesSrv',
         /**
          *
          * @return {undefined}
-         * @param {name}
+         * @param {name} name name of active tab
          */
         $scope.changeTab = function (name) {
             $scope.state.activeTab = name;
