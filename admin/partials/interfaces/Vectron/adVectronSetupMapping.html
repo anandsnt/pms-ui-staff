@@ -1,6 +1,6 @@
 <div class="form float" ng-if="state.activeTab === 'MAPPING'">
 
-    <div class="entry full-width" ng-controller="adVectronSetupMappingCtrl">
+    <div class="entry full-width" ng-controller="adVectronMappingCtrl">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
@@ -25,7 +25,7 @@
                     ng-class="{'selected': room.isSelected}">
                     <td data-title="'MAPPING TYPE'" sortable="'typeof'" header-class="width-40" ng-hide="mappingRow.editing"
                         ng-click="onEditMapping(mappingRow)">
-                        {{mappingRow.typeof}}
+                        {{mappingTypeText(mappingRow.typeof)}}
                     </td>
                     <td data-title="'SNT VALUE'" sortable="'value'" header-class="width-30" ng-hide="mappingRow.editing"
                         ng-click="onEditMapping(mappingRow)">
