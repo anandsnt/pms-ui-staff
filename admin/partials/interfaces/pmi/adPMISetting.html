@@ -24,10 +24,10 @@
             </div>
         </div>
         <fieldset class="holder full-width">
-            <div class="form-title">
-                <h3>Export Settings</h3>
-            </div>
             <fieldset class="holder left">
+                <div class="form-title">
+                    <h3>Export Settings</h3>
+                </div>
                 <div id="options" class="entry full-width">
                     <label>
                         {{ 'DELIVERY' | translate}}
@@ -50,14 +50,26 @@
             <fieldset class="holder right">
                 <div class="form-title">
                     <h3>Export Email Delivery</h3>
-                    <textarea rows="4"
-                              div-class="full-width"
-                              text-area-class="full-width"
-                              value="config.email"
-                              label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate }}"
-                              placeholder="">
-                    </textarea>
                 </div>
+                <ad-textarea rows="4" 
+                             div-class="full-width" 
+                             text-area-class="full-width" 
+                             value="config.email"
+                             label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" 
+                             placeholder="">
+                </ad-textarea>
+                <section ng-hide="!config.deliver_by_ftp">
+                    <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
+                    <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host" styleclass="full-width"></ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location" styleclass="full-width">
+                    </ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_receipts_location" label="FTP receipt location" styleclass="full-width">
+                    </ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name" styleclass="full-width">
+                    </ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password" styleclass="full-width">
+                    </ad-textbox>
+                </section>
             </fieldset>
         </fieldset>
         <div class="actions float">

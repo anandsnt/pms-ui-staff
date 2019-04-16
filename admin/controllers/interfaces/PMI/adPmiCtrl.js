@@ -21,7 +21,7 @@ admin.controller('adPmiCtrl', ['$scope', 'config', 'adInterfacesSrv',
 
         $scope.toggleInfants = function () {
             $scope.config.add_infants_to_guest_count = !$scope.config.add_infants_to_guest_count;
-        }
+        };
 
         /**
          *
@@ -57,4 +57,3 @@ admin.controller('adPmiCtrl', ['$scope', 'config', 'adInterfacesSrv',
             $scope.config = config;
         })();
     }]);
-    
