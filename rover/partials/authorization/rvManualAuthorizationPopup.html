@@ -78,7 +78,7 @@
                 <input ng-model="authData.authAmount" id="auth-amount" value="" type="number" />
             </div>
 
-            <div class="entry manual_auth full-width">
+            <div class="entry manual_auth full-width" ng-show="paymentGateway == 'MLI'">
                     <label class="checkbox inline" ng-class="{ 'checked' : authData.isManual }" ng-click="authData.isManual = !authData.isManual"> <!-- Add class 'checked' if checked -->
                         <span class="icon-form icon-checkbox" ng-class="{ 'checked' : authData.isManual }"></span> <!-- Add class 'checked' if checked -->
                         <input value="1" type="checkbox" />
