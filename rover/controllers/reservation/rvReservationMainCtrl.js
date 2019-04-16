@@ -29,7 +29,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.setTitle(title);
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled;
 
 
         // setting the main header of the screen
@@ -1623,7 +1624,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 } else {
                     // CICO-63737 : Set Arrival, dep time while booking.
-                    if ($scope.reservationData.isFromNightlyDiary) {
+                    if (!isNightlyHotel && $scope.reservationData.isFromNightlyDiary) {
                         postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
                         postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
                         
