@@ -112,6 +112,14 @@ sntRover.controller('reservationDetailsController',
                     isFromStayCard: true
                 }
             };
+        } else if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+            $rootScope.setPrevState = {
+                title: 'INVOICE SEARCH',
+                name: 'rover.financials.invoiceSearch',
+                param: {
+                    isFromStayCard: true
+                }
+            };
         } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
