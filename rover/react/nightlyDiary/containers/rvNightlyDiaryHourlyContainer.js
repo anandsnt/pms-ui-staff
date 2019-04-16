@@ -8,6 +8,7 @@ let calculateHourlyRoomsPositionAndDuration = (diaryInitialDayOfDateGrid, hourly
     let oneDay = 24 * 60 * 60 * 1000;
     let noOfDaysBtwInitialAndArrivalDate = diffBtwInitialAndStartDate / oneDay;
     let unHourlyRoomPosition = noOfDaysBtwInitialAndArrivalDate * nightDuration;
+    
     hourly_data.status = (hourly_data.is_pre_checkin) ? "PRE_CHECKIN" : hourly_data.status;
     let reservationStatusClass = getReservationStatusClass(hourly_data.status);
 

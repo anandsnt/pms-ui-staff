@@ -282,7 +282,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          */
         this.unAssignRoom = function(params) {
             var deferred = $q.defer(),
-                url = '/api/reservations/'+ params.id +'/unassign_room';
+                url = '/api/reservations/' + params.id + '/unassign_room';
 
             BaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
