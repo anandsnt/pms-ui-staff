@@ -79,12 +79,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
+        templateUrl: '/assets/partials/interfaces/checkmate/adCheckmateSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            checkmateSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('checkmate');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('checkmate');
             }]
         }
     });
