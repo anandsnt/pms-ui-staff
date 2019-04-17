@@ -12,6 +12,7 @@ admin.controller('ADAppCtrl', [
 
         BaseCtrl.call(this, $scope);
         var title = "Showing Settings";
+        var hideAnalyticsReportMenu = false;
 
         var successCallbackOfFtechUserInfo = function (userInfoDetails) {
             // CICO-39623 : set current hotel details
@@ -73,26 +74,37 @@ admin.controller('ADAppCtrl', [
         // flag to decide show task management under house keeping: true by default
         var showTaskManagementInHKMenu = true,
             shouldShowCurrencyExchangeInMenu = false;
+        
+        /*
+         *  Utility method to check whether we need to show DIARY menu
+         *  Based on settings values inside Reservation settings.
+         */
+        var showHourlyDiaryMenu = function() {
+            
+            /**
+             *  A = settings.day_use_enabled (true / false)
+             *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+             *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+             *
+             *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+             *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+             *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+             */
 
+            var diaryConfig = $rootScope.hotelDiaryConfig,
+                showHourlyDiaryMenu = false;
+
+            // A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+            if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.mode === 'FULL' ) {
+                showHourlyDiaryMenu = true;
+            }
+
+            return showHourlyDiaryMenu;
+        };
+        
         // flag to decide show neighbours screen
         var isNeighboursEnabled = false;
-        var hideAnalyticsReportMenu = false;
-
-        var addAnalyticsMenuConditionally = function(menuList) {
-            if (!hideAnalyticsReportMenu) {
-                var reportIndex = _.findIndex(menuList, {
-                    title: 'MENU_REPORTS'
-                });
-                var analyticsMenu = {
-                    title: "MENU_REPORT_ANALYTICS",
-                    action: "rover.reportAnalytics",
-                    menuIndex: "reportAnalytics"
-                };
-
-                menuList[reportIndex].submenu.push(analyticsMenu);
-            }
-            return menuList;
-        };
 
         /**
          * Get menu list for standalone
@@ -129,7 +141,7 @@ admin.controller('ADAppCtrl', [
                             action: 'rover.diary',
                             menuIndex: 'diaryReservation',
                             standAlone: true,
-                            hidden: !$rootScope.isHourlyRatesEnabled
+                            hidden: !$rootScope.isHourlyRatesEnabled && !showHourlyDiaryMenu()
                         }, {
                             title: 'MENU_ROOM_DIARY',
                             action: 'rover.nightlyDiary',
@@ -177,7 +189,7 @@ admin.controller('ADAppCtrl', [
                     action: '',
                     iconClass: 'icon-groups',
                     menuIndex: 'menuGroups',
-                    hidden: $rootScope.isHourlyRatesEnabled,
+                    hidden: $rootScope.isHourlyRatesEnabled || shouldHideNightlyDiaryMenu,
                     submenu: [{
                         title: 'MENU_CREATE_GROUP',
                         action: 'rover.groups.config',
@@ -443,6 +455,22 @@ admin.controller('ADAppCtrl', [
             return  adMenuSrv.processMenuList(mobileMenu);
         };
 
+        var addAnalyticsMenuConditionally = function(menuList) {
+            if (!hideAnalyticsReportMenu) {
+                var reportIndex = _.findIndex(menuList, {
+                    title: 'MENU_REPORTS'
+                });
+                var analyticsMenu = {
+                    title: "MENU_REPORT_ANALYTICS",
+                    action: "rover.reportAnalytics",
+                    menuIndex: "reportAnalytics"
+                }
+
+                menuList[reportIndex].submenu.push(analyticsMenu);
+            };
+            return menuList;
+        };
+
         /**
          * Set up left side menus based on permission and pms type
          */
@@ -451,7 +479,7 @@ admin.controller('ADAppCtrl', [
                 shouldHideSellLimitMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
-                shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideNightlyDiaryMenu  = (!$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv) || showHourlyDiaryMenu();
                 shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled;
             }
             if ($scope.isStandAlone) {
@@ -746,13 +774,16 @@ admin.controller('ADAppCtrl', [
             $rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
             $rootScope.hotelDateFormat = data.date_format.value;
             $scope.$emit('hideLoader');
+            $rootScope.dayUseEnabled = data.day_use_enabled;
             $rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
+            $rootScope.hourlyRatesForDayUseEnabled = data.hourly_rates_for_day_use_enabled;
             $rootScope.isSuiteRoomsAvailable = data.suite_enabled;
             $rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
             $rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
             $rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            
             // CICO-51146
             $rootScope.isBackgroundReportsEnabled = data.background_report;
             // CICO-55154
@@ -783,9 +814,20 @@ admin.controller('ADAppCtrl', [
 
             $rootScope.mliAndCBAEnabled = data.payment_gateway === 'MLI' && data.mli_cba_enabled;
             hideAnalyticsReportMenu = data.hide_analytics_menu;
-            
-            setupLeftMenu();
 
+            /*
+             *   A = settings.day_use_enabled (true / false)
+             *   B = settings.hourly_rates_for_day_use_enabled (true / false)
+             *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+             */
+            $rootScope.hotelDiaryConfig = {
+                dayUseEnabled: data.day_use_enabled,
+                hourlyRatesForDayUseEnabled: data.hourly_rates_for_day_use_enabled,
+                mode: data.hourly_availability_calculation,
+                isDiaryMergeEnabled: data.is_diary_merge_enabled
+            };
+
+            setupLeftMenu();
         };
         /*
          * Function to get the current hotel language

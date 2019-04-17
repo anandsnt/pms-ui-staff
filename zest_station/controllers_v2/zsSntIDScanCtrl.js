@@ -515,7 +515,7 @@
 				angular.forEach($scope.selectedReservation.guest_details, function(guestDetail) {
 					guestDetail.idScanStatus = SCANING_PENDING;
 					var scannedDetails = zsCheckinSrv.getCurrentReservationIdDetails();
-					if (guestDetail.is_primary && !_.isEmpty(scannedDetails) && guestDetail.last_name === scannedDetails.last_name) {
+					if (guestDetail.is_primary && !_.isEmpty(scannedDetails) && guestDetail.last_name.toLowerCase() === scannedDetails.last_name.toLowerCase()) {
 						$scope.idScanData.showPrimaryGuestAlreadyScannedMg = true;
 						guestDetail.scannedDetails = scannedDetails;
 						guestDetail.front_image_data = scannedDetails.front_image_data ? scannedDetails.front_image_data :'';

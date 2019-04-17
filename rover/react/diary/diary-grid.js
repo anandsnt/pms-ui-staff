@@ -5,7 +5,7 @@ var Grid = React.createClass({
 	componentDidMount: function() {
 		var iscroll = this.props.iscroll;
 
-		iscroll.grid = new IScroll($('.diary-grid .wrapper')[0], {
+		iscroll.grid = new IScroll($('.diary-grid')[0], {
 			probeType: 2,
 			scrollbars: 'custom',
 			interactiveScrollbars: true,
@@ -40,11 +40,11 @@ var Grid = React.createClass({
 
 		/* OUTPUT VIEWPORT/GRID and eventually TIMELINE*/
 		return  React.DOM.div({
-					id: 'grid-wrapper',
-					className: 'wrapper scrollable'
+					id: 'diary-grid',
+					className: 'diary-grid scrollable'
 				},
 				React.DOM.ul({
-					className: 'grid',
+					className: 'wrapper',
 					style: {
 						width: grid_width// ,
 						// left: -1 * (display.x_offset - display.x_n) * display.px_per_ms + 'px'

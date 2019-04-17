@@ -298,6 +298,18 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     return params;
                 }
+                function dateRangeForDateChange(start_date, end_date) {
+                    var s_comp = start_date.toComponents(),
+                        e_comp = end_date.toComponents(),
+                        params = {
+                            begin_time: '00:00',
+                            end_time: '23:59',
+                            begin_date: s_comp.date.toDateString(),
+                            end_date: e_comp.date.toDateString()
+                        };
+
+                    return params;
+                }
 
                 /**
                 *
@@ -356,14 +368,14 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         _.each(inactiveRooms, function(value, index) {
 
                            if (value.room_id === room.id) {
-                                hour = value.from_time.split(":")[0];
-                                min = value.from_time.split(":")[1];
+                                hour = value.from_time === null ? 0 : value.from_time.split(":")[0];
+                                min = value.from_time === null ? 0 : value.from_time.split(":")[1];
                                 startTime = new tzIndependentDate(value.from_date);
                                 startTime.setHours (hour, min, 0);
 
                                 // end time
-                                hour = value.to_time.split(":")[0];
-                                min = value.to_time.split(":")[1];
+                                hour = value.to_time === null ? 0 : value.to_time.split(":")[0];
+                                min = value.to_time === null ? 0 : value.to_time.split(":")[1];
                                 endTime = new tzIndependentDate(value.to_date);
                                 endTime.setHours (hour, min, 0);
 
@@ -597,9 +609,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         end_date.setHours(0, 0, 0);
                         $q.all([Maintenance.read(),
                                 RoomType.read(),
-                                InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
+                                InActiveRoomSlots.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                                 Room.read(),
-                                Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
+                                Occupancy.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
                                 AvailabilityCount.read(dateRange(start_date, end_date))])
                                 .then(function(data_array) {
                                     _.reduce([
@@ -651,6 +663,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             ));
 
                         }, function(err) {
+                            q.reject(err);
                         });
 
                     return q.promise;
@@ -671,9 +684,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         __this = this;
 
                     $q.all([
-                            InActiveRoomSlots.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
+                            InActiveRoomSlots.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))),
                             Room.read(),
-                            Occupancy.read(dateRange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
+                            Occupancy.read(dateRangeForDateChange(time.toShijuBugStartDate(0), time.toShijuBugEndDate(23))), // time.toStartDate(), time.toEndDate())),
                             AvailabilityCount.read(dateRange(time.x_n, time.x_p))])
                             .then(function(data_array) {
                                 // if there is any reservation transfter initiated from one day to another
@@ -1064,9 +1077,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 this.fetchUnassignedRoomList = function(params) {
                     var deferred = $q.defer();
-                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date;
+                    var url = '/api/hourly_occupancy/unassigned_list?date=' + params.date,
+                        businessDate = $rootScope.businessDate;
 
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                        angular.forEach(data.reservations, function(reservation) {
+                            reservation.statusClass = reservation.arrival_date === businessDate ? 'guest check-in' : 'guest no-status';
+                        });
                         deferred.resolve(data.reservations);
                     }, function(error) {
                         deferred.reject(error);
