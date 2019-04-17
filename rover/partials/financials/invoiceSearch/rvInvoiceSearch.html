@@ -29,7 +29,7 @@
         <div class="wrapper">
             <ul class="search-results">
                 <li class="invoice-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results">
-                    <div class="bill">
+                    <div class="bill has-arrow next-view" ng-click="clickedItem($index, 0)">
                         <!-- Image - Leave blank if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
                         <!-- If primary guest, output L2 -->
                         <figure class="guest-image" ng-show="invoiceReservationData.associated_item.type === 'RESERVATION'"><img src="{{::invoiceReservationData.associated_item.image_url}}" alt="" /></figure>
