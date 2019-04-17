@@ -219,6 +219,7 @@ sntRover.controller('RVInvoiceSearchController',
 			// CICO-9569 to solve the hotel logo issue
 			$("header .logo").removeClass('logo-hide');
 			$("header .h2").addClass('text-hide');
+			$scope.$parent.addNoPrintClass = false;
 
 			// remove the orientation after similar delay
 			removePrintOrientation();
@@ -270,6 +271,7 @@ sntRover.controller('RVInvoiceSearchController',
 						// CICO-9569 to solve the hotel logo issue
 						$("header .logo").addClass('logo-hide');
 						$("header .h2").addClass('text-hide');
+						$scope.$parent.addNoPrintClass = true;
 
 						// add the orientation
 						addPrintOrientation();
