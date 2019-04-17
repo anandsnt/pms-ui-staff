@@ -255,6 +255,30 @@ angular.module('sntRover')
             return hideToggleMenu;
         };
 
+        $scope.disableAvlToggle = function() {
+            var isHideAvlToggle = false,
+                dateDiff = moment($rootScope.businessDate)
+                            .diff(moment($scope.diaryData.fromDate), 'days');
+
+            if (!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) {
+                isHideAvlToggle = true;
+            }
+
+            return isHideAvlToggle;
+        };
+
+        $scope.disableLeftDateShift = function() {
+            var isHideAvlToggle = false,
+                dateDiff = moment($rootScope.businessDate)
+                            .diff(moment($scope.diaryData.fromDate), 'days');
+
+            if ($scope.diaryData.isBookRoomViewActive && dateDiff >= 0 ) {
+                isHideAvlToggle = true;
+            }
+
+            return isHideAvlToggle;
+        };
+
         init();
 
 }]);
