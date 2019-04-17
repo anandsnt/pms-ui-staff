@@ -201,5 +201,9 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
             return deferred.promise;
         };
 
+        this.fetchRoomTypes = function (id) {
+            return ADBaseWebSrvV2.getJSON('/api/rates/' + id + '/fetch_room_types');
+        };
+
     }
 ]);

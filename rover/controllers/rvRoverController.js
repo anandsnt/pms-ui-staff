@@ -308,6 +308,9 @@ sntRover.controller('roverController', [
         });
         $scope.searchBackButtonCaption = '';
 
+        // Temporary hack to enable the merge options only for pilot properties
+        $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
+
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that
@@ -927,6 +930,7 @@ sntRover.controller('roverController', [
         $rootScope.showTimeoutError = function () {
             // Hide loading message
             $scope.$emit('hideLoader');
+            $scope.$emit('resetLoader');
             ngDialog.open({
                 template: '/assets/partials/errorPopup/rvTimeoutError.html',
                 className: 'ngdialog-theme-default1 modal-theme1',
@@ -1141,6 +1145,10 @@ sntRover.controller('roverController', [
         document.addEventListener('WS_CONNECTION_LOST', function () {
             $scope.formMenu();
         });
+
+        $scope.broadcastFromRoot = function(eventIdentifier, payLoad) {
+            $scope.$broadcast(eventIdentifier, payLoad);
+        };
 
         (function() {
             if ($window.dataLayer) {

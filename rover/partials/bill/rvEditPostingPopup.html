@@ -5,7 +5,7 @@
         <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="h2 message" translate>EDIT_CHARGE</span>
-            <span class="text">{{selectedTransaction.desc}}<strong>{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
+            <span class="text">{{selectedTransaction.desc}}<strong class="currency">{{currencySymbol}}{{selectedTransaction.amount}}</strong></span>
             <ul id="change-edit-type" class="modal-options">
                 <li ng-class="{'active':!chargeCodeActive, 'disabled': shouldDisableEditChargeAmount() }" ng-click="!shouldDisableEditChargeAmount() && setchargeCodeActive(false)" translate>AMOUNT</li>
                 <li ng-class="{'active':chargeCodeActive, 'disabled': shouldDisableEditChargeCode() }" ng-click="!shouldDisableEditChargeCode() && setchargeCodeActive(true)" translate>CHARGE_CODE</li>
@@ -13,7 +13,7 @@
 
             <!-- Edit amount field -->
             <div id="edit-amount" class="entry full-width" ng-hide="chargeCodeActive">
-                <label for="new-amount">{{'NEW_AMOUNT' | translate}}(<span>{{currencySymbol}}</span>)</label>
+                <label for="new-amount">{{'NEW_AMOUNT' | translate}}(<span class="currency">{{currencySymbol}}</span>)</label>
                 <input name="new-amount" id="new-amount" placeholder="{{'ENTER_VALUE_PLACEHOLDER' | translate}}" ng-model="newAmount" type="text" />
             </div>
 

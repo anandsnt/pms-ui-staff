@@ -19,6 +19,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 		var init = function() {
 			$scope.ARData = {};
 			$scope.ARData.note = "";
+			$scope.shouldValidate = true;
 		};
 
 		init();
@@ -53,12 +54,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var failureCallback = function(errorMessage) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = errorMessage;
-				if (errorMessage[0] !== 'Please complete required AR Account Information') {
-					$scope.$emit('ERRORONARTAB');
-					$scope.switchTabTo('click', 'cc-ar-accounts');
-				} else {
+				if (errorMessage[0] === 'Please complete required AR Account Information') {
 					$scope.$emit("MANDATORY_CHECK_FAILED", $scope.errorMessage);
-				}
+
+				} 
 			};
 
 			var dataToSend = $scope.arAccountDetails;
@@ -80,10 +79,15 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
                 dataNotUpdated = true;
                 presentArDetails = presentArDetailsAfterEdit;
             }
-			if (($scope.generateNewAutoAr && $scope.arAccountDetails.is_auto_assign_ar_numbers) || (dataNotUpdated && $scope.arAccountDetails.ar_number)) {
+			
+			if (($scope.$parent.generateNewAutoAr 
+				&& $scope.arAccountDetails.is_auto_assign_ar_numbers) 
+				|| (dataNotUpdated)) {
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetails, failureCallback );
 			}
-			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers && dataNotUpdated ) || initialUpdate ) {
+			else if ( (!$scope.arAccountDetails.is_auto_assign_ar_numbers 
+				&& dataNotUpdated ) 
+				|| initialUpdate ) {
 				// CICO-24472 => If is_auto_assign_ar_numbers property is OFF and some data updated on AR TAB ,
 				// we call save API without AR Number.
 				$scope.invokeApi(RVCompanyCardSrv.saveARDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber, failureCallback );
@@ -146,6 +150,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		};
 
+		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS", function(e, data) {
+			$scope.arAccountDetails = data;
+		});
+
 		/**
 		 * recieving function for save AR accounts with data
 		 */
@@ -162,7 +170,10 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			$scope.arAccountDetails.is_use_main_address = true;
 			$scope.arAccountDetails.is_auto_assign_ar_numbers = bool;
 			$scope.arAccountDetails.ar_number = "";
+			$scope.arAccountDetails.payment_due_days = "";
 			$scope.arAccountNotes.ar_notes = [];
+			$scope.$emit('UPDATE_AR_ACCOUNT_DETAILS_AFTER_DELETE', $scope.arAccountDetails);
+
 		});
 
 

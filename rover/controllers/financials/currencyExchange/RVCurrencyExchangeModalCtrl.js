@@ -138,7 +138,8 @@ sntRover.controller('RVCurrencyExchangeModalController',
             /*
              * To close dialog box
              */
-            $scope.closeDialog = function() {
+            $scope.closeDialog = function() {                
+
                 $rootScope.modalOpened = false;
                 $timeout(function() {
                     ngDialog.close();

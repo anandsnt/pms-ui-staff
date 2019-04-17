@@ -1,7 +1,5 @@
 angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
-<<<<<<< HEAD
-=======
     $stateProvider.state('admin.accountview', {
         templateUrl: '/assets/partials/interfaces/accountview/adAccountview.html',
         controller: 'adAccountviewCtrl',
@@ -13,7 +11,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
->>>>>>> 10e5109952... CICO-64601 reconfigure sun accounting UI routing/services
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -156,6 +153,21 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.derbysoftSetup', {
+        templateUrl: '/assets/partials/interfaces/DerbySoft/adDerbySoftSetup.html',
+        controller: 'ADDerbySoftSetupCtrl',
+        url: '/derbysoft/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
+            }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('derbysoft');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.verticalBookingSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
@@ -244,17 +256,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('salesforce');
-            }]
-        }
-    });
-
-    $stateProvider.state('admin.accountViewSetup', {
-        templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
-        controller: 'adAccountViewSetupCtrl',
-        url: '/revinate/setup',
-        resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('accountview');
             }]
         }
     });
@@ -638,20 +639,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.hogiaSetup', {
-        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
-        controller: 'adInterfaceConfigurationCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'hogia';
-        }],
+        templateUrl: '/assets/partials/interfaces/hogia/adHogia.html',
+        controller: 'adHogiaCtrl',
+        url: '/hogia',
         resolve: {
             config: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchConfiguration('hogia');
-                }],
-            mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('hogia');
                 }]
         }
     });

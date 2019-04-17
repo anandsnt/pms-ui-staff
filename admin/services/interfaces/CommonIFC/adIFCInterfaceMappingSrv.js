@@ -52,6 +52,10 @@ admin.service('adIFCInterfaceMappingSrv', [
             return interfaceswithNumericExternalValues.indexOf(interfaceIdentifier) >= 0;
         };
 
+        service.resetAuthToken = function(mapping_interface) {
+            return ADBaseWebSrvV2.postJSON('/api/integrations/' + mapping_interface + '/reset_auth_token');
+        };
+
         service.fetchMeta = function(interfaceIdentifier) {
             var metaList = metaLists[interfaceIdentifier],
                 deferred = $q.defer(),
@@ -61,13 +65,15 @@ admin.service('adIFCInterfaceMappingSrv', [
             metaList.forEach(function(identifier) {
                 promises.push(metaPromises[identifier]().
                     then(function(data) {
-                        meta[identifier] = data.data.charge_codes;
+                        meta[identifier] = data.data ? data.data : data;
                     }));
             });
 
             $q.all(promises).
                 then(function() {
                     deferred.resolve(meta);
+                }, function(err) {
+                        throw err;
                 });
 
             return deferred.promise;

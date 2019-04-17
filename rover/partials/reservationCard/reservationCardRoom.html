@@ -20,7 +20,7 @@
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
 	<a class="next-view no-auto-bind" ng-click="goToroomAssignment()" ng-class="getRoomClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.cannot_move_room)">
-		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status,  reservationData.reservation_card.checkin_inspected_only)" >
+		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status, reservationData.reservation_card.room_ready_status, reservationData.reservation_card.checkin_inspected_only, reservationData.reservation_card.room_service_status )" >
 		 	 {{reservationData.reservation_card.room_number}}
 		 </strong>
 		 {{reservationData.reservation_card.room_type_description}}

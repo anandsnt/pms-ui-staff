@@ -14,7 +14,7 @@ describe('ADCoTaMandatoryFieldsCtrl', function() {
             $q = _$q_;
             $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
-            $scope.coTaMandatoryFields = {"address_line1_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"city_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"postal_code_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"country_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"contact_phone_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":false,"is_mandatory_on_account_creation":false},"contact_email_address_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"contact_name_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":false,"is_mandatory_on_account_creation":false},"tax_id_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"e_invoice_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":false,"is_mandatory_on_account_creation":true},"regd_tax_office_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false},"organization_id_mandatory":{"is_visible":true,"is_mandatory_on_ar_account_creation":true,"is_mandatory_on_account_creation":false}};
+            $scope.coTaMandatoryFields = {"address_line1_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "city_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "postal_code_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "country_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "contact_phone_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": false, "is_mandatory_on_account_creation": false}, "contact_email_address_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "contact_name_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": false, "is_mandatory_on_account_creation": false}, "tax_id_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "e_invoice_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": false, "is_mandatory_on_account_creation": true}, "regd_tax_office_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}, "organization_id_mandatory": {"is_visible": true, "is_mandatory_on_ar_account_creation": true, "is_mandatory_on_account_creation": false}};
         });
 
         $controller('ADCoTaMandatoryFieldsCtrl', {
@@ -60,18 +60,6 @@ describe('ADCoTaMandatoryFieldsCtrl', function() {
 
     });
     // =======================
-    it('Clicked status toggle when organization id visibility is true', function() {
-
-        $scope.clickedStatus('organization_id_mandatory');
-
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_visible).toBe(false);
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_ar_account_creation).toBe(false);
-        expect($scope.coTaMandatoryFields.organization_id_mandatory.is_mandatory_on_account_creation).toBe(false);
-
-    });
-
-    // ========================
-
     it('Clicked status toggle when organization id visibility is true', function() {
 
         $scope.clickedStatus('organization_id_mandatory');

@@ -50,7 +50,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl',
 
 		var data = {
 			"id": $scope.reservationBillData.bills[$scope.currentActiveBill].account_id,
-			"ar_number": isAutoAssignARNumber ? "" : $scope.data.ar_number
+			"ar_number": isAutoAssignARNumber ? "" : $scope.data.ar_number			
 		};
 
 		$scope.invokeApi(RVCompanyCardSrv.saveARDetails, data, $scope.successCreate, $scope.failureCreate);

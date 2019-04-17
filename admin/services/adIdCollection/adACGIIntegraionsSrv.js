@@ -9,7 +9,7 @@ admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to fetch the configuration
          */
         service.fetchConfiguration = function() {
-            return ADBaseWebSrvV2.getJSON('/admin/guest_id_archive_setup/guest_id_archive_options.json');
+            return ADBaseWebSrvV2.getJSON('/admin/archival_transfer_setup/archive_options.json');
         };
         /**
          *
@@ -17,7 +17,7 @@ admin.service('ACGIIntegrationSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to save the configuration
          */
         service.saveConfiguration = function(params) {
-            return ADBaseWebSrvV2.postJSON('/admin/guest_id_archive_setup/update_options.json', params.config);
+            return ADBaseWebSrvV2.postJSON('/admin/archival_transfer_setup/update_options.json', params.config);
         };
 
     }

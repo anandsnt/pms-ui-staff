@@ -491,7 +491,8 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
             reservationData.stayDays.push({
                 date: dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd'),
                 dayOfWeek: dateFilter(new tzIndependentDate(item.date), 'EEE'),
-                day: dateFilter(new tzIndependentDate(item.date), 'dd')
+                day: dateFilter(new tzIndependentDate(item.date), 'dd'),
+                shouldDisable: tzIndependentDate(item.date) < tzIndependentDate ($rootScope.businessDate) 
             });
             roomDetails.stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')] = {
                 guests: {
@@ -502,12 +503,14 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
                 rate: {
                     id: item.rate_id
                 },
-                rateDetails: item.rate
+                rateDetails: item.rate,
+                roomTypeId: item.room_type_id,
+                roomId: item.room_id
             };
 				// TODO : Extend for each stay dates
             roomDetails.rateId.push(item.rate_id);
             if (index === 0) {
-                roomDetails.roomTypeId = item.room_type_id;
+                roomDetails.roomTypeId = stayCard.reservation_status === 'CHECKEDIN' ? stayCard.room_type_id : item.room_type_id;
                 roomDetails.room_id = stayCard.room_id;
                 roomDetails.roomTypeName = stayCard.room_type_description;
                 RVReservationStateService.bookMark.lastPostedRate = item.rate_id;

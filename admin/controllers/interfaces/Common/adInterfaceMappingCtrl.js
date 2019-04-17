@@ -5,7 +5,6 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-
         var mappingText = {
           'cancellation_code': 'Cancellation Codes',
           'tax_code': 'Tax Codes',
@@ -13,6 +12,7 @@ admin.controller('adInterfaceMappingCtrl', [
           'charge_code_department_code': 'Charge Code - Department Code',
           'market_code': 'Market Code - Market Segment',
           'market_code_department_code': 'Market Code - Department Code'
+
         };
 
         var mappingPartials = {
