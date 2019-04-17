@@ -255,6 +255,8 @@ angular.module('sntRover')
             return hideToggleMenu;
         };
 
+        // CICO-63546 : Disable RES/AVL toggle -
+        // While RES mode is active & diff bw/n businessDate and FromDate > 6.
         $scope.disableAvlToggle = function() {
             var isHideAvlToggle = false,
                 dateDiff = moment($rootScope.businessDate)
@@ -267,6 +269,8 @@ angular.module('sntRover')
             return isHideAvlToggle;
         };
 
+        // CICO-63546 : Disable Left Shift << button -
+        // While AVL mode is active & diff bw/n businessDate and FromDate >= 0.
         $scope.disableLeftDateShift = function() {
             var isHideAvlToggle = false,
                 dateDiff = moment($rootScope.businessDate)
