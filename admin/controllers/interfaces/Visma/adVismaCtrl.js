@@ -21,9 +21,8 @@ admin.controller('adVismaCtrl', ['$scope', 'config', 'adInterfacesSrv',
          */
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
-            console.log("changing tab ", $scope.state.activeTab)
         }
-        
+
         /**
          * when we clicked on save button
          * @return {undefined}
@@ -43,7 +42,6 @@ admin.controller('adVismaCtrl', ['$scope', 'config', 'adInterfacesSrv',
 
         (function () {
             $scope.config = config;
-            console.log("visma iife ", $scope);
         })();
     }
 ]);
