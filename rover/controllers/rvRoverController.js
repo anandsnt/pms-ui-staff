@@ -67,6 +67,9 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
+        if (hotelDetails.hide_analytics_menu) {
+            rvMenuSrv.showAnalyticsMenu = false;
+        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
@@ -1171,6 +1174,12 @@ sntRover.controller('roverController', [
                 });
             }
         })();
+
+        // TODO: delete this code after 2-3 releases, this is mainly for analyzing the feature
+        // In browser console call document.dispatchEvent(new Event('SHOW_ANALYTICS_MENU')) 
+        document.addEventListener('SHOW_ANALYTICS_MENU', function() {
+            $state.go('rover.reportAnalytics');
+        });
 
     }
 ]);
