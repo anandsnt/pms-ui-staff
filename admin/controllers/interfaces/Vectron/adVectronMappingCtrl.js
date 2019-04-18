@@ -39,36 +39,23 @@ admin.controller('adVectronMappingCtrl', [
             return _.find($scope.state.mappingTypes, function (obj) { return obj.name === name; })['text'];
         }
 
-        var loadSntValuesByMappingTypes = function() {
-            // fetch charge codes
-            if (!$scope.state.chargeCodes) {
-                $scope.callAPI(adVectronSetupSrv.getAllChargeCodes, {
-                    successCallBack: function(response) {
-                        $scope.state.chargeCodes = response.data.charge_codes;
-                    }
-                });
-            }
+        $scope.mappingValueText = function(mappingType, mappingValue) {
+            var text = ""
+            if (mappingType == 'charge_code') {
+                item = _.find($scope.state.chargeCodes, function (obj) { return obj.charge_code === mappingValue; });
+                text = item.charge_code +' - '+ item.description
 
-            // fetch payment charge codes
-            if (!$scope.state.paymentChargeCodes) {
-                $scope.callAPI(adVectronSetupSrv.getAllPaymentChargeCodes, {
-                    successCallBack: function(response) {
-                        $scope.state.paymentChargeCodes = response.data.charge_codes;
-                    }
-                });
             }
-
-            // fetch posting accounts
-            if (!$scope.state.postingAccounts) {
-                $scope.callAPI(adVectronSetupSrv.getAllPostingAccounts, {
-                    successCallBack: function(response) {
-                        $scope.state.postingAccounts = response.posting_accounts;
-                    }
-                });
+            else if (mappingType == 'payment_charge_code') {
+                item = _.find($scope.state.paymentChargeCodes, function (obj) { return obj.charge_code === mappingValue; });
+                text = item.charge_code +' - '+ item.description
             }
-
+            else if (mappingType == 'posting_account') {
+                item = _.find($scope.state.postingAccounts, function (obj) { return obj.posting_accounts_number === mappingValue; });
+                text = item.posting_accounts_number +' - '+ item.posting_accounts_name
+            }
+            return text;
         }
-
 
         $scope.onClickSaveNew = function() {
             $scope.callAPI(adVectronSetupSrv.saveMapping, {
@@ -167,19 +154,18 @@ admin.controller('adVectronMappingCtrl', [
         (function() {
             $scope.totalCount = 0;
             $scope.mapping = fetchEmptyMapping();
-            // should fetch mapping types from IFC, as mapping types needs to be translated before rendering in the listing
-            if (!$scope.state.mappingTypes) {
-                $scope.callAPI(adVectronSetupSrv.getAllMappingTypes, {
-                    successCallBack: function(response) {
-                        var dict =[];
-                        _.each(response.data, function(data){
-                            dict.push({ name: data, text: titleCase(data) });
-                        })
-                        $scope.state.mappingTypes = dict;
-                        $scope.loadTable();
-                    }
-                });
-            }
-            loadSntValuesByMappingTypes();
+            $scope.callAPI(adVectronSetupSrv.fetchMeta, {
+                successCallBack: function(meta) {
+                    $scope.state.chargeCodes = meta['charge_codes'];
+                    $scope.state.paymentChargeCodes = meta['payment_charge_codes'];
+                    $scope.state.postingAccounts = meta['posting_accounts'];
+                    var dict =[];
+                    _.each(meta['mapping_types'], function(data){
+                        dict.push({ name: data, text: titleCase(data) });
+                    })
+                    $scope.state.mappingTypes = dict;
+                    $scope.loadTable();
+                }
+            });
         })();
     }]);

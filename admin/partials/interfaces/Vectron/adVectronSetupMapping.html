@@ -29,7 +29,7 @@
                     </td>
                     <td data-title="'SNT VALUE'" sortable="'value'" header-class="width-30" ng-hide="mappingRow.editing"
                         ng-click="onEditMapping(mappingRow)">
-                        {{mappingRow.value}}
+                        {{mappingValueText(mappingRow.typeof, mappingRow.value)}}
                     </td>
                     <td data-title="'EXTERNAL VALUE'" sortable="'external_value'" header-class="width-30" ng-hide="mappingRow.editing"
                         ng-click="onEditMapping(mappingRow)">
