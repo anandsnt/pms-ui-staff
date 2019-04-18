@@ -9,8 +9,43 @@ admin.service('adVectronSetupSrv', [
             'MAPPING_TYPES': {}
         }
 
+        service.fetchMeta = function() {
+            var deferred = $q.defer(),
+                promises = [],
+                meta = {};
+
+            promises.push(service.getAllChargeCodes().
+            then(function(response) {
+                meta['charge_codes'] = response.data.charge_codes;
+            }));
+
+            promises.push(service.getAllPaymentChargeCodes().
+            then(function(response) {
+                meta['payment_charge_codes'] = response.data.charge_codes;
+            }));
+
+            promises.push(service.getAllPostingAccounts().
+            then(function(response) {
+                meta['posting_accounts'] = response.posting_accounts;
+            }));
+
+            promises.push(service.getAllMappingTypes().
+            then(function(response) {
+                meta['mapping_types'] = response.data;
+            }));
+
+
+            $q.all(promises).
+            then(function() {
+                deferred.resolve(meta);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
         service.getAllChargeCodes = function() {
-            // return ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000');
             if (_.isEmpty(cache['CHARGE_CODES'])) {
                 cache['CHARGE_CODES'] = ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000');
             }
@@ -18,7 +53,6 @@ admin.service('adVectronSetupSrv', [
         };
 
         service.getAllPaymentChargeCodes = function() {
-            // return ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000&charge_code_type=PAYMENT');
             if (_.isEmpty(cache['PAYMENT_CHARGE_CODES'])) {
                 cache['PAYMENT_CHARGE_CODES'] = ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000&charge_code_type=PAYMENT');
             }
@@ -26,16 +60,11 @@ admin.service('adVectronSetupSrv', [
         };
 
         service.getAllPostingAccounts = function() {
-            // return ADBaseWebSrvV2.getJSON('api/posting_accounts.json');
             if (_.isEmpty(cache['POSTING_ACCOUNTS'])) {
                 cache['POSTING_ACCOUNTS'] = ADBaseWebSrvV2.getJSON('api/posting_accounts.json');
             }
             return cache['POSTING_ACCOUNTS']
         };
-
-        function snakeToCamel(s){
-            return s.charAt(0).toUpperCase() + s.slice(1).replace(/(\_\w)/g, function(m){return ' ' + m[1].toUpperCase();});
-        }
 
         service.getAllMappingTypes = function() {
             if (_.isEmpty(cache['MAPPING_TYPES'])) {
