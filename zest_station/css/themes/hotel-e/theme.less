@@ -1,0 +1,223 @@
+/* StayNTouch Zest Station Styles | Amrath Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #673340;
+    
+@textColor:             @black;
+@backgroundColor:       #faf6ed;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @white;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+.logo-svg{
+    background-image: url("/assets/zest_station/css/themes/hotel-e/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 110px;
+    width: 189px;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#hotel-e {
+
+    #header {
+        height: 145px;
+        background: #ffffff;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    button {
+        font-size: 1.3em;
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 110px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background: @black;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+
+        &:not(.selected) {
+            .add-on-content {
+                background: #fff;
+            }
+            border-color: #fff;
+        }
+        
+    }
+
+    #textual {
+        background: #fff;
+         
+
+        &:before,
+        &:after {
+            background: #fff;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    .popup {
+        .add-on {
+            .add-on-content {
+                background: @white;
+            }
+        }
+    }
+
+    #upgrade {
+        background-color: #fff;
+        
+        .upgrade-price {
+            background-color: @brandColor;
+            color: @white;
+        }
+    }
+
+    .upgrade-list {
+        &.upgrade-list-v2 {
+            .upgrade-content {
+                background: #fff;
+            }
+        }
+    }
+}
