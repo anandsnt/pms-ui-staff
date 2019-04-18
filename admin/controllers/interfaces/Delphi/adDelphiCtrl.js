@@ -1,43 +1,27 @@
-admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesSrv',
-    function($scope, config, adInterfacesSrv) {
-        BaseCtrl.call(this, $scope);
+admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesCommonConfigSrv',
+    function($scope, config, adInterfacesCommonConfigSrv) {
 
-        $scope.interface = 'DELPHI';
-
-        $scope.state = {
-            activeTab: 'SETTING'
-        };
+        var interfaceIdentifier = 'delphi';
 
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
 
-        $scope.realTimeDataSyncItems = ['link', 'group', 'inventory'];
-
-        /**
-         * when button clicked to switch between mappings/settings
-         * @return {undefined}
-         * @param {name} name tab name to toggle.
-         */
-        $scope.changeTab = function(name) {
-            $scope.state.activeTab = name;
-        };
-
-        $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesSrv.updateSettings, {
+        $scope.saveInterfaceConfig = function() {
+            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
-                    settings: $scope.config,
-                    integration: $scope.interface.toLowerCase()
+                    config: $scope.config,
+                    interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
-                    $scope.errorMessage = '';
-                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                    $scope.goBackToPreviousState();
                 }
             });
         };
 
         (function() {
             $scope.config = config;
+            $scope.interface = interfaceIdentifier.toUpperCase();
         })();
     }
 ]);

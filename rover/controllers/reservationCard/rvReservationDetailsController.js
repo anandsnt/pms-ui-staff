@@ -112,6 +112,14 @@ sntRover.controller('reservationDetailsController',
                     isFromStayCard: true
                 }
             };
+        } else if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+            $rootScope.setPrevState = {
+                title: 'INVOICE SEARCH',
+                name: 'rover.financials.invoiceSearch',
+                param: {
+                    isFromStayCard: true
+                }
+            };
         } else if ($scope.previousState.name === "rover.allotments.config" || $rootScope.stayCardStateBookMark.previousState === 'rover.allotments.config') {
 			if ($scope.previousState.name === "rover.allotments.config") {
 				setNavigationBookMark();
@@ -278,8 +286,6 @@ sntRover.controller('reservationDetailsController',
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
 				guestIdList = response;
-				console.log(response);
-
 				sntActivity.stop('GUEST_ID_FETCH');
 			};
 
@@ -1384,6 +1390,8 @@ sntRover.controller('reservationDetailsController',
 			'authAmount': '0.00',
 			'manualCCAuthPermission': true,
 			'billData': [],
+			'isManual': false,
+			'manualAuthCode': '',
 			'selectedCardDetails': {	// To keep the selected/active card details
 					'name': '',	// card - name
 					'number': '',	// card - number
@@ -1406,6 +1414,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.showAuthAmountPopUp = function() {
 
 			var fetchCreditCardAuthInfoSuccess = function( data ) {
+				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.authData.manualCCAuthPermission = hasManualCCAuthPermission();
 				$scope.authData.billData = data.bill_data;
@@ -1433,6 +1442,7 @@ sntRover.controller('reservationDetailsController',
 			};
 
 			var fetchCreditCardAuthInfoFaliure = function( errorMessage ) {
+				sntActivity.stop('FETCH_AUTH_DETAILS');
 				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorMessage;
 			};
@@ -1444,7 +1454,7 @@ sntRover.controller('reservationDetailsController',
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
-
+			sntActivity.start('FETCH_AUTH_DETAILS');
 			$scope.invokeApi(RVCCAuthorizationSrv.fetchCreditCardAuthInfo, data, fetchCreditCardAuthInfoSuccess, fetchCreditCardAuthInfoFaliure);
 		};
 
@@ -1504,10 +1514,27 @@ sntRover.controller('reservationDetailsController',
 			var onAuthorizationSuccess = function(response) {
 				$scope.$emit('hideLoader');
 				authSuccess(response);
+				if ($scope.authData.isManual) {
+					$scope.authData.isManual = false; // reset 
+					$scope.authData.authAmount = ''; // reset
+					$scope.authData.manualAuthCode = ''; // reset
+					ngDialog.close(); // reload popup with new data from the API
+					$scope.showAuthAmountPopUp();
+				}
 			};
 
 			var onAuthorizationFaliure = function(errorMessage) {
 				$scope.$emit('hideLoader');
+				if ($scope.authData.isManual) {
+					ngDialog.close(); // close the initial popup and display error
+					$scope.isCCAuthPermission = true;
+					ngDialog.open({
+						template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
+						className: '',
+						closeByDocument: false,
+						scope: $scope
+					});
+				}
 				authFailure();
 			};
 
@@ -1516,7 +1543,12 @@ sntRover.controller('reservationDetailsController',
 				"amount": $scope.authData.authAmount
 			};
 
-			$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			if ($scope.authData.isManual) {
+				postData.auth_code = $scope.authData.manualAuthCode;
+				$scope.invokeApi(RVCCAuthorizationSrv.manualVoiceAuth, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			} else {
+				$scope.invokeApi(RVCCAuthorizationSrv.manualAuthorization, postData, onAuthorizationSuccess, onAuthorizationFaliure);
+			}
 		};
 
 		// To handle close/cancel button click after success/declined of auth process.
@@ -1526,22 +1558,27 @@ sntRover.controller('reservationDetailsController',
 
 		// To handle authorize button click on 'auth amount popup' ..
 		$scope.authorize = function() {
-			ngDialog.close(); // Closing the 'auth amount popup' ..
+			if ($scope.authData.isManual) {
+				manualAuthAPICall(); // No need to show Auth in progress message
+			} else {
+				ngDialog.close(); // Closing the 'auth amount popup' ..
 
-			authInProgress();
+				authInProgress();
 
-			setTimeout(function() {
+				setTimeout(function() {
 
-				ngDialog.open({
-					template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
-					className: '',
-					closeByDocument: false,
-					scope: $scope
-				});
+					ngDialog.open({
+						template: '/assets/partials/authorization/rvManualAuthorizationProcess.html',
+						className: '',
+						closeByDocument: false,
+						scope: $scope
+					});
 
-				manualAuthAPICall();
+					manualAuthAPICall();
 
-			}, 100);
+				}, 100);
+			}
+
 		};
 
     // Handle TRY AGAIN on auth failure popup.
