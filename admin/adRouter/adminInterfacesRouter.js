@@ -625,15 +625,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.baswareSetup', {
-        templateUrl: '/assets/partials/interfaces/Basware/adBaswareSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'basware';
-        }],
+        templateUrl: '/assets/partials/interfaces/basware/adBasware.html',
+        controller: 'adBaswareCtrl',
+        url: '/basware/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('basware');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('basware');
             }]
         }
     });
