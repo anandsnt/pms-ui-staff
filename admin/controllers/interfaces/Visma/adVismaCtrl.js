@@ -21,7 +21,7 @@ admin.controller('adVismaCtrl', ['$scope', 'config', 'adInterfacesSrv',
          */
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
-        }
+        };
 
         /**
          * when we clicked on save button
