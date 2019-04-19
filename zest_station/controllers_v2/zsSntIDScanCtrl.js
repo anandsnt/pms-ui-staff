@@ -387,6 +387,8 @@
 					successCallback({
 						id: 123
 					});
+				} else if (!$scope.screenData.adminPin) {
+					return;
 				} else {
 					$scope.callAPI(zsGeneralSrv.verifyStaffByPin, options);
 				}
