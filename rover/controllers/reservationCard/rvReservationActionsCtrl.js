@@ -16,6 +16,7 @@ sntRover.controller('reservationActionsController', [
     'RVContactInfoSrv',
     'rvUtilSrv',
     'RVBillCardSrv',
+    '$stateParams',
     function($rootScope,
         $scope,
         ngDialog,
@@ -32,7 +33,8 @@ sntRover.controller('reservationActionsController', [
                 RVPaymentSrv,
         RVContactInfoSrv,
         rvUtilSrv,
-        RVBillCardSrv) {
+        RVBillCardSrv,
+        $stateParams) {
 
 				BaseCtrl.call(this, $scope);
 				var that = this;
@@ -50,9 +52,15 @@ sntRover.controller('reservationActionsController', [
          * -is stand alone hotel
          * - hourly turned off
          */
-        var departureDatePassedbusinessDate = (new Date($scope.reservationData.reservation_card.departure_date) >= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate);
+        var departureDatePassedbusinessDate = new Date($scope.reservationData.reservation_card.departure_date) >= new Date($rootScope.businessDate) || $scope.reservationData.reservation_card.departure_date === $rootScope.businessDate,
+            reservationCard = $scope.reservationData.reservation_card;
 
-        $scope.showReverseCheckout = $scope.reservationData.reservation_card.reservation_status === "CHECKEDOUT" && departureDatePassedbusinessDate && rvPermissionSrv.getPermissionValue('REVERSE_CHECK_OUT') && $rootScope.isStandAlone && !$rootScope.isHourlyRateOn;
+        $scope.showReverseCheckout = reservationCard.reservation_status === 'CHECKEDOUT'
+            && departureDatePassedbusinessDate
+            && rvPermissionSrv.getPermissionValue('REVERSE_CHECK_OUT')
+            && $rootScope.isStandAlone
+            && !$rootScope.isHourlyRateOn
+            && reservationCard.is_reverse_checkout_allowed_for_hotel;
         $scope.shouldShowDemographicsInValidationPopup = false;
         $scope.shouldShowGuestInfoInValidationPopup = false;
 
@@ -1184,6 +1192,7 @@ sntRover.controller('reservationActionsController', [
                 },
                 // Handle Success
                 function() {
+                    $stateParams.isrefresh = true;
                     $state.reload($state.$current.name);
                     $scope.closeDialog();
                 },
@@ -1221,7 +1230,7 @@ sntRover.controller('reservationActionsController', [
             var resData = $scope.reservationData.reservation_card;
 
             // set not visible for Hourly in 1.11
-            if (resData.is_hourly_reservation || resData.group_status === "Cancel" || resData.allotment_status === "Cancel") {
+            if ($rootScope.hotelDiaryConfig.mode === 'FULL' || resData.is_hourly_reservation || resData.group_status === "Cancel" || resData.allotment_status === "Cancel") {
                 return false;
             }
 

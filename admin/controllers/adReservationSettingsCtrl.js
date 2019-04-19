@@ -86,6 +86,8 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
 
       var saveChangesSuccessCallback = function(data) {
         $rootScope.isHourlyRatesEnabled = !!$scope.reservationSettingsData.is_hourly_rate_on;
+        $rootScope.dayUseEnabled = $scope.reservationSettingsData.day_use_enabled;
+        $rootScope.hourlyRatesForDayUseEnabled = $scope.reservationSettingsData.hourly_rates_for_day_use_enabled;
         $rootScope.isSuiteRoomsAvailable = $scope.reservationSettingsData.suite_enabled;
         $scope.$emit("refreshLeftMenu");
         $scope.$emit('hideLoader');
@@ -97,9 +99,40 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
       };
       var data = dclone($scope.reservationSettingsData, ['prepaid_commission_charge_codes', 'tax_transaction_codes']);
 
+      if (!data.hourly_rates_for_day_use_enabled) {
+        data.hourly_availability_calculation = '';
+      }
+      else if (data.hourly_availability_calculation === '') {
+        data.hourly_availability_calculation = 'FULL';
+      }
+
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
 
     };
+
+    $scope.toggleDayUse = function() {
+        $scope.reservationSettingsData.day_use_enabled = !$scope.reservationSettingsData.day_use_enabled;
+        if (!$scope.reservationSettingsData.day_use_enabled) {
+            $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = false;
+        }
+    };
+
+    $scope.toggleHourlyRatesForDayUse = function() {
+        if (!$scope.reservationSettingsData.day_use_enabled) {
+            $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = false;
+        }
+         else {
+            $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = !$scope.reservationSettingsData.hourly_rates_for_day_use_enabled;
+        }
+        if (!$scope.reservationSettingsData.hourly_rates_for_day_use_enabled) {
+            $scope.reservationSettingsData.hourly_availability_calculation = 'FULL';
+        }
+    };
+    
+    $scope.toggleHourlyAvailability = function(value) {
+        $scope.reservationSettingsData.hourly_availability_calculation = value;
+    };
+
     /*
      * Suite rooms toggle button actions
      */

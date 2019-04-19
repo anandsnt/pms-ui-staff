@@ -9,6 +9,16 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.checkInReservations = [];
+        this.currentReservationIdDetails = {};
+
+        this.setCurrentReservationIdDetails = function(data) {
+            that.currentReservationIdDetails = data;
+        };
+
+        this.getCurrentReservationIdDetails = function() {
+            return that.currentReservationIdDetails;
+        };
+
         this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
             that.checkInReservations = data;

@@ -52,7 +52,7 @@
                 </label>
             </div
             <!-- Preview, hidden until amount edited or charge code changed -->
-            <div id="edit-preview" class="entry full-width notice" ng-show="selectedChargeCode.description.length>0 || newAmount.length>0">
+            <div id="edit-preview" class="entry full-width notice" ng-show="(selectedChargeCode.description.length>0 || newAmount.length>0) && errorMessage===''">
                 <strong class="h4" translate>CHARGE_WILL_APPEAR_AS</strong>
                 <ul>
                     <li>

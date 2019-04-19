@@ -63,6 +63,8 @@ angular.module('sntRover')
 			}
 		};
 
+		// Flag for showing save changes button after reservation extend or shorten
+		$scope.showSaveChangesAfterEditing = false;
 
 		/**
 		 * decide what the behaviour and title of back button on diary
@@ -165,8 +167,10 @@ angular.module('sntRover')
 			}
 		};
 
-		decideBackBtn($rootScope, $rootScope.diaryState);
-
+		// CICO-63369 : Hide back button while we switch bw/n diaries.
+		if ($stateParams.origin !== 'NIGHTLY_DIARY') {
+			decideBackBtn($rootScope, $rootScope.diaryState);
+		}
 
 	// adjuested property date time (rounded to next 15min slot time)
 	$scope.adj_property_date_time 	= util.correctTime(propertyTime.hotel_time.date, propertyTime);
@@ -213,6 +217,8 @@ angular.module('sntRover')
 		var onDateSelectionFromDatepicker = function(date_string, date_picker_obj) {
 			var isOnEditMode = $scope.gridProps.edit.active,
 				going_date = new Date (date_string);
+
+			propertyTime.hotel_time.date = going_date;
 
 			if (!isOnEditMode) {
 				$scope.gridProps.filter.arrival_date = going_date;
@@ -328,14 +334,14 @@ angular.module('sntRover')
 			viewport: {
 				hours: 24,
 				width: angular.element($window).width() - 120,
-				height: angular.element($window).height() - 230,
-				row_header_right: 120,
-				timeline_header_height: 80,
-				timeline_height: 60,
+				height: angular.element($window).height() - 180,
+				row_header_right: 184,
+				timeline_header_height: 60,
+				timeline_height: 40,
 				timeline_occupancy_height: 20,
-				timeline_header_bottom: 230,
+				timeline_header_bottom: 180,
 				element: function() {
-					return $('.diary-grid .wrapper');
+                    return $('.diary-grid');
 				}
 			},
 		/* h
@@ -362,8 +368,8 @@ angular.module('sntRover')
 				width: undefined,
 				height: undefined,
 				hours: getTotalGridHours( payload.display.x_n ),
-				row_height: 24, // please set to 60 when default changeed to 12 hour mode
-				row_height_margin: 0,
+				row_height: 28, // please set to 60 when default changeed to 12 hour mode
+				row_height_margin: 2,
 				intervals_per_hour: 4,
 				ms_15: 900000,
 				ms_hr: 3600000,
@@ -608,7 +614,9 @@ angular.module('sntRover')
 				this.dragData = options;
 			},
 			dropReservation: function(roomId) {
-				$scope.saveReservationOnDrop(this.dragData, roomId);
+                if (this.dragData.reservationId) {
+                    $scope.saveReservationOnDrop(this.dragData, roomId);
+                }
 			},
 			dragEnded: function() {
 				$scope.clearAvailability();
@@ -704,6 +712,18 @@ angular.module('sntRover')
 			setFocusOnCorporateSearchText ();
 		};
 
+		$scope.onUnassignedRoomToggle = function() {
+			if ($scope.gridProps.unassignedRoomList.open) {
+                $scope.gridProps.unassignedRoomList.open = false;
+                $scope.resetEdit();
+                $scope.clearAvailability();
+                $scope.renderGrid();
+            } 
+            else {
+                $scope.gridProps.unassignedRoomList.fetchList();
+            }
+        };
+
 	    /* _________________________________________________________
 		    BEGIN EVENT HOOKS
 		  ________________________________________________________
@@ -716,6 +736,8 @@ angular.module('sntRover')
 	    		edit  = props.edit,
 	    		selectedTypeCount;
 
+			$scope.showSaveChangesAfterEditing = false;
+			
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
@@ -786,9 +808,8 @@ angular.module('sntRover')
 		    		if ( copy.physical_count === 0 || (copy.physical_count - selectedTypeCount === 0 ) ) {
 		    			copy.selected = false;
 
-		    			$scope.message = ['Sorry, There are no more physical rooms of "' + copy.room_type + '" available.'];
 		    			ngDialog.open({
-		    				template: '/assets/partials/diary/rvDiaryConfirmation.html',
+		    				template: '/assets/partials/diary/rvDiaryAvailabilityPopup.html',
 		    				controller: 'RVDiaryConfirmationCtrl',
 		    				scope: $scope
 		    			});
@@ -873,6 +894,19 @@ angular.module('sntRover')
 				controller: 'RVDiaryMessageShowingCtrl'
 			});
 	    };
+
+        var openUnAssignedPopup = function() {
+            ngDialog.open({
+                template: '/assets/partials/diary/rvDiaryUnAssignedPopup.html',
+                scope: $scope,
+                controller: 'RVDiaryMessageShowingCtrl'
+            });
+        };
+
+        $scope.closeUnAssignedPopup = function() {
+            $scope.resetEverything();
+            $scope.closeDialog();
+        };
 
 	   	/**
 	    * method used to set focus on corporate account choosing textbox
@@ -1053,7 +1087,22 @@ angular.module('sntRover')
 				}
 			};
 		})();
-
+                
+        /*
+         *  Logic to show/hide save changes based on any changes occured via ext-shortening or room move
+         *  @param {Object} - [ original item ]
+         *  @param {String} - [ new arrival data ]
+         *  @param {String} - [ new departure data ]
+         *	@param {Boolean}- [ to check room move hanppend ]
+         */
+		var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture, isMoveRoomAction) {
+			if ( originalItem.arrival !== newArrival || originalItem.departure !== newDeparture || isMoveRoomAction ) {
+				$scope.showSaveChangesAfterEditing = true;
+			}
+			else {
+				$scope.showSaveChangesAfterEditing = false;
+			}
+		};
 
 	    var successCallBackOfResizeExistingReservation = function(data, successParams) {
 	    	var avData 		= data.availability,
@@ -1061,7 +1110,11 @@ angular.module('sntRover')
 	    		oItem 		= props.edit.originalItem,
 	    		oRowItem 	= props.edit.originalRowItem,
 	    		lastArrTime = this.availability.resize.last_arrival_time,
-	    		lastDepTime = this.availability.resize.last_departure_time;
+				lastDepTime = this.availability.resize.last_departure_time,
+				isMoveRoomAction = (successParams.params.room_id !== oItem.room_id);
+				
+			// To show save change button ,only if there is change in time
+			showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {
@@ -1158,7 +1211,7 @@ angular.module('sntRover')
 
 	    	// Show some message if unassigned exists.
 	    	if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
-	    		showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+                openUnAssignedPopup();
 	    	}
 	    }.bind($scope.gridProps);
 
@@ -1489,7 +1542,7 @@ angular.module('sntRover')
 
 		// CICO-24243 comment-82523 https://goo.gl/b9HgY1
 		if ($scope.gridProps.unassignedRoomList.isUnassignedPresent) {
-		 	showPopupWithMessage('Unassigned rooms exist. Consider assigning them first');
+            openUnAssignedPopup();
 	 	}
 	};
 
@@ -2604,5 +2657,42 @@ angular.module('sntRover')
 			clearTimeout(timeoutforLine);
 		}
 	});
+
+	// Handle Nigthtly/Hourly toggle
+	$scope.toggleHourlyNightly = true;
+	$scope.navigateToNightlyDiary = function() {
+		$state.go("rover.nightlyDiary", {
+			start_date: $scope.gridProps.filter.arrival_date
+		});
+		$scope.toggleHourlyNightly = false;
+	};
+
+	/*
+     *  Utility method to check whether we need to show Toggle DIARY D/N
+     *  Based on settings values inside Reservation settings.
+     */
+    $scope.hideToggleMenu = function() {
+        
+        /**
+         *  A = settings.day_use_enabled (true / false)
+         *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         *
+         *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+         *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+         *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+         *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+         */
+
+        var hideToggleMenu = false;
+
+        // For Hourly hotels we are hiding the Navigations to Nightly Diary.
+        // CICO-64919 : Hiding Navigation to Night Diary for FULL hotels.
+        if ( $rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL' ) {
+            hideToggleMenu = true;
+        }
+
+        return hideToggleMenu;
+    };
 
 }]);

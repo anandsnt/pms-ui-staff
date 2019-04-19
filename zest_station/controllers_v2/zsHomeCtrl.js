@@ -37,7 +37,12 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.trackEvent('CI', 'user_selected');
 
             clearInterval($scope.activityTimer);
-            $state.go('zest_station.checkInReservationSearch');
+
+            if ($scope.isIpad && $scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
+                $state.go('zest_station.findReservationFromId');
+            } else {
+                $state.go('zest_station.checkInReservationSearch');
+            }
         };
 
 		/*
@@ -237,6 +242,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			// flush out previous search results
             zsCheckinSrv.setSelectedCheckInReservation([]);
             zsCheckinSrv.setCheckInReservations([]);
+            zsCheckinSrv.setCurrentReservationIdDetails({});
 			// eject if any key card is inserted
             $scope.$emit('EJECT_KEYCARD');
 			// set this to false always on entering home screen

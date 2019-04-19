@@ -2,11 +2,15 @@ angular
 .module('diaryModule', [])
 .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     $stateProvider.state('rover.diary', {
-        url: '/diary/?reservation_id&checkin_date',
+        url: '/diary/?reservation_id&checkin_date&origin',
         templateUrl: '/assets/partials/diary/rvDiary.html',
         controller: 'rvDiaryCtrl',
         resolve: {
-            propertyTime: function(RVReservationBaseSearchSrv) {
+            propertyTime: function(RVReservationBaseSearchSrv, $stateParams) {
+                if (!!$stateParams.checkin_date) {
+                    return RVReservationBaseSearchSrv.fetchCurrentTime($stateParams.checkin_date);
+                }
+                
                 return RVReservationBaseSearchSrv.fetchCurrentTime();
             },
             baseSearchData: function(RVReservationBaseSearchSrv) {
@@ -15,7 +19,7 @@ angular
             payload: function($rootScope, rvDiarySrv, $stateParams, $vault, baseSearchData, propertyTime) {
                 var start_date = propertyTime.hotel_time.date;
 
-                if ($stateParams.checkin_date) {
+                if (!!$stateParams.checkin_date) {
                     start_date = $stateParams.checkin_date;
                 }
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
@@ -28,14 +32,14 @@ angular
     });
 
     $stateProvider.state('rover.nightlyDiary', {
-        url: '/nightlyDiary/?reservation_id&start_date&isFromStayCard',
+        url: '/nightlyDiary/?reservation_id&room_id&start_date&origin',
         templateUrl: '/assets/partials/nightlyDiary/rvNightlyDiary.html',
         controller: 'rvNightlyDiaryMainController',
         resolve: {
             roomsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -47,7 +51,7 @@ angular
             datesList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -65,7 +69,7 @@ angular
             reservationsList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
                 var params = {};
 
-                if ($stateParams.isFromStayCard) {
+                if ($stateParams.origin === 'STAYCARD') {
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
@@ -76,6 +80,24 @@ angular
                     params.per_page = 50;
                 }
                 return RVNightlyDiarySrv.fetchReservationsList(params);
+            },
+            unassignedReservationList: function(RVNightlyDiarySrv, $rootScope, $stateParams) {
+                var params = {}, cacheData = {};
+
+                if ($stateParams.origin === 'STAYCARD') {
+                    cacheData = RVNightlyDiarySrv.getCache();
+                    params.date = cacheData.start_date;
+                }
+                else {
+                    if (!!$stateParams.start_date) {
+                        params.date = $stateParams.start_date;
+                    }
+                    else {
+                        params.date = $rootScope.businessDate;
+                    }
+                }
+                
+                return RVNightlyDiarySrv.fetchUnassignedReservationList(params);
             }
         },
         lazyLoad: function($transition$) {

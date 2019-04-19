@@ -1,0 +1,10 @@
+<div class="form float" ng-if="state.activeTab === 'SYNC'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <ad-sync-block interface="sie",
+                   historical-date-range-days="30",
+                   config="config",
+                   proxy="true">
+    </ad-sync-block>
+</div>

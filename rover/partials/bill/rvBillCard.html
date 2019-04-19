@@ -147,7 +147,7 @@
 											<span class="icons icon-charge"></span>
 											Add Charge
 										</button>
-										<button g-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
+										<button ng-show="isStandAlone && reservationBillData.reservation_status === 'CHECKEDIN' &&
 									!reservationBillData.is_advance_bill && !reservationBillData.is_hourly" type="button" class="button with-icon green" click-touch="clickedAdvanceBill()"> <!-- Click opens {modals/alerts/advanced-bill.html} -->
 											<span class="icons icon-charge"></span>
 											Advanced Bill
