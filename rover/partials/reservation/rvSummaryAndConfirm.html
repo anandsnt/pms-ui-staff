@@ -4,6 +4,7 @@
     <div id="details-and-payment-content" class="reservations-content-wrapper">
         <div id="reservation-summary" class="reservation-summary scrollable" ng-iscroll='reservationSummary'>
             <div class="wrapper">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <h2 translate>RESERVATION_SUMMARY</h2>
                 <ul class="data" ng-if="!reservationData.isHourly">
                     <li>
@@ -118,7 +119,8 @@
                         </div>
                     </div>
                     <div class="room-type">
-                        <h4>{{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="room.roomName">{{room.roomName}} - {{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="!room.roomName">{{room.roomTypeName}}<span></span></h4>
                         <div class="confirmation" ng-hide="room.confirm_no">
                             <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>{{reservationData.confirmNum}}

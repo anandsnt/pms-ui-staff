@@ -1,13 +1,17 @@
 angular.module('admin').
     controller('adInterfaceConfigurationCtrl', [
-        '$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', '$stateParams', 'mappingTypes',
-        function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, mappingTypes) {
+        '$scope', '$rootScope', 'config', 'adInterfacesSrv', 'dateFilter', '$stateParams', 'mappingTypes',
+        function($scope, $rootScope, config, adInterfacesSrv, dateFilter, $stateParams, mappingTypes) {
 
             var interfaceIdentifier = $stateParams.id;
 
             var configUrls = {
                 "SUNACCOUNTING": '/assets/partials/interfaces/SunAccounting/adSunAccountingSetup.html',
                 "DEFAULT": '/assets/partials/interfaces/Common/setup.html'
+            };
+
+            var syncItems = {
+                "SUNACCOUNTING": ['Journal and Market Data']
             };
 
             $scope.state = {
@@ -17,6 +21,10 @@ angular.module('admin').
 
             $scope.fetchConfigUrl = function() {
                 return configUrls[$scope.interface] ? configUrls[$scope.interface] : configUrls["DEFAULT"];
+            };
+
+            $scope.changeTab = function(name) {
+                $scope.state.activeTab = name;
             };
 
             /**
@@ -29,16 +37,22 @@ angular.module('admin').
 
 
             $scope.saveInterfaceConfig = function() {
-                $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+                $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        config: $scope.config,
-                        interfaceIdentifier: interfaceIdentifier
+                        settings: $scope.config,
+                        integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
-                        $scope.goBackToPreviousState();
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Settings updated!';
+                    },
+                    onFailure: function(response) {
+                        $scope.successMessage = '';
+                        $scope.errorMessage = response.errors;
                     }
                 });
             };
+
 
             (function() {
                 // init
@@ -46,6 +60,7 @@ angular.module('admin').
                 $scope.availableSettings = _.keys(config);
                 $scope.mappingTypes = mappingTypes.data;
                 $scope.interface = interfaceIdentifier.toUpperCase();
+                $scope.syncItems = syncItems[$scope.interface];
             })();
         }
     ]);

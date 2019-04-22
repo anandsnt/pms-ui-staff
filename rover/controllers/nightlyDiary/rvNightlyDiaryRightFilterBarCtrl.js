@@ -7,7 +7,7 @@ angular.module('sntRover')
 			RVNightlyDiaryRightFilterBarSrv
 		) {
 
-		BaseCtrl.call(this, $scope);
+			BaseCtrl.call(this, $scope);
 
 			/*
 			 * Initiate controller
@@ -112,7 +112,7 @@ angular.module('sntRover')
 				$scope.diaryData.selectedRoomCount = 0;
 			};
 
-			$scope.$on('RESET_RIGHT_FILTER_BAR', function() {
+			$scope.addListener('RESET_RIGHT_FILTER_BAR', function() {
 				resetFilters();
 			});
 

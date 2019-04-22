@@ -82,7 +82,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'ruby': 'Ruby Hospitality',
             'qbic': 'Qbic Hotels',
             'merrion-row': 'Merrion Row Hotel And Public House',
-            'freehand-chicago': 'Freehand Chicago'
+            'freehand-chicago': 'Freehand Chicago',
+            'why': 'Why Hotel',
+            'village': 'Village Hotels'
         };
 
         this.isThemeConfigured = function(theme) {

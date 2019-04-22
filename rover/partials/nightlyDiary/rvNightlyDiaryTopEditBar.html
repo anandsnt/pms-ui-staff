@@ -3,15 +3,21 @@
         <figure class="guest-image">
             <img src="{{currentSelectedReservation.guest_details.image}}" alt="Guest-Image">
         </figure>
-        <h2 class="name">{{currentSelectedReservation.guest_details.full_name}}</h2>
+        <div class="guest-info">
+            <h2 class="name">{{currentSelectedReservation.guest_details.full_name}}</h2>
+            <span class="room hidden">{Room No.} {Room Type}</span>
+        </div>
+
         <!-- Opens Stay Card of that guest -->
         <button type="button" class="button orange" ng-click="goToStayCard(currentSelectedReservation, currentSelectedRoom)">Stay Card</button>
     </div>
     <div class="actions">
         <!-- Cancels editing, hides edit screen and stay-range, shows search -->
-        <button type="button" class="button blank" ng-click="cancelEditReservation()">Cancel</button>
+        <button type="button" class="button blank" ng-click="cancelEditReservation()" ng-hide="diaryData.isMoveRoomViewActive">Cancel</button>
+        <button type="button" class="button purple" ng-click="moveRoomButtonClick()" ng-hide="diaryData.hideMoveButton || diaryData.isMoveRoomViewActive || diaryData.showSaveChangeButtonAfterShortenOrExtent.show">Move Room</button>
+        <button type="button" class="button blank" ng-click="cancelMoveRoomButtonClick()" ng-show="diaryData.isMoveRoomViewActive">Cancel Move Room</button>
         <!-- Removes the reservation from the grid and moves it to the Unassigned sidebar (filter) -->
-        <button ng-hide="true" type="button" class="button white red-text>">Unassign Room</button>
-        <button type="button" class="button green" ng-click="saveEditedReservation()">Save Changes</button>
+        <button type="button" class="button white red-text" ng-if="!diaryData.showSaveChangeButtonAfterShortenOrExtent.show" ng-hide="diaryData.isMoveRoomViewActive" ng-click="unAssignRoomButtonClick()">Unassign Room</button>
+        <button type="button" class="button green" ng-click="saveEditedReservation()" ng-if="diaryData.showSaveChangeButtonAfterShortenOrExtent.show" ng-hide="diaryData.isMoveRoomViewActive">Save Changes</button>
     </div>
 </div>

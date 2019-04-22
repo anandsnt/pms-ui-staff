@@ -1,20 +1,28 @@
-admin.controller('ADVectronSetupCtrl', [
-    '$scope', 'vectronSetupValues', 'adInterfacesCommonConfigSrv', 'adVectronSetupSrv', 'ngDialog',
-    function($scope, vectronSetupValues, adInterfacesCommonConfigSrv, adVectronSetupSrv, ngDialog) {
+admin.controller('ADVectronSetupCtrl', ['$scope', 'config', 'adInterfacesSrv', 'adVectronSetupSrv', 'ngDialog',
+    function($scope, config, adInterfacesSrv, adVectronSetupSrv, ngDialog) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'VECTRON';
 
         $scope.state = {
-            activeTab: 'SETUP'
+            activeTab: 'SETTING'
+
         };
 
         /**
-         * when clicked on check box to enable/diable GoMomentIvy
+         * when clicked on check box to enable/disable Vectron
          * @return {undefined}
          */
         $scope.toggleEnabled = function() {
             $scope.config.enabled = !$scope.config.enabled;
+        };
+
+        /**
+         *
+         * @return {undefined}
+         */
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
         };
 
         $scope.closeDialog = function() {
@@ -47,33 +55,19 @@ admin.controller('ADVectronSetupCtrl', [
         };
 
         /**
-         *
-         * @return {undefined}
-         */
-        $scope.toggleMappings = function() {
-            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
-        };
-
-        /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfSave = function() {
-            $scope.goBackToPreviousState();
-        };
-
-
-        /**
          * when we clicked on save button
          * @return {undefined}
          */
         $scope.saveSetup = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: $scope.interface
+                    settings: $scope.config,
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfSave
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                }
             });
         };
 
@@ -82,6 +76,6 @@ admin.controller('ADVectronSetupCtrl', [
          * @return {undefined}
          */
         (function() {
-            $scope.config = vectronSetupValues;
+            $scope.config = config;
         })();
     }]);

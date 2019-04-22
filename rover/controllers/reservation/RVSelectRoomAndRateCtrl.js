@@ -52,7 +52,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			showLessRooms: !$stateParams.room_type_id,
 			maxRoomsToShow: 0,
 			selectedRoomType: -1,
-			stayDates: {}
+			stayDates: {},
+			isFromNightlyDiary: $stateParams.isFromNightlyDiary,
+			roomTypeIdFromNightlyDiary: $stateParams.roomTypeIdFromNightlyDiary
 		};
 
 		$scope.display = {
@@ -69,7 +71,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			ROOMS = $scope.reservationData.rooms,
 			ARRIVAL_DATE = $scope.reservationData.arrivalDate,
 			DEPARTURE_DATE = $scope.reservationData.departureDate,
-			scrollPosition = 0;
+			scrollPosition = 0,
+			isRoomTypeChangePopupShown = false;
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ***************************
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PRIVATE METHODS
@@ -347,7 +350,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
 				} else {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
-					payLoad.order = "ALPHABETICAL";
+					payLoad.order = "RATE";
 					if (!!$scope.stateCheck.preferredType && !roomTypeId) {
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 					}
@@ -1781,10 +1784,38 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			return chosen;
 		};
 
+		// CICO-61893 : showValidationPopup
+        var showValidationPopup = function () {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/reseravtionFromDiaryValidation.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        },
+        // CICO-61893 : Reset the room details if the user changes the room type.
+        resetRoomDetailsIfInvalid = function () {
+            TABS[0].room_id = null;
+            ROOMS[0].room_id = null;
+            TABS[0].roomName = null;
+            ROOMS[0].roomName = null;
+        };
+
 		$scope.onRoomTypeChange = function($event) {
 			var tabIndex = $scope.viewState.currentTab,
 				roomType = parseInt($scope.stateCheck.preferredType, 10) || '',
 				roomIndex;
+
+			var roomTypeChanged = ( roomType !== $scope.stateCheck.roomTypeIdFromNightlyDiary ),
+				isRoomDetailsInvalidated = TABS[0].room_id === null;
+
+			if ($scope.stateCheck.isFromNightlyDiary && roomTypeChanged && !isRoomTypeChangePopupShown && !isRoomDetailsInvalidated) {
+                $scope.validationMsg = 'Room number will be unassigned by changing the room type';
+                isRoomTypeChangePopupShown = true;
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
 
 			TABS[tabIndex].roomTypeId = roomType;
 
@@ -2136,7 +2167,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// mark 'isSameCard' as true on '$scope.reservationData'
 		$scope.setSameCardNgo = function() {
 			$scope.reservationData.isSameCard = true;
-			$state.go('rover.reservation.search');
+			$state.go('rover.reservation.search', { fromState: $scope.stateCheck.isFromNightlyDiary ? 'NIGHTLY_DIARY' : null });
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENER
