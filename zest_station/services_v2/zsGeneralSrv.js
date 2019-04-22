@@ -85,7 +85,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'freehand-chicago': 'Freehand Chicago',
             'why': 'Why Hotel',
             'village': 'Village Hotels',
-            'gallivant': 'Gallivant NY'
+            'gallivant': 'Gallivant NY',
+            'hotel-e': 'Hotel E'
         };
 
         this.isThemeConfigured = function(theme) {
