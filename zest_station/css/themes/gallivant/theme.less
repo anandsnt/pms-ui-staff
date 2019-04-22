@@ -1,0 +1,219 @@
+/* StayNTouch Zest Station Styles | Amrath Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #ddc273;
+    
+@textColor:             @black;
+@backgroundColor:       #ffffff;
+
+@actionColor:           @black;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@font-face {
+    font-family:'Didot';
+    src: url('../../type/gallivant/DidotLTStd-Bold.eot');
+    src: url('../../type/gallivant/DidotLTStd-Bold.eot?#iefix') format('embedded-opentype'),
+        url("../../type/gallivant/DidotLTStd-Bold.woff2") format("woff2"),
+        url('../../type/gallivant/DidotLTStd-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@fontFamily: 'Didot', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @backgroundColor;
+@backgroundSize: '';
+
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: #000;
+    }
+
+}
+
+// PMS Zest Station logo
+.logo-svg{
+    background-image: url("../css/themes/gallivant/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 454px;
+    height: 57px;
+    background-position: center;
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#gallivant {
+
+    #header {
+        height: 145px;
+        background: #2f3437;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    button {
+        font-size: 1.3em;
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    .button {
+        &.transparent {
+            background: #f3f3f3;
+        }
+    }
+
+    #logo {
+        padding-top: 0;
+
+        .logo {
+            width: auto;
+            height: 57px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: #000;
+        }
+
+        .icons {
+            fill: #000;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background: @black;
+        }
+    } 
+
+    .add-on-list {
+
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+
+    .add-on {
+        &:not(.selected) {
+            background-color: #f3f3f3;
+        }
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+
+        .add-on-content {
+            .action {
+                .button {
+                    &.transparent {
+                        background-color: rgba( 0, 0, 0, 0.15 );
+                    }
+                }
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background: #f3f3f3;
+            }
+        }
+    }
+
+    #textual {
+        background: #f3f3f3;
+         
+
+        &:before,
+        &:after {
+            background: #f3f3f3;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+        }
+    }
+}
