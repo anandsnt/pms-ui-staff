@@ -14,10 +14,19 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 	var domIDMappings;
 
+	var runDigestCycle = function() {
+		if (!$scope.$$phase) {
+			$scope.$digest();
+		}
+	};
+
 	$scope.deviceConfig = {
 		useExtCamera: false,
 		useiOSAppCamera: false,
-		useExtCamForFR: false
+		useExtCamForFR: false,
+		useAutoDetection: false,
+		idCapturePluginName: '',
+		idCaptureActionName: ''
 	};
 
 	var stopVideoStream = function() {
@@ -259,17 +268,81 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 	};
 
-	$scope.captureFrontImage = function() {
-		$timeout(function() {
-			angular.element(document.querySelector('#' + domIDMappings.front_side_upload)).click();
-		}, 0);
+	var autoDetectIDAndProcessData = function() {
 
+		var cameraParams = {
+			'CAPTURE_TIMER': 4,
+			'PREVIEW_TIMER': 4,
+			'CAMERA_TYPE': 'back_camera',
+			'CAMERA_MESSAGES': {
+				'DETECTING_FACE': 'WAITING FOR AN ID TO SCAN, PLEASE SHOW YOUR ID TO THE IPAD BACK CAMERA',
+				'CANCEL': 'CANCEL',
+				'TAKING_PHOTO': 'CAPTURING ID',
+				'CAPTURE': 'CAPTURE NOW',
+				'PROCEEDING_WITH_THE_IMAGE': 'PROCEEDING WITH THIS ID IMAGE',
+				'RETAKE_PHOTO': 'RECAPTURE',
+				'PROCEED': 'CONTINUE'
+			}
+		};
+
+		var imageCaptured = function(response) {
+
+			var img = document.createElement('img');
+			var response = response ? response.image_base64 : '';
+			var unmodifiedImage = 'data: image / jpeg;base64,' + response;
+
+			img.src = unmodifiedImage;
+			unmodifiedImage = sntIDCollectionUtilsSrv.dataURLtoBlob(unmodifiedImage);
+			img.onload = function() {
+
+				if ($scope.screenData.imageSide === 0) {
+					$scope.screenData.frontSideImage = unmodifiedImage;
+					getDocInstance();
+				} else {
+					$scope.screenData.backSideImage = unmodifiedImage;
+					postBackImage();
+				}
+				$scope.$emit('IMAGE_ANALYSIS_STARTED');
+				runDigestCycle();
+			};
+			img.onerror = function() {
+				$scope.$emit('IMAGE_ANALYSIS_FAILED');
+				$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
+			};
+		};
+
+		// imageCaptured();
+		var jsonstring = JSON.stringify(cameraParams);
+
+		var pluginName = $scope.deviceConfig.idCapturePluginName ? $scope.deviceConfig.idCapturePluginName : 'AilaCordovaPlugin';
+		var actionName = $scope.deviceConfig.idCaptureActionName ? $scope.deviceConfig.idCaptureActionName : 'captureID';
+
+		cordova.exec(function(response) {
+			imageCaptured(response);
+		}, function(error) {
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
+			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
+		}, pluginName, actionName, [jsonstring]);
+	};
+
+	$scope.captureFrontImage = function() {
+		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+			autoDetectIDAndProcessData();
+		} else {
+			$timeout(function() {
+				angular.element(document.querySelector('#' + domIDMappings.front_side_upload)).click();
+			}, 0);
+		}
 	};
 
 	$scope.captureBackImage = function() {
-		$timeout(function() {
-			angular.element(document.querySelector('#' + domIDMappings.back_side_upload)).click();
-		}, 0);
+		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+			autoDetectIDAndProcessData();
+		} else {
+			$timeout(function() {
+				angular.element(document.querySelector('#' + domIDMappings.back_side_upload)).click();
+			}, 0);
+		}
 	};
 
 	$scope.startScanning = function() {
