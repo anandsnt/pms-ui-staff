@@ -2,10 +2,7 @@
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
-    <ad-sync-block interface="sie"
-                   historical-date-range-days="31"
-                   exclude-today="true"
-                   config="config"
-                   proxy="true">
+    <ad-sync-block interface="digitalalchemy" config="config" proxy="true"
+        historical-data-sync-items="historicalDataSyncItems" real-time-data-sync-items="realTimeDataSyncItems">
     </ad-sync-block>
 </div>

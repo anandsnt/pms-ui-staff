@@ -67,7 +67,8 @@ module.exports = {
             'qbic': [themeCSSRoot + 'qbic.less'],
             'merrion-row': [themeCSSRoot + 'merrion-row.less'],
             'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less'],
-            'why': [themeCSSRoot + 'why.less']
+            'why': [themeCSSRoot + 'why.less'],
+            'village': [themeCSSRoot + 'village.less']
         };
     }
 };

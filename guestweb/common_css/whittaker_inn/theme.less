@@ -1,21 +1,14 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
-@font-face {
-  font-family: 'Jannon';
-  src: url('/assets/type/Jannon/Jannon.eot');
-  src: url('/assets/type/Jannon/Jannon.eot?#iefix') format('embedded-opentype'), url('/assets/type/Jannon/Jannon.woff2') format('woff2'), url('/assets/type/Jannon/Jannon.woff') format('woff'), url('/assets/type/Jannon/Jannon.ttf') format('truetype');
-}
-
 @import "../style.less";
 html,
 body {
-  font-family: 'Jannon';
   height: auto;
   min-height: 100%;
 }
 
 body {
-  background-color: #FFF9F8;
+  background-color: #fff;
 }
 
 .back-text {
@@ -30,7 +23,7 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #484e6b;
+  color: #363d40;
 }
 
 input[type=text],
@@ -42,12 +35,11 @@ input[type=email] {
 }
 
 .sub-main-text {
-  color: #484e6b;
-  font-weight: 500;
+  color: #363d40;
 }
 
 .header-bar {
-  background:#FFF9F8;
+  background:#FFFFFF;
 }
 
 .logo-image {
@@ -62,12 +54,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #484e6b;
-  font-style: normal;
+  color: #363d40;
 }
 
 .view-bill {
-  color: #484e6b;
+  color: #363d40;
 }
 
 .sub-text,
@@ -75,13 +66,12 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #484e6b;
-  float: none !important;
+  color: #363d40;
 }
 
 .btn,
 .btn:hover {
-  background:#484e6b;
+  background:#A77B35;
   color: @white;
 }
 
@@ -98,41 +88,38 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
-  padding: 12% 5% !important;
-  background:#484e6b;
+  background:#A77B35;
 }
 
 .light-button,
 .light-button:hover {
-  padding: 12% 5% !important;
-  background:#6d7289;
+  background: #BA975B;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #9195a6;
+  background: #BA975B;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#6d7289;
+  background:#A77B35;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #484e6b;
+  background: #575753;
 }
 
 .no-thanks,
 .no-thanks:hover {
-  color: #484e6b;
+  color: #000;
   text-decoration: underline;
   text-transform: none;
 }
 
 .strong-font {
   font-weight: 500;
-  color: #484e6b;
 }
 
 .amount,
@@ -150,23 +137,22 @@ input[type=email] {
 }
 
 .upgrade-details .upgrades-btn {
-  background:#464F6A;
+  background:#A77B35;
 }
 
 .proceed-to-checkin {
-  background: #464F6A;
-  text-align: center !important;
+  background: #A77B35;
 }
 
 .upgrades-label {
-  color: #484e6b;
+  color: #BA7A55;
 }
 
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#464F6A;
+  color:#A77B35;
   color: transparent;
 }
 
@@ -176,7 +162,7 @@ input[type=email] {
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#464F6A !important;
+  background-color:#A77B35 !important;
   color: #fff;
 }
 
@@ -218,11 +204,7 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#464F6A;
-}
-
-.circle-bg {
-  background: none;
+  background-color:#A77B35;
 }
 
 .calendar-back {
@@ -237,7 +219,7 @@ input[type=email] {
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #576380;
+  color: #BA975B;
 }
 
 .date-picker-wrap {
@@ -267,19 +249,12 @@ input[type=email] {
 
 .res-details-heading,
 .res-details-heading:hover {
-  color: #343E58;
+  color: #575753;
 }
 
 .back-to-checkout {
-  background: url(/assets/guestweb/common_images/left_arrow.png) center top no-repeat;
+  background: url(/assets/guestweb/common_images/black/left_arrow.png) center top no-repeat;
   height: 40px;
-}
-
-.checkout-icon,.late-checkout-icon {
-  display: none !important;
-}
-.for {
-  text-transform: uppercase !important;
 }
 
 @media (max-width: 990px) {
@@ -292,9 +267,9 @@ input[type=email] {
   }
   .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
-    display: none;
   }
-  .accept-charges {
+  .accept-charges,
+  {
     width: 300px;
     padding: 4% 0%;
   }
@@ -305,7 +280,7 @@ input[type=email] {
 
 @media (max-width: 480px) {
   .main-text {
-    font-size: 8.25vw;
+    font-size: 11vw;
   }
   .container {
     width: 100%;
@@ -334,11 +309,5 @@ input{
   background: #fff none repeat scroll 0 0;
 }
 .bill-hotel-logo{
-  background:#FFF9F8;
-}
-.line-break {
-  margin:auto;
-  width:15px;
-  height:2px;
-  background-color: #fff;
+  background:#FFFFFF;
 }

@@ -68,23 +68,23 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
+        templateUrl: '/assets/partials/interfaces/goMomentIvy/adGoMomentIvySetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            goMomentIvySetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('gomomentivy');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('gomomentivy');
             }]
         }
     });
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
+        templateUrl: '/assets/partials/interfaces/checkmate/adCheckmateSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            checkmateSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('checkmate');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('checkmate');
             }]
         }
     });
@@ -239,12 +239,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.digitalalchemySetup', {
-        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        templateUrl: '/assets/partials/interfaces/digitalalchemy/adDigitalalchemy.html',
         controller: 'adDigitalalchemySetupCtrl',
         url: '/digitalalchemy/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('digitalalchemy');
             }]
         }
     });
@@ -650,14 +650,34 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+
     $stateProvider.state('admin.sieSetup', {
-        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
-        controller: 'adSieCtrl',
-        url: '/sie',
+       templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+       controller: 'adSieCtrl',
+       url: '/sie',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('sie');
+               }]
+       }
+    });
+
+    $stateProvider.state('admin.sunaccountingSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        controller: 'adInterfaceConfigurationCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'sunaccounting';
+        }],
         resolve: {
             config: [
-                'adInterfacesSrv', function(adInterfacesSrv) {
-                    return adInterfacesSrv.getSettings('sie');
+              'adInterfacesSrv', function(adInterfacesSrv) {
+                  return adInterfacesSrv.getSettings('sunaccounting');
+              }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
                 }]
         }
     });
