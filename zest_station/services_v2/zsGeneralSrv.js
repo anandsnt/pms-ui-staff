@@ -84,7 +84,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'merrion-row': 'Merrion Row Hotel And Public House',
             'freehand-chicago': 'Freehand Chicago',
             'why': 'Why Hotel',
-            'village': 'Village Hotels'
+            'village': 'Village Hotels',
+            'gallivant': 'Gallivant NY'
         };
 
         this.isThemeConfigured = function(theme) {
