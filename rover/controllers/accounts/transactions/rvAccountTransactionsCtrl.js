@@ -947,6 +947,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} else {
 				$scope.closeDialog();
 			}
+			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchTabTo('TRANSACTIONS');
         };
 
@@ -987,6 +988,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.nav-bar').addClass('no-print');
 					$('.cards-header').addClass('no-print');
 					$('.card-tabs-nav').addClass('no-print');
+					$("body #loading").html("");
 
 					// this will show the popup with full report
 					$timeout(function() {
