@@ -200,7 +200,8 @@ module.exports = {
             'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css'],
             'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css'],
             'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css'],
-            'guestweb_ihg': [ themeCSSRoot + 'guestweb_ihg.css']
+            'guestweb_ihg': [ themeCSSRoot + 'guestweb_ihg.css'],
+            'guestweb_manchebo_beach_resort': [ themeCSSRoot + 'guestweb_manchebo_beach_resort.css']
         };
     }
 };
