@@ -286,7 +286,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 
 		var imageCaptured = function(response) {
-
+			$scope.$emit('IMAGE_ANALYSIS_STARTED');
 			var img = document.createElement('img');
 			var response = response ? response.image_base64 : '';
 			var unmodifiedImage = 'data: image / jpeg;base64,' + response;
