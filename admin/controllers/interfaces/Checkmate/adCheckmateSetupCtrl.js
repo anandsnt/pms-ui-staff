@@ -22,7 +22,7 @@ admin.controller('adCheckmateSetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
                     settings: $scope.config,
                     integration: $scope.interface.toLowerCase()
                 },
-                onSuccess: function() {
+                onSuccess: function () {
                     $scope.errorMessge = '';
                     $scope.successMessage = "SUCCESS: Settings Updated!";
                 }

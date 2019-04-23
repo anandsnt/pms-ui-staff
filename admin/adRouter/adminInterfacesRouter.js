@@ -28,7 +28,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.twinfieldSetup', {
         templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
         controller: 'adTwinfieldSetupCtrl',
-        url: '/gomomentivy/setup',
+        url: '/twinfield/setup',
         resolve: {
             twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
@@ -68,22 +68,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/GoMomentIvy/adGoMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/gomomentivy/adGoMomentIvySetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('gomomentivy');
             }]
         }
     });
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/Checkmate/adCheckmateSetup.html',
+        templateUrl: '/assets/partials/interfaces/checkmate/adCheckmateSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('checkmate');
             }]
         }
@@ -274,10 +274,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.vectronSetup', {
         templateUrl: '/assets/partials/interfaces/Vectron/adVectronSetup.html',
         controller: 'ADVectronSetupCtrl',
-        url: '/vectron/setup',
+        url: '/vectron',
         resolve: {
-            vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('vectron');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('vectron');
             }]
         }
     });
@@ -611,15 +611,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.avidaSetup', {
-        templateUrl: '/assets/partials/interfaces/Avida/adAvidaSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'avida';
-        }],
+        templateUrl: '/assets/partials/interfaces/avida/adAvida.html',
+        controller: 'adAvidaCtrl',
+        url: '/avida/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('avida');
             }]
         }
     });
@@ -650,8 +647,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.sieSetup', {
+       templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+       controller: 'adSieCtrl',
+       url: '/sie',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('sie');
+               }]
+       }
+    });
+
     $stateProvider.state('admin.sunaccountingSetup', {
-        templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
+        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
         controller: 'adInterfaceConfigurationCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
@@ -665,18 +674,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
-                }]
-        }
-    });
-
-    $stateProvider.state('admin.sieSetup', {
-        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
-        controller: 'adSieCtrl',
-        url: '/sie',
-        resolve: {
-            config: [
-                'adInterfacesSrv', function(adInterfacesSrv) {
-                    return adInterfacesSrv.getSettings('sie');
                 }]
         }
     });
