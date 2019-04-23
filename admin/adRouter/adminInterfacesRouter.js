@@ -68,22 +68,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/GoMomentIvy/adGoMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/goMomentIvy/adGoMomentIvySetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('gomomentivy');
             }]
         }
     });
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/Checkmate/adCheckmateSetup.html',
+        templateUrl: '/assets/partials/interfaces/checkmate/adCheckmateSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('checkmate');
             }]
         }
@@ -239,12 +239,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.digitalalchemySetup', {
-        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        templateUrl: '/assets/partials/interfaces/digitalalchemy/adDigitalalchemy.html',
         controller: 'adDigitalalchemySetupCtrl',
         url: '/digitalalchemy/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('digitalalchemy');
             }]
         }
     });
