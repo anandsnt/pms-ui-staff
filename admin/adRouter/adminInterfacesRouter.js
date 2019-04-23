@@ -647,6 +647,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.sieSetup', {
+       templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+       controller: 'adSieCtrl',
+       url: '/sie',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('sie');
+               }]
+       }
+    });
+
     $stateProvider.state('admin.sunaccountingSetup', {
         templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
         controller: 'adInterfaceConfigurationCtrl',
@@ -662,18 +674,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             mappingTypes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
-                }]
-        }
-    });
-
-    $stateProvider.state('admin.sieSetup', {
-        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
-        controller: 'adSieCtrl',
-        url: '/sie',
-        resolve: {
-            config: [
-                'adInterfacesSrv', function(adInterfacesSrv) {
-                    return adInterfacesSrv.getSettings('sie');
                 }]
         }
     });
