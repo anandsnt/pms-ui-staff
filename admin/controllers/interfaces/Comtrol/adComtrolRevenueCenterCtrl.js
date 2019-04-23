@@ -1,5 +1,5 @@
-admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtrolRevenueCenterSrv',
-    function($scope, revCenters, adComtrolRevenueCenterSrv) {
+admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'adComtrolRevenueCenterSrv',
+    function($scope, adComtrolRevenueCenterSrv) {
 
         // private methods and variables
         var resetNew = function() {
@@ -120,7 +120,11 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'revCenters', 'adComtr
                 }
             };
 
-            $scope.revCenters = revCenters;
+          $scope.callAPI(adComtrolRevenueCenterSrv.fetch, {
+            onSuccess: function (response) {
+              $scope.revCenters = response;
+            }
+          });
         })();
     }
 ]);
