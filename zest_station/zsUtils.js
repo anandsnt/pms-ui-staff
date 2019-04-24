@@ -117,7 +117,7 @@ var retrieveFeatureDetails = function(feature_list, feature_name) {
 	return requestedFeature;
 };
 
-var processCameraConfigs = function(iOSCameraEnabled,connectedCameras, featuresSupportedInIosApp) {
+var processCameraConfigs = function(iOSCameraEnabled, connectedCameras, featuresSupportedInIosApp) {
 	var idCaptureConfig = {
 		useiOSAppCamera: iOSCameraEnabled,
 		useExtCamera:connectedCameras.length > 0,

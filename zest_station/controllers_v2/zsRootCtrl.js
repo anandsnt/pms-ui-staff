@@ -1979,10 +1979,10 @@ sntZestStation.controller('zsRootCtrl', [
                             $scope.zestStationData.featuresSupportedInIosApp = response.features;
                         }
                     },
-                    function(error) {
+                    function() {
                         // do nothing
                     }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
-            };
+            }
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {

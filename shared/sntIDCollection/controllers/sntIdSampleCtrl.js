@@ -55,6 +55,7 @@ angular.module('sntIDCollection').controller('sntIdSampleCtrl', function($scope,
 		var config = {
 			useAutoDetection: true
 		};
+		
 		$scope.setConfigurations(config);
 	}
 

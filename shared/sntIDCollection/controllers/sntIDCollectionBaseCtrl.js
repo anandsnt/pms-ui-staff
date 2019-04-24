@@ -288,7 +288,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var imageCaptured = function(response) {
 			$scope.$emit('IMAGE_ANALYSIS_STARTED');
 			var img = document.createElement('img');
-			var response = response ? response.image_base64 : '';
+
+			response = response ? response.image_base64 : '';
 			var unmodifiedImage = 'data: image / jpeg;base64,' + response;
 
 			img.src = unmodifiedImage;
@@ -319,7 +320,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		cordova.exec(function(response) {
 			imageCaptured(response);
-		}, function(error) {
+		}, function() {
 			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
 		}, pluginName, actionName, [jsonstring]);
