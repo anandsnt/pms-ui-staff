@@ -1,0 +1,10 @@
+<div class="form float" ng-if="state.activeTab === 'SYNC'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <ad-sync-block interface="sunaccounting"
+                   config="config",
+                   historical-data-sync-items='syncItems'
+                   proxy="true">
+    </ad-sync-block>
+</div>

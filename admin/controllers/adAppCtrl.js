@@ -71,7 +71,8 @@ admin.controller('ADAppCtrl', [
 	    $rootScope.businessDate = businessDate;
 
 	    // flag to decide show task management under house keeping: true by default
-	    var showTaskManagementInHKMenu = true;
+	    var showTaskManagementInHKMenu = true,
+            shouldShowCurrencyExchangeInMenu = false;
 
 	    // flag to decide show neighbours screen
         var isNeighboursEnabled = false;
@@ -282,6 +283,16 @@ admin.controller('ADAppCtrl', [
                         title: "AUTO_CHARGE",
                         action: "rover.financials.autoCharge",
                         menuIndex: "autoCharge"
+                    },
+                    {
+
+                        title: 'MENU_CURRENY_EXCHANGE',
+                        action: 'rover.dashboardFromAdmin',
+                        menuIndex: "currencyExchange",
+                        hidden: !shouldShowCurrencyExchangeInMenu,
+                        actionParams: {
+                            type: 'currencyExchange'
+                        }
                     }]
                 }, {
                     title: "MENU_ACTIONS",
@@ -424,7 +435,7 @@ admin.controller('ADAppCtrl', [
 
             if (!$rootScope.isHourlyRatesEnabled) {
                 shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
-                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled;
             }
             if ($scope.isStandAlone) {
                 $scope.menu = getMainMenuForStandAloneRover(shouldHideNightlyDiaryMenu, shouldHideSellLimitMenu);
@@ -681,6 +692,7 @@ admin.controller('ADAppCtrl', [
 			// flag to decide show task management under house keeping: true by default
 			showTaskManagementInHKMenu = data.is_show_task_management_in_hk_menu;
 			isNeighboursEnabled = data.social_lobby_settings.is_neighbours_enabled;
+            shouldShowCurrencyExchangeInMenu = data.is_multi_currency_enabled;
 			if (data.language) {
 		      $translate.use(data.language.value);
 		      $translate.fallbackLanguage('EN');

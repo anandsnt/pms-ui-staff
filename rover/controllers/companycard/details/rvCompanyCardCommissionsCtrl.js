@@ -373,7 +373,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
             requestData.accountId = $scope.accountId;
             requestData.commissionDetails = commissionListToUpdate;
             if (isSelectionError) {
-                $scope.errorMessage = ["The hold status can be updated only for unpaid or on hold commissions"];
+                $timeout(function() {
+                    $scope.errorMessage = ["The hold status can be updated only for unpaid or on hold commissions"];
+                }, 500);                
             } else {
                 updatePaidStatus(requestData);
             }
@@ -506,7 +508,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             var requestData = {};
 
-            requestData.accountId = $scope.accountId;
+            requestData.accountId = $scope.accountId === "add" ? $scope.contactInformation.id : $scope.accountId;
         
             $scope.invokeApi(RVCompanyCardSrv.fetchMultiProperties, requestData, onPropertyFetchSuccess);
 

@@ -73,7 +73,7 @@ admin.service('adIFCInterfaceMappingSrv', [
                 then(function() {
                     deferred.resolve(meta);
                 }, function(err) {
-                        throw err;
+                    throw err;
                 });
 
             return deferred.promise;

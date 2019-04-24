@@ -12,7 +12,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                                                 && $scope.isSettledBill 
                                                 && $scope.reservationBillData.is_bill_lock_enabled;
     $scope.billFormat.isInformationalInvoiceDisabled = $scope.isSettledBill 
-                                                && $scope.reservationBillData.is_bill_lock_enabled; 
+                                                && $scope.reservationBillData.is_bill_lock_enabled;
     /*
     *  Get the request params for bill settings info
     */

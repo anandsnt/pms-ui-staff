@@ -616,12 +616,36 @@
 
             /* Rooming List ***/
             &.rooming-list {
+                padding: 4pt;
 
                 .check { .hide; }
 
+                .guest-image {
+                    .square(20px);
+                    .show();
+
+                    &.accompany {
+                        img {
+                            width: 15px;
+
+                            &:nth-child(2) {
+                                top: 5px;
+                                left: 5px;
+                            }
+                        }
+                    }
+                }
+
+                .stay-count,
+                .vip {
+                    font-size: 6pt;
+                    line-height: 10pt;
+                    .square(10pt);
+                }
+
                 .data {
                     padding: 0 4pt;
-                    width: 30%;
+                    .calc-width(30, 20);
                     .pull-left;
 
                     .room {
@@ -2771,7 +2795,7 @@
                                 }
 
                                 &.guest {
-                                    width: 300pt;
+                                    width: 200pt;
                                 }
                             }
                         }

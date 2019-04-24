@@ -16,6 +16,7 @@ sntRover.controller('reservationActionsController', [
     'RVContactInfoSrv',
     'rvUtilSrv',
     'RVBillCardSrv',
+    '$stateParams',
     function($rootScope,
         $scope,
         ngDialog,
@@ -32,7 +33,8 @@ sntRover.controller('reservationActionsController', [
                 RVPaymentSrv,
         RVContactInfoSrv,
         rvUtilSrv,
-        RVBillCardSrv) {
+        RVBillCardSrv,
+        $stateParams) {
 
 				BaseCtrl.call(this, $scope);
 				var that = this;
@@ -1184,6 +1186,7 @@ sntRover.controller('reservationActionsController', [
                 },
                 // Handle Success
                 function() {
+                    $stateParams.isrefresh = true;
                     $state.reload($state.$current.name);
                     $scope.closeDialog();
                 },
