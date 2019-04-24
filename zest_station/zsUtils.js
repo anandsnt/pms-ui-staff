@@ -118,9 +118,10 @@ var retrieveFeatureDetails = function(feature_list, feature_name) {
 };
 
 var processCameraConfigs = function(iOSCameraEnabled, connectedCameras, featuresSupportedInIosApp) {
+	
 	var idCaptureConfig = {
 		useiOSAppCamera: iOSCameraEnabled,
-		useExtCamera:connectedCameras.length > 0,
+		useExtCamera: connectedCameras.length > 0,
 		useExtCamForFR: connectedCameras.length > 0,
 		useAutoDetection: false
 	};
