@@ -752,12 +752,6 @@ angular.module('sntRover')
 
 				    		x_n.setHours(0, 0, 0);
 				    		var x_origin = row_item_data.arrival;
-
-				    		$scope.gridProps.edit.reset_scroll = {
-	    						'x_n': x_n.getTime(),
-	    						'x_origin': x_origin
-	    					};
-
 	    					// setting arrival_time as selected one reservation
 	    					var new_arrival_time = new Date (row_item_data.arrival);
 
@@ -778,9 +772,12 @@ angular.module('sntRover')
 
 
 				    		$scope.renderGrid();
-				    		if (!$scope.$$phase) {
-				    			$scope.$apply();
-				    		}
+                            setTimeout(function() {
+                                if (!$scope.$$phase) {
+                                    $scope.$apply();
+                                }
+                            }, 100);
+
 				    	}
 
 		    		break;
