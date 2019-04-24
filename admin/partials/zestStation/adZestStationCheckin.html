@@ -107,7 +107,7 @@
                 <div class="form-title full-width">
                     <h3><span translate>ADD_UPDATE_GUEST_DETAILS </span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.kiosk_add_remove_guests" label="{{'USE_ADD_REMOVE_GUESTS'| translate}}" div-class="full-width"></ad-toggle-button>
+                <!-- <ad-toggle-button is-checked="zestSettings.kiosk_add_remove_guests" label="{{'USE_ADD_REMOVE_GUESTS'| translate}}" div-class="full-width"></ad-toggle-button> -->
                 <ad-toggle-button is-checked="zestSettings.kiosk_collect_guest_address" label="{{'COLLECT_GUEST_ADDRESS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
@@ -118,6 +118,13 @@
                     </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.add_loyalty_pgms" label="{{'ADD_LOYALTY_PGMS'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
+            <fieldset class="holder left" ng-if="zestSettings.kiosk_scan_enabled && zestSettings.kiosk_scan_mode != 'staff_id_verification' &&  zestSettings.kiosk_scan_mode != 'id_scan_with_samsotech'">
+                <div class="form-title full-width">
+                    <h3><span translate>SCAN_ID_TO_FIND_RESERVATION </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.scan_id_to_find_reservations" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
             <div class="actions float">

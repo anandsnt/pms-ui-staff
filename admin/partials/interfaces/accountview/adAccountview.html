@@ -11,9 +11,9 @@
                     ng-class="{'orange' : state.activeTab === 'MAPPING', 'white' : state.activeTab !== 'MAPPING'}">
                 MAPPINGS
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('SYNC')"
-                    ng-class="{'orange' : state.activeTab === 'SYNC', 'white' : state.activeTab !== 'SYNC'}">
-                SYNC
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('DATA')"
+                    ng-class="{'orange' : state.activeTab === 'DATA', 'white' : state.activeTab !== 'DATA'}">
+                DATA
             </button>
         </div>
     </header>
@@ -21,6 +21,6 @@
     <section class="content-scroll">
         <ng-include src="'/assets/partials/interfaces/accountview/adAccountviewSetting.html'"></ng-include>
         <ng-include src="'/assets/partials/interfaces/adMapping.html'"></ng-include>
-        <ng-include src="'/assets/partials/interfaces/accountview/adAccountviewSync.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/accountview/adAccountviewData.html'"></ng-include>
     </section>
 </div>

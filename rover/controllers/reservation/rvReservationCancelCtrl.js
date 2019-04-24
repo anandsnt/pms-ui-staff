@@ -268,6 +268,7 @@
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
 					if ($state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails') {
+						$stateParams.isrefresh = true;
 						$state.reload($state.current.name);
 						
 					} else {

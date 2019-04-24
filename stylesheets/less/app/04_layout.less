@@ -219,7 +219,6 @@ body { overflow: hidden; }
 
 			/* With search bar ***/
 			&#dashboard,
-            &#find-cards,
             &#reports {
 				top: 120px;
 				.calc-height(100, 120);
@@ -233,6 +232,7 @@ body { overflow: hidden; }
 			/* With pagination **/
 			&#dashboard-search,
 			&#search,
+			&#find-cards,
 			&#find-group,
 			&#find-account,
 			&#find-allotment,
@@ -2034,6 +2034,10 @@ body { overflow: hidden; }
 	        .hide();
 	        .box-shadow(0 -1px 1px rgba(0,0,0,.2));
 	        .size(60px, 100%);
+
+	        &.show-merge {
+	            .calc-width(100, 340);
+	        }
 	    }
 
 	    .numbers-pagination {

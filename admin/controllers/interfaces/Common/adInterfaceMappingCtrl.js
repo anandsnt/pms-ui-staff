@@ -12,7 +12,6 @@ admin.controller('adInterfaceMappingCtrl', [
           'charge_code_department_code': 'Charge Code - Department Code',
           'market_code': 'Market Code - Market Segment',
           'market_code_department_code': 'Market Code - Department Code'
-
         };
 
         var mappingPartials = {
@@ -48,6 +47,10 @@ admin.controller('adInterfaceMappingCtrl', [
                 external_value: ''
             };
         }
+
+        $scope.fetchMappingPartial = function() {
+            return mappingPartials[$scope.interface];
+        };
 
         $scope.fetchMappingPartial = function() {
             return mappingPartials[$scope.interface];
