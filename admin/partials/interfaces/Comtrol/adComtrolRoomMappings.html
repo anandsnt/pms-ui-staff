@@ -1,15 +1,19 @@
-<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+<div class="form float" ng-if="state.activeTab === 'ROOM'">
+    <div class="entry full-width" ng-controller="adComtrolRoomMappingCtrl">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
-    <header class="content-title float">
-        <h2>Room Mapping</h2>
-        <span class="count">({{data.length}})</span>
-        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-        <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
-    </header>
+        <div class="form-title full-width">
+            <h3>Room Mappings Centers</h3>
+        </div>
 
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div class="entry full-width" ng-show="state.mode !== 'ADD'">
+            <div class="content-title" style="position: relative;">
+                <span class="count">MAPPINGS({{totalCount}})</span>
+                <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
+            </div>
+        </div>
 
-    <section class="content-scroll" style="overflow-x: hidden;">
         <div id="add-new" ng-show="state.mode === 'ADD'">
             <div class="data-holder">
                 <form class="form inline-form float">
@@ -203,6 +207,5 @@
                 </div>
             </script>
         </form>
-        <!--end-->
-    </section>
-</section>
+    </div>
+</div>

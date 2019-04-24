@@ -1,15 +1,20 @@
-<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
-    <div class="inline-edit">
-        <header class="content-title float">
-            <h2>Charge Code Mapping</h2>
-            <span class="count">({{mappings.length - state.deletedCount}})</span>
-            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
-        </header>
+<div class="form float" ng-if="state.activeTab === 'CHARGECODE'">
+    <div class="entry full-width" ng-controller="adComtrolChargeCodeMappingCtrl">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
-        <section class="content-scroll">
-            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div class="form-title full-width">
+            <h3>Charge Code Mapping</h3>
+        </div>
 
+        <div class="entry full-width" ng-show="state.mode !== 'ADD'">
+            <div class="content-title" style="position: relative;">
+                <span class="count">MAPPINGS({{mappings.length - state.deletedCount}})</span>
+                <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
+            </div>
+        </div>
+
+        <form ng-show="state.mode=='ADD'" class="form float">
             <div id="add-new" ng-show="state.mode === 'ADD'">
                 <div class="data-holder">
                     <form class="form inline-form float">
@@ -68,6 +73,9 @@
                     </form>
                 </div>
             </div>
+        </form>
+
+        <section ng-show="state.mode !=='ADD'">
             <table id="brands" class="grid datatable dataTable"
                    ng-show="mappings.length - state.deletedCount > 0"
                    ng-table="itemList" template-pagination="nil">
@@ -173,4 +181,4 @@
             </table>
         </section>
     </div>
-</section>
+</div>

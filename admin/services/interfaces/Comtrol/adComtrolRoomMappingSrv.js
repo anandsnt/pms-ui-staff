@@ -1,8 +1,7 @@
-admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
-    function($http, $q, ADBaseWebSrvV2) {
+admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'adIFCSrv',
+    function($http, $q, ADBaseWebSrvV2, adIFCSrv) {
 
-        var service = this,
-            baseUrl = "/api/hotel_settings/comtrol_mappings/room_mappings";
+        var service = this;
 
         var fetchRoomsList = function() {
             var deferred = $q.defer();
@@ -42,7 +41,7 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @returns {deferred.promise|{then, catch, finally}} list of mappings
          */
         service.fetch = function(params) {
-            return ADBaseWebSrvV2.getJSON(baseUrl, params);
+          return adIFCSrv.get('comtrol', 'list_room_mapping', params);
         };
 
         /**
@@ -51,7 +50,7 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.create = function(newMapping) {
-            return ADBaseWebSrvV2.postJSON(baseUrl, newMapping);
+          return adIFCSrv.post('comtrol', 'create_room_mapping', newMapping);
         };
 
         /**
@@ -60,7 +59,7 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.delete = function(id) {
-            return ADBaseWebSrvV2.deleteJSON(baseUrl + "/" + id);
+          return adIFCSrv.delete('comtrol', 'delete_room_mapping', { id: id });
         };
 
         /**
@@ -69,12 +68,13 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.update = function(mapping) {
-            return ADBaseWebSrvV2.putJSON(baseUrl + "/" + mapping.id, {
-                room_no: mapping.room_no,
-                external_room: mapping.external_room,
-                external_extension: mapping.external_extension,
-                external_access_level: mapping.external_access_level
-            });
+          return adIFCSrv.put('comtrol', 'update_room_mapping', {
+            id: mapping.id,
+            room_no: mapping.room_no,
+            external_room: mapping.external_room,
+            external_extension: mapping.external_extension,
+            external_access_level: mapping.external_access_level
+          });
         };
 
     }]);
