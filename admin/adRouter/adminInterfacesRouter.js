@@ -68,7 +68,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/goMomentIvy/adGoMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/gomomentivy/adGoMomentIvySetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
