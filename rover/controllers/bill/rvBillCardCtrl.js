@@ -3289,8 +3289,7 @@ sntRover.controller('RVbillCardController',
 		});
 	};
 
-	// $scope.$on( '$destroy', updateGenerateFolioFlag );
-	    $scope.putInQueue = false;
+	$scope.putInQueue = false;
 	$scope.init = function(reservationBillData) {
                 $scope.lastResBillData = reservationBillData;// used if refreshing screen manually
                 $scope.isStandAlone = $rootScope.isStandAlone;
