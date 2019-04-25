@@ -1968,9 +1968,6 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
             $scope.zestStationData.iOSCameraEnabled = false;
-
-            localStorage.setItem('dontUseAutoDetection', false);
-
             $scope.zestStationData.featuresSupportedInIosApp = [];
 
             if (typeof cordova !== "undefined") {
