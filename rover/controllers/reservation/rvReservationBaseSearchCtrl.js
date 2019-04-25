@@ -409,11 +409,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     $scope.validationMsg = 'Room number will be unassigned by booking 0 night';
                     resetRoomDetailsIfInvalid();
                     showValidationPopup();
-                }else if (noOfAvailableDates === 0) {
+                } else if (noOfAvailableDates === 0) {
                     $scope.validationMsg = 'Room not available and room number will be unassigned';
                     resetRoomDetailsIfInvalid();
                     showValidationPopup();
-                }else if (diffrenceBtwnDates() > noOfAvailableDates) {
+                } else if (diffrenceBtwnDates() > noOfAvailableDates) {
                     $scope.validationMsg = 'Room ' + data.rooms[0].room_no + ' can be booked only for ' + noOfAvailableDates + ' nights. By booking more nights room number will be unassigned.';
                     resetRoomDetailsIfInvalid();
                     showValidationPopup();
