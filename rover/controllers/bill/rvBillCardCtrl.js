@@ -45,7 +45,6 @@ sntRover.controller('RVbillCardController',
 		scope: $scope
 	};
 	$scope.encoderTypes = [];
-	$scope.shouldGenerateFolioNumber = false;
 	$scope.isSRViewRateBtnClicked = RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
 
 	// Flag for CC auth permission
@@ -90,7 +89,6 @@ sntRover.controller('RVbillCardController',
 	var isAlreadyShownPleaseSwipeForCheckingIn = false,
 		isDuringCheckoutPayment = false,
 		callGenerateFolioNumberApiAfterLoadingCurrentBill = false,
-		callGenerateFolioNumberApiAfterSuccessfullTransferCharge = false,
 		toBillIndex =  '';
 
 	// Scope variable to set active bill
@@ -1933,7 +1931,6 @@ sntRover.controller('RVbillCardController',
 	 */
 	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists, billIndex) {
 
-		$scope.shouldGenerateFolioNumber = false;
 		if (balanceAmount === "0.00" && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
@@ -2861,7 +2858,7 @@ sntRover.controller('RVbillCardController',
 		 	var billCount = $scope.reservationBillData.bills.length,
 	 			reservationStatus = $scope.reservationBillData.reservation_status;
 
-	 		if ($scope.shouldGenerateFolioNumber) {
+	 		if (!$scope.reservationBillData.is_bill_lock_enabled) {
 				that.callGenerateFolioNumberApi();
 			}			
 		 	// CICO-10906 review process continues after payment.
@@ -2885,14 +2882,13 @@ sntRover.controller('RVbillCardController',
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-	 	$scope.shouldGenerateFolioNumber = true;
 		$scope.isRefreshOnBackToStaycard = true;
 		if ($scope.isViaReviewProcess) {
 			isDuringCheckoutPayment = true;
 		}
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if ($scope.shouldGenerateFolioNumber) {
+ 		if (!$scope.reservationBillData.is_bill_lock_enabled) {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
@@ -3260,10 +3256,6 @@ sntRover.controller('RVbillCardController',
 
 		$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 	};
-
-	var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
-		$scope.shouldGenerateFolioNumber = true;
-	});
 	
 	/* 
 	 * To reload the current Active Bill
@@ -3297,7 +3289,7 @@ sntRover.controller('RVbillCardController',
 		});
 	};
 
-	$scope.$on( '$destroy', updateGenerateFolioFlag );
+	// $scope.$on( '$destroy', updateGenerateFolioFlag );
 	    $scope.putInQueue = false;
 	$scope.init = function(reservationBillData) {
                 $scope.lastResBillData = reservationBillData;// used if refreshing screen manually
