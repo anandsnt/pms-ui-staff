@@ -1,8 +1,7 @@
-admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'adComtrolRevenueCenterSrv',
-    function($http, $q, ADBaseWebSrvV2, adComtrolRevenueCenterSrv) {
+admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'adIFCSrv',
+    function($http, $q, ADBaseWebSrvV2, adIFCSrv) {
 
-        var service = this,
-            baseUrl = "/api/hotel_settings/comtrol_mappings/generic_mappings";
+        var service = this;
 
         var fetchNonPaymentChargeCodes = function() {
             var deferred = $q.defer();
@@ -42,7 +41,7 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.fetch = function() {
-            return ADBaseWebSrvV2.getJSON(baseUrl);
+          return adIFCSrv.get('comtrol', 'list_generic_mapping');
         };
 
         /**
@@ -51,7 +50,7 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.create = function(newMapping) {
-            return ADBaseWebSrvV2.postJSON(baseUrl, newMapping);
+          return adIFCSrv.post('comtrol', 'create_generic_mapping', newMapping);
         };
 
         /**
@@ -60,7 +59,7 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.delete = function(id) {
-            return ADBaseWebSrvV2.deleteJSON(baseUrl + "/" + id);
+          return adIFCSrv.delete('comtrol', 'delete_generic_mapping', { id: id });
         };
 
         /**
@@ -69,12 +68,12 @@ admin.service('adComtrolGenericMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'a
          * @returns {deferred.promise|{then, catch, finally}}
          */
         service.update = function(mapping) {
-            return ADBaseWebSrvV2.putJSON(baseUrl + "/" + mapping.id, {
-                external_type: mapping.external_type,
-                external_code: mapping.external_code,
-                is_default: mapping.is_default,
-                charge_code_name: mapping.charge_code_name
-            });
+          return adIFCSrv.put('comtrol', 'update_generic_mapping', {
+            id: mapping.id,
+            external_type: mapping.external_type,
+            external_code: mapping.external_code,
+            is_default: mapping.is_default,
+            charge_code_name: mapping.charge_code_name
+          });
         };
-
     }]);
