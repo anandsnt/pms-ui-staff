@@ -111,9 +111,11 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
     };
 
     $scope.toggleDayUse = function() {
+        /* CICO-64699 */
         $scope.reservationSettingsData.day_use_enabled = !$scope.reservationSettingsData.day_use_enabled;
-        if (!$scope.reservationSettingsData.day_use_enabled) {
-            $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = false;
+        $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = $scope.reservationSettingsData.day_use_enabled;
+        if ($scope.reservationSettingsData.hourly_rates_for_day_use_enabled) {
+            $scope.reservationSettingsData.hourly_availability_calculation = 'FULL';
         }
     };
 
