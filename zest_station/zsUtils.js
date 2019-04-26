@@ -108,3 +108,32 @@ var scrollContentsDown = function() {
 		$("#popup").removeClass("lift-popup");
 	}
 };
+
+var retrieveFeatureDetails = function(feature_list, feature_name) {
+	var requestedFeature = _.find(feature_list, function(feature) {
+		return feature.feature_name === feature_name;
+	});
+
+	return requestedFeature;
+};
+
+var processCameraConfigs = function(iOSCameraEnabled, connectedCameras, featuresSupportedInIosApp) {
+	
+	var idCaptureConfig = {
+		useiOSAppCamera: iOSCameraEnabled,
+		useExtCamera: connectedCameras.length > 0,
+		useExtCamForFR: connectedCameras.length > 0,
+		useAutoDetection: false
+	};
+
+	if (localStorage.getItem('dontUseAutoDetection') === "NO" && !_.isUndefined(cordova)) {
+		var idCaptureFeature = retrieveFeatureDetails(featuresSupportedInIosApp, 'CAPTURE_ID');
+
+		if (idCaptureFeature) {
+			idCaptureConfig.useAutoDetection = true;
+			idCaptureConfig.idCapturePluginName = idCaptureFeature.plugin_details ? idCaptureFeature.plugin_details.plugin_name : '';
+			idCaptureConfig.idCaptureActionName = idCaptureFeature.plugin_details ? idCaptureFeature.plugin_details.action : '';
+		}
+	}
+	return idCaptureConfig;
+};
