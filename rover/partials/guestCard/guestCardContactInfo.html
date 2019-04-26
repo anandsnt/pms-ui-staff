@@ -51,9 +51,26 @@
 
 			<rv-textbox ng-if="guestCardData.contactInfo.is_gender_visible" value="guestCardData.contactInfo.gender" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
 
+			<rv-textbox ng-if="guestCardData.contactInfo.is_home_town_visible" value="guestCardData.contactInfo.home_town" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
+
+			<rv-textbox ng-if="guestCardData.contactInfo.is_place_of_residence_visible" value="guestCardData.contactInfo.place_of_residence" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>		
+
 			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.vehicle_registration_number" label = "Vehicle Registration Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.vehicle_registration_number, getDefaultClass('vehicle_registration_number'))}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.personal_id_no" label = "Personal No." styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.personal_id_no, '')}}"></rv-textbox>		
+			<div class="entry" ng-if="guestCardData.contactInfo.is_vehicle_country_mark_visible">
+				<label for="vehicle-country-mark">Vehicle Country Mark</label>
+				<div class="select">
+					<select iscroll-stop-propagation ng-options="country.code as country.code for country  in countries" ng-model="guestCardData.contactInfo.country_code">
+							<option style="display:none" value=""></option>
+						</select>
+					<select id="vehicle-country-mark">
+						<option value="" selected>Select Country Mark</option>
+						<option value="{ISO Code}">{ISO Code}</option>
+					</select>
+				</div>
+			</div>
+
+			<rv-textbox ng-if="guestCardData.contactInfo.is_personal_id_no_visible" value="guestCardData.contactInfo.personal_id_no" label = "Personal No." styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.personal_id_no, '')}}"></rv-textbox>		
 			
 		</div> 		
 		<div class="holder right">
