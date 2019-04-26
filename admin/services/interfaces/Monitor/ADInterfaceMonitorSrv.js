@@ -7,11 +7,11 @@ angular.module('admin').service('ADInterfaceMonitorSrv', ['$http', '$q', 'ADBase
         };
 
         service.fetchLlpts = function () {
-            return ADBaseWebSrvV2.getJSON('/api/hotel_settings/comtrol/llpts_installed_interfaces');
+            return ADBaseWebSrvV2.getJSON('/admin/hotel_ext_interfaces/llpts_installed_interfaces');
         };
 
         service.saveLlpts = function (comtrolInterfaces) {
-            return ADBaseWebSrvV2.postJSON('/api/hotel_settings/comtrol/llpts_installed_interfaces', {
+            return ADBaseWebSrvV2.postJSON('/admin/hotel_ext_interfaces/llpts_installed_interfaces', {
                 'comtrol_llpts_installed_interfaces': comtrolInterfaces
             });
         };

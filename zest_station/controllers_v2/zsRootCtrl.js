@@ -1968,6 +1968,18 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
             $scope.zestStationData.iOSCameraEnabled = false;
+            $scope.zestStationData.featuresSupportedInIosApp = [];
+
+            if (typeof cordova !== "undefined") {
+                cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $scope.zestStationData.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function() {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
+            }
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
