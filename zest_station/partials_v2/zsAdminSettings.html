@@ -88,6 +88,17 @@
                     <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
 
+                <div class="entry with-label" ng-show="isIpad && zestStationData.id_scan_enabled && idCaptureFeature">
+                    <label>ID AUTO-DETECTION</label>
+                    <div class="entry select">
+                        <select id="order-status" ng-model="useIdAutoCapture" ng-change="autoIdDetectionChanged()">
+                            <option value="">Select</option>
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="entry with-label oos-reason-hist" ng-hide="!show_oos_history" ng-repeat="reason in zestStationData.sessionOosReason">
                     <label></label>
                     <label class='admin-label-description'>{{reason.datetime}}</label>
