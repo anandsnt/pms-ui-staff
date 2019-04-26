@@ -220,11 +220,10 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
                 staffVerified: false
             };
             $scope.setScroller('confirm-images');
-            $scope.setConfigurations({
-                useiOSAppCamera: $scope.zestStationData.iOSCameraEnabled,
-                useExtCamera: $scope.zestStationData.connectedCameras.length > 0,
-                useExtCamForFR: $scope.zestStationData.connectedCameras.length > 0
-            });
+
+            var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
+            
+            $scope.setConfigurations(idCaptureConfig);
         })();
     }
 ]);
