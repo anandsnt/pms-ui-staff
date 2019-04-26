@@ -404,6 +404,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             },
             validateDateForAvailabilitySuccess = function( data ) {
                 var noOfAvailableDates = data.rooms[0].available_dates.length;
+
                 $scope.validationMsg = '';
                 if (diffrenceBtwnDates() === 0) {
                     $scope.validationMsg = 'Room number will be unassigned by booking 0 night';
