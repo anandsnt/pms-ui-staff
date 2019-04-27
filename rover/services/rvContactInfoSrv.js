@@ -90,9 +90,6 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             } else {
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     _guest.isFetched = true;
-                    data.is_home_town_visible = true;
-                    data.is_place_of_residence_visible = true;
-                    data.is_vehicle_country_mark_visible = true;
                     deferred.resolve(data);
                 }, function(data) {
                     deferred.reject(data);
