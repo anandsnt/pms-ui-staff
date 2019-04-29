@@ -274,10 +274,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.vectronSetup', {
         templateUrl: '/assets/partials/interfaces/Vectron/adVectronSetup.html',
         controller: 'ADVectronSetupCtrl',
-        url: '/vectron/setup',
+        url: '/vectron',
         resolve: {
-            vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('vectron');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('vectron');
             }]
         }
     });
