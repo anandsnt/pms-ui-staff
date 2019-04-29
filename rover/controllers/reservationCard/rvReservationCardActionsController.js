@@ -920,7 +920,7 @@ year: year};
                 department: department,
                 time_due: action.due_at_time,
                 date_due: action.due_at_date,
-                dueDateObj: new tzIndependentDate(action.time_due_str),
+                dueDateObj: new tzIndependentDate(action.time_due_str.split('T')[0]),
                 hasDate: true,
                 notes: action.description,
                 actionId: action.id

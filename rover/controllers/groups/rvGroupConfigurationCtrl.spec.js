@@ -2,7 +2,6 @@ describe("rvGroupConfigurationCtrl", function() {
     var $controller,
         $scope,
         rvPermissionSrv,
-        $q,
         $rootScope;
 
     beforeEach(function() {
