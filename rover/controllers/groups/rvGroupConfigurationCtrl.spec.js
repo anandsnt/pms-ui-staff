@@ -10,7 +10,6 @@ describe("rvGroupConfigurationCtrl", function() {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             rvPermissionSrv = _rvPermissionSrv_;
-            $q = _$q_;
             $rootScope = _$rootScope_;
         });
 
