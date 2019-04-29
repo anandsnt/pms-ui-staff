@@ -1,7 +1,8 @@
 admin.controller('adZestStationLanguageConfigCtrl',
 	['$scope',
 	'adZestStationLanguageConfigSrv',
-	function($scope, adZestStationLanguageConfigSrv) {
+	'$log',
+	function($scope, adZestStationLanguageConfigSrv, $log) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -168,6 +169,24 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	        }
 
 
+	    };
+
+	    $scope.languageSelected = function(index) {
+	    	$scope.detailIndex = index;
+	    };
+
+	    $scope.saveSettings = function(language) {
+	    	var options = {
+				params: language
+			};
+
+			$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageConfig, options);
+	    	$scope.detailIndex = -1;	    	
+	    };
+
+	    $scope.cancel = function() {
+	    	$log.log('language settings cancelled');
+	    	$scope.detailIndex = -1;
 	    };
 
 		/**

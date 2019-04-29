@@ -12,11 +12,12 @@
 		<!--  -->
 		<ol class="cms-tree" ui-sortable="sortableOptions" ng-model="languageList">
             <li class="branch" ng-repeat="language in languageList">
-                <div class="sort">
-                    <a class="cms-name first-letter-capitalize" ng-click="detailIndex=$index;" ng-show="detailIndex != $index">{{language.name}}</a>
-                    <div ng-show="detailIndex == $index">
+                <div class="sort" ng-show="detailIndex != $index">
+                    <a class="cms-name first-letter-capitalize" ng-click="languageSelected($index)" >{{language.name}}</a>
+                </div>
+                <div ng-show="detailIndex == $index" class="form float">
                         <div class="form-title full-width">
-                            <h3><span > {{language.name}}</span> </h3>
+                            <h3><span class="first-letter-capitalize"> {{language.name}}</span> </h3>
                         </div>
                         <ad-toggle-button is-checked="language.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
                         <ad-toggle-button is-checked="language.is_default" label="{{'STATION_LANGUAGE_DEFAULT'| translate}}" div-class=""></ad-toggle-button>
@@ -36,14 +37,13 @@
                             </div>
                         </div>
                         <div class="actions float">
-                            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="detailIndex=-1" translate>
+                            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancel()" translate>
                                 CANCEL
                             </button>
                             <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
                                 SAVE_CHANGES
                             </button>
                         </div>
-                    </div>
                 </div>
             </li>
         </ol>
