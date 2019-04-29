@@ -37,7 +37,7 @@ input[type=email] {
 
 .header-bar {
   background:#fff;
-  margin-bottom: 0px !important;
+  margin-bottom: 5%;
 }
 
 .logo-image {
@@ -253,6 +253,13 @@ input[type=email] {
   height: 40px;
 }
 
+@media (min-width: 990px) {
+  .checkout-alone-button {
+    float: none;
+    margin: 1% auto;
+  }
+}
+
 @media (max-width: 990px) {
   .logo-image {
     margin: 0 !important;
@@ -265,8 +272,7 @@ input[type=email] {
   .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges,
-  {
+  .accept-charges {
     width: 300px;
     padding: 4% 0%;
   }
