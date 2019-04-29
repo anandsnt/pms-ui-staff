@@ -1,0 +1,165 @@
+<div class="form float" ng-if="state.activeTab === 'SETTING'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+    <div class="holder full-width">
+        <div class="form-title full-width">
+            <h3>Settings</h3>
+        </div>
+        <div class="entry">
+            <label><span translate>ACTIVATE_INACTIVATE</span></label>
+            <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
+                 ng-click="toggleEnabled()">
+                <input type="checkbox" name="ideas-setup-active" id="ideas-setup-active">
+                <span class="switch-icon"></span>
+            </div>
+        </div>
+        <section ng-show="config.enabled">
+            <fieldset class="holder left">
+                <ad-textbox inputtype="text" value="config.hotel_code" label="{{'HOTEL_CODE'| translate}}"
+                            styleclass="full-width">
+                </ad-textbox>
+            </fieldset>
+
+            <div class="form-title full-width">
+                <h3>G3</h3>
+            </div>
+            <div class="entry">
+                <ad-toggle-button
+                        div-class="holder left"
+                        is-checked="config.g3_enabled" label="{{'ACTIVATE_INACTIVATE' | translate}}">
+                </ad-toggle-button>
+            </div>
+
+            <fieldset class="holder left" ng-show="config.g3_enabled">
+                <ad-textbox inputtype="text" value="config.endpoint" label="{{'END_POINT'| translate}}"
+                            styleclass="full-width">
+                </ad-textbox>
+            </fieldset>
+
+            <div class="form-title full-width">
+                <h3>G2</h3>
+            </div>
+            <div class="entry">
+                <ad-toggle-button
+                        div-class="holder left"
+                        is-checked="config.import_enabled" label="{{'ACTIVATE_INACTIVATE' | translate}}">
+                </ad-toggle-button>
+            </div>
+                <fieldset class="holder left" ng-show="config.import_enabled">
+                <ad-textbox required='yes' inputtype="text" value="config.account_id" label="IDeaS Account ID"
+                            styleclass="full-width"></ad-textbox>
+                <div class="entry has-datepicker full-width">
+                    <label>
+                        {{'START_DATE' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <input type="text" class="range-datepicker" ui-date="datepicker.options"
+                           ng-model="config.start_date" readonly>
+                </div>
+                <ad-textbox inputtype="number" required="yes" value="config.days_past" label="Past Days"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="number" required="yes" value="config.days_future" label="Future Days"
+                            styleclass="full-width"></ad-textbox>
+                </fieldset>
+                <fieldset class="holder right" ng-show="config.import_enabled">
+                    <section>
+                        <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
+                        <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name"
+                                    styleclass="full-width"></ad-textbox>
+                        <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password"
+                                    styleclass="full-width"></ad-textbox>
+                        <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location"
+                                    styleclass="full-width"
+                                    readonly></ad-textbox>
+                    </section>
+                </fieldset>
+                <fieldset class="holder full-width" ng-show="config.import_enabled">
+                    <div class="form-title">
+                        <h3>
+                            <span>Charge Groups</span>
+                        </h3>
+                        <em class="status">
+                            <span>Select at least one Charge Group</span>
+                        </em>
+                    </div>
+                    <div class="entry has-sortable">
+                        <label class="center_align"><em class="rate_roomtype_text">Available Charge Groups</em></label>
+                        <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
+                            ng-model="config.available_charge_groups" style="overflow-y: scroll !important;"
+                            jqyoui-droppable="{multiple:true, onOver: 'onUnSelectChargeGroup'}" data-j
+                            qyoui-options="{accept:'.selected_reports'}">
+                            <li ng-repeat="chargeGroup in config.available_charge_groups" data-drag="true"
+                                ng-model="config.available_charge_groups"
+                                jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                                data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                                class="available-reports li-draggable" ng-click="chooseAvailableChargeGroup($index)"
+                                ng-class='{selected: chosenAvailableChargeGroups.indexOf($index) > -1}'>
+                                <span class="icons icon-handle"></span>
+                                <span class="icons icon-handle"></span> {{ chargeGroup }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry movers rates_mover">
+                        <span class="top_mover">
+                        <span class="icons icon-mover-right to-target"
+                              data-type="target"
+                              ng-click="selectChosen()"
+                              ng-class="{active: chosenAvailableChargeGroups.length >= 1}"
+                              data-type="source">
+                        Select Report(s)
+                        </span>
+                        <span class="icons icon-mover-left to-source" data-type="source" ng-click="unSelectChosen()"
+                              ng-class="{active: chosenSelectedChargeGroups.length >= 1}">
+                        Un-select Report(s)
+                        </span>
+                        </span>
+                        <span>
+                   <div class="green_gradient icons">
+                      <span class="active to-source green_mover icons_rates"
+                            data-type="source"
+                            ng-click="selectAll()">
+                      Select Report(s)
+                      </span>
+                   </div>
+                   <div class="red_gradient icons">
+                      <span class="active to-target  red_mover icons_rates" data-type="target" ng-click="unSelectAll()">
+                      Un-select Report(s)
+                      </span>
+                   </div>
+                </span>
+                    </div>
+                    <div class="entry has-sortable">
+                        <label class="center_align">
+                            <span class="assigned_room_text">Selected Charge Group</span></label>
+                        <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true"
+                            ng-model="config.selected_charge_groups"
+                            jqyoui-droppable="{multiple:true, onOver: 'onSelectChargeGroup'}"
+                            data-jqyoui-options="{accept:'.available-reports'}">
+                            <li ng-repeat="chargeGroup in config.selected_charge_groups"
+                                ng-click="chooseSelectedChargeGroup($index)"
+                                ng-class='{selected: chosenSelectedChargeGroups.indexOf($index) > -1}'
+                                class="selected-reports li-draggable"
+                                data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                                data-drag="true"
+                                ng-model="config.selected_charge_groups"
+                                jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                                <span class="icons icon-handle"></span>
+                                <span class="icons icon-handle"></span> {{ chargeGroup }}
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
+
+        </fieldset>
+        <div class="actions float">
+            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()"
+                    translate>
+                CANCEL
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
+                    translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+        </section>
+</div>

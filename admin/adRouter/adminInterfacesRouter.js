@@ -183,12 +183,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.ideasSetup', {
-        templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
+        templateUrl: '/assets/partials/interfaces/ideas/adIdeas.html',
         controller: 'adIdeasSetupCtrl',
         url: '/ideas/setup',
         resolve: {
-            ideaSetup: ['adIdeasSetupSrv', function(adIdeasSetupSrv) {
-                return adIdeasSetupSrv.getIdeaSetup();
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('ideas');
+            }],
+            chargeGroups: ['ADChargeGroupsSrv', function(ADChargeGroupsSrv) {
+                return ADChargeGroupsSrv.fetch();
             }]
         }
     });
