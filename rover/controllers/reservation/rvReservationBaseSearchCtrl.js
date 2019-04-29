@@ -436,7 +436,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 params: {
                     "start_date": $scope.reservationData.arrivalDate,
                     "no_of_days": $scope.reservationData.numNights,
-                    "room_id": $stateParams.selectedRoomId
+                    "room_id": $scope.reservationData.rooms[0].room_id
                 },
                 successCallBack: validateDateForAvailabilitySuccess
             };
