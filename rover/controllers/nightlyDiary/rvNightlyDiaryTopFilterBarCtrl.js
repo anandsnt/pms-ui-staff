@@ -109,6 +109,15 @@ angular.module('sntRover')
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
             $scope.$emit('UPDATE_RESERVATIONLIST');
             isDateChangedFromInitialState = true;
+
+            // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
+            // Toggle back to reservation mode.
+            var dateDiff = moment($rootScope.businessDate)
+                            .diff(moment($scope.diaryData.fromDate), 'days');
+
+            if ($scope.diaryData.isBookRoomViewActive && dateDiff > 6) {
+                $scope.toggleBookedOrAvailable();
+            }
         });
         // Catching event from main controller, when API is completed.
         $scope.addListener('FETCH_COMPLETED_DATE_LIST_DATA', function() {
