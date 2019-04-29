@@ -32,7 +32,7 @@
 
     <!-- Set start date -->
     <div class="entry date">
-        <button type="button" class="button white with-icon only-icon" ng-click="clickedDateLeftShift()">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': disableLeftDateShift() }" ng-click="clickedDateLeftShift()">
             <span class="icons icon-double-arrow black"></span>
         </button>
         <div class="entry-data" ng-click="clickedDatePicker()">
@@ -45,7 +45,7 @@
     </div>
 
     <!-- Reservations or Available Slots View -->
-    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive }"> 
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive, 'overlay': disableAvlToggle() }"> 
         <div class="switch-button" ng-class="{'on' : !diaryData.isBookRoomViewActive }"> <!-- Remove class 'on' when L48 is not checked -->
             <input id="diary-availability" value="" type="checkbox" checked /> <!-- Showing existing reservations when checked. Showing Available slots when not checked -->
             <label class="data-off">
