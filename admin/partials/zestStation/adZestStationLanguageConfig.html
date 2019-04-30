@@ -2,6 +2,7 @@
     <header class="content-title float">
         <h2 >Zest Station Language</h2>
         <a ng-click="goBackToPreviousState()" class="action back ">Back to Station Setup</a>
+        <a class="action add" ng-click="addNewLanguage()" >{{ 'ADD_NEW' | translate }}</a>
     </header>
     <!-- list mode -->
     <section class="content-scroll">
@@ -14,11 +15,30 @@
             <li class="branch" ng-repeat="language in languageList">
                 <div class="sort" ng-show="detailIndex != $index">
                     <a class="cms-name first-letter-capitalize" ng-click="languageSelected($index)" >{{language.name}}</a>
+                    <a  class="icons icon-delete large-icon language-delete"  ng-click="deleteItem(language)"></a>
                 </div>
                 <div ng-show="detailIndex == $index" class="form float">
                         <div class="form-title full-width">
-                            <h3><span class="first-letter-capitalize"> {{language.name}}</span> </h3>
+                            <h3>
+                                <span ng-show="!isAddMode" class="first-letter-capitalize"> {{language.name}}</span>
+                                <span ng-show="isAddMode" class="first-letter-capitalize" translate> STATION_LANGUAGE_ADD_LABEL </span>
+                            </h3>
                         </div>
+                        <div class="entry" ng-show="isAddMode">
+                            <label for="item-id" translate>STATION_LANGUAGE_NAME_LABEL</label>
+                            <input class="entry" ng-model="language.name" />
+                        </div>
+
+                        <div class="entry">
+                            <label for="item-id" translate>STATION_LANGUAGE_ENGLISH_LABEL</label>
+                            <input class="entry" ng-model="language.label" />
+                        </div>
+
+                        <div class="entry">
+                            <label for="item-id" translate>STATION_LANGUAGE_FOREIGN_LABEL</label>
+                            <input class="entry" ng-model="language.foreign_label" />
+                        </div>
+                        
                         <ad-toggle-button is-checked="language.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
                         <ad-toggle-button is-checked="language.is_default" label="{{'STATION_LANGUAGE_DEFAULT'| translate}}" div-class=""></ad-toggle-button>
                         
@@ -40,7 +60,7 @@
                             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancel()" translate>
                                 CANCEL
                             </button>
-                            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings()" translate>
+                            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings(language)" translate>
                                 SAVE_CHANGES
                             </button>
                         </div>

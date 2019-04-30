@@ -8,7 +8,7 @@ admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBa
     };
 
     this.saveLanguageList = function(params) {
-        var url = '/api/kiosk/languages';
+        var url = '/api/kiosk/languages/update_listing_oder';
 
         return ADBaseWebSrvV2.putJSON(url, params);
     };
@@ -20,9 +20,21 @@ admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBa
         return ADBaseWebSrvV2.getJSON(url)
     };
 
-    this.saveLanguageConfig = function(params) {
+    this.createLanguageConfig = function(params) {
         var url = '/api/kiosk/languages';
 
+        return ADBaseWebSrvV2.postJSON(url, params);
+    };
+
+    this.saveLanguageConfig = function(params) {
+        var url = '/api/kiosk/languages/' + params.id;
+
         return ADBaseWebSrvV2.putJSON(url, params);
+    };
+
+    this.deleteLanguage = function(params) {
+        var url = '/api/kiosk/languages/' + params.id;
+
+        return ADBaseWebSrvV2.deleteJSON(url);
     };
 }]);
