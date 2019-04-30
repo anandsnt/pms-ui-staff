@@ -50,7 +50,7 @@ admin.controller('adStationWalkInReservationsCtrl', ['$scope',
                 $scope.successMessage = 'Success';
                 $scope.$emit('hideLoader');
             };
-            var saveFailed = function(response) {
+            var saveFailed = function() {
                 $scope.errorMessage = 'Failed';
                 $scope.$emit('hideLoader');
             };

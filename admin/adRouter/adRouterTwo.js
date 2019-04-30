@@ -749,7 +749,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             bookingOrigins: function(ADOriginsSrv) {
                 return ADOriginsSrv.fetch();
             },
-            rateCodes: function(adInterfacesCommonConfigSrv){
+            rateCodes: function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchRatesMinimal();
             }
         }
