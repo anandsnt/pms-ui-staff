@@ -30,6 +30,32 @@
                 <label for="group-email" translate>CONTACT_EMAIL</label>
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
+            <div class="entry break full-width" ng-if="roverObj.forceNationalityAtCheckin || roverObj.forceCountryAtCheckin">
+                <div class="entry margin" ng-show="roverObj.forceNationalityAtCheckin">
+                    <label for="group-nationality">
+                        {{'NATIONALITY' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <div class="select">
+                        <select  iscroll-stop-propagation ng-model="groupConfigData.summary.nationality">
+                            <option value="">Select Nationality</option>
+                            <option value="{{country.value}}" ng-repeat="country in countries" ng-selected="country.value == groupConfigData.summary.nationality">{{country.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry" ng-show="roverObj.forceCountryAtCheckin">
+                    <label for="group-country">
+                        {{'COUNTRY' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <div class="select">
+                        <select convert-to-number iscroll-stop-propagation ng-model="groupConfigData.summary.country_id">
+                            <option value="">Select Country</option>
+                            <option value="{{country.id}}" ng-repeat="country in countries" ng-selected="country.id == groupConfigData.summary.country_id">{{country.value}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="entry break full-width card-buttons" ng-hide="isInStaycardScreen()">
                 <a ng-click="openDemographicsPopup(false, true);" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
                 
