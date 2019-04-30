@@ -140,6 +140,10 @@ sntZestStation.controller('zsCheckinfindReservationFromIdCtrl', [
         };
 
         var setDataToCheckinSrv = function(data) {
+            // if ID scan is not enabled for KIOSK don't store ID details for future reference
+            if (!$scope.zestStationData.id_scan_enabled) {
+                return;
+            }
             data.front_image_data = $scope.idScanData.selectedGuest.front_image_data;
             data.back_image_data = $scope.idScanData.selectedGuest.back_image_data;
             zsCheckinSrv.setCurrentReservationIdDetails(data);
