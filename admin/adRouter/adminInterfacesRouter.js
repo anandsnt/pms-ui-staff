@@ -650,6 +650,19 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+
+    $stateProvider.state('admin.sieSetup', {
+       templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+       controller: 'adSieCtrl',
+       url: '/sie',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('sie');
+               }]
+       }
+    });
+
     $stateProvider.state('admin.sunaccountingSetup', {
         templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
         controller: 'adInterfaceConfigurationCtrl',
