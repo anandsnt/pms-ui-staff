@@ -93,7 +93,7 @@
 		<fieldset class="content-right">
 			<strong class="h2 message">Deposit</strong>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues">
+			<div class="dates notice" ng-if="depositBalanceData.data.deposit_dues.length > 0" >
             	<strong>Deposit Due</strong>
                     <div class="scrollable" ng-iscroll="deopositdue" >
                             <ul class="wrapper ">

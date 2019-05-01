@@ -5,10 +5,26 @@ angular.module('admin').
 
             var interfaceIdentifier = $stateParams.id;
 
+            var configUrls = {
+                "SUNACCOUNTING": '/assets/partials/interfaces/SunAccounting/adSunAccountingSetup.html',
+                "DEFAULT": '/assets/partials/interfaces/Common/setup.html'
+            };
+
+            var syncItems = {
+                "SUNACCOUNTING": ['Journal and Market Data']
+            };
+
             $scope.state = {
                 activeTab: 'SETUP',
-                configUrl: '/assets/partials/interfaces/Common/setup.html',
                 mappingsUrl: '/assets/partials/interfaces/Common/mappingsList.html'
+            };
+
+            $scope.fetchConfigUrl = function() {
+                return configUrls[$scope.interface] ? configUrls[$scope.interface] : configUrls["DEFAULT"];
+            };
+
+            $scope.changeTab = function(name) {
+                $scope.state.activeTab = name;
             };
 
             /**
@@ -37,12 +53,14 @@ angular.module('admin').
                 });
             };
 
+
             (function() {
                 // init
                 $scope.config = config;
                 $scope.availableSettings = _.keys(config);
                 $scope.mappingTypes = mappingTypes.data;
                 $scope.interface = interfaceIdentifier.toUpperCase();
+                $scope.syncItems = syncItems[$scope.interface];
             })();
         }
     ]);

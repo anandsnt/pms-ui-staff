@@ -801,7 +801,19 @@
                 <input type="checkbox" checked="checked" ng-model="chosenReport.show_vat_with_rates">
                 SHOW VAT WITH RATES
             </label>
-        </div>  
+        </div> 
+
+        <!-- YEARLY VAT END-->
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasShowIncludeLongStays" ng-class="{'active': filterItemsToggle.item_57}" ng-click="toggleFilterItems('item_57')">
+            <span class="title">INCLUDE LONG STAYS</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasShowIncludeLongStays" ng-class="{ 'hidden': !filterItemsToggle.item_57 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.include_long_stays}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.include_long_stays}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.include_long_stays">
+                INCLUDE LONG STAYS
+            </label>
+        </div> 
 
 
         <!-- item_43: Completion Status -->

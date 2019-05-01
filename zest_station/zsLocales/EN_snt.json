@@ -770,5 +770,17 @@
    "DETACHING_GUEST": "Are you sure you want to detach the guest ",
    "DETACH_GUEST": "Confirm",
    "REASON": "Reason",
-   "REASON_PLACEHOLDER": "Enter Reason Here"
+   "REASON_PLACEHOLDER": "Enter Reason Here",
+
+   "FIND_YOUR_RESERVATION": "Find your Reservation",
+   "FIND_YOUR_RESERVATION_INSTRUCTIONS": "You can either scan the primary guest's ID or type in and search",
+   "SCAN_ID": "Scan ID",
+   "FINDING_RESERVATION_INSTRUCTIONS": "Searching for the reservation. Please wait..",
+   "FINDING_RESERVATION_FAILED": "Unable to find the reservation",
+   "FINDING_RESERVATION_FAILED_INSTRUCTIONS": "Sorry, We are unable to retrieve your reservation using the last name - '{{ last_name }}'. Please scan a different ID or search by name",
+   "FACIAL_RECOGNITION_FAILED_INSTRUCTIONS": "Please retry or search your reservation by name",
+   "FACIAL_RECOGNITION_FAILED": "Facial recongnition failed",
+   "GID_SCAN_ALREADY_DONE": "approve/reject",
+   "PRIMARY_GUEST_ALREADY_SCANNED_MSG": "(Since you have already scanned the ID of the primary guest, you can either approve or reject the scanned results)"
+
 }

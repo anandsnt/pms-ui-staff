@@ -196,6 +196,27 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.selectedScheduleIndex = index;
         };
 
+        $scope.dayInAdvanceSelections = [{
+            id: 9999,
+            description: 'At Booking'
+        }, {
+            id: 0,
+            description: 'At Arrival'
+        }, {
+            id: 'custom',
+            description: 'Custom'
+        }];
+
+        $scope.daysInAdvanceSelectionChanged = function() {
+            if ($scope.selectedSchedule.advance_days_selection === 0) {
+                $scope.selectedSchedule.advance_days = 0;
+            } else if (parseInt($scope.selectedSchedule.advance_days_selection) === 9999) {
+                $scope.selectedSchedule.advance_days = 9999;
+            } else if ($scope.selectedSchedule.advance_days_selection === 'custom') {
+                $scope.selectedSchedule.advance_days = '';
+            }
+        };
+
         // open the form to edit a rule
         $scope.editSingleDepositeRule = function(rule) {
             var rule = rule;
@@ -208,6 +229,17 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.showDepositForm = true;
                 $scope.rulesTitle = 'Edit';
                 $scope.rulesSubtitle = $scope.singleRule.name + ' Rule';
+
+                _.each($scope.singleRule.schedules, function(schedule) {
+                    if (parseInt(schedule.advance_days) === 0) {
+                        schedule.advance_days_selection = 0;
+                    } else if (parseInt(schedule.advance_days) === 9999) {
+                        schedule.advance_days_selection = 9999;
+                    } else if (schedule.advance_days) {
+                        schedule.advance_days_selection = 'custom';
+                    }
+                });
+
                 // flag to know that we are in edit mode
                 $scope.updateRule = true;
                 $scope.$emit('hideLoader');
@@ -260,6 +292,12 @@ admin.controller('ADRulesRestrictionCtrl', [
                 saveCallback,
                 updateCallback;
 
+            var apiParams =  angular.copy($scope.singleRule);
+
+            _.each(apiParams.schedules, function(schedule) {
+                delete schedule.advance_days_selection;
+            });
+
             // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
@@ -273,7 +311,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.$emit('hideLoader');
                 };
 
-                $scope.invokeApi(ADRulesRestrictionSrv.updateDepositeRule, $scope.singleRule, updateCallback);
+                $scope.invokeApi(ADRulesRestrictionSrv.updateDepositeRule, apiParams, updateCallback);
             } else {
                 saveCallback = function(data) {
                     fetchRuleDepositPoliciesList({
@@ -284,7 +322,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.$emit('hideLoader');
                 };
 
-                $scope.invokeApi(ADRulesRestrictionSrv.saveDepositeRule, $scope.singleRule, saveCallback);
+                $scope.invokeApi(ADRulesRestrictionSrv.saveDepositeRule, apiParams, saveCallback);
             }
 
         };
