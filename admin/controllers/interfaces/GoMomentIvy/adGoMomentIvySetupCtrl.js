@@ -22,7 +22,7 @@ admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'config', 'adInterfacesSrv
                     settings: $scope.config,
                     integration: $scope.interface.toLowerCase()
                 },
-                onSuccess: function () {
+                onSuccess: function() {
                     $scope.errorMessage = '';
                     $scope.successMessage = "SUCCESS: Settings Updated!";
                 }

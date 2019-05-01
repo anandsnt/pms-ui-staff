@@ -319,4 +319,12 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
 			return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
 		};
 
+		this.retrieveFeatureDetails = function(feature_list, feature_name) {
+			var feature = _.find(feature_list, function(feature) {
+				return feature.feature_name === feature_name;
+			});
+
+			return feature;
+		};
+
 }]);

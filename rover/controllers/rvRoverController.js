@@ -541,6 +541,7 @@ sntRover.controller('roverController', [
                 isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
                 isEMVEnabled: $rootScope.isMLIEMVEnabled
             };
+            $rootScope.featuresSupportedInIosApp = []; // The feature list cordoav call will work only in new builds.
 
             $scope.menuOpen = false;
             $rootScope.showNotificationForCurrentUser = true;
@@ -567,6 +568,15 @@ sntRover.controller('roverController', [
                     }, function () {
 
                     }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $rootScope.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function(error) {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
 
                 }, 500);
             }

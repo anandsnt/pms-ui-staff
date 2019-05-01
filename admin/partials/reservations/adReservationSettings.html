@@ -204,7 +204,7 @@
 	                	</div>
 		            </div>
 
-		            <div class="entry" ng-hide="!hotelDiaryConfig.isDiaryMergeEnabled || isPmsProductionEnv">
+		            <div class="entry hidden" ng-hide="!hotelDiaryConfig.isDiaryMergeEnabled || isPmsProductionEnv">
 						<label>Hourly Rates for Day Use</label>
 						<div class="switch-button single" ng-class="{ on: reservationSettingsData.hourly_rates_for_day_use_enabled }" ng-click="toggleHourlyRatesForDayUse()">
 		                    <input type="checkbox">
@@ -224,7 +224,7 @@
 
 					<ad-toggle-button label="Item Inventory" is-checked="reservationSettingsData.is_item_inventory_on" ></ad-toggle-button>
 
-					<div class="entry" ng-show="isStandAlone && !isHourlyRatesEnabled">
+					<div class="entry" ng-show="isStandAlone && !(isHourlyRatesEnabled || hotelDiaryConfig.mode === 'FULL' || reservationSettingsData.hourly_availability_calculation == 'FULL')">
 						<label>Suite Rooms</label>
 						<div  class="switch-button single" ng-class="{ on :reservationSettingsData.suite_enabled }">
 							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="suiteRoomsSwitchClicked($index)">
