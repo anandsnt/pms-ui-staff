@@ -24,8 +24,17 @@
  
 <ng-include src="'/assets/partials_v2/walkin/zsWalkinSelectStayDetails.html'"  
    ng-show="screenData.scanMode == 'SELECT_STAY_DETAILS'"></ng-include>  
-   --{{screenData.scanMode}}--'SELECT_STAY_DETAILS'
---{{screenData.scanMode == 'SELECT_STAY_DETAILS'}}
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinRoomNotAvailable.html'"  
+   ng-show="screenData.scanMode == 'ROOMS_NOT_AVAILABLE'"></ng-include>  
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationCreationFailed.html'"  
+   ng-show="screenData.scanMode == 'RESERVATION_CREATION_FAILED'"></ng-include>  
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationCreationSuccess.html'"  
+   ng-show="screenData.scanMode == 'RESERVATION_CREATION_SUCCESS'"></ng-include>  
+
+   
 <section id="main" class="centered test add_remove_main" role="main"  
    ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE' ||
    screenData.scanMode == 'ANALYSING_BACK_IMAGE'  ||

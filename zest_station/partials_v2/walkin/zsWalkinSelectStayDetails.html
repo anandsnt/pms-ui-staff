@@ -3,26 +3,31 @@
         <h1>STAY DETAILS</h1>
         <div id="flex-holder">
             <form method="post" class="pull-left form">
-                <div class="select entry entry-address">
-                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="nights as nights for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
                         <option value="">{{'NO. OF NIGHTS' | translate}}</option>
                     </select>
                 </div>
-                <div class="select entry entry-address">
-                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="adultCount as adultCount for adultCount in idScanData.guestCountArray" ng-model="idScanData.noOfAdults">
                         <option value="">{{'ADULTS' | translate}}</option>
                     </select>
                 </div>
-                <div class="select entry entry-address">
-                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="childCount as childCount for childCount in idScanData.guestCountArray" ng-model="idScanData.noOfChildren">
                         <option value="">{{'CHILDREN' | translate}}</option>
+                    </select>
+                </div>
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="infantCount as infantCount for infantCount in idScanData.guestCountArray" ng-model="idScanData.noOfInfants">
+                        <option value="">{{'INFANTS' | translate}}</option>
                     </select>
                 </div>
             </form>
             <div id="actions">
                  <button type="button" class="button transparent" style="visibility: hidden;">
                  </button>
-                <button type="button" class="button" ng-click="nextButtonClicked()">Next</button>
+                <button type="button" class="button" touch-press="startCreatingReservation()">Next</button>
             </div>
         </div>
     </div>        

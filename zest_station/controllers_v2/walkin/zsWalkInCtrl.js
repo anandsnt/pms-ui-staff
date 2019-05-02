@@ -8,11 +8,14 @@ sntZestStation.controller('zsWalkInCtrl', [
     'zsUtilitySrv',
     '$timeout',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, zsGeneralSrv) {
+    'bussinessDateData',
+    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, zsGeneralSrv, bussinessDateData) {
 
         BaseCtrl.call(this, $scope);
 
-        var reservationId;
+        var reservationId,
+            minimumAdrRoomType,
+            arrivalDate = bussinessDateData.business_date;
 
         $controller('sntIDCollectionBaseCtrl', {
             $scope: $scope
@@ -96,14 +99,14 @@ sntZestStation.controller('zsWalkInCtrl', [
         };
 
         var refreshIDdetailsScroller = function() {
-                $scope.refreshScroller('passport-validate');
+            $scope.refreshScroller('passport-validate');
 
-                var scroller = $scope.getScroller('passport-validate');
+            var scroller = $scope.getScroller('passport-validate');
 
-                $timeout(function() {
-                    scroller.scrollTo(0, 0, 300);
-                }, 0);
-            };
+            $timeout(function() {
+                scroller.scrollTo(0, 0, 300);
+            }, 0);
+        };
 
         $scope.$on('SHOW_ID_RESULTS', function() {
             $scope.screenData.scanMode = 'FINAL_ID_RESULTS';
@@ -111,21 +114,23 @@ sntZestStation.controller('zsWalkInCtrl', [
             //searchReservationByLastName();
         });
 
-        var createReservationFailed = function(){
-
+        var createReservationFailed = function() {
+            $scope.screenData.scanMode = 'RESERVATION_CREATION_FAILED';
         };
 
-        var roomTypeNotAvailableActions = function(){
-
+        var roomTypeNotAvailableActions = function() {
+            $scope.screenData.scanMode = 'ROOMS_NOT_AVAILABLE';
         };
 
-        var createReservationUsingRoomTypeId = function(roomTypeId){
+        var createReservationUsingRoomTypeId = function(roomTypeId) {
+            var departureDate = moment(arrivalDate, "YYYY-MM-DD").add($scope.idScanData.noOfDays, 'd').format("YYYY-MM-DD");
+
             var params = {
-                "arrival_date": "2018-10-12",
-                "departure_date": "2018-10-13",
-                "adults_count": 1,
-                "children_count": 0,
-                "infants_count": 0,
+                "arrival_date": arrivalDate,
+                "departure_date": departureDate,
+                "adults_count": $scope.idScanData.noOfAdults,
+                "children_count": $scope.idScanData.noOfChildren,
+                "infants_count": $scope.idScanData.noOfInfants,
                 "room_type_id": roomTypeId,
                 "rate_id": $scope.zestStationData.kiosk_walk_in_rate_id,
                 "new_guest_details": [{
@@ -133,11 +138,11 @@ sntZestStation.controller('zsWalkInCtrl', [
                     "first_name": $scope.idScanData.selectedGuest.scannedDetails.first_name,
                     "last_name": $scope.idScanData.selectedGuest.scannedDetails.last_name,
                     "id_number": $scope.idScanData.selectedGuest.scannedDetails.document_number,
-                    "address":{
-                        "city":  $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_city,
-                        "state":  $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_state,
-                        "street":  $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_1,
-                        "street2":  $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_2
+                    "address": {
+                        "city": $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_city,
+                        "state": $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_state,
+                        "street": $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_1,
+                        "street2": $scope.idScanData.selectedGuest.scannedDetails.id_scan_info.address_line_2
                     },
                     "nationality": $scope.idScanData.selectedGuest.scannedDetails.nationality
                 }],
@@ -145,8 +150,8 @@ sntZestStation.controller('zsWalkInCtrl', [
                 "market_segment_id": $scope.zestStationData.kiosk_walk_in_market_id,
                 "booking_origin_id": $scope.zestStationData.kiosk_walk_in_origin_id
             };
-            var createReservationSuccess = function(response){
-
+            var createReservationSuccess = function(response) {
+                $scope.screenData.scanMode = 'RESERVATION_CREATION_SUCCESS';
             };
             var options = {
                 params: params,
@@ -156,39 +161,36 @@ sntZestStation.controller('zsWalkInCtrl', [
 
             $scope.callAPI(zsGeneralSrv.createReservation, options);
         };
-        var minimumAdrRoomType;
 
-        $scope.continueFromStayDetails = function(){
-            createReservationUsingRoomTypeId(minimumAdrRoomType.id);
-        };
-
-        var startCreatingReservation = function (){
+        $scope.startCreatingReservation = function() {
+            if ($scope.idScanData.noOfDays === 0 || $scope.idScanData.noOfAdults === 0) {
+                return;
+            }
+            var departureDate = moment(arrivalDate, "YYYY-MM-DD").add($scope.idScanData.noOfDays, 'd').format("YYYY-MM-DD");
             var params = {
-                "from_date": "2018-10-12",
-                "to_date":"2018-10-13",
+                "from_date": arrivalDate,
+                "to_date": departureDate,
                 "rate_id": $scope.zestStationData.kiosk_walk_in_rate_id,
                 "adults": 1,
-                "children":0,
+                "children": 0,
                 "order": "LOW_TO_HIGH"
             };
-            var fetchAvailabilitySuccess = function(response){
-                if(response.results && response.results.length === 0 ) {
+            var fetchAvailabilitySuccess = function(response) {
+                if (response.results && response.results.length === 0) {
                     roomTypeNotAvailableActions();
-                } else{
+                } else {
                     // accept only if availablity is > 0
-                    var availabilityList = _.filter(response.results, function(roomType){
+                    var availabilityList = _.filter(response.results, function(roomType) {
                         return roomType.availability > 0;
                     });
-                    if(availabilityList.length === 0){
+                    if (availabilityList.length === 0) {
                         roomTypeNotAvailableActions();
                         return;
                     }
-                    minimumAdrRoomType = _.min(availabilityList, function(roomType){
+                    minimumAdrRoomType = _.min(availabilityList, function(roomType) {
                         return roomType.adr;
                     });
-                    $scope.idScanData.scanMode = 'SELECT_STAY_DETAILS';
-                    $scope.runDigestCycle();
-                    console.log(availabilityList);
+                    createReservationUsingRoomTypeId(minimumAdrRoomType.id);
                 }
             };
             var options = {
@@ -201,18 +203,23 @@ sntZestStation.controller('zsWalkInCtrl', [
             console.log("creating reservation");
         };
 
-        $scope.$on('START_CREATING_RESERVATION', startCreatingReservation);
+        var showStayDetailsScreen = function() {
+            $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
+        };
 
-        $scope.acceptID = function(){
-            if($scope.idScanData.verificationMethod === 'FR'){
+        $scope.$on('START_CREATING_RESERVATION', showStayDetailsScreen);
+
+        $scope.acceptID = function() {
+            if ($scope.idScanData.verificationMethod === 'FR') {
                 $scope.$emit('START_FACIAL_RECOGNITION');
-            } else{
-                startCreatingReservation();
+            } else {
+                showStayDetailsScreen();
             }
         };
 
         $scope.rejectID = function() {
             $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+            $scope.screenData.imageSide = 0;
         };
 
         (function() {
@@ -225,7 +232,13 @@ sntZestStation.controller('zsWalkInCtrl', [
                 selectedGuest: {},
                 verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
                 staffVerified: false,
-                screenType: 'WALKIN_RESERVATION'
+                screenType: 'WALKIN_RESERVATION',
+                noOfNightArray: _.range(1, 11),
+                guestCountArray: _.range(1, 6),
+                noOfDays: 0,
+                noOfAdults: 0,
+                noOfChildren: 0,
+                noOfInfants: 0
             };
             $scope.setScroller('confirm-images');
             $scope.setScroller('passport-validate');
