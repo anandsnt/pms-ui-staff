@@ -11,13 +11,16 @@
                     ng-class="{'orange' : state.activeTab === 'MAPPING', 'white' : state.activeTab !== 'MAPPING'}">
                 MAPPINGS
             </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('SYNC')"
+                    ng-class="{'orange' : state.activeTab === 'SYNC', 'white' : state.activeTab !== 'SYNC'}">
+                SYNC
+            </button>
         </div>
     </header>
 
-    <section class="content-scroll">
-        <ng-include src="'/assets/partials/interfaces/Vectron/adVectronSetupConfiguration.html'"></ng-include>
-        <ng-include src="'/assets/partials/interfaces/Vectron/adVectronSetupMapping.html'"></ng-include>
+     <section class="content-scroll">
+        <ng-include src="'/assets/partials/interfaces/sie/adSieSetting.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/adMapping.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/sie/adSieSync.html'"></ng-include>
     </section>
 </div>
-
-
