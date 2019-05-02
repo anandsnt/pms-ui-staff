@@ -9,13 +9,18 @@ sntZestStation.controller('zsWalkInCtrl', [
     '$timeout',
     'zsGeneralSrv',
     'bussinessDateData',
-    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, zsGeneralSrv, bussinessDateData) {
+    '$filter',
+    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, zsGeneralSrv, bussinessDateData, $filter) {
 
         BaseCtrl.call(this, $scope);
 
         var reservationId,
             minimumAdrRoomType,
-            arrivalDate = bussinessDateData.business_date;
+            arrivalDate = bussinessDateData.business_date,
+            // searchingReservationInProgress = false,
+            // searchingReservationFailed = false;
+
+        $scope.newReservation = {};
 
         $controller('sntIDCollectionBaseCtrl', {
             $scope: $scope
@@ -51,53 +56,6 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.recordReservationActions, options);
         };
 
-        var searchReservationByLastName = function() {
-            var reservationSearchFailed = function() {
-                $scope.screenData.scanMode = 'FINDING_RESERVATION_FAILED';
-            };
-            var reservationSearchSuccess = function(response) {
-                if (response.results && response.results.length === 1) {
-                    zsCheckinSrv.setSelectedCheckInReservation(response.results);
-
-                    if (response.results[0].guest_details) {
-                        var primaryGuest = _.find(response.results[0].guest_details, function(guest) {
-                            return guest.is_primary;
-                        });
-                        var guestName = primaryGuest.first_name + primaryGuest.last_name;
-
-                        reservationId = response.results[0].id;
-
-                        recordIDScanActions('ID_ANALYZING', 'Success for the guest', guestName);
-                        if ($scope.idScanData.verificationMethod === 'FR') {
-                            recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest', guestName);
-                        }
-                    }
-                    $state.go('zest_station.checkInReservationDetails');
-                } else if (response.results && response.results.length > 1) {
-                    // zsCheckinSrv.setCheckInReservations(response.results);
-                    // $state.go('zest_station.selectReservationForCheckIn');
-                    $state.go('zest_station.checkInReservationSearch', {
-                        'last_name': $scope.idScanData.selectedGuest.scannedDetails.last_name
-                    });
-                } else {
-                    reservationSearchFailed();
-                }
-            };
-
-            var params = {
-                is_kiosk: true,
-                due_in: true,
-                last_name: $scope.idScanData.selectedGuest.scannedDetails.last_name
-            };
-            var options = {
-                params: params,
-                successCallBack: reservationSearchSuccess,
-                failureCallBack: reservationSearchFailed
-            };
-
-            $scope.callAPI(zsCheckinSrv.fetchReservations, options);
-        };
-
         var refreshIDdetailsScroller = function() {
             $scope.refreshScroller('passport-validate');
 
@@ -120,6 +78,76 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         var roomTypeNotAvailableActions = function() {
             $scope.screenData.scanMode = 'ROOMS_NOT_AVAILABLE';
+        };
+
+        // $scope.proceedToCheckin = function() {
+        //     // if the reservation search for the reservation just created is still goin on,
+        //     // show loader and recheck status every second
+        //     if (searchingReservationInProgress) {
+        //         $scope.$emit('showLoader');
+        //         $timeout(function() {
+        //             $scope.proceedToCheckin();
+        //         }, 1000);
+        //         return;
+        //     } else if(searchingReservationFailed){
+        //         var stateParams = {
+        //             'message': $filter('translate')('RESERVATION_CREATED_BUT_UNABLE_TO_RETRIEVE')
+        //         };
+
+        //         $state.go('zest_station.speakToStaff', stateParams);
+        //         return;
+        //     }
+        //     $scope.$emit('hideLoader');
+        //     $state.go('zest_station.checkInReservationDetails');
+        // };
+
+        var searchReservationByLastName = function() {
+            var reservationSearchFailed = function() {
+                $scope.screenData.scanMode = 'FINDING_RESERVATION_FAILED';
+            };
+            var reservationSearchSuccess = function(response) {
+                if (response.results && response.results.length === 1) {
+                    zsCheckinSrv.setSelectedCheckInReservation(response.results);
+
+                    if (response.results[0].guest_details) {
+                        var primaryGuest = _.find(response.results[0].guest_details, function(guest) {
+                            return guest.is_primary;
+                        });
+                        var guestName = primaryGuest.first_name + primaryGuest.last_name;
+
+                        reservationId = response.results[0].id;
+
+                        recordIDScanActions('ID_ANALYZING', 'Success for the guest', guestName);
+                        if ($scope.idScanData.verificationMethod === 'FR') {
+                            recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest', guestName);
+                        }
+                    }
+                    // searchingReservationInProgress = false;
+                    $state.go('zest_station.checkInReservationDetails');
+                }
+            };
+
+            var params = {
+                is_kiosk: true,
+                due_in: true,
+                last_name: $scope.idScanData.selectedGuest.scannedDetails.last_name,
+                alt_confirmation_number: $scope.newReservation.confirm_no
+            };
+            var options = {
+                params: params,
+                successCallBack: reservationSearchSuccess,
+                //loader: 'none',
+                failureCallBack: function() {
+                    // searchingReservationFailed = true;
+                    var stateParams = {
+                        'message': $filter('translate')('RESERVATION_CREATED_BUT_UNABLE_TO_RETRIEVE')
+                    };
+
+                    $state.go('zest_station.speakToStaff', stateParams);
+                }
+            };
+            // searchingReservationInProgress = true;
+            $scope.callAPI(zsCheckinSrv.fetchReservations, options);
         };
 
         var createReservationUsingRoomTypeId = function(roomTypeId) {
@@ -151,7 +179,11 @@ sntZestStation.controller('zsWalkInCtrl', [
                 "booking_origin_id": $scope.zestStationData.kiosk_walk_in_origin_id
             };
             var createReservationSuccess = function(response) {
-                $scope.screenData.scanMode = 'RESERVATION_CREATION_SUCCESS';
+                // $scope.screenData.scanMode = 'RESERVATION_CREATION_SUCCESS';
+                $scope.newReservation = response && response.reservations.length > 0 ? response.reservations[0] : {};
+                // As soon as reservation is created, in background (w/o loader), find the reservation 
+                // and gather data to proceed with checkin flow
+                searchReservationByLastName();
             };
             var options = {
                 params: params,
@@ -163,16 +195,13 @@ sntZestStation.controller('zsWalkInCtrl', [
         };
 
         $scope.startCreatingReservation = function() {
-            if ($scope.idScanData.noOfDays === 0 || $scope.idScanData.noOfAdults === 0) {
-                return;
-            }
             var departureDate = moment(arrivalDate, "YYYY-MM-DD").add($scope.idScanData.noOfDays, 'd').format("YYYY-MM-DD");
             var params = {
                 "from_date": arrivalDate,
                 "to_date": departureDate,
                 "rate_id": $scope.zestStationData.kiosk_walk_in_rate_id,
-                "adults": 1,
-                "children": 0,
+                "adults": $scope.idScanData.noOfAdults,
+                "children": $scope.idScanData.noOfChildren,
                 "order": "LOW_TO_HIGH"
             };
             var fetchAvailabilitySuccess = function(response) {
@@ -200,7 +229,6 @@ sntZestStation.controller('zsWalkInCtrl', [
             };
 
             $scope.callAPI(zsGeneralSrv.getAvailableRatesForTheDay, options);
-            console.log("creating reservation");
         };
 
         var showStayDetailsScreen = function() {
@@ -235,10 +263,10 @@ sntZestStation.controller('zsWalkInCtrl', [
                 screenType: 'WALKIN_RESERVATION',
                 noOfNightArray: _.range(1, 11),
                 guestCountArray: _.range(1, 6),
-                noOfDays: 0,
-                noOfAdults: 0,
-                noOfChildren: 0,
-                noOfInfants: 0
+                noOfDays: "",
+                noOfAdults: "",
+                noOfChildren: "",
+                noOfInfants: ""
             };
             $scope.setScroller('confirm-images');
             $scope.setScroller('passport-validate');

@@ -73,7 +73,9 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
                 $scope.idScanData.selectedGuest.scannedDetails = data;
                 setDataToCheckinSrv(data);
                 if ($scope.idScanData.screenType === 'WALKIN_RESERVATION') {
-                    proceedWithScanedDetails();
+                    $scope.$emit('SHOW_ID_RESULTS');
+                } else{
+                    facialRecogntionActions();
                 }
             } else {
                 $scope.idScanData.selectedGuest.scannedDetails = data;

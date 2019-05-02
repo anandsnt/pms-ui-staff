@@ -4,8 +4,8 @@
         <h1 translate>
             WALKIN_RESERVATION_CREATION_SUCCCESS
         </h1>
-        <h3 class="nocaps" translate>
-            WALKIN_RESERVATION_CREATION_SUCCCESS_SUB
+        <h3 class="nocaps">
+            {{'WALKIN_RESERVATION_CREATION_SUCCCESS_SUB'| translate}}&nbsp;{{newReservation.confirm_no}}
         </h3>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -13,7 +13,7 @@
                     <button type="button" class="button option" touch-press='navToHome()'>
                         <div ng-include="icons.url.checkmark"></div>
                     </button>
-                    {{ 'BACK_TO_HOME' | translate }}    
+                    {{ 'RETURN_TO_HOME' | translate }}    
                 </li>
                 <li class="break">
                     <span>
@@ -21,7 +21,7 @@
                     </span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='searchByName()'>
+                    <button type="button" class="button option" touch-press='proceedToCheckin()'>
                         <div ng-include="icons.url.checkin"></div>
                     </button>
                    {{ 'PROCEED_WITH_CHECKIN' | translate }}
