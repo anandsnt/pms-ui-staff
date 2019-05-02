@@ -120,20 +120,21 @@
 				<div class="title" ng-hide="shouldHideSplitCharge()">
                         Split Charges 
                 </div>
-                <div class="entry" ng-hide="shouldHideSplitCharge()" ng-class="{'overlay': checkBillStatus()}">
+                <div class="entry" ng-hide="shouldHideSplitCharge()" ng-class="{'overlay': checkBillStatus() || selectedEntity.is_split_evenly}">
                     <label class="checkbox" for="split-charges" ng-class="{'checked': selectedEntity.split_charge_by_50}">
                         <span class="icon-form icon-checkbox" ng-class="{'checked': selectedEntity.split_charge_by_50}"></span>
                         <input ng-class="{'checked': selectedEntity.split_charge_by_50}" name="split-charges" id="split-charges" ng-model="selectedEntity.split_charge_by_50" value="1" type="checkbox">
-                        Split all charges by 50%
+                        Split all charges by {{ selectedEntity.is_split_evenly ? selectedEntity.charge_split_percentage : 50 }}%
                     </label>
 				</div>
 				
+				
 				<!-- Split charges (Group) -->
-				<div class="title">
+				<div class="title" ng-show="billingEntity === 'GROUP_DEFAULT_BILLING'">
                     Split Charges (Accompanying Guests)
                 </div>
-                <div class="entry">
-					<label class="checkbox" for="split-charges" ng-class="{'checked': selectedEntity.split_charge_by_guests}">
+                <div class="entry" ng-show="billingEntity === 'GROUP_DEFAULT_BILLING'">
+					<label class="checkbox" for="split-charges-guests" ng-class="{'checked': selectedEntity.split_charge_by_guests}">
 						<span class="icon-form icon-checkbox" ng-class="{'checked': selectedEntity.split_charge_by_guests}"></span>
 						<input id="split-charges-guests" type="checkbox" ng-model="selectedEntity.split_charge_by_guests">
 						Split all charges evenly
