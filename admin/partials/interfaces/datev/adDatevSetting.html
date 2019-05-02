@@ -41,11 +41,14 @@
                                     styleclass="full-width"></ad-textbox>
                     </fieldset>
                     <fieldset class="holder right">
-                        <ad-textbox inputtype="text" value="config.gl_account_number_length"
-                                    required="yes"
-                                    label="{{'GL_ACCOUNT_NUMBER_LENGTH'| translate}}"
-                                    styleclass="full-width"></ad-textbox>
-                        <ad-textbox inputtype="text" value="config.guest_ledger_account_number"
+                      <div class="entry" ng-class="full-width">
+                        <label>
+                          {{'GL_ACCOUNT_NUMBER_LENGTH'| translate}}
+                          <strong>*</strong>
+                        </label>
+                        <input ng-model="config.gl_account_number_length" ng-change="onAccountNumberLengthChange()">
+                      </div>
+                      <ad-textbox inputtype="text" value="config.guest_ledger_account_number"
                                     required="yes"
                                     label="{{'GUEST_LEDGER_ACCOUNT_NUMBER'| translate}}"
                                     styleclass="full-width"></ad-textbox>
@@ -53,9 +56,9 @@
                 </fieldset>
 
                  <fieldset class="holder full-width">
-                    <div class="form-title">
-                        <h3>SFTP <span>Access Configuration</span></h3>
-                    </div>
+                   <div class="form-title">
+                     <h3>SFTP <span>Access Configuration</span></h3>
+                   </div>
 
                      <fieldset class="holder left">
                         <ad-textbox inputtype="text" value="config.sftp_host"
