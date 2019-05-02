@@ -69,12 +69,11 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
             } else if (!data.document_number) {
                 $scope.screenData.scanMode = 'ANALYSING_ID_DATA_FAILED';
             } else if ($scope.idScanData.verificationMethod === 'FR') {
-                //TO: Handle FR for walkin later
                 $scope.idScanData.selectedGuest.scannedDetails = data;
                 setDataToCheckinSrv(data);
                 if ($scope.idScanData.screenType === 'WALKIN_RESERVATION') {
                     $scope.$emit('SHOW_ID_RESULTS');
-                } else{
+                } else {
                     facialRecogntionActions();
                 }
             } else {
@@ -130,6 +129,10 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
             // recordIDScanActions('ID_IMAGE_PROCESSING', errorMessage);
         });
 
+        $scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+            $scope.screenData.scanMode = 'ANALYSING_ID_DATA';
+        });
+
         (function() {})();
     }
 ]);
@@ -147,9 +150,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         //     }
         // });
 
-        // $scope.$on('IMAGE_ANALYSIS_STARTED', function() {
-        //     $scope.screenData.scanMode = 'ANALYSING_ID_DATA';
-        // });
+        
 
         // $scope.$on('EXT_CAMERA_STARTED', function() {
         //     $timeout(function() {

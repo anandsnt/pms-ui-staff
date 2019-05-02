@@ -58,7 +58,7 @@ sntZestStation.controller('zsHomeCtrl', [
             }
         };
 
-        $scope.startWalkinReservationFlow = function(){
+        $scope.startWalkinReservationFlow = function() {
             $state.go('zest_station.walkInReservation');
         };
 

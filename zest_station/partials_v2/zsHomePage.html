@@ -36,7 +36,7 @@
                         </button>
                         <text data-ng-bind-html="getTagValue('BOOK_NOW')" editable-text="BOOK_NOW"></text>
                     </li>
-                    <li ng-if="isIpad && zestStationData.kiosk_walk_in_enabled">
+                    <li ng-if="zestStationData.showWalkinReservationOption">
                         <button type="button" class="button option" touch-press='startWalkinReservationFlow()'>
                             <div ng-include="icons.url.booknow"></div>
                         </button>

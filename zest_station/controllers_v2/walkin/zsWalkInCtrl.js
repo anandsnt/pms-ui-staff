@@ -68,7 +68,7 @@ sntZestStation.controller('zsWalkInCtrl', [
         $scope.$on('SHOW_ID_RESULTS', function() {
             $scope.screenData.scanMode = 'FINAL_ID_RESULTS';
             refreshIDdetailsScroller();
-            //searchReservationByLastName();
+            // searchReservationByLastName();
         });
 
         var createReservationFailed = function() {
@@ -137,7 +137,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             var options = {
                 params: params,
                 successCallBack: reservationSearchSuccess,
-                //loader: 'none',
+                // loader: 'none',
                 failureCallBack: function() {
                     // searchingReservationFailed = true;
                     var stateParams = {
@@ -147,12 +147,15 @@ sntZestStation.controller('zsWalkInCtrl', [
                     $state.go('zest_station.speakToStaff', stateParams);
                 }
             };
+
             // searchingReservationInProgress = true;
             $scope.callAPI(zsCheckinSrv.fetchReservations, options);
         };
 
         var createReservationUsingRoomTypeId = function(roomTypeId) {
-            var departureDate = moment(arrivalDate, "YYYY-MM-DD").add($scope.idScanData.noOfDays, 'd').format("YYYY-MM-DD");
+            var departureDate = moment(arrivalDate, "YYYY-MM-DD").
+                                add($scope.idScanData.noOfDays, 'd').
+                                format("YYYY-MM-DD");
 
             var params = {
                 "arrival_date": arrivalDate,
@@ -196,7 +199,9 @@ sntZestStation.controller('zsWalkInCtrl', [
         };
 
         $scope.startCreatingReservation = function() {
-            var departureDate = moment(arrivalDate, "YYYY-MM-DD").add($scope.idScanData.noOfDays, 'd').format("YYYY-MM-DD");
+            var departureDate = moment(arrivalDate, "YYYY-MM-DD").
+                                add($scope.idScanData.noOfDays, 'd').
+                                format("YYYY-MM-DD");
             var params = {
                 "from_date": arrivalDate,
                 "to_date": departureDate,
@@ -213,6 +218,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                     var availabilityList = _.filter(response.results, function(roomType) {
                         return roomType.availability > 0;
                     });
+
                     if (availabilityList.length === 0) {
                         roomTypeNotAvailableActions();
                         return;
@@ -255,7 +261,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             var options = {
                 params: {},
                 successCallBack: function(response) {
-                    arrivalDate = response.business_date
+                    arrivalDate = response.business_date;
                 },
                 failureCallBack: createReservationFailed
             };
