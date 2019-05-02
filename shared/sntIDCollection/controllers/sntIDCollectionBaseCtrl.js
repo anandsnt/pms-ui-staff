@@ -290,7 +290,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			var img = document.createElement('img');
 
 			response = response ? response.image_base64 : '';
-			var unmodifiedImage = 'data: image / jpeg;base64,' + response;
+			var unmodifiedImage = 'data:image/png;base64,' + response;
 
 			img.src = unmodifiedImage;
 			unmodifiedImage = sntIDCollectionUtilsSrv.dataURLtoBlob(unmodifiedImage);
@@ -298,12 +298,14 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 				if ($scope.screenData.imageSide === 0) {
 					$scope.screenData.frontSideImage = unmodifiedImage;
+					var imageData = sntIDCollectionUtilsSrv.resizeImage(img, undefined, 2560, 1920);
+
+					unmodifiedFrontImage = imageData;
 					getDocInstance();
 				} else {
 					$scope.screenData.backSideImage = unmodifiedImage;
 					postBackImage();
 				}
-				$scope.$emit('IMAGE_ANALYSIS_STARTED');
 				runDigestCycle();
 			};
 			img.onerror = function() {
@@ -319,6 +321,7 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		var actionName = $scope.deviceConfig.idCaptureActionName ? $scope.deviceConfig.idCaptureActionName : 'captureID';
 
 		cordova.exec(function(response) {
+			$scope.$emit('IMAGE_ANALYSIS_STARTED');
 			imageCaptured(response);
 		}, function() {
 			$scope.$emit('IMAGE_ANALYSIS_FAILED');

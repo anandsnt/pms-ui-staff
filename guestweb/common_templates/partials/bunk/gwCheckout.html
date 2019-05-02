@@ -1,0 +1,35 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <!-- left side -->
+        <div class="col-md-4 top-spacing">
+            <p class="main-text">Ready to check out?</p>
+            <p class="sub-main-text">
+                {{checkoutTimessage}} {{checkoutTime}}.
+                <br />
+                (unless you’ve purchased a late check out)
+            </p>
+        </div>
+        <div class="col-md-1"></div>
+        <!-- right side -->
+        <div class="col-md-3 sm-no-top-spacing no-side-padding">
+            <a class="btn checkout-btn" ui-sref="checkoutBalance">
+                <div>Check out now</div>
+                <br />
+                <div class="checkout-icon checkout-alone-button"></div>
+            </a>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <div class="row footer-text">
+        Only click the check out now button when you are ready to leave your Room or Pod.
+    </div>
+</div>
