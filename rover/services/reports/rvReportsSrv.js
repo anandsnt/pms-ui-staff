@@ -104,7 +104,7 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Police Report Export': [
 				'TODAY'
 			 ],
-			'Swiss Police Report Export': [
+			'Switzerland Zurich Police Export': [
 				'TODAY'
 			],
 			 'Belgium Nationality Export': [

@@ -498,7 +498,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Swiss Police Report Export': true
+                'Switzerland Zurich Police Export': true
             };
 
             var forRunOnceOnly = {
@@ -516,7 +516,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Swiss Police Report Export': true
+                'Switzerland Zurich Police Export': true
             };
 
             var forWeekly = {
@@ -525,7 +525,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Swiss Police Report Export': true
+                'Switzerland Zurich Police Export': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -536,7 +536,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Belgium Nationality Export': true,
-                'Swiss Police Report Export': true
+                'Switzerland Zurich Police Export': true
             };
 
             var forHourly = {
@@ -545,7 +545,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Synxis - Reservations': true,
-                'Swiss Police Report Export': true
+                'Switzerland Zurich Police Export': true
             };
 
             if ( forHourly[item.report.title] ) {
