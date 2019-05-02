@@ -430,12 +430,7 @@ sntZestStation.config(['$stateProvider',
         $stateProvider.state('zest_station.walkInReservation', {
             url: '/walkInReservation',
             controller: 'zsWalkInCtrl',
-            templateUrl: '/assets/partials_v2/walkin/zsWakinReservationMain.html',
-            resolve: {
-                bussinessDateData: function(zsGeneralSrv) {
-                    return zsGeneralSrv.fetchHotelBusinessDate();
-                }
-            }
+            templateUrl: '/assets/partials_v2/walkin/zsWakinReservationMain.html'
         });
     
     }

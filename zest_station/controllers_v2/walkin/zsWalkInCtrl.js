@@ -8,15 +8,14 @@ sntZestStation.controller('zsWalkInCtrl', [
     'zsUtilitySrv',
     '$timeout',
     'zsGeneralSrv',
-    'bussinessDateData',
     '$filter',
-    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, zsGeneralSrv, bussinessDateData, $filter) {
+    function($scope, $stateParams, $state, $controller, zsEventConstants, zsCheckinSrv, zsUtilitySrv, $timeout, zsGeneralSrv, $filter) {
 
         BaseCtrl.call(this, $scope);
 
         var reservationId,
             minimumAdrRoomType,
-            arrivalDate = bussinessDateData.business_date,
+            arrivalDate;
             // searchingReservationInProgress = false,
             // searchingReservationFailed = false;
 
@@ -124,6 +123,8 @@ sntZestStation.controller('zsWalkInCtrl', [
                     }
                     // searchingReservationInProgress = false;
                     $state.go('zest_station.checkInReservationDetails');
+                } else {
+                    reservationSearchFailed();
                 }
             };
 
@@ -250,6 +251,18 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.screenData.imageSide = 0;
         };
 
+        var fetchHotelBussinessDate = function() {
+            var options = {
+                params: {},
+                successCallBack: function(response) {
+                    arrivalDate = response.business_date
+                },
+                failureCallBack: createReservationFailed
+            };
+
+            $scope.callAPI(zsGeneralSrv.fetchHotelBusinessDate, options);
+        };
+
         (function() {
             zsCheckinSrv.setCurrentReservationIdDetails({});
             $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
@@ -274,6 +287,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
 
             $scope.setConfigurations(idCaptureConfig);
+            fetchHotelBussinessDate();
         })();
     }
 ]);
