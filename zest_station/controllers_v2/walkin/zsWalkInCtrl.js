@@ -156,6 +156,11 @@ sntZestStation.controller('zsWalkInCtrl', [
 
             $scope.callAPI(zsGeneralSrv.createReservation, options);
         };
+        var minimumAdrRoomType;
+
+        $scope.continueFromStayDetails = function(){
+            createReservationUsingRoomTypeId(minimumAdrRoomType.id);
+        };
 
         var startCreatingReservation = function (){
             var params = {
@@ -178,12 +183,11 @@ sntZestStation.controller('zsWalkInCtrl', [
                         roomTypeNotAvailableActions();
                         return;
                     }
-                    var minimumAdrRoomType = _.min(availabilityList, function(roomType){
+                    minimumAdrRoomType = _.min(availabilityList, function(roomType){
                         return roomType.adr;
                     });
-
-                    createReservationUsingRoomTypeId(minimumAdrRoomType.id);
-
+                    $scope.idScanData.scanMode = 'SELECT_STAY_DETAILS';
+                    $scope.runDigestCycle();
                     console.log(availabilityList);
                 }
             };

@@ -1,0 +1,29 @@
+<section id="main" class="address-screen" role="main">
+    <div id="content">
+        <h1>STAY DETAILS</h1>
+        <div id="flex-holder">
+            <form method="post" class="pull-left form">
+                <div class="select entry entry-address">
+                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                        <option value="">{{'NO. OF NIGHTS' | translate}}</option>
+                    </select>
+                </div>
+                <div class="select entry entry-address">
+                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                        <option value="">{{'ADULTS' | translate}}</option>
+                    </select>
+                </div>
+                <div class="select entry entry-address">
+                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                        <option value="">{{'CHILDREN' | translate}}</option>
+                    </select>
+                </div>
+            </form>
+            <div id="actions">
+                 <button type="button" class="button transparent" style="visibility: hidden;">
+                 </button>
+                <button type="button" class="button" ng-click="nextButtonClicked()">Next</button>
+            </div>
+        </div>
+    </div>        
+</section>
