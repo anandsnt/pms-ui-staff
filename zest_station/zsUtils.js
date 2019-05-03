@@ -121,8 +121,8 @@ var processCameraConfigs = function(iOSCameraEnabled, connectedCameras, features
 	
 	var idCaptureConfig = {
 		useiOSAppCamera: iOSCameraEnabled,
-		useExtCamera: connectedCameras.length > 0,
-		useExtCamForFR: connectedCameras.length > 0,
+		useExtCamera: connectedCameras && connectedCameras.length > 0,
+		useExtCamForFR: connectedCameras && connectedCameras.length > 0,
 		useAutoDetection: false
 	};
 

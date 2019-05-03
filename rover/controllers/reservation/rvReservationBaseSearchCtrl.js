@@ -836,6 +836,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             }
 
+            // CICO-65075
+            if (isFromNightlyDiary && !checkRoomDetailsInvalidated()) {
+                $scope.validationMsg = 'The selected room number will be unassigned, please assign a room once reservation is confirmed';
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
 
             // DO NOT return false
         };
@@ -1059,6 +1065,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.codeSearchText = code.item.value;
                 $scope.companySearchText = code.item.name;
             }
+
+            // CICO-65075
+            if (isFromNightlyDiary && !checkRoomDetailsInvalidated()) {
+                $scope.validationMsg = 'The selected room number will be unassigned, please assign a room once reservation is confirmed';
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
         };
 
         // Autocomplete options for promo/group code
@@ -1077,6 +1090,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         $scope.onMemberRateToggle = function() {
+            // CICO-65075
+            if (isFromNightlyDiary && !checkRoomDetailsInvalidated()) {
+                $scope.validationMsg = 'The selected room number will be unassigned, please assign a room once reservation is confirmed';
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
             if ($rootScope.isHLPActive && $scope.loyaltyPrograms.length > 0) {
                 $scope.reservationData.member.value = $scope.loyaltyPrograms[0].hl_value;
                 return;

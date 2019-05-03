@@ -103,7 +103,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
         data.hourly_availability_calculation = '';
       }
       else if (data.hourly_availability_calculation === '') {
-        data.hourly_availability_calculation = 'FULL';
+        data.hourly_availability_calculation = 'LIMITED';
       }
 
       $scope.invokeApi(ADReservationSettingsSrv.saveChanges, data, saveChangesSuccessCallback, saveChangesFailureCallback);
@@ -127,7 +127,7 @@ admin.controller('ADReservationSettingsCtrl', ['$scope', '$rootScope', '$state',
             $scope.reservationSettingsData.hourly_rates_for_day_use_enabled = !$scope.reservationSettingsData.hourly_rates_for_day_use_enabled;
         }
         if ($scope.reservationSettingsData.hourly_rates_for_day_use_enabled) {
-            $scope.reservationSettingsData.hourly_availability_calculation = 'FULL';
+            $scope.reservationSettingsData.hourly_availability_calculation = 'LIMITED';
         }
     };
     
