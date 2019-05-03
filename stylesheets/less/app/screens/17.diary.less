@@ -883,6 +883,7 @@
                 .occupied {
                     position: relative;
                     cursor: pointer;
+                    z-index: 2;
 
                     &:not(.departed) {
                         text-indent: 28px;
@@ -976,6 +977,11 @@
                         cursor: default;
                         background-color: lighten(@greyEnd, 10);
                         .box-shadow(none);
+                    }
+
+                    &.ooo,
+                    &.oos {
+                        z-index: 1;
                     }
 
                     &.no-show {  

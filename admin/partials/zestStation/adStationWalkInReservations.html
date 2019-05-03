@@ -1,0 +1,44 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveSettings" header-caption="{{ 'WALK_IN_RESERVATIONS' | translate }}">
+   <fieldset class="holder left">
+      <!-- <ad-form-sub-title title="WALK_IN_RESERVATIONS"></ad-form-sub-title> -->
+      <ad-toggle-button is-checked="kioskSettings.kiosk_walk_in_enabled" label="{{'ACTIVE'| translate}}" div-class="full-width" is-disabled="false"></ad-toggle-button>
+   </fieldset>
+   <fieldset class="holder right"  ng-show="kioskSettings.kiosk_walk_in_enabled">
+      <ad-dropdown-name
+         savemodel="kioskSettings.kiosk_walk_in_rate_id"
+         valueproperty="id"
+         property="name"
+         list="config.rateCodes"
+         required="yes"
+         label="{{'WALK_IN_RATE_CODE'| translate}}"
+         div-class="full-width">
+      </ad-dropdown-name>
+      <ad-dropdown-name
+         savemodel="kioskSettings.kiosk_walk_in_origin_id"
+         valueproperty="value"
+         property="name"
+         list="config.bookingOrigins"
+         required="yes"
+         label="{{'WALK_IN_ORIGIN'| translate}}"
+         div-class="full-width">
+      </ad-dropdown-name>
+      <ad-dropdown-name
+         savemodel="kioskSettings.kiosk_walk_in_source_id"
+         valueproperty="value"
+         property="name"
+         list="config.bookingSources"
+         required="yes"
+         label="{{'WALK_IN_SOURCE'| translate}}"
+         div-class="full-width">
+      </ad-dropdown-name>
+      <ad-dropdown-name
+         savemodel="kioskSettings.kiosk_walk_in_market_id"
+         valueproperty="value"
+         property="name"
+         list="config.marketSegments"
+         required="yes"
+         label="{{'WALK_IN_MARKET'| translate}}"
+         div-class="full-width">
+      </ad-dropdown-name>
+   </fieldset>
+</ad-common-parts-in-form-dir>

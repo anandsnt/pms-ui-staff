@@ -1,0 +1,35 @@
+<section id="main" class="address-screen" role="main">
+    <div id="content">
+        <h1 translate>WALK_IN_STAY_DETAILS</h1>
+        <h3 translate>WALK_IN_STAY_DETAILS_SUB</h3>
+        <div id="flex-holder">
+            <form method="post" class="pull-left form">
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="nights as nights for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
+                        <option value="">{{'NO. OF NIGHTS' | translate}}</option>
+                    </select>
+                </div>
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="adultCount as adultCount for adultCount in idScanData.guestCountArray" ng-model="idScanData.noOfAdults">
+                        <option value="">{{'ADULTS' | translate}}</option>
+                    </select>
+                </div>
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="childCount as childCount for childCount in idScanData.guestCountArray" ng-model="idScanData.noOfChildren">
+                        <option value="">{{'CHILDREN' | translate}}</option>
+                    </select>
+                </div>
+                <div class="select entry entry-address" style="width: calc(24% - 9px);">
+                    <select name="Country" ng-options="infantCount as infantCount for infantCount in idScanData.guestCountArray" ng-model="idScanData.noOfInfants">
+                        <option value="">{{'INFANTS' | translate}}</option>
+                    </select>
+                </div>
+            </form>
+            <div id="actions">
+                 <button type="button" class="button transparent" style="visibility: hidden;">
+                 </button>
+                <button type="button" ng-hide="!idScanData.noOfDays || idScanData.noOfDays === 0 || !idScanData.noOfAdults || idScanData.noOfAdults === 0" class="button" touch-press="startCreatingReservation()" translate="">NEXT</button>
+            </div>
+        </div>
+    </div>        
+</section>
