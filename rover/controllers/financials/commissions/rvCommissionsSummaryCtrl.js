@@ -394,6 +394,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $scope.initialLoading = false;
                 $scope.sideFilterData.openSideFilter = false; // close the side filter
                 calculateTotalSelectedBillAmount();
+                $scope.filterData.noCommissionsMsg = setNoCommissionsMsg();
             };
 
             $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
@@ -404,6 +405,20 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         }
                     });
         };
+
+        var setNoCommissionsMsg = function() {
+            let message = '';
+            if ($scope.filterData.filterTab === 'PAYABLE') {
+                message = 'There are no Travel Agents with Payable commission records';
+            } else if ($scope.filterData.filterTab === 'ON_HOLD') {
+                message = 'There are no Travel Agents with On Hold commission records';
+            } else {
+                message = 'There are no Travel Agents with Paid commission records';
+            }
+
+            message += $scope.filterData.searchQuery ? ' that match your search.' : '.'
+            return message;
+        }
 
         $scope.clearSearchQuery = function() {
             $scope.filterData.searchQuery = '';
@@ -598,8 +613,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             updateHeader();
             $scope.errorMessage = '';
             $scope.commissionsData = {};
-            $scope.filterData.filterTab = 'PAID';
-            $scope.filterData.billStatus.value = 'PAID';
+            $scope.filterData.filterTab = 'PAYABLE';
+            $scope.filterData.billStatus.value = 'UN_PAID';
             // side filetr date is to be applied only after the apply filter button is clicked 
             $scope.sideFilterData = {
                 'openSideFilter': false,
@@ -617,6 +632,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.filterData.searchQuery = '';
             $scope.filterData.selectedExportType = 'standard';
             $scope.filterData.receipientEmail = '';
+            $scope.filterData.noCommissionsMsg = '';
 
             fetchExportTypeData();
             // set intial values
