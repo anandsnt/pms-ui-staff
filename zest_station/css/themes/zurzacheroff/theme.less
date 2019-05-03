@@ -1,0 +1,233 @@
+/* StayNTouch Zest Station Styles | Zurzacheroff Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #b07378;
+    
+@textColor:             @black;
+@backgroundColor:       @white;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+@background: @white;
+@backgroundSize: '';
+
+@headerIconsColor:      @brandColor;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @white; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+
+}
+
+// PMS Zest Station logo
+    .logo-svg{
+        background-image: url("../css/themes/zurzacheroff/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100px;
+        height: 115px;
+        background-position: center;
+        margin-top: 40px;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+
+#zurzacheroff {
+
+    #header {
+        height: 135px;
+
+        .button {
+            .icons {
+                fill: @black;
+            }
+        }
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 135px);
+        top: 135px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    .entry.input {
+        .icons {
+            fill: @brandColor;
+        }
+    }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
+        background: @inputBackground;
+        color: @white;
+    }
+    
+    #logo {
+        padding-top: 0px;
+        margin-top: 40px;
+    
+        .logo {
+            width: auto;
+            height: 115px;
+        }
+    }
+
+    #options {
+        
+        .icon-text {
+            color: @white;
+        }
+
+        .icons {
+            fill: @white;
+        }
+
+        li.break {
+            padding-top: 60px;
+
+            &:after,
+            &:before {
+                display: none;
+            }
+        }
+
+        &.home {
+            li {
+                &:nth-child(1) {
+                    .button {
+                        background: #95978d;
+                    }
+                }
+
+                &:nth-child(3) {
+                    .button {
+                        background: #898c2f;
+                    }
+                }
+            }
+        }
+    }
+
+    #selection {
+        li {
+            .details {
+                background-color: fade(@brandColor, 5);
+            }
+        }
+    }
+
+    #guests {
+        .button {
+            color: @white;
+            background-color: #000;
+        }
+    } 
+
+    .add-on-list {
+        li {
+
+            &:not(.selected){
+                border-color: rgba(0,0,0,0.05);
+
+                .add-on-content {
+                    background: rgba(0,0,0,0.05);
+                }
+            }
+            
+        }
+    }
+
+    .add-on {
+
+        .input-group {
+            input {
+                color: @brandColor;
+            }
+        }
+    }
+
+    #textual {
+        background: #ececec;
+         
+
+        &:before,
+        &:after {
+            background: #ececec;
+        }
+
+        #rate {
+            li {
+                &.total {
+                    color: #000;
+                }
+            }
+        }
+        
+    }
+
+    #rate {
+        li {
+            &.sub {
+                color: #a1a1a1;
+            }
+
+            &.total {
+                color: #000;
+            }
+        }
+    }
+
+    #textual,
+    .popup {
+        .icons {
+            fill: @white;
+        }
+    }
+
+    #upgrade {
+        border-color: @brandColor;
+        
+        .upgrade-price {
+            background: @brandColor;
+            color: @white;
+        }
+    }
+}
