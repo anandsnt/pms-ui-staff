@@ -41,6 +41,10 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * will save comment if something entered
 		 */
 		$scope.saveCommentAgainstRateChange = function(callback) {
+			// proceed only if something entered
+			if ($scope.adjustment_reason.trim() === "") {
+				return;
+			}
 			// forming the API params
 			var params = {},
 				onReservationNoteSuccess = function() {
