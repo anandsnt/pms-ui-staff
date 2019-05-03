@@ -31,9 +31,11 @@
 <ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationCreationFailed.html'"  
    ng-show="screenData.scanMode == 'RESERVATION_CREATION_FAILED'"></ng-include>  
 
-<ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationCreationSuccess.html'"  
-   ng-show="screenData.scanMode == 'RESERVATION_CREATION_SUCCESS'"></ng-include>  
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationFindingFailed.html'"  
+   ng-show="screenData.scanMode == 'FINDING_RESERVATION_FAILED'"></ng-include>  
 
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationConfirmation.html'"  
+   ng-show="screenData.scanMode == 'RESERVATION_CONFIRMATION'"></ng-include>  
    
 <section id="main" class="centered test add_remove_main" role="main"  
    ng-show="screenData.scanMode == 'ANALYSING_FRONT_IMAGE' ||
@@ -45,6 +47,8 @@
       </h1>
    </div>
 </section>
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationScanFRFailed.html'" ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'"></ng-include>
 
 <ng-include src="'/assets/partials_v2/walkin/zsWalkinReservationScanFRFailed.html'" ng-show="screenData.scanMode == 'FACIAL_RECOGNTION_FAILED'"></ng-include>
 

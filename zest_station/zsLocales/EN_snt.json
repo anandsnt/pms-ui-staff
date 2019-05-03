@@ -801,5 +801,15 @@
     "WALKIN_RESERVATION_CREATION_SUCCCESS_SUB": "Please note down your confirmation number",
     "WALKIN_RESERVATION_ROOMS_UN_AVAILABLE": "Sorry",
     "WALKIN_RESERVATION_ROOMS_UN_AVAILABLE_SUB": "There are not any available rooms at this time. Please contact as staff member",
-    "PROCEED_WITH_CHECKIN": "Proceed to checkin"
+    "WALK_IN_FINDING_RESERVATION_FAILED": "Sorry",
+    "WALK_IN_FINDING_RESERVATION_FAILED_INSTRUCTIONS": "Unable to retrieve you reservation at this time. Your confirmation number is {{ confirm_no }}",
+    "PROCEED_WITH_CHECKIN": "Proceed to checkin",
+    "REVIEW_WALKIN_GUEST_STAY_DETAILS": "Review your stay details",
+    "REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS": "",
+    "NO_OF_NIGHTS": "No. of Nights",
+    "ADULTS": "ADULTS",
+    "CHILDREN": "CHILDREN",
+    "INFANTS": "INFANTS",
+    "CONFIRM_RESERVATION_CREATION": "Book now"
+
 }
