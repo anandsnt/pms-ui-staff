@@ -1,4 +1,4 @@
-sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope) {
+sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', 'ngDialog', function($scope, ngDialog) {
 
     /*
      *  generateTimeDuration
@@ -126,6 +126,11 @@ sntRover.controller('rvNightlyDiarySetTimePopupCtrl', ['$scope', function($scope
     // Handle continueWithBook button click.
     $scope.continueWithBookClicked = function() {
         $scope.setTimePopupData.isContinueBookPopup = false;
+    };
+
+    // Close popup
+    $scope.closeSetTimePopup = function() {
+        ngDialog.close();
     };
 
     init();

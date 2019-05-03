@@ -39,7 +39,7 @@
                     <div class="select">
                         <select  iscroll-stop-propagation ng-model="groupConfigData.summary.nationality">
                             <option value="">Select Nationality</option>
-                            <option value="{{country.value}}" ng-repeat="country in countries" ng-selected="country.value == groupConfigData.summary.nationality">{{country.value}}</option>
+                            <option value="{{country.code}}" ng-repeat="country in countries" ng-selected="country.code == groupConfigData.summary.nationality">{{country.value}}</option>
                         </select>
                     </div>
                 </div>

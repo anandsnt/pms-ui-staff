@@ -194,7 +194,7 @@
 				</fieldset>
 
 				<fieldset class="holder left" ng-if="isStandAlone">
-					<ad-toggle-button label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on"></ad-toggle-button>
+					<ad-toggle-button div-class="full-width" label="Hourly Rates" is-checked="reservationSettingsData.is_hourly_rate_on"></ad-toggle-button>
 
 					<div class="entry" ng-hide="!hotelDiaryConfig.isDiaryMergeEnabled || isPmsProductionEnv">
 						<label>Day Use</label>
@@ -213,10 +213,10 @@
 					</div>
 					
 	                <div class="entry" ng-hide="!hotelDiaryConfig.isDiaryMergeEnabled || isPmsProductionEnv || !reservationSettingsData.hourly_rates_for_day_use_enabled">
-	                	<label translate>Hourly Availability Calculation</label>
+	                	<label>DAY USE MODE</label>
 	                	<div class="switch">
-		                    <span ng-click="toggleHourlyAvailability('FULL')" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'FULL' || reservationSettingsData.hourly_availability_calculation == ''}">FULL</span>
-		                    <span ng-click="toggleHourlyAvailability('LIMITED')" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'LIMITED'}">LIMITED</span>
+	                		<span ng-click="toggleHourlyAvailability('LIMITED')" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'LIMITED' || reservationSettingsData.hourly_availability_calculation == ''}">DAY USE</span>
+		                    <span ng-click="toggleHourlyAvailability('FULL')" ng-class="{'active' : reservationSettingsData.hourly_availability_calculation == 'FULL' }">FULL HOURLY</span>
 		                </div>
 	                </div>
 
