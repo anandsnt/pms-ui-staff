@@ -45,8 +45,8 @@
 
                         <ad-image-upload image-file="selectedLanguage.icon" label="{{'STATION_LANGUAGE_FLAG_LABEL' | translate}}" div-class="entry"></ad-image-upload>
                         
-                        <div class="entry full-width station-language-entry">
-                            <div class="entry">
+                        <div class="entry station-language-entry">
+                                <label for="item-id" translate>STATION_LANGUAGE_TRANSLATION_FILE_LABEL</label>                            
                                 <div class="file-upload">
                                     <span class="input" ng-show="selectedLanguage.translation_file_updated">{{'FILE_ATTACHED' | translate}}</span>
                                     <span class="input" ng-hide="selectedLanguage.translation_file_updated">{{'CHOOSE_FILE' | translate}}</span>
@@ -57,7 +57,6 @@
                                         <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                                     </button>
                                 </div>
-                            </div>
                         </div>
                         <div class="actions float">
                             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancel()" translate>
