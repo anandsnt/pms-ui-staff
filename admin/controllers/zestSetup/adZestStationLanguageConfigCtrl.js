@@ -2,7 +2,8 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	['$scope',
 	'adZestStationLanguageConfigSrv',
 	'$log',
-	function($scope, adZestStationLanguageConfigSrv, $log) {
+	'$timeout',
+	function($scope, adZestStationLanguageConfigSrv, $log, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -11,7 +12,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		var saveNewLanguagePosition = function(languageName, position) {
 			var languageListForApi = $scope.languageList.map(function(language, index) {
 				return {
-					'name': language.name,
+					'id': language.id,
 					'position': index + 1 // index will be in teh order of position
 				};
 			});
@@ -36,7 +37,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			}
 		};
 
-		// when language fetch completed
+		// when language list fetch completed
 		var onFetchLanguageList = function(data) {
 			var combinedList = _.partition(data.languages, { position: null }),
 				nullList = combinedList[0],
@@ -46,7 +47,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		};
 
 		/**
-		 * to fetch the country list
+		 * to fetch the language list
 		 */
 		var fetchLanguageList = function() {
 			var options = {
@@ -55,6 +56,22 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 			$scope.callAPI(adZestStationLanguageConfigSrv.fetchLanguageList, options);
 		};
+
+		// when language fetch completed
+		var onFetchLanguage = function(data) {
+	    	$scope.selectedLanguage = data;
+		};
+
+		$scope.languageSelected = function(index) {
+	    	var options = {
+				params: $scope.languageList[index],
+				successCallBack: onFetchLanguage
+			};
+
+			$scope.callAPI(adZestStationLanguageConfigSrv.fetchLanguage, options);
+			$scope.isAddMode = false;
+			$scope.detailIndex = index;
+	    };
 
 		$scope.downloadLang = function(lang) {
 	        $timeout(function() {
@@ -164,16 +181,11 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	                }
 	            };
 
-	            $scope.callAPI(ADZestStationSrv.loadTranslationFiles, options);
+	            $scope.callAPI(adZestStationLanguageConfigSrv.loadTranslationFiles, options);
 
 	        }
 
 
-	    };
-
-	    $scope.languageSelected = function(index) {
-	    	$scope.isAddMode = false;
-	    	$scope.detailIndex = index;
 	    };
 
 	    $scope.saveSettings = function(language) {
@@ -207,6 +219,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	    $scope.addNewLanguage = function() {
 	    	$scope.isAddMode = true; 
 	    	$scope.languageList.unshift({ 'name': "", 'position': 0 })
+	    	$scope.selectedLanguage = $scope.languageList[0];
 	    	$scope.detailIndex = 0;
 	    };
 

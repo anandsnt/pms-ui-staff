@@ -7,6 +7,13 @@ admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBa
         return ADBaseWebSrvV2.getJSON(url);
     };
 
+    this.fetchLanguage = function(params) {
+        var url = "/api/kiosk/languages/" + params.id;
+        // var url = '/admin/zest_email_setups.json';
+
+        return ADBaseWebSrvV2.getJSON(url);
+    };
+
     this.saveLanguageList = function(params) {
         var url = '/api/kiosk/languages/update_listing_oder';
 
