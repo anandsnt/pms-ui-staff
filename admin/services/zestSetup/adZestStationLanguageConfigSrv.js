@@ -21,7 +21,6 @@ admin.service('adZestStationLanguageConfigSrv', ['ADBaseWebSrvV2', function(ADBa
     };
 
     this.loadTranslationFiles = function(params) {
-        var deferred = $q.defer();
         var url = '/staff/locales/download/' + params.lang + '.json';
         
         return ADBaseWebSrvV2.getJSON(url)

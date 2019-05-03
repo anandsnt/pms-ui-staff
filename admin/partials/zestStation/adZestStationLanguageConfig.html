@@ -15,7 +15,7 @@
             <li class="branch" ng-repeat="language in languageList">
                 <div class="sort" ng-show="detailIndex != $index">
                     <a class="cms-name first-letter-capitalize" ng-click="languageSelected($index)" >{{language.name}}</a>
-                    <ad-toggle-button is-checked="language.is_default" div-class=""></ad-toggle-button>
+                    <ad-toggle-button is-checked="language.active" on-update="toggleLanguage" params="language" div-class=""></ad-toggle-button>
                     <a  class="icons icon-delete large-icon language-delete"  ng-click="deleteItem(language)"></a>
                 </div>
                 <div ng-show="detailIndex == $index" class="form float">
@@ -48,12 +48,12 @@
                         <div class="entry full-width station-language-entry">
                             <div class="entry">
                                 <div class="file-upload">
-                                    <span class="input" ng-show="selectedLanguage.translations_file_updated || selectedLanguage.translations_file">{{'FILE_ATTACHED' | translate}}</span>
-                                    <span class="input" ng-hide="selectedLanguage.translations_file_updated || selectedLanguage.translations_file">{{'CHOOSE_FILE' | translate}}</span>
-                                    <input type="file" ng-model="selectedLanguage.translations_file" accept="*" app-filereader emit-data="english_translations_file" />
+                                    <span class="input" ng-show="selectedLanguage.translations_file_updated">{{'FILE_ATTACHED' | translate}}</span>
+                                    <span class="input" ng-hide="selectedLanguage.translations_file_updated">{{'CHOOSE_FILE' | translate}}</span>
+                                    <input type="file" ng-model="selectedLanguage.translations_file" accept="*" app-filereader emit-data="selectedLanguage.name" />
                                     <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
-                                    <button type="button" ng-show="selectedLanguage.translations_file_updated || selectedLanguage.translations_file" class="button download-arrow icons " ng-click="downloadLang(language.code)"></button>
-                                    <button type="button" ng-show="selectedLanguage.translations_file_updated || selectedLanguage.translations_file" class="button download-arrow icons right editor" ng-click="editLang(language.code)">
+                                    <button type="button" ng-show="selectedLanguage.translation_file_updated" class="button download-arrow icons " ng-click="downloadLang(selectedLanguage.name)"></button>
+                                    <button type="button" ng-show="selectedLanguage.translation_file_updated" class="button download-arrow icons right editor" ng-click="editLang(selectedLanguage.name)">
                                         <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                                     </button>
                                 </div>

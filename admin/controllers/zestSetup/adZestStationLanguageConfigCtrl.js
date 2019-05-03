@@ -1,9 +1,12 @@
 admin.controller('adZestStationLanguageConfigCtrl',
 	['$scope',
 	'adZestStationLanguageConfigSrv',
+	'sntAuthorizationSrv',
 	'$log',
 	'$timeout',
-	function($scope, adZestStationLanguageConfigSrv, $log, $timeout) {
+	'ngDialog',
+	'$window',
+	function($scope, adZestStationLanguageConfigSrv, sntAuthorizationSrv, $log, $timeout, ngDialog, $window) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -188,6 +191,12 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 	    };
 
+	    $scope.toggleLanguage = function(language, isChecked) {
+	    	$scope.isAddMode = false;
+	    	language.active = isChecked;
+	    	$scope.saveSettings(language)
+	    }
+
 	    $scope.saveSettings = function(language) {
 	    	var options = {
 				params: language,
@@ -221,6 +230,10 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	    	$scope.languageList.unshift({ 'name': "", 'position': 0 })
 	    	$scope.selectedLanguage = $scope.languageList[0];
 	    	$scope.detailIndex = 0;
+	    };
+
+	    $scope.closePrompt = function() {
+	        ngDialog.close();
 	    };
 
 		/**
