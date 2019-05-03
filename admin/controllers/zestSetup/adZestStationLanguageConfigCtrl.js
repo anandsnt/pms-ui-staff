@@ -250,6 +250,11 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			$scope.sortableOptions = {
 				stop: onDragStop
 			};
+			if (window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1) {
+	            $scope.saveAsText = 'Save-As';
+	        } else {
+	            $scope.saveAsText = 'Download Linked File As';
+	        }
 		})();
 	}
 ]);

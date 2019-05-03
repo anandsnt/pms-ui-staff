@@ -48,8 +48,8 @@
                         <div class="entry full-width station-language-entry">
                             <div class="entry">
                                 <div class="file-upload">
-                                    <span class="input" ng-show="selectedLanguage.translations_file_updated">{{'FILE_ATTACHED' | translate}}</span>
-                                    <span class="input" ng-hide="selectedLanguage.translations_file_updated">{{'CHOOSE_FILE' | translate}}</span>
+                                    <span class="input" ng-show="selectedLanguage.translation_file_updated">{{'FILE_ATTACHED' | translate}}</span>
+                                    <span class="input" ng-hide="selectedLanguage.translation_file_updated">{{'CHOOSE_FILE' | translate}}</span>
                                     <input type="file" ng-model="selectedLanguage.translations_file" accept="*" app-filereader emit-data="selectedLanguage.name" />
                                     <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
                                     <button type="button" ng-show="selectedLanguage.translation_file_updated" class="button download-arrow icons " ng-click="downloadLang(selectedLanguage.name)"></button>
