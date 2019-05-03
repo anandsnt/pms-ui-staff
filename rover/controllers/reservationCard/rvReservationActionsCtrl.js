@@ -448,6 +448,7 @@ sntRover.controller('reservationActionsController', [
                 // when clicking the CHECK IN button if the reservation has no room assigned or assigned room is not ready
                 if (!hasRoom && $rootScope.hotelDiaryConfig.mode === 'FULL') {
                     gotoDiaryInEditMode();
+                    return false;
                 }
 
                 if (!hasRoom && $scope.putInQueueClicked) {
