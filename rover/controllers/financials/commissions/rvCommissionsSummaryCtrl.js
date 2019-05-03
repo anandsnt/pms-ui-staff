@@ -408,6 +408,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         var setNoCommissionsMsg = function() {
             let message = '';
+
             if ($scope.filterData.filterTab === 'PAYABLE') {
                 message = 'There are no Travel Agents with Payable commission records';
             } else if ($scope.filterData.filterTab === 'ON_HOLD') {
@@ -416,9 +417,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 message = 'There are no Travel Agents with Paid commission records';
             }
 
-            message += $scope.filterData.searchQuery ? ' that match your search.' : '.'
+            message += $scope.filterData.searchQuery ? ' that match your search.' : '.';
             return message;
-        }
+        };
 
         $scope.clearSearchQuery = function() {
             $scope.filterData.searchQuery = '';
