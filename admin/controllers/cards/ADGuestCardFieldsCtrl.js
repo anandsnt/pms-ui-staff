@@ -39,6 +39,15 @@ function($scope, $state, ADGuestCardSrv) {
 				case "is_personal_id_no_visible":
 					$scope.guestCardFields.is_personal_id_no_visible = !$scope.guestCardFields.is_personal_id_no_visible;					
 					break;
+				case "is_home_town_visible":
+					$scope.guestCardFields.is_home_town_visible = !$scope.guestCardFields.is_home_town_visible;					
+					break;
+				case "is_place_of_residence_visible":
+					$scope.guestCardFields.is_place_of_residence_visible = !$scope.guestCardFields.is_place_of_residence_visible;					
+					break;
+				case "is_vehicle_country_mark_visible":
+					$scope.guestCardFields.is_vehicle_country_mark_visible = !$scope.guestCardFields.is_vehicle_country_mark_visible;					
+					break;
 
 			}
 	
