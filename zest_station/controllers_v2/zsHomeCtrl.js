@@ -38,7 +38,7 @@ sntZestStation.controller('zsHomeCtrl', [
 
             clearInterval($scope.activityTimer);
 
-            if ($scope.isIpad && $scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
+            if ($scope.isIpad && $scope.zestStationData.is_snt_id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
                 $state.go('zest_station.findReservationFromId');
             } else {
                 $state.go('zest_station.checkInReservationSearch');
@@ -56,6 +56,10 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
                 $state.go('zest_station.checkoutSearchOptions');
             }
+        };
+
+        $scope.startWalkinReservationFlow = function() {
+            $state.go('zest_station.walkInReservation');
         };
 
         $scope.language = {};
