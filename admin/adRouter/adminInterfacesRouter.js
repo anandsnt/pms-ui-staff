@@ -618,7 +618,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.avidaSetup', {
         templateUrl: '/assets/partials/interfaces/avida/adAvida.html',
         controller: 'adAvidaCtrl',
-        url: '/avida/setup/',
+        url: '/avida/setup',
         resolve: {
             config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('avida');
