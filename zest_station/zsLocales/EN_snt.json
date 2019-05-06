@@ -807,7 +807,9 @@
     "REVIEW_WALKIN_GUEST_STAY_DETAILS": "Review your stay details",
     "REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS": "",
     "NO_OF_NIGHTS": "No. of Nights",
+    "WALKIN_NIGHT": "Night",
     "ADULTS": "ADULTS",
+    "WALKIN_ADULT": "Adult",
     "CHILDREN": "CHILDREN",
     "INFANTS": "INFANTS",
     "CONFIRM_RESERVATION_CREATION": "Book now"

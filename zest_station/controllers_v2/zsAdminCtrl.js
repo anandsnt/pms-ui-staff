@@ -593,7 +593,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.idCaptureFeature = retrieveFeatureDetails($scope.zestStationData.featuresSupportedInIosApp, 'CAPTURE_ID');
 
             if ($scope.idCaptureFeature) {
-                $scope.useIdAutoCapture = localStorage.getItem('dontUseAutoDetection') === "NO" ? "YES" : "NO";
+                $scope.useIdAutoCapture = (!localStorage.getItem('dontUseAutoDetection') || localStorage.getItem('dontUseAutoDetection') === "NO") ? "YES" : "NO";
                 $scope.autoIdDetectionChanged = function() {
                     localStorage.setItem('dontUseAutoDetection', $scope.useIdAutoCapture === "YES" ? "NO" : "YES");
                 };
