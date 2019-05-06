@@ -747,5 +747,17 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             return zsBaseWebSrv.postJSON(url, params);
         };
+
+        this.getAvailableRatesForTheDay = function(params) {
+            var url = '/api/availability/room_type_adrs';
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.createReservation = function(params) {
+            var url = '/api/reservations';
+            
+            return zsBaseWebSrv.postJSON(url, params);
+        };
     }
 ]);
