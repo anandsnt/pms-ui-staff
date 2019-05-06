@@ -2500,10 +2500,12 @@ angular.module('sntRover')
                 });
 
                 setTimeout(correctRoomType, 100);
+                // Allow edit mode only to Hourly reservation items not for Nightly.
+                var isHourlyComponent = ($stateParams.is_nightly_reservation !== 'true' || typeof $stateParams.is_nightly_reservation === 'undefined');
 
                 setTimeout(function() {
                     if ($stateParams && 'reservation_id' in $stateParams &&
-			$stateParams.reservation_id !== '') {
+			$stateParams.reservation_id !== '' && isHourlyComponent ) {
                         var reservation_id 		= $stateParams.reservation_id;
 
                         $scope.$apply(function() {
