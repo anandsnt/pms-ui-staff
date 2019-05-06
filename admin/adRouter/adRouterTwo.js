@@ -732,6 +732,29 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.stationWalkInReservations', {
+        templateUrl: '/assets/partials/zestStation/adStationWalkInReservations.html',
+        controller: 'adStationWalkInReservationsCtrl',
+        url: '/zestWalkin',
+        resolve: {
+            kioskSettings: function(ADZestStationSrv) {
+                return ADZestStationSrv.fetch();
+            },
+            marketSegments: function(ADMarketsSrv) {
+                return ADMarketsSrv.fetch();
+            },
+            bookingSources: function(ADSourcesSrv) {
+                return ADSourcesSrv.fetch();
+            },
+            bookingOrigins: function(ADOriginsSrv) {
+                return ADOriginsSrv.fetch();
+            },
+            rateCodes: function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchRatesMinimal();
+            }
+        }
+    });
+    
     // =================================================================================================
 
     $stateProvider.state('admin.emailTemplatesSettingsGroup', {

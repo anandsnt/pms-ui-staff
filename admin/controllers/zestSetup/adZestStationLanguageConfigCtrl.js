@@ -198,6 +198,9 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	    }
 
 	    $scope.saveSettings = function(language) {
+	    	if(language.translations_file) {
+	    		language.translation_file_updated = true;
+	    	}
 	    	var options = {
 				params: language,
 				successCallBack: fetchLanguageList

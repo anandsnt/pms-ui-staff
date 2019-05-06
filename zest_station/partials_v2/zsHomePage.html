@@ -36,12 +36,18 @@
                         </button>
                         <text data-ng-bind-html="getTagValue('BOOK_NOW')" editable-text="BOOK_NOW"></text>
                     </li>
+                    <li ng-if="zestStationData.showWalkinReservationOption">
+                        <button type="button" class="button option" touch-press='startWalkinReservationFlow()'>
+                            <div ng-include="icons.url.booknow"></div>
+                        </button>
+                        <text data-ng-bind-html="getTagValue('WALK_IN')" editable-text="WALK_IN"></text>
+                    </li>
                 </ul>
             </nav>
         </div>
         <div id="actions" class="align-center languages">
             <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
-                {{language.language_name_in_local}}
+                {{language.foreign_label}}
             </button>
         </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
