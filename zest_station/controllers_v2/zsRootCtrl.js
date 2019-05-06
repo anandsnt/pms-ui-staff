@@ -156,8 +156,8 @@ sntZestStation.controller('zsRootCtrl', [
                     language: {}// each lang code will return have tags with values
                 };
 
-                for (var i in hotelLanguages.languages) {
-                    codeForLang = hotelLanguages.languages[i].language;
+                for (var i in languages.languages) {
+                    codeForLang = languages.languages[i].name;
                     if (locales[codeForLang]) {
                         $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
                     }
