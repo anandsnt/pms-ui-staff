@@ -292,26 +292,41 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         $scope.getDefaultClass = function(fieldName) {
             var visibleCount = 0;
 
-            if (fieldName === "vehicle_registration_number") {
-                if ($scope.guestCardData.contactInfo.is_father_name_visible) {
-                    visibleCount++;
-                }
-                if ($scope.guestCardData.contactInfo.is_mother_name_visible) {
-                    visibleCount++;
-                }
-                if ($scope.guestCardData.contactInfo.is_birth_place_visible) {
-                    visibleCount++;
-                }
-                if ($scope.guestCardData.contactInfo.is_gender_visible) {
-                    visibleCount++;
-                }
-
-                if ( visibleCount % 2 === 0) {
-                    return 'margin';
-                }
-
-                return '';
+            if ($scope.guestCardData.contactInfo.is_father_name_visible) {
+                visibleCount++;
             }
+            if ($scope.guestCardData.contactInfo.is_mother_name_visible) {
+                visibleCount++;
+            }
+            if ($scope.guestCardData.contactInfo.is_birth_place_visible) {
+                visibleCount++;
+            }
+            if ($scope.guestCardData.contactInfo.is_gender_visible) {
+                visibleCount++;
+            }
+
+            if (fieldName === "place_of_residence" || fieldName === "vehicle_registration_number" || fieldName === 'country_code') {                
+                if ($scope.guestCardData.contactInfo.is_home_town_visible) {
+                    visibleCount++;
+                }
+
+                if (fieldName === "vehicle_registration_number" || fieldName === 'country_code') {
+                    if ($scope.guestCardData.contactInfo.is_place_of_residence_visible) {
+                        visibleCount++;
+                    }  
+                }
+                if (fieldName === 'country_code') {
+                    if ($scope.guestCardData.contactInfo.is_registration_number_visible) {
+                        visibleCount++;
+                    }
+                }       
+            }
+
+            if ( visibleCount % 2 === 0) {
+                return 'margin';
+            }
+
+            return '';
         };
 
         init();

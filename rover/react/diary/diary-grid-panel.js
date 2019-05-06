@@ -5,10 +5,7 @@ var GridPanel = React.createClass({
 	render: function() {
 		var props = this.props;
 
-		return React.DOM.div({
-			className: 'diary-grid'
-		},
-		React.createElement( Grid, {
+		return React.createElement( Grid, {
 			viewport: props.viewport,
 			display: props.display,
 			filter: props.filter,
@@ -25,6 +22,6 @@ var GridPanel = React.createClass({
 			__onGridScrollEnd: props.__onGridScrollEnd,
 			__onDragStart: props.__onDragStart,
 			__onDragStop: props.__onDragStop
-		}));
+		});
 	}
 });

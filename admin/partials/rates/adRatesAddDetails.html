@@ -25,7 +25,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry" ng-show="isHourlyRatesEnabled();">
+            <div class="entry" ng-show="shouldShowPeriodicity();">
                 <label>Periodicity</label>
                 <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
                     <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
@@ -51,7 +51,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry entry-no-bottom full-width" ng-hide="isHourlyRatesEnabled()">
+            <div class="entry entry-no-bottom full-width" ng-show="shouldShowBasedOnAndCopy()">
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">

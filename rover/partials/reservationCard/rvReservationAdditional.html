@@ -30,6 +30,23 @@
             </div>
         </div>
 
+        <!-- Day Use -->
+        <div class="block-item additional-detail">
+            <h3 class="block-title">Day Use</h3>
+            <div class="switch-button" ng-class="{'on': additionalDetails.isDayUse}">
+                <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="updateDayUseFlag()"></div>
+                <input id="day-use" type="checkbox" ng-model="additionalDetails.isDayUse" ng-checked="additionalDetails.isDayUse" />
+                <label class="data-off">
+                    <span class="value">Off</span>
+                    <span class="switch-icon">On</span>
+                </label>
+                <label class="data-on">
+                    <span class="switch-icon grey">Off</span>
+                    <span class="value">On</span>
+                </label>
+            </div>
+        </div>
+
         <!-- If TA is attached and commission is turned on: -->
         <div class="block-item item-commission additional-detail" ng-if="!isEmptyObject(reservationData.reservation_card.commission_details)">
             <h3 class="block-title">

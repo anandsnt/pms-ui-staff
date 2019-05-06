@@ -284,7 +284,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 		$state.go('rover.diary', {
 			reservation_id: $scope.reservationData.reservation_card.reservation_id,
-			checkin_date: $scope.reservationData.reservation_card.arrival_date
+			checkin_date: $scope.reservationData.reservation_card.arrival_date,
+            is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
 		});
 	};
 	/**
@@ -302,8 +303,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
             cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
 
-		if ($scope.reservationData.reservation_card.is_hourly_reservation) {
-			gotToDiaryInEditMode ();
+		if ($rootScope.hotelDiaryConfig.mode === 'FULL' || $scope.reservationData.reservation_card.is_hourly_reservation) {
+			gotToDiaryInEditMode();
 		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
 			$state.go("rover.reservation.staycard.roomassignment", {

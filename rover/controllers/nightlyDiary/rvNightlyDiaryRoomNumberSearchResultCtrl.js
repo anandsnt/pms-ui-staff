@@ -15,4 +15,5 @@ angular.module('sntRover')
                 $scope.diaryData.reservationSearchResults = [];
             };
 
-        }]);
+        }
+]);

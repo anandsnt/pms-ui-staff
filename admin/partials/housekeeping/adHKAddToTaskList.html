@@ -12,14 +12,14 @@
 		<fieldset class="holder left float">
 			<div class="entry" style="padding-right:10px">
 				<label>Task <strong> * </strong></label>
-				<input type="text" placeholder="Enter the task name" ng-model="eachTaskList.name">
+				<input type="text" placeholder="Enter the task name" ng-model="eachTaskList.name" ng-disabled="eachTaskList.isSystemDefined">
 			</div>
 			<div class="full-width">
 				<div class="entry" style="padding-left:10px">
 					<label>Work Type <strong> * </strong></label>
 					<div class="select">
 
-						<select class="daily-task-worktype" ng-model="eachTaskList.work_type_id" ng-change="onChangeWorkType()" ng-options="item.id as item.name for item in workType">
+						<select class="daily-task-worktype" ng-model="eachTaskList.work_type_id" ng-change="onChangeWorkType()" ng-options="item.id as item.name for item in workType" ng-disabled="eachTaskList.isSystemDefined">
 							<option value="" class="placeholder">Choose work type</option>
 						</select>
 						<!-- <select ng-model="eachTaskList.work_type_id" class="placeholder" ng-change="onChangeWorkType()">
@@ -45,7 +45,7 @@
 			<div class="entry full-width">
 			    <label for="item-type">Reservation status <strong>*</strong></label>
 			    <div class="boxes">
-			        <label class="checkbox inline" ng-repeat="item in resHkStatusList" style="width: 29% !important">
+			        <label class="checkbox inline" ng-repeat="item in resHkStatusList" style="width: 29% !important; margin-left: 0px;">
 			            <span class="icon-form icon-checkbox"  ng-class="{'checked' : eachTaskList.reservation_statuses_ids[$index]}"></span>
 			            <input type="checkbox" ng-disabled="item.is_disabled" ng-model="eachTaskList.reservation_statuses_ids[$index]">
 			            {{ item.description }}

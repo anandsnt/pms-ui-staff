@@ -22,6 +22,10 @@ admin.service('adInterfacesSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
             return ADBaseWebSrvV2.postJSON('ifc/proxy/property/synchronize_integration', params);
         };
 
+        this.hotelSettings = function() {
+            return ADBaseWebSrvV2.getJSON('api/hotel_settings.json');
+        };
+
         /**
          *
          * @param {Object} params used to build the API endpoint
@@ -30,6 +34,10 @@ admin.service('adInterfacesSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
          */
         this.updateSettings = function(params) {
             return ADBaseWebSrvV2.putJSON('ifc/proxy/settings/update_all_by_integration', params);
+        };
+
+        this.updateLocalSettings = function(params) {
+            return ADBaseWebSrvV2.postJSON('/api/hotel_settings/change_settings', params);
         };
     }
 ]);

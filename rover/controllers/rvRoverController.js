@@ -67,6 +67,9 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
+        if (hotelDetails.hide_analytics_menu) {
+            rvMenuSrv.showAnalyticsMenu = false;
+        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
@@ -132,6 +135,17 @@ sntRover.controller('roverController', [
             forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
             forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin
         };
+        /*
+         *   A = settings.day_use_enabled (true / false)
+         *   B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         */
+        $rootScope.hotelDiaryConfig = {
+            dayUseEnabled: hotelDetails.day_use_enabled,
+            hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
+            mode: hotelDetails.hourly_availability_calculation
+        };
+
         /*
          * hotel Details
          */
@@ -527,6 +541,7 @@ sntRover.controller('roverController', [
                 isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
                 isEMVEnabled: $rootScope.isMLIEMVEnabled
             };
+            $rootScope.featuresSupportedInIosApp = []; // The feature list cordoav call will work only in new builds.
 
             $scope.menuOpen = false;
             $rootScope.showNotificationForCurrentUser = true;
@@ -553,6 +568,15 @@ sntRover.controller('roverController', [
                     }, function () {
 
                     }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $rootScope.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function(error) {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
 
                 }, 500);
             }
@@ -1160,6 +1184,12 @@ sntRover.controller('roverController', [
                 });
             }
         })();
+
+        // TODO: delete this code after 2-3 releases, this is mainly for analyzing the feature
+        // In browser console call document.dispatchEvent(new Event('SHOW_ANALYTICS_MENU')) 
+        document.addEventListener('SHOW_ANALYTICS_MENU', function() {
+            $state.go('rover.reportAnalytics');
+        });
 
     }
 ]);
