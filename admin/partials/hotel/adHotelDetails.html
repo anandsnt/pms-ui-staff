@@ -453,6 +453,8 @@
 
                 <ad-toggle-button is-checked="data.use_ows_chip_and_pin_flag" label="{{'OWS_CHIP_N_PIN' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
+                <ad-toggle-button is-checked="data.use_ows_opi_auth" label="{{'OWS_OPI_AUTH' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
 				<!-- <div class="entry">
 					<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">

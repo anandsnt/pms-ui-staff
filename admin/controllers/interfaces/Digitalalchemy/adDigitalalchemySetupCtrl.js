@@ -19,13 +19,14 @@ angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$roo
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
+
         /**
          * when button clicked to switch between mappings/settings
          * @return {undefined}
          * @param {name} name tab name to toggle.
          */
-        $scope.changeTab = function(name) {
-          $scope.state.activeTab = name;
+        $scope.changeTab = function (name) {
+            $scope.state.activeTab = name;
         };
 
         $scope.saveSetup = function() {

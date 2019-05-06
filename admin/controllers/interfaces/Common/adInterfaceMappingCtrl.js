@@ -5,7 +5,6 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-
         var mappingText = {
           'cancellation_code': 'Cancellation Codes',
           'tax_code': 'Tax Codes',
@@ -48,10 +47,6 @@ admin.controller('adInterfaceMappingCtrl', [
                 external_value: ''
             };
         }
-
-        $scope.fetchMappingPartial = function() {
-            return mappingPartials[$scope.interface];
-        };
 
         $scope.fetchMappingPartial = function() {
             return mappingPartials[$scope.interface];

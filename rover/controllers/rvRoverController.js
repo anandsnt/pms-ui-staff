@@ -129,7 +129,7 @@ sntRover.controller('roverController', [
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            eInvoiceVisible: hotelDetails.e_invoice_visible,
             noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
             noModifyInvoice: hotelDetails.no_modify_invoice,
             forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
@@ -541,6 +541,7 @@ sntRover.controller('roverController', [
                 isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
                 isEMVEnabled: $rootScope.isMLIEMVEnabled
             };
+            $rootScope.featuresSupportedInIosApp = []; // The feature list cordoav call will work only in new builds.
 
             $scope.menuOpen = false;
             $rootScope.showNotificationForCurrentUser = true;
@@ -567,6 +568,15 @@ sntRover.controller('roverController', [
                     }, function () {
 
                     }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $rootScope.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function(error) {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
 
                 }, 500);
             }

@@ -1170,4 +1170,8 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
         setTimeout(refreshScrollers, 300);
     });
 
+    $scope.shouldShowSplitChargeAccompanyGuests = function() {
+        return $scope.billingEntity === 'GROUP_DEFAULT_BILLING';
+    };
+
 }]);
