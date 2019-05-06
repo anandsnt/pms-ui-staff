@@ -5,12 +5,12 @@
         <div id="flex-holder">
             <form method="post" class="pull-left form">
                 <div class="select entry entry-address" style="width: calc(23% - 9px);">
-                    <select name="Country" ng-options="nights as nights for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
+                    <select name="Country" ng-options="nights.id as nights.desc for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
                         <option value="">{{'NO_OF_NIGHTS' | translate}}</option>
                     </select>
                 </div>
                 <div class="select entry entry-address" style="width: calc(23% - 9px);">
-                    <select name="Country" ng-options="adultCount as adultCount for adultCount in idScanData.guestCountArray" ng-model="idScanData.noOfAdults">
+                    <select name="Country" ng-options="adultCount.id as adultCount.desc for adultCount in idScanData.adultsCountArray" ng-model="idScanData.noOfAdults">
                         <option value="">{{'ADULTS' | translate}}</option>
                     </select>
                 </div>
