@@ -322,10 +322,12 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		cordova.exec(function(response) {
 			$scope.$emit('IMAGE_ANALYSIS_STARTED');
+			$scope.$emit('RUN_APPLY');
 			imageCaptured(response);
 		}, function() {
 			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
+			$scope.$emit('RUN_APPLY');
 		}, pluginName, actionName, [jsonstring]);
 	};
 
