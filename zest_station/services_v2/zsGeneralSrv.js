@@ -167,10 +167,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchTranslations = function(languages) {
             var deferred = $q.defer();
 
-            var languageConfig, langShortCode, url, promises = [], results = {};
+            var langShortCode, url, promises = [], results = {};
 
             languages.map(function(language) {
-                // languageConfig = that.languageValueMappingsForUI[language.name];
                 langShortCode = language.name;
 
                 that.langName[langShortCode] = language.name;

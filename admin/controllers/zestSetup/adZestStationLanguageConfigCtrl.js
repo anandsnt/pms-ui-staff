@@ -10,7 +10,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.detailIndex = -1
+		$scope.detailIndex = -1;
 
 		var saveNewLanguagePosition = function(languageName, position) {
 			var languageListForApi = $scope.languageList.map(function(language, index) {
@@ -62,30 +62,33 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 		// when language fetch completed
 		var onFetchLanguage = function(data) {
-	    	$scope.selectedLanguage = data;
-		};
+			$scope.selectedLanguage = data;
+	    };
 
 		$scope.languageSelected = function(index) {
-	    	var options = {
-				params: $scope.languageList[index],
+			var options = {
+	    		params: $scope.languageList[index],
 				successCallBack: onFetchLanguage
 			};
 
 			$scope.callAPI(adZestStationLanguageConfigSrv.fetchLanguage, options);
 			$scope.isAddMode = false;
 			$scope.detailIndex = index;
-	    };
+		};
 
-		$scope.downloadLang = function(lang) {
-	        $timeout(function() {
-	            $scope.downloadPromptFileName = lang + '.json';
+	    $scope.downloadLang = function(lang) {
+			$timeout(function() {
+	        	$scope.downloadPromptFileName = lang + '.json';
+
 	            var link = document.getElementById('download-link-popup'); // ie. en-download-link
+
 	            var jwt = $window.localStorage.getItem('jwt');
 
 	            link.href = 'staff/locales/download/' + lang + '?hotel_uuid=' + sntAuthorizationSrv.getProperty() + '&auth_token=' + jwt;
+
 	        }, 500);
 	        ngDialog.open({
-	            template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
+	        	template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
 	            className: 'ngdialog-theme-default single-calendar-modal',
 	            scope: $scope,
 	            closeByDocument: true
@@ -93,11 +96,10 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	    };
 
 	    $scope.downloadPromptFileName = '';
-    
 
 	    $scope.saveLanguageEditorChanges = function() {
 
-	        var lang = $scope.editingLanguage;
+	    	var lang = $scope.editingLanguage;
 
 	        $scope.languageEditorData = angular.copy($scope.languageEditorDataTmp);
 	        // save ref in case needed for continuing to edit
@@ -108,27 +110,26 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	        // current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
 	        // check for default
 	        if (lang === 'en') {
-	            lang = 'english';
+	        	lang = 'english';
 
 	        } else if (lang === 'fr') {
-	            lang = 'french';
+	        	lang = 'french';
 
 	        } else if (lang === 'es') {
-	            lang = 'spanish';
+	        	lang = 'spanish';
 
 	        } else if (lang === 'de') {
-	            lang = 'german';
+	        	lang = 'german';
 
 	        } else if (lang === 'it') {
-	            lang = 'italian';
+	        	lang = 'italian';
 
 	        } else if (lang === 'cl') {
-	            lang = 'castellano';
+	        	lang = 'castellano';
 
 	        } else {
-	            $log.log('need to add new language code here');
+	        	$log.log('need to add new language code here');
 	        }
-
 	        $scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
 	        $scope.closePrompt();
 	    };
@@ -137,82 +138,73 @@ admin.controller('adZestStationLanguageConfigCtrl',
 	    // want to continue editing
 	    var languagesEditedInSession = [];
 	    var continueEditing = function(lang) {
-	        if (languagesEditedInSession[lang]) {
-	            return true;
+	    	if (languagesEditedInSession[lang]) {
+	        	return true;
 	        } // else
 	        return false;
 	    };
 	    var openEditor = function(json) {
-	        // converts object into a plyable array
+	    // converts object into a plyable array
 	        $scope.languageEditorDataTmp = angular.copy(json);
 
 	        ngDialog.open({
-	            template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
+	        	template: '/assets/partials/zestStation/adZestStationLanguageEditor.html',
 	            className: 'ngdialog-theme-default single-calendar-modal language-editor',
 	            scope: $scope,
 	            closeByDocument: true
 	        });
 	    };
 
-	    //  track which languages were fetched/edited already, 
+	    //  track which languages were fetched/edited already,
 	    //  we dont want to re-fetch when user accidentily closes the window and needs to re-open it
 	    $scope.editLang = function(lang) {
-
-	        $scope.editingLanguage = lang;
+	    	$scope.editingLanguage = lang;
 	        // shows user an on-screen prompt, with the tags and values, so they can edit in-screen
-
 	        if (continueEditing(lang)) {
-
-	            $log.log('continuing to edit...');
+	        	$log.log('continuing to edit...');
 	            openEditor(languagesEditedInSession[lang].json);
 	        } else {
-
-
-	            $log.log('fetching language json file for editing');
-
+	        	$log.log('fetching language json file for editing');
 	            var options = {
-	                params: {
-	                    'lang': lang
+	            	params: {
+	                	'lang': lang
 	                },
 	                successCallBack: function(json) {
-	                    $log.log(json); // show the info in console
+	                	$log.log(json); // show the info in console
 	                    // reference to downloaded data in case user wants to continue editing after closing window
 	                    languagesEditedInSession[lang] = {
-	                        'json': json
+	                    	'json': json
 	                    };
+
 	                    openEditor(json);
 	                }
 	            };
-
 	            $scope.callAPI(adZestStationLanguageConfigSrv.loadTranslationFiles, options);
-
 	        }
-
-
 	    };
 
 	    $scope.toggleLanguage = function(language, isChecked) {
 	    	$scope.isAddMode = false;
 	    	language.active = isChecked;
-	    	$scope.saveSettings(language)
-	    }
+	    	$scope.saveSettings(language);
+	    };
 
 	    $scope.saveSettings = function(language) {
-	    	if(language.translations_file) {
+	    	if (language.translations_file) {
 	    		language.translation_file_updated = true;
 	    	}
 	    	var options = {
 				params: language,
 				successCallBack: fetchLanguageList
 			};
-			if( $scope.isAddMode ) {
+
+			if ($scope.isAddMode) {
 				$scope.callAPI(adZestStationLanguageConfigSrv.createLanguageConfig, options);
 			}
 			else {
 				$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageConfig, options);
 			}
-			
-	    	$scope.detailIndex = -1;	    	
+			$scope.detailIndex = -1;
 	    };
 
 	    $scope.cancel = function() {
@@ -225,18 +217,19 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				params: language,
 				successCallBack: fetchLanguageList
 			};
+
 			$scope.callAPI(adZestStationLanguageConfigSrv.deleteLanguage, options);
-	    };
+		};
 
 	    $scope.addNewLanguage = function() {
 	    	$scope.isAddMode = true; 
-	    	$scope.languageList.unshift({ 'name': "", 'position': 0 })
+	    	$scope.languageList.unshift({ 'name': "", 'position': 0 });
 	    	$scope.selectedLanguage = $scope.languageList[0];
 	    	$scope.detailIndex = 0;
 	    };
 
 	    $scope.closePrompt = function() {
-	        ngDialog.close();
+	    	ngDialog.close();
 	    };
 
 		/**
@@ -254,9 +247,9 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				stop: onDragStop
 			};
 			if (window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1) {
-	            $scope.saveAsText = 'Save-As';
+				$scope.saveAsText = 'Save-As';
 	        } else {
-	            $scope.saveAsText = 'Download Linked File As';
+	        	$scope.saveAsText = 'Download Linked File As';
 	        }
 		})();
 	}

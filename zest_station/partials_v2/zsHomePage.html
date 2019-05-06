@@ -46,7 +46,7 @@
             </nav>
         </div>
         <div id="actions" class="align-center languages">
-            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+            <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.foreign_label}}
             </button>
         </div>
