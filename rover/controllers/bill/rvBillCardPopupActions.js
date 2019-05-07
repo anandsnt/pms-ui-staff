@@ -39,7 +39,6 @@ sntRover.controller('rvBillCardPopupCtrl',
 			"id": $scope.selectedTransaction.id
 		};
 		var transactionDeleteSuccessCallback = function(data) {
-			$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 
@@ -80,7 +79,6 @@ sntRover.controller('rvBillCardPopupCtrl',
 	};
 
 	var transactionEditSuccessCallback = function(data) {
-		$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 		hideLoaderAndClosePopup();
 		refreshListWithData(data);
 	};

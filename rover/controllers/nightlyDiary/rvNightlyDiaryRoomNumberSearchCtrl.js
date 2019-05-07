@@ -10,6 +10,9 @@ angular.module('sntRover')
             $rootScope,
             RVNightlyDiaryRoomNumberSearchSrv
         ) {
+
+            BaseCtrl.call(this, $scope);
+            
             var init = function() {
                 BaseCtrl.call(this, $scope);
                 $scope.diaryData.textInQueryBox = '';
@@ -73,7 +76,7 @@ angular.module('sntRover')
                 }
             };
 
-            $scope.$on('CLOSE_SEARCH_RESULT', function() {
+            $scope.addListener('CLOSE_SEARCH_RESULT', function() {
                $scope.clearResults();
             });
 

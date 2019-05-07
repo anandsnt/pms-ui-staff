@@ -1950,7 +1950,13 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
 
-
+            if ($scope.isIpad &&
+                $scope.zestStationData.kiosk_walk_in_enabled &&
+                $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification') {
+                // TODO: following style fix is a workaround, will be fixed by designers in next sprint
+                $('head').append('<style type="text/css">#options.large-icons li { margin: 0 10px !important;}</style>');
+                $scope.zestStationData.showWalkinReservationOption = true;
+            }
             if ($scope.zestStationData.id_scan_enabled) {
                 checkForExternalCameras();
             }
@@ -1968,6 +1974,18 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.appVersion = null;
             $scope.zestStationData.connectedDeviceDetails = {};
             $scope.zestStationData.iOSCameraEnabled = false;
+            $scope.zestStationData.featuresSupportedInIosApp = [];
+
+            if (typeof cordova !== "undefined") {
+                cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $scope.zestStationData.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function() {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
+            }
             
             if ($scope.isIpad && typeof cordova !== typeof undefined) {
                 try {
