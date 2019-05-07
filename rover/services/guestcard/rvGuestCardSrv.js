@@ -25,7 +25,8 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                     "is_birth_place_visible": data.is_birth_place_visible,
                     "is_home_town_visible": data.is_home_town_visible,
                     "is_place_of_residence_visible": data.is_place_of_residence_visible,
-                    "is_vehicle_country_mark_visible": data.is_vehicle_country_mark_visible
+                    "is_vehicle_country_mark_visible": data.is_vehicle_country_mark_visible,
+                    "is_personal_id_no_visible": data.is_personal_id_no_visible
                 };
                 deferred.resolve(data);
             }, function (data) {
