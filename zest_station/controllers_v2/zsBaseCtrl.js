@@ -375,7 +375,7 @@ function BaseCtrl($scope) {
 
         if ($scope && $scope.$parent || $scope.zestStationData) {
             zs = $scope.$parent.zestStationData ? $scope.$parent.zestStationData : $scope.zestStationData;
-            if (!_.isEmpty(zs)) {
+            if (zs) {
 
                 // JSON format to parse from a string 
                 var today = new Date();
@@ -405,9 +405,9 @@ function BaseCtrl($scope) {
                     'from_screen': from ? from : '',
 
                     'idle_timer': {
-                        'enabled': zs.idle_timer.enabled,
-                        'max': zs.idle_timer.max,
-                        'prompt': zs.idle_timer.prompt
+                        'enabled': zs.idle_timer ? zs.idle_timer.enabled : false,
+                        'max': zs.idle_timer ? zs.idle_timer.max : "",
+                        'prompt': zs.idle_timer ? zs.idle_timer.prompt : ""
                     },
                     'upsell_addons_enabled': false,
                     'upsell_rooms_enabled': false,
