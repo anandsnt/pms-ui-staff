@@ -375,7 +375,7 @@ function BaseCtrl($scope) {
 
         if ($scope && $scope.$parent || $scope.zestStationData) {
             zs = $scope.$parent.zestStationData ? $scope.$parent.zestStationData : $scope.zestStationData;
-            if (zs) {
+            if (!_.isEmpty(zs)) {
 
                 // JSON format to parse from a string 
                 var today = new Date();
@@ -405,7 +405,7 @@ function BaseCtrl($scope) {
                     'from_screen': from ? from : '',
 
                     'idle_timer': {
-                        'enabled': zs.idle_timer ? zs.idle_timer.enabled : false,
+                        'enabled': zs.idle_timer.enabled,
                         'max': zs.idle_timer.max,
                         'prompt': zs.idle_timer.prompt
                     },
