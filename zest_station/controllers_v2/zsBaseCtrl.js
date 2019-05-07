@@ -405,7 +405,7 @@ function BaseCtrl($scope) {
                     'from_screen': from ? from : '',
 
                     'idle_timer': {
-                        'enabled': zs.idle_timer.enabled,
+                        'enabled': zs.idle_timer ? zs.idle_timer.enabled : false,
                         'max': zs.idle_timer.max,
                         'prompt': zs.idle_timer.prompt
                     },
