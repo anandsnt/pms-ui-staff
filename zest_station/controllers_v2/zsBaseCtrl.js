@@ -509,6 +509,9 @@ function BaseCtrl($scope) {
         // for each session of this station, send along the OOS reason(s) with timestamps
         // for now, just include the workstation time
         // 
+        if (typeof $scope.zestStationData.sessionActivity == 'undefined') {
+            return;
+        }
         var today = new Date();
         var currentTime = today.toString();
 
