@@ -1114,6 +1114,84 @@
             margin: 0;
             font-size: 18px;
         }
+
+        &.languages-list {
+            left: 60px;
+            right: 60px;
+            bottom: 0;
+            #calc > #width > .remove(100%, 120px);
+            #flexbox > .flex();
+            #flexbox > .parent(row wrap, center, center, '');
+
+             .selected-language {
+                position: relative;
+                font-size: 20px;
+                line-height: 64px;
+                text-transform: uppercase;
+                padding-left: 50px;
+                margin-bottom: 40px;
+                .size(64px, 240px);
+
+                 .icons {
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    margin-top: -16px;
+                    .size(32px, 40px);
+                }
+            }
+
+             .button {
+                line-height: 1;
+                padding: 10px 40px 10px 80px;
+                height: 64px;
+
+                 .label-main {
+                    line-height: 24px;
+                    .show();
+                }
+
+                 .label-secondary {
+                    font-size: 16px;
+                    opacity: .7;
+                    .show();
+                }
+
+                 &:not(:last-child) {
+                    margin-right: 20px;
+                }
+            }
+
+             .scrollable {
+                position: relative;
+                margin-left: 20px;
+                height: 104px;
+                padding-bottom: 40px;
+                overflow: hidden;
+                max-width: calc(~'100% - 260px');
+            }
+
+             .wrapper {
+                #flexbox > .flex();
+                #flexbox > .parent(row nowrap, '', '', '');
+            }
+
+             .iScrollHorizontalScrollbar {
+                position: absolute;
+                top: auto;
+                bottom: 20px;
+                left: 0;
+                right: 0;
+                height: 5px;
+                z-index: 99;
+            }
+
+             .iScrollIndicator {
+                background: @brandColor;
+                height: 5px;
+                #rounded > .round();
+            }
+        }
     }
 
 /* Selectable list ***/
