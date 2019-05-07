@@ -222,7 +222,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                         return;
                     }
                     $scope.minimumAdrRoomType = _.min(availabilityList, function(roomType) {
-                        return roomType.adr;
+                        return parseFloat(roomType.adr);
                     });
 
                     $scope.minimumAdrRoomType.adr = $scope.minimumAdrRoomType.adr ? $scope.zestStationData.currencySymbol + $filter('number')($scope.minimumAdrRoomType.adr, 2) : '';
