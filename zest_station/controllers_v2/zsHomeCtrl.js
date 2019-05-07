@@ -8,7 +8,10 @@ sntZestStation.controller('zsHomeCtrl', [
     'languages',
     'zsGeneralSrv',
     'zestStationSettings',
-    function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings) {
+    '$timeout',
+    function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings, $timeout) {
+
+        BaseCtrl.call(this, $scope);
 		/*
 		 * when we clicked on pickup key from home screen
 		 */
@@ -67,7 +70,7 @@ sntZestStation.controller('zsHomeCtrl', [
         var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			// assigning default language
             if ($scope.languages.length) {
-                var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
+                var defaultLangName = zestStationSettings.zest_lang.default_language,
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
@@ -232,6 +235,21 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.selectedLanguage = language;
         };
 
+        $scope.widthForLanguageList = function() {
+            var width = 0;
+            
+            angular.forEach($scope.languages, function(language) {
+                width += (language.label.length * 20) + 100;
+            });
+            return "" + width + "px;";
+        };
+
+        var refreshLanguageScroller = function() {
+            $timeout(function() {
+                $scope.refreshScroller('language-list');
+            }, 500);
+        };
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -287,6 +305,14 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
                 $scope.setScreenIcon('bed');
             }
+            $scope.setScroller('language-list', {
+                scrollX: true,
+                scrollY: false,
+                disablePointer: true, // important to disable the pointer events that causes the issues
+                disableTouch: false, // false if you want the slider to be usable with touch devices
+                disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
+            });
+            refreshLanguageScroller();
         })();
 
 

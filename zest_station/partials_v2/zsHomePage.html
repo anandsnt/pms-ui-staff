@@ -45,10 +45,24 @@
                 </ul>
             </nav>
         </div>
-        <div id="actions" class="align-center languages">
-            <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+        <div id="actions" class="languages-list">
+            <!-- <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.foreign_label}}
-            </button>
+            </button> -->
+            <p class="selected-language">
+                    <img ng-src="{{ selectedLanguage.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
+                    {{selectedLanguage.foreign_label}}
+                </p>
+
+                <div id="language-options" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> <!-- Add HORIZONTAL ng-scroll here -->
+                    <div class="wrapper" style="width: 2000px;">
+                        <button type="button" class="button with-icon" ng-hide="!language.active" touch-press="selectLanguage(language)" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+                            <img ng-src="{{ language.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
+                            <span class="label-main">{{language.label}}</span>
+                            <span class="label-secondary">{{language.foreign_label}}</span>
+                        </button>
+                    </div>
+                </div>
         </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
     </section>
