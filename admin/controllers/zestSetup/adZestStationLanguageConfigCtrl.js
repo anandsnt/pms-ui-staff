@@ -179,6 +179,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 						openEditor(json);
 					}
 				};
+
 				$scope.callAPI(adZestStationLanguageConfigSrv.loadTranslationFiles, options);
 			}
 		};
@@ -193,10 +194,12 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			if (language.translations_file) {
 				language.translation_file_updated = true;
 			}
+
 			var options = {
-				params: language,
-				successCallBack: fetchLanguageList
+				params: language
 			};
+
+			options.successCallBack = $scope.isAddMode ? saveNewLanguagePosition : fetchLanguageList;
 
 			if ($scope.isAddMode) {
 				$scope.callAPI(adZestStationLanguageConfigSrv.createLanguageConfig, options);
@@ -210,6 +213,9 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		$scope.cancel = function() {
 			$log.log('language settings cancelled');
 			$scope.detailIndex = -1;
+			if ($scope.isAddMode) {
+				$scope.languageList.shift();
+			}
 		};
 
 		$scope.deleteItem = function(language) {
@@ -223,7 +229,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 		$scope.addNewLanguage = function() {
 			$scope.isAddMode = true; 
-			$scope.languageList.unshift({ 'name': "", 'position': 0 });
+			$scope.languageList.unshift({ 'name': "", 'position': 1 });
 			$scope.selectedLanguage = $scope.languageList[0];
 			$scope.detailIndex = 0;
 		};
