@@ -237,6 +237,7 @@ sntZestStation.controller('zsHomeCtrl', [
 
         $scope.widthForLanguageList = function() {
             var width = 0;
+            
             angular.forEach($scope.languages, function(language) {
                 width += (language.label.length * 20) + 100;
             });
