@@ -126,7 +126,7 @@ var processCameraConfigs = function(iOSCameraEnabled, connectedCameras, features
 		useAutoDetection: false
 	};
 
-	if (localStorage.getItem('dontUseAutoDetection') === "NO" && !_.isUndefined(cordova)) {
+	if ((!localStorage.getItem('dontUseAutoDetection') || localStorage.getItem('dontUseAutoDetection') === "NO") && typeof cordova !== 'undefined') {
 		var idCaptureFeature = retrieveFeatureDetails(featuresSupportedInIosApp, 'CAPTURE_ID');
 
 		if (idCaptureFeature) {

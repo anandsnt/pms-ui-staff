@@ -273,6 +273,22 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.fetchHotelBusinessDate, options);
         };
 
+        var setStaysArray = function(rangeEnd, firstItemDesc, otherDesc) {
+            var arrayRange = _.range(1, rangeEnd);
+            var finalArray = [];
+
+            _.each(arrayRange, function(range, index) {
+                var desc = index === 0 ? range + " " + $filter('translate')(firstItemDesc) : range + " " + $filter('translate')(otherDesc);
+
+                finalArray.push({
+                    "id": range,
+                    "desc": desc
+                });
+            });
+
+            return finalArray;
+        };
+
         (function() {
             zsCheckinSrv.setCurrentReservationIdDetails({});
             $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
@@ -284,10 +300,11 @@ sntZestStation.controller('zsWalkInCtrl', [
                 verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
                 staffVerified: false,
                 screenType: 'WALKIN_RESERVATION',
-                noOfNightArray: _.range(1, 11),
+                noOfNightArray: setStaysArray(11, 'WALKIN_NIGHT', 'DAY_NIGHTS'),
+                adultsCountArray: setStaysArray(6, 'WALKIN_ADULT', 'ADULTS'),
                 guestCountArray: _.range(1, 6),
-                noOfDays: 0,
-                noOfAdults: 0,
+                noOfDays: 1,
+                noOfAdults: 1,
                 noOfChildren: 0,
                 noOfInfants: 0
             };
