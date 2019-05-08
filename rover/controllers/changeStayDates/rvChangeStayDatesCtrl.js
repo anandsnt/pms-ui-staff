@@ -662,8 +662,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 dest = angular.copy(destEventObject);
 
 			// we will not allow to drag before to available start date or to drag after available end date
-            if ((newDateSelected < availableStartDate || newDateSelected > availableLastDate) && !dest.onlyCheckOut) {
-                revertFunc();
+            if ( newDateSelected < availableStartDate || newDateSelected > availableLastDate ) {
+                if (!dest || !dest.onlyCheckOut) {
+                    revertFunc();
+                }
 				// reverting back to it's original position
                 return false;
             }
@@ -781,6 +783,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
             return dateStr === checkoutDate;		
         };
 
+        /**
+         * Get the event source object for the calendar
+         * @param {Date} checkinDate - check in date of the reservation
+         * @param {Date} checkoutDate - check out date of the reservation
+         * @param {Boolean} skipAddingLastDate - flag to indicate whether the last unavailable date should be added or not to the list of available dates shown in calendar
+         */
         $scope.getEventSourceObject = function(checkinDate, checkoutDate, skipAddingLastDate) {
 			/**
 			 * CICO-19733
@@ -801,14 +809,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				// Introducing this variable to ensure that in case of user having no permissions to go beyond; hide further dates
                 extendThrough = true,
                 thisDate,
-                firstUnavailableDate;
+                firstUnavailableDate,
+                isCheckoutDateAvailable = true;
 
 			// Reset validDays array
             $scope.stayDetails.validDays = [];
-
-            var isCheckoutDateAvailable = true,
-                tzCheckoutDate = tzIndependentDate(checkoutDate);
-                
 
             $($scope.stayDetails.calendarDetails.available_dates).each(function(index) {				
                 var preventOverbookHouse = !this.is_house_available && !canOverbookHouse && $rootScope.isStandAlone,
@@ -874,7 +879,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                     calEvt.className = 'check-out';
                     calEvt.startEditable = 'true';
                     calEvt.durationEditable = 'false';
-					// dates prior to check-in and dates after checkout
+                    
+                    isCheckoutDateAvailable = !(preventGroupSuiteRoomOverBook || preventSuiteRoomOverBook || 
+                                                preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType);
                 } else {
                     calEvt.id = 'availability' + index; // Id should be unique
                     calEvt.className = 'type-available';
@@ -891,14 +898,13 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 } else if (!skipAddingLastDate && !firstUnavailableDate) {
                     firstUnavailableDate = calEvt;
                 }
-
-                if ( this.date === $filter('date')(tzCheckoutDate, $rootScope.dateFormatForAPI)) {
-                    isCheckoutDateAvailable = !(preventGroupSuiteRoomOverBook || preventSuiteRoomOverBook || preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType);
-                }
                 
             });
 
             if (firstUnavailableDate && isCheckoutDateAvailable) {
+                // We usually revert the move date operation, when the new date is outside the check-in and check-out date.
+                // Since the first available date will be outside the check-out date and we need to be able to extend the checkout date to 
+                // that date, we use this flag to override that behaviour.
                 firstUnavailableDate.onlyCheckOut = true;
                 events.push(firstUnavailableDate);
             }
