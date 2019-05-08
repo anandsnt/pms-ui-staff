@@ -7,6 +7,7 @@ describe('RVInvoiceSearchController', function () {
     var $controller,
         $scope,
         $q,
+        $state,
         $rootScope,
         RVInvoiceSearchSrv,
         RVBillCardSrv,
@@ -20,15 +21,17 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$state_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
                     RVBillCardSrv = _RVBillCardSrv_;
                     $q = _$q_;
+                    $state = _$state_;
                     $rootScope = _$rootScope_;
                     rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
                     rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
                     $scope = _$rootScope_.$new();
+                    $scope.resultData = jsonResult;
                 });
 
                 $rootScope.roverObj = {};                
@@ -87,8 +90,49 @@ describe('RVInvoiceSearchController', function () {
 
                 expect($scope.results.data.results[0].associated_item.number).toBe(results.data.results[0].associated_item.number);
                 expect($scope.results.data.results[0].bills[2].routing_details.is_primary).toEqual(results.data.results[0].bills[2].routing_details.is_primary);
-               
+
+                
             }); 
+            // ============================================
+
+            it('clicked item should navigate to reservation details screen if it is reservation', function() {
+
+                spyOn($state, 'go');
+                $scope.invoiceSearchData = {};
+                $scope.invoiceSearchData.query = 'ghl';
+                $scope.invoiceSearchData.reservationsList = $scope.resultData.data;
+                $scope.clickedItem(0);
+                expect($state.go).toHaveBeenCalledWith('rover.reservation.staycard.reservationcard.reservationdetails', {
+                    id: $scope.invoiceSearchData.reservationsList.results[0].associated_item.item_id,
+                    confirmationId: $scope.invoiceSearchData.reservationsList.results[0].associated_item.number,
+                    isrefresh: true,
+                    searchQuery: $scope.invoiceSearchData.query
+                });
+            });
+
+            // ============================================
+
+            it('clicked item should navigate to account details screen if it is posting account', function() {
+
+                spyOn($state, 'go');
+                $scope.invoiceSearchData = {};
+                $scope.invoiceSearchData.query = 'ghl';
+                $scope.invoiceSearchData.reservationsList = $scope.resultData.data;
+                $scope.clickedItem(1);
+                expect($state.go).toHaveBeenCalledWith('rover.accounts.config', {
+                    id: $scope.invoiceSearchData.reservationsList.results[1].associated_item.item_id,
+                    activeTab: 'ACCOUNT'
+                });
+            });
+
+            it('get invoice button class', function() {
+                $scope.invoiceSearchData = {};
+                $scope.invoiceSearchData.reservationsList = $scope.resultData.data;
+                $scope.roverObj.noReprintReEmailInvoice = true;
+                var color = $scope.getInvoiceButtonClass(0, 0);
+
+                expect(color).toBe("blue");               
+            });
             // ============================================
 
             it('initalization method', function () {
@@ -191,7 +235,7 @@ describe('RVInvoiceSearchController', function () {
 
                     expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
 
-                });
+                });   
             });
         });    
 });

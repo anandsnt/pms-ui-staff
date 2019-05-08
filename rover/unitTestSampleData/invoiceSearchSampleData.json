@@ -3,32 +3,132 @@
         "results": [{
             "associated_item": {
                 "type": "RESERVATION",
-                "name": "Akshai Raj",
-                "number": "103668",
-                "company_card": "stay",
-                "travel_agent_card": null,
-                "image_url": "http://localhost:3000/assets/images/avatar-male.png",
-                "accompanying_guests": ["Nicki Dehler"]
+                "name": "Nidhin R Nath",
+                "number": "100203",
+                "company_card": null,
+                "item_id": 1661644,
+                "travel_agent_card": "Redbus TA",
+                "image_url": "https://pms-dev.stayntouch.com/assets/images/avatar-trans.png",
+                "accompanying_guests": [],
+                "is_print_ar_invoice_number_enabled": true,
+                "ar_invoice_label": "AR Invoice Number",
+                "reservation_status": "NOSHOW"
             },
             "bills": [{
-                "invoice_no": "GHL2740",
-                "balance": 0.0
+                "invoice_no": "522",
+                "folio_number": null,
+                "balance": 59.0,
+                "bill_no": 1,
+                "bill_id": 104020,
+                "is_active": true,
+                "is_folio_number_exists": false,
+                "is_control_code_exist": false,
+                "print_counter": 0,
+                "email_counter": 0,
+                "is_db_payment_exists": false,
+                "is_transactions_exist": true
             }, {
-                "invoice_no": "GHL3165",
-                "balance": 0.0
+                "invoice_no": "523",
+                "folio_number": null,
+                "balance": 83.0,
+                "bill_no": 2,
+                "bill_id": 104021,
+                "is_active": true,
+                "is_folio_number_exists": false,
+                "is_control_code_exist": false,
+                "print_counter": 0,
+                "email_counter": 0,
+                "is_db_payment_exists": false,
+                "is_transactions_exist": true
             }, {
-                "invoice_no": "GHL3166",
+                "invoice_no": "524",
+                "folio_number": null,
                 "balance": 0.0,
+                "bill_no": 3,
+                "bill_id": 104022,
+                "is_active": false,
+                "is_folio_number_exists": false,
+                "is_control_code_exist": false,
+                "print_counter": 0,
+                "email_counter": 0,
+                "is_db_payment_exists": true,
+                "ar_invoice_number": null,
                 "routing_details": {
-                    "type": null,
-                    "name": "stay",
+                    "type": "TRAVELAGENT",
+                    "name": "Redbus TA",
                     "is_primary": true,
-                    "address": "Washington, 20002",
-                    "image_url": ""
-                }
+                    "address": "LINE 12, Bruges, 8380",
+                    "image_url": "https://8ebd8b3dcdf6d6f8887d-4d1e022461cbaa577307930af1386d20.ssl.cf2.rackcdn.com/images/893/images/thumb/logo20180703023531.png"
+                },
+                "is_transactions_exist": true
             }, {
-                "invoice_no": "GHL2791",
-                "balance": 382.5
+                "invoice_no": "525",
+                "folio_number": null,
+                "balance": 0.0,
+                "bill_no": 4,
+                "bill_id": 104023,
+                "is_active": true,
+                "is_folio_number_exists": false,
+                "is_control_code_exist": false,
+                "print_counter": 0,
+                "email_counter": 0,
+                "is_db_payment_exists": false,
+                "is_transactions_exist": false
+            }]
+        }, 
+        {
+            "associated_item": {
+                "type": "POSTING_ACCOUNT",
+                "name": "ACCOUNT FOLIO",
+                "number": "00122",
+                "company_card": null,
+                "item_id": 5070,
+                "travel_agent_card": null,
+                "image_url": "",
+                "accompanying_guests": [],
+                "is_print_ar_invoice_number_enabled": true,
+                "ar_invoice_label": "AR Invoice Number",
+                "reservation_status": ""
+            },
+            "bills": [{
+                "invoice_no": "1456",
+                "folio_number": "11365",
+                "balance": 105.01,
+                "bill_no": 1,
+                "bill_id": 128721,
+                "is_active": true,
+                "is_folio_number_exists": true,
+                "is_control_code_exist": false,
+                "print_counter": 0,
+                "email_counter": 0,
+                "is_db_payment_exists": false,
+                "is_transactions_exist": true
+            }, {
+                "invoice_no": "PHVFINV-9895",
+                "folio_number": null,
+                "balance": 36.82,
+                "bill_no": 2,
+                "bill_id": 142490,
+                "is_active": true,
+                "is_folio_number_exists": false,
+                "is_control_code_exist": false,
+                "print_counter": 0,
+                "email_counter": 0,
+                "is_db_payment_exists": false,
+                "is_transactions_exist": true
+            }, {
+                "invoice_no": "PHVFINV-9898",
+                "folio_number": "PHVF1839",
+                "balance": 0.0,
+                "bill_no": 3,
+                "bill_id": 142511,
+                "is_active": false,
+                "is_folio_number_exists": true,
+                "is_control_code_exist": false,
+                "print_counter": 1,
+                "email_counter": 0,
+                "is_db_payment_exists": false,
+                "is_transactions_exist": true
             }]
         }],
         "total_count": 6905
