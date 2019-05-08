@@ -1,0 +1,37 @@
+<div class="form float" ng-if="state.activeTab === 'DATA'">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <ad-sync-block interface="pmi" config="config" proxy="true">
+        </ad-sync-block>
+    <!-- <fieldset ng-if="m3Accounting.enabled">
+        <div class="form-title">
+            <h3>Sync<span> Settings</span></h3>
+        </div>
+        <fieldset class="holder left">
+            <div class=entry></div>
+            <div class="entry has-datepicker full-width">
+                <label>Start Date</label>
+                <input type="date" ng-model="m3Accounting.fromDate" placeholder="Select Start Date"
+                    class="date-picker-input-small hasDatepicker">
+            </div>
+            <div class="entry">
+                <label>
+                    {{EXPORT | translate}}
+                </label>
+                <button type="button" like-type="common" class="button ng-binding blue sm-refresh-btn"
+                    ng-click="exportData()" ng-class="{'grey' : !m3Accounting.fromDate || !m3Accounting.toDate}"
+                    ng-disabled="!m3Accounting.fromDate || !m3Accounting.toDate" translate>
+                    EXPORT
+                </button>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <div class=entry></div>
+            <div class="entry has-datepicker full-width">
+                <label>End Date</label>
+                <input type="date" ng-model="m3Accounting.toDate" placeholder="Select End Date"
+                    class="date-picker-input-small hasDatepicker">
+            </div>
+        </fieldset>
+    </fieldset> -->
+</div>

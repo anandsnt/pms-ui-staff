@@ -1,7 +1,28 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'ADM3SetupSrv', '$filter',
-    function($scope, m3AccountingSetupValues, ADM3SetupSrv, $filter) {
+admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$filter',
+    function($scope, config, ADM3SetupSrv, $filter) {
+        console.log("hello from inisde of adm3backofficeCtrl!!! ", config)
 
     BaseCtrl.call(this, $scope);
+
+    $scope.state = {
+        activeTab: 'SETTING'
+    };
+
+    $scope.integration = 'M3BACKOFFICE'
+    
+    /**
+     * when clicked on check box to enable/diable letshare
+     * @return {undefiend}
+     */
+    $scope.toggleEnabled = function () {
+        $scope.config.enabled = !$scope.config.enabled;
+        console.log("toggling enabled", $scope.config.enabled)
+    };
+
+    $scope.changeTab = function(name) {
+        $scope.state.activeTab = name;
+        console.log("changing tab, ", $scope.state.activeTab)
+    }
 
     $scope.chosenSelectedReports = [],
         $scope.chosenAvailableReports = [];
@@ -11,13 +32,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
         $scope.chosenSelectedReports = [];
     };
 
-    /**
-     * when clicked on check box to enable/diable letshare
-     * @return {undefiend}
-     */
-    $scope.toggleActivation = function() {
-        $scope.m3Accounting.enabled = !$scope.m3Accounting.enabled;
-    };
+
 
     /**
      * when the save is success
@@ -41,7 +56,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
             },
             successCallBack: successCallBackOfSaveAfasSetup
         };
-
+        // migrate this API call to IFC
         $scope.callAPI(ADM3SetupSrv.saveConfig, options);
     };
 
@@ -153,6 +168,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
     };
 
     $scope.exportData = function() {
+        // migrate this API call to IFC 
       $scope.callAPI(ADM3SetupSrv.sync, {
          params: {
             from_date: $filter('date')($scope.m3Accounting.fromDate, 'yyyy-MM-dd'),
@@ -164,19 +180,21 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
          }
        });
     };
-
+    console.log("M3 COntroller scope: ", $scope)
     /**
      * Initialization stuffs
      * @return {undefiend}
      */
     var initializeMe = (function() {
+        $scope.config = config;
         $scope.m3Accounting = {
-            enabled: m3AccountingSetupValues.enabled,
-            emails: m3AccountingSetupValues.emails,
-            hotelCode: m3AccountingSetupValues.facility_id,
-            available_reports: m3AccountingSetupValues.available_reports,
-            selected_reports: m3AccountingSetupValues.selected_reports || [],
-            roomRevenueOnly: m3AccountingSetupValues.room_revenue_only
+            enabled: config.enabled,
+            emails: config.emails,
+            hotelCode: config.facility_id,
+            available_reports: config.available_reports,
+            selected_reports: config.selected_reports || [],
+            roomRevenueOnly: config.room_revenue_only
         };
+        console.log("m3 iife, config ", $scope.config)
     }());
 }]);

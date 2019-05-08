@@ -360,13 +360,16 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.m3BackOfficeExport', {
-        templateUrl: '/assets/partials/interfaces/M3BackOffice/ADM3Configuration.html',
+        templateUrl: '/assets/partials/interfaces/m3backoffice/adM3backoffice.html',
         controller: 'ADM3BackOfficeCtrl',
         url: '/backoffice/m3/setup',
         resolve: {
-            m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
+            config: ['ADM3SetupSrv', function(ADM3SetupSrv) {
                 return ADM3SetupSrv.getConfig();
             }]
+            // m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
+            //     return ADM3SetupSrv.getConfig();
+            // }]
         }
     });
 
