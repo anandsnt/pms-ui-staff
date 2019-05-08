@@ -156,8 +156,8 @@ sntZestStation.controller('zsRootCtrl', [
                     language: {}// each lang code will return have tags with values
                 };
 
-                for (var i in hotelLanguages.languages) {
-                    codeForLang = hotelLanguages.languages[i].code;
+                for (var i in languages.languages) {
+                    codeForLang = languages.languages[i].name;
                     if (locales[codeForLang]) {
                         $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
                     }
@@ -1782,7 +1782,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.retrieveTranslations = function() {
             var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
-                return language.code === $translate.use();
+                return language.language === $translate.use();
             });
             var languageId = selecteLanguage ? selecteLanguage.id : '';
             var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {

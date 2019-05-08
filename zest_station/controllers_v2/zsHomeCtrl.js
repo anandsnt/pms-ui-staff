@@ -8,7 +8,10 @@ sntZestStation.controller('zsHomeCtrl', [
     'languages',
     'zsGeneralSrv',
     'zestStationSettings',
-    function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings) {
+    '$timeout',
+    function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings, $timeout) {
+
+        BaseCtrl.call(this, $scope);
 		/*
 		 * when we clicked on pickup key from home screen
 		 */
@@ -67,14 +70,13 @@ sntZestStation.controller('zsHomeCtrl', [
         var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			// assigning default language
             if ($scope.languages.length) {
-                var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
+                var defaultLangName = zestStationSettings.zest_lang.default_language,
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
 
                 if (defaultLanguage && defaultLanguage.name) {
-                    var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-                        langShortCode = languageConfig.code;
+                    var langShortCode = defaultLanguage.name;
 
                     if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
                             // do nothing, current language is already the default one or no default is selected from hotel admin
@@ -212,7 +214,7 @@ sntZestStation.controller('zsHomeCtrl', [
             for (var i in $scope.languages) {
                 
                 obj = $scope.languages[i];
-                if (obj.code === lang) {
+                if (obj.name === lang) {
                     $scope.selectLanguage(obj);
                     setTimeout(function() {
                         $scope.$digest();
@@ -224,14 +226,28 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.selectLanguage = function(language) {
 			// Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
-            var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
-                langShortCode = languageConfig.code;
+            var langShortCode = language.name;
 
                 // keep track of lang short code, for editor to save / update tags when needed
             $scope.languageCodeSelected(langShortCode, language.name);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
+        };
+
+        $scope.widthForLanguageList = function() {
+            var width = 0;
+            
+            angular.forEach($scope.languages, function(language) {
+                width += (language.label.length * 20) + 100;
+            });
+            return "" + width + "px;";
+        };
+
+        var refreshLanguageScroller = function() {
+            $timeout(function() {
+                $scope.refreshScroller('language-list');
+            }, 500);
         };
 
 		/**
@@ -264,12 +280,6 @@ sntZestStation.controller('zsHomeCtrl', [
 
             $scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
 
-            $scope.languages = $scope.languages.map(function(language) {
-				// merging, so that we can use more localized terms in UI
-                Object.assign(language, zsGeneralSrv.languageValueMappingsForUI[language.name]);
-                return language;
-            });
-
 			// assigning default language initially
             if (!zsGeneralSrv.isDefaultLanguageSet && $state.current.name === 'zest_station.home') {
                 setToDefaultLanguage();
@@ -277,7 +287,7 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
 				// set the active language as the selected language in the home screen
                 var activeLanguage = _.findWhere($scope.languages, {
-                    code: $translate.use()
+                    name: $translate.use()
                 });
 
                 $scope.selectedLanguage = activeLanguage;
@@ -295,6 +305,14 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
                 $scope.setScreenIcon('bed');
             }
+            $scope.setScroller('language-list', {
+                scrollX: true,
+                scrollY: false,
+                disablePointer: true, // important to disable the pointer events that causes the issues
+                disableTouch: false, // false if you want the slider to be usable with touch devices
+                disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
+            });
+            refreshLanguageScroller();
         })();
 
 
