@@ -788,6 +788,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
          * @param {Date} checkinDate - check in date of the reservation
          * @param {Date} checkoutDate - check out date of the reservation
          * @param {Boolean} skipAddingLastDate - flag to indicate whether the last unavailable date should be added or not to the list of available dates shown in calendar
+         * @return {Array} events - array of event sources
          */
         $scope.getEventSourceObject = function(checkinDate, checkoutDate, skipAddingLastDate) {
 			/**
