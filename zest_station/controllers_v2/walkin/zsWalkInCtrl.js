@@ -259,6 +259,8 @@ sntZestStation.controller('zsWalkInCtrl', [
         $scope.rejectID = function() {
             $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
             $scope.screenData.imageSide = 0;
+            $scope.idScanData.selectedGuest.front_image_data = "";
+            $scope.idScanData.selectedGuest.back_image_data = "";
         };
 
         var fetchHotelBussinessDate = function() {
