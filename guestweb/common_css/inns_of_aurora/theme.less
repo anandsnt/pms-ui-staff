@@ -5,11 +5,14 @@ html,
 body {
   height: auto;
   min-height: 100%;
-  background-color: #fff;
-
 }
+
+body {
+  background-color: #fff;
+}
+
 .back-text {
-  color: #fff;
+  color: #000;
   display: none !important;
 }
 
@@ -20,7 +23,7 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #000;
+  color: #363d40;
 }
 
 input[type=text],
@@ -32,17 +35,16 @@ input[type=email] {
 }
 
 .sub-main-text {
-  color: #000;
+  color: #363d40;
 }
 
 .header-bar {
   background:#fff;
-  margin-bottom: 5%;
 }
 
 .logo-image {
   max-width: 100%;
-  margin: 0 !important;
+  margin: 4% auto 2%;
 }
 
 .template-text,
@@ -52,11 +54,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #000 !important;
+  color: #363d40;
 }
 
 .view-bill {
-  color: #dcd4d4;
+  color: #363d40;
 }
 
 .sub-text,
@@ -64,14 +66,13 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #000;
+  color: #363d40;
 }
 
 .btn,
 .btn:hover {
-  background:#00b196;
+  background:#C55E51;
   color: @white;
-  text-transform: uppercase !important;
 }
 
 .dual-button {
@@ -87,27 +88,27 @@ input[type=email] {
 
 .dark-button,
 .dark-button:hover {
-  background:#00b196;
+  background:#C35D4E;
 }
 
 .light-button,
 .light-button:hover {
-  background: #00c3a9;
+  background: #D26E60;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #00c3a9;
+  background: #D37062;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#00b196;
+  background:#C55E51;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #009c80;
+  background: #B64E40;
 }
 
 .no-thanks,
@@ -128,33 +129,30 @@ input[type=email] {
 }
 
 .down-arrow-button {
-  background-image: url('/assets/guestweb/common_images/white/down_arrow.png');
+  background-image: url('/assets/guestweb/common_images/black/down_arrow.png');
 }
 
 .right-arrow-button {
-  background-image: url('/assets/guestweb/common_images/white/right_arrow.png');
+  background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
 }
 
 .upgrade-details .upgrades-btn {
-  background:#00b196;
+  background:#C55E51;
 }
 
 .proceed-to-checkin {
-  background: #3D3D3B;
+  background: #C55E51;
 }
 
 .upgrades-label {
   color: #BA7A55;
-}
-.addon-container {
-  background-color: #fff !important;
 }
 
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#00b196;
+  color:#C55E51;
   color: transparent;
 }
 
@@ -164,7 +162,7 @@ input[type=email] {
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#00b196 !important;
+  background-color:#C55E51 !important;
   color: #fff;
 }
 
@@ -206,7 +204,7 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#00b196;
+  background-color:#C55E51;
 }
 
 .calendar-back {
@@ -221,7 +219,7 @@ input[type=email] {
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #00c3a9;
+  color: #D37062;
 }
 
 .date-picker-wrap {
@@ -243,9 +241,15 @@ input[type=email] {
 .date-text {
   color: #fff;
 }
+
+.logo-image {
+  margin: 1% auto;
+  max-width: unset;
+}
+
 .res-details-heading,
 .res-details-heading:hover {
-  color: #009c80;
+  color: #B64E40;
 }
 
 .back-to-checkout {
@@ -253,29 +257,19 @@ input[type=email] {
   height: 40px;
 }
 
-@media (min-width: 990px) {
-  .checkout-alone-button {
-    float: none;
-    margin: 1% auto;
-  }
-}
-
 @media (max-width: 990px) {
   .logo-image {
-    margin: 0 !important;
+    margin: 9% auto 7%;
     max-width: unset;
-    width: 100%;
   }
   .back-to-checkout {
     display: none;
   }
-  .checkout-alone-button {
-    margin: 1% auto !important;
-  }
-  .checkout-icon, .late-checkout-icon {
+  .checkout-icon,.late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges {
+  .accept-charges,
+  {
     width: 300px;
     padding: 4% 0%;
   }
@@ -285,9 +279,6 @@ input[type=email] {
 }
 
 @media (max-width: 480px) {
-  .logo-image {
-    margin: 0 !important;
-  }
   .main-text {
     font-size: 11vw;
   }
@@ -300,17 +291,14 @@ input[type=email] {
   .footer-text {
     font-size: 5.3vw;
   }
+  .logo-image {
+    max-width: 181px;
+  }
   .dual-button {
     font-size: 32px;
   }
   .section-container {
     padding-bottom: 0px;
-  }
-}
-
-@media only screen and (max-device-width: 1028px) and (min-device-width: 768px) {
-  .checkout-alone-button {
-    margin: 1% auto !important;
   }
 }
 
@@ -321,9 +309,5 @@ input{
   background: #fff none repeat scroll 0 0;
 }
 .bill-hotel-logo{
-  background:#00b196;
-}
-
-.text-comment {
-  background: #ededed !important;
+  background:#fff;
 }
