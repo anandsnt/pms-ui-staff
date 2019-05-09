@@ -87,7 +87,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'village': 'Village Hotels',
             'gallivant': 'Gallivant NY',
             'hotel-e': 'Hotel E',
-            'kelley': 'Kelley House'
+            'kelley': 'Kelley House',
+            'stare-miastro': 'Aparthotel Stare Miasto'
         };
 
         this.isThemeConfigured = function(theme) {
