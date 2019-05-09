@@ -665,9 +665,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
             if ( newDateSelected < availableStartDate || newDateSelected > availableLastDate ) {
                 if (!dest || !dest.onlyCheckOut) {
                     revertFunc();
+                    // reverting back to it's original position
+                    return false;
                 }
-				// reverting back to it's original position
-                return false;
             }
 			// CICO-30310
             if (event.id === 'check-in' && $scope.stayDetails.details.reservation_status === 'CHECKEDIN') {
