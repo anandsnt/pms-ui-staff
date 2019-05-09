@@ -37,7 +37,7 @@ input[type=email] {
 
 .header-bar {
   background:#fff;
-  margin-bottom: 0px !important;
+  margin-bottom: 5%;
 }
 
 .logo-image {
@@ -253,6 +253,13 @@ input[type=email] {
   height: 40px;
 }
 
+@media (min-width: 990px) {
+  .checkout-alone-button {
+    float: none;
+    margin: 1% auto;
+  }
+}
+
 @media (max-width: 990px) {
   .logo-image {
     margin: 0 !important;
@@ -262,11 +269,13 @@ input[type=email] {
   .back-to-checkout {
     display: none;
   }
-  .checkout-icon,.late-checkout-icon {
+  .checkout-alone-button {
+    margin: 1% auto !important;
+  }
+  .checkout-icon, .late-checkout-icon {
     margin-top: 43px;
   }
-  .accept-charges,
-  {
+  .accept-charges {
     width: 300px;
     padding: 4% 0%;
   }
@@ -296,6 +305,12 @@ input[type=email] {
   }
   .section-container {
     padding-bottom: 0px;
+  }
+}
+
+@media only screen and (max-device-width: 1028px) and (min-device-width: 768px) {
+  .checkout-alone-button {
+    margin: 1% auto !important;
   }
 }
 
