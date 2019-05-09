@@ -12,7 +12,7 @@ const ReservationComponent = createClass({
 
     render() {
         return (this.props.isFromStayCard && (this.props.selectedReservationId === this.props.reservation.id)) ? (
-            <div style={this.props.reservation.style} className={this.setClassName()} onTouchEnd={this.props.selectReservation("", this.props.reservation, this.props.selectedRoom)} onClick={this.props.selectReservation("", this.props.reservation, this.props.selectedRoom)}>
+            <div style={this.props.reservation.style} className={this.setClassName()} onTouchEnd={() => this.props.selectReservation("", this.props.reservation, this.props.selectedRoom)} onClick={() => this.props.selectReservation("", this.props.reservation, this.props.selectedRoom)}>
                 <div className="reservation-data">
                     {
                         this.props.reservation.isReservationDayStay ? <span className="day-stay-icon"></span> : ''
