@@ -88,7 +88,7 @@
                     <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
 
-                <div class="entry with-label" ng-show="isIpad && zestStationData.id_scan_enabled && idCaptureFeature">
+                <div class="entry with-label" ng-show="isIpad && zestStationData.is_snt_id_scan_enabled && idCaptureFeature">
                     <label>ID auto detection</label>
                     <div class="entry select">
                         <select id="order-status" ng-model="useIdAutoCapture" ng-change="autoIdDetectionChanged()">

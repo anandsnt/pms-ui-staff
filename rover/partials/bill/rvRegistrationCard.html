@@ -98,7 +98,7 @@
     </tbody>
 </table>
 
-<table ng-hide="!isStandAlone" class="bill-details">
+<table ng-hide="!isStandAlone" class="bill-details" ng-if = "printRegCardData.daily_instances_info.length > 0">
     <thead>
         <tr>
             <th>{{ printRegCardData.translation.date }}</th>
