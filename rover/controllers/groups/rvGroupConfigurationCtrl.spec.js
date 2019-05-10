@@ -1,16 +1,12 @@
 describe("rvGroupConfigurationCtrl", function() {
     var $controller,
-        $scope,
-        rvPermissionSrv,
-        $rootScope;
+        $scope;        
 
     beforeEach(function() {
         module("sntRover");
-        inject(function (_$controller_, _$q_, _$rootScope_, _rvPermissionSrv_) {
+        inject(function (_$controller_, _$q_, _$rootScope_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            rvPermissionSrv = _rvPermissionSrv_;
-            $rootScope = _$rootScope_;
         });
 
         $scope.groupConfigData = {};
