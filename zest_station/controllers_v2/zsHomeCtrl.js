@@ -228,6 +228,7 @@ sntZestStation.controller('zsHomeCtrl', [
             var selectableLanguages = _.filter($scope.languages, function(language) {
                 return language.active;
             });
+            
             return selectableLanguages.length > 1;
         };
 
