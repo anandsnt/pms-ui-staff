@@ -54,8 +54,8 @@
                     {{selectedLanguage.foreign_label}}
                 </p>
 
-                <div id="language-options" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> <!-- Add HORIZONTAL ng-scroll here -->
-                    <div class="wrapper" style="width: 2000px;">
+                <div id="language-options" ng-show="shouldShowLanguageSelection()" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> <!-- Add HORIZONTAL ng-scroll here -->
+                    <div class="wrapper" style="width: {{widthForLanguageList();}}">
                         <button type="button" class="button with-icon" ng-hide="!language.active" touch-press="selectLanguage(language)" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                             <img ng-src="{{ language.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
                             <span class="label-main">{{language.label}}</span>

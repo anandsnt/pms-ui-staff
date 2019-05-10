@@ -223,6 +223,14 @@ sntZestStation.controller('zsHomeCtrl', [
                 }
             }
         });
+
+        $scope.shouldShowLanguageSelection = function() {
+            var selectableLanguages = _.filter($scope.languages, function(language) {
+                return language.active;
+            });
+            return selectableLanguages.length > 1;
+        };
+
         $scope.selectLanguage = function(language) {
 			// Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
@@ -239,7 +247,13 @@ sntZestStation.controller('zsHomeCtrl', [
             var width = 0;
             
             angular.forEach($scope.languages, function(language) {
-                width += (language.label.length * 20) + 100;
+                if (language.active) {
+                    if (language.label.length > language.foreign_label.length) {
+                        width += (language.label.length * 20) + 100;
+                    } else {
+                        width += (language.foreign_label.length * 20) + 100;
+                    }
+                }
             });
             return "" + width + "px;";
         };
