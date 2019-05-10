@@ -7,14 +7,15 @@
                 ng-class="{'orange' : state.activeTab === 'SETTING', 'white' : state.activeTab !== 'SETTING'}">
                 SETTINGS
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('DATA')"
-                ng-class="{'orange' : state.activeTab === 'DATA', 'white' : state.activeTab !== 'DATA'}">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('SYNC')"
+                ng-class="{'orange' : state.activeTab === 'SYNC', 'white' : state.activeTab !== 'SYNC'}">
                 SYNC
             </button>
         </div>
     </header>
+
     <section class="content-scroll">
-        <ng-include src="'/assets/partials/interfaces/avida/adAvidaSetting.html'"></ng-include>
-        <ng-include src="'/assets/partials/interfaces/avida/adAvidaSync.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/delphi/adDelphiSetting.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/delphi/adDelphiSync.html'"></ng-include>
     </section>
 </div>

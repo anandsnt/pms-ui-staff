@@ -121,12 +121,12 @@ var processCameraConfigs = function(iOSCameraEnabled, connectedCameras, features
 	
 	var idCaptureConfig = {
 		useiOSAppCamera: iOSCameraEnabled,
-		useExtCamera: connectedCameras.length > 0,
-		useExtCamForFR: connectedCameras.length > 0,
+		useExtCamera: connectedCameras && connectedCameras.length > 0,
+		useExtCamForFR: connectedCameras && connectedCameras.length > 0,
 		useAutoDetection: false
 	};
 
-	if (localStorage.getItem('dontUseAutoDetection') === "NO" && !_.isUndefined(cordova)) {
+	if ((localStorage.getItem('useAutoDetection') && localStorage.getItem('useAutoDetection') === "YES") && typeof cordova !== 'undefined') {
 		var idCaptureFeature = retrieveFeatureDetails(featuresSupportedInIosApp, 'CAPTURE_ID');
 
 		if (idCaptureFeature) {

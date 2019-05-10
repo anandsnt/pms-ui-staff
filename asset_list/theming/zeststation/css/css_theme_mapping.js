@@ -70,7 +70,9 @@ module.exports = {
             'why': [themeCSSRoot + 'why.less'],
             'village': [themeCSSRoot + 'village.less'],
             'gallivant': [themeCSSRoot + 'gallivant.less'],
-            'hotel-e': [themeCSSRoot + 'hotel-e.less']
+            'hotel-e': [themeCSSRoot + 'hotel-e.less'],
+            'kelley': [themeCSSRoot + 'kelley.less'],
+            'stare-miastro': [themeCSSRoot + 'stare-miastro.less']
         };
     }
 };

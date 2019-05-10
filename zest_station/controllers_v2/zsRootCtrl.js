@@ -156,8 +156,8 @@ sntZestStation.controller('zsRootCtrl', [
                     language: {}// each lang code will return have tags with values
                 };
 
-                for (var i in hotelLanguages.languages) {
-                    codeForLang = hotelLanguages.languages[i].code;
+                for (var i in languages.languages) {
+                    codeForLang = languages.languages[i].name;
                     if (locales[codeForLang]) {
                         $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
                     }
@@ -1782,7 +1782,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.retrieveTranslations = function() {
             var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
-                return language.code === $translate.use();
+                return language.language === $translate.use();
             });
             var languageId = selecteLanguage ? selecteLanguage.id : '';
             var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
@@ -1950,7 +1950,13 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_staff_verification' ||
                     $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification');
 
-
+            if ($scope.isIpad &&
+                $scope.zestStationData.kiosk_walk_in_enabled &&
+                $scope.zestStationData.kiosk_scan_mode === 'id_scan_with_facial_verification') {
+                // TODO: following style fix is a workaround, will be fixed by designers in next sprint
+                $('head').append('<style type="text/css">#options.large-icons li { margin: 0 10px !important;}</style>');
+                $scope.zestStationData.showWalkinReservationOption = true;
+            }
             if ($scope.zestStationData.id_scan_enabled) {
                 checkForExternalCameras();
             }
