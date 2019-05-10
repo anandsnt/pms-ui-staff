@@ -201,6 +201,13 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 			options.successCallBack = $scope.isAddMode ? saveNewLanguagePosition : fetchLanguageList;
 
+			if ($scope.detailIndex == -1) {
+				options.failureCallBack = function(errorMessage) {
+					$scope.fetchedFailed(errorMessage);
+					fetchLanguageList();
+				};
+			}
+
 			if ($scope.isAddMode) {
 				$scope.callAPI(adZestStationLanguageConfigSrv.createLanguageConfig, options);
 			}
