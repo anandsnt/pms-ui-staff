@@ -43,8 +43,12 @@
             </fieldset>
         </fieldset>
         <div class="actions float">
-            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
-                translate>
+            <button type="button" id="cancel" class="button blank add-data-inline"
+                    ng-click="goBackToPreviousState()" translate>
+                CANCEL
+            </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green"
+                    ng-click="saveSetup()" translate>
                 SAVE_CHANGES
             </button>
         </div>
