@@ -164,7 +164,14 @@
 "SWIPE_CC_FOR_AUTH": "Swipe CC for Authorization",
 "SWIPE_CC_FOR_PAYMENT": "Swipe CC for Payment",
 "KEY_CONFIRMATION_IMG": "Key confirmation image",
-"SCAN_ID_TO_FIND_RESERVATION": "Scan ID to find Reservations"
+"SCAN_ID_TO_FIND_RESERVATION": "Scan ID to find Reservations",
+
+"WALK_IN_RESERVATIONS": "Walk-in Reservations",
+"WALK_IN_RESERVATIONS_INSTRUCTIONS": "",
+"WALK_IN_RATE_CODE": "Walk-in Rate code",
+"WALK_IN_MARKET": "Walk-in Market",
+"WALK_IN_ORIGIN": "Walk-in Origin",
+"WALK_IN_SOURCE": "Walk-in Source"
 
 
 

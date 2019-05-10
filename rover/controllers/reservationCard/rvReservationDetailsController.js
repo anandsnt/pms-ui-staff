@@ -762,10 +762,9 @@ sntRover.controller('reservationDetailsController',
 		 * as part of CICO-17712, we are hiding it for now (group rservation)
 		 * @return {Boolean}
 		 */
-		$scope.shouldShowChangeStayDatesButton = function() {
-			return ($scope.isNightsEnabled() &&
-				!$scope.reservationData.reservation_card.is_hourly_reservation);
-		};
+        $scope.shouldShowChangeStayDatesButton = function () {
+            return $scope.isNightsEnabled() && !$scope.reservationData.reservation_card.is_hourly_reservation;
+        };
 
 		$scope.isNightsEnabled = function() {
 			var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -788,22 +787,20 @@ sntRover.controller('reservationDetailsController',
 			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
 				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
 				group_id              = $scope.reservationData.reservation_card.group_id,
-                isStayDatesChangeAllowed;
+                isStayDatesChangeAllowed = false;
 
-			var not_hourly_reservation = ! is_hourly_reservation,
+			var is_full_mode = $rootScope.hotelDiaryConfig.mode === 'FULL' ? true : false,
 				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
 				group_checked_in       = {'CHECKEDIN': true, 'CHECKING_OUT': true}[reservation_status] && !! group_id;
 
 			isStayDatesChangeAllowed = false;
 
-			if (
-				$rootScope.isStandAlone &&
-				not_hourly_reservation &&
-				hasPermissionToChangeStayDates() &&
-				(checking_in_reserved || group_checked_in)
-			) {
-				isStayDatesChangeAllowed = true;
-			}
+            if ($rootScope.isStandAlone &&
+                (!is_full_mode && !is_hourly_reservation)
+                && hasPermissionToChangeStayDates()
+                && (checking_in_reserved || group_checked_in)) {
+                isStayDatesChangeAllowed = true;
+            }
 
 			return isStayDatesChangeAllowed;
 		};
@@ -824,11 +821,14 @@ sntRover.controller('reservationDetailsController',
 			if ($scope.shouldDisableExtendNightsButton()) {
 				return false;
 			};
-
-			$state.go("rover.reservation.staycard.changestaydates", {
-				reservationId: reservationMainData.reservationId,
-				confirmNumber: reservationMainData.confirmNum
-			});
+			if ( $rootScope.hotelDiaryConfig.mode === 'FULL' ) {
+                $scope.showDiaryScreen();
+            }else {
+                $state.go("rover.reservation.staycard.changestaydates", {
+                    reservationId: reservationMainData.reservationId,
+                    confirmNumber: reservationMainData.confirmNum
+                });
+            }
 		};
 
 		var editPromptDialogId;
@@ -1052,7 +1052,8 @@ sntRover.controller('reservationDetailsController',
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.diary', {
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				checkin_date: $scope.reservationData.reservation_card.arrival_date
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
+				is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
 			});
 		};
 

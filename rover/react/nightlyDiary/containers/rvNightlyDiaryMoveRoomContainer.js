@@ -7,7 +7,7 @@ let calculateMoveRoomPositionAndDuration = (diaryInitialDayOfDateGrid, uarData, 
 
     let oneDay = 24 * 60 * 60 * 1000;
     let diffBtwInitialAndStartDate = moveRoomStartDate.getTime() - diaryInitialDate.getTime();
-    let noOfDaysBtwInitialAndArrivalDate = Math.abs((diffBtwInitialAndStartDate) / (oneDay));
+    let noOfDaysBtwInitialAndArrivalDate = (diffBtwInitialAndStartDate) / (oneDay);
 
     let moveRoomPosition = 0;
 
@@ -25,12 +25,20 @@ let calculateMoveRoomPositionAndDuration = (diaryInitialDayOfDateGrid, uarData, 
     let durationOfMoveRoom = 0;
     let numberOfNightsVisibleInGrid = (uarData.nights <= 1) ? 1 : uarData.nights;
     
-    durationOfMoveRoom = numberOfNightsVisibleInGrid * nightDuration;
-    if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
-        durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.EXTEND_7_DAYS / 2;
-    } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
-        durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.EXTEND_21_DAYS / 2;
+    if (noOfDaysBtwInitialAndArrivalDate < 0) {
+        numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid + noOfDaysBtwInitialAndArrivalDate;
+        durationOfMoveRoom = (numberOfNightsVisibleInGrid * nightDuration) + 10;
     }
+    else {
+        durationOfMoveRoom = (numberOfNightsVisibleInGrid * nightDuration);
+        if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
+            durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.EXTEND_7_DAYS / 2;
+        } 
+        else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
+            durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.EXTEND_21_DAYS / 2;
+        }
+    }
+    
     var returnData = {};
 
     returnData.numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid;

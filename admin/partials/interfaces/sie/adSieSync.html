@@ -2,9 +2,10 @@
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
-    <ad-sync-block interface="sie",
-                   historicalDateRangeDays="30",
-                   config="config",
+    <ad-sync-block interface="sie"
+                   historical-date-range-days="31"
+                   exclude-today="true"
+                   config="config"
                    proxy="true">
     </ad-sync-block>
 </div>

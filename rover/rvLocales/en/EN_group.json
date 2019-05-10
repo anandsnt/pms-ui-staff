@@ -105,4 +105,6 @@
     "GROUP_NEXT_SET": "Next 14 Days",
     "NO_SINGLE_RATE_CONFIGURED": "Single rate can't be blank",
     "NO_PERMISSION_TO_OVERBOOK": "Room Block exceeds Room Type or House Availability - No permission to overbook.",
-    "TAX_EXEMPT_REFERENCE": "Tax Exempt Reference (200 chars.)"
+    "TAX_EXEMPT_REFERENCE": "Tax Exempt Reference (200 chars.)",
+    "NATIONALITY": "Nationality",
+    "COUNTRY": "Country"
