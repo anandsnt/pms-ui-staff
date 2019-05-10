@@ -75,8 +75,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var summary = $scope.groupConfigData.summary,
                 isValid = !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
 
-            isValid = isValid && ($rootScope.roverObj.forceCountryAtCheckin ? !!summary.country_id : true);
-            isValid = isValid && ($rootScope.roverObj.forceNationalityAtCheckin ? !!summary.nationality : true);
             return isValid;
         };
 
@@ -1116,16 +1114,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     });
                 } else {
                     $scope.errorMessage = ["Group's name, from date, to date, room release date and hold status are mandatory"];
-                    if ($rootScope.roverObj.forceCountryAtCheckin && 
-                        !$scope.groupConfigData.summary.country_id && 
-                        $rootScope.roverObj.forceNationalityAtCheckin && 
-                        !$scope.groupConfigData.summary.nationality) {
-                        $scope.errorMessage = ["Group's name, from date, to date, room release date, hold status, nationality and country are mandatory"];
-                    } else if ($rootScope.roverObj.forceCountryAtCheckin && !$scope.groupConfigData.summary.country_id ) {
-                        $scope.errorMessage = ["Group's name, from date, to date, room release date, hold status and country are mandatory"];   
-                    } else if ($rootScope.roverObj.forceNationalityAtCheckin && !$scope.groupConfigData.summary.nationality) {
-                        $scope.errorMessage = ["Group's name, from date, to date, room release date, hold status and nationality are mandatory"];     
-                    }
                 }
             } else {
                 $scope.$emit("showErrorMessage", ["Sorry, you don\'t have enough permission to save the details"]);
