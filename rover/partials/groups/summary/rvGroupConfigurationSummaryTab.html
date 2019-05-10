@@ -34,7 +34,6 @@
                 <div class="entry margin" ng-show="roverObj.forceNationalityAtCheckin">
                     <label for="group-nationality">
                         {{'NATIONALITY' | translate}}
-                        <strong>*</strong>
                     </label>
                     <div class="select">
                         <select  iscroll-stop-propagation ng-model="groupConfigData.summary.nationality">
@@ -46,7 +45,6 @@
                 <div class="entry" ng-show="roverObj.forceCountryAtCheckin">
                     <label for="group-country">
                         {{'COUNTRY' | translate}}
-                        <strong>*</strong>
                     </label>
                     <div class="select">
                         <select convert-to-number iscroll-stop-propagation ng-model="groupConfigData.summary.country_id">
