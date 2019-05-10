@@ -502,7 +502,7 @@ angular.module('sntRover').controller('guestCardController', [
                 cls += " open";
             }
 
-            if ($rootScope.isHourlyRateOn) {
+            if ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') {
                 cls += " hourly";
             }
 
