@@ -2,6 +2,18 @@
  * All payment gateways are configured here... The libraries & the URLs for inline frames    are consumed from this constant in
  * the payment module
  */
+
+var iFrameParams = {
+    // guest's first name
+    "card_holder_first_name": "",
+    // guest's last name
+    "card_holder_last_name": "",
+    // service action is sent as createtoken ALWAYS now
+    "service_action": "createtoken",
+    // current time stamp new Date() -> getTime()
+    "time": ""
+};
+
 angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
     "CBA": {
         iFrameUrl: null,
@@ -11,11 +23,10 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         disableCardSelection: true
     },
     'SHIJI': {
-        iFrameUrl: null,
+        iFrameUrl: "/api/ipage/index.html",
         jsLibrary: null,
         partial: '/assets/partials/payShijiPartial.html',
-        params: null,
-        disableCardSelection: true
+        params: iFrameParams
     },
     "MLI": {
         iFrameUrl: null,
@@ -34,16 +45,7 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         // Iframe loading url query string params
         // Skelton
         // TODO: need to use while constructing from the params from service
-        params: {
-            // guest's first name
-            "card_holder_first_name": "",
-            // guest's last name
-            "card_holder_last_name": "",
-            // service action is sent as createtoken ALWAYS now
-            "service_action": "createtoken",
-            // current time stamp new Date() -> getTime()
-            "time": ""
-        },
+        params: iFrameParams,
         jsLibrary: null,
         partial: "/assets/partials/paySixPaymentPartial.html"
     },
