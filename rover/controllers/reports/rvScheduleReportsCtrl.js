@@ -944,6 +944,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         // Checks whether file format dropdown should be shown or not
         $scope.shouldShowFileFormat = function (selectedEntity) {
+            if (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object){ return object.value !== "XML"; });
+            }
             return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
         };
 
