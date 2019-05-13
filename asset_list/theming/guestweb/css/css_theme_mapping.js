@@ -5,6 +5,8 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_aparthotel_stare_miasto': [ themeCSSRoot + 'guestweb_aparthotel_stare_miasto.css'],
+            'guestweb_upstairs_by_mamas': [ themeCSSRoot + 'guestweb_upstairs_by_mamas.css'],
             'guestweb_kelley_house': [ themeCSSRoot + 'guestweb_kelley_house.css'],
             'guestweb_inns_of_aurora': [ themeCSSRoot + 'guestweb_inns_of_aurora.css'],
             'guestweb_shelburne_hotel': [ themeCSSRoot + 'guestweb_shelburne_hotel.css'],
