@@ -4,7 +4,7 @@ sntZestStation.config(['$stateProvider',
         $stateProvider.state('zest_station.checkInReservationSearch', {
             url: '/checkInReservationSearch',
             params: {
-                last_name: '',
+                last_name: ''
             },
             templateUrl: '/assets/partials_v2/checkin/zscheckInReservationSearch.html',
             controller: 'zscheckInReservationSearchCtrl',
