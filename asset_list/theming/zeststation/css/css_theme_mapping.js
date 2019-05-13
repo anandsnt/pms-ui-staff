@@ -71,7 +71,8 @@ module.exports = {
             'village': [themeCSSRoot + 'village.less'],
             'gallivant': [themeCSSRoot + 'gallivant.less'],
             'hotel-e': [themeCSSRoot + 'hotel-e.less'],
-            'kelley': [themeCSSRoot + 'kelley.less']
+            'kelley': [themeCSSRoot + 'kelley.less'],
+            'stare-miastro': [themeCSSRoot + 'stare-miastro.less']
         };
     }
 };
