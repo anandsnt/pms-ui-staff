@@ -555,4 +555,16 @@ if (status === 406) { // 406- Network error
         };
 
         service.mockCba = false;
+
+        service.getShijiPayCreditCardType = function(cardCode) {
+            var shijiCreditCardTypes = {
+                "American Express": 'AX',
+                "Discover Card": 'DS',
+                "JCB": 'JCB',
+                "MasterCard": 'MC',
+                "Visa": 'VA'
+            };
+
+            return shijiCreditCardTypes[cardCode] || 'credit-card';
+        };
 }]);

@@ -363,6 +363,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.hotelConfig.paymentGateway === 'sixpayments' && !!$('#sixIframe').length) {
                     iFrame = document.getElementById('sixIframe');
                     iFrame.src = iFrame.src;
+                } else if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
+                    $scope.$broadcast('RELOAD_IFRAME');
                 }
             }
 
@@ -1383,6 +1385,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
                     isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
+            };
+
+            $scope.getShijiToken = function(){
+                $scope.$broadcast('GET_SHIJI_TOKEN');
             };
 
             /** **************** init ***********************************************/
