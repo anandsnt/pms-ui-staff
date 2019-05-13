@@ -2,7 +2,7 @@
     <header class="content-title float">
         <h2 >Zest Station Language</h2>
         <a ng-click="goBackToPreviousState()" class="action back ">Back to Station Setup</a>
-        <a class="action add" ng-click="addNewLanguage()" >{{ 'ADD_NEW' | translate }}</a>
+        <a class="action add" ng-show="!isAddMode" ng-click="addNewLanguage()" >{{ 'ADD_NEW' | translate }}</a>
     </header>
     <!-- list mode -->
     <section class="content-scroll">
