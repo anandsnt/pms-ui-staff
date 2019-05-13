@@ -40,8 +40,6 @@ angular.module('sntRover').controller('rvReservationCardActionsController', [
         $scope.actionSelected = 'none';
         $scope.isRefreshing = false;
 
-        $scope.setScroller("reservation-card-actions-scroller");
-
         var setInitialActionsCount = function() {
             $scope.actions.totalCount = $scope.reservationListData.action_count;
             $scope.actions.pendingCount = $scope.reservationListData.pending_action_count;
@@ -917,12 +915,13 @@ year: year};
             if (assignedTo && assignedTo.id) {
                 department = _.findWhere($scope.departments, { value: assignedTo.id + "" });
             }
+            
 
             $scope.newAction = {
                 department: department,
                 time_due: action.due_at_time,
                 date_due: action.due_at_date,
-                dueDateObj: new tzIndependentDate(action.time_due_str),
+                dueDateObj: new tzIndependentDate(action.time_due_str.split("T")[0]),
                 hasDate: true,
                 notes: action.description,
                 actionId: action.id
@@ -1039,6 +1038,7 @@ year: year};
             $scope.populateTimeFieldValue();
             $scope.setScroller('rvActionListScroller', scrollOptions);
             $scope.setScroller('actionSummaryScroller', scrollOptions);
+            $scope.setScroller("reservation-card-actions-scroller", scrollOptions);
             $scope.setUpData();
 
             if (!$scope.isStandAlone) {
@@ -1046,6 +1046,9 @@ year: year};
             }
 
             setInitialActionsCount();
+            $timeout(function() {
+                $scope.refreshScroller('reservation-card-actions-scroller');
+            }, 500);
         })();
     }
 ]);

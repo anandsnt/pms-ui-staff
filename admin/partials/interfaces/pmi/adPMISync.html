@@ -1,0 +1,7 @@
+<div class="form float" ng-if="state.activeTab === 'DATA'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+    <ad-sync-block interface="pmi" config="config" proxy="true" historical-data-sync-items="historicalDataSyncItems"
+        real-time-data-sync-items="realTimeDataSyncItems">
+    </ad-sync-block>
+</div>

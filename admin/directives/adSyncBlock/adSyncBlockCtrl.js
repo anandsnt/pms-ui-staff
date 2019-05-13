@@ -146,7 +146,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             if (adCheckbox) {
                 $scope.syncItems = getSyncItems($scope.historical_data_sync_items);
 
-                $scope.toDate = new Date();
+                $scope.toDate = $scope.historical_data_sync_items ? new Date(new Date().setDate(new Date().getDate() - 1)) : new Date();
                 fromDate = new Date();
 
                 var maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - HISTORICAL_SYNC_LIMIT));
@@ -159,8 +159,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
                 if ($scope.excludeToday) {
                     var dateObj = new Date();
-
-                    $scope.startDatePickerOptions.maxDate = tzIndependentDate(dateObj.setDate(dateObj.getDate() - 1));
+                    $scope.endDatePickerOptions.maxDate = tzIndependentDate(dateObj.setDate(dateObj.getDate() - 1));
                 }
 
                 if ($scope.historicalDateRangeDays) {

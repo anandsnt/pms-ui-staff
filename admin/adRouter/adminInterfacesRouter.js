@@ -11,6 +11,28 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.comtrol', {
+        templateUrl: '/assets/partials/interfaces/comtrol/adComtrol.html',
+        controller: 'adComtrolCtrl',
+        url: '/comtrol',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('comtrol');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.comtrolKey', {
+        templateUrl: '/assets/partials/interfaces/comtrol/adComtrol.html',
+        controller: 'adComtrolCtrl',
+        url: '/comtrol_key',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('comtrol');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -28,7 +50,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.twinfieldSetup', {
         templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
         controller: 'adTwinfieldSetupCtrl',
-        url: '/gomomentivy/setup',
+        url: '/twinfield/setup',
         resolve: {
             twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
@@ -68,23 +90,23 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/GoMomentIvy/adGoMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/gomomentivy/adGoMomentIvySetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('gomomentivy');
             }]
         }
     });
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
+        templateUrl: '/assets/partials/interfaces/checkmate/adCheckmateSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            checkmateSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('checkmate');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('checkmate');
             }]
         }
     });
@@ -205,12 +227,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.delphi', {
-        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        templateUrl: '/assets/partials/interfaces/delphi/adDelphi.html',
         controller: 'adDelphiCtrl',
-        url: '/delphi/setup',
+        url: '/delphi',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('delphi');
             }]
         }
     });
@@ -239,12 +261,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.digitalalchemySetup', {
-        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        templateUrl: '/assets/partials/interfaces/digitalalchemy/adDigitalalchemy.html',
         controller: 'adDigitalalchemySetupCtrl',
         url: '/digitalalchemy/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('digitalalchemy');
             }]
         }
     });
@@ -260,24 +282,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
-    $stateProvider.state('admin.ifc_comtrol_settings', {
-        templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
-        controller: 'adIFCComtrolSetupCtrl',
-        url: '/ifc_comtrol/setup',
-        resolve: {
-            ifcComtrolSetupValues: ['adIFCComtrolSetupSrv', function(adIFCComtrolSetupSrv) {
-                return adIFCComtrolSetupSrv.fetchIFCComtrolConfiguration();
-            }]
-        }
-    });
-
     $stateProvider.state('admin.vectronSetup', {
         templateUrl: '/assets/partials/interfaces/Vectron/adVectronSetup.html',
         controller: 'ADVectronSetupCtrl',
-        url: '/vectron/setup',
+        url: '/vectron',
         resolve: {
-            vectronSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('vectron');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('vectron');
             }]
         }
     });
@@ -313,12 +324,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 return adComtrolGenericMappingSrv.fetch();
             }]
         }
-    });
-
-    $stateProvider.state('admin.ifc_room_mappings', {
-        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
-        controller: 'adComtrolRoomMappingCtrl',
-        url: '/ifc_comtrol/setup'
     });
 
     $stateProvider.state('admin.gustoPosSetup', {
@@ -597,43 +602,34 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.pmiSetup', {
-        templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'pmi';
-        }],
+        templateUrl: '/assets/partials/interfaces/pmi/adPMI.html',
+        controller: 'adPmiCtrl',
+        url: '/pmi/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('pmi');
             }]
         }
     });
 
     $stateProvider.state('admin.avidaSetup', {
-        templateUrl: '/assets/partials/interfaces/Avida/adAvidaSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'avida';
-        }],
+        templateUrl: '/assets/partials/interfaces/avida/adAvida.html',
+        controller: 'adAvidaCtrl',
+        url: '/avida/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('avida');
             }]
         }
     });
 
     $stateProvider.state('admin.baswareSetup', {
-        templateUrl: '/assets/partials/interfaces/Basware/adBaswareSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'basware';
-        }],
+        templateUrl: '/assets/partials/interfaces/basware/adBasware.html',
+        controller: 'adBaswareCtrl',
+        url: '/basware/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('basware');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('basware');
             }]
         }
     });
@@ -650,8 +646,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.sieSetup', {
+       templateUrl: '/assets/partials/interfaces/sie/adSie.html',
+       controller: 'adSieCtrl',
+       url: '/sie',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('sie');
+               }]
+       }
+    });
+
     $stateProvider.state('admin.sunaccountingSetup', {
-        templateUrl: '/assets/partials/interfaces/adInterfaceAndMappingSetup.html',
+        templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
         controller: 'adInterfaceConfigurationCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
@@ -825,6 +833,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchCurrencyList();
             }]
+        }
+    });
+
+    $stateProvider.state('admin.datevSetup', {
+        templateUrl: '/assets/partials/interfaces/datev/adDatev.html',
+        controller: 'adDatevCtrl',
+        url: '/datev',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('datev');
+                }]
         }
     });
 

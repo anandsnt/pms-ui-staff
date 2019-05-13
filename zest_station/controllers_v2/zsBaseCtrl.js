@@ -405,9 +405,9 @@ function BaseCtrl($scope) {
                     'from_screen': from ? from : '',
 
                     'idle_timer': {
-                        'enabled': zs.idle_timer.enabled,
-                        'max': zs.idle_timer.max,
-                        'prompt': zs.idle_timer.prompt
+                        'enabled': zs.idle_timer ? zs.idle_timer.enabled : false,
+                        'max': zs.idle_timer ? zs.idle_timer.max : "",
+                        'prompt': zs.idle_timer ? zs.idle_timer.prompt : ""
                     },
                     'upsell_addons_enabled': false,
                     'upsell_rooms_enabled': false,
@@ -509,6 +509,9 @@ function BaseCtrl($scope) {
         // for each session of this station, send along the OOS reason(s) with timestamps
         // for now, just include the workstation time
         // 
+        if (typeof $scope.zestStationData.sessionActivity === 'undefined') {
+            return;
+        }
         var today = new Date();
         var currentTime = today.toString();
 

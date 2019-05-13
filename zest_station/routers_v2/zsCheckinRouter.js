@@ -3,6 +3,9 @@ sntZestStation.config(['$stateProvider',
         // checkin reservation search
         $stateProvider.state('zest_station.checkInReservationSearch', {
             url: '/checkInReservationSearch',
+            params: {
+                last_name: '',
+            },
             templateUrl: '/assets/partials_v2/checkin/zscheckInReservationSearch.html',
             controller: 'zscheckInReservationSearchCtrl',
             jumper: true,
@@ -603,5 +606,17 @@ sntZestStation.config(['$stateProvider',
             }
         });
 
+        $stateProvider.state('zest_station.findReservationFromId', {
+            url: '/findReservationFromId',
+            controller: 'zsCheckinfindReservationFromIdCtrl',
+            templateUrl: '/assets/partials_v2/checkin/zsFindReservationUsingId.html'
+        });
+
+        $stateProvider.state('zest_station.walkInReservation', {
+            url: '/walkInReservation',
+            controller: 'zsWalkInCtrl',
+            templateUrl: '/assets/partials_v2/walkin/zsWakinReservationMain.html'
+        });
+    
     }
 ]);

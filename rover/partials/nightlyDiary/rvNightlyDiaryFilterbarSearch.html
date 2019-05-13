@@ -1,5 +1,5 @@
 <!-- Find reservation -->
-<div class="entry search" ng-controller = "rvNightlyDiaryFilterbarSearchController">
+<div class="entry search" ng-class="{'hidden': diaryData.isBookRoomViewActive }" ng-controller = "rvNightlyDiaryFilterbarSearchController">
     <button class="clear-query" ng-class = "{'visible': textInQueryBox.length > 0}"> <!-- Class 'visible' added when searching. Clicking the button clears the query text. -->
         <span class="icons icon-clear-search" ng-click = "clearResults()">Clear query</span>
     </button>

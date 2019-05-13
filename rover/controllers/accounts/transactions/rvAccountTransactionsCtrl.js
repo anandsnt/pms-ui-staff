@@ -435,7 +435,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
 				
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
-			if ($scope.isFromPaymentScreen) {
+			if ($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) {
 				$scope.shouldGenerateFolioNumber = true;
 			}
 			getTransactionDetails();
@@ -927,33 +927,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				};
 
 			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
-		};
-
-		/*
-		 * Settle invoice
-		 */
-		var finalInvoiceSettlement = function(data, isPrint) {
-			var settleInvoiceSuccess = function() {
-					$scope.shouldGenerateFinalInvoice = false;
-					if (isPrint) {
-						printBillCard(data);
-					} else {
-						$scope.sendEmail(data);
-					}				
-				},
-				options = {
-					params: {"bill_id": $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id},
-					successCallBack: settleInvoiceSuccess
-				};
-
-			$scope.callAPI(RVBillCardSrv.settleFinalInvoice, options);
-		};
+		};		
 
 		$scope.clickedEmail = function(requestParams) {
 			$scope.sendEmail(requestParams);
 		};
 
 		$scope.clickedPrint = function(requestParams) {
+			sntActivity.start("PRINT_STARTED");
 			printBillCard(requestParams);
 		};
 
@@ -966,6 +947,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} else {
 				$scope.closeDialog();
 			}
+			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchTabTo('TRANSACTIONS');
         };
 
@@ -974,7 +956,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				finalInvoiceSettlement(requestParams, true);
 			} else {
 				var printBillSuccess = function(response) {
-					$scope.$emit('hideLoader');
+					sntActivity.stop("PRINT_STARTED");
 					var responseData = response.data,
 						copyCount = "",
 						timeDelay = 700;
@@ -1006,6 +988,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.nav-bar').addClass('no-print');
 					$('.cards-header').addClass('no-print');
 					$('.card-tabs-nav').addClass('no-print');
+					$("body #loading").html("");
 
 					// this will show the popup with full report
 					$timeout(function() {
