@@ -367,7 +367,7 @@ angular.module('sntPay').controller('sntPaymentController',
             }
 
             // toggle between manual card entry and six payment swipe (C&P option in UI) for sixpayments
-            $scope.sixPayEntryOptionChanged = function () {
+            $scope.toggleManualIframe = function () {
                 if ($scope.payment.isManualEntryInsideIFrame) {
                     changeToCardAddMode();
                 } else {
@@ -1368,7 +1368,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.errorMessage = '';
             };
 
-            $scope.showSixPaymentsModeSelection = function () {
+            $scope.showEmvModeSelection = function () {
                 var isMLIEMV = ($scope.hotelConfig.paymentGateway === 'MLI' &&
                     $scope.hotelConfig.isEMVEnabled) || ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' &&
                     $scope.hotelConfig.isEMVEnabled && $scope.payment.isAddCardAction);
@@ -1379,7 +1379,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         // CICO-41498 in the middle of split bill payments
                         ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
-                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
+                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
                     isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
@@ -1475,7 +1475,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     $timeout(() => {
                         if (isEMVEnabled) {
                             $scope.payment.isManualEntryInsideIFrame = true;
-                            $scope.sixPayEntryOptionChanged();
+                            $scope.toggleManualIframe();
                         }
                         $scope.$broadcast('RENDER_SWIPED_DATA', JSON.parse($scope.swipedCardData));
                     }, 300);
