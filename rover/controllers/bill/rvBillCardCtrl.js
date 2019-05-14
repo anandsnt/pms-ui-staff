@@ -2676,7 +2676,16 @@ sntRover.controller('RVbillCardController',
 		if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 			finalInvoiceSettlement(data, true);
 		} else {
-			var printDataFetchSuccess = function(successData) {
+			var getCopyCount = function(successData) {
+					var copyCount = "";
+
+					if (successData.is_copy_counter) {
+						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+					}
+					return copyCount;
+				},
+				printDataFetchSuccess = function(successData) {
+					var copyCount = "";
 				$scope.isPrintRegistrationCard = false;
 				$scope.printBillCardActive = true;
 				$scope.$emit('hideLoader');
@@ -2689,25 +2698,21 @@ sntRover.controller('RVbillCardController',
 					successData.invoiceLabel = successData.translation.invoice;
 				} 
 				else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-					successData.invoiceLabel = successData.translation.void_invoice;
+					if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) {
+						successData.invoiceLabel = successData.translation.void_invoice;
+					} 
+					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) {
+						copyCount = getCopyCount(successData);
+						successData.invoiceLabel = successData.translation.copy_of_void_invoice.replace("#count", copyCount);
+					}
 				} 
-				else if (($scope.reservationBillData.is_bill_lock_enabled 
-					&& parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
-					|| (!$scope.reservationBillData.is_bill_lock_enabled 
-						&& parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) 
+				else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
 				{
 					successData.invoiceLabel = successData.translation.invoice;
 				} 
-				else if (($scope.reservationBillData.is_bill_lock_enabled 
-					&& parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
-						|| (!$scope.reservationBillData.is_bill_lock_enabled 
-							&& parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)))
+				else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
 				{
-					var copyCount = "";
-
-					if (successData.is_copy_counter) {
-						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
-					}
+					copyCount = getCopyCount(successData);
 					successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 				}
 
