@@ -15,7 +15,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope', 'sntShijiGatewayS
 			if (!!$('#shiji-iframe').length) {
 				let iFrame = document.getElementById('shiji-iframe');
 
-				iFrame.src = iFrame.src;
+				iFrame.src = '/api/ipage/shiji';
 			}
 		});
 
