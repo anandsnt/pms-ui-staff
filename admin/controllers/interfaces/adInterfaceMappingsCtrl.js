@@ -141,7 +141,7 @@ admin.controller('adInterfaceMappingsCtrl', [
         };
        /**
         * @return {string} formattedMappingType formatted to Title Case
-        * @param {sting} mappingType camel_case mapping type from API
+        * @param {string} mappingType camel_case mapping type from API
         */
         $scope.formatMappingType = function(mappingType) {
           if (mappingType.includes('_')) {
