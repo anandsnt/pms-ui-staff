@@ -47,6 +47,8 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				listHavingValues = combinedList[1];
 
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
+			$scope.detailIndex = -1;
+			$scope.isAddMode = false;
 		};
 
 		/**
@@ -107,30 +109,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 			var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
 
-			// current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
-			// check for default
-			if (lang === 'en') {
-				lang = 'english';
-
-			} else if (lang === 'fr') {
-				lang = 'french';
-
-			} else if (lang === 'es') {
-				lang = 'spanish';
-
-			} else if (lang === 'de') {
-				lang = 'german';
-
-			} else if (lang === 'it') {
-				lang = 'italian';
-
-			} else if (lang === 'cl') {
-				lang = 'castellano';
-
-			} else {
-				$log.log('need to add new language code here');
-			}
-			$scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
+			$scope.selectedLanguage.translations_file = encoded;
 			$scope.closePrompt();
 		};
 		// when editing on-screen, need to fetch the language then show on-screen
@@ -214,7 +193,6 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			else {
 				$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageConfig, options);
 			}
-			$scope.detailIndex = -1;
 		};
 
 		$scope.cancel = function() {
@@ -222,6 +200,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			$scope.detailIndex = -1;
 			if ($scope.isAddMode) {
 				$scope.languageList.shift();
+				$scope.isAddMode = false;
 			}
 		};
 
@@ -235,8 +214,11 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		};
 
 		$scope.addNewLanguage = function() {
+			if ($scope.isAddMode) {
+				return;
+			}
 			$scope.isAddMode = true; 
-			$scope.languageList.unshift({ 'name': "", 'position': 1 });
+			$scope.languageList.unshift({ 'name': "", 'position': 1, 'icon': "" });
 			$scope.selectedLanguage = $scope.languageList[0];
 			$scope.detailIndex = 0;
 		};
