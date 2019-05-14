@@ -139,6 +139,25 @@ admin.controller('adInterfaceMappingsCtrl', [
                 getData: $scope.fetchTableData
             });
         };
+       /**
+        * @return {string} formattedMappingType formatted to Title Case
+        * @param {sting} mappingType camel_case mapping type from API
+        */
+        $scope.formatMappingType = function(mappingType) {
+          if(mappingType.includes('_')) {
+              var split = mappingType.split('_'); // split mapping type on '_'
+              var formattedMappingType = ''
+              for(var i = 0; i < split.length; i++) {
+                  // for each word in mapping type, capitalize first character and downcase the others,
+                  // concat to formattedMappingType
+                  formattedMappingType += split[i].charAt(0).toUpperCase() + split[i].slice(1).toLowerCase() + ' '
+              }
+              return formattedMappingType.trim()
+          } else {
+              // if no underscores, titlecase mappingType
+              return mappingType.charAt(0).toUpperCase() + mappingType.slice(1).toLowerCase();
+          }
+        };
 
         (function() {
             $scope.totalCount = 0;
