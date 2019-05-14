@@ -144,19 +144,20 @@ admin.controller('adInterfaceMappingsCtrl', [
         * @param {sting} mappingType camel_case mapping type from API
         */
         $scope.formatMappingType = function(mappingType) {
-          if(mappingType.includes('_')) {
+          if (mappingType.includes('_')) {
               var split = mappingType.split('_'); // split mapping type on '_'
-              var formattedMappingType = ''
-              for(var i = 0; i < split.length; i++) {
+              var formattedMappingType = '';
+
+              for (var i = 0; i < split.length; i++) {
                   // for each word in mapping type, capitalize first character and downcase the others,
                   // concat to formattedMappingType
-                  formattedMappingType += split[i].charAt(0).toUpperCase() + split[i].slice(1).toLowerCase() + ' '
+                  formattedMappingType += split[i].charAt(0).toUpperCase() + split[i].slice(1).toLowerCase() + ' ';
               }
-              return formattedMappingType.trim()
-          } else {
+              return formattedMappingType.trim();
+          }
               // if no underscores, titlecase mappingType
               return mappingType.charAt(0).toUpperCase() + mappingType.slice(1).toLowerCase();
-          }
+          
         };
 
         (function() {
