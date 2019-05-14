@@ -1083,7 +1083,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         angular.forEach(data.reservations, function(reservation) {
                             reservation.statusClass = reservation.arrival_date === businessDate ? 'guest check-in' : 'guest no-status';
-                            reservation.statusClass += params.date === reservation.arrival_date ? '' : ' overlay';
+                            reservation.statusClass += params.date === reservation.arrival_date ? '' : ' blocked disable-element';
                         });
                         deferred.resolve(data.reservations);
                     }, function(error) {
