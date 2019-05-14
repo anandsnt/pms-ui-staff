@@ -1,21 +1,16 @@
 angular.module('sntPay').controller('payShijiCtrl', ['$scope', 'sntShijiGatewaySrv', 'sntPaymentSrv', 'paymentAppEventConstants', 'ngDialog', '$timeout', 'sntActivity', '$window', '$sce',
 	function($scope, sntShijiGatewaySrv, sntPaymentSrv, payEvntConst, ngDialog, $timeout, sntActivity, $window, $sce) {
 
-
-		let setUpShijiIframe = () => {
-			// let accessTokenUrl = "https://png-dev-token-proxy.shijicloud.com:9081/token-proxy/token/getTokenIframe?accessToken=f2e87d9cc7a84c95aa7466ba602acd13";
-			// let iframeStyles = "";
-
-			// accessTokenUrl += iframeStyles;
-			// accessTokenUrl = $sce.trustAsResourceUrl(accessTokenUrl);
-			// $scope.payment.iFrameUrl = accessTokenUrl;
-		};
-
 		$scope.$on('RELOAD_IFRAME', () => {
-			if (!!$('#shiji-iframe').length) {
-				let iFrame = document.getElementById('shiji-iframe');
+			let shijiIframe = $('#iframe-token');
 
-				iFrame.src = '/api/ipage/shiji';
+			if (!!shijiIframe.length) {
+				let shijiPaths = sntPaymentSrv.resolvePaths($scope.hotelConfig.paymentGateway, {
+                    card_holder_first_name: $scope.payment.guestFirstName,
+                    card_holder_last_name: $scope.payment.guestLastName
+                });
+
+                shijiIframe[0].src = shijiPaths.iFrameUrl;
 			}
 		});
 
@@ -30,6 +25,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope', 'sntShijiGatewayS
 			// // for API params
 			// cardDetails.cardExpiry = (cardDetails.expiryMonth && cardDetails.expiryYear) ? ("20" + cardDetails.expiryYear + "-" + cardDetails.expiryMonth + "-01") : "";
 			cardDetails.cardCode = sntPaymentSrv.getShijiPayCreditCardType(tokenDetails.cardType).toLowerCase();
+			cardDetails.cardExpiry = "2019-11-01";
 			//cardDetails.cardCode = tokenDetails.cardType;
 			// last 4 number of card
 			cardDetails.endingWith = tokenDetails.suffix4;
@@ -83,12 +79,79 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope', 'sntShijiGatewayS
 		};
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
-			if (!!$('#shiji-iframe').length) {
-				$('#shiji-iframe')[0].contentWindow.postMessage("0", "*");
+            let shijiIframe = $('#iframe-token');
+
+			if (!!shijiIframe.length) {
+                shijiIframe[0].contentWindow.postMessage("0", "*");
 				sntActivity.start('FETCH_SHIJI_TOKEN');
 			}
 			// getTokenByTokenId();
 		});
+
+		let addCard = (tokenId) => {
+			var apiParams = {
+				"token": tokenId,
+				"payment_type": "CC",
+				"card_expiry": "2019-11-01",
+				"reservation_id": "2871136",
+				"bill_number": 1,
+				"add_to_guest_card": $scope.payment.addToGuestCardSelected,
+				 "user_id": $scope.guestId
+			};
+
+			let onAddCardSuccess = (response) => {
+				let paymentResponse = response.data;
+				$scope.$emit('SUCCESS_LINK_PAYMENT', {
+					response: {
+						...paymentResponse,
+						addToGuestCard: $scope.payment.addToGuestCardSelected,
+					},
+					selectedPaymentType: $scope.selectedPaymentType,
+					cardDetails: {
+						'card_code': paymentResponse.credit_card_type,
+						'ending_with': paymentResponse.ending_with,
+						'expiry_date': paymentResponse.expiry_date || '11/19',
+						'card_name': ''
+					}
+				});
+			};
+			
+			var data = {
+				"status": "success",
+				"data": {
+					"id": 708439,
+					"payment_type": "Credit Card",
+					"credit_card_type": "VA",
+					"is_already_on_guest_card": false,
+					"warnings": [],
+					"bill_balance": "-10.0",
+					"reservation_balance": "-10.00",
+					"fees_information": {
+						"charge_code_id": 8098,
+						"amount_symbol": "amount",
+						"amount_sign": "+",
+						"amount": "5.0",
+						"minimum_amount_for_fees": null,
+						"description": "\u00a35 Credit Card Fee"
+					},
+					"reservation_type_id": null,
+					"guest_payment_method_id": null,
+					"has_any_credit_card_attached_bill": true,
+					"restrict_post": false,
+					"token": "8041637097761111",
+					"expiry_date": "11/19",
+					"card_type": "MC",
+					"ending_with": "1234"
+				},
+				"errors": [],
+				"is_eod_in_progress": false,
+				"is_eod_manual_started": false,
+				"is_eod_failed": false,
+				"is_eod_process_running": false
+			};
+			sntActivity.stop('FETCH_SHIJI_TOKEN');
+			onAddCardSuccess(data);
+		};
 
 		// ----------- init -------------
 		(() => {
@@ -96,8 +159,6 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope', 'sntShijiGatewayS
 
 			$scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'SHIJI';
 			// iframe documentation - https://png-development.shijicloud.com:8443/develop/iframe/show
-			setUpShijiIframe();
-
 			// handle payment iFrame communication
 			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 			let eventer = window[eventMethod];
@@ -107,8 +168,9 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope', 'sntShijiGatewayS
 				let responseData = e.data || e.originalEvent.data;
 
 				if (responseData.respCode === "00") {
-					// sntActivity.stop('FETCH_SHIJI_TOKEN');
-					getTokenByTokenId(responseData.tokenId);
+					//sntActivity.stop('FETCH_SHIJI_TOKEN');
+					//getTokenByTokenId(responseData.tokenId);
+					addCard(responseData.tokenId);
 				} else {
 					sntActivity.stop('FETCH_SHIJI_TOKEN');
 					// tokenization failed

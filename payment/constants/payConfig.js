@@ -23,7 +23,7 @@ angular.module("sntPayConfig", []).constant("PAYMENT_CONFIG", Object.freeze({
         disableCardSelection: true
     },
     'SHIJI': {
-        iFrameUrl: null,
+        iFrameUrl: '/api/ipage/shiji',
         jsLibrary: null,
         partial: '/assets/partials/payShijiPartial.html',
         params: iFrameParams

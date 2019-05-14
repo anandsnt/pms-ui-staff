@@ -389,10 +389,10 @@ if (status === 406) { // 406- Network error
             switch (gateWay) {
                 case "MLI":
                 case "CBA":
+                case "CBA_AND_MLI":
+                    break;
                 case "SHIJI":
                     iFrameUrlWithParams = getiFrameUrlWithParams();
-                    break;
-                case "CBA_AND_MLI":
                     break;
                 case "sixpayments":
                     iFrameUrlWithParams = getiFrameUrlWithParams();
@@ -565,6 +565,6 @@ if (status === 406) { // 406- Network error
                 "Visa": 'VA'
             };
 
-            return shijiCreditCardTypes[cardCode] || 'credit-card';
+            return shijiCreditCardTypes[cardCode] || '';
         };
 }]);
