@@ -98,7 +98,7 @@
     </tbody>
 </table>
 
-<table ng-hide="!isStandAlone" class="bill-details">
+<table ng-hide="!isStandAlone" class="bill-details" ng-if = "printRegCardData.daily_instances_info.length > 0">
     <thead>
         <tr>
             <th>{{ printRegCardData.translation.date }}</th>
@@ -111,7 +111,10 @@
     <tbody>
         <tr ng-repeat="each in printRegCardData.daily_instances_info">
             <td>{{ each.date | date : dateFormat }}</td>
-            <td ng-hide="printRegCardData.hide_rates">{{ each.rate | currency:currencySymbol:2 }}</td>
+            <td ng-hide="printRegCardData.hide_rates">
+                <span ng-if="printRegCardData.is_reservation_rate_suppressed">SR</span>
+                <span ng-if="!printRegCardData.is_reservation_rate_suppressed">{{ each.rate | currency:currencySymbol:2 }}</span>
+            </td>
             <td ng-hide="printRegCardData.hide_rates">{{ each.tax  | currency:currencySymbol:2 }}</td>
             <td class="addons" colspan="2">
                 <table>

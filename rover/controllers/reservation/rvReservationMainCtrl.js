@@ -18,7 +18,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$log',
             '$q',
             'RVContactInfoSrv',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv) {
+            'RVRoomRatesSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -771,7 +772,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             setCcTaAllotmentGroupDetails = function (data) {
                 data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company || $scope.reservationData.allotment.company ;
                 data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent || $scope.reservationData.allotment.travelAgent;
-                data.group_id = $scope.reservationData.group.id;
+                // CICO-65314 - Should pass the group id only when the user choose the group rate from the recommended tab
+                // If the user selects a rate from the rates tab, it should be created as a normal reservation
+                if (RVRoomRatesSrv.getRoomAndRateActiveTab() !== 'RATE') {
+                    data.group_id = $scope.reservationData.group.id;
+                }
+                
                 data.allotment_id = $scope.reservationData.allotment.id;
             },
             setDemoGraphicsInfo = function (data, demographicsData) {                 

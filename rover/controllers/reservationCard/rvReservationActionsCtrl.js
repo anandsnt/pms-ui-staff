@@ -241,7 +241,7 @@ sntRover.controller('reservationActionsController', [
                 });
             }
 
-            if ((reservationData.room_status === 'NOTREADY' || isOOORoom ) && reservationData.is_hourly_reservation) {
+            if ((reservationData.room_status === 'NOTREADY' || isOOORoom ) && (reservationData.is_hourly_reservation || $rootScope.hotelDiaryConfig.mode === 'FULL')) {
                 return true;
             }
             return false;
@@ -251,7 +251,8 @@ sntRover.controller('reservationActionsController', [
             RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
             $state.go('rover.diary', {
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
-                checkin_date: $scope.reservationData.reservation_card.arrival_date
+                checkin_date: $scope.reservationData.reservation_card.arrival_date,
+                is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
             });
         };
 
@@ -444,15 +445,22 @@ sntRover.controller('reservationActionsController', [
             // NOTE: room_id is provided as string and number >.<, that why checking length/existance
             var hasRoom = typeof $scope.reservationData.reservation_card.room_id === 'string' ? $scope.reservationData.reservation_card.room_id.length : $scope.reservationData.reservation_card.room_id;
 
-                        if (!hasRoom && $scope.putInQueueClicked) {
-                            if ($scope.reservationMissingGuestDataOrDemographics()) {
-                                    $scope.$emit('showLoader');
-                                    $scope.validateEmailPhone();
-                                    return false;
-                            }
-                            $scope.goToRoomAssignment();
+                // CICO-65447 : FULL Mode: Reservations should be redirected to Hourly(D) diary, 
+                // when clicking the CHECK IN button if the reservation has no room assigned or assigned room is not ready
+                if (!hasRoom && $rootScope.hotelDiaryConfig.mode === 'FULL') {
+                    gotoDiaryInEditMode();
+                    return false;
+                }
+
+                if (!hasRoom && $scope.putInQueueClicked) {
+                    if ($scope.reservationMissingGuestDataOrDemographics()) {
+                            $scope.$emit('showLoader');
+                            $scope.validateEmailPhone();
                             return false;
-                        }
+                    }
+                    $scope.goToRoomAssignment();
+                    return false;
+                }
 
 
             if (!!hasRoom) {
