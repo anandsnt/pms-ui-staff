@@ -24,6 +24,9 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				shijiIframe.on('load', () => {
 					sntActivity.stop('SHIJI_IFRAME_LOADING');
 				});
+				shijiIframe.on('error', () => {
+					sntActivity.stop('SHIJI_IFRAME_LOADING');
+				});
 			}
 		});
 
@@ -77,7 +80,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			let apiParams = {
 				"token": tokenId,
 				"payment_type": "CC",
-				"card_expiry": "2019-11-01",
+				"card_expiry": "2020-12-31",
 			};
 
 			if (isAddCardAction) {
@@ -99,8 +102,24 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
-			let data = sntShijiGatewaySrv.paymentAddSuccess;
-			onAddCardSuccess(data);
+			let onSaveFailure = (errorMessage) => {
+                 $scope.$emit('PAYMENT_FAILED', errorMessage);
+            };
+            sntActivity.start('SAVE_CC_PAYMENT');
+			sntPaymentSrv.savePaymentDetails(apiParams).then(
+				response => {
+					if (response.status === 'success') {
+						onAddCardSuccess(response);
+					} else {
+						onSaveFailure(response.errors);
+					}
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				},
+				errorMessage => {
+					onSaveFailure(errorMessage);
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				});
+			
 		};
 
 		// ----------- init -------------

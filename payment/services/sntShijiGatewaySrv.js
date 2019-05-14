@@ -80,33 +80,5 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
             poller();
             return deferred.promise;
         };
-
-    service.getToken = (tokenId) => {
-        var data = {
-            apiUser: "ifameApiUser",
-            cardType: "Visa",
-            correlationId: "bfd0194a3ded417194d9d3f23fa50f94",
-            issuerCode: "20",
-            issuerName: "Visa",
-            messageType: "6",
-            panLen: "16",
-            partnerId: "cd8e3340c0e34101b3347e9b6ed6962b",
-            prefix6: "411111",
-            reqTrace: "bf38c34d426a4cfea2f97eaee2f69e5a",
-            respCode: "00",
-            respText: "Approve",
-            signature: "lmB1BTGZuM2bFCkzUJYbCzYgedXvPI6DaGB7IsLI0Eg=",
-            suffix4: "1111",
-            timestamp: "20190514031408",
-            token: "4111119237471111",
-            tokenChannel: "1"
-        };
-        let deferred = $q.defer();
-        
-        deferred.resolve(data);
-
-        return deferred.promise;
-    };
-
     }
 ]);
