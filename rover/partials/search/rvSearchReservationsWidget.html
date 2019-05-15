@@ -63,20 +63,39 @@
                         </span>
                         <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
 
-                        <span class="guest-status check-in"></span>
-                        <time class="guest-time">
-                            <span>{{row.arrival_date| date : dateFormat}}</span>
-                            <span class="hours">{{getTimeConverted(row.arrival_time)}}</span>
-                        </time>
+                    </div>
 
-                        <span class="guest-status check-out"></span>
-                        <time class="guest-time">
-                            <span>{{row.departure_date| date : dateFormat}}</span>
-                            <span class="hours">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</span>
-                        </time>
+                    <!-- If Daily reservation add .daily -->
+                    <div class="reservation-time" ng-class="{'daily': row.arrival_date === row.departure_date}">
+                        <div class="check-icons">
+                            <span class="guest-status check-in">arrival</span>
+                            <span class="guest-status check-out">departure</span>
+                        </div>
+                        <div class="check-times">
+                            <!-- If nightly reservation -->
+                            <time class="guest-time" ng-if="row.arrival_date !== row.departure_date">
+                                <span>{{row.arrival_date| date : dateFormat}}</span>
+                                <span class="hours">{{getTimeConverted(row.arrival_time)}}</span>
+                            </time>
+                            <time class="guest-time" ng-if="row.arrival_date !== row.departure_date">
+                                <span>{{row.departure_date| date : dateFormat}}</span>
+                                <span class="hours">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</span>
+                            </time>
+
+                            <!-- If daily reservation -->
+                            <div class="guest-hours" ng-if="row.arrival_date === row.departure_date">
+                                <time class="guest-time">{{getTimeConverted(row.arrival_time)}}</time> - <time class="guest-time">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</time>
+                            </div>
+                            <span class="date">{{row.arrival_date| date : dateFormat}}</span>
+                            
+                        </div>
                     </div>
 
                     <div class="reservation-info">
+
+                    	<div class="reservation-type red" ng-if="row.is_day_use && hotelDiaryConfig.mode !== 'FULL'">D</div>
+                    	<div class="reservation-type red" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
                         <div class="guest-info">
                             <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
 	                        <span class="guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
@@ -102,15 +121,14 @@
                                 	<span class="time" pretty-time-ago="row.is_queued_till"></span>
                                 </span>
                             </div>
-
-
-
                         </div>
-                         <span class="room-status" ng-if="showStatus(row)" ng-class="{'green':!row.is_room_due_out}">{{getRoomStatus(row)}}</span>
-                    </div>
 
+                        <span class="room-status" ng-if="showStatus(row)" ng-class="{'green':!row.is_room_due_out}">{{getRoomStatus(row)}}</span>
+
+                    </div>
                 </a>
 				</li>
+
 				<li class="no-content" ng-show="showNoMatches(results, textInQueryBox.trim().length, isTyping, isSwiped)" >
 					<div class="info">
 						<span class="icon-no-content icon-search"></span>
