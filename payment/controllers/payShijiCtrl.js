@@ -45,6 +45,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				shijiIframe[0].contentWindow.postMessage("0", "*");
 				sntActivity.start('FETCH_SHIJI_TOKEN');
 			}
+			$("input").blur();
 		});
 
 		let onAddCardSuccess = (response) => {
