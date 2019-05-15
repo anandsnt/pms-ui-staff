@@ -1273,9 +1273,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                     $scope.payment.tokenizedCardData = paymentData;
                     $scope.selectedCC = $scope.selectedCC || {};
-                    $scope.selectedCC.card_code = response.credit_card_type;
-                    $scope.selectedCC.ending_with = response.ending_with;
-                    $scope.selectedCC.expiry_date = response.expiry_date;
+                    $scope.selectedCC.card_code = paymentData.cardDisplayData.card_code;
+                    $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
+                    $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
                     $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card || paymentData.apiParams.card_name;
                     $timeout(() => {
                         $scope.selectedPaymentType = 'CC';

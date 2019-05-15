@@ -70,7 +70,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			let apiParams = {
 				"token": tokenId,
 				"payment_type": "CC",
-				"card_expiry": "2020-12-31",
+				"card_expiry": "2020-12-31"
 			};
 
 			if (isAddCardAction) {
