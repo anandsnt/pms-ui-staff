@@ -86,7 +86,7 @@
                             <div class="guest-hours" ng-if="row.arrival_date === row.departure_date">
                                 <time class="guest-time">{{getTimeConverted(row.arrival_time)}}</time> - <time class="guest-time">{{getTimeConverted(row.late_checkout_time || row.departure_time)}}</time>
                             </div>
-                            <span class="date">{{row.arrival_date| date : dateFormat}}</span>
+                            <span class="date" ng-if="row.arrival_date === row.departure_date">{{row.arrival_date| date : dateFormat}}</span>
                             
                         </div>
                     </div>
