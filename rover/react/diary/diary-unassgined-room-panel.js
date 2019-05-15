@@ -222,7 +222,7 @@ var UnassignedRoomPanel = React.createClass({
                             room.is_vip ? React.DOM.span(
                                 {
                                     className: 'vip'
-                                }
+                                }, 'vip'
                             ) : '',
                             React.DOM.span(
                                 {
@@ -266,9 +266,9 @@ var UnassignedRoomPanel = React.createClass({
                     className: 'sidebar-header'
                 },
                     React.DOM.h2({
-                    }, 'Unassigned Rooms'),
+                    }, 'Unassigned Reservations'),
                     React.DOM.p({
-                    }, 'Drag & Drop To Assign a Room')
+                    }, 'Select Reservation To Assign A Room')
                 ),
                 React.DOM.div({
                     id: 'unassigned-list',
