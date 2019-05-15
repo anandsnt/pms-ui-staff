@@ -111,44 +111,12 @@
             &.hidden { #fade > .out(); }
         }
 
-        .switch-button { 
-            .size(40px, 180px);
-
-            input {
-                height: 40px;
-            }
-
-            .data-off,
-            .data-on {
-                line-height: 30px;
-                height: 30px; 
-
-                &.data-off { 
-                    left: auto;
-                    right: 0;
-
-                    .switch-icon { margin: 0 5px 0 0; }
-                }
-                
-                &.data-on { 
-                    left: auto;
-                    right: 100%;
-
-                    .switch-icon { margin: 0 0 0 5px; }
-                }
-            }
-
-            &.on {
-                .data-off { left: auto; right: -100%; }
-                .data-on { left: auto; right: 0; }
-            }
-        }
-
         .entry-data {
             position: relative;
             padding: 10px;
             background: @white @calendar no-repeat calc(~'100% - 10px') 16px;
             background-size: 20px;
+            overflow: hidden;
             #border-radius > .rounded();
             .box-shadow();
             .size(50px, 100%);
@@ -196,7 +164,6 @@
 
         .entry {
             position: relative;
-            padding-right: 10px;
 
             label {
                 display: table;
@@ -204,47 +171,37 @@
                 line-height: 20px;
                 text-transform: uppercase;
                 margin: 0;
-                width: 100%;            
+                .nowrap();
             }
 
             .button {
                 line-height: 50px;
             }
 
-            &.filter {
-                width: 194px;
+            &.date {
+                width: 180px;
             }
 
-            &.date {
-                width: 170px;
+            &.filter {
+                width: 220px;
             }
 
             &.action {
                 padding-top: 20px;
             }
 
-            &.summary {
-                #flexbox > .parent(row wrap, '', center, '');
-
-                .entry-data {
-                    margin-right: 10px;
-                    width: 220px;
-                }
-
-                .switch-button {
-                    margin-right: 10px;
-                }
+            &:not(:last-child) {
+                margin-right: 10px;
             }
         }        
 
         .display {
-            position: absolute;
-            top: 0;
-            right: 0;
+            margin-left: auto;
             #flexbox > .parent(row nowrap, '', '', '');
 
             li {
                 position: relative;
+                flex: 1 0 auto;
                 cursor: pointer;
                 font-size: 14px;
                 line-height: 1;
@@ -252,26 +209,25 @@
                 text-transform: uppercase;
                 color: @white;
                 background: rgba(0,0,0,.1);
+                padding: 0 10px;
+                margin: 0;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                .square(90px);
+                height: 90px;
+                min-width: 90px;
+                max-width: 140px;
+                .box-shadow(inset -1px 0 0 rgba(0,0,0,.2));
 
                 .icons {
                     padding-top: 50px;
                     font-size: 16px;
                     font-weight: 600;
                     .size(65px, 100%);
-                    .show;
-                    
-                }
-
-                &:not(:last-child) {
-                    .box-shadow(1px 0 0 rgba(0,0,0,.2));
+                    .show();
                 }
 
                 &.active {
                     cursor: default;
-                    .box-shadow(0 1px 1px rgba(0,0,0,.1));
                     .gradient(@logoGradientStart, @logoGradientEnd);
 
                     &:after {
@@ -311,76 +267,176 @@
         .transition(height, .2s, cubic-bezier(.10, .10, .25, .90));
 
         .holder { 
-            padding: 10px 20px;
+            padding: 0 10px;
             overflow: hidden;
+            background-color: transparent;
             .square(100%);
-            .hide; 
-
-            .entry {
-                position: relative;
-                margin-right: 20px;
-
-                label {
-                    display: table;
-                    font-size: 14px;
-                    line-height: 20px;
-                    text-transform: uppercase;
-                    margin-bottom: 0;
-                }
-
-                .select { 
-                    width: 180px; 
-                }
-
-                .switch-button { 
-                    margin-top: 20px;
-                    .size(40px, 180px);
-
-                    input {
-                        height: 40px;
-                    }
-
-                    .data-off,
-                    .data-on {
-                        line-height: 30px;
-                        height: 30px; 
-
-                        &.data-off { 
-                            left: auto;
-                            right: 0;
-
-                            .switch-icon { margin: 0 5px 0 0; }
-                        }
-                        
-                        &.data-on { 
-                            left: auto;
-                            right: 100%;
-
-                            .switch-icon { margin: 0 0 0 5px; }
-                        }
-                    }
-
-                    &.on {
-                        .data-off { left: auto; right: -100%; }
-                        .data-on { left: auto; right: 0; }
-                    }
-                }
-            }
-
-            .actions {
-                margin: 20px 0 0 auto;
-                width: 120px;
-
-                .button { width: 100%; }
-            }
+            .hide(); 
         }
 
+        .entry {
+            position: relative;
+
+            label:not(.data-off):not(.data-on) {
+                position: absolute;
+                top: 7px;
+                left: 10px;
+                font-size: 12px;
+                line-height: 1;
+                text-transform: uppercase;
+                color: @grey3;
+                margin-bottom: 0;
+                z-index: 100;
+            }
+
+            .switch-button { 
+                .size(40px, 180px);
+
+                input {
+                    height: 40px;
+                }
+
+                .data-off,
+                .data-on {
+                    font-size: 14px;
+                    line-height: 30px;
+                    height: 30px; 
+                    text-transform: uppercase;
+                    margin-bottom: 0;
+
+                    &.data-off { 
+                        left: auto;
+                        right: 0;
+
+                        .switch-icon { margin: 0 5px 0 0; }
+                    }
+                    
+                    &.data-on { 
+                        left: auto;
+                        right: 100%;
+
+                        .switch-icon { margin: 0 0 0 5px; }
+                    }
+                }
+
+                &.on {
+                    .data-off { left: auto; right: -100%; }
+                    .data-on { left: auto; right: 0; }
+                }
+            }
+
+            .select {
+                width: 180px;
+            }
+
+            select {
+                padding: 13px 10px 0;
+                font-size: 14px;
+                line-height: 28px;
+            }
+
+            .button {
+                &.with-icon {
+                    .square(40px);
+                }
+            }
+
+            &.search {
+                flex: 1;
+
+                .icon-search {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 99;
+                }
+
+                .clear-query {
+                    position: absolute;
+                    top: 0;
+                    right: 160px;
+                    z-index: 99;
+                    visibility: hidden;
+                    .square(40px);
+
+                    .icons {
+                        position: absolute;
+                        top: 12.5px;
+                        right: 12.5px;
+                        background-color: @grey2;
+                        .hide-text;
+                        .square(15px);
+                        .opacity(0);
+                        .show;
+                        #border-radius > .rounded(15px);
+                    }
+
+                    &.visible { 
+                        visibility: visible;
+
+                        .icons {    
+                            .opacity(100); 
+                        }
+                    }
+
+                    &:hover,
+                    &.active { 
+                        .icons { background-color: @logoPrimary; }
+                    }
+                }
+
+                input {
+                    width: 100%;
+                    font-size: 21px;
+                    font-weight: 700;
+                    padding-left: 30px;
+                    padding-right: 180px;
+                    color: @logoPrimary; 
+                    z-index: 9;
+                    .box-shadow(inset 1px 1px 0 rgba(0,0,0,.15));
+                    #border-radius > .rounded(25px);
+
+                    &:focus,
+                    &:active { .box-shadow(inset 1px 1px 0 rgba(0,0,0,.3)); }
+                }
+
+                .select {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 160px;
+
+                    label {
+                        top: 8px;
+                    }
+                    
+                    &:after {
+                        background-color: transparent;
+                    }
+                }
+
+                select {
+                    border-top-right-radius: 25px;
+                    border-bottom-right-radius: 25px;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    background-color: @grey1;
+                    box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
+                }
+            }
+
+            &:not(:last-child) {
+                margin-right: 10px;
+            }
+        }       
+
         &.open {         
-            height: 80px;
+            height: 60px;
             background: @rcardTexture2;
             .box-shadow(0 1px 1px rgba(0,0,0,.15));
 
             .holder { 
+                padding: 10px;
                 #flexbox > .parent(row wrap, '', '', '');
             }
         }
@@ -395,8 +451,7 @@
         left: 0;
         z-index: 99;
         background: @rcardTexture2;
-        padding: 0 10px;
-        .size(80px, 100%);
+        .size(60px, 100%);
         .box-shadow(inset 0 -1px 2px rgba(0,0,0,.15));
         #flexbox > .parent(row wrap, '', '', '');
 
@@ -406,32 +461,19 @@
             text-transform: uppercase;
             text-align: center;
             cursor: pointer;
-            padding: 15px 0;
-            .size(80px, 100px);
+            margin: 0;
+            .box-shadow(inset -1px 0 0 rgba(0,0,0,.2));
+            .size(60px, 100px);
             .opacity(40);
 
             .icons {
-                .size(30px, 100%);
+                .size(28px, 100%);
             }
 
             &.active { 
-                position: relative;
                 cursor: default;
+                .background();
                 .opacity(100);
-
-                &:after {
-                    content: "";
-                    position: absolute;
-                    left: 50%;
-                    bottom: 0;
-                    width: 0; 
-                    height: 0; 
-                    margin-left: -10px;
-                    border-bottom: 10px solid darken(@white, 3);
-                    border-left: 10px solid transparent;
-                    border-right: 10px solid transparent;
-                    z-index: 1000;
-                }
             }
         }
     }
@@ -983,7 +1025,13 @@
             }
         }
 
-        /* Revenue ***/
+        /* Revenue / Payments ***/
+        &.revenue,
+        &.payments {
+            margin-top: 60px;
+            .calc-height(100, 170);
+        }
+
         &.revenue {
             .journal-grid {
 
@@ -1008,8 +1056,6 @@
 
         /* Payments ***/
         &.payments {
-            margin-top: 80px;
-            .calc-height(100, 170);
 
             .journal-grid {
 
