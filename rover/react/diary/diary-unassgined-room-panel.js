@@ -222,7 +222,7 @@ var UnassignedRoomPanel = React.createClass({
                             room.is_vip ? React.DOM.span(
                                 {
                                     className: 'vip'
-                                }
+                                }, 'vip'
                             ) : '',
                             React.DOM.span(
                                 {
