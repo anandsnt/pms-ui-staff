@@ -97,8 +97,9 @@ var CurrencyInfoMappings = {
     'USD': [2, '$', 'US$'],
     'UYU': [2, '$', 'UY$'],
     'VND': [0, '\u20AB', 'VN\u20AB'],
-    'YER': [0, 'Rial', 'Rial'],
-    'ZAR': [2, 'R', 'ZAR']
+    'YER': [0, 'Rial', 'Rial'],,
+    'ZAR': [2, 'R', 'ZAR'],
+    'PLN': [2, 'zł', 'zł']
 };
 
 /**
