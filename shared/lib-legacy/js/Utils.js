@@ -97,7 +97,7 @@ var CurrencyInfoMappings = {
     'USD': [2, '$', 'US$'],
     'UYU': [2, '$', 'UY$'],
     'VND': [0, '\u20AB', 'VN\u20AB'],
-    'YER': [0, 'Rial', 'Rial'],,
+    'YER': [0, 'Rial', 'Rial'],
     'ZAR': [2, 'R', 'ZAR'],
     'PLN': [2, 'zł', 'zł']
 };
@@ -107,7 +107,7 @@ var CurrencyInfoMappings = {
 * @param {string/integer} is the value to be checked
 * @param {array} is the set of values to be evaluated
 */
-var isAnyMatch = function(val, arr){
+var isAnyMatch = function(val, ar){
     var ret = false;
     for(var i=0, j= arr.length ; i<j ; i++){
         if(arr[i] === val){
