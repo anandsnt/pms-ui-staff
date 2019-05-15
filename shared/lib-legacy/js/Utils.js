@@ -107,7 +107,7 @@ var CurrencyInfoMappings = {
 * @param {string/integer} is the value to be checked
 * @param {array} is the set of values to be evaluated
 */
-var isAnyMatch = function(val, ar){
+var isAnyMatch = function(val, arr){
     var ret = false;
     for(var i=0, j= arr.length ; i<j ; i++){
         if(arr[i] === val){
