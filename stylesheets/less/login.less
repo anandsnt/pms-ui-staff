@@ -114,6 +114,13 @@
 	@highdpi: ~"(-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), (min-resolution: 1.5dppx)";
 
 /* Mixins 				==================================*/
+    .placeholder-text() {
+        font-style: italic;
+        color: @grey3;
+        font-weight: 300;
+        font-size: (@base * 2);
+    }
+
 	#font {
 		#family {
 			.sans-serif() {
@@ -153,6 +160,20 @@
 	.square(@size: 5px) {
 		.size(@size, @size);
 	}
+
+    .hide,
+    .ng-hide,
+    .hidden { 
+        display: none !important; 
+    }
+
+    .hide-text {
+        text-indent: -9999px;
+    }
+
+    .transition (@property: all, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90)) {
+        transition: @property @duration @easing;
+    }
 
 	.float() {
 		*zoom: 1;
