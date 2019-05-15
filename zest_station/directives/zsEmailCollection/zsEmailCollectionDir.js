@@ -9,7 +9,7 @@ sntZestStation.directive('zsEmailCollection', function() {
 			email: '=email',
 			isSkipable: '=isSkipable',
 			showKeyboard: '&',
-			onFocus: '&',
+			onFocus: '=',
 			onBlur: '&'
 		},
 		templateUrl: '/assets/directives/zsEmailCollection/zsEmailCollectionDir.html',
