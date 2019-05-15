@@ -4,7 +4,7 @@ describe('payShijiCtrl', () => {
         $scope = {},
         $rootScope,
         sntActivity,
-        ctrl,
+        payShijiCtrl,
         $q,
         sntPaymentSrv;
 
@@ -16,7 +16,7 @@ describe('payShijiCtrl', () => {
                     iFrameUrl: '/api/ipage/shiji',
                     jsLibrary: null,
                     partial: '/assets/partials/payShijiPartial.html',
-                    params: iFrameParams
+                    params: {}
                 }
             });
         });
@@ -53,10 +53,24 @@ describe('payShijiCtrl', () => {
 
             }
         });
-        ctrl = $controller('payShijiCtrl', {
+        payShijiCtrl = $controller('payShijiCtrl', {
             $scope: $scope
         });
     });
+
+    it('On iFrame reloading show loading indicator', () => {
+        let fixture = '<iframe class="payment-iframe iframe-scroll" id="iframe-token" ng-controller="payShijiCtrl" seamless></iframe>';
+
+        document.body.insertAdjacentHTML(
+            'afterbegin',
+            fixture);
+        spyOn(sntActivity, 'start');
+        payShijiCtrl.loadShijiIframe();
+
+        expect(sntActivity.start)
+            .toHaveBeenCalledWith('SHIJI_IFRAME_LOADING');
+    });
+
 
     it('set isManualEntryInsideIFrame as true if card is present', () => {
 
@@ -71,19 +85,6 @@ describe('payShijiCtrl', () => {
             .toHaveBeenCalled();
     });
 
-    it('On iFrame reloading show loading indicator', () => {
-        let fixture = '<iframe class="payment-iframe iframe-scroll" id="iframe-token" ng-controller="payShijiCtrl" seamless></iframe>';
-
-        document.body.insertAdjacentHTML(
-            'afterbegin',
-            fixture);
-        spyOn(sntActivity, 'start');
-        $scope.$emit('RELOAD_IFRAME');
-
-        expect(sntActivity.start)
-            .toHaveBeenCalledWith('SHIJI_IFRAME_LOADING');
-    });
-
     describe('Add payment method', () => {
         it('on Message from iframe retieve token Id', () => {
             spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
@@ -96,7 +97,7 @@ describe('payShijiCtrl', () => {
                 return deferred.promise;
             });
             $scope.actionType = 'ADD_PAYMENT_CARD';
-            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            payShijiCtrl.tokenizeBySavingtheCard('XXXXXXXXX');
             $rootScope.$apply();
         });
 
@@ -112,7 +113,7 @@ describe('payShijiCtrl', () => {
                 return deferred.promise;
             });
             $scope.actionType = 'ADD_PAYMENT_CARD';
-            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            payShijiCtrl.tokenizeBySavingtheCard('XXXXXXXXX');
             $rootScope.$apply();
             expect($scope.$emit).toHaveBeenCalledWith('SUCCESS_LINK_PAYMENT', jasmine.any(Object));
         });
@@ -130,7 +131,7 @@ describe('payShijiCtrl', () => {
                 return deferred.promise;
             });
             $scope.actionType = 'ADD_PAYMENT_CARD';
-            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            payShijiCtrl.tokenizeBySavingtheCard('XXXXXXXXX');
             $rootScope.$apply();
             expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', jasmine.any(Object));
         });
@@ -144,7 +145,7 @@ describe('payShijiCtrl', () => {
             });
             spyOn($scope, '$emit');
             $scope.actionType = 'ADD_PAYMENT_CARD';
-            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            payShijiCtrl.tokenizeBySavingtheCard('XXXXXXXXX');
             $rootScope.$apply();
             expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', 'Error');
         });
@@ -153,7 +154,7 @@ describe('payShijiCtrl', () => {
     it('For payment screens, on Message from iframe retieve token Id and notify the parent controller', () => {
         spyOn($scope, '$emit');
         $scope.actionType = 'DEPOSIT_PAYMENT_RES_SUMMARY';
-        $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+        payShijiCtrl.tokenizeBySavingtheCard('XXXXXXXXX');
         expect($scope.$emit).toHaveBeenCalledWith('PAYMENTAPP_CC_TOKEN_GENERATED', jasmine.any(Object));
     });
 });

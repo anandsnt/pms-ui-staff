@@ -371,7 +371,7 @@ if (status === 406) { // 406- Network error
         service.resolvePaths = function(gateWay, params) {
             var iFrameUrlWithParams = "",
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
-            var getiFrameUrlWithParams = function(){
+            var getiFrameUrlWithParams = function() {
                 var time = new Date().getTime(),
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action,
                         jwt = localStorage.getItem('jwt') || '';

@@ -6,13 +6,15 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 	'$timeout',
 	'sntActivity',
 	'$window',
-	'$sce',
-	($scope, sntShijiGatewaySrv, sntPaymentSrv, payEvntConst, ngDialog, $timeout, sntActivity, $window, $sce) => {
+	'$log',
+	function($scope, sntShijiGatewaySrv, sntPaymentSrv, payEvntConst, ngDialog, $timeout, sntActivity, $window, $log) {
 
-		let loadShijiIframe = () => {
+		let self = this;
+
+		self.loadShijiIframe = () => {
 			let shijiIframe = $('#iframe-token');
 
-			if (!!shijiIframe.length) {
+			if (shijiIframe && shijiIframe.length) {
 				let shijiPaths = sntPaymentSrv.resolvePaths($scope.hotelConfig.paymentGateway, {
 					card_holder_first_name: $scope.payment.guestFirstName,
 					card_holder_last_name: $scope.payment.guestLastName
@@ -32,14 +34,14 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		$scope.$on('RELOAD_IFRAME', () => {
 			// TODO: handle if needed. Now the iframe loading is taking some time
-			// loadShijiIframe();
+			// self.loadShijiIframe();
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
 			$scope.clearErrorMessage();
 			let shijiIframe = $('#iframe-token');
 
-			if (!!shijiIframe.length) {
+			if (shijiIframe && shijiIframe.length) {
 				shijiIframe[0].contentWindow.postMessage("0", "*");
 				sntActivity.start('FETCH_SHIJI_TOKEN');
 			}
@@ -47,10 +49,11 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		let onAddCardSuccess = (response) => {
 			let paymentResponse = response.data;
+
 			$scope.$emit('SUCCESS_LINK_PAYMENT', {
 				response: {
 					...paymentResponse,
-					addToGuestCard: $scope.payment.addToGuestCardSelected,
+					addToGuestCard: $scope.payment.addToGuestCardSelected
 				},
 				selectedPaymentType: $scope.selectedPaymentType,
 				cardDetails: {
@@ -62,7 +65,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			});
 		};
 
-		$scope.tokenizeBySavingtheCard = (tokenId) => {
+		self.tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
 				"token": tokenId,
@@ -71,18 +74,19 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			};
 
 			if (isAddCardAction) {
-				apiParams.reservation_id = $scope.reservationId
+				apiParams.reservation_id = $scope.reservationId;
 				apiParams.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 				apiParams.bill_number = 1;
-				apiParams.user_id = $scope.guestId
+				apiParams.user_id = $scope.guestId;
 			}
 
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
 			let onSaveFailure = (errorMessage) => {
-                 $scope.$emit('PAYMENT_FAILED', errorMessage);
-            };
-            sntActivity.start('SAVE_CC_PAYMENT');
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+			};
+
+			sntActivity.start('SAVE_CC_PAYMENT');
 			if (isAddCardAction) {
 				sntPaymentSrv.savePaymentDetails(apiParams).then(
 					response => {
@@ -106,26 +110,27 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 						}
 					}
 				};
+
 				$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
 			}
 		};
 
 		// ----------- init -------------
 		(() => {
-			loadShijiIframe();
+			self.loadShijiIframe();
 			let isCCPresent = angular.copy($scope.showSelectedCard());
+
 			// iFrame documentation - https://png-development.shijicloud.com:8443/develop/iframe/show
 			$scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'SHIJI';
 			// handle payment iFrame communication
 			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-			let eventer = window[eventMethod];
 			let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
 			angular.element($window).on(messageEvent, function(e) {
 				let responseData = e.data || e.originalEvent.data;
 
 				if (responseData.respCode === "00") {
-					$scope.tokenizeBySavingtheCard(responseData.tokenId);
+					self.tokenizeBySavingtheCard(responseData.tokenId);
 				} else {
 					sntActivity.stop('FETCH_SHIJI_TOKEN');
 					$log.info('Tokenization Failed');
