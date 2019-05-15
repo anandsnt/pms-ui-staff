@@ -9,7 +9,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 	'$sce',
 	($scope, sntShijiGatewaySrv, sntPaymentSrv, payEvntConst, ngDialog, $timeout, sntActivity, $window, $sce) => {
 
-		$scope.$on('RELOAD_IFRAME', () => {
+		let loadShijiIframe = () => {
 			let shijiIframe = $('#iframe-token');
 
 			if (!!shijiIframe.length) {
@@ -28,6 +28,11 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 					sntActivity.stop('SHIJI_IFRAME_LOADING');
 				});
 			}
+		};
+
+		$scope.$on('RELOAD_IFRAME', () => {
+			// TODO: handle if needed. Now the iframe loading is taking some time
+			// loadShijiIframe();
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
@@ -40,7 +45,8 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			}
 		});
 
-		let addPaymentTypeSuccess = (paymentResponse) => {
+		let onAddCardSuccess = (response) => {
+			let paymentResponse = response.data;
 			$scope.$emit('SUCCESS_LINK_PAYMENT', {
 				response: {
 					...paymentResponse,
@@ -54,26 +60,6 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 					'card_name': ''
 				}
 			});
-		};
-
-		let addCardForPaymentSuccess = (paymentResponse) => {
-			var paymentDetails = {
-				"paymentData": {
-					"apiParams": {
-						"token": tokenId,
-						"payment_type": "CC",
-						"card_expiry": "2023-12-01"
-					},
-					"cardDisplayData": {
-						"card_code": paymentResponse.credit_card_type,
-						"name_on_card": "",
-						"ending_with": paymentResponse.ending_with,
-						"expiry_date": paymentResponse.expiry_date || '11/19'
-					}
-				}
-			};
-
-			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentDetails);
 		};
 
 		$scope.tokenizeBySavingtheCard = (tokenId) => {
@@ -91,40 +77,42 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				apiParams.user_id = $scope.guestId
 			}
 
-			let onAddCardSuccess = (response) => {
-				let paymentResponse = response.data;
-
-				if (isAddCardAction) {
-					addPaymentTypeSuccess(paymentResponse);
-				} else {
-					addCardForPaymentSuccess(paymentResponse);
-				}
-			};
-
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
 			let onSaveFailure = (errorMessage) => {
                  $scope.$emit('PAYMENT_FAILED', errorMessage);
             };
             sntActivity.start('SAVE_CC_PAYMENT');
-			sntPaymentSrv.savePaymentDetails(apiParams).then(
-				response => {
-					if (response.status === 'success') {
-						onAddCardSuccess(response);
-					} else {
-						onSaveFailure(response.errors);
+			if (isAddCardAction) {
+				sntPaymentSrv.savePaymentDetails(apiParams).then(
+					response => {
+						if (response.status === 'success') {
+							onAddCardSuccess(response);
+						} else {
+							onSaveFailure(response.errors);
+						}
+						sntActivity.stop('SAVE_CC_PAYMENT');
+					},
+					errorMessage => {
+						onSaveFailure(errorMessage);
+						sntActivity.stop('SAVE_CC_PAYMENT');
+					});
+			} else {
+				let params = {
+					'paymentData': {
+						'apiParams': apiParams,
+						'cardDisplayData': {
+							'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
+						}
 					}
-					sntActivity.stop('SAVE_CC_PAYMENT');
-				},
-				errorMessage => {
-					onSaveFailure(errorMessage);
-					sntActivity.stop('SAVE_CC_PAYMENT');
-				});
-			
+				};
+				$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
+			}
 		};
 
 		// ----------- init -------------
 		(() => {
+			loadShijiIframe();
 			let isCCPresent = angular.copy($scope.showSelectedCard());
 			// iFrame documentation - https://png-development.shijicloud.com:8443/develop/iframe/show
 			$scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'SHIJI';

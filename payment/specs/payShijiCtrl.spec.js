@@ -84,32 +84,76 @@ describe('payShijiCtrl', () => {
             .toHaveBeenCalledWith('SHIJI_IFRAME_LOADING');
     });
 
-    it('on Message from iframe retieve token Id', () => {
-        spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
-            var deferred = $q.defer();
+    describe('Add payment method', () => {
+        it('on Message from iframe retieve token Id', () => {
+            spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
+                let deferred = $q.defer();
 
-            deferred.resolve({
-                status: 'success',
-                data: {}
+                deferred.resolve({
+                    status: 'success',
+                    data: {}
+                });
+                return deferred.promise;
             });
-            return deferred.promise;
+            $scope.actionType = 'ADD_PAYMENT_CARD';
+            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            $rootScope.$apply();
         });
-        $scope.actionType = 'ADD_PAYMENT_CARD';
-        $scope.tokenizeBySavingtheCard('XXXXXXXXX');
-        $rootScope.$apply();
+
+        it('on Message from iframe retieve token Id and save card and notify parent controller', () => {
+            spyOn($scope, '$emit');
+            spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
+                let deferred = $q.defer();
+
+                deferred.resolve({
+                    status: 'success',
+                    data: {}
+                });
+                return deferred.promise;
+            });
+            $scope.actionType = 'ADD_PAYMENT_CARD';
+            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            $rootScope.$apply();
+            expect($scope.$emit).toHaveBeenCalledWith('SUCCESS_LINK_PAYMENT', jasmine.any(Object));
+        });
+
+        it('on Message from iframe retieve token Id and save card and on error, show error message', () => {
+            spyOn($scope, '$emit');
+            spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
+                let deferred = $q.defer();
+
+                deferred.resolve({
+                    status: 'failure',
+                    data: {},
+                    errors: []
+                });
+                return deferred.promise;
+            });
+            $scope.actionType = 'ADD_PAYMENT_CARD';
+            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            $rootScope.$apply();
+            expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', jasmine.any(Object));
+        });
+
+        it('on save payment failure, show error message', () => {
+            spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
+                let deferred = $q.defer();
+
+                deferred.reject("Error");
+                return deferred.promise;
+            });
+            spyOn($scope, '$emit');
+            $scope.actionType = 'ADD_PAYMENT_CARD';
+            $scope.tokenizeBySavingtheCard('XXXXXXXXX');
+            $rootScope.$apply();
+            expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', 'Error');
+        });
     });
 
-    it('on save payment failure, show error message', () => {
-        spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
-            var deferred = $q.defer();
-
-            deferred.reject("Error");
-            return deferred.promise;
-        });
+    it('For payment screens, on Message from iframe retieve token Id and notify the parent controller', () => {
         spyOn($scope, '$emit');
-        $scope.actionType = 'ADD_PAYMENT_CARD';
+        $scope.actionType = 'DEPOSIT_PAYMENT_RES_SUMMARY';
         $scope.tokenizeBySavingtheCard('XXXXXXXXX');
-        $rootScope.$apply();
-        expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', 'Error');
+        expect($scope.$emit).toHaveBeenCalledWith('PAYMENTAPP_CC_TOKEN_GENERATED', jasmine.any(Object));
     });
 });
