@@ -31,6 +31,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
+			$scope.clearErrorMessage();
 			let shijiIframe = $('#iframe-token');
 
 			if (!!shijiIframe.length) {
@@ -75,7 +76,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, paymentDetails);
 		};
 
-		let tokenizeBySavingtheCard = (tokenId) => {
+		$scope.tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
 				"token": tokenId,
@@ -136,7 +137,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				let responseData = e.data || e.originalEvent.data;
 
 				if (responseData.respCode === "00") {
-					tokenizeBySavingtheCard(responseData.tokenId);
+					$scope.tokenizeBySavingtheCard(responseData.tokenId);
 				} else {
 					sntActivity.stop('FETCH_SHIJI_TOKEN');
 					$log.info('Tokenization Failed');
