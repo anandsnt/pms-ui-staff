@@ -49,7 +49,7 @@
             <!-- <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.foreign_label}}
             </button> -->
-            <p class="selected-language">
+            <p class="selected-language" ng-show="shouldShowLanguageSelection()">
                     <img ng-src="{{ selectedLanguage.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
                     {{selectedLanguage.foreign_label}}
                 </p>
