@@ -147,6 +147,10 @@
 							                    </div>
 
 							                    <div class="reservation-info">
+
+							                    	<div class="reservation-type red" ng-if="row.is_day_use && hotelDiaryConfig.mode !== 'FULL'">D</div>
+                    								<div class="reservation-type red" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
 							                    	<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}"></span>
 							                    	<strong class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)">
 														<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }">{{row.room}}</span>
