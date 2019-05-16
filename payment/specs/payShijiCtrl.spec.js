@@ -86,6 +86,28 @@ describe('payShijiCtrl', () => {
     });
 
     describe('Add payment method', () => {
+        it('On getting message from the iFrame, save the payment method if response code is approved', () => {
+            spyOn(payShijiCtrl, 'tokenizeBySavingtheCard');
+            payShijiCtrl.handleResponseFromIframe({
+                data: {
+                    respCode: '00',
+                    tokenId: 'XXXXXXXXXX'
+                }
+            });
+            expect(payShijiCtrl.tokenizeBySavingtheCard).toHaveBeenCalled();
+        });
+
+        it('On getting message from the iFrame, show error message if response code is not approved', () => {
+            spyOn($scope, '$emit');
+            payShijiCtrl.handleResponseFromIframe({
+                data: {
+                    respCode: '15',
+                    respText: 'Card expired'
+                }
+            });
+            expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', 'Card expired');
+        });
+
         it('on Message from iframe retieve token Id', () => {
             spyOn(sntPaymentSrv, 'savePaymentDetails').and.callFake(function() {
                 let deferred = $q.defer();

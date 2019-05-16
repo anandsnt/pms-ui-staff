@@ -116,6 +116,18 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			}
 		};
 
+		self.handleResponseFromIframe = (response) => {
+			let responseData = response.data || response.originalEvent.data;
+
+			if (responseData.respCode === "00") {
+				self.tokenizeBySavingtheCard(responseData.tokenId);
+			} else {
+				sntActivity.stop('FETCH_SHIJI_TOKEN');
+				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
+				$scope.$emit('PAYMENT_FAILED', responseData.respText);
+			}
+		};
+
 		// ----------- init -------------
 		(() => {
 			self.loadShijiIframe();
@@ -127,16 +139,8 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			let eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 			let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
-			angular.element($window).on(messageEvent, function(e) {
-				let responseData = e.data || e.originalEvent.data;
-
-				if (responseData.respCode === "00") {
-					self.tokenizeBySavingtheCard(responseData.tokenId);
-				} else {
-					sntActivity.stop('FETCH_SHIJI_TOKEN');
-					$log.info('Tokenization Failed');
-					$scope.$emit('PAYMENT_FAILED', responseData.respText);
-				}
+			angular.element($window).on(messageEvent, (response) => {
+				self.handleResponseFromIframe(response);
 			});
 
 			$scope.$on("$destroy", () => {
