@@ -11,33 +11,41 @@
                </h2>
                <div class="entry with-label">
                   <label translate>
-                   {{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}
+                  {{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}
                   </label>
                   <input type="text" ng-model="minimumAdrRoomType.adr" class='disabled'/>
                </div>
                <div class="entry with-label">
-                  <label translate>
-                  NO_OF_NIGHTS
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfDays' class='disabled' />
+                  <label class='admin-item-label'>{{'NO_OF_NIGHTS' | translate}}</label>
+                  <div class="entry select">
+                     <select  ng-options="nights.id as nights.desc for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
+                        <option value="">{{'NO_OF_NIGHTS' | translate}}</option>
+                     </select>
+                  </div>
                </div>
                <div class="entry with-label">
-                  <label translate>
-                  ADULTS
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfAdults' class='disabled' />
+                  <label class='admin-item-label'>{{'ADULTS' | translate}}</label>
+                  <div class="entry select">
+                     <select  ng-options="adultCount.id as adultCount.desc for adultCount in idScanData.adultsCountArray" ng-model="idScanData.noOfAdults">
+                        <option value="">{{'ADULTS' | translate}}</option>
+                     </select>
+                  </div>
                </div>
                <div class="entry with-label">
-                  <label translate>
-                  CHILDREN
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfChildren' class='disabled' />
+                  <label class='admin-item-label'>{{'CHILDREN' | translate}}</label>
+                  <div class="entry select">
+                     <select  ng-options="childCount as childCount for childCount in idScanData.guestCountArray" ng-model="idScanData.noOfChildren">
+                        <option value="0">{{'CHILDREN' | translate}}</option>
+                     </select>
+                  </div>
                </div>
                <div class="entry with-label">
-                  <label translate>
-                  INFANTS
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfInfants' class='disabled' />
+                  <label class='admin-item-label'>{{'INFANTS' | translate}}</label>
+                  <div class="entry select">
+                     <select  ng-options="infantCount as infantCount for infantCount in idScanData.guestCountArray" ng-model="idScanData.noOfInfants">
+                        <option value="0">{{'INFANTS' | translate}}</option>
+                     </select>
+                  </div>
                </div>
                <br/><br/>
             </div>
