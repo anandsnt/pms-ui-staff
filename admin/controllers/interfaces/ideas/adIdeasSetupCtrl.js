@@ -13,7 +13,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
             activeTab: 'SETTING'
         };
 
-        var syncItems = ['reservation', 'rate', 'group', 'statistics', 'inventory'];
+        var syncItems = ['reservation', 'rate', 'group'];
 
         $scope.realTimeDataSyncItems = syncItems;
         $scope.historicalDataSyncItems = syncItems;

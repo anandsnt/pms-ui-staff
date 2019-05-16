@@ -31,9 +31,25 @@
             </div>
 
             <fieldset class="holder left" ng-show="config.g3_enabled">
-                <ad-textbox inputtype="text" value="config.endpoint" label="{{'END_POINT'| translate}}"
+                <ad-textbox inputtype="text"
+                            value="config.endpoint"
+                            label="{{'END_POINT'| translate}}"
                             styleclass="full-width">
                 </ad-textbox>
+                <ad-textbox inputtype="text"
+                            value="config.chain_code"
+                            label="{{'CHAIN_CODE'| translate}}"
+                            styleclass="full-width">
+                </ad-textbox>
+                <ad-textbox inputtype="text"
+                            value="config.username"
+                            label="{{'USER_NAME'| translate}}"
+                            styleclass="full-width">
+                </ad-textbox>
+                <ad-textbox inputtype="password"
+                            value="config.password"
+                            label="{{'PASSWORD'| translate}}"
+                            styleclass="full-width"></ad-textbox>
             </fieldset>
 
             <div class="form-title full-width">
