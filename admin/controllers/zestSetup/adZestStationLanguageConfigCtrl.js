@@ -47,6 +47,8 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				listHavingValues = combinedList[1];
 
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
+			$scope.detailIndex = -1;
+			$scope.isAddMode = false;
 		};
 
 		/**
@@ -107,30 +109,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 
 			var encoded = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify($scope.languageEditorData))));
 
-			// current language being edited, for saving, need to save with long-name (ie. "english" instead of "en")
-			// check for default
-			if (lang === 'en') {
-				lang = 'english';
-
-			} else if (lang === 'fr') {
-				lang = 'french';
-
-			} else if (lang === 'es') {
-				lang = 'spanish';
-
-			} else if (lang === 'de') {
-				lang = 'german';
-
-			} else if (lang === 'it') {
-				lang = 'italian';
-
-			} else if (lang === 'cl') {
-				lang = 'castellano';
-
-			} else {
-				$log.log('need to add new language code here');
-			}
-			$scope.zestSettings.zest_lang[lang + '_translations_file'] = encoded;
+			$scope.selectedLanguage.translations_file = encoded;
 			$scope.closePrompt();
 		};
 		// when editing on-screen, need to fetch the language then show on-screen
@@ -154,6 +133,41 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				closeByDocument: true
 			});
 		};
+
+		$scope.searchbar = {
+	        value: ''
+	    };
+
+
+		// when editing a tags value with some filter
+	    // if the text is not in the tag/value, the field
+	    // may disappear, but if we track what is being editing/
+	    // has-focus, we can allow that tag to stay until user is done editing
+	    $scope.editingTag = '';
+	    $scope.editingTagKey = function(k) {
+	        $scope.editingTag = k;
+	    };
+
+	    $scope.showResult = function(key, value) {
+	        // show key/value as a result if returning true
+	        // hide the field if user is searching/filtering
+	        // and neither match the value entered
+	        // 
+	        var v = $scope.searchbar.value.toLowerCase(),
+	            k = key.toLowerCase(),
+	            txt = value.toLowerCase();
+
+	        if ($scope.editingTag === key) { // see editingTagKey comments
+	            return 'true';
+	        } else if (v.length === 0) {
+	            return 'true';
+	        } else if (k.indexOf(v) !== -1) {
+	            return 'true';
+	        } else if (txt.indexOf(v) !== -1) {
+	            return 'true';
+	        }
+	        return 'false';
+	    };
 
 		//  track which languages were fetched/edited already,
 		//  we dont want to re-fetch when user accidentily closes the window and needs to re-open it
@@ -214,7 +228,6 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			else {
 				$scope.callAPI(adZestStationLanguageConfigSrv.saveLanguageConfig, options);
 			}
-			$scope.detailIndex = -1;
 		};
 
 		$scope.cancel = function() {
@@ -222,6 +235,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			$scope.detailIndex = -1;
 			if ($scope.isAddMode) {
 				$scope.languageList.shift();
+				$scope.isAddMode = false;
 			}
 		};
 
@@ -235,8 +249,11 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		};
 
 		$scope.addNewLanguage = function() {
+			if ($scope.isAddMode) {
+				return;
+			}
 			$scope.isAddMode = true; 
-			$scope.languageList.unshift({ 'name': "", 'position': 1 });
+			$scope.languageList.unshift({ 'name': "", 'position': 1, 'icon': "" });
 			$scope.selectedLanguage = $scope.languageList[0];
 			$scope.detailIndex = 0;
 		};

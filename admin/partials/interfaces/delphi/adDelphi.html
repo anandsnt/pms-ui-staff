@@ -7,6 +7,10 @@
                 ng-class="{'orange' : state.activeTab === 'SETTING', 'white' : state.activeTab !== 'SETTING'}">
                 SETTINGS
             </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('MAPPING')"
+                    ng-class="{'orange' : state.activeTab === 'MAPPING', 'white' : state.activeTab !== 'MAPPING'}">
+                MAPPINGS
+            </button>
             <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('SYNC')"
                 ng-class="{'orange' : state.activeTab === 'SYNC', 'white' : state.activeTab !== 'SYNC'}">
                 SYNC
@@ -16,6 +20,7 @@
 
     <section class="content-scroll">
         <ng-include src="'/assets/partials/interfaces/delphi/adDelphiSetting.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/adMapping.html'"></ng-include>
         <ng-include src="'/assets/partials/interfaces/delphi/adDelphiSync.html'"></ng-include>
     </section>
 </div>
