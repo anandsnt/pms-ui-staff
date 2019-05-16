@@ -1,0 +1,19 @@
+<div class="form float" ng-if="state.activeTab === 'SYNC'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+<!--    <div class="entry has-datepicker holder left" ng-show="config.import_enabled">-->
+<!--        <label>-->
+<!--            {{'DATE' | translate}}-->
+<!--            <strong>*</strong>-->
+<!--        </label>-->
+<!--        <input type="text" class="range-datepicker" ui-date="datepicker.options"-->
+<!--               ng-model="config.start_date" readonly>-->
+<!--    </div>-->
+
+    <ad-sync-block interface="ideas" config="config" proxy="true"
+                   ng-if="config.g3_enabled"
+                   historical-data-sync-items="historicalDataSyncItems"
+                   real-time-data-sync-items="realTimeDataSyncItems">
+    </ad-sync-block>
+</div>
