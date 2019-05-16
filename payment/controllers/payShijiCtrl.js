@@ -58,9 +58,9 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				},
 				selectedPaymentType: $scope.selectedPaymentType,
 				cardDetails: {
-					'card_code': paymentResponse.credit_card_type,
+					'card_code': paymentResponse.credit_card_type ? paymentResponse.credit_card_type.toLowerCase() : '',
 					'ending_with': paymentResponse.ending_with,
-					'expiry_date': paymentResponse.expiry_date || '11/19',
+					'expiry_date': paymentResponse.expiry_date || '12/20', // To delete the fallback expiry date once Shiji fixes
 					'card_name': ''
 				}
 			});
