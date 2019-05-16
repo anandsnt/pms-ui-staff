@@ -99,7 +99,13 @@
 </div>
 
 <div class="actions" ng-if="payment.addCCMode === 'EXISTING_CARDS' || payment.addCCMode === 'ADD_CARD'">
-    <button type="button" class="button blank" ng-click="cancelCardSelection()">
+    <button type="button" class="button green" ng-click="getShijiToken()" ng-if="hotelConfig.paymentGateway === 'SHIJI'" translate>
+        ADD
+    </button>
+    <button type="button" class="button blank" ng-click="cancelCardSelection()" ng-if="hotelConfig.paymentGateway === 'SHIJI'" translate>
+        CANCEL
+    </button>
+    <button type="button" class="button blank" ng-click="cancelCardSelection()" ng-if="hotelConfig.paymentGateway !== 'SHIJI'">
         Cancel Card selection
     </button>
 </div>
