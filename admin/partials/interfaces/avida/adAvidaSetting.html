@@ -8,7 +8,7 @@
         <div class="entry">
             <label><span translate>ACTIVATE_INACTIVATE</span></label>
             <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
-                ng-click="toggleEnabled()">
+                 ng-click="toggleEnabled()">
                 <input type="checkbox">
                 <span class="switch-icon"></span>
             </div>
@@ -17,7 +17,7 @@
             <fieldset class="holder left">
                 <ad-form-title class="form-title" form-title="Export Settings"></ad-form-title>
                 <ad-textbox inputtype="text" value="config.hotel_code" label="{{'HOTEL_CODE'| translate}}"
-                    styleclass="full-width"></ad-textbox>
+                            styleclass="full-width"></ad-textbox>
             </fieldset>
             <fieldset class="holder right">
                 <section>
@@ -26,7 +26,7 @@
                     <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location" styleclass="full-width">
                     </ad-textbox>
                     <ad-textbox inputtype="text" value="config.ftp_receipts_location" label="FTP receipt location"
-                        styleclass="full-width"></ad-textbox>
+                                styleclass="full-width"></ad-textbox>
                     <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name" styleclass="full-width">
                     </ad-textbox>
                     <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password" styleclass="full-width">
@@ -35,8 +35,12 @@
             </fieldset>
         </fieldset>
     <div class="actions float">
-        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
-            translate>
+        <button type="button" id="cancel" class="button blank add-data-inline"
+                ng-click="goBackToPreviousState()" translate>
+            CANCEL
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green"
+                ng-click="saveSetup()" translate>
             SAVE_CHANGES
         </button>
     </div>

@@ -59,7 +59,9 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
                 // CICO-36769 hide direct bill for reservations as entity.
                 if ($scope.selectedEntity.entity_type === 'RESERVATION') {
                     indexOfDB = _.findIndex($scope.availablePaymentTypes, {name: 'DB'});
-                    $scope.availablePaymentTypes.splice(indexOfDB, 1);
+                    if (indexOfDB !== -1) {
+                        $scope.availablePaymentTypes.splice(indexOfDB, 1);
+                    }                    
                 }
 
                 $scope.$parent.$emit('hideLoader');

@@ -509,7 +509,7 @@ angular.module('sntPay').controller('sntPaymentController',
                                 'card_code': cardDetails.cardDisplayData.card_code,
                                 'ending_with': cardDetails.cardDisplayData.ending_with,
                                 'expiry_date': cardDetails.cardDisplayData.expiry_date,
-                                'card_name': cardDetails.apiParams.name_on_card
+                                'card_name': cardDetails.cardDisplayData.name_on_card
                             }
                         });
                         sntActivity.stop('ADD_PAYMENT_GUEST_CARD');

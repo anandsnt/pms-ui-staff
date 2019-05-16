@@ -243,44 +243,9 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
     $scope.closePrompt = function() {
         ngDialog.close();
     };
-    
-
-    $scope.searchbar = {
-        value: ''
-    };
-
-    // when editing a tags value with some filter
-    // if the text is not in the tag/value, the field
-    // may disappear, but if we track what is being editing/
-    // has-focus, we can allow that tag to stay until user is done editing
-    $scope.editingTag = '';
-    $scope.editingTagKey = function(k) {
-        $scope.editingTag = k;
-    };
 
     $scope.showLoader = function() {
         $scope.$emit('showLoader');
-    };
-
-    $scope.showResult = function(key, value) {
-        // show key/value as a result if returning true
-        // hide the field if user is searching/filtering
-        // and neither match the value entered
-        // 
-        var v = $scope.searchbar.value.toLowerCase(),
-            k = key.toLowerCase(),
-            txt = value.toLowerCase();
-
-        if ($scope.editingTag === key) { // see editingTagKey comments
-            return 'true';
-        } else if (v.length === 0) {
-            return 'true';
-        } else if (k.indexOf(v) !== -1) {
-            return 'true';
-        } else if (txt.indexOf(v) !== -1) {
-            return 'true';
-        }
-        return 'false';
     };
 
     $scope.saveAsText = '';
