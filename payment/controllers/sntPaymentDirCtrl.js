@@ -1146,7 +1146,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.selectedCC = $scope.selectedCC || {};
                     $scope.selectedCC.value = response.data.id;
                     $scope.selectedCard = $scope.selectedCC.value;
-                    $scope.selectedCC.card_code = response.data.credit_card_type;
+                    $scope.selectedCC.card_code = response.data.credit_card_type ? response.data.credit_card_type.toLowerCase() : 'credit-card';
                     $scope.selectedCC.ending_with = response.data.ending_with;
                     $scope.selectedCC.expiry_date = response.data.expiry_date;
                     $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
@@ -1233,7 +1233,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                         $scope.selectedCC.value = response.id;
                         $scope.selectedCard = $scope.selectedCC.value;
-                        $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code;
+                        $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code ? cardDetails.cardDisplayData.card_code.toLowerCase() : 'credit-card';
                         $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
                         $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
                         $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
