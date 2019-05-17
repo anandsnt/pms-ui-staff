@@ -364,12 +364,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADM3BackOfficeCtrl',
         url: '/backoffice/m3/setup',
         resolve: {
-            config: ['ADM3SetupSrv', function(ADM3SetupSrv) {
-                return ADM3SetupSrv.getConfig();
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('m3backoffice');
             }]
-            // m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
-            //     return ADM3SetupSrv.getConfig();
-            // }]
         }
     });
 

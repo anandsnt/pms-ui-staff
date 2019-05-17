@@ -17,7 +17,7 @@
                     <tr>
                         <td>
                             <div name="active-inactive-toggle" class="switch-button single"
-                                ng-class="{ on: m3Accounting.enabled }" ng-click="toggleActivation()">
+                                ng-class="{ on: config.enabled }" ng-click="toggleEnabled()">
                                 <input type="checkbox">
                                 <span class="switch-icon"></span>
                             </div>
@@ -27,20 +27,20 @@
             </table>
         </fieldset>
         <!-- hotel code, room revenue chekbox -->
-        <fieldset class="holder left">
-            <ad-textbox inputtype="text" value="m3Accounting.hotelCode" label="{{'M3_FACILITY_ID'| translate}}"
-                styleclass="full-width" ng-if="m3Accounting.enabled"></ad-textbox>
+        <fieldset class="holder full-width">
+            <ad-textbox inputtype="text" value="config.facility_id" label="{{'M3_FACILITY_ID'| translate}}"
+                styleclass="full-width" ng-if="config.enabled"></ad-textbox>
             
-            <ad-toggle-button is-checked="m3Accounting.roomRevenueOnly" label="{{'M3_ROOM_REVENUE_ONLY'| translate}}"
-                ng-if="m3Accounting.enabled"></ad-toggle-button>
+            <ad-toggle-button is-checked="config.roomRevenueOnly" label="{{'M3_ROOM_REVENUE_ONLY'| translate}}"
+                ng-if="config.enabled"></ad-toggle-button>
         </fieldset>
         <!-- email addresses for export  -->
-        <fieldset class="holder full-width" ng-if="m3Accounting.enabled">
+        <fieldset class="holder full-width" ng-if="config.enabled">
             <div class="form-title full-width">
                 <h3><span translate>EMAIL_RECIPIENT_FOR_EOD_EXPORTS</span></h3>
             </div>
             <div class="entry left">
-                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="m3Accounting.emails"
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="config.emails"
                     label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder=""></ad-textarea>
             </div>
         </fieldset>
@@ -58,16 +58,17 @@
                 <label class="center_align"><em class="rate_roomtype_text">Available Data Types</em></label>
         
                 <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
-                    ng-model="m3Accounting.available_reports" style="overflow-y: scroll !important;"
+                    ng-model="config.available_reports" style="overflow-y: scroll !important;"
                     jqyoui-droppable="{multiple:true, onOver: 'onUnSelectReport'}" data-j
                     qyoui-options="{accept:'.selected_reports'}">
         
-                    <li ng-repeat="report in m3Accounting.available_reports" data-drag="true"
-                        ng-model="m3Accounting.available_reports"
+                    <li ng-repeat="report in config.available_reports" data-drag="true"
+                        ng-model="config.available_reports"
                         jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
                         class="available-reports li-draggable" ng-click="chooseAvailableReport($index)"
-                        ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'>
+                        ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'
+                        track by $index>
         
                         <span class="icons icon-handle"></span>
                         <span class="icons icon-handle"></span>
@@ -103,13 +104,14 @@
                 <label class="center_align">
                     <span class="assigned_room_text">Selected Data Types</span></label>
                 <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true"
-                    ng-model="m3Accounting.selected_reports" jqyoui-droppable="{multiple:true, onOver: 'onSelectReport'}"
+                    ng-model="config.selected_reports" jqyoui-droppable="{multiple:true, onOver: 'onSelectReport'}"
                     data-jqyoui-options="{accept:'.available-reports'}">
-                    <li ng-repeat="report in m3Accounting.selected_reports" ng-click="chooseSelectedReport($index)"
+                    <li ng-repeat="report in config.selected_reports" ng-click="chooseSelectedReport($index)"
                         ng-class='{selected: chosenSelectedReports.indexOf($index) > -1}' class="selected-reports li-draggable"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true"
-                        ng-model="m3Accounting.selected_reports"
-                        jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                        ng-model="config.selected_reports"
+                        jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                        track by $index>
                         <span class="icons icon-handle"></span>
                         <span class="icons icon-handle"></span>
                         {{ getTitleCase(report) }}
@@ -118,6 +120,6 @@
             </div>
         </fieldset>
         <!-- save settings, ng-click="saveSetup()" saves settings to IFC -->
-    <ad-save-cancel-area save-action="saveSetup" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
+    <ad-save-cancel-area ng-click="saveSetup()" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
     </form>
 </div>

@@ -1,6 +1,7 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$filter',
-    function($scope, config, ADM3SetupSrv, $filter) {
-        console.log("hello from inisde of adm3backofficeCtrl!!! ", config)
+admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '$filter',
+    function($scope, config, adInterfacesSrv, $filter) {
+        console.log("hello from inisde of adm3backofficeCtrl!!! config from router:", config)
+        console.log("hello from inisde of adm3backofficeCtrl!!! adInterfacesSrv :", adInterfacesSrv)
 
     BaseCtrl.call(this, $scope);
 
@@ -32,8 +33,6 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
         $scope.chosenSelectedReports = [];
     };
 
-
-
     /**
      * when the save is success
      */
@@ -46,18 +45,25 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
      * @return {undefiend}
      */
     $scope.saveSetup = function() {
-        var options = {
+        console.log("Saving Setup via new endpoint: ")
+        $scope.callAPI(adInterfacesSrv.updateSettings, {
             params: {
-                enabled: $scope.m3Accounting.enabled,
-                emails: $scope.m3Accounting.emails,
-                facility_id: $scope.m3Accounting.hotelCode,
-                selected_reports: $scope.m3Accounting.selected_reports,
-                room_revenue_only: $scope.m3Accounting.roomRevenueOnly
+                integration: $scope.integration.toLowerCase(),
+                settings: {
+                    enabled: $scope.config.enabled,
+                    emails: $scope.config.emails,
+                    facility_id: $scope.config.facility_id,
+                    selected_reports: $scope.config.selected_reports,
+                    room_revenue_only: $scope.config.room_revenue_only
+                }
             },
-            successCallBack: successCallBackOfSaveAfasSetup
-        };
-        // migrate this API call to IFC
-        $scope.callAPI(ADM3SetupSrv.saveConfig, options);
+            onSuccess: function() {
+                $scope.errorMessage = '';
+                $scope.successMessage = 'SUCCESS: Settings Updated!';
+            }
+        })
+
+
     };
 
     /**
@@ -126,10 +132,10 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
         var chosenAvailableReportValues = [];
 
         _.each($scope.chosenAvailableReports, function(reportIndex) {
-            chosenAvailableReportValues.push($scope.m3Accounting.available_reports[reportIndex]);
+            chosenAvailableReportValues.push($scope.config.available_reports[reportIndex]);
         });
-        $scope.m3Accounting.selected_reports = $scope.m3Accounting.selected_reports.concat(chosenAvailableReportValues);
-        $scope.m3Accounting.available_reports = _.difference($scope.m3Accounting.available_reports, chosenAvailableReportValues);
+        $scope.config.selected_reports = $scope.config.selected_reports.concat(chosenAvailableReportValues);
+        $scope.config.available_reports = _.difference($scope.config.available_reports, chosenAvailableReportValues);
 
         resetChosenReports();
     };
@@ -141,10 +147,10 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
         var chosenSelectedReportValues = [];
 
         _.each($scope.chosenSelectedReports, function(reportIndex) {
-            chosenSelectedReportValues.push($scope.m3Accounting.selected_reports[reportIndex]);
+            chosenSelectedReportValues.push($scope.config.selected_reports[reportIndex]);
         });
-        $scope.m3Accounting.available_reports = $scope.m3Accounting.available_reports.concat(chosenSelectedReportValues);
-        $scope.m3Accounting.selected_reports = _.difference($scope.m3Accounting.selected_reports, chosenSelectedReportValues);
+        $scope.config.available_reports = $scope.config.available_reports.concat(chosenSelectedReportValues);
+        $scope.config.selected_reports = _.difference($scope.config.selected_reports, chosenSelectedReportValues);
 
         resetChosenReports();
     };
@@ -153,8 +159,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
      * Move all reports to the selected column
      */
     $scope.selectAll = function() {
-        $scope.m3Accounting.selected_reports = $scope.m3Accounting.selected_reports.concat($scope.m3Accounting.available_reports);
-        $scope.m3Accounting.available_reports = [];
+        $scope.config.selected_reports = $scope.config.selected_reports.concat($scope.config.available_reports);
+        $scope.config.available_reports = [];
         resetChosenReports();
     };
 
@@ -162,17 +168,19 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
      * Move all reports to the available column
      */
     $scope.unSelectAll = function() {
-        $scope.m3Accounting.available_reports = $scope.m3Accounting.available_reports.concat($scope.m3Accounting.selected_reports);
-        $scope.m3Accounting.selected_reports = [];
+        $scope.config.available_reports = $scope.config.available_reports.concat($scope.config.selected_reports);
+        $scope.config.selected_reports = [];
         resetChosenReports();
     };
 
     $scope.exportData = function() {
+        // SYNC!!!
         // migrate this API call to IFC 
+        // adInterfacesSrv
       $scope.callAPI(ADM3SetupSrv.sync, {
          params: {
-            from_date: $filter('date')($scope.m3Accounting.fromDate, 'yyyy-MM-dd'),
-            to_date: $filter('date')($scope.m3Accounting.toDate, 'yyyy-MM-dd')
+            from_date: $filter('date')($scope.config.fromDate, 'yyyy-MM-dd'),
+            to_date: $filter('date')($scope.config.toDate, 'yyyy-MM-dd')
          },
          onSuccess: function () {
              $scope.errorMessage = '';
@@ -180,21 +188,51 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'ADM3SetupSrv', '$fi
          }
        });
     };
-    console.log("M3 COntroller scope: ", $scope)
+    console.log("M3 Controller scope: ", $scope)
     /**
      * Initialization stuffs
      * @return {undefiend}
      */
     var initializeMe = (function() {
+        console.log("beginning of iife, before scope.config defined: ", config)
+        console.log("beginning of iife, before scope.config defined: ", $scope.config)
+        // $scope.config.selected_reports = ["test1", "test2"]
+        console.log("before debugger")
+        // debugger
+        console.log("after debugger")
+        // if (!config.available_reports) {
+        //     config.available_reports = [
+        //         "financial_journal_charge_codes", 
+        //         "financial_journal_rates", 
+        //         "financial_journal_room_types", 
+        //         "financial_journal_market_segments", 
+        //         "reservation_count_rates", 
+        //         "reservation_count_room_types", 
+        //         "reservation_count_market_segments", 
+        //         "rooms_occupied", 
+        //         "rooms_arrival", 
+        //         "rooms_departure", 
+        //         "rooms_ooo", 
+        //         "rooms_comp", 
+        //         "guest_opening_balance", 
+        //         "guest_closing_balance", 
+        //         "deposit_opening_balance", 
+        //         "deposit_closing_balance", 
+        //         "ar_opening_balance", 
+        //         "ar_closing_balance", 
+        //         "rooms_oos", 
+        //         "rooms_occupancy", 
+        //         "financial_journal_charge_codes_no_tax", 
+        //         "financial_journal_rates_no_tax", 
+        //         "financial_journal_room_types_no_tax", 
+        //         "financial_journal_market_segments_no_tax"
+        //     ]
+        // }
+
+        // if (!config.selected_reports) {
+        //     config.selected_reports = [];
+        // }
         $scope.config = config;
-        $scope.m3Accounting = {
-            enabled: config.enabled,
-            emails: config.emails,
-            hotelCode: config.facility_id,
-            available_reports: config.available_reports,
-            selected_reports: config.selected_reports || [],
-            roomRevenueOnly: config.room_revenue_only
-        };
         console.log("m3 iife, config ", $scope.config)
     }());
 }]);

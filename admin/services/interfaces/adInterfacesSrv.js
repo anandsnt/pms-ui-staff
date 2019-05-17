@@ -33,6 +33,8 @@ admin.service('adInterfacesSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log',
          * Should put all values to interface for update/create
          */
         this.updateSettings = function(params) {
+            console.log("adInterfacesSrv update Settings. Params: ", params)
+            console.log("adInterfacesSrv update Settings. this: ", this)
             return ADBaseWebSrvV2.putJSON('ifc/proxy/settings/update_all_by_integration', params);
         };
 
