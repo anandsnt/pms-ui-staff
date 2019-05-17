@@ -848,23 +848,6 @@
                 </div>
             </fieldset>
             <!--SHIJI ENDS-->
-
-            <fieldset class="holder left" ng-if="isAdminSnt">
-                <div class="entry full-width">
-                    <label>Allow CC processors per payment methods</label>
-                    <div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
-                        <input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
-                        <span class="switch-icon"></span>
-                    </div>
-                </div>
-                <div class="entry">
-                    <label>
-                        EMV TIMEOUT
-                    </label>
-                    <input type="text" ng-model="data.emv_timeout">
-                </div>
-            </fieldset>
-
 			<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 				<div class="form-title">
 					<h3><span>Hotel</span> MerchantLink Settings </h3>
@@ -904,6 +887,22 @@
 				</button>
 
 			</fieldset>
+
+			<fieldset class="holder left" ng-if="isAdminSnt">
+                <div class="entry full-width">
+                    <label>Allow CC processors per payment methods</label>
+                    <div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
+                        <input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+                <div class="entry">
+                    <label>
+                        EMV TIMEOUT
+                    </label>
+                    <input type="text" ng-model="data.emv_timeout">
+                </div>
+            </fieldset>
 
 			<fieldset class="holder right" ng-if="isAdminSnt">
 				<div class="form-title">
