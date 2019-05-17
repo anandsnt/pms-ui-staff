@@ -103,5 +103,26 @@ angular.module('login').service('loginSrv',
                 return deferred.promise;
             };
 
+            // Get marketing items from WP service
+            service.getMarketingItems = function() {
+                var url = 'https://www.stayntouch.com/wp-json/snt/v1/rover_banners',
+                    deferred = $q.defer();
+
+                // This is done to override the common header configured globally
+                $http.get(url, {
+                    headers: {
+                        'X-Requested-With': undefined
+                    }
+                }).
+                then(function (response) {
+                    deferred.resolve(response.data);
+                }, function () {
+                    $window.localStorage.removeItem('jwt');
+                    deferred.resolve([]);
+                });
+                
+                return deferred.promise;
+            };
+
         }
     ]);

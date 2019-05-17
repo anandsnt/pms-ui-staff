@@ -35,8 +35,11 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout) {
+angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
 	 $scope.data = {};
+	 // CICO-65478 Marketing items that is shown in login screen
+	 $scope.marketingItems = marketingItems;
+	 $rootScope.isModalShowing = false;
 
 	 if (localStorage.email) {
 	 	$scope.data.email = localStorage.email;
@@ -262,6 +265,59 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 			$window.open('https://status.stayntouch.com', '_blank');
 		}
 	};
+
+	/**
+	 * Add script/script content dynamically to the html
+	 * @param {String} content - script content
+	 * @param {Boolean} isCode is script file or code
+	 * @return {void}
+	 */
+    var addMarketingContentScript = function(content, isCode) {
+        var script = document.createElement('script');
+		
+        isCode = isCode || false;
+
+        if ( ! isCode ) {
+            script.src = content;
+        } else {
+            script.text = content;
+        }
+        document.body.appendChild(script);
+    };
+
+	/**
+	 * Show the marketing content details
+	 * @param {Object} event click event object
+	 * @param {Object} marketingItem contains the marketing content details
+	 * @return {void}
+	 */
+    $scope.showMarketingContent = function (event, marketingItem) {
+        if (!marketingItem.url) {
+            event.preventDefault();
+			// Load the javascript file first
+            if (marketingItem.form_script_file) {
+                addMarketingContentScript(marketingItem.form_script_file, false);	
+            }
+			
+            $rootScope.isModalShowing = true;
+			// This is used in new.html for loading the contents of the popup
+            $rootScope.marketingItem = marketingItem;
+			// Load the form html
+            $('.right-content').html(marketingItem.form_html);
+            $timeout(function() {
+                addMarketingContentScript(marketingItem.get_script_code, true);	
+            }, 1000);
+			
+        } else {
+            $window.open(marketingItem.url, '_blank');
+        }
+    };
+
+	// Closes the popup opened for marketing content
+    $rootScope.closePopup = function() {
+        $rootScope.isModalShowing = false;
+    };
+	
 }]);
 /*
  * Reset Password Controller - First time login of snt admin

@@ -41,7 +41,12 @@ login.config([
                     } else {
                         $window.localStorage.removeItem('jwt');
                     }
-                }]
+                }],
+            resolve: {
+                marketingItems: function(loginSrv) {
+                    return loginSrv.getMarketingItems(); 
+                }
+            }
         });
 
         $stateProvider.state('stationlogin', {
