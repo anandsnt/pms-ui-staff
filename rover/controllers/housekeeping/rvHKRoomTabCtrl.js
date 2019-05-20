@@ -473,7 +473,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
             $scope.ooOsTitle = item.description;
 
-            $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].reason_id;
+            $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].maintenance_reason_id;
             $scope.updateService.comment = dateHash[$scope.updateService.selected_date].comments;
 
             if ($scope.updateService.room_service_status_id !== $_inServiceId) {
