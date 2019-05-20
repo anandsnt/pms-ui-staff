@@ -42,10 +42,10 @@
                         </button>
                         <text data-ng-bind-html="getTagValue('WALK_IN')" editable-text="WALK_IN"></text>
                     </li>
-                </ul>
+                </ul> 
             </nav>
         </div>
-        <div id="actions" class="languages">
+        <div id="actions" class="languages align-center">
             <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.foreign_label}}
             </button>
