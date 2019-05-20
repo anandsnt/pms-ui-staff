@@ -1,8 +1,5 @@
 admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '$filter',
     function($scope, config, adInterfacesSrv, $filter) {
-        console.log("hello from inisde of adm3backofficeCtrl!!! config from router:", config)
-        console.log("hello from inisde of adm3backofficeCtrl!!! adInterfacesSrv :", adInterfacesSrv)
-
     BaseCtrl.call(this, $scope);
 
     $scope.state = {
@@ -17,12 +14,10 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
      */
     $scope.toggleEnabled = function () {
         $scope.config.enabled = !$scope.config.enabled;
-        console.log("toggling enabled", $scope.config.enabled)
     };
 
     $scope.changeTab = function(name) {
         $scope.state.activeTab = name;
-        console.log("changing tab, ", $scope.state.activeTab)
     }
 
     $scope.chosenSelectedReports = [],
@@ -45,7 +40,6 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
      * @return {undefiend}
      */
     $scope.saveSetup = function() {
-        console.log("Saving Setup via new endpoint: ")
         $scope.callAPI(adInterfacesSrv.updateSettings, {
             params: {
                 integration: $scope.integration.toLowerCase(),
@@ -173,10 +167,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
         resetChosenReports();
     };
 
+    // TODO: migrate sync to IFC framework
     $scope.exportData = function() {
-        // SYNC!!!
-        // migrate this API call to IFC 
-        // adInterfacesSrv
       $scope.callAPI(ADM3SetupSrv.sync, {
          params: {
             from_date: $filter('date')($scope.config.fromDate, 'yyyy-MM-dd'),
@@ -188,51 +180,14 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
          }
        });
     };
-    console.log("M3 Controller scope: ", $scope)
+
     /**
      * Initialization stuffs
      * @return {undefiend}
      */
     var initializeMe = (function() {
-        console.log("beginning of iife, before scope.config defined: ", config)
-        console.log("beginning of iife, before scope.config defined: ", $scope.config)
-        // $scope.config.selected_reports = ["test1", "test2"]
-        console.log("before debugger")
-        // debugger
-        console.log("after debugger")
-        // if (!config.available_reports) {
-        //     config.available_reports = [
-        //         "financial_journal_charge_codes", 
-        //         "financial_journal_rates", 
-        //         "financial_journal_room_types", 
-        //         "financial_journal_market_segments", 
-        //         "reservation_count_rates", 
-        //         "reservation_count_room_types", 
-        //         "reservation_count_market_segments", 
-        //         "rooms_occupied", 
-        //         "rooms_arrival", 
-        //         "rooms_departure", 
-        //         "rooms_ooo", 
-        //         "rooms_comp", 
-        //         "guest_opening_balance", 
-        //         "guest_closing_balance", 
-        //         "deposit_opening_balance", 
-        //         "deposit_closing_balance", 
-        //         "ar_opening_balance", 
-        //         "ar_closing_balance", 
-        //         "rooms_oos", 
-        //         "rooms_occupancy", 
-        //         "financial_journal_charge_codes_no_tax", 
-        //         "financial_journal_rates_no_tax", 
-        //         "financial_journal_room_types_no_tax", 
-        //         "financial_journal_market_segments_no_tax"
-        //     ]
-        // }
-
-        // if (!config.selected_reports) {
-        //     config.selected_reports = [];
-        // }
+        config.selected_reports = JSON.parse(config.selected_reports)
+        config.available_reports = JSON.parse(config.available_reports) || []
         $scope.config = config;
-        console.log("m3 iife, config ", $scope.config)
     }());
 }]);

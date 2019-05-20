@@ -44,7 +44,7 @@
                     label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder=""></ad-textarea>
             </div>
         </fieldset>
-        <!-- 'data-types' ... depending on whether they are related to the sync or the settings -->
+        <!-- data-types -->
         <fieldset class="holder full-width">
             <div class="form-title">
                 <h3>
@@ -62,13 +62,12 @@
                     jqyoui-droppable="{multiple:true, onOver: 'onUnSelectReport'}" data-j
                     qyoui-options="{accept:'.selected_reports'}">
         
-                    <li ng-repeat="report in config.available_reports" data-drag="true"
+                    <li ng-repeat="report in config.available_reports track by $index" data-drag="true"
                         ng-model="config.available_reports"
                         jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
                         class="available-reports li-draggable" ng-click="chooseAvailableReport($index)"
-                        ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'
-                        track by $index>
+                        ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'>
         
                         <span class="icons icon-handle"></span>
                         <span class="icons icon-handle"></span>
@@ -106,12 +105,11 @@
                 <ul class="boxes sortable ui-sortable short-list" data-type="target" data-drop="true"
                     ng-model="config.selected_reports" jqyoui-droppable="{multiple:true, onOver: 'onSelectReport'}"
                     data-jqyoui-options="{accept:'.available-reports'}">
-                    <li ng-repeat="report in config.selected_reports" ng-click="chooseSelectedReport($index)"
+                    <li ng-repeat="report in config.selected_reports track by $index" ng-click="chooseSelectedReport($index)"
                         ng-class='{selected: chosenSelectedReports.indexOf($index) > -1}' class="selected-reports li-draggable"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true"
                         ng-model="config.selected_reports"
-                        jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
-                        track by $index>
+                        jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
                         <span class="icons icon-handle"></span>
                         <span class="icons icon-handle"></span>
                         {{ getTitleCase(report) }}
@@ -120,6 +118,14 @@
             </div>
         </fieldset>
         <!-- save settings, ng-click="saveSetup()" saves settings to IFC -->
-    <ad-save-cancel-area ng-click="saveSetup()" cancel-action="goBackToPreviousState"></ad-save-cancel-area>
+        <div class="actions float">
+            <button id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" type="button" translate>
+                CANCEL
+             </button>
+            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
+                translate>
+                SAVE_CHANGES
+            </button>
+        </div>
     </form>
 </div>
