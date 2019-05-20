@@ -35,7 +35,7 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
+angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope',  function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
     $scope.data = {};
    // CICO-65478 Marketing items that is shown in login screen
     $scope.marketingItems = marketingItems;
@@ -273,7 +273,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
    * @return {void}
    */
     var addMarketingContentScript = function(content, isCode) {
-        var script = document.createElement('script');
+        var script = $window.document.createElement('script');
     
         isCode = isCode || false;
 
@@ -282,7 +282,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
         } else {
             script.text = content;
         }
-        document.body.appendChild(script);
+        $window.document.body.appendChild(script);
     };
 
   /**
@@ -294,15 +294,15 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
     $scope.showMarketingContent = function (event, marketingItem) {
         if (!marketingItem.url) {
             event.preventDefault();
-      // Load the javascript file first
-            if (marketingItem.form_script_file && !window.MktoForms2) {
+            // Load the javascript file first
+            if (marketingItem.form_script_file && !$window.MktoForms2) {
                 addMarketingContentScript(marketingItem.form_script_file, false);	
             }
       
             $rootScope.isModalShowing = true;
-      // This is used in new.html for loading the contents of the popup
+            // This is used in new.html for loading the contents of the popup
             $rootScope.marketingItem = marketingItem;
-      // Load the form html
+            // Load the form html
             $('.right-content').html(marketingItem.form_html);
             $timeout(function() {
                 addMarketingContentScript(marketingItem.get_script_code, true);	
