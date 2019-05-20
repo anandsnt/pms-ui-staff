@@ -68,8 +68,6 @@
             <!-- if daily reservation add .red -->
             <div class="reservation-type red" ng-if="paidInvoice.is_day_use">D</div>
             <div class="reservation-type" ng-if="!paidInvoice.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
-            
-            <div class="status"></div>
 
             <div class="amount paid">
                 <span class="currency">{{currencySymbol}}</span>{{ paidInvoice.amount | number:2 }}
