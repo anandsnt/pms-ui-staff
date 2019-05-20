@@ -528,7 +528,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			// For custom languages, use English for now
 			// TODO: Handle addon translations for custom languages in hotel admin
 			if (!selectedLanguage) {
-				var selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
+				selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
 					return language.language === 'English';
 				});
 			}
