@@ -1034,8 +1034,26 @@
 
                 /* CC display adjustment ***/
                 &.item-payment {
-                    .card-logo { margin-right: 20px; }
-                    .icons { right: 30px; }
+                    .card-logo {
+                        margin: 13px 10px 13px 0;
+                        .size(24px, 48px);
+
+                        img { 
+                            .show();
+                        }
+                    }
+
+                    span {
+                        margin-right: 10px;
+
+                        .value {
+                            margin-left: 3px;
+                        }
+                    }
+
+                    .icons {
+                        right: 30px;
+                    }
                 }
             }
 
