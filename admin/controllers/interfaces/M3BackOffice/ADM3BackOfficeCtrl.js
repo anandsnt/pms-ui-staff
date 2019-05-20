@@ -6,7 +6,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
         activeTab: 'SETTING'
     };
 
-    $scope.integration = 'M3BACKOFFICE'
+    $scope.integration = 'M3BACKOFFICE';
     
     /**
      * when clicked on check box to enable/diable letshare
@@ -18,7 +18,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
 
     $scope.changeTab = function(name) {
         $scope.state.activeTab = name;
-    }
+    };
 
     $scope.chosenSelectedReports = [],
         $scope.chosenAvailableReports = [];
@@ -26,13 +26,6 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
     var resetChosenReports = function() {
         $scope.chosenAvailableReports = [];
         $scope.chosenSelectedReports = [];
-    };
-
-    /**
-     * when the save is success
-     */
-    var successCallBackOfSaveAfasSetup = function(data) {
-        $scope.goBackToPreviousState();
     };
 
     /**
@@ -55,9 +48,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
                 $scope.errorMessage = '';
                 $scope.successMessage = 'SUCCESS: Settings Updated!';
             }
-        })
-
-
+        });
     };
 
     /**
@@ -186,8 +177,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
      * @return {undefiend}
      */
     var initializeMe = (function() {
-        config.selected_reports = JSON.parse(config.selected_reports)
-        config.available_reports = JSON.parse(config.available_reports) || []
+        config.selected_reports = JSON.parse(config.selected_reports);
+        config.available_reports = JSON.parse(config.available_reports) || [];
         $scope.config = config;
     }());
 }]);
