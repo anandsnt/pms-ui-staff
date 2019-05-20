@@ -1,0 +1,46 @@
+<section ng-if="selectedScope=== 'HOTEL'" ng-controller="ADFeatureToggleConfigHotelsCtrl">
+    <fieldset class="holder full-width">
+
+        <span class="count-show">Show</span>
+        <div class="select table-count rates-table-count">
+            <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+        </div>
+        <span class="count-entries">entries</span>
+
+        <div class="entry table-search">
+            <span class="search-text">Search</span>
+            <span class="icons icon-search" name="submit" type="submit"></span>
+            <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                   function-to-fire="searchEntered"/>
+        </div>
+
+
+        <div id="new-form-holder"></div>
+        <!--ng-table component -->
+        <table class="grid" ng-table="tableParams" template-pagination="custom/pager"
+               ng-class="{'edit-data': currentClickedElement == $index}">
+            <tbody>
+            <tr ng-repeat="hotel in $data" class="device-list">
+                <td data-title="'CODE'" sortable="'code'" header-class="width-20"
+                    ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
+                    <strong> {{hotel.code}}</strong>
+                </td>
+                <td data-title="'NAME'" sortable="'name'" header-class="width-60"
+                    ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
+                    <strong> {{hotel.name}}</strong>
+                </td>
+                <td data-title="''" header-class="width-20"
+                    ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
+                    <div class="entry full-width">
+                        <div class="switch-button single" ng-class="{ on : hotel.enabled }"
+                             ng-click="toggleFeatureHotel(hotel)">
+                            <input type="checkbox" ng-model="hotel.enabled">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+                </td>
+            </tbody>
+        </table>
+
+    </fieldset>
+</section>

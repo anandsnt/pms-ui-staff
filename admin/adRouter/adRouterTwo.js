@@ -944,6 +944,23 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/hkSections'
     });
 
+    $stateProvider.state('admin.featureToggles', {
+        templateUrl: '/assets/partials/featureToggles/adFeaturesList.html',
+        controller: 'ADFeatureToggleListCtrl',
+        url: '/features'
+    });
+
+    $stateProvider.state('admin.configFeature', {
+        templateUrl: '/assets/partials/featureToggles/adFeaturesConfig.html',
+        controller: 'ADFeatureToggleConfigCtrl',
+        url: '/features/:feature',
+        resolve: {
+            feature: ['ADFeatureToggleSrv', '$stateParams', function (ADFeatureToggleSrv, $stateParams) {
+                return ADFeatureToggleSrv.show($stateParams['feature']);
+            }]
+        }
+    });
+
     $stateProvider.state('admin.idCollection', {
       templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
       controller: 'ADInterfaceSubMenuCtrl',
