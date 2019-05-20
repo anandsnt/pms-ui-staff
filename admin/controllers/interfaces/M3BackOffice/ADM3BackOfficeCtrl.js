@@ -158,20 +158,6 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '
         resetChosenReports();
     };
 
-    // TODO: migrate sync to IFC framework
-    $scope.exportData = function() {
-      $scope.callAPI(ADM3SetupSrv.sync, {
-         params: {
-            from_date: $filter('date')($scope.config.fromDate, 'yyyy-MM-dd'),
-            to_date: $filter('date')($scope.config.toDate, 'yyyy-MM-dd')
-         },
-         onSuccess: function () {
-             $scope.errorMessage = '';
-             $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
-         }
-       });
-    };
-
     /**
      * Initialization stuffs
      * @return {undefiend}
