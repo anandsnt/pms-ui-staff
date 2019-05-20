@@ -1,7 +1,7 @@
 
-<div class="content" id="login" ng-hide="data.showDebugOptions">
+<div id="login" ng-hide="data.showDebugOptions" role="content"> 
 	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
-	<img alt="" class="logo" src="/assets/images/logo.png" />
+	<img src="/assets/images/logo-snt.png" alt="" class="login__logo" />
 
 	<span class="notice error" ng-show="errorMessage!=''" >
 		<ul>
@@ -15,34 +15,67 @@
 		<ul>
 			<li>
 				{{successMessage}}
-			</li>
+			</li>	
 		</ul>
 	</span>
 
-	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>
+	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="login__content" id="login-form" method="post" name="login-form" novalidate>
+		<h1>Welcome to Rover.</h1>
 		<input name="utf8" type="hidden" value="" />
 		<input name="authenticity_token" type="hidden" value="" />
 
 		<div class="entry">
-			<label for="email">E-mail</label>
+			<div class="entry__label">
+				<label for="email">E-mail</label>
+			</div>			
 			<input id="email" name="email" ng-model="data.email" placeholder="Enter your e-mail address" type="email" value="" />
 		</div>
 		<div class="entry">
-			<label for="password">Password </label>
+			<div class="entry__label">
+				<label for="password">Password </label>
+				<button id="reset-password" ng-click="forgotPassword()" type="button">RESET</button>
+			</div>
 			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
 		</div>
 		<div class="action">
-            <button type="submit" class="button green">Login</button>
-            <a ng-click="forgotPassword()">Forgot Password?</a>
+            <button type="submit" class="button green">Sign In To Rover</button>            
         </div>
 	</form>
+	<div class="login__footer">
+		<p>
+			For questions please contact your hotel administrator or visit the <a href="#" ng-click="onClickSupportLink()">StayNTouch Support Portal</a> for more information.
+		</p>
+		<p>For system performance issues see <a ng-click="onSystemStatusClick()" href="#">StayNTouch System Status</a></p>
+		<p class="muted">Rover Version 1.50</p>
+	</div>
 
-	<div class="support">
+	<!-- <div class="support">
 		For questions please contact your hotel administrator or visit the StayNTouch <a href="#" ng-click="onClickSupportLink()">Support Portal</a> for more information.
 	</div>
 	<div class="support">
 		<br/>
 		<a ng-click="onSystemStatusClick()" href="#">System Status</a> 
-	</div>
+	</div> -->
+</div>
+<div id="marketing" role="aside">
+
+	<!-- if no link, show modal as instructed above -->
+	<a class="marketing-item" ng-repeat="marketingItem in marketingItems" ng-click="showMarketingContent($event, marketingItem)">
+		<div class="item-image">
+			<img ng-src="{{marketingItem.image}}">
+		</div>
+		<div class="item-heading">
+			<h2>{{marketingItem.title}}</h2>
+			<p>{{marketingItem.text}}</p>
+			<!-- if external link -->
+			<svg enable-background="new 0 0 24 24" version="1.1" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" ng-if="marketingItem.url">
+				<path d="m23.976 4.382c-0.055-0.217-0.242-0.38-0.476-0.38h-5.5c-0.276 0-0.5 0.224-0.5 0.5s0.224 0.5 0.5 0.5h4.397l-8.665 8.666c-0.195 0.195-0.195 0.512 0 0.707 0.098 0.098 0.226 0.146 0.354 0.146s0.256-0.049 0.354-0.146l8.56-8.563v4.189c0 0.276 0.224 0.5 0.5 0.5s0.5-0.224 0.5-0.5v-5.307c0.024-0.105 0.02-0.213-0.024-0.312z">
+				</path>
+				<path d="m20.5 11.001c-0.276 0-0.5 0.224-0.5 0.5v11.5h-19v-15h15.5c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-16c-0.276 0-0.5 0.224-0.5 0.5v16c0 0.276 0.224 0.5 0.5 0.5h20c0.276 0 0.5-0.224 0.5-0.5v-12c0-0.276-0.224-0.5-0.5-0.5z">
+				</path>
+			</svg>
+			
+		</div>
+	</a>
 </div>
 <button style="opacity: 0;bottom: 0; left:0; position: fixed;" ng-click="loadURL()">Load URL</button>
