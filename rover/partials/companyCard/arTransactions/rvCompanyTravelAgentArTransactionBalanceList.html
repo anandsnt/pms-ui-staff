@@ -56,22 +56,45 @@
 				</span>
 			   
 			</div>
-			<!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
-			<div class="guest-date arrival" ng-if="!balance.isSelected">
-				<span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance || balance.associated_type === 'PostingAccount'">check-in</span>
-				<time>
-					<span class="date">{{balance.reservation_arrival_date  | date : dateFormat}}</span>
-					<span class="time">{{balance.reservation_arrival_time}}</span>
-				</time>
-			</div>
-
-            <div class="guest-date departure" ng-if="!balance.isSelected">
-                <span class="guest-status small-icon check-out" ng-hide="balance.associated_type === 'PostingAccount'">check-out</span>
-                <time ng-hide="balance.associated_type === 'PostingAccount'">
-                    <span class="date">{{balance.reservation_dep_date | date : dateFormat}}</span>
-                    <span class="time">{{balance.reservation_dep_time}}</span>
-                </time>
+			
+            <!-- Case 1: Nightly -->
+            <div class="reservation-time" ng-if="balance.reservation_arrival_date !== balance.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">arrival</span>
+                    <span class="guest-status check-out" ng-hide="balance.associated_type === 'PostingAccount'">arrival</span>
+                </div>
+                <div class="check-times">
+                    <time class="guest-time" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">
+                        <span>{{balance.reservation_arrival_date | date : dateFormat}}</span>
+                        <span class="hours">{{balance.reservation_arrival_time}}</span>
+                    </time>
+                    <time class="guest-time">
+                        <span>{{balance.reservation_dep_date | date : dateFormat}}</span>
+                        <span class="hours">{{balance.reservation_dep_time}}</span>
+                    </time>
+                </div>
             </div>
+
+            <!-- Case 2: Daily Reservation -->
+            <div class="reservation-time daily" ng-if="balance.reservation_arrival_date === balance.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in">arrival</span>
+                    <span class="guest-status check-out">arrival</span>
+                </div>
+                <div class="check-times">
+                    <div class="guest-hours">
+                        <time class="guest-time">{{balance.reservation_arrival_time}}</time> - <time class="guest-time">{{balance.reservation_dep_time}}</time>
+                    </div>
+                    <span class="date">{{balance.reservation_arrival_date | date : dateFormat}}</span>
+                </div>
+            </div>
+            
+            <!-- if daily reservation add .red -->
+            <div class="reservation-type red" ng-if="balance.is_day_use">D</div>
+            <div class="reservation-type" ng-if="!balance.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+            
+            <div class="status"></div>
+
             <div class="balance balance-now">
                 Invoiced Amount 
                 <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow | number:2}}</strong>

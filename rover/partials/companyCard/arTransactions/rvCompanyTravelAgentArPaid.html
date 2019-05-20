@@ -32,22 +32,45 @@
                 </span>
                 <span class="invoice">Account #<span class="value">{{paidInvoice.account_number}}</span></span>
             </div>
-
-            <div class="guest-date arrival">
-                <span class="guest-status small-icon check-in" ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">check-in</span>
-                <time ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">
-                    <span class="date">{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
-                    <span class="time">{{paidInvoice.reservation_arrival_time}}</span>
-                </time>
+            
+            <!-- Case 1: Nightly -->
+            <div class="reservation-time" ng-if="paidInvoice.reservation_arrival_date !== paidInvoice.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in" ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">arrival</span>
+                    <span class="guest-status check-out" ng-hide="paidInvoice.associated_type === 'PostingAccount'">arrival</span>
+                </div>
+                <div class="check-times">
+                    <time class="guest-time" ng-if="!paidInvoice.is_manual_balance && paidInvoice.associated_type !== 'PostingAccount'">
+                        <span>{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
+                        <span class="hours">{{paidInvoice.reservation_arrival_time}}</span>
+                    </time>
+                    <time class="guest-time">
+                        <span>{{paidInvoice.reservation_dep_date | date : dateFormat}}</span>
+                        <span class="hours">{{paidInvoice.reservation_dep_time}}</span>
+                    </time>
+                </div>
             </div>
-            <div class="guest-date departure">
-                <span class="guest-status small-icon check-out" ng-hide="paidInvoice.associated_type === 'PostingAccount'">check-out</span>
-                <time>
-                    <span class="date">{{paidInvoice.reservation_dep_date | date : dateFormat}}</span>
-                    <span class="time">{{paidInvoice.reservation_dep_time}}</span>
-                </time>
+
+            <!-- Case 2: Daily Reservation -->
+            <div class="reservation-time daily" ng-if="paidInvoice.reservation_arrival_date === paidInvoice.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in">arrival</span>
+                    <span class="guest-status check-out">arrival</span>
+                </div>
+                <div class="check-times">
+                    <div class="guest-hours">
+                        <time class="guest-time">{{paidInvoice.reservation_arrival_time}}</time> - <time class="guest-time">{{paidInvoice.reservation_dep_time}}</time>
+                    </div>
+                    <span class="date">{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
+                </div>
             </div>
             
+            <!-- if daily reservation add .red -->
+            <div class="reservation-type red" ng-if="paidInvoice.is_day_use">D</div>
+            <div class="reservation-type" ng-if="!paidInvoice.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+            
+            <div class="status"></div>
+
             <div class="amount paid">
                 <span class="currency">{{currencySymbol}}</span>{{ paidInvoice.amount | number:2 }}
             </div>
