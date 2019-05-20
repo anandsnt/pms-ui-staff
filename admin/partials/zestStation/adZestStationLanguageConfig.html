@@ -52,8 +52,8 @@
                                     <span class="input" ng-hide="selectedLanguage.translation_file_updated || selectedLanguage.translations_file">{{'CHOOSE_FILE' | translate}}</span>
                                     <input type="file" ng-model="selectedLanguage.translations_file" accept="application/json" app-filereader emit-data="selectedLanguage.name" />
                                     <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
-                                    <button type="button" ng-show="selectedLanguage.translation_file_updated || selectedLanguage.translations_file" class="button download-arrow icons " ng-click="downloadLang(selectedLanguage.name)"></button>
-                                    <button type="button" ng-show="selectedLanguage.translation_file_updated || selectedLanguage.translations_file" class="button download-arrow icons right editor" ng-click="editLang(selectedLanguage.name)">
+                                    <button type="button" ng-hide="selectedLanguage.translations_file || !selectedLanguage.translation_file_updated" class="button download-arrow icons " ng-click="downloadLang(selectedLanguage.name)"></button>
+                                    <button type="button" ng-hide="selectedLanguage.translations_file || !selectedLanguage.translation_file_updated" class="button download-arrow icons right editor" ng-click="editLang(selectedLanguage.name)">
                                         <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                                     </button>
                                 </div>
