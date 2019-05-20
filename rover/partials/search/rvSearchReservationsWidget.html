@@ -93,8 +93,8 @@
 
                     <div class="reservation-info">
 
-                    	<div class="reservation-type red" ng-if="row.is_day_use && hotelDiaryConfig.mode !== 'FULL'">D</div>
-                    	<div class="reservation-type red" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+                    	<div class="reservation-type red" ng-if="row.is_day_use">D</div>
+                    	<div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
 
                         <div class="guest-info">
                             <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
