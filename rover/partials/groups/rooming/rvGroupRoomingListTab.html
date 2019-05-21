@@ -248,16 +248,39 @@
                         <span ng-show="shouldShowAssignedRoom(reservation) || shouldShowUnAssigned(reservation)">|</span>
                         <span class="confirmation" ng-bind-html="escapeNull(reservation.confirm_no)|highlight:query:false"></span>
                     </div>
-                        <div class="reservation-info">
+
+                        <div class="reservation-info" ng-if="reservation.arrival_date !== reservation.departure_date">
                             <div class="arrival-departure">
-                                <span class="guest-status check-in">{{'GROUP_CHECK-IN'|translate}}</span>
-                                <time datetime="{arrival timestamp}">{{reservation.arrival_date|date:dateFormat}}</time>
+                                <span class="guest-status check-in">check-in</span>
+                                <time>
+                                    {{reservation.arrival_date|date:dateFormat}}
+                                </time>
                             </div>
                             <div class="departing">
-                                <span class="guest-status check-out">{{'GROUP_CHECK-OUT'|translate}}</span>
-                                <time datetime="{departure timestamp}">{{reservation.departure_date|date:dateFormat}}</time>
+                                <span class="guest-status check-out">check-out</span>
+                                <time>
+                                    {{reservation.departure_date|date:dateFormat}}
+                                </time>
                             </div>
                         </div>
+
+                        <div class="reservation-info" ng-if="reservation.arrival_date === reservation.departure_date">
+                            <div class="arrival-departure">
+                                <span class="guest-status check-in">check-in</span>
+                                <time>
+                                    <!-- show if daily reservation -->
+                                    <span class="date">{{reservation.arrival_date|date:dateFormat}}</span>
+                                </time>
+                            </div>
+                            <div class="departing">
+                                <span class="guest-status check-out">check-out</span>
+                                <time>
+                                    <!-- show if daily reservation -->
+                                    <span class="date">{{reservation.departure_date|date:dateFormat}}</span>
+                                </time>
+                            </div>
+                        </div>
+
                         <div class="room-info">
                             <strong class="room-type" ng-hide="emailPrintFilters.excludeRoomType && isPrintClicked">{{reservation.room_type_name}}</strong>
                             <em class="room-occupancy">{{occupancyTextMap[reservation.occupancy]}}</em>
@@ -270,6 +293,9 @@
                             &nbsp;
                         </div>
                         <div class="reservation-status">
+                            <!-- if daily reservation add .red -->
+                            <div class="reservation-type red" ng-if="reservation.is_day_use">D</div>
+                            <div class="reservation-type" ng-if="!reservation.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
                             <!-- No status if it's a new room -->
                             <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
                         </div>
