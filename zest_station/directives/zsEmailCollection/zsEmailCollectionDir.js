@@ -8,7 +8,7 @@ sntZestStation.directive('zsEmailCollection', function() {
 			icon: '=icon',
 			email: '=email',
 			isSkipable: '=isSkipable',
-			showKeyboard: '&',
+			showKeyboard: '=',
 			onFocus: '=',
 			onBlur: '&'
 		},

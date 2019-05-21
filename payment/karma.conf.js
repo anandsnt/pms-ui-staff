@@ -8,6 +8,8 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            '../shared/lib/js/jquery.min.js',
+            '../shared/lib/js/underscore.min.js',
             '../shared/lib/js/angular.min.js',
             '../shared/lib/js/angular-ui-router.min.js',
             '../shared/lib/js/angular-mocks.js',
@@ -20,8 +22,15 @@ module.exports = function(config) {
             '../shared/directives/activityIndicator/sntActivityIndicator.js',
             './constants/payConfig.js',
             '../shared/interceptors/**/*.js',
-            './services/sntPaymentSrv.js',
-            './specs/sntPaymentSrv.spec.js'
-        ]
+            './constants/*.js',
+            './services/*.js',
+            './controllers/*.js',
+            './specs/*.spec.js'
+        ],
+        preprocessors: {
+            './services/*.js': ['babel'],
+            './controllers/*.js': ['babel'],
+            './specs/*.spec.js': ['babel']
+        }
     }));
 };
