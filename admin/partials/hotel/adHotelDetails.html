@@ -759,47 +759,95 @@
 						HTTPS
 					</label>
 				</div>
-                <!--SHIJI STARTS-->
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-merchant-id">
-                        Merchant ID
-                    </label>
-                    <input type="text" ng-model="data.shiji_merchant_id" value="{{data.shiji_merchant_id}}">
+			</fieldset>
+
+            <!--SHIJI STARTS-->
+            <fieldset class="holder left" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI'">
+                <div class="form-title">
+                    <h3><span>Shiji Token</span> Settings </h3>
+                    <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
                 </div>
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-partner-id">
+                <div class="entry">
+                    <label>
                         Partner ID
                     </label>
-                    <input type="text" ng-model="data.shiji_partner_id" value="{{data.shiji_partner_id}}">
+                    <input type="text" ng-model="data.shiji_token_partner_id" value="{{data.shiji_token_partner_id}}">
                 </div>
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-key">
+                <div class="entry">
+                    <label>
+                        Repository ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_token_repository_id" value="{{data.shiji_token_repository_id}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Tokenization URL
+                    </label>
+                    <input type="text" value="{{data.shiji_token_url}}" readonly="readonly">
+                </div>
+                <div class="entry">
+                    <label>
                         Platform SSL Key
                     </label>
-                    <input type="text" ng-model="data.shiji_key" value="{{data.shiji_key}}">
+                    <input type="text" ng-model="data.shiji_token_key" value="{{data.shiji_token_key}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        API User
+                    </label>
+                    <input type="text" ng-model="data.shiji_token_api_user" value="{{data.shiji_token_api_user}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        API Password
+                    </label>
+                    <input type="text" ng-model="data.shiji_token_api_password" value="{{data.shiji_token_api_password}}">
+                </div>
+            </fieldset>
+            <fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway === 'SHIJI'">
+                <div class="form-title">
+                    <h3><span>Shiji Cloud Payment</span> Settings </h3>
+                    <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
                 </div>
 
-                <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
-                    <label for="shiji-payment-gateway-url">
-                        Gateway URL
+                <div class="entry">
+                    <label>
+                        Merchant ID
                     </label>
-                    <input type="text" value="{{data.shiji_payment_gateway_url}}" readonly="readonly">
+                    <input type="text" ng-model="data.shiji_cloud_merchant_id" value="{{data.shiji_cloud_merchant_id}}">
                 </div>
-                <!--SHIJI ENDS-->
-				<div class="entry full-width">
-					<label>Allow CC processors per payment methods</label>
-					<div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
-						<input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
-						<span class="switch-icon"></span>
-					</div>
-				</div>
-				<div class="entry">
-					<label>
-						EMV TIMEOUT
-					</label>
-					<input type="text" ng-model="data.emv_timeout">
-				</div>
-			</fieldset>
+                <div class="entry">
+                    <label>
+                        Terminal ID
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_terminal_id" value="{{data.shiji_cloud_terminal_id}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        Cloud Payment URL
+                    </label>
+                    <input type="text" value="{{data.shiji_cloud_url}}" readonly="readonly">
+                </div>
+                <div class="entry">
+                    <label>
+                        Platform SSL Key
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_key" value="{{data.shiji_cloud_key}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        API User
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_api_user" value="{{data.shiji_cloud_api_user}}">
+                </div>
+                <div class="entry">
+                    <label>
+                        API Password
+                    </label>
+                    <input type="text" ng-model="data.shiji_cloud_api_password" value="{{data.shiji_cloud_api_password}}">
+                </div>
+            </fieldset>
+            <!--SHIJI ENDS-->
 			<fieldset class="holder right" ng-if="isAdminSnt && data.payment_gateway == 'MLI'" >
 				<div class="form-title">
 					<h3><span>Hotel</span> MerchantLink Settings </h3>
@@ -839,6 +887,22 @@
 				</button>
 
 			</fieldset>
+
+			<fieldset class="holder left" ng-if="isAdminSnt">
+                <div class="entry full-width">
+                    <label>Allow CC processors per payment methods</label>
+                    <div class="switch-button single" ng-class="{ on : data.allow_cc_processors_per_payment_methods == true }" ng-click="data.allow_cc_processors_per_payment_methods = !data.allow_cc_processors_per_payment_methods">
+                        <input type="checkbox" value="{{data.allow_cc_processors_per_payment_methods}}">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
+                <div class="entry">
+                    <label>
+                        EMV TIMEOUT
+                    </label>
+                    <input type="text" ng-model="data.emv_timeout">
+                </div>
+            </fieldset>
 
 			<fieldset class="holder right" ng-if="isAdminSnt">
 				<div class="form-title">

@@ -66,7 +66,7 @@ var CurrencyInfoMappings = {
     'VND': [0, '\u20AB', 'VN\u20AB'],
     'YER': [0, 'Rial', 'Rial'],
     'ZAR': [2, 'R', 'R'],
-    'ZL': [2, 'zł', 'zł']
+    'PLN': [2, 'zł', 'zł']
 };
 
 /**
