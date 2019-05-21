@@ -198,7 +198,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
-		            menuIndex: "createReservation"
+		            menuIndex: "createReservation",
+		            hidden: ($rootScope.isPmsProductionEnv && $rootScope.hotelDiaryConfig.mode === 'FULL')
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
