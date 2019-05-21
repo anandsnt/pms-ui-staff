@@ -268,6 +268,7 @@
                             <div class="arrival-departure">
                                 <span class="guest-status check-in">check-in</span>
                                 <time>
+                                    {{getTimeConverted(reservation.arrival_time)}}
                                     <!-- show if daily reservation -->
                                     <span class="date">{{reservation.arrival_date|date:dateFormat}}</span>
                                 </time>
@@ -275,6 +276,7 @@
                             <div class="departing">
                                 <span class="guest-status check-out">check-out</span>
                                 <time>
+                                    {{getTimeConverted(reservation.departure_time)}}
                                     <!-- show if daily reservation -->
                                     <span class="date">{{reservation.departure_date|date:dateFormat}}</span>
                                 </time>
