@@ -306,6 +306,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 });
 
                 $scope.selectedLanguage = activeLanguage;
+                $scope.selectLanguage($scope.selectedLanguage);
             }
 
             $scope.resetHomeScreenTimer();
