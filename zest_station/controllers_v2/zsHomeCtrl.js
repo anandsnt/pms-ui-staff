@@ -75,8 +75,8 @@ sntZestStation.controller('zsHomeCtrl', [
                         name: defaultLangName
                     });
 
-                if (defaultLanguage && defaultLanguage.name) {
-                    var langShortCode = defaultLanguage.name;
+                if (defaultLanguage && defaultLanguage.code) {
+                    var langShortCode = defaultLanguage.code;
 
                     if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
                             // do nothing, current language is already the default one or no default is selected from hotel admin
