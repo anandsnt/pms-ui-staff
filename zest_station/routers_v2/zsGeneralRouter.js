@@ -31,9 +31,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 						defaultLangShortCode = defaultLanguage.code;
 
                     // Remove inactive languages
-                    sortedLanguages = _.filter(sortedLanguages, function(language){
-                        return language.active;
-                    });
+					sortedLanguages = _.filter(sortedLanguages, function(language) {
+						return language.active;
+					});
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
 						.then(function(translationFiles) {
