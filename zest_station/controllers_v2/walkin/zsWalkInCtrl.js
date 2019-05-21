@@ -82,6 +82,10 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.refreshScroller('stay-details-validate');
         };
 
+        $scope.continueBooking = function(){
+            $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+        };
+
         // $scope.proceedToCheckin = function() {
         //     // if the reservation search for the reservation just created is still goin on,
         //     // show loader and recheck status every second
@@ -208,14 +212,21 @@ sntZestStation.controller('zsWalkInCtrl', [
                     roomTypeNotAvailableActions();
                 } else {
                      _.each(roomTypeList, function(roomType){
-                         _.each($scope.availabileRoomList, function(availableRoom){
-                            if(roomType.id === availableRoom.id) {
-                                availableRoom.desc = roomType.name + ' :   ' + availableRoom.description;
-                                availableRoom.roomTypeName = roomType.name;
+                         _.each($scope.availabileRoomList, function(availableRoomType){
+                            if(roomType.id === availableRoomType.id) {
+                                availableRoomType.desc = roomType.name + ' :   ' + availableRoomType.description;
+                                availableRoomType.roomTypeName = roomType.name;
+                                availableRoomType.room_type_image =  roomType.room_type_image;
+                                availableRoomType.description = roomType.description;
                             }
                         });
                     });
-                    $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+                    $scope.idScanData.selectedRoomType = _.min($scope.availabileRoomList, function(roomType) {
+                        return parseFloat(roomType.adr);
+                    });
+                    showReservationSummaryScreen();
+
+                    // $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
                 }
             };
             var options = {
@@ -253,10 +264,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                         return;
                     }
                     _.each(availabileRoomTypes, function(roomType){
-                        roomType.description = roomType.adr ? $scope.zestStationData.currencySymbol + $filter('number')(roomType.adr, 2) : '';
-                    });
-                    $scope.idScanData.selectedRoomType = _.min(availabileRoomTypes, function(roomType) {
-                        return parseFloat(roomType.adr);
+                        roomType.adr_details = roomType.adr ? $scope.zestStationData.currencySymbol + $filter('number')(roomType.adr, 2) : '';
                     });
                     $scope.availabileRoomList = _.sortBy(availabileRoomTypes, function(roomType) {
                         return parseFloat(roomType.adr);
@@ -273,13 +281,14 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.getAvailableRatesForTheDay, options);
         };
 
-        $scope.$on('START_CREATING_RESERVATION', showReservationSummaryScreen);
+        $scope.$on('START_CREATING_RESERVATION', $scope.createReservation);
 
         $scope.acceptID = function() {
             if ($scope.idScanData.verificationMethod === 'FR') {
                 $scope.$emit('START_FACIAL_RECOGNITION');
             } else {
-                showReservationSummaryScreen();
+                //showReservationSummaryScreen();
+                $scope.createReservation();
             }
         };
 

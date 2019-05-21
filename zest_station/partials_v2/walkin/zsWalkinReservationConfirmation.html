@@ -1,4 +1,4 @@
-<section id="main" class="guest-id-verify" role="main">
+<section id="main" class="guest-id-verify" role="main" ng-if="false">
    <div id="flex-holder">
       <div id="textual" class="review-bill scrollable" ng-iscroll="stay-details-validate" style="height: 70%;">
          <div class="wrapper passport-details">
@@ -9,7 +9,7 @@
                <h2 translate>
                   REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
                </h2>
-               <div class="entry with-label">
+           <!--     <div class="entry with-label">
                   <label translate>
                   {{ 'ROOM_TYPE' |translate}}
                   </label>
@@ -19,15 +19,15 @@
                   <label translate>
                   {{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}
                   </label>
-                  <input type="text" ng-model="idScanData.selectedRoomType.description" class='disabled'/>
-               </div>
-               <!--  <div class="entry with-label">
+                  <input type="text" ng-model="idScanData.selectedRoomType.adr_details" class='disabled'/>
+               </div> -->
+               <div class="entry with-label">
                   <label class='admin-item-label'>{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}</label>
                   <div class="entry select">
                      <select  ng-options="roomType as roomType.desc for roomType in availabileRoomList" ng-model="idScanData.selectedRoomType">
                      </select>
                   </div>
-                  </div> -->
+                  </div>
                <!--    <div class="entry with-label">
                   <label class='admin-item-label'>{{'NO_OF_NIGHTS' | translate}}</label>
                   <div class="entry select">
@@ -79,8 +79,51 @@
       <button type="button" class="button" touch-press='navToHome(); resetTime()' translate>
       NAV_CANCEL
       </button>
-      <button type="button" class="button" touch-press='createReservation(); resetTime()' translate>
-      CONFIRM_RESERVATION_CREATION
+      <button type="button" class="button" touch-press='continueBooking(); resetTime()' translate>
+      CONTINUE
       </button>
    </div>
+</section>
+
+
+
+<!-- Content -->
+<section id="main" role="main" click-touch='resetTime()'class="upgrades-section">
+
+    <div id="content" class='room-details'>
+        <h1 translate>
+            REVIEW_WALKIN_GUEST_STAY_DETAILS
+        </h1>
+        <h2 translate>
+            REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
+        </h2>
+        <div id="upgrade" class="tabled-options">
+            <div class="upgrade-picture">
+                <img src="{{ idScanData.selectedRoomType.room_type_image }}">
+            </div>
+            <!-- Add scroll on it -->
+            <div class="upgrade-info">
+                <div class="wrapper" ng-bind-html="idScanData.selectedRoomType.description">
+                </div>
+            </div>
+            <div class="upgrade-price">
+                <h2>{{idScanData.selectedRoomType.name}}</h2>
+                <div class="price">
+                    <strong>{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}: {{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
+                   <!--  <small>
+                        <text data-ng-bind-html="getTagValue('PER_NIGHT')" editable-text="PER_NIGHT"></text>
+                        <text data-ng-bind-html="getTagValue('TAX_TEXT')" editable-text="TAX_TEXT"></text>
+                    </small> -->
+                </div>
+            </div>
+        </div>
+        <div id="actions">
+            <button type="button" class="button transparent" touch-press='navToHome(); resetTime()' translate>
+               NAV_CANCEL
+            </button>
+            <button type="button" class="button" touch-press='continueBooking(); resetTime()' translate>
+               CONTINUE
+            </button>
+        </div>
+    </div>
 </section>
