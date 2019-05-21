@@ -13,7 +13,10 @@
 		<ol class="cms-tree" ui-sortable="sortableOptions" ng-model="languageList">
             <li class="branch" ng-repeat="language in languageList">
                 <div class="sort" ng-show="detailIndex != $index" style="padding-right: 60px;">
-                    <a class="cms-name first-letter-capitalize" ng-click="languageSelected($index)" style="width: 80%">{{language.name}}</a>
+                    <a class="cms-name first-letter-capitalize" ng-click="languageSelected($index)" style="width: 80%">
+                        {{language.name}}
+                        <span class="italic_text" ng-show="language.is_default" style="color: #f6991b"> &nbsp; (Default)</span>
+                    </a>
                     <ad-toggle-button is-checked="language.active" on-update="toggleLanguage" params="language" div-class=""></ad-toggle-button>
                 </div>
                 <div ng-show="detailIndex == $index" class="form float">
