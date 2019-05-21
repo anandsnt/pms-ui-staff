@@ -44,20 +44,43 @@
                         <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
                         <span ng-hide="item.is_manual_balance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
                     </div>
-                    <div class="guest-date arrival">
-                        <span ng-if="!item.is_manual_balance" class="guest-status small-icon check-in">check-in</span>
-                        <time ng-if="!item.is_manual_balance">
+
+                    <!-- Case 1: Nightly -->
+                    <div class="reservation-time" ng-if="item.reservation_arrival_date !== item.reservation_dep_date">
+                        <div class="check-icons">
+                            <span class="guest-status check-in" ng-if="!item.is_manual_balance">arrival</span>
+                            <span class="guest-status check-out" ng-hide="item.associated_type === 'PostingAccount'">arrival</span>
+                        </div>
+                        <div class="check-times">
+                            <time class="guest-time" ng-if="!item.is_manual_balance">
+                                <span>{{item.reservation_arrival_date | date : dateFormat}}</span>
+                                <span class="hours">{{item.reservation_arrival_time}}</span>
+                            </time>
+                            <time class="guest-time">
+                                <span>{{item.reservation_dep_date | date : dateFormat}}</span>
+                                <span class="hours">{{item.reservation_dep_time}}</span>
+                            </time>
+                        </div>
+                    </div>
+
+                    <!-- Case 2: Daily Reservation -->
+                    <div class="reservation-time daily" ng-if="item.reservation_arrival_date === item.reservation_dep_date">
+                        <div class="check-icons">
+                            <span class="guest-status check-in">arrival</span>
+                            <span class="guest-status check-out">arrival</span>
+                        </div>
+                        <div class="check-times">
+                            <div class="guest-hours">
+                                <time class="guest-time">{{item.reservation_arrival_time}}</time> - <time class="guest-time">{{item.reservation_dep_time}}</time>
+                            </div>
                             <span class="date">{{item.reservation_arrival_date | date : dateFormat}}</span>
-                            <span class="time">{{item.reservation_arrival_time}}</span>
-                        </time>
+                        </div>
                     </div>
-                    <div class="guest-date departure">
-                        <span class="guest-status small-icon check-out">check-out</span>
-                        <time>
-                            <span class="date">{{item.reservation_dep_date | date : dateFormat}}</span>
-                            <span class="time">{{item.reservation_dep_time}}</span>
-                        </time>
-                    </div>
+                    
+                    <!-- if daily reservation add .red -->
+                    <div class="reservation-type red" ng-if="item.is_day_use">D</div>
+                    <div class="reservation-type" ng-if="!item.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
                     <div class="amount paid">
                         {{currencySymbol}} {{item.amount | number:2 }}
                     </div>

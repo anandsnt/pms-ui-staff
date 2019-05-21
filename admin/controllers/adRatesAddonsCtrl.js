@@ -155,7 +155,7 @@ admin.controller('ADRatesAddonsCtrl', [
             // fetch post types
             var ptCallback = function(data) {
                 // CICO-23575 - Disable all posting types apart from First Night for Hourly.
-                if ($rootScope.isHourlyRatesEnabled) {
+                if ($rootScope.isHourlyRatesEnabled || $rootScope.hotelDiaryConfig.mode === 'FULL') {
                     $scope.postTypes = [data[2]];
                 } else {
                     $scope.postTypes = data;
