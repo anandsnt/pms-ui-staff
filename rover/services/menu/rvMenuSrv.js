@@ -151,6 +151,23 @@ angular.module('sntRover').service('rvMenuSrv',
 		return menuToReturn;
     };
 
+    this.showAnalyticsMenu =  true;
+
+	var addAnalyticsMenuConditionally = function(menuList) {
+		if (self.showAnalyticsMenu) {
+			var reportIndex = _.findIndex(menuList, {
+				title: 'MENU_REPORTS'
+			});
+			var analyticsMenu = {
+				title: "MENU_REPORT_ANALYTICS",
+				action: "rover.reportAnalytics",
+				menuIndex: "reportAnalytics"
+			};
+			
+			menuList[reportIndex].submenu.push(analyticsMenu);
+		}
+		return menuList;
+	};
 
 	/**
 	* method to get menu for rover
@@ -181,7 +198,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
-		            menuIndex: "createReservation"
+		            menuIndex: "createReservation",
+		            hidden: ($rootScope.isPmsProductionEnv && $rootScope.hotelDiaryConfig.mode === 'FULL')
 		        }, {
 		            title: "MENU_ROOM_DIARY",
 		            action: 'rover.diary',
@@ -381,6 +399,8 @@ angular.module('sntRover').service('rvMenuSrv',
             }            
 		];
 
+		menuList = addAnalyticsMenuConditionally(menuList);
+
 		return processMenuList (menuList);
 	};
 
@@ -432,6 +452,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }]
             }
 		];
+
+		menu = addAnalyticsMenuConditionally(menu);
 
 		return processMenuList (menu);
 	};
@@ -616,6 +638,34 @@ angular.module('sntRover').service('rvMenuSrv',
 		return returnValue;
 	};
 
+	/*
+	 *	Utility method to check whether we need to show DIARY menu
+	 *	Based on settings values inside Reservation settings.
+	 */
+	var showHourlyDiaryMenu = function() {
+		
+		/**
+		 *	A = settings.day_use_enabled (true / false)
+		 *	B = settings.hourly_rates_for_day_use_enabled (true / false)
+		 *	C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+		 *
+		 *	A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+		 *	A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+		 *	A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+		 *	A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+		 */
+
+		var diaryConfig = $rootScope.hotelDiaryConfig,
+			showHourlyDiaryMenu = false;
+
+		// A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+		if ( diaryConfig.dayUseEnabled && diaryConfig.hourlyRatesForDayUseEnabled && diaryConfig.mode === 'FULL' ) {
+			showHourlyDiaryMenu = true;
+		}
+
+		return showHourlyDiaryMenu;
+	};
+
 	/**
 	* function to check whether a menu has some role based association
 	* @param {string}, menu index
@@ -627,18 +677,18 @@ angular.module('sntRover').service('rvMenuSrv',
 
 		switch (menuIndex) {
 			case 'diaryReservation':
-				returnValue = isHourlyRateOn();
+				returnValue = isHourlyRateOn() || showHourlyDiaryMenu();
 				break;
 
 			case 'nightlyDiaryReservation':
 				var isRoomDiaryEnabled = ($rootScope.isPmsProductionEnv) ? $rootScope.isRoomDiaryEnabled : true;
 
-				returnValue = !isHourlyRateOn() && isRoomDiaryEnabled;
+				returnValue = ( !isHourlyRateOn() && !showHourlyDiaryMenu() ) && isRoomDiaryEnabled;
 				break;
 
 			// dont wanted to show on hourly enabled hotels
 			case 'menuGroups':
-				returnValue = !isHourlyRateOn();
+				returnValue = !isHourlyRateOn() && !showHourlyDiaryMenu();
 				break;
 
 			// if auto change business is not enabled, we have to show EOD menu

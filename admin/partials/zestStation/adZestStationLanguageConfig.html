@@ -2,6 +2,7 @@
     <header class="content-title float">
         <h2 >Zest Station Language</h2>
         <a ng-click="goBackToPreviousState()" class="action back ">Back to Station Setup</a>
+        <a class="action add" ng-show="!isAddMode" ng-click="addNewLanguage()" >{{ 'ADD_NEW' | translate }}</a>
     </header>
     <!-- list mode -->
     <section class="content-scroll">
@@ -12,8 +13,59 @@
 		<!--  -->
 		<ol class="cms-tree" ui-sortable="sortableOptions" ng-model="languageList">
             <li class="branch" ng-repeat="language in languageList">
-                <div class="sort">
-                    <a class="cms-name first-letter-capitalize">{{language.name}}</a>
+                <div class="sort" ng-show="detailIndex != $index">
+                    <a class="cms-name first-letter-capitalize" ng-click="languageSelected($index)" >{{language.name}}</a>
+                    <ad-toggle-button is-checked="language.active" on-update="toggleLanguage" params="language" div-class=""></ad-toggle-button>
+                    <a  class="icons icon-delete large-icon language-delete"  ng-click="deleteItem(language)"></a>
+                </div>
+                <div ng-show="detailIndex == $index" class="form float">
+                        <div class="form-title full-width">
+                            <h3>
+                                <span ng-show="!isAddMode" class="first-letter-capitalize"> {{selectedLanguage.name}}</span>
+                                <span ng-show="isAddMode" class="first-letter-capitalize" translate> STATION_LANGUAGE_ADD_LABEL </span>
+                            </h3>
+                        </div>
+                        <div class="entry" ng-if="isAddMode">
+                            <label for="item-id" translate>STATION_LANGUAGE_NAME_LABEL</label>
+                            <input class="entry" ng-model="selectedLanguage.name" />
+                        </div>
+
+                        <div class="entry">
+                            <label for="item-id" translate>STATION_LANGUAGE_ENGLISH_LABEL</label>
+                            <input class="entry" ng-model="selectedLanguage.label" />
+                        </div>
+
+                        <div class="entry">
+                            <label for="item-id" translate>STATION_LANGUAGE_FOREIGN_LABEL</label>
+                            <input class="entry" ng-model="selectedLanguage.foreign_label" />
+                        </div>
+                        
+                        <ad-toggle-button is-checked="selectedLanguage.active" label="{{'STATION_LANGUAGE_ACTIVE_LABEL'| translate}}" div-class=""></ad-toggle-button>
+                        <ad-toggle-button is-checked="selectedLanguage.is_default" label="{{'STATION_LANGUAGE_DEFAULT'| translate}}" div-class=""></ad-toggle-button>
+
+                        <ad-image-upload image-file="selectedLanguage.icon" label="{{'STATION_LANGUAGE_FLAG_LABEL' | translate}}" div-class="entry"></ad-image-upload>
+                        
+                        <div class="entry station-language-entry">
+                                <label for="item-id" translate>STATION_LANGUAGE_TRANSLATION_FILE_LABEL</label>                            
+                                <div class="file-upload">
+                                    <span class="input" ng-show="selectedLanguage.translation_file_updated || selectedLanguage.translations_file">{{'FILE_ATTACHED' | translate}}</span>
+                                    <span class="input" ng-hide="selectedLanguage.translation_file_updated || selectedLanguage.translations_file">{{'CHOOSE_FILE' | translate}}</span>
+                                    <input type="file" ng-model="selectedLanguage.translations_file" accept="application/json" app-filereader emit-data="selectedLanguage.name" />
+                                    <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
+                                    <button type="button" ng-hide="selectedLanguage.translations_file || !selectedLanguage.translation_file_updated" class="button download-arrow icons " ng-click="downloadLang(selectedLanguage.name)"></button>
+                                    <button type="button" ng-show="selectedLanguage.translations_file || selectedLanguage.translation_file_updated" class="button download-arrow icons right editor" ng-click="editLang(selectedLanguage.name)">
+                                        <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                                    </button>
+                                </div>
+                        </div>
+                        <div class="actions float">
+                            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancel()" translate>
+                                CANCEL
+                            </button>
+                            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSettings(selectedLanguage)" translate>
+                                SAVE_CHANGES
+                            </button>
+                        </div>
                 </div>
             </li>
         </ol>

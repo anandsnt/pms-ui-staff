@@ -120,7 +120,7 @@
 		<div id="unassign-room" class="details scrollable">
 			<div class="wrapper">
 				<h3 class="unnasign-from-guest">
-					<span ng-repeat="restriction in stayDetails.restrictions">
+					<span ng-repeat="restriction in stayDetails.restrictions | unique: restriction.name">
                         {{restriction.name}}
                         <span ng-show="restriction.days!= null">&nbsp;{{'OF'|translate}}&nbsp;</span>
                         <strong>{{restriction.days}}</strong>{{$last ? '' : ', '}}

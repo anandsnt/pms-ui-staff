@@ -715,7 +715,7 @@
 
                                 &.with-icon {
                                     padding: 0 20px 0 40px;
-                                    font-size: 16px;
+                                    font-size: 14px;
                                     line-height: 40px;
                                     overflow: visible;
                                     .size(40px, auto);
@@ -889,9 +889,11 @@
 
                         &.card-buttons {
                             .button {
-                                margin-bottom:10px;
+                                &:not(:last-child) { margin-bottom: 10px; }
+                                &:nth-child(even) { margin-left: 20px; }
                             }
                         }
+
 
                         &.has-datepicker {
                             .ui-datepicker-trigger { top: 24px; }
@@ -3862,19 +3864,7 @@
                                     .data {
                                         .calc-width(100, 540);
                                     }
-                                    .guest-date {
-                                        width: 110px;
-                                        padding-left: 25px;
-                                        position: relative;
-
-                                        .guest-status {
-                                            position: absolute;
-                                            left: 0;
-                                            top: 0;
-                                            bottom: 0;
-                                            margin: auto;
-                                        }
-                                    }
+                                    
                                     .guest-data {
                                         width: 150px;
                                         padding-right: 20px;
@@ -3899,6 +3889,12 @@
                                                 font-size: 21px;
                                             }
                                         }
+                                    }
+                                    .reservation-time {
+                                        padding-left: 20px;
+                                    }
+                                    .reservation-type {
+                                        width: 30px;
                                     }
                                 }
 

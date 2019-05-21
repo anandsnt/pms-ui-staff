@@ -21,8 +21,7 @@ var GridRowInactive = React.createClass({
 			className: divClassName,
 			style: {
 					display: 'block',
-					left: (start_time_ms - x_origin) * px_per_ms + 'px',
-					zIndex: 100
+					left: (start_time_ms - x_origin) * px_per_ms + 'px'
 				}
 		},
 		React.DOM.span({

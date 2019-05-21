@@ -36,13 +36,33 @@
                         </button>
                         <text data-ng-bind-html="getTagValue('BOOK_NOW')" editable-text="BOOK_NOW"></text>
                     </li>
-                </ul>
+                    <li ng-if="zestStationData.showWalkinReservationOption">
+                        <button type="button" class="button option" touch-press='startWalkinReservationFlow()'>
+                            <div ng-include="icons.url.booknow"></div>
+                        </button>
+                        <text data-ng-bind-html="getTagValue('WALK_IN')" editable-text="WALK_IN"></text>
+                    </li>
+                </ul> 
             </nav>
         </div>
-        <div id="actions" class="align-center languages">
-            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
-                {{language.language_name_in_local}}
+        <div id="actions" class="languages align-center">
+            <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+                {{language.foreign_label}}
             </button>
+            <!-- <p class="selected-language" ng-show="shouldShowLanguageSelection()">
+                    <img ng-src="{{ selectedLanguage.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
+                    {{selectedLanguage.foreign_label}}
+                </p>
+
+                <div id="language-options" ng-show="shouldShowLanguageSelection()" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> 
+                    <div class="wrapper" style="width: {{widthForLanguageList();}}">
+                        <button type="button" class="button with-icon" ng-hide="!language.active" touch-press="selectLanguage(language)" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+                            <img ng-src="{{ language.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
+                            <span class="label-main">{{language.label}}</span>
+                            <span class="label-secondary">{{language.foreign_label}}</span>
+                        </button>
+                    </div>
+                </div> -->
         </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
     </section>

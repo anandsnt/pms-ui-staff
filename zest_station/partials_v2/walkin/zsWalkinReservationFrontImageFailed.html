@@ -1,0 +1,20 @@
+<section id="main" class="centered" role="main">
+    <div id="content">
+        <h1>
+             <text data-ng-bind-html="getTagValue('GI_UPLOAD_FRONT_IMAGE_FAILED')" editable-text="GI_UPLOAD_FRONT_IMAGE_FAILED"></text>
+        </h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" ng-hide="deviceConfig.useExtCamera" touch-press="captureFrontImage()">
+                        <div ng-include="icons.url.user_with_id"></div>
+                    </button>
+                    <button type="button" class="button option" ng-show="deviceConfig.useExtCamera" touch-press="retryFrontImageUsingExtCamera()">
+                        <div ng-include="icons.url.user_with_id"></div>
+                    </button>
+                     <text data-ng-bind-html="getTagValue('GI_RETAKE_FRONT_IMAGE')" editable-text="GI_RETAKE_FRONT_IMAGE"></text>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
