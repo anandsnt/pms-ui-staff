@@ -174,11 +174,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		$scope.editLang = function(lang) {
 			$scope.editingLanguage = lang;
 			// shows user an on-screen prompt, with the tags and values, so they can edit in-screen
-			if ($scope.selectedLanguage.translations_file) {
-				var json = JSON.parse(window.atob($scope.selectedLanguage.translations_file.split('base64,')[1]));
-
-				openEditor(json);
-			} else if (continueEditing(lang)) {
+			if (continueEditing(lang)) {
 				$log.log('continuing to edit...');
 				openEditor(languagesEditedInSession[lang].json);
 			} else if ($scope.selectedLanguage.translation_file_updated) {
@@ -212,9 +208,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			if (language.translations_file) {
 				language.translation_file_updated = true;
 
-				languagesEditedInSession[language.name] = {
-					'json': JSON.parse(window.atob(language.translations_file.split('base64,')[1]))
-				};
+				languagesEditedInSession[language.name] = null;
 				
 			}
 
