@@ -42,19 +42,19 @@
                         </button>
                         <text data-ng-bind-html="getTagValue('WALK_IN')" editable-text="WALK_IN"></text>
                     </li>
-                </ul>
+                </ul> 
             </nav>
         </div>
-        <div id="actions" class="languages-list">
-            <!-- <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+        <div id="actions" class="languages align-center">
+            <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.foreign_label}}
-            </button> -->
-            <p class="selected-language">
+            </button>
+            <!-- <p class="selected-language" ng-show="shouldShowLanguageSelection()">
                     <img ng-src="{{ selectedLanguage.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
                     {{selectedLanguage.foreign_label}}
                 </p>
 
-                <div id="language-options" ng-show="shouldShowLanguageSelection()" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> <!-- Add HORIZONTAL ng-scroll here -->
+                <div id="language-options" ng-show="shouldShowLanguageSelection()" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> 
                     <div class="wrapper" style="width: {{widthForLanguageList();}}">
                         <button type="button" class="button with-icon" ng-hide="!language.active" touch-press="selectLanguage(language)" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                             <img ng-src="{{ language.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
@@ -62,7 +62,7 @@
                             <span class="label-secondary">{{language.foreign_label}}</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
         </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
     </section>
