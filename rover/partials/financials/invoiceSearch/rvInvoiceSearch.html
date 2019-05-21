@@ -66,7 +66,11 @@
                             <span class="icons icon-guest-travelagent" ng-bind-html="escapeNull(invoiceReservationData.associated_item.travel_agent_card)|highlight:invoiceSearchData.query:false" >{{::invoiceReservationData.associated_item.travel_agent_card}}</span> 
 
                             <!-- If TA is attached to reservation (doesn't have to have routed bill), show:-->
-                            <span class="icons icon-guest-company" ng-bind-html="escapeNull(invoiceReservationData.associated_item.company_card)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.company_card}}</span> 
+                            <span class="icons icon-guest-company" ng-bind-html="escapeNull(invoiceReservationData.associated_item.company_card)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.company_card}}</span>
+
+                            <div class="reservation-type red" ng-if="invoiceReservationData.associated_item.type === 'RESERVATION' && invoiceReservationData.associated_item.is_day_use">D</div>
+                            <div class="reservation-type" ng-if="invoiceReservationData.associated_item.type === 'RESERVATION' && !invoiceReservationData.associated_item.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
                         </div>
 
                         <!-- Invoice Info -->
@@ -113,6 +117,10 @@
 
                             <!-- If TA is attached to reservation (doesn't have to have routed bill), show:
                             <span class="icons icon-guest-travelagent">{Travel Agent Name}</span> -->
+
+                            <div class="reservation-type red" ng-if="invoiceReservationData.associated_item.type === 'RESERVATION' && invoiceReservationData.associated_item.is_day_use && hotelDiaryConfig.mode !== 'FULL'">D</div>
+                            <div class="reservation-type red" ng-if="invoiceReservationData.associated_item.type === 'RESERVATION' && !invoiceReservationData.associated_item.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
                         </div>
 
                         <!-- Invoice Info -->
