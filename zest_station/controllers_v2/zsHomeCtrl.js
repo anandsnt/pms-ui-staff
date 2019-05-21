@@ -75,6 +75,8 @@ sntZestStation.controller('zsHomeCtrl', [
                         name: defaultLangName
                     });
 
+                defaultLanguage = !defaultLangName && $scope.languages.length ? $scope.languages[0] : defaultLanguage;
+
                 if (defaultLanguage && defaultLanguage.code) {
                     var langShortCode = defaultLanguage.code;
 
