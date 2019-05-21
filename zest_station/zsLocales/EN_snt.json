@@ -812,6 +812,7 @@
     "WALKIN_ADULT": "Adult",
     "CHILDREN": "CHILDREN",
     "INFANTS": "INFANTS",
-    "CONFIRM_RESERVATION_CREATION": "Book now"
+    "CONFIRM_RESERVATION_CREATION": "Book now",
+    "ROOM_TYPE": "Room Type"
 
 }

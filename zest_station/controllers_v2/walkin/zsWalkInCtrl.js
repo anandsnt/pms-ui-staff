@@ -15,7 +15,7 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         var reservationId,
             arrivalDate;
-        $scope.minimumAdrRoomType = {};
+        $scope.availabileRoomList = [];
 
             // searchingReservationInProgress = false,
             // searchingReservationFailed = false;
@@ -166,7 +166,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                 "adults_count": $scope.idScanData.noOfAdults,
                 "children_count": $scope.idScanData.noOfChildren,
                 "infants_count": $scope.idScanData.noOfInfants,
-                "room_type_id": $scope.minimumAdrRoomType.id,
+                "room_type_id": $scope.idScanData.selectedRoomType.id,
                 "rate_id": $scope.zestStationData.kiosk_walk_in_rate_id,
                 "new_guest_details": [{
                     "is_primary": true,
@@ -197,8 +197,34 @@ sntZestStation.controller('zsWalkInCtrl', [
                 successCallBack: createReservationSuccess,
                 failureCallBack: createReservationFailed
             };
-
             $scope.callAPI(zsGeneralSrv.createReservation, options);
+        };
+
+        var fetchRoomTypes = function(){
+            var fetchRoomtypesSuccess = function(response){
+                var roomTypeList = response.results;
+
+                if (roomTypeList && roomTypeList.length === 0) {
+                    roomTypeNotAvailableActions();
+                } else {
+                     _.each(roomTypeList, function(roomType){
+                         _.each($scope.availabileRoomList, function(availableRoom){
+                            if(roomType.id === availableRoom.id) {
+                                availableRoom.desc = roomType.name + ' :   ' + availableRoom.description;
+                                availableRoom.roomTypeName = roomType.name;
+                            }
+                        });
+                    });
+                    $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
+                }
+            };
+            var options = {
+                params: {},
+                successCallBack: fetchRoomtypesSuccess,
+                failureCallBack: roomTypeNotAvailableActions
+            };
+
+            $scope.callAPI(zsGeneralSrv.getRoomTypes, options);
         };
 
         $scope.checkRoomAvailability = function() {
@@ -218,21 +244,24 @@ sntZestStation.controller('zsWalkInCtrl', [
                     roomTypeNotAvailableActions();
                 } else {
                     // accept only if availablity is > 0
-                    var availabilityList = _.filter(response.results, function(roomType) {
+                    var availabileRoomTypes = _.filter(response.results, function(roomType) {
                         return roomType.availability > 0;
                     });
 
-                    if (availabilityList.length === 0) {
+                    if (availabileRoomTypes.length === 0) {
                         roomTypeNotAvailableActions();
                         return;
                     }
-                    $scope.minimumAdrRoomType = _.min(availabilityList, function(roomType) {
+                    _.each(availabileRoomTypes, function(roomType){
+                        roomType.description = roomType.adr ? $scope.zestStationData.currencySymbol + $filter('number')(roomType.adr, 2) : '';
+                    });
+                    $scope.idScanData.selectedRoomType = _.min(availabileRoomTypes, function(roomType) {
                         return parseFloat(roomType.adr);
                     });
-
-                    $scope.minimumAdrRoomType.adr = $scope.minimumAdrRoomType.adr ? $scope.zestStationData.currencySymbol + $filter('number')($scope.minimumAdrRoomType.adr, 2) : '';
-                    $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE'
-
+                    $scope.availabileRoomList = _.sortBy(availabileRoomTypes, function(roomType) {
+                        return parseFloat(roomType.adr);
+                    });
+                    fetchRoomTypes();
                 }
             };
             var options = {
@@ -273,22 +302,6 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.fetchHotelBusinessDate, options);
         };
 
-        var setStaysArray = function(rangeEnd, firstItemDesc, otherDesc) {
-            var arrayRange = _.range(1, rangeEnd);
-            var finalArray = [];
-
-            _.each(arrayRange, function(range, index) {
-                var desc = index === 0 ? range + " " + $filter('translate')(firstItemDesc) : range + " " + $filter('translate')(otherDesc);
-
-                finalArray.push({
-                    "id": range,
-                    "desc": desc
-                });
-            });
-
-            return finalArray;
-        };
-
         (function() {
             zsCheckinSrv.setCurrentReservationIdDetails({});
             // $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
@@ -301,13 +314,13 @@ sntZestStation.controller('zsWalkInCtrl', [
                 verificationMethod: zsUtilitySrv.retriveIdScanVerificationMethod($scope.zestStationData.kiosk_scan_mode),
                 staffVerified: false,
                 screenType: 'WALKIN_RESERVATION',
-                noOfNightArray: setStaysArray(11, 'WALKIN_NIGHT', 'DAY_NIGHTS'),
-                adultsCountArray: setStaysArray(6, 'WALKIN_ADULT', 'ADULTS'),
+                noOfNightArray: _.range(1, 6),
+                adultsCountArray: _.range(1, 6),
                 guestCountArray: _.range(0, 6),
                 noOfDays: 1,
                 noOfAdults: 1,
                 noOfChildren: 0,
-                noOfInfants: 0
+                selectedRoomType: {}
             };
             $scope.setScroller('confirm-images');
             $scope.setScroller('passport-validate');

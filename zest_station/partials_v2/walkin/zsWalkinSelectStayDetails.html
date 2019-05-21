@@ -1,35 +1,34 @@
 <section id="main" class="address-screen" role="main">
-    <div id="content">
-        <h1 translate>WALK_IN_STAY_DETAILS</h1>
-        <h3 translate>WALK_IN_STAY_DETAILS_SUB</h3>
-        <div id="flex-holder">
-            <form method="post" class="pull-left form">
-                <div class="select entry entry-address" style="width: calc(23% - 9px);">
-                    <select name="Country" ng-options="nights.id as nights.desc for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
-                        <option value="">{{'NO_OF_NIGHTS' | translate}}</option>
-                    </select>
-                </div>
-                <div class="select entry entry-address" style="width: calc(23% - 9px);">
-                    <select name="Country" ng-options="adultCount.id as adultCount.desc for adultCount in idScanData.adultsCountArray" ng-model="idScanData.noOfAdults">
-                        <option value="">{{'ADULTS' | translate}}</option>
-                    </select>
-                </div>
-                <div class="select entry entry-address" style="width: calc(23% - 9px);">
-                    <select name="Country" ng-options="childCount as childCount for childCount in idScanData.guestCountArray" ng-model="idScanData.noOfChildren">
-                        <option value="">{{'CHILDREN' | translate}}</option>
-                    </select>
-                </div>
-                <div class="select entry entry-address" style="width: calc(23% - 9px); margin-left: 20px;">
-                    <select name="Country" ng-options="infantCount as infantCount for infantCount in idScanData.guestCountArray" ng-model="idScanData.noOfInfants">
-                        <option value="">{{'INFANTS' | translate}}</option>
-                    </select>
-                </div>
-            </form>
-            <div id="actions">
-                 <button type="button" class="button transparent" style="visibility: hidden;">
-                 </button>
-                <button type="button" ng-hide="!idScanData.noOfDays || idScanData.noOfDays === 0 || !idScanData.noOfAdults || idScanData.noOfAdults === 0" class="button" touch-press="checkRoomAvailability()" translate="">NEXT</button>
+   <div id="content">
+      <h1 translate>WALK_IN_STAY_DETAILS</h1>
+      <h3 translate>WALK_IN_STAY_DETAILS_SUB</h3>
+      <div id="flex-holder">
+         <form method="post" class="pull-left form full-width">
+            <div class="entry entry-address address-col select with-icon with-label">
+               <label for="nights" translate>NO_OF_NIGHTS</label>
+               <ng-include src="icons.url.no_of_nights"></ng-include>
+               <select id="nights" name="nights" ng-options="nights as nights for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
+                  <option value="">{{'NO_OF_NIGHTS' | translate}}</option>
+               </select>
             </div>
-        </div>
-    </div>        
+            <div class="entry entry-address address-col select with-icon with-label">
+               <label for="adults" translate>ADULTS</label>
+               <ng-include src="icons.url.adults"></ng-include>
+               <select id="adults" name="adults"ng-options="adultCount as adultCount for adultCount in idScanData.adultsCountArray" ng-model="idScanData.noOfAdults">
+                  <option value="">{{'ADULTS' | translate}}</option>
+               </select>
+            </div>
+            <div class="entry entry-address address-col  select with-icon with-label">
+               <label for="children" translate>CHILDREN</label>
+               <ng-include src="icons.url.children"></ng-include>
+               <select id="children" name="children" ng-options="childCount as childCount for childCount in idScanData.guestCountArray" ng-model="idScanData.noOfChildren">
+                  <option value="">{{'CHILDREN' | translate}}</option>
+               </select>
+            </div>
+         </form>
+         <div id="actions" class="pull-right">
+            <button type="button" class="button" ng-hide="!idScanData.noOfDays || idScanData.noOfDays === 0 || !idScanData.noOfAdults || idScanData.noOfAdults === 0" class="button" touch-press="checkRoomAvailability()" translate>Next</button>
+         </div>
+      </div>
+   </div>
 </section>
