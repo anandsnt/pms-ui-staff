@@ -89,7 +89,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'hotel-e': 'Hotel E',
             'kelley': 'Kelley House',
             'stare-miastro': 'Aparthotel Stare Miasto',
-            'upstairs-by-mamas': 'Upstairs by Mamas'
+            'upstairs-by-mamas': 'Upstairs by Mamas',
+            'juliani': 'Hotel Juliani',
+            'mooons': 'Mooons'
         };
 
         this.isThemeConfigured = function(theme) {
