@@ -11,6 +11,7 @@
 @actionBackground:      @brandColor;
 
 @inputBackground:       #707070;
+@inputColor:            @white;
 @transparentColor:      rgba(0,0,0,.5);
 
 /* 2. TYPOGRAPHY
@@ -76,12 +77,6 @@
     #header {
         height: 152px;
         background: #23272b;
-
-        .button {
-            .icons {
-                fill: @black;
-            }
-        }
     }
 
     #main {
@@ -148,20 +143,6 @@
             background-color: #000;
         }
     } 
-
-    .add-on-list {
-        li {
-
-            &:not(.selected){
-                border-color: rgba(0,0,0,0.05);
-
-                .add-on-content {
-                    background: rgba(0,0,0,0.05);
-                }
-            }
-            
-        }
-    }
 
     .add-on {
 
