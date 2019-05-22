@@ -124,7 +124,9 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			} else {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
-				$scope.$emit('PAYMENT_FAILED', responseData.respText);
+				let errorMsg = responseData.respText ? [responseData.respText] : [''];
+
+				$scope.$emit('PAYMENT_FAILED', errorMsg);
 			}
 		};
 
