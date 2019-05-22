@@ -2,7 +2,7 @@
 
 /* Variables            ==================================*/
 @import "common/01-B_variables.less";
-    
+
 @images:            ~"../cssimg";
 @appImages:         ~"../cssimg/app";
 
@@ -466,6 +466,12 @@ a {
         padding: (@base * 5) (@base * 12);
         overflow-y: auto;
         .size(100vh, 60%);
+
+        &.login--just-form {
+            width: 400px;
+            padding: (@base * 5) 0;
+            #flexbox > .parent(column wrap, '', '', center);
+        }
     }
 }
 
@@ -507,6 +513,15 @@ a {
 
     @media only screen and (min-width: 1024px) {
         max-width: 400px;
+    }
+}
+
+.login--just-form {
+    .login__content,
+    .login__footer {
+        @media only screen and (min-width: 1024px) {
+            width: 100%;
+        }
     }
 }
 
