@@ -36,8 +36,8 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Redirects to specific ur on succesfull login
  */
 angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout) {
-	 $scope.data = {};
-	 $scope.data.roverVersion =  "";
+	$scope.data = {};
+	$scope.data.roverVersion = "";
 
 	 if (localStorage.email) {
 	 	$scope.data.email = localStorage.email;
