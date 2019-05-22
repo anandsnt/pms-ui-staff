@@ -235,11 +235,11 @@ angular.module("sntRover").service("RVSearchSrv", [
             return deferred.promise;
         };
 
-		/**
-		 * Fetches the reservations eligible for bulk checkout
-		 * @param {Object} params request params
-		 * @return {Promise} promise object
-		 */
+        /**
+         * Fetches the reservations eligible for bulk checkout
+         * @param {Object} params request params
+         * @return {Promise} promise object
+         */
         this.fetchReservationsForBulkCheckout = function(params) {
             var deferred = $q.defer(),
                 url = '/api/reservations/fetch_bulk_checkout_reservations';
@@ -250,6 +250,27 @@ angular.module("sntRover").service("RVSearchSrv", [
                 },
                 function(errorMessage) {
                     deferred.reject(errorMessage);
+                }
+            );
+
+            return deferred.promise;
+        };
+        
+        /**
+         * Perform bulk checkout of reservations
+         * @param {Object} params request params for the bulk checkout operation
+         * @return {Promise} promise
+         */
+        this.processBulkCheckout = function (params) {
+            var url = '/api/reservations/bulk_checkout.json',
+                deferred = $q.defer();
+
+            rvBaseWebSrvV2.postJSON(url, params).then(
+                function (data) {
+                    deferred.resolve(data);
+                },
+                function (data) {
+                    deferred.reject(data);
                 }
             );
 
