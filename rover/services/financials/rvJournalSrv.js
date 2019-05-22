@@ -79,6 +79,22 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         return deferred.promise;
     };
 
+		/*
+		* Service function to fetch journal summary
+		* @return {object} journal summary
+		*/
+		that.fetchPrintDateTime = function () {
+			var deferred = $q.defer(),
+			url = "api/financial_transactions/print_date_time";
+
+			BaseWebSrvV2.getJSON(url).then(function (data) {
+				deferred.resolve(data);
+			}, function (data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
+		}; 
+
     /*
      * Service function to fetch journal summary
      * @return {object} journal summary
