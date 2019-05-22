@@ -1083,7 +1083,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.dashboardSearchPagination = {
 				id: 'DASHBOARD_SEARCH',
 				api: isBulkCheckoutAvailable ? $scope.fetchBulkCheckoutReservations : $scope.fetchSearchResults,
-				perPage: 10//RVSearchSrv.searchPerPage
+				perPage: RVSearchSrv.searchPerPage
 			};
 		};
 
@@ -1092,17 +1092,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.fetchBulkCheckoutReservations = function( page ) {
 			var requestParams = {
-					per_page: 10,
+					per_page: RVSearchSrv.searchPerPage,
 					page: page || 1,
 					allow_open_balance_checkout : $scope.allowOpenBalanceCheckout
 				},
 				onReservationsFetchSuccess = function(data) {
 					$scope.results = data.results;
-					$scope.totalSearchResults = data.results.length;
+					$scope.totalSearchResults = data.total_count;
 					if ($scope.results.length > 0) { 
 						applyFilters();
+						$scope.showSearchResultsArea = true;
 					}
-					$scope.bulkCheckoutReservationsCount = $scope.totalSearchResults;
+					$scope.bulkCheckoutReservationsCount = data.total_count;
 					setTimeout(function() {
 						$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
 						$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
@@ -1125,11 +1126,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.onDeparturesScreenTabViewChange = function() {
 			$scope.isBulkCheckoutSelected = !$scope.isBulkCheckoutSelected;
+			initializePagination($scope.isBulkCheckoutSelected);
 
-			if (!$scope.isBulkCheckoutSelected) {
-				$scope.fetchSearchResults();
-			} else {
+			if ($scope.isBulkCheckoutSelected) {
 				$scope.fetchBulkCheckoutReservations();
+			} else {
+				$scope.fetchSearchResults();
 			}
 		};
 
@@ -1137,15 +1139,18 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * Should disable bulk checkout button in departures screen
 		 */
 		$scope.shouldDisableBulkCheckoutOption = function() {
-			return !$rootScope.isStandAlone || $rootScope.isHourlyRateOn || !rvPermissionSrv.getPermissionValue('CHECK_OUT_RESERVATION')
-			
+			return (
+                !$rootScope.isStandAlone ||
+                $rootScope.isHourlyRateOn ||
+                !rvPermissionSrv.getPermissionValue("CHECK_OUT_RESERVATION") ||
+                $rootScope.isInfrasecEnabled
+            );
 		};
 
 		/**
 		 * Toggle allow open balance checkout filter in departures screen
 		 */
 		$scope.toggleAllowOpenBalanceCheckoutFilter = function() {
-			initializePagination($scope.isBulkCheckoutSelected);
 			$scope.allowOpenBalanceCheckout = !$scope.allowOpenBalanceCheckout;
 			$scope.fetchBulkCheckoutReservations();
 		};

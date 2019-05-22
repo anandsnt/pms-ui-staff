@@ -4,7 +4,7 @@
 			<div class="entry switch" ng-if="isDueoutShowing">
 				<!-- remove .on when showing Bulk Checkout -->
 				<div class="switch-button" ng-class="{'on': !isBulkCheckoutSelected}">
-					<input value="" type="checkbox" checked="" ng-model="isBulkCheckoutSelected" ng-change="onDeparturesScreenTabViewChange()">
+					<input value="" type="checkbox" checked="" ng-model="isBulkCheckoutSelected" ng-change="onDeparturesScreenTabViewChange()" ng-disabled="shouldDisableBulkCheckoutOption()">
 					<label class="data-off">
 						<span class="value">All</span>
 						<span class="switch-icon">Bulk Checkout</span>
@@ -19,7 +19,7 @@
 			<!-- remove .hidden when showing bulk checkout -->
 			<div class="entry open-balance" ng-if="isDueoutShowing" ng-class="{'hidden': !isBulkCheckoutSelected}">
 				<label class="checkbox" for="open-balance">
-					<span class="icon-form icon-checkbox"></span>
+					<span class="icon-form icon-checkbox" ng-class="{'checked': allowOpenBalanceCheckout}"></span>
 					<input id="open-balance" value="1" type="checkbox" ng-model="allowOpenBalanceCheckout" ng-click="toggleAllowOpenBalanceCheckoutFilter()">
 					ALLOW OPEN BALANCE CHECK OUT
 				</label>
