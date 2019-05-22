@@ -175,9 +175,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var langShortCode, url, promises = [], results = {};
 
             languages.map(function(language) {
-                langShortCode = language.name;
+                langShortCode = language.code;
 
-                that.langName[langShortCode] = language.name;
+                that.langName[langShortCode] = language.code;
 
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(

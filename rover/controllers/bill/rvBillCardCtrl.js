@@ -2676,71 +2676,77 @@ sntRover.controller('RVbillCardController',
 		if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 			finalInvoiceSettlement(data, true);
 		} else {
-			var printDataFetchSuccess = function(successData) {
-				$scope.isPrintRegistrationCard = false;
-				$scope.printBillCardActive = true;
-				$scope.$emit('hideLoader');
-
-
-				if ($scope.billFormat.isInformationalInvoice) {
-					successData.invoiceLabel = successData.translation.information_invoice;
-				}
-				else if (successData.no_of_original_invoices === null) {
-					successData.invoiceLabel = successData.translation.invoice;
-				} 
-				else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-					successData.invoiceLabel = successData.translation.void_invoice;
-				} 
-				else if (($scope.reservationBillData.is_bill_lock_enabled 
-					&& parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
-					|| (!$scope.reservationBillData.is_bill_lock_enabled 
-						&& parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) 
-				{
-					successData.invoiceLabel = successData.translation.invoice;
-				} 
-				else if (($scope.reservationBillData.is_bill_lock_enabled 
-					&& parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
-						|| (!$scope.reservationBillData.is_bill_lock_enabled 
-							&& parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)))
-				{
+			var getCopyCount = function(successData) {
 					var copyCount = "";
 
 					if (successData.is_copy_counter) {
 						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
 					}
-					successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
-				}
+					return copyCount;
+				},
+				printDataFetchSuccess = function(successData) {
+					var copyCount = "";
 
-				
-				$scope.printData = successData;
-				$scope.errorMessage = "";
+					$scope.isPrintRegistrationCard = false;
+					$scope.printBillCardActive = true;
+					$scope.$emit('hideLoader');
 
-				// CICO-9569 to solve the hotel logo issue
-				$("header .logo").addClass('logo-hide');
-				$("header .h2").addClass('text-hide');
-				$("body #loading").html("");// CICO-56119
 
-			    // add the orientation
-			    addPrintOrientation();
-
-			    /*
-			    *	======[ READY TO PRINT ]======
-			    */
-			    // this will show the popup with full bill
-			    $timeout(function() {
-
-					if (sntapp.cordovaLoaded) {
-						cordova.exec(billCardPrintCompleted,
-							function(error) {
-								billCardPrintCompleted();
-							}, 'RVCardPlugin', 'printWebView', []);
+					if ($scope.billFormat.isInformationalInvoice) {
+						successData.invoiceLabel = successData.translation.information_invoice;
 					}
-					else
+					else if (successData.no_of_original_invoices === null) {
+						successData.invoiceLabel = successData.translation.invoice;
+					} 
+					else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
+						if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) {
+							successData.invoiceLabel = successData.translation.void_invoice;
+						} 
+						else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) {
+							copyCount = getCopyCount(successData);
+							successData.invoiceLabel = successData.translation.copy_of_void_invoice.replace("#count", copyCount);
+						}
+					} 
+					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
 					{
-						window.print();
-						billCardPrintCompleted();
+						successData.invoiceLabel = successData.translation.invoice;
+					} 
+					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					{
+						copyCount = getCopyCount(successData);
+						successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 					}
-				}, 700);
+
+					
+					$scope.printData = successData;
+					$scope.errorMessage = "";
+
+					// CICO-9569 to solve the hotel logo issue
+					$("header .logo").addClass('logo-hide');
+					$("header .h2").addClass('text-hide');
+					$("body #loading").html("");// CICO-56119
+
+					// add the orientation
+					addPrintOrientation();
+
+					/*
+					*	======[ READY TO PRINT ]======
+					*/
+					// this will show the popup with full bill
+					$timeout(function() {
+
+						if (sntapp.cordovaLoaded) {
+							cordova.exec(billCardPrintCompleted,
+								function(error) {
+									billCardPrintCompleted();
+								}, 'RVCardPlugin', 'printWebView', []);
+						}
+						else
+						{
+							window.print();
+							billCardPrintCompleted();
+						}
+					}, 700);
 			    
 			};
 

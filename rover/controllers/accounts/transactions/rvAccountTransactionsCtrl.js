@@ -955,59 +955,71 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(requestParams, true);
 			} else {
-				var printBillSuccess = function(response) {
-					sntActivity.stop("PRINT_STARTED");
-					var responseData = response.data,
-						copyCount = "",
-						timeDelay = 700;
+				var getCopyCount = function(successData) {
+						var copyCount = "";
 
-					if ($scope.billFormat.isInformationalInvoice) {
-						responseData.invoiceLabel = responseData.translation.information_invoice;
-					}
-					else if (responseData.no_of_original_invoices === null) {
-						responseData.invoiceLabel = responseData.translation.invoice;
-					}
-					else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
-						responseData.invoiceLabel = responseData.translation.void_invoice;
-					} 
-					else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
-					{
-						responseData.invoiceLabel = responseData.translation.invoice;
-					} 
-					else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
-					{
-						if (responseData.is_copy_counter) {
-							copyCount = parseInt(responseData.print_counter, 10) - parseInt(responseData.no_of_original_invoices, 10);					
+						if (successData.is_copy_counter) {
+							copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
 						}
-						responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
-					}
+						return copyCount;
+					},
+					printBillSuccess = function(response) {
+						sntActivity.stop("PRINT_STARTED");
+						var responseData = response.data,
+							copyCount = "",
+							timeDelay = 700;
 
-					$scope.printData = responseData;
-					$scope.errorMessage = "";
-
-					$('.nav-bar').addClass('no-print');
-					$('.cards-header').addClass('no-print');
-					$('.card-tabs-nav').addClass('no-print');
-					$("body #loading").html("");
-
-					// this will show the popup with full report
-					$timeout(function() {
-
-						if (sntapp.cordovaLoaded) {
-							cordova.exec(accountsPrintCompleted,
-								function(error) {
-									accountsPrintCompleted();
-								}, 'RVCardPlugin', 'printWebView', []);
+						if ($scope.billFormat.isInformationalInvoice) {
+							responseData.invoiceLabel = responseData.translation.information_invoice;
 						}
-						else
+						else if (responseData.no_of_original_invoices === null) {
+							responseData.invoiceLabel = responseData.translation.invoice;
+						}
+						else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
+							
+							if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) {
+								responseData.invoiceLabel = responseData.translation.void_invoice;
+							} else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10)) {
+								copyCount = getCopyCount(responseData);
+								responseData.invoiceLabel = responseData.translation.copy_of_void_invoice.replace("#count", copyCount);
+							}
+						} 
+						else if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) 
 						{
-							$timeout(function() {
-								window.print();
-								accountsPrintCompleted();
-							}, timeDelay); // CICO-61122 
+							responseData.invoiceLabel = responseData.translation.invoice;
+						} 
+						else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10))
+						{
+							copyCount = getCopyCount(responseData);
+							responseData.invoiceLabel = responseData.translation.copy_of_invoice.replace("#count", copyCount);
 						}
 
-					}, 100);
+						$scope.printData = responseData;
+						$scope.errorMessage = "";
+
+						$('.nav-bar').addClass('no-print');
+						$('.cards-header').addClass('no-print');
+						$('.card-tabs-nav').addClass('no-print');
+						$("body #loading").html("");
+
+						// this will show the popup with full report
+						$timeout(function() {
+
+							if (sntapp.cordovaLoaded) {
+								cordova.exec(accountsPrintCompleted,
+									function(error) {
+										accountsPrintCompleted();
+									}, 'RVCardPlugin', 'printWebView', []);
+							}
+							else
+							{
+								$timeout(function() {
+									window.print();
+									accountsPrintCompleted();
+								}, timeDelay); // CICO-61122 
+							}
+
+						}, 100);
 				};
 
 				var printBillFailure = function(errorData) {
