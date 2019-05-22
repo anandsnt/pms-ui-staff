@@ -4,11 +4,11 @@
         <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
         <div class="actions float pull-right">
             <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('SETTING')"
-                    ng-class="{'orange' : state.activeTab === 'SETTING', 'white' : state.activeTab !== 'SETTING'}">
+                ng-class="{'orange' : state.activeTab === 'SETTING', 'white' : state.activeTab !== 'SETTING'}">
                 SETTINGS
             </button>
             <button type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('DATA')"
-                    ng-class="{'orange' : state.activeTab === 'DATA', 'white' : state.activeTab !== 'DATA'}">
+                ng-class="{'orange' : state.activeTab === 'DATA', 'white' : state.activeTab !== 'DATA'}">
                 SYNC
             </button>
         </div>
