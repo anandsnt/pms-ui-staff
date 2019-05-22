@@ -267,7 +267,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 		var versionNumber = response.data.data.split("-")[0];
 
 		$scope.data.roverVersion = versionNumber;
-	}
+	};
 	loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion, $scope.failureCallBackGetVersion);
 
 }]);
@@ -358,7 +358,7 @@ angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', 'loginSrv
 		var versionNumber = response.data.data.split("-")[0];
 
 		$scope.data.roverVersion = versionNumber;
-	}
+	};
 	loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion, $scope.failureCallBackGetVersion);
 
 }]);
@@ -622,6 +622,6 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
 			var versionNumber = response.data.data.split("-")[0];
 
 			$scope.data.roverVersion = versionNumber;
-		}
+		};
 		loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion, $scope.failureCallBackGetVersion);
 }]);
