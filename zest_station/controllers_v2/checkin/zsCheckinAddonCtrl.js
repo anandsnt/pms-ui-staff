@@ -522,7 +522,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		var findSelectedLanguageId = function() {
 			var usedLanguageCode = $translate.use();
 			var selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
-				return language.language === usedLanguageCode;
+				return language.code === usedLanguageCode;
 			});
 
 			// For custom languages, use English for now
