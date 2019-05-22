@@ -14,10 +14,19 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	};
 	var domIDMappings;
 
+	var runDigestCycle = function() {
+		if (!$scope.$$phase) {
+			$scope.$digest();
+		}
+	};
+
 	$scope.deviceConfig = {
 		useExtCamera: false,
 		useiOSAppCamera: false,
-		useExtCamForFR: false
+		useExtCamForFR: false,
+		useAutoDetection: false,
+		idCapturePluginName: '',
+		idCaptureActionName: ''
 	};
 
 	var stopVideoStream = function() {
@@ -259,17 +268,87 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 		};
 	};
 
-	$scope.captureFrontImage = function() {
-		$timeout(function() {
-			angular.element(document.querySelector('#' + domIDMappings.front_side_upload)).click();
-		}, 0);
+	var autoDetectIDAndProcessData = function() {
 
+		var cameraParams = {
+			'CAPTURE_TIMER': 3,
+			'PREVIEW_TIMER': 3,
+			'CAMERA_TYPE': 'back_camera',
+			'CAMERA_MESSAGES': {
+				'DETECTING_FACE': 'WAITING FOR AN ID TO SCAN, PLEASE SHOW YOUR ID TO THE IPAD BACK CAMERA',
+				'CANCEL': 'CANCEL',
+				'TAKING_PHOTO': 'CAPTURING ID',
+				'CAPTURE': 'CAPTURE NOW',
+				'PROCEEDING_WITH_THE_IMAGE': 'PROCEEDING WITH THIS ID IMAGE',
+				'RETAKE_PHOTO': 'RECAPTURE',
+				'PROCEED': 'CONTINUE'
+			}
+		};
+
+		var imageCaptured = function(response) {
+			$scope.$emit('IMAGE_ANALYSIS_STARTED');
+			var img = document.createElement('img');
+
+			response = response ? response.image_base64 : '';
+			var unmodifiedImage = 'data:image/png;base64,' + response;
+
+			img.src = unmodifiedImage;
+			unmodifiedImage = sntIDCollectionUtilsSrv.dataURLtoBlob(unmodifiedImage);
+			img.onload = function() {
+
+				if ($scope.screenData.imageSide === 0) {
+					$scope.screenData.frontSideImage = unmodifiedImage;
+					var imageData = sntIDCollectionUtilsSrv.resizeImage(img, undefined, 2560, 1920);
+
+					unmodifiedFrontImage = imageData;
+					getDocInstance();
+				} else {
+					$scope.screenData.backSideImage = unmodifiedImage;
+					postBackImage();
+				}
+				runDigestCycle();
+			};
+			img.onerror = function() {
+				$scope.$emit('IMAGE_ANALYSIS_FAILED');
+				$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
+			};
+		};
+
+		// imageCaptured();
+		var jsonstring = JSON.stringify(cameraParams);
+
+		var pluginName = $scope.deviceConfig.idCapturePluginName ? $scope.deviceConfig.idCapturePluginName : 'AilaCordovaPlugin';
+		var actionName = $scope.deviceConfig.idCaptureActionName ? $scope.deviceConfig.idCaptureActionName : 'captureID';
+
+		cordova.exec(function(response) {
+			$scope.$emit('IMAGE_ANALYSIS_STARTED');
+			$scope.$emit('RUN_APPLY');
+			imageCaptured(response);
+		}, function() {
+			$scope.$emit('IMAGE_ANALYSIS_FAILED');
+			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
+			$scope.$emit('RUN_APPLY');
+		}, pluginName, actionName, [jsonstring]);
+	};
+
+	$scope.captureFrontImage = function() {
+		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+			autoDetectIDAndProcessData();
+		} else {
+			$timeout(function() {
+				angular.element(document.querySelector('#' + domIDMappings.front_side_upload)).click();
+			}, 0);
+		}
 	};
 
 	$scope.captureBackImage = function() {
-		$timeout(function() {
-			angular.element(document.querySelector('#' + domIDMappings.back_side_upload)).click();
-		}, 0);
+		if (typeof cordova !== "undefined" && $scope.deviceConfig.useAutoDetection) {
+			autoDetectIDAndProcessData();
+		} else {
+			$timeout(function() {
+				angular.element(document.querySelector('#' + domIDMappings.back_side_upload)).click();
+			}, 0);
+		}
 	};
 
 	$scope.startScanning = function() {
@@ -300,13 +379,13 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			'PREVIEW_TIMER': 3,
 			'CAMERA_TYPE': 'front_camera',
 			'CAMERA_MESSAGES': {
-				'DETECTING_FACE': 'Detecting face, Please position your face straight',
-				'CANCEL': 'Cancel',
-				'TAKING_PHOTO': 'Capturing your headshot',
-				'CAPTURE': 'Capture now',
-				'PROCEEDING_WITH_THE_IMAGE': 'Proceeding with captured image',
-				'RETAKE_PHOTO': 'Recapture',
-				'PROCEED': 'Continue'
+				'DETECTING_FACE': 'DETECTING FACE, PLEASE POSITION YOUR FACE STRAIGHT',
+				'CANCEL': 'CANCEL',
+				'TAKING_PHOTO': 'CAPTURING YOUR HEADSHOT',
+				'CAPTURE': 'CAPTURE NOW',
+				'PROCEEDING_WITH_THE_IMAGE': 'PROCEEDING WITH CAPTURED IMAGE',
+				'RETAKE_PHOTO': 'RECAPTURE',
+				'PROCEED': 'CONTINUE'
 			}
 		};
 

@@ -915,6 +915,7 @@ year: year};
             if (assignedTo && assignedTo.id) {
                 department = _.findWhere($scope.departments, { value: assignedTo.id + "" });
             }
+            
 
             $scope.newAction = {
                 department: department,

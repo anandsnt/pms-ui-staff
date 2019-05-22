@@ -11,6 +11,28 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.comtrol', {
+        templateUrl: '/assets/partials/interfaces/comtrol/adComtrol.html',
+        controller: 'adComtrolCtrl',
+        url: '/comtrol',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('comtrol');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.comtrolKey', {
+        templateUrl: '/assets/partials/interfaces/comtrol/adComtrol.html',
+        controller: 'adComtrolCtrl',
+        url: '/comtrol_key',
+        resolve: {
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('comtrol');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.exactOnlineSetup', {
         templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
         controller: 'adExactOnlineSetupCtrl',
@@ -28,7 +50,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.twinfieldSetup', {
         templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
         controller: 'adTwinfieldSetupCtrl',
-        url: '/gomomentivy/setup',
+        url: '/twinfield/setup',
         resolve: {
             twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
@@ -260,17 +282,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
-    $stateProvider.state('admin.ifc_comtrol_settings', {
-        templateUrl: '/assets/partials/IFCComtrol/adIFCComtrolSetup.html',
-        controller: 'adIFCComtrolSetupCtrl',
-        url: '/ifc_comtrol/setup',
-        resolve: {
-            ifcComtrolSetupValues: ['adIFCComtrolSetupSrv', function(adIFCComtrolSetupSrv) {
-                return adIFCComtrolSetupSrv.fetchIFCComtrolConfiguration();
-            }]
-        }
-    });
-
     $stateProvider.state('admin.vectronSetup', {
         templateUrl: '/assets/partials/interfaces/Vectron/adVectronSetup.html',
         controller: 'ADVectronSetupCtrl',
@@ -280,45 +291,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 return adInterfacesSrv.getSettings('vectron');
             }]
         }
-    });
-
-    $stateProvider.state('admin.ifc_revenue_centers', {
-        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenterConfig.html',
-        controller: 'adComtrolRevenueCenterCtrl',
-        url: '/ifc_comtrol/revenueCenter',
-        resolve: {
-            revCenters: ['adComtrolRevenueCenterSrv', function(adComtrolRevenueCenterSrv) {
-                return adComtrolRevenueCenterSrv.fetch();
-            }]
-        }
-    });
-
-    $stateProvider.state('admin.ifc_charge_codes', {
-        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolChargeCodes.html',
-        controller: 'adComtrolChargeCodeMappingCtrl',
-        url: '/ifc_comtrol/chargeCodeMappings',
-        resolve: {
-            mappedChargeCodes: ['adComtrolChargeCodeMappingSrv', function(adComtrolChargeCodeMappingSrv) {
-                return adComtrolChargeCodeMappingSrv.fetch();
-            }]
-        }
-    });
-
-    $stateProvider.state('admin.ifc_generic_mappings', {
-        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolGenericMappings.html',
-        controller: 'adComtrolGenericMappingCtrl',
-        url: '/ifc_comtrol/genericMappings',
-        resolve: {
-            genericMappings: ['adComtrolGenericMappingSrv', function(adComtrolGenericMappingSrv) {
-                return adComtrolGenericMappingSrv.fetch();
-            }]
-        }
-    });
-
-    $stateProvider.state('admin.ifc_room_mappings', {
-        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
-        controller: 'adComtrolRoomMappingCtrl',
-        url: '/ifc_comtrol/setup'
     });
 
     $stateProvider.state('admin.gustoPosSetup', {
@@ -611,15 +583,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.avidaSetup', {
-        templateUrl: '/assets/partials/interfaces/Avida/adAvidaSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'avida';
-        }],
+        templateUrl: '/assets/partials/interfaces/avida/adAvida.html',
+        controller: 'adAvidaCtrl',
+        url: '/avida/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('avida');
             }]
         }
     });
@@ -649,7 +618,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 }]
         }
     });
-
 
     $stateProvider.state('admin.sieSetup', {
        templateUrl: '/assets/partials/interfaces/sie/adSie.html',

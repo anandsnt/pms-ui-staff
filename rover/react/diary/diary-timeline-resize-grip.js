@@ -345,7 +345,7 @@ var TimelineResizeGrip = React.createClass({
 				React.DOM.span({
 					className: 'title'
 				},
-					React.DOM.label({}, label),
+					React.DOM.span({}, label),
 					React.DOM.span({
 						className: 'time'
 					}, time_txt)

@@ -123,7 +123,7 @@ angular.module('sntRover')
         };
 
         // To handle close search results after rendering new data set.
-        $scope.$on('CLOSE_SEARCH_RESULT', function() {
+        $scope.addListener('CLOSE_SEARCH_RESULT', function() {
             $scope.clearResults();
         });
         // Load placeholder text based on screen width.
