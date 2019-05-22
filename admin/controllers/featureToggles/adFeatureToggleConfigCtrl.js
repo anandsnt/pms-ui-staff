@@ -3,12 +3,12 @@ angular.module('admin')
         function ($scope, $state, ngTableParams, ADFeatureToggleSrv, feature) {
             $scope.scopesList = ['APPLICATION', 'CHAIN', 'HOTEL'];
 
-            $scope.saveToggle = function () {
-                console.log('save', feature);
-            };
-
-            $scope.changeScope = function () {
-                console.log($scope.selectedScope);
+            $scope.toggleFeature = function () {
+                $scope.callAPI(ADFeatureToggleSrv.toggle, {
+                    params: {
+                        feature: $scope.feature.name
+                    }
+                });
             };
 
             (function () {

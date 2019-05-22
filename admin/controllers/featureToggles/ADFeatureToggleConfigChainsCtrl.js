@@ -1,5 +1,5 @@
 angular.module('admin')
-    .controller('ADFeatureToggleConfigHotelsCtrl', ['$scope', '$state', 'ngTableParams', 'ADFeatureToggleSrv', 'sntActivity',
+    .controller('ADFeatureToggleConfigChainsCtrl', ['$scope', '$state', 'ngTableParams', 'ADFeatureToggleSrv', 'sntActivity',
         function ($scope, $state, ngTableParams, ADFeatureToggleSrv, sntActivity) {
 
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -18,31 +18,26 @@ angular.module('admin')
                         $defer.resolve($scope.data);
                     };
 
-                $scope.callAPI(ADFeatureToggleSrv.getHotels, {
+                $scope.callAPI(ADFeatureToggleSrv.getChains, {
                     params: getParams,
                     onSuccess: fetchSuccessOfItemList
                 });
             };
 
-            $scope.selectFeature = function (featureName) {
-                $state.go('admin.configFeature', {
-                    feature: featureName
-                });
-            };
 
-            $scope.toggleFeatureHotel = function (hotel) {
+            $scope.toggleFeatureChain = function (chain) {
                 $scope.callAPI(ADFeatureToggleSrv.toggle, {
                     params: {
-                        hotel_uuid: hotel.uuid,
+                        chain_uuid: chain.uuid,
                         feature: $scope.feature.name
                     }
                 });
             };
 
             var fetchStatus = function () {
-                $scope.callAPI(ADFeatureToggleSrv.fetchHotelStatus, {
+                $scope.callAPI(ADFeatureToggleSrv.fetchChainStatus, {
                     params: {
-                        hotels: _.pluck($scope.data, 'uuid'),
+                        chains: _.pluck($scope.data, 'uuid'),
                         feature: $scope.feature.name
                     },
                     onSuccess: function (result) {

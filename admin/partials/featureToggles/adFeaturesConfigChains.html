@@ -1,32 +1,45 @@
-<form class="form float" ng-if="selectedScope=== 'CHAIN'">
+<section ng-if="selectedScope=== 'CHAIN'" ng-controller="ADFeatureToggleConfigChainsCtrl">
+    <div class='info notice' data-ng-if="feature.enabled">
+        <span translate="ACTIVE_APPLICATION_LEVEL"></span>
+    </div>
+
     <fieldset class="holder full-width">
-        <div class="form-title">
-            <h3>
-                Toggle Feature
-            </h3>
-            <em class="status">
-                <strong>Modifying this setting will impact all properties</strong>
-            </em>
+        <span class="count-show">Show</span>
+        <div class="select table-count rates-table-count">
+            <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+        </div>
+        <span class="count-entries">entries</span>
+
+        <div class="entry table-search">
+            <span class="search-text">Search</span>
+            <span class="icons icon-search" name="submit" type="submit"></span>
+            <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                   function-to-fire="searchEntered"/>
         </div>
 
-        <fieldset class="holder left">
-            <div class="entry full-width">
-                <label><span translate>ACTIVATE_INACTIVATE</span></label>
-                <div class="switch-button single" ng-class="{ on : feature.enabled }">
-                    <input type="checkbox" ng-model="feature.enabled">
-                    <span class="switch-icon"></span>
-                </div>
-            </div>
-        </fieldset>
+
+        <div id="new-form-holder"></div>
+        <!--ng-table component -->
+        <table class="grid" ng-table="tableParams" template-pagination="custom/pager"
+               ng-class="{'edit-data': currentClickedElement == $index}">
+            <tbody>
+            <tr ng-repeat="hotel in $data" class="device-list">
+                <td data-title="'CODE'" sortable="'code'" header-class="width-20">
+                    <strong> {{hotel.code}}</strong>
+                </td>
+                <td data-title="'NAME'" sortable="'name'" header-class="width-60">
+                    <strong> {{hotel.name}}</strong>
+                </td>
+                <td data-title="'STATUS'" header-class="width-20">
+                    <div class="entry full-width">
+                        <div class="switch-button single" ng-class="{ on : hotel.featureStatus.enabled_chain }"
+                             ng-click="toggleFeatureChain(hotel)">
+                            <input type="checkbox" ng-model="hotel.featureStatus.enabled_chain">
+                            <span class="switch-icon"></span>
+                        </div>
+                    </div>
+                </td>
+            </tbody>
+        </table>
     </fieldset>
-    <div class="actions float">
-        <button type="button" id="cancel" class="button blank add-data-inline"
-                ng-click="goBackToPreviousState()" translate>
-            CANCEL
-        </button>
-        <button type="button" like-type="common" id="update" class="button ng-binding green"
-                ng-click="saveToggle()" translate>
-            SAVE_CHANGES
-        </button>
-    </div>
-</form>
+</section>
