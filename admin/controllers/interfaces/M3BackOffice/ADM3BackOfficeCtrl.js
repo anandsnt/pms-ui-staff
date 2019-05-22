@@ -1,5 +1,5 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv', '$filter',
-    function($scope, config, adInterfacesSrv, $filter) {
+admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
     BaseCtrl.call(this, $scope);
 
     $scope.state = {
