@@ -1116,7 +1116,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 			$scope.callAPI(RVSearchSrv.fetchReservationsForBulkCheckout, {
 				onSuccess: onReservationsFetchSuccess,
-				onFailure: onReservationsFetchSuccess,
+				onFailure: onReservationsFetchFailure,
 				params: requestParams
 			});
 		};
