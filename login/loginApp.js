@@ -36,7 +36,8 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Redirects to specific ur on succesfull login
  */
 angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout) {
-	 $scope.data = {};
+	$scope.data = {};
+	$scope.data.roverVersion = "";
 
 	 if (localStorage.email) {
 	 	$scope.data.email = localStorage.email;
@@ -262,11 +263,18 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 			$window.open('https://status.stayntouch.com', '_blank');
 		}
 	};
+	$scope.successCallbackGetVersion = function(response) {
+		var versionNumber = response.data.data.split("-")[0];
+
+		$scope.data.roverVersion = versionNumber;
+	};
+	loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
+
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
  */
-angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, $window, $state, $stateParams, ngDialog) {
+angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog', function($scope, resetSrv, loginSrv, $window, $state, $stateParams, ngDialog) {
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 
@@ -345,6 +353,13 @@ angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', '$window'
 			$window.open('https://status.stayntouch.com', '_blank');
 		}
 	};
+
+	$scope.successCallbackGetVersion = function(response) {
+		var versionNumber = response.data.data.split("-")[0];
+
+		$scope.data.roverVersion = versionNumber;
+	};
+	loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
 
 }]);
 /*
@@ -602,4 +617,11 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
 
         }
         document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension
+
+        $scope.successCallbackGetVersion = function(response) {
+			var versionNumber = response.data.data.split("-")[0];
+
+			$scope.data.roverVersion = versionNumber;
+		};
+		loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
 }]);

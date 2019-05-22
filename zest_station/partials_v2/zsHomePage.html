@@ -45,9 +45,9 @@
                 </ul> 
             </nav>
         </div>
-        <div id="actions" class="languages align-center">
+        <div id="actions" class="languages align-center" ng-if="zestStationData.zest_lang.enabled && shouldShowLanguageSelection()">
             <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
-                {{language.foreign_label}}
+                {{language.name}}
             </button>
             <!-- <p class="selected-language" ng-show="shouldShowLanguageSelection()">
                     <img ng-src="{{ selectedLanguage.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
