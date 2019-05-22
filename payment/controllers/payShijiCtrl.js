@@ -34,7 +34,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		$scope.$on('RELOAD_IFRAME', () => {
 			// TODO: handle if needed. Now the iframe loading is taking some time
-			// self.loadShijiIframe();
+			// self.loadShijiIframe(); 
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
