@@ -16,7 +16,7 @@ angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPrope
 
                 $scope.data.roverVersion = versionNumber;
             };
-            loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion, $scope.failureCallBackGetVersion);
+            loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
         };
 
         /*
