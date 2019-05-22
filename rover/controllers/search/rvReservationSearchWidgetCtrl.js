@@ -501,7 +501,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.dashboardSearchPagination = {
 			id: 'DASHBOARD_SEARCH',
 			api: $scope.fetchSearchResults,
-			perPage: 10//RVSearchSrv.searchPerPage
+			perPage: RVSearchSrv.searchPerPage
 		};
 
 
@@ -1094,7 +1094,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			var requestParams = {
 					per_page: RVSearchSrv.searchPerPage,
 					page: page || 1,
-					allow_open_balance_checkout : $scope.allowOpenBalanceCheckout
+					allow_open_balance_checkout: $scope.allowOpenBalanceCheckout
 				},
 				onReservationsFetchSuccess = function(data) {
 					$scope.results = data.results;
@@ -1111,7 +1111,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					}, 100);
 				},
 				onReservationsFetchFailure = function(errorMsg) {
-					$scope.errorMessage = errorMessage;
+					$scope.errorMessage = errorMsg;
 				};
 
 			$scope.callAPI(RVSearchSrv.fetchReservationsForBulkCheckout, {
