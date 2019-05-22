@@ -300,7 +300,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 
 			}, 250);
-		}
+		};
         
 
     	var params = {
