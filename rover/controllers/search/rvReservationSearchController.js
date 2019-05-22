@@ -154,10 +154,16 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.$on("UPDATE_MANAGER_DASHBOARD", function() {
       $scope.heading = headingDict['NORMAL_SEARCH'];
     });
-    $stateParams.type = "";
+
+    
+    //$stateParams.type = "";
     // Regarding rvReservationSearchWidgetCtrl.js's ng-repeat on large data set
     // Even though we are showing loader on ng-repeat start, it is not showing :(, so adding here
     // we are hiding this loader on data ng-repeat complete in rvReservationSearchWidgetCtrl.js
     $scope.$emit('showLoader'); // Please see above comment
+
+
+
+
   }
 ]);
