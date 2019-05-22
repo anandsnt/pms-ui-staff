@@ -37,7 +37,7 @@ admin.controller('adHotelLegalSettingsController',
 			var unwantedKeys = [];
 
 			if (screen === 'financial') {
-				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'ar_invoice_label', 'is_police_report_enabled'];
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'is_police_report_enabled'];
 				if (!$scope.legalSettings.is_print_invoice_enabled) {
 					if (!$scope.legalSettings.is_print_folio_enabled) {
 						$scope.legalSettings.is_print_folio_enabled = !$scope.legalSettings.is_print_folio_enabled;
@@ -52,8 +52,8 @@ admin.controller('adHotelLegalSettingsController',
 								'no_reprint_reemail_invoice', 'folio_no_prefix', 'first_folio_number', 'is_police_report_enabled', 'is_copy_counter', 'is_print_invoice_enabled', 
 								'is_void_bill_enabled', 'no_of_original_emails', 'no_of_original_invoices'];
 			} else if (screen === 'report') {
-				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 
-								'ar_invoice_label', 'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
+								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
 								'first_folio_number', 'is_copy_counter', 'is_print_invoice_enabled', 'is_void_bill_enabled', 'no_of_original_emails', 'no_of_original_invoices'];
 			}
 
