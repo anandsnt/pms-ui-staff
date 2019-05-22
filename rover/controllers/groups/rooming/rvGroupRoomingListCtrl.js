@@ -159,6 +159,20 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.isGuestBlank = function(reservation) {
             return util.isEmpty(reservation.guest_card_id);
         };
+        
+        // Convert 24hr format to 12hr format
+        $scope.getTimeConverted = function(time) {
+            if (time === null || time === undefined) {
+                return "";
+            }
+            if (time.indexOf('AM') > -1 || time.indexOf('PM') > -1) {
+                // time is already in 12H format
+                return time;
+            }
+            var timeDict = tConvert(time);
+
+            return (timeDict.hh + ":" + timeDict.mm + " " + timeDict.ampm);
+        };
 
         /**
          * Function to decide whether to show unassigned room' screen

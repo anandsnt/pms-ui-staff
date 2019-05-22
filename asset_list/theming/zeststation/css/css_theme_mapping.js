@@ -74,7 +74,8 @@ module.exports = {
             'kelley': [themeCSSRoot + 'kelley.less'],
             'stare-miastro': [themeCSSRoot + 'stare-miastro.less'],
             'upstairs-by-mamas': [themeCSSRoot + 'upstairs-by-mamas.less'],
-            'juliani': [themeCSSRoot + 'juliani.less']
+            'juliani': [themeCSSRoot + 'juliani.less'],
+            'mooons': [themeCSSRoot + 'mooons.less']
         };
     }
 };

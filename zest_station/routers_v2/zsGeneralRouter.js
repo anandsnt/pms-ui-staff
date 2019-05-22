@@ -25,7 +25,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 					var languages = languages.languages.length ? languages.languages : [{'name': 'english', 'position': 1}];
 
 					var sortedLanguages = _.sortBy(languages, 'position'),
-						defaultLanguage = sortedLanguages[0],
+						defaultLanguage = _.findWhere(sortedLanguages, {
+	                        active: true
+	                    }),
 						defaultLangShortCode = defaultLanguage.name;
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)

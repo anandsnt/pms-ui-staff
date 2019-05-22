@@ -177,7 +177,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			if (continueEditing(lang)) {
 				$log.log('continuing to edit...');
 				openEditor(languagesEditedInSession[lang].json);
-			} else {
+			} else if ($scope.selectedLanguage.translation_file_updated) {
 				$log.log('fetching language json file for editing');
 				var options = {
 					params: {
@@ -195,7 +195,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				};
 
 				$scope.callAPI(adZestStationLanguageConfigSrv.loadTranslationFiles, options);
-			}
+			} 
 		};
 
 		$scope.toggleLanguage = function(language, isChecked) {
@@ -207,6 +207,9 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		$scope.saveSettings = function(language) {
 			if (language.translations_file) {
 				language.translation_file_updated = true;
+
+				languagesEditedInSession[language.name] = null;
+				
 			}
 
 			var options = {
