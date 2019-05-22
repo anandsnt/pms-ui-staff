@@ -300,14 +300,14 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 
 			}, 250);
-		};
-        
+		};    	
+		var params = {},
+			options = {
+				params: params,
+				successCallBack: successCallBackFetchDateTimeDuringPrint
+			};
 
-    	var params = {
-            "date": $scope.data.summaryDate
-        };
-
-		$scope.invokeApi(RVJournalSrv.fetchPrintDateTime, params, successCallBackFetchDateTimeDuringPrint);
+		$scope.callAPI(RVJournalSrv.fetchPrintDateTime, options);
 	};
 
 }]);
