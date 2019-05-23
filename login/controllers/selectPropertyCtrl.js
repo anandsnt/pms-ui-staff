@@ -1,5 +1,5 @@
-angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams', 'ngDialog',
-    function($scope, selectPropertySrv, $window, $state, $stateParams, ngDialog) {
+angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog',
+    function($scope, selectPropertySrv, loginSrv, $window, $state, $stateParams, ngDialog) {
         
         BaseCtrl.call(this, $scope);
         var init = function() {
@@ -7,9 +7,16 @@ angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPrope
             $scope.propertyResults = [];
             $scope.searchData = "";
             $scope.selectedProperty = null;
+            $scope.data = {};
             $scope.$emit('hideloader');
             $scope.setScroller('property-results', {click: true});
             $scope.modalClosing = false;
+            $scope.successCallbackGetVersion = function(response) {
+                var versionNumber = response.data.data.split("-")[0];
+
+                $scope.data.roverVersion = versionNumber;
+            };
+            loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
         };
 
         /*

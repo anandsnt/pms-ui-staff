@@ -1589,6 +1589,130 @@ body { overflow: hidden; }
 		                }
 		            }
 		        }
+
+		        &.has-bulk-checkout {
+	                .entry {
+	                    &.switch {
+	                        width: 190px;
+	                    }
+
+	                    &.search { 
+	                        .calc-width(100, 590); 
+	                    }
+
+	                    &.open-balance {
+	                        width: 270px;
+	                        font-size: 14px;
+	                        text-align: left;
+	                    }
+
+	                    &.notice-checkout {
+	                        .calc-width(100, 480);
+	                        .float;
+
+	                        .notice {
+	                            margin-right: 10px;
+	                            text-transform: uppercase;
+	                            color: @black;
+	                            .calc-width( 100, 140);
+	                            .pull-left;
+
+	                            .count {
+	                                display: inline-block;
+	                                padding: 0 2px;
+	                                font-weight: 600;
+	                                background-color: @red;
+	                                color: white;
+	                            }
+	                        }
+	                        .button {
+	                            width: 130px;
+	                        }
+	                    }
+
+	                    &.room-types {
+	                        width: 140px;
+	                        padding: 0;
+	                        .box-shadow(none);
+	                    }
+
+	                    &.dates {
+	                        width: 230px;
+	                        padding: 0;
+	                        .box-shadow(none);
+
+	                        .entry-data {
+	                            width: 110px;
+	                        }
+	                    }
+
+	                    .switch-button {
+	                        background: rgba(0,0,0,.1);
+	                        #border-radius > .rounded();
+	                        .size(40px, 100%);
+	                        .show;
+	        
+	                        .data-off,
+	                        .data-on { 
+	                            font-size: 14px;
+	                            line-height: 30px;
+	                            text-transform: uppercase;
+	                            height: 30px;
+	                            overflow: hidden;
+	        
+	                            .switch-icon {
+	                                color: @grey3;
+	                                text-shadow: none;
+	                                .clickable;
+	                                background: @white;
+	                            }
+	        
+	                            .value { 
+	                                color: rgba(0,0,0,.3);
+	                                font-weight: 600; 
+	                            }
+	        
+	                            &.data-off { 
+	                                left: auto;
+	                                right: 0;
+	        
+	                                .switch-icon { 
+	                                    margin: 0 5px 0 0; 
+	                                    .calc-width( 100, 45 );
+	                                }
+	                                .value { width: 40px; }
+	                            }
+	        
+	                            &.data-on { 
+	                                left: auto;
+	                                right: 100%;
+	        
+	                                .switch-icon { 
+	                                    width: 40px;
+	                                    margin: 0 0 0 5px; 
+	                                }
+
+	                                .value {
+	                                    .calc-width( 100, 45 );
+	                                }
+	                            }
+	                        }
+	        
+	                        &.on {
+	                            .data-off { left: auto; right: -100%; }
+	                            .data-on { left: auto; right: 0; }
+	                        }
+	                    }
+	                }
+
+	                &.enable-adding {
+	                    .entry {
+	                        &.search { 
+	                            .calc-width(100, 700); 
+	                        }
+	                    }
+	                }
+	            }
 		    }
 
 			/* Room search ***/

@@ -24,10 +24,16 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				languageTranslations: function(zsGeneralSrv, languages, $translate) {
 					var languages = languages.languages.length ? languages.languages : [{'name': 'english', 'position': 1}];
 
-					var sortedLanguages = _.sortBy(languages, 'position'),
-						defaultLanguage = sortedLanguages[0],
-						defaultLanguageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-						defaultLangShortCode = defaultLanguageConfig.code;
+					var sortedLanguages = _.sortBy(languages, 'position');
+                    var defaultLanguage = _.filter(sortedLanguages, {
+                            is_default: true
+	                    }),
+						defaultLangShortCode = defaultLanguage.code;
+
+                    // Remove inactive languages
+					sortedLanguages = _.filter(sortedLanguages, function(language) {
+						return language.active;
+					});
 
 					return zsGeneralSrv.fetchTranslations(sortedLanguages)
 						.then(function(translationFiles) {
@@ -75,7 +81,10 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 		});
 
         $stateProvider.state('zest_station.speakToStaff', {
-            url: '/speakToStaff/:message',
+            url: '/speakToStaff',
+            params: {
+                message: ''
+            },
             templateUrl: '/assets/partials_v2/zsSpeakToStaff.html',
             controller: 'zsSpeakToStaffCtrl',
          	jumper: true,
@@ -103,13 +112,24 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
         });
 
         $stateProvider.state('zest_station.manualKeyPickup', {
-        	url: '/manualKeyPickUp/:reservation_id/:room_no/:first_name/:guest_id/:email/:mode',
+        	url: '/manualKeyPickUp',
+            params: {
+                reservation_id: '',
+                room_no: '',
+                first_name: '',
+                guest_id: '',
+                email: '',
+                mode: ''
+            },
             templateUrl: '/assets/partials_v2/zsManualKeyPickup.html',
             controller: 'zsManualKeyPickUpCtrl'
         });
 
         $stateProvider.state('zest_station.sntIDScan', {
-        	url: '/sntIDScan/:params',
+        	url: '/sntIDScan',
+            params: {
+                params: ''
+            },
             templateUrl: '/assets/partials_v2/idScan/zsIDScanMain.html',
             controller: 'zsSntIDScanCtrl'
         });

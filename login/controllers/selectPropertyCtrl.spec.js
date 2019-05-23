@@ -2,6 +2,7 @@ describe('selectPropertyCtrl', function () {
 
     var $controller,
         selectPropertySrv,
+        loginSrv,
         $q,
         $rootScope,
         results = [{
@@ -83,13 +84,21 @@ describe('selectPropertyCtrl', function () {
 
         module('login');
 
-        inject(function (_$controller_, _selectPropertySrv_, _$q_, _$rootScope_) {
+        inject(function (_$controller_, _selectPropertySrv_, _$q_, _$rootScope_, _loginSrv_) {
             $controller = _$controller_;
             selectPropertySrv = _selectPropertySrv_;
+            loginSrv = _loginSrv_;
             $q = _$q_;
             $rootScope = _$rootScope_;
 
             $scope = _$rootScope_.$new();
+        });
+
+        spyOn(loginSrv, 'getApplicationVersion').and.callFake(function () {
+            var deferred = $q.defer();
+
+            deferred.resolve(results);
+            return deferred.promise;
         });
 
         spyOn(selectPropertySrv, 'searchChargeCode').and.callFake(function () {

@@ -89,7 +89,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'hotel-e': 'Hotel E',
             'kelley': 'Kelley House',
             'stare-miastro': 'Aparthotel Stare Miasto',
-            'upstairs-by-mamas': 'Upstairs by Mamas'
+            'upstairs-by-mamas': 'Upstairs by Mamas',
+            'juliani': 'Hotel Juliani',
+            'mooons': 'Mooons'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -170,13 +172,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchTranslations = function(languages) {
             var deferred = $q.defer();
 
-            var languageConfig, langShortCode, url, promises = [], results = {};
+            var langShortCode, url, promises = [], results = {};
 
             languages.map(function(language) {
-                languageConfig = that.languageValueMappingsForUI[language.name];
-                langShortCode = languageConfig.code;
+                langShortCode = language.code;
 
-                that.langName[langShortCode] = language.name;
+                that.langName[langShortCode] = language.code;
 
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
