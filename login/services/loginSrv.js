@@ -103,5 +103,37 @@ angular.module('login').service('loginSrv',
                 return deferred.promise;
             };
 
+            service.getApplicationVersion = function(data, successCallback, failureCallBack) {
+                var deferred = $q.defer();
+
+                // Sample params {params:{"email":email}}
+                $http.get("/api/application_details/version_info", data).then(function(response) {
+                    if (response.status === 200) {
+
+                        successCallback(response);
+                    } else {
+                        // please note the type of error expecting is array
+                        failureCallBack(response);
+                    }
+                }, function(response) {
+                    // please note the type of error expecting is array
+                    // so form error as array if you modifying it
+                    if (response.status === 406) { // 406- Network error
+                        deferred.reject(response.errors);
+                    }
+                    else if (response.status === 500) { // 500- Internal Server Error
+
+                        deferred.reject(['Internal server error occured']);
+                    }
+                    else if (response.status === 401) { // 401- Unauthorized
+                        // so lets redirect to login page
+                        $window.location.href = '/logout';
+                    } else {
+                        deferred.reject(response.data.errors);
+                    }
+
+                });
+                return deferred.promise;
+            };
         }
     ]);
