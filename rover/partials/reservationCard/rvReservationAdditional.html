@@ -31,7 +31,7 @@
         </div>
 
         <!-- Day Use -->
-        <div class="block-item additional-detail">
+        <div class="block-item additional-detail" ng-show="hotelDiaryConfig.dayUseEnabled">
             <h3 class="block-title">Day Use</h3>
             <div class="switch-button" ng-class="{'on': additionalDetails.isDayUse}">
                 <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="updateDayUseFlag()"></div>

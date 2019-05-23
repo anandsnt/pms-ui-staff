@@ -500,7 +500,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation = data;
-			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
+			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.eInvoiceVisible ? 'margin' : 'full-width';
 			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 			$scope.$broadcast('UPDATE_CONTACT_INFO');
 			if ($scope.contactInformation.alert_message !== "") {
