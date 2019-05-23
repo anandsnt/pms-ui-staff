@@ -1,95 +1,5 @@
-<section id="main" class="guest-id-verify" role="main" ng-if="false">
-   <div id="flex-holder">
-      <div id="textual" class="review-bill scrollable" ng-iscroll="stay-details-validate" style="height: 70%;">
-         <div class="wrapper passport-details">
-            <div id="bill">
-               <h1 translate>
-                  REVIEW_WALKIN_GUEST_STAY_DETAILS
-               </h1>
-               <h2 translate>
-                  REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
-               </h2>
-           <!--     <div class="entry with-label">
-                  <label translate>
-                  {{ 'ROOM_TYPE' |translate}}
-                  </label>
-                  <input type="text" ng-model="idScanData.selectedRoomType.roomTypeName" class='disabled'/>
-               </div>
-               <div class="entry with-label">
-                  <label translate>
-                  {{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}
-                  </label>
-                  <input type="text" ng-model="idScanData.selectedRoomType.adr_details" class='disabled'/>
-               </div> -->
-               <div class="entry with-label">
-                  <label class='admin-item-label'>{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}</label>
-                  <div class="entry select">
-                     <select  ng-options="roomType as roomType.desc for roomType in availabileRoomList" ng-model="idScanData.selectedRoomType">
-                     </select>
-                  </div>
-                  </div>
-               <!--    <div class="entry with-label">
-                  <label class='admin-item-label'>{{'NO_OF_NIGHTS' | translate}}</label>
-                  <div class="entry select">
-                     <select  ng-options="nights as nights for nights in idScanData.noOfNightArray" ng-model="idScanData.noOfDays">
-                        <option value="">{{'NO_OF_NIGHTS' | translate}}</option>
-                     </select>
-                  </div>
-                  </div> -->
-               <div class="entry with-label">
-                  <label translate>
-                  {{'NO_OF_NIGHTS' | translate}}
-                  </label>
-                  <input type="text" ng-model="idScanData.noOfDays" class='disabled'/>
-               </div>
-               <!--  <div class="entry with-label">
-                  <label class='admin-item-label'>{{'ADULTS' | translate}}</label>
-                  <div class="entry select">
-                     <select  ng-options="adultCount as adultCount for adultCount in idScanData.adultsCountArray" ng-model="idScanData.noOfAdults">
-                        <option value="">{{'ADULTS' | translate}}</option>
-                     </select>
-                  </div>
-                  </div> -->
-               <div class="entry with-label">
-                  <label translate>
-                  {{'ADULTS' | translate}}
-                  </label>
-                  <input type="text" ng-model="idScanData.noOfAdults" class='disabled'/>
-               </div>
-               <!--  <div class="entry with-label">
-                  <label class='admin-item-label'>{{'CHILDREN' | translate}}</label>
-                  <div class="entry select">
-                     <select  ng-options="childCount as childCount for childCount in idScanData.guestCountArray" ng-model="idScanData.noOfChildren">
-                        <option value="0">{{'CHILDREN' | translate}}</option>
-                     </select>
-                  </div>
-                  </div> -->
-               <div class="entry with-label">
-                  <label translate>
-                  {{'CHILDREN' | translate}}
-                  </label>
-                  <input type="text" ng-model="idScanData.noOfChildren" class='disabled'/>
-               </div>
-               <br/><br/>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div id='actions' class="align-center guest-id-actions">
-      <button type="button" class="button" touch-press='navToHome(); resetTime()' translate>
-      NAV_CANCEL
-      </button>
-      <button type="button" class="button" touch-press='continueBooking(); resetTime()' translate>
-      CONTINUE
-      </button>
-   </div>
-</section>
-
-
-
 <!-- Content -->
 <section id="main" role="main" click-touch='resetTime()'class="upgrades-section">
-
     <div id="content" class='room-details'>
         <h1 translate>
             REVIEW_WALKIN_GUEST_STAY_DETAILS
@@ -99,10 +9,10 @@
         </h2>
         <div id="upgrade" class="tabled-options">
             <div class="upgrade-picture">
-                <img src="{{ idScanData.selectedRoomType.room_type_image }}">
+                <img ng-src="{{ idScanData.selectedRoomType.room_type_image ? idScanData.selectedRoomType.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
             </div>
             <!-- Add scroll on it -->
-            <div class="upgrade-info">
+            <div class="upgrade-info scrollable" ng-iscroll="room-info">
                 <div class="wrapper" ng-bind-html="idScanData.selectedRoomType.description">
                 </div>
             </div>
@@ -110,10 +20,6 @@
                 <h2>{{idScanData.selectedRoomType.name}}</h2>
                 <div class="price">
                     <strong>{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}: {{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
-                   <!--  <small>
-                        <text data-ng-bind-html="getTagValue('PER_NIGHT')" editable-text="PER_NIGHT"></text>
-                        <text data-ng-bind-html="getTagValue('TAX_TEXT')" editable-text="TAX_TEXT"></text>
-                    </small> -->
                 </div>
             </div>
         </div>

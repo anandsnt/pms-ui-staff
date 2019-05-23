@@ -79,7 +79,7 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         var showReservationSummaryScreen = function() {
             $scope.screenData.scanMode = "RESERVATION_CONFIRMATION";
-            $scope.refreshScroller('stay-details-validate');
+            $scope.refreshScroller('room-info')
         };
 
         $scope.continueBooking = function(){
@@ -336,7 +336,8 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.setScroller('stay-details-validate');
 
             var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
-
+            
+            $scope.setScroller('room-info');
             $scope.setConfigurations(idCaptureConfig);
             fetchHotelBussinessDate();
         })();
