@@ -1,55 +1,35 @@
-<section id="main" class="guest-id-verify" role="main">
-   <div id="flex-holder">
-      <div id="textual" class="review-bill scrollable" ng-iscroll="stay-details-validate" style="height: 75%;">
-         <div class="wrapper passport-details">
-            <div id="bill">
-               <h1 translate>
-                  REVIEW_WALKIN_GUEST_STAY_DETAILS
-               </h1>
-               <h2 translate>
-                  REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
-               </h2>
-               <div class="entry with-label">
-                  <label translate>
-                   {{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}
-                  </label>
-                  <input type="text" ng-model="minimumAdrRoomType.adr" class='disabled'/>
-               </div>
-               <div class="entry with-label">
-                  <label translate>
-                  NO_OF_NIGHTS
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfDays' class='disabled' />
-               </div>
-               <div class="entry with-label">
-                  <label translate>
-                  ADULTS
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfAdults' class='disabled' />
-               </div>
-               <div class="entry with-label">
-                  <label translate>
-                  CHILDREN
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfChildren' class='disabled' />
-               </div>
-               <div class="entry with-label">
-                  <label translate>
-                  INFANTS
-                  </label>
-                  <input type="text" ng-model='idScanData.noOfInfants' class='disabled' />
-               </div>
-               <br/><br/>
+<!-- Content -->
+<section id="main" role="main" click-touch='resetTime()'class="upgrades-section">
+    <div id="content" class='room-details'>
+        <h1 translate>
+            REVIEW_WALKIN_GUEST_STAY_DETAILS
+        </h1>
+        <h2 translate>
+            REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
+        </h2>
+        <div id="upgrade" class="tabled-options">
+            <div class="upgrade-picture">
+                <img ng-src="{{ idScanData.selectedRoomType.room_type_image ? idScanData.selectedRoomType.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
             </div>
-         </div>
-      </div>
-   </div>
-   <div id='actions' class="align-center guest-id-actions">
-      <button type="button" class="button" touch-press='navToHome(); resetTime()' translate>
-      NAV_CANCEL
-      </button>
-      <button type="button" class="button" touch-press='createReservation(); resetTime()' translate>
-      CONFIRM_RESERVATION_CREATION
-      </button>
-   </div>
+            <!-- Add scroll on it -->
+            <div class="upgrade-info scrollable" ng-iscroll="room-info">
+                <div class="wrapper" ng-bind-html="idScanData.selectedRoomType.description">
+                </div>
+            </div>
+            <div class="upgrade-price">
+                <h2>{{idScanData.selectedRoomType.name}}</h2>
+                <div class="price">
+                    <strong>{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}: {{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
+                </div>
+            </div>
+        </div>
+        <div id="actions">
+            <button type="button" class="button transparent" touch-press='navToHome(); resetTime()' translate>
+               NAV_CANCEL
+            </button>
+            <button type="button" class="button" touch-press='continueBooking(); resetTime()' translate>
+               CONTINUE
+            </button>
+        </div>
+    </div>
 </section>

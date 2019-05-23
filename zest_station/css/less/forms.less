@@ -21,7 +21,7 @@ li {
 
 input,
 textarea {
-    color: @textColor;
+    color: @inputColor;
     background: @inputBackground;
     width: 100%;
 }
@@ -37,7 +37,7 @@ textarea {
 }
 
 select {
-    color: @textColor;
+    color: @inputColor;
     background: @inputBackground;
     padding: 0 20px;
     cursor: pointer;
@@ -144,6 +144,10 @@ select {
             }
         }
     }
+
+    &.full-width {
+        width: 100%;
+    }
 }
 
 .entry {
@@ -164,6 +168,48 @@ select {
             border-top: 6px solid rgba(0, 0, 0, .8);
             .square(0);
             .show;
+        }
+
+        &.with-icon {
+            .icons {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                fill: @inputColor;
+                opacity: 0.8;
+                .square(24px);
+            }
+
+            select {
+                padding-left: 54px;
+            }
+        }
+
+        &.with-label {
+            select {
+                padding-left: calc(~"100% - 62px");
+                text-align: right;
+                font-weight: 600;
+                font-size: 28px;
+            }
+
+            label {
+                position: absolute;
+                width: auto;
+                top: 20px;
+                left: 20px;
+                text-transform: uppercase;
+                color: @inputColor;
+                opacity: 0.5;
+                font-size: 18px;
+                line-height: 24px;
+            }
+
+            &.with-icon {
+                label {
+                    left: 54px;
+                }
+            }
         }
     }
 
@@ -249,6 +295,9 @@ select {
         &.select {
             clear: inherit;
             .box-shadow(none);
+        }
+        &.address-col {
+            #calc > #width > .remove(33%, 13.33px);
         }
 
         &:nth-child(3n) {
