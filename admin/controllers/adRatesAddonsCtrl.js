@@ -204,6 +204,7 @@ admin.controller('ADRatesAddonsCtrl', [
             // params to be sent to server
             $scope.singleAddon = {};
             $scope.singleAddon.activated = true;
+            $scope.singleAddon.allowedChargeCodeIds = [];
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
@@ -284,6 +285,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
 
                 $scope.singleAddon = data;
+                $scope.singleAddon.allowedChargeCodeIds = [];
+
                 $scope.initialImage = data.addon_image;
                 // CICO-23575 - Disable all posting types apart from First Night for Hourly.
                 if ($rootScope.isHourlyRatesEnabled) {
@@ -366,7 +369,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 is_sell_separate: $scope.singleAddon.is_sell_separate,
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
                 suffix_label: $scope.singleAddon.suffix_label,
-                notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase
+                notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase,
+                allowed_charge_code_ids: $scope.singleAddon.allowedChargeCodeIds
             };
 
             if ($scope.isDefaulLanguageSelected()) {
@@ -674,6 +678,22 @@ admin.controller('ADRatesAddonsCtrl', [
             }
             return styleClass;
 
+        };
+
+        $scope.linkAllowedChargeCodesForAllowance = function() {
+            $scope.singleAddon.allowedChargeCodeIds = _.pluck(_.filter($scope.chargeCodes, function (chargeCode) {
+                return chargeCode.ticked;
+            }), "id");
+        };
+
+        $scope.setAllowedChargeCodesForAllowance = function() {
+            $scope.chargeCodes.map(function(chargeCode) {
+              if($scope.singleAddon.allowedChargeCodeIds.indexOf(parseInt(chargeCode.id)) > -1) {
+                chargeCode.ticked = true;
+              } else {
+                chargeCode.ticked = false;
+              }
+            });
         };
     }
 ]);

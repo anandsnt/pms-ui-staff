@@ -18,6 +18,37 @@
                 </div>
             </div>
 
+            <fieldset ng-if="isAllowanceEnabled" class="holder full-width">
+                <ad-toggle-button div-class="float_left" label="{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}" is-checked="singleAddon.is_allowance"></ad-toggle-button>
+                <div class="entry " ng-if="singleAddon.is_allowance">
+                    <label for="overage-charge">
+                        {{'OVERAGE_CHARGE_CODE_LABEL' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <div class="select">
+                        <select name="overage-charge" id="overage-charge" ng-model="singleAddon.overage_charge_code" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+                    </div>
+                </div>
+
+                <div class="entry " ng-if="singleAddon.is_allowance">
+                    <label for="spillage-charge">
+                        {{'SPILLAGE_CHARGE_CODE_LABEL' | translate}}
+                        <strong>*</strong>
+                    </label>
+                    <div class="select">
+                        <select name="spillage-charge" id="spillage-charge" ng-model="singleAddon.spillage_charge_code" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+                    </div>
+                </div>
+
+                <div class="entry" ng-if="singleAddon.is_allowance">
+                    <label translate>ALLOWED_CHARGE_CODES_LABEL</label>
+                     <div multi-select on-open="setAllowedChargeCodesForAllowance()" on-close="linkAllowedChargeCodesForAllowance()" input-model="chargeCodes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                    </div>
+                </div>
+
+                <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.allowance_value" name="name" id="name" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
+            </fieldset>
+
             <fieldset class="holder left float">
                 <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"  hide="!isDefaulLanguageSelected()"></ad-textbox>
 

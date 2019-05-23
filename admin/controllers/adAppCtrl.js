@@ -828,6 +828,8 @@ admin.controller('ADAppCtrl', [
                 isDiaryMergeEnabled: data.is_diary_merge_enabled
             };
 
+            $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
+
             setupLeftMenu();
         };
         /*
