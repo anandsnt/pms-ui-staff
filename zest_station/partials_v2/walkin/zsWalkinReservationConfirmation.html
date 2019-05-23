@@ -17,9 +17,10 @@
                 </div>
             </div>
             <div class="upgrade-price">
-                <h2>{{idScanData.selectedRoomType.name}}</h2>
+                <h2>{{ idScanData.selectedRoomType.roomTypeName }}</h2>
                 <div class="price">
-                    <strong>{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}: {{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
+                    <h3 style="margin: 5px 0px;">{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}</h3> 
+                    <strong>{{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
                 </div>
             </div>
         </div>
