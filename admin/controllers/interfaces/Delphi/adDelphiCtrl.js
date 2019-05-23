@@ -8,6 +8,8 @@ admin.controller('adDelphiCtrl', ['$scope', 'config', 'adInterfacesSrv',
             activeTab: 'SETTING'
         };
 
+        $scope.mappingTypes = ['charge_code', 'group_hold_status', 'market_segment', 'source_code'];
+
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };

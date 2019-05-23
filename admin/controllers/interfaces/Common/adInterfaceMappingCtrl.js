@@ -5,17 +5,20 @@ admin.controller('adInterfaceMappingCtrl', [
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-
         var mappingText = {
           'cancellation_code': 'Cancellation Codes',
-          'tax_code': 'Tax Codes',
           'charge_code': 'Charge Code - General Ledger',
           'charge_code_department_code': 'Charge Code - Department Code',
+          'group_hold_status': 'Group Hold Status',
           'market_code': 'Market Code - Market Segment',
-          'market_code_department_code': 'Market Code - Department Code'
+          'market_segment': 'Market Code - Market Segment',
+          'market_code_department_code': 'Market Code - Department Code',
+          'source_code': 'Source Code',
+          'tax_code': 'Tax Codes'
         };
 
         var mappingPartials = {
+            'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
             'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
