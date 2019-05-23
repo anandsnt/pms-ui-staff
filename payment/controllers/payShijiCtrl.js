@@ -75,7 +75,10 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			};
 
 			if (isAddCardAction) {
-				apiParams.reservation_id = $scope.reservationId;
+				if ($scope.reservationId) {
+					// Incase of guestcard, there will be no reservation Id
+					apiParams.reservation_id = $scope.reservationId;
+				}
 				apiParams.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 				apiParams.bill_number = 1;
 				apiParams.user_id = $scope.guestId;
