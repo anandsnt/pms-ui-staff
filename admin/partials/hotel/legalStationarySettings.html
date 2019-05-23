@@ -1,0 +1,22 @@
+<span class="message h2">Report Settings</span>
+<div class="scrollable" ng-iscroll="financialSettingsList" ng-iscroll-delay="100">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
+    <table class="table-settings wrapper">
+        <tbody>
+            <tr>
+                <td>Austrian Registration Card</td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.austrian_registration_card_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.austrian_registration_card_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>            
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <button class="button blank" ng-click="closeDialog()">Cancel</button>
+    <button class="button green" ng-click="saveLegalSettings('stationary')">Save Changes</button>
+</div>
