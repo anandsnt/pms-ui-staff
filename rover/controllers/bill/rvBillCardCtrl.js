@@ -268,6 +268,7 @@ sntRover.controller('RVbillCardController',
 
 
 	$scope.isPrintRegistrationCard = false;
+	$scope.isAustrianRegistrationCardEnabled = $scope.reservationBillData.austrian_registration_card_enabled;
 
 	// To send track details on checkin button
 	var swipedTrackDataForCheckin = {};
@@ -2761,6 +2762,8 @@ sntRover.controller('RVbillCardController',
 
 			$scope.isPrintRegistrationCard = true;
 			$scope.printRegistrationCardActive = true;
+			$scope.printRegCardData.rowspanAustrianRegCardChild = data.guest_details.accompanying_children.length > 4 ? 3 : 2;
+			
 			$scope.$emit('hideLoader');
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
