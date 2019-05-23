@@ -79,10 +79,10 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         var showReservationSummaryScreen = function() {
             $scope.screenData.scanMode = "RESERVATION_CONFIRMATION";
-            $scope.refreshScroller('room-info')
+            $scope.refreshScroller('room-info');
         };
 
-        $scope.continueBooking = function(){
+        $scope.continueBooking = function() {
             $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
         };
 
@@ -204,19 +204,19 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.createReservation, options);
         };
 
-        var fetchRoomTypes = function(){
-            var fetchRoomtypesSuccess = function(response){
+        var fetchRoomTypes = function() {
+            var fetchRoomtypesSuccess = function(response) {
                 var roomTypeList = response.results;
 
                 if (roomTypeList && roomTypeList.length === 0) {
                     roomTypeNotAvailableActions();
                 } else {
-                     _.each(roomTypeList, function(roomType){
-                         _.each($scope.availabileRoomList, function(availableRoomType){
-                            if(roomType.id === availableRoomType.id) {
+                    _.each(roomTypeList, function(roomType) {
+                        _.each($scope.availabileRoomList, function(availableRoomType) {
+                            if (roomType.id === availableRoomType.id) {
                                 availableRoomType.desc = roomType.name + ' :   ' + availableRoomType.description;
                                 availableRoomType.roomTypeName = roomType.name;
-                                availableRoomType.room_type_image =  roomType.room_type_image;
+                                availableRoomType.room_type_image = roomType.room_type_image;
                                 availableRoomType.description = roomType.description;
                             }
                         });
@@ -287,7 +287,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             if ($scope.idScanData.verificationMethod === 'FR') {
                 $scope.$emit('START_FACIAL_RECOGNITION');
             } else {
-                //showReservationSummaryScreen();
+                // showReservationSummaryScreen();
                 $scope.createReservation();
             }
         };
