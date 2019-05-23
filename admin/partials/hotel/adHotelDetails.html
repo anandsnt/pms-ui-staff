@@ -403,6 +403,14 @@
 					</div>
 				</div>
 
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
+					<label for="Allowance">ENABLE ALLOWANCE</label>
+					<div class="switch-button single" ng-class="{ on : data.is_allowance_enabled}" >
+						<input type="checkbox" ng-model="data.is_allowance_enabled" name="Allowance" id="allowance">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
 				<!-- will show only for standalone  & snt admin -->
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ===''">
 					<label for="hold-status-flag-enabled">Enable HOLD - flag for IBE</label>
