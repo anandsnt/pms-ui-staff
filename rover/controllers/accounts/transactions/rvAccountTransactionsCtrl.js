@@ -972,12 +972,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						if ($scope.billFormat.isInformationalInvoice) {
 							responseData.invoiceLabel = responseData.translation.information_invoice;
 						}
-						else if (responseData.no_of_original_invoices === null) {
+						else if (responseData.no_of_original_invoices === null && !$scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
 							responseData.invoiceLabel = responseData.translation.invoice;
 						}
 						else if ($scope.transactionsDetails.bills[$scope.currentActiveBill].is_void_bill) {
 							
-							if (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10)) {
+							if (responseData.no_of_original_invoices === null || (parseInt(responseData.print_counter, 10) <= parseInt(responseData.no_of_original_invoices, 10))) {
 								responseData.invoiceLabel = responseData.translation.void_invoice;
 							} else if (parseInt(responseData.print_counter, 10) > parseInt(responseData.no_of_original_invoices, 10)) {
 								copyCount = getCopyCount(responseData);

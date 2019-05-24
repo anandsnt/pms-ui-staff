@@ -2696,11 +2696,11 @@ sntRover.controller('RVbillCardController',
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
-					else if (successData.no_of_original_invoices === null) {
+					else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
 						successData.invoiceLabel = successData.translation.invoice;
 					} 
 					else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-						if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) {
+						if (parseInt(successData.no_of_original_invoices === null || (successData.print_counter) <= parseInt(successData.no_of_original_invoices))) {
 							successData.invoiceLabel = successData.translation.void_invoice;
 						} 
 						else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) {
