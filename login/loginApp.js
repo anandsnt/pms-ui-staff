@@ -212,7 +212,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 
 	var loadURLCounter = 0;
 
-	$scope.loadURL = function() {
+	$scope.showDebugOptions = function() {
 		$scope.data.domainURL = "https://";
 		loadURLCounter++;
 		if (loadURLCounter >= 5) {
@@ -228,8 +228,14 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 		}, 5000);
 	};
 
+	$scope.isIPad = navigator.userAgent.match(/iPad/i) != null;
+
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
+	};
+
+	$scope.switchRoverInstance = function() {
+		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'switchEnvironment', [window.location.href]);
 	};
 
 	var loadCordovaWithVersion = function(version) {
