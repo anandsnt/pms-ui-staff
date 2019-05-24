@@ -936,7 +936,7 @@
                         }
                     }
 
-                    &:not(.departed):not(.locked):not(.ooo):not(.oos):not(.blocked) {
+                    &:not(.departed):not(.check-out):not(.locked):not(.ooo):not(.oos):not(.blocked) {
                         &:before {
                             content: '';
                             position: absolute;
@@ -998,6 +998,7 @@
                     }
 
                     &.departed {
+                        color: rgba(255,255,255,.6);
                         background-color: @red;
                         .box-shadow(none);
                     }
@@ -1045,9 +1046,7 @@
                     }                        
 
                     &.blocked,
-                    &.departed {
-                        color: rgba(255,255,255,.6);
-
+                    &.check-out {
                         &:before {
                             content: '';
                             position: absolute;
