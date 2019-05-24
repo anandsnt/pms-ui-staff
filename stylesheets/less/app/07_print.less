@@ -4418,6 +4418,10 @@
     .registration-card {
         margin: 1cm 2cm 0;
 
+        &.registration-card-2 {
+            margin: 0.5cm;
+        }
+
         table {
             tr {
                 page-break-after: avoid;
@@ -4520,6 +4524,127 @@
             .details {
                 border: 0;
                 padding: 0 0 0 10pt;
+            }
+
+            &.customized {
+                margin: 0;
+
+                &.border-top {
+                    border-top: 2pt solid #000;
+                }
+
+                &.border-bottom {
+                    border-bottom: 2pt solid #000;
+                }
+
+                tr {
+                    &:last-child:not(.with-borders) {
+                        td {
+                            border-bottom: none;
+                        }
+                    }
+
+                    &:last-child{
+                        &.with-borders {
+                            td {
+                                border-left-width: 1pt;
+                            }
+                        }
+                    }
+                }
+
+                td {
+                    color: @grey3;
+                    font-size: 8pt;
+                    font-weight: 400;
+                    padding: 5pt;
+                    height: 37pt;
+                    border-width: 1pt;
+                    border-color: #000;
+
+                    &:first-child {
+                        border-left-width: 2pt;
+                    }
+
+                    &:last-child {
+                        border-right-width: 2pt;
+                    }
+
+                    &.border-left-width {
+                        border-left-width: 1pt;
+                    }
+
+                    &.border-bottom-grey {
+                        border-bottom-color: @grey3;
+                    }
+
+                    &.border-right-grey {
+                        border-right-color: @grey3;
+                    }
+
+                    &.short {
+                        height: 27pt;
+                    }
+
+                    &.centered {
+                        vertical-align: middle;
+                        text-align: center;
+                    }
+
+                    &.centered-vertical {
+                        vertical-align: middle;
+                    }
+
+                    &.headline {
+                        font-size: 20pt;
+                    }
+
+                    &.align-right {
+                        text-align: right;
+                    }
+
+                    &.inner-table {
+                        padding: 0;
+
+                        td {
+                            border-top: none;
+                            border-left: none;
+                            border-bottom: none;
+                            border-width: 1pt;
+
+                            &:last-child {
+                                border-right: none;
+                            }
+                        }
+
+                        table {
+                            margin: 0;
+                            height: 100%;
+                        }
+                    }
+
+                    strong {
+                        display: block;
+                        color: #000;
+                    }
+
+                    .placeholder {
+                        margin: 0;
+                        font-size: 6pt;
+                        color: @grey3;
+                    }
+                }
+
+                .details {
+                    padding: 0;
+                    border: 0;
+
+                    td {
+                        &:not(:last-child) {
+                            border-right-color: transparent;
+                        }
+                    }
+                }
             }
         }
 

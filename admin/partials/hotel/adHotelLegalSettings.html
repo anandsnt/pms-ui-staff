@@ -10,6 +10,7 @@
 				<li ng-class="{'active': activeTab === 'financials'}" ng-click="clickedTabMenu('financials')">Financials</li>
 				<li ng-class="{'active': activeTab === 'account_receivables'}" ng-click="clickedTabMenu('account_receivables')">Account  Receivables</li>
 				<li ng-class="{'active': activeTab === 'reports'}" ng-click="clickedTabMenu('reports')">Reports</li>
+				<li ng-class="{'active': activeTab === 'stationary'}" ng-click="clickedTabMenu('stationary')">Stationary</li>
 				<li ng-class="{'active': activeTab === 'reservations'}" ng-click="clickedTabMenu('reservations')">Reservations</li>
 				<li ng-class="{'active': activeTab === 'luhn'}" ng-click="clickedTabMenu('luhn')"><span class="icons icon-action"></span>Luhn Algorithm</li>
 				<li ng-class="{'active': activeTab === 'control'}" ng-click="clickedTabMenu('control')"><span class="icons icon-success"></span>Control Number</li>
@@ -28,6 +29,10 @@
 			<!-- Reports -->
 			<div class="content" ng-show="activeTab === 'reports'">
 				<div ng-include="'/assets/partials/hotel/legalReportSettings.html'"></div>
+			</div>
+			<!-- Stationary -->
+			<div class="content" ng-show="activeTab === 'stationary'">
+				<div ng-include="'/assets/partials/hotel/legalStationarySettings.html'"></div>
 			</div>
 			<!-- Reservations -->
 			<div class="content hidden" ng-show="activeTab === 'reservations'">
