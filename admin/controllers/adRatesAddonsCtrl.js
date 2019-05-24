@@ -285,7 +285,6 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
 
                 $scope.singleAddon = data;
-                $scope.singleAddon.allowed_charge_code_ids = [];
 
                 $scope.initialImage = data.addon_image;
                 // CICO-23575 - Disable all posting types apart from First Night for Hourly.
@@ -370,7 +369,11 @@ admin.controller('ADRatesAddonsCtrl', [
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
                 suffix_label: $scope.singleAddon.suffix_label,
                 notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase,
-                allowed_charge_code_ids: $scope.singleAddon.allowed_charge_code_ids
+                allowed_charge_code_ids: $scope.singleAddon.allowed_charge_code_ids,
+                overage_charge_code_id: $scope.singleAddon.overage_charge_code_id,
+                spillage_charge_code_id: $scope.singleAddon.spillage_charge_code_id,
+                is_allowance: $scope.singleAddon.is_allowance,
+                price: $scope.singleAddon.price
             };
 
             if ($scope.isDefaulLanguageSelected()) {
