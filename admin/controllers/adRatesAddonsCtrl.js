@@ -205,6 +205,7 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.singleAddon = {};
             $scope.singleAddon.activated = true;
             $scope.singleAddon.permissible_charge_code_ids = [];
+            $scope.setAllowedChargeCodesForAllowance();
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
@@ -285,6 +286,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
 
                 $scope.singleAddon = data;
+
+                $scope.setAllowedChargeCodesForAllowance();
 
                 $scope.initialImage = data.addon_image;
                 // CICO-23575 - Disable all posting types apart from First Night for Hourly.
