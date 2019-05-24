@@ -509,6 +509,7 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           onSelect: reservationToDateChoosed
         }, commonDateOptions);
       };
+      
         /**
          * Close the bulk checkout status popup
          */

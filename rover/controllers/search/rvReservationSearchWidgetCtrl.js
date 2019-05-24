@@ -1174,6 +1174,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				},
 				onBulkCheckoutSuccess = function (response) {
 					var data;
+					
 					if (response.is_bulk_checkout_in_progress) {
 						data = {
 							message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
