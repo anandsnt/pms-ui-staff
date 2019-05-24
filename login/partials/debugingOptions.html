@@ -7,9 +7,11 @@
          <input autocomplete="off" ng-model="data.domainURL" name="password" placeholder="Enter URL"/>
       </div>
       <div class="actions" ng-hide="data.isLoadingUrl">
-         <button type="submit" class="button green" ng-click="data.isLoadingUrl = true;">Load custom URL</button>
+         <button type="submit" class="button green" ng-click="switchRoverInstance()">Switch Rover Instance</button>
          <br/>
-         <button type="submit" class="button" ng-click="loadTestPage()">Load test Page</button>
+         <!-- <button type="submit" class="button green" ng-click="data.isLoadingUrl = true;">Load custom URL</button>
+         <br/> -->
+         <button type="submit" class="button green" ng-click="loadTestPage()">Load test Page</button>
       </div>
       <div class="actions" ng-show="data.isLoadingUrl">
          <button type="submit" class="button green" ng-click="loadDomainURL()">Continue</button>
