@@ -2761,12 +2761,12 @@ sntRover.controller('RVbillCardController',
 		var sucessCallback = function(data) {
 
 			$scope.isPrintRegistrationCard = true;
-			$scope.printRegistrationCardActive = true;
-			$scope.printRegCardData.rowspanAustrianRegCardChild = data.guest_details.accompanying_children.length > 4 ? 3 : 2;
+			$scope.printRegistrationCardActive = true;			
 			
 			$scope.$emit('hideLoader');
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
+			$scope.printRegCardData.rowspanAustrianRegCardChild = data.guest_details.accompanying_children.length > 4 ? 3 : 2;
 
 			// CICO-25012 - checking for signature dispaly on Reg'n Card PRINT
 			if ( $scope.reservationBillData.signature_details.is_signed === "true" ) {

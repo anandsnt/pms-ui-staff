@@ -91,7 +91,7 @@
                 Spouse or partner
             </td>
             <td colspan="4">Vorname, Geburtsjahr/First name, date of birth<br />
-                {{printRegCardData.guest_details.accompanying_guest_first_name}}, {{printRegCardData.guest_details.accompanying_guest_dob}}
+                {{printRegCardData.guest_details.accompanying_guest_first_name}}<span ng-if="printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null">, </span>{{printRegCardData.guest_details.accompanying_guest_dob}}
             </td>
         </tr>
 
@@ -103,12 +103,12 @@
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                {{printRegCardData.guest_details.accompanying_children[0].first_name}}, {{printRegCardData.guest_details.accompanying_children[0].date_of_birth}}
+                {{printRegCardData.guest_details.accompanying_children[0].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null">, </span>{{printRegCardData.guest_details.accompanying_children[0].date_of_birth}}
             </td>
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                {{printRegCardData.guest_details.accompanying_children[1].first_name}}, {{printRegCardData.guest_details.accompanying_children[1].date_of_birth}}
+                {{printRegCardData.guest_details.accompanying_children[1].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[1] && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== null">, </span>{{printRegCardData.guest_details.accompanying_children[1].date_of_birth}}
             </td>
             
             <td class="inner-table">
@@ -130,22 +130,23 @@
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                {{printRegCardData.guest_details.accompanying_children[2].first_name}}, {{printRegCardData.guest_details.accompanying_children[2].date_of_birth}}
+                {{printRegCardData.guest_details.accompanying_children[2].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[2] && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== null">, </span> {{printRegCardData.guest_details.accompanying_children[2].date_of_birth}}
             </td>
             <td style="width: 130pt">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                {{printRegCardData.guest_details.accompanying_children[3].first_name}}, {{printRegCardData.guest_details.accompanying_children[3].date_of_birth}}
+                {{printRegCardData.guest_details.accompanying_children[3].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[3] && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== null">, </span>{{printRegCardData.guest_details.accompanying_children[3].date_of_birth}}
             </td>            
             <td>
-                Unterschrift des Meldepflichtigen/Signature
+                Unterschrift des Meldepflichtigen/Signature<br />
+                {{ printRegCardData.translation.guest_signature }}
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="width: 130pt">
+            <td colspan="3" style="width: 130pt" ng-if="printRegCardData.guest_details.accompanying_children.length > 4">
                 Vorname, Geburtsjahr
                 <span class="placeholder">First name, date of birth</span><br />
-                {{printRegCardData.guest_details.accompanying_children[2].first_name}}, {{printRegCardData.guest_details.accompanying_children[2].date_of_birth}}
+                {{printRegCardData.guest_details.accompanying_children[4].first_name}}<span ng-if="printRegCardData.guest_details.accompanying_children[4] && printRegCardData.guest_details.accompanying_children[4].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[4].date_of_birth !== null">, </span>{{printRegCardData.guest_details.accompanying_children[4].date_of_birth}}
             </td>
             
         </tr>
