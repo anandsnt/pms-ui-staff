@@ -235,7 +235,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	};
 
 	$scope.switchRoverInstance = function() {
-		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'switchEnvironment', [window.location.href]);
+		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'switchRoverInstance', []);
 	};
 
 	var loadCordovaWithVersion = function(version) {
