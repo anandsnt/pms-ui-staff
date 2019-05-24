@@ -204,7 +204,7 @@ admin.controller('ADRatesAddonsCtrl', [
             // params to be sent to server
             $scope.singleAddon = {};
             $scope.singleAddon.activated = true;
-            $scope.singleAddon.allowed_charge_code_ids = [];
+            $scope.singleAddon.permissible_charge_code_ids = [];
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
@@ -369,7 +369,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
                 suffix_label: $scope.singleAddon.suffix_label,
                 notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase,
-                allowed_charge_code_ids: $scope.singleAddon.allowed_charge_code_ids,
+                permissible_charge_code_ids: $scope.singleAddon.permissible_charge_code_ids,
                 overage_charge_code_id: $scope.singleAddon.overage_charge_code_id,
                 spillage_charge_code_id: $scope.singleAddon.spillage_charge_code_id,
                 is_allowance: $scope.singleAddon.is_allowance,
@@ -684,14 +684,14 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         $scope.linkAllowedChargeCodesForAllowance = function() {
-            $scope.singleAddon.allowed_charge_code_ids = _.pluck(_.filter($scope.chargeCodes, function (chargeCode) {
+            $scope.singleAddon.permissible_charge_code_ids = _.pluck(_.filter($scope.chargeCodes, function (chargeCode) {
                 return chargeCode.ticked;
             }), "id");
         };
 
         $scope.setAllowedChargeCodesForAllowance = function() {
             $scope.chargeCodes.map(function(chargeCode) {
-              if($scope.singleAddon.allowed_charge_code_ids.indexOf(parseInt(chargeCode.id)) > -1) {
+              if($scope.singleAddon.permissible_charge_code_ids.indexOf(parseInt(chargeCode.id)) > -1) {
                 chargeCode.ticked = true;
               } else {
                 chargeCode.ticked = false;
