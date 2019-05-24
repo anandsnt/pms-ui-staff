@@ -26,7 +26,7 @@
                         <strong>*</strong>
                     </label>
                     <div class="select">
-                        <select name="overage-charge" id="overage-charge" ng-model="singleAddon.overage_charge_code" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+                        <select name="overage-charge" id="overage-charge" ng-model="singleAddon.overage_charge_code_id" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@
                         <strong>*</strong>
                     </label>
                     <div class="select">
-                        <select name="spillage-charge" id="spillage-charge" ng-model="singleAddon.spillage_charge_code" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+                        <select name="spillage-charge" id="spillage-charge" ng-model="singleAddon.spillage_charge_code_id" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.allowance_value" name="name" id="name" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
+                <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.price" name="name" id="name" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
             </fieldset>
 
             <fieldset class="holder left float">
