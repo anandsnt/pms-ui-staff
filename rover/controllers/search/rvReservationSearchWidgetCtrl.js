@@ -1154,5 +1154,54 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.allowOpenBalanceCheckout = !$scope.allowOpenBalanceCheckout;
 			$scope.fetchBulkCheckoutReservations();
 		};
+
+		/**
+		 * Perform bulk checkout of reservations
+		 */
+		$scope.performBulkCheckout = function() {
+			var postData = {
+					allow_open_balance_checkout: $scope.allowOpenBalanceCheckout
+				},
+				onBulkCheckoutSuccess = function (response) {
+					var data = {
+						message: "BULK_CHECKOUT_INITIATED",
+						isSuccess: true
+					};
+
+					ngDialog.open({
+						template: '/assets/partials/popups/rvInfoPopup.html',						
+						closeByDocument: true,
+						scope: $scope,
+						data: JSON.stringify(data)
+					});
+				},
+				onBulkCheckoutFailure = function (errorMsg) {
+					var data = {
+						message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
+						isFailure: true
+					};
+
+					ngDialog.open({
+						template: '/assets/partials/popups/rvInfoPopup.html',						
+						closeByDocument: false,
+						scope: $scope,
+						data: JSON.stringify(data)
+					});
+				};
+
+			$scope.callAPI(RVSearchSrv.processBulkCheckout, {
+				onSuccess: onBulkCheckoutSuccess,
+				onFailure: onBulkCheckoutFailure,
+				params: postData
+			});
+		};
+
+		$scope.closeSuccessDialog = function() {
+			ngDialog.close();
+			$state.go('rover.dashboard');
+		};
+		$scope.closeErrorDialog = function() {
+			ngDialog.close();
+		};
 	}
 ]);
