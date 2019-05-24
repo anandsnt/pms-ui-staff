@@ -1044,8 +1044,9 @@
                         }
                     }                        
 
-                    &.blocked {
-                        cursor: default;
+                    &.blocked,
+                    &.departed {
+                        color: rgba(255,255,255,.6);
 
                         &:before {
                             content: '';
