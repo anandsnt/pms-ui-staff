@@ -1155,6 +1155,16 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.fetchBulkCheckoutReservations();
 		};
 
+		var showBulkCheckoutStatusPopup = function (data) {
+			ngDialog.open({
+				template: '/assets/partials/popups/rvInfoPopup.html',						
+				closeByDocument: true,
+				scope: $scope,
+				data: JSON.stringify(data)
+			});
+		};
+			
+
 		/**
 		 * Perform bulk checkout of reservations
 		 */
@@ -1163,30 +1173,24 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					allow_open_balance_checkout: $scope.allowOpenBalanceCheckout
 				},
 				onBulkCheckoutSuccess = function (response) {
-					var data = {
-						message: "BULK_CHECKOUT_INITIATED",
-						isSuccess: true
-					};
-
-					ngDialog.open({
-						template: '/assets/partials/popups/rvInfoPopup.html',						
-						closeByDocument: true,
-						scope: $scope,
-						data: JSON.stringify(data)
-					});
+					var data;
+					if (response.is_bulk_checkout_in_progress) {
+						data = {
+							message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
+							isFailure: true
+						};
+						showBulkCheckoutStatusPopup(data);
+					} else {
+						data = {
+							message: "BULK_CHECKOUT_INITIATED",
+							isSuccess: true
+						};
+						showBulkCheckoutStatusPopup(data);
+					}
+					
 				},
 				onBulkCheckoutFailure = function (errorMsg) {
-					var data = {
-						message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
-						isFailure: true
-					};
-
-					ngDialog.open({
-						template: '/assets/partials/popups/rvInfoPopup.html',						
-						closeByDocument: false,
-						scope: $scope,
-						data: JSON.stringify(data)
-					});
+					$scope.errorMessage = errorMsg;
 				};
 
 			$scope.callAPI(RVSearchSrv.processBulkCheckout, {
