@@ -462,9 +462,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     } else if (occupancy[m.status]   === 'checkedin') {
                         occupancy[m.status]         = 'inhouse';
                     } else if (occupancy[m.status]   === 'checkedout') {
-                        occupancy[m.status]         = 'check-out';
-                    } else if (occupancy[m.status]   === 'checking_out') {
                         occupancy[m.status]         = 'departed';
+                    } else if (occupancy[m.status]   === 'checking_out') {
+                        occupancy[m.status]         = 'check-out';
                     } else if (occupancy[m.status]   ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
