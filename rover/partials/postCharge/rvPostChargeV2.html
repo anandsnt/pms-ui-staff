@@ -133,36 +133,44 @@
 													<span class="vip" ng-show="row.vip==true">VIP</span>
 				                    			</figure>
 
-				                    			<div class="data" ng-class="{'no-guest-info': escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)=='' && escapeNull(row.allotment)==''}">
+				                    			<div class="data">
+					                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
+								                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:search.guest_company_agent:false">{{row.company}}</span>
+								                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:search.guest_company_agent:false">{{row.travel_agent}}</span>
+								                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:search.guest_company_agent:false"></span>
+								                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:search.guest_company_agent:false"></span>
+								                    </div>
 				                    				<h2 ng-bind-html="row.lastname + ' ' +row.firstname|highlight:search.guest_company_agent:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"></h2>
-				                    				<span class="confirmation" ng-bind-html="row.confirmation|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
-				                    				<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
-				                    			</div>
 
-				                    			<div class="guest-info" ng-hide="escapeNull(row.company)=='' && escapeNull(row.travel_agent)=='' && escapeNull(row.group)==''">
-							                        <span class="icons icon-guest-company" ng-hide="escapeNull(row.company)==''" ng-bind-html="escapeNull(row.company)|highlight:search.guest_company_agent:false">{{row.company}}</span>
-							                        <span class="icons icon-guest-travelagent" ng-hide="escapeNull(row.travel_agent)==''" ng-bind-html="escapeNull(row.travel_agent)|highlight:search.guest_company_agent:false">{{row.travel_agent}}</span>
-							                        <span class="icons icon-group" ng-hide="escapeNull(row.group)==''" ng-bind-html="escapeNull(row.group)|highlight:search.guest_company_agent:false"></span>
-							                        <span class="icons icon-allotment" ng-hide="escapeNull(row.allotment)==''" ng-bind-html="escapeNull(row.allotment)|highlight:search.guest_company_agent:false"></span>
-							                    </div>
+				                    				<div class="guest-meta">
+				                    					<span class="confirmation" ng-bind-html="row.confirmation|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
+				                    					<span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
+				                    				</div>
+				                    			</div>
 
 							                    <div class="reservation-info">
 
-							                    	<div class="reservation-type red" ng-if="row.is_day_use">D</div>
-                    								<div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+							                    	<div class="reservation-type red" ng-if="row.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
+                        							<div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
 
 							                    	<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}"></span>
-							                    	<strong class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)">
-														<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }">{{row.room}}</span>
-													</strong>
 
-							                    	<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+							                    	<div class="room-info">
+							                    		<div class="room-number-info">
+							                    			<strong class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only)">
+																<span ng-class="{'highlight': row.room.indexOf(search.room) != -1 && search.room!='' && search.room.length>=3 }">{{row.room}}</span>
+															</strong>
+							                    			<span class="icons icon-suite-orange" ng-if="row.is_suite_room && !isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Suite</span>
+															<span class="room-status" ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</span>
+							                    		</div>
+							                    	</div>
+							                    	
 							                    	<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 														{{row.late_checkout_time}}
 													</span>
 
-							                    	<span class="icons icon-queued" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status) && !row.is_suite_room"></span>
-							                    	<span class="icons icon-suite" ng-if="row.is_suite_room && !isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">Suite</span>
+							                    	<span class="icons icon-queued-red" ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status) && !row.is_suite_room"></span>
+
 							                    	<div class="room-icons" ng-if="row.is_suite_room && isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)">
 							                    		<span class="icons icon-suite"></span>
 							                    		<span class="icons icon-queued"></span>
