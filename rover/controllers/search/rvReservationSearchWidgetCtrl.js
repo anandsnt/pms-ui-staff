@@ -1155,7 +1155,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.fetchBulkCheckoutReservations();
 		};
 
-		var showBulkCheckoutStatusPopup = function (data) {
+		/**
+		 * Show the popup with proper message when the bulk checkout process is initiated
+		 * @param {Object} data holding the details for the popup content
+		 * @return {void}
+		 */
+		this.showBulkCheckoutStatusPopup = function (data) {
 			ngDialog.open({
 				template: '/assets/partials/popups/rvInfoPopup.html',						
 				closeByDocument: true,
@@ -1180,13 +1185,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 							message: "BULK_CHECKOUT_PROCESS_IN_PROGRESS",
 							isFailure: true
 						};
-						showBulkCheckoutStatusPopup(data);
+						that.showBulkCheckoutStatusPopup(data);
 					} else {
 						data = {
 							message: "BULK_CHECKOUT_INITIATED",
 							isSuccess: true
 						};
-						showBulkCheckoutStatusPopup(data);
+						that.showBulkCheckoutStatusPopup(data);
 					}
 					
 				},
