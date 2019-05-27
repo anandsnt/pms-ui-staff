@@ -85,18 +85,27 @@
                         <span class="stay-count" ng-if="row.stay_count > 0 && isStandAlone">{{::row.stay_count}}</span>
                         <span class="vip" ng-show="row.vip==1">VIP</span>
                     </figure>
+
                     <div class="data">
+                        <div class="guest-info">
+                            <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
+                            <span class="guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
+                            <span class="group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
+                            <span class="allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
+                        </div>
                         <!-- Add .cancelled if the guest has cancelled or no show -->
                         <h2 ng-show="escapeNull(row.lastname) != '' || escapeNull(row.firstname) != ''" ng-bind-html="getGuestName(row.firstname, row.lastname)| highlightWords:searchWords" ng-class="{'cancelled' : row.reservation_status == 'CANCELED' || row.reservation_status == 'NO SHOW'}">
                         </h2>
                         <h2 class="pending" ng-if="escapeNull(row.lastname) == '' && escapeNull(row.firstname) == '' " translate>PENDING</h2>
-                        <span class="confirmation">
-                            <span class="confirmation-text">{{getConfirmationNoText(row)}}</span>
-                            <span ng-bind-html="getConfirmationNo(row) | highlight:textInQueryBox:false" ng-if="textInQueryBox.length >= 5"></span>
-                            <span ng-bind-html="getConfirmationNo(row)" ng-if="textInQueryBox.length < 5"></span>
-                        </span>
-                        <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
 
+                        <div class="guest-meta">
+                            <span class="confirmation">
+                                <span class="confirmation-text">{{getConfirmationNoText(row)}}</span>
+                                <span ng-bind-html="getConfirmationNo(row) | highlight:textInQueryBox:false" ng-if="textInQueryBox.length >= 5"></span>
+                                <span ng-bind-html="getConfirmationNo(row)" ng-if="textInQueryBox.length < 5"></span>
+                            </span>
+                            <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
+                        </div>
                     </div>
 
                     <!-- If Daily reservation add .daily -->
@@ -130,36 +139,26 @@
                     	<div class="reservation-type red" ng-if="row.is_day_use">D</div>
                     	<div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
 
-                        <div class="guest-info">
-                            <span class="guest-company" ng-if="escapeNull(row.company)!=''" ng-bind-html="escapeNull(row.company)|highlight:textInQueryBox:false"></span>
-	                        <span class="guest-travelagent" ng-if="escapeNull(row.travel_agent)!=''" ng-bind-html="escapeNull(row.travel_agent)|highlight:textInQueryBox:false"></span>
-	                        <span class="group" ng-if="escapeNull(row.group)!=''" ng-bind-html="escapeNull(row.group)|highlight:textInQueryBox:false"></span>
-	                        <span class="allotment" ng-if="escapeNull(row.allotment)!=''" ng-bind-html="escapeNull(row.allotment)|highlight:textInQueryBox:false"></span>
-                        </div>
-
                         <div class="reservation-status">
                             <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
                         </div>
 
                         <div class="room-info">
-                            <strong class="room-number {{getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status, row.room)}}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
-                            <span class="room-type">{{row.room_type}}</span>
-                            <div class="room-icons">
-
+                            <div class="room-number-info">
+                                <strong class="room-number {{getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status, row.room)}}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
                                 <span class="icons icon-suite" ng-if="row.is_suite_room"></span>
-
-                                <span class="icons icon-queued has-time"
-                                	ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"
-                                >
-                                	Queued
-                                	<span class="time" pretty-time-ago="row.is_queued_till"></span>
-                                </span>
+                                <span class="room-status" ng-if="showStatus(row)" ng-class="{'green':!row.is_room_due_out}">{{getRoomStatus(row)}}</span>
                             </div>
+                            <span class="room-type">{{row.room_type}}</span>
+                            <span class="icons icon-queued has-time"
+                                    ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"
+                                >
+                                Queued
+                                <span class="time" pretty-time-ago="row.is_queued_till"></span>
+                            </span>
                         </div>
-
-                        <span class="room-status" ng-if="showStatus(row)" ng-class="{'green':!row.is_room_due_out}">{{getRoomStatus(row)}}</span>
-
 					</div>
+
 					<!-- Available on Departures -->
 					<div class="reservation-balance" ng-if="isBulkCheckoutSelected">
 						<span class="currency">{{currencySymbol}}</span>
