@@ -136,8 +136,8 @@
 
                     <div class="reservation-info">
 
-                    	<div class="reservation-type red" ng-if="row.is_day_use">D</div>
-                    	<div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+                    	<div class="reservation-type red" ng-if="row.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
+                        <div class="reservation-type" ng-if="!row.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
 
                         <div class="reservation-status">
                             <span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin , row.arrival_date)}}">{{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout,row.is_pre_checkin, row.arrival_date)}}</span>
