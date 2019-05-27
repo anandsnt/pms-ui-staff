@@ -104,7 +104,8 @@
                                 <span ng-bind-html="getConfirmationNo(row) | highlight:textInQueryBox:false" ng-if="textInQueryBox.length >= 5"></span>
                                 <span ng-bind-html="getConfirmationNo(row)" ng-if="textInQueryBox.length < 5"></span>
                             </span>
-                            <span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}">{{escapeNullStr(row.location)}}</span>
+                            <span class="icons icon-location" ng-if="escapeNullStr(row.location) !== ''">{{escapeNullStr(row.location)}}</span>
+                            <span class="icons icon-location no-location" ng-if="escapeNullStr(row.location) === ''">N/A</span>
                         </div>
                     </div>
 
