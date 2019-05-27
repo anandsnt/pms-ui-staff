@@ -296,8 +296,9 @@
                         </div>
                         <div class="reservation-status">
                             <!-- if daily reservation add .red -->
-                            <div class="reservation-type red" ng-if="reservation.is_day_use">D</div>
-                            <div class="reservation-type" ng-if="!reservation.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+                            <div class="reservation-type red" ng-if="reservation.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
+                            <div class="reservation-type" ng-if="!reservation.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
+                            
                             <!-- No status if it's a new room -->
                             <span class="guest-status" ng-class="getReservationClass(reservation.reservation_status)">{{reservation.reservation_status}}</span>
                         </div>
