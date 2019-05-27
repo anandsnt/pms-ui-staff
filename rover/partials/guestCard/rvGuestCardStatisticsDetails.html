@@ -94,20 +94,42 @@
                                             <span class="value">{{reservation.confirmation_no}}</span>
                                         </span>
                                     </div>
-                                    <div class="guest-date arrival">
-                                        <span class="guest-status small-icon check-in"></span>
-                                        <time datetime="">
+
+                                    <!-- Case 1: Nightly -->
+                                    <div class="reservation-time" ng-if="reservation.arrival_date !== reservation.departure_date">
+                                        <div class="check-icons">
+                                            <span class="guest-status check-in">arrival</span>
+                                            <span class="guest-status check-out">arrival</span>
+                                        </div>
+                                        <div class="check-times">
+                                            <time class="guest-time">
+                                                <span>{{reservation.arrival_date| date : dateFormat}}</span>
+                                                <span class="hours">{{reservation.arrival_time}}</span>
+                                            </time>
+                                            <time class="guest-time">
+                                                <span>{{reservation.departure_date| date : dateFormat}}</span>
+                                                <span class="hours">{{reservation.departure_time}}</span>
+                                            </time>
+                                        </div>
+                                    </div>
+                                    <!-- Case 2: Daily Reservation -->
+                                    <div class="reservation-time daily" ng-if="reservation.arrival_date === reservation.departure_date">
+                                        <div class="check-icons">
+                                            <span class="guest-status check-in">arrival</span>
+                                            <span class="guest-status check-out">arrival</span>
+                                        </div>
+                                        <div class="check-times">
+                                            <div class="guest-hours">
+                                                <time class="guest-time">{{reservation.arrival_time}}</time> - <time class="guest-time">{{reservation.departure_time}}</time>
+                                            </div>
                                             <span class="date">{{reservation.arrival_date| date : dateFormat}}</span>
-                                            <span class="time">{{reservation.arrival_time}}</span>
-                                        </time>
+                                        </div>
                                     </div>
-                                    <div class="guest-date departure">
-                                        <span class="guest-status small-icon {{getReservationClass(reservation)}}"></span>
-                                        <time datetime="">
-                                            <span class="date">{{reservation.departure_date| date : dateFormat}}</span>
-                                            <span class="time">{{reservation.departure_time}}</span>
-                                        </time>
-                                    </div>
+
+                                    <!-- if daily reservation add .red -->
+                                    <div class="reservation-type red" ng-if="reservation.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
+                                    <div class="reservation-type" ng-if="!reservation.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
+                                    
                                     <div class="guest-data rate">
                                         <strong><span class="currency">{{currencySymbol}}</span>{{reservation.adr | number: 2}} ADR</strong>
                                         <span>{{reservation.rate_name}}</span>

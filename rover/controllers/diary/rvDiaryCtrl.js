@@ -738,8 +738,8 @@ angular.module('sntRover')
 	    		props = $scope.gridProps,
 	    		edit = props.edit,
 	    		selectedTypeCount;
-
-        $scope.showSaveChangesAfterEditing = false;
+            $scope.hideRoomUnAssignButton = row_item_data.reservation_status === "departed";
+            $scope.showSaveChangesAfterEditing = false;
 			
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
@@ -1099,6 +1099,7 @@ angular.module('sntRover')
             var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture, isMoveRoomAction) {
                 if ( originalItem.arrival !== newArrival || originalItem.departure !== newDeparture || isMoveRoomAction ) {
                     $scope.showSaveChangesAfterEditing = true;
+                    $scope.hideRoomUnAssignButton = true;
                 }
                 else {
                     $scope.showSaveChangesAfterEditing = false;
@@ -1115,7 +1116,7 @@ angular.module('sntRover')
         isMoveRoomAction = successParams.params.room_id !== oItem.room_id;
 				
 			// To show save change button ,only if there is change in time
-        showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
+            showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {

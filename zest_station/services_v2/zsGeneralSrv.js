@@ -89,7 +89,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'hotel-e': 'Hotel E',
             'kelley': 'Kelley House',
             'stare-miastro': 'Aparthotel Stare Miasto',
-            'upstairs-by-mamas': 'Upstairs by Mamas'
+            'upstairs-by-mamas': 'Upstairs by Mamas',
+            'juliani': 'Hotel Juliani',
+            'mooons': 'Mooons'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -170,13 +172,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchTranslations = function(languages) {
             var deferred = $q.defer();
 
-            var languageConfig, langShortCode, url, promises = [], results = {};
+            var langShortCode, url, promises = [], results = {};
 
             languages.map(function(language) {
-                languageConfig = that.languageValueMappingsForUI[language.name];
-                langShortCode = languageConfig.code;
+                langShortCode = language.code;
 
-                that.langName[langShortCode] = language.name;
+                that.langName[langShortCode] = language.code;
 
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
@@ -748,6 +749,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/zest_station/reservations/' + params.id + '/detach_accompanying_guest';
 
             return zsBaseWebSrv.postJSON(url, params);
+        };
+
+        this.getRoomTypes = function(params) {
+            var url = '/api/room_types.json';
+            
+            return zsBaseWebSrv.getJSON(url, params);
         };
 
         this.getAvailableRatesForTheDay = function(params) {
