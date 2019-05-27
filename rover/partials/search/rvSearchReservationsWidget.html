@@ -146,11 +146,11 @@
                         <div class="room-info">
                             <div class="room-number-info">
                                 <strong class="room-number {{getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus, row.room_ready_status, row.checkin_inspected_only, row.room_service_status, row.room)}}" ng-bind-html="getRoomNo(row.room) | highlight:textInQueryBox:false"></strong>
-                                <span class="icons icon-suite" ng-if="row.is_suite_room"></span>
+                                <span class="icons icon-suite-orange" ng-if="row.is_suite_room"></span>
                                 <span class="room-status" ng-if="showStatus(row)" ng-class="{'green':!row.is_room_due_out}">{{getRoomStatus(row)}}</span>
                             </div>
                             <span class="room-type">{{row.room_type}}</span>
-                            <span class="icons icon-queued has-time"
+                            <span class="icons icon-queued-red"
                                     ng-if="isReservationQueued(row.is_reservation_queued, row.is_queue_rooms_on, row.reservation_status)"
                                 >
                                 Queued
