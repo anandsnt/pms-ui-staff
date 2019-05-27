@@ -144,7 +144,7 @@
 
 				                    				<div class="guest-meta">
 				                    					<span class="confirmation" ng-bind-html="row.confirmation|highlight:search.guest_company_agent:false">{{row.confirmation}}</span>
-				                    					<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
+				                    					<span class="icons icon-location" ng-class="{'no-location': (escapeNullStr(row.location)=='')}" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}</span>
 				                    				</div>
 				                    			</div>
 
