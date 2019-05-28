@@ -2,28 +2,42 @@ angular.module('admin').controller('adEasiCtrl',
     ['$scope',
         '$rootScope',
         'config',
+        'adInterfacesSrv',
         'adInterfacesCommonConfigSrv',
-        'dateFilter',
-        '$stateParams',
         'chargeGroups',
         'taxChargeCodes',
-        function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, chargeGroups, taxChargeCodes) {
+        function($scope, $rootScope, config, adInterfacesSrv, adInterfacesCommonConfigSrv, chargeGroups, taxChargeCodes) {
+            console.log("from adRouter - chargeGroups: ", chargeGroups)
+            console.log("from adRouter - config: ", config)
+            console.log("from adRouter - taxChargeCodes: ", taxChargeCodes)
 
-            var interfaceIdentifier = $stateParams.id;
+
+            $scope.interface = 'EASI';
 
             $scope.toggleEnabled = function() {
                 config.enabled = !config.enabled;
             };
 
-            $scope.saveInterfaceConfig = function() {
+            $scope.changeTab = function (name) {
+                $scope.state.activeTab = name;
+            };
 
-                $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.state = {
+                activeTab: "SETTING"
+            };
+
+            $scope.historicalDataSyncItems = ['invoice'];
+
+            $scope.saveSetup = function () {
+                console.log("saving setup for new framework. params: ", $scope.config)
+                $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        config: $scope.config,
-                        interfaceIdentifier: interfaceIdentifier
+                        settings: $scope.config,
+                        integration: $scope.interface.toLowerCase()
                     },
-                    onSuccess: function() {
-                        $scope.goBackToPreviousState();
+                    onSuccess: function () {
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Settings Updated!';
                     }
                 });
             };
@@ -43,9 +57,9 @@ angular.module('admin').controller('adEasiCtrl',
                 config.enabled = (config.enabled !== null) ? config.enabled : false;
                 $scope.config = config;
                 $scope.availableSettings = _.keys(config);
-                $scope.interface = interfaceIdentifier.toUpperCase();
                 $scope.chargeGroups = chargeGroups.data.charge_groups;
                 $scope.availableTaxChargeCodesForTaxExemptOne = $scope.availableTaxChargeCodesForTaxExemptTwo = $scope.availableTaxChargeCodesForTaxExemptThree = taxChargeCodes.data.charge_codes;
+                console.log("easi iife, $scope: ", $scope)
             })();
             /*
              * Changed tax exempt
