@@ -40,6 +40,8 @@
                     </div>
                 </div>
 
+                <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.spillage_refund" name="name" id="name" label="{{'SPILLAGE_REFUND_LABEL' | translate}}" placeholder="{{'SPILLAGE_REFUND_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
+
                 <div class="entry" ng-if="singleAddon.is_allowance">
                     <label translate>ALLOWED_CHARGE_CODES_LABEL</label>
                      <div multi-select on-open="setAllowedChargeCodesForAllowance()" on-close="linkAllowedChargeCodesForAllowance()" input-model="chargeCodes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
