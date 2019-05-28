@@ -8,4 +8,6 @@
     "SEARCH_NORMAL": "Find Reservation",
     "PRE_CHECKIN":"Pre Check In",
     "SEARCH":"Search",
-    "MOBILE_CHECKIN" : "Mobile Check In"
+    "MOBILE_CHECKIN" : "Mobile Check In",
+    "BULK_CHECKOUT_INITIATED": "Bulk check out initiated",
+    "BULK_CHECKOUT_PROCESS_IN_PROGRESS": "Bulk check out process is in progress"
