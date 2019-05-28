@@ -1,44 +1,48 @@
-<div class="content" id="login">
+<div id="login" role="content">
     <div ng-show="hasLoader" id="loading">
         <div id="loading-spinner"></div>
     </div>
-    <img src="/assets/images/logo.png" class="logo" alt="">
-    <span class="notice error" ng-show="errorMessage !== ''">
-        <ul>
-            <li>
-                {{errorMessage}}
-            </li>
-        </ul>   
-    </span>
-    <form ng-submit="submit()" id="login-form" class="form search-form" autocomplete="off">
-        <label>Select Property</label>
-        <div class="entry search">
-            <button class="clear-query" ng-class="{'visible': searchData !== ''}" ng-click="clearQuery()">
-                <span class="icons icon-clear-search">Clear query</span>
-            </button>
-            <button class="icons icon-search" ng-class="{'visible': searchData!==''}" ng-click="filterByQuery()">
-                Search
-            </button>
-            <input id="property-query" class="query" ng-model="searchData" placeholder="Search by Name" type="text" ng-change="filterByQuery()" autocomplete="off" />
-            <div class="property-autocomplete scrollable" ng-show="!selectedProperty" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
-                <div class="wrapper" >
-                    <ul class="ui-autocomplete">
-                        <li ng-click="onSelect(property)" ng-repeat="property in propertyResults track by $index">
-                            <a  ng-bind-html="highlight(property.name, searchData)"></a>
-                        </li>
-                    </ul>
+    <img src="/assets/images/logo-snt.png" alt="" class="login__logo" />
+    
+    <form ng-submit="submit()" id="login-form" class="login__content" autocomplete="off" novalidate>
+        <h1>Select your Property.</h1>
+        <span class="notice error bg-white" ng-show="errorMessage !== ''">
+            {{errorMessage}}
+        </span>
+        <div class="entry">
+            <div class="entry__label">
+                <label>Select Property</label> 
+            </div>
+            <div class="entry_search">
+                <button type="button" id="property-clear-query" class="clear-query" ng-click="clearQuery()" ng-class="{'visible': searchData !== ''}" ng-show="searchData !== ''">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <!-- <button class="icons icon-search" ng-class="{'visible': searchData!==''}" ng-click="filterByQuery()">
+                    Search
+                </button>  -->
+                <input id="property-query" ng-model="searchData" placeholder="Search by Property Name, e.g. 'Grand'" type="search" ng-change="filterByQuery()" autocomplete="off" />
+                <div class="property-autocomplete scrollable" ng-show="!selectedProperty" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
+                    <div class="wrapper" id="property-search-scroller">
+                        <ul class="ui-autocomplete">
+                            <li ng-click="onSelect(property)" ng-repeat="property in propertyResults track by $index">
+                                <a  ng-bind-html="highlight(property.name, searchData)"></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+        
         <div class="action">
-            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-disabled="!selectedProperty" ng-class="{'blue': !!selectedProperty }">Continue</button>
+            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-disabled="!selectedProperty" ng-class="{'blue': !!selectedProperty }">Continue to Rover</button>
+            <button type="button" id="cancel" class="button blank" ng-hide="true">Sign Out</button>
         </div>
     </form>
-    <div class="support">
-        For questionsdd please contact your hotel administrator or visit the StayNTouch <a href="#" ng-click="onClickSupportLink()">Support Portal</a> for more information.
-    </div>
-    <div class="support">
-        <br />
-        Rover Version {{data.roverVersion}}
-    </div>
+    <div class="login__footer">
+		<p>
+			For questions please contact your hotel administrator or visit the <a href="#" ng-click="onClickSupportLink()">StayNTouch Support Portal</a> for more information.
+		</p>
+		<p>For system performance issues see <a ng-click="onSystemStatusClick()" href="#">StayNTouch System Status</a></p>
+		<p class="muted">Rover Version {{data.roverVersion}}</p>
+	</div>
 </div>
