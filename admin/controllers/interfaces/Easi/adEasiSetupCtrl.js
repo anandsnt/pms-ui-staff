@@ -7,11 +7,6 @@ angular.module('admin').controller('adEasiCtrl',
         'chargeGroups',
         'taxChargeCodes',
         function($scope, $rootScope, config, adInterfacesSrv, adInterfacesCommonConfigSrv, chargeGroups, taxChargeCodes) {
-            console.log("from adRouter - chargeGroups: ", chargeGroups)
-            console.log("from adRouter - config: ", config)
-            console.log("from adRouter - taxChargeCodes: ", taxChargeCodes)
-
-
             $scope.interface = 'EASI';
 
             $scope.toggleEnabled = function() {
@@ -29,7 +24,6 @@ angular.module('admin').controller('adEasiCtrl',
             $scope.historicalDataSyncItems = ['invoice'];
 
             $scope.saveSetup = function () {
-                console.log("saving setup for new framework. params: ", $scope.config)
                 $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
                         settings: $scope.config,
@@ -59,7 +53,11 @@ angular.module('admin').controller('adEasiCtrl',
                 $scope.availableSettings = _.keys(config);
                 $scope.chargeGroups = chargeGroups.data.charge_groups;
                 $scope.availableTaxChargeCodesForTaxExemptOne = $scope.availableTaxChargeCodesForTaxExemptTwo = $scope.availableTaxChargeCodesForTaxExemptThree = taxChargeCodes.data.charge_codes;
-                console.log("easi iife, $scope: ", $scope)
+
+                // ensure tax charge code id's are integers
+                $scope.config.tax1_charge_code_id = parseInt(config.tax1_charge_code_id)
+                $scope.config.tax2_charge_code_id = parseInt(config.tax2_charge_code_id)
+                $scope.config.tax3_charge_code_id = parseInt(config.tax3_charge_code_id)
             })();
             /*
              * Changed tax exempt
@@ -83,6 +81,5 @@ angular.module('admin').controller('adEasiCtrl',
                 $scope.availableTaxChargeCodesForTaxExemptTwo = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForTwo);
                 $scope.availableTaxChargeCodesForTaxExemptThree = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForThree);
             };
-
         }
     ]);
