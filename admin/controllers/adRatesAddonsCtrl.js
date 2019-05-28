@@ -376,7 +376,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 overage_charge_code_id: $scope.singleAddon.overage_charge_code_id,
                 spillage_charge_code_id: $scope.singleAddon.spillage_charge_code_id,
                 is_allowance: $scope.singleAddon.is_allowance,
-                price: $scope.singleAddon.price
+                price: $scope.singleAddon.price,
+                spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage
             };
 
             if ($scope.isDefaulLanguageSelected()) {
