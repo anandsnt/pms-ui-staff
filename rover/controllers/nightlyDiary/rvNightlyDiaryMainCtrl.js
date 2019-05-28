@@ -565,23 +565,23 @@ angular.module('sntRover')
                  * Function to save editing of a reservation
                  */
                 var saveReservationEditing = function () {
-                    let successCallBack = function (data) {
+                    let successCallBack = function (response) {
 
                         if ($scope.diaryData.requireAuthorization && $scope.isStandAlone) {
                             // CICO-7306 : With Authorization flow .: Auth Success
-                            if (data.auth_status) {
+                            if (response.data.auth_status) {
                                 $scope.isInProgressScreen = false;
                                 $scope.isSuccessScreen = true;
                                 $scope.isFailureScreen = false;
-                                $scope.cc_auth_amount = data.cc_auth_amount;
-                                $scope.cc_auth_code = data.cc_auth_code;
+                                $scope.cc_auth_amount = response.data.cc_auth_amount;
+                                $scope.cc_auth_code = response.data.cc_auth_code;
                             } 
                             else {
                                 // CICO-7306 : With Authorization flow .: Auth declined
                                 $scope.isInProgressScreen = false;
                                 $scope.isSuccessScreen = false;
                                 $scope.isFailureScreen = true;
-                                $scope.cc_auth_amount = data.cc_auth_amount;
+                                $scope.cc_auth_amount = response.data.cc_auth_amount;
                             }
                         }
                         else {
@@ -589,7 +589,6 @@ angular.module('sntRover')
                             $timeout(function () {
                                 fetchRoomListDataAndReservationListData();
                             }, 700);
-
                         }
                     };
 
