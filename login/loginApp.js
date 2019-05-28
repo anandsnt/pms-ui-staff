@@ -629,5 +629,6 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
 
 			$scope.data.roverVersion = versionNumber;
 		};
+		
 		loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
 }]);
