@@ -1,0 +1,87 @@
+<div class="form float" ng-if="state.activeTab === 'SETTING'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+    <fieldset class="holder full-width">
+        <div class="form-title full-width">
+            <h3>Settings</h3>
+        </div>
+    </fieldset>
+    <!-- export settings  -->
+    <fieldset class="holder left" ng-if="config.enabled">
+        <div class="form-title">
+            <h3>Export Settings</h3>
+        </div>
+        <ad-textbox inputtype="text" value="config.hotel_code" label="{{'HOTEL_CODE'| translate}}" styleclass="full-width">
+        </ad-textbox>
+    </fieldset>
+    <!-- sftp settings -->
+    <fieldset class="holder right" ng-if="config.enabled">
+        <div class="form-title">
+            <h3>Export SFTP Settings</h3>
+        </div>
+        <section>
+            <ad-textbox inputtype="text" value="config.sftp_host" label="SFTP host" styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.sftp_location" label="SFTP location" styleclass="full-width">
+            </ad-textbox>
+            <ad-textbox inputtype="text" value="config.sftp_username" label="SFTP user name" styleclass="full-width">
+            </ad-textbox>
+            <ad-textbox inputtype="password" value="config.sftp_password" label="SFTP password" styleclass="full-width">
+            </ad-textbox>
+        </section>
+    </fieldset>
+    <!-- paid out settings -->
+    <fieldset class="holder left" ng-if="config.enabled">
+        <div class="form-title">
+            <h3>Paid Out Settings </h3>
+        </div>
+        <div class="entry">
+            <label translate>PAID_OUT_CHARGE_GROUP</label>
+            <select ng-model="config.paid_out_charge_group_id"
+                ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups">
+                <option value="" disabled selected>Select paid out group</option>
+            </select>
+        </div>
+    </fieldset>
+    
+    <!-- charge code settings -->
+    <fieldset class="holder right" ng-if="config.enabled">
+      <div class="form-title">
+        <h3>Charge Code Settings </h3>       
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_6</label>
+        <div class="select">
+          <select ng-model="config.tax1_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >
+            <option value="" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_12</label>
+        <div class="select">
+          <select ng-model="config.tax2_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_two.id as charge_code_for_two.code for charge_code_for_two in availableTaxChargeCodesForTaxExemptTwo" >
+            <option value="" class="placeholder" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_21</label>
+        <div class="select">
+          <select ng-model="config.tax3_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_three.id as charge_code_for_three.code for charge_code_for_three in availableTaxChargeCodesForTaxExemptThree" >
+            <option value="" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- save settings  -->
+    <div class="actions float">
+        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+            CANCEL
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
+            translate>
+            SAVE_CHANGES
+        </button>
+    </div>
+</div>
