@@ -390,7 +390,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
                     // For Inspected Only Hotel, Adding class for clean not-inspected case
-                    room[meta.room.hk_status] += ( room.hk_status === 'CLEAN' && !room.is_ready ) ? ' not-inspected' : '';
+                    room[meta.room.hk_status] += ( room.hk_status === 'CLEAN' && !room.is_inspected ) ? ' not-inspected' : '';
                     // Add class when room is OOO/OOS
                     if ( room.room_service_status === 'OUT_OF_ORDER' || room.room_service_status === 'OUT_OF_SERVICE') {
                         room[meta.room.hk_status] = 'unavailable';

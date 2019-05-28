@@ -20,7 +20,7 @@ let convertRoomsListReadyToComponent = (roomsList, selectedRoomId) => {
             default:
         }
         // For Inspected Only Hotel, Adding class for clean not-inspected case
-        room.main_room_class += ( room.hk_status === 'CLEAN' && !room.is_ready ) ? ' not-inspected' : '';
+        room.main_room_class += ( room.hk_status === 'CLEAN' && !room.is_inspected ) ? ' not-inspected' : '';
         // Add class when room is OOO/OOS
         if ( room.service_status === 'OUT_OF_ORDER' || room.service_status === 'OUT_OF_SERVICE') {
             room.main_room_class = 'room unavailable';
