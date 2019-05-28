@@ -310,7 +310,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
         if (!marketingItem.url) {
             event.preventDefault();
 			// Load the javascript file first
-            if (marketingItem.form_script_file) {
+            if (marketingItem.form_script_file && !window.MktoForms2) {
                 addMarketingContentScript(marketingItem.form_script_file, false);	
             }
 			
