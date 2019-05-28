@@ -12,7 +12,7 @@ angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPrope
             $scope.setScroller('property-results', {click: true});
             $scope.modalClosing = false;
             $scope.successCallbackGetVersion = function(response) {
-                var versionNumber = response.data.data.split("-")[0];
+                var versionNumber = response.data.data;
 
                 $scope.data.roverVersion = versionNumber;
             };
