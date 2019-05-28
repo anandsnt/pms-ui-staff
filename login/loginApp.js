@@ -35,7 +35,6 @@ angular.module('login').controller('loginRootCtrl', ['$scope', function($scope) 
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-<<<<<<< HEAD
 angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope', function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
 	 $scope.data = {};
 	 $scope.data.roverVersion = "";
@@ -109,75 +108,6 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 	            }
 		 	}
         };
-=======
-angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', '$timeout', 'marketingItems', '$rootScope',  function($scope, loginSrv, $window, $state, resetSrv, ngDialog, $timeout, marketingItems, $rootScope) {
-    $scope.data = {};
-   // CICO-65478 Marketing items that is shown in login screen
-    $scope.marketingItems = marketingItems;
-    $rootScope.isModalShowing = false;
-
-    if (localStorage.email) {
-       $scope.data.email = localStorage.email;
-       document.getElementById("password").focus();
-
-   } else if (!localStorage.email) {
-       document.getElementById("email").focus();
-   }
-    $scope.errorMessage = "";
-    $scope.successMessage = "";
-    $scope.errorMessage = resetSrv.getErrorMessage();
-
-    // :: setInAppFlag :: used to reset a localStorage flag (for Zest Station), since we use a different log-in page
-    // this helps us detect if zest station was initiated from our [stationlogin#/stationlogin] URL ( CICO-38189 )
-
-    var setInAppFlag = function() {
-        try {
-            localStorage.setItem('roverInApp', 'false');
-        } catch (err) {
-            console.log('could not set station flag [roverInApp] to [false]');
-        }
-    };
-    setInAppFlag();
-   /*
-    * successCallback of login action
-    * @param {object} status of login and data
-    */
-    $scope.successCallback = function(data) {
-
-       var navigateToRover = function() {
-       // Clear all session storage contents. We are starting a new session.
-         var i = sessionStorage.length;
-
-         while (i--) {
-           var key = sessionStorage.key(i);
-
-           sessionStorage.removeItem(key);
-       }
-
-         try {
-          localStorage.email = $scope.data.email;
-      } catch (e) {
-          console.log('ignoring a problem occured while setting item using localStorage');
-      }
-
-         if (data.token !== '') {
-           $state.go('resetpassword', {token: data.token, notifications: data.notifications});
-       }
-         else {
-           $scope.hasLoader = true;
-           if (data.is_sp_admin === true) {
-                  // we need to show the animation before redirecting to the url, so introducing a timeout there
-                  setTimeout(function() {
-                      $state.go('selectProperty');
-                  }, 300);
-              }
-           else {
-                  $scope.$emit("signingIn");
-                  // we need to show the animation before redirecting to the url, so introducing a timeout there
-                  setTimeout(function() {
-                      $window.location.href = data.redirect_url;
-                  }, 300);
->>>>>>> 3c283fc... CICO-65478 Fixed CC issues
 
         if (sntapp.loginUpdate != null) {
 	        /**
