@@ -3,20 +3,19 @@ const {connect} = ReactRedux;
 let convertRoomsListReadyToComponent = (roomsList, selectedRoomId) => {
     roomsList.map((room, index) => {
         room.room_class = (room.service_status === 'IN_SERVICE') ? "room-number " + room.hk_status : "room-number out";
-
         room.main_room_class = (room.id === selectedRoomId) ? 'room not-clickable highlighted' : 'room not-clickable';
-        switch(room.hk_status) {
+        switch (room.hk_status) {
             case 'CLEAN':
-                room.main_room_class + ' clean';
+                room.main_room_class += ' clean';
                 break;
             case 'DIRTY' :
-                room.main_room_class + ' dirty';
+                room.main_room_class += ' dirty';
                 break;
             case 'INSPECTED' :
-                room.main_room_class + ' inspected';
+                room.main_room_class += ' inspected';
                 break;
             case 'PICKUP' :
-                room.main_room_class + ' pickup';
+                room.main_room_class += ' pickup';
                 break;
             default:
         }
