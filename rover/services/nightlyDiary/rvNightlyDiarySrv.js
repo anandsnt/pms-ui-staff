@@ -140,7 +140,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var postData = {
                 'arrival_date': data.arrival_date,
                 'dep_date': data.dep_date,
-                'room_number': data.room_number
+                'room_number': data.room_number,
+                'authorize_credit_card': data.authorize_credit_card
             };
             var deferred = $q.defer ();
 

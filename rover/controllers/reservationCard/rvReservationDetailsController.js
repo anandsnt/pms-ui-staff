@@ -1052,7 +1052,8 @@ sntRover.controller('reservationDetailsController',
 			RVReservationCardSrv.checkinDateForDiary = $scope.reservationData.reservation_card.arrival_date.replace(/-/g, '/');
 			$state.go('rover.diary', {
 				reservation_id: $scope.reservationData.reservation_card.reservation_id,
-				checkin_date: $scope.reservationData.reservation_card.arrival_date
+				checkin_date: $scope.reservationData.reservation_card.arrival_date,
+				is_nightly_reservation: !$scope.reservationData.reservation_card.is_hourly_reservation
 			});
 		};
 

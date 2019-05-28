@@ -22,12 +22,12 @@
 			});
 
 			var stateParams = JSON.parse($stateParams.params);
-			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED');
-			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
-			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');
-			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS');
-			var SCAN_ALREADY_COMPLTED = $filter('translate')('GID_SCAN_ALREADY_DONE');
-			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED');
+			var SCANING_PENDING = $filter('translate')('GID_SCAN_NOT_STARTED') || 'Pending';
+			var SCAN_REJECTED = $filter('translate')('GID_STAFF_REVIEW_REJECTED') || 'Rejected';
+			var SCAN_ACCEPTED = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED') || 'Accepted';
+			var SCAN_WAITING_FOR_APPROVAL = $filter('translate')('GID_SCAN_SUCCESS') || 'Success';
+			var SCAN_ALREADY_COMPLTED = $filter('translate')('GID_SCAN_ALREADY_DONE') || 'approve/reject';
+			var FR_FAILED_STATUS = $filter('translate')('GID_FACIAL_RECOGNITION_FAILED') || 'FR Failed';
 
 			if (!sntIDCollectionSrv.isInDevEnv && $scope.zestStationData.hotelSettings.id_collection) {
 				sntIDCollectionSrv.setAcuantCredentialsForProduction($scope.zestStationData.hotelSettings.id_collection.acuant_credentials);
