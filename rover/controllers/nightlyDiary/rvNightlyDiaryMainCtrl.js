@@ -221,24 +221,26 @@ angular.module('sntRover')
                  * @param reservation - Current selected reservation
                  */
                 var selectReservation = (e, reservation, room) => {
-                    $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
-                    $scope.diaryData.hideMoveButton = reservation.no_room_move;
-                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT';
-                    $scope.diaryData.isEditReservationMode = true;
-                    $scope.currentSelectedReservation = reservation;
-                    $scope.currentSelectedRoom = room;
-                    $scope.diaryData.selectedRoomId = room.id;
-                    $scope.extendShortenReservationDetails = {
-                        'arrival_date': reservation.arrival_date,
-                        'dep_date': reservation.dept_date,
-                        'reservation_id': reservation.id,
-                        'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: room.id })).room_no
-                    };
+                    if (!$scope.diaryData.isEditReservationMode) {
+                        $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
+                        $scope.diaryData.hideMoveButton = reservation.no_room_move;
+                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT';
+                        $scope.diaryData.isEditReservationMode = true;
+                        $scope.currentSelectedReservation = reservation;
+                        $scope.currentSelectedRoom = room;
+                        $scope.diaryData.selectedRoomId = room.id;
+                        $scope.extendShortenReservationDetails = {
+                            'arrival_date': reservation.arrival_date,
+                            'dep_date': reservation.dept_date,
+                            'reservation_id': reservation.id,
+                            'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, { id: room.id })).room_no
+                        };
 
-                    showReservationSelected();
-                    $timeout(function () {
-                        $scope.$apply();
-                    }, 10);
+                        showReservationSelected();
+                        $timeout(function () {
+                            $scope.$apply();
+                        }, 10);
+                    }
                 };
 
                 var resetUnassignedList = function () {
