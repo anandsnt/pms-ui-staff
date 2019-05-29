@@ -246,6 +246,9 @@ angular.module("sntRover").service("RVSearchSrv", [
 
             rvBaseWebSrvV2.getJSON(url, params).then(
                 function(data) {
+                    for (var i = 0; i < data.results.length; i++) {
+                        data.results[i].is_row_visible = true;
+                    }
                     deferred.resolve(data);
                 },
                 function(errorMessage) {
