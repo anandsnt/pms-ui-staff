@@ -12,7 +12,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 	'rvAccountTransactionsSrv',
 	'$vault',
 	'$timeout',
-	function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvAccountsConfigurationSrv, rvGroupConfigurationSrv, accountData, $state, rvPermissionSrv, rvAccountTransactionsSrv, $vault, $timeout) {
+	function($scope, $rootScope, rvGroupSrv, $filter, 
+		$stateParams, rvAccountsConfigurationSrv, 
+		rvGroupConfigurationSrv, accountData, $state, 
+		rvPermissionSrv, rvAccountTransactionsSrv, $vault, $timeout) {
 
     BaseCtrl.call(this, $scope);
 
@@ -88,6 +91,14 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 						type: $vault.get('type'),
 						query: $vault.get('query'),
 						isBackFromStaycard: true
+					}
+				};
+			} else if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+				$rootScope.setPrevState = {
+					title: 'INVOICE SEARCH',
+					name: 'rover.financials.invoiceSearch',
+					param: {
+						isFromStayCard: true
 					}
 				};
 			}
@@ -369,6 +380,10 @@ sntRover.controller('rvAccountsConfigurationCtrl', [
 
 			// back navigation
 			setBackNavigation();
+
+			if ($scope.previousState.name === 'rover.financials.invoiceSearch') {
+				$scope.switchTabTo("TRANSACTIONS");
+			}
 		};
 
 		initGroupConfig();

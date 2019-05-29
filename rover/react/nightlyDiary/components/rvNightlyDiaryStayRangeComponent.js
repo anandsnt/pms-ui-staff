@@ -45,14 +45,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
         this.mouseLeavingEvent  = this.isTouchEnabled ? 'touchend'  : 'mouseup';
         let flagarea = this.flagarea;
 
-        if (!this.props.isPmsProductionEnvironment) {
-            this.arrivalFlag.addEventListener (this.mouseStartingEvent, e => this.arrivalFlagMouseDown (e));
-            this.departureFlag.addEventListener (this.mouseStartingEvent, e => this.departureFlagMouseDown (e));
-            flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
-            flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
-            flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
-        }
-
+        this.arrivalFlag.addEventListener (this.mouseStartingEvent, e => this.arrivalFlagMouseDown (e));
+        this.departureFlag.addEventListener (this.mouseStartingEvent, e => this.departureFlagMouseDown (e));
+        flagarea.addEventListener (this.mouseMovingEvent, e => this.mouseMove (e));
+        flagarea.addEventListener (this.mouseLeavingEvent, e => this.mouseLeave (e));
+        flagarea.addEventListener ('mouseleave', e => this.mouseLeave (e));
     },
     /*
      * Mouse down event handling
@@ -112,11 +109,11 @@ const NightlyDiaryStayRangeComponent = createClass ({
         e.stopPropagation ();
         if (state.isArrivalDragging) {
             state.isArrivalDragging = false;
-            this.calculateArrivalDate();
+            setTimeout(this.calculateArrivalDate, 500);
         }
         if (state.isDepartureDragging) {
             state.isDepartureDragging = false;
-            this.calculateDepartureDate();
+            setTimeout(this.calculateDepartureDate, 500);
         }
         flagarea.removeEventListener(this.mouseMovingEvent, () =>{});
         flagarea.removeEventListener(this.mouseLeavingEvent, () =>{});
@@ -206,6 +203,13 @@ const NightlyDiaryStayRangeComponent = createClass ({
                         .add(addDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 
+        if (differenceInDays !== 0 || (differenceInDays === 0 && differenceInPosition < 0)) {
+            props.showOrHideSaveChangesButton(true);
+        }
+        else {
+            props.showOrHideSaveChangesButton(false); 
+        }
+
         // If flag moved to set for 0 night stay
         if (state.departurePosition === state.oneNightDeparturePosition) {
 
@@ -250,8 +254,15 @@ const NightlyDiaryStayRangeComponent = createClass ({
                         .add(differenceInDays, 'days')
                         .format(state.dateFormat.toUpperCase());
 
+        if (differenceInDays !== 0) {
+            props.showOrHideSaveChangesButton(true, true);
+        }
+        else {
+            props.showOrHideSaveChangesButton(false, true); 
+        }
+
         props.extendShortenReservation(curentPosition, state.departurePosition);
-        props.checkReservationAvailability(state.arrivalDate, state.departureDate);
+        props.checkReservationAvailability(currentDay, state.departureDate);
 
         this.setState({
             arrivalStyle: {

@@ -575,7 +575,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.shouldShowTimeSelector = function() {
             var isInService = $scope.updateServiceData.room_service_status_id === 1;
 
-            return $rootScope.isHourlyRateOn && !isInService;
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !isInService;
 		};
 
 		$scope.closeDialog = function() {

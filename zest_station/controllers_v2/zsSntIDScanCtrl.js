@@ -387,6 +387,8 @@
 					successCallback({
 						id: 123
 					});
+				} else if (!$scope.screenData.adminPin) {
+					return;
 				} else {
 					$scope.callAPI(zsGeneralSrv.verifyStaffByPin, options);
 				}
@@ -534,11 +536,9 @@
 				$scope.screenData.scanMode = 'GUEST_LIST';
 				$scope.setScroller('passport-validate');
 				$scope.setScroller('confirm-images');
-				$scope.setConfigurations({
-					useiOSAppCamera: $scope.zestStationData.iOSCameraEnabled,
-					useExtCamera: $scope.zestStationData.connectedCameras.length > 0,
-					useExtCamForFR: $scope.zestStationData.connectedCameras.length > 0
-				});
+				var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
+            
+           		$scope.setConfigurations(idCaptureConfig);
 			}());
 		}
 	]);

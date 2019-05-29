@@ -10,19 +10,44 @@
                       required="yes"
                       is-disabled="state.mode==='EDIT'"
                       label-in-drop-down="Select Mapping Type"
-                          list="state.mappingTypes"
+                      list="state.mappingTypes"
                       label="{{'MAPPING_TYPE'| translate}}"
                       div-class="full-width">
     </ad-dropdown-name>
 </fieldset>
 <fieldset class="holder left">
     <ad-dropdown-name savemodel="mapping.value"
-                      ng-show="mapping.typeof"
+                      ng-show="mapping.typeof == 'charge_code'"
                       valueproperty="charge_code"
                       required="yes"
+                      property="text"
                       label-properties="['charge_code', 'description']"
                       label-in-drop-down="Select Value"
                       list="state.chargeCodes"
+                      label="{{'SNT_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
+    <ad-dropdown-name savemodel="mapping.value"
+                      ng-show="mapping.typeof == 'payment_charge_code'"
+                      valueproperty="charge_code"
+                      required="yes"
+                      property="text"
+                      label-properties="['charge_code', 'description']"
+                      label-in-drop-down="Select Value"
+                      list="state.paymentChargeCodes"
+                      label="{{'SNT_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
+    <ad-dropdown-name savemodel="mapping.value"
+                      ng-show="mapping.typeof == 'posting_account'"
+                      valueproperty="posting_accounts_number"
+                      required="yes"
+                      property="text"
+                      label-properties="['posting_accounts_number', 'posting_accounts_name']"
+                      label-in-drop-down="Select Value"
+                      list="state.postingAccounts"
                       label="{{'SNT_VALUE'| translate}}"
                       skip-number-conversion="true"
                       div-class="full-width">

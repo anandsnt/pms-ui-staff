@@ -22,6 +22,15 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>Switzerland Zurich Police Export</td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_swiss_police_report_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_swiss_police_report_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr> 
         </tbody>
     </table>
 </div>

@@ -68,7 +68,12 @@ module.exports = {
             'merrion-row': [themeCSSRoot + 'merrion-row.less'],
             'freehand-chicago': [themeCSSRoot + 'freehand-chicago.less'],
             'why': [themeCSSRoot + 'why.less'],
-            'village': [themeCSSRoot + 'village.less']
+            'village': [themeCSSRoot + 'village.less'],
+            'gallivant': [themeCSSRoot + 'gallivant.less'],
+            'hotel-e': [themeCSSRoot + 'hotel-e.less'],
+            'kelley': [themeCSSRoot + 'kelley.less'],
+            'stare-miastro': [themeCSSRoot + 'stare-miastro.less'],
+            'upstairs-by-mamas': [themeCSSRoot + 'upstairs-by-mamas.less']
         };
     }
 };
