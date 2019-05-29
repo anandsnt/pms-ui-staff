@@ -1,15 +1,38 @@
 <div ng-show="!diaryData.isEditReservationMode" class="diary-nightly-search-form" ng-controller="rvNightlyDiaryTopFilterBarController" ng-class="{'hidden': diaryData.isEditReservationMode}">
 
-    <!-- Refresh -->
-    <div class="entry reset" ng-click="clickedResetButton()">
-        <button type="button" class="button white with-icon only-icon">
-            <span class="icons icon-reset"></span>
-        </button>
+    <!-- Toggle Hourly / Nightly -->
+    <div class="entry switch switch-view" ng-hide="hideToggleMenu()">
+        <div class="switch-button" ng-class="{'on': toggleHourlyNightly}">
+            <input ng-click="navigateToHourlyDiary()" id="diary-hours-days" type="checkbox">
+            <label class="data-off">
+                <span class="value">D</span>
+                <span class="switch-icon">N</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">D</span>
+                <span class="value">N</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- 7 or 21 Days -->
+    <div class="entry switch switch-view">
+        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
+            <input value="" type="checkbox" checked>
+            <label class="data-off">
+                <span class="value">7</span>
+                <span class="switch-icon">21</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">7</span>
+                <span class="value">21</span>
+            </label>
+        </div>
     </div>
 
     <!-- Set start date -->
     <div class="entry date">
-        <button type="button" class="button white with-icon only-icon" ng-click="clickedDateLeftShift()">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': disableLeftDateShift() }" ng-click="clickedDateLeftShift()">
             <span class="icons icon-double-arrow black"></span>
         </button>
         <div class="entry-data" ng-click="clickedDatePicker()">
@@ -21,32 +44,39 @@
         </button>
     </div>
 
-    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
-
-    <!-- 7 or 21 Days -->
-    <div class="entry switch">
-        <div class="switch-button" ng-class="{'on' : diaryData.numberOfDays === 7 }" ng-click="toggleSwitchMode()">
-            <input value="" type="checkbox" checked>
+    <!-- Reservations or Available Slots View -->
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive, 'overlay': disableAvlToggle() }"> 
+        <div class="switch-button" ng-class="{'on' : !diaryData.isBookRoomViewActive }"> <!-- Remove class 'on' when L48 is not checked -->
+            <input id="diary-availability" value="" type="checkbox" checked /> <!-- Showing existing reservations when checked. Showing Available slots when not checked -->
             <label class="data-off">
-                <span class="value" translate>7_DAYS</span>
-                <span class="switch-icon" translate>21_DAYS</span>
+                <span class="value" data-long="Reserved">Res.</span>
+                <span class="switch-icon" data-long="Available">Avl.</span>
             </label>
             <label class="data-on">
-                <span class="switch-icon" translate>7_DAYS</span>
-                <span class="value" translate>21_DAYS</span>
+                <span class="switch-icon" data-long="Reserved">Res.</span>
+                <span class="value" data-long="Available">Avl.</span>
             </label>
+        </div>
+        <div class="notice" ng-show="diaryData.isBookRoomViewActive">
+            Select Room and Arrival Date
         </div>
     </div>
 
+    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
+
     <!-- Show / Hide Filters -->
-    <div class="entry filters">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active': diaryData.showUnassignedReservations}" >
-            <span class="count">{{diaryData.roomFilterCount}}</span>
-            <span class="icons icon-filter-room"></span>
+    <div class="entry filters" ng-class="{'show-one': diaryData.isBookRoomViewActive }">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.isBookRoomViewActive}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+            <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
+            <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active': diaryData.showFilterPanel}" ng-click="togglePanelView()">
-            <span class="count">{{diaryData.selectedRoomCount}}</span>
-            <span class="icons icon-filter" ng-class="{'active': diaryData.showFilterPanel}"></span>
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER' }" ng-click="toggleFilter('RESERVATION_FILTER')">
+            <span class="count">{{diaryData.selectedRoomCount + diaryData.selectedFloorCount}}</span>
+            <span class="icons icon-filter" ng-class="{'active': diaryData.rightFilter === 'RESERVATION_FILTER' }"></span>
+        </button>
+        <!-- Refresh -->
+        <button type="button" class="button white with-icon only-icon" ng-click="clickedResetButton()">
+            <span class="icons icon-reset"></span>
         </button>
     </div>
 

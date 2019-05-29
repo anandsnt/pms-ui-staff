@@ -216,10 +216,11 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 		loadURLCounter++;
 		if (loadURLCounter >= 5) {
 			ngDialog.open({
-				template: '/assets/partials/loadURL.html',
+				template: '/assets/partials/debugingOptions.html',
 				scope: $scope
 			});
-			$scope.data.isLoadingUrl = true;
+			$scope.data.showDebugOptions = true;
+			$scope.data.isLoadingUrl = false;
 		}
 		$timeout(function() {
 			loadURLCounter = 0;
@@ -228,6 +229,25 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
+	};
+
+	var loadCordovaWithVersion = function(version) {
+		var script_node = document.createElement('script');
+
+		script_node.setAttribute('src', '/assets/shared/cordova/' + version + '/cordova.js');
+		script_node.setAttribute('type', 'application/javascript');
+		document.body.appendChild(script_node);
+	};
+
+	// for now load cordova 4_5_5
+	loadCordovaWithVersion('4_5_5');
+
+	$scope.loadDomainURL = function() {
+		$window.location = $scope.data.domainURL;
+	};
+
+	$scope.loadTestPage = function() {
+		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'loadTestClient', [window.location.href]);
 	};
 
 	$scope.onSystemStatusClick = function() {

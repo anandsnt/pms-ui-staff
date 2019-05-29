@@ -122,12 +122,14 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
-
-        this.fetchCurrentTime = function() {
-            var deferred = $q.defer();
-            var url = '/api/hotel_current_time';
+        this.fetchCurrentTime = function(start_date) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_current_time';
 
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                if (start_date && typeof start_date === 'string') {
+                    data.hotel_time.date = start_date;
+                }
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -252,6 +254,18 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 deferred.resolve(response.results);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.checkDiaryAvailability = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/nightly_diary/availability';
+
+            RVBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);
             });

@@ -426,6 +426,12 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinfindReservationFromIdCtrl',
             templateUrl: '/assets/partials_v2/checkin/zsFindReservationUsingId.html'
         });
+
+        $stateProvider.state('zest_station.walkInReservation', {
+            url: '/walkInReservation',
+            controller: 'zsWalkInCtrl',
+            templateUrl: '/assets/partials_v2/walkin/zsWakinReservationMain.html'
+        });
     
     }
 ]);

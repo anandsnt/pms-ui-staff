@@ -14,7 +14,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
     'ngDialog',
     'hotelSettings',
     'taxExempts',
-    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings, taxExempts) {
+    'countries',
+    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings, taxExempts, countries) {
 
         BaseCtrl.call(this, $scope);
 
@@ -71,9 +72,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * @return boolean [true if all the mandatory values are present]
          */
         var ifMandatoryValuesEntered = function() {
-            var summary = $scope.groupConfigData.summary;
+            var summary = $scope.groupConfigData.summary,
+                isValid = !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
 
-            return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+            return isValid;
         };
 
         /**
@@ -1570,6 +1572,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             // updating the left side menu
             setActiveLeftSideMenu();
+
+            $scope.countries = countries;
             
         };
 

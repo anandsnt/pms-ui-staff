@@ -539,64 +539,63 @@ admin.controller('ADDailyWorkAssignmentCtrl', [
 			});
 		};
 
-		$scope.openTaskListForm = function(typeIndex, isSystemDefined) {
+		$scope.openTaskListForm = function(typeIndex) {
 			var item = this.item;
 
 			setScrollPos();
 
 			$timeout(function() {
-				openTaskListForm(item, typeIndex, isSystemDefined);
+				openTaskListForm(item, typeIndex);
 			}, 100);
 		};
 
-		function openTaskListForm (item, typeIndex, isSystemDefined) {
-			if (!isSystemDefined)
-			{
-				if (typeIndex === 'new') {
-					$scope.taskListForm = 'add';
-					$scope.taskListClickedElement = 'new';
-					resetEachTaskList();
-					resetShowFlags();
-					$timeout(function() {
-						$location.hash('new-form-holder-task-list');
-						$anchorScroll();
-					});
-				} else {
-					$scope.taskListForm = 'edit';
-					var frequencyType = checkForFrequencyType(item.frequency);
+		function openTaskListForm (item, typeIndex) {			
+			if (typeIndex === 'new') {
+				$scope.taskListForm = 'add';
+				$scope.taskListClickedElement = 'new';
+				resetEachTaskList();
+				resetShowFlags();
+				$timeout(function() {
+					$location.hash('new-form-holder-task-list');
+					$anchorScroll();
+				});
+			} else {
+				$scope.taskListForm = 'edit';
+				var frequencyType = checkForFrequencyType(item.frequency);
 
-					$scope.taskListClickedElement = typeIndex;
-					var time = item.completion_time;
+				$scope.taskListClickedElement = typeIndex;
+				var time = item.completion_time;
 
-					$scope.eachTaskList = {
-						name: item.name,
-						work_type_id: item.work_type_id,
-						room_type_ids: applyIds( $scope.roomTypesList, item.room_type_ids ),
-						reservation_statuses_ids: applyIds( $scope.resHkStatusList, item.reservation_statuses_ids ),
-						is_occupied: item.is_occupied,
-						is_vacant: item.is_vacant,
-						hours: !!time ? time.split(':')[0] : '',
-						mins: !!time ? time.split(':')[1] : '',
-						task_completion_hk_status_id: item.task_completion_hk_status_id,
-						id: item.id,
-						rooms_task_completion: initateRoomTaskTimes(time, item.room_types_completion_time),
-						isWeekDay: frequencyType.isWeekDay,
-						isWeekEnd: frequencyType.isWeekEnd,
-						isCustom: frequencyType.isCustom,
-						frequency: item.frequency,
-						is_active: item.is_active,
-						is_dirty: item.is_dirty,
-						is_clean: item.is_clean,
-						is_pickup: item.is_pickup
-					};
-					mapRoomShowflag($scope.eachTaskList);
-					if (frequencyType.isCustom === true) {
-					//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
-					//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
-						$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
-					}
+				$scope.eachTaskList = {
+					name: item.name,
+					work_type_id: item.work_type_id,
+					room_type_ids: applyIds( $scope.roomTypesList, item.room_type_ids ),
+					reservation_statuses_ids: applyIds( $scope.resHkStatusList, item.reservation_statuses_ids ),
+					is_occupied: item.is_occupied,
+					is_vacant: item.is_vacant,
+					hours: !!time ? time.split(':')[0] : '',
+					mins: !!time ? time.split(':')[1] : '',
+					task_completion_hk_status_id: item.task_completion_hk_status_id,
+					id: item.id,
+					rooms_task_completion: initateRoomTaskTimes(time, item.room_types_completion_time),
+					isWeekDay: frequencyType.isWeekDay,
+					isWeekEnd: frequencyType.isWeekEnd,
+					isCustom: frequencyType.isCustom,
+					frequency: item.frequency,
+					is_active: item.is_active,
+					is_dirty: item.is_dirty,
+					is_clean: item.is_clean,
+					is_pickup: item.is_pickup,
+					isSystemDefined: item.is_system
+				};
+				mapRoomShowflag($scope.eachTaskList);
+				if (frequencyType.isCustom === true) {
+				//	$scope.eachTaskList.isByWeekDay = frequencyType.isByWeekDay;
+				//	$scope.eachTaskList.isByStayDay = frequencyType.isByStayDay;
+					$scope.eachTaskList.customBy = (frequencyType.isByWeekDay === true) ? "weekday" : "stayday";
 				}
 			}
+			
 		}
 
 		$scope.closeTaskListForm = function() {

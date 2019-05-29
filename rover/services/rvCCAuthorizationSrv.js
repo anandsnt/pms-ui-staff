@@ -97,6 +97,18 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
             return deferred.promise;
         };
 
+        service.manualVoiceAuth = function (param) {
+            var deferred = $q.defer();
+            var url = '/api/cc/voice_auth';
+
+            rvBaseWebSrvV2.postJSON(url, param).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
         /**
          * Performs the release of already authorized ones

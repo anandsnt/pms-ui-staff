@@ -130,7 +130,7 @@ sntRover.controller('RVDiaryConfirmationCtrl', ['$scope',
             var fetchSuccess = function(isAddonsConfigured) {
                 $scope.saveToVault('temporaryReservationDataFromDiaryScreen', $scope.vaultSelections);
                 // CICO-9429
-                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn && isAddonsConfigured) {
+                if ( !$rootScope.isHourlyRateOn && $rootScope.isAddonOn && isAddonsConfigured && $rootScope.hotelDiaryConfig.mode !== 'FULL' ) {
                     var arrival_date = $scope.vaultSelections.arrival_date;
                     var departure_date = $scope.vaultSelections.departure_date;
 

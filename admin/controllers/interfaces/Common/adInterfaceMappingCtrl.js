@@ -52,10 +52,6 @@ admin.controller('adInterfaceMappingCtrl', [
             return mappingPartials[$scope.interface];
         };
 
-        $scope.fetchMappingPartial = function() {
-            return mappingPartials[$scope.interface];
-        };
-
         $scope.onClickAdd = function() {
             if (!$scope.state.meta) {
                 $scope.callAPI(adIFCInterfaceMappingSrv.fetchMeta, {
