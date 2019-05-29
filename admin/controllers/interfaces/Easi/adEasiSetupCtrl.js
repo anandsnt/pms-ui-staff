@@ -55,9 +55,9 @@ angular.module('admin').controller('adEasiCtrl',
                 $scope.availableTaxChargeCodesForTaxExemptOne = $scope.availableTaxChargeCodesForTaxExemptTwo = $scope.availableTaxChargeCodesForTaxExemptThree = taxChargeCodes.data.charge_codes;
 
                 // ensure tax charge code id's are integers
-                $scope.config.tax1_charge_code_id = parseInt(config.tax1_charge_code_id);
-                $scope.config.tax2_charge_code_id = parseInt(config.tax2_charge_code_id);
-                $scope.config.tax3_charge_code_id = parseInt(config.tax3_charge_code_id);
+                $scope.config.tax1_charge_code_id = parseInt(config.tax1_charge_code_id, 10);
+                $scope.config.tax2_charge_code_id = parseInt(config.tax2_charge_code_id, 10);
+                $scope.config.tax3_charge_code_id = parseInt(config.tax3_charge_code_id, 10);
             })();
             /*
              * Changed tax exempt
