@@ -3,8 +3,16 @@
 /* Variables            ==================================*/
 @import "common/01-B_variables.less";
 
+@images:            ~"../assets/cssimg";
+@appImages:         ~"../assets/cssimg/app";
+
+@textureImage:      url("@{images}/texture.png");
+@darkTexture:       url("@{images}/texture-dark.png");
+
 @icons:             url("@{appImages}/app-icons.png");
 @icons2x:           url("@{appImages}/app-icons@2x.png");
+
+@type:              ~"../assets/type";
 
 @base:              8px;
 @baseFontSize:      (@base * 2);
@@ -343,13 +351,13 @@ body {
         overflow: hidden;
     }
 
-    @media only screen and (min-width: 1024px) {
+    /*@media only screen and (min-width: 1024px) {
         overflow: hidden;
-    }
+    }*/
 }
 
 #container {
-    #flexbox > .parent(column wrap, space-between, '', '');
+    #flexbox > .parent(column nowrap, space-between, center, '');
     min-height: 100vh;
 
     @media only screen and (min-width: 1024px) {
@@ -424,10 +432,13 @@ a {
 
 /* Login                ==================================*/
 #login {
-    flex: 1 1 auto;
-    #flexbox > .parent(column wrap, '', '', '');
+    #flexbox > .parent(column nowrap, '', '', '');
     padding: (@base * 5);
-    width: 100%;
+
+    &.login--just-form {
+        min-height: 100vh;
+        height: auto;
+    }
 
     @media only screen and (max-width: 320px) {
         padding: (@base * 3);
@@ -437,20 +448,15 @@ a {
         min-height: 100%;
     }
 
-    @media only screen and (min-width: 640px) {
-       #flexbox > .parent('', '', '', center);
-    }
-
     @media only screen and (min-width: 1024px) {
         order: 2;
         padding: (@base * 5) (@base * 12);
         overflow-y: auto;
         .size(100vh, 60%);
-        #flexbox > .parent(column nowrap, '', '', '');
 
         &.login--just-form {
-            padding: (@base * 5) 0;
-            #flexbox > .parent('', '', center, '');
+            padding: (@base * 5);
+            width: 480px;
         }
     }
 }
@@ -470,7 +476,7 @@ a {
     }
 
     @media only screen and (min-width: 640px) {
-        max-width: 400px;
+        width: 400px;
     }
 } 
 
@@ -484,16 +490,7 @@ a {
     }
 
     @media only screen and (min-width: 640px) {
-        max-width: 400px;
-    }
-}
-
-.login--just-form {
-    .login__content,
-    .login__footer {
-        @media only screen and (min-width: 1024px) {
-            width: 100%;
-        }
+        width: 400px;
     }
 }
 
