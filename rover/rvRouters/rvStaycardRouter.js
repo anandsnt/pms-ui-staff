@@ -240,7 +240,9 @@ angular.module('stayCardModule', [])
                 isKeySystemAvailable: null,
                 isFromTACommission: null,
                 isFromGuestStatistics: null,
-                isFromCardStatistics: null
+                isFromCardStatistics: null,
+                isBulkCheckoutSelected: false,
+                isAllowOpenBalanceCheckoutSelected: false
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {
