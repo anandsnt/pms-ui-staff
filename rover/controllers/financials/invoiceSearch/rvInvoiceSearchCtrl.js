@@ -278,10 +278,10 @@ sntRover.controller('RVInvoiceSearchController',
 							successData.invoiceLabel = successData.translation.invoice;
 						} 
 						else if (successData.is_void_bill) {
-							if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) {
+							if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10))) {
 								successData.invoiceLabel = successData.translation.void_invoice;
 							} 
-							else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) {
+							else if (parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices, 10)) {
 								copyCount = getCopyCount(successData);
 								successData.invoiceLabel = successData.translation.copy_of_void_invoice.replace("#count", copyCount);
 							}
@@ -301,7 +301,7 @@ sntRover.controller('RVInvoiceSearchController',
 							var copyCount = "";
 
 							if (successData.is_copy_counter) {
-								copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices);					
+								copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices, 10);					
 							}
 							successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 						}
