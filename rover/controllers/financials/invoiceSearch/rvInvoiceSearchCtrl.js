@@ -261,7 +261,7 @@ sntRover.controller('RVInvoiceSearchController',
 						var copyCount = "";
 
 						if (successData.is_copy_counter) {
-							copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+							copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices, 10);					
 						}
 						return copyCount;
 					},
