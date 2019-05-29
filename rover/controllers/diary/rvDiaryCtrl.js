@@ -738,9 +738,10 @@ angular.module('sntRover')
 	    		props = $scope.gridProps,
 	    		edit = props.edit,
 	    		selectedTypeCount;
-            $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed' || row_item_data.reservation_status === 'inhouse';
+            $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed'
+                                            || row_item_data.reservation_status === 'inhouse'
+                                            || row_item_data.reservation_status === 'check-out';
             $scope.showSaveChangesAfterEditing = false;
-			
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
