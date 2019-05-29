@@ -223,7 +223,9 @@ angular.module('sntRover')
                 var selectReservation = (e, reservation, room) => {
                     $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
                     $scope.diaryData.hideMoveButton = reservation.no_room_move;
-                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT';
+                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN'
+                                                            || reservation.status === 'CHECKEDOUT'
+                                                            || reservation.status === 'CHECKING_OUT';
                     $scope.diaryData.isEditReservationMode = true;
                     $scope.currentSelectedReservation = reservation;
                     $scope.currentSelectedRoom = room;
