@@ -242,25 +242,6 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			}
 		};
 
-		$scope.deleteItem = function(language) {
-			var options = {
-				params: language,
-				successCallBack: fetchLanguageList
-			};
-
-			$scope.callAPI(adZestStationLanguageConfigSrv.deleteLanguage, options);
-		};
-
-		$scope.addNewLanguage = function() {
-			if ($scope.isAddMode) {
-				return;
-			}
-			$scope.isAddMode = true; 
-			$scope.languageList.unshift({ 'name': "", 'position': 1, 'icon': "" });
-			$scope.selectedLanguage = $scope.languageList[0];
-			$scope.detailIndex = 0;
-		};
-
 		$scope.closePrompt = function() {
 			ngDialog.close();
 		};

@@ -651,7 +651,6 @@ sntRover.controller('RVPostChargeControllerV2',
 				}
 				return IsShowItemSummaryList;
 			};
-
 		}
 	]
 );

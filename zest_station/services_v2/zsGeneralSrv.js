@@ -175,9 +175,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var langShortCode, url, promises = [], results = {};
 
             languages.map(function(language) {
-                langShortCode = language.name;
+                langShortCode = language.code;
 
-                that.langName[langShortCode] = language.name;
+                that.langName[langShortCode] = language.code;
 
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
@@ -749,6 +749,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/zest_station/reservations/' + params.id + '/detach_accompanying_guest';
 
             return zsBaseWebSrv.postJSON(url, params);
+        };
+
+        this.getRoomTypes = function(params) {
+            var url = '/api/room_types.json';
+            
+            return zsBaseWebSrv.getJSON(url, params);
         };
 
         this.getAvailableRatesForTheDay = function(params) {
