@@ -2,17 +2,9 @@
 
 /* Variables            ==================================*/
 @import "common/01-B_variables.less";
-    
-@images:            ~"/assets/cssimg";
-@appImages:         ~"/assets/cssimg/app";
-
-@textureImage:      url("@{images}/texture.png");
-@darkTexture:       url("@{images}/texture-dark.png");
 
 @icons:             url("@{appImages}/app-icons.png");
 @icons2x:           url("@{appImages}/app-icons@2x.png");
-
-@type:              ~"../assets/type";
 
 @base:              8px;
 @baseFontSize:      (@base * 2);
@@ -317,14 +309,6 @@ p {
     }
 }
 
-&.error { 
-    color: @red;
-}
-
-&.success {
-    color: @green;
-}
-
 /* Keyframes            ==================================*/
 @keyframes rotation {
     0% { transform: rotate(0deg); }
@@ -353,9 +337,7 @@ body {
     line-height: @baseLineHeight;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    background-color: @logoPrimary;
-    background-image: @darkTexture, linear-gradient(to bottom, @logoGradientStart 0%, @logoGradientEnd 100%);
-    background-size: 40px, 100%, 100%;
+    .background();
 
     &.showing-modal {
         overflow: hidden;
@@ -371,7 +353,7 @@ body {
     min-height: 100vh;
 
     @media only screen and (min-width: 1024px) {
-        #flexbox > .parent(row wrap, '', '', '');
+        #flexbox > .parent(row wrap, center, '', '');
     }
 }
 
@@ -446,7 +428,6 @@ a {
     #flexbox > .parent(column wrap, '', '', '');
     padding: (@base * 5);
     width: 100%;
-    .background();
 
     @media only screen and (max-width: 320px) {
         padding: (@base * 3);
@@ -456,21 +437,20 @@ a {
         min-height: 100%;
     }
 
-    @media only screen and (min-width: 640px) and (max-width: 1023px) {
-       padding: (@base * 5) 25vw;
+    @media only screen and (min-width: 640px) {
+       #flexbox > .parent('', '', '', center);
     }
 
     @media only screen and (min-width: 1024px) {
         order: 2;
-        #flexbox > .parent(column nowrap, '', '', center);
         padding: (@base * 5) (@base * 12);
         overflow-y: auto;
         .size(100vh, 60%);
+        #flexbox > .parent(column nowrap, '', '', '');
 
         &.login--just-form {
-            width: 400px;
             padding: (@base * 5) 0;
-            #flexbox > .parent(column wrap, '', '', center);
+            #flexbox > .parent('', '', center, '');
         }
     }
 }
@@ -489,11 +469,7 @@ a {
         margin-bottom: (@base * 4);
     }
 
-    @media only screen and (min-width: 640px) and (max-width: 1023px) {
-        max-width: 50vw;
-    }
-
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 640px) {
         max-width: 400px;
     }
 } 
@@ -507,11 +483,7 @@ a {
         line-height: (@base * 4);
     }
 
-    @media only screen and (min-width: 640px) and (max-width: 1023px) {
-        max-width: 50vw;
-    }
-
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 640px) {
         max-width: 400px;
     }
 }
@@ -706,7 +678,9 @@ a {
 /* Marketing            ==================================*/
 #marketing {
     width: 100%;
-    background: transparent;
+    background-color: @logoPrimary;
+    background-image: @darkTexture, linear-gradient(to bottom, @logoGradientStart 0%, @logoGradientEnd 100%);
+    background-size: 40px, 100%, 100%;
 
     &::-webkit-scrollbar {
         width: @base;
