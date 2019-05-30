@@ -95,6 +95,7 @@ angular.module('sntRover')
                         selectedRoomTypes: [],
                         selectedFloors: [],
                         isFromStayCard: false,
+                        hideUnassignRoomButton: true,
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
@@ -223,7 +224,7 @@ angular.module('sntRover')
                     if (!$scope.diaryData.isEditReservationMode) {
                         $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
                         $scope.diaryData.hideMoveButton = reservation.no_room_move;
-                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';;
+                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = reservation;
                         $scope.currentSelectedRoom = room;
@@ -842,11 +843,13 @@ angular.module('sntRover')
                 };
 
                 var mapCachedDataFromSrv = function () {
-                    var params = RVNightlyDiarySrv.getCache();
+                    var params = RVNightlyDiarySrv.getCache(),
+                        reservation = params.currentSelectedReservation;
 
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
+                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                     if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.filterList = params.filterList;
