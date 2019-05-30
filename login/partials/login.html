@@ -3,24 +3,14 @@
 	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
 	<img src="/assets/images/logo-snt.png" alt="" class="login__logo" />
 
-	<span class="notice error" ng-show="errorMessage!=''" >
-		<ul>
-			<li ng-repeat="message in errorMessage">
-				{{message}}
-			</li>
-		</ul>
-	</span>
-
-	<span class="notice success" ng-show="successMessage!=''" >
-		<ul>
-			<li>
-				{{successMessage}}
-			</li>	
-		</ul>
-	</span>
-
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="login__content" id="login-form" method="post" name="login-form" novalidate>
 		<h1>Welcome to Rover.</h1>
+		<div class="notice error" ng-show="errorMessage!=''">
+			{{errorMessage[0]}}
+		</div>
+		<div class="notice success" ng-show="successMessage!=''" >
+			Successfully sent temporary password to {{data.email}}
+		</div>
 		<input name="utf8" type="hidden" value="" />
 		<input name="authenticity_token" type="hidden" value="" />
 
@@ -42,10 +32,8 @@
         </div>
 	</form>
 	<div class="login__footer">
-		<p>
-			For questions please contact your hotel administrator or visit the <a href="#" ng-click="onClickSupportLink()">StayNTouch Support Portal</a> for more information.
-		</p>
-		<p>For system performance issues see <a ng-click="onSystemStatusClick()" href="#">StayNTouch System Status</a></p>
+		<p>For questions please contact your hotel administrator or visit the <a href="https://stayntouch.freshdesk.com/support/home" target="_blank">StayNTouch Support Portal</a> for more information.</p>
+        <p>For system performance issues see <a href="https://status.stayntouch.com/" target="_blank">StayNTouch System Status</a> page.</p>
 		<p class="muted">Rover Version {{data.roverVersion}}</p>
 	</div>
 </div>
