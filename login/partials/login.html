@@ -1,6 +1,5 @@
-
+<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
 <div id="login" ng-hide="data.showDebugOptions" role="content"> 
-	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
 	<img src="/assets/images/logo-snt.png" alt="" class="login__logo" />
 
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="login__content" id="login-form" method="post" name="login-form" novalidate>
@@ -18,17 +17,17 @@
 			<div class="entry__label">
 				<label for="email">E-mail</label>
 			</div>			
-			<input id="email" name="email" ng-model="data.email" placeholder="Enter your e-mail address" type="email" value="" />
+			<input id="email" name="email" ng-model="data.email" placeholder="Enter your e-mail address" type="email" value="" tabindex="1"/>
 		</div>
 		<div class="entry">
 			<div class="entry__label">
 				<label for="password">Password </label>
-				<button id="reset-password" ng-click="forgotPassword()" type="button">RESET</button>
+				<button id="reset-password" ng-click="forgotPassword()" type="button" tabindex="4">RESET</button>
 			</div>
-			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" />
+			<input autocomplete="off" id="password" ng-model="data.password" name="password" placeholder="Enter your password" type="password" value="{{data.password}}" tabindex="2" />
 		</div>
 		<div class="action">
-            <button type="submit" class="button green">Sign In To Rover</button>            
+            <button type="submit" class="button green" tabindex="3">Sign In To Rover</button>            
         </div>
 	</form>
 	<div class="login__footer">
