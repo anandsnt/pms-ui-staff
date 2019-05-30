@@ -521,15 +521,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.vismaSetup', {
-        templateUrl: '/assets/partials/interfaces/Visma/adVismaSetup.html',
-        controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'visma';
-        }],
+        templateUrl: '/assets/partials/interfaces/visma/adVisma.html',
+        controller: 'adVismaCtrl',
+        url: '/visma/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('visma');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('visma');
             }]
         }
     });
@@ -803,6 +800,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchCurrencyList();
             }]
+        }
+    });
+
+    $stateProvider.state('admin.datevSetup', {
+        templateUrl: '/assets/partials/interfaces/datev/adDatev.html',
+        controller: 'adDatevCtrl',
+        url: '/datev',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('datev');
+                }]
         }
     });
 
