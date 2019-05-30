@@ -249,7 +249,7 @@
 					<ul class = 'charge-items' ng-if = "isStandAlone && feesData.is_group_by_ref" ng-class = "{'hidden': !feesData.isExpanded}">
 						<li ng-repeat = "item in feesData.light_speed_data">
 							<strong>{{item.description}}</strong>
-							<span class = "cost">{{ item.amount | number:precisonTwo }}</span>
+							<span class = "cost" ng-class="{'fee': !item.is_payment, 'credit': item.is_payment }">{{ item.amount | number:precisonTwo }}</span>
 						</li>
 					</ul>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
@@ -271,15 +271,15 @@
 								{{'SUPPRESSED_RATES_TEXT' | translate}}
 							</span>
                             <span ng-show="description.fees_amount != '' && description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
-								<span class="currency">{{currencySymbol}}</span>{{description.fees_amount | number: precisonTwo}}
+								<span class="currency">{{currencySymbol}}</span>++{{description.fees_amount | number: precisonTwo}}
 							</span>
 							<br />
 						</span>
 					</strong>
 				</td>
 				<td>
-					<strong ng-show="feesData.credits!='' && isBalanceShown(feesData.is_rate_suppressed)">
-						<span class="currency">{{currencySymbol}}</span>{{feesData.credits}}
+					<strong >
+						<span class="currency">{{currencySymbol}}</span>##{{feesData.credits}}
 					</strong>
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}
