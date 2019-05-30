@@ -92,7 +92,6 @@ angular.module('sntRover')
                         hideMoveButton: false,
                         showUnassignedPanel: false,
                         showUnassignedReservations: false,
-                        innerWidth: screen.width,
                         selectedRoomTypes: [],
                         selectedFloors: [],
                         isFromStayCard: false,

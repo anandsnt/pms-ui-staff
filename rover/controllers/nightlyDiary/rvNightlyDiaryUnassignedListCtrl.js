@@ -179,4 +179,9 @@ angular.module('sntRover')
             }
         };
 
+        // Show/Hide unassigned list based on screen width and filter type
+        $scope.isShowUnassignedList = function() {
+            return (screen.width >= 1600 || $scope.diaryData.rightFilter == 'UNASSIGNED_RESERVATION') ? 'visible' : '';
+        };
+
 }]);

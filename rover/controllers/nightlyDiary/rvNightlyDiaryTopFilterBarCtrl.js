@@ -211,7 +211,7 @@ angular.module('sntRover')
 
             // If iPad ( width < 1280 ) , we will hide side bars if we click on current active button.
             // For other resoltions ( > 1280 ) we will toggle bw/n UNASSIGNED_RESERVATIONLIST , Filter bar.
-            if ($scope.diaryData.innerWidth < 1280 && $scope.diaryData.rightFilter === activeTab) {
+            if (screen.width < 1280 && $scope.diaryData.rightFilter === activeTab) {
                 $scope.diaryData.rightFilter = '';
             }
             else if ( $scope.diaryData.rightFilter !== activeTab ) {
