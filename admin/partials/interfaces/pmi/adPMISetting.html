@@ -67,12 +67,16 @@
                     </ad-textbox>
                     <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name" styleclass="full-width">
                     </ad-textbox>
-                    <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password" styleclass="full-width">
+                    <ad-textbox inputtype="password" value="config.ftp_password" label="FTP password" styleclass="full-width">
                     </ad-textbox>
                 </section>
             </fieldset>
         </fieldset>
         <div class="actions float">
+             <button id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" type="button"
+                translate>
+                 CANCEL
+             </button>
             <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
                 translate>
                 SAVE_CHANGES

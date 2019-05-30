@@ -6,23 +6,30 @@ admin.service('adIFCInterfaceMappingSrv', [
         var interfaceswithNumericExternalValues = ['HOGIA'];
 
         var metaLists = {
+            'DELPHI': ['CHARGE_CODES', 'GROUP_HOLD_STATUSES', 'MARKET_SEGMENTS', 'SOURCE_CODES'],
             'HOGIA': ['CHARGE_CODES'],
             'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES']
         };
 
         var metaPromises = {
-            'CHARGE_CODES': function() {
-                return ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000');
-            },
-            'MARKET_SEGMENTS': function() {
-                return ADBaseWebSrvV2.getJSON('/api/market_segments.json?per_page=1000&is_active=true');
+            'CANCELLATION_CODES': function() {
+                return ADBaseWebSrvV2.getJSON('/api/hotel_settings/derbysoft/cancellation_codes.json?per_page=1000');
             },
             'CANCELLATION_POLICIES': function() {
                 return ADBaseWebSrvV2.getJSON('/api/cancellation_policies.json?per_page=1000');
             },
-            'CANCELLATION_CODES': function() {
-                return ADBaseWebSrvV2.getJSON('/api/hotel_settings/derbysoft/cancellation_codes.json?per_page=1000');
+            'CHARGE_CODES': function() {
+                return ADBaseWebSrvV2.getJSON('/admin/charge_codes/list.json?per_page=1000');
+            },
+            'GROUP_HOLD_STATUSES': function() {
+                return ADBaseWebSrvV2.getJSON('/api/group_hold_statuses');
+            },
+            'MARKET_SEGMENTS': function() {
+                return ADBaseWebSrvV2.getJSON('/api/market_segments.json?per_page=1000&is_active=true');
+            },
+            'SOURCE_CODES': function() {
+                return ADBaseWebSrvV2.getJSON('/api/sources?&is_active=true');
             },
             'TAX_CHARGE_CODES': function() {
                 return ADBaseWebSrvV2.getJSON('/admin/charge_codes/tax_charge_code.json?per_page=1000');

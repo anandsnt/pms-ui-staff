@@ -105,7 +105,7 @@ describe('payShijiCtrl', () => {
                     respText: 'Card expired'
                 }
             });
-            expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', 'Card expired');
+            expect($scope.$emit).toHaveBeenCalledWith('PAYMENT_FAILED', ['Card expired']);
         });
 
         it('on Message from iframe retieve token Id', () => {

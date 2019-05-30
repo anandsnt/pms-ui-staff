@@ -751,6 +751,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return zsBaseWebSrv.postJSON(url, params);
         };
 
+        this.getRoomTypes = function(params) {
+            var url = '/api/room_types.json';
+            
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
         this.getAvailableRatesForTheDay = function(params) {
             var url = '/api/availability/room_type_adrs';
 

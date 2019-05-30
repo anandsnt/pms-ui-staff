@@ -212,7 +212,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 
 	var loadURLCounter = 0;
 
-	$scope.loadURL = function() {
+	$scope.showDebugOptions = function() {
 		$scope.data.domainURL = "https://";
 		loadURLCounter++;
 		if (loadURLCounter >= 5) {
@@ -228,8 +228,14 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 		}, 5000);
 	};
 
+	$scope.isIPad = navigator.userAgent.match(/iPad/i) != null;
+
 	$scope.loadDomainURL = function() {
 		$window.location = $scope.data.domainURL;
+	};
+
+	$scope.switchRoverInstance = function() {
+		cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'switchRoverInstance', []);
 	};
 
 	var loadCordovaWithVersion = function(version) {
@@ -264,7 +270,7 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
 		}
 	};
 	$scope.successCallbackGetVersion = function(response) {
-		var versionNumber = response.data.data.split("-")[0];
+		var versionNumber = response.data.data;
 
 		$scope.data.roverVersion = versionNumber;
 	};
@@ -355,7 +361,7 @@ angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', 'loginSrv
 	};
 
 	$scope.successCallbackGetVersion = function(response) {
-		var versionNumber = response.data.data.split("-")[0];
+		var versionNumber = response.data.data;
 
 		$scope.data.roverVersion = versionNumber;
 	};
@@ -619,9 +625,10 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
         document.addEventListener('keydown', doc_keyDown, false); // listen for hotkeys to work with chrome extension
 
         $scope.successCallbackGetVersion = function(response) {
-			var versionNumber = response.data.data.split("-")[0];
+			var versionNumber = response.data.data;
 
 			$scope.data.roverVersion = versionNumber;
 		};
+		
 		loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
 }]);
