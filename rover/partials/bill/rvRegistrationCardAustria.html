@@ -140,7 +140,8 @@
             </td>            
             <td>
                 Unterschrift des Meldepflichtigen/Signature<br />
-                <strong>{{ printRegCardData.translation.guest_signature }}</strong>
+                <span class="placeholder">{{ printRegCardData.translation.guest_signature }}</span>
+                <strong><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
             </td>
         </tr>
         <tr>
