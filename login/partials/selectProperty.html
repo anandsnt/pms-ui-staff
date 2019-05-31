@@ -20,8 +20,8 @@
                 <!-- <button class="icons icon-search" ng-class="{'visible': searchData!==''}" ng-click="filterByQuery()">
                     Search
                 </button>  -->
-                <input id="property-query" ng-model="searchData" placeholder="Search by Property Name, e.g. 'Grand'" type="search" ng-change="filterByQuery()" autocomplete="off" />
-                <div class="property-autocomplete scrollable" ng-show="!selectedProperty" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
+                <input id="property-query" ng-model="searchData" placeholder="Search by Property Name" type="search" ng-change="filterByQuery()" autocomplete="off" />
+                <div id="property-search" class="property-autocomplete scrollable" ng-show="!selectedProperty" ng-class="{'open': propertyResults.length > 0 }" ng-iscroll="property-results" ng-iscroll-delay="300">
                     <div class="wrapper" id="property-search-scroller">
                         <ul class="ui-autocomplete">
                             <li ng-click="onSelect(property)" ng-repeat="property in propertyResults track by $index">
@@ -34,8 +34,8 @@
         </div>
         
         <div class="action">
-            <button type="submit" name="property" class="button" ng-click="submitProperty()" ng-disabled="!selectedProperty" ng-class="{'blue': !!selectedProperty }">Continue to Rover</button>
-            <button type="button" id="cancel" class="button blank" ng-hide="true">Sign Out</button>
+            <button type="submit" id="property-button" name="property" class="button" ng-click="submitProperty()" ng-disabled="!selectedProperty" ng-class="{'blue': !!selectedProperty, 'grey': !selectedProperty }">Continue to Rover</button>
+            <button type="button" id="cancel" class="button blank" ng-click="logout()">Sign Out</button>
         </div>
     </form>
     <div class="login__footer">
