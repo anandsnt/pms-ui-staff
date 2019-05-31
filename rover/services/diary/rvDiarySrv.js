@@ -389,6 +389,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         });
 
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
+                    // For Inspected Only Hotel, Adding class for clean not-inspected case
+                    room[meta.room.hk_status] += ( room.hk_status === 'CLEAN' && !room.is_inspected ) ? ' not-inspected' : '';
+                    // Add class when room is OOO/OOS
+                    if ( room.room_service_status === 'OUT_OF_ORDER' || room.room_service_status === 'OUT_OF_SERVICE') {
+                        room[meta.room.hk_status] = 'unavailable';
+                    }
                     return room;
                 }),
 
@@ -462,9 +468,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     } else if (occupancy[m.status]   === 'checkedin') {
                         occupancy[m.status]         = 'inhouse';
                     } else if (occupancy[m.status]   === 'checkedout') {
-                        occupancy[m.status]         = 'check-out';
-                    } else if (occupancy[m.status]   === 'checking_out') {
                         occupancy[m.status]         = 'departed';
+                    } else if (occupancy[m.status]   === 'checking_out') {
+                        occupancy[m.status]         = 'check-out';
                     } else if (occupancy[m.status]   ===  'checking_in') {
                         occupancy[m.status]         = 'check-in';
                     }
@@ -1083,6 +1089,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     rvBaseWebSrvV2.getJSON(url).then(function(data) {
                         angular.forEach(data.reservations, function(reservation) {
                             reservation.statusClass = reservation.arrival_date === businessDate ? 'guest check-in' : 'guest no-status';
+                            reservation.statusClass += params.date === reservation.arrival_date ? '' : ' blocked disable-element';
                         });
                         deferred.resolve(data.reservations);
                     }, function(error) {

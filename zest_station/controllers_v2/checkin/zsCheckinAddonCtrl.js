@@ -521,10 +521,19 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		};
 		var findSelectedLanguageId = function() {
 			var usedLanguageCode = $translate.use();
-
-			$scope.languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
+			var selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
 				return language.code === usedLanguageCode;
-			}).id;
+			});
+
+			// For custom languages, use English for now
+			// TODO: Handle addon translations for custom languages in hotel admin
+			if (!selectedLanguage) {
+				selectedLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
+					return language.language === 'English';
+				});
+			}
+			$scope.languageId = selectedLanguage.id;
+
 			fetchAddons();
 		};
 

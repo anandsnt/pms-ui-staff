@@ -135,7 +135,8 @@ admin.controller('ADAppCtrl', [
                             title: 'MENU_CREATE_RESERVATION',
                             action: 'rover.reservation.search',
                             menuIndex: "createReservation",
-                            standAlone: true
+                            standAlone: true,
+                            hidden: ($rootScope.isPmsProductionEnv && $rootScope.hotelDiaryConfig.mode === 'FULL')
                         }, {
                             title: 'MENU_ROOM_DIARY',
                             action: 'rover.diary',

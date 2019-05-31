@@ -12,6 +12,7 @@ angular.module('sntRover')
             'reservationsList',
             'RVNightlyDiarySrv',
             'unassignedReservationList',
+            'rvPermissionSrv',
             function (
                 $scope,
                 $rootScope,
@@ -24,7 +25,8 @@ angular.module('sntRover')
                 $timeout,
                 reservationsList,
                 RVNightlyDiarySrv,
-                unassignedReservationList
+                unassignedReservationList,
+                rvPermissionSrv
             ) {
 
                 BaseCtrl.call(this, $scope);
@@ -86,14 +88,14 @@ angular.module('sntRover')
                         reservationsList: reservationsList,
                         unassignedReservationList: unassignedReservationList,
                         hasOverlay: false,
-                        isEditReservationMode: false,
+                        isEditReservationMode: isFromStayCard,
                         hideMoveButton: false,
                         showUnassignedPanel: false,
                         showUnassignedReservations: false,
-                        innerWidth: screen.width,
                         selectedRoomTypes: [],
                         selectedFloors: [],
                         isFromStayCard: false,
+                        hideUnassignRoomButton: true,
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
@@ -110,7 +112,8 @@ angular.module('sntRover')
                             availableRoomList: [],
                             fromDate: null,
                             nights: null
-                        }
+                        },
+                        requireAuthorization: false
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -218,9 +221,10 @@ angular.module('sntRover')
                  * @param reservation - Current selected reservation
                  */
                 var selectReservation = (e, reservation, room) => {
-                    $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
-                    $scope.diaryData.hideMoveButton = reservation.no_room_move;
                     if (!$scope.diaryData.isEditReservationMode) {
+                        $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
+                        $scope.diaryData.hideMoveButton = reservation.no_room_move;
+                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = reservation;
                         $scope.currentSelectedRoom = room;
@@ -478,7 +482,7 @@ angular.module('sntRover')
                             message: ''
                         };
                         let proceedSave = false;
-
+                      
                         if (response.is_room_available && response.message === '') {
                             // Proceed without any popup, save changes and updated.
                             proceedSave = true;
@@ -510,6 +514,8 @@ angular.module('sntRover')
                                 'room_number': $scope.currentSelectedReservation.room_no
                             };
                         }
+                        $scope.diaryData.requireAuthorization = response.require_cc_auth;
+                        $scope.extendShortenReservationDetails.authorize_credit_card = response.require_cc_auth;
                     };
 
                     let options = {
@@ -534,20 +540,82 @@ angular.module('sntRover')
                     cancelReservationEditing();
                     ngDialog.close();
                 };
+
+                // Flag for CC auth permission
+                var hasCCAuthPermission = function() {
+                    return rvPermissionSrv.getPermissionValue('OVERRIDE_CC_AUTHORIZATION');
+                };
+
+                // Handle continue without CC
+                $scope.continueWithoutCC = function() {
+                    cancelReservationEditing();
+                    $timeout(function () {
+                        fetchRoomListDataAndReservationListData();
+                    }, 700);
+                    $scope.closeDialog();
+                };
+
+                // Handle continue after success auth
+                $scope.continueAfterSuccessAuth = function() {
+                    cancelReservationEditing();
+                    $timeout(function () {
+                        fetchRoomListDataAndReservationListData();
+                    }, 700);
+                    $scope.closeDialog();
+                };
+
                 /*
                  * Function to save editing of a reservation
                  */
                 var saveReservationEditing = function () {
-                    let successCallBack = function () {
-                        cancelReservationEditing();
-                        $timeout(function () {
-                            fetchRoomListDataAndReservationListData();
-                        }, 700);
+                    let successCallBack = function (response) {
+
+                        if ($scope.diaryData.requireAuthorization && $scope.isStandAlone) {
+                            // CICO-7306 : With Authorization flow .: Auth Success
+                            if (response.data.auth_status) {
+                                $scope.isInProgressScreen = false;
+                                $scope.isSuccessScreen = true;
+                                $scope.isFailureScreen = false;
+                                $scope.cc_auth_amount = response.data.cc_auth_amount;
+                                $scope.cc_auth_code = response.data.cc_auth_code;
+                            } 
+                            else {
+                                // CICO-7306 : With Authorization flow .: Auth declined
+                                $scope.isInProgressScreen = false;
+                                $scope.isSuccessScreen = false;
+                                $scope.isFailureScreen = true;
+                                $scope.cc_auth_amount = response.data.cc_auth_amount;
+                            }
+                        }
+                        else {
+                            cancelReservationEditing();
+                            $timeout(function () {
+                                fetchRoomListDataAndReservationListData();
+                            }, 700);
+                        }
                     };
 
-                    $scope.invokeApi(RVNightlyDiarySrv.confirmUpdates,
-                        $scope.extendShortenReservationDetails,
-                        successCallBack);
+                    if ($scope.diaryData.requireAuthorization && $scope.isStandAlone) {
+                        // Start authorization process...
+                        $scope.isInProgressScreen = true;
+                        $scope.isSuccessScreen = false;
+                        $scope.isFailureScreen = false;
+                        $scope.isCCAuthPermission = hasCCAuthPermission();
+
+                        ngDialog.open({
+                            template: '/assets/partials/bill/ccAuthorization.html',
+                            className: '',
+                            closeByDocument: false,
+                            scope: $scope
+                        });
+                    }
+
+                    let options = {
+                        params: $scope.extendShortenReservationDetails,
+                        successCallBack: successCallBack
+                    };
+
+                    $scope.callAPI(RVNightlyDiarySrv.confirmUpdates, options);
                 };
 
                 /*
@@ -775,11 +843,13 @@ angular.module('sntRover')
                 };
 
                 var mapCachedDataFromSrv = function () {
-                    var params = RVNightlyDiarySrv.getCache();
+                    var params = RVNightlyDiarySrv.getCache(),
+                        reservation = params.currentSelectedReservation;
 
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
+                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                     if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.filterList = params.filterList;

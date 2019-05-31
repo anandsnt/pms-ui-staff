@@ -3,12 +3,12 @@ admin.controller('adAvidaCtrl', ['$scope', 'config', 'adInterfacesSrv',
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'AVIDA';
+
         $scope.state = {
             activeTab: 'SETTING'
         };
         
-        $scope.realTimeDataSyncItems = ['invoice'];
-        $scope.historicalDataSyncItems = ['invoice'];
+        $scope.historicalDataSyncItems = [];
 
         /**
          * when clicked on check box to enable/disable Avida

@@ -77,6 +77,8 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 
             $scope.data.summaryData = {};
             $scope.data.summaryData = responce.data;
+            $scope.data.printDate = "";
+            $scope.data.printTime = "";
 
             // Initializing objetcs for DEPOSIT_BALANCE/ GUEST_BALANCE/ AR_BALANCE sections.
             $scope.data.summaryData.deposit_balance = { 'active': false, 'page_no': 1, 'start': 1, 'end': 1, 'nextAction': false, 'prevAction': false };

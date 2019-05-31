@@ -549,6 +549,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                     $scope.isShownExistingCCPayment = true;
                 }
             }
+            $scope.selectedEntity.split_charge_by_guests = data.split_charge_by_guests;
             $scope.$parent.$emit('hideLoader');
         };
         var params = {};

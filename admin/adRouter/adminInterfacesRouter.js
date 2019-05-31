@@ -227,12 +227,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.delphi', {
-        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        templateUrl: '/assets/partials/interfaces/delphi/adDelphi.html',
         controller: 'adDelphiCtrl',
-        url: '/delphi/setup',
+        url: '/delphi',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('delphi');
             }]
         }
     });
@@ -554,15 +554,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.vismaSetup', {
-        templateUrl: '/assets/partials/interfaces/Visma/adVismaSetup.html',
-        controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'visma';
-        }],
+        templateUrl: '/assets/partials/interfaces/visma/adVisma.html',
+        controller: 'adVismaCtrl',
+        url: '/visma/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('visma');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('visma');
             }]
         }
     });
@@ -602,15 +599,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.pmiSetup', {
-        templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'pmi';
-        }],
+        templateUrl: '/assets/partials/interfaces/pmi/adPMI.html',
+        controller: 'adPmiCtrl',
+        url: '/pmi/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('pmi');
             }]
         }
     });
@@ -627,15 +621,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.baswareSetup', {
-        templateUrl: '/assets/partials/interfaces/Basware/adBaswareSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'basware';
-        }],
+        templateUrl: '/assets/partials/interfaces/basware/adBasware.html',
+        controller: 'adBaswareCtrl',
+        url: '/basware/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('basware');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('basware');
             }]
         }
     });

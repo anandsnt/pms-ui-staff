@@ -229,7 +229,7 @@ module.exports = function(gulp, $, options) {
     gulp.task('watch-modules', function() {
         gulp.watch('rover/modules/snt/**/*.ts').
             on('change', file => {
-                let dirName = path.dirname(path.relative('rover/modules/snt',file.path)),
+                var dirName = path.dirname(path.relative('rover/modules/snt',file.path)),
                     fileName = path.basename(file.path, '.ts'),
                     filePath = path.resolve('rover', dirName, fileName) + '.js';
 

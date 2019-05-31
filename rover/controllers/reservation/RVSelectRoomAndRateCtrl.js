@@ -520,7 +520,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// CICO-9429: Show Addon step only if its been set ON in admin
 				var navigate = function() {
 					if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
-						if ($rootScope.isAddonOn && areReservationAddonsAvailable) {
+						if ($rootScope.isAddonOn && areReservationAddonsAvailable && $rootScope.hotelDiaryConfig.mode !== 'FULL') {
 							goToAddonsView();
 						} else {
 							$scope.computeTotalStayCost();
@@ -529,7 +529,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				};
 
-				if ($rootScope.isAddonOn && areReservationAddonsAvailable) {
+				if ($rootScope.isAddonOn && areReservationAddonsAvailable && $rootScope.hotelDiaryConfig.mode !== 'FULL') {
 					// CICO-16874
 					goToAddonsView();
 				} else {
@@ -1274,6 +1274,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				if ($scope.stateCheck.rateSelected.oneDay) {
 					payLoad.room_type_id = $scope.stateCheck.preferredType;
 				}
+			}
+			// CICO-65314 - Group id is not required while fetching the rate details from the rates tab upons chosing a rate
+			if ($scope.stateCheck.activeView === 'RATE') {
+				delete payLoad.group_id;
 			}
 
 			$scope.invokeApi(RVSelectRoomRateSrv.getRateDetails, payLoad, function(rateDetails) {
