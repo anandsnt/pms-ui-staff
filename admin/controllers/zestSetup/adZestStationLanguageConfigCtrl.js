@@ -11,7 +11,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		BaseCtrl.call(this, $scope);
 
 		$scope.detailIndex = -1;
-
+		var languagesEditedInSession = [];
 		var saveNewLanguagePosition = function(languageName, position) {
 			var languageListForApi = $scope.languageList.map(function(language, index) {
 				return {
@@ -49,6 +49,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			$scope.languageList = _.sortBy(listHavingValues, 'position').concat(nullList);
 			$scope.detailIndex = -1;
 			$scope.isAddMode = false;
+			languagesEditedInSession = [];
 		};
 
 		/**
@@ -115,7 +116,6 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		// when editing on-screen, need to fetch the language then show on-screen
 		// if a user closes the window, we need to persist the reference in case they
 		// want to continue editing
-		var languagesEditedInSession = [];
 		var continueEditing = function(lang) {
 			if (languagesEditedInSession[lang]) {
 				return true;
@@ -174,11 +174,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 		$scope.editLang = function(lang) {
 			$scope.editingLanguage = lang;
 			// shows user an on-screen prompt, with the tags and values, so they can edit in-screen
-			if ($scope.selectedLanguage.translations_file) {
-				var json = JSON.parse(window.atob($scope.selectedLanguage.translations_file.split('base64,')[1]));
-
-				openEditor(json);
-			} else if (continueEditing(lang)) {
+			if (continueEditing(lang)) {
 				$log.log('continuing to edit...');
 				openEditor(languagesEditedInSession[lang].json);
 			} else if ($scope.selectedLanguage.translation_file_updated) {
@@ -212,9 +208,7 @@ admin.controller('adZestStationLanguageConfigCtrl',
 			if (language.translations_file) {
 				language.translation_file_updated = true;
 
-				languagesEditedInSession[language.name] = {
-					'json': JSON.parse(window.atob(language.translations_file.split('base64,')[1]))
-				};
+				languagesEditedInSession[language.name] = null;
 				
 			}
 
@@ -246,25 +240,6 @@ admin.controller('adZestStationLanguageConfigCtrl',
 				$scope.languageList.shift();
 				$scope.isAddMode = false;
 			}
-		};
-
-		$scope.deleteItem = function(language) {
-			var options = {
-				params: language,
-				successCallBack: fetchLanguageList
-			};
-
-			$scope.callAPI(adZestStationLanguageConfigSrv.deleteLanguage, options);
-		};
-
-		$scope.addNewLanguage = function() {
-			if ($scope.isAddMode) {
-				return;
-			}
-			$scope.isAddMode = true; 
-			$scope.languageList.unshift({ 'name': "", 'position': 1, 'icon': "" });
-			$scope.selectedLanguage = $scope.languageList[0];
-			$scope.detailIndex = 0;
 		};
 
 		$scope.closePrompt = function() {

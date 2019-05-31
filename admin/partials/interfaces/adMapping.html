@@ -28,7 +28,7 @@
                     ng-class="{'selected': room.isSelected}">
                     <td data-title="'MAPPING TYPE'" sortable="'typeof'" header-class="width-40" ng-hide="mappingRow.editing"
                         ng-click="onEditMapping(mappingRow)">
-                        {{mappingRow.typeof}}
+                        {{formatMappingType(mappingRow.typeof)}}
                     </td>
                     <td data-title="'SNT VALUE'" sortable="'value'" header-class="width-30" ng-hide="mappingRow.editing"
                         ng-click="onEditMapping(mappingRow)">

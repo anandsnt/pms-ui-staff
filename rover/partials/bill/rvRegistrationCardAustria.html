@@ -1,0 +1,233 @@
+<!-- This is the customized registration card (CICO-64935) -->
+<table class="guest-data-enter fixed customized border-top">
+    <tr>
+        <td class="headline centered short" style="max-width: 170pt; width: 30%;">
+            GÄSTEBLATT
+        </td>
+        <td class="short">
+            Lfd.-Nr:
+        </td>
+        <td class="centered short" style="max-width: 150pt; width: 30%;">
+            Hotel Bed & Breakfast GmbH
+        </td>
+    </tr>
+</table>
+
+<table class="guest-data-enter fixed customized">
+    <tr>
+        <td>Famlienname/Last Name <br />
+            <strong>{{ printRegCardData.guest_details.last_name }}</strong>
+        </td>
+        <td style="max-width: 150pt; width: 30%;">
+            Geschlecht/Gender<br />
+            <strong>{{ printRegCardData.guest_details.gender }}</strong>
+        </td>
+    </tr>
+</table>
+
+<table class="guest-data-enter fixed customized">
+    <tr>
+        <td>Vorname/First Name<br />
+            <strong>{{ printRegCardData.guest_details.first_name }}</strong>
+        </td>
+        <td style="width: 150pt;">Geburtsdatum/Date of birth<br />
+            <strong>{{ printRegCardData.guest_details.birthday }}</strong>
+        </td>
+        <td style="max-width: 150pt; width: 30%;">
+            Beruf/Profession<br />
+            <strong>{{ printRegCardData.guest_details.profession }}</strong>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Reisedokument & Nummer/Identification Type & Number<br />
+            <strong>{{printRegCardData.guest_details['id_number']}}</strong>
+        </td>
+        <td>
+            Staatsangehörigkeit/Nationality<br />
+            <strong>{{printRegCardData.guest_details['nationality_name']}}</strong>
+        </td>
+    </tr>
+</table>
+
+<table class="guest-data-enter customized border-bottom">
+    <tbody>
+        <tr>
+            <td rowspan="2" class="centered" style="width: 80pt;">
+                <strong>Hauptwohnsitz</strong>
+                Main Address<br />
+                <strong>{{ printRegCardData.guest_details.street }}</strong>
+            </td>
+            <td colspan="3">Strasse/Street<br />
+                <strong>{{ printRegCardData.guest_details.street }}</strong>
+            </td>
+        
+        </tr>
+        <tr>
+            <td colspan="3" class="inner-table border-left-width">
+                <table class="guest-data-enter customized">
+                    <tbody>
+                        <tr class="details">
+                            <td style="width:100pt;">Plz/Postal Code<br />
+                                <strong>{{ printRegCardData.guest_details.postal_code }}</strong>
+                            </td>
+                            <td style="width:200pt;">Stadt/City<br />
+                                <strong>{{ printRegCardData.guest_details.city }}</strong>
+                            </td>
+                            <td style="width:150pt;">Bundesland/Province<br />
+                                <strong>{{ printRegCardData.guest_details.province }}</strong>
+                            </td>
+                            <td>Land/Country<br />
+                                <strong>{{printRegCardData.guest_details['country_name']}}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="centered" style="width: 80pt;">
+                <strong>Ehegatte oder eingetr. Partner</strong>
+                Spouse or partner
+            </td>
+            <td colspan="4">Vorname, Geburtsjahr/First name, date of birth<br />
+                <strong>{{printRegCardData.guest_details.accompanying_guest_first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_guest_dob !== '' && printRegCardData.guest_details.accompanying_guest_dob !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_guest_dob}}</strong>
+            </td>
+        </tr>
+
+        <tr>
+            <td rowspan="{{printRegCardData.rowspanAustrianRegCardChild}}" class="centered" style="width: 80pt;">
+                <strong>Kind(er)</strong>
+                Child(ren)
+            </td>
+            <td style="width: 130pt">
+                Vorname, Geburtsjahr
+                <span class="placeholder">First name, date of birth</span><br />
+                <strong>{{printRegCardData.guest_details.accompanying_children[0].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[0] && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[0].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[0].date_of_birth}}</strong>
+            </td>
+            <td style="width: 130pt">
+                Vorname, Geburtsjahr
+                <span class="placeholder">First name, date of birth</span><br />
+                <strong>{{printRegCardData.guest_details.accompanying_children[1].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[1] && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[1].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[1].date_of_birth}}</strong>
+            </td>
+            
+            <td class="inner-table">
+                <table class="guest-data-enter fixed customized">
+                    <tr class="details">
+                        <td>
+                            Anreise/Arrival<br />
+                            <strong>{{ printRegCardData.arrival_date | date : dateFormat }}</strong>
+                        </td>
+                        <td>
+                            Abreise/Departure<br />
+                            <strong>{{ printRegCardData.dep_date | date : dateFormat }}</strong>
+                        </td>
+                    </tr>
+                </table>
+            </td> 
+        </tr>
+        <tr>
+            <td style="width: 130pt">
+                Vorname, Geburtsjahr
+                <span class="placeholder">First name, date of birth</span><br />
+                <strong>{{printRegCardData.guest_details.accompanying_children[2].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[2] && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[2].date_of_birth !== null">, </span> <strong>{{printRegCardData.guest_details.accompanying_children[2].date_of_birth}}</strong>
+            </td>
+            <td style="width: 130pt">
+                Vorname, Geburtsjahr
+                <span class="placeholder">First name, date of birth</span><br />
+               <strong> {{printRegCardData.guest_details.accompanying_children[3].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[3] && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[3].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[3].date_of_birth}}</strong>
+            </td>            
+            <td>
+                Unterschrift des Meldepflichtigen/Signature<br />
+                <span class="placeholder">{{ printRegCardData.translation.guest_signature }}</span>
+                <strong><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="width: 130pt" ng-if="printRegCardData.guest_details.accompanying_children.length > 4">
+                Vorname, Geburtsjahr
+                <span class="placeholder">First name, date of birth</span><br />
+               <strong>{{printRegCardData.guest_details.accompanying_children[4].first_name}}</strong><span ng-if="printRegCardData.guest_details.accompanying_children[4] && printRegCardData.guest_details.accompanying_children[4].date_of_birth !== '' && printRegCardData.guest_details.accompanying_children[4].date_of_birth !== null">, </span><strong>{{printRegCardData.guest_details.accompanying_children[4].date_of_birth}}</strong>
+            </td>
+            
+        </tr>
+
+        <tr>
+            <td rowspan="2" class="centered short" style="width: 80pt;">
+                <strong>Bei Reisegruppen</strong>
+                Groups
+            </td>
+            <td rowspan="2" class="inner-table short border-right-grey">
+                <table class="guest-data-enter fixed customized">
+                    <tbody>
+                        <tr>
+                            <td class="short border-right-grey">Gesamtanzahl</td>
+                            <td class="short">Aufgliederung nach Herkunfts- land</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            
+            <td colspan="2" class="inner-table short border-bottom-grey">
+                <table class="guest-data-enter fixed customized">
+                    <tbody>
+                        <tr>
+                            <td class="inner-table short border-right-grey">
+                                <table class="guest-data-enter fixed customized">
+                                    <tbody>
+                                        <tr class="details">
+                                            <td class="short">Herkunftsland</td>
+                                            <td class="short align-right">Anzahl</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td class="inner-table short">
+                                <table class="guest-data-enter fixed customized">
+                                    <tbody>
+                                        <tr class="details">
+                                            <td class="short">Herkunftsland</td>
+                                            <td class="short align-right">Anzahl</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            
+        </tr>
+        <tr class="with-borders">
+            <td colspan="2" class="inner-table short">
+                <table class="guest-data-enter fixed customized">
+                    <tbody>
+                        <tr>
+                            <td class="inner-table short border-right-grey">
+                                <table class="guest-data-enter fixed customized">
+                                    <tbody>
+                                        <tr class="details">
+                                            <td class="short">Herkunftsland</td>
+                                            <td class="short align-right">Anzahl</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td class="inner-table short">
+                                <table class="guest-data-enter fixed customized">
+                                    <tbody>
+                                        <tr class="details">
+                                            <td class="short">Herkunftsland</td>
+                                            <td class="short align-right">Anzahl</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

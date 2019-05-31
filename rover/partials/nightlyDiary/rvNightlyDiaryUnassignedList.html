@@ -1,4 +1,4 @@
-<div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-unassigned diary-nightly-unassigned" ng-class="(diaryData.innerWidth >= 1600 || diaryData.rightFilter == 'UNASSIGNED_RESERVATION')? 'visible' : '' ">
+<div ng-controller="rvNightlyDiaryUnassignedListController" class="diary-nightly-sidebar diary-unassigned diary-nightly-unassigned" ng-class="isShowUnassignedList()">
     <div class="diary-nightly-search-form">
         <div class="entry date">
             <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': (diaryData.arrivalDate <= diaryData.fromDate || diaryData.arrivalDate <= businessDate)}" ng-click="clickedDateLeftShift()">

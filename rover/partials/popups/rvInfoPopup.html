@@ -1,0 +1,14 @@
+
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <form method="post" action="" id="edit-charge-options" name="edit-charge" class="modal-content form advanced-bill">
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeSuccessDialog()" ng-if="ngDialogData.isSuccess"><span
+                class="icons icon-close invert"></span></button>
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeErrorDialog()" ng-if="ngDialogData.isFailure"><span
+                class="icons icon-close invert"></span></button>
+        <span class="message h2" translate>{{ngDialogData.message}}</span>
+        <div class="actions">
+            <button type="button" class="button green modal-close" ng-click="closeSuccessDialog()" ng-if="ngDialogData.isSuccess">OK</button>
+            <button type="button" class="button green modal-close" ng-click="closeErrorDialog()" ng-if="ngDialogData.isFailure">OK</button>
+        </div>
+    </form>
+</div>
