@@ -295,7 +295,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             var apiParams =  angular.copy($scope.singleRule);
 
             _.each(apiParams.schedules, function(schedule) {
-                // _.omit(schedule, 'id');
                 delete schedule.id;
                 delete schedule.advance_days_selection;
             });
