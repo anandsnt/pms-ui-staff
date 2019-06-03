@@ -1,5 +1,5 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
-<div id="login" ng-hide="data.showDebugOptions" role="content"> 
+<div id="login" role="content"> 
 	<img src="/assets/images/logo-snt.png" alt="" class="login__logo" />
 
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="login__content" id="login-form" method="post" name="login-form" novalidate>
@@ -58,3 +58,4 @@
 	</a>
 </div>
 <button style="opacity: 0;bottom: 0; left:0; position: fixed;" ng-show="isIPad" ng-click="showDebugOptions()">Load URL</button>
+<div id="modal-overlay" ng-class="{'modal-show': data.showDebugOptions}" ng-if="data.showDebugOptions"></div>
