@@ -48,7 +48,8 @@ angular.module('sntRover')
                         nights: selectedItem.no_of_nights,
                         reservationId: selectedItem.reservation_id,
                         roomTypeId: selectedItem.room_type_id,
-                        type: 'ASSIGN_ROOM'
+                        type: 'ASSIGN_ROOM',
+                        reservationOccupancy: data.reservation_occupancy
                     };
 
                     $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
@@ -178,10 +179,8 @@ angular.module('sntRover')
                 unSelectUnassignedListItem();
             }
         };
-
         // Show/Hide unassigned list based on screen width and filter type
         $scope.isShowUnassignedList = function() {
             return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
         };
-
 }]);
