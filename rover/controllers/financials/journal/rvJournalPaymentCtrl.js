@@ -148,7 +148,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         if ((typeof item.credit_cards !== 'undefined') && (item.credit_cards.length > 0)) {
             hasArrow = true;
         }
-        else if ((typeof item.transactions !== 'undefined') && (item.transactions.length > 0)) {
+        else if (item.number > 0) {
             hasArrow = true;
         }
         return hasArrow;

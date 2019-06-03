@@ -124,6 +124,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                         id: response.existing_email_template_theme
                     });
 
+                    // if theme isn't set, choose Stayntouch theme and proceed
+                    if (!hotelTheme) {
+                        hotelTheme = _.findWhere(response.themes, {
+                            name: 'Stayntouch'
+                        });
+                    }
+
                     if (hotelTheme && hotelTheme.name) {
                         theme = hotelTheme.name.toLowerCase();
                     } else {
