@@ -141,9 +141,6 @@ angular.module('login').service('loginSrv',
                 var url = 'https://www.stayntouch.com/wp-json/snt/v1/rover_banners',
                     deferred = $q.defer();
 
-                // This is done to prevent the auth-token header being sent in this request which results in CORS issue   
-                $window.localStorage.removeItem('jwt');
-
                 // This is done to override the common header configured globally
                 $http.get(url, {
                     headers: {
