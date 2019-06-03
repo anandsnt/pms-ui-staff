@@ -396,7 +396,33 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedAssignRoom = (roomDetails, reservationDetails) => {
-                    showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                    var showOccupancyMessage = false;
+
+                    if (roomDetails.room_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
+                        if (roomDetails.room_max_occupancy < reservationDetails.reservationOccupancy) {
+                            showOccupancyMessage = true;
+                            $scope.max_occupancy = roomDetails.room_max_occupancy;
+                        }
+                    } else if (roomDetails.room_type_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
+                        if (roomDetails.room_type_max_occupancy < reservationDetails.reservationOccupancy) {
+                            showOccupancyMessage = true;
+                            $scope.max_occupancy = roomDetails.room_type_max_occupancy;
+                        }
+                    }
+
+                    if (showOccupancyMessage) {
+                        ngDialog.openConfirm({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryMaxOccupancyPopup.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope
+                        }).then(
+                            function() {
+                                showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                            }, function() {
+                            });
+                    } else {
+                        showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                    }
                 };
 
                 /*
