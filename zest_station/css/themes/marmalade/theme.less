@@ -1,11 +1,11 @@
-/* StayNTouch Zest Station Styles | First Theme */
+/* StayNTouch Zest Station Styles | Marmalade Theme */
 
 /* 1. COLORS
 ==========================================================*/
-@brandColor:            #00b1df;
+@brandColor:            #7c9991;
     
 @textColor:             @black;
-@backgroundColor:       @white;
+@backgroundColor:       #f3f4f9;
 
 @actionColor:           @white;
 @actionBackground:      @brandColor;
@@ -22,11 +22,11 @@
 
 /* 3. IMAGES
 ==========================================================*/
-@background: @white;
+@background: @backgroundColor;
 @backgroundSize: '';
 
 @headerIconsColor:      @brandColor;
-@headerIconsActive:     @brandColor;
+@headerIconsActive:     @brandColor;   
 
 .icons { 
     &.icon-create-key {
@@ -48,24 +48,23 @@
 
 }
 
-// PMS Zest Station logo
-    .logo-svg{
-        background-image: url("../css/themes/juliani/logo.svg");
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 273px;
-        height: 100px;
-        background-position: center;
-        margin-top: 45px;
-    }
-
 /* 4. LAYOUT
 ==========================================================*/
 
-#juliani {
+#marmalade {
+    
+    .logo-svg{
+        background-image: url("../css/themes/marmalade/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        height: 110px;
+        width: 213px;
+    }
 
     #header {
-        height: 135px;
+        height: 145px;
+        background: @white;
 
         .button {
             .icons {
@@ -75,8 +74,8 @@
     }
 
     #main {
-        #calc > #height > .remove(100%, 135px);
-        top: 135px;
+        #calc > #height > .remove(100%, 145px);
+        top: 145px;
 
         &.centered {
             padding-top: 100px;
@@ -85,60 +84,21 @@
             }
         }
     }
-
     .entry.input {
         .icons {
             fill: @brandColor;
         }
     }
-
-    input,
-    select,
-    /* Popup fixes start */
-    textarea
-    /* Popup fixes end */ {
-        background: @inputBackground;
-        color: @white;
-    }
-
+ 
     #logo {
-        padding-top: 0px;
-        margin-top: 45px;
-    
+        padding-top: 0;
+
         .logo {
             width: auto;
-            height: 100px;
+            height: 110px;
         }
     }
 
-    #options {
-        
-        .icon-text {
-            color: @white;
-        }
-
-        .icons {
-            fill: @white;
-        }
-
-        li.break {
-            padding-top: 60px;
-
-            &:after,
-            &:before {
-                display: none;
-            }
-        }
-    }
-
-    #selection {
-        li {
-            .details {
-                background-color: fade(#000, 5);
-            
-            }
-        }
-    }
 
     #guests {
         .button {
@@ -148,16 +108,14 @@
     } 
 
     .add-on-list {
-        li {
 
-            &:not(.selected){
-                border-color: rgba(0,0,0,0.05);
-
-                .add-on-content {
-                    background: rgba(0,0,0,0.05);
+        // The second row is getting chunked on lower viewport height
+        @media screen and (max-height:800px) {
+            &.add-on-list-rows {
+                li:nth-child(n+4) {
+                    margin-top: 0;
                 }
             }
-            
         }
     }
 
@@ -168,25 +126,29 @@
                 color: @brandColor;
             }
         }
+
+        #options {
+            li {
+                .option {
+                    &.not-selected {
+                        .icon-text {
+                            color: @brandColor;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #textual {
-        background: #ececec;
+        background: @white;
          
 
         &:before,
         &:after {
-            background: #ececec;
+            background: @white;
         }
 
-        #rate {
-            li {
-                &.total {
-                    color: #000;
-                }
-            }
-        }
-        
     }
 
     #rate {
@@ -194,26 +156,14 @@
             &.sub {
                 color: #a1a1a1;
             }
-
-            &.total {
-                color: #000;
-            }
         }
     }
 
     #textual,
-    .popup {
+    .popup,
+    .option {
         .icons {
             fill: @white;
-        }
-    }
-
-    #upgrade {
-        border-color: @brandColor;
-        
-        .upgrade-price {
-            background: @brandColor;
-            color: @white;
         }
     }
 }

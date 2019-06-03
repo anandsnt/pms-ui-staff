@@ -92,10 +92,10 @@ angular.module('sntRover')
                         hideMoveButton: false,
                         showUnassignedPanel: false,
                         showUnassignedReservations: false,
-                        innerWidth: screen.width,
                         selectedRoomTypes: [],
                         selectedFloors: [],
                         isFromStayCard: false,
+                        hideUnassignRoomButton: true,
                         filterList: {},
                         hideRoomType: true,
                         hideFloorList: true,
@@ -224,7 +224,7 @@ angular.module('sntRover')
                     if (!$scope.diaryData.isEditReservationMode) {
                         $scope.diaryData.showSaveChangeButtonAfterShortenOrExtent.show = false;
                         $scope.diaryData.hideMoveButton = reservation.no_room_move;
-                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';;
+                        $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                         $scope.diaryData.isEditReservationMode = true;
                         $scope.currentSelectedReservation = reservation;
                         $scope.currentSelectedRoom = room;
@@ -402,7 +402,33 @@ angular.module('sntRover')
                  *  @return {}
                  */
                 var clickedAssignRoom = (roomDetails, reservationDetails) => {
-                    showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                    var showOccupancyMessage = false;
+
+                    if (roomDetails.room_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
+                        if (roomDetails.room_max_occupancy < reservationDetails.reservationOccupancy) {
+                            showOccupancyMessage = true;
+                            $scope.max_occupancy = roomDetails.room_max_occupancy;
+                        }
+                    } else if (roomDetails.room_type_max_occupancy !== null && reservationDetails.reservationOccupancy !== null) {
+                        if (roomDetails.room_type_max_occupancy < reservationDetails.reservationOccupancy) {
+                            showOccupancyMessage = true;
+                            $scope.max_occupancy = roomDetails.room_type_max_occupancy;
+                        }
+                    }
+
+                    if (showOccupancyMessage) {
+                        ngDialog.openConfirm({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryMaxOccupancyPopup.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope
+                        }).then(
+                            function() {
+                                showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                            }, function() {
+                            });
+                    } else {
+                        showDiarySetTimePopup(roomDetails, reservationDetails, 'ASSIGN');
+                    }
                 };
 
                 /*
@@ -843,11 +869,13 @@ angular.module('sntRover')
                 };
 
                 var mapCachedDataFromSrv = function () {
-                    var params = RVNightlyDiarySrv.getCache();
+                    var params = RVNightlyDiarySrv.getCache(),
+                        reservation = params.currentSelectedReservation;
 
                     $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                     $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                     $scope.currentSelectedReservation = params.currentSelectedReservation;
+                    $scope.diaryData.hideUnassignRoomButton = reservation.status === 'CHECKEDIN' || reservation.status === 'CHECKEDOUT' || reservation.status === 'CHECKING_OUT';
                     if ((!!params.selected_floor_ids && params.selected_floor_ids.length > 0) || (!!params.selected_room_type_ids && params.selected_room_type_ids.length > 0)) {
                         $scope.diaryData.isFromStayCard = true;
                         $scope.diaryData.filterList = params.filterList;
