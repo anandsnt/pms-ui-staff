@@ -1,5 +1,5 @@
-angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog',
-    function($scope, selectPropertySrv, loginSrv, $window, $state, $stateParams, ngDialog) {
+angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog', '$timeout',
+    function($scope, selectPropertySrv, loginSrv, $window, $state, $stateParams, ngDialog, $timeout) {
         
         BaseCtrl.call(this, $scope);
         var init = function() {
@@ -130,6 +130,17 @@ angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPrope
             } else {
                 $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
             }
+        };
+
+        /**
+         * Perform logout
+         */
+        $scope.logout = function() {
+            loginSrv.signOut().finally(function() {
+                $timeout(function () {
+                    $window.location.href = '/logout';
+                });
+            });
         };
 
         init();

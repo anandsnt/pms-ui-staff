@@ -60,10 +60,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.isSwiped = false;
 		$scope.firstSearch = true;
 
-		$scope.isBulkCheckoutSelected = false;
+		$scope.isBulkCheckoutSelected = !!$stateParams.isBulkCheckoutSelected;
 		$scope.isDueoutShowing = $stateParams.type === 'DUEOUT';
 		
-		$scope.allowOpenBalanceCheckout = false;
+		$scope.allowOpenBalanceCheckout = !!$stateParams.isAllowOpenBalanceCheckoutSelected;
 		$scope.bulkCheckoutReservationsCount = 0;
 		$scope.showAddNewGuestButton = false; // read cooment below :(
 		/**
@@ -189,6 +189,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.$on("updateDataFromOutside", function(event, data) {
 			$scope.disableNextButton = false;
 			$scope.results = data;
+
+			// CICO-56785 - Bulk checkout case while returning from staycard
+			if (data.total_count) {
+				$scope.totalSearchResults = data.total_count;
+				$scope.results = data.results;
+			}
 
 			$scope.start = ((RVSearchSrv.page - 1) * RVSearchSrv.searchPerPage) + $scope.start;
 			$scope.end = $scope.start + $scope.results.length - 1;
@@ -728,7 +734,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,
-				isrefresh: true
+				isrefresh: true,
+				isBulkCheckoutSelected: $scope.isBulkCheckoutSelected,
+				isAllowOpenBalanceCheckoutSelected: $scope.allowOpenBalanceCheckout
 			});
 		};
 
@@ -1213,5 +1221,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.closeErrorDialog = function() {
 			ngDialog.close();
 		};
+
 	}
 ]);
