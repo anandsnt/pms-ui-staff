@@ -76,7 +76,8 @@ module.exports = {
             'upstairs-by-mamas': [themeCSSRoot + 'upstairs-by-mamas.less'],
             'juliani': [themeCSSRoot + 'juliani.less'],
             'mooons': [themeCSSRoot + 'mooons.less'],
-            'marmalade': [themeCSSRoot + 'marmalade.less']
+            'marmalade': [themeCSSRoot + 'marmalade.less'],
+            'bosville': [themeCSSRoot + 'bosville.less']
         };
     }
 };
