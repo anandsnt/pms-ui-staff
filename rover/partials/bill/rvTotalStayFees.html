@@ -271,7 +271,7 @@
 								{{'SUPPRESSED_RATES_TEXT' | translate}}
 							</span>
                             <span ng-show="description.fees_amount != '' && description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
-								<span class="currency">{{currencySymbol}}</span>++{{description.fees_amount | number: precisonTwo}}
+								<span class="currency">{{currencySymbol}}</span>{{description.fees_amount | number: precisonTwo}}
 							</span>
 							<br />
 						</span>
@@ -279,7 +279,7 @@
 				</td>
 				<td>
 					<strong >
-						<span class="currency">{{currencySymbol}}</span>##{{feesData.credits}}
+						<span class="currency">{{currencySymbol}}</span>{{feesData.credits}}
 					</strong>
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}
