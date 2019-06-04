@@ -165,9 +165,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To show/hide expandable arrow to level1
     $scope.checkHasArrowFirstLevel = function(index) {
         var hasArrow = false;
-        var item = $scope.data.revenueData.charge_groups[index].charge_codes;
+        var count = $scope.data.revenueData.charge_groups[index].charge_codes_count;
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (count > 0) {
             hasArrow = true;
         }
         return hasArrow;
@@ -176,9 +176,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     // To show/hide expandable arrow to level2
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false;
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].transactions;
+        var count = $scope.data.revenueData.charge_groups[index1].charge_codes[index2].number;
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (count > 0) {
             hasArrow = true;
         }
         return hasArrow;
