@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog',
-    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog', 'ADRatesAddonsSrv',
+    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog, ADRatesAddonsSrv) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
@@ -113,12 +113,24 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				// Default amount sign for FEES and TAXES to be positive
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
+
+				$scope.prefetchData.overage_charge_code_id = "";
+				$scope.prefetchData.spillage_charge_code_id = "";
 				// Add New is at the top of the content window, scroll up for the user
 				scrollTop();
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
 		};
+
+		var fetchChargeCodesForAllowance = function() {
+			var chargeCodesSuccessCallback = function(data) {
+                $scope.chargeCodes = data.results;
+                $scope.$emit('hideLoader');
+            };
+
+            $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, chargeCodesSuccessCallback, '', 'NONE');
+		}
 
 		/**
 		 * Callback for charge code type dropdown
@@ -133,6 +145,15 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if (selectedType === '1') {
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
+			} else if (selectedType === '13') {
+				if (_.isUndefined($scope.chargeCodes)) {
+					fetchChargeCodesForAllowance();
+				}				
+				var allowanceChargeGroup = _.find($scope.prefetchData.charge_groups, {
+	                name: "Allowance"
+	            });
+
+				$scope.prefetchData.selected_charge_group = allowanceChargeGroup.value;
 			}
 		};
 
