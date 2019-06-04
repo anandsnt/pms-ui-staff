@@ -3269,13 +3269,22 @@ sntRover.controller('RVbillCardController',
 	 * balance must be 0.00
 	 */
 	$scope.shouldShowVoidBill = function() {
+		var isDbpaymentExistsForThisBill = false;	
+
+		angular.forEach($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details, function(element) {
+			if (element.description[0].fees_desc === "Direct Bill")
+			{
+				isDbpaymentExistsForThisBill = true;
+			}
+		});
 		
 		return !$scope.reservationBillData.bills[$scope.currentActiveBill].is_active && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === '0.00' && 
 		$scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type !== 'DB' && 
 		 $scope.reservationBillData.is_void_bill_enabled && 
 		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_voided && 
-		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill;
+		!$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill && 
+		!isDbpaymentExistsForThisBill;
 	};
 	/*
 	 * Open void bill popup
