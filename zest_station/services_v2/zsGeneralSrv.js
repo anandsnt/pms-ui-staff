@@ -91,7 +91,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'stare-miastro': 'Aparthotel Stare Miasto',
             'upstairs-by-mamas': 'Upstairs by Mamas',
             'juliani': 'Hotel Juliani',
-            'mooons': 'Mooons'
+            'mooons': 'Mooons',
+            'marmalade': 'Marmalade Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -122,6 +123,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     var hotelTheme = _.findWhere(response.themes, {
                         id: response.existing_email_template_theme
                     });
+
+                    // if theme isn't set, choose Stayntouch theme and proceed
+                    if (!hotelTheme) {
+                        hotelTheme = _.findWhere(response.themes, {
+                            name: 'Stayntouch'
+                        });
+                    }
 
                     if (hotelTheme && hotelTheme.name) {
                         theme = hotelTheme.name.toLowerCase();
