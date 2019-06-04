@@ -3,6 +3,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv) {
 
 		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
+        $scope.isFromNightlyDiary = $stateParams.isFromNightlyDiary ? true : false;
 
 		$scope.stateCheck = {
 			pagination: {
@@ -520,7 +521,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// CICO-9429: Show Addon step only if its been set ON in admin
 				var navigate = function() {
 					if ($scope.reservationData.guest.id || $scope.reservationData.company.id || $scope.reservationData.travelAgent.id || $scope.reservationData.group.id) {
-						if ($rootScope.isAddonOn && areReservationAddonsAvailable && $rootScope.hotelDiaryConfig.mode !== 'FULL') {
+						if ($rootScope.isAddonOn && areReservationAddonsAvailable && ( $rootScope.hotelDiaryConfig.mode !== 'FULL' || !$scope.isFromNightlyDiary)) {
 							goToAddonsView();
 						} else {
 							$scope.computeTotalStayCost();
@@ -529,7 +530,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					}
 				};
 
-				if ($rootScope.isAddonOn && areReservationAddonsAvailable && $rootScope.hotelDiaryConfig.mode !== 'FULL') {
+				if ($rootScope.isAddonOn && areReservationAddonsAvailable && ( $rootScope.hotelDiaryConfig.mode !== 'FULL' || !$scope.isFromNightlyDiary)) {
 					// CICO-16874
 					goToAddonsView();
 				} else {
