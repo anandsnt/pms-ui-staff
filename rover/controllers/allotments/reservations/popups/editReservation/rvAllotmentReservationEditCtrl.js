@@ -21,7 +21,8 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
       BaseCtrl.call(this, $scope);
 
       // variables
-      var initialPopupData = {};
+      var initialPopupData = {},
+          bulkCheckoutPopup;
 
       var fieldsEnabled = {
         date: true,
@@ -261,6 +262,22 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
        * @param {object} Selected Reservation
        */
       $scope.checkoutReservation = function(reservation) {
+          if (reservation.is_bulk_checkout_in_progress) {
+              var data = {
+                  message: 'BULK_CHECKOUT_PROCESS_IN_PROGRESS',
+                  isFailure: true
+              };
+
+              bulkCheckoutPopup = ngDialog.open({
+                  template: '/assets/partials/popups/rvInfoPopup.html',
+                  closeByDocument: true,
+                  scope: $scope,
+                  data: JSON.stringify(data)
+              });
+
+              return;
+          }
+
         var summaryData     = $scope.allotmentConfigData.summary,
             dataForPopup    = {
                                 group_name: summaryData.group_name,
@@ -492,6 +509,15 @@ sntRover.controller('rvAllotmentReservationEditCtrl', [
           onSelect: reservationToDateChoosed
         }, commonDateOptions);
       };
+      
+        /**
+         * Close the bulk checkout status popup
+         */
+        $scope.closeErrorDialog = function() {
+            if (bulkCheckoutPopup) {
+                bulkCheckoutPopup.close();
+            }
+        };
       /**
       * Initialization of pop
       * @return {[type]} [description]

@@ -1,0 +1,81 @@
+<div class="form float" ng-if="state.activeTab === 'SETTING'">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+    <fieldset class="holder full-width">
+        <div class="form-title full-width">
+            <h3><span translate>PMI Settings</span></h3>
+        </div>
+        <div class="entry">
+            <div class="holder left">
+                <label><span translate>ACTIVATE_INACTIVATE</span></label>
+                <div name="active-inactive-toggle" class="switch-button" ng-class="{ on: config.enabled }"
+                    ng-click="toggleEnabled()">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+            <div class="holder left">
+                <label><span translate>INFANTS_INCLUDED</span></label>
+                <div name="active-inactive-toggle" class="switch-button" ng-class="{ on: config.add_infants_to_guest_count }"
+                    ng-click="toggleInfants()">
+                    <input type="checkbox">
+                    <span class="switch-icon"></span>
+                </div>
+            </div>
+        </div>
+        <fieldset class="holder full-width">
+            <fieldset class="holder left">
+                <div class="form-title">
+                    <h3>Export Settings</h3>
+                </div>
+                <div id="options" class="entry full-width">
+                    <label>
+                        {{ 'DELIVERY' | translate}}
+                    </label>
+                    <div class="switch-container">
+                        <div class="switch-button with-text" ng-class="{'on' : config.deliver_by_ftp}">
+                            <input type="checkbox" ng-model="config.deliver_by_ftp" />
+                            <label class="data-off">
+                                <span class="value">FTP</span>
+                                <span class="button orange">EMAIL</span>
+                            </label>
+                            <label class="data-on">
+                                <span class="button orange">FTP</span>
+                                <span class="value">EMAIL</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="holder right">
+                <div class="form-title">
+                    <h3>Export Email Delivery</h3>
+                </div>
+                <ad-textarea rows="4" 
+                             div-class="full-width" 
+                             text-area-class="full-width" 
+                             value="config.email"
+                             label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" 
+                             placeholder="">
+                </ad-textarea>
+                <section ng-hide="!config.deliver_by_ftp">
+                    <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
+                    <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host" styleclass="full-width"></ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location" styleclass="full-width">
+                    </ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_receipts_location" label="FTP receipt location" styleclass="full-width">
+                    </ad-textbox>
+                    <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name" styleclass="full-width">
+                    </ad-textbox>
+                    <ad-textbox inputtype="password" value="config.ftp_password" label="FTP password" styleclass="full-width">
+                    </ad-textbox>
+                </section>
+            </fieldset>
+        </fieldset>
+        <div class="actions float">
+            <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
+                translate>
+                SAVE_CHANGES
+            </button>
+        </div>
+</div>

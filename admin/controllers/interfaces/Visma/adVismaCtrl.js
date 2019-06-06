@@ -15,18 +15,18 @@ admin.controller('adVismaCtrl', ['$scope', 'config', 'adInterfacesSrv',
         };
 
         /**
-        *
-        * @return {undefined}
-        * @param {name} name name of current active Tab
-        */
+         *
+         * @return {undefined}
+         * @param {name} name name of current active Tab
+         */
         $scope.changeTab = function (name) {
             $scope.state.activeTab = name;
         };
 
         /**
-        * when we clicked on save button
-        * @return {undefined}
-        */
+         * when we clicked on save button
+         * @return {undefined}
+         */
         $scope.saveSetup = function () {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
