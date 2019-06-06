@@ -9,7 +9,7 @@ angular.module('admin')
         };
 
         this.toggle = function (params) {
-            return ADBaseWebSrvV2.putJSON('/api/features/' + params.feature, params);
+            return ADBaseWebSrvV2.putJSON('/api/features/' + params.feature, _.omit(params, 'feature'));
         };
 
         this.getHotels = function (params) {

@@ -37,7 +37,7 @@ angular.module('admin')
             var fetchStatus = function () {
                 $scope.callAPI(ADFeatureToggleSrv.fetchChainStatus, {
                     params: {
-                        chains: _.pluck($scope.data, 'uuid'),
+                        chain_uuids: _.pluck($scope.data, 'uuid'),
                         feature: $scope.feature.name
                     },
                     onSuccess: function (result) {

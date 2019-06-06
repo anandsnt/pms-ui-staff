@@ -42,7 +42,7 @@ angular.module('admin')
             var fetchStatus = function () {
                 $scope.callAPI(ADFeatureToggleSrv.fetchHotelStatus, {
                     params: {
-                        hotels: _.pluck($scope.data, 'uuid'),
+                        hotel_uuids: _.pluck($scope.data, 'uuid'),
                         feature: $scope.feature.name
                     },
                     onSuccess: function (result) {
