@@ -370,6 +370,25 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+		/**
+		 * Attach a specific guest to a reservation
+		 * @param {Object} params - holding request params
+		 * @return {Promise}
+		 */
+		this.attachGuestToReservation = function (params) {
+			var deferred = $q.defer(),
+				url = '/api/reservations/' + params.reservation_id + '/reservations_guest_details/attach_guest_details';
+			
+			delete params.reservation_id;
+
+			rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		}
+
 
 	}
 ]);

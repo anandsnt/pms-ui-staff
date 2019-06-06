@@ -126,11 +126,14 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             if ($stateParams.isMergeViewSelected) {
                 backBtnLabel = $filter('translate')('MERGE_CARDS');
             } 
-                $rootScope.setPrevState = {
-                    title: backBtnLabel,
-                    callback: 'navigateBack',
-                    scope: $scope
-                };
+            if ($stateParams.fromStaycard) {
+                backBtnLabel = $filter('translate')('STAY_CARD');
+            }
+            $rootScope.setPrevState = {
+                title: backBtnLabel,
+                callback: 'navigateBack',
+                scope: $scope
+            };
             },
             setTitleAndHeading = function () {
                 var title = $filter('translate')('GUEST_CARD');
@@ -147,11 +150,19 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Back navigation handler
         $scope.navigateBack = function () {
-          $state.go('rover.guest.search', {
-            textInQueryBox: $stateParams.query,
-            selectedIds: $stateParams.selectedIds,
-            isMergeViewSelected: $stateParams.isMergeViewSelected
-          });
+          if ($stateParams.fromStaycard) {
+              $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                  id: $stateParams.reservationId,
+                  confirmationId: $stateParams.confirmationNo
+              });
+          } else {
+              $state.go('rover.guest.search', {
+                  textInQueryBox: $stateParams.query,
+                  selectedIds: $stateParams.selectedIds,
+                  isMergeViewSelected: $stateParams.isMergeViewSelected
+              });
+          }
+          
         };
 
         /**
