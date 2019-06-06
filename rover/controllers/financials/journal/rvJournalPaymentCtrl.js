@@ -157,9 +157,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     /* To hide/show arrow button for Level2 */
     $scope.checkHasArrowSecondLevel = function(index1, index2) {
         var hasArrow = false,
-        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2].transactions;
+        item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
 
-        if ((typeof item !== 'undefined') && (item.length > 0)) {
+        if (item.number > 0) {
             hasArrow = true;
         }
         return hasArrow;
