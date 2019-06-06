@@ -84,6 +84,7 @@ sntZestStation.controller('zsWalkInCtrl', [
         };
 
         $scope.continueBooking = function() {
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
         };
 
@@ -130,8 +131,10 @@ sntZestStation.controller('zsWalkInCtrl', [
                             recordIDScanActions('ID_FACIAL_RECOGNITION', 'Success for the guest', guestName);
                         }
                     }
-                    // searchingReservationInProgress = false;
-                    $state.go('zest_station.checkInReservationDetails');
+                    
+                    $state.go('zest_station.checkInReservationDetails', {
+                        'previousState': 'WALKIN'
+                    });
                 } else {
                     reservationSearchFailed();
                 }
@@ -361,6 +364,11 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.idScanData.showRoomDetailsPopup = false;
         };
 
+        $scope.upgradeSelected = function(roomDetails) {
+            $scope.roomTypeSelected(roomDetails);
+            $scope.continueBooking();
+        };
+
         $scope.continueFromMinimumAdrRoomType = function() {
             // if there are available rooms in next level proceed to room upsell
             if ($scope.availabileRoomList.length > 0) {
@@ -378,12 +386,38 @@ sntZestStation.controller('zsWalkInCtrl', [
             }
         };
 
+        $scope.showRoomDetails = function(roomType){
+            $scope.idScanData.roomDetails = roomType;
+            $scope.screenData.roomSelectionMode = 'ROOM_UPSELL_DETAILS';
+            $scope.refreshScroller('upsell-details');
+        };
+
+        var onBackButtonClicked = function() {
+            if ($scope.screenData.scanMode === 'SELECT_STAY_DETAILS') {
+                $scope.navToHome();
+            } else if ($scope.screenData.scanMode === 'RESERVATION_CONFIRMATION') {
+                if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' || $scope.availabileRoomList.length == 1) {
+                    if ($scope.screenData.roomSelectionMode === 'MINIMUM_ADR') {
+                        $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
+                    } else if ($scope.screenData.roomSelectionMode === 'ROOM_UPSELL') {
+                        $scope.screenData.roomSelectionMode = 'MINIMUM_ADR';
+                    } else if ($scope.screenData.roomSelectionMode === 'ROOM_UPSELL_DETAILS') {
+                        $scope.screenData.roomSelectionMode = 'ROOM_UPSELL';
+                    }
+                } else {
+                    $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
+                    $scope.idScanData.selectedRoomType = {};
+                }
+            }
+        };
+
         (function() {
             zsCheckinSrv.setCurrentReservationIdDetails({});
             // $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
             $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
-            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
             $scope.idScanData = {
                 mode: '',
                 selectedGuest: {},
@@ -404,6 +438,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.setScroller('passport-validate');
             $scope.setScroller('stay-details-validate');
             $scope.setScroller('room-details');
+            $scope.setScroller('upsell-details');
 
             var idCaptureConfig = processCameraConfigs($scope.zestStationData.iOSCameraEnabled, $scope.zestStationData.connectedCameras, $scope.zestStationData.featuresSupportedInIosApp);
 

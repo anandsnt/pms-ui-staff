@@ -1,32 +1,25 @@
-<section id="main" role="main" click-touch='resetTime()'class="upgrades-section" ng-show="screenData.roomSelectionMode == 'MINIMUM_ADR'">
-    <div id="content" class='room-details'>
-        <h1 translate>
-            REVIEW_WALKIN_GUEST_STAY_DETAILS
-        </h1>
-        <h2 translate>
-            REVIEW_WALKIN_GUEST_STAY_DETAILS_INSTRUCTIONS
-        </h2>
-        <div id="upgrade" class="tabled-options">
+<section id="main" class="admin-screen" role="main" ng-show="screenData.roomSelectionMode == 'MINIMUM_ADR'">
+    <div id="content">
+        <h1 translate>WALKIN_ROOM_SELECTED</h1>
+        <h3 ng-show="idScanData.selectedRoomType.id">{{ 'ADR_FOR_X_NIGHTS' | translate: idScanData }} <strong>{{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong></h3>
+        <div id="upgrade">
             <div class="upgrade-picture">
                 <img ng-src="{{ idScanData.selectedRoomType.room_type_image ? idScanData.selectedRoomType.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
             </div>
-            <!-- Add scroll on it -->
-            <div class="upgrade-info scrollable" ng-iscroll="room-info">
+            <div id="upgradeInfo" class="upgrade-info" ng-iscroll="room-info">
                 <div class="wrapper" ng-bind-html="idScanData.selectedRoomType.description">
                 </div>
             </div>
             <div class="upgrade-price">
                 <h2>{{ idScanData.selectedRoomType.roomTypeName }}</h2>
                 <div class="price">
-                    <h3 style="margin: 5px 0px;">{{ zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}</h3> 
                     <strong>{{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong>
+                    <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
                 </div>
             </div>
         </div>
         <div id="actions">
-            <button type="button" class="button transparent" touch-press='navToHome(); resetTime()' translate>
-               NAV_CANCEL
-            </button>
+            <p class="inline-text" translate>WALKIN_SELECTED_ROOM_MSG</p>
             <button type="button" class="button" touch-press='continueFromMinimumAdrRoomType(); resetTime()' translate>
                CONTINUE
             </button>
@@ -34,39 +27,39 @@
     </div>
 </section>
 
-<section id="main" class="addon-screen" role="main" ng-show="screenData.roomSelectionMode == 'ROOM_UPSELL'">
-   <div id="content">
-     <h1 translate>
-            REVIEW_WALKIN_UPSELL_ROOM_TYPE
-        </h1>
-        <h2 translate>
-            REVIEW_WALKIN_UPSELL_ROOM_TYPE_INSTRUCTIONS
-        </h2>
-      <div id="upgrades">
-         <ul class="add-on-list add-on-list-columns" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
-            <li class="add-on" ng-repeat="room in pageData.viewableItems" ng-class="{'selected': room.id === idScanData.selectedRoomType.id }" click-touch="selectRoom(room)">
-               <div class="add-on-picture">
-                  <img ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
-               </div>
-               <div class="add-on-content">
-                  <h2>{{ room.roomTypeName }}</h2>
-                  <div class="price">
-                     {{ zestStationData.currencySymbol }}{{ room.adr }}
-                  </div>
-               </div>
-            </li>
-         </ul>
-      </div>
-      <div id="actions">
-        <button type="button" class="button transparent" click-touch="continueBooking()" translate>
-            ROOM_UPGRADE_SKIP
-        </button>
-         <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
-         <!-- <p class="text">
-            {{ 'WALKIN_ROOM_TYPES_FOOTER' | translate: pageData }}
-         </p> -->
-         <!-- Remove this .button-group element when there is no navigation -->
-         <div class="button-group">
+
+
+
+<section id="main" role="main" ng-show="screenData.roomSelectionMode == 'ROOM_UPSELL'">
+    <div id="content">
+        <h1 translate>WALKIN_UPGRADE_ROOM_MSG</h1>
+        <h3 translate>WALKIN_UPGRADE_ROOM_SUB_MSG</h3>
+        <div id="upgrades">
+            <!--Layout V4: add  .upgrade-list-v2 -->
+            <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
+                <li ng-repeat="room in pageData.viewableItems" ng-class="{'selected': room.id === idScanData.selectedRoomType.id }" click-touch="showRoomDetails(room)">
+                    <div class="upgrade-picture">
+                        <img ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
+                    </div>
+                    <div class="upgrade-content">
+                        <h2>{{ room.roomTypeName }}</h2>
+                        <div class="price">
+                            <strong>+{{ zestStationData.currencySymbol }}{{ room.adr }}</strong>
+                            <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
+                            <button type="button" class="button" click-touch='showRoomDetails(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'" translate>
+                                ROOM_DETAILS
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- If there is no navigation or the 'No Thanks' button does not exist add class .align-right-->
+        <div id="actions">
+            <!-- Don't show if there is no navigation -->
+            <p class="text">{{ 'WALKIN_ROOM_TYPES_FOOTER' | translate: pageData }}</p>
+            <!-- Remove this .button-group element when there is no navigation -->
+             <div class="button-group">
             <!-- add 'disabled="disabled"' if there is no previous page -->
             <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disablePreviousButton, false)" ng-hide="pageData.disablePreviousButton">
                <div ng-include="icons.url.left_arrow_icon"></div>
@@ -84,35 +77,38 @@
                 <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>
-         <button type="button" class="button" click-touch="continueWithRoomUpsell()" ng-disabled="idScanData.selectedRoomType != idScanData.roomDetails" ng-class="{'disabled-button': idScanData.selectedRoomType != idScanData.roomDetails }" translate>
-           CONTINUE
-         </button>
-      </div>
-   </div>
+        <button type="button" class="button transparent" click-touch="continueBooking()" translate>
+            ROOM_UPGRADE_SKIP
+        </button>
+    </div>
 </section>
-<div id="popup-overlay" ng-class="{'open': idScanData.showRoomDetailsPopup}"></div>
-<div class="popup" ng-class="{'open': idScanData.showRoomDetailsPopup }">
-   <div class="popup-content add-on">
-      <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
-      <div class="add-on-picture">
-        <img ng-src="{{ idScanData.roomDetails.room_type_image ? idScanData.roomDetails.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
-      </div>
-      <div class="add-on-content">
-         <h2>{{ idScanData.roomDetails.roomTypeName }}</h2>
-         <p ng-bind-html="idScanData.roomDetails.description"></p>
-         <div class="price">
-            <div class="amount">
-               <strong>+{{ zestStationData.currencySymbol }}{{ idScanData.roomDetails.adr }}</strong>
+
+
+<section id="main" role="main" ng-show="screenData.roomSelectionMode == 'ROOM_UPSELL_DETAILS'">
+    <div id="content">
+        <h1>Upgrade your Room?</h1>
+        <div id="upgrade" class="tabled-options">
+            <div class="upgrade-picture">
+                <img ng-src="{{ idScanData.roomDetails.room_type_image ? idScanData.roomDetails.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
             </div>
-            <div class="action">
-               <button type="button" data-action="popup" class="button transparent" click-touch="closeRoomSelection()" translate>
-                    CLOSE
-               </button>
-               <button type="button" data-action="popup" class="button" click-touch="roomTypeSelected(idScanData.roomDetails)" translate>
-                    BOOK_ROOM
-               </button>
+            <!-- Add scroll on it -->
+             <div id="upgradeInfo" class="upgrade-info" ng-iscroll="upsell-details">
+                <div class="wrapper" ng-bind-html="idScanData.roomDetails.description">
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
+            <div class="upgrade-price">
+                <h2>{{ idScanData.roomDetails.roomTypeName }}</h2>
+                <div class="price">
+                    <strong>+{{ zestStationData.currencySymbol }}{{ idScanData.roomDetails.adr }}</strong>
+                    <small>{{ 'WALKIN_ROOM_TYPES_FOOTER' | translate: pageData }}</small>
+                </div>
+            </div>
+        </div>
+        <div id="actions">
+            <button type="button" class="button transparent" click-touch="continueBooking()" translate>
+              ROOM_UPGRADE_SKIP
+            </button>
+            <button type="button" class="button"class="button" click-touch="upgradeSelected(idScanData.roomDetails)" translate>BUY_UPGRADE</button>
+        </div>
+    </div>
+</section>

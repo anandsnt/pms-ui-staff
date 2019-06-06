@@ -189,7 +189,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 });
             } else if (reservations.length > 0) {
                 $state.go('zest_station.selectReservationForCheckIn');
-            } else {
+            }
+            else if ($stateParams.previousState === 'WALKIN') {
+                $scope.navToHome();
+            } 
+            else {
                 $state.go('zest_station.checkInReservationSearch');
             }
             // what needs to be passed back to re-init search results

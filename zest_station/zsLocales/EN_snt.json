@@ -821,6 +821,8 @@
     "SELECT_YOUR_ROOM": "Select your room",
     "SELECT_ROOM": "Select Room",
     "REMOVE_ROOM": "Remove room",
-    "ADR_FOR_X_NIGHTS": "Avg. Daily Rate for {{ noOfDays }} night(s):"
+    "ADR_FOR_X_NIGHTS": "Avg. Daily Rate for {{ noOfDays }} night(s):",
+    "WALKIN_ROOM_SELECTED": "Room selected",
+    "WALKIN_SELECTED_ROOM_MSG": "We selected a room category for you, based on best fit and offer. You can modify your room type selection before confirming the reservation."
 
 }

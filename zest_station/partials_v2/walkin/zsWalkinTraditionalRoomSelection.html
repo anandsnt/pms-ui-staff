@@ -5,7 +5,7 @@
         <!-- Once room is selected, show total stay cost:-->
         <h3 ng-show="idScanData.selectedRoomType.id">{{ 'ADR_FOR_X_NIGHTS' | translate: idScanData }} <strong>{{ zestStationData.currencySymbol }}{{ idScanData.selectedRoomType.adr }}</strong></h3>
         <div id="upgrades">
-            <ul class="upgrade-list">
+            <ul class="upgrade-list"  ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
                 <li ng-repeat="room in pageData.viewableItems" ng-class="{'selected': room.id === idScanData.selectedRoomType.id }" click-touch="selectRoom(room)">
                     <!-- Add class 'selected' when room is selected -->
                     <div class="upgrade-picture">
@@ -16,6 +16,9 @@
                         <div class="price" style="bottom: unset;">
                             <strong>{{ zestStationData.currencySymbol }}{{ room.adr }} </strong>
                             <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
+                            <button type="button" class="button" click-touch='selectRoom(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'" translate>
+                                ROOM_DETAILS
+                            </button>
                         </div>
                     </div>
                 </li>
