@@ -221,7 +221,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
                 fetchAddons();
-                checkIfRoomUpgradeIsPresent();
+                if ($scope.selectedReservation.skipRoomUpsell) {
+                    $scope.selectedReservation.is_upsell_available = false;
+                } else {
+                    checkIfRoomUpgradeIsPresent();
+                }
             } else {
                 setDisplayContentHeight(); // utils function
                 refreshScroller();

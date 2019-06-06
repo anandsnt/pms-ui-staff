@@ -84,8 +84,8 @@
 ==========================================================*/
 
 /* Containers ***/
-
     #screen-icon { .hide; }
+
     #main {
         position: absolute;
         top: 90px;
@@ -126,23 +126,26 @@
 
         @media only screen and (min-height: 1024px) { padding-top: 200px; }
     }
-  #content {
-            position: relative;
-            overflow: hidden;
-            max-width: 1280px;
-            .square(100%);
+    
+    #content {
+        position: relative;
+        overflow: hidden;
+        max-width: 1280px;
+        .square(100%);
 
-            > .button { 
-                min-width: 180px;
-                margin: 0 auto 20px; 
+        > .button { 
+            min-width: 180px;
+            margin: 0 auto 20px; 
 
-                &:last-child { margin-bottom: 0; }
-            }
+            &:last-child { margin-bottom: 0; }
         }
-    .timer-checkbox{
-      background-color: transparent;
-      box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.15);
     }
+
+    .timer-checkbox{
+        background-color: transparent;
+        box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.15);
+    }
+
     .admin-item-label{
         color:black !important ;
     }
@@ -162,8 +165,10 @@
 
     #message {
         margin-top: 120px;
+        
         .button { margin: 80px auto 0; }
     }
+
     .eci-done { 
         margin-top: 0px !important;
         .button { 
@@ -171,10 +176,7 @@
         }
     }
 
-    
-     .page-print { .hide; }
-    
-    
+    .page-print { .hide; }
     
 /* Nav options ***/
     #options {
@@ -206,8 +208,9 @@
                     width: 100%;
                     padding: 30px 0;
                 }
+
                 .icon-img{
-                    max-height:130px;
+                    max-height: 130px;
                 }
 
                 &.not-selected {
@@ -220,20 +223,20 @@
                     .square(70px);
                 }
             }
+
             .cc-details {
                 margin: 0;
  
                 strong {
-                     font-size: 16px;
-                     color: @textColor;
+                    font-size: 16px;
+                    color: @textColor;
                 }
  
                 span { 
-                     display: inline-block;
-                     color: fade(@textColor, 70); 
+                    display: inline-block;
+                    color: fade(@textColor, 70); 
                 }
             }
-
 
             span { 
                 font-size: 14px;
@@ -253,7 +256,6 @@
             .device-magtek {
                 height: 140px;
             }
-
 
             &.break {
                 position: relative;
@@ -280,6 +282,7 @@
                     .size(70px, 2px);
                 }
             }
+
             &.break.single-line{
                 &:before {
                     .size(230px, 2px);
@@ -328,7 +331,6 @@
         }
     }
 
-
     #balance {
          #flexbox > .flex();
          #flexbox > .parent(row wrap, center, '', '');
@@ -346,10 +348,6 @@
 
 /* Textual block /w scroll ***/
     #textual {
-        &.fill-height{
-            max-height: 63% !important;
-            min-height: 46% !important;
-        }
         position: relative;
         color: @black;
         background-color: @white;
@@ -391,7 +389,6 @@
                  height: 54px;
             }
         }
- 
 
         .wrapper { 
             padding: 20px 30px; 
@@ -432,6 +429,11 @@
         }
 
         &:after { bottom: 0; }
+
+        &.fill-height {
+            max-height: 63% !important;
+            min-height: 46% !important;
+        }
 
         &.pull-left {
             margin-right: 20px;
@@ -505,87 +507,51 @@
         &.full { width: 100%; }
     }
 
-
-/* Upgrade Box **/
+/* Room Upgrade - Single Room **/
     #upgrade {
         position: relative;
-        color: @black;
-        background-color: @white;
-        padding:5px;
+        width: 100%;
         overflow: hidden;
-        #calc > #height > .remove( 100%, 185px );
+        background-color: @white;
+        overflow: hidden;
+        border: 3px solid @white;
+        #calc > #height > .remove( 100%, 240px );
         #rounded > .round();
 
-        .upgrade-picture,
-        .upgrade-info {
-            float: left;
-            width: 50%;
-             #calc > #height > .remove( 100%, 80px );
-             overflow: hidden;
-             position: relative;
-        }
-
         .upgrade-picture {
-            #rounded > .top-left();
-            > img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 45%;
+            #calc > #height > .remove(100%, 80px);
+            overflow: hidden;
+
+            img {
                 min-width: 100%;
                 width: auto;
                 height: 100%;
+                #rounded > .top-left(6px);
             }
         }
 
         .upgrade-info {
-            padding: 15px 25px;
-            position: relative;
-            font-size: 1rem;
-            #rounded > .top-right();
-
-            h1,h2,h3,h4,h5 {
-                text-transform: none;
-                text-align: left;
-
-            }
-
-            h2 {
-                font-size: 1.3em;
-            } 
-
-            p, ul {
-                font-size: 1em;
-            }
-
-            strong {
-                font-weight: 600;
-            }
-
-            ul { 
-                margin-top: 10px;
-                padding-left: 20px;
-                list-style:none;
-
-                li {
-                    position: relative;
-                    &:before {
-                        position: absolute;
-                        content: "-"; 
-                        left: -20px;
-                    }
-                   
-                }
-            }
-
-            .wrapper {
-                padding-bottom: 20px;
-            }
+            position: absolute;
+            top: 30px;
+            right: 0;
+            color: @black;
+            padding: 0 20px;
+            width: 55%;
+            overflow: hidden;
+            #calc > #height > .remove(100%, 125px);
 
             .iScrollVerticalScrollbar {
                 position: absolute;
                 width: 5px;
-                top: 10px;
-                right: 10px;
-                bottom: 10px;
+                top: 0;
+                right: 5px;
+                bottom: 0;
                 z-index: 99;
-                
+
                 .iScrollIndicator {
                     position: absolute;
                     width: 100%;
@@ -593,37 +559,96 @@
                     #rounded > .round();
                 }
             }
-        }
- 
-        .upgrade-price {
-            clear: both;
-            width: 100%;
-            background-color: @backgroundColor;
-            color: @textColor;
-            height: 80px;
-            padding: 0 10px;
-            
-            #rounded > .bottom();
-            #flexbox > .flex();
-            #flexbox > .parent('', space-between, center, '');
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5 {
+                text-transform: none;
+                text-align: left;
+            }
 
             h2 {
+                font-size: 1.3em;
+            }
+
+            p,
+            ul {
+                font-size: 1em;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            ul {
+                margin-top: 10px;
+                padding-left: 20px;
+                list-style:none;
+
+                li {
+                    position: relative;
+
+                    &:before {
+                        position: absolute;
+                        content: "-";
+                        left: -20px;
+                    }
+                }
+            }
+        }
+
+        .upgrade-price {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 0 10px;
+            color: @textColor;
+            background-color: @backgroundColor;
+            .size(80px, 100%);
+            #rounded > .bottom(4px);
+            #flexbox > .flex();
+            #flexbox > .parent(row wrap, space-between, center, '');
+
+            h2 {
+                text-align: left;
                 margin: 0;
+                line-height: 24px;
+                max-width: 75%;
+                max-height: 48px;
+                overflow: hidden;
             }
 
             .price {
                 text-align: right;
+
                 strong {
                     font-size: 32px;
                     font-weight: 600;
                     display: block;
                 }
+
                 small {
                     text-transform: uppercase;
                     font-size: 14px;
                 }
             }
         }
+    }
+
+/* Room Upgrade - Multiple Rooms **/
+    #upgrades{
+        overflow: hidden;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        align-items: center;
     }
 
     .upgrade-list {
@@ -696,6 +721,24 @@
                     }
                 }
             }
+
+            .selected {
+                border-color: @actionBackground;
+                background-color: @actionBackground;
+
+                .upgrade-picture {
+                    background-color: darken(@white, 2);
+
+                    svg {
+                        fill: @brandColor;
+                    }
+                }
+
+                .upgrade-content {
+                    color: @actionColor;
+                    background-color: @actionBackground;
+                }
+            }
         }
 
         &.upgrade-list-v2 {
@@ -733,6 +776,7 @@
             }
         }
     }
+    
     @media (max-width: 1025px) {   
 
             .upgrade-list { 
@@ -779,7 +823,6 @@
             }
     }
 
-
     .two-upgrades-list{
         width: 66%;
         margin: 0 auto;
@@ -787,6 +830,7 @@
             width:49%;
         }
     }
+
     .single-upgrade-list{
         width: 33%;
         margin: 0 auto;
@@ -797,18 +841,6 @@
  
 
  /* Add Ons **/
-    #upgrades{
-        overflow: hidden;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-flex-flow: row wrap;
-        flex-flow: row wrap;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
     .addon-screen#main {
         padding-top: 60px;
     }
@@ -904,6 +936,33 @@
                     }
                 }
             }
+
+            .scrollable {
+                position: relative;
+                max-height: 380px;
+                margin-bottom: 20px;
+                overflow: hidden;
+
+                .iScrollVerticalScrollbar {
+                    position: absolute;
+                    width: 5px;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 99;
+
+                    .iScrollIndicator {
+                        position: absolute;
+                        width: 100%;
+                        background: @brandColor;
+                        #rounded > .round();
+                    }
+                }
+            }
+
+            .wrapper {
+                padding: 0 20px 20px 0;
+            }
         }
 
         &.selected {
@@ -915,44 +974,6 @@
         }
     }
 
-     .popup .popup-content.add-on {
-        padding: 0;
-        border: 3px solid #fff;
-        width: 450px;
-        .add-on-picture {
-            width: 100%;
-            height: 290px;
-        }
-        .add-on-content {
-            width: 100%;
-            padding: 20px;
-            .price .action {
-                width: 100%; 
-                display: -webkit-box; 
-                display: -webkit-flex;
-                display: flex;
-                -webkit-flex-flow: row wrap; 
-                flex-flow: row wrap;
-                -webkit-justify-content: space-between;
-                justify-content: space-between; 
-                margin-top: 20px;
-            }
-            .price .amount{
-                width:100%;
-                display: -webkit-box;
-                display: -webkit-flex;
-                display: flex;
-                -webkit-flex-flow: row;
-                flex-flow: row;
-                -webkit-align-items: center;
-                align-items: center;
-                small{
-                    color: rgba(42,39,39,.6);
-                    margin-left: 10px;
-                }
-            }
-        }
-    }
     .single-addon-image > img {
         min-height: 300px;
     }
@@ -1113,6 +1134,13 @@
 
             p,
             .button { font-size: 14px; }
+        }
+
+        .inline-text {
+            font-size: 16px;
+            margin-bottom: 0;
+            margin-right: auto;
+            #flexbox > .items('', '', center);
         }
 
         .text {
@@ -1294,6 +1322,7 @@
     .px-space{//used in reservation details for the appearance for better alignment
         padding-left:1px;
     }
+
 /* Reservation details ***/
     #guests {
         font-size: 14px;
@@ -1705,6 +1734,52 @@
             >table>tbody>tr>td>button.overlay{
                 opacity: .5;
             }
+
+            &.add-on {
+                padding: 0;
+                border: 3px solid #fff;
+                width: 450px;
+                
+                .add-on-picture {
+                    width: 100%;
+                    height: 290px;
+                }
+                
+                .add-on-content {
+                    width: 100%;
+                    padding: 20px;
+
+                    .scrollable {
+                        max-height: 30vh;
+                    }
+
+                    .price .action {
+                        width: 100%; 
+                        display: -webkit-box; 
+                        display: -webkit-flex;
+                        display: flex;
+                        -webkit-flex-flow: row wrap; 
+                        flex-flow: row wrap;
+                        -webkit-justify-content: space-between;
+                        justify-content: space-between; 
+                        margin-top: 20px;
+                    }
+                    .price .amount{
+                        width:100%;
+                        display: -webkit-box;
+                        display: -webkit-flex;
+                        display: flex;
+                        -webkit-flex-flow: row;
+                        flex-flow: row;
+                        -webkit-align-items: center;
+                        align-items: center;
+                        small{
+                            color: rgba(42,39,39,.6);
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
             &.large {
                  width: 640px;
             }
@@ -1742,7 +1817,7 @@
             }
         }
 
-             #message-content {
+        #message-content {
             padding: 0 80px 20px;
             #flexbox > .flex();
             #flexbox > .parent(row wrap, center, '', '');

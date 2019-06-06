@@ -813,6 +813,14 @@
     "CHILDREN": "CHILDREN",
     "INFANTS": "INFANTS",
     "CONFIRM_RESERVATION_CREATION": "Book now",
-    "ROOM_TYPE": "Room Type"
+    "ROOM_TYPE": "Room Type",
+    "WALKIN_ROOM_TYPES_FOOTER": "Showing {{ pageStartingIndex }}-{{ pageEndingIndex }} of {{ total }} room types",
+    "BOOK_ROOM": "Book room",
+    "REVIEW_WALKIN_UPSELL_ROOM_TYPE": "Upgrade room?",
+    "REVIEW_WALKIN_UPSELL_ROOM_TYPE_INSTRUCTIONS": "",
+    "SELECT_YOUR_ROOM": "Select your room",
+    "SELECT_ROOM": "Select Room",
+    "REMOVE_ROOM": "Remove room",
+    "ADR_FOR_X_NIGHTS": "Avg. Daily Rate for {{ noOfDays }} night(s):"
 
 }

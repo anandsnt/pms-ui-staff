@@ -11,7 +11,7 @@
         <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
             <li ng-repeat='room in pageData.viewableItems' click-touch="showRoomDetailsForStyleA(room)">
                 <div class="upgrade-picture">
-                    <img src="{{room.room_type_image}}">
+                    <img ng-src="{{ room.room_type_image ? room.room_type_image.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
                 </div>
                 <div class="upgrade-content">
                     <h2>{{room.upgrade_room_type_name}}</h2>
@@ -56,7 +56,7 @@
         </h1>
         <div id="upgrade" class="tabled-options">
             <div class="upgrade-picture">
-                <img src="{{selectedRoom.room_type_image}}">
+                <img src="{{selectedRoom.room_type_image ? selectedRoom.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
             </div>
             <!-- Add scroll on it -->
             <div class="upgrade-info">
