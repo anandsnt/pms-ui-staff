@@ -7,7 +7,8 @@
         </div>
         <div class="entry">
             <label><span translate>ACTIVATE_INACTIVATE</span></label>
-            <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }" ng-click="toggleEnabled()">
+            <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
+                ng-click="toggleEnabled()">
                 <input type="checkbox" name="accountview-setup-active" id="accountview-setup-active">
                 <span class="switch-icon"></span>
             </div>
@@ -15,17 +16,12 @@
         <div ng-if="config.enabled">
             <fieldset class="holder full-width">
                 <fieldset class="holder left">
-                    <ad-textbox inputtype="text"
-                                value="config.balancing_account"
-                                label="{{'BALANCING_ACCOUNT'| translate}}"
-                                styleclass="full-width">
+                    <ad-textbox inputtype="text" value="config.balancing_account"
+                        label="{{'BALANCING_ACCOUNT'| translate}}" styleclass="full-width">
                     </ad-textbox>
-                    <ad-textarea rows="4"
-                                 div-class="full-width"
-                                 text-area-class="full-width"
-                                 value="config.email_addresses"
-                                 label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
-                                 placeholder="">
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width"
+                        value="config.email_addresses" label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}"
+                        placeholder="">
                     </ad-textarea>
                 </fieldset>
             </fieldset>
@@ -33,12 +29,12 @@
     </fieldset>
 
     <div class="actions float">
-        <button type="button" id="cancel" class="button blank add-data-inline"
-                ng-click="goBackToPreviousState()" translate>
+        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()"
+            translate>
             CANCEL
         </button>
-        <button type="button" like-type="common" id="update" class="button ng-binding green"
-                ng-click="saveSetup()" translate>
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
+            translate>
             SAVE_CHANGES
         </button>
     </div>

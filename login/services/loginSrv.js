@@ -144,14 +144,31 @@ angular.module('login').service('loginSrv',
                 // This is done to override the common header configured globally
                 $http.get(url, {
                     headers: {
-                        'X-Requested-With': undefined
+                        'X-Requested-With': undefined,
+                        'Auth-Token': undefined
                     }
                 }).
                 then(function (response) {
                     deferred.resolve(response.data);
                 }, function () {
-                    $window.localStorage.removeItem('jwt');
                     deferred.resolve([]);
+                });
+                
+                return deferred.promise;
+            };
+
+            /**
+             * Perform signout
+             */
+            service.signOut = function() {
+                var url = '/logout',
+                    deferred = $q.defer();
+
+                $http.get(url).
+                then(function () {
+                    deferred.resolve({});
+                }, function () {
+                    deferred.resolve({});
                 });
                 
                 return deferred.promise;
