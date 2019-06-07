@@ -1677,7 +1677,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.retrieveTranslations = function() {
             var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
-                return language.language === $translate.use();
+                return language.code === $translate.use();
             });
             var languageId = selecteLanguage ? selecteLanguage.id : '';
             var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
