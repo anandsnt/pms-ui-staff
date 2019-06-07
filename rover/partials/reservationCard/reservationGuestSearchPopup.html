@@ -1,0 +1,70 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" >
+    <div class="modal-content guest-search">
+        <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closePopup()">
+            <span class="icons icon-close"></span>
+        </button>
+        <div class="modal-header">
+            <figure class="guest-image">
+                <img  alt="">
+                <span class="search-indicator"></span>  
+            </figure>
+    
+            <div class="data">
+                <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" rv-delay-textbox ng-model="searchData.firstName" delay="1000" function-to-fire="searchGuest">
+                <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" rv-delay-textbox ng-model="searchData.lastName" delay="1000" function-to-fire="searchGuest">
+            </div>
+    
+            <div class="actions">
+                <button type="button" class="button blank modal-close" ng-click="closePopup()">Cancel</button>
+                <button type="button" class="button green">New Guest</button>
+            </div>
+    
+        </div>
+        <div class="modal-body">
+            <div class="match-info">
+                <p><strong>{{guestList.length}} possible matches</strong></p>
+                <p>Select existing or create a new guest.</p>
+            </div>
+            <div class="scrollable">
+                <div class="wrapper" ng-iscroll="guestSearchResultsScroller">
+                    <ul class="search-results">
+                        <li class="reservation identify-guest" ng-repeat="guest in guestList">
+                            <!-- on click, select it as the guest -->
+                            <a ng-click="attachGuestToReservation(guest.id, ngDialogData.isPrimary)">
+                                <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
+                                    <img ng-src="{{ guest.image }}" alt="" />
+    
+                                    <!-- if it's accompanying guest, show this as well:
+                                    <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                                    
+                                    <!-- If previous stays > 0 show:-->
+                                    <span class="stay-count" ng-if="guest.stayCount > 0">{{guest.stayCount}}</span>
+                                    
+                                    <span class="vip" ng-if="guest.vip">VIP</span>
+                                </figure>
+                                <div class="data" ng-class="{'no-stay': guest.stayCount == 0}">
+                                    <h2>
+                                        <span ng-bind-html="guest.firstName | highlight:searchData.firstName:false"></span>
+                                        <span ng-bind-html="guest.lastName | highlight:searchData.lastName:false"></span>
+                                    </h2>
+                                    <span class="confirmation">Todo</span>
+                                    <span class="icons icon-location">{{guest.address.city}}, {{guest.address.state}}</span>
+                                    <span class="icons icon-phone">{{ guest.phone }}</span>
+                                    <span class="icons icon-email-grey">{{guest.email}}</span>
+                                </div>
+                                <!-- If guest has prevous stays, show last stay details: -->
+                                <div class="last-stay" ng-if="guest.stayCount > 0">
+                                    <span class="label">
+                                        Last Stay <span class="date">{{ guest.lastStay.date | date: 'MMMM d, yyyy'}}</span>
+                                    </span>
+                                    <strong class="room">{{ guest.lastStay.room }}</strong>
+                                    <em class="type">{{ guest.lastStay.roomType }}</em>
+                                </div>
+                            </a>
+                        </li>       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
