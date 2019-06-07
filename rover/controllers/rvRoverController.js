@@ -325,6 +325,8 @@ sntRover.controller('roverController', [
         // Temporary hack to enable the merge options only for pilot properties
         $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
 
+        $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
+
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that

@@ -48,16 +48,18 @@
                 </div>
             </fieldset>
             <fieldset class="holder right">
-                <div class="form-title">
-                    <h3>Export Email Delivery</h3>
+                <div ng-hide="config.deliver_by_ftp">
+                    <div class="form-title">
+                        <h3>Export Email Delivery</h3>
+                    </div>
+                    <ad-textarea rows="4" 
+                                 div-class="full-width" 
+                                 text-area-class="full-width" 
+                                 value="config.email"
+                                 label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" 
+                                 placeholder="">
+                    </ad-textarea>
                 </div>
-                <ad-textarea rows="4" 
-                             div-class="full-width" 
-                             text-area-class="full-width" 
-                             value="config.email"
-                             label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" 
-                             placeholder="">
-                </ad-textarea>
                 <section ng-hide="!config.deliver_by_ftp">
                     <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
                     <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host" styleclass="full-width"></ad-textbox>
@@ -67,12 +69,16 @@
                     </ad-textbox>
                     <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name" styleclass="full-width">
                     </ad-textbox>
-                    <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password" styleclass="full-width">
+                    <ad-textbox inputtype="password" value="config.ftp_password" label="FTP password" styleclass="full-width">
                     </ad-textbox>
                 </section>
             </fieldset>
         </fieldset>
         <div class="actions float">
+             <button id="cancel" class="button blank add-data-inline ng-scope" ng-click="goBackToPreviousState()" type="button"
+                translate>
+                 CANCEL
+             </button>
             <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
                 translate>
                 SAVE_CHANGES

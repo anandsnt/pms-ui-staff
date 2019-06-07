@@ -891,6 +891,22 @@ sntRover.controller('reservationActionsController', [
 
 
         $scope.goToCheckoutButton = function(reservationId, clickedButton, smartbandHasBalance) {
+            // CICO-65640 Prevent user from checking out, when the reservation is already part of the bulk checkout process
+            if ($scope.reservationData.reservation_card.is_bulk_checkout_in_progress) {
+                var data = {
+                    message: 'BULK_CHECKOUT_PROCESS_IN_PROGRESS',
+                    isFailure: true
+                };
+
+                ngDialog.open({
+                    template: '/assets/partials/popups/rvInfoPopup.html',						
+                    closeByDocument: true,
+                    scope: $scope,
+                    data: JSON.stringify(data)
+                });
+
+                return;
+            }
             if (smartbandHasBalance === "true") {
                 $scope.clickedButton = clickedButton;
                 ngDialog.open({
@@ -1438,6 +1454,10 @@ sntRover.controller('reservationActionsController', [
                     reservationId: $scope.reservationData.reservation_card.reservation_id
                 }
             });
+        };
+
+        $scope.closeErrorDialog = function() {
+            ngDialog.close();
         };
     }
 ]);
