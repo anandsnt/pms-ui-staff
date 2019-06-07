@@ -13,7 +13,7 @@
                     </div>
                     <div class="upgrade-content">
                         <h2>{{ room.roomTypeName }}</h2>
-                        <div class="price">
+                        <div class="price" style="bottom: unset;">
                             <strong>{{ zestStationData.currencySymbol }}{{ room.adr }} </strong>
                             <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
                             <button type="button" class="button" click-touch='selectRoom(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'" translate>

@@ -1,45 +1,42 @@
 <!-- Content -->
-<section id="main" role="main" click-touch='resetTime()' ng-class="{'centered':mode === 'ERROR_MODE'}" class="upgrades-section">
-    <div id="content" ng-show="mode === 'ROOM_UPSELL_LIST'" class='room-upsell-content'>
-        <h1>
-            <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_HEADER')" editable-text="ROOM_UPGRADE_HEADER"></text>
-        </h1>
-        <h3>
-            <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_LIST_SUB_HEADER')" editable-text="ROOM_UPGRADE_LIST_SUB_HEADER"></text>
-        </h3>
-        <!--Layout V4: add  .upgrade-list-v2 -->
-        <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
-            <li ng-repeat='room in pageData.viewableItems' click-touch="showRoomDetailsForStyleA(room)">
-                <div class="upgrade-picture">
-                    <img ng-src="{{ room.room_type_image ? room.room_type_image.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
-                </div>
-                <div class="upgrade-content">
-                    <h2>{{room.upgrade_room_type_name}}</h2>
-                    <div class="price">
-                        <strong>+{{ zestStationData.currencySymbol }}{{ room.upsell_amount }}</strong>
-                        <small>
-                            <text data-ng-bind-html="getTagValue('PER_NIGHT')" editable-text="PER_NIGHT"></text>
-                            <br>
-                            <text data-ng-bind-html="getTagValue('TAX_TEXT')" editable-text="TAX_TEXT"></text>
-                        </small>
-                        <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'">
-                            <text data-ng-bind-html="getTagValue('ROOM_DETAILS')" editable-text="ROOM_DETAILS"></text>
-                        </button>
+<section id="main" class="admin-screen" role="main">
+    <div id="content" ng-show="mode === 'ROOM_UPSELL_LIST'">
+        <h1 translate="">ROOM_UPGRADE_HEADER</h1>
+        <h3 translate>ROOM_UPGRADE_LIST_SUB_HEADER</h3>
+        <div id="upgrades">
+            <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}"> <!--Layout with button: add class 'upgrade-list-v2' -->
+                <li ng-repeat='room in pageData.viewableItems' click-touch="showRoomDetailsForStyleA(room)"> <!-- Add class 'selected' when room is selected -->
+                    <div class="upgrade-picture">
+                      <img ng-src="{{ room.room_type_image }}"  onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png'">
                     </div>
-                </div>
-            </li>
-        </ul>
-        <div id="actions">
-            <button type="button" class="button transparent" click-touch="skipRoomUpsell()">
-                <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_SKIP')" editable-text="ROOM_UPGRADE_SKIP"></text>
-            </button>
-            <p class="text room-upgrades-pagination" ng-show="showPageNumberDetails">
-                <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_1')" editable-text="ROOM_UPSELL_FOOTER_1"></text>
+                    <div class="upgrade-content">
+                        <h2>{{room.upgrade_room_type_name}}</h2>
+                       
+                        <div class="price">
+                            <strong>+{{ zestStationData.currencySymbol }}{{ room.upsell_amount }}</strong>
+                            <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
+                            <!-- If showing button:-->
+                            <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'" translate="">
+                                ROOM_DETAILS
+                            </button> 
+                        </div>
+                 
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="actions"> <!-- Add class 'align-right' if showing only a button that needs to be in the bottom right corner of the screen -->
+            
+            <!-- Label (don't show if there is no pagination) -->
+            <p class="text">
+                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_1')" editable-text="ROOM_UPSELL_FOOTER_1"></text>
                 &nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_2')" editable-text="ROOM_UPSELL_FOOTER_2"></text>
                 &nbsp;{{upsellRooms.length}}&nbsp;
                 <text data-ng-bind-html="getTagValue('ROOM_UPSELL_FOOTER_3')" editable-text="ROOM_UPSELL_FOOTER_3"></text>
             </p>
+
+            <!-- Pagination -->
             <div class="button-group">
                 <button type="button" class="button" click-touch="paginationAction(false)" ng-hide="pageData.disablePreviousButton">
                     <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_PREV')" editable-text="ROOM_UPGRADE_PREV"></text>
@@ -48,15 +45,18 @@
                     <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_NEXT')" editable-text="ROOM_UPGRADE_NEXT"></text>
                 </button>
             </div>
+
+            <button type="button" class="button transparent"  click-touch="skipRoomUpsell()" translate>ROOM_UPGRADE_SKIP</button> 
         </div>
     </div>
+    <!--  -->
     <div id="content" class='room-details' ng-show="mode === 'ROOM_DETAILS'">
         <h1>
             <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_HEADER')" editable-text="ROOM_UPGRADE_HEADER"></text>
         </h1>
         <div id="upgrade" class="tabled-options">
             <div class="upgrade-picture">
-                <img src="{{selectedRoom.room_type_image ? selectedRoom.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
+                <img ng-src="{{selectedRoom.room_type_image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png'">
             </div>
             <!-- Add scroll on it -->
             <div class="upgrade-info">
@@ -83,6 +83,7 @@
             </button>
         </div>
     </div>
+    <!--  -->
     <div id="content" ng-show="mode === 'ERROR_MODE'">
         <h1>
             <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_ERROR')" editable-text="ROOM_UPGRADE_ERROR"></text>
@@ -90,10 +91,10 @@
         <h2>
             <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_ERROR_SUB')" editable-text="ROOM_UPGRADE_ERROR_SUB"></text>
         </h2>
-        <button type="button" class="button  done-btn" click-touch="skipRoomUpsell()">
-            <text data-ng-bind-html="getTagValue('ROOM_UPGRADE_ERROR_CONTINUE')" editable-text="ROOM_UPGRADE_ERROR_CONTINUE"></text>
-        </button>
+        <div id="actions"  class="footer-centered">
+            <button type="button" class="button  done-btn" click-touch="skipRoomUpsell()" translate>
+                ROOM_UPGRADE_ERROR_CONTINUE
+            </button>
+        </div>
     </div>
 </section>
-
-
