@@ -1,8 +1,14 @@
-angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv', 'chargeGroups',
-    function ($scope, $rootScope, config, adInterfacesSrv, chargeGroups) {
+angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv', 'chargeGroups', 'dateFilter', 'adIFCSrv',
+    function ($scope, $rootScope, config, adInterfacesSrv, chargeGroups, dateFilter, adIFCSrv) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'ideas';
+        $scope.exportDate = $rootScope.businessDate;
+        $scope.isServiceProvider = !!$rootScope.isServiceProvider;
+        $scope.exportTypes = {
+            isColdStart: false,
+            isSequential: true
+        };
 
         $scope.sync = {
             start_date: null,
@@ -156,6 +162,35 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
                 onSuccess: function () {
                     $scope.errorMessage = '';
                     $scope.successMessage = 'SUCCESS: Settings updated!';
+                }
+            });
+        };
+
+        $scope.runExport = function () {
+            var types = [];
+            if ($scope.exportTypes.isColdStart === true){
+                types.push('cold_start');
+            }
+            if ($scope.exportTypes.isSequential === true){
+                types.push('sequential');
+            }
+            var payload = {
+                integration_name: $scope.interface.toLowerCase(),
+                options: {}
+            };
+
+            if (types.length > 0 ) {
+                payload.options.types = types;
+            }
+            payload.options.date = dateFilter($scope.exportDate, $rootScope.dateFormatForAPI);
+            synchronize = function(params) {
+                return adIFCSrv.post('property', 'synchronize_integration', params);
+            };
+            $scope.callAPI(synchronize, {
+                params: payload,
+                onSuccess: function () {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
                 }
             });
         };
