@@ -34,7 +34,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		$scope.$on('RELOAD_IFRAME', () => {
 			// TODO: handle if needed. Now the iframe loading is taking some time
-			// self.loadShijiIframe();
+			// self.loadShijiIframe(); 
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
@@ -75,7 +75,10 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			};
 
 			if (isAddCardAction) {
-				apiParams.reservation_id = $scope.reservationId;
+				if ($scope.reservationId) {
+					// Incase of guestcard, there will be no reservation Id
+					apiParams.reservation_id = $scope.reservationId;
+				}
 				apiParams.add_to_guest_card = $scope.payment.addToGuestCardSelected;
 				apiParams.bill_number = 1;
 				apiParams.user_id = $scope.guestId;
@@ -124,7 +127,9 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			} else {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
-				$scope.$emit('PAYMENT_FAILED', responseData.respText);
+				let errorMsg = responseData.respText ? [responseData.respText] : [''];
+
+				$scope.$emit('PAYMENT_FAILED', errorMsg);
 			}
 		};
 

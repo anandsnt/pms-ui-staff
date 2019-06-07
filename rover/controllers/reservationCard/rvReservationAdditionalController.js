@@ -164,28 +164,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 				$scope.updateTaxExemptData();
 			}			
 		};
-
-		$scope.updateDayUseFlag = function() {
-            $scope.additionalDetails.isDayUse = !$scope.additionalDetails.isDayUse;
-            var params = {
-                'is_day_use': $scope.additionalDetails.isDayUse
-            };
-
-            params.reservationId = $scope.reservationParentData.reservationId;
-
-            var	options = {
-                params: params,
-                successCallBack: function() {
-                },
-                failureCallBack: function(errorMessage) {
-                    $scope.additionalDetails.isDayUse = !$scope.additionalDetails.isDayUse;
-                    $scope.errorMessage = errorMessage;
-                }
-            };
-
-            $scope.callAPI(RVReservationSummarySrv.updateDayUseFlag, options);
-        };
-
 		/*
 		 * Toggle commission
 		 */

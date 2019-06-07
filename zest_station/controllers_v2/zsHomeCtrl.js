@@ -75,8 +75,10 @@ sntZestStation.controller('zsHomeCtrl', [
                         name: defaultLangName
                     });
 
-                if (defaultLanguage && defaultLanguage.name) {
-                    var langShortCode = defaultLanguage.name;
+                defaultLanguage = !defaultLangName && $scope.languages.length ? $scope.languages[0] : defaultLanguage;
+
+                if (defaultLanguage && defaultLanguage.code) {
+                    var langShortCode = defaultLanguage.code;
 
                     if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
                             // do nothing, current language is already the default one or no default is selected from hotel admin
@@ -235,10 +237,10 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.selectLanguage = function(language) {
 			// Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
-            var langShortCode = language.name;
+            var langShortCode = language.code;
 
                 // keep track of lang short code, for editor to save / update tags when needed
-            $scope.languageCodeSelected(langShortCode, language.name);
+            $scope.languageCodeSelected(langShortCode, language.code);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
@@ -302,10 +304,13 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
 				// set the active language as the selected language in the home screen
                 var activeLanguage = _.findWhere($scope.languages, {
-                    name: $translate.use()
+                    code: $translate.use()
                 });
 
                 $scope.selectedLanguage = activeLanguage;
+                if ($scope.selectedLanguage) {
+                    $scope.selectLanguage($scope.selectedLanguage);
+                }
             }
 
             $scope.resetHomeScreenTimer();

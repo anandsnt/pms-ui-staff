@@ -132,22 +132,6 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         var setupLanguageTranslations = function() {
-            // workaround to fix for castellona
-            // castellona is not present in the hotel languages list, it is present only with station languages
-            // TODO: remove this code when castellano is added to hotel languages
-            var castellanoIndexInZestLanguages = _.findIndex(languages.languages, function(language) {
-                return language.name === 'castellano';
-            });
-            var castellanoIndexInHotelLanguages = _.findIndex(hotelLanguages.languages, function(language) {
-                return language.code === 'cl';
-            });
-           
-            if (castellanoIndexInHotelLanguages === -1 && castellanoIndexInZestLanguages !== -1) {
-                hotelLanguages.languages.push({
-                    'name': 'castellano',
-                    'code': 'cl'
-                });
-            }
 
             if (hotelLanguages.languages.length > 0) {
                 var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
@@ -157,7 +141,7 @@ sntZestStation.controller('zsRootCtrl', [
                 };
 
                 for (var i in languages.languages) {
-                    codeForLang = languages.languages[i].name;
+                    codeForLang = languages.languages[i].code;
                     if (locales[codeForLang]) {
                         $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
                     }
@@ -256,99 +240,10 @@ sntZestStation.controller('zsRootCtrl', [
                 }  
             }
 
-            if ($scope.softResetCount == 2) {
-                $timeout(function() {
-                    if ($scope.softResetCount == 2) {
-                        // when in a local testing environment, we should be able to test all hotel themes
-                        // a bit faster, to help with this~
-                        // *activate themeSwitcher (showTemplateList) on Ipad by double-tapping the logo @ admin,
-                        // then, at any screen swipe the icon up or down to change the hotel theme
-                        // !! IMPORTANT !! -> ONLY ALLOW IN DEVELOPMENT ENVIRONMENT, NOT for production
-                        if (!$scope.inProd()) { // ONLY IN DEVELOPMENT ENVIRONMENT !! IMPORTANT !!
-                            initThemeTemplateList();
-                        }
-
-                    }
-                }, 750);
-            } else if ($scope.softResetCount == 3) {
-                $timeout(function() {
-                    if ($scope.softResetCount == 3) {
-                        // when in a local testing environment, we should be able to test all hotel themes
-                        // a bit faster, to help with this~
-                        // *activate themeSwitcher (showTemplateList) on Ipad by double-tapping the logo @ admin,
-                        // then, at any screen swipe the icon up or down to change the hotel theme
-                        // !! IMPORTANT !! -> ONLY ALLOW IN DEVELOPMENT ENVIRONMENT, NOT for production
-                        if (!$scope.inProd()) { // ONLY IN DEVELOPMENT ENVIRONMENT !! IMPORTANT !!
-                            zestSntApp.getStateList();// toggle jump list
-                        }
-
-                    }
-                }, 750);
-            }
-
             $timeout(function() {
                 $scope.softResetCount = 0;
             }, 2200);
         };
-        $scope.themeTemplateList = [];
-        var initThemeTemplateList = function() {
-            $scope.themeTemplateList = [];
-            for (var propertyName in $scope.cssMappings) {
-                $scope.themeTemplateList.push({
-                    'name': propertyName
-                });
-            }
-            // sorted list to find themes easier
-            $scope.themeTemplateList.sort(function(a, b) {
-                var nameA = a.name.toLowerCase(), 
-                    nameB = b.name.toLowerCase();
-
-                if (nameA < nameB) // sort string ascending
-                    {return -1;} 
-                if (nameA > nameB)
-                    {return 1;}
-                return 0; // default return value (no sorting)
-            });
-
-
-            $scope.zestStationData.showTemplateList = true;
-        };
-
-        $scope.sonicTestTemplatesCount = 0;
-        $scope.selectThemeFromTemplateList = function(theme, sonicTesting, themeToTest) {
-            var totalTemplates = $scope.themeTemplateList.length;
-            /*
-                Sonic Testing: loop through all the themes for the current page,
-                good for verifying changes applied to all themes without having to 
-                press/switch each theme manually
-             */
-            if (theme === 'sonic' && $scope.softResetCount === 0) {
-
-                $scope.zestStationData.showTemplateList = false;
-                if (!sonicTesting) {
-                    $scope.sonicTestTemplatesCount = 0;    
-                }
-                if ($scope.sonicTestTemplatesCount < totalTemplates) {
-                   
-                    
-                    $scope.resetTime();
-                    $timeout(function() {
-                        themeToTest = $scope.themeTemplateList[$scope.sonicTestTemplatesCount].name;
-                        $scope.sonicTestTemplatesCount++;
-                        $scope.selectThemeFromTemplateList('sonic', true, themeToTest);
-                        $scope.quickSetHotelTheme(themeToTest);
-                    }, 2500);
-                }
-
-
-            } else {
-                $scope.zestStationData.showTemplateList = false;
-                $scope.quickSetHotelTheme(theme);
-            }
-
-
-        }; 
-
 
         $scope.adminBtnPress = 0;
         $scope.goToAdmin = function() {
@@ -1782,7 +1677,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.retrieveTranslations = function() {
             var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
-                return language.language === $translate.use();
+                return language.code === $translate.use();
             });
             var languageId = selecteLanguage ? selecteLanguage.id : '';
             var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {

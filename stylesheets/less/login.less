@@ -2,9 +2,9 @@
 
 /* Variables            ==================================*/
 @import "common/01-B_variables.less";
-    
-@images:            ~"/assets/cssimg";
-@appImages:         ~"/assets/cssimg/app";
+
+@images:            ~"../assets/cssimg";
+@appImages:         ~"../assets/cssimg/app";
 
 @textureImage:      url("@{images}/texture.png");
 @darkTexture:       url("@{images}/texture-dark.png");
@@ -12,7 +12,7 @@
 @icons:             url("@{appImages}/app-icons.png");
 @icons2x:           url("@{appImages}/app-icons@2x.png");
 
-@type:              ~"../type";
+@type:              ~"../assets/type";
 
 @base:              8px;
 @baseFontSize:      (@base * 2);
@@ -286,7 +286,8 @@ p {
         box-shadow: inset 0 -2px 0 rgba(0,0,0,.3);
         background-repeat: repeat;
 
-        &:active { 
+        &:active,
+        &:focus { 
             box-shadow: inset 1px 1px 2px rgba(0,0,0,.3); 
         }
     }
@@ -317,12 +318,37 @@ p {
     }
 }
 
-&.error { 
-    color: @red;
+#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent;
+    z-index: 9999;
+    .square(100%);
 }
 
-&.success {
-    color: @green;
+#loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -32px 0 0 -32px;
+    background: rgba(255,255,255,.7);
+    z-index: 9999;
+    border-radius: 32px;
+    .square(64px);
+
+    &:after {
+        content: "";
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        border: 5px solid;
+        border-color: @orange rgba(255,255,255,.4);
+        border-radius: 63px;
+        -webkit-animation: rotation .8s linear infinite;
+        animation: rotation .8s linear infinite;
+        .square(32px);
+    }
 }
 
 /* Keyframes            ==================================*/
@@ -353,25 +379,19 @@ body {
     line-height: @baseLineHeight;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    background-color: @logoPrimary;
-    background-image: @darkTexture, linear-gradient(to bottom, @logoGradientStart 0%, @logoGradientEnd 100%);
-    background-size: 40px, 100%, 100%;
+    .background();
 
     &.showing-modal {
-        overflow: hidden;
-    }
-
-    @media only screen and (min-width: 1024px) {
         overflow: hidden;
     }
 }
 
 #container {
-    #flexbox > .parent(column wrap, space-between, '', '');
+    #flexbox > .parent(column nowrap, space-between, center, '');
     min-height: 100vh;
 
     @media only screen and (min-width: 1024px) {
-        #flexbox > .parent(row wrap, '', '', '');
+        #flexbox > .parent(row wrap, center, '', '');
     }
 }
 
@@ -406,7 +426,7 @@ input {
 
     &:focus {
         outline: inherit;
-        box-shadow: inset 1px 1px 2px rgba(0,0,0,.5);
+        box-shadow: inset 0 0 1px rgba(0,0,0,.4), inset 1px 1px 2px rgba(0,0,0,.6);
     }
 
     &::-webkit-input-placeholder {
@@ -442,11 +462,13 @@ a {
 
 /* Login                ==================================*/
 #login {
-    flex: 1 1 auto;
-    #flexbox > .parent(column wrap, '', '', '');
+    #flexbox > .parent(column nowrap, '', '', '');
     padding: (@base * 5);
-    width: 100%;
-    .background();
+
+    &.login--just-form {
+        min-height: 100vh;
+        height: auto;
+    }
 
     @media only screen and (max-width: 320px) {
         padding: (@base * 3);
@@ -456,16 +478,16 @@ a {
         min-height: 100%;
     }
 
-    @media only screen and (min-width: 640px) and (max-width: 1023px) {
-       padding: (@base * 5) 25vw;
-    }
-
     @media only screen and (min-width: 1024px) {
         order: 2;
-        #flexbox > .parent(column nowrap, '', '', center);
         padding: (@base * 5) (@base * 12);
         overflow-y: auto;
         .size(100vh, 60%);
+
+        &.login--just-form {
+            padding: (@base * 5);
+            width: 480px;
+        }
     }
 }
 
@@ -483,12 +505,8 @@ a {
         margin-bottom: (@base * 4);
     }
 
-    @media only screen and (min-width: 640px) and (max-width: 1023px) {
-        max-width: 50vw;
-    }
-
-    @media only screen and (min-width: 1024px) {
-        max-width: 400px;
+    @media only screen and (min-width: 640px) {
+        width: 400px;
     }
 } 
 
@@ -501,12 +519,8 @@ a {
         line-height: (@base * 4);
     }
 
-    @media only screen and (min-width: 640px) and (max-width: 1023px) {
-        max-width: 50vw;
-    }
-
-    @media only screen and (min-width: 1024px) {
-        max-width: 400px;
+    @media only screen and (min-width: 640px) {
+        width: 400px;
     }
 }
 
@@ -651,7 +665,6 @@ a {
 
     .highlight { 
         color: @logoPrimary;
-        padding-right: (@base / 2);
     }
 
     li {
@@ -691,7 +704,9 @@ a {
 /* Marketing            ==================================*/
 #marketing {
     width: 100%;
-    background: transparent;
+    background-color: @logoPrimary;
+    background-image: @darkTexture, linear-gradient(to bottom, @logoGradientStart 0%, @logoGradientEnd 100%);
+    background-size: 40px, 100%, 100%;
 
     &::-webkit-scrollbar {
         width: @base;
@@ -1255,7 +1270,7 @@ a {
             h2 {
                 font-size: (@base * 2);
             }
-            p {
+            p {
                 font-size: (@base * 4);
             }
         }
