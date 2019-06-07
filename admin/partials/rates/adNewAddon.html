@@ -18,20 +18,6 @@
                 </div>
             </div>
 
-            <fieldset ng-if="isAllowanceEnabled" class="holder full-width">
-                <ad-toggle-button div-class="float_left" label="{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}" is-checked="singleAddon.is_allowance"></ad-toggle-button>
-
-                <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.spillage_refund_percentage" name="name" id="name" label="{{'SPILLAGE_REFUND_LABEL' | translate}}" placeholder="{{'SPILLAGE_REFUND_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
-
-                <div class="entry" ng-if="singleAddon.is_allowance">
-                    <label translate>ALLOWED_CHARGE_CODES_LABEL</label>
-                     <div multi-select on-open="setAllowedChargeCodesForAllowance()" on-close="linkAllowedChargeCodesForAllowance()" input-model="chargeCodes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
-                    </div>
-                </div>
-
-                <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.price" name="name" id="name" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
-            </fieldset>
-
             <fieldset class="holder left float">
                 <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"  hide="!isDefaulLanguageSelected()"></ad-textbox>
 
@@ -54,6 +40,13 @@
                         <input type="checkbox" ng-model="singleAddon.bestseller" ng-change="bestsellerChanged()">
                     </label>
                 </div>
+                <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_allowance }"></span>
+                        <label>{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.is_allowance" ng-change="allowanceChanged()">
+                    </label>
+                </div>
                 <div ng-if="::!isConnectedToPMS && !isHourlyRatesEnabled" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
@@ -72,7 +65,7 @@
 
                     <ad-toggle-button div-class="float_left" ng-if="singleAddon.is_reservation_only" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>
                 </div>
-                <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
+                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry full-width radio-check">
                     <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count"></ad-textbox>
                 </div>
 
@@ -134,7 +127,31 @@
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('To')">&nbsp;</span>
                     </div>
                 </div>
-                <div ng-if="::!isConnectedToPMS" class="entry">
+
+                <fieldset ng-if="isAllowanceEnabled" class="holder full-width">
+
+                    <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry">
+                        <div class="entry full-width">
+                            <label for="charge-group-id">
+                                {{'SPILLAGE_REFUND_LABEL' | translate}}
+                                <strong>*</strong>
+                            </label>
+                            <div class="select">
+                                <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.spillage_refund_percentage" ng-options="option for option in allowanceRefundOptions" ng-change="chargeGroupChage()"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="entry" ng-if="singleAddon.is_allowance">
+                        <label translate>ALLOWED_CHARGE_CODES_LABEL</label>
+                         <div multi-select on-open="setAllowedChargeCodesForAllowance()" on-close="linkAllowedChargeCodesForAllowance()" input-model="chargeCodes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                        </div>
+                    </div>
+
+                    <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.price" name="name" id="name" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
+                </fieldset>
+                
+                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry">
                     <div class="entry full-width">
                         <label for="charge-group-id">
                             {{'CHARGE_GROUP' | translate}}
@@ -192,7 +209,7 @@
                     <ad-toggle-button is-hide="!isConnectedToPMS || !singleAddon.is_sell_separate" div-class="float_left" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>
                 </div>
 
-                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
+                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
                         <label>{{'MANUAL_POSTING' | translate}}</label>
@@ -206,7 +223,7 @@
                         <input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
                     </label>
                 </div>
-                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
+                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_common_area }"></span>
                         <label>{{'COMMON_AREA' | translate}}</label>

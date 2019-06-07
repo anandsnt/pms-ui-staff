@@ -42,6 +42,9 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
             $scope.showZestWebSettings = addonUpsellSettings.zest_web_addon_upsell_availability;
             $scope.showZestStationSettings = addonUpsellSettings.zest_station_addon_upsell_availability;
+
+            $scope.allowanceRefundOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
         };
 
         $scope.init();
@@ -513,6 +516,14 @@ admin.controller('ADRatesAddonsCtrl', [
             // CICO-21783 'BestSeller' and 'Rate Only' are mutually exclusive
             if ($scope.singleAddon.bestseller) {
                 $scope.singleAddon.rate_code_only = false;
+            }
+        };
+
+        $scope.allowanceChanged = function() {
+            if ($scope.singleAddon.is_allowance) {
+                $scope.singleAddon.charge_group_id = _.find($scope.chargeGroups, function(chargeGroup) {
+                    return chargeGroup.name === "Allowance";
+                }).id;
             }
         };
 
