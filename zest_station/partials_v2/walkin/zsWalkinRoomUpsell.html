@@ -44,7 +44,7 @@
                     <div class="upgrade-content">
                         <h2>{{ room.roomTypeName }}</h2>
                         <div class="price">
-                            <strong>+{{ zestStationData.currencySymbol }}{{ room.adr }}</strong>
+                            <strong>+{{ zestStationData.currencySymbol }}{{ room.upsellAmount }}</strong>
                             <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
                             <button type="button" class="button" click-touch='showRoomDetails(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'" translate>
                                 ROOM_DETAILS
@@ -99,8 +99,8 @@
             <div class="upgrade-price">
                 <h2>{{ idScanData.roomDetails.roomTypeName }}</h2>
                 <div class="price">
-                    <strong>+{{ zestStationData.currencySymbol }}{{ idScanData.roomDetails.adr }}</strong>
-                    <small>{{ 'WALKIN_ROOM_TYPES_FOOTER' | translate: pageData }}</small>
+                    <strong>+{{ zestStationData.currencySymbol }}{{ idScanData.roomDetails.upsellAmount }}</strong>
+                    <small>{{ 'PER_NIGHT' | translate }}&nbsp;{{ 'TAX_TEXT' | translate }}</small>
                 </div>
             </div>
         </div>

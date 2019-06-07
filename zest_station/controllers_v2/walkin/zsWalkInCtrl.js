@@ -17,9 +17,6 @@ sntZestStation.controller('zsWalkInCtrl', [
             arrivalDate;
         $scope.availabileRoomList = [];
 
-        // searchingReservationInProgress = false,
-        // searchingReservationFailed = false;
-
         $scope.newReservation = {};
 
         $controller('sntIDCollectionBaseCtrl', {
@@ -229,6 +226,22 @@ sntZestStation.controller('zsWalkInCtrl', [
             }, 200);
         };
 
+        var fetchRoomUpsellSuccess = function(response) {
+
+            _.each($scope.availabileRoomList, function(roomType) {
+                _.each(response.upsell_amounts, function(upsellData) {
+                    if (
+                        (($scope.idScanData.selectedRoomType.roomLevel === 1 && parseInt(upsellData.level_from) === 1) ||
+                            ($scope.idScanData.selectedRoomType.roomLevel === 2 && parseInt(upsellData.level_from) === 2)) &&
+                        ((parseInt(upsellData.level_to) === 2 && roomType.roomLevel === 2) ||
+                            (parseInt(upsellData.level_to) === 3 && roomType.roomLevel === 3))
+                    ) {
+                        roomType.upsellAmount = upsellData.amount;
+                    }
+                });
+            });
+        };
+
         var fetchRoomTypes = function() {
             var fetchRoomtypesSuccess = function(response) {
                 var roomTypeList = response.results;
@@ -247,7 +260,6 @@ sntZestStation.controller('zsWalkInCtrl', [
                             }
                         });
                     });
-                    console.log($scope.availabileRoomList);
                     if ($scope.zestStationData.kiosk_walkin_flow === 'upsell_oriented') {
                         var minimumAdrRoomType = _.min($scope.availabileRoomList, function(roomType) {
                             return parseFloat(roomType.adr);
@@ -263,6 +275,13 @@ sntZestStation.controller('zsWalkInCtrl', [
                     showReservationSummaryScreen();
                     if ($scope.zestStationData.kiosk_walkin_flow === 'traditional') {
                         setPageNumberDetails();
+                    } else {
+                        var options = {
+                            params: {},
+                            successCallBack: fetchRoomUpsellSuccess,
+                            failureCallBack: roomTypeNotAvailableActions
+                        };
+                        $scope.callAPI(zsCheckinSrv.getRoomUpsellSettings, options);
                     }
                     // $scope.screenData.scanMode = 'UPLOAD_FRONT_IMAGE';
                 }

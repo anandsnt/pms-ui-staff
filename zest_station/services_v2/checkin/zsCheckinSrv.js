@@ -619,5 +619,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             
             return zsBaseWebSrv.putJSON(url, params);
         };
+
+        this.getRoomUpsellSettings = function() {
+            var url = '/admin/room_upsells/room_upsell_options.json';
+
+            return zsBaseWebSrv2.getJSON(url);
+        }
     }
 ]);
