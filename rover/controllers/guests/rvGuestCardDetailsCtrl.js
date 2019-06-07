@@ -289,6 +289,12 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             if (!$stateParams.guestId) {
                 $scope.guestCardData = {};
                 $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();
+                if ($stateParams.firstName) {
+                    $scope.guestCardData.contactInfo.first_name = $stateParams.firstName;
+                }
+                if ($stateParams.lastName) {
+                    $scope.guestCardData.contactInfo.last_name = $stateParams.lastName;
+                }
             } else {
                 $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             }

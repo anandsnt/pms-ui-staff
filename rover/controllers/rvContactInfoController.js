@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv',
-    function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv) {
+angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv', 'RVReservationCardSrv',
+    function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv, RVReservationCardSrv) {
 
         BaseCtrl.call(this, $scope);
         var initialGuestCardData;
@@ -70,6 +70,27 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             $scope.$emit('contactInfoError', true);
         };
 
+        /**
+         * Attaches a primary/accompany guest to a reservation
+         * @param {Number} guestId identifier for guest
+         * @param {Boolean} isPrimary should be attaced as a primary/accompany guest
+         * @return {void}
+         */
+        var attachGuestToReservation = function (reservationId, guestId, isPrimary) {
+            var onGuestLinkedToReservationSuccess = function () {
+                    
+                };                
+
+            $scope.callAPI(RVReservationCardSrv.attachGuestToReservation, {
+                onSuccess: onGuestLinkedToReservationSuccess,
+                params: {
+                    reservation_id: reservationId,
+                    guest_detail_id: guestId,
+                    is_primary: isPrimary
+                }
+            });
+        };
+
     // This method needs a refactor:|
         $scope.saveContactInfo = function(newGuest) {
             var createUserInfoSuccessCallback = function(data) {
@@ -125,6 +146,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 // CICO-51598 - Should allow the guest card to delete immediately after creation
                 $scope.guestCardData.contactInfo.can_guest_details_anonymized = true;
                 $scope.guestCardData.contactInfo.can_guest_card_delete = true;
+
+                if ($stateParams.fromStaycard && !$stateParams.guestId) {
+                    attachGuestToReservation($stateParams.reservationId, data.id, $stateParams.isPrimary);
+                }
             };
 
       /**

@@ -37,7 +37,10 @@ function(
                 isMergeViewSelected: null,
                 reservationId: null,
                 confirmationNo: null,
-                fromStaycard: null
+                fromStaycard: null,
+                isPrimary: null,
+                firstName: '',
+                lastName: ''
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',

@@ -581,7 +581,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             onFailure: onGuestsFetchFailure,
             params: {
                 first_name: $scope.searchData.firstName,
-                last_name: $scope.searchData.lastName
+				last_name: $scope.searchData.lastName,
+				guest_type: $scope.searchData.guestType
             }
         });
     };
@@ -593,10 +594,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
      * @param {Boolean} isPrimary should the guest should be linked as primary/accompany guest
      * @return {void}
      */
-    $scope.findGuests = function (firstName, lastName, isPrimary) {
+    $scope.findGuests = function (firstName, lastName, isPrimary, guestType) {
         $scope.searchData = {
             firstName: firstName,
-            lastName: lastName
+			lastName: lastName,
+			guestType: guestType
         };
 
         $scope.searchGuest(isPrimary);
@@ -633,7 +635,20 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                 is_primary: isPrimary
             }
         });
-    };
+	};
+	
+	/**
+	 * Navigate to new guest creation screen
+	 */
+	$scope.navigateToCreateGuest = function (isPrimary) {
+		$state.go('rover.guest.details', {
+			reservationId: 	$scope.reservationData.reservation_card.reservation_id,
+			fromStaycard: true,
+			isPrimary: isPrimary,
+			firstName: $scope.searchData.firstName,
+			lastName: $scope.searchData.lastName
+		});
+	};
 
 	}
 ]);

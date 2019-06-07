@@ -16,7 +16,7 @@
     
             <div class="actions">
                 <button type="button" class="button blank modal-close" ng-click="closePopup()">Cancel</button>
-                <button type="button" class="button green">New Guest</button>
+                <button type="button" class="button green" ng-click="navigateToCreateGuest(ngDialogData.isPrimary)">New Guest</button>
             </div>
     
         </div>
@@ -25,8 +25,8 @@
                 <p><strong>{{guestList.length}} possible matches</strong></p>
                 <p>Select existing or create a new guest.</p>
             </div>
-            <div class="scrollable">
-                <div class="wrapper" ng-iscroll="guestSearchResultsScroller">
+            <div class="scrollable" ng-iscroll="guestSearchResultsScroller">
+                <div class="wrapper" >
                     <ul class="search-results">
                         <li class="reservation identify-guest" ng-repeat="guest in guestList">
                             <!-- on click, select it as the guest -->
