@@ -515,7 +515,21 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             fromStaycard: true
         });
 			
-    };
+	};
+	
+	/**
+	 * Filter guests by guest type
+	 * @param {Array} guestList all guests irrespective of type
+	 * @param {String} guestType type of guest ADULT/CHILDREN/INFANTS
+	 * @return {Array} guestList list of given guest type
+	 */
+	var getGuestsByType = function (guestList, guestType) {
+		guestList = _.filter(guestList, function (guest) {
+						return guest.guest_type === guestType;
+					});
+
+		return guestList;
+	};
 
     /**
      * Search guests by first name / last name
@@ -541,7 +555,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             onGuestsFetchSuccess = function (data) {
                 $scope.guestList = [];
                 if (data.results.length > 0) {
-                    angular.forEach(data.results, function (item) {
+                    angular.forEach(getGuestsByType(data.results, $scope.searchData.guestType), function (item) {
                         var guestData = {};
 
                         guestData.id = item.id;
@@ -639,14 +653,18 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 	
 	/**
 	 * Navigate to new guest creation screen
+	 * @param {Boolean} isPrimary primary guest or not
+	 * @return {void}
 	 */
 	$scope.navigateToCreateGuest = function (isPrimary) {
+		closeDialog();
 		$state.go('rover.guest.details', {
 			reservationId: 	$scope.reservationData.reservation_card.reservation_id,
 			fromStaycard: true,
 			isPrimary: isPrimary,
 			firstName: $scope.searchData.firstName,
-			lastName: $scope.searchData.lastName
+			lastName: $scope.searchData.lastName,
+			confirmationNo: $scope.reservationData.reservation_card.confirmation_num
 		});
 	};
 

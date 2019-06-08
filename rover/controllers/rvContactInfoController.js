@@ -205,7 +205,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
      * watch and update formatted date for display
      */
         $scope.$watch('guestCardData.contactInfo.birthday', function() {
-            $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
+            if ($scope.guestCardData.contactInfo.birthday) {
+                $scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, $rootScope.dateFormat)));
+            }
         });
     /**
      * to handle click actins outside this tab
