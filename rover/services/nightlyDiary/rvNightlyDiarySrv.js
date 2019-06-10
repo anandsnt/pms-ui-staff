@@ -297,8 +297,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          *  Get prefrences of a reservation for filter
          */
         this.getPreferences = function(param) {
-            var deferred = $q.defer();
-            var url =  '/staff/preferences/room_assignment.json';
+            var deferred = $q.defer(),
+                url =  '/staff/preferences/room_assignment.json';
 
             BaseWebSrvV2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);

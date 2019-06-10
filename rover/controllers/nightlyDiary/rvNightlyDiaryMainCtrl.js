@@ -113,7 +113,9 @@ angular.module('sntRover')
                             fromDate: null,
                             nights: null
                         },
-                        requireAuthorization: false
+                        requireAuthorization: false,
+                        isReservationSelected: false,
+                        roomAssignmentFilters: {}
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};

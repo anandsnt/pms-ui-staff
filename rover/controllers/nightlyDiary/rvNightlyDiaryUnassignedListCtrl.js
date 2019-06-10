@@ -29,7 +29,6 @@ angular.module('sntRover')
          *  @param {Object} - [selected reservation Item]
          */
         var retrieveAvailableRooms = function( selectedItem ) {
-            $scope.selectedItem = selectedItem;
             var successCallBack = function(data) {
                 $scope.errorMessage = '';
                 var roomCount = data.rooms.length;
@@ -44,10 +43,10 @@ angular.module('sntRover')
                 else {
                     var newData = {
                         availableRoomList: data.rooms,
-                        fromDate: selectedItem.arrival_date,
-                        nights: selectedItem.no_of_nights,
-                        reservationId: selectedItem.reservation_id,
-                        roomTypeId: selectedItem.room_type_id,
+                        fromDate: $scope.selectedItem.arrival_date,
+                        nights: $scope.selectedItem.no_of_nights,
+                        reservationId: $scope.selectedItem.reservation_id,
+                        roomTypeId: $scope.selectedItem.room_type_id,
                         type: 'ASSIGN_ROOM',
                         reservationOccupancy: data.reservation_occupancy
                     };
@@ -66,8 +65,10 @@ angular.module('sntRover')
                 }
             },
             postData = {
-                'reservation_id': selectedItem.reservation_id,
-                'selected_room_type_ids': [selectedItem.room_type_id],
+                'reservation_id': $scope.selectedItem.reservation_id,
+                'selected_room_type_ids': [$scope.selectedItem.room_type_id],
+                'selected_room_features': [],
+                // 'floor_id': '',
                 'is_from_diary': true
             },
             options = {
@@ -79,8 +80,28 @@ angular.module('sntRover')
             $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
         };
 
-        var unSelectUnassignedListItem = function() {
+        var selectUnassignedListItem = function(item) {
+            $scope.diaryData.isReservationSelected = true;
+            $scope.selectedItem = item;
+            
+            $scope.diaryData.roomAssignmentFilters = {};
+            successCallBack = function(responce) {
+                $scope.diaryData.roomAssignmentFilters = responce.data;
+            },
+            postData = {
+                'reservation_id': item.reservation_id
+            },
+            options = {
+                params: postData,
+                successCallBack: successCallBack,
+                failureCallBack: failureCallBackMethod
+            };
+
+            $scope.callAPI(RVNightlyDiarySrv.getPreferences, options );
+        },
+        unSelectUnassignedListItem = function() {
             $scope.selectedItem = {};
+            $scope.diaryData.isReservationSelected = false;
             $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
         };
 
@@ -95,7 +116,8 @@ angular.module('sntRover')
                 unSelectUnassignedListItem();
             }
             else {
-                retrieveAvailableRooms(item);
+                selectUnassignedListItem(item);
+                
             }
         };
 
