@@ -411,7 +411,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.refreshScroller('upsell-details');
         };
 
-        var onBackButtonClicked = function() {
+        $scope.onBackButtonClicked = function() {
             if ($scope.screenData.scanMode === 'SELECT_STAY_DETAILS') {
                 $scope.navToHome();
             } else if ($scope.screenData.scanMode === 'RESERVATION_CONFIRMATION') {
@@ -436,7 +436,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, $scope.onBackButtonClicked);
             $scope.idScanData = {
                 mode: '',
                 selectedGuest: {},

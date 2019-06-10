@@ -823,6 +823,7 @@
     "REMOVE_ROOM": "Remove room",
     "ADR_FOR_X_NIGHTS": "Avg. Daily Rate for {{ noOfDays }} night(s):",
     "WALKIN_ROOM_SELECTED": "Room selected",
-    "WALKIN_SELECTED_ROOM_MSG": "We selected a room category for you, based on best fit and offer. You can modify your room type selection before confirming the reservation."
-
+    "WALKIN_SELECTED_ROOM_MSG": "We selected a room category for you, based on best fit and offer. You can modify your room type selection before confirming the reservation.",
+    "WALKIN_UPGRADE_ROOM_MSG": "Upgrade your room?",
+    "WALKIN_UPGRADE_ROOM_SUB_MSG": "Select a card to see room details before you upgrade"
 }

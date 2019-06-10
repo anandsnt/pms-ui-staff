@@ -86,7 +86,7 @@
 
 <section id="main" role="main" ng-show="screenData.roomSelectionMode == 'ROOM_UPSELL_DETAILS'">
     <div id="content">
-        <h1>Upgrade your Room?</h1>
+        <h1 translate>WALKIN_UPGRADE_ROOM_MSG</h1>
         <div id="upgrade" class="tabled-options">
             <div class="upgrade-picture">
                 <img ng-src="{{ idScanData.roomDetails.room_type_image ? idScanData.roomDetails.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
@@ -105,7 +105,7 @@
             </div>
         </div>
         <div id="actions">
-            <button type="button" class="button transparent" click-touch="continueBooking()" translate>
+            <button type="button" class="button transparent" click-touch="onBackButtonClicked()" translate>
               ROOM_UPGRADE_SKIP
             </button>
             <button type="button" class="button"class="button" click-touch="upgradeSelected(idScanData.roomDetails)" translate>BUY_UPGRADE</button>
