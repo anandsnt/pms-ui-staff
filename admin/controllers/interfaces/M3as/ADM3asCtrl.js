@@ -1,4 +1,4 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv',
+admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
     function($scope, config, adInterfacesSrv) {
     BaseCtrl.call(this, $scope);
 
@@ -6,7 +6,7 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'config', 'adInterfacesSrv',
         activeTab: 'SETTING'
     };
 
-    $scope.integration = 'M3BACKOFFICE';
+    $scope.integration = 'M3AS';
     
     /**
      * when clicked on check box to enable/diable letshare

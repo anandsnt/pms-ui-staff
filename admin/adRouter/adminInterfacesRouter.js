@@ -360,12 +360,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.m3BackOfficeExport', {
-        templateUrl: '/assets/partials/interfaces/m3backoffice/adM3backoffice.html',
-        controller: 'ADM3BackOfficeCtrl',
-        url: '/backoffice/m3/setup',
+        templateUrl: '/assets/partials/interfaces/m3as/adM3as.html',
+        controller: 'ADM3asCtrl',
+        url: '/m3as/setup',
         resolve: {
             config: ['adInterfacesSrv', function(adInterfacesSrv) {
-                return adInterfacesSrv.getSettings('m3backoffice');
+                return adInterfacesSrv.getSettings('m3as');
             }]
         }
     });
@@ -610,6 +610,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }],
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                console.log("pmi, admin: ", admin)
                 return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
             }]
         }
