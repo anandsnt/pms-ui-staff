@@ -610,7 +610,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }],
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                console.log("pmi, admin: ", admin)
                 return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
             }]
         }
