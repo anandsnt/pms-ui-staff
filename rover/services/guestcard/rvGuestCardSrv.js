@@ -9,11 +9,11 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
         this.PER_PAGE_COUNT = 50;
 
 
-        service.fetchGuestDetails = function() {
+        service.fetchGuestDetails = function(param) {
             var deferred = $q.defer(),
                 url = '/api/guest_details';
 
-            RVBaseWebSrvV2.getJSON(url, data).then(function (data) {
+            RVBaseWebSrvV2.getJSON(url, param).then(function (data) {
                 // guestFieldData = {
                 //     "is_father_name_visible": data.is_father_name_visible,
                 //     "is_gender_visible": data.is_gender_visible,
@@ -35,11 +35,11 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
          * Fetch admin settings
          *
          */
-        service.fetchGuestAdminSettings = function(param) {
+        service.fetchGuestAdminSettings = function() {
             var deferred = $q.defer();
             var url = '/admin/guest_card_settings/current_settings';
 
-            rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -52,13 +52,13 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
          * @param {object} data request object
          * @return {Promise} promise
          */
-        this.fetchGuests = function (data) {
+        this.fetchGuests = function (param) {
 
             var deferred = $q.defer(),
                 data = {};
 
             $q.when().then(function() {
-                return service.fetchGuestDetails().then(function(response) {
+                return service.fetchGuestDetails(param).then(function(response) {
                     data = response;
                 });
             })

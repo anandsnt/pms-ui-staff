@@ -23,39 +23,75 @@ function($scope, $state, ADGuestCardSrv) {
 			switch (fieldName) {
 				case "father_name":
 					$scope.guestCardFields.father_name.is_visible = !$scope.guestCardFields.father_name.is_visible;
+					if (!$scope.guestCardFields.father_name.is_visible) {
+						$scope.guestCardFields.father_name.is_mandatory_on_guest_card_creation = false;
+					}					
 					break;
 				case "mother_name":
 					$scope.guestCardFields.mother_name.is_visible = !$scope.guestCardFields.mother_name.is_visible;
+					if (!$scope.guestCardFields.mother_name.is_visible) {
+						$scope.guestCardFields.mother_name.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "birth_place":
 					$scope.guestCardFields.birth_place.is_visible = !$scope.guestCardFields.birth_place.is_visible;
+					if (!$scope.guestCardFields.birth_place.is_visible) {
+						$scope.guestCardFields.birth_place.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "gender":
 					$scope.guestCardFields.gender.is_visible = !$scope.guestCardFields.gender.is_visible;					
+					if (!$scope.guestCardFields.gender.is_visible) {
+						$scope.guestCardFields.gender.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "registration_number":
-					$scope.guestCardFields.registration_number.is_visible = !$scope.guestCardFields.registration_number.is_visible;					
+					$scope.guestCardFields.registration_number.is_visible = !$scope.guestCardFields.registration_number.is_visible;
+					if (!$scope.guestCardFields.registration_number.is_visible) {
+						$scope.guestCardFields.registration_number.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "personal_id_no":
-					$scope.guestCardFields.personal_id_no.is_visible = !$scope.guestCardFields.personal_id_no.is_visible;					
+					$scope.guestCardFields.personal_id_no.is_visible = !$scope.guestCardFields.personal_id_no.is_visible;
+					if (!$scope.guestCardFields.personal_id_no.is_visible) {
+						$scope.guestCardFields.personal_id_no.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "home_town":
-					$scope.guestCardFields.home_town.is_visible = !$scope.guestCardFields.home_town.is_visible;					
+					$scope.guestCardFields.home_town.is_visible = !$scope.guestCardFields.home_town.is_visible;
+					if (!$scope.guestCardFields.home_town.is_visible) {
+						$scope.guestCardFields.home_town.is_mandatory_on_guest_card_creation = false;
+					}				
 					break;
 				case "place_of_residence":
 					$scope.guestCardFields.place_of_residence.is_visible = !$scope.guestCardFields.place_of_residence.is_visible;					
+					if (!$scope.guestCardFields.place_of_residence.is_visible) {
+						$scope.guestCardFields.place_of_residence.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "vehicle_country_mark":
 					$scope.guestCardFields.vehicle_country_mark.is_visible = !$scope.guestCardFields.vehicle_country_mark.is_visible;					
+					if (!$scope.guestCardFields.vehicle_country_mark.is_visible) {
+						$scope.guestCardFields.vehicle_country_mark.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "job_title":
 					$scope.guestCardFields.job_title.is_visible = !$scope.guestCardFields.job_title.is_visible;					
+					if (!$scope.guestCardFields.job_title.is_visible) {
+						$scope.guestCardFields.job_title.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "date_of_birth":
 					$scope.guestCardFields.date_of_birth.is_visible = !$scope.guestCardFields.date_of_birth.is_visible;					
+					if (!$scope.guestCardFields.date_of_birth.is_visible) {
+						$scope.guestCardFields.date_of_birth.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 				case "nationality":
 					$scope.guestCardFields.nationality.is_visible = !$scope.guestCardFields.nationality.is_visible;					
+					if (!$scope.guestCardFields.nationality.is_visible) {
+						$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 
 			}

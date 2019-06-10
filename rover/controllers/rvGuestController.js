@@ -348,6 +348,10 @@ angular.module('sntRover').controller('guestCardController', [
             var that = this;
 
             that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+            var saveUserInfoFailureCallback = function () {
+                $scope.$emit('contactInfoError', true);
+            };
+            
             var saveUserInfoSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.reservationData.guest.email = that.newUpdatedData.email;
@@ -370,7 +374,7 @@ angular.module('sntRover').controller('guestCardController', [
 
                 if (typeof data.userId !== 'undefined') {
                     $scope.isGuestCardSaveInProgress = true;
-                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
+                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
                 }
             }
         };

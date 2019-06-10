@@ -69,8 +69,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             $scope.errorMessage = data;
             $scope.$emit('GUESTCARDVISIBLE', true);
             $scope.$emit('contactInfoError', true);
-           // $scope.$emit("OPEN_GUEST_CARD_ON_VALIDATION");
-
         };
 
     // This method needs a refactor:|
@@ -174,7 +172,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 if (!angular.equals(dataToUpdate, initialGuestCardData)) {     
               // CICO-46709 - Reset the guest card data to reflect the new changes made to contact details
                     initialGuestCardData = dclone(dataToUpdate, ['avatar', 'confirmation_num']);
-                    if ($scope.isGuestCardVisible) {
+                    if ($scope.isGuestCardVisible || $scope.isFromMenuGuest) {
                         $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
                     }                    
                 }

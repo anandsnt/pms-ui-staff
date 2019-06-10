@@ -34,7 +34,8 @@ function(
                 isBackToStatistics: null,
                 selectedStatisticsYear: null,
                 selectedIds: [],
-                isMergeViewSelected: null
+                isMergeViewSelected: null,
+                isFromMenuGuest: false
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',
