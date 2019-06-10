@@ -415,7 +415,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             if ($scope.screenData.scanMode === 'SELECT_STAY_DETAILS') {
                 $scope.navToHome();
             } else if ($scope.screenData.scanMode === 'RESERVATION_CONFIRMATION') {
-                if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' || $scope.availabileRoomList.length == 1) {
+                if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' || $scope.availabileRoomList.length === 1) {
                     if ($scope.screenData.roomSelectionMode === 'MINIMUM_ADR') {
                         $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
                     } else if ($scope.screenData.roomSelectionMode === 'ROOM_UPSELL') {
