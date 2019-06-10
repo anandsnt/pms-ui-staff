@@ -145,7 +145,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if (selectedType === '1') {
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
-			} else if (selectedType === '13') {
+			} else if (selectedType === '11') {
 				if (_.isUndefined($scope.chargeCodes)) {
 					fetchChargeCodesForAllowance();
 				}				
