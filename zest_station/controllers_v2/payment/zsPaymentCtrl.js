@@ -289,6 +289,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         /**  *************************** EMV **********************************/
 
         var saveCardByEmv = function (params) {
+            if (params.amount === 0 && $scope.zestStationData.paymentGateway === 'sixpayments') {
+                delete params.amount;
+            }
+            
             $scope.callAPI(zsPaymentSrv.chipAndPinGetToken, {
                 params: params,
                 'successCallBack': function() {
