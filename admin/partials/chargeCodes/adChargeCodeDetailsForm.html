@@ -22,16 +22,16 @@
 					</div>
                                 
                 <div class="entry" style="margin-bottom:15px;" ng-show='isStandAlone' ng-hide='!isStandAlone'>    
-                    <ad-dropdown  label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '13'"  required = "yes" div-class="full-width"></ad-dropdown>
+                    <ad-dropdown  label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'"  required = "yes" div-class="full-width"></ad-dropdown>
                 </div>
                 
                 <div class="entry" style="margin-bottom:15px;" ng-show='!isStandAlone' ng-hide='isStandAlone'>
-                    <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '13'" required = "no" div-class="full-width"></ad-dropdown>
+                    <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'" required = "no" div-class="full-width"></ad-dropdown>
                 </div>  
                                 
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="entry full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
 
-				<div class="entry full-width" ng-if="prefetchData.selected_charge_code_type === '13'">
+				<div class="entry full-width" ng-if="prefetchData.selected_charge_code_type === '11'">
                     <label for="overage-charge">
                         {{'OVERAGE_CHARGE_CODE_LABEL' | translate}}
                         <strong>*</strong>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="entry full-width" ng-if="prefetchData.selected_charge_code_type === '13'">
+                <div class="entry full-width" ng-if="prefetchData.selected_charge_code_type === '11'">
                     <label for="spillage-charge">
                         {{'SPILLAGE_CHARGE_CODE_LABEL' | translate}}
                         <strong>*</strong>
