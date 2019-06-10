@@ -1,18 +1,15 @@
-<div id="modal" class="modal-show"  ng-class="{'modal-show': !modalClosing}" role="dialog" style="width:50%;" ng-cloak>
-   <div class="modal-content form">
-      <button  ng-click="data.showDebugOptions = false;closeDialog()" class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
-      <strong class="h2 message">Debugging options</strong>
-      <div class="entry" ng-show="data.isLoadingUrl">
-         <label for="password">Enter the URL</label>
-         <input autocomplete="off" ng-model="data.domainURL" name="password" placeholder="Enter URL"/>
-      </div>
-      <div class="actions" ng-hide="data.isLoadingUrl">
-         <button type="submit" class="button green" ng-click="data.isLoadingUrl = true;">Load custom URL</button>
-         <br/>
-         <button type="submit" class="button" ng-click="loadTestPage()">Load test Page</button>
-      </div>
-      <div class="actions" ng-show="data.isLoadingUrl">
-         <button type="submit" class="button green" ng-click="loadDomainURL()">Continue</button>
+<div id="modal" role="dialog" ng-class="{'modal-show': data.showDebugOptions}" ng-cloak>
+<div class="modal-content marketing-popup" style="width: 60vw;">
+   <button id="modal-close" type="button" class="modal-close" ng-click="data.showDebugOptions = false;closeDialog();">
+   <span class="icons icon-close invert" ng-click="closePopup()"></span>
+   </button>
+   <div class="modal-header" style="height: 10vh;">
+      <h2 style="font-weight: 600">Debugging options</h2>
+   </div>
+   <div class="modal-body">
+      <div class="actions" style="margin: 0 auto">
+         <button type="submit" class="button blue" ng-click="switchRoverInstance()">Switch Rover Instance</button>
+         <button type="submit" class="button green" ng-click="loadTestPage()">Load test Page</button>
       </div>
    </div>
 </div>
