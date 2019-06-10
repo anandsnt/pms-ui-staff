@@ -217,6 +217,9 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					});
 					$scope.prefetchData.link_with.push(obj);
 				});
+				if ($scope.prefetchData.selected_charge_code_type) {
+					fetchChargeCodesForAllowance();
+				}
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
