@@ -46,7 +46,7 @@
                     <div ng-include="icons.url.right_arrow_icon"></div>
                 </button>
             </div>
-            <button type="button" class="button transparent" click-touch="continueBooking()" ng-disabled="!idScanData.selectedRoomType.id" ng-class="{'disabled-button': !idScanData.selectedRoomType.id }" translate>
+            <button type="button" class="button" click-touch="continueBooking()" ng-disabled="!idScanData.selectedRoomType.id" ng-class="{'disabled-button': !idScanData.selectedRoomType.id, 'transparent': !idScanData.selectedRoomType.id }" translate>
                 CONTINUE</button> <!-- Remove attr 'disable' and class 'transparent' when room is selected -->
         </div>
     </div>
