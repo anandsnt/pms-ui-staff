@@ -92,7 +92,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'upstairs-by-mamas': 'Upstairs by Mamas',
             'juliani': 'Hotel Juliani',
             'mooons': 'Mooons',
-            'marmalade': 'Marmalade Hotel'
+            'marmalade': 'Marmalade Hotel',
+            'bosville': 'Bosville Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
