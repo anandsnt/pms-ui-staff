@@ -76,7 +76,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
          * @param {Boolean} isPrimary should be attaced as a primary/accompany guest
          * @return {void}
          */
-        var attachGuestToReservation = function (reservationId, guestId, isPrimary) {
+        var attachGuestToReservation = function (reservationId, guestId, isPrimary, guestType) {
             var onGuestLinkedToReservationSuccess = function () {
                     
                 };                
@@ -86,7 +86,8 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 params: {
                     reservation_id: reservationId,
                     guest_detail_id: guestId,
-                    is_primary: isPrimary
+                    is_primary: isPrimary,
+                    guest_type: guestType
                 }
             });
         };
@@ -148,7 +149,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 $scope.guestCardData.contactInfo.can_guest_card_delete = true;
 
                 if ($stateParams.fromStaycard && !$stateParams.guestId) {
-                    attachGuestToReservation($stateParams.reservationId, data.id, $stateParams.isPrimary);
+                    attachGuestToReservation($stateParams.reservationId, data.id, $stateParams.isPrimary, $stateParams.guestType);
                 }
             };
 
@@ -190,6 +191,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 dataToUpdate.avatar = '';
                 if (typeof data.data.is_opted_promotion_email === 'undefined') {
                     data.data.is_opted_promotion_email = false;
+                }
+                if ($stateParams.guestType) {
+                    data.data.guest_type = $stateParams.guestType;
                 }
                 $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
             } else if (!dataUpdated) {

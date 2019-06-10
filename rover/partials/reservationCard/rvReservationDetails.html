@@ -268,7 +268,7 @@
                             <span class="icons icon-save"></span> Download
                         </button>
                         <button type="button" class="button blue prevent-api-call" ng-if="!!guest.id && isStandAlone" click-touch="navigateToGuestCard(guest.id)">Show Guest Card</button>
-                        <button type="button" class="button green prevent-api-call" ng-if="!guest.id && isStandAlone" click-touch="findGuests(guest.first_name, guest.last_name, false, 'ADULT')">Create Guest Card</button>
+                        <button type="button" class="button green prevent-api-call" ng-if="shouldShowCreateGuestBtn(guest.id, guest.first_name, guest.last_name)" click-touch="findGuests(guest.first_name, guest.last_name, false, 'ADULT')">Create Guest Card</button>
                     </div>
 
                     <!-- Children Guest -->
@@ -299,7 +299,7 @@
                             <span class="icons icon-save"></span> Download
                         </button>
                         <button type="button" class="button blue prevent-api-call" ng-if="!!guest.id && isStandAlone" click-touch="navigateToGuestCard(guest.id)">Show Guest Card</button>
-                        <button type="button" class="button green prevent-api-call" ng-if="!guest.id && isStandAlone" click-touch="findGuests(guest.first_name, guest.last_name, false, 'CHILDREN')">Create Guest Card</button>
+                        <button type="button" class="button green prevent-api-call" ng-if="shouldShowCreateGuestBtn(guest.id, guest.first_name, guest.last_name)" click-touch="findGuests(guest.first_name, guest.last_name, false, 'CHILDREN')">Create Guest Card</button>
                     </div>
 
                     <!-- Infant Guest -->
@@ -331,7 +331,7 @@
                             <span class="icons icon-save"></span> Download
                         </button>
                         <button type="button" class="button blue prevent-api-call" ng-if="!!guest.id && isStandAlone" click-touch="navigateToGuestCard(guest.id)">Show Guest Card</button>
-                        <button type="button" class="button green prevent-api-call" ng-if="!guest.id && isStandAlone" click-touch="findGuests(guest.first_name, guest.last_name, false, INFANTS)">Create Guest Card</button>
+                        <button type="button" class="button green prevent-api-call" ng-if="shouldShowCreateGuestBtn(guest.id, guest.first_name, guest.last_name)" click-touch="findGuests(guest.first_name, guest.last_name, false, 'INFANTS')">Create Guest Card</button>
                     </div>
 
                 </div>

@@ -40,7 +40,8 @@ function(
                 fromStaycard: null,
                 isPrimary: null,
                 firstName: '',
-                lastName: ''
+                lastName: '',
+                guestType: null
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',

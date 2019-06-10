@@ -646,7 +646,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             params: {
                 reservation_id: $scope.reservationData.reservation_card.reservation_id,
                 guest_detail_id: guestId,
-                is_primary: isPrimary
+				is_primary: isPrimary,
+				guest_type: $scope.searchData.guestType
             }
         });
 	};
@@ -664,8 +665,19 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			isPrimary: isPrimary,
 			firstName: $scope.searchData.firstName,
 			lastName: $scope.searchData.lastName,
-			confirmationNo: $scope.reservationData.reservation_card.confirmation_num
+			confirmationNo: $scope.reservationData.reservation_card.confirmation_num,
+			guestType: $scope.searchData.guestType
 		});
+	};
+
+	/**
+	 * Should show create guest button
+	 * @param {Number} guestId if of the guest if already exists
+	 * @param {String} firstName first name of guest
+	 * @param {String} lastName last name of guest
+	 */
+	$scope.shouldShowCreateGuestBtn = function (guestId, firstName, lastName) {
+		return (!guestId && $rootScope.isStandAlone && (firstName || lastName) );
 	};
 
 	}
