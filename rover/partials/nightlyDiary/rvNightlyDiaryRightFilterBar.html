@@ -5,9 +5,11 @@
     </div>
     <div class="filters-list scrollable scroll-vertical">
         <div class="wrapper">
+
+            <!--- :START - NORMAL FILTERS without selecting a Reservation -->
             <!-- Room Type -->
             <div class="entry">
-                <div class="multi-select with-label" ng-click="diaryData.hideRoomType =! diaryData.hideRoomType">
+                <div class="multi-select with-label" ng-click="diaryData.hideRoomType ==! diaryData.hideRoomType">
                     <label for="room-type">Room Type</label>
                     <span class="value">{{diaryData.selectedRoomCount}} selected ...</span>
                 </div>
@@ -19,10 +21,9 @@
                     </label>
                 </div>
             </div>
-
             <!-- Floor -->
             <div class="entry">
-                <div class="multi-select with-label" ng-click="diaryData.hideFloorList =! diaryData.hideFloorList">
+                <div class="multi-select with-label" ng-click="diaryData.hideFloorList ==! diaryData.hideFloorList">
                     <label for="room-type">Floor</label>
                     <span class="value">{{diaryData.selectedFloorCount}} selected ...</span>
                 </div>
@@ -34,9 +35,14 @@
                     </label>
                 </div>
             </div>
+            <!--- :END - NORMAL FILTERS without selecting a Reservation -->
+
+
+
         </div>
     </div>
-    <div class="actions">
+    <div class="actions dual-actions">
+        <button type="button" class="button blank">Clear All</button> <!-- Add class 'hidden' when no filters are applied -->
         <button type="button" class="button green" ng-click="applyFilter()">Apply</button>
     </div>
 </div>
