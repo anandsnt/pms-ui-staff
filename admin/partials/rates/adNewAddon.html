@@ -128,19 +128,7 @@
                     </div>
                 </div>
 
-                <fieldset ng-if="isAllowanceEnabled" class="holder full-width">
-
-                    <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry">
-                        <div class="entry full-width">
-                            <label for="charge-group-id">
-                                {{'SPILLAGE_REFUND_LABEL' | translate}}
-                                <strong>*</strong>
-                            </label>
-                            <div class="select">
-                                <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.spillage_refund_percentage" ng-options="option for option in allowanceRefundOptions" ng-change="chargeGroupChage()"></select>
-                            </div>
-                        </div>
-                    </div>
+                
 
                     <div class="entry" ng-if="singleAddon.is_allowance">
                         <label translate>ALLOWED_CHARGE_CODES_LABEL</label>
@@ -148,34 +136,41 @@
                         </div>
                     </div>
 
-                    <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.price" name="name" id="name" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" ></ad-textbox>
-                </fieldset>
-                
-                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry">
-                    <div class="entry full-width">
-                        <label for="charge-group-id">
-                            {{'CHARGE_GROUP' | translate}}
-                            <strong>*</strong>
-                        </label>
-                        <div class="select">
-                            <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.charge_group_id" ng-options="group.id as group.name for group in chargeGroups" ng-change="chargeGroupChage()"></select>
+                    <div ng-if="!singleAddon.is_allowance" ng-hide="singleAddon.is_allowance" class="entry">
+                        <div class="entry full-width">
+                            <label for="charge-group-id">
+                                {{'CHARGE_GROUP' | translate}}
+                                <strong>*</strong>
+                            </label>
+                            <div class="select">
+                                <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.charge_group_id" ng-options="group.id as group.name for group in chargeGroups" ng-change="chargeGroupChage()"></select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div ng-if="::!isConnectedToPMS" class="entry">
-                    <div class="entry full-width">
-                        <label for="charge-group-id">
-                            {{'CHARGE_CODE' | translate}}
-                            <strong>*</strong>
-                        </label>
-                        <div class="select">
-                            <select name="charge-code-id" id="charge-code-id" ng-model="singleAddon.charge_code_id" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodesForChargeGrp"></select>
+
+                    <div ng-if="::!isConnectedToPMS" class="entry">
+                        <div class="entry full-width">
+                            <label for="charge-group-id">
+                                {{'CHARGE_CODE' | translate}}
+                                <strong>*</strong>
+                            </label>
+                            <div class="select">
+                                <select name="charge-code-id" id="charge-code-id" ng-model="singleAddon.charge_code_id" ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodesForChargeGrp"></select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="entry">
-                    <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}}" placeholder="Enter the amount" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
-                </div>
+
+                    <div class="entry" ng-if="!singleAddon.is_allowance">
+                        <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}}" placeholder="Enter the amount" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+                    </div>
+
+                    <div class="entry" ng-if="singleAddon.is_allowance">
+                        <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+                    </div>
+
+                    <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.price" name="name" id="name" label="{{'ALLOWANCE_PRICE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_PRICE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+
+                    
 
                 <ad-toggle-button div-class="full-width" label="{{'ALTERNATE_DESCRIPTION_SWITCH_LABEL' | translate}}" is-hide="!isConnectedToPMS" is-checked="singleAddon.is_alternate_description_active"></ad-toggle-button>
 
@@ -183,7 +178,7 @@
 
                 <ad-textarea rows="4" hide="!(isConnectedToPMS && singleAddon.is_alternate_description_active) || isDefaulLanguageSelected()" div-class="full-width" text-area-class="full-width" value="translations.translated_alternate_description" name="desc" id="desc" label="{{'ALTERNATE_DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_ALTERNATE_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
 
-                <div class="entry">
+                <div class="entry full-width">
                     <div class="entry full-width">
                         <label for="amount-type-id">
                             {{'AMOUNT_TYPE' | translate}}
@@ -194,6 +189,19 @@
                         </div>
                     </div>
                 </div>
+
+                    <div ng-if="::!isConnectedToPMS" ng-show="singleAddon.is_allowance" class="entry full-width">
+                        <div class="entry full-width">
+                            <label for="charge-group-id">
+                                {{'SPILLAGE_REFUND_LABEL' | translate}}
+                                <strong>*</strong>
+                            </label>
+                            <div class="select">
+                                <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.spillage_refund_percentage" ng-options="option for option in allowanceRefundOptions" ></select>
+                            </div>
+                        </div>
+                    </div>
+
                 <div class="entry full-width">
                     <label for="amount-type-id">
                         {{'POST_TYPE' | translate}}
