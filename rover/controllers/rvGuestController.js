@@ -337,6 +337,7 @@ angular.module('sntRover').controller('guestCardController', [
 
         $scope.$on('contactInfoError', function(event, value) {
             $scope.contactInfoError = value;
+            $scope.current = 'guest-contact';
         });
 
         $scope.$on('likesInfoError', function(event, value) {
@@ -444,6 +445,10 @@ angular.module('sntRover').controller('guestCardController', [
                 }
             }
         };
+
+        $scope.$on("OPEN_GUEST_CARD", function() {
+            $scope.openGuestCard();
+        });
 
 
         $scope.checkOutsideClick = function(targetElement) {

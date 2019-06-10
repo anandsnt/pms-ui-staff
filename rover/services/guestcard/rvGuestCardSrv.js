@@ -3,9 +3,49 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
     'rvBaseWebSrvV2',
     function ($q, RVBaseWebSrvV2) {
 
-        var guestFieldData = {};
+        var guestFieldData = {},
+            service = this;
 
         this.PER_PAGE_COUNT = 50;
+
+
+        service.fetchGuestDetails = function() {
+            var deferred = $q.defer(),
+                url = '/api/guest_details';
+
+            RVBaseWebSrvV2.getJSON(url, data).then(function (data) {
+                // guestFieldData = {
+                //     "is_father_name_visible": data.is_father_name_visible,
+                //     "is_gender_visible": data.is_gender_visible,
+                //     "is_mother_name_visible": data.is_mother_name_visible,
+                //     "is_registration_number_visible": data.is_registration_number_visible,
+                //     "is_birth_place_visible": data.is_birth_place_visible,
+                //     "is_home_town_visible": data.is_home_town_visible,
+                //     "is_place_of_residence_visible": data.is_place_of_residence_visible,
+                //     "is_vehicle_country_mark_visible": data.is_vehicle_country_mark_visible,
+                //     "is_personal_id_no_visible": data.is_personal_id_no_visible
+                // };
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        /*
+         * Fetch admin settings
+         *
+         */
+        service.fetchGuestAdminSettings = function(param) {
+            var deferred = $q.defer();
+            var url = '/admin/guest_card_settings/current_settings';
+
+            rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         /**
          * Fetch guest details
@@ -13,25 +53,26 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
          * @return {Promise} promise
          */
         this.fetchGuests = function (data) {
-            var deferred = $q.defer(),
-                url = '/api/guest_details';
 
-            RVBaseWebSrvV2.getJSON(url, data).then(function (data) {
-                guestFieldData = {
-                    "is_father_name_visible": data.is_father_name_visible,
-                    "is_gender_visible": data.is_gender_visible,
-                    "is_mother_name_visible": data.is_mother_name_visible,
-                    "is_registration_number_visible": data.is_registration_number_visible,
-                    "is_birth_place_visible": data.is_birth_place_visible,
-                    "is_home_town_visible": data.is_home_town_visible,
-                    "is_place_of_residence_visible": data.is_place_of_residence_visible,
-                    "is_vehicle_country_mark_visible": data.is_vehicle_country_mark_visible,
-                    "is_personal_id_no_visible": data.is_personal_id_no_visible
-                };
+            var deferred = $q.defer(),
+                data = {};
+
+            $q.when().then(function() {
+                return service.fetchGuestDetails().then(function(response) {
+                    data = response;
+                });
+            })
+            .then(function() {                 
+                return service.fetchGuestAdminSettings().then(function(response) {
+                    data.guestAdminSettings = response;
+                });
+            })            
+            .then(function() {
                 deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
             });
+
             return deferred.promise;
         };
         /*
