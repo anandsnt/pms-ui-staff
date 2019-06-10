@@ -720,7 +720,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 pageStartingIndex: pageStartingIndex,
                 pageEndingIndex: pageEndingIndex,
                 viewableItems: viewableItems,
-                pageNumber: pageNumber
+                pageNumber: pageNumber,
+                total: array.length
             };
 
             return pageData;
