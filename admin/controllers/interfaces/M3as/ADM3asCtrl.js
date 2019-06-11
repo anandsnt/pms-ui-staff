@@ -17,8 +17,8 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
     };
 
     $scope.toggleRoomRevenue = function () {
-        $scope.config.room_revenue_only = !$scope.config.room_revenue_only
-    }
+        $scope.config.room_revenue_only = !$scope.config.room_revenue_only;
+    };
 
     $scope.changeTab = function(name) {
         $scope.state.activeTab = name;
