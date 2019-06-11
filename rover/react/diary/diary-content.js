@@ -33,6 +33,23 @@ var DiaryContent = React.createClass({
 	__onGridScrollStart: function(iscroll_object) {
 
 	},
+    __onResibleClicked: function(e) {
+        var state = this.state,
+            targetElementClass = 'ui-resizable-handle ui-resizable-e';
+
+        if ( e.target.className === targetElementClass ) {
+            if (state.jqResizable.open) {
+                state.jqResizable.open = false;
+                state.jqResizable.display.width = state.jqResizable.options.minWidth;
+            } else {
+                state.jqResizable.open = true;
+                state.jqResizable.display.width = state.jqResizable.options.maxWidth;
+            }
+            this.setState({
+                jqResizable: state.jqResizable
+            });
+        }
+    },
 	__onGridScrollEnd: function(iscroll_object) {
 		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
 	},
@@ -141,6 +158,8 @@ var DiaryContent = React.createClass({
 	componentDidMount: function() {
 		var self = this,
             state = this.state;
+
+        $('.diary-resizable').resizable(state.jqResizable.options);
 
     	$(window).on('resize', _.throttle(function(e) {
     		self._recalculateGridSize();
@@ -291,7 +310,12 @@ var DiaryContent = React.createClass({
 		},
             React.DOM.div(
                 {
-                    className: 'diary-resizable'
+                    className: 'diary-resizable',
+                    ref: 'diary-resizable',
+                    onClick: self.__onResibleClicked,
+                    style: {
+                        width: state.jqResizable.display.width + 'px'
+                    }
                 },
                 React.createElement( TogglePanel, {
                     __toggleRows: self.__toggleRows
