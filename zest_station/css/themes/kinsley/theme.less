@@ -1,11 +1,11 @@
-/* StayNTouch Zest Station Styles | First Theme */
+/* StayNTouch Zest Station Styles | Kinsley Theme */
 
 /* 1. COLORS
 ==========================================================*/
-@brandColor:            #00b1df;
+@brandColor:            #024e66;
     
 @textColor:             @black;
-@backgroundColor:       @white;
+@backgroundColor:       #f5f1e5;
 
 @actionColor:           @white;
 @actionBackground:      @brandColor;
@@ -22,11 +22,11 @@
 
 /* 3. IMAGES
 ==========================================================*/
-@background: @white;
+@background: @backgroundColor;
 @backgroundSize: '';
 
-@headerIconsColor:      @brandColor;
-@headerIconsActive:     @brandColor;
+@headerIconsColor:      @black;
+@headerIconsActive:     @black;
 
 .icons { 
     &.icon-create-key {
@@ -48,24 +48,22 @@
 
 }
 
-// PMS Zest Station logo
-    .logo-svg{
-        background-image: url("../css/themes/juliani/logo.svg");
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 273px;
-        height: 100px;
-        background-position: center;
-        margin-top: 45px;
-    }
+.logo-svg{
+    background-image: url("../css/themes/kinsley/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 70px;
+    width: 293px;
+}
 
 /* 4. LAYOUT
 ==========================================================*/
 
-#juliani {
+#kinsley {
 
     #header {
-        height: 135px;
+        height: 130px;
 
         .button {
             .icons {
@@ -75,18 +73,11 @@
     }
 
     #main {
-        #calc > #height > .remove(100%, 135px);
-        top: 135px;
-
-        &.centered {
-            padding-top: 100px;
-            #content {
-                height: 100%;
-            }
-        }
+        #calc > #height > .remove(100%, 130px);
+        top: 130px;
     }
 
-    .entry.input {
+    .entry.input:not(.select) {
         .icons {
             fill: @brandColor;
         }
@@ -94,11 +85,11 @@
     
     #logo {
         padding-top: 0px;
-        margin-top: 45px;
+        margin-top: 50px;
     
         .logo {
             width: auto;
-            height: 100px;
+            height: 70px;
         }
     }
 
@@ -121,15 +112,7 @@
             }
         }
     }
-
-    #selection {
-        li {
-            .details {
-                background-color: fade(#000, 5);
-            
-            }
-        }
-    }
+ 
 
     #guests {
         .button {
@@ -142,10 +125,10 @@
         li {
 
             &:not(.selected){
-                border-color: rgba(0,0,0,0.05);
+                border-color: @white;
 
                 .add-on-content {
-                    background: rgba(0,0,0,0.05);
+                    background: @white
                 }
             }
             
@@ -159,16 +142,23 @@
                 color: @brandColor;
             }
         }
+
+        .add-on-content {
+
+            #options {
+                .option {
+                    &.not-selected {
+                        .icon-text {
+                            color: @brandColor;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #textual {
-        background: #ececec;
          
-
-        &:before,
-        &:after {
-            background: #ececec;
-        }
 
         #rate {
             li {

@@ -1,8 +1,8 @@
-/* StayNTouch Zest Station Styles | First Theme */
+/* StayNTouch Zest Station Styles | Zurzacheroff Theme */
 
 /* 1. COLORS
 ==========================================================*/
-@brandColor:            #00b1df;
+@brandColor:            #b07378;
     
 @textColor:             @black;
 @backgroundColor:       @white;
@@ -50,19 +50,19 @@
 
 // PMS Zest Station logo
     .logo-svg{
-        background-image: url("../css/themes/juliani/logo.svg");
+        background-image: url("../css/themes/zurzacheroff/logo.svg");
         background-repeat: no-repeat;
         background-size: contain;
-        width: 273px;
-        height: 100px;
+        width: 100px;
+        height: 115px;
         background-position: center;
-        margin-top: 45px;
+        margin-top: 40px;
     }
 
 /* 4. LAYOUT
 ==========================================================*/
 
-#juliani {
+#zurzacheroff {
 
     #header {
         height: 135px;
@@ -91,14 +91,23 @@
             fill: @brandColor;
         }
     }
+
+    input,
+    select,
+    /* Popup fixes start */
+    textarea
+    /* Popup fixes end */ {
+        background: @inputBackground;
+        color: @inputColor;
+    }
     
     #logo {
         padding-top: 0px;
-        margin-top: 45px;
+        margin-top: 40px;
     
         .logo {
             width: auto;
-            height: 100px;
+            height: 115px;
         }
     }
 
@@ -120,13 +129,28 @@
                 display: none;
             }
         }
+
+        &.home {
+            li {
+                &:nth-child(1) {
+                    .button {
+                        background: #95978d;
+                    }
+                }
+
+                &:nth-child(3) {
+                    .button {
+                        background: #898c2f;
+                    }
+                }
+            }
+        }
     }
 
     #selection {
         li {
             .details {
-                background-color: fade(#000, 5);
-            
+                background-color: fade(@brandColor, 5);
             }
         }
     }
