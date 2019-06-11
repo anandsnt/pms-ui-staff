@@ -111,7 +111,7 @@
 
             .entry-data {
                 position: relative;
-                background: @white @calendar no-repeat 94% 10px;
+                background: @white @calendar2x no-repeat 94% 10px;
                 background-size: 20px;
                 height: 40px;
                 .box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
@@ -136,12 +136,71 @@
                     padding-left: 10px;
                 }
 
-                @media @highdpi {
-                    background-image: @calendar2x;
-                }
-
                 &:hover { background-position: 94% -40px; }
             } 
+        }
+
+        &.single-date {
+            width: 216px;
+            #flexbox > .parent(row wrap, '', '', '');
+
+            label {
+                position: absolute;
+                top: 0;
+                left: 10px;
+                font-size: 12px;
+                text-transform: uppercase;
+                color: @grey3;
+                margin: 0;
+            }
+
+            input {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 99;
+                cursor: pointer;
+                .square(100%);
+                .opacity(0);
+            }
+
+            select {
+                padding: 13px 30px 7px 10px;
+                line-height: 20px;
+                #border-radius > .left(0);
+            }
+
+            .date {
+                line-height: 30px;
+                font-size: 16px;
+                font-weight: 600;
+                padding: 10px 0 0 10px;
+                .show();
+
+                &.arrival {
+                    color: @green;
+                }
+
+                &.departure {
+                    color: @red;
+                }
+            }
+
+            .entry-date {
+                position: relative;
+                background: @white @calendar2x no-repeat 94% 10px;
+                background-size: 20px;
+                width: 136px;
+                .box-shadow(~'inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
+                #border-radius > .right(0);
+
+                &:hover { background-position: 94% -40px; }
+            }
+
+            .entry-time {
+                position: relative;
+                width: 80px;
+            }
         }
 
         &.switch {
@@ -149,7 +208,7 @@
                 background: rgba(0,0,0,.1);
                 #border-radius > .rounded();
                 .show;
-                .size( 40px, 100% );
+                .size(40px, 100%);
 
                 input {
                     .square(100%);
@@ -200,88 +259,29 @@
             width: 75px;
 
             .switch-button {
-                background: rgba(0,0,0,.1);
-                #border-radius > .rounded();
-                .size(40px, 100%);
-                .show;
-
                 .data-off,
                 .data-on { 
                     font-size: 21px;
-                    line-height: 30px;
-                    height: 30px;
 
                     .switch-icon {
                         color: @grey3;
-                        text-shadow: none;
-                        .clickable;
-                        background: @white;
                     }
 
                     .value { 
                         color: @grey2;
-                        font-weight: 600; 
                     }
-
-                    &.data-off { 
-                        left: auto;
-                        right: 0;
-
-                        .switch-icon { margin: 0 5px 0 0; }
-                    }
-                    
-                    &.data-on { 
-                        left: auto;
-                        right: 100%;
-
-                        .switch-icon { margin: 0 0 0 5px; }
-                    }
-                }
-
-                &.on {
-                    .data-off { left: auto; right: -100%; }
-                    .data-on { left: auto; right: 0; }
                 }
             }
         }
 
         &.switch-available {
-            width: 100px;
-            .float();
-
-            .switch-button {
-                width: 100px;
-                float: left;
-            }
-
-            .notice {
-                margin-left: 10px;
-                font-weight: 600;
-                line-height: 40px;
-                height: 40px;
-                padding-top: 0;
-                padding-bottom: 0;
-                margin-bottom: 0;
-                text-align: center;
-                text-transform: uppercase;
-                background: lighten(@yellow, 30);
-                .pull-left;
-                .calc-width(100, 110);
-                .nowrap();
-                .hide();
-            }
-
-            &.show-notice {
-                .calc-width(100, 550);
-
-                .notice { .show(); }
-            }
+            width: 120px;
         }
 
         &.search {
             position: relative;
             flex: 1 1 auto;
-            .calc-width(100, 710);
+            .calc-width(100, 740);
 
             input {
                 position: relative;
@@ -323,6 +323,7 @@
             }
 
             .button {
+                padding: 0;
                 .show();
 
                 &:not(:last-child) {
@@ -332,6 +333,15 @@
 
             &.show-one {
                 width: 90px;
+            }
+        }
+
+        &.action {
+            width: 100px;
+
+            .button {
+                font-size: 14px;
+                padding: 0 10px;
             }
         }
 
@@ -489,45 +499,14 @@
     /* Screen big enough to show two columns  ***/
     @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
         .entry {
-            
-            &.search {
-                .calc-width(100, 670);
-            }
+            &.filters {
+                width: 40px;
 
-            &.switch-available {
-                width: 200px;
-
-                .switch-button {
-                    width: 200px;
-                }
-
-                .value,
-                .switch-icon {
-                    position: relative;
-                    .hide-text();
-
-                    &:after {
-                        content: attr(data-long);
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        text-indent: 0;
-                        .square(100%);
-                        .show();
+                .button {
+                    &:not(:last-child) {
+                        .hide();
                     }
                 }
-
-                .notice {
-                    .calc-width(100, 210);
-                }
-
-                &.show-notice {
-                    .calc-width(100, 460);
-                }
-            }
-
-            &.filters{
-                .hide();
             }
         }
     }
