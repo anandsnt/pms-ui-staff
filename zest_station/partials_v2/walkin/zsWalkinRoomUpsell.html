@@ -39,7 +39,7 @@
             <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
                 <li ng-repeat="room in pageData.viewableItems" ng-class="{'selected': room.id === idScanData.selectedRoomType.id }" click-touch="showRoomDetails(room)">
                     <div class="upgrade-picture">
-                        <img ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
+                        <img ng-class="{'no-room-image': !idScanData.selectedRoomType.room_type_image }" ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
                     </div>
                     <div class="upgrade-content">
                         <h2>{{ room.roomTypeName }}</h2>
