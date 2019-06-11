@@ -116,5 +116,10 @@ angular.module('sntRover')
 				resetFilters();
 			});
 
+			// Show/Hide right filter based on screen width and filter type
+			$scope.isShowRightFilter = function() {
+				return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'RESERVATION_FILTER') ? 'visible' : '';
+			};
+
 			initiate();
 }]);

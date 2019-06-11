@@ -5,6 +5,15 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_hotel_kinsley': [ themeCSSRoot + 'guestweb_hotel_kinsley.css'],
+            'guestweb_bosville_hotel': [ themeCSSRoot + 'guestweb_bosville_hotel.css'],
+            'guestweb_marmalade_hotel': [ themeCSSRoot + 'guestweb_marmalade_hotel.css'],
+            'guestweb_hotel_juliani': [ themeCSSRoot + 'guestweb_hotel_juliani.css'],
+            'guestweb_mooons': [ themeCSSRoot + 'guestweb_mooons.css'],
+            'guestweb_aparthotel_stare_miasto': [ themeCSSRoot + 'guestweb_aparthotel_stare_miasto.css'],
+            'guestweb_upstairs_by_mamas': [ themeCSSRoot + 'guestweb_upstairs_by_mamas.css'],
+            'guestweb_kelley_house': [ themeCSSRoot + 'guestweb_kelley_house.css'],
+            'guestweb_inns_of_aurora': [ themeCSSRoot + 'guestweb_inns_of_aurora.css'],
             'guestweb_shelburne_hotel': [ themeCSSRoot + 'guestweb_shelburne_hotel.css'],
             'guestweb_whittaker_inn': [ themeCSSRoot + 'guestweb_whittaker_inn.css'],
             'guestweb_ashore_hotel': [ themeCSSRoot + 'guestweb_ashore_hotel.css'],
@@ -201,7 +210,8 @@ module.exports = {
             'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css'],
             'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css'],
             'guestweb_ihg': [ themeCSSRoot + 'guestweb_ihg.css'],
-            'guestweb_manchebo_beach_resort': [ themeCSSRoot + 'guestweb_manchebo_beach_resort.css']
+            'guestweb_manchebo_beach_resort': [ themeCSSRoot + 'guestweb_manchebo_beach_resort.css'],
+            'guestweb_hotel_zurzacherhof': [ themeCSSRoot + 'guestweb_hotel_zurzacherhof.css']
         };
     }
 };

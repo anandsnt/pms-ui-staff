@@ -55,4 +55,5 @@
     "ENDING_WITH" : "Ending with ",
 
     "USE_IPAD_TO_USE_CBA": "Please use Rover iPad Application to use CBA",
-    "CBA_TIMED_OUT": "The operation timed out, Please check device connectivity."
+    "CBA_TIMED_OUT": "The operation timed out, Please check device connectivity.",
+    "GET_TOKEN": "Get Token"

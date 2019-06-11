@@ -129,7 +129,7 @@ sntRover.controller('roverController', [
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            eInvoiceVisible: hotelDetails.e_invoice_visible,
             noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
             noModifyInvoice: hotelDetails.no_modify_invoice,
             forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
@@ -324,6 +324,8 @@ sntRover.controller('roverController', [
 
         // Temporary hack to enable the merge options only for pilot properties
         $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
+
+        $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
 
         /**
          * reciever function used to change the heading according to the current page

@@ -271,8 +271,8 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 	var autoDetectIDAndProcessData = function() {
 
 		var cameraParams = {
-			'CAPTURE_TIMER': 4,
-			'PREVIEW_TIMER': 4,
+			'CAPTURE_TIMER': 3,
+			'PREVIEW_TIMER': 3,
 			'CAMERA_TYPE': 'back_camera',
 			'CAMERA_MESSAGES': {
 				'DETECTING_FACE': 'WAITING FOR AN ID TO SCAN, PLEASE SHOW YOUR ID TO THE IPAD BACK CAMERA',
@@ -322,10 +322,12 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 
 		cordova.exec(function(response) {
 			$scope.$emit('IMAGE_ANALYSIS_STARTED');
+			$scope.$emit('RUN_APPLY');
 			imageCaptured(response);
 		}, function() {
 			$scope.$emit('IMAGE_ANALYSIS_FAILED');
 			$scope.screenData.scanMode = $scope.screenData.imageSide === 0 ? screenModes.upload_front_image_failed : screenModes.upload_back_image_failed;
+			$scope.$emit('RUN_APPLY');
 		}, pluginName, actionName, [jsonstring]);
 	};
 
@@ -377,13 +379,13 @@ angular.module('sntIDCollection').controller('sntIDCollectionBaseCtrl', function
 			'PREVIEW_TIMER': 3,
 			'CAMERA_TYPE': 'front_camera',
 			'CAMERA_MESSAGES': {
-				'DETECTING_FACE': 'Detecting face, Please position your face straight',
-				'CANCEL': 'Cancel',
-				'TAKING_PHOTO': 'Capturing your headshot',
-				'CAPTURE': 'Capture now',
-				'PROCEEDING_WITH_THE_IMAGE': 'Proceeding with captured image',
-				'RETAKE_PHOTO': 'Recapture',
-				'PROCEED': 'Continue'
+				'DETECTING_FACE': 'DETECTING FACE, PLEASE POSITION YOUR FACE STRAIGHT',
+				'CANCEL': 'CANCEL',
+				'TAKING_PHOTO': 'CAPTURING YOUR HEADSHOT',
+				'CAPTURE': 'CAPTURE NOW',
+				'PROCEEDING_WITH_THE_IMAGE': 'PROCEEDING WITH CAPTURED IMAGE',
+				'RETAKE_PHOTO': 'RECAPTURE',
+				'PROCEED': 'CONTINUE'
 			}
 		};
 

@@ -507,7 +507,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 } else {
                     recordIDApproval();
 
-                    if ($scope.fromPickupKeyPassportScan) {
+                    if ($stateParams.from_pickup_key) {
                         $scope.zestStationData.continuePickupFlow();
                     } else {
                         $scope.mode = 'RESERVATION_DETAILS';
@@ -835,8 +835,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 $scope.mode = 'SCAN_RESULTS';
             }
-
-            $scope.fromPickupKeyPassportScan = $stateParams.from_pickup_key === 'true';
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 

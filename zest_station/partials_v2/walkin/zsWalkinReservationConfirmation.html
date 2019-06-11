@@ -1,0 +1,11 @@
+<!-- Content -->
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinRoomUpsell.html'"  
+   ng-if="zestStationData.kiosk_walkin_flow !== 'traditional' || availabileRoomList.length == 1"></ng-include>
+
+<ng-include src="'/assets/partials_v2/walkin/zsWalkinTraditionalRoomSelection.html'"  
+   ng-if="zestStationData.kiosk_walkin_flow === 'traditional' && availabileRoomList.length > 1"></ng-include> 
+
+
+
+
