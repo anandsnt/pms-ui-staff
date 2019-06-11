@@ -30,9 +30,14 @@
         <fieldset class="holder full-width">
             <ad-textbox inputtype="text" value="config.facility_id" label="{{'M3_FACILITY_ID'| translate}}"
                 styleclass="full-width" ng-if="config.enabled"></ad-textbox>
-            
-            <ad-toggle-button is-checked="config.roomRevenueOnly" label="{{'M3_ROOM_REVENUE_ONLY'| translate}}"
-                ng-if="config.enabled"></ad-toggle-button>
+                <label><span translate>M3_ROOM_REVENUE_ONLY</span></label>
+                <div>
+                    <div name="active-inactive-toggle" class="switch-button" ng-class="{ on: config.room_revenue_only }"
+                        ng-click="toggleRoomRevenue()">
+                        <input type="checkbox">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
         </fieldset>
         <!-- email addresses for export  -->
         <fieldset class="holder full-width" ng-if="config.enabled">
