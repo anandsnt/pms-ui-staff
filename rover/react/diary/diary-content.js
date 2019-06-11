@@ -33,19 +33,22 @@ var DiaryContent = React.createClass({
 	__onGridScrollStart: function(iscroll_object) {
 
 	},
-    __onResibleClicked: function() {
-        var state = this.state;
+    __onResibleClicked: function(e) {
+        var state = this.state,
+            targetElementClass = 'ui-resizable-handle ui-resizable-e';
 
-        if (state.jqResizable.open) {
-            state.jqResizable.open = false;
-            state.jqResizable.display.width = state.jqResizable.options.minWidth;
-        } else {
-            state.jqResizable.open = true;
-            state.jqResizable.display.width = state.jqResizable.options.maxWidth;
-        };
-        this.setState({
-            jqResizable: state.jqResizable
-        });
+        if ( e.target.className === targetElementClass ) {
+            if (state.jqResizable.open) {
+                state.jqResizable.open = false;
+                state.jqResizable.display.width = state.jqResizable.options.minWidth;
+            } else {
+                state.jqResizable.open = true;
+                state.jqResizable.display.width = state.jqResizable.options.maxWidth;
+            };
+            this.setState({
+                jqResizable: state.jqResizable
+            });
+        }
     },
 	__onGridScrollEnd: function(iscroll_object) {
 		this.state.angular_evt.onScrollEnd(Math.abs(this.state.iscroll.grid.x) / this.state.display.px_per_ms + this.state.display.x_n);
