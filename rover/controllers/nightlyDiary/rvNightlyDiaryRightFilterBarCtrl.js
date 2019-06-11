@@ -131,6 +131,22 @@ angular.module('sntRover')
 				return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'RESERVATION_FILTER') ? 'visible' : '';
 			};
 
+			/**
+			 * function to handle the filter selection
+			 */
+			$scope.setSelectionForFeature = function(group, feature) {
+				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+				
+				if (!roomFeatures[group].multiple_allowed) {
+					for (var i = 0; i < roomFeatures[group].items.length; i++) {
+						if (feature !== i) {
+							roomFeatures[group].items[i].selected = false;
+						}
+					}
+				}
+				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
+			};
+
 			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
 			$scope.applyGuestPreferenceFilter = function() {
 

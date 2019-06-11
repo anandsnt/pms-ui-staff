@@ -9,7 +9,7 @@
             <!--- :START - NORMAL FILTERS without selecting a Reservation -->
                 <!-- Room Type -->
                 <div class="entry" ng-hide="diaryData.isReservationSelected">
-                    <div class="multi-select with-label" ng-click="diaryData.hideRoomType ==! diaryData.hideRoomType">
+                    <div class="multi-select with-label" ng-click="diaryData.hideRoomType = !diaryData.hideRoomType">
                         <label for="room-type">Room Type</label>
                         <span class="value">{{diaryData.selectedRoomCount}} selected ...</span>
                     </div>
@@ -23,7 +23,7 @@
                 </div>
                 <!-- Floor -->
                 <div class="entry" ng-hide="diaryData.isReservationSelected">
-                    <div class="multi-select with-label" ng-click="diaryData.hideFloorList ==! diaryData.hideFloorList">
+                    <div class="multi-select with-label" ng-click="diaryData.hideFloorList = !diaryData.hideFloorList">
                         <label for="room-type">Floor</label>
                         <span class="value">{{diaryData.selectedFloorCount}} selected ...</span>
                     </div>
@@ -68,17 +68,12 @@
                 </div>
 
                 <!-- CASE 3: Option toggle. Checking one option should deselect the other. Clicking the selected one should deselect it. -->
-                <div class="entry join radio-check" ng-show="diaryData.isReservationSelected">
-                    <strong class="label">{Filter Label}</strong>
-                    <label class="checkbox"> <!-- Add class 'checked' when checked -->
-                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when checked -->
-                        <input name="{filterName}" id="{optionId}" type="checkbox">
-                        {Filter Option 1}
-                    </label>
-                    <label class="checkbox"> <!-- Add class 'checked' when checked -->
-                        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' when checked -->
-                        <input name="{filterName}" id="{optionId}" type="checkbox">
-                        {Filter Option 2}
+                <div class="entry join radio-check" ng-show="diaryData.isReservationSelected" ng-repeat="feature in diaryData.roomAssignmentFilters.room_features">
+                    <strong class="label">{{feature.group_name}}</strong>
+                    <label class="checkbox" ng-repeat="item in feature.items" ng-class="{'checked': item.selected}"> <!-- Add class 'checked' when checked -->
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': item.selected}"></span> <!-- Add class 'checked' when checked -->
+                        <input type="checkbox" ng-click="setSelectionForFeature($parent.$index, $index)">
+                        {{item.name}}
                     </label>
                 </div>
 
