@@ -44,7 +44,7 @@ var DiaryContent = React.createClass({
             } else {
                 state.jqResizable.open = true;
                 state.jqResizable.display.width = state.jqResizable.options.maxWidth;
-            };
+            }
             this.setState({
                 jqResizable: state.jqResizable
             });
@@ -250,7 +250,6 @@ var DiaryContent = React.createClass({
 			viewport 	= scope.gridProps.viewport,
 			display 	= scope.gridProps.display,
 			filter      = scope.gridProps.filter,
-            jqResizable = scope.gridProps.jqResizable,
 			s_0 		= {
 							angular_evt: {
 								onSelect: scope.onSelect,
