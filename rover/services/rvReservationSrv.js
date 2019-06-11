@@ -387,7 +387,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 				deferred.reject(response);
 			});
 			return deferred.promise;
-		}
+		};
 
 
 	}

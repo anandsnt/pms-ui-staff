@@ -623,7 +623,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
      */
     $scope.closePopup = function () {
         closeDialog();
-    }
+    };
 
     /**
      * Attaches a primary/accompany guest to a reservation
@@ -660,7 +660,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 	$scope.navigateToCreateGuest = function (isPrimary) {
 		closeDialog();
 		$state.go('rover.guest.details', {
-			reservationId: 	$scope.reservationData.reservation_card.reservation_id,
+			reservationId:	$scope.reservationData.reservation_card.reservation_id,
 			fromStaycard: true,
 			isPrimary: isPrimary,
 			firstName: $scope.searchData.firstName,
