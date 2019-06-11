@@ -475,7 +475,7 @@ sntRover.controller('reservationDetailsController',
 				// The additional check is to prevent the save while navigating to some other states
 				if(document.activeElement.getAttribute("type") != "text" && 
 					$state.$current.name === "rover.reservation.staycard.reservationcard.reservationdetails" &&
-					!$event.originalEvent.relatedTarget.className.search(/prevent-api-call/) ) {
+					!document.activeElement.className.search(/prevent-api-call/) ) {
 					$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": false});
 				}
 
