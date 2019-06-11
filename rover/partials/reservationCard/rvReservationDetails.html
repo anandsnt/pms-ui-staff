@@ -238,6 +238,7 @@
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)">
                             <span class="icons icon-save"></span> Download
                         </button>
+                        <button type="button" class="button blue prevent-api-call" click-touch="navigateToGuestCard(guestData.primary_guest_details.id)" ng-if="isStandAlone">Show Guest Card</button>
                     </div>
 
                     <label for="acc1-first-name" ng-show="showAccompanyingGuestLabel()">Accompanying Guests</label>
@@ -248,8 +249,8 @@
                             <span class="icons icon-adult"></span>
 
                         </figure>
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails()" />
-                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails($event)" />
+                        <input ng-class='{"disabled overlay":!isStandAlone}' name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails($event)" />
                         <button class="button with-icon white" 
                             click-touch='showScannedGuestID(false, guest)'
                             ng-show="guest.id"
@@ -266,6 +267,8 @@
                          <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
                         </button>
+                        <button type="button" class="button blue prevent-api-call" ng-if="!!guest.id && isStandAlone" click-touch="navigateToGuestCard(guest.id)">Show Guest Card</button>
+                        <button type="button" class="button green prevent-api-call" ng-if="shouldShowCreateGuestBtn(guest.id, guest.first_name, guest.last_name)" click-touch="findGuests(guest.first_name, guest.last_name, false, 'ADULT')">Create Guest Card</button>
                     </div>
 
                     <!-- Children Guest -->
@@ -289,12 +292,14 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
                                              'icons icon-identity-card-red': isIdRequiredForGuest(guest)}"></span>
-                            <span ng-show="!isIdRequiredForGuest(guest">{{ 'GUEST_ID_BUTTON' | translate }}</span>
+                            <span ng-show="!isIdRequiredForGuest(guest)">{{ 'GUEST_ID_BUTTON' | translate }}</span>
                             <span ng-show="isIdRequiredForGuest(guest)">{{ 'GUEST_ID_MISSING_BUTTON' | translate }}</span>
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
                         </button>
+                        <button type="button" class="button blue prevent-api-call" ng-if="!!guest.id && isStandAlone" click-touch="navigateToGuestCard(guest.id)">Show Guest Card</button>
+                        <button type="button" class="button green prevent-api-call" ng-if="shouldShowCreateGuestBtn(guest.id, guest.first_name, guest.last_name)" click-touch="findGuests(guest.first_name, guest.last_name, false, 'CHILDREN')">Create Guest Card</button>
                     </div>
 
                     <!-- Infant Guest -->
@@ -319,12 +324,14 @@
                             <span ng-class="{'icons icon-identity-card': isGuestIdUploaded(guest), 
                                              'icons icon-identity-card-grey': !isGuestIdUploaded(guest) && !isIdRequiredForGuest(guest),
                                              'icons icon-identity-card-red': isIdRequiredForGuest(guest)}"></span>
-                            <span ng-show="!isIdRequiredForGuest(guest">{{ 'GUEST_ID_BUTTON' | translate }}</span>
+                            <span ng-show="!isIdRequiredForGuest(guest)">{{ 'GUEST_ID_BUTTON' | translate }}</span>
                             <span ng-show="isIdRequiredForGuest(guest)">{{ 'GUEST_ID_MISSING_BUTTON' | translate }}</span>
                         </button>
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guest)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guest)">
                             <span class="icons icon-save"></span> Download
                         </button>
+                        <button type="button" class="button blue prevent-api-call" ng-if="!!guest.id && isStandAlone" click-touch="navigateToGuestCard(guest.id)">Show Guest Card</button>
+                        <button type="button" class="button green prevent-api-call" ng-if="shouldShowCreateGuestBtn(guest.id, guest.first_name, guest.last_name)" click-touch="findGuests(guest.first_name, guest.last_name, false, 'INFANTS')">Create Guest Card</button>
                     </div>
 
                 </div>
