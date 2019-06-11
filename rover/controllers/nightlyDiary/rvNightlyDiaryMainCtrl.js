@@ -798,7 +798,7 @@ angular.module('sntRover')
                 /*  
                  *  Toggle filter section.
                  */
-                $scope.addListener('TOGGLE_FILTER', function (e, value) {
+                $scope.addListener('TOGGLE_FILTER_TOP', function (e, value) {
                     $scope.$broadcast('TOGGLE_FILTER', value);
                 });
 

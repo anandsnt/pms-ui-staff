@@ -2,9 +2,13 @@ angular.module('sntRover')
 .controller('rvNightlyDiaryRightFilterBarController',
 	[   '$scope',
 		'RVNightlyDiaryRightFilterBarSrv',
+		'RVNightlyDiarySrv',
+		'ngDialog',
 		function(
 			$scope,
-			RVNightlyDiaryRightFilterBarSrv
+			RVNightlyDiaryRightFilterBarSrv,
+			RVNightlyDiarySrv,
+			ngDialog
 		) {
 
 			BaseCtrl.call(this, $scope);
@@ -136,7 +140,7 @@ angular.module('sntRover')
 			 */
 			$scope.setSelectionForFeature = function(group, feature) {
 				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
-				
+
 				if (!roomFeatures[group].multiple_allowed) {
 					for (var i = 0; i < roomFeatures[group].items.length; i++) {
 						if (feature !== i) {
@@ -147,9 +151,77 @@ angular.module('sntRover')
 				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
 			};
 
+			/**
+             *  Retrieve Available Rooms
+             *  @param {Object} - [selected reservation Item]
+             */
+            var retrieveAvailableRooms = function() {
+
+				var filterData = $scope.diaryData.roomAssignmentFilters,
+					selectedItem = $scope.diaryData.selectedUnassignedReservation;
+
+                var successCallBack = function(data) {
+                    $scope.errorMessage = '';
+                    var roomCount = data.rooms.length;
+
+                    if ( roomCount === 0 ) {
+                        ngDialog.open({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
+                            className: '',
+                            scope: $scope
+                        });
+                    }
+                    else {
+                        var newData = {
+                            availableRoomList: data.rooms,
+                            fromDate: selectedItem.arrival_date,
+                            nights: selectedItem.no_of_nights,
+                            reservationId: selectedItem.reservation_id,
+                            roomTypeId: selectedItem.room_type_id,
+                            type: 'ASSIGN_ROOM',
+                            reservationOccupancy: data.reservation_occupancy
+                        };
+
+                        $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
+                    }
+                },
+                failureCallBackMethod = function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    if (errorMessage[0] === "Suite Room Type Assigned") {
+                        ngDialog.open({
+                            template: '/assets/partials/nightlyDiary/rvNightlyDiarySuiteRooms.html',
+                            className: '',
+                            scope: $scope
+                        });
+                    }
+                },
+                postData = {
+                    'reservation_id': selectedItem.reservation_id,
+                    'selected_room_type_ids': [filterData.roomTypeId],
+                    'selected_room_features': [],
+                    'floor_id': filterData.floorId,
+                    'is_from_diary': true
+                },
+                options = {
+                    params: postData,
+                    successCallBack: successCallBack,
+                    failureCallBack: failureCallBackMethod
+                };
+
+                $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
+            };
+
+            // Handle validation popup close.
+            $scope.closeDialogAndRefresh = function(event) {
+                if ($scope.diaryData.isAssignRoomViewActive) {
+                    $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
+                }
+                ngDialog.close();
+            };
+
 			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
 			$scope.applyGuestPreferenceFilter = function() {
-
+				retrieveAvailableRooms();
 			};
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
