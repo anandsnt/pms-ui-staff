@@ -89,6 +89,11 @@ admin.controller('adHotelLegalSettingsController',
 		$scope.modifyVoidButton = function() {
 			$scope.legalSettings.is_void_bill_enabled = ($scope.legalSettings.is_void_bill_enabled && $scope.legalSettings.is_bill_lock_enabled);
 		};
+		$scope.modifyRegistrationCardSequence = function () {
+			if (!$scope.legalSettings.austrian_registration_card_enabled) {
+				$scope.legalSettings.registration_card_sequence = false;
+			}
+		}
 		/*
 		 * Initial loading
 		 */

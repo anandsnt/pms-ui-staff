@@ -7,12 +7,21 @@
             <tr>
                 <td>Austrian Registration Card</td>
                 <td>
-                    <div class="switch-button" ng-class="{'on' : legalSettings.austrian_registration_card_enabled}">
+                    <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.austrian_registration_card_enabled}">
                         <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.austrian_registration_card_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
-            </tr>            
+            </tr>
+            <tr >
+                <td>Registration Card Sequence toggle</td>
+                <td>
+                    <div class="switch-button" ng-class="{'on' : legalSettings.registration_card_sequence}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.registration_card_sequence" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>           
         </tbody>
     </table>
 </div>
