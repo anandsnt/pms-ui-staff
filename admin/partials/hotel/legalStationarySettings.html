@@ -7,21 +7,27 @@
             <tr>
                 <td>Austrian Registration Card</td>
                 <td>
-                    <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.austrian_registration_card_enabled}">
-                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.austrian_registration_card_enabled" type="checkbox" checked="">
+                    <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.austrian_reg_card_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.austrian_reg_card_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
             </tr>
-            <tr >
+            <tr ng-show="legalSettings.austrian_reg_card_enabled">
                 <td>Registration Card Sequence toggle</td>
                 <td>
-                    <div class="switch-button" ng-class="{'on' : legalSettings.registration_card_sequence}">
-                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.registration_card_sequence" type="checkbox" checked="">
+                    <div class="switch-button" ng-class="{'on' : legalSettings.reg_card_number_sequence_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.reg_card_number_sequence_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
-            </tr>           
+            </tr>      
+            <tr ng-show="legalSettings.austrian_reg_card_enabled">
+                <td>First Registration card Number</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.first_reg_card_number" placeholder="Enter first registration card number">
+                </td>
+            </tr>   
         </tbody>
     </table>
 </div>
