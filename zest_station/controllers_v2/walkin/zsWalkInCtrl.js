@@ -338,7 +338,18 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.getAvailableRatesForTheDay, options);
         };
 
-        $scope.$on('START_CREATING_RESERVATION', $scope.createReservation);
+        var startCreatingReservation = function() {
+            // if there are available rooms in next level proceed to room upsell
+            if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' && $scope.availabileRoomList.length > 0) {
+                $scope.screenData.scanMode = 'RESERVATION_CONFIRMATION';
+                $scope.screenData.roomSelectionMode = 'ROOM_UPSELL';
+                setPageNumberDetails();
+            } else {
+                $scope.createReservation();
+            }
+        };
+
+        $scope.$on('START_CREATING_RESERVATION', startCreatingReservation);
 
         $scope.acceptID = function() {
             if ($scope.idScanData.verificationMethod === 'FR') {
@@ -385,18 +396,7 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         $scope.upgradeSelected = function(roomDetails) {
             $scope.roomTypeSelected(roomDetails);
-            $scope.continueBooking();
-        };
-
-        $scope.continueFromMinimumAdrRoomType = function() {
-            // if there are available rooms in next level proceed to room upsell
-            if ($scope.availabileRoomList.length > 0) {
-                $scope.screenData.roomSelectionMode = 'ROOM_UPSELL';
-                setPageNumberDetails();
-            } else {
-                // if no upsell is available, just continue with booking reservation
-                $scope.continueBooking();
-            }
+            $scope.createReservation();
         };
 
         $scope.continueWithRoomUpsell = function() {
