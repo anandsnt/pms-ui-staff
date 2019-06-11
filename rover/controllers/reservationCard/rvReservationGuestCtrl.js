@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter', 'RVReservationAllCardsSrv', 'RVReservationCardSrv',
-	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter, RVReservationAllCardsSrv, RVReservationCardSrv) {
+sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter', 'RVGuestCardsSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter, RVGuestCardsSrv, RVReservationCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -590,7 +590,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                 $scope.guestList = [];
             };
 
-        $scope.callAPI(RVReservationAllCardsSrv.fetchGuests, {
+        $scope.callAPI(RVGuestCardsSrv.fetchGuests, {
             onSuccess: onGuestsFetchSuccess,
             onFailure: onGuestsFetchFailure,
             params: {
