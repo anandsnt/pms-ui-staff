@@ -88,6 +88,8 @@ angular.module('sntRover')
             $scope.diaryData.roomAssignmentFilters = {};
             var successCallBack = function(responce) {
                 $scope.diaryData.roomAssignmentFilters = responce.data;
+                $scope.diaryData.roomAssignmentFilters.roomTypeId = item.room_type_id.toString();
+                $scope.diaryData.roomAssignmentFilters.floorId = '';
                 if (screen.width < 1600) {
                     $scope.$emit("TOGGLE_FILTER", 'RESERVATION_FILTER');
                 }
