@@ -4,7 +4,7 @@
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
     <table class="table-settings wrapper">
         <tbody>
-            <tr>
+            <tr ng-class="{'overlay': legalSettings.reg_card_number_sequence_enabled}">
                 <td>Austrian Registration Card</td>
                 <td>
                     <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.austrian_reg_card_enabled}">
