@@ -82,19 +82,22 @@ angular.module('sntRover')
 
         var selectUnassignedListItem = function(item) {
             $scope.diaryData.isReservationSelected = true;
+            $scope.diaryData.selectedUnassignedReservation = item;
             $scope.selectedItem = item;
-            
+
             $scope.diaryData.roomAssignmentFilters = {};
-            successCallBack = function(responce) {
+            var successCallBack = function(responce) {
                 $scope.diaryData.roomAssignmentFilters = responce.data;
+                if (screen.width < 1600) {
+                    $scope.$emit("TOGGLE_FILTER", 'RESERVATION_FILTER');
+                }
             },
             postData = {
                 'reservation_id': item.reservation_id
             },
             options = {
                 params: postData,
-                successCallBack: successCallBack,
-                failureCallBack: failureCallBackMethod
+                successCallBack: successCallBack
             };
 
             $scope.callAPI(RVNightlyDiarySrv.getPreferences, options );

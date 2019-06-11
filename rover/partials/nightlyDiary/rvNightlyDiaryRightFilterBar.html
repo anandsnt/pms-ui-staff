@@ -87,8 +87,10 @@
         </div>
     </div>
     <div class="actions dual-actions">
-        <button ng-hide="diaryData.isReservationSelected" type="button" class="button green" ng-click="applyFilter()">Apply</button>
-        <button ng-show="diaryData.isReservationSelected" type="button" class="button blank">Clear All</button> <!-- Add class 'hidden' when no filters are applied -->
-        <button ng-show="diaryData.isReservationSelected" type="button" class="button green">Apply</button>
+        <button ng-hide="diaryData.isReservationSelected" type="button" class="button blank" ng-click="clearCommonFilter()">Clear All</button>
+        <button ng-hide="diaryData.isReservationSelected" type="button" class="button green" ng-click="applyCommonFilter()">Apply</button>
+
+        <button ng-show="diaryData.isReservationSelected" type="button" class="button blank" ng-click="clearGuestPreferenceFilter()">Clear All</button>
+        <button ng-show="diaryData.isReservationSelected" type="button" class="button green" ng-click="applyGuestPreferenceFilter()">Apply</button>
     </div>
 </div>

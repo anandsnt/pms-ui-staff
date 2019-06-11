@@ -52,9 +52,10 @@ angular.module('sntRover')
 			};
 
 			/*
-			 * Method to apply filter
+			 * 	Method to apply common filter - 
+			 *	to filter entire room/reservations view.
 			 */
-			$scope.applyFilter = function() {
+			$scope.applyCommonFilter = function() {
 				var selectedRoomTypes = [],
 					selectedFloors = [];
 
@@ -89,8 +90,9 @@ angular.module('sntRover')
 
 			/*
 			 *	Method to reset room type, floor filters
+			 *	to filter entire room/reservations view.
 			 */
-			var resetFilters = function() {
+			var resetCommonFilters = function() {
 				var roomTypes = $scope.diaryData.filterList.roomType,
 					floorList = $scope.diaryData.filterList.floorList;
 
@@ -113,12 +115,30 @@ angular.module('sntRover')
 			};
 
 			$scope.addListener('RESET_RIGHT_FILTER_BAR', function() {
-				resetFilters();
+				resetCommonFilters();
 			});
+
+			/*
+			 *	Method to clear room type, floor filters
+			 *	to filter entire room/reservations view.
+			 */
+			$scope.clearCommonFilter = function() {
+				resetCommonFilters();
+			};
 
 			// Show/Hide right filter based on screen width and filter type
 			$scope.isShowRightFilter = function() {
 				return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'RESERVATION_FILTER') ? 'visible' : '';
+			};
+
+			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
+			$scope.applyGuestPreferenceFilter = function() {
+
+			};
+
+			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
+			$scope.clearGuestPreferenceFilter = function() {
+
 			};
 
 			initiate();

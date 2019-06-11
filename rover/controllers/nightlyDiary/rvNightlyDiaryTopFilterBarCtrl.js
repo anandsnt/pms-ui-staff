@@ -219,6 +219,11 @@ angular.module('sntRover')
             }
         };
 
+        // Catching event from main controller, when API is completed.
+        $scope.addListener('TOGGLE_FILTER', function(e, value) {
+            $scope.toggleFilter(value);
+        });
+
         // Handle Nigthtly/Hourly toggle
         $scope.toggleHourlyNightly = false;
         $scope.navigateToHourlyDiary = function() {
