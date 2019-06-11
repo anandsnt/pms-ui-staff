@@ -72,10 +72,18 @@ admin.controller('adHotelLegalSettingsController',
 					'data': $scope.legalSettings
 				},
 				successCallBack: function(data) {
+					$scope.legalSettings = $scope.legalSettingsCopy;
 					if (data.warnings.length === 0) {
 						$scope.successMessage = "Saved Succesfully!";
+						if ($scope.legalSettings.reg_card_number_sequence_enabled) {
+							$scope.legalSettings.isInitialLoad = true;
+						}
+					} else {
+						if ($scope.legalSettings.reg_card_number_sequence_enabled) {
+							$scope.legalSettings.isInitialLoad = true;
+						}
 					}
-					$scope.legalSettings = $scope.legalSettingsCopy;
+					
 					$scope.errorMessage = data.warnings;
 				}
 			};
@@ -107,7 +115,11 @@ admin.controller('adHotelLegalSettingsController',
 					'hotel_id': $scope.data.id
 				},
 				successCallBack: function(response) {
-					$scope.legalSettings = response.data;					
+					$scope.legalSettings = response.data;
+					$scope.legalSettings.isInitialLoad = false;
+					if ($scope.legalSettings.reg_card_number_sequence_enabled) {
+						$scope.legalSettings.isInitialLoad = true;
+					}									
 				}
 			};
 

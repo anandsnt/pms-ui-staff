@@ -13,7 +13,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-show="legalSettings.austrian_reg_card_enabled">
+            <tr ng-show="legalSettings.austrian_reg_card_enabled" ng-class="{'overlay': legalSettings.reg_card_number_sequence_enabled && legalSettings.isInitialLoad}">
                 <td>Registration Card Sequence toggle</td>
                 <td>
                     <div class="switch-button" ng-class="{'on' : legalSettings.reg_card_number_sequence_enabled}">
