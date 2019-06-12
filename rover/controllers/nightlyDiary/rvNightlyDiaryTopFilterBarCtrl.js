@@ -202,10 +202,10 @@ angular.module('sntRover')
             var filterHasValue = ( $scope.diaryData.selectedRoomTypes.length > 0 || $scope.diaryData.selectedFloors.length > 0 );
 
             // While switch from Filter Bar to Unassigned List Bar, Clear filters and Refresh Diary.
-            if ( filterHasValue && $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION') {
+            if ( filterHasValue && $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION' && !$scope.diaryData.isReservationSelected) {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             }
-            else if (activeTab === 'RESERVATION_FILTER' && $scope.diaryData.isAssignRoomViewActive) {
+            else if (activeTab === 'RESERVATION_FILTER' && $scope.diaryData.isAssignRoomViewActive && !$scope.diaryData.isReservationSelected) {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             }
 

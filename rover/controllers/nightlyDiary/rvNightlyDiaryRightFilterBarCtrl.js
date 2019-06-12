@@ -154,6 +154,9 @@ angular.module('sntRover')
                             className: '',
                             scope: $scope
                         });
+                        if (screen.width < 1600) {
+							$scope.$emit('TOGGLE_FILTER_TOP', 'RESERVATION_FILTER');
+						}
                     }
                     else {
                         var newData = {
@@ -167,6 +170,10 @@ angular.module('sntRover')
                         };
 
                         $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
+
+						if (screen.width < 1600) {
+							$scope.$emit('TOGGLE_FILTER_TOP', 'UNASSIGNED_RESERVATION');
+						}
                     }
                 },
                 failureCallBackMethod = function(errorMessage) {
@@ -260,6 +267,14 @@ angular.module('sntRover')
 				fetchIdFromRoomFeaturesList();
 				retrieveAvailableRooms();
 			};
+
+			/*  
+             *  Guest preference filter message
+             */
+            $scope.addListener('APPLY_GUEST_PREFERENCE_FILTER', function () {
+                fetchIdFromRoomFeaturesList();
+				retrieveAvailableRooms();
+            });
 
 			initiate();
 }]);

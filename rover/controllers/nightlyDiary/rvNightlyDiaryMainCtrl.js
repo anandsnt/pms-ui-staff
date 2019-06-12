@@ -803,6 +803,13 @@ angular.module('sntRover')
                 });
 
                 /*  
+                 *  Guest preference filter message
+                 */
+                $scope.addListener('APPLY_GUEST_PREFERENCE_FILTER_TOP', function () {
+                    $scope.$broadcast('APPLY_GUEST_PREFERENCE_FILTER');
+                });
+
+                /*  
                  *  To Hide 'ASSIGN' or 'MOVE' room button in Diary.
                  */
                 $scope.addListener('SHOW_ERROR_MESSAGE', function (event, errorMessage) {

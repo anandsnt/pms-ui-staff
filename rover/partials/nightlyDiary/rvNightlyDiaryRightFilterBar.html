@@ -39,16 +39,6 @@
 
             <!--- :START - FILTERS while selecting a Reservation -->
 
-                <!-- CASE 1: Room Type : Single select dropdown -->
-                <div class="entry" ng-show="diaryData.isReservationSelected">
-                    <div class="select with-label">
-                        <label>Room Type</label>
-                        <select ng-model="diaryData.roomAssignmentFilters.roomTypeId">
-                            <option ng-repeat="roomType in diaryData.roomAssignmentFilters.room_types" ng-selected="roomType.id === diaryData.roomAssignmentFilters.roomTypeId" value="{{roomType.id}}">{{roomType.description}}</option>
-                        </select>
-                    </div>
-                </div>
-
                 <!-- CASE 2: Floors : Single select dropdown -->
                 <div class="entry" ng-show="diaryData.isReservationSelected">
                     <div class="select with-label">

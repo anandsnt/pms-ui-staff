@@ -24,9 +24,7 @@ angular.module('sntRover')
                 $scope.diaryData.roomAssignmentFilters.roomTypeId = item.room_type_id.toString();
                 $scope.diaryData.roomAssignmentFilters.floorId = '';
                 $scope.diaryData.roomAssignmentFilters.roomFeatureIds = [];
-                if (screen.width < 1600) {
-                    $scope.$emit("TOGGLE_FILTER_TOP", 'RESERVATION_FILTER');
-                }
+                $scope.$emit('APPLY_GUEST_PREFERENCE_FILTER_TOP');
             },
             postData = {
                 'reservation_id': item.reservation_id
