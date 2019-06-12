@@ -78,7 +78,8 @@ module.exports = {
             'mooons': [themeCSSRoot + 'mooons.less'],
             'marmalade': [themeCSSRoot + 'marmalade.less'],
             'bosville': [themeCSSRoot + 'bosville.less'],
-            'kinsley': [themeCSSRoot + 'kinsley.less']
+            'kinsley': [themeCSSRoot + 'kinsley.less'],
+            'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less']
         };
     }
 };

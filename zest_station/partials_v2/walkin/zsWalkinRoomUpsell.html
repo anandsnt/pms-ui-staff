@@ -20,7 +20,7 @@
         </div>
         <div id="actions">
             <p class="inline-text" translate>{{ 'WALKIN_SELECTED_ROOM_MSG' | translate: availabileRoomList }}</p>
-            <button type="button" class="button" touch-press='continueFromMinimumAdrRoomType(); resetTime()' translate>
+            <button type="button" class="button" touch-press='continueBooking(); resetTime()' translate>
                CONTINUE
             </button>
         </div>
@@ -39,7 +39,7 @@
             <ul class="upgrade-list" ng-class="{'upgrade-list-v2' :  zestStationData.room_upsell_style === 'STYLE_B','two-upgrades-list':pageData.viewableItems.length === 2,'single-upgrade-list':pageData.viewableItems.length === 1}">
                 <li ng-repeat="room in pageData.viewableItems" ng-class="{'selected': room.id === idScanData.selectedRoomType.id }" click-touch="showRoomDetails(room)">
                     <div class="upgrade-picture">
-                        <img ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
+                        <img ng-class="{'no-room-image': !room.room_type_image }" ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
                     </div>
                     <div class="upgrade-content">
                         <h2>{{ room.roomTypeName }}</h2>
@@ -77,7 +77,7 @@
                 <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>
-        <button type="button" class="button transparent" click-touch="continueBooking()" translate>
+        <button type="button" class="button transparent" click-touch="createReservation()" translate>
             ROOM_UPGRADE_SKIP
         </button>
     </div>
@@ -106,7 +106,7 @@
         </div>
         <div id="actions">
             <button type="button" class="button transparent" click-touch="onBackButtonClicked()" translate>
-              ROOM_UPGRADE_SKIP
+              NAV_BACK
             </button>
             <button type="button" class="button"class="button" click-touch="upgradeSelected(idScanData.roomDetails)" translate>BUY_UPGRADE</button>
         </div>
