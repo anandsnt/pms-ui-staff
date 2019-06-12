@@ -102,7 +102,7 @@ admin.controller('adHotelLegalSettingsController',
 			if (!$scope.legalSettings.austrian_reg_card_enabled) {
 				$scope.legalSettings.reg_card_number_sequence_enabled = false;
 			}
-		}
+		};
 		/*
 		 * Initial loading
 		 */
