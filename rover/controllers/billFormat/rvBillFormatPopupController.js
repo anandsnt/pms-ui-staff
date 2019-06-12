@@ -357,7 +357,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         } else {
             $scope.data.mailto_address = $scope.data.travel_agent_address ? $scope.data.travel_agent_address : $scope.data.to_address;
         }
-    }
+    };
 
     /*
     *  Initialize the controller
