@@ -36,7 +36,7 @@
         <div class="entry full-width" ng-hide="hideCompanyCardInvoiceToggle">
             <label>Generate Invoice for</label>
             <div class="switch-button" ng-class="{'on': isCompanyCardInvoice, 'overlay': disableCompanyCardInvoice }">
-                <input type="checkbox" ng-model="isCompanyCardInvoice" ng-change="onCCTAToggle()" />
+                <input type="checkbox" ng-model="isCompanyCardInvoice" ng-change="setEmailAddress()" />
                 <label class="data-off">
                     <span class="value">Company</span>
                     <span class="switch-icon">Travel Agent</span>

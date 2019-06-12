@@ -132,11 +132,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
-            if ($scope.isCompanyCardInvoice) {
-                $scope.data.mailto_address = $scope.data.company_address ? $scope.data.company_address : $scope.data.to_address;
-            } else {
-                $scope.data.mailto_address = $scope.data.travel_agent_address ? $scope.data.travel_agent_address : $scope.data.to_address;
-            }
+            $scope.setEmailAddress();
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -355,7 +351,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         }, delayScreen);
     };
 
-    $scope.onCCTAToggle = function () {
+    $scope.setEmailAddress = function() {
         if ($scope.isCompanyCardInvoice) {
             $scope.data.mailto_address = $scope.data.company_address ? $scope.data.company_address : $scope.data.to_address;
         } else {
