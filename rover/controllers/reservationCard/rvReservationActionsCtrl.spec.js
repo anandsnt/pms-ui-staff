@@ -6,18 +6,16 @@ describe('reservationActionsController', function () {
 
     var $controller,
         $scope,
-        $rootScope,
-        ngDialog;
+        $rootScope;
 
         describe('variable initalizations', function () {
 
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _$rootScope_, _ngDialog_) {
+                inject(function (_$controller_, _$rootScope_) {
                     $controller = _$controller_;
                     $rootScope = _$rootScope_;
-                    ngDialog = _ngDialog_;
                     $scope = _$rootScope_.$new();
                     $scope.guestCardData = {};
                     $scope.guestCardData.contactInfo = {};
@@ -204,8 +202,6 @@ describe('reservationActionsController', function () {
             });
 
             it('should update the hk status as dirty when not ready is selected as the option from the popup', function() {
-                var hkstatusId;
-
                 $scope.roomStatus = {
                     isReady: false
                 };
