@@ -803,6 +803,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         room_type_id       = params.room_type_id,
                         rate_type          = params.rate_type,
                         account_id         = params.account_id,
+                        reservation_id     = params.reservation_id,
                         GUID               = params.GUID,
                         _data_Store        = this.data_Store,
                         q                  = $q.defer(),
@@ -817,6 +818,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         if (account_id) {
                             _.extend(params, { account_id: account_id });
                         }
+                    }
+                    if (reservation_id) {
+                        _.extend(params, { reservation_id: reservation_id });
                     }
 
                     // if from unassigned room
