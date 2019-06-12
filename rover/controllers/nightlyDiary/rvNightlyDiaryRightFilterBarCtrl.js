@@ -136,22 +136,6 @@ angular.module('sntRover')
 			};
 
 			/**
-			 * function to handle the filter selection
-			 */
-			$scope.setSelectionForFeature = function(group, feature) {
-				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
-
-				if (!roomFeatures[group].multiple_allowed) {
-					for (var i = 0; i < roomFeatures[group].items.length; i++) {
-						if (feature !== i) {
-							roomFeatures[group].items[i].selected = false;
-						}
-					}
-				}
-				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
-			};
-
-			/**
              *  Retrieve Available Rooms
              *  @param {Object} - [selected reservation Item]
              */
@@ -198,7 +182,7 @@ angular.module('sntRover')
                 postData = {
                     'reservation_id': selectedItem.reservation_id,
                     'selected_room_type_ids': [filterData.roomTypeId],
-                    'selected_room_features': [],
+                    'selected_room_features': filterData.roomFeatureIds,
                     'floor_id': filterData.floorId,
                     'is_from_diary': true
                 },
@@ -219,14 +203,62 @@ angular.module('sntRover')
                 ngDialog.close();
             };
 
-			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
-			$scope.applyGuestPreferenceFilter = function() {
-				retrieveAvailableRooms();
+			/**
+			 * function to handle the filter selection
+			 */
+			$scope.setSelectionForFeature = function(group, feature) {
+				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+
+				if (!roomFeatures[group].multiple_allowed) {
+					for (var i = 0; i < roomFeatures[group].items.length; i++) {
+						if (feature !== i) {
+							roomFeatures[group].items[i].selected = false;
+						}
+					}
+				}
+				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
+			};
+
+			// Clear Room Features
+			var clearRoomFeaturesList = function() {
+				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+
+				_.each(roomFeatures, function(feature) {
+					_.each(feature.items, function(item) {
+						item.selected = false;
+					});
+				});
+
+				$scope.diaryData.roomAssignmentFilters.roomFeatureIds = [];
+			};
+
+			// Clear Room Features
+			var fetchIdFromRoomFeaturesList = function() {
+				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features,
+					roomFeatureIds = [];
+
+				_.each(roomFeatures, function(feature) {
+					_.each(feature.items, function(item) {
+						if ( item.selected ) {
+							roomFeatureIds.push(item.id);
+						}
+					});
+				});
+
+				$scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
 			};
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
 			$scope.clearGuestPreferenceFilter = function() {
+				$scope.diaryData.roomAssignmentFilters.roomTypeId = $scope.diaryData.selectedUnassignedReservation.room_type_id.toString();
+                $scope.diaryData.roomAssignmentFilters.floorId = '';
+                clearRoomFeaturesList();
+			};
 
+			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
+			$scope.applyGuestPreferenceFilter = function() {
+				fetchIdFromRoomFeaturesList();
+				retrieveAvailableRooms();
 			};
 
 			initiate();
