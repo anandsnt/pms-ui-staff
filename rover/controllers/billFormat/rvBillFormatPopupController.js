@@ -132,6 +132,11 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             }
 
             $scope.data = response.data;
+            if ($scope.isCompanyCardInvoice) {
+                $scope.data.mailto_address = $scope.data.company_address ? $scope.data.company_address : $scope.data.to_address;
+            } else {
+                $scope.data.mailto_address = $scope.data.travel_agent_address ? $scope.data.travel_agent_address : $scope.data.to_address;
+            }
         };
 
         $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
@@ -206,7 +211,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         var emailRequest = getPrintEmailRequestParams();
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
-        emailRequest.to_address = $scope.data.to_address;
+        emailRequest.to_address = $scope.data.mailto_address;
         emailRequest.is_informational_invoice = $scope.billFormat.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
@@ -310,7 +315,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var emailButtonClass = "blue";
 
-        if (!$scope.data.to_address) {
+        if (!$scope.data.mailto_address) {
             emailButtonClass = "grey";
 
         } else if (!$scope.billFormat.isInformationalInvoice 
@@ -329,7 +334,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         var isEmailButtonDisabled = false;
 
-        if (!$scope.data.to_address) {
+        if (!$scope.data.mailto_address) {
             isEmailButtonDisabled = true;
         } else if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
@@ -349,6 +354,14 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             $scope.isInvoiceStepThreeActive = true;            
         }, delayScreen);
     };
+
+    $scope.onCCTAToggle = function () {
+        if ($scope.isCompanyCardInvoice) {
+            $scope.data.mailto_address = $scope.data.company_address ? $scope.data.company_address : $scope.data.to_address;
+        } else {
+            $scope.data.mailto_address = $scope.data.travel_agent_address ? $scope.data.travel_agent_address : $scope.data.to_address;
+        }
+    }
 
     /*
     *  Initialize the controller
