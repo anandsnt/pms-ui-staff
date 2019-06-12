@@ -611,6 +611,7 @@ sntRover.controller('reservationActionsController', [
             } else {
                 if ($rootScope.isStandAlone &&
                     $rootScope.allowCheckInToNotReadyRooms &&
+                    $scope.reservationData.reservation_card.room_number && 
                     $scope.reservationData.reservation_card.room_status === 'NOTREADY') {
                         that.openRoomStatusChangePopup('', true);
                 } else {
