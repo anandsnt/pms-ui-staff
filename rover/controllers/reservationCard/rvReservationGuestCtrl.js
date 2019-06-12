@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter',
-	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter) {
+sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter', 'RVGuestCardsSrv', 'RVReservationCardSrv',
+	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter, RVGuestCardsSrv, RVReservationCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -12,7 +12,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 		$scope.errorMessage = '';
 
-        $scope.setScroller('accompanyGuestList');
+		$scope.setScroller('accompanyGuestList');
+		
+		var GUEST_SEARCH_RESULTS_SCROLLER = 'guestSearchResultsScroller';
 
         // Refresh accompany guest section scroller
         var refreshMyScroller = function () {
@@ -500,7 +502,183 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             // Initial loading doesn't contain the accompanying_guests_details
             $scope.guestData.accompanying_guests_details = $scope.guestData.accompanying_guests_details || [];
             return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count + $scope.guestData.accompanying_guests_details.length) > 1;
+		};
+		
+		/**
+		 * Navigate to guest card details view
+		 */
+    $scope.navigateToGuestCard = function (guestId) {
+        $state.go('rover.guest.details', {
+            guestId: guestId,
+            reservationId: $scope.reservationData.reservation_card.reservation_id,
+            confirmationNo: $scope.reservationData.reservation_card.confirmation_num,
+            fromStaycard: true
+        });
+			
+	};
+	
+	/**
+	 * Filter guests by guest type
+	 * @param {Array} guestList all guests irrespective of type
+	 * @param {String} guestType type of guest ADULT/CHILDREN/INFANTS
+	 * @return {Array} guestList list of given guest type
+	 */
+	var getGuestsByType = function (guestList, guestType) {
+		guestList = _.filter(guestList, function (guest) {
+						return guest.guest_type === guestType;
+					});
+
+		return guestList;
+	};
+
+    /**
+     * Search guests by first name / last name
+     * @param {Boolean} isPrimary searching for creating a primary guest or not
+     * @return {void}
+     */
+    $scope.searchGuest = function (isPrimary) {
+        isPrimary = isPrimary || false;
+
+        var openGuestSearchResultsPopup = function (isPrimary) {
+                ngDialog.open({
+                    template: '/assets/partials/reservationCard/reservationGuestSearchPopup.html',
+                    className: '',
+                    scope: $scope,
+                    closeByDocument: true,
+                    closeByEscape: false,
+                    data: {
+                        isPrimary: isPrimary
+                    }
+                });
+                $scope.setScroller(GUEST_SEARCH_RESULTS_SCROLLER);
+            },
+            onGuestsFetchSuccess = function (data) {
+                $scope.guestList = [];
+                if (data.results.length > 0) {
+                    angular.forEach(getGuestsByType(data.results, $scope.searchData.guestType), function (item) {
+                        var guestData = {};
+
+                        guestData.id = item.id;
+                        guestData.firstName = item.first_name;
+                        guestData.lastName = item.last_name;
+                        guestData.image = item.image_url;
+                        guestData.vip = item.vip;
+                        if (item.address !== null) {
+                            guestData.address = {};
+                            guestData.address.city = item.address.city;
+                            guestData.address.state = item.address.state;
+                            guestData.address.postalCode = item.address.postal_code;
+                        }
+                        guestData.stayCount = item.stay_count;
+                        guestData.lastStay = {};
+                        guestData.phone = item.home_phone;
+                        guestData.email = item.email;
+                        guestData.lastStay.date = item.last_stay.date;
+                        guestData.lastStay.room = item.last_stay.room;
+                        guestData.lastStay.roomType = item.last_stay.room_type;
+                        $scope.guestList.push(guestData);
+                    });
+
+                    $timeout(function() {
+                        $scope.refreshScroller(GUEST_SEARCH_RESULTS_SCROLLER);
+                    }, 500);
+                }
+                openGuestSearchResultsPopup(isPrimary);
+
+            },
+            onGuestsFetchFailure = function () {
+                $scope.guestList = [];
+            };
+
+        $scope.callAPI(RVGuestCardsSrv.fetchGuests, {
+            onSuccess: onGuestsFetchSuccess,
+            onFailure: onGuestsFetchFailure,
+            params: {
+                first_name: $scope.searchData.firstName,
+				last_name: $scope.searchData.lastName,
+				guest_type: $scope.searchData.guestType
+            }
+        });
+    };
+
+    /**
+     * Find guests by first/last name
+     * @param {String} firstName first name of guest
+     * @param {String} lastName  last name of guest
+     * @param {Boolean} isPrimary should the guest should be linked as primary/accompany guest
+     * @return {void}
+     */
+    $scope.findGuests = function (firstName, lastName, isPrimary, guestType) {
+        $scope.searchData = {
+            firstName: firstName,
+			lastName: lastName,
+			guestType: guestType
         };
+
+        $scope.searchGuest(isPrimary);
+    };
+
+    /**
+     * Close the open dialog
+     */
+    $scope.closePopup = function () {
+        closeDialog();
+    };
+
+    /**
+     * Attaches a primary/accompany guest to a reservation
+     * @param {Number} guestId identifier for guest
+     * @param {Boolean} isPrimary should be attaced as a primary/accompany guest
+     * @return {void}
+     */
+    $scope.attachGuestToReservation = function (guestId, isPrimary) {
+        var onGuestLinkedToReservationSuccess = function () {
+                closeDialog();
+                $state.reload($state.current.name);
+            },
+            onGuestLinkToReservationFailure = function () {
+                closeDialog();
+            };
+
+        $scope.callAPI(RVReservationCardSrv.attachGuestToReservation, {
+            onSuccess: onGuestLinkedToReservationSuccess,
+            onFailure: onGuestLinkToReservationFailure,
+            params: {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                guest_detail_id: guestId,
+				is_primary: isPrimary,
+				guest_type: $scope.searchData.guestType
+            }
+        });
+	};
+	
+	/**
+	 * Navigate to new guest creation screen
+	 * @param {Boolean} isPrimary primary guest or not
+	 * @return {void}
+	 */
+	$scope.navigateToCreateGuest = function (isPrimary) {
+		closeDialog();
+		$state.go('rover.guest.details', {
+			reservationId:	$scope.reservationData.reservation_card.reservation_id,
+			fromStaycard: true,
+			isPrimary: isPrimary,
+			firstName: $scope.searchData.firstName,
+			lastName: $scope.searchData.lastName,
+			confirmationNo: $scope.reservationData.reservation_card.confirmation_num,
+			guestType: $scope.searchData.guestType
+		});
+	};
+
+	/**
+	 * Should show create guest button
+	 * @param {Number} guestId if of the guest if already exists
+	 * @param {String} firstName first name of guest
+	 * @param {String} lastName last name of guest
+	 */
+	$scope.shouldShowCreateGuestBtn = function (guestId, firstName, lastName) {
+		return (!guestId && $rootScope.isStandAlone && (firstName || lastName) );
+	};
 
 	}
 ]);
