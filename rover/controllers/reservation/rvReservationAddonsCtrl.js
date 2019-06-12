@@ -24,7 +24,7 @@ sntRover.controller('RVReservationAddonsCtrl', [
                             "isrefresh": true
                         });
                     };
-                } else if (!!$stateParams.isFromDiary) {
+                } else if ( $stateParams.reservation === "HOURLY" ) {
                     $rootScope.setPrevState = {
                         title: $filter('translate')('DIARY'),
                         name: 'rover.diary',
