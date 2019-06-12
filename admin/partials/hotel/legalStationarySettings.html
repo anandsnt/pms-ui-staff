@@ -7,13 +7,13 @@
             <tr ng-class="{'overlay': legalSettings.reg_card_number_sequence_enabled}">
                 <td>Austrian Registration Card</td>
                 <td>
-                    <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.austrian_reg_card_enabled}">
-                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.austrian_reg_card_enabled" type="checkbox" checked="">
+                    <div class="switch-button" ng-click="modifyRegistrationCardSequence()" ng-class="{'on' : legalSettings.austrian_registration_card_enabled}">
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.austrian_registration_card_enabled" type="checkbox" checked="">
                         <span class="switch-icon"></span>
                     </div>
                 </td>
             </tr>
-            <tr ng-show="legalSettings.austrian_reg_card_enabled" ng-class="{'overlay': legalSettings.reg_card_number_sequence_enabled && legalSettings.isInitialLoad}">
+            <tr ng-show="legalSettings.austrian_registration_card_enabled" ng-class="{'overlay': legalSettings.reg_card_number_sequence_enabled && legalSettings.isInitialLoad}">
                 <td>Registration Card Sequence toggle</td>
                 <td>
                     <div class="switch-button" ng-class="{'on' : legalSettings.reg_card_number_sequence_enabled}">
@@ -22,7 +22,7 @@
                     </div>
                 </td>
             </tr>      
-            <tr ng-show="legalSettings.austrian_reg_card_enabled">
+            <tr ng-show="legalSettings.austrian_registration_card_enabled">
                 <td>First Registration card Number</td>
                 <td>
                     <input type="text" ng-model="legalSettings.first_reg_card_number" placeholder="Enter first registration card number">

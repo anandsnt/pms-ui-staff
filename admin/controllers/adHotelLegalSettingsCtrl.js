@@ -51,13 +51,13 @@ admin.controller('adHotelLegalSettingsController',
 				unwantedKeys = ['is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 
 								'no_reprint_reemail_invoice', 'folio_no_prefix', 'first_folio_number', 'is_police_report_enabled', 'is_copy_counter', 'is_print_invoice_enabled', 
 								'is_void_bill_enabled', 'no_of_original_emails', 'no_of_original_invoices', 
-								'austrian_reg_card_enabled', 'reg_card_number_sequence_enabled'];
+								'austrian_registration_card_enabled', 'reg_card_number_sequence_enabled'];
 			} else if (screen === 'report') {
 				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
 								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
 								'first_folio_number', 'is_copy_counter', 'is_print_invoice_enabled', 
 								'is_void_bill_enabled', 'no_of_original_emails', 'no_of_original_invoices', 'austrian_reg_card_enabled',
-								'reg_card_number_sequence_enabled'];
+								'austrian_registration_card_enabled'];
 			} else if (screen === 'stationary') {
 				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
 								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
@@ -99,7 +99,7 @@ admin.controller('adHotelLegalSettingsController',
 			$scope.legalSettings.is_void_bill_enabled = ($scope.legalSettings.is_void_bill_enabled && $scope.legalSettings.is_bill_lock_enabled);
 		};
 		$scope.modifyRegistrationCardSequence = function () {
-			if (!$scope.legalSettings.austrian_reg_card_enabled) {
+			if (!$scope.legalSettings.austrian_registration_card_enabled) {
 				$scope.legalSettings.reg_card_number_sequence_enabled = false;
 			}
 		}
