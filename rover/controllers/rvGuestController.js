@@ -1902,6 +1902,17 @@ angular.module('sntRover').controller('guestCardController', [
         };
         // CREATES
         $scope.createNewGuest = function() {
+
+
+            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });
             // create an empty dataModel for the guest
             var contactInfoData = {
                 'contactInfo': $scope.guestCardData.contactInfo,
