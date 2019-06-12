@@ -6,17 +6,18 @@ describe('reservationActionsController', function () {
 
     var $controller,
         $scope,
-        $rootScope;
+        $rootScope,
+        ngDialog;
 
         describe('variable initalizations', function () {
 
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _$rootScope_) {
+                inject(function (_$controller_, _$rootScope_, _ngDialog_) {
                     $controller = _$controller_;
                     $rootScope = _$rootScope_;
-
+                    ngDialog = _ngDialog_;
                     $scope = _$rootScope_.$new();
                     $scope.guestCardData = {};
                     $scope.guestCardData.contactInfo = {};
@@ -203,24 +204,30 @@ describe('reservationActionsController', function () {
             });
 
             it('should update the hk status as dirty when not ready is selected as the option from the popup', function() {
+                var hkstatusId;
+
                 $scope.roomStatus = {
                     isReady: false
                 };
-                var hkstatusId;
-
-                $httpBackend.expectPOST('/house/change_house_keeping_status.json').respond((method, url, data, headers, params) => {
+                $scope.reservationData = {
+                    reservation_card: {
+                        room_status: 'NOTREADY'
+                    }
+                };
+                spyOn(ngDialog, 'close').and.callFake(function() {
                     var deferred = $q.defer();
-
-                    hkstatusId = (JSON.parse(data)).hkstatus_id;
-                    deferred.resolve(params);
-                    return deferred.promise; 
+        
+                    deferred.resolve();
+                    return deferred.promise;
                 });
 
                 $scope.updateRoomStatus();
-                $httpBackend.flush();
-                expect(hkstatusId).toEqual(3);
+                expect(ngDialog.close).toHaveBeenCalled();
             });
+
             it('should update the hk status as clean when ready is selected as the option from the popup and check in inspected is false', function() {
+                var hkstatusId;
+
                 $scope.roomStatus = {
                     isReady: true
                 };
@@ -230,7 +237,6 @@ describe('reservationActionsController', function () {
                         checkin_inspected_only: 'false'
                     }
                 };
-                var hkstatusId;
 
                 $httpBackend.expectPOST('/house/change_house_keeping_status.json').respond(function(method, url, data, headers, params) {
                     var deferred = $q.defer();
@@ -244,7 +250,10 @@ describe('reservationActionsController', function () {
                 $httpBackend.flush();
                 expect(hkstatusId).toEqual(1);
             });
+
             it('should update the hk status as inspected when ready is selected as the option from the popup and check in inspected is true', function() {
+                var hkstatusId;
+
                 $scope.roomStatus = {
                     isReady: true
                 };
@@ -254,7 +263,6 @@ describe('reservationActionsController', function () {
                         checkin_inspected_only: 'true'
                     }
                 };
-                var hkstatusId;
 
                 $httpBackend.expectPOST('/house/change_house_keeping_status.json').respond(function(method, url, data, headers, params) {
                     var deferred = $q.defer();
