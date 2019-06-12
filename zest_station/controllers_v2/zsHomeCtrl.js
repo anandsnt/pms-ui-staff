@@ -246,25 +246,13 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.selectedLanguage = language;
         };
 
-        $scope.widthForLanguageList = function() {
+        var widthForLanguageList = function() {
             var width = 0;
             
-            angular.forEach($scope.languages, function(language) {
-                if (language.active) {
-                    if (language.label.length > language.foreign_label.length) {
-                        width += (language.label.length * 20) + 100;
-                    } else {
-                        width += (language.foreign_label.length * 20) + 100;
-                    }
-                }
+            angular.forEach($scope.languages, function(language, index) {
+                width += language.active && language !== $scope.selectedLanguage ? $('#language-'+ index).width() + 20 : 0;
             });
             return "" + width + "px;";
-        };
-
-        var refreshLanguageScroller = function() {
-            $timeout(function() {
-                $scope.refreshScroller('language-list');
-            }, 500);
         };
 
 		/**
@@ -332,7 +320,13 @@ sntZestStation.controller('zsHomeCtrl', [
                 disableTouch: false, // false if you want the slider to be usable with touch devices
                 disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
             });
-            refreshLanguageScroller();
+            $scope.languageListWidth = "0px";
+            $timeout(function() {
+                $scope.languageListWidth = angular.copy(widthForLanguageList());
+                $timeout(function() {
+                    $scope.refreshScroller('language-list');
+                }, 500);
+            }, 2000);
         })();
 
 
