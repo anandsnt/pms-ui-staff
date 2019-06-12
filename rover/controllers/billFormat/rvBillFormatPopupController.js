@@ -351,6 +351,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         }, delayScreen);
     };
 
+    /*
+    *  Set email address to send invoice, according to cards attached.
+    */
     $scope.setEmailAddress = function() {
         if ($scope.isCompanyCardInvoice) {
             $scope.data.mailto_address = $scope.data.company_address ? $scope.data.company_address : $scope.data.to_address;
