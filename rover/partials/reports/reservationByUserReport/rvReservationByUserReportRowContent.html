@@ -31,7 +31,7 @@
     <!-- If payment is CC: -->
     <span ng-if="each.payment_type === 'Credit Card'" class="data payment">
         <figure class="card-logo">
-            <img ng-src="{{each.card_logo}}" alt="" />
+            <img ng-src="/assets/{{each.card_logo}}" alt="" />
         </figure>
         <span>ending with</span> {{ each.card_number }}
     </span> 
