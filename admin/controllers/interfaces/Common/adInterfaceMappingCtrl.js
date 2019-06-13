@@ -11,13 +11,15 @@ admin.controller('adInterfaceMappingCtrl', [
           'charge_code': 'Charge Code - General Ledger',
           'charge_code_department_code': 'Charge Code - Department Code',
           'market_code': 'Market Code - Market Segment',
-          'market_code_department_code': 'Market Code - Department Code'
+          'market_code_department_code': 'Market Code - Department Code',
+          'payment_code': 'Payment Codes'
         };
 
         var mappingPartials = {
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
-            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
+            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html'
         };
 
         $scope.state = {

@@ -845,6 +845,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.igelSetup', {
+        templateUrl: '/assets/partials/interfaces/igel/adIgel.html',
+        controller: 'adIgelCtrl',
+        url: '/igel',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('igel');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('igel');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.global_feature_toggles', {
         templateUrl: '/assets/partials/interfaces/GlobalFeatureToggles/adGlobalFeatureToggles.html',
         controller: 'adGlobalFeatureTogglesCtrl',
