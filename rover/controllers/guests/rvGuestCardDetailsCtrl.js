@@ -33,6 +33,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
            }
         });
 
+        $scope.isFromMenuGuest = $stateParams.isFromMenuGuest;
+
         $scope.$on('$destroy', listener);
 
         // Sets the loyalty level
@@ -117,6 +119,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
         };
 
+        $scope.$on('contactInfoError', function(event, value) {
+            $scope.contactInfoError = value;
+            $scope.current = 'guest-contact';
+        });
+
         /**
          * Set navigation back to guest card search         
          */
@@ -126,11 +133,14 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             if ($stateParams.isMergeViewSelected) {
                 backBtnLabel = $filter('translate')('MERGE_CARDS');
             } 
-                $rootScope.setPrevState = {
-                    title: backBtnLabel,
-                    callback: 'navigateBack',
-                    scope: $scope
-                };
+            if ($stateParams.fromStaycard) {
+                backBtnLabel = $filter('translate')('STAY_CARD');
+            }
+            $rootScope.setPrevState = {
+                title: backBtnLabel,
+                callback: 'navigateBack',
+                scope: $scope
+            };
             },
             setTitleAndHeading = function () {
                 var title = $filter('translate')('GUEST_CARD');
@@ -147,11 +157,19 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Back navigation handler
         $scope.navigateBack = function () {
-          $state.go('rover.guest.search', {
-            textInQueryBox: $stateParams.query,
-            selectedIds: $stateParams.selectedIds,
-            isMergeViewSelected: $stateParams.isMergeViewSelected
-          });
+          if ($stateParams.fromStaycard) {
+              $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                  id: $stateParams.reservationId,
+                  confirmationId: $stateParams.confirmationNo
+              });
+          } else {
+              $state.go('rover.guest.search', {
+                  textInQueryBox: $stateParams.query,
+                  selectedIds: $stateParams.selectedIds,
+                  isMergeViewSelected: $stateParams.isMergeViewSelected
+              });
+          }
+          
         };
 
         /**
@@ -189,6 +207,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * @return {undefined} 
          */
         var initGuestCard = function(guestData) {
+
             if (guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
                 $scope.guestCardData.guestId = guestData.id;
@@ -264,7 +283,26 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.currentGuestCardHeaderData.last_name = data.last_name;
         }); 
 
-        $scope.$on('$destroy', resetHeaderDataListener);        
+        $scope.$on('$destroy', resetHeaderDataListener);
+        
+        /**
+         * Pouplate admin settings for guest fields
+         */
+        var populateContactInfo = function () {
+            var guestAdminSettings = RVGuestCardsSrv.setGuestFields();
+
+            $scope.guestCardData.contactInfo = {
+                is_father_name_visible: guestAdminSettings.is_father_name_visible,
+                is_gender_visible: guestAdminSettings.is_gender_visible,
+                is_mother_name_visible: guestAdminSettings.is_mother_name_visible,
+                is_registration_number_visible: guestAdminSettings.is_registration_number_visible,
+                is_birth_place_visible: guestAdminSettings.is_birth_place_visible,
+                is_home_town_visible: guestAdminSettings.is_home_town_visible,
+                is_place_of_residence_visible: guestAdminSettings.is_place_of_residence_visible,
+                is_vehicle_country_mark_visible: guestAdminSettings.is_vehicle_country_mark_visible,
+                is_personal_id_no_visible: guestAdminSettings.is_personal_id_no_visible
+            };
+        };
 
         var init = function () {
 
@@ -277,7 +315,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             if (!$stateParams.guestId) {
                 $scope.guestCardData = {};
-                $scope.guestCardData.contactInfo = RVGuestCardsSrv.setGuestFields();
+                populateContactInfo();
+                $scope.guestCardData.contactInfo.user_id = '';
+                $scope.guestCardData.contactInfo.first_name = $stateParams.firstName;
+                $scope.guestCardData.contactInfo.last_name = $stateParams.lastName;
+               
             } else {
                 $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             }

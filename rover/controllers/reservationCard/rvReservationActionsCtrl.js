@@ -609,7 +609,15 @@ sntRover.controller('reservationActionsController', [
                 $scope.toggleGuests(true);
                 return;
             } else {
-                startCheckin();
+                if ($rootScope.isStandAlone &&
+                    $rootScope.allowCheckInToNotReadyRooms &&
+                    $scope.reservationData.reservation_card.room_number && 
+                    $scope.reservationData.reservation_card.room_status === 'NOTREADY') {
+                        that.openRoomStatusChangePopup('', true);
+                } else {
+                    startCheckin();
+                }
+                
             }			
         };
         $scope.unAvailablePopup = function() {
@@ -1419,7 +1427,12 @@ sntRover.controller('reservationActionsController', [
 							} else {
 								hkStatus = 1;
 							}
-						}
+						} else {
+                            if ($scope.reservationData.reservation_card.room_status === 'NOTREADY') {
+                                ngDialog.close();
+                                return;
+                            }
+                        }
                 
 						var requestData = {
 								room_no: $scope.reservationData.reservation_card.room_number,
@@ -1446,7 +1459,7 @@ sntRover.controller('reservationActionsController', [
 				 * Opens room status change popup on the success of reverse check-in
 				 * @return {void}
 				 */
-        that.openRoomStatusChangePopup = function() {
+        that.openRoomStatusChangePopup = function (displayText, shouldShowCloseBtn) {
             $scope.roomStatus = {
                 isReady: false
             };
@@ -1455,7 +1468,11 @@ sntRover.controller('reservationActionsController', [
                 className: '',
                 scope: $scope,
                 closeByDocument: false,
-                closeByEscape: false
+                closeByEscape: false,
+                data: {
+                    displayText: displayText,
+                    shouldShowCloseBtn: shouldShowCloseBtn
+                }
             });
         };
 				
@@ -1465,7 +1482,7 @@ sntRover.controller('reservationActionsController', [
          */
         $scope.performReverseCheckIn = function() {
             var onSuccess = function() {
-                  that.openRoomStatusChangePopup();
+                  that.openRoomStatusChangePopup('CHECK_IN_REVERSED', false);
                 },
                 onFailure = function(errorMsg) {
                   $scope.errorMessage = errorMsg;

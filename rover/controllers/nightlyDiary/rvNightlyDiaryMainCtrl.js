@@ -113,7 +113,10 @@ angular.module('sntRover')
                             fromDate: null,
                             nights: null
                         },
-                        requireAuthorization: false
+                        requireAuthorization: false,
+                        isReservationSelected: false,
+                        selectedUnassignedReservation: {},
+                        roomAssignmentFilters: {}
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -791,6 +794,21 @@ angular.module('sntRover')
                     $scope.diaryData.availableSlotsForAssignRooms = {};
                     fetchRoomListDataAndReservationListData();
                 });
+
+                /*  
+                 *  Toggle filter section.
+                 */
+                $scope.addListener('TOGGLE_FILTER_TOP', function (e, value) {
+                    $scope.$broadcast('TOGGLE_FILTER', value);
+                });
+
+                /*  
+                 *  Guest preference filter message
+                 */
+                $scope.addListener('APPLY_GUEST_PREFERENCE_FILTER_TOP', function () {
+                    $scope.$broadcast('APPLY_GUEST_PREFERENCE_FILTER');
+                });
+
                 /*  
                  *  To Hide 'ASSIGN' or 'MOVE' room button in Diary.
                  */
