@@ -54,7 +54,7 @@
 
             <!-- Other Languages -->
             <div id="language-options" ng-iscroll="language-list" ng-iscroll-delay="100" class="scrollable" > <!-- Add HORIZONTAL ng-scroll here -->
-                <div class="wrapper" style="width: {{languageListWidth}}" width="{{languageListWidth}}">
+                <div class="wrapper" style="width: {{ languageListWidth }}">
                     <button type="button" class="button with-icon"
                      ng-repeat="language in languages"
                      ng-hide="!language.active || language == selectedLanguage"

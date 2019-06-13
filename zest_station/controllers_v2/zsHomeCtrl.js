@@ -234,25 +234,37 @@ sntZestStation.controller('zsHomeCtrl', [
             return selectableLanguages.length > 1;
         };
 
+        var widthForLanguageList = function() {
+            var width = 0;
+
+            angular.forEach($scope.languages, function(language, index) {
+                if (language.active) {
+                    if (!language.foreign_label || language.name && language.foreign_label && language.name.length > language.foreign_label.length) {
+                        width += language.name.length * 15 + 10;
+                    } else {
+                        width += language.foreign_label.length * 15 + 10;
+                    }
+                }
+            });
+            return width + "px;";
+        };
+
+        var resetWidthAndRefreshScroller = function() {
+            $scope.languageListWidth = widthForLanguageList();
+            $scope.refreshScroller('language-list');
+        };
+
         $scope.selectLanguage = function(language) {
-			// Reset idle timer to 0, on language selection, otherwise counter is still going
+            // Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
             var langShortCode = language.code;
 
-                // keep track of lang short code, for editor to save / update tags when needed
+            // keep track of lang short code, for editor to save / update tags when needed
             $scope.languageCodeSelected(langShortCode, language.code);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
-        };
-
-        var widthForLanguageList = function() {
-            var width = 0;
-            
-            angular.forEach($scope.languages, function(language, index) {
-                width += language.active && language !== $scope.selectedLanguage ? $('#language-'+ index).width() + 20 : 0;
-            });
-            return "" + width + "px;";
+            resetWidthAndRefreshScroller();
         };
 
 		/**
@@ -322,10 +334,7 @@ sntZestStation.controller('zsHomeCtrl', [
             });
             $scope.languageListWidth = "0px";
             $timeout(function() {
-                $scope.languageListWidth = angular.copy(widthForLanguageList());
-                $timeout(function() {
-                    $scope.refreshScroller('language-list');
-                }, 500);
+                resetWidthAndRefreshScroller();
             }, 2000);
         })();
 
