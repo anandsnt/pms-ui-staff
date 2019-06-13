@@ -239,11 +239,14 @@ sntZestStation.controller('zsHomeCtrl', [
 
             angular.forEach($scope.languages, function(language, index) {
                 if (language.active) {
+                    var buttonWidth = 0;
+
                     if (!language.foreign_label || language.name && language.foreign_label && language.name.length > language.foreign_label.length) {
-                        width += language.name.length * 15 + 10;
+                        buttonWidth += language.icon ? (language.name.length * 14 + 15 + 32) : (language.name.length * 15 + 10);
                     } else {
-                        width += language.foreign_label.length * 15 + 10;
+                        buttonWidth += language.icon ? (language.foreign_label.length * 13 + 15 + 32) : (language.foreign_label.length * 14 + 10);
                     }
+                    width += buttonWidth;
                 }
             });
             return width + "px;";
@@ -328,6 +331,9 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.setScroller('language-list', {
                 scrollX: true,
                 scrollY: false,
+                preventDefault: {
+                    tagName: /^(BUTTON)$/
+                },
                 disablePointer: true, // important to disable the pointer events that causes the issues
                 disableTouch: false, // false if you want the slider to be usable with touch devices
                 disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
@@ -335,7 +341,7 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.languageListWidth = "0px";
             $timeout(function() {
                 resetWidthAndRefreshScroller();
-            }, 2000);
+            }, 100);
         })();
 
 

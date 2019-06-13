@@ -1072,20 +1072,21 @@
         &.languages-list {
             left: 0;
             right: 0;
-            bottom: 0;
+            bottom: 40px;
             width: 100%;
-            padding-left: 20px;
             #flexbox > .flex();
             #flexbox > .parent(row wrap, center, center, '');
 
             .selected-language {
                 position: relative;
-                font-size: 20px;
+                font-size: 18px;
                 line-height: 64px;
                 text-transform: uppercase;
                 padding: 0 20px 0 50px;
-                margin: 40px 0;
+                margin: 40px 0 40px 20px;
                 height: 64px;
+                max-width: 200px;
+                overflow: hidden;
 
                 .icons {
                     position: absolute;
@@ -1122,10 +1123,10 @@
             }
 
             .scrollable {
-                flex: 1;
                 position: relative;
                 height: 144px;
                 overflow: hidden;
+                max-width: calc(~'100% - 220px');
             }
 
             .wrapper {
