@@ -1,0 +1,67 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <div>
+        <header class="content-title float">
+            <h2> Features </h2>
+            <span class="count"> ({{totalCount}}) </span>
+            <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">BACK</a>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <span class="count-show">Show</span>
+            <div class="select table-count rates-table-count">
+                <select ng-model="displyCount" ng-options="opt for opt in displayCountList"></select>
+            </div>
+            <span class="count-entries">entries</span>
+            <div class="entry table-search">
+                <span class="search-text">Search</span>
+                <span class="icons icon-search" name="submit" type="submit"></span>
+                <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000"
+                       function-to-fire="searchEntered"/>
+            </div>
+            <div id="new-form-holder"></div>
+            <!--ng-table component -->
+            <table class="grid" ng-table="tableParams" template-pagination="custom/pager"
+                   ng-class="{'edit-data': currentClickedElement == $index}">
+                <tbody>
+                <tr ng-repeat="feature in $data" class="device-list">
+                    <td data-title="'TITLE'" sortable="'title'" header-class="width-30"
+                        ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
+                        <strong> {{feature.title}}</strong>
+                    </td>
+                    <td data-title="'DESCRIPTION'" sortable="'description'" header-class="width-70"
+                        ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
+                        <strong> {{feature.description}}</strong>
+                    </td>
+                </tbody>
+            </table>
+        </section>
+        <!--end -->
+        <!--Custom pagination footer goes here-->
+        <script type="text/ng-template" id="custom/pager">
+            <div class="pager">
+                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                <span ng-show="totalCount==0">Showing 0 items</span>
+                <ul class="ng-cloak">
+                    <li ng-repeat="page in pages"
+                        ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                        ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page"
+                           ng-class="{'disabled': !page.active}">First</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page"
+                           ng-class="{'disabled': !page.active}">Previous</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page"
+                           ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page"
+                           ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page"
+                           ng-class="{'disabled': !page.active}">Next</a>
+                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page"
+                           ng-class="{'disabled': !page.active}">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <!--end-->
+    </div>
+</section>

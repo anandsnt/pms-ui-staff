@@ -71,7 +71,8 @@
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>
         <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'RESERVATION_FILTER' }" ng-click="toggleFilter('RESERVATION_FILTER')">
-            <span class="count">{{diaryData.selectedRoomCount + diaryData.selectedFloorCount}}</span>
+            <span class="count" ng-if="!diaryData.isReservationSelected">{{diaryData.selectedRoomCount + diaryData.selectedFloorCount}}</span>
+            <span class="count" ng-if="diaryData.isReservationSelected">{{diaryData.roomAssignmentFilters.count}}</span>
             <span class="icons icon-filter" ng-class="{'active': diaryData.rightFilter === 'RESERVATION_FILTER' }"></span>
         </button>
         <!-- Refresh -->

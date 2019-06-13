@@ -35,6 +35,7 @@ function(
                 selectedStatisticsYear: null,
                 selectedIds: [],
                 isMergeViewSelected: null,
+                isFromMenuGuest: false,
                 reservationId: null,
                 confirmationNo: null,
                 fromStaycard: null,
