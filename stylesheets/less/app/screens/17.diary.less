@@ -705,17 +705,29 @@
                 }
             }
         }
-    
-        /* Grid - Toggle Open / All Rooms ***/
-        .diary-toggle {
+
+        /* Grid - Resizable Rooms ***/
+        .diary-resizable {
             position: absolute;
             top: 0;
             left: 0;
-            padding: 10px;
             z-index: 90;
+            width: ~'@{diarySidebar}px';
+            #flexbox > .parent(column wrap, '', '', '');
+
+            .ui-resizable-handle {
+                top: 4px;
+                right: -24px;
+                background-image: @icons2x, @textureImage;
+                background-size: 120px, 40px;
+            }
+        }
+    
+        /* Grid - Toggle Open / All Rooms ***/
+        .diary-toggle {
+            padding: 10px;
             .background(@white);
-            .box-shadow(0 1px 2px rgba(0,0,0,.15));
-            .size(60px, ~'@{diarySidebar}px');
+            .size(60px, 100%);
         
             .switch-button {
                 .hide();
@@ -724,15 +736,10 @@
 
         /* Grid - Rooms List ***/
         .diary-rooms {
-            position: absolute;
-            top: 60px;
-            left: 0;
             background-color: @white;
-            z-index: 89;
-            cursor: default;
-            width: ~'@{diarySidebar}px';
+            width: 100%;
             .box-shadow(2px 0 4px rgba(0, 0, 0, .2));
-            .calc-height(100, 60); 
+            .calc-height(100, 60);
 
             .iScrollVerticalScrollbar {
                 .hide();
@@ -820,7 +827,7 @@
                         background-color: @grey2;
                         background: linear-gradient(90deg, fade(@grey2, 0) 0%, @grey2 10px, @grey2 100%); 
                     }
-                }    
+                }
 
                 &:not(:first-child) {
                     &:before {

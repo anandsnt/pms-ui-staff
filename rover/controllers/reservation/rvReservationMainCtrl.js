@@ -996,7 +996,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {},
                 isInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
-                shouldWeIncludeRoomTypeArray = !isInStayCard && !$scope.reservationData.isHourly && typeof roomIndex === 'undefined';
+                shouldWeIncludeRoomTypeArray = !isInStayCard && typeof roomIndex === 'undefined';
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;

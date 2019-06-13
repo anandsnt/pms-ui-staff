@@ -326,7 +326,7 @@ sntRover.controller('roverController', [
         $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
 
         $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
-
+        $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that

@@ -326,6 +326,17 @@ angular.module('sntRover')
 		    	Stats correspond to the occupancy counts found at the bottom of the timeline.
 		    */
 		    stats: $scope.stats,
+            jqResizable: {
+		       options: {
+                    minWidth: 184,
+                    maxWidth: 480,
+                    handles: 'e'
+                },
+                open: false,
+                display: {
+                    width: 184
+                }
+            },
 		    /*
 				Viewport - frames viewable portion of grid.  Constains offsets necessary
 							for correct display and obtaining current window size.
@@ -586,6 +597,8 @@ angular.module('sntRover')
                             self = this,
                             success,
                             apiOptions;
+
+                        params.reservation_id = options.reservationId;
 
                         success = function(data, successParams) {
 					// CICO-24243: Set top filter values to selected reservation attributes
