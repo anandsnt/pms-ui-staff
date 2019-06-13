@@ -292,5 +292,20 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+
+        /*
+         *  Get prefrences of a reservation for filter
+         */
+        this.getPreferences = function(param) {
+            var deferred = $q.defer(),
+                url =  '/staff/preferences/room_assignment.json';
+
+            BaseWebSrvV2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);
