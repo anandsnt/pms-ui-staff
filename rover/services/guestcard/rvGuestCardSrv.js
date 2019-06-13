@@ -38,7 +38,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
 
         /**
          * Fetch guest details
-         * @param {object} data request object
+         * @param {object} param request object
          * @return {Promise} promise
          */
         this.fetchGuests = function (param) {

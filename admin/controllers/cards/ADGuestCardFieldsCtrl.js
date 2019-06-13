@@ -102,7 +102,7 @@ function($scope, $state, ADGuestCardSrv) {
 	 * @param fieldName field name
 	 */
 	$scope.clickedMandatory = function(isFieldVisible, fieldName) {
-		if(isFieldVisible)
+		if (isFieldVisible)
 		{
 			switch (fieldName) {
 				case "father_name":
