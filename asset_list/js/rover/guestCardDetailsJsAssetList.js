@@ -32,7 +32,8 @@ module.exports = {
                     servicesRoot + "rvCCAuthorizationSrv.js",
                     servicesRoot + "rvCompanyCardSrv.js",
                     servicesRoot + "guestcard/rvGuestCardSrv.js",
-
+                    servicesRoot + "rvReservationSrv.js",
+                    
                     // Eliminate all spec files
                     '!**/*.spec.js'
                 ]
