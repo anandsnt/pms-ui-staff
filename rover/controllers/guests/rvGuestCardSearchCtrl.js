@@ -284,7 +284,8 @@ angular.module('sntRover').controller('guestCardSearchController',
                 guestId: guestId,
                 query: $scope.textInQueryBox,
                 selectedIds: $scope.viewState.selectedCardsForMerge || [],
-                isMergeViewSelected: !$scope.viewState.isViewSelected				
+                isMergeViewSelected: !$scope.viewState.isViewSelected,
+                isFromMenuGuest: true			
             });
         };
 

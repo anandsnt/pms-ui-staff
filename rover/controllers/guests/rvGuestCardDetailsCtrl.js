@@ -33,6 +33,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
            }
         });
 
+        $scope.isFromMenuGuest = $stateParams.isFromMenuGuest;
+
         $scope.$on('$destroy', listener);
 
         // Sets the loyalty level
@@ -117,6 +119,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
         };
 
+        $scope.$on('contactInfoError', function(event, value) {
+            $scope.contactInfoError = value;
+            $scope.current = 'guest-contact';
+        });
+
         /**
          * Set navigation back to guest card search         
          */
@@ -200,6 +207,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * @return {undefined} 
          */
         var initGuestCard = function(guestData) {
+
             if (guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
                 $scope.guestCardData.guestId = guestData.id;
