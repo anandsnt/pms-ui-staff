@@ -210,22 +210,6 @@ angular.module('sntRover')
                 ngDialog.close();
             };
 
-			/**
-			 * function to handle the filter selection
-			 */
-			$scope.setSelectionForFeature = function(group, feature) {
-				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
-
-				if (!roomFeatures[group].multiple_allowed) {
-					for (var i = 0; i < roomFeatures[group].items.length; i++) {
-						if (feature !== i) {
-							roomFeatures[group].items[i].selected = false;
-						}
-					}
-				}
-				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
-			};
-
 			// Clear Room Features
 			var clearRoomFeaturesList = function() {
 				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
@@ -237,6 +221,7 @@ angular.module('sntRover')
 				});
 
 				$scope.diaryData.roomAssignmentFilters.roomFeatureIds = [];
+				$scope.diaryData.roomAssignmentFilters.count = 0;
 			};
 
 			// Clear Room Features
@@ -253,6 +238,24 @@ angular.module('sntRover')
 				});
 
 				$scope.diaryData.roomAssignmentFilters.roomFeatureIds = roomFeatureIds;
+				$scope.diaryData.roomAssignmentFilters.count = roomFeatureIds.length;
+			};
+
+			/**
+			 * function to handle the filter selection
+			 */
+			$scope.setSelectionForFeature = function(group, feature) {
+				var roomFeatures = $scope.diaryData.roomAssignmentFilters.room_features;
+
+				if (!roomFeatures[group].multiple_allowed) {
+					for (var i = 0; i < roomFeatures[group].items.length; i++) {
+						if (feature !== i) {
+							roomFeatures[group].items[i].selected = false;
+						}
+					}
+				}
+				roomFeatures[group].items[feature].selected = !roomFeatures[group].items[feature].selected;
+				fetchIdFromRoomFeaturesList();
 			};
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
@@ -264,7 +267,6 @@ angular.module('sntRover')
 
 			// CICO-65277 : Apply Guest preferences corresponding to a seletced Reservation.
 			$scope.applyGuestPreferenceFilter = function() {
-				fetchIdFromRoomFeaturesList();
 				retrieveAvailableRooms();
 			};
 
