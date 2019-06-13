@@ -142,7 +142,18 @@ angular.module('sntRover')
             var retrieveAvailableRooms = function() {
 
 				var filterData = $scope.diaryData.roomAssignmentFilters,
+					selectedItem = {};
+				
+				if (filterData.type === 'MOVE_ROOM') {
+					selectedItem = $scope.currentSelectedReservation;
+					$scope.diaryData.selectedUnassignedReservation = {};
+					if (screen.width < 1600) {
+						$scope.$emit('TOGGLE_FILTER_TOP', 'RESERVATION_FILTER');
+					}
+				}
+				else if (filterData.type === 'ASSIGN_ROOM') {
 					selectedItem = $scope.diaryData.selectedUnassignedReservation;
+				}
 
                 var successCallBack = function(data) {
                     $scope.errorMessage = '';
@@ -154,7 +165,7 @@ angular.module('sntRover')
                             className: '',
                             scope: $scope
                         });
-                        if (screen.width < 1600) {
+                        if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM') {
 							$scope.$emit('TOGGLE_FILTER_TOP', 'RESERVATION_FILTER');
 						}
                     }
@@ -163,15 +174,15 @@ angular.module('sntRover')
                             availableRoomList: data.rooms,
                             fromDate: selectedItem.arrival_date,
                             nights: selectedItem.no_of_nights,
-                            reservationId: selectedItem.reservation_id,
+                            reservationId: (selectedItem.reservation_id || selectedItem.id),
                             roomTypeId: selectedItem.room_type_id,
-                            type: 'ASSIGN_ROOM',
+                            type: filterData.type,
                             reservationOccupancy: data.reservation_occupancy
                         };
 
                         $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
 
-						if (screen.width < 1600) {
+						if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM') {
 							$scope.$emit('TOGGLE_FILTER_TOP', 'UNASSIGNED_RESERVATION');
 						}
                     }
@@ -187,7 +198,7 @@ angular.module('sntRover')
                     }
                 },
                 postData = {
-                    'reservation_id': selectedItem.reservation_id,
+                    'reservation_id': (selectedItem.reservation_id || selectedItem.id),
                     'selected_room_type_ids': [filterData.roomTypeId],
                     'selected_room_features': filterData.roomFeatureIds,
                     'floor_id': filterData.floorId,
@@ -203,7 +214,7 @@ angular.module('sntRover')
             };
 
             // Handle validation popup close.
-            $scope.closeDialogAndRefresh = function(event) {
+            $scope.closeDialogAndRefresh = function() {
                 if ($scope.diaryData.isAssignRoomViewActive) {
                     $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
                 }
