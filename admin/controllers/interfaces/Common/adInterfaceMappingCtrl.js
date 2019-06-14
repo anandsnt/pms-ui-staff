@@ -15,7 +15,7 @@ admin.controller('adInterfaceMappingCtrl', [
           'market_code_department_code': 'Market Code - Department Code',
           'source_code': 'Source Code',
           'tax_code': 'Tax Codes',
-          'payment_code': 'Payment Codes'
+          'payment_code_billing_account': 'Payment Code - Billing Account Number'
         };
 
         var mappingPartials = {
