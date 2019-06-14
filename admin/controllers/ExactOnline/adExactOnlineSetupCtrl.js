@@ -1,11 +1,18 @@
-admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints',
-    function($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, endPoints) {
+admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints', 'config', 'adInterfacesSrv',
+    function($scope, $rootScope, adExactOnlineSetupSrv, dateFilter, endPoints, config, adInterfacesSrv) {
 
         BaseCtrl.call(this, $scope);
+        console.log("config from router", config)
 
         $scope.exportOptions = {
             date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
         };
+
+        $scope.state = {
+            activeTab: 'SETTING'
+        };
+
+        $scope.integration = "EXACTONLINE";
 
         $scope.datePickerOptions = {
             dateFormat: $rootScope.jqDateFormat,
@@ -42,17 +49,32 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
          * @return {undefined}
          */
         $scope.saveExactOnlineSetup = function() {
-            var options = {
-                params: {
-                    enabled: $scope.exactOnlineSetup.enabled,
-                    journal_code: $scope.exactOnlineSetup.journal_code,
-                    balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
-                    endpoint: $scope.exactOnlineSetup.endpoint
-                },
-                successCallBack: successCallBackOfExactOnlineSetup
-            };
+            // var options = {
+            //     params: {
+            //         enabled: $scope.exactOnlineSetup.enabled,
+            //         journal_code: $scope.exactOnlineSetup.journal_code,
+            //         balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
+            //         endpoint: $scope.exactOnlineSetup.endpoint
+            //     },
+            //     successCallBack: successCallBackOfExactOnlineSetup
+            // };
 
-            $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+            // $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
+                params: {
+                    integration: $scope.integration.toLowerCase(),
+                    settings: {
+                        enabled: $scope.config.enabled,
+                        journal_code: $scope.config.journal_code,
+                        balancing_account_code: $scope.config.balancing_account_code,
+                        endpoint: $scope.config.endpoint
+                    }
+                },
+                onSuccess: function () {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "SUCCESS: Settings Updated!";
+                }
+            })
         };
 
         $scope.runExport = function() {
@@ -71,20 +93,22 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
         };
 
         $scope.onURLChange = function() {
-            var options = {
-                params: {
-                    enabled: $scope.exactOnlineSetup.enabled,
-                    authorized: false,
-                    journal_code: $scope.exactOnlineSetup.journal_code,
-                    balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
-                    endpoint: $scope.exactOnlineSetup.endpoint
-                },
-                successCallBack: function(exactOnlineSetupValues) {
-                    $scope.exactOnlineSetup = exactOnlineSetupValues;
-                }
-            };
+            // change to $scope.config to update settings in IFC
+            // var options = {
+            //     params: {
+            //         enabled: $scope.exactOnlineSetup.enabled,
+            //         authorized: false,
+            //         journal_code: $scope.exactOnlineSetup.journal_code,
+            //         balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
+            //         endpoint: $scope.exactOnlineSetup.endpoint
+            //     },
+            //     successCallBack: function(exactOnlineSetupValues) {
+            //         $scope.exactOnlineSetup = exactOnlineSetupValues;
+            //     }
+            // };
 
-            $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+            // $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+            console.log("currently under MIGRATION")
         };
 
         /**
@@ -108,7 +132,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                 $scope.$emit("changedSelectedMenu", interfacesMenuIndex);
             }
 
-            $scope.exactOnlineSetup = exactOnlineSetupValues;
+            $scope.config = config;
 
             $scope.callAPI(adExactOnlineSetupSrv.fetchJournalsList, {
                 successCallBack: function(journalsList) {
@@ -121,6 +145,15 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                 }
             });
 
+            $scope.callAPI(adExactOnlineSetupSrv.indexWithParams, {
+                params: $scope.config,
+                successCallBack: function(values) {
+                    //save values to $scope? how were the extra config/auth values handled before??
+                    console.log("done", values)
+                }
+            });
+
             $scope.endPoints = endPoints;
+            console.log("iife, scope: ", $scope)
         }());
     }]);
