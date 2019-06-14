@@ -47,7 +47,7 @@
             <label for="guest-email">Send To</label>
         
             <!-- If no email is present -->
-            <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-if="!hasEmails()"/>
+            <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-if="!hasEmails()" ng-model="ngData.sendConfirmatonMailTo"/>
                         
             <!-- If Emails are present -->
             <label class="checkbox" ng-if="ngData.sendConfirmatonMailTo">
@@ -63,7 +63,7 @@
         </div>
                
         <div class="actions">
-            <button type="button" class="button" ng-class="{'grey' : shouldDisableSendEmailBtn(ngData.isGuestEmailSelected, ngData.isBookerEmailSelected, ngData.languageData.selected_language_code), 'blue': !shouldDisableSendEmailBtn(ngData.isGuestEmailSelected, ngData.isBookerEmailSelected, ngData.languageData.selected_language_code) }" ng-if="sendConfirmationLetter" ng-click="sendConfirmationEmail()">
+            <button type="button" class="button" ng-class="{'grey' : shouldDisableSendEmailBtn(), 'blue': !shouldDisableSendEmailBtn() }" ng-if="sendConfirmationLetter" ng-click="sendConfirmationEmail()">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
                 {{'SEND_EMAIL' | translate}}
@@ -73,7 +73,7 @@
                 <span class="icons icon-print"></span>
                 {{'PRINT_LETTER' | translate}}
             </button>
-            <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE</button> 
+            <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE_WINDOW</button> 
         </div>
     </form>
 </div>

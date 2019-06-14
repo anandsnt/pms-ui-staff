@@ -135,4 +135,8 @@
 "CLIENT_NUMBER": "Client #",
 "GL_ACCOUNT_NUMBER_LENGTH": "GL Account Number Length",
 "ACCOUNTS_RECEIVABLE": "Accounts Receivable #",
-"GUEST_LEDGER_ACCOUNT_NUMBER": "Guest Ledger Account #"
+"GUEST_LEDGER_ACCOUNT_NUMBER": "Guest Ledger Account #",
+"IGEL_HEADER": "IGEL Setup",
+"OFFICE": "Office #",
+"JOURNAL_EXPORT": "Journal Export",
+"payment_code": "Payment Code"

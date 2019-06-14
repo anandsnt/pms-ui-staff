@@ -731,6 +731,10 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
+            $scope.DailogeState.sendConfirmatonMailTo = $scope.guestCardData.contactInfo.email;
+            $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.DailogeState.isGuestEmailSelected = false;
+            $scope.DailogeState.isBookerEmailSelected = false;
             var passData = {
                 "reservationId": $scope.reservationData.reservation_card.reservation_id,
                 "details": {
@@ -1110,7 +1114,7 @@ sntRover.controller('reservationActionsController', [
         };
 
         $scope.sendConfirmationEmail = function() {
-            if ($scope.shouldDisableSendEmailBtn($scope.ngData.isGuestEmailSelected, $scope.ngData.isBookerEmailSelected, $scope.ngData.languageData.selected_language_code)) {
+            if ($scope.shouldDisableSendConfirmationEmailBtn()) {
                 return;
             }
 
@@ -1123,7 +1127,7 @@ sntRover.controller('reservationActionsController', [
                 },
                 emails = [];
 
-            if ($scope.ngData.isGuestEmailSelected) {
+            if ($scope.ngData.isGuestEmailSelected || (!$scope.hasEmails() && $scope.ngData.sendConfirmatonMailTo)) {
                 emails.push($scope.ngData.sendConfirmatonMailTo); 
             }
             if ($scope.ngData.isBookerEmailSelected) {
@@ -1308,11 +1312,26 @@ sntRover.controller('reservationActionsController', [
 
         // Action against email button in staycard.
         $scope.sendReservationCancellation = function(locale) {
+            if ($scope.shouldDisableSendCancellationEmailBtn()) {
+                return;
+            }
+            
             var postData = {
-                "type": "cancellation",
-                "locale": locale,
-                "emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
-            };
+                    "type": "cancellation",
+                    "locale": locale
+                },
+                emails = [];
+
+            if ($scope.DailogeState.isGuestEmailSelected || (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo)) {
+                emails.push($scope.DailogeState.sendConfirmatonMailTo);
+            }
+
+            if ($scope.DailogeState.isBookerEmailSelected) {
+                emails.push($scope.DailogeState.bookerEmail);
+            }
+
+            postData.emails = emails;
+
             var data = {
                 "postData": postData,
                 "reservationId": $scope.reservationData.reservation_card.reservation_id
@@ -1506,12 +1525,28 @@ sntRover.controller('reservationActionsController', [
 
         /**
          * Should disable the send mail btn in email confirmation popup
-         * @param {Boolean} isGuestEmailSelected guest email selected or not
-         * @param {Boolean} isBookerEmailSelected booker email selected or not
-         * @param {String} selectedLanguage selected language
          */
-        $scope.shouldDisableSendEmailBtn = function (isGuestEmailSelected, isBookerEmailSelected, selectedLanguage) {
-            return !selectedLanguage || ( !isGuestEmailSelected && !isBookerEmailSelected );
+        $scope.shouldDisableSendConfirmationEmailBtn = function () {
+            return (
+                !$scope.ngData.languageData
+                    .selected_language_code ||
+                (!$scope.ngData.isGuestEmailSelected &&
+                    !$scope.ngData.isBookerEmailSelected &&
+                    !$scope.ngData.sendConfirmatonMailTo)
+            );
+        };
+
+        /**
+         * Should disable the send email btn in the cancellation popup
+         * @param {String} locale - locale chosen from the popup
+         */
+        $scope.shouldDisableSendCancellationEmailBtn = function (locale) {
+            return (
+                !locale ||
+                (!$scope.DailogeState.isGuestEmailSelected &&
+                    !$scope.DailogeState.isBookerEmailSelected &&
+                    !$scope.DailogeState.sendConfirmatonMailTo)
+            );
         };
     }
 ]);
