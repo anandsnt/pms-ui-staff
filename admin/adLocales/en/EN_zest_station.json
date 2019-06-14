@@ -178,7 +178,11 @@
 "WALK_IN_RATE_CODE": "Walk-in Rate code",
 "WALK_IN_MARKET": "Walk-in Market",
 "WALK_IN_ORIGIN": "Walk-in Origin",
-"WALK_IN_SOURCE": "Walk-in Source"
+"WALK_IN_SOURCE": "Walk-in Source",
+"WALK_IN_SOURCE": "Walk-in Source",
+"WALKIN_FLOW": "Walk-in flow",
+"TRADITIONAL": "Traditional",
+"UPSELL_ORIENTED": "Upsell oriented"
 
 
 
