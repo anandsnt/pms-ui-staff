@@ -12,7 +12,7 @@ admin.controller('adInterfaceMappingCtrl', [
           'charge_code_department_code': 'Charge Code - Department Code',
           'market_code': 'Market Code - Market Segment',
           'market_code_department_code': 'Market Code - Department Code',
-          'payment_code': 'Payment Codes'
+          'payment_code_billing_account': 'Payment Code - Billing Account Number'
         };
 
         var mappingPartials = {
