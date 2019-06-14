@@ -1,8 +1,6 @@
 admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints', 'config', 'adInterfacesSrv',
     function($scope, $rootScope, adExactOnlineSetupSrv, dateFilter, endPoints, config, adInterfacesSrv) {
-
         BaseCtrl.call(this, $scope);
-        console.log("config from router", config)
 
         $scope.exportOptions = {
             date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
@@ -134,6 +132,5 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             });
 
             $scope.endPoints = endPoints;
-            console.log("iife, scope: ", $scope)
         }());
     }]);
