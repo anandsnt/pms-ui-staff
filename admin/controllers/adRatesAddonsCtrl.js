@@ -706,7 +706,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
         $scope.setAllowedChargeCodesForAllowance = function() {
             $scope.chargeCodes.map(function(chargeCode) {
-              if($scope.singleAddon.permissible_charge_code_ids.indexOf(parseInt(chargeCode.id)) > -1) {
+              if ($scope.singleAddon.permissible_charge_code_ids.indexOf(parseInt(chargeCode.id)) > -1) {
                 chargeCode.ticked = true;
               } else {
                 chargeCode.ticked = false;

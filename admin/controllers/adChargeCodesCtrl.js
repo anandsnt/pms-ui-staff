@@ -130,7 +130,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
             };
 
             $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, chargeCodesSuccessCallback, '', 'NONE');
-		}
+		};
 
 		/**
 		 * Callback for charge code type dropdown
