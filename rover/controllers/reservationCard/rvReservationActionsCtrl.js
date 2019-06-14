@@ -731,10 +731,12 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
-            $scope.DailogeState.sendConfirmatonMailTo = $scope.guestCardData.contactInfo.email;
+            $scope.DailogeState.sendConfirmatonMailTo = '';
             $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
             $scope.DailogeState.isGuestEmailSelected = false;
             $scope.DailogeState.isBookerEmailSelected = false;
+            $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+            
             var passData = {
                 "reservationId": $scope.reservationData.reservation_card.reservation_id,
                 "details": {
@@ -778,6 +780,12 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState = {};
             $scope.DailogeState.successMessage = '';
             $scope.DailogeState.failureMessage = '';
+            $scope.DailogeState.sendConfirmatonMailTo = '';
+            $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.DailogeState.isGuestEmailSelected = false;
+            $scope.DailogeState.isBookerEmailSelected = false;
+            $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+
             var openCancellationPopup = function(data) {
                   
                   $scope.languageData = data;
@@ -1023,7 +1031,7 @@ sntRover.controller('reservationActionsController', [
          * Checks whether there are any emails configured
          */
         $scope.hasEmails = function () {
-            return $scope.guestCardData.contactInfo.email || $scope.reservationData.reservation_card.booker_email;
+            return !!$scope.guestCardData.contactInfo.email || !!$scope.reservationData.reservation_card.booker_email;
         };
 
         // Checking whether email is attached with guest card or not
@@ -1054,7 +1062,7 @@ sntRover.controller('reservationActionsController', [
         // Pop up for confirmation print as well as email send
         $scope.popupForConfirmation = function() {
 
-            $scope.ngData.sendConfirmatonMailTo = $scope.guestCardData.contactInfo.email;
+            $scope.ngData.sendConfirmatonMailTo = '';
             $scope.ngData.enable_confirmation_custom_text = false;
             $scope.ngData.enable_confirmation_custom_text = "";
             $scope.ngData.confirmation_custom_title = "";
@@ -1064,6 +1072,7 @@ sntRover.controller('reservationActionsController', [
             $scope.ngData.isBookerEmailSelected = false;
             $scope.ngData.successMessage = '';
             $scope.ngData.failureMessage = '';
+            $scope.ngData.guestEmail = $scope.guestCardData.contactInfo.email;
 
             var openConfirmationPopup = function(data) {
                   
@@ -1127,11 +1136,15 @@ sntRover.controller('reservationActionsController', [
                 },
                 emails = [];
 
-            if ($scope.ngData.isGuestEmailSelected || (!$scope.hasEmails() && $scope.ngData.sendConfirmatonMailTo)) {
-                emails.push($scope.ngData.sendConfirmatonMailTo); 
+            if ($scope.ngData.isGuestEmailSelected ) {
+                emails.push($scope.ngData.guestEmail); 
             }
             if ($scope.ngData.isBookerEmailSelected) {
                 emails.push($scope.ngData.bookerEmail); 
+            }
+
+            if (!$scope.hasEmails() && $scope.ngData.sendConfirmatonMailTo) {
+                emails.push($scope.ngData.sendConfirmatonMailTo); 
             }
 
             postData.emails = emails;
@@ -1315,19 +1328,23 @@ sntRover.controller('reservationActionsController', [
             if ($scope.shouldDisableSendCancellationEmailBtn()) {
                 return;
             }
-            
+
             var postData = {
                     "type": "cancellation",
                     "locale": locale
                 },
                 emails = [];
 
-            if ($scope.DailogeState.isGuestEmailSelected || (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo)) {
-                emails.push($scope.DailogeState.sendConfirmatonMailTo);
+            if ($scope.DailogeState.isGuestEmailSelected ) {
+                emails.push($scope.DailogeState.guestEmail);
             }
 
             if ($scope.DailogeState.isBookerEmailSelected) {
                 emails.push($scope.DailogeState.bookerEmail);
+            }
+
+            if (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo) {
+                emails.push($scope.DailogeState.sendConfirmatonMailTo);
             }
 
             postData.emails = emails;
@@ -1540,13 +1557,11 @@ sntRover.controller('reservationActionsController', [
          * Should disable the send email btn in the cancellation popup
          * @param {String} locale - locale chosen from the popup
          */
-        $scope.shouldDisableSendCancellationEmailBtn = function (locale) {
-            return (
-                !locale ||
-                (!$scope.DailogeState.isGuestEmailSelected &&
+        $scope.shouldDisableSendCancellationEmailBtn = function () {
+            return  !$scope.DailogeState.isGuestEmailSelected &&
                     !$scope.DailogeState.isBookerEmailSelected &&
-                    !$scope.DailogeState.sendConfirmatonMailTo)
-            );
+                    !$scope.DailogeState.sendConfirmatonMailTo;
+            
         };
     }
 ]);

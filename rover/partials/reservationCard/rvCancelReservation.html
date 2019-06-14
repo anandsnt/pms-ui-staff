@@ -68,10 +68,10 @@
         <div class="confirmation-emails entry full-width">
                 <label for="guest-email">Send To</label>
                 <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-if="!hasEmails()" ng-model="DailogeState.sendConfirmatonMailTo"/>
-                <label class="checkbox" ng-if="DailogeState.sendConfirmatonMailTo">
+                <label class="checkbox" ng-if="DailogeState.guestEmail">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': DailogeState.isGuestEmailSelected}"></span>
                     <input type="checkbox" name="guest_email[]" value="{Email}" />
-                    {{DailogeState.sendConfirmatonMailTo}}
+                    {{DailogeState.guestEmail}}
                 </label>
                 <label class="checkbox" ng-if="DailogeState.bookerEmail">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': DailogeState.isBookerEmailSelected}"></span>

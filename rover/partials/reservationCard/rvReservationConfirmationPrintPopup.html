@@ -50,10 +50,10 @@
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-if="!hasEmails()" ng-model="ngData.sendConfirmatonMailTo"/>
                         
             <!-- If Emails are present -->
-            <label class="checkbox" ng-if="ngData.sendConfirmatonMailTo">
+            <label class="checkbox" ng-if="ngData.guestEmail">
                 <span class="icon-form icon-checkbox" ng-class="{'checked': ngData.isGuestEmailSelected}"></span>
                 <input type="checkbox" name="guest_email[]" value="{Email}" ng-model="ngData.isGuestEmailSelected"/>
-                {{ngData.sendConfirmatonMailTo}}
+                {{ngData.guestEmail}}
             </label>
             <label class="checkbox" ng-if="ngData.bookerEmail">
                 <span class="icon-form icon-checkbox" ng-class="{'checked': ngData.isBookerEmailSelected}"></span>
@@ -63,7 +63,7 @@
         </div>
                
         <div class="actions">
-            <button type="button" class="button" ng-class="{'grey' : shouldDisableSendEmailBtn(), 'blue': !shouldDisableSendEmailBtn() }" ng-if="sendConfirmationLetter" ng-click="sendConfirmationEmail()">
+            <button type="button" class="button" ng-class="{'grey' : shouldDisableSendConfirmationEmailBtn(), 'blue': !shouldDisableSendConfirmationEmailBtn() }" ng-if="sendConfirmationLetter" ng-click="sendConfirmationEmail()">
              <!-- Grey when no email, otherwise blue -->
                 <span class="icons icon-email"></span>
                 {{'SEND_EMAIL' | translate}}
