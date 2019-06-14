@@ -17,6 +17,25 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
     };
 
     /**
+     * CICO-64131 - migrate Settings to IFC
+     * make configuration values fetched from IFC available to exactonline controller for o_auth flow
+     * @return {undefined}
+     * @param params object, the configuration values fetched from IFCC
+     */
+    this.indexWithParams = function(params) {
+        var deferred = $q.defer();
+        var url = 'api/hotel_settings/exactonline';
+
+        ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    }
+
+    /**
      * to save the ExactOnLine configration values
      * @return {undefined}
      */
