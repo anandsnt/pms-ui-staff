@@ -5,7 +5,8 @@
             GÄSTEBLATT
         </td>
         <td class="short">
-            Lfd.-Nr:
+            Lfd.-Nr:<br />
+            <strong>{{ printRegCardData.reg_card_number }}</strong>
         </td>
         <td class="centered short" style="max-width: 150pt; width: 30%;">
             Hotel Bed & Breakfast GmbH
@@ -140,7 +141,8 @@
             </td>            
             <td>
                 Unterschrift des Meldepflichtigen/Signature<br />
-                <strong>{{ printRegCardData.translation.guest_signature }}</strong>
+                <span class="placeholder">{{ printRegCardData.translation.guest_signature }}</span>
+                <strong><img ng-src="{{printRegCardData.signature_url}}" width="50%"/></strong>
             </td>
         </tr>
         <tr>

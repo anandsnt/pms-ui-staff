@@ -289,26 +289,32 @@ var DiaryContent = React.createClass({
 		return React.DOM.div({
 			className: 'diary-container ' + ((state.viewport.hours === 12) ? 'hours-12' : 'hours-24') + /* (props.currentResizeItem*/ (state.edit.active ? ' editing' : '')
 		},
+            React.DOM.div(
+                {
+                    className: 'diary-resizable'
+                },
+                React.createElement( TogglePanel, {
+                    __toggleRows: self.__toggleRows
+                }),
+                React.createElement( RoomPanel, {
+                    refs: 'rooms',
+                    viewport: state.viewport,
+                    display: state.display,
+                    meta: state.meta,
+                    data: state.data,
+                    edit: state.edit,
+                    filter: state.filter,
+                    iscroll: state.iscroll,
+                    __onGridScroll: self.__onGridScroll,
+                    __onGridScrollEnd: self.__onGridScrollEnd
+                })
+            ),
 		React.createElement( UnassignedRoomPanel, {
 			edit: state.edit,
 			unassignedRoomList: props.unassignedRoomList,
 			iscroll: state.iscroll
 		}),
-		React.createElement( TogglePanel, {
-			__toggleRows: self.__toggleRows
-		}),
-		React.createElement( RoomPanel, {
-			refs: 'rooms',
-			viewport: state.viewport,
-			display: state.display,
-			meta: state.meta,
-			data: state.data,
-			edit: state.edit,
-			filter: state.filter,
-			iscroll: state.iscroll,
-			__onGridScroll: self.__onGridScroll,
-			__onGridScrollEnd: self.__onGridScrollEnd
-		}),
+
 		React.createElement( TimelinePanel, {
 			refs: 'timeline',
 			viewport: state.viewport,

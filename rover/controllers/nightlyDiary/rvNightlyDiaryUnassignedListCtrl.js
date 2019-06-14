@@ -12,76 +12,33 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
-        $scope.selectedItem = {};
+        $scope.diaryData.selectedUnassignedReservation = {};
         $scope.businessDate = $rootScope.businessDate;
 
-        // Handle validation popup close.
-        $scope.closeDialogAndRefresh = function() {
-            $scope.selectedItem = {};
-            if ($scope.diaryData.isAssignRoomViewActive) {
-                $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
-            }
-            ngDialog.close();
-        };
-
-        /**
-         *  Retrieve Available Rooms
-         *  @param {Object} - [selected reservation Item]
-         */
-        var retrieveAvailableRooms = function( selectedItem ) {
-            $scope.selectedItem = selectedItem;
-            var successCallBack = function(data) {
-                $scope.errorMessage = '';
-                var roomCount = data.rooms.length;
-
-                if ( roomCount === 0 ) {
-                    ngDialog.open({
-                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
-                        className: '',
-                        scope: $scope
-                    });
-                }
-                else {
-                    var newData = {
-                        availableRoomList: data.rooms,
-                        fromDate: selectedItem.arrival_date,
-                        nights: selectedItem.no_of_nights,
-                        reservationId: selectedItem.reservation_id,
-                        roomTypeId: selectedItem.room_type_id,
-                        type: 'ASSIGN_ROOM'
-                    };
-
-                    $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
-                }
-            },
-            failureCallBackMethod = function(errorMessage) {
-                $scope.errorMessage = errorMessage;
-                if (errorMessage[0] === "Suite Room Type Assigned") {
-                    ngDialog.open({
-                        template: '/assets/partials/nightlyDiary/rvNightlyDiarySuiteRooms.html',
-                        className: '',
-                        scope: $scope
-                    });
-                }
+        var selectUnassignedListItem = function(item) {
+            $scope.diaryData.isReservationSelected = true;
+            $scope.diaryData.selectedUnassignedReservation = item;
+            $scope.diaryData.roomAssignmentFilters = {};
+            var successCallBack = function(responce) {
+                $scope.diaryData.roomAssignmentFilters = responce.data;
+                $scope.diaryData.roomAssignmentFilters.roomTypeId = item.room_type_id.toString();
+                $scope.diaryData.roomAssignmentFilters.floorId = '';
+                $scope.diaryData.roomAssignmentFilters.roomFeatureIds = [];
+                $scope.$emit('APPLY_GUEST_PREFERENCE_FILTER_TOP');
             },
             postData = {
-                'reservation_id': selectedItem.reservation_id,
-                'selected_room_type_ids': [selectedItem.room_type_id],
-                'include_dueout': true,
-                'include_preassigned': true,
-                'is_from_diary': true
+                'reservation_id': item.reservation_id
             },
             options = {
                 params: postData,
-                successCallBack: successCallBack,
-                failureCallBack: failureCallBackMethod
+                successCallBack: successCallBack
             };
 
-            $scope.callAPI(RVNightlyDiarySrv.retrieveAvailableRooms, options );
-        };
-
-        var unSelectUnassignedListItem = function() {
-            $scope.selectedItem = {};
+            $scope.callAPI(RVNightlyDiarySrv.getPreferences, options );
+        },
+        unSelectUnassignedListItem = function() {
+            $scope.diaryData.selectedUnassignedReservation = {};
+            $scope.diaryData.isReservationSelected = false;
             $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
         };
 
@@ -92,11 +49,11 @@ angular.module('sntRover')
         $scope.clickedUnassignedItem = function( index ) {
             var item = $scope.diaryData.unassignedReservationList.reservations[index];
 
-            if (item.reservation_id === $scope.selectedItem.reservation_id) {
+            if (item.reservation_id === $scope.diaryData.selectedUnassignedReservation.reservation_id) {
                 unSelectUnassignedListItem();
             }
             else {
-                retrieveAvailableRooms(item);
+                selectUnassignedListItem(item);
             }
         };
 
@@ -106,13 +63,13 @@ angular.module('sntRover')
             // Update unassigned reservation list...
             unassignedReservationList = _.reject( unassignedReservationList,
                 function(obj) {
-                    return obj.reservation_id === $scope.selectedItem.reservation_id; 
+                    return obj.reservation_id === $scope.diaryData.selectedUnassignedReservation.reservation_id; 
                 }
             );
 
             $scope.diaryData.unassignedReservationList.reservations = [];
             $scope.diaryData.unassignedReservationList.reservations = unassignedReservationList;
-            $scope.selectedItem = {};
+            $scope.diaryData.selectedUnassignedReservation = {};
 
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
         });
@@ -135,7 +92,8 @@ angular.module('sntRover')
         };
 
         $scope.addListener('RESET_UNASSIGNED_LIST_SELECTION', function() {
-            $scope.selectedItem = {};
+            $scope.diaryData.selectedUnassignedReservation = {};
+            $scope.diaryData.isReservationSelected = false;
         });
 
         $scope.addListener('FETCH_UNASSIGNED_LIST_DATA', function() {
@@ -178,5 +136,8 @@ angular.module('sntRover')
                 unSelectUnassignedListItem();
             }
         };
-
+        // Show/Hide unassigned list based on screen width and filter type
+        $scope.isShowUnassignedList = function() {
+            return (screen.width >= 1600 || $scope.diaryData.rightFilter === 'UNASSIGNED_RESERVATION') ? 'visible' : '';
+        };
 }]);
