@@ -15,6 +15,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 		};
 		$scope.isEmptyObject = isEmptyObject;
 
+		var originalBookerEmail = (angular.copy($scope.reservationData.reservation_card)).booker_email;
+
 		$scope.hasPermissionToEditCommission = rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') &&
 				$scope.reservationData.reservation_card.reservation_status !== 'CHECKEDOUT' &&
 			    !$scope.reservationData.reservation_card.allotment_id &&
@@ -215,7 +217,29 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
         });
         $scope.$on('travelagentcardremoved', function() {
             $scope.reservationData.reservation_card.commission_details = {};
-        });
+		});
+		
+		/**
+		 * Update booker email for the given reservation
+		 */
+		$scope.updateBookerEmail = function () {
+			if ($scope.reservationData.reservation_card.booker_email === originalBookerEmail) {
+				return;
+			}
+
+			$scope.callAPI(RVReservationSummarySrv.updateBookerEmail, {
+				onSuccess: function () {
+					originalBookerEmail = $scope.reservationData.reservation_card.booker_email;
+				},
+				onFailure: function (errorMessage) {
+					$scope.errorMessage = errorMessage;
+				},
+				params: {
+					reservationId: $scope.reservationData.reservation_card.reservation_id,
+					booker_email: $scope.reservationData.reservation_card.booker_email
+				}
+			});
+		};
 
 	}
 ]);
