@@ -1362,6 +1362,11 @@ sntRover.controller('reservationActionsController', [
             $scope.DailogeState.isCancelled = true;
             $scope.DailogeState.failureMessage = '';
             $scope.DailogeState.successMessage = '';
+            $scope.DailogeState.sendConfirmatonMailTo = '';
+            $scope.DailogeState.bookerEmail = $scope.reservationData.reservation_card.booker_email;
+            $scope.DailogeState.isGuestEmailSelected = false;
+            $scope.DailogeState.isBookerEmailSelected = false;
+            $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
 
             var passData = {
                 "reservationId": $scope.reservationData.reservation_card.reservation_id,
