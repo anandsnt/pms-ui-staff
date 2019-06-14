@@ -98,7 +98,6 @@ angular.module('sntRover')
             var state;
             var hasCC = ccStore.get(item.charge_group_id);
             var sourceIndex = index + 1;
-            var delay = 500;
 
             $scope.fetchChargeCodes(index, 1);
             
@@ -111,8 +110,6 @@ angular.module('sntRover')
                 var item = $scope.cgEntries[index];
                 var pageNo = pageNo || 1;
 
-                var delay = 100;
-                var refreshDelay = 500;
                 var success = function(data) {
                     $scope.cgEntries[index].chargeCodesArray = data.charge_codes;
                     $scope.$emit('hideLoader');
@@ -143,7 +140,7 @@ angular.module('sntRover')
              $scope.pgEntries[index].isPaymentGroupActive = !$scope.pgEntries[index].isPaymentGroupActive;
 
              if ($scope.pgEntries[index].isPaymentGroupActive) {
-                var refreshDelay = 1000;
+
                 var success = function(data) {
                     ccStore.set($scope.pgEntries[index].charge_group_id, data);
                     $scope.$emit('hideLoader');
@@ -294,35 +291,6 @@ angular.module('sntRover')
             }
         }
 
-        /**
-         * toggleChargeCodes - toggle the visibility of a set of cc under a cg
-         *
-         * @param  {array} source      full array
-         * @param  {type} sourceIndex the index from the full array we need to look from
-         * @param  {type} active      show or hide
-         * @returns {object}             undefined
-         */
-        function toggleChargeCodes (source, sourceIndex, active) {
-            var deferred = $q.defer();
-
-            var process = function(source, index, active) {
-                var nextIndex = index + 1;
-
-                source[index].isChargeCodeActive = active;
-                if ( source[index].isChargeCodePagination ) {
-                    source[index].isEmpty = false;
-                }
-
-                if ( source[nextIndex] && source[nextIndex].isChargeCode ) {
-                    process(source, nextIndex, active);
-                } else {
-                    deferred.resolve();
-                }
-            };
-
-            process(source, sourceIndex, active);
-            return deferred.promise;
-        }
 
         /**
          * toggleAllChargeCodes - toggle all the cc available on the ui
@@ -341,40 +309,6 @@ angular.module('sntRover')
             }
         }
 
-
-        /**
-         * ledgerInit - bootstrap initial execution
-         *
-         * @param {array} results fetched data from API
-         * @returns {object} undefined
-         */
-        function ledgerInit (results) {
-            var i, j;
-
-            $scope.ledgerEntries = [];
-            for (i = 0, j = results.length; i < j; i++) {
-                if ( results[i].is_ledger ) {
-                    $scope.ledgerEntries.push( results[i] );
-                }
-            }
-        }
-
-        /**
-         * totalRevenueInit - bootstrap initial execution
-         *
-         * @param {array} results fetched data from API
-         * @returns {object} undefined
-         */
-        function totalRevenueInit (results) {
-            var i, j;
-
-            $scope.totalEntries = [];
-            for (i = 0, j = results.length; i < j; i++) {
-                if ( results[i].is_total_revenue ) {
-                    $scope.totalEntries.push( results[i] );
-                }
-            }
-        }
 
         /**
          * processStatic - a helper function that will suffix '%'
@@ -425,29 +359,6 @@ angular.module('sntRover')
             }
         }
 
-        /**
-         * chargeGroupInit - bootstrap initial execution
-         *
-         * @param {array} results fetched data from API
-         * @returns {object} undefined
-         */
-        function chargeGroupInit (results) {
-            $scope.cgEntries = prepareChargeGroupsCodes(results);
-            fillAllChargeCodes($scope.cgEntries);
-        }
-        /*
-         * Seperating payment group values
-         * @param {array} results fetched data from API
-         */
-        function paymentGroupInit (results) {
-            $scope.pgEntries = [];
-            $scope.pgEntries = _.where(results, { is_payment_group: true });
-            _.each($scope.pgEntries, function(paymentGroupItem) {
-                paymentGroupItem.isPaymentGroupActive = false;
-
-                paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);
-            });
-        }
         /*
          * Seperating balance
          * @param {array} results fetched data from API
@@ -504,10 +415,10 @@ angular.module('sntRover')
             $scope.comparisonReportResult = $scope.$parent.results;
             $scope.cgEntries = $scope.comparisonReportResult.charge_group_hash;
             $scope.pgEntries = $scope.comparisonReportResult.payment_hash;
-            angular.forEach($scope.cgEntries, function (item, key) {
+            angular.forEach($scope.cgEntries, function (item) {
                 item.isChargeGroupActive = false;
             });
-            angular.forEach($scope.pgEntries, function (item, key) {
+            angular.forEach($scope.pgEntries, function (item) {
                 item.isPaymentGroupActive = false;
             });
             balanceBrought($scope.comparisonReportResult.ledger_hash);
