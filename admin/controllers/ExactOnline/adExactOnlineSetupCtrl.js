@@ -49,17 +49,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
          * @return {undefined}
          */
         $scope.saveExactOnlineSetup = function() {
-            // var options = {
-            //     params: {
-            //         enabled: $scope.exactOnlineSetup.enabled,
-            //         journal_code: $scope.exactOnlineSetup.journal_code,
-            //         balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
-            //         endpoint: $scope.exactOnlineSetup.endpoint
-            //     },
-            //     successCallBack: successCallBackOfExactOnlineSetup
-            // };
-
-            // $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     integration: $scope.integration.toLowerCase(),
@@ -93,22 +82,21 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         };
 
         $scope.onURLChange = function() {
-            // change to $scope.config to update settings in IFC
-            // var options = {
-            //     params: {
-            //         enabled: $scope.exactOnlineSetup.enabled,
-            //         authorized: false,
-            //         journal_code: $scope.exactOnlineSetup.journal_code,
-            //         balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
-            //         endpoint: $scope.exactOnlineSetup.endpoint
-            //     },
-            //     successCallBack: function(exactOnlineSetupValues) {
-            //         $scope.exactOnlineSetup = exactOnlineSetupValues;
-            //     }
-            // };
-
-            // $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
-            console.log("currently under MIGRATION")
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
+                params: {
+                    settings: {
+                        enabled: $scope.config.enabled,
+                        authorized: false,
+                        journal_code: $scope.config.journal_code,
+                        balancing_account_code: $scope.config.balancing_account_code,
+                        endpoint: $scope.config.endpoint
+                    }
+                },
+                onSuccess: function () {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "SUCCESS: Endpoint Updated!";
+                }
+            })
         };
 
         /**
@@ -142,14 +130,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             $scope.callAPI(adExactOnlineSetupSrv.fetchBalancingAccounts, {
                 successCallBack: function(balancingAccounts) {
                     $scope.balancingAccounts = balancingAccounts;
-                }
-            });
-
-            $scope.callAPI(adExactOnlineSetupSrv.indexWithParams, {
-                params: $scope.config,
-                successCallBack: function(values) {
-                    //save values to $scope? how were the extra config/auth values handled before??
-                    console.log("done", values)
                 }
             });
 
