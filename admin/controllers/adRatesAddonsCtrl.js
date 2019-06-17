@@ -42,6 +42,9 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
             $scope.showZestWebSettings = addonUpsellSettings.zest_web_addon_upsell_availability;
             $scope.showZestStationSettings = addonUpsellSettings.zest_station_addon_upsell_availability;
+
+            $scope.allowanceRefundOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
         };
 
         $scope.init();
@@ -204,6 +207,8 @@ admin.controller('ADRatesAddonsCtrl', [
             // params to be sent to server
             $scope.singleAddon = {};
             $scope.singleAddon.activated = true;
+            $scope.singleAddon.permissible_charge_code_ids = [];
+            $scope.setAllowedChargeCodesForAllowance();
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
             if ($rootScope.isHourlyRatesEnabled) {
@@ -284,6 +289,9 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
 
                 $scope.singleAddon = data;
+
+                $scope.setAllowedChargeCodesForAllowance();
+
                 $scope.initialImage = data.addon_image;
                 // CICO-23575 - Disable all posting types apart from First Night for Hourly.
                 if ($rootScope.isHourlyRatesEnabled) {
@@ -366,7 +374,13 @@ admin.controller('ADRatesAddonsCtrl', [
                 is_sell_separate: $scope.singleAddon.is_sell_separate,
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
                 suffix_label: $scope.singleAddon.suffix_label,
-                notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase
+                notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase,
+                permissible_charge_code_ids: $scope.singleAddon.permissible_charge_code_ids,
+                overage_charge_code_id: $scope.singleAddon.overage_charge_code_id,
+                spillage_charge_code_id: $scope.singleAddon.spillage_charge_code_id,
+                is_allowance: $scope.singleAddon.is_allowance,
+                addon_value: $scope.singleAddon.addon_value,
+                spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage
             };
 
             if ($scope.isDefaulLanguageSelected()) {
@@ -502,6 +516,15 @@ admin.controller('ADRatesAddonsCtrl', [
             // CICO-21783 'BestSeller' and 'Rate Only' are mutually exclusive
             if ($scope.singleAddon.bestseller) {
                 $scope.singleAddon.rate_code_only = false;
+            }
+        };
+
+        $scope.allowanceChanged = function() {
+            if ($scope.singleAddon.is_allowance) {
+                $scope.singleAddon.charge_group_id = _.find($scope.chargeGroups, function(chargeGroup) {
+                    return chargeGroup.name === "Allowance";
+                }).id;
+                $scope.chargeGroupChage();
             }
         };
 
@@ -674,6 +697,22 @@ admin.controller('ADRatesAddonsCtrl', [
             }
             return styleClass;
 
+        };
+
+        $scope.linkAllowedChargeCodesForAllowance = function() {
+            $scope.singleAddon.permissible_charge_code_ids = _.pluck(_.filter($scope.chargeCodes, function (chargeCode) {
+                return chargeCode.ticked;
+            }), "id");
+        };
+
+        $scope.setAllowedChargeCodesForAllowance = function() {
+            $scope.chargeCodes.map(function(chargeCode) {
+              if ($scope.singleAddon.permissible_charge_code_ids.indexOf(parseInt(chargeCode.id)) > -1) {
+                chargeCode.ticked = true;
+              } else {
+                chargeCode.ticked = false;
+              }
+            });
         };
     }
 ]);
