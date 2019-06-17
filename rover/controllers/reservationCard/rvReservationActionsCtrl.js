@@ -1477,7 +1477,8 @@ sntRover.controller('reservationActionsController', [
                 
 						var requestData = {
 								room_no: $scope.reservationData.reservation_card.room_number,
-								hkstatus_id: hkStatus
+                                hkstatus_id: hkStatus,
+                                reservation_id: $scope.reservationData.reservation_card.reservation_id
 						};
 
 						var houseKeepingStatusUpdateSuccess = function() {
