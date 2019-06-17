@@ -272,12 +272,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.salesforceSetup', {
-        templateUrl: '/assets/partials/interfaces/Salesforce/adSalesforceSetup.html',
+        templateUrl: '/assets/partials/interfaces/salesforce/adSalesforce.html',
         controller: 'adSalesforceSetupCtrl',
         url: '/salesforce/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('salesforce');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('salesforce');
             }]
         }
     });
