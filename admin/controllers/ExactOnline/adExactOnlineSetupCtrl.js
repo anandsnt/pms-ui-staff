@@ -35,14 +35,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         };
 
         /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfExactOnlineSetup = function() {
-            $scope.goBackToPreviousState();
-        };
-
-        /**
          * when we clicked on save button
          * @return {undefined}
          */
