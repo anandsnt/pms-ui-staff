@@ -36,7 +36,7 @@
         <div class="entry full-width" ng-hide="hideCompanyCardInvoiceToggle">
             <label>Generate Invoice for</label>
             <div class="switch-button" ng-class="{'on': isCompanyCardInvoice, 'overlay': disableCompanyCardInvoice }">
-                <input type="checkbox" ng-model="isCompanyCardInvoice"/>
+                <input type="checkbox" ng-model="isCompanyCardInvoice" ng-change="setEmailAddress()" />
                 <label class="data-off">
                     <span class="value">Company</span>
                     <span class="switch-icon">Travel Agent</span>
@@ -50,7 +50,7 @@
 
         <div class="entry full-width">
             <label for="account-email">Email</label>
-            <input type="email" id="account-email" name="email" placeholder="Enter an Email"  ng-model="data.to_address"/>
+            <input type="email" id="account-email" name="email" placeholder="Enter an Email"  ng-model="data.mailto_address"/>
         </div>
 
         <!-- Show this part when languages are available  -->

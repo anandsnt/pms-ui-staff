@@ -15,6 +15,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         }
 
         $scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+            $scope.resetTime();
             var scannedDetails = zsCheckinSrv.getCurrentReservationIdDetails();
 
             scannedDetails.faceImage = response;
@@ -60,10 +61,12 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         };
 
         $scope.$on('START_FACIAL_RECOGNITION', function() {
+            $scope.resetTime();
             facialRecogntionActions();
         });
 
         $scope.$on('FINAL_RESULTS', function(evt, data) {
+            $scope.resetTime();
             if (data.expirationStatus === 'Expired') {
                 $scope.screenData.scanMode = 'ID_DATA_EXPIRED';
             } else if (!data.document_number) {
@@ -95,6 +98,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         $scope.screenData.facialRecognitionInProgress = false;
 
         $scope.$on('FR_ANALYSIS_STARTED', function() {
+            $scope.resetTime();
             $scope.screenData.facialRecognitionInProgress = true;
             $scope.$emit('showLoader');
         });
@@ -115,6 +119,7 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         });
 
         $scope.$on('IMAGE_UPDATED', function(evt, data) {
+            $scope.resetTime();
             if (data.isFrontSide) {
                 $scope.idScanData.selectedGuest.front_image_data = data.imageData;
             } else {
@@ -124,12 +129,14 @@ sntZestStation.controller('zsScanIdBaseCtrl', [
         });
 
         $scope.$on('IMAGE_ANALYSIS_FAILED', function(event, data) {
+            $scope.resetTime();
             var errorMessage = data && Array.isArray(data) ? data[0] + ' for the guest' : 'Failed for the guest';
 
             // recordIDScanActions('ID_IMAGE_PROCESSING', errorMessage);
         });
 
         $scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+            $scope.resetTime();
             $scope.screenData.scanMode = 'ANALYSING_ID_DATA';
         });
 

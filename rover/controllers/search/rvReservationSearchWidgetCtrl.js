@@ -720,6 +720,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
+
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();
@@ -731,6 +732,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			RVSearchSrv.toDate = $scope.toDate;
 
             $rootScope.goToReservationCalled = true;
+            $scope.$emit('GUESTCARDVISIBLE', false);
 			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 				id: reservationID,
 				confirmationId: confirmationID,

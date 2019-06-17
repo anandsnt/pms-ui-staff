@@ -77,7 +77,10 @@ module.exports = {
             'juliani': [themeCSSRoot + 'juliani.less'],
             'mooons': [themeCSSRoot + 'mooons.less'],
             'marmalade': [themeCSSRoot + 'marmalade.less'],
-            'bosville': [themeCSSRoot + 'bosville.less']
+            'bosville': [themeCSSRoot + 'bosville.less'],
+            'kinsley': [themeCSSRoot + 'kinsley.less'],
+            'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less'],
+            'asbury': [themeCSSRoot + 'asbury.less']
         };
     }
 };
