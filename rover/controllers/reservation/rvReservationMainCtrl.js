@@ -1085,6 +1085,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 data.room_types = [];
             }
 
+            if ($scope.reservationData.hasOwnProperty('has_reason')) {
+                data.has_reason = $scope.reservationData.has_reason;
+            }
+
             setRoomTypes(data, shouldWeIncludeRoomTypeArray); 
             setRoomInfo(data, roomIndex);  
 
