@@ -61,7 +61,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                     $scope.errorMessage = '';
                     $scope.successMessage = "SUCCESS: Settings Updated!";
                 }
-            })
+            });
         };
 
         $scope.runExport = function() {
@@ -82,6 +82,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         $scope.onURLChange = function() {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
+                    integration: $scope.integration.toLowerCase(),
                     settings: {
                         enabled: $scope.config.enabled,
                         authorized: false,
@@ -94,7 +95,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                     $scope.errorMessage = '';
                     $scope.successMessage = "SUCCESS: Endpoint Updated!";
                 }
-            })
+            });
         };
 
         /**
