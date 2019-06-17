@@ -132,6 +132,13 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
             $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, chargeCodesSuccessCallback, '', 'NONE');
 		};
 
+		$scope.isAllowanceType = function(allowanceType) {
+			allowanceChargeCodeType = _.find($scope.prefetchData.charge_code_types, {
+				name: "ALLOWANCE"
+	        });
+	        return allowanceChargeCodeType.value === allowanceType
+		};
+
 		/**
 		 * Callback for charge code type dropdown
 		 * See comments in CICO-33997
@@ -145,7 +152,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if (selectedType === '1') {
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
-			} else if (selectedType === '11') {
+			} else if ($scope.isAllowanceType(selectedType)) {
 				if (_.isUndefined($scope.chargeCodes)) {
 					fetchChargeCodesForAllowance();
 				}				

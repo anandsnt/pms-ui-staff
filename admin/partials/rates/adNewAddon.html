@@ -40,13 +40,6 @@
                         <input type="checkbox" ng-model="singleAddon.bestseller" ng-change="bestsellerChanged()">
                     </label>
                 </div>
-                <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
-                    <label class="checkbox">
-                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_allowance }"></span>
-                        <label>{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}</label>
-                        <input type="checkbox" ng-model="singleAddon.is_allowance" ng-change="allowanceChanged()">
-                    </label>
-                </div>
                 <div ng-if="::!isConnectedToPMS && !isHourlyRatesEnabled" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
@@ -105,6 +98,8 @@
 
             </fieldset>
             <fieldset class="holder right float">
+                <ad-toggle-button ng-if="::!isConnectedToPMS" div-class="float_left full-width" label="{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}" is-checked="singleAddon.is_allowance" on-update="allowanceChanged()"></ad-toggle-button>
+
                 <div ng-if="::!isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'FROM_DATE' | translate}}
                     </label>
@@ -136,7 +131,7 @@
                         </div>
                     </div>
 
-                    <div ng-if="!singleAddon.is_allowance" ng-hide="singleAddon.is_allowance" class="entry">
+                    <div ng-if="!singleAddon.is_allowance" class="entry">
                         <div class="entry full-width">
                             <label for="charge-group-id">
                                 {{'CHARGE_GROUP' | translate}}
@@ -165,10 +160,12 @@
                     </div>
 
                     <div class="entry" ng-if="singleAddon.is_allowance">
-                        <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+                        <ad-textbox styleclass="full-width" value="singleAddon.addon_value" name="value" id="value" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
                     </div>
 
-                    <ad-textbox ng-if="singleAddon.is_allowance" styleclass="entry" value="singleAddon.price" name="name" id="name" label="{{'ALLOWANCE_PRICE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_PRICE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+                    <div class="entry" ng-if="singleAddon.is_allowance">
+                        <ad-textbox ng-if="singleAddon.is_allowance" styleclass="full-width" value="singleAddon.amount" name="name" id="name" label="{{'ALLOWANCE_PRICE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_PRICE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+                    </div>
 
                     
 
