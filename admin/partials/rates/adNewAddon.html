@@ -58,7 +58,7 @@
 
                     <ad-toggle-button div-class="float_left" ng-if="singleAddon.is_reservation_only" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>
                 </div>
-                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry full-width radio-check">
+                <div ng-if="!isConnectedToPMS && !singleAddon.is_allowance" class="entry full-width radio-check">
                     <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count"></ad-textbox>
                 </div>
 
@@ -99,7 +99,8 @@
             </fieldset>
             <fieldset class="holder right float">
                 <ad-toggle-button ng-if="::!isConnectedToPMS && isAllowanceEnabled" div-class="float_left full-width" label="{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}" is-checked="singleAddon.is_allowance" on-update="allowanceChanged()"></ad-toggle-button>
-
+            </fieldset>
+            <fieldset class="holder right float">
                 <div ng-if="::!isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'FROM_DATE' | translate}}
                     </label>
@@ -214,7 +215,7 @@
                     <ad-toggle-button is-hide="!isConnectedToPMS || !singleAddon.is_sell_separate" div-class="float_left" label="{{'NOTIFY_STAFF_ON_GUEST_PURCHASE' | translate}}" is-checked="singleAddon.notify_staff_on_purchase"></ad-toggle-button>
                 </div>
 
-                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry radio-check">
+                <div ng-if="!isConnectedToPMS && !singleAddon.is_allowance" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
                         <label>{{'MANUAL_POSTING' | translate}}</label>
@@ -228,7 +229,7 @@
                         <input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
                     </label>
                 </div>
-                <div ng-if="::!isConnectedToPMS && !singleAddon.is_allowance" class="entry radio-check">
+                <div ng-if="!isConnectedToPMS && !singleAddon.is_allowance" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_common_area }"></span>
                         <label>{{'COMMON_AREA' | translate}}</label>

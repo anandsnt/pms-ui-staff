@@ -524,6 +524,7 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.singleAddon.charge_group_id = _.find($scope.chargeGroups, function(chargeGroup) {
                     return chargeGroup.name === "Allowance";
                 }).id;
+                $scope.chargeGroupChage();
             }
         };
 
