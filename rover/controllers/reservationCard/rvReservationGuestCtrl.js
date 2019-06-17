@@ -576,6 +576,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                         guestData.lastStay.date = item.last_stay.date;
                         guestData.lastStay.room = item.last_stay.room;
                         guestData.lastStay.roomType = item.last_stay.room_type;
+                        guestData.lastStay.confirmationNo = item.last_stay.confirm_no;
                         $scope.guestList.push(guestData);
                     });
 

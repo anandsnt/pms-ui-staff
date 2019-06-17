@@ -1,11 +1,24 @@
-angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', '$log',
-    function($http, $q, $window, $rootScope, $log) {
-
-    var webserviceErrorActions = function(url, deferred, errors, status) {
-        var urlStart = url.split('?')[0];
+/**
+ * sntBaseWebSrv
+ * @param {function} $http AngularJS HttpProvider
+ * @param {function} $q AngularJS qProvider
+ * @param {function} $window AngularJS WindowProvider
+ * @param {function} $rootScope RootScope
+ * @param {function} $log AngularJS logProvider
+ * @returns {undefined}
+ */
+function sntBaseWebSrv($http, $q, $window, $rootScope, $log) {
+    /**
+     * webserviceErrorActions
+     * @param {string} url endpoint
+     * @param {object} deferred promise
+     * @param {array} errors array of errors
+     * @param {number} status response code
+     * @returns {undefined}
+     */
+    var webserviceErrorActions = function (url, deferred, errors, status) {
         // please note the type of error expecting is array
         // so form error as array if you modifying it
-
 
         if (status === 406) { // 406- Network error
             deferred.reject(errors);
@@ -21,7 +34,6 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             } else {
                 $log.error('504 - Not handled!');
             }
-            return;
         } else if (status === 401) { // 401- Unauthorized
             // so lets redirect to login page
             $window.location.href = '/logout';
@@ -35,20 +47,20 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
         }
         // CICO-26779 : Handling 404 - Not found.
         else if (status === 404) {
-            console.warn("Found 404 Error : " + url);
+            $log.warn('Found 404 Error : ' + url);
         } else {
             deferred.reject(errors);
         }
     };
+
     /**
      *   A http requester method for calling webservice
-     *   @param {function} function of the method to call like $http.get, $http.put..
-     *   @param {string} webservice url
-     *   @param {Object} data for webservice
-     *   @return {promise}
+     *   @param {function} httpMethod function of the method to call like $http.get, $http.put..
+     *   @param {string} url webservice url
+     *   @param {Object} params data for webservice
+     *   @return {promise} promise
      */
-
-    this.callWebService = function(httpMethod, url, params, data) {
+    this.callWebService = function (httpMethod, url, params) {
         var deferred = $q.defer(),
             httpDict = {};
 
@@ -62,54 +74,35 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             if (angular.isDefined($rootScope.workstation_id)) {
                 httpDict.params.workstation_id = $rootScope.workstation_id;
             }
-        }
-        else if (httpMethod === 'POST' || httpMethod === 'PUT') {
+        } else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
             if (angular.isDefined($rootScope.workstation_id)) {
                 httpDict.data.workstation_id = $rootScope.workstation_id;
             }
         }
 
-        $http(httpDict).then(function(response) {
+        $http(httpDict).then(function (response) {
             deferred.resolve(response.data);
-        }, function(response) {
+        }, function (response) {
             webserviceErrorActions(url, deferred, response.data, response.status);
         });
         return deferred.promise;
     };
 
-    this.getJSON = function(url, params) {
-        return this.callWebService("GET", url, params);
-    };
-
-    this.putJSON = function(url, params) {
-        return this.callWebService("PUT", url, params);
-    };
-
-    this.postJSON = function(url, data) {
-        return this.callWebService("POST", url, data);
-    };
-
-    this.deleteJSON = function(url, params) {
-        return this.callWebService("DELETE", url, params);
-    };
-
-
-    /** ************************************************************************************/
 
     /**
      *   A http requester method for calling webservice
-     *   @param {function} function of the method to call like $http.get, $http.put..
-     *   @param {string} webservice url
-     *   @param {Object} data for webservice
-     *   @return {promise}
+     *   @param {function} httpMethod function of the method to call like $http.get, $http.put..
+     *   @param {string} url webservice url
+     *   @param {Object} params data for webservice
+     *   @return {promise} promise
      */
-    this.callWebServiceWithSpecialStatusHandling = function(httpMethod, url, params, data) {
+    this.callWebServiceWithSpecialStatusHandling = function (httpMethod, url, params) {
         var deferred = $q.defer(),
             httpDict = {};
 
-        if (typeof params === "undefined") {
-            params = "";
+        if (typeof params === 'undefined') {
+            params = '';
         }
 
         // Sample params {params:{fname: "fname", lname: "lname"}}
@@ -128,7 +121,7 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             }
         }
 
-        $http(httpDict).then(function(response) {
+        $http(httpDict).then(function (response) {
 
             var data = response.data,
                 status = response.status,
@@ -144,7 +137,7 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             } else {
                 deferred.resolve(data);
             }
-        }, function(response) {
+        }, function (response) {
             var errors = response.errors,
                 status = response.status;
 
@@ -154,12 +147,71 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
         return deferred.promise;
     };
 
-    this.postJSONWithSpecialStatusHandling = function(url, data) {
-        return this.callWebServiceWithSpecialStatusHandling("POST", url, data);
+    /**
+     * postJSONWithSpecialStatusHandling
+     * @param {string} url endpoint
+     * @param {object} data payload
+     * @returns {promise} promise   
+     */
+    this.postJSONWithSpecialStatusHandling = function (url, data) {
+        return this.callWebServiceWithSpecialStatusHandling('POST', url, data);
     };
 
-    this.getJSONWithSpecialStatusHandling = function(url, data) {
-        return this.callWebServiceWithSpecialStatusHandling("GET", url, data);
+    /**
+     * getJSONWithSpecialStatusHandling
+     * @param {string} url endpoint
+     * @param {object} data payload
+     * @returns {promise} promise   
+     */
+    this.getJSONWithSpecialStatusHandling = function (url, data) {
+        return this.callWebServiceWithSpecialStatusHandling('GET', url, data);
     };
 
-}]);
+    /**
+     * getJSON
+     * @param {string} url endpoint
+     * @param {object} params payload
+     * @returns {promise} promise   
+     */
+    this.getJSON = function (url, params) {
+        return this.callWebService('GET', url, params);
+    };
+
+    /**
+     * putJSON
+     * @param {string} url endpoint
+     * @param {object} params payload
+     * @returns {promise} promise   
+     */
+    this.putJSON = function (url, params) {
+        return this.callWebService('PUT', url, params);
+    };
+
+    /**
+     * postJSON
+     * @param {string} url endpoint
+     * @param {object} data payload
+     * @returns {promise} promise   
+     */
+    this.postJSON = function (url, data) {
+        return this.callWebService('POST', url, data);
+    };
+
+    /**
+     * deleteJSON
+     * @param {string} url endpoint
+     * @param {object} params payload
+     * @returns {promise} promise
+     */
+    this.deleteJSON = function (url, params) {
+        return this.callWebService('DELETE', url, params);
+    };
+
+}
+
+// TODO: Add a similar definition for adBaseWebSrvV2, and also relevant services used in GW & ZS thus reducing code duplication
+angular.module('sharedHttpInterceptor').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', '$log',
+    sntBaseWebSrv]);
+
+angular.module('sharedHttpInterceptor').service('sntBaseWebSrv', ['$http', '$q', '$window', '$rootScope', '$log',
+    sntBaseWebSrv]);

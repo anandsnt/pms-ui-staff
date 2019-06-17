@@ -16,6 +16,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.resetTime();
             $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
@@ -37,6 +38,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CI', 'user_selected');
 
             clearInterval($scope.activityTimer);
@@ -52,6 +54,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
@@ -62,6 +65,7 @@ sntZestStation.controller('zsHomeCtrl', [
         };
 
         $scope.startWalkinReservationFlow = function() {
+            $scope.resetTime();
             $state.go('zest_station.walkInReservation');
         };
 
@@ -234,37 +238,40 @@ sntZestStation.controller('zsHomeCtrl', [
             return selectableLanguages.length > 1;
         };
 
+        var widthForLanguageList = function() {
+            var width = 0;
+
+            angular.forEach($scope.languages, function(language, index) {
+                if (language.active) {
+                    var buttonWidth = 0;
+
+                    if (!language.foreign_label || language.name && language.foreign_label && language.name.length > language.foreign_label.length) {
+                        buttonWidth += language.icon ? (language.name.length * 14 + 15 + 32) : (language.name.length * 15 + 10);
+                    } else {
+                        buttonWidth += language.icon ? (language.foreign_label.length * 13 + 15 + 32) : (language.foreign_label.length * 14 + 10);
+                    }
+                    width += buttonWidth;
+                }
+            });
+            return width + "px;";
+        };
+
+        var resetWidthAndRefreshScroller = function() {
+            $scope.languageListWidth = widthForLanguageList();
+            $scope.refreshScroller('language-list');
+        };
+
         $scope.selectLanguage = function(language) {
-			// Reset idle timer to 0, on language selection, otherwise counter is still going
+            // Reset idle timer to 0, on language selection, otherwise counter is still going
             userInActivityTimeInHomeScreenInSeconds = 0;
             var langShortCode = language.code;
 
-                // keep track of lang short code, for editor to save / update tags when needed
+            // keep track of lang short code, for editor to save / update tags when needed
             $scope.languageCodeSelected(langShortCode, language.code);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
-        };
-
-        $scope.widthForLanguageList = function() {
-            var width = 0;
-            
-            angular.forEach($scope.languages, function(language) {
-                if (language.active) {
-                    if (language.label.length > language.foreign_label.length) {
-                        width += (language.label.length * 20) + 100;
-                    } else {
-                        width += (language.foreign_label.length * 20) + 100;
-                    }
-                }
-            });
-            return "" + width + "px;";
-        };
-
-        var refreshLanguageScroller = function() {
-            $timeout(function() {
-                $scope.refreshScroller('language-list');
-            }, 500);
+            resetWidthAndRefreshScroller();
         };
 
 		/**
@@ -328,11 +335,17 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.setScroller('language-list', {
                 scrollX: true,
                 scrollY: false,
+                preventDefault: {
+                    tagName: /^(BUTTON)$/
+                },
                 disablePointer: true, // important to disable the pointer events that causes the issues
                 disableTouch: false, // false if you want the slider to be usable with touch devices
                 disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
             });
-            refreshLanguageScroller();
+            $scope.languageListWidth = "0px";
+            $timeout(function() {
+                resetWidthAndRefreshScroller();
+            }, 100);
         })();
 
 

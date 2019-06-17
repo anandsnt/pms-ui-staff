@@ -5,7 +5,7 @@
         </button>
         <div class="modal-header">
             <figure class="guest-image">
-                <img  alt="">
+                <img  alt="" ng-src="{{'/assets/images/avatar-trans.png'}}">
                 <span class="search-indicator"></span>  
             </figure>
     
@@ -47,7 +47,7 @@
                                         <span ng-bind-html="guest.firstName | highlight:searchData.firstName:false"></span>
                                         <span ng-bind-html="guest.lastName | highlight:searchData.lastName:false"></span>
                                     </h2>
-                                    <span class="confirmation">Todo</span>
+                                    <span class="confirmation" ng-if="guest.lastStay.confirmationNo">{{guest.lastStay.confirmationNo}}</span>
                                     <span class="icons icon-location">{{guest.address.city}}, {{guest.address.state}}</span>
                                     <span class="icons icon-phone">{{ guest.phone }}</span>
                                     <span class="icons icon-email-grey">{{guest.email}}</span>
