@@ -176,6 +176,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.clickedOnCloseButton = function() {
             var currentState = $state.current.name;
 
+            $scope.resetTime();
             $scope.trackEvent(currentState, 'clicked_close_button');
             $scope.$broadcast('CLICKED_ON_CANCEL_BUTTON');
             $state.go('zest_station.home');
