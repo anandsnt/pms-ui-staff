@@ -1,24 +1,35 @@
-admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv) {
-
-        var interfaceIdentifier = 'salesforce';
+admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv',
+    function($scope, $rootScope, config, adInterfacesSrv) {
 
         $scope.sync = {
             start_date: null
         };
 
-        $scope.toggleEnabled = function() {
-            config.enabled = !config.enabled;
+        $scope.state = {
+            activeTab: "SETTING"
         };
 
-        $scope.saveInterfaceConfig = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+        $scope.interface = 'salesforce';
+
+        $scope.historical_data_sync_items = ['financials'];
+
+        $scope.toggleEnabled = function() {
+            $scope.config.enabled = !$scope.config.enabled;
+        };
+
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
+        }
+
+        $scope.saveSetup = function() {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
+                    integration: $scope.interface.toLowerCase(),
+                    settings: $scope.config
                 },
                 onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings Updated!';
                 }
             });
         };
@@ -26,7 +37,6 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'ad
         (function() {
             //    init
             $scope.config = config;
-            $scope.interface = interfaceIdentifier;
         })();
     }
 ]);
