@@ -41,10 +41,6 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		 * will save comment if something entered
 		 */
 		$scope.saveCommentAgainstRateChange = function(callback) {
-			// proceed only if something entered
-			if ($scope.adjustment_reason.trim() === "") {
-				return;
-			}
 			// forming the API params
 			var params = {},
 				onReservationNoteSuccess = function() {
@@ -77,6 +73,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				});
 
 				$scope.reservationData.rooms[index] = room;
+				$scope.reservationData.has_reason = $scope.adjustment_reason.trim() === "" ? false : true;
 
 				var reservationUpdateCallback = function() {
 					if ($scope.reservationData.isHourly && !$stateParams.id) {
@@ -97,8 +94,11 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 					$scope.closeDialog();
 				};
 
-				// comment box will appear in every box
-				$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+				if ($scope.adjustment_reason.trim() === "") {
+					reservationUpdateCallback();
+				} else {
+					$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+				}
 				
 			} else {
 				$scope.errorMessage = ['Please enter Adjustment Reason'];
