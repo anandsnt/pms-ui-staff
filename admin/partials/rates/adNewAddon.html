@@ -98,7 +98,7 @@
 
             </fieldset>
             <fieldset class="holder right float">
-                <ad-toggle-button ng-if="::!isConnectedToPMS" div-class="float_left full-width" label="{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}" is-checked="singleAddon.is_allowance" on-update="allowanceChanged()"></ad-toggle-button>
+                <ad-toggle-button ng-if="::!isConnectedToPMS && isAllowanceEnabled" div-class="float_left full-width" label="{{'CONFIGURE_ALLOWANCE_LABEL' | translate}}" is-checked="singleAddon.is_allowance" on-update="allowanceChanged()"></ad-toggle-button>
 
                 <div ng-if="::!isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'FROM_DATE' | translate}}
