@@ -9,7 +9,7 @@
                 <li ng-repeat="room in pageData.viewableItems" ng-class="{'selected': room.id === idScanData.selectedRoomType.id }" click-touch="selectRoom(room)">
                     <!-- Add class 'selected' when room is selected -->
                     <div class="upgrade-picture">
-                        <img ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
+                        <img ng-class="{'no-room-image': !room.room_type_image }" ng-src="{{ room.room_type_image ? room.room_type_image : '/assets/images/room_type_image_not_available.png' }}">
                     </div>
                     <div class="upgrade-content">
                         <h2>{{ room.roomTypeName }}</h2>
@@ -46,7 +46,7 @@
                     <div ng-include="icons.url.right_arrow_icon"></div>
                 </button>
             </div>
-            <button type="button" class="button transparent" click-touch="continueBooking()" ng-disabled="!idScanData.selectedRoomType.id" ng-class="{'disabled-button': !idScanData.selectedRoomType.id }" translate>
+            <button type="button" class="button" click-touch="continueBooking()" ng-disabled="!idScanData.selectedRoomType.id" ng-class="{'disabled-button': !idScanData.selectedRoomType.id, 'transparent': !idScanData.selectedRoomType.id }" translate>
                 CONTINUE</button> <!-- Remove attr 'disable' and class 'transparent' when room is selected -->
         </div>
     </div>

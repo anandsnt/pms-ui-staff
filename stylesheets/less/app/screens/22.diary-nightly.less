@@ -1599,16 +1599,65 @@
         z-index: 90;
 
         .filters-list {
-            .calc-height(100, 140);
+            .calc-height(100, 120);
 
             .wrapper {
-                padding-bottom: 10px;
+                padding: 20px 0;
             }
         }
 
+        .label {
+            color: @textColor;
+            font-weight: 600;
+            margin: 10px 0 0 0;
+            float: none;
+            display: table;
+        }
+
         .entry {
-            padding: 10px 0;
-            .box-shadow(0 1px 0 rgba(0,0,0,.15));
+            &:not(.join):not(:last-child) {
+                margin-bottom: 20px;
+            }
+        }
+
+        .checkbox,
+        .radio {
+            font-size: 14px;
+            margin-bottom: 0;
+
+            &.checked {
+                font-weight: 600;
+            }
+
+            &:not(:last-child) {
+                #border-radius > .bottom(0);
+            }
+        }
+
+        .select {
+
+            select {
+                text-transform: uppercase;
+            }
+            
+            &.with-label {
+
+                label {
+                    position: absolute;
+                    top: 0;
+                    left: 10px;
+                    font-size: 13px;
+                    color: @grey3;
+                    margin: 0;
+                }
+
+                select {
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 25px;
+                    padding: 15px 10px 0;
+                }
+            }
         }
 
         .multi-select {
@@ -1717,15 +1766,25 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            padding: 20px;
+            padding: 10px;
             background: #bfbfbf @darkTexture;
             z-index: 9;
             text-align: center;
-            .box-shadow(0 -1px 1px rgba(0,0,0,.15));
-            .size(80px, 100%);
+            .size(60px, 100%);
+            #flexbox > .parent(row wrap, center, center, '');
 
             .button {
-                width: 120px;
+                width: 100%;
+            }
+
+            &.dual-actions {
+                .button {
+                    .calc-width(50, 5);
+
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
+                }
             }
         }        
 

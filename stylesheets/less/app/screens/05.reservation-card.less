@@ -374,8 +374,6 @@
 
                 .wrapper {
                     padding-top: 10px;
-                    max-width: 430px;
-                    .calc-width(100, 360); 
                 }
 
                 .iScrollVerticalScrollbar {
@@ -389,17 +387,15 @@
                     font-size: 14px;
                     line-height: 20px;
                     text-transform: uppercase;
-                    margin: 10px 0 0 0;
+                    margin: 20px 0 0 0;
                     .float;
-
-                    &:not(:first-child) {
-                        margin-top: 15px;
-                    }
                 }
 
                 .entry {
-                    float:none;
                     position: relative;
+                    width: 100%;
+                    float: none;                    
+                    #flexbox > .parent(row wrap, '', center, '');
 
                     &:after {
                         content:'';
@@ -409,7 +405,6 @@
 
                     .guest-image {
                         margin-right: 10px;
-                        .pull-left;
                         .square(40px); 
 
                         .icons {
@@ -439,25 +434,13 @@
                     }
 
                     input {
+                        width: 140px;
                         margin-right: 10px;
-                        .calc-width(50, 30);
-                        .pull-left;
-
-                        &:nth-of-type(2) { margin-right: 0; }
                     }
 
                     .button {
-                        position: absolute;
-                        left: 100%;
-                        .size(40px, 110px);
-                        margin-left: 10px;
-                        padding-left: 40px;
+                        height: 40px;
                         .nowrap();
-
-                        &.red-text {
-                            width: 170px;
-                            text-align: left;
-                        }
 
                         .icon-identity-card {
                             background-position: 10px -10831px;
@@ -479,14 +462,20 @@
                             .square(40px);
                         }
 
-                        &.purple {
-                            width: 40px;
-                            left: calc(~"100% + 120px");
+                        &.white {
+                            padding-left: 40px;
+                            margin-right: 10px;
+                            width: 120px;
                         }
-                    }
+                        
+                        &.only-icon {
+                            width: 40px;
+                            margin-right: 10px;
+                        }
 
-                    &:last-child {
-                        margin-bottom: 0;
+                        &.guest-card {
+                            
+                        }
                     }
                 }
             }            
@@ -1266,6 +1255,7 @@
                             height: 50px;
                         }
 
+                        > input,
                         textarea {
                             grid-column: span 2;
                         }

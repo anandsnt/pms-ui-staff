@@ -35,6 +35,7 @@ module.exports = function(config) {
             '../shared/interceptors/**/*.js',
             '../shared/directives/**/*.js',
             '../shared/sntTransitionManager/**/*.js',
+            '../shared/sntFeatureToggles/**/*.js',
             '../shared/lib/js/Utils.js',
             '../shared/sntCanvasUtil/**/*.js',
             './rvApp.js',

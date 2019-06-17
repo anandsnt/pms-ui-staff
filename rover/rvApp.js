@@ -40,7 +40,8 @@ var sntRover = angular.module('sntRover', [
         'guestCardModule',
         'snt.transitionManager',
         'sntCurrencyFilter',
-        'sntCanvasUtil'
+        'sntCanvasUtil',
+        'sntFeatureToggles'
 	]);
 
 sntRover.config([
