@@ -19,7 +19,7 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'ad
 
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
-        }
+        };
 
         $scope.saveSetup = function() {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
