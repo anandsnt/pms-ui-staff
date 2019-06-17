@@ -1,0 +1,37 @@
+<!-- Arrival Date -->
+<div class="entry single-date" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
+    <div class="entry-date">
+        <label for="diary-nightly-arrival">Arrival Date</label>
+        <input id="diary-nightly-arrival" type="text" value="{Arrival Date}" readonly />
+        <span class="date arrival">{{diaryData.bookRoomViewFilter.fromDate | date: 'd MMM yyyy'}}</span>
+    </div>
+    <div class="entry-time select">
+        <label for="diary-nightly-arrival-time">Time</label>
+        <select id="diary-nightly-arrival-time">
+            <option value="" selected>--:--</option>
+            <optgroup label="{hour, e.g. '10 AM'}">
+                <option value="{hour}:00">{hour}:00</option>
+                <option value="{hour}:15">{hour}:15</option>
+                <option value="{hour}:30">{hour}:30</option>
+                <option value="{hour}:45">{hour}:45</option>
+            </optgroup>
+            ... repeat L123-L128 for every hour
+        </select>
+    </div>
+</div> 
+<div class="entry single-date" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
+    <div class="entry-date">
+        <label for="diary-nightly-departure">Departure Date</label>
+        <input id="diary-nightly-departure" type="text" value="{Departure Date}" readonly />
+        <span class="date departure">{{diaryData.bookRoomViewFilter.toDate | date: 'd MMM yyyy'}}</span>
+    </div>
+    <div class="entry-time select">
+        <label for="diary-nightly-departure-time">Time</label>
+        <select id="diary-nightly-departure-time">
+            ... same as L122-L129
+        </select>
+    </div>
+</div> 
+<div class="entry action" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
+    <button type="button" class="button green" ng-click="clickedFindRooms()">Find Rooms</button> <!-- Load available slots (green "Book" buttons only after this is clicked) -->
+</div> 

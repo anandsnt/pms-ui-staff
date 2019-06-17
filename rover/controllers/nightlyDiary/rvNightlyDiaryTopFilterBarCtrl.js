@@ -84,6 +84,19 @@ angular.module('sntRover')
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+
+            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
+            if ($scope.diaryData.fromDate === businessDateMinusOne) {
+                $scope.diaryData.bookRoomViewFilter.fromDate = $rootScope.businessDate;
+            }
+            else {
+                $scope.diaryData.bookRoomViewFilter.fromDate = $scope.diaryData.fromDate;
+            }
+            $scope.diaryData.bookRoomViewFilter.toDate = moment(tzIndependentDate($scope.diaryData.bookRoomViewFilter.fromDate)).add(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
         };
 
         // Show calendar popup.
@@ -142,7 +155,6 @@ angular.module('sntRover')
         // To toggle Booked/Available button.
         $scope.toggleBookedOrAvailable = function() {
             $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
-            $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
         };
 
         /*
@@ -295,6 +307,10 @@ angular.module('sntRover')
             }
 
             return isHideAvlToggle;
+        };
+
+        $scope.clickedFindRooms = function() {
+            $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
         };
 
         init();

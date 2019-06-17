@@ -100,6 +100,7 @@ angular.module('sntRover')
                         hideRoomType: true,
                         hideFloorList: true,
                         isBookRoomViewActive: false,
+                        bookRoomViewFilter: {},
                         availableSlotsForBookRooms: [],
                         isAssignRoomViewActive: false,
                         isMoveRoomViewActive: false,
