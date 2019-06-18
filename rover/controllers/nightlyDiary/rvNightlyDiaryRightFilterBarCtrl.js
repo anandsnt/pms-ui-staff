@@ -271,7 +271,6 @@ angular.module('sntRover')
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
 			$scope.clearGuestPreferenceFilter = function() {
-				$scope.diaryData.roomAssignmentFilters.roomTypeId = $scope.diaryData.selectedUnassignedReservation.room_type_id;
                 $scope.diaryData.roomAssignmentFilters.floorId = '';
                 clearRoomFeaturesList();
 			};
