@@ -21,8 +21,6 @@ angular.module('admin').controller('adEasiCtrl',
                 activeTab: "SETTING"
             };
 
-            $scope.historicalDataSyncItems = ['invoice'];
-
             $scope.saveSetup = function () {
                 $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
