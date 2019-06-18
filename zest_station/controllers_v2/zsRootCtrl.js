@@ -176,6 +176,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.clickedOnCloseButton = function() {
             var currentState = $state.current.name;
 
+            $scope.resetTime();
             $scope.trackEvent(currentState, 'clicked_close_button');
             $scope.$broadcast('CLICKED_ON_CANCEL_BUTTON');
             $state.go('zest_station.home');
@@ -806,7 +807,7 @@ sntZestStation.controller('zsRootCtrl', [
                         $scope.hideKeyboardIfUp();
 
                         $scope.trackEvent(currentState, 'timeout_to_home');
-
+                        $scope.resetTime();
                         $state.go('zest_station.home');
                         $scope.runDigestCycle();
                     }
@@ -1181,6 +1182,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.navToHome = function() {
             $timeout(function() {
+                $scope.resetTime();
                 $state.go('zest_station.home');
             }, 250); // use delay so user doesnt immediately click check-in/out icons on touchscreen devices
         };

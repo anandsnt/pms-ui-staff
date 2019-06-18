@@ -16,6 +16,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.resetTime();
             $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
@@ -37,6 +38,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CI', 'user_selected');
 
             clearInterval($scope.activityTimer);
@@ -52,6 +54,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
@@ -62,6 +65,7 @@ sntZestStation.controller('zsHomeCtrl', [
         };
 
         $scope.startWalkinReservationFlow = function() {
+            $scope.resetTime();
             $state.go('zest_station.walkInReservation');
         };
 
