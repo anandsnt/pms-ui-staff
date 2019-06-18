@@ -236,6 +236,24 @@
                 </div>
             </td>
         </tr>
+        <tr ng-repeat="item in printData.tax_breakdown_for_deposit.details">
+            <td class="text-align-left">{{ item.description }}</td>
+            <td>{{currencySymbol}}{{ item.gross_amount | number: precisonTwo }}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_gross_amount !== null">
+                    {{invoiceCurrencySymbol}}{{item.inv_gross_amount}}
+                </div>
+            </td>
+            <td>{{currencySymbol}}{{ item.net_amount | number: precisonTwo }}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_net_amount !== null">
+                    {{invoiceCurrencySymbol}}{{item.inv_net_amount}}
+                </div>
+            </td>
+            <td>{{currencySymbol}}{{ item.tax_amount | number: precisonTwo }}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && item.inv_tax_amount !== null">
+                    {{invoiceCurrencySymbol}}{{item.inv_tax_amount}}
+                </div>
+            </td>
+        </tr>
     </tbody>
     <tfoot>
         <tr>
