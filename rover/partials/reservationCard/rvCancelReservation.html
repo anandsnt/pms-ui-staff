@@ -70,18 +70,18 @@
                 <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-if="!hasEmails()" ng-model="DailogeState.sendConfirmatonMailTo"/>
                 <label class="checkbox" ng-if="DailogeState.guestEmail">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': DailogeState.isGuestEmailSelected}"></span>
-                    <input type="checkbox" name="guest_email[]" value="{Email}" />
+                    <input type="checkbox" name="guest_email[]" value="{Email}" ng-model="DailogeState.isGuestEmailSelected"/>
                     {{DailogeState.guestEmail}}
                 </label>
                 <label class="checkbox" ng-if="DailogeState.bookerEmail">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': DailogeState.isBookerEmailSelected}"></span>
-                    <input type="checkbox" name="guest_email[]" value="{Booker Email}"/>
+                    <input type="checkbox" name="guest_email[]" value="{Booker Email}" ng-model="DailogeState.isBookerEmailSelected"/>
                     {{DailogeState.bookerEmail}}
                 </label>
         </div>
 
         <div class="actions">
-            <button type="button" class="button" ng-if="sendCancellationLetter" ng-class="{'grey': shouldDisableSendCancellationEmailBtn(cancellationData.locale), 'blue': !shouldDisableSendCancellationEmailBtn(cancellationData.locale)}" ng-click="sendReservationCancellation(cancellationData.locale)">
+            <button type="button" class="button" ng-if="sendCancellationLetter" ng-class="{'grey': shouldDisableSendCancellationEmailBtn(), 'blue': !shouldDisableSendCancellationEmailBtn()}" ng-click="sendReservationCancellation(cancellationData.locale)">
                 <span class="icons icon-email"></span> 
                 {{'SEND_EMAIL' | translate}}
             </button>

@@ -12,6 +12,7 @@ angular.module('sntRover')
 
             $scope.cancelEditReservation = function() {
                 $scope.$emit('CANCEL_RESERVATION_EDITING');
+                $scope.diaryData.isReservationSelected = false;
             };
 
             // Handle validation popup close.
