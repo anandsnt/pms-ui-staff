@@ -236,7 +236,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope',
 				},
 				params: {
 					reservationId: $scope.reservationData.reservation_card.reservation_id,
-					booker_email: $scope.reservationData.reservation_card.booker_email
+					booker_email: $scope.reservationData.reservation_card.booker_email || ''
 				}
 			});
 		};
