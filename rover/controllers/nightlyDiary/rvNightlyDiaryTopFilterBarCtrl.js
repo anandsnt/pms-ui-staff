@@ -309,13 +309,16 @@ angular.module('sntRover')
             if ($scope.diaryData.showBookFilterPanel) {
                 $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
             }
+            // Toggle back to VIEW mode from BOOK.
+            if ($scope.diaryData.isBookRoomViewActive) {
+                $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
+                $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
+            }
         };
 
         $scope.clickedFindRooms = function() {
-
-            $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
+            $scope.diaryData.isBookRoomViewActive = true;
             $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
-
         };
 
         init();
