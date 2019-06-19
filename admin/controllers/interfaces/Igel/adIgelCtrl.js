@@ -12,7 +12,7 @@ admin.controller('adIgelCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingT
             $scope.config.enabled = !$scope.config.enabled;
         };
 
-        $scope.mappingTypes = ['charge_code', 'payment_code'];
+        $scope.mappingTypes = ['charge_code', 'payment_code_billing_account'];
 
         /**
          *

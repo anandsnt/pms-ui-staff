@@ -1070,22 +1070,25 @@
         }
 
         &.languages-list {
-            left: 60px;
-            right: 60px;
-            bottom: 0;
-            #calc > #width > .remove(100%, 120px);
+            left: 0;
+            right: 0;
+            bottom: 40px;
+            width: 100%;
             #flexbox > .flex();
             #flexbox > .parent(row wrap, center, center, '');
 
-             .selected-language {
+            .selected-language {
                 position: relative;
-                font-size: 20px;
+                font-size: 18px;
                 line-height: 64px;
                 text-transform: uppercase;
-                padding-left: 50px;
-                margin-bottom: 40px;
+                padding: 0 20px 0 50px;
+                margin: 40px 0 40px 20px;
+                height: 64px;
+                max-width: 200px;
+                overflow: hidden;
 
-                 .icons {
+                .icons {
                     position: absolute;
                     top: 50%;
                     left: 0;
@@ -1094,42 +1097,45 @@
                 }
             }
 
-             .button {
+            .button {
                 line-height: 1;
-                padding: 10px 40px 10px 80px;
+                padding: 10px 10px 10px 55px;
                 height: 64px;
 
-                 .label-main {
+                .icons {
+                    left: 10px;
+                }
+
+                .label-main {
                     line-height: 24px;
                     .show();
                 }
 
-                 .label-secondary {
+                .label-secondary {
                     font-size: 16px;
                     opacity: .7;
                     .show();
                 }
 
-                 &:not(:last-child) {
-                    margin-right: 20px;
+                &:not(:last-child) {
+                    margin-right: 10px;
                 }
             }
 
-             .scrollable {
+            .scrollable {
                 position: relative;
-                margin-left: 20px;
-                height: 104px;
-                padding-bottom: 40px;
+                height: 144px;
                 overflow: hidden;
-                max-width: calc(~'100% - 260px');
+                max-width: calc(~'100% - 220px');
             }
 
-             .wrapper {
+            .wrapper {
+                padding: 40px 0;
                 #flexbox > .flex();
                 #flexbox > .parent(row nowrap, '', '', '');
             }
 
-             .iScrollHorizontalScrollbar {
+            .iScrollHorizontalScrollbar {
                 position: absolute;
                 top: auto;
                 bottom: 20px;
@@ -1139,12 +1145,13 @@
                 z-index: 99;
             }
 
-             .iScrollIndicator {
+            .iScrollIndicator {
                 background: @brandColor;
                 height: 5px;
                 #rounded > .round();
             }
         }
+
     }
 
 /* Selectable list ***/
@@ -2871,4 +2878,8 @@ div.jumper-box-li {
 
 .no-room-image {
     max-width: 100%;
+}
+
+#actions.languages-list .button.no-flag {
+    padding: 10px 20px;
 }

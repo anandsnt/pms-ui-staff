@@ -21,9 +21,10 @@ angular.module('sntRover')
             $scope.diaryData.roomAssignmentFilters = {};
             var successCallBack = function(responce) {
                 $scope.diaryData.roomAssignmentFilters = responce.data;
-                $scope.diaryData.roomAssignmentFilters.roomTypeId = item.room_type_id.toString();
+                $scope.diaryData.roomAssignmentFilters.roomTypeId = item.room_type_id;
                 $scope.diaryData.roomAssignmentFilters.floorId = '';
                 $scope.diaryData.roomAssignmentFilters.roomFeatureIds = [];
+                $scope.diaryData.roomAssignmentFilters.type = 'ASSIGN_ROOM';
                 $scope.$emit('APPLY_GUEST_PREFERENCE_FILTER_TOP');
             },
             postData = {
