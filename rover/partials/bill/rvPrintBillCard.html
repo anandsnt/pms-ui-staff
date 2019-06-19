@@ -12,6 +12,9 @@
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <span ng-if="printData.advance_payment_number">
+                <strong >Deposit Number: </strong>{{printData.advance_payment_number}}<br/>
+            </span>
             <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
