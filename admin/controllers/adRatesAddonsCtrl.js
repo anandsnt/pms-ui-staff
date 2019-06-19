@@ -43,7 +43,7 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.showZestWebSettings = addonUpsellSettings.zest_web_addon_upsell_availability;
             $scope.showZestStationSettings = addonUpsellSettings.zest_station_addon_upsell_availability;
 
-            $scope.allowanceRefundOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+            $scope.allowanceRefundOptions = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
         };
 
@@ -289,6 +289,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 $scope.$emit('hideLoader');
 
                 $scope.singleAddon = data;
+
+                $scope.singleAddon.is_allowance = $scope.singleAddon.is_allowance && $rootScope.isAllowanceEnabled;
 
                 $scope.setAllowedChargeCodesForAllowance();
 

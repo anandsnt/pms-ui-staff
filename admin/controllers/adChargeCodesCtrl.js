@@ -136,6 +136,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var allowanceChargeCodeType = _.find($scope.prefetchData.charge_code_types, {
 				name: "ALLOWANCE"
 	        });
+	        
 	        return allowanceChargeCodeType.value === allowanceType;
 		};
 
