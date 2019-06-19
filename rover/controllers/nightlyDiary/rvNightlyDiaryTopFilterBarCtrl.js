@@ -305,11 +305,17 @@ angular.module('sntRover')
 
         // To toggle Booked/Available button.
         $scope.toggleBookedOrAvailable = function() {
-            $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
+            $scope.diaryData.showBookFilterPanel = !($scope.diaryData.showBookFilterPanel);
+            if ($scope.diaryData.showBookFilterPanel) {
+                $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+            }
         };
-        
+
         $scope.clickedFindRooms = function() {
+
+            $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
             $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
+
         };
 
         init();

@@ -45,8 +45,8 @@
     </div>
 
     <!-- Reservations or Available Slots View -->
-    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive, 'overlay': disableAvlToggle() }"> 
-        <div class="switch-button" ng-class="{'on' : !diaryData.isBookRoomViewActive }">
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'overlay': disableAvlToggle() }"> 
+        <div class="switch-button" ng-class="{'on' : !diaryData.showBookFilterPanel }">
             <input id="diary-availability" type="checkbox" checked />
             <label class="data-off">
                 <span class="value">View</span>
@@ -64,8 +64,8 @@
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryBookRoomFilter.html'" include-replace></div>
 
     <!-- Show / Hide Filters -->
-    <div class="entry filters" ng-class="{'show-one': diaryData.isBookRoomViewActive }">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.isBookRoomViewActive}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+    <div class="entry filters" ng-class="{'show-one': diaryData.showBookFilterPanel }">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showBookFilterPanel}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
             <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>

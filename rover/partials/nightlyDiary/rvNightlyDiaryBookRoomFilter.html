@@ -1,5 +1,5 @@
 <!-- Arrival Date -->
-<div class="entry single-date" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
+<div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }"> <!-- Remove class 'hidden' when L34 is not checked -->
     <div class="entry-date">
         <label for="diary-nightly-arrival">Arrival Date</label>
         <input id="diary-nightly-arrival" type="text" value="{Arrival Date}" readonly />
@@ -19,7 +19,7 @@
         </select>
     </div>
 </div> 
-<div class="entry single-date" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
+<div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }"> <!-- Remove class 'hidden' when L34 is not checked -->
     <div class="entry-date">
         <label for="diary-nightly-departure">Departure Date</label>
         <input id="diary-nightly-departure" type="text" value="{Departure Date}" readonly />
@@ -32,6 +32,6 @@
         </select>
     </div>
 </div> 
-<div class="entry action" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
+<div class="entry action" ng-class="{'hidden': !diaryData.showBookFilterPanel }"> <!-- Remove class 'hidden' when L34 is not checked -->
     <button type="button" class="button green" ng-click="clickedFindRooms()">Find Rooms</button> <!-- Load available slots (green "Book" buttons only after this is clicked) -->
 </div> 
