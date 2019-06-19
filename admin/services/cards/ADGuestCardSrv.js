@@ -22,6 +22,7 @@ function($q, ADBaseWebSrvV2) {
 			url = '/admin/guest_card_settings/save';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+			
 			deferred.resolve(data);
 		}, function(errorMessage) {
 			deferred.reject(errorMessage);
