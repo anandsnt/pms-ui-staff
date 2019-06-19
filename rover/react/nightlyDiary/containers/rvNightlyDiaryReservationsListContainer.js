@@ -4,13 +4,13 @@ let convertRowReadyToComponent = (roomsList, selectedRoomId, state) => {
 
     roomsList.map((room) => {
         room.roomClass = (room.id === selectedRoomId) ? 'grid-row highlighted' : 'grid-row';
-        if (state.isBookRoomViewActive) {
+        /*if (state.isBookRoomViewActive) {
             state.availableSlotsForBookRooms.forEach(function (item) {
                 if (item.room_id === room.id) {
                     room.availableSlotsForBookRooms = item.available_dates;
                 }
             });
-        }
+        }*/
     });
     return roomsList;
 };
@@ -22,6 +22,7 @@ const mapStateToNightlyDiaryReservationsListContainerProps = (state) => ({
     selectedRoomId: state.selectedRoomId,
     showAssignRooms: state.isAssignRoomViewActive,
     showMoveRooms: state.isMoveRoomViewActive,
+    showBookRooms: state.isBookRoomViewActive,
     state: state
 });
 
