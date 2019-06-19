@@ -207,7 +207,7 @@
         </tbody>
     </table>
 </div>
-<strong>Tax Breakdown</strong>
+<strong ng-if="printData.has_enabled_extended_tax_breakdown">Tax Breakdown</strong>
 <table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
     <thead style="display:table-row-group;">
         <tr>
@@ -259,8 +259,8 @@
     </tfoot>           
 </table>
 <br><br>
-<strong>Deposit VAT Breakdown</strong>
-<table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
+<strong ng-if="printData.tax_breakdown_for_deposit.details.length>0">Deposit VAT Breakdown</strong>
+<table class="invoice-details extended-tax-table" ng-if="printData.tax_breakdown_for_deposit.details.length>0">
     <thead style="display:table-row-group;">
         <tr>
             <th class="text-align-left" >{{printData.translation.tax_description}}</th>
@@ -292,19 +292,19 @@
     <tfoot>
         <tr>
             <td class="text-align-left" >{{printData.translation.total}}</td>
-            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_gross_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_gross_amount}}
+            <td>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_gross_amount | number: precisonTwo }}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.tax_breakdown_for_deposit.inv_total_gross_amount !== null">
+                    {{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_gross_amount}}
                 </div>
             </td>
-            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_net_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_net_amount}}
+            <td>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_net_amount | number: precisonTwo }}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.tax_breakdown_for_deposit.inv_total_net_amount !== null">
+                    {{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_net_amount}}
                 </div>
             </td>
-            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
-                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_tax_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_tax_amount}}
+            <td>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_tax_amount | number: precisonTwo }}
+                <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.tax_breakdown_for_deposit.inv_total_tax_amount !== null">
+                    {{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_tax_amount}}
                 </div>
             </td>
         </tr>
