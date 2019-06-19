@@ -235,7 +235,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 url = '/api/nightly_diary/availability';
 
             sntBaseWebSrv.postJSON(url, params).then(function(data) {
-                deferred.resolve(data.rooms);
+                deferred.resolve(data);
                 }, function(error) {
                 deferred.reject(error);
             });

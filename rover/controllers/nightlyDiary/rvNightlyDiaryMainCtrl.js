@@ -855,8 +855,10 @@ angular.module('sntRover')
 
                         let options = {
                             params: {
-                                start_date: $scope.diaryData.fromDate,
-                                no_of_days: $scope.diaryData.numberOfDays,
+                                start_date: $scope.diaryData.bookRoomViewFilter.fromDate,
+                                end_date: $scope.diaryData.bookRoomViewFilter.toDate,
+                                start_time: $scope.diaryData.bookRoomViewFilter.arrivalTime,
+                                end_time: $scope.diaryData.bookRoomViewFilter.departureTime,
                                 page: $scope.diaryData.paginationData.page,
                                 per_page: $scope.diaryData.paginationData.perPage,
                                 selected_room_type_ids: $scope.diaryData.selectedRoomTypes,
