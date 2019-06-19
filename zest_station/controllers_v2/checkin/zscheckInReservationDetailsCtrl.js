@@ -189,7 +189,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 });
             } else if (reservations.length > 0) {
                 $state.go('zest_station.selectReservationForCheckIn');
-            } else {
+            }
+            else if ($stateParams.previousState === 'WALKIN') {
+                $scope.navToHome();
+            } 
+            else {
                 $state.go('zest_station.checkInReservationSearch');
             }
             // what needs to be passed back to re-init search results
@@ -221,7 +225,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
                 fetchAddons();
-                checkIfRoomUpgradeIsPresent();
+                if ($scope.selectedReservation.skipRoomUpsell) {
+                    $scope.selectedReservation.is_upsell_available = false;
+                } else {
+                    checkIfRoomUpgradeIsPresent();
+                }
             } else {
                 setDisplayContentHeight(); // utils function
                 refreshScroller();

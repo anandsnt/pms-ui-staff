@@ -10,13 +10,13 @@
     </div>
 </div>
 <!-- six pay options -->
-<div class="entry" ng-show="showSixPaymentsModeSelection()">
+<div class="entry" ng-show="showEmvModeSelection()">
     <label for="card-source">Card Input</label>
     <div class="switch-button" ng-class="{'on': !payment.isManualEntryInsideIFrame}">
         <input name="card-source"
                style="width: 100%"
                id="card-source" value="card-source" type="checkbox" ng-model="payment.isManualEntryInsideIFrame"
-               ng-click="sixPayEntryOptionChanged()"/>
+               ng-click="toggleManualIframe()"/>
         <label class="data-off">
             <span class="value">CARD READER</span>
             <span class="switch-icon">Manual</span>

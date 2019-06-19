@@ -18,7 +18,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$log',
             '$q',
             'RVContactInfoSrv',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv) {
+            'RVRoomRatesSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -29,7 +30,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.setTitle(title);
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled;
 
 
         // setting the main header of the screen
@@ -770,7 +772,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             setCcTaAllotmentGroupDetails = function (data) {
                 data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company || $scope.reservationData.allotment.company ;
                 data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent || $scope.reservationData.allotment.travelAgent;
-                data.group_id = $scope.reservationData.group.id;
+                // CICO-65314 - Should pass the group id only when the user choose the group rate from the recommended tab
+                // If the user selects a rate from the rates tab, it should be created as a normal reservation
+                if (RVRoomRatesSrv.getRoomAndRateActiveTab() !== 'RATE') {
+                    data.group_id = $scope.reservationData.group.id;
+                }
+                
                 data.allotment_id = $scope.reservationData.allotment.id;
             },
             setDemoGraphicsInfo = function (data, demographicsData) {                 
@@ -1512,6 +1519,15 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.$emit('hideLoader');
                 };
 
+                // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
+                var extractHhMmAmPm = function( time ) {
+                    return {
+                        'ampm': time.split(' ')[1],
+                        'hh': time.split(' ')[0].split(':')[0],
+                        'mm': time.split(' ')[0].split(':')[1]
+                    };
+                };
+
                 var updateSuccess = function(data) {
                     // CICO-47877 - When there are multiple reservations, we have an array of responses
                     var responseData = data;
@@ -1613,6 +1629,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
 
                 } else {
+                    // CICO-63737 : Set Arrival, dep time while booking.
+                    if (!isNightlyHotel && $scope.reservationData.isFromNightlyDiary) {
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
+                        
+                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTimeObj['12']);
+                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTimeObj['12']);
+                    }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
                 // CICO-16959 We use a flag to indicate if the reservation is extended outside staydate range for the group, if it is a group reservation. Resetting this flag after passing the flag to the API.
@@ -1821,6 +1845,24 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
         };
 
+        // CICO-62890 : showValidationPopup
+        var showValidationPopup = function () {
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/reseravtionFromDiaryValidation.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        },
+        resetRoomDetailsIfInvalid = function () {
+            $scope.reservationData.tabs[0].room_id = null;
+            $scope.reservationData.rooms[0].room_id = null;
+
+            $scope.reservationData.tabs[0].roomName = null;
+            $scope.reservationData.rooms[0].roomName = null;
+        },
+        isShowPopopForRoomCount = false;
 
         $scope.onRoomCountChange = function(tabIndex) {
             var currentCount = parseInt($scope.reservationData.tabs[tabIndex].roomCount, 10),
@@ -1833,6 +1875,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }))),
                 totalCount = (lastIndex - firstIndex) + 1;
 
+            var isRoomDetailsInvalidated = $scope.reservationData.tabs[0].room_id === null;
+
+            // CICO-62890 : Fix issue on change room count.
+            if ($stateParams.fromState === 'NIGHTLY_DIARY' && currentCount > 1 && !isShowPopopForRoomCount && !isRoomDetailsInvalidated) {
+                $scope.validationMsg = 'Room number will be unassigned by changing the room count';
+                isShowPopopForRoomCount = true;
+                resetRoomDetailsIfInvalid();
+                showValidationPopup();
+            }
+
             if (totalCount < currentCount) {
                 var copy,
                     i;
@@ -1844,6 +1896,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             } else {
                 $scope.reservationData.rooms.splice(firstIndex, totalCount - currentCount);
             }
+            
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };

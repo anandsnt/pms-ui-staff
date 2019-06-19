@@ -8,11 +8,15 @@ sntZestStation.controller('zsHomeCtrl', [
     'languages',
     'zsGeneralSrv',
     'zestStationSettings',
-    function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings) {
+    '$timeout',
+    function($scope, $rootScope, $state, zsEventConstants, $translate, zsCheckinSrv, languages, zsGeneralSrv, zestStationSettings, $timeout) {
+
+        BaseCtrl.call(this, $scope);
 		/*
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.resetTime();
             $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
@@ -34,16 +38,23 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CI', 'user_selected');
 
             clearInterval($scope.activityTimer);
-            $state.go('zest_station.checkInReservationSearch');
+
+            if ($scope.isIpad && $scope.zestStationData.is_snt_id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
+                $state.go('zest_station.findReservationFromId');
+            } else {
+                $state.go('zest_station.checkInReservationSearch');
+            }
         };
 
 		/*
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.resetTime();
             $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
@@ -53,19 +64,25 @@ sntZestStation.controller('zsHomeCtrl', [
             }
         };
 
+        $scope.startWalkinReservationFlow = function() {
+            $scope.resetTime();
+            $state.go('zest_station.walkInReservation');
+        };
+
         $scope.language = {};
 
         var setToDefaultLanguage = function(checkIfDefaultLanguagIsSet) {
 			// assigning default language
             if ($scope.languages.length) {
-                var defaultLangName = zestStationSettings.zest_lang.default_language.toLowerCase(),
+                var defaultLangName = zestStationSettings.zest_lang.default_language,
                     defaultLanguage = _.findWhere($scope.languages, {
                         name: defaultLangName
                     });
 
-                if (defaultLanguage && defaultLanguage.name) {
-                    var languageConfig = zsGeneralSrv.languageValueMappingsForUI[defaultLanguage.name],
-                        langShortCode = languageConfig.code;
+                defaultLanguage = !defaultLangName && $scope.languages.length ? $scope.languages[0] : defaultLanguage;
+
+                if (defaultLanguage && defaultLanguage.code) {
+                    var langShortCode = defaultLanguage.code;
 
                     if ( $translate.use() === langShortCode && checkIfDefaultLanguagIsSet ) {
                             // do nothing, current language is already the default one or no default is selected from hotel admin
@@ -203,7 +220,7 @@ sntZestStation.controller('zsHomeCtrl', [
             for (var i in $scope.languages) {
                 
                 obj = $scope.languages[i];
-                if (obj.code === lang) {
+                if (obj.name === lang) {
                     $scope.selectLanguage(obj);
                     setTimeout(function() {
                         $scope.$digest();
@@ -212,17 +229,49 @@ sntZestStation.controller('zsHomeCtrl', [
                 }
             }
         });
-        $scope.selectLanguage = function(language) {
-			// Reset idle timer to 0, on language selection, otherwise counter is still going
-            userInActivityTimeInHomeScreenInSeconds = 0;
-            var languageConfig = zsGeneralSrv.languageValueMappingsForUI[language.name],
-                langShortCode = languageConfig.code;
 
-                // keep track of lang short code, for editor to save / update tags when needed
-            $scope.languageCodeSelected(langShortCode, language.name);
+        $scope.shouldShowLanguageSelection = function() {
+            var selectableLanguages = _.filter($scope.languages, function(language) {
+                return language.active;
+            });
+            
+            return selectableLanguages.length > 1;
+        };
+
+        var widthForLanguageList = function() {
+            var width = 0;
+
+            angular.forEach($scope.languages, function(language, index) {
+                if (language.active) {
+                    var buttonWidth = 0;
+
+                    if (!language.foreign_label || language.name && language.foreign_label && language.name.length > language.foreign_label.length) {
+                        buttonWidth += language.icon ? (language.name.length * 14 + 15 + 32) : (language.name.length * 15 + 10);
+                    } else {
+                        buttonWidth += language.icon ? (language.foreign_label.length * 13 + 15 + 32) : (language.foreign_label.length * 14 + 10);
+                    }
+                    width += buttonWidth;
+                }
+            });
+            return width + "px;";
+        };
+
+        var resetWidthAndRefreshScroller = function() {
+            $scope.languageListWidth = widthForLanguageList();
+            $scope.refreshScroller('language-list');
+        };
+
+        $scope.selectLanguage = function(language) {
+            // Reset idle timer to 0, on language selection, otherwise counter is still going
+            userInActivityTimeInHomeScreenInSeconds = 0;
+            var langShortCode = language.code;
+
+            // keep track of lang short code, for editor to save / update tags when needed
+            $scope.languageCodeSelected(langShortCode, language.code);
 
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
+            resetWidthAndRefreshScroller();
         };
 
 		/**
@@ -237,6 +286,7 @@ sntZestStation.controller('zsHomeCtrl', [
 			// flush out previous search results
             zsCheckinSrv.setSelectedCheckInReservation([]);
             zsCheckinSrv.setCheckInReservations([]);
+            zsCheckinSrv.setCurrentReservationIdDetails({});
 			// eject if any key card is inserted
             $scope.$emit('EJECT_KEYCARD');
 			// set this to false always on entering home screen
@@ -254,12 +304,6 @@ sntZestStation.controller('zsHomeCtrl', [
 
             $scope.languages = _.sortBy(listHavingValues, 'position').concat(nullList);
 
-            $scope.languages = $scope.languages.map(function(language) {
-				// merging, so that we can use more localized terms in UI
-                Object.assign(language, zsGeneralSrv.languageValueMappingsForUI[language.name]);
-                return language;
-            });
-
 			// assigning default language initially
             if (!zsGeneralSrv.isDefaultLanguageSet && $state.current.name === 'zest_station.home') {
                 setToDefaultLanguage();
@@ -271,6 +315,9 @@ sntZestStation.controller('zsHomeCtrl', [
                 });
 
                 $scope.selectedLanguage = activeLanguage;
+                if ($scope.selectedLanguage) {
+                    $scope.selectLanguage($scope.selectedLanguage);
+                }
             }
 
             $scope.resetHomeScreenTimer();
@@ -285,6 +332,20 @@ sntZestStation.controller('zsHomeCtrl', [
             } else {
                 $scope.setScreenIcon('bed');
             }
+            $scope.setScroller('language-list', {
+                scrollX: true,
+                scrollY: false,
+                preventDefault: {
+                    tagName: /^(BUTTON)$/
+                },
+                disablePointer: true, // important to disable the pointer events that causes the issues
+                disableTouch: false, // false if you want the slider to be usable with touch devices
+                disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
+            });
+            $scope.languageListWidth = "0px";
+            $timeout(function() {
+                resetWidthAndRefreshScroller();
+            }, 100);
         })();
 
 

@@ -7,6 +7,7 @@
         <span class="text">All fields are mandatory</span>
         <div class="scrollable" ng-iscroll="companyTravelAgentMandatory" ng-iscroll-delay="2000">
             <div class="wrapper">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <fieldset ng-if="shouldShowAddress || shouldShowCity || shouldShowPostalCode || shouldShowCountry || shouldShowPhone || shouldShowEmail || (contactInformation.mandatoryFields.e_invoice_mandatory.is_visible && shouldShowEInvoice)">
                     <legend ng-hide="account_type == 'TRAVELAGENT'" translate>COMAPNY_INFO</legend>
                     <legend ng-show="account_type == 'TRAVELAGENT'" translate>TA_INFO</legend>

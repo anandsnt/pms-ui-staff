@@ -40,9 +40,10 @@ angular.module('sntRover').controller('guestCardController', [
 
                 if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' ||
                     searchData.company.id !== null || searchData.travelAgent.id !== null || !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
-                    // based on search values from base screen
-                    // init respective search
-                    if ($scope.reservationDetails.guestCard.id === '') {
+                    // CICO-64219 - If guest card is already saved, then it should be opened upon navigation
+                    if ($scope.reservationData.guest && $scope.reservationData.guest.id) {
+                        $scope.openGuestCard(); 
+                    } else if ($scope.reservationDetails.guestCard.id === '') {
                         if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '') {
                             $scope.openGuestCard();
                             $scope.searchGuest();
@@ -502,7 +503,7 @@ angular.module('sntRover').controller('guestCardController', [
                 cls += " open";
             }
 
-            if ($rootScope.isHourlyRateOn) {
+            if ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') {
                 cls += " hourly";
             }
 

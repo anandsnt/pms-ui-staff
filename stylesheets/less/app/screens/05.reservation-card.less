@@ -632,7 +632,7 @@
         .button { 
             padding: 0;
             line-height: 50px;
-            margin-bottom: 10px;
+            width: 100%;
             .show(); 
 
             &.green,
@@ -671,7 +671,7 @@
                 &:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
             }
 
-            &:not(last-child) { 
+            &:not(:last-child) { 
                 margin-bottom: 10px; 
             }
         }
@@ -681,10 +681,14 @@
                 position: absolute;
                 bottom: 20px;
                 left: 0;
+
+                &:not(:last-child) { 
+                    margin-bottom: 0; 
+                }
                 
-                &:nth-last-child(2) { bottom: 70px; }
-                &:nth-last-child(3) { bottom: 130px; }
-                &:nth-last-child(4) { bottom: 190px; }
+                &:nth-last-child(2) { bottom: 80px; }
+                &:nth-last-child(3) { bottom: 140px; }
+                &:nth-last-child(4) { bottom: 200px; }
             }
         }
     }

@@ -54,7 +54,8 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			var failureCallback = function(errorMessage) {
 				$scope.$emit("hideLoader");
 				$scope.errorMessage = errorMessage;
-				if (errorMessage[0] === 'Please complete required AR Account Information') {
+				if (errorMessage[0] === 'Please complete required AR Account Information' 
+					|| errorMessage[0] === 'Please provide payment due days since it is mandatory') {
 					$scope.$emit("MANDATORY_CHECK_FAILED", $scope.errorMessage);
 
 				} 
@@ -152,6 +153,7 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 
 		$scope.$on("UPDATE_AR_ACCOUNT_DETAILS", function(e, data) {
 			$scope.arAccountDetails = data;
+			$scope.arAccountDetails.payment_due_days = (data.payment_due_days === null ) ? "" : data.payment_due_days;
 		});
 
 		/**

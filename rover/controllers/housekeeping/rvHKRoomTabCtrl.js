@@ -194,7 +194,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
          */
         $scope.shouldShowTimeSelector = function() {
             // as per CICO-11840 we will show this for hourly hotels only
-            return $rootScope.isHourlyRateOn && !$scope.inService;
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !$scope.inService;
         };
         /*
          * @param  {Date}
@@ -291,7 +291,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
                 room_id: $scope.roomDetails.id
             };
 
-            if ($rootScope.isHourlyRateOn) {
+            if ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') {
                 params.begin_time = $scope.updateService.begin_time;
                 params.end_time = $scope.updateService.end_time;
             }
@@ -473,7 +473,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
             $scope.ooOsTitle = item.description;
 
-            $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].reason_id;
+            $scope.updateService.reason_id = dateHash[$scope.updateService.selected_date].maintenance_reason_id;
             $scope.updateService.comment = dateHash[$scope.updateService.selected_date].comments;
 
             if ($scope.updateService.room_service_status_id !== $_inServiceId) {

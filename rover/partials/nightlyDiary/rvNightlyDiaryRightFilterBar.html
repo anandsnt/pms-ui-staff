@@ -1,4 +1,4 @@
-<div class="diary-nightly-sidebar diary-nightly-filters" ng-controller="rvNightlyDiaryRightFilterBarController" ng-class = "{'visible' : diaryData.showFilterPanel}">
+<div id="diary-nightly-filters" class="diary-nightly-sidebar diary-nightly-filters" ng-controller="rvNightlyDiaryRightFilterBarController" ng-class="(diaryData.innerWidth >= 1600 || diaryData.rightFilter == 'RESERVATION_FILTER')? 'visible' : '' ">
     <div class="sidebar-header">
         <h2>Filters</h2>
         <p>Select filters and press "apply"</p>

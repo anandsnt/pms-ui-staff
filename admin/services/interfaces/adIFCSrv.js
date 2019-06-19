@@ -15,15 +15,26 @@ admin.service('adIFCSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         };
 
         /**
-         * Make a delete CRUD proxy call to IFC integration
+         * Make a DELETE proxy call to IFC
+         * @param {String} namespace - remote call namespace
+         * @param {String} method - remote call method
+         * @param {Object} params - Data sent to service
+         * @return {deferred.promise|{then, catch, finally}}
+         */
+        this.delete = function(namespace, method, params) {
+          return ADBaseWebSrvV2.deleteJSON('ifc/proxy/' + namespace + '/' + method, params);
+        };
+
+        /**
+         * Make a destroy CRUD proxy call to IFC integration
          * @param {String} integration - Name of integration
          * @param {String} namespace - Remote call namespace
          * @param {String} id - Identifier of remote object
          * @param {Object} data - Data sent to service
          * @return {deferred.promise|{then, catch, finally}}
          */
-        this.delete = function(integration, namespace, id, data) {
-            return ADBaseWebSrvV2.deleteJSON('ifc/' + integration + '/' + namespace + '/' + id, data);
+        this.destroy = function(integration, namespace, id, data) {
+          return ADBaseWebSrvV2.deleteJSON('ifc/' + integration + '/' + namespace + '/' + id, data);
         };
 
         /**

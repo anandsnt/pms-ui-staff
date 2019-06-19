@@ -120,6 +120,13 @@
                 <ad-toggle-button is-checked="zestSettings.add_loyalty_pgms" label="{{'ADD_LOYALTY_PGMS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
+            <fieldset class="holder left" ng-if="zestSettings.is_snt_id_scan_enabled">
+                <div class="form-title full-width">
+                    <h3><span translate>SCAN_ID_TO_FIND_RESERVATION </span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.scan_id_to_find_reservations" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

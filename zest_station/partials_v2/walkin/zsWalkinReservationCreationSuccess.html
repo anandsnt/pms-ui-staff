@@ -1,0 +1,32 @@
+<section id="main" role="main" class="centered" click-touch='resetTime()'>
+    <!-- reservation search failed -->
+    <div id="content">
+        <h1 translate>
+            WALKIN_RESERVATION_CREATION_SUCCCESS
+        </h1>
+        <h3 class="nocaps">
+            {{'WALKIN_RESERVATION_CREATION_SUCCCESS_SUB'| translate}}&nbsp;{{newReservation.confirm_no}}
+        </h3>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='navToHome()'>
+                        <div ng-include="icons.url.checkmark"></div>
+                    </button>
+                    {{ 'RETURN_TO_HOME' | translate }}    
+                </li>
+                <li class="break">
+                    <span>
+                        {{ 'OR_TEXT' | translate }}
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='proceedToCheckin()'>
+                        <div ng-include="icons.url.checkin"></div>
+                    </button>
+                   {{ 'PROCEED_WITH_CHECKIN' | translate }}
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

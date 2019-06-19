@@ -9,6 +9,16 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.checkInReservations = [];
+        this.currentReservationIdDetails = {};
+
+        this.setCurrentReservationIdDetails = function(data) {
+            that.currentReservationIdDetails = data;
+        };
+
+        this.getCurrentReservationIdDetails = function() {
+            return that.currentReservationIdDetails;
+        };
+
         this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
             that.checkInReservations = data;
@@ -608,6 +618,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/staff/guest_cards/' + params.guest_id + '.json';
             
             return zsBaseWebSrv.putJSON(url, params);
+        };
+
+        this.getRoomUpsellSettings = function() {
+            var url = '/admin/room_upsells/room_upsell_options.json';
+
+            return zsBaseWebSrv2.getJSON(url);
         };
     }
 ]);

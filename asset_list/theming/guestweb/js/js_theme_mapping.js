@@ -108,6 +108,7 @@ module.exports = {
             // 'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_snt': [ themeJsRoot + 'app_router_new_common.js'],
             'guestweb_snt_v2': [ themeJsRoot + 'app_router_new_common.js'],
+            'guestweb_snt_v3': [ themeJsRoot + 'app_router_new_common.js'],
             // 'guestweb_silver_stone': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_koa_kea': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_chicago': [ themeJsRoot + 'app_router_common.js'],
@@ -129,7 +130,8 @@ module.exports = {
             'guestweb_ihg': [ themeJsRoot + 'app_router_ihg.js'],
             'guestweb_liason_dc': [ themeJsRoot + 'app_router_liason.js'],
             'guestweb_maison_de_la_luz': [ themeJsRoot + 'app_router_maison_de_la_luz.js'],
-            'guestweb_qbic_hotels': [ themeJsRoot + 'app_router_qbic.js']
+            'guestweb_qbic_hotels': [ themeJsRoot + 'app_router_qbic.js'],
+            'guestweb_bunk_hotels': [ themeJsRoot + 'app_router_bunk.js']
   //           'guestweb_circle_fairfield': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_foundation_hotel_detroit': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_hotel_royal': [ themeJsRoot + 'app_router_common.js'],
