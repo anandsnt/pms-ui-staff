@@ -56,10 +56,10 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         };
 
         this.timeSlots = [
-            {value: '00:00 AM', label: '00:00 AM', fullDayValue: 0 },
-            {value: '00:15 AM', label: '00:15 AM', fullDayValue: 15 },
-            {value: '00:30 AM', label: '00:30 AM', fullDayValue: 30  },
-            {value: '00:45 AM', label: '00:45 AM', fullDayValue: 45 },
+            {value: '00:00 AM', label: '12:00 AM', fullDayValue: 0 },
+            {value: '00:15 AM', label: '12:15 AM', fullDayValue: 15 },
+            {value: '00:30 AM', label: '12:30 AM', fullDayValue: 30  },
+            {value: '00:45 AM', label: '12:45 AM', fullDayValue: 45 },
             {value: '1:00 AM', label: '01:00 AM', fullDayValue: 100 },
             {value: '1:15 AM', label: '01:15 AM', fullDayValue: 115 },
             {value: '1:30 AM', label: '01:30 AM', fullDayValue: 130 },
