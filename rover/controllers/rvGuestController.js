@@ -1978,8 +1978,7 @@ angular.module('sntRover').controller('guestCardController', [
             $scope.viewState.pendingRemoval.cardType = "";
             $scope.initGuestCard({
                 id: id
-            });
-            $scope.closeGuestCard();
+            });            
         };
 
         $scope.$on("updateGuestEmail", function(e) {
