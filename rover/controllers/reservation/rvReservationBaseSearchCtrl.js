@@ -246,6 +246,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             timeToValue,
             valueToTime,
             setDefaultCheckinCheckoutTime = function() {
+            $scope.timeSlots = RVReservationBaseSearchSrv.timeSlots;
                 $scope.fullCheckinTime = '9:00 AM';
                 $scope.fullCheckoutTime = '5:00 PM';
                 $scope.reservationData.checkinTime = {
@@ -428,6 +429,24 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.$digest();
             }
         };
+        $scope.showCheckinTimeslot = function( time ) {
+            var selectedCheckoutSlot = _.find($scope.timeSlots, function(timeSlot) { return timeSlot.value === $scope.fullCheckoutTime; });
+
+            if ( selectedCheckoutSlot.fullDayValue <= time.fullDayValue || time.fullDayValue === 0 ) {
+                return false;
+            } else {
+                return true;
+            }
+        };
+        $scope.showCheckoutTimeslot = function( time ) {
+            var selectedCheckinSlot = _.find($scope.timeSlots, function(timeSlot){ return timeSlot.value === $scope.fullCheckinTime; });
+
+            if ( selectedCheckinSlot.fullDayValue  >= time.fullDayValue || time.fullDayValue === 2400 ) {
+                return false;
+            } else {
+                return true;
+            }
+        };
 
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
@@ -437,20 +456,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
             $scope.reservationData.numNights = dayDiff;
-
-            // // to make sure that the number of
-            // // dates the guest stays must not be less than ZERO [In order to handle day reservations!]
-            // if (dayDiff < 0) {
-            //
-            //     // user tried set the departure date
-            //     // before the arriaval date
-            //     $scope.reservationData.numNights = 1;
-            //
-            //     // need delay
-            //     $timeout($scope.setDepartureDate, 1);
-            // } else {
-            //     $scope.reservationData.numNights = dayDiff;
-            // }
 
         };
 
