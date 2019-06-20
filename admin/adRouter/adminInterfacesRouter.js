@@ -480,12 +480,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.sitemindersSetup', {
-        templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 2,
-        interface_id: 'SITEMINDER',
-        simple_name: 'Siteminder',
-        url: '/siteminderSetup'
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'siteminder';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('siteminder');
+            }]
+        }
     });
 
     $stateProvider.state('admin.givexSetup', {
