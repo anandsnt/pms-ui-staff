@@ -254,7 +254,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     hh: "09",
                     mm: "00"
                 };
-                $scope.reservationData.checkinTime = {
+                $scope.reservationData.checkoutTime = {
                     ampm: "PM",
                     hh: "05",
                     mm: "00"
