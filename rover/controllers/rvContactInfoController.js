@@ -156,7 +156,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 $scope.newGuestAdded(data.id);
                 if ($scope.errorMessage === '') {
                    $scope.closeGuestCard();
-                    // $scope
                 } 
 
                 // CICO-51598 - Should allow the guest card to delete immediately after creation
