@@ -15,10 +15,11 @@ const NightlyDiaryBookRoomComponent = createClass({
         return (
             <div style={this.getStyles()}
                 className="reservation unassigned"
-                onClick={() => this.props.bookRoom(this.props.roomDetails)}
+                onClick={() => this.props.bookRoom(this.props.roomDetails, this.props.roomTypeDetails, this.props.type)}
             >
                 <div className="reservation-data">
-                    <span className="name">BOOK</span>
+                    {this.props.type}
+                    <span className="name">{this.props.roomDetails.room_no}</span>
                 </div>
             </div>
         );

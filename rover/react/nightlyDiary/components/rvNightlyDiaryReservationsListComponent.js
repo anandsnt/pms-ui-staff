@@ -1,22 +1,30 @@
 const isRoomAvailable = (roomId, state, type) => {
-    console.log(state);
+
     let unAssignedRoomList = [];
+    let roomTypeList = [];
+    let flagforAvailable = false;
+    let roomDetails = {};
+    let roomTypeDetails = {};
+    let bookType = 'BOOK';
+    let diaryMode = state.diaryMode;
+
+    console.log('diaryMode', diaryMode);
 
     if (type === 'BOOK') {
         unAssignedRoomList = state.availableSlotsForBookRooms.rooms;
+        roomTypeList = state.availableSlotsForBookRooms.room_types;
     }
     else if (type === 'ASSIGN' || type === 'MOVE') {
         unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
     }
-    let flagforAvailable = false;
-    let roomDetails = {};
-
+    
     unAssignedRoomList.forEach(function (item) {
         if (item.room_id === roomId) {
             flagforAvailable = true;
             roomDetails = item;
         }
     });
+
     if (flagforAvailable && type === 'ASSIGN') {
         return (
             <NightlyDiaryAssignRoomContainer roomDetails={roomDetails} />
@@ -28,8 +36,27 @@ const isRoomAvailable = (roomId, state, type) => {
         );
     }
     if (flagforAvailable && type === 'BOOK') {
+
+        roomTypeList.forEach(function (item) {
+            if (item.room_type_id === roomDetails.room_type_id) {
+                roomTypeDetails = item;
+            }
+        });
+
+        if (diaryMode === 'FULL') {
+            bookType = 'BOOK';
+        }
+        else if (diaryMode === 'NIGHTLY' || diaryMode === 'DAYUSE') {
+
+            if (roomTypeDetails.availability > 0) {
+                bookType = 'BOOK';
+            }
+            /* TODO CICO-65955 : Overbook logic will go here */
+            /* bookType = 'OVERBOOK'; */
+        }
+        
         return (
-            <NightlyDiaryBookRoomContainer roomDetails={roomDetails} />
+            <NightlyDiaryBookRoomContainer roomDetails={roomDetails} roomTypeDetails={roomTypeDetails} type={bookType}/>
         );
     }
 
