@@ -21,6 +21,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
         var url = 'api/hotel_settings/exactonline/gl_accounts';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            console.log("fetching balancing accounts, ", data)
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -38,6 +39,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
         var url = 'api/hotel_settings/exactonline/journals';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            console.log("fetching journals, ", data)    
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -56,6 +58,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
         var url = '/api/hotel_settings/exactonline/endpoints';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            console.log("fetchcing endpoints, ", data)
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);

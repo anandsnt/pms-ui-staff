@@ -1,7 +1,7 @@
 admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints', 'config', 'adInterfacesSrv',
     function($scope, $rootScope, adExactOnlineSetupSrv, dateFilter, endPoints, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
-
+        console.log("config from router", config)
         $scope.exportOptions = {
             date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
         };
@@ -72,18 +72,14 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         };
 
         $scope.onURLChange = function() {
+            console.log("before api call, ", $scope.config)
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     integration: $scope.integration.toLowerCase(),
-                    settings: {
-                        enabled: $scope.config.enabled,
-                        authorized: false,
-                        journal_code: $scope.config.journal_code,
-                        balancing_account_code: $scope.config.balancing_account_code,
-                        endpoint: $scope.config.endpoint
-                    }
+                    settings: $scope.config
                 },
                 onSuccess: function () {
+                    console.log("on succcess", $scope.config)
                     $scope.errorMessage = '';
                     $scope.successMessage = "SUCCESS: Endpoint Updated!";
                 }
@@ -125,5 +121,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             });
 
             $scope.endPoints = endPoints;
+            console.log("iife", $scope.config)
         }());
     }]);
