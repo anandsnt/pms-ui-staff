@@ -479,7 +479,11 @@ angular.module('sntRover')
                 };
 
                 // Handle book room button actions.
-                var clickedBookRoom = (roomData) => {
+                var clickedBookRoom = (roomData, roomTypeData, bookType) => {
+                    console.log(roomData);
+                    console.log(roomTypeData);
+                    console.log(bookType);
+
                     var roomDetails = {
                         room_id: roomData.room_id,
                         roomNo: roomData.room_no,
@@ -927,6 +931,20 @@ angular.module('sntRover')
                     callbackForBookedOrAvailableListner();
                 }
 
+                // Mapping of diary modes.
+                var getDiaryMode = function() {
+                    var diaryMode = 'FULL';
+
+                    if (!$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled) {
+                        diaryMode = 'NIGHTLY';
+                    }
+                    else if ($rootScope.hotelDiaryConfig.mode === 'LIMITED') {
+                        // mode = FULL or LIMITED
+                        diaryMode = 'DAYUSE';
+                    }
+                    return diaryMode;
+                };
+
                 // Initial State
                 var initialState = {
                     roomsList: roomsList.rooms,
@@ -944,7 +962,8 @@ angular.module('sntRover')
                     isFromStayCard: isFromStayCard,
                     currentSelectedReservation: $scope.currentSelectedReservation,
                     dateFormat: $rootScope.dateFormat,
-                    isPmsProductionEnvironment: $rootScope.isPmsProductionEnv
+                    isPmsProductionEnvironment: $rootScope.isPmsProductionEnv,
+                    diaryMode: getDiaryMode()
                 };
 
                 const store = configureStore(initialState);
@@ -968,7 +987,8 @@ angular.module('sntRover')
                         callBackFromAngular: getTheCallbacksFromAngularToReact(),
                         paginationData: $scope.diaryData.paginationData,
                         selectedReservationId: $scope.currentSelectedReservation.id,
-                        selectedRoomId: $scope.diaryData.selectedRoomId
+                        selectedRoomId: $scope.diaryData.selectedRoomId,
+                        diaryMode: getDiaryMode()
                     };
 
                     store.dispatch(dispatchData);

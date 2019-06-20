@@ -54,7 +54,8 @@ const mapStateToNightlyDiaryBookRoomContainerProps = (state) => ({
         state.diaryInitialDayOfDateGrid, state.availableSlotsForBookRooms, state.numberOfDays
     ),
     bookRoom: state.callBackFromAngular.clickedBookRoom,
-    availableSlotsForBookRooms: state.availableSlotsForBookRooms
+    availableSlotsForBookRooms: state.availableSlotsForBookRooms,
+    diaryMode: state.diaryMode
 });
 
 const NightlyDiaryBookRoomContainer = connect(
