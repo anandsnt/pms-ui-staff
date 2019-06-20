@@ -261,24 +261,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 };
             };
 
-        // timeToValue = function(value) {
-        //     var ampm = value.split(' ')[1],
-        //         time = value.split(' ')[0],
-        //         hh = time.length ? time.split(':')[0] : '',
-        //         mm = time.length ? time.split(':')[1] : '';
-        //
-        //     if (ampm === 'AM') {
-        //         return parseInt(hh + mm);
-        //     } else {
-        //         return 1200 + parseInt(hh + mm);
-        //     }
-        // };
-        //
-        // valueToTime = function(value) {
-        //   var ampm = value < 1200 ? 'AM' : 'PM',
-        //       hh = parseInt(value % 1200);
-        // };
-
         init = function () {
             $scope.viewState.identifier = "CREATION";
             $scope.reservationData.rateDetails = [];
