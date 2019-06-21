@@ -28,7 +28,7 @@
 
                                 data-type="target">
 
-                                    <li ng-repeat="assignedPermission in assignedPermissions" 
+                                    <li ng-repeat="assignedPermission in assignedPermissions track by $index" 
                                     class="assigned-user-roles li-draggable"
 
                                     data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
@@ -43,7 +43,7 @@
 
                                         <span class="icons icon-handle"></span>
                                         <span class="icons icon-handle"></span>
-                                        {{assignedPermission.name}}
+                                        {{assignedPermission.name}} {{assignedPermission.value}}
                                     </li>
                                 <span class="placeholder ui-state-disabled"  ng-show="assignedPermissions.length == 0" translate>PERMISSIONS_PLACEHOLDER1</span>
                         </ul>
