@@ -6,13 +6,15 @@ angular.module('sntRover')
         '$stateParams',
         '$filter',
         'ngDialog',
+        'rvUtilSrv',
         function(
             $scope,
             $rootScope,
             $state,
             $stateParams,
             $filter,
-            ngDialog
+            ngDialog,
+            rvUtilSrv
         ) {
 
         BaseCtrl.call(this, $scope);
@@ -98,7 +100,11 @@ angular.module('sntRover')
             $scope.diaryData.bookRoomViewFilter.toDate = moment(tzIndependentDate($scope.diaryData.bookRoomViewFilter.fromDate)).add(1, 'days')
                 .format($rootScope.momentFormatForAPI);
 
+            $scope.diaryData.bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+            $scope.diaryData.bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
+
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+            console.log($scope.diaryData.bookRoomViewFilter);
         };
 
         /* 
@@ -139,6 +145,18 @@ angular.module('sntRover')
                 if ($scope.diaryData.isBookRoomViewActive && dateDiff > 6) {
                     $scope.toggleBookedOrAvailable();
                 }
+            }
+            else if ($scope.diaryData.bookRoomViewFilter.fromDate === $scope.diaryData.bookRoomViewFilter.toDate) {
+                // For BOOK filter date selection.
+                // Handle 0 night scenario. Reset both the time selections.
+                $scope.diaryData.bookRoomViewFilter.arrivalTime = '';
+                $scope.diaryData.bookRoomViewFilter.departureTime = '';
+            }
+            else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' && $scope.diaryData.bookRoomViewFilter.arrivalTime === '') {
+                $scope.diaryData.bookRoomViewFilter.arrivalTime = $scope.diaryData.bookRoomViewFilter.hotelCheckinTime;
+            }
+            else if (clickedFrom === 'BOOK_FILTER_DEPARTURE' && $scope.diaryData.bookRoomViewFilter.departureTime === '') {
+                $scope.diaryData.bookRoomViewFilter.departureTime = $scope.diaryData.bookRoomViewFilter.hotelCheckoutTime;
             }
         });
         // Catching event from main controller, when API is completed.

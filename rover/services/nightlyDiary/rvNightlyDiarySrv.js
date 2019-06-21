@@ -41,7 +41,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(), dateArray = [];
             var url = '/api/nightly_diary/date_list';
 
-            var paramsToApi = {};
+            var paramsToApi = {}, responseObj = {};
 
             paramsToApi.start_date = data.start_date;
             paramsToApi.no_of_days = data.no_of_days;
@@ -57,7 +57,13 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
 
                     dateArray.push(itemObj);
                 });
-                deferred.resolve(dateArray);
+                responseObj = {
+                    dates: dateArray,
+                    hotelCheckinTime: response.checkin_time,
+                    hotelCheckoutTime: response.checkout_time
+                };
+                
+                deferred.resolve(responseObj);
             }, function(error) {
                 deferred.reject(error);
             });
