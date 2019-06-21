@@ -98,8 +98,12 @@ angular.module('sntRover')
                 .format($rootScope.momentFormatForAPI);
         };
 
-        // Show calendar popup.
-        $scope.clickedDatePicker = function() {
+        /* 
+         *  Show calendar popup.
+         *  @param {string} [clicked component name - 'MAIN_FILTER', 'BOOK_FILTER_ARRIVAL', 'BOOK_FILTER_DEPARTURE']
+         */
+        $scope.clickedDatePicker = function( clickedFrom ) {
+            $scope.clickedFrom = clickedFrom;
             ngDialog.open({
                 template: '/assets/partials/nightlyDiary/rvNightlyDiaryDatePicker.html',
                 controller: 'RVNightlyDiaryTopFilterDatePickerController',
@@ -109,26 +113,29 @@ angular.module('sntRover')
         };
 
         // Catching event from date picker controller while date is changed.
-        $scope.addListener('DATE_CHANGED', function () {
-            var isRightShift = true;
+        $scope.addListener('DATE_CHANGED', function ( event, clickedFrom ) {
 
-            if ($scope.diaryData.numberOfDays === 7) {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift, true);
-            }
-            else {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
-            }
-            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
-            $scope.$emit('UPDATE_RESERVATIONLIST');
-            isDateChangedFromInitialState = true;
+            if ( clickedFrom === 'MAIN_FILTER') {
+                var isRightShift = true;
 
-            // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
-            // Toggle back to reservation mode.
-            var dateDiff = moment($rootScope.businessDate)
-                            .diff(moment($scope.diaryData.fromDate), 'days');
+                if ($scope.diaryData.numberOfDays === 7) {
+                    $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift, true);
+                }
+                else {
+                    $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
+                }
+                $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+                $scope.$emit('UPDATE_RESERVATIONLIST');
+                isDateChangedFromInitialState = true;
 
-            if ($scope.diaryData.isBookRoomViewActive && dateDiff > 6) {
-                $scope.toggleBookedOrAvailable();
+                // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
+                // Toggle back to reservation mode.
+                var dateDiff = moment($rootScope.businessDate)
+                                .diff(moment($scope.diaryData.fromDate), 'days');
+
+                if ($scope.diaryData.isBookRoomViewActive && dateDiff > 6) {
+                    $scope.toggleBookedOrAvailable();
+                }
             }
         });
         // Catching event from main controller, when API is completed.

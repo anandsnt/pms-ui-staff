@@ -1,6 +1,6 @@
 <!-- Arrival Date -->
 <div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }"> <!-- Remove class 'hidden' when L34 is not checked -->
-    <div class="entry-date">
+    <div class="entry-date" ng-click="clickedDatePicker('BOOK_FILTER_ARRIVAL')">
         <label for="diary-nightly-arrival">Arrival Date</label>
         <input id="diary-nightly-arrival" type="text" value="{Arrival Date}" readonly />
         <span class="date arrival">{{diaryData.bookRoomViewFilter.fromDate | date: 'd MMM yyyy'}}</span>
@@ -20,9 +20,9 @@
     </div>
 </div> 
 <div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }"> <!-- Remove class 'hidden' when L34 is not checked -->
-    <div class="entry-date">
+    <div class="entry-date" ng-click="clickedDatePicker('BOOK_FILTER_DEPARTURE')">
         <label for="diary-nightly-departure">Departure Date</label>
-        <input id="diary-nightly-departure" type="text" value="{Departure Date}" readonly />
+        <input id="diary-nightly-departure" type="text" readonly />
         <span class="date departure">{{diaryData.bookRoomViewFilter.toDate | date: 'd MMM yyyy'}}</span>
     </div>
     <div class="entry-time select">
