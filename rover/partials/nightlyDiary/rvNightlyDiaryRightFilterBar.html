@@ -5,38 +5,73 @@
     </div>
     <div class="filters-list scrollable scroll-vertical">
         <div class="wrapper">
-            <!-- Room Type -->
-            <div class="entry">
-                <div class="multi-select with-label" ng-click="diaryData.hideRoomType =! diaryData.hideRoomType">
-                    <label for="room-type">Room Type</label>
-                    <span class="value">{{diaryData.selectedRoomCount}} selected ...</span>
-                </div>
-                <div class="multi-select-options" ng-class="{'hidden': diaryData.hideRoomType}">
-                    <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.isSelected}" ng-click="toggleRoomSelection($index)">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.isSelected}"></span>
-                        <input type="checkbox">
-                        <span class="text">{{roomType.name}}</span>
-                    </label>
-                </div>
-            </div>
 
-            <!-- Floor -->
-            <div class="entry">
-                <div class="multi-select with-label" ng-click="diaryData.hideFloorList =! diaryData.hideFloorList">
-                    <label for="room-type">Floor</label>
-                    <span class="value">{{diaryData.selectedFloorCount}} selected ...</span>
+            <!--- :START - NORMAL FILTERS without selecting a Reservation -->
+                <!-- Room Type -->
+                <div class="entry" ng-hide="diaryData.isReservationSelected">
+                    <div class="multi-select with-label" ng-click="diaryData.hideRoomType = !diaryData.hideRoomType">
+                        <label for="room-type">Room Type</label>
+                        <span class="value">{{diaryData.selectedRoomCount}} selected ...</span>
+                    </div>
+                    <div class="multi-select-options" ng-class="{'hidden': diaryData.hideRoomType}">
+                        <label class="checkbox inline" ng-repeat="roomType in diaryData.filterList.roomType" ng-class="{'checked':roomType.isSelected}" ng-click="toggleRoomSelection($index)">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked':roomType.isSelected}"></span>
+                            <input type="checkbox">
+                            <span class="text">{{roomType.name}}</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="multi-select-options halfs" ng-class="{'hidden': diaryData.hideFloorList}">
-                    <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.isSelected}" ng-click="toggleFloorSelection($index)">
-                        <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.isSelected}"></span>
-                        <input type="checkbox">
-                        <span class="text">{{floorList.floor_number}}</span>
+                <!-- Floor -->
+                <div class="entry" ng-hide="diaryData.isReservationSelected">
+                    <div class="multi-select with-label" ng-click="diaryData.hideFloorList = !diaryData.hideFloorList">
+                        <label for="room-type">Floor</label>
+                        <span class="value">{{diaryData.selectedFloorCount}} selected ...</span>
+                    </div>
+                    <div class="multi-select-options halfs" ng-class="{'hidden': diaryData.hideFloorList}">
+                        <label class="checkbox inline" ng-repeat="floorList in diaryData.filterList.floorList" ng-class="{'checked':floorList.isSelected}" ng-click="toggleFloorSelection($index)">
+                            <span class="icon-form icon-checkbox" ng-class="{'checked':floorList.isSelected}"></span>
+                            <input type="checkbox">
+                            <span class="text">{{floorList.floor_number}}</span>
+                        </label>
+                    </div>
+                </div>
+            <!--- :END   - NORMAL FILTERS without selecting a Reservation -->
+
+            <!--- :START - FILTERS while selecting a Reservation -->
+
+                <!-- CASE 2: Floors : Single select dropdown -->
+                <div class="entry" ng-show="diaryData.isReservationSelected">
+                    <div class="select with-label">
+                        <label>Floors</label>
+                        <select ng-model="diaryData.roomAssignmentFilters.floorId">
+                            <option value="">All Floors Selected</option>
+                            <option ng-repeat="floor in diaryData.roomAssignmentFilters.floors.floor_details" value="{{floor.id}}">{{floor.floor_number}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- CASE 3: Room Features -->
+                <div class="entry join radio-check" ng-show="diaryData.isReservationSelected" ng-repeat="feature in diaryData.roomAssignmentFilters.room_features">
+                    <strong class="label">{{feature.group_name}}</strong>
+                    <label class="checkbox" ng-repeat="item in feature.items" ng-class="{'checked': item.selected}">
+                        <span class="icon-form icon-checkbox" ng-class="{'checked': item.selected}"></span>
+                        <input type="checkbox" ng-click="setSelectionForFeature($parent.$index, $index)">
+                        {{item.name}}
                     </label>
                 </div>
-            </div>
+
+            <!--- :END   - FILTERS while selecting a Reservation -->
+
         </div>
     </div>
-    <div class="actions">
-        <button type="button" class="button green" ng-click="applyFilter()">Apply</button>
+    
+    <div class="actions dual-actions" ng-if="!diaryData.isReservationSelected">
+        <button ng-if="!diaryData.isReservationSelected" type="button" class="button blank" ng-click="clearCommonFilter()">Clear All</button>
+        <button ng-if="!diaryData.isReservationSelected" type="button" class="button green" ng-click="applyCommonFilter()">Apply</button>
+    </div>
+
+    <div class="actions dual-actions" ng-if="diaryData.isReservationSelected">
+        <button ng-if="diaryData.isReservationSelected" type="button" class="button blank" ng-click="clearGuestPreferenceFilter()">Clear All</button>
+        <button ng-if="diaryData.isReservationSelected" type="button" class="button green" ng-click="applyGuestPreferenceFilter()">Apply</button>
     </div>
 </div>

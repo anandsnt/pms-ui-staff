@@ -1109,6 +1109,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var promptCancel = function(penalty, nights) {
             var openCancelPopup = function(data) {
                 $scope.languageData = data;
+                $scope.DailogeState = {};
+                $scope.DailogeState.isGuestEmailSelected = false;
+                $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+                $scope.DailogeState.sendConfirmatonMailTo = '';
+                
                 var passData = {
                     "reservationId": $scope.reservationData.reservationId,
                     "details": {
@@ -1226,6 +1231,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.DailogeState = {};
                     $scope.DailogeState.successMessage = '';
                     $scope.DailogeState.failureMessage = '';
+                    $scope.DailogeState.isGuestEmailSelected = false;
+                    $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+                    $scope.DailogeState.sendConfirmatonMailTo = '';
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
                         controller: 'RVCancelReservationDepositController',
@@ -1914,6 +1922,23 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
                     $scope.observeForSwipe();
                 }
+
+        /**
+         * Checks whether there are any emails configured
+         */
+        $scope.hasEmails = function () {
+            return !!$scope.guestCardData.contactInfo.email;
+        };
+
+        /**
+         * Should disable the send email btn in the cancellation popup
+         * @param {String} locale - locale chosen from the popup
+         */
+        $scope.shouldDisableSendCancellationEmailBtn = function () {
+            return  !$scope.DailogeState.isGuestEmailSelected &&                
+                    !$scope.DailogeState.sendConfirmatonMailTo;
+            
+        };
 
     }
 

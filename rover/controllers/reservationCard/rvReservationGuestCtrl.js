@@ -156,7 +156,12 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				if (new tzIndependentDate(item.date) >= new tzIndependentDate($rootScope.businessDate)) {
 					var adults = parseInt($scope.guestData.adult_count || 0),
 						children = parseInt($scope.guestData.children_count || 0),
-						rateToday = item.rate_config;
+						rateToday = angular.copy(item.rate_config);
+
+						rateToday.single = rateToday.single || 0;
+						rateToday.double = rateToday.double || 0;
+						rateToday.extra_adult = rateToday.extra_adult || 0;
+						rateToday.child = rateToday.child || 0;
 
 					$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].guests = {
 						adults: adults,
@@ -576,6 +581,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                         guestData.lastStay.date = item.last_stay.date;
                         guestData.lastStay.room = item.last_stay.room;
                         guestData.lastStay.roomType = item.last_stay.room_type;
+                        guestData.lastStay.confirmationNo = item.last_stay.confirm_no;
                         $scope.guestList.push(guestData);
                     });
 

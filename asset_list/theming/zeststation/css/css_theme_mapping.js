@@ -79,7 +79,10 @@ module.exports = {
             'marmalade': [themeCSSRoot + 'marmalade.less'],
             'bosville': [themeCSSRoot + 'bosville.less'],
             'kinsley': [themeCSSRoot + 'kinsley.less'],
-            'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less']
+            'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less'],
+            'asbury': [themeCSSRoot + 'asbury.less'],
+            'manchebo': [themeCSSRoot + 'manchebo.less'],
+            'seacrest': [themeCSSRoot + 'seacrest.less']
         };
     }
 };

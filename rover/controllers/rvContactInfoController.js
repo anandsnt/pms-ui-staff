@@ -37,6 +37,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             $scope.saveGuestCardInfoInProgress = false;
         };
         var saveUserInfoSuccessCallback = function(data) {
+            if (data.mandatory_field_missing_message !== '' 
+                && data.mandatory_field_missing_message !== null) {
+                $scope.errorMessage = data.mandatory_field_missing_message;
+                $scope.$emit('contactInfoError', true);
+            }
           /**
            *  CICO-9169
            *  Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
@@ -67,6 +72,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         var saveUserInfoFailureCallback = function(data) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = data;
+            $scope.$emit('GUESTCARDVISIBLE', true);
             $scope.$emit('contactInfoError', true);
         };
 
@@ -95,6 +101,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     // This method needs a refactor:|
         $scope.saveContactInfo = function(newGuest) {
             var createUserInfoSuccessCallback = function(data) {
+                if (data.mandatory_field_missing_message !== '' 
+                    && data.mandatory_field_missing_message !== null) {
+                    $scope.errorMessage = data.mandatory_field_missing_message;
+                    $scope.$emit('contactInfoError', true);
+                }
                 $scope.$emit('hideLoader');
                 if (typeof $scope.guestCardData.contactInfo.user_id === 'undefined' || $scope.guestCardData.userId === '' || $scope.guestCardData.userId === null || typeof $scope.guestCardData.userId === 'undefined') {
                     if ($scope.viewState.identifier === 'STAY_CARD' || $scope.viewState.identifier === 'CREATION' && $scope.viewState.reservationStatus.confirm) {
@@ -143,6 +154,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
                 }        
                 $scope.newGuestAdded(data.id);
+                if ($scope.errorMessage === '') {
+                   $scope.closeGuestCard();
+                } 
 
                 // CICO-51598 - Should allow the guest card to delete immediately after creation
                 $scope.guestCardData.contactInfo.can_guest_details_anonymized = true;
@@ -200,7 +214,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 if (!angular.equals(dataToUpdate, initialGuestCardData)) {     
               // CICO-46709 - Reset the guest card data to reflect the new changes made to contact details
                     initialGuestCardData = dclone(dataToUpdate, ['avatar', 'confirmation_num']);
-                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+                    if ($scope.isGuestCardVisible || $scope.isFromMenuGuest) {
+                        $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
+                    }                    
                 }
             }
         };

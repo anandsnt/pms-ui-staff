@@ -95,7 +95,10 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'marmalade': 'Marmalade Hotel',
             'bosville': 'Bosville Hotel',
             'kinsley': 'Hotel Kinsley',
-            'zurzacheroff': 'Hotel Zurzacherhof'
+            'zurzacheroff': 'Hotel Zurzacherhof',
+            'asbury': 'The Asbury',
+            'manchebo': 'Manchebo Beach Resort',
+            'seacrest': 'Seacrest Hotel V2'
         };
 
         this.isThemeConfigured = function(theme) {

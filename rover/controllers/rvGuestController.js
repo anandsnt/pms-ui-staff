@@ -336,7 +336,9 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         $scope.$on('contactInfoError', function(event, value) {
-            $scope.contactInfoError = value;
+            if (value) {
+                $scope.current = 'guest-contact';
+            }
         });
 
         $scope.$on('likesInfoError', function(event, value) {
@@ -347,6 +349,10 @@ angular.module('sntRover').controller('guestCardController', [
             var that = this;
 
             that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+            var saveUserInfoFailureCallback = function () {
+                $scope.$emit('contactInfoError', true);
+            };
+            
             var saveUserInfoSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.reservationData.guest.email = that.newUpdatedData.email;
@@ -369,7 +375,7 @@ angular.module('sntRover').controller('guestCardController', [
 
                 if (typeof data.userId !== 'undefined') {
                     $scope.isGuestCardSaveInProgress = true;
-                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
+                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
                 }
             }
         };
@@ -444,6 +450,10 @@ angular.module('sntRover').controller('guestCardController', [
                 }
             }
         };
+
+        $scope.$on("OPEN_GUEST_CARD", function() {
+            $scope.openGuestCard();
+        });
 
 
         $scope.checkOutsideClick = function(targetElement) {
@@ -1893,6 +1903,17 @@ angular.module('sntRover').controller('guestCardController', [
         };
         // CREATES
         $scope.createNewGuest = function() {
+
+
+            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });
             // create an empty dataModel for the guest
             var contactInfoData = {
                 'contactInfo': $scope.guestCardData.contactInfo,
@@ -1957,8 +1978,7 @@ angular.module('sntRover').controller('guestCardController', [
             $scope.viewState.pendingRemoval.cardType = "";
             $scope.initGuestCard({
                 id: id
-            });
-            $scope.closeGuestCard();
+            });            
         };
 
         $scope.$on("updateGuestEmail", function(e) {

@@ -14,11 +14,12 @@ describe('ADGuestCardFieldsCtrl', function() {
             $q = _$q_;
             $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
-            $scope.guestCardFields = {"is_father_name_visible": true, 
-                                      "is_mother_name_visible": false, 
-                                      "is_birth_place_visible": true, 
-                                      "is_gender_visible": false, 
-                                      "is_registration_number_visible": false};
+            $scope.guestCardFields = {};
+            $scope.guestCardFields.father_name = {is_visible: true};
+            $scope.guestCardFields.mother_name = {is_visible: false};
+            $scope.guestCardFields.birth_place = {is_visible: true};
+            $scope.guestCardFields.gender = {is_visible: false};
+            $scope.guestCardFields.registration_number = {is_visible: false};
         });
 
         $controller('ADGuestCardFieldsCtrl', {
@@ -44,39 +45,39 @@ describe('ADGuestCardFieldsCtrl', function() {
 
     });
     // =======================
-    it('Clicked status toggle when is_father_name_visible visibility is true', function() {
+    it('Clicked status toggle when father_name visibility is true', function() {
 
-        $scope.clickedStatus('is_father_name_visible');
+        $scope.clickedStatus('father_name');
 
-        expect($scope.guestCardFields.is_father_name_visible).toBe(false);
+        expect($scope.guestCardFields.father_name.is_visible).toBe(false);
     });
     // =======================
-    it('Clicked status toggle when is_father_name_visible visibility is true', function() {
+    it('Clicked status toggle when mother_name visibility is true', function() {
 
-        $scope.clickedStatus('is_mother_name_visible');
+        $scope.clickedStatus('mother_name');
 
-        expect($scope.guestCardFields.is_mother_name_visible).toBe(true);
+        expect($scope.guestCardFields.mother_name.is_visible).toBe(true);
     });
     // =======================
-    it('Clicked status toggle when is_birth_place_visible visibility is true', function() {
+    it('Clicked status toggle when birth_place visibility is true', function() {
 
-        $scope.clickedStatus('is_birth_place_visible');
+        $scope.clickedStatus('birth_place');
 
-        expect($scope.guestCardFields.is_birth_place_visible).toBe(false);
+        expect($scope.guestCardFields.birth_place.is_visible).toBe(false);
     });
     // =======================
-    it('Clicked status toggle when is_gender_visible visibility is true', function() {
+    it('Clicked status toggle when gender visibility is true', function() {
 
-        $scope.clickedStatus('is_gender_visible');
+        $scope.clickedStatus('gender');
 
-        expect($scope.guestCardFields.is_gender_visible).toBe(true);
+        expect($scope.guestCardFields.gender.is_visible).toBe(true);
     });
 
     // =======================
-    it('Clicked status toggle when is_registration_number_visible visibility is true', function() {
+    it('Clicked status toggle when registration_number visibility is true', function() {
 
-        $scope.clickedStatus('is_registration_number_visible');
+        $scope.clickedStatus('registration_number');
 
-        expect($scope.guestCardFields.is_registration_number_visible).toBe(true);
+        expect($scope.guestCardFields.registration_number.is_visible).toBe(true);
     });
 });
