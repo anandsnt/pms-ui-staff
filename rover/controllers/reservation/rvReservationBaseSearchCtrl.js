@@ -243,8 +243,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         var init,
-            timeToValue,
-            valueToTime,
+            setDefaultCheckinCheckoutTime;
+
             setDefaultCheckinCheckoutTime = function() {
             $scope.timeSlots = RVReservationBaseSearchSrv.timeSlots;
                 $scope.fullCheckinTime = '9:00 AM';
@@ -411,23 +411,28 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.$digest();
             }
         };
+
         $scope.showCheckinTimeslot = function( time ) {
-            var selectedCheckoutSlot = _.find($scope.timeSlots, function(timeSlot) { return timeSlot.value === $scope.fullCheckoutTime; });
+            var selectedCheckoutSlot = _.find( $scope.timeSlots,
+                function( timeSlot ) {
+                    return timeSlot.value === $scope.fullCheckoutTime;
+                });
 
             if ( selectedCheckoutSlot.fullDayValue <= time.fullDayValue || time.fullDayValue === 0 ) {
                 return false;
-            } else {
-                return true;
             }
+            return true;
         };
         $scope.showCheckoutTimeslot = function( time ) {
-            var selectedCheckinSlot = _.find($scope.timeSlots, function(timeSlot){ return timeSlot.value === $scope.fullCheckinTime; });
+            var selectedCheckinSlot = _.find( $scope.timeSlots,
+                function( timeSlot ) {
+                    return timeSlot.value === $scope.fullCheckinTime;
+                });
 
             if ( selectedCheckinSlot.fullDayValue  >= time.fullDayValue || time.fullDayValue === 2400 ) {
                 return false;
-            } else {
-                return true;
             }
+            return true;
         };
 
         $scope.setNumberOfNights = function() {
