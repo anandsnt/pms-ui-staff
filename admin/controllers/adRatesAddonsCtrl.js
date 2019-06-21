@@ -208,6 +208,10 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.singleAddon = {};
             $scope.singleAddon.activated = true;
             $scope.singleAddon.permissible_charge_code_ids = [];
+            $scope.singleAddon.is_allowance = false;
+            $scope.singleAddon.addon_value = 0;
+            $scope.singleAddon.spillage_refund_percentage = 0;
+
             $scope.setAllowedChargeCodesForAllowance();
 
             // CICO-23575 - Disable all posting types apart from First Night for Hourly.
