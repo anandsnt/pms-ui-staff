@@ -208,6 +208,11 @@ angular.module('sntRover')
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST', 'RESET');
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+
+            // If book view is active, reset to reservation view
+            if ( $scope.diaryData.showBookFilterPanel && $scope.diaryData.isBookRoomViewActive) {
+                $scope.toggleBookedOrAvailable();
+            }
         };
 
         // To toggle filter and unassigned list.
@@ -314,7 +319,7 @@ angular.module('sntRover')
         $scope.toggleBookedOrAvailable = function() {
             $scope.diaryData.showBookFilterPanel = !($scope.diaryData.showBookFilterPanel);
             if ($scope.diaryData.showBookFilterPanel) {
-                $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+                init();
             }
             // Toggle back to VIEW mode from BOOK.
             if ($scope.diaryData.isBookRoomViewActive) {
@@ -325,6 +330,9 @@ angular.module('sntRover')
 
         $scope.clickedFindRooms = function() {
             $scope.diaryData.isBookRoomViewActive = true;
+            // Set nights count.
+            $scope.diaryData.bookRoomViewFilter.nights = moment($scope.diaryData.bookRoomViewFilter.toDate)
+                            .diff(moment($scope.diaryData.bookRoomViewFilter.fromDate), 'days');
             $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
         };
 
