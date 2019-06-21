@@ -1,37 +1,31 @@
 <!-- Arrival Date -->
-<div class="entry single-date" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
-    <div class="entry-date">
+<div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }">
+    <div class="entry-date" ng-click="clickedDatePicker('BOOK_FILTER_ARRIVAL')">
         <label for="diary-nightly-arrival">Arrival Date</label>
         <input id="diary-nightly-arrival" type="text" value="{Arrival Date}" readonly />
         <span class="date arrival">{{diaryData.bookRoomViewFilter.fromDate | date: 'd MMM yyyy'}}</span>
     </div>
     <div class="entry-time select">
         <label for="diary-nightly-arrival-time">Time</label>
-        <select id="diary-nightly-arrival-time">
-            <option value="" selected>--:--</option>
-            <optgroup label="{hour, e.g. '10 AM'}">
-                <option value="{hour}:00">{hour}:00</option>
-                <option value="{hour}:15">{hour}:15</option>
-                <option value="{hour}:30">{hour}:30</option>
-                <option value="{hour}:45">{hour}:45</option>
-            </optgroup>
-            ... repeat L123-L128 for every hour
+        <select id="diary-nightly-arrival-time" ng-model="diaryData.bookRoomViewFilter.arrivalTime" ng-change="arrivalTimeChanged()">
+            <option ng-repeat="time in diaryData.bookRoomViewFilter.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
         </select>
     </div>
-</div> 
-<div class="entry single-date" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
-    <div class="entry-date">
+</div>
+<!-- Departure Date -->
+<div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }">
+    <div class="entry-date" ng-click="clickedDatePicker('BOOK_FILTER_DEPARTURE')">
         <label for="diary-nightly-departure">Departure Date</label>
-        <input id="diary-nightly-departure" type="text" value="{Departure Date}" readonly />
+        <input id="diary-nightly-departure" type="text" readonly />
         <span class="date departure">{{diaryData.bookRoomViewFilter.toDate | date: 'd MMM yyyy'}}</span>
     </div>
     <div class="entry-time select">
         <label for="diary-nightly-departure-time">Time</label>
-        <select id="diary-nightly-departure-time">
-            ... same as L122-L129
+        <select id="diary-nightly-departure-time" ng-model="diaryData.bookRoomViewFilter.departureTime" ng-change="departureTimeChanged()">
+            <option ng-repeat="time in diaryData.bookRoomViewFilter.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
         </select>
     </div>
 </div> 
-<div class="entry action" ng-class="{'hidden': !diaryData.isBookRoomViewActive }"> <!-- Remove class 'hidden' when L34 is not checked -->
-    <button type="button" class="button green" ng-click="clickedFindRooms()">Find Rooms</button> <!-- Load available slots (green "Book" buttons only after this is clicked) -->
-</div> 
+<div class="entry action" ng-class="{'hidden': !diaryData.showBookFilterPanel }">
+    <button type="button" class="button green" ng-click="clickedFindRooms()">Find Rooms</button>
+</div>
