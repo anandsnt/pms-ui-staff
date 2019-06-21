@@ -1195,12 +1195,17 @@
 
         .reservation-data {
             position: relative;
+            min-width: 50%;
             max-width: 100%;
             order: 1;
+            flex: 1 1 auto;
         }
 
         .reservation-icons {
             order: 2;
+            flex: 1 1 auto;
+            -webkit-justify-content: flex-end;
+            justify-content: flex-end;
         }
 
         /* Guest Name ***/
@@ -1470,7 +1475,7 @@
                 .square(12px);
             }
         }
-
+f
         /* Night Use Reservation - Single Day Stay ***/
         &.day-stay {
             
@@ -1969,7 +1974,6 @@
     /* Assigning rooms */
     &.assigning-rooms {
 
-
         &:not(.hide-unnassigned) {
             .reservation {
                 &:not(.unassigned) {
@@ -2020,9 +2024,9 @@
     /* Showing available slots to book */
     &.showing-available {
         
-        .diary-nightly-unassigned {
+        /*.diary-nightly-unassigned {
             .hide();
-        }
+        }*/
 
         .reservation {
 
@@ -2053,6 +2057,25 @@
  
                     @media @highdpi { 
                         background-image: @arrowWhiteRight2x;
+                    }
+                }
+
+                &.overbook {
+                    .gradient(@logoGradientStart, @logoGradientEnd);
+
+                    &:hover,
+                    &:active { 
+                        .gradient(@logoGradientEnd, @logoGradientStart);
+                    }
+                }
+
+                &.overbook-disabled {
+                    cursor: default;
+                    .gradient (@grey3, @grey4);
+
+                    &:hover,
+                    &:active { 
+                        .gradient (@grey3, @grey4);
                     }
                 }
             }
