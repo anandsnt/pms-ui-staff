@@ -84,7 +84,8 @@ angular.module('sntRover')
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
-
+        },
+        initBookFilterData = function() {
             var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                 .format($rootScope.momentFormatForAPI);
 
@@ -96,6 +97,8 @@ angular.module('sntRover')
             }
             $scope.diaryData.bookRoomViewFilter.toDate = moment(tzIndependentDate($scope.diaryData.bookRoomViewFilter.fromDate)).add(1, 'days')
                 .format($rootScope.momentFormatForAPI);
+
+            $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
 
         /* 
@@ -317,14 +320,14 @@ angular.module('sntRover')
 
         // To toggle Booked/Available button.
         $scope.toggleBookedOrAvailable = function() {
-            $scope.diaryData.showBookFilterPanel = !($scope.diaryData.showBookFilterPanel);
+            $scope.diaryData.showBookFilterPanel = !$scope.diaryData.showBookFilterPanel;
             if ($scope.diaryData.showBookFilterPanel) {
-                init();
+                initBookFilterData();
             }
             // Toggle back to VIEW mode from BOOK.
             if ($scope.diaryData.isBookRoomViewActive) {
-                $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
-                $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
+                $scope.diaryData.isBookRoomViewActive = !$scope.diaryData.isBookRoomViewActive;
+                $scope.$emit('TOGGLE_BOOK_AVAILABLE');
             }
         };
 
@@ -333,7 +336,7 @@ angular.module('sntRover')
             // Set nights count.
             $scope.diaryData.bookRoomViewFilter.nights = moment($scope.diaryData.bookRoomViewFilter.toDate)
                             .diff(moment($scope.diaryData.bookRoomViewFilter.fromDate), 'days');
-            $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
+            $scope.$emit('TOGGLE_BOOK_AVAILABLE');
         };
 
         init();

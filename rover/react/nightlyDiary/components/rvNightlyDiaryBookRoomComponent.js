@@ -11,10 +11,21 @@ const NightlyDiaryBookRoomComponent = createClass({
 
         return style;
     },
+    getClassName() {
+        let className = 'reservation unassigned ';
+
+        if (this.props.type === 'OVERBOOK') {
+            className += 'overbook';
+        }
+        else if (this.props.type === 'OVERBOOK_DISABLED') {
+            className += 'overbook-disabled disable-element';
+        }
+        return className;
+    },
     render() {
         return (
             <div style={this.getStyles()}
-                className="reservation unassigned"
+                className={this.getClassName()}
                 onClick={() => this.props.bookRoom(this.props.roomDetails, this.props.roomTypeDetails, this.props.type)}
             >
                 <div className="reservation-data">

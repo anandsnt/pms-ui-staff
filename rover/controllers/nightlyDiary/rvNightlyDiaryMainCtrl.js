@@ -883,7 +883,7 @@ angular.module('sntRover')
                 /* Handle event emitted from child controllers.
                  * To toggle available and booked.
                  */
-                $scope.addListener('TOGGLE_BOOKED_AVAIALBLE', callbackForBookedOrAvailableListner);
+                $scope.addListener('TOGGLE_BOOK_AVAILABLE', callbackForBookedOrAvailableListner);
 
                 /**
                  * utility method to pass callbacks from
