@@ -7,15 +7,9 @@
     </div>
     <div class="entry-time select">
         <label for="diary-nightly-arrival-time">Time</label>
-        <select id="diary-nightly-arrival-time">
-            <option value="" selected>--:--</option>
-            <optgroup label="{hour, e.g. '10 AM'}">
-                <option value="{hour}:00">{hour}:00</option>
-                <option value="{hour}:15">{hour}:15</option>
-                <option value="{hour}:30">{hour}:30</option>
-                <option value="{hour}:45">{hour}:45</option>
-            </optgroup>
-            ... repeat L123-L128 for every hour
+        <select id="diary-nightly-arrival-time" ng-model="diaryData.bookRoomViewFilter.arrivalTime">
+            <option value="">--:--</option>
+            <option ng-repeat="time in diaryData.bookRoomViewFilter.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
         </select>
     </div>
 </div> 
@@ -27,8 +21,9 @@
     </div>
     <div class="entry-time select">
         <label for="diary-nightly-departure-time">Time</label>
-        <select id="diary-nightly-departure-time">
-            ... same as L122-L129
+        <select id="diary-nightly-departure-time" ng-model="diaryData.bookRoomViewFilter.departureTime">
+            <option value="">--:--</option>
+            <option ng-repeat="time in diaryData.bookRoomViewFilter.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
         </select>
     </div>
 </div> 

@@ -70,7 +70,7 @@ angular.module('sntRover')
 
                     // data set for diary used for Angular code.
                     $scope.diaryData = {
-                        datesGridData: datesList,
+                        datesGridData: datesList.dates,
                         businessDate: $rootScope.businessDate,
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
@@ -104,11 +104,13 @@ angular.module('sntRover')
                         bookRoomViewFilter: {
                             fromDate: null,
                             toDate: null,
-                            arrivalTime: null,
+                            arrivalTime: datesList.hotelCheckinTime,
                             arrivalTimeList: [],
-                            departureTime: null,
+                            departureTime: datesList.hotelCheckoutTime,
                             departureTimeList: [],
-                            nights: 1
+                            nights: 1,
+                            hotelCheckinTime: datesList.hotelCheckinTime,
+                            hotelCheckoutTime: datesList.hotelCheckoutTime
                         },
                         availableSlotsForBookRooms: [],
                         isAssignRoomViewActive: false,
