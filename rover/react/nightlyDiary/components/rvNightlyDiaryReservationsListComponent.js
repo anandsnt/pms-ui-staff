@@ -53,6 +53,7 @@ const isRoomAvailable = (roomId, state, type) => {
             }
             /* TODO CICO-65955 : Overbook logic will go here */
             /* bookType = 'OVERBOOK'; */
+            /* bookType = 'OVERBOOK_DISABLED' */
         }
         
         return (
