@@ -32,7 +32,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled,
             isRoomTypeChangePopupShown = false;
 
-
         $scope.activeCodes = activeCodes.promotions;
         $scope.loyaltyPrograms = loyaltyPrograms.data;
         $scope.flyerPrograms = flyerPrograms.data;
