@@ -1195,17 +1195,11 @@
 
         .reservation-data {
             position: relative;
-            min-width: 50%;
-            max-width: 100%;
             order: 1;
-            flex: 1 1 auto;
         }
 
         .reservation-icons {
             order: 2;
-            flex: 1 1 auto;
-            -webkit-justify-content: flex-end;
-            justify-content: flex-end;
         }
 
         /* Guest Name ***/
@@ -1986,7 +1980,7 @@ f
 
                 &.unassigned {
                     z-index: 5;
-                    #flexbox > .parent(row nowrap, center, center, '');
+                    #flexbox > .parent('', center, center, '');
                 }
             }
             
@@ -2024,10 +2018,6 @@ f
     /* Showing available slots to book */
     &.showing-available {
         
-        /*.diary-nightly-unassigned {
-            .hide();
-        }*/
-
         .reservation {
 
             &:not(.unassigned) {
@@ -2041,7 +2031,7 @@ f
             &.unassigned {
                 z-index: 5;
                 .gradient( @greenStart, @greenEnd );
-                #flexbox > .parent(row nowrap, center, center, '');
+                #flexbox > .parent('', flex-start, center, '');
 
                 &:hover,
                 &:active { 
