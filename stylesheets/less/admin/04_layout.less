@@ -930,6 +930,28 @@ body { overflow: hidden; }
                         font-size: 14px;
                         color: @grey3;
                     }
+
+                    .button {
+                        &.small {
+                            font-size: 14px;
+                            line-height: 28px;
+                            padding: 0 10px;
+                        }
+                    }
+
+                    &.hidden-button {
+                        .button {
+                            opacity: 0;
+                            margin-left: 5px;
+                            .transition();
+                        }
+
+                        &:hover {
+                            .button {
+                                opacity: 1;
+                            }
+                        }
+                    }
                 }
 
                 &.inactive {
