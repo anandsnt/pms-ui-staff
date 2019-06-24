@@ -41,8 +41,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
             }],
-            config: ['adInterfacesSrv', function (adInterfacesSrv) {
-                return adInterfacesSrv.getSettings('exactonline');
+            config: ['adExactOnlineSetupSrv', function (adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }]
         }
     });

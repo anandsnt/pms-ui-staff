@@ -42,14 +42,9 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     integration: $scope.integration.toLowerCase(),
-                    settings: {
-                        enabled: $scope.config.enabled,
-                        journal_code: $scope.config.journal_code,
-                        balancing_account_code: $scope.config.balancing_account_code,
-                        endpoint: $scope.config.endpoint
-                    }
+                    settings: $scope.config
                 },
-                onSuccess: function () {
+                onSuccess: function() {
                     $scope.errorMessage = '';
                     $scope.successMessage = "SUCCESS: Settings Updated!";
                 }
@@ -71,20 +66,8 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
         };
 
-        $scope.onURLChange = function() {
-            console.log("before api call, ", $scope.config)
-            $scope.callAPI(adInterfacesSrv.updateSettings, {
-                params: {
-                    integration: $scope.integration.toLowerCase(),
-                    settings: $scope.config
-                },
-                onSuccess: function () {
-                    console.log("on succcess", $scope.config)
-                    $scope.errorMessage = '';
-                    $scope.successMessage = "SUCCESS: Endpoint Updated!";
-                }
-            });
-        };
+        // TODO: make a refresh button that fetches the o_auth URL again after the endpoint has been changed
+        // set it to $scope.config.oauth_url so that the button links to the proper app
 
         /**
          * Initialization stuffs

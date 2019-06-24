@@ -1,4 +1,19 @@
 admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
+    /**
+     * to get the ExactOnLine configraton values
+     * @return {undefined}
+     */
+    this.fetchExactOnLineConfiguration = function () {
+        var deferred = $q.defer();
+        var url = 'ifc/proxy/exactonline/index';
+
+        ADBaseWebSrvV2.getJSON(url).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
     /**
      * to run Exact Online Export
@@ -18,7 +33,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
 
     this.fetchBalancingAccounts = function() {
         var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline/gl_accounts';
+        var url = 'ifc/proxy/exactonline/gl_accounts';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             console.log("fetching balancing accounts, ", data)
@@ -36,7 +51,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.fetchJournalsList = function() {
         var deferred = $q.defer();
-        var url = 'api/hotel_settings/exactonline/journals';
+        var url = 'ifc/proxy/exactonline/journals';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             console.log("fetching journals, ", data)    
@@ -55,7 +70,7 @@ admin.service('adExactOnlineSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', functio
      */
     this.fetchEndpointsList = function() {
         var deferred = $q.defer();
-        var url = '/api/hotel_settings/exactonline/endpoints';
+        var url = '/ifc/proxy/exactonline/endpoints';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             console.log("fetchcing endpoints, ", data)
