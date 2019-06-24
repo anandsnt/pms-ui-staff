@@ -153,7 +153,7 @@ angular.module('sntRover')
                 bookRoomViewFilter.departureTime = '17:00';
             }
             else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
-                if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime){
+                if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime) {
                     bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
                 }
                 if (bookRoomViewFilter.departureTime !== bookRoomViewFilter.hotelCheckoutTime) {
