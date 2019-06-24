@@ -584,20 +584,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.easiSetup', {
-        templateUrl: '/assets/partials/interfaces/Easi/adEasiSetup.html',
+        templateUrl: '/assets/partials/interfaces/easi/adEasi.html',
         controller: 'adEasiCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'easi';
-        }],
+        url: '/easi/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('easi');
+                // return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
             }],
             chargeGroups: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                // use mappings/additional_setting?
                 return adInterfacesCommonConfigSrv.fetchChargeGroups();
             }],
             taxChargeCodes: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                // use mappings/additional_setting?
                 return adInterfacesCommonConfigSrv.fetchTaxChargeCodes();
             }]
         }
