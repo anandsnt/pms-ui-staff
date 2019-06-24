@@ -163,7 +163,10 @@ angular.module('sntRover')
                         ngDialog.open({
                             template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
                             className: '',
-                            scope: $scope
+                            scope: $scope,
+                            data: {
+                                warningMessage: 'No Available Rooms'
+                            }
                         });
                         if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM' && filterData.count > 0) {
 							$scope.$emit('TOGGLE_FILTER_TOP', 'RESERVATION_FILTER');
