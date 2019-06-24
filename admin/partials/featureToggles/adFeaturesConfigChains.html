@@ -24,10 +24,10 @@
                ng-class="{'edit-data': currentClickedElement == $index}">
             <tbody>
             <tr ng-repeat="hotel in $data" class="device-list">
-                <td data-title="'CODE'" sortable="'code'" header-class="width-20">
+                <td data-title="'CODE'" header-class="width-20">
                     <strong> {{hotel.code}}</strong>
                 </td>
-                <td data-title="'NAME'" sortable="'name'" header-class="width-60">
+                <td data-title="'NAME'" header-class="width-60">
                     <strong> {{hotel.name}}</strong>
                 </td>
                 <td data-title="'STATUS'" header-class="width-20">
