@@ -104,7 +104,6 @@ angular.module('sntRover')
             $scope.diaryData.bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
 
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
-            console.log($scope.diaryData.bookRoomViewFilter);
         };
 
         /* 
