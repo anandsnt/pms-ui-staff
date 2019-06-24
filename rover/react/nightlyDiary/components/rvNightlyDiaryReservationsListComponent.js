@@ -8,8 +8,6 @@ const isRoomAvailable = (roomId, state, type) => {
     let bookType = 'BOOK';
     let diaryMode = state.diaryMode;
 
-    console.log('diaryMode', diaryMode);
-
     if (type === 'BOOK') {
         unAssignedRoomList = state.availableSlotsForBookRooms.rooms;
         roomTypeList = state.availableSlotsForBookRooms.room_types;
@@ -53,7 +51,7 @@ const isRoomAvailable = (roomId, state, type) => {
             }
             /* TODO CICO-65955 : Overbook logic will go here */
             /* bookType = 'OVERBOOK'; */
-            /* bookType = 'OVERBOOK_DISABLED' */
+            /* bookType = 'OVERBOOK_DISABLED'; */
         }
         
         return (

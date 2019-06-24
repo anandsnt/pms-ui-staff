@@ -13,6 +13,7 @@ angular.module('sntRover')
             'RVNightlyDiarySrv',
             'unassignedReservationList',
             'rvPermissionSrv',
+            '$log',
             function (
                 $scope,
                 $rootScope,
@@ -26,7 +27,8 @@ angular.module('sntRover')
                 reservationsList,
                 RVNightlyDiarySrv,
                 unassignedReservationList,
-                rvPermissionSrv
+                rvPermissionSrv,
+                $log
             ) {
 
                 BaseCtrl.call(this, $scope);
@@ -161,7 +163,7 @@ angular.module('sntRover')
                         $scope.diaryData.diaryRoomsList = data.roomList.rooms;
                         $scope.diaryData.reservationsList = data.reservationList;
                         handlePaginationData(data);
-                        $scope.diaryData.datesGridData = data.dateList;
+                        $scope.diaryData.datesGridData = data.dateList.dates;
                         $scope.$broadcast('FETCH_COMPLETED_DATE_LIST_DATA');
                         if ($scope.diaryData.isBookRoomViewActive) {
                             callbackForBookedOrAvailableListner();
@@ -483,9 +485,9 @@ angular.module('sntRover')
 
                 // Handle book room button actions.
                 var clickedBookRoom = (roomData, roomTypeData, bookType) => {
-                    console.log(roomData);
-                    console.log(roomTypeData);
-                    console.log(bookType);
+                    $log.log(roomData);
+                    $log.log(roomTypeData);
+                    $log.log(bookType);
 
                     var roomDetails = {
                         room_id: roomData.room_id,
@@ -770,19 +772,21 @@ angular.module('sntRover')
                     cancelReservationEditing();
                 });
 
+                var resetFilterBarAndRefreshDiary = function() {
+                    resetUnassignedList();
+                    $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
+                    $scope.diaryData.paginationData.page = 1;
+                    fetchRoomListDataAndReservationListData();
+                    cancelReservationEditing();
+                };
+
                 /*
                  *  Handle event emitted from child controller.
                  *  When clicking Unassigned filter button.
                  *  Reset filter selections and,
                  *  Refresh diary data - rooms and reservations after applying filter.
                  */
-                $scope.addListener('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', function () {
-                    resetUnassignedList();
-                    $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.paginationData.page = 1;
-                    fetchRoomListDataAndReservationListData();
-                    cancelReservationEditing();
-                });
+                $scope.addListener('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY', resetFilterBarAndRefreshDiary) ;
 
                 /* 
                  *  To Show 'ASSIGN' or 'MOVE' room button in Diary.
@@ -824,10 +828,13 @@ angular.module('sntRover')
                     $scope.$broadcast('APPLY_GUEST_PREFERENCE_FILTER');
                 });
 
-                /*  
-                 *  To Hide 'ASSIGN' or 'MOVE' room button in Diary.
-                 */
-                $scope.addListener('SHOW_ERROR_MESSAGE', function (event, errorMessage) {
+                // Handle validation popup close.
+                $scope.closeDialogAndRefresh = function() {
+                    resetFilterBarAndRefreshDiary();
+                    ngDialog.close();
+                };
+
+                var showErrorMessagePopup = function( errorMessage ) {
                     ngDialog.open({
                         template: '/assets/partials/nightlyDiary/rvNightlyDiaryErrorMessage.html',
                         scope: $scope,
@@ -838,7 +845,25 @@ angular.module('sntRover')
                             errorMessage: errorMessage
                         }
                     });
+                },
+                showWarningMessagePopup = function ( warningMessage ) {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
+                        className: '',
+                        scope: $scope,
+                        data: {
+                            warningMessage: warningMessage
+                        }
+                    });
+                };
+
+                /*  
+                 *  Handle error messages
+                 */
+                $scope.addListener('SHOW_ERROR_MESSAGE', function (event, errorMessage) {
+                    showErrorMessagePopup(errorMessage);
                 });
+
                 /**
                  * utility method to call available slots API
                  */
@@ -850,6 +875,9 @@ angular.module('sntRover')
                             $scope.diaryData.availableSlotsForBookRooms = response;
                             $scope.diaryData.availableSlotsForBookRooms.fromDate = $scope.diaryData.bookRoomViewFilter.fromDate;
                             $scope.diaryData.availableSlotsForBookRooms.nights = $scope.diaryData.bookRoomViewFilter.nights;
+                            if (response.rooms.length === 0 ) {
+                                showWarningMessagePopup('No available rooms found for selected criteria');
+                            }
                             if ($scope.diaryData.availableSlotsForAssignRooms.hasOwnProperty('reservationId')) {
                                 // Reset unassigned reservation list selection.
                                 resetUnassignedList();
@@ -942,7 +970,6 @@ angular.module('sntRover')
                         diaryMode = 'NIGHTLY';
                     }
                     else if ($rootScope.hotelDiaryConfig.mode === 'LIMITED') {
-                        // mode = FULL or LIMITED
                         diaryMode = 'DAYUSE';
                     }
                     return diaryMode;
