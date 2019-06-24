@@ -201,26 +201,6 @@ describe('reservationActionsController', function () {
                 expect($scope.errorMessage).toEqual('Errored');
             });
 
-            it('should update the hk status as dirty when not ready is selected as the option from the popup', function() {
-                $scope.roomStatus = {
-                    isReady: false
-                };
-                $scope.reservationData = {
-                    reservation_card: {
-                        room_status: 'NOTREADY'
-                    }
-                };
-                spyOn(ngDialog, 'close').and.callFake(function() {
-                    var deferred = $q.defer();
-        
-                    deferred.resolve();
-                    return deferred.promise;
-                });
-
-                $scope.updateRoomStatus();
-                expect(ngDialog.close).toHaveBeenCalled();
-            });
-
             it('should update the hk status as clean when ready is selected as the option from the popup and check in inspected is false', function() {
                 var hkstatusId;
 
