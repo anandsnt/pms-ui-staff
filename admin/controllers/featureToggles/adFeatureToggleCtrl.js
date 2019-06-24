@@ -8,7 +8,7 @@ angular.module('admin')
                 var getParams = $scope.calculateGetParams(params),
                     fetchSuccessOfItemList = function (data) {
                         $scope.currentClickedElement = -1;
-                        $scope.totalCount = parseInt(data.totalCount);
+                        $scope.totalCount = parseInt(data.total_count);
                         $scope.totalPage = Math.ceil($scope.totalCount / $scope.displyCount);
                         $scope.data = data.results;
 
