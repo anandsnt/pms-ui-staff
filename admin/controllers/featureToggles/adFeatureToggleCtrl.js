@@ -6,12 +6,7 @@ angular.module('admin')
 
             $scope.fetchTableData = function ($defer, params) {
                 var getParams = $scope.calculateGetParams(params),
-                    fetchSuccessOfItemList = function (results) {
-                        var data = {
-                            results: results,
-                            totalCount: results.length
-                        };
-
+                    fetchSuccessOfItemList = function (data) {
                         $scope.currentClickedElement = -1;
                         $scope.totalCount = parseInt(data.totalCount);
                         $scope.totalPage = Math.ceil($scope.totalCount / $scope.displyCount);
