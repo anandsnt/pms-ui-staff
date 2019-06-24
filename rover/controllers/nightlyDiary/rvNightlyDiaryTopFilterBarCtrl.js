@@ -148,15 +148,15 @@ angular.module('sntRover')
             }
             else if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
                 // For BOOK filter date selection.
-                // Handle 0 night scenario. Reset both the time selections.
-                bookRoomViewFilter.arrivalTime = '';
-                bookRoomViewFilter.departureTime = '';
+                // Handle 0 night scenario. Reset the time selections to '09:00 AM' & '05:00 PM'.
+                bookRoomViewFilter.arrivalTime = '09:00';
+                bookRoomViewFilter.departureTime = '17:00';
             }
             else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
-                if (bookRoomViewFilter.arrivalTime === ''){
+                if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime){
                     bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
                 }
-                if (bookRoomViewFilter.departureTime === '') {
+                if (bookRoomViewFilter.departureTime !== bookRoomViewFilter.hotelCheckoutTime) {
                     bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
                 }
             }
