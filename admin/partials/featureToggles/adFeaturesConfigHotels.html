@@ -21,11 +21,11 @@
                ng-class="{'edit-data': currentClickedElement == $index}">
             <tbody>
             <tr ng-repeat="hotel in $data" class="device-list">
-                <td data-title="'CODE'" sortable="'code'" header-class="width-20"
+                <td data-title="'CODE'" header-class="width-20"
                     ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
                     <strong> {{hotel.code}}</strong>
                 </td>
-                <td data-title="'NAME'" sortable="'name'" header-class="width-60"
+                <td data-title="'NAME'" header-class="width-60"
                     ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
                     <strong> {{hotel.name}}</strong>
                     <em ng-if="hotel.featureStatus.enabled_chain" translate>ACTIVE_CHAIN_LEVEL</em>
