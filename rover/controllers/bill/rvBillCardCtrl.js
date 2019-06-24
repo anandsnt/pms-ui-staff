@@ -2695,7 +2695,6 @@ sntRover.controller('RVbillCardController',
 					if (dateDifference < 0) {
 						$scope.shouldShowArInvoiceNumber = false;
 					}
-					console.log($scope.shouldShowArInvoiceNumber)
 
 					$scope.isPrintRegistrationCard = false;
 					$scope.printBillCardActive = true;
