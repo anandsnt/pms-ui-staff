@@ -122,6 +122,7 @@ angular.module('sntRover')
 
         // Catching event from date picker controller while date is changed.
         $scope.addListener('DATE_CHANGED', function ( event, clickedFrom ) {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
 
             if ( clickedFrom === 'MAIN_FILTER') {
                 var isRightShift = true;
@@ -145,17 +146,19 @@ angular.module('sntRover')
                     $scope.toggleBookedOrAvailable();
                 }
             }
-            else if ($scope.diaryData.bookRoomViewFilter.fromDate === $scope.diaryData.bookRoomViewFilter.toDate) {
+            else if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
                 // For BOOK filter date selection.
                 // Handle 0 night scenario. Reset both the time selections.
-                $scope.diaryData.bookRoomViewFilter.arrivalTime = '';
-                $scope.diaryData.bookRoomViewFilter.departureTime = '';
+                bookRoomViewFilter.arrivalTime = '';
+                bookRoomViewFilter.departureTime = '';
             }
-            else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' && $scope.diaryData.bookRoomViewFilter.arrivalTime === '') {
-                $scope.diaryData.bookRoomViewFilter.arrivalTime = $scope.diaryData.bookRoomViewFilter.hotelCheckinTime;
-            }
-            else if (clickedFrom === 'BOOK_FILTER_DEPARTURE' && $scope.diaryData.bookRoomViewFilter.departureTime === '') {
-                $scope.diaryData.bookRoomViewFilter.departureTime = $scope.diaryData.bookRoomViewFilter.hotelCheckoutTime;
+            else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
+                if (bookRoomViewFilter.arrivalTime === ''){
+                    bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
+                }
+                if (bookRoomViewFilter.departureTime === '') {
+                    bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
+                }
             }
         });
         // Catching event from main controller, when API is completed.
@@ -354,6 +357,24 @@ angular.module('sntRover')
             $scope.diaryData.bookRoomViewFilter.nights = moment($scope.diaryData.bookRoomViewFilter.toDate)
                             .diff(moment($scope.diaryData.bookRoomViewFilter.fromDate), 'days');
             $scope.$emit('TOGGLE_BOOK_AVAILABLE');
+        };
+        // Handle arrival time changes.
+        $scope.arrivalTimeChanged = function() {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
+
+            // Handle 0 night usecse
+            if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null);
+            }
+        };
+        // Handle departure time changes.
+        $scope.departureTimeChanged = function() {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
+
+            // Handle 0 night usecse
+            if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime);
+            }
         };
 
         init();

@@ -7,7 +7,7 @@
     </div>
     <div class="entry-time select">
         <label for="diary-nightly-arrival-time">Time</label>
-        <select id="diary-nightly-arrival-time" ng-model="diaryData.bookRoomViewFilter.arrivalTime">
+        <select id="diary-nightly-arrival-time" ng-model="diaryData.bookRoomViewFilter.arrivalTime" ng-change="arrivalTimeChanged()">
             <option value="">--:--</option>
             <option ng-repeat="time in diaryData.bookRoomViewFilter.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
         </select>
@@ -21,7 +21,7 @@
     </div>
     <div class="entry-time select">
         <label for="diary-nightly-departure-time">Time</label>
-        <select id="diary-nightly-departure-time" ng-model="diaryData.bookRoomViewFilter.departureTime">
+        <select id="diary-nightly-departure-time" ng-model="diaryData.bookRoomViewFilter.departureTime" ng-change="departureTimeChanged()">
             <option value="">--:--</option>
             <option ng-repeat="time in diaryData.bookRoomViewFilter.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
         </select>

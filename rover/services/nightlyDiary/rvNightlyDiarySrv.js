@@ -59,8 +59,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 });
                 responseObj = {
                     dates: dateArray,
-                    hotelCheckinTime: response.checkin_time,
-                    hotelCheckoutTime: response.checkout_time
+                    hotelCheckinTime: response.hotel_checkin_time,
+                    hotelCheckoutTime: response.hotel_checkout_time
                 };
                 
                 deferred.resolve(responseObj);
