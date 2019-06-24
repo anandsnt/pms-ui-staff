@@ -19,7 +19,7 @@
             <div class='entry full-width'>
                 <label>{{'ENDPOINT'| translate}}</label>
                 <div class='select'>
-                    <select ng-model='config.endpoint' ng-change="onURLChange();">
+                    <select ng-model='config.endpoint'>
                         <option ng-repeat='endpoint in endPoints' value='{{endpoint.endpoint}}'>
                             {{endpoint.endpoint}}&nbsp;{{code.description}}
                         </option>
@@ -37,7 +37,7 @@
                         {{'EXACT_ONLINE_UNAUTHORIZED' | translate}}
                     </span>
                 </label>
-                <a target="_self" href="{{exactOnlineSetup.oauth_url}}" class="button blue">
+                <a target="_self" href="{{config.oauth_url}}" class="button blue">
                     {{'EXACT_ONLINE_OAUTH' | translate}}
                 </a>
             </div>
