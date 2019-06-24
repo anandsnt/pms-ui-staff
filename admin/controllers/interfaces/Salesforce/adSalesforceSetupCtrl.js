@@ -1,17 +1,11 @@
-admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv',
-    function($scope, $rootScope, config, adInterfacesSrv) {
-
-        $scope.sync = {
-            start_date: null
-        };
-
+admin.controller('adSalesforceSetupCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         $scope.state = {
             activeTab: "SETTING"
         };
 
         $scope.interface = 'salesforce';
 
-        $scope.historical_data_sync_items = ['financials'];
 
         $scope.toggleEnabled = function() {
             $scope.config.enabled = !$scope.config.enabled;
