@@ -149,6 +149,19 @@ angular.module('sntRover')
                     };
                 };
 
+                // Mapping of diary modes.
+                var getDiaryMode = function() {
+                    var diaryMode = 'FULL';
+
+                    if (!$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled) {
+                        diaryMode = 'NIGHTLY';
+                    }
+                    else if ($rootScope.hotelDiaryConfig.mode === 'LIMITED') {
+                        diaryMode = 'DAYUSE';
+                    }
+                    return diaryMode;
+                };
+
                 /**
                  * method to update Pagination parametrs
                  */
@@ -328,9 +341,7 @@ angular.module('sntRover')
                         type: type,
                         roomDetails: roomDetails,
                         reservationDetails: reservationDetails,
-                        data: {},
-                        processData: [],
-                        isContinueBookPopup: false
+                        data: {}
                     };
 
                     var triggerSetTimePopup = function() {
@@ -342,49 +353,10 @@ angular.module('sntRover')
                             closeByEscape: false,
                             controller: 'rvNightlyDiarySetTimePopupCtrl'
                         });
-                    },
-                    showPopupForReservationWithUnassignedRoom = function() {
-                        ngDialog.open({
-                            template: '/assets/partials/nightlyDiary/rvNightlyDiaryReservationWithUnassignedRoom.html',
-                            scope: $scope,
-                            className: '',
-                            closeByDocument: false,
-                            closeByEscape: false
-                        });
                     };
 
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
-                        var isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled,
-                            diaryMode = $rootScope.hotelDiaryConfig.mode;
-
-                        if (type === 'BOOK' && isNightlyHotel) {
-                            // Navigation directly to Reservation Creation Screen if Nightly diary.
-                            // startDate (strat date of diary)- is passed for back navigation purpose.
-                            $state.go('rover.reservation.search', {
-                                selectedArrivalDate: $scope.setTimePopupData.reservationDetails.fromDate,
-                                selectedRoomTypeId: $scope.setTimePopupData.roomDetails.roomTypeId,
-                                selectedRoomId: $scope.setTimePopupData.roomDetails.room_id,
-                                selectedRoomNo: $scope.setTimePopupData.roomDetails.roomNo,
-                                startDate: $scope.diaryData.startDate,
-                                fromState: 'NIGHTLY_DIARY'
-                            });
-                        }
-                        else if (type === 'BOOK' && (diaryMode === 'FULL' || diaryMode === 'LIMITED')) {
-                            if (data.is_unassigned_reservations_exist && data.room_type_availability <= 0) {
-                                // There are reservations with unassigned Rooms.
-                                showPopupForReservationWithUnassignedRoom();
-                            }
-                            else if (data.is_unassigned_reservations_exist) {
-                                $scope.setTimePopupData.isContinueBookPopup = true;
-                                triggerSetTimePopup();
-                            }
-                            else {
-                                $scope.setTimePopupData.isContinueBookPopup = false;
-                                triggerSetTimePopup();
-                            }
-                        }
-
                         // Handle ASSIGN/MOVE button click handle.
                         if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
                             triggerSetTimePopup();
@@ -481,6 +453,58 @@ angular.module('sntRover')
                  */
                 var clickedMoveRoom = (roomDetails, reservationDetails) => {
                     showDiarySetTimePopup(roomDetails, reservationDetails, 'MOVE');
+                },
+                showPopupForReservationWithUnassignedRoom = function() {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryReservationWithUnassignedRoom.html',
+                        scope: $scope,
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: false
+                    });
+                },
+                showContinueWithBookPopup = function( callbackAction ) {
+                    ngDialog.open({
+                        template: '/assets/partials/nightlyDiary/rvNightlyDiaryContinueWithBookPopup.html',
+                        scope: $scope,
+                        className: '',
+                        closeByDocument: false,
+                        closeByEscape: false,
+                        data: {
+                            callbackAction: callbackAction
+                        }
+                    });
+                },
+                handleCreateReservationFlow = function(roomDetails, reservationDetails, roomTypeData, bookType) {
+                    var diaryMode = getDiaryMode();
+                   
+                    if (bookType === 'BOOK' && (diaryMode === 'FULL' || diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY')) {
+
+                        if (roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0) {
+                            // There are reservations with unassigned Rooms.
+                            showPopupForReservationWithUnassignedRoom();
+                        }
+                        else {
+                            // Navigation directly to Reservation Creation Screen if Nightly diary.
+                            // startDate (strat date of diary)- is passed for back navigation purpose.
+                            var callbackAction = function() {
+                                $state.go('rover.reservation.search', {
+                                    selectedArrivalDate: reservationDetails.fromDate,
+                                    selectedRoomTypeId: roomDetails.roomTypeId,
+                                    selectedRoomId: roomDetails.room_id,
+                                    selectedRoomNo: roomDetails.roomNo,
+                                    startDate: $scope.diaryData.startDate,
+                                    fromState: 'NIGHTLY_DIARY',
+                                    selectedArrivalTime: $scope.diaryData.bookRoomViewFilter.arrivalTime,
+                                    selectedDepartureTime: $scope.diaryData.bookRoomViewFilter.departureTime,
+                                    numNights: $scope.diaryData.bookRoomViewFilter.nights
+                                });
+                                ngDialog.close();
+                            };
+
+                            showContinueWithBookPopup(callbackAction);
+                        }
+                    }
                 };
 
                 // Handle book room button actions.
@@ -499,7 +523,7 @@ angular.module('sntRover')
                         toDate: $scope.diaryData.bookRoomViewFilter.toDate
                     };
 
-                    showDiarySetTimePopup(roomDetails, reservationDetails, 'BOOK');
+                    handleCreateReservationFlow(roomDetails, reservationDetails, roomTypeData, bookType);
                 };
 
                 /*
@@ -961,19 +985,6 @@ angular.module('sntRover')
                     $scope.diaryData.isBookRoomViewActive = true;
                     callbackForBookedOrAvailableListner();
                 }
-
-                // Mapping of diary modes.
-                var getDiaryMode = function() {
-                    var diaryMode = 'FULL';
-
-                    if (!$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled) {
-                        diaryMode = 'NIGHTLY';
-                    }
-                    else if ($rootScope.hotelDiaryConfig.mode === 'LIMITED') {
-                        diaryMode = 'DAYUSE';
-                    }
-                    return diaryMode;
-                };
 
                 // Initial State
                 var initialState = {
