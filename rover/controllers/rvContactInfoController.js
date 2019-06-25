@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv', 'RVReservationCardSrv',
-    function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv, RVReservationCardSrv) {
+angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv', 'RVReservationCardSrv', '$state',
+    function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv, RVReservationCardSrv, $state) {
 
         BaseCtrl.call(this, $scope);
         var initialGuestCardData;
@@ -154,7 +154,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
                 }        
                 $scope.newGuestAdded(data.id);
-                if ($scope.errorMessage === '') {
+                if ($scope.errorMessage === '' && $state.current.name !== 'rover.guest.details') {
                    $scope.closeGuestCard();
                 } 
 
