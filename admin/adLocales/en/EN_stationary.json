@@ -131,5 +131,7 @@
 	"TERMS_AND_CONDITIONS_PLACEHOLDER": "Enter Terms & Conditions",
 	"NONE": "None",
 	"ADD_NEW": "Add New",
-	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown"
+	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown",
+	"COPY_HOTEL_ON_CONFIRMATION": "Copy hotel on confirmation",
+	"HOTEL_EMAIL": "Hotel Email"
 

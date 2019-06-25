@@ -1,7 +1,28 @@
-admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'ADM3SetupSrv', '$filter',
-    function($scope, m3AccountingSetupValues, ADM3SetupSrv, $filter) {
-
+admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
     BaseCtrl.call(this, $scope);
+
+    $scope.state = {
+        activeTab: 'SETTING'
+    };
+
+    $scope.integration = 'M3AS';
+    
+    /**
+     * when clicked on check box to enable/diable letshare
+     * @return {undefiend}
+     */
+    $scope.toggleEnabled = function () {
+        $scope.config.enabled = !$scope.config.enabled;
+    };
+
+    $scope.toggleRoomRevenue = function () {
+        $scope.config.room_revenue_only = !$scope.config.room_revenue_only;
+    };
+
+    $scope.changeTab = function(name) {
+        $scope.state.activeTab = name;
+    };
 
     $scope.chosenSelectedReports = [],
         $scope.chosenAvailableReports = [];
@@ -12,37 +33,26 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
     };
 
     /**
-     * when clicked on check box to enable/diable letshare
-     * @return {undefiend}
-     */
-    $scope.toggleActivation = function() {
-        $scope.m3Accounting.enabled = !$scope.m3Accounting.enabled;
-    };
-
-    /**
-     * when the save is success
-     */
-    var successCallBackOfSaveAfasSetup = function(data) {
-        $scope.goBackToPreviousState();
-    };
-
-    /**
      * when we clicked on save button
      * @return {undefiend}
      */
     $scope.saveSetup = function() {
-        var options = {
+        $scope.callAPI(adInterfacesSrv.updateSettings, {
             params: {
-                enabled: $scope.m3Accounting.enabled,
-                emails: $scope.m3Accounting.emails,
-                facility_id: $scope.m3Accounting.hotelCode,
-                selected_reports: $scope.m3Accounting.selected_reports,
-                room_revenue_only: $scope.m3Accounting.roomRevenueOnly
+                integration: $scope.integration.toLowerCase(),
+                settings: {
+                    enabled: $scope.config.enabled,
+                    emails: $scope.config.emails,
+                    facility_id: $scope.config.facility_id,
+                    selected_reports: $scope.config.selected_reports,
+                    room_revenue_only: $scope.config.room_revenue_only
+                }
             },
-            successCallBack: successCallBackOfSaveAfasSetup
-        };
-
-        $scope.callAPI(ADM3SetupSrv.saveConfig, options);
+            onSuccess: function() {
+                $scope.errorMessage = '';
+                $scope.successMessage = 'SUCCESS: Settings Updated!';
+            }
+        });
     };
 
     /**
@@ -111,10 +121,10 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
         var chosenAvailableReportValues = [];
 
         _.each($scope.chosenAvailableReports, function(reportIndex) {
-            chosenAvailableReportValues.push($scope.m3Accounting.available_reports[reportIndex]);
+            chosenAvailableReportValues.push($scope.config.available_reports[reportIndex]);
         });
-        $scope.m3Accounting.selected_reports = $scope.m3Accounting.selected_reports.concat(chosenAvailableReportValues);
-        $scope.m3Accounting.available_reports = _.difference($scope.m3Accounting.available_reports, chosenAvailableReportValues);
+        $scope.config.selected_reports = $scope.config.selected_reports.concat(chosenAvailableReportValues);
+        $scope.config.available_reports = _.difference($scope.config.available_reports, chosenAvailableReportValues);
 
         resetChosenReports();
     };
@@ -126,10 +136,10 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
         var chosenSelectedReportValues = [];
 
         _.each($scope.chosenSelectedReports, function(reportIndex) {
-            chosenSelectedReportValues.push($scope.m3Accounting.selected_reports[reportIndex]);
+            chosenSelectedReportValues.push($scope.config.selected_reports[reportIndex]);
         });
-        $scope.m3Accounting.available_reports = $scope.m3Accounting.available_reports.concat(chosenSelectedReportValues);
-        $scope.m3Accounting.selected_reports = _.difference($scope.m3Accounting.selected_reports, chosenSelectedReportValues);
+        $scope.config.available_reports = $scope.config.available_reports.concat(chosenSelectedReportValues);
+        $scope.config.selected_reports = _.difference($scope.config.selected_reports, chosenSelectedReportValues);
 
         resetChosenReports();
     };
@@ -138,8 +148,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      * Move all reports to the selected column
      */
     $scope.selectAll = function() {
-        $scope.m3Accounting.selected_reports = $scope.m3Accounting.selected_reports.concat($scope.m3Accounting.available_reports);
-        $scope.m3Accounting.available_reports = [];
+        $scope.config.selected_reports = $scope.config.selected_reports.concat($scope.config.available_reports);
+        $scope.config.available_reports = [];
         resetChosenReports();
     };
 
@@ -147,22 +157,9 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      * Move all reports to the available column
      */
     $scope.unSelectAll = function() {
-        $scope.m3Accounting.available_reports = $scope.m3Accounting.available_reports.concat($scope.m3Accounting.selected_reports);
-        $scope.m3Accounting.selected_reports = [];
+        $scope.config.available_reports = $scope.config.available_reports.concat($scope.config.selected_reports);
+        $scope.config.selected_reports = [];
         resetChosenReports();
-    };
-
-    $scope.exportData = function() {
-      $scope.callAPI(ADM3SetupSrv.sync, {
-         params: {
-            from_date: $filter('date')($scope.m3Accounting.fromDate, 'yyyy-MM-dd'),
-            to_date: $filter('date')($scope.m3Accounting.toDate, 'yyyy-MM-dd')
-         },
-         onSuccess: function () {
-             $scope.errorMessage = '';
-             $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
-         }
-       });
     };
 
     /**
@@ -170,13 +167,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
      * @return {undefiend}
      */
     var initializeMe = (function() {
-        $scope.m3Accounting = {
-            enabled: m3AccountingSetupValues.enabled,
-            emails: m3AccountingSetupValues.emails,
-            hotelCode: m3AccountingSetupValues.facility_id,
-            available_reports: m3AccountingSetupValues.available_reports,
-            selected_reports: m3AccountingSetupValues.selected_reports || [],
-            roomRevenueOnly: m3AccountingSetupValues.room_revenue_only
-        };
+        config.selected_reports = JSON.parse(config.selected_reports);
+        config.available_reports = JSON.parse(config.available_reports) || [];
+        $scope.config = config;
     }());
 }]);

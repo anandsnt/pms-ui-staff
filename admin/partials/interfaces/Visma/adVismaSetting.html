@@ -18,20 +18,18 @@
             <h3>API Access Configuration</h3>
         </div>
         <fieldset class="holder right">
-            <ad-textbox inputtype="text" value="config.endpoint" label="{{'ACCESS_URL'| translate}}"
-                styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.endpoint"
+                label="{{'ACCESS_URL'| translate}}" styleclass="full-width"></ad-textbox>
             <ad-textbox inputtype="text" value="config.settling_account" label="Settling Account (eg: 9999.XXXX)"
                 styleclass="full-width"></ad-textbox>
         </fieldset>
     </fieldset>
 
     <div class="actions float">
-        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()"
-            translate>
+        <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
             CANCEL
         </button>
-        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()"
-            translate>
+        <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveSetup()" translate>
             SAVE_CHANGES
         </button>
     </div>

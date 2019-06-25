@@ -1,8 +1,8 @@
 angular.module('sntRover').service('RVNightlyDiarySrv',
     ['$q',
-    'BaseWebSrvV2',
+    'sntBaseWebSrv',
     '$rootScope',
-    function($q, BaseWebSrvV2, $rootScope) {
+    function($q, sntBaseWebSrv, $rootScope) {
 
         var that = this;
 
@@ -23,7 +23,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/room_list';
 
-            BaseWebSrvV2.postJSON(url, data).then(function(response) {
+            sntBaseWebSrv.postJSON(url, data).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);
@@ -41,12 +41,12 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(), dateArray = [];
             var url = '/api/nightly_diary/date_list';
 
-            var paramsToApi = {};
+            var paramsToApi = {}, responseObj = {};
 
             paramsToApi.start_date = data.start_date;
             paramsToApi.no_of_days = data.no_of_days;
 
-            BaseWebSrvV2.getJSON(url, paramsToApi).then(function(response) {
+            sntBaseWebSrv.getJSON(url, paramsToApi).then(function(response) {
                 angular.forEach(response.dates, function(item) {
                     var dateObj = tzIndependentDate(item);
                     var isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6) ? true : false;
@@ -57,7 +57,13 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
 
                     dateArray.push(itemObj);
                 });
-                deferred.resolve(dateArray);
+                responseObj = {
+                    dates: dateArray,
+                    hotelCheckinTime: response.hotel_checkin_time,
+                    hotelCheckoutTime: response.hotel_checkout_time
+                };
+                
+                deferred.resolve(responseObj);
             }, function(error) {
                 deferred.reject(error);
             });
@@ -82,7 +88,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             paramsToApi.selected_room_type_ids = data.selected_room_type_ids;
             paramsToApi.selected_floor_ids = data.selected_floor_ids;
 
-            BaseWebSrvV2.postJSON(url, paramsToApi).then(function(response) {
+            sntBaseWebSrv.postJSON(url, paramsToApi).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);
@@ -104,7 +110,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             };
             var deferred = $q.defer ();
 
-            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            sntBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
@@ -121,7 +127,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var url = '/api/nightly_diary/validate_stay_change',
                 deferred = $q.defer ();
 
-            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            sntBaseWebSrv.getJSON(url, params).then(function(data) {
                 deferred.resolve(data.result);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
@@ -145,7 +151,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             };
             var deferred = $q.defer ();
 
-            BaseWebSrvV2.postJSON(url, postData).then(function(data) {
+            sntBaseWebSrv.postJSON(url, postData).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
@@ -197,7 +203,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
                 url = '/api/nightly_diary/unassigned_reservations',
                 businessDate = $rootScope.businessDate;
 
-            BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            sntBaseWebSrv.getJSON(url, params).then(function(data) {
                 angular.forEach(data.reservations, function(item) {
                     item.statusClass = item.arrival_date === businessDate ? 'check-in' : 'no-status';
                 });
@@ -217,7 +223,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/retrieve_available_rooms';
 
-            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data.data);
             }, function(error) {
                 deferred.reject(error);
@@ -234,8 +240,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/availability';
 
-            BaseWebSrvV2.postJSON(url, params).then(function(data) {
-                deferred.resolve(data.rooms);
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
                 }, function(error) {
                 deferred.reject(error);
             });
@@ -251,7 +257,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/staff/reservation/modify_reservation';
 
-            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data.data);
             }, function(error) {
                 deferred.reject(error);
@@ -268,7 +274,7 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/available_time_slots';
 
-            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error);
@@ -285,10 +291,25 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(),
                 url = '/api/reservations/' + params.id + '/unassign_room';
 
-            BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        /*
+         *  Get prefrences of a reservation for filter
+         */
+        this.getPreferences = function(param) {
+            var deferred = $q.defer(),
+                url =  '/staff/preferences/room_assignment.json';
+
+            sntBaseWebSrv.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
             });
             return deferred.promise;
         };

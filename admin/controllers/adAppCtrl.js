@@ -135,8 +135,7 @@ admin.controller('ADAppCtrl', [
                             title: 'MENU_CREATE_RESERVATION',
                             action: 'rover.reservation.search',
                             menuIndex: "createReservation",
-                            standAlone: true,
-                            hidden: ($rootScope.isPmsProductionEnv && $rootScope.hotelDiaryConfig.mode === 'FULL')
+                            standAlone: true
                         }, {
                             title: 'MENU_ROOM_DIARY',
                             action: 'rover.diary',
@@ -827,6 +826,8 @@ admin.controller('ADAppCtrl', [
                 mode: data.hourly_availability_calculation,
                 isDiaryMergeEnabled: data.is_diary_merge_enabled
             };
+
+            $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
 
             setupLeftMenu();
         };

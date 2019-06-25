@@ -97,7 +97,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'kinsley': 'Hotel Kinsley',
             'zurzacheroff': 'Hotel Zurzacherhof',
             'asbury': 'The Asbury',
-            'manchebo': 'Manchebo Beach Resort'
+            'manchebo': 'Manchebo Beach Resort',
+            'seacrest': 'Seacrest Hotel V2'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -128,6 +129,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     var hotelTheme = _.findWhere(response.themes, {
                         id: response.existing_email_template_theme
                     });
+
+                    // if theme isn't set, choose Stayntouch theme and proceed
+                    if (!hotelTheme) {
+                        hotelTheme = _.findWhere(response.themes, {
+                            name: 'Stayntouch'
+                        });
+                    }
 
                     if (hotelTheme && hotelTheme.name) {
                         theme = hotelTheme.name.toLowerCase();

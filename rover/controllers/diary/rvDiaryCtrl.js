@@ -587,6 +587,8 @@ angular.module('sntRover')
                             success,
                             apiOptions;
 
+                        params.reservation_id = options.reservationId;
+
                         success = function(data, successParams) {
 					// CICO-24243: Set top filter values to selected reservation attributes
                             if (data.length) {
@@ -738,9 +740,10 @@ angular.module('sntRover')
 	    		props = $scope.gridProps,
 	    		edit = props.edit,
 	    		selectedTypeCount;
-
-        $scope.showSaveChangesAfterEditing = false;
-			
+            $scope.hideRoomUnAssignButton = row_item_data.reservation_status === 'departed'
+                                            || row_item_data.reservation_status === 'inhouse'
+                                            || row_item_data.reservation_status === 'check-out';
+            $scope.showSaveChangesAfterEditing = false;
 	    	if (!$scope.isAvailable(undefined, row_item_data)) {
 		    	switch (command_message) {
 
@@ -1099,6 +1102,7 @@ angular.module('sntRover')
             var showOrHideSaveChangesButtonForHourly = function (originalItem, newArrival, newDeparture, isMoveRoomAction) {
                 if ( originalItem.arrival !== newArrival || originalItem.departure !== newDeparture || isMoveRoomAction ) {
                     $scope.showSaveChangesAfterEditing = true;
+                    $scope.hideRoomUnAssignButton = true;
                 }
                 else {
                     $scope.showSaveChangesAfterEditing = false;
@@ -1115,7 +1119,7 @@ angular.module('sntRover')
         isMoveRoomAction = successParams.params.room_id !== oItem.room_id;
 				
 			// To show save change button ,only if there is change in time
-        showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
+            showOrHideSaveChangesButtonForHourly(oItem, props.currentResizeItem.arrival, props.currentResizeItem.departure, isMoveRoomAction);
 
 			// if API returns that move is not allowed then we have to revert back
 	    	if (!avData.is_available) {
@@ -2681,22 +2685,21 @@ angular.module('sntRover')
      */
             $scope.hideToggleMenu = function() {
         
-        /**
-         *  A = settings.day_use_enabled (true / false)
-         *  B = settings.hourly_rates_for_day_use_enabled (true / false)
-         *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
-         *
-         *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
-         *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
-         *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
-         *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
-         */
+                /**
+                 *  A = settings.day_use_enabled (true / false)
+                 *  B = settings.hourly_rates_for_day_use_enabled (true / false)
+                 *  C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+                 *
+                 *  A == false => 1. Default with nightly Diary. No navigation to Hourly ( we can hide the toggle from UI ).
+                 *  A == true && B == false => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+                 *  A == true && B == true && C == 'FULL' => 4. Default with Hourly Diary. Able to view Nightly ( we can show the toggle from UI ).
+                 *  A == true && B == true && C == 'LIMITED' => 3. Default with nightly Diary. Able to view Hourly ( we can show the toggle from UI ).
+                 */
 
                 var hideToggleMenu = false;
 
-        // For Hourly hotels we are hiding the Navigations to Nightly Diary.
-        // CICO-64919 : Hiding Navigation to Night Diary for FULL hotels.
-                if ( $rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL' ) {
+                // For Hourly hotels we are hiding the Navigations to Nightly Diary.
+                if ( $rootScope.isHourlyRateOn ) {
                     hideToggleMenu = true;
                 }
 

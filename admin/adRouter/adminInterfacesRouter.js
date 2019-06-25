@@ -360,12 +360,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.m3BackOfficeExport', {
-        templateUrl: '/assets/partials/interfaces/M3BackOffice/ADM3Configuration.html',
-        controller: 'ADM3BackOfficeCtrl',
-        url: '/backoffice/m3/setup',
+        templateUrl: '/assets/partials/interfaces/m3as/adM3as.html',
+        controller: 'ADM3asCtrl',
+        url: '/m3as/setup',
         resolve: {
-            m3AccountingSetupValues: ['ADM3SetupSrv', function(ADM3SetupSrv) {
-                return ADM3SetupSrv.getConfig();
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('m3as');
             }]
         }
     });
@@ -480,12 +480,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.sitemindersSetup', {
-        templateUrl: '/assets/partials/SiteminderSetup/adSiteminderSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 2,
-        interface_id: 'SITEMINDER',
-        simple_name: 'Siteminder',
-        url: '/siteminderSetup'
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'siteminder';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('siteminder');
+            }]
+        }
     });
 
     $stateProvider.state('admin.givexSetup', {
@@ -579,20 +584,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.easiSetup', {
-        templateUrl: '/assets/partials/interfaces/Easi/adEasiSetup.html',
+        templateUrl: '/assets/partials/interfaces/easi/adEasi.html',
         controller: 'adEasiCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'easi';
-        }],
+        url: '/easi/setup/',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('easi');
+                // return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
             }],
             chargeGroups: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                // use mappings/additional_setting?
                 return adInterfacesCommonConfigSrv.fetchChargeGroups();
             }],
             taxChargeCodes: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                // use mappings/additional_setting?
                 return adInterfacesCommonConfigSrv.fetchTaxChargeCodes();
             }]
         }
@@ -841,6 +846,22 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             config: [
                 'adInterfacesSrv', function(adInterfacesSrv) {
                     return adInterfacesSrv.getSettings('datev');
+                }]
+        }
+    });
+
+    $stateProvider.state('admin.igelSetup', {
+        templateUrl: '/assets/partials/interfaces/igel/adIgel.html',
+        controller: 'adIgelCtrl',
+        url: '/igel',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('igel');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('igel');
                 }]
         }
     });
