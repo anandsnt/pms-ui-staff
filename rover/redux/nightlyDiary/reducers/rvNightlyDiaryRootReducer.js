@@ -23,7 +23,8 @@ const nightlyDiaryRootReducer = (state, action) => (
         dateFormat: state.dateFormat,
         newArrivalPosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newArrivalPosition : '',
         newDeparturePosition: (action.type === 'EXTEND_SHORTEN_RESERVATION') ? action.newDeparturePosition : '',
-        isPmsProductionEnvironment: state.isPmsProductionEnvironment
+        isPmsProductionEnvironment: state.isPmsProductionEnvironment,
+        diaryMode: state.diaryMode
     }
 );
 
