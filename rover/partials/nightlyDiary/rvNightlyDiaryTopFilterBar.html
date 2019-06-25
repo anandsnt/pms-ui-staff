@@ -32,7 +32,7 @@
     
     <!-- Reservations or Available Slots View -->
     <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive, 'overlay': disableAvlToggle() }"> 
-        <div class="switch-button" ng-class="{'on' : !diaryData.isBookRoomViewActive }">
+        <div class="switch-button" ng-class="{'on' : !diaryData.showBookFilterPanel }">
             <input id="diary-availability" type="checkbox" checked />
             <label class="data-off">
                 <span class="value">View</span>
