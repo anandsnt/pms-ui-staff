@@ -10,11 +10,11 @@ sntRover.controller('RVNightlyDiaryTopFilterDatePickerController', ['$scope', '$
 	else if ($scope.clickedFrom === 'BOOK_FILTER_ARRIVAL') {
 
         if ($rootScope.businessDate > $scope.diaryData.fromDate) {
-        	$scope.date = $rootScope.businessDate;
+            $scope.date = $rootScope.businessDate;
             minDateSelected = $rootScope.businessDate;
         }
         else {
-        	$scope.date = $scope.diaryData.bookRoomViewFilter.fromDate;
+            $scope.date = $scope.diaryData.bookRoomViewFilter.fromDate;
             minDateSelected = $scope.diaryData.fromDate;
         }
 
@@ -34,7 +34,7 @@ sntRover.controller('RVNightlyDiaryTopFilterDatePickerController', ['$scope', '$
 	else if ($scope.clickedFrom === 'BOOK_FILTER_DEPARTURE') {
 		$scope.date = $scope.diaryData.bookRoomViewFilter.toDate;
 		minDateSelected = $scope.diaryData.bookRoomViewFilter.fromDate;
-		maxDateSelected = moment(tzIndependentDate($rootScope.businessDate)).add( MAX_NIGHTS_TO_ALLOW_BOOK , 'days')
+		maxDateSelected = moment(tzIndependentDate($rootScope.businessDate)).add( MAX_NIGHTS_TO_ALLOW_BOOK, 'days')
                 .format($rootScope.momentFormatForAPI);
 	}
 
