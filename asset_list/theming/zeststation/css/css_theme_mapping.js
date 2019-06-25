@@ -80,7 +80,8 @@ module.exports = {
             'bosville': [themeCSSRoot + 'bosville.less'],
             'kinsley': [themeCSSRoot + 'kinsley.less'],
             'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less'],
-            'asbury': [themeCSSRoot + 'asbury.less']
+            'asbury': [themeCSSRoot + 'asbury.less'],
+            'manchebo': [themeCSSRoot + 'manchebo.less']
         };
     }
 };
