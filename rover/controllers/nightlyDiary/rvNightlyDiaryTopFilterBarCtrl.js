@@ -90,10 +90,7 @@ angular.module('sntRover')
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         },
         initBookFilterData = function() {
-            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                .format($rootScope.momentFormatForAPI);
-
-            if ($scope.diaryData.fromDate === businessDateMinusOne) {
+            if ($rootScope.businessDate > $scope.diaryData.fromDate) {
                 $scope.diaryData.bookRoomViewFilter.fromDate = $rootScope.businessDate;
             }
             else {
