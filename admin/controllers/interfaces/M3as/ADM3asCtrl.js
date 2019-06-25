@@ -197,8 +197,9 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
         // if selected_reports returned from IFC, remove them from available_reports
         if (config.selected_reports) {
             config.selected_reports = JSON.parse(config.selected_reports);
-            for(i = 0; i < config.selected_reports.length; i++) {
-                var idx = config.available_reports.indexOf(config.selected_reports[i])
+            for (i = 0; i < config.selected_reports.length; i++) {
+                var idx = config.available_reports.indexOf(config.selected_reports[i]);
+
                 if (idx >= 0) {
                     config.available_reports.splice(idx, 1);
                 }
