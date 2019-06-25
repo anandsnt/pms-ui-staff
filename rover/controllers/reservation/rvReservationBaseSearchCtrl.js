@@ -100,8 +100,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0' + hh : hh;
             $scope.reservationData.checkinTime.mm = mm || '';
             $scope.reservationData.checkinTime.ampm = ampm || '';
-
-            $scope.setDepartureHours();
         };
 
         $scope.mapToCheckoutTime = function() {
