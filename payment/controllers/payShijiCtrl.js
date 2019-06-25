@@ -66,6 +66,41 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			});
 		};
 
+		self.savePaymentDetails = (apiParams) => {
+			let onSaveFailure = (errorMessage) => {
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+			};
+
+			sntActivity.start('SAVE_CC_PAYMENT');
+			
+			sntPaymentSrv.savePaymentDetails(apiParams).then(
+				response => {
+					if (response.status === 'success') {
+						onAddCardSuccess(response);
+					} else {
+						onSaveFailure(response.errors);
+					}
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				},
+				errorMessage => {
+					onSaveFailure(errorMessage);
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				});
+		};
+
+		self.proceedWithPaymentData = (apiParams) => {
+			let params = {
+				'paymentData': {
+					'apiParams': apiParams,
+					'cardDisplayData': {
+						'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
+					}
+				}
+			};
+
+			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
+		};
+
 		self.tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
@@ -86,36 +121,10 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
-			let onSaveFailure = (errorMessage) => {
-				$scope.$emit('PAYMENT_FAILED', errorMessage);
-			};
-
-			sntActivity.start('SAVE_CC_PAYMENT');
 			if (isAddCardAction) {
-				sntPaymentSrv.savePaymentDetails(apiParams).then(
-					response => {
-						if (response.status === 'success') {
-							onAddCardSuccess(response);
-						} else {
-							onSaveFailure(response.errors);
-						}
-						sntActivity.stop('SAVE_CC_PAYMENT');
-					},
-					errorMessage => {
-						onSaveFailure(errorMessage);
-						sntActivity.stop('SAVE_CC_PAYMENT');
-					});
+				self.savePaymentDetails(apiParams);
 			} else {
-				let params = {
-					'paymentData': {
-						'apiParams': apiParams,
-						'cardDisplayData': {
-							'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
-						}
-					}
-				};
-
-				$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
+				self.proceedWithPaymentData(apiParams);
 			}
 		};
 
