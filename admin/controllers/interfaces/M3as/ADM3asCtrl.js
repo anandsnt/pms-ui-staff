@@ -167,21 +167,45 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
      * @return {undefiend}
      */
     var initializeMe = (function() {
-        // if IFC returns no reports settings, set all as available_reports
-        if (config.selected_reports && config.available_reports) {
+        config.available_reports = [
+            'financial_journal_charge_codes',
+            'financial_journal_rates',
+            'financial_journal_room_types',
+            'financial_journal_market_segments',
+            'reservation_count_rates',
+            'reservation_count_room_types',
+            'reservation_count_market_segments',
+            'rooms_occupied',
+            'deposit_opening_balance',
+            'deposit_closing_balance',
+            'ar_opening_balance',
+            'ar_closing_balance',
+            'rooms_arrival',
+            'rooms_departure',
+            'rooms_ooo',
+            'rooms_comp',
+            'guest_opening_balance',
+            'guest_closing_balance',
+            'rooms_oos',
+            'rooms_occupancy',
+            'financial_journal_charge_codes_no_tax',
+            'financial_journal_rates_no_tax',
+            'financial_journal_room_types_no_tax',
+            'financial_journal_market_segments_no_tax'
+        ];
+
+        // if selected_reports returned from IFC, remove them from available_reports
+        if (config.selected_reports) {
             config.selected_reports = JSON.parse(config.selected_reports);
-            config.available_reports = JSON.parse(config.available_reports);
+            for(i = 0; i < config.selected_reports.length; i++) {
+                var idx = config.available_reports.indexOf(config.selected_reports[i])
+                if (idx >= 0) {
+                    config.available_reports.splice(idx, 1);
+                }
+            }
         } else {
+        // if no selected_reports returned from IFC, initialize as empty array
             config.selected_reports = [];
-            config.available_reports = ['financial_journal_charge_codes', 'financial_journal_rates',
-                                         'financial_journal_room_types', 'financial_journal_market_segments',
-                                         'reservation_count_rates', 'reservation_count_room_types',
-                                         'reservation_count_market_segments', 'rooms_occupied',
-                                         'rooms_arrival', 'rooms_departure', 'rooms_ooo', 'rooms_comp', 'guest_opening_balance', 'guest_closing_balance',
-                                         'deposit_opening_balance', 'deposit_closing_balance', 'ar_opening_balance', 'ar_closing_balance',
-                                         'rooms_oos', 'rooms_occupancy', 'financial_journal_charge_codes_no_tax',
-                                         'financial_journal_rates_no_tax', 'financial_journal_room_types_no_tax',
-                                         'financial_journal_market_segments_no_tax'];
         }
         $scope.config = config;
     }());
