@@ -29,7 +29,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5,
             isFromNightlyDiary = $stateParams.fromState === "NIGHTLY_DIARY",
-            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled,
             isRoomTypeChangePopupShown = false;
 
         $scope.activeCodes = activeCodes.promotions;
@@ -225,11 +224,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.tabs[0].roomName = $stateParams.selectedRoomNo;
             $scope.reservationData.rooms[0].roomName = $stateParams.selectedRoomNo;
 
-            if (!isNightlyHotel) {
-                $scope.reservationData.tabs[0].checkinTimeObj = $stateParams.selectedArrivalTime;
-                $scope.reservationData.tabs[0].checkoutTimeObj = $stateParams.selectedDepartureTime;
-                $scope.reservationData.numNights = $stateParams.numNights;
-            }
+            $scope.reservationData.tabs[0].checkinTime = $stateParams.selectedArrivalTime;
+            $scope.reservationData.tabs[0].checkoutTime = $stateParams.selectedDepartureTime;
+            $scope.reservationData.numNights = $stateParams.numNights;
         },
         resetRoomDetailsIfInvalid = function () {
             $scope.reservationData.tabs[0].room_id = null;
