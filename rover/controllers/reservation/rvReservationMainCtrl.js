@@ -1528,7 +1528,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
                 var extractHhMmAmPm = function( time ) {
                     return {
-                        'ampm': time.split(' ')[1],
+                        'ampm': parseInt(time.split(' ')[0]) > 12 ? 'PM' : 'AM',
                         'hh': time.split(' ')[0].split(':')[0],
                         'mm': time.split(' ')[0].split(':')[1]
                     };
