@@ -512,7 +512,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             guestId: guestId,
             reservationId: $scope.reservationData.reservation_card.reservation_id,
             confirmationNo: $scope.reservationData.reservation_card.confirmation_num,
-            fromStaycard: true
+			fromStaycard: true,
+			isFromMenuGuest: true
         });
 			
 	};
@@ -667,7 +668,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			firstName: $scope.searchData.firstName,
 			lastName: $scope.searchData.lastName,
 			confirmationNo: $scope.reservationData.reservation_card.confirmation_num,
-			guestType: $scope.searchData.guestType
+			guestType: $scope.searchData.guestType,
+			isFromMenuGuest: true
 		});
 	};
 

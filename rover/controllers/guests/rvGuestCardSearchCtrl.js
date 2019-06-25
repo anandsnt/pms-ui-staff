@@ -121,7 +121,9 @@ angular.module('sntRover').controller('guestCardSearchController',
 
         // Click on add new btn navigates to an empty guest card page
         $scope.addNewCard = function() {
-            $state.go('rover.guest.details');
+            $state.go('rover.guest.details', {
+                isFromMenuGuest: true
+            });
         }; 
 
         /**
