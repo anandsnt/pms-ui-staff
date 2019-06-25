@@ -67,7 +67,7 @@
                     <div class="file-upload with-preview large-preview cms-item-image-picker">
                         <span class="input">{{fileName}}</span>
                         <input type="file" name="item-image" ng-model="singleAddon.addon_image" app-filereader id="item-image" />
-                        <a id="deleteLogo" class="icons icon-delete large-icon delete_item ng-scope" ng-if="singleAddon.addon_image != null && singleAddon.addon_image != ''" ng-click="deleteIcon()"></a>
+                        <a id="deleteLogo" class="icons icon-delete large-icon delete_item ng-scope" ng-if="singleAddon.addon_image != null && singleAddon.addon_image != ''" style="margin: 0px auto;" ng-click="deleteIcon()"></a>
                         <button type="button" ng-if="singleAddon.addon_image != null && singleAddon.addon_image != ''" class="button brand-colors" translate>REPLACE_IMAGE_LABEL</button>
                         <button type="button" ng-if="singleAddon.addon_image == null || singleAddon.addon_image == ''" class="button brand-colors" translate>ADD_IMAGE_LABEL</button>
                     </div>
