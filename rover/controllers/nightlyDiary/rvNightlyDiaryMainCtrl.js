@@ -102,6 +102,7 @@ angular.module('sntRover')
                         hideRoomType: true,
                         hideFloorList: true,
                         isBookRoomViewActive: false,
+                        showBookFilterPanel: false,
                         bookRoomViewFilter: {
                             fromDate: null,
                             toDate: null,
