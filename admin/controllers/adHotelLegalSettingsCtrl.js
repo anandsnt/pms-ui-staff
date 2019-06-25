@@ -37,7 +37,9 @@ admin.controller('adHotelLegalSettingsController',
 			var unwantedKeys = [];
 
 			if (screen === 'financial') {
-				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'is_police_report_enabled'];
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number', 'is_police_report_enabled',
+								'first_reg_card_number', 'next_ar_invoice_number', 'austrian_reg_card_enabled', 'reg_card_number_sequence_enabled',
+								'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled'];
 				if (!$scope.legalSettings.is_print_invoice_enabled) {
 					if (!$scope.legalSettings.is_print_folio_enabled) {
 						$scope.legalSettings.is_print_folio_enabled = !$scope.legalSettings.is_print_folio_enabled;
@@ -51,18 +53,20 @@ admin.controller('adHotelLegalSettingsController',
 				unwantedKeys = ['is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 
 								'no_reprint_reemail_invoice', 'folio_no_prefix', 'first_folio_number', 'is_police_report_enabled', 'is_copy_counter', 'is_print_invoice_enabled', 
 								'is_void_bill_enabled', 'no_of_original_emails', 'no_of_original_invoices', 
-								'austrian_reg_card_enabled', 'reg_card_number_sequence_enabled'];
+								'austrian_reg_card_enabled', 'reg_card_number_sequence_enabled', 'first_reg_card_number',
+								'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled'];
 			} else if (screen === 'report') {
 				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
 								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
 								'first_folio_number', 'is_copy_counter', 'is_print_invoice_enabled', 
 								'is_void_bill_enabled', 'no_of_original_emails', 'no_of_original_invoices', 'austrian_reg_card_enabled',
-								'austrian_reg_card_enabled'];
+								'austrian_reg_card_enabled', 'first_reg_card_number', 'next_ar_invoice_number'];
 			} else if (screen === 'stationary') {
 				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
 								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
 								'first_folio_number', 'is_copy_counter', 'is_print_invoice_enabled', 'is_void_bill_enabled', 'no_of_original_emails', 
-								'no_of_original_invoices', 'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled'];
+								'no_of_original_invoices', 'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled',
+								'next_ar_invoice_number'];
 			}
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);

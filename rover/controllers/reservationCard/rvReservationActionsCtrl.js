@@ -1468,12 +1468,7 @@ sntRover.controller('reservationActionsController', [
 							} else {
 								hkStatus = 1;
 							}
-						} else {
-                            if ($scope.reservationData.reservation_card.room_status === 'NOTREADY') {
-                                ngDialog.close();
-                                return;
-                            }
-                        }
+                        } 
                 
 						var requestData = {
 								room_no: $scope.reservationData.reservation_card.room_number,

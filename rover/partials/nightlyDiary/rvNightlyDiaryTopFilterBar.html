@@ -29,9 +29,24 @@
             </label>
         </div>
     </div>
+    
+    <!-- Reservations or Available Slots View -->
+    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'overlay': disableAvlToggle() }"> 
+        <div class="switch-button" ng-class="{'on' : !diaryData.showBookFilterPanel }">
+            <input id="diary-availability" type="checkbox" checked />
+            <label class="data-off">
+                <span class="value">View</span>
+                <span class="switch-icon">Book</span>
+            </label>
+            <label class="data-on">
+                <span class="switch-icon">View</span>
+                <span class="value">Book</span>
+            </label>
+        </div>
+    </div>
 
     <!-- Set start date -->
-    <div class="entry date">
+    <div class="entry date" ng-hide="diaryData.showBookFilterPanel">
         <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': disableLeftDateShift() }" ng-click="clickedDateLeftShift()">
             <span class="icons icon-double-arrow black"></span>
         </button>
@@ -44,29 +59,13 @@
         </button>
     </div>
 
-    <!-- Reservations or Available Slots View -->
-    <div class="entry switch switch-available" ng-click="toggleBookedOrAvailable()" ng-class="{'show-notice': diaryData.isBookRoomViewActive, 'overlay': disableAvlToggle() }"> 
-        <div class="switch-button" ng-class="{'on' : !diaryData.isBookRoomViewActive }"> <!-- Remove class 'on' when L48 is not checked -->
-            <input id="diary-availability" value="" type="checkbox" checked /> <!-- Showing existing reservations when checked. Showing Available slots when not checked -->
-            <label class="data-off">
-                <span class="value" data-long="Reserved">Res.</span>
-                <span class="switch-icon" data-long="Available">Avl.</span>
-            </label>
-            <label class="data-on">
-                <span class="switch-icon" data-long="Reserved">Res.</span>
-                <span class="value" data-long="Available">Avl.</span>
-            </label>
-        </div>
-        <div class="notice" ng-show="diaryData.isBookRoomViewActive">
-            Select Room and Arrival Date
-        </div>
-    </div>
-
     <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryFilterbarSearch.html'" include-replace></div>
 
+    <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryBookRoomFilter.html'" include-replace></div>
+
     <!-- Show / Hide Filters -->
-    <div class="entry filters" ng-class="{'show-one': diaryData.isBookRoomViewActive }">
-        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.isBookRoomViewActive}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
+    <div class="entry filters" ng-class="{'show-one': diaryData.showBookFilterPanel }">
+        <button type="button" class="button white with-icon only-icon" ng-class="{'active' : diaryData.rightFilter === 'UNASSIGNED_RESERVATION', 'hidden': diaryData.showBookFilterPanel}" ng-click="toggleFilter('UNASSIGNED_RESERVATION')" >
             <span class="count">{{diaryData.unassignedReservationList.reservations.length}}</span>
             <span class="icons icon-filter-room" ng-class="{'active': diaryData.rightFilter === 'UNASSIGNED_RESERVATION' }"></span>
         </button>
