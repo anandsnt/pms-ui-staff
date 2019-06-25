@@ -9,7 +9,7 @@
                     <div class="entry" style="width:200px;">
                         <div class="select">
                             <select ng-model="selectedScope"
-                                    ng-change="changeScope()"
+                                    ng-change="onScopeChange()"
                                     ng-options="scope for scope in scopesList" style="width:200px;">
                             </select>
                         </div>
@@ -48,6 +48,8 @@
                         CANCEL
                     </button>
                     <button type="button" like-type="common" id="update" class="button ng-binding green"
+                            ng-disabled="state.toggleStatus === feature.enabled"
+                            ng-class="{'grey' : state.toggleStatus === feature.enabled}"
                             ng-click="toggleFeature()" translate>
                         SAVE_CHANGES
                     </button>
