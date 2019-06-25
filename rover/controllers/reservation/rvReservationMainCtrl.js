@@ -30,9 +30,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.setTitle(title);
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
-            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled;
-
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
         // setting the main header of the screen
         $scope.heading = "Reservations";
@@ -1530,7 +1528,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
                 var extractHhMmAmPm = function( time ) {
                     return {
-                        'ampm': time.split(' ')[1],
+                        'ampm': parseInt(time.split(' ')[0]) > 12 ? 'PM' : 'AM',
                         'hh': time.split(' ')[0].split(':')[0],
                         'mm': time.split(' ')[0].split(':')[1]
                     };
@@ -1638,12 +1636,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 } else {
                     // CICO-63737 : Set Arrival, dep time while booking.
-                    if (!isNightlyHotel && $scope.reservationData.isFromNightlyDiary) {
-                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
-                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
+                    if ($scope.reservationData.isFromNightlyDiary) {
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTime;
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTime;
                         
-                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTimeObj['12']);
-                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTimeObj['12']);
+                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTime);
+                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTime);
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }

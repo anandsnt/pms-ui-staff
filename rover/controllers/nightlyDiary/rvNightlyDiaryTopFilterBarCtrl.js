@@ -90,20 +90,21 @@ angular.module('sntRover')
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         },
         initBookFilterData = function() {
-            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                .format($rootScope.momentFormatForAPI);
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
 
-            if ($scope.diaryData.fromDate === businessDateMinusOne) {
-                $scope.diaryData.bookRoomViewFilter.fromDate = $rootScope.businessDate;
+            if ($rootScope.businessDate > $scope.diaryData.fromDate) {
+                bookRoomViewFilter.fromDate = $rootScope.businessDate;
             }
             else {
-                $scope.diaryData.bookRoomViewFilter.fromDate = $scope.diaryData.fromDate;
+                bookRoomViewFilter.fromDate = $scope.diaryData.fromDate;
             }
-            $scope.diaryData.bookRoomViewFilter.toDate = moment(tzIndependentDate($scope.diaryData.bookRoomViewFilter.fromDate)).add(1, 'days')
+            bookRoomViewFilter.toDate = moment(tzIndependentDate(bookRoomViewFilter.fromDate)).add(1, 'days')
                 .format($rootScope.momentFormatForAPI);
 
-            $scope.diaryData.bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
-            $scope.diaryData.bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
+            bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
 
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
@@ -153,6 +154,9 @@ angular.module('sntRover')
                 // Handle 0 night scenario. Reset the time selections to '09:00 AM' & '05:00 PM'.
                 bookRoomViewFilter.arrivalTime = '09:00';
                 bookRoomViewFilter.departureTime = '17:00';
+                
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime);
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null);
             }
             else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
                 if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime) {
@@ -161,6 +165,8 @@ angular.module('sntRover')
                 if (bookRoomViewFilter.departureTime !== bookRoomViewFilter.hotelCheckoutTime) {
                     bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
                 }
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
             }
         });
         // Catching event from main controller, when API is completed.
