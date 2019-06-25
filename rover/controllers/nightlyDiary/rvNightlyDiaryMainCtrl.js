@@ -979,13 +979,6 @@ angular.module('sntRover')
                     mapCachedDataFromSrv();
                 }
 
-                // CICO-59170 : When coming back from RESERVATION_BASE_SEARCH screen
-                // Enable Avaialble Book slot mode.
-                if ($stateParams.origin === 'RESERVATION_BASE_SEARCH') {
-                    $scope.diaryData.isBookRoomViewActive = true;
-                    callbackForBookedOrAvailableListner();
-                }
-
                 // Initial State
                 var initialState = {
                     roomsList: roomsList.rooms,
