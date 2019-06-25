@@ -50,8 +50,8 @@
         <button type="button" class="button white with-icon only-icon" ng-class="{'overlay': disableLeftDateShift() }" ng-click="clickedDateLeftShift()">
             <span class="icons icon-double-arrow black"></span>
         </button>
-        <div class="entry-data" ng-click="clickedDatePicker()">
-            <input type="text" class="datepicker" value="" readonly />
+        <div class="entry-data" ng-click="clickedDatePicker('MAIN_FILTER')">
+            <input type="text" class="datepicker" readonly />
             <span class="date-range">{{ diaryData.fromDate | date: 'd MMM' }} - {{ diaryData.toDate | date: 'd MMM yyyy' }}</span>
         </div>
         <button type="button" class="button white with-icon only-icon" ng-click="clickedDateRightShift()">

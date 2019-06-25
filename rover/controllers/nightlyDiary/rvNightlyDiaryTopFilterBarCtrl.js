@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'ngDialog',
         'rvUtilSrv',
+        'rvPermissionSrv',
         function(
             $scope,
             $rootScope,
@@ -14,7 +15,8 @@ angular.module('sntRover')
             $stateParams,
             $filter,
             ngDialog,
-            rvUtilSrv
+            rvUtilSrv,
+            rvPermissionSrv
         ) {
 
         BaseCtrl.call(this, $scope);
@@ -310,6 +312,11 @@ angular.module('sntRover')
             return hideToggleMenu;
         };
 
+        // Flag CreateReservation permission
+        var hasCreateReservationPermission = function() {
+            return rvPermissionSrv.getPermissionValue('CREATE_RESERVATION');
+        };
+
         // CICO-63546 : Disable RES/AVL toggle -
         // While RES mode is active & diff bw/n businessDate and FromDate > 6.
         $scope.disableAvlToggle = function() {
@@ -317,7 +324,7 @@ angular.module('sntRover')
                 dateDiff = moment($rootScope.businessDate)
                             .diff(moment($scope.diaryData.fromDate), 'days');
 
-            if (!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) {
+            if ((!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) || !hasCreateReservationPermission()) {
                 isHideAvlToggle = true;
             }
 
