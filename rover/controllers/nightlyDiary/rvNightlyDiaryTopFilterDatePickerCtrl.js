@@ -1,22 +1,20 @@
 sntRover.controller('RVNightlyDiaryTopFilterDatePickerController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
 
 	var minDateSelected = '',
-		maxDateSelected = '';
+		maxDateSelected = '',
+		MAX_NIGHTS_TO_ALLOW_BOOK = 92;
 
 	if ($scope.clickedFrom === 'MAIN_FILTER') {
 		$scope.date = $scope.diaryData.fromDate;
 	}
 	else if ($scope.clickedFrom === 'BOOK_FILTER_ARRIVAL') {
-		$scope.date = $scope.diaryData.bookRoomViewFilter.fromDate;
 
-		// Logic to set minDateSelected.
-		var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                .format($rootScope.momentFormatForAPI);
-
-        if ($scope.diaryData.fromDate === businessDateMinusOne) {
+        if ($rootScope.businessDate > $scope.diaryData.fromDate) {
+            $scope.date = $rootScope.businessDate;
             minDateSelected = $rootScope.businessDate;
         }
         else {
+            $scope.date = $scope.diaryData.bookRoomViewFilter.fromDate;
             minDateSelected = $scope.diaryData.fromDate;
         }
 
@@ -36,6 +34,8 @@ sntRover.controller('RVNightlyDiaryTopFilterDatePickerController', ['$scope', '$
 	else if ($scope.clickedFrom === 'BOOK_FILTER_DEPARTURE') {
 		$scope.date = $scope.diaryData.bookRoomViewFilter.toDate;
 		minDateSelected = $scope.diaryData.bookRoomViewFilter.fromDate;
+		maxDateSelected = moment(tzIndependentDate($rootScope.businessDate)).add( MAX_NIGHTS_TO_ALLOW_BOOK, 'days')
+                .format($rootScope.momentFormatForAPI);
 	}
 
 	$scope.setUpData = function() {
