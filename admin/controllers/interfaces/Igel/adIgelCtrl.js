@@ -1,5 +1,5 @@
-admin.controller('adIgelCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingTypes',
-    function($scope, config, adInterfacesSrv, mappingTypes) {
+admin.controller('adIgelCtrl', ['$scope', 'config', 'paymentChargeCodes', 'adInterfacesSrv', 'mappingTypes',
+    function($scope, config, paymentChargeCodes, adInterfacesSrv, mappingTypes) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'IGEL';
@@ -12,7 +12,7 @@ admin.controller('adIgelCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingT
             $scope.config.enabled = !$scope.config.enabled;
         };
 
-        $scope.mappingTypes = ['charge_code', 'payment_code'];
+        $scope.mappingTypes = ['charge_code', 'payment_code_billing_account'];
 
         /**
          *
@@ -27,6 +27,7 @@ admin.controller('adIgelCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingT
          * @return {undefined}
          */
         $scope.saveSetup = function() {
+            $scope.config.credit_card_payment_charge_codes = _.pluck($scope.meta.selected_charge_codes, 'charge_code').join(',');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
                     settings: $scope.config,
@@ -51,6 +52,32 @@ admin.controller('adIgelCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingT
                 value: "MONTHLY"
               }
             ];
+        })();
+
+        /**
+         * Method to segregate the list of charge codes to selected and available groups
+         * @param {string} selectedPayments string returned
+         * @returns {undefined}
+         */
+        function initiateChargeCodesSelection(selectedPayments) {
+            selectedPayments = selectedPayments.split(',');
+
+            var selectedObjects = _.filter(paymentChargeCodes.data.charge_codes,
+                function(chargeCode) {return selectedPayments.indexOf(chargeCode.charge_code) > -1;});
+
+            $scope.meta = {
+                available_charge_codes: _.difference(paymentChargeCodes.data.charge_codes, selectedObjects),
+                selected_charge_codes: selectedObjects
+            };
+        }
+
+        /**
+         * Initialization stuffs
+         * @return {undefined}
+         */
+        (function() {
+            // default to empty string to mitigate null
+            initiateChargeCodesSelection(config['credit_card_payment_charge_codes'] || '');
         })();
     }
 ]);

@@ -182,10 +182,29 @@
 
                 &#arriving-time {
                     margin-right: 0;
-                    #pixel-to-percent > .width(400, 1230);
+                    #flexbox > .parent( row, separate-between, '', '' );
+                    #pixel-to-percent > .width(250, 640);
+                    .arrival-time,
+                    .departure-time {
+                        width: 100%;
+                    }
+
+                    .departure-time {
+                        margin-left: 20px;
+                    }
 
                     select { 
                         option { font-size: 16px; }
+                    }
+                }
+            }
+
+            &:not(.with-toggle) {
+                .entry {
+                    &#arriving-time {
+                        select { 
+                            font-size: 20px;
+                        }
                     }
                 }
             }
@@ -208,6 +227,10 @@
                                 text-align: center;
                             }
                         }
+                    }
+
+                    &#arriving-time {
+                        #pixel-to-percent > .width(400, 1230);
                     }
                 }
             }
