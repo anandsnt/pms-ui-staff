@@ -296,7 +296,10 @@
 				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
 					<label>Invoice Number Sequence</label>
 					<div class="select">
-					<select ng-disabled="{{isSequenceModChangeDisabled}}" ng-model="data.selected_mod_type_id" ng-options="mod_type.id as mod_type.value for mod_type in data.mod_types"></select>					
+						<select convert-to-number ng-model="data.selected_mod_type_id" class="placeholder" >
+							<option value=""> Select Invoice Number Sequence</option>
+							<option ng-repeat="mod_type in data.mod_types" value="{{mod_type.id}}" ng-selected="mod_type.id===data.selected_mod_type_id">{{mod_type.value}}</option>
+						</select>					
 					</div>
 				</div>
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
@@ -399,6 +402,14 @@
 					<label for="Neighbours">ENABLE NEIGHBOURS</label>
 					<div class="switch-button single" ng-class="{ on : data.is_neighbours_enabled}" >
 						<input type="checkbox" ng-model="data.is_neighbours_enabled" name="Neighbours" id="Neighbours">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+
+				<div class="entry is-pms-tokenized" ng-if="isAdminSnt">
+					<label for="Allowance">ENABLE ALLOWANCE</label>
+					<div class="switch-button single" ng-class="{ on : data.is_allowance_enabled}" >
+						<input type="checkbox" ng-model="data.is_allowance_enabled" name="Allowance" id="allowance">
 						<span class="switch-icon"></span>
 					</div>
 				</div>
