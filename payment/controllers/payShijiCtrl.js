@@ -11,7 +11,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		let self = this;
 
-		let loadShijiIframe = () => {
+		self.loadShijiIframe = () => {
 			let shijiIframe = $('#iframe-token');
 
 			if (shijiIframe && shijiIframe.length) {
@@ -34,7 +34,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		$scope.$on('RELOAD_IFRAME', () => {
 			// TODO: handle if needed. Now the iframe loading is taking some time
-			// loadShijiIframe(); 
+			// self.loadShijiIframe(); 
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
@@ -101,7 +101,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
 		};
 
-		let tokenizeBySavingtheCard = (tokenId) => {
+		self.tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
 				"token": tokenId,
@@ -128,11 +128,11 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			}
 		};
 
-		let handleResponseFromIframe = (response) => {
+		self.handleResponseFromIframe = (response) => {
 			let responseData = response.data || response.originalEvent.data;
 
 			if (responseData.respCode === "00") {
-				tokenizeBySavingtheCard(responseData.tokenId);
+				self.tokenizeBySavingtheCard(responseData.tokenId);
 			} else {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
@@ -144,7 +144,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		// ----------- init -------------
 		(() => {
-			loadShijiIframe();
+			self.loadShijiIframe();
 			let isCCPresent = angular.copy($scope.showSelectedCard());
 
 			// iFrame documentation - https://png-development.shijicloud.com:8443/develop/iframe/show
@@ -154,7 +154,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
 			angular.element($window).on(messageEvent, (response) => {
-				handleResponseFromIframe(response);
+				self.handleResponseFromIframe(response);
 			});
 
 			$scope.$on("$destroy", () => {
