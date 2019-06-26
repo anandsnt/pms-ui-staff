@@ -8569,6 +8569,13 @@
             /* Check In Data ***/
             &.check-in-data {
                 width: 670px;
+                padding: 20px 0;
+
+                .modal-fields {
+                    position: relative;
+                    max-height: 380px;
+                    padding: 0 20px;
+                }
 
                 fieldset {
                     padding-left: 200px;
@@ -8609,16 +8616,28 @@
 
                 .message {
                     margin-bottom: 10px;
+                    padding: 0 20px;
+                }
+
+                .text {
+                    padding: 0 20px;
                 }
 
                 .required {
                     color: @red;
                 }
 
+                .iScrollVerticalScrollbar {
+                    .iScrollIndicator {
+                        background: @grey2;
+                    }
+                }
+
                 .actions {
                     padding-top: 10px;
                     text-align: right;
                     border-top: 1px solid rgba(0, 0, 0, 0.15);
+                    margin: 0 20px;
 
                     .button {
                         width: auto;
