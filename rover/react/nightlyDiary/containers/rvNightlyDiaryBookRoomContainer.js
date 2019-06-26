@@ -28,11 +28,11 @@ let calculateBookRoomPositionAndDuration = (diaryInitialDayOfDateGrid, uarData, 
     if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7 && uarData.nights === 0) {
         durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.DAYS_7_OFFSET;
     }
-    else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7){
+    else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
         durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.EXTEND_7_DAYS / 2;
     }
     else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21 && uarData.nights === 0) {
-        durationOfMoveRoom - NIGHTLY_DIARY_CONST.DAYS_7_OFFSET / 2;
+        durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.DAYS_7_OFFSET / 2;
     }
     else {
         durationOfMoveRoom = durationOfMoveRoom - NIGHTLY_DIARY_CONST.EXTEND_21_DAYS / 2;
