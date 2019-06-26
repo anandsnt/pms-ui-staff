@@ -163,6 +163,17 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             $scope.$broadcast('resetGuestTab');
             $scope.$emit('hideLoader');
         }
+        // Added as part of CICO-67231
+        // We need guest card data to show/hide data validate email/phone popup
+        $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+            successCallBack: function(data) {
+                fetchGuestCardDataSuccessCallback(data);
+            },
+            failureCallBack: function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+                $scope.$emit('hideLoader');
+            }
+        });
 
         $scope.$on('UPDATE_GUEST_CARD_DETAILS', function(event, data) {
             fetchGuestCardDataSuccessCallback(data);
