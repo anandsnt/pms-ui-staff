@@ -397,7 +397,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
         		ampm = hh >= 12 ? 'PM' : 'AM';
 
         	return {
-                'ampm': parseInt(time.split(' ')[0]) >= 12 ? 'PM' : 'AM',
+                'ampm': ampm,
                 'hh': (("0" + hh % 12).slice(-2) === '00' ? '12' : ("0" + hh % 12).slice(-2)),
                 'mm': time.split(' ')[0].split(':')[1]
             };
