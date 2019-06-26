@@ -7,7 +7,12 @@ $scope.setUpData = function() {
      maxDate: tzIndependentDate($rootScope.businessDate),
      yearRange: "-100:+0",
       onSelect: function(dateText, inst) {
-        ngDialog.close();
+      	if ($scope.datePicker) {
+      		ngDialog.close($scope.datePicker.id);
+      		$scope.saveData.birth_day = JSON.parse(JSON.stringify(dateFilter(dateText, $rootScope.dateFormat)));;
+      	} else {
+      		ngDialog.close();
+      	}        
       }
 
     };
