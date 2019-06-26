@@ -21,7 +21,8 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
 
-        var isDateChangedFromInitialState = false;
+        var isDateChangedFromInitialState = false,
+            TIME_OFFSET = 15;
 
         /*
          * Utility method to shift date.
@@ -155,8 +156,8 @@ angular.module('sntRover')
                 bookRoomViewFilter.arrivalTime = '09:00';
                 bookRoomViewFilter.departureTime = '17:00';
                 
-                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime);
-                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null);
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null, TIME_OFFSET);
             }
             else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
                 if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime) {
@@ -377,7 +378,7 @@ angular.module('sntRover')
 
             // Handle 0 night usecse
             if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
-                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null);
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null, TIME_OFFSET);
             }
         };
         // Handle departure time changes.
@@ -386,7 +387,7 @@ angular.module('sntRover')
 
             // Handle 0 night usecse
             if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
-                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime);
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
             }
         };
 
