@@ -7,6 +7,33 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
     };
 
     $scope.integration = 'M3AS';
+
+    $scope.available_reports = [
+        'financial_journal_charge_codes',
+        'financial_journal_rates',
+        'financial_journal_room_types',
+        'financial_journal_market_segments',
+        'reservation_count_rates',
+        'reservation_count_room_types',
+        'reservation_count_market_segments',
+        'rooms_occupied',
+        'deposit_opening_balance',
+        'deposit_closing_balance',
+        'ar_opening_balance',
+        'ar_closing_balance',
+        'rooms_arrival',
+        'rooms_departure',
+        'rooms_ooo',
+        'rooms_comp',
+        'guest_opening_balance',
+        'guest_closing_balance',
+        'rooms_oos',
+        'rooms_occupancy',
+        'financial_journal_charge_codes_no_tax',
+        'financial_journal_rates_no_tax',
+        'financial_journal_room_types_no_tax',
+        'financial_journal_market_segments_no_tax'
+    ];
     
     /**
      * when clicked on check box to enable/diable letshare
@@ -121,10 +148,10 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
         var chosenAvailableReportValues = [];
 
         _.each($scope.chosenAvailableReports, function(reportIndex) {
-            chosenAvailableReportValues.push($scope.config.available_reports[reportIndex]);
+            chosenAvailableReportValues.push($scope.available_reports[reportIndex]);
         });
         $scope.config.selected_reports = $scope.config.selected_reports.concat(chosenAvailableReportValues);
-        $scope.config.available_reports = _.difference($scope.config.available_reports, chosenAvailableReportValues);
+        $scope.available_reports = _.difference($scope.available_reports, chosenAvailableReportValues);
 
         resetChosenReports();
     };
@@ -138,7 +165,7 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
         _.each($scope.chosenSelectedReports, function(reportIndex) {
             chosenSelectedReportValues.push($scope.config.selected_reports[reportIndex]);
         });
-        $scope.config.available_reports = $scope.config.available_reports.concat(chosenSelectedReportValues);
+        $scope.available_reports = $scope.available_reports.concat(chosenSelectedReportValues);
         $scope.config.selected_reports = _.difference($scope.config.selected_reports, chosenSelectedReportValues);
 
         resetChosenReports();
@@ -148,8 +175,8 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
      * Move all reports to the selected column
      */
     $scope.selectAll = function() {
-        $scope.config.selected_reports = $scope.config.selected_reports.concat($scope.config.available_reports);
-        $scope.config.available_reports = [];
+        $scope.config.selected_reports = $scope.config.selected_reports.concat($scope.available_reports);
+        $scope.available_reports = [];
         resetChosenReports();
     };
 
@@ -157,7 +184,7 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
      * Move all reports to the available column
      */
     $scope.unSelectAll = function() {
-        $scope.config.available_reports = $scope.config.available_reports.concat($scope.config.selected_reports);
+        $scope.available_reports = $scope.available_reports.concat($scope.config.selected_reports);
         $scope.config.selected_reports = [];
         resetChosenReports();
     };
@@ -167,8 +194,20 @@ admin.controller('ADM3asCtrl', ['$scope', 'config', 'adInterfacesSrv',
      * @return {undefiend}
      */
     var initializeMe = (function() {
-        config.selected_reports = JSON.parse(config.selected_reports);
-        config.available_reports = JSON.parse(config.available_reports) || [];
+        // if selected_reports returned from IFC, remove them from available_reports
+        if (config.selected_reports) {
+            config.selected_reports = JSON.parse(config.selected_reports);
+            for (var i = 0; i < config.selected_reports.length; i++) {
+                var idx = $scope.available_reports.indexOf(config.selected_reports[i]);
+
+                if (idx >= 0) {
+                    $scope.available_reports.splice(idx, 1);
+                }
+            }
+        } else {
+        // if no selected_reports returned from IFC, initialize as empty array
+            config.selected_reports = [];
+        }
         $scope.config = config;
     }());
 }]);
