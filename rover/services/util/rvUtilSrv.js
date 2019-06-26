@@ -381,4 +381,26 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
             return times;
         };
 
+        // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
+        /*
+		 *	extractHhMmAmPm('11:00') => {ampm: "AM", hh: "11", mm: "00"}
+		 *	
+		 *	extractHhMmAmPm('15:30') => {ampm: "PM", hh: "03", mm: "30"}
+		 *	
+		 *	extractHhMmAmPm('20:15') => {ampm: "PM", hh: "08", mm: "15"}
+		 *	
+		 *	extractHhMmAmPm('01:45') => {ampm: "AM", hh: "01", mm: "45"}
+		 *	
+        */
+        this.extractHhMmAmPm = function( time ) {
+        	var hh = parseInt(time.split(' ')[0].split(':')[0]),
+        		ampm = hh >= 12 ? 'PM' : 'AM';
+
+        	return {
+                'ampm': ampm,
+                'hh': (("0" + hh % 12).slice(-2) === '00' ? '12' : ("0" + hh % 12).slice(-2)),
+                'mm': time.split(' ')[0].split(':')[1]
+            };
+        };
+
 }]);
