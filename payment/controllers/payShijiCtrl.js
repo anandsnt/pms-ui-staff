@@ -11,7 +11,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		let self = this;
 
-		self.loadShijiIframe = () => {
+		let loadShijiIframe = () => {
 			let shijiIframe = $('#iframe-token');
 
 			if (shijiIframe && shijiIframe.length) {
@@ -34,7 +34,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		$scope.$on('RELOAD_IFRAME', () => {
 			// TODO: handle if needed. Now the iframe loading is taking some time
-			// self.loadShijiIframe(); 
+			// loadShijiIframe(); 
 		});
 
 		$scope.$on('GET_SHIJI_TOKEN', () => {
@@ -66,7 +66,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			});
 		};
 
-		self.savePaymentDetails = (apiParams) => {
+		let savePaymentDetails = (apiParams) => {
 			let onSaveFailure = (errorMessage) => {
 				$scope.$emit('PAYMENT_FAILED', errorMessage);
 			};
@@ -88,7 +88,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				});
 		};
 
-		self.proceedWithPaymentData = (apiParams) => {
+		let proceedWithPaymentData = (apiParams) => {
 			let params = {
 				'paymentData': {
 					'apiParams': apiParams,
@@ -101,7 +101,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
 		};
 
-		self.tokenizeBySavingtheCard = (tokenId) => {
+		let tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
 				"token": tokenId,
@@ -122,17 +122,17 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
 			if (isAddCardAction) {
-				self.savePaymentDetails(apiParams);
+				savePaymentDetails(apiParams);
 			} else {
-				self.proceedWithPaymentData(apiParams);
+				proceedWithPaymentData(apiParams);
 			}
 		};
 
-		self.handleResponseFromIframe = (response) => {
+		let handleResponseFromIframe = (response) => {
 			let responseData = response.data || response.originalEvent.data;
 
 			if (responseData.respCode === "00") {
-				self.tokenizeBySavingtheCard(responseData.tokenId);
+				tokenizeBySavingtheCard(responseData.tokenId);
 			} else {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
@@ -144,7 +144,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 		// ----------- init -------------
 		(() => {
-			self.loadShijiIframe();
+			loadShijiIframe();
 			let isCCPresent = angular.copy($scope.showSelectedCard());
 
 			// iFrame documentation - https://png-development.shijicloud.com:8443/develop/iframe/show
@@ -154,7 +154,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 			let messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
 			angular.element($window).on(messageEvent, (response) => {
-				self.handleResponseFromIframe(response);
+				handleResponseFromIframe(response);
 			});
 
 			$scope.$on("$destroy", () => {
