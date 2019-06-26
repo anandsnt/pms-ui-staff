@@ -1,7 +1,6 @@
 admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints', 'config', 'adInterfacesSrv',
     function($scope, $rootScope, adExactOnlineSetupSrv, dateFilter, endPoints, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
-        console.log("config from router", config)
         $scope.exportOptions = {
             date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
         };
@@ -31,9 +30,12 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
          * @return {undefined}
          */
         $scope.toggleExactOnlineEnabled = function() {
-            $scope.exactOnlineSetup.enabled = !$scope.exactOnlineSetup.enabled;
+            $scope.config.enabled = !$scope.config.enabled;
         };
 
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
+        }
         /**
          * when we clicked on save button
          * @return {undefined}
@@ -51,6 +53,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             });
         };
 
+        // TODO: delete this function. Handling sync thru adExactonlineSync.html
         $scope.runExport = function() {
             var options = {
                 params: {
@@ -62,7 +65,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                     $scope.successMessage = 'Exact Online Export Started!';
                 }
             };
-
             $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
         };
 
@@ -104,6 +106,5 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             });
 
             $scope.endPoints = endPoints;
-            console.log("iife", $scope.config)
         }());
     }]);

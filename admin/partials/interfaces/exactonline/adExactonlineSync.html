@@ -1,0 +1,7 @@
+<div class="form float" ng-if="state.activeTab === 'DATA' && config.authorized">
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <ad-sync-block interface="exactonline" is-export="true", config="config", proxy="true">
+    </ad-sync-block>
+</div>
