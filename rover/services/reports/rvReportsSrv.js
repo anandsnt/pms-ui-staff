@@ -138,7 +138,8 @@ angular.module('sntRover').service('RVreportsSrv', [
         		'TOMORROW'
         	 ],
         	 'Comparison': ['YESTERDAY'],
-        	 'Guest Balance Report': ['ALL']
+			 'Guest Balance Report': ['ALL'],
+			 'Daily Production': ['YESTERDAY']
         };
 
 		var cacheKey = 'REPORT_PAYLOAD_CACHE';
