@@ -63,12 +63,12 @@
                 <label class="center_align"><em class="rate_roomtype_text">Available Data Types</em></label>
         
                 <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
-                    ng-model="config.available_reports" style="overflow-y: scroll !important;"
+                    ng-model="available_reports" style="overflow-y: scroll !important;"
                     jqyoui-droppable="{multiple:true, onOver: 'onUnSelectReport'}" data-j
                     qyoui-options="{accept:'.selected_reports'}">
         
-                    <li ng-repeat="report in config.available_reports track by $index" data-drag="true"
-                        ng-model="config.available_reports"
+                    <li ng-repeat="report in available_reports track by $index" data-drag="true"
+                        ng-model="available_reports"
                         jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
                         data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
                         class="available-reports li-draggable" ng-click="chooseAvailableReport($index)"
