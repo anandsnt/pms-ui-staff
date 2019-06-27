@@ -19,7 +19,7 @@
             <div class='entry full-width'>
                 <label>{{'ENDPOINT'| translate}}</label>
                 <div class='select'>
-                    <select ng-model='config.endpoint'>
+                    <select ng-model='config.endpoint' ng-change='onUrlChange();'>
                         <option ng-repeat='endpoint in endPoints' value='{{endpoint.endpoint}}'>
                             {{endpoint.endpoint}}&nbsp;{{code.description}}
                         </option>
