@@ -959,15 +959,15 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.searchData.guestCard.guestLoyaltyNumber = "";
 				$scope.searchData.guestCard.email = "";
 				$scope.initGuestCard(cardData);
-                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
-                    successCallBack: function(data) {
-                        fetchGuestCardDataSuccessCallback(data);
-                    },
-                    failureCallBack: function(errorMessage) {
-                        $scope.errorMessage = errorMessage;
-                        $scope.$emit('hideLoader');
-                    }
-                });
+                // $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                //     successCallBack: function(data) {
+                //         fetchGuestCardDataSuccessCallback(data);
+                //     },
+                //     failureCallBack: function(errorMessage) {
+                //         $scope.errorMessage = errorMessage;
+                //         $scope.$emit('hideLoader');
+                //     }
+                // });
 
 				$scope.$broadcast('guestSearchStopped');
 			}
