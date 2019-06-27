@@ -401,7 +401,13 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             },
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {
-                return $stateParams.addonId === null ? {} : ADRatesAddonsSrv.fetchSingle($stateParams.addonId);
+                if ($stateParams.addonId === null) {
+                    return {};
+                } else {
+                    addon = ADRatesAddonsSrv.fetchSingle($stateParams.addonId);
+                    addon.id = $stateParams.addonId;
+                    return addon;
+                }
             }
         }
     });

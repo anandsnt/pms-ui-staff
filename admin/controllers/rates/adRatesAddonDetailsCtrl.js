@@ -177,7 +177,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.singleAddon.addon_image = "";
         };
 
-        var setEndDate = function() {
+        var setEndDate = function(chosenDate) {
             $scope.singleAddon.end_date = chosenDate;
             $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
         }
@@ -197,10 +197,10 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 // we must set the end_date to begin_date
                 // so that user may not submit invalid dates
                 if (tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0) {
-                    setEndDate();
+                    setEndDate(chosenDate);
                 }
             } else {
-                setEndDate();
+                setEndDate(chosenDate);
             }
         });
 
