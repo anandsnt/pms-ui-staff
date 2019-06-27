@@ -39,8 +39,8 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 		};
 
 		this.searchRates = function(params) {
-	      var deferred = $q.defer();
-	      var url = '/api/sort_preferences/search_custom_rates';
+			var deferred = $q.defer(),
+          url = '/api/sort_preferences/search_custom_rates';
 
 	       ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 	          deferred.resolve(data);

@@ -15,7 +15,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 		};
 
 		var isCustomRateSelected = function( dashboard ) {
-			return dashboard.value === 'CUSTOM_RATE'
+			return dashboard.value === 'CUSTOM_RATE';
 		};
 
 		var fetchSelections = function() {
