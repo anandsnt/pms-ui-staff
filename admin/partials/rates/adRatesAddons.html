@@ -30,7 +30,7 @@
 			</div>
 
 
-			<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
+			<!-- <div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div> -->
 
 			<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager" template-header="custom/header">
 				<tbody>
@@ -61,7 +61,7 @@
 							<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this addon</a>		
 						</td>
 
-						<td colspan="{{ (showZestWebSettings || showZestStationSettings) ? 5 : 4 }}" ng-include="getTemplateUrl()" ng-show="currentClickedAddon === $index"></td>
+						<!-- <td colspan="{{ (showZestWebSettings || showZestStationSettings) ? 5 : 4 }}" ng-include="getTemplateUrl()" ng-show="currentClickedAddon === $index"></td> -->
 					</tr>
 				</tbody>
 			</table>
