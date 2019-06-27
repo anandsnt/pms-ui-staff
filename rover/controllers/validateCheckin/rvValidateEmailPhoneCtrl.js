@@ -17,26 +17,15 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     $scope.saveData.phone = "";
     $scope.saveData.guest_id = "";
     $scope.saveData.user_id = "";
-    $scope.saveData.job_title = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
-    $scope.saveData.user_id = "";
+
     $scope.putInQueue = false;
 
     $scope.setScroller('guestCardFields');
 
     var init = function() {
             $timeout(function() {
-                        $scope.saveData.job_title = "";
-        $scope.saveData.father_name = "";
-        $scope.saveData.mother_name = "";
-                        $scope.refreshScroller('guestCardFields');
-                    }, 1500);
+                $scope.refreshScroller('guestCardFields');
+            }, 1500);
     };
 
     $scope.popupCalendar = function() {
@@ -47,13 +36,6 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             scope: $scope
         });
     };
-
-    $scope.$on('DOB_SELECTED', function(dateText) {
-        
-            $scope.saveData.birth_day = JSON.parse(JSON.stringify(dateFilter(dateText, $rootScope.dateFormat)));
-        
-    });
-    
 
 	// CICO-13907
 	$scope.hasAnySharerCheckedin = function() {

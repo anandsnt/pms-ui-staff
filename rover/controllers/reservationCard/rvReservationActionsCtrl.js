@@ -349,16 +349,16 @@ sntRover.controller('reservationActionsController', [
         };
         $scope.validateEmailPhone = function() {
             $scope.showJobTitle     = false;
-    $scope.showNameOfFather = false;
-    $scope.showNameOfMother = false;
-    $scope.showPlaceOfBirth = false;
-    $scope.showGender       = false;
-    $scope.showVehicleRegistrationNumber = false;
-    $scope.showPersonalIdNumber = false;
-    $scope.showHomeTown = false;
-    $scope.showPlaceOfResidence = false;
-    $scope.showVehicleCountryMark = false;
-    $scope.showDateOfBirth = false;
+            $scope.showNameOfFather = false;
+            $scope.showNameOfMother = false;
+            $scope.showPlaceOfBirth = false;
+            $scope.showGender       = false;
+            $scope.showVehicleRegistrationNumber = false;
+            $scope.showPersonalIdNumber = false;
+            $scope.showHomeTown = false;
+            $scope.showPlaceOfResidence = false;
+            $scope.showVehicleCountryMark = false;
+            $scope.showDateOfBirth = false;
 
             $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
                 successCallBack: function(data) {
@@ -377,21 +377,17 @@ sntRover.controller('reservationActionsController', [
                     $scope.showDateOfBirth =  $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation;               
 
 
-                ngDialog.open({
-                    template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-                    controller: 'RVValidateEmailPhoneCtrl',
-                    scope: $scope
-            });
-                        
-                   
-            },
-            failureCallBack: function(errorMessage) {
-                $scope.errorMessage = errorMessage;
-                $scope.$emit('hideLoader');
-            }
-        });     
-
-            
+                    ngDialog.open({
+                        template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+                        controller: 'RVValidateEmailPhoneCtrl',
+                        scope: $scope
+                    });                  
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });         
         };
 
         $scope.promptCardAddition = function() {
