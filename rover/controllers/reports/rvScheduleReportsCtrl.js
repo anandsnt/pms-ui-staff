@@ -1027,11 +1027,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         // Checks whether file format dropdown should be shown or not
         $scope.shouldShowFileFormat = function (selectedEntity) {
-            if (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
+            if (selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
-            } else if (selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+            } else if (selectedEntity.report && ( selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
                 selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
-                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE']) {
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] )) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
                     return object.value === 'CSV';
                 });
