@@ -1029,8 +1029,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.shouldShowFileFormat = function (selectedEntity) {
             if (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
+            } else if (selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE']) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
+                    return object.value === 'CSV';
+                });
             }
-            return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
+
+            return selectedEntity.report && (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE']);
         };
 
         // Listener for creating new report schedule
