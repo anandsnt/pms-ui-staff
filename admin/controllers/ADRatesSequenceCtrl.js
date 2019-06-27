@@ -1,50 +1,46 @@
 admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchorScroll', '$timeout', '$location',
 	function($scope, ADRateSequenceSrv, $anchorScroll, $timeout, $location) {
+    var isCustomRateSelected = function( dashboard ) {
+            return dashboard.value === 'CUSTOM_RATE';
+        },
+        fetchSelections = function() {
+            var onFetchSelectionsSuccess = function(data) {
+                $scope.sequenceState.selectedOptions = data;
+                $scope.showSearch = isCustomRateSelected( data.dashboard );
+                $scope.$emit('hideLoader');
+            };
 
-		$scope.sequenceState = {
-			availableOptions: {
-				room_rate: [],
-				rate_manager: [],
-				dashboard: []
-			},
-			selectedOptions: {
-				room_rates: {},
-				rate_manager: {},
-				dashboard: {}
-			}
-		};
+            $scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess);
+        },
+        initializeView = function() {
+            var onFetchPrefereneOptions = function(data) {
+                $scope.sequenceState.availableOptions = data;
+                fetchSelections();
+            };
 
-		var isCustomRateSelected = function( dashboard ) {
-			return dashboard.value === 'CUSTOM_RATE';
-		};
+            $scope.invokeApi(ADRateSequenceSrv.fetchOptions, {}, onFetchPrefereneOptions);
+        };
 
-		var fetchSelections = function() {
-			var onFetchSelectionsSuccess = function(data) {
-				$scope.sequenceState.selectedOptions = data;
-				$scope.showSearch = isCustomRateSelected( data.dashboard );
-				$scope.$emit('hideLoader');
-			};
-
-			$scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess);
-		};
-
-		var initializeView = function() {
-			var onFetchPrefereneOptions = function(data) {
-				$scope.sequenceState.availableOptions = data;
-				fetchSelections();
-			};
-
-			$scope.invokeApi(ADRateSequenceSrv.fetchOptions, {}, onFetchPrefereneOptions);
-		};
-
+    $scope.sequenceState = {
+        availableOptions: {
+            room_rate: [],
+            rate_manager: [],
+            dashboard: []
+        },
+        selectedOptions: {
+            room_rates: {},
+            rate_manager: {},
+            dashboard: {}
+        }
+    };
 
 		// --------------------------------------------------------------------------- //
 
 
 		$scope.changePreference = function(type, option) {
 			$scope.sequenceState.selectedOptions[type] = angular.copy(option);
-			$scope.showSearch = isCustomRateSelected( option );
-		};
+      	$scope.showSearch = isCustomRateSelected( option );
+    ;
 
 		$scope.saveRateSortPreferences = function() {
 			var onSaveSuccess = function(data) {
