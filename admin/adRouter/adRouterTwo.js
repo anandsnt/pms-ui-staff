@@ -383,14 +383,30 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADRatesAddonsCtrl',
         url: '/rates_addons',
         resolve: {
+            addonUpsellSettings: function (ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.ratesAddonDetails', {
+        templateUrl: '/assets/partials/rates/adNewAddon.html',
+        controller: 'ADRatesAddonDetailsCtrl',
+        url: '/rates_addons/:addonId',
+        resolve: {
             activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             },
             availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             },
-            addonUpsellSettings: function (ADUpsellAddonSrv) {
-                return ADUpsellAddonSrv.getSettings();
+            singleAddon: function (ADRatesAddonsSrv, $stateParams) {
+                if ($stateParams.addonId === "") {
+                    return {};
+                }
+                var addon = ADRatesAddonsSrv.fetchSingle($stateParams.addonId);
+                addon.id = $stateParams.addonId;
+                return addon;
             }
         }
     });
