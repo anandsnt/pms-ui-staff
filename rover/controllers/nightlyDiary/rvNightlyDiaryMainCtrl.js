@@ -843,8 +843,10 @@ angular.module('sntRover')
                 });
 
                 // Handle validation popup close.
-                $scope.closeDialogAndRefresh = function() {
-                    resetFilterBarAndRefreshDiary();
+                $scope.closeDialogAndRefresh = function(isRefresh) {
+                    if (!!isRefresh) {
+                        resetFilterBarAndRefreshDiary();
+                    }
                     ngDialog.close();
                 };
 
@@ -866,7 +868,8 @@ angular.module('sntRover')
                         className: '',
                         scope: $scope,
                         data: {
-                            warningMessage: warningMessage
+                            warningMessage: warningMessage,
+                            isRefresh: false
                         }
                     });
                 };
