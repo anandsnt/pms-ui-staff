@@ -20,8 +20,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.singleAddon = singleAddon;
             $scope.singleAddon.id = $stateParams.addonId;
             // for adding
-            $scope.isAddMode = _.isEmpty(singleAddon);
-            $scope.isEditMode = !_.isEmpty(singleAddon);
+            $scope.isAddMode = $stateParams.addonId === "";
+            $scope.isEditMode = $stateParams.addonId !== "";
 
             // api load count
             $scope.fileName = "Choose file...";
