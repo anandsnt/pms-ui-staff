@@ -36,6 +36,29 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
         }
+
+        $scope.onUrlChange = function() {
+            $scope.config.authorized = false;
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
+                params: {
+                    integration: $scope.integration.toLowerCase(),
+                    settings: {
+                        enabled: $scope.config.enabled,
+                        endpoint: $scope.config.endpoint,
+                        authorized: $scope.config.authorized,
+                        balancing_account_code: $scope.config.balancing_account_code,
+                        journal_code: $scope.config.journal_code,
+                    }
+                },
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "Regional Endpoint changed, please re-authenticate!";
+                    adExactOnlineSetupSrv.fetchExactOnLineConfiguration().then(function(settings) {
+                        $scope.config = settings;
+                    });
+                }
+            })
+        }
         /**
          * when we clicked on save button
          * @return {undefined}
@@ -54,20 +77,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         };
 
         // TODO: delete this function. Handling sync thru adExactonlineSync.html
-        $scope.runExport = function() {
-            var options = {
-                params: {
-                    data: {
-                        "date": dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI)
-                    }
-                },
-                successCallBack: function() {
-                    $scope.successMessage = 'Exact Online Export Started!';
-                }
-            };
-            $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
-        };
-
         // TODO: make a refresh button that fetches the o_auth URL again after the endpoint has been changed
         // set it to $scope.config.oauth_url so that the button links to the proper app
 
