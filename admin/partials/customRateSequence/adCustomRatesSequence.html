@@ -1,0 +1,87 @@
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
+    <header class="content-title float">
+
+        <h2><span>Create</span> Rate Sequence</h2>
+        <a class="action back" href="{back}">Back</a>
+        <!-- On click, remove .hidden from the Add Sequence From below -->
+        <a href="#" class="action add">Add Sequence</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab orange">MANAGE Sequence</button>
+            <button type="button" class="button add-data-inline toggle-tab white">MANAGE Rates</button>
+        </div>
+    </header>
+    <section class="content-scroll">
+        <!-- If data, show this -->
+        <table class="grid datatable draggable editable">
+            <thead>
+            <tr>
+                <th class="sequence break sort-asc sorting">Sort</th>
+                <th class="sorting">Sequence Name</th>
+                <th class="sorting sequence-rates">Rates</th>
+                <th class="delete">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="sequence handle">
+                    <span class="icons icon-handle centered grey"></span>
+                </td>
+                <td>
+                    <!-- When clicked, hide this row and show the row below (form-row) -->
+                    <strong>{Sequence Name}</strong>
+                </td>
+                <td class="sequence-rates">{rates}</td>
+                <td class="delete">
+                    <a href="#" class="icons icon-delete large-icon">Delete</a>
+                </td>
+            </tr>
+
+            <tr class="hidden form-row">
+                <td colspan="4">
+                    <form class="form">
+                        <div class="holder full-width holder_margin">
+                            <div class="form-title">
+                                <h3>
+                                    <span>Add</span> Sequence
+                                </h3>
+                            </div>
+
+                            <div class="entry">
+                                <label>Sequence Name<strong>*</strong></label>
+                                <input type="text" value="{Sequence Name}" placeholder="Enter Sequence Name">
+                            </div>
+
+                            <div class="actions float">
+                                <!-- on cancel, hide this form-row and show the row above -->
+                                <button type="button" class="button blank">Cancel</button>
+                                <button type="button" class="button green">Edit Sequence</button>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            ... for each sequence, repeat this two table rows
+            </tbody>
+        </table>
+        <!-- If no data, show this immediatelly -->
+        <form  class="form hidden">
+            <div class="holder full-width">
+                <div class="form-title">
+                    <h3>
+                        <span>Add</span> Sequence
+                    </h3>
+                </div>
+
+                <div class="entry">
+                    <label>Sequence Name<strong>*</strong></label>
+                    <input type="text" value="" placeholder="Enter Sequence Name">
+                </div>
+
+                <div class="actions float">
+                    <button type="button" class="button blank">Cancel</button>
+                    <button type="button" class="button green">Add Sequence</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</section>

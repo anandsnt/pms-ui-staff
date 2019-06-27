@@ -401,6 +401,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/rates_sequence'
     });
 
+    $stateProvider.state('admin.customRatesSequence', {
+        templateUrl: '/assets/partials/customRateSequence/adCustomRatesSequence.html',
+        controller: 'ADCustomRatesSequenceCtrl',
+        url: '/custom_rates_sequence'
+    });
+
     $stateProvider.state('admin.promotions', {
         templateUrl: '/assets/partials/rates/adPromotions.html',
         controller: 'ADPromotionsCtrl',
