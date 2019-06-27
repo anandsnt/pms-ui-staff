@@ -1,6 +1,7 @@
 admin.controller('ADRatesAddonDetailsCtrl', [
     '$scope',
     '$state',
+    '$stateParams',
     '$rootScope',
     'ADRatesAddonsSrv',
     '$filter',
@@ -9,7 +10,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     'activeRates',
     'availableLanguages',
     'singleAddon',
-    function($scope, $state, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
+    function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
 
         // extend base controller
        var init = function() {
@@ -17,6 +18,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             // various addon data holders
             $scope.data = [];
             $scope.singleAddon = singleAddon;
+            $scope.singleAddon.id = $stateParams.addonId;
             // for adding
             $scope.isAddMode = _.isEmpty(singleAddon);
             $scope.isEditMode = !_.isEmpty(singleAddon);
