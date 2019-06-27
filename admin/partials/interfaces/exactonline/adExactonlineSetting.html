@@ -48,8 +48,8 @@
                 <label>{{'JOURNAL_CODE'| translate}}</label>
                 <div class='select'>
                     <select ng-model='config.journal_code'>
-                        <option ng-repeat='journal in journals' value='{{journal.code}}'>
-                            {{journal.code}}&nbsp;{{journal.description}}
+                        <option ng-repeat='journal in journals' value='{{journal.attributes.code}}'>
+                            {{journal.attributes.code}}&nbsp;{{journal.attributes.description}}
                         </option>
                     </select>
                 </div>
@@ -59,8 +59,8 @@
                 <label>{{'BALANCING_ACCOUNT'| translate}}</label>
                 <div class='select'>
                     <select ng-model='config.balancing_account_code'>
-                        <option ng-repeat='balancingAccount in balancingAccounts' value='{{balancingAccount.code}}'>
-                            {{balancingAccount.code}}&nbsp;{{balancingAccount.description}}
+                        <option ng-repeat='balancingAccount in balancingAccounts' value='{{balancingAccount.attributes.code}}'>
+                            {{balancingAccount.attributes.code}}&nbsp;{{balancingAccount.attributes.description}}
                         </option>
                     </select>
                 </div>
