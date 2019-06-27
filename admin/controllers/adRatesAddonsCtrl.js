@@ -138,6 +138,24 @@ admin.controller('ADRatesAddonsCtrl', [
             };
 
             $scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
+        };
+
+        // on change activation
+        $scope.switchActivation = function() {
+            var item = this.item;
+
+            var activateCallback = function() {
+                item.activated = !item.activated;
+
+                $scope.$emit('hideLoader');
+            };
+
+            var data = {
+                id: item.id,
+                status: !item.activated
+            };
+
+            $scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, activateCallback);
         };        
 
         $scope.returnAddonUpseellClass = function(addon) {

@@ -182,7 +182,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
         var setEndDate = function(chosenDate) {
             $scope.singleAddon.end_date = chosenDate;
             $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
-        }
+        };
 
         // listen for datepicker update from ngDialog
         var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
@@ -279,13 +279,13 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             return _.find($scope.languages.locales, function(language) {
                 return language.value === $scope.languageFilter.locale;
             });
-        }
+        };
 
         var getSelectedTranslationsForLanguage = function(language) {
             return _.find($scope.singleAddon.translations, function(translation) {
                 return parseInt(language.id) === parseInt(translation.language_id);
             });
-        }
+        };
 
         // on save add/edit addon
         $scope.addUpdateAddon = function() {
@@ -383,24 +383,6 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
                 $scope.invokeApi(ADRatesAddonsSrv.updateSingle, addon_data, editCallback);
             }
-        };
-
-        // on change activation
-        $scope.switchActivation = function() {
-            var item = this.item;
-
-            var activateCallback = function() {
-                item.activated = !item.activated;
-
-                $scope.$emit('hideLoader');
-            };
-
-            var data = {
-                id: item.id,
-                status: !item.activated
-            };
-
-            $scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, activateCallback);
         };
 
         $scope.popupCalendar = function(dateNeeded) {

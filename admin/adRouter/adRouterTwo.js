@@ -403,11 +403,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {
                 if ($stateParams.addonId === null) {
                     return {};
-                } else {
-                    addon = ADRatesAddonsSrv.fetchSingle($stateParams.addonId);
-                    addon.id = $stateParams.addonId;
-                    return addon;
                 }
+                var addon = ADRatesAddonsSrv.fetchSingle($stateParams.addonId);
+                addon.id = $stateParams.addonId;
+                return addon;
             }
         }
     });
