@@ -78,7 +78,7 @@ admin.controller('ADRatesAddonsCtrl', [
         };
 
         $scope.editSingle = function() {
-            $state.go ('admin.ratesAddonDetails', { addonId:this.item.id });
+            $state.go ('admin.ratesAddonDetails', { addonId: this.item.id });
         };
 
         // on delete addon
@@ -138,9 +138,7 @@ admin.controller('ADRatesAddonsCtrl', [
             };
 
             $scope.invokeApi(ADRatesAddonsSrv.importPackages, {}, fetchSuccessOfPackageList);
-        };
-
-        
+        };        
 
         $scope.returnAddonUpseellClass = function(addon) {
             var styleClass;

@@ -1,5 +1,6 @@
 admin.controller('ADRatesAddonDetailsCtrl', [
     '$scope',
+    '$state',
     '$rootScope',
     'ADRatesAddonsSrv',
     '$filter',
@@ -8,7 +9,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     'activeRates',
     'availableLanguages',
     'singleAddon',
-    function($scope, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
+    function($scope, $state, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
 
         // extend base controller
        var init = function() {
@@ -58,9 +59,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             }
             if (!$scope.isConnectedToPMS && ($scope.singleAddon.post_type_id === 3) && ($scope.singleAddon.is_reservation_only === true)) {
                 return true;
-            } else {
-                return false;
-            }
+            } 
+            return false;
         };
 
         // map charge codes for selected charge charge group
@@ -73,8 +73,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 var selectedChargeGrpId = $scope.singleAddon.charge_group_id;
 
                 $scope.chargeCodesForChargeGrp = [];
-                angular.forEach($scope.chargeCodes, function(chargeCode, key) {
-                    angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
+                angular.forEach($scope.chargeCodes, function(chargeCode) {
+                    angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp) {
                         if (associatedChargeGrp.id === selectedChargeGrpId) {
                             $scope.chargeCodesForChargeGrp.push(chargeCode);
                         }
@@ -165,8 +165,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             }
 
             // today should be business date, currently not avaliable
-            var today = tzIndependentDate();
-            var weekAfter = today.setDate(today.getDate() + 7);
+            // var today = tzIndependentDate();
+            // var weekAfter = today.setDate(today.getDate() + 7);
 
             // the inital dates to business date // CICO-17736 Addons can have blank begin-end dates
             $scope.singleAddon.begin_date = null;
@@ -176,6 +176,11 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             filterRates($scope.singleAddon);
             $scope.singleAddon.addon_image = "";
         };
+
+        var setEndDate = function() {
+            $scope.singleAddon.end_date = chosenDate;
+            $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
+        }
 
         // listen for datepicker update from ngDialog
         var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
@@ -192,12 +197,10 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 // we must set the end_date to begin_date
                 // so that user may not submit invalid dates
                 if (tzIndependentDate($scope.singleAddon.begin_date) - tzIndependentDate($scope.singleAddon.end_date) > 0) {
-                    $scope.singleAddon.end_date = chosenDate;
-                    $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
+                    setEndDate();
                 }
             } else {
-                $scope.singleAddon.end_date = chosenDate;
-                $scope.singleAddon.end_date_for_display = $filter('date')(tzIndependentDate(chosenDate), $rootScope.dateFormat);
+                setEndDate();
             }
         });
 
@@ -270,6 +273,18 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             filterRates($scope.singleAddon);
         };
 
+        var getSelectedLanguage = function() {
+            return _.find($scope.languages.locales, function(language) {
+                return language.value === $scope.languageFilter.locale;
+            });
+        }
+
+        var getSelectedTranslationsForLanguage = function(language) {
+            return _.find($scope.singleAddon.translations, function(translation) {
+                return parseInt(language.id) === parseInt(translation.language_id);
+            });
+        }
+
         // on save add/edit addon
         $scope.addUpdateAddon = function() {
             var singleAddonData = {
@@ -291,7 +306,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 is_common_area: $scope.singleAddon.is_common_area,
                 pass_level_no: $scope.singleAddon.pass_level_no,
                 forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
-                charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
+                charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only),
                 allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
                 excluded_rate_ids: _.pluck($scope.singleAddon.excludedRates, 'id'),
                 addon_image: $scope.singleAddon.addon_image,
@@ -308,12 +323,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             };
 
             if ($scope.isDefaulLanguageSelected()) {
-                var selectedLanguage = _.find($scope.languages.locales, function(language) {
-                    return language.value === $scope.languageFilter.locale;
-                });
-                var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
-                    return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
-                });
+                var selectedLanguage = getSelectedLanguage();
+                var selectedLanguageTranslations = getSelectedTranslationsForLanguage(selectedLanguage);
                 var translations = {};
 
                 // translations.translated_description = $scope.singleAddon.description;
@@ -345,18 +356,18 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             // if we are adding new addon
             if ($scope.isAddMode) {
-                var callback = function() {
+                var addCallback = function() {
                     $scope.$emit('hideLoader');
                     $scope.isAddMode = false;
                     $scope.tableParams.reload();
                 };
 
-                $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, callback);
+                $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, addCallback);
             }
 
             // if we are editing an addon
             if ($scope.isEditMode) {
-                var callback = function() {
+                var editCallback = function() {
                     $scope.$emit('hideLoader');
 
                     $scope.isEditMode = false;
@@ -366,9 +377,9 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 };
 
                 // include current addon id also
-                addon_data.id = $scope.currentAddonId;
+                addon_data.id = $scope.singleAddon.id;
 
-                $scope.invokeApi(ADRatesAddonsSrv.updateSingle, addon_data, callback);
+                $scope.invokeApi(ADRatesAddonsSrv.updateSingle, addon_data, editCallback);
             }
         };
 
@@ -376,18 +387,18 @@ admin.controller('ADRatesAddonDetailsCtrl', [
         $scope.switchActivation = function() {
             var item = this.item;
 
-            var callback = function() {
-                item.activated = item.activated ? false : true;
+            var activateCallback = function() {
+                item.activated = !item.activated;
 
                 $scope.$emit('hideLoader');
             };
 
             var data = {
                 id: item.id,
-                status: item.activated ? false : true
+                status: !item.activated
             };
 
-            $scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, callback);
+            $scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, activateCallback);
         };
 
         $scope.popupCalendar = function(dateNeeded) {
@@ -408,7 +419,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
         };
 
         var updateBestSellerOption = function() {
-            if (!!$scope.singleAddon.rate_code_only) {
+            if ($scope.singleAddon.rate_code_only) {
                 $scope.singleAddon.bestseller = false;
             }
         };
@@ -522,12 +533,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             'currentLocaleId': 0
         };
         $scope.onLocaleChange = function() {
-            var selectedLanguage = _.find($scope.languages.locales, function(language) {
-                return language.value === $scope.languageFilter.locale
-            });
-            var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
-                return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
-            });
+            var selectedLanguage = getSelectedLanguage();
+            var selectedLanguageTranslations = getSelectedTranslationsForLanguage(selectedLanguage);
 
             $scope.translations = {};
             $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_description;
@@ -536,7 +543,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.translations.translated_name = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_name;
             $scope.translations.language_id = selectedLanguage.id;
             if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
-                $scope.translations.id = selectedLanguageTranslations.id
+                $scope.translations.id = selectedLanguageTranslations.id;
             }
         };
 
