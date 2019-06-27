@@ -1,0 +1,31 @@
+<!-- Arrival Date -->
+<div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }">
+    <div class="entry-date" ng-click="clickedDatePicker('BOOK_FILTER_ARRIVAL')">
+        <label for="diary-nightly-arrival">Arrival Date</label>
+        <input id="diary-nightly-arrival" type="text" value="{Arrival Date}" readonly />
+        <span class="date arrival">{{diaryData.bookRoomViewFilter.fromDate | date: 'd MMM yyyy'}}</span>
+    </div>
+    <div class="entry-time select">
+        <label for="diary-nightly-arrival-time">Time</label>
+        <select id="diary-nightly-arrival-time" ng-model="diaryData.bookRoomViewFilter.arrivalTime" ng-change="arrivalTimeChanged()">
+            <option ng-repeat="time in diaryData.bookRoomViewFilter.arrivalTimeList" value="{{time['24']}}">{{time['12']}}</option>
+        </select>
+    </div>
+</div>
+<!-- Departure Date -->
+<div class="entry single-date" ng-class="{'hidden': !diaryData.showBookFilterPanel }">
+    <div class="entry-date" ng-click="clickedDatePicker('BOOK_FILTER_DEPARTURE')">
+        <label for="diary-nightly-departure">Departure Date</label>
+        <input id="diary-nightly-departure" type="text" readonly />
+        <span class="date departure">{{diaryData.bookRoomViewFilter.toDate | date: 'd MMM yyyy'}}</span>
+    </div>
+    <div class="entry-time select">
+        <label for="diary-nightly-departure-time">Time</label>
+        <select id="diary-nightly-departure-time" ng-model="diaryData.bookRoomViewFilter.departureTime" ng-change="departureTimeChanged()">
+            <option ng-repeat="time in diaryData.bookRoomViewFilter.departureTimeList" value="{{time['24']}}">{{time['12']}}</option>
+        </select>
+    </div>
+</div> 
+<div class="entry action" ng-class="{'hidden': !diaryData.showBookFilterPanel }">
+    <button type="button" class="button green" ng-click="clickedFindRooms()">Find Rooms</button>
+</div>
