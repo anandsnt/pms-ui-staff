@@ -401,7 +401,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             },
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {
-                if ($stateParams.addonId === null) {
+                if ($stateParams.addonId === "") {
                     return {};
                 }
                 var addon = ADRatesAddonsSrv.fetchSingle($stateParams.addonId);

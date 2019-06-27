@@ -38,7 +38,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
 
-            $scope.allowanceRefundOptions = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+            $scope.allowanceRefundOptions = _.range(0, 110, 10);
 
             if ($scope.isAddMode) {
                 addNew();
@@ -109,7 +109,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                     $scope.postTypes = data;
                 }
 
-                $scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback, '', 'NONE');
+                $scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback, '');
             };
 
              // fetch amount types
@@ -117,7 +117,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 $scope.amountTypes = data;
                 $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, {
                     'type': 'post_type'
-                }, ptCallback, '', 'NONE');
+                }, ptCallback, '');
             };
 
             // fetch charge codes
@@ -125,17 +125,17 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 $scope.chargeCodes = data.results;
                 $scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, {
                     'type': 'amount_type'
-                }, atCallback, '', 'NONE');
+                }, atCallback, '');
             };            
 
            // fetch charge groups
             var cgCallback = function(data) {
                 $scope.chargeGroups = data.results;
-                $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '', 'NONE');
+                $scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback, '');
                 // when ever we are ready to emit 'hideLoader'
             };
 
-            $scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '', 'NONE');    
+            $scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback, '');    
         };
 
         // to add new addon
@@ -146,9 +146,6 @@ admin.controller('ADRatesAddonDetailsCtrl', [
 
             $scope.isAddMode = true;
             $scope.isEditMode = false;
-
-            // reset any currently being edited
-            $scope.currentClickedAddon = -1;
 
             // title for the sub template
             $scope.addonTitle = $filter('translate')('ADD_NEW_SMALL');
@@ -360,8 +357,6 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             if ($scope.isAddMode) {
                 var addCallback = function() {
                     $scope.$emit('hideLoader');
-                    $scope.isAddMode = false;
-                    $scope.tableParams.reload();
                 };
 
                 $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, addCallback);
@@ -371,9 +366,6 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             if ($scope.isEditMode) {
                 var editCallback = function() {
                     $scope.$emit('hideLoader');
-
-                    $scope.isEditMode = false;
-                    $scope.currentClickedAddon = -1;
 
                     $scope.tableParams.reload();
                 };

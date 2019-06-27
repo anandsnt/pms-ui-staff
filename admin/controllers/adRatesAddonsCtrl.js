@@ -74,7 +74,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
         // to add new addon
         $scope.addNew = function() {
-            $state.go ('admin.ratesAddonDetails', { addonId: null });
+            $state.go ('admin.ratesAddonDetails', { addonId: "" });
         };
 
         $scope.editSingle = function() {
