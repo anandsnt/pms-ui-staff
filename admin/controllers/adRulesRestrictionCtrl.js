@@ -201,7 +201,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             description: 'At Booking'
         }, {
             id: 0,
-            description: 'At Arrival'
+            description: 'Day of Arrival'
         }, {
             id: 'custom',
             description: 'Custom'
@@ -295,7 +295,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             var apiParams =  angular.copy($scope.singleRule);
 
             _.each(apiParams.schedules, function(schedule) {
-                delete schedule.id;
                 delete schedule.advance_days_selection;
             });
 
