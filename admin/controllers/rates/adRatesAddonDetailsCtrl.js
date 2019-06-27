@@ -59,6 +59,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             if (_.isEmpty($scope.singleAddon)) {
                 return false;
             }
+            //For post type =  weekly
             if (!$scope.isConnectedToPMS && ($scope.singleAddon.post_type_id === 3) && ($scope.singleAddon.is_reservation_only === true)) {
                 return true;
             } 
@@ -353,27 +354,22 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             /* global dclone:true */
             var addon_data = dclone(singleAddonData, unwantedKeys);
 
+            var addUpdateCallback = function() {
+                $scope.$emit('hideLoader');
+                $scope.back();
+            };
+
             // if we are adding new addon
             if ($scope.isAddMode) {
-                var addCallback = function() {
-                    $scope.$emit('hideLoader');
-                };
-
-                $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, addCallback);
+                $scope.invokeApi(ADRatesAddonsSrv.addNewAddon, addon_data, addUpdateCallback);
             }
 
             // if we are editing an addon
             if ($scope.isEditMode) {
-                var editCallback = function() {
-                    $scope.$emit('hideLoader');
-
-                    $scope.tableParams.reload();
-                };
-
                 // include current addon id also
                 addon_data.id = $scope.singleAddon.id;
 
-                $scope.invokeApi(ADRatesAddonsSrv.updateSingle, addon_data, editCallback);
+                $scope.invokeApi(ADRatesAddonsSrv.updateSingle, addon_data, addUpdateCallback);
             }
         };
 
