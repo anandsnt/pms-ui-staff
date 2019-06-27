@@ -1,0 +1,13 @@
+<div class="entry" ng-show="showSearch">
+    <label for="search-codes">Charge Code</label>
+    <input ng-model="rateName" ng-keyup="rateKeyEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select Rates to add" value="" autocomplete="off" />
+    <div class="autocomplete-results" ng-show="showRates">
+        <div class="scrollable" ng-iscroll="rateList" ng-iscroll-delay="100">
+            <ul class="wrapper">
+                <li ng-repeat="rate in rateSearchResults" ng-click="selectRate(rate.id, rate.name)" >
+                    <span ng-bind-html="rate.name"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

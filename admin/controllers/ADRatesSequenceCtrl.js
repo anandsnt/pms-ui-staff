@@ -14,9 +14,14 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 			}
 		};
 
+		var isCustomRateSelected = function( dashboard ) {
+			return dashboard.value === 'CUSTOM_RATE'
+		};
+
 		var fetchSelections = function() {
 			var onFetchSelectionsSuccess = function(data) {
 				$scope.sequenceState.selectedOptions = data;
+				$scope.showSearch = isCustomRateSelected( data.dashboard );
 				$scope.$emit('hideLoader');
 			};
 
@@ -38,6 +43,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 
 		$scope.changePreference = function(type, option) {
 			$scope.sequenceState.selectedOptions[type] = angular.copy(option);
+			$scope.showSearch = isCustomRateSelected( option );
 		};
 
 		$scope.saveRateSortPreferences = function() {
@@ -49,7 +55,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 				"room_rates": $scope.sequenceState.selectedOptions['room_rates'].id,
 				"rate_manager": $scope.sequenceState.selectedOptions['rate_manager'].id,
 				"dashboard": $scope.sequenceState.selectedOptions['dashboard'].id,
-				"dashboard_is_rate": $scope.sequenceState.selectedOptions['dashboard'].value === 'RATE'
+				"dashboard_rate_id": $scope.sequenceState.selectedOptions['dashboard_rate'].id
 			}, onSaveSuccess);
 		};
 

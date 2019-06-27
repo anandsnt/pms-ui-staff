@@ -38,6 +38,18 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 			return deferred.promise;
 		};
 
+		this.searchRates = function(params) {
+	      var deferred = $q.defer();
+	      var url = '/api/sort_preferences/search_custom_rates';
+
+	       ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+	          deferred.resolve(data);
+	      }, function(data) {
+	          deferred.reject(data);
+	      });
+	      return deferred.promise;
+	  };
+
 
 	}
 ]);
