@@ -201,7 +201,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             description: 'At Booking'
         }, {
             id: 0,
-            description: 'At Arrival'
+            description: 'Day of Arrival'
         }, {
             id: 'custom',
             description: 'Custom'

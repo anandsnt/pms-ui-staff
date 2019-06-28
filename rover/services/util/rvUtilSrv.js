@@ -331,6 +331,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
          *  Utility method to Generate Time Duration List.
          *  @param {string | null} [optional] - [minArrivalTime] 
          *  @param {string | null} [optional] - [maxDepartureTime]
+         *  @param {Number | null} [optional] - [offset value - 15m]
          *  @return {Array} - [List of time objects having 12hr and 24hr formats]
 		 *
          *  generateTimeDuration(null, '1:00')  => 
@@ -344,7 +345,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
          *	
          *	generateTimeDuration() => Full list will return.
          */
-        this.generateTimeDuration = function( minArrivalTime, maxDepartureTime ) {
+        this.generateTimeDuration = function( minArrivalTime, maxDepartureTime, offset ) {
             var timeInterval = 15, // minutes interval
                 startTime = 0, // start time
                 endTime = (24 * 60) - timeInterval, // end time
@@ -355,13 +356,14 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
                 twentyFourHrFormat = '',
                 hh = '',
                 mm = '',
-                obj = {};
+                obj = {},
+                offset = offset || 0;
 
             if (minArrivalTime) {
-                startTime = minArrivalTime.split(':')[0] * 60 + minArrivalTime.split(':')[1] * 1;
+                startTime = minArrivalTime.split(':')[0] * 60 + minArrivalTime.split(':')[1] * 1 + offset * 1;
             }
             if (maxDepartureTime) {
-                endTime = maxDepartureTime.split(':')[0] * 60 + maxDepartureTime.split(':')[1] * 1;
+                endTime = maxDepartureTime.split(':')[0] * 60 + maxDepartureTime.split(':')[1] * 1 + offset * 1;
             }
 
             // loop to increment the time and push results in times array
@@ -379,6 +381,28 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
             }
 
             return times;
+        };
+
+        // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
+        /*
+		 *	extractHhMmAmPm('11:00') => {ampm: "AM", hh: "11", mm: "00"}
+		 *	
+		 *	extractHhMmAmPm('15:30') => {ampm: "PM", hh: "03", mm: "30"}
+		 *	
+		 *	extractHhMmAmPm('20:15') => {ampm: "PM", hh: "08", mm: "15"}
+		 *	
+		 *	extractHhMmAmPm('01:45') => {ampm: "AM", hh: "01", mm: "45"}
+		 *	
+        */
+        this.extractHhMmAmPm = function( time ) {
+        	var hh = parseInt(time.split(' ')[0].split(':')[0]),
+        		ampm = hh >= 12 ? 'PM' : 'AM';
+
+        	return {
+                'ampm': ampm,
+                'hh': (("0" + hh % 12).slice(-2) === '00' ? '12' : ("0" + hh % 12).slice(-2)),
+                'mm': time.split(' ')[0].split(':')[1]
+            };
         };
 
 }]);
