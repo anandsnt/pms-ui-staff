@@ -163,7 +163,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 }
 
                 if ($scope.historicalDateRangeDays || $scope.defaultDateRange) {
-                    dateRange = $scope.historicalDateRangeDays ? $scope.historicalDateRangeDays : $scope.defaultDateRange
+                    dateRange = $scope.historicalDateRangeDays ? $scope.historicalDateRangeDays : $scope.defaultDateRange;
                     $scope.fromDate = new Date(fromDate.setDate(fromDate.getDate() - parseInt(dateRange)));
                 } else {
                     $scope.fromDate = maxDate;
