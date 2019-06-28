@@ -16,10 +16,10 @@
 				<tbody>
 					<tr ng-repeat="item in data.charge_groups" > 
 						<td ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
-							<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}}</a>
+							<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}}<span ng-show="item.name == 'Allowance'"> (system defined)</span></a>
 						</td>
-						<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index || item.name == 'Allowance'">
-							<a class="icons icon-delete large-icon delete_item"></a>
+						<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index">
+							<a class="icons icon-delete large-icon delete_item" ng-hide="item.name == 'Allowance'"></a>
 						</td>
 						<td colspan="2" ng-include="getTemplateUrl($index)"></td>
 					</tr>
