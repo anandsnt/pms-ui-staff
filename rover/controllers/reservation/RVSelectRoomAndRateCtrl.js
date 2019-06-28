@@ -61,7 +61,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			roomFirstGrid: [],
 			rateFirstGrid: []
 		};
-
 		
 		// --
 		$scope.restrictionColorClass = RVSelectRoomRateSrv.restrictionColorClass;
@@ -1824,9 +1823,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
             TABS[0].roomName = null;
             ROOMS[0].roomName = null;
         };
-        
+
         // Init data for chackin flow if coming via Nightly Diary
         if ($scope.stateCheck.isFromNightlyDiary) {
+        	$scope.reservationData.isFromNightlyDiary = true;
         	setRoomDetailsForDiaryFlow();
         }
 		$scope.onRoomTypeChange = function($event) {
