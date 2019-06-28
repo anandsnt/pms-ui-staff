@@ -1133,21 +1133,18 @@ sntRover.controller('reservationActionsController', [
                     "confirmation_custom_title": $scope.ngData.confirmation_custom_title,
                     "confirmation_custom_text": $scope.ngData.confirmation_custom_text,
                     "locale": $scope.ngData.languageData.selected_language_code
-                },
-                emails = [];
+                };
 
             if ($scope.ngData.isGuestEmailSelected ) {
-                emails.push($scope.ngData.guestEmail); 
+                postData.primary_email = $scope.ngData.guestEmail; 
             }
             if ($scope.ngData.isBookerEmailSelected) {
-                emails.push($scope.ngData.bookerEmail); 
+                postData.booker_email = $scope.ngData.bookerEmail; 
             }
 
             if (!$scope.hasEmails() && $scope.ngData.sendConfirmatonMailTo) {
-                emails.push($scope.ngData.sendConfirmatonMailTo); 
+                postData.primary_email = $scope.ngData.sendConfirmatonMailTo; 
             }
-
-            postData.emails = emails;
 
             var reservationId = $scope.reservationData.reservation_card.reservation_id,
                 data = {
@@ -1223,8 +1220,8 @@ sntRover.controller('reservationActionsController', [
 
         var setAllowOverbookflag = function() { // check user permission for overbook_house
             var hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
-            hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-
+                hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+                
             $scope.allowOverbook = hasOverBookHousePermission && hasOverBookRoomTypePermission;
         };
 
@@ -1332,22 +1329,19 @@ sntRover.controller('reservationActionsController', [
             var postData = {
                     "type": "cancellation",
                     "locale": locale
-                },
-                emails = [];
+                };
 
             if ($scope.DailogeState.isGuestEmailSelected ) {
-                emails.push($scope.DailogeState.guestEmail);
+                postData.primary_email = $scope.DailogeState.guestEmail;
             }
 
             if ($scope.DailogeState.isBookerEmailSelected) {
-                emails.push($scope.DailogeState.bookerEmail);
+                postData.booker_email = $scope.DailogeState.bookerEmail;
             }
 
             if (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo) {
-                emails.push($scope.DailogeState.sendConfirmatonMailTo);
+                postData.primary_email = $scope.DailogeState.sendConfirmatonMailTo;
             }
-
-            postData.emails = emails;
 
             var data = {
                 "postData": postData,
