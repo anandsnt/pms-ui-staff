@@ -234,19 +234,27 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 completeCheckin();
             };
 
+            var proceedWithAuthorizations = function() {
+                if ($rootScope.paymentGateway === 'SHIJI') {
+                    $scope.onClickUseCardOnFile();
+                } else {
+                    $timeout(promptForSwipe, 700);
+                }
+            };
+
             $scope.onClickIncidentalsOnly = function () {
                 $scope.checkInState.authorizeIncidentalOnly = true;
                 // set the authorization amount to incidentals
                 $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_for_incidentals;
                 ngDialog.close();
-                $timeout(promptForSwipe, 700);
+                proceedWithAuthorizations();  
             };
 
             $scope.onClickFullAuth = function () {
                 $scope.checkInState.authorizeIncidentalOnly = false;
                 $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
                 ngDialog.close();
-                $timeout(promptForSwipe, 700);
+                proceedWithAuthorizations();
             };
 
             $scope.onClickManualAuth = function () {
@@ -324,7 +332,15 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
-                            promptForSwipe();
+                            if ($rootScope.paymentGateway === 'SHIJI') {
+                                if ($scope.checkInState.hasCardOnFile) {
+                                    $scope.onClickUseCardOnFile();
+                                } else {
+                                    completeCheckin();
+                                }
+                            } else {
+                                promptForSwipe();
+                            }
                         }
                     } else {
                         // if is_cc_authorize_at_checkin enabled is false; then needn't authorize
