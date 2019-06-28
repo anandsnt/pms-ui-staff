@@ -2,7 +2,8 @@
     <div class="modal-content swipe-cc-prompt">
         <section ng-if="isStandAlone">
             <section ng-if="!checkInState.hasActiveEMV">
-                <span class="h3 message">PLEASE SWIPE NOW</span>
+                <span class="h3 message" ng-if=" paymentGateway !== 'SHIJI' " translate>PLEASE_SWIPE_NOW</span>
+                <span class="h3 message" ng-if=" paymentGateway === 'SHIJI' " translate>ADD_A_CC_AND_COME_BACK</span>
                 <span class="message">OR</span>
             </section>
 
