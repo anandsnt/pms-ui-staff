@@ -1,6 +1,6 @@
 sntRover.controller('RVValidateEmailPhoneCtrl', 
-    ['$rootScope', '$scope', '$state', '$timeout', 'ngDialog', 'RVValidateCheckinSrv',  'RVContactInfoSrv',
-    function($rootScope, $scope, $state, $timeout, ngDialog, RVValidateCheckinSrv, RVContactInfoSrv) {
+    ['$rootScope', '$scope', '$state', '$timeout', 'ngDialog', 'RVValidateCheckinSrv',
+    function($rootScope, $scope, $state, $timeout, ngDialog, RVValidateCheckinSrv) {
 	BaseCtrl.call(this, $scope);    
 
     $scope.showEmail = ($scope.guestCardData.contactInfo.email === undefined || $scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
@@ -212,7 +212,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
 
 	};
 	$scope.submitAndGoToCheckin = function() {
-        $scope.guestCardData.contactInfo
+
         if ($scope.shouldEnableSubmitButton()) {
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
