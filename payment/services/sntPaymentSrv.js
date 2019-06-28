@@ -79,6 +79,19 @@ if (status === 406) { // 406- Network error
             });
             return deferred.promise;
         };
+        
+        service.checkWorkStationMandatoryFields = function(reservationId) {
+
+            var deferred = $q.defer(),
+                url = '/api/workstation_mandatory';
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
 
         /**
          *

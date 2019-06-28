@@ -298,14 +298,25 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
 
+            $scope.checkWorkStationMandatoryFields = function () { 
+                sntPaymentSrv.checkWorkStationMandatoryFields().then(
+                    response = (data) =>  {
+                        return true;
+                    },
+                    errorMessage => {
+                        return true;
+                    }
+                );
+            };
+
             /**
              * Hide payment method if there is no permission or no payment type
              * @returns {boolean} boolean
              */
             $scope.shouldHidePaymentButton = function () {
-                return !$scope.selectedPaymentType || !$scope.hasPermission ||
+                return $scope.checkWorkStationMandatoryFields() && (!$scope.selectedPaymentType || !$scope.hasPermission ||
                     $scope.isGCBalanceShort() ||
-                    (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
+                    (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure));
             };
 
             /**
