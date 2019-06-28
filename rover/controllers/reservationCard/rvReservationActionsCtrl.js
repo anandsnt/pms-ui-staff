@@ -349,11 +349,11 @@ sntRover.controller('reservationActionsController', [
         };
         $scope.validateEmailPhone = function() {
 
-            $scope.showJobTitle     = false;
+            $scope.showJobTitle = false;
             $scope.showNameOfFather = false;
             $scope.showNameOfMother = false;
             $scope.showPlaceOfBirth = false;
-            $scope.showGender       = false;
+            $scope.showGender = false;
             $scope.showVehicleRegistrationNumber = false;
             $scope.showPersonalIdNumber = false;
             $scope.showHomeTown = false;
