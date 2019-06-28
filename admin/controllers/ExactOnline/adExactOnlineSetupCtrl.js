@@ -33,7 +33,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                         endpoint: $scope.config.endpoint,
                         authorized: $scope.config.authorized,
                         balancing_account_code: $scope.config.balancing_account_code,
-                        journal_code: $scope.config.journal_code,
+                        journal_code: $scope.config.journal_code
                     }
                 },
                 onSuccess: function() {
@@ -43,7 +43,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                         $scope.config = settings;
                     });
                 }
-            })
+            });
         }
         /**
          * when we clicked on save button
