@@ -185,6 +185,20 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             });
             return deferred.promise; 
         };
+        
+        this.fetchGenderTypes = function () {
+            var deffered = $q.defer(),
+               url = 'api/guest_details/gender_types';
+
+            RVBaseWebSrvV2.getJSON(url)
+             .then( function (data) {
+                deffered.resolve( data.gender_type_list);
+             }, function (error) {
+                deffered.resolve( error);
+             });
+
+             return deffered.promise;
+        };
 
     }
 ]);

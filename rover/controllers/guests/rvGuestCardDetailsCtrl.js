@@ -11,12 +11,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVContactInfoSrv',
   'RVSearchSrv',
   'idTypesList',
+  'genderTypesList',
   'rvPermissionSrv',
   'RVGuestCardsSrv',
   '$timeout',
   '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList, genderTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -323,6 +324,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
             $scope.countries = countries;
             $scope.idTypeList = idTypesList;
+            $scope.genderTypeList = genderTypesList;
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,
