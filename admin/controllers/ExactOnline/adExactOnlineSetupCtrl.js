@@ -21,7 +21,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
 
         $scope.changeTab = function(name) {
             $scope.state.activeTab = name;
-        }
+        };
 
         $scope.onUrlChange = function() {
             $scope.config.authorized = false;
@@ -44,7 +44,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                     });
                 }
             });
-        }
+        };
         /**
          * when we clicked on save button
          * @return {undefined}
