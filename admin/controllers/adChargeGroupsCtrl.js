@@ -21,6 +21,9 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
     * @paran {string} id - charge groups id
     */
 	$scope.editItem = function(index)	{
+		if ($scope.data.charge_groups[index].name === 'Allowance') {
+			return;
+		}
 		$scope.currentClickedElement = index;
 		$scope.preveousItem = $scope.data.charge_groups[index].name;
 	};

@@ -165,6 +165,21 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			}
 		};
 
+		$scope.onChangeChargeGroup = function (chargeGroupID) {
+			var chargeGroupp = _.find($scope.prefetchData.charge_groups, {
+	            value: chargeGroupID
+	        });
+			if (chargeGroupp.name === "Allowance") {
+				if (_.isUndefined($scope.chargeCodes)) {
+					fetchChargeCodesForAllowance();
+				}
+
+				$scope.prefetchData.selected_charge_code_type = _.find($scope.prefetchData.charge_code_types, {
+					name: "ALLOWANCE"
+		        }).value;
+			}
+		};
+
 		/*
 		 * To fetch the charge code details for edit screen.
 		 */

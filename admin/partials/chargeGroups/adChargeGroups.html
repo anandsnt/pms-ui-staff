@@ -18,7 +18,7 @@
 						<td ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
 							<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}}</a>
 						</td>
-						<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index">
+						<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index || item.name == 'Allowance'">
 							<a class="icons icon-delete large-icon delete_item"></a>
 						</td>
 						<td colspan="2" ng-include="getTemplateUrl($index)"></td>
