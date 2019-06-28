@@ -41,6 +41,12 @@ const isRoomAvailable = (roomId, state, type) => {
             }
         });
 
+        roomDetails.fromDate = state.availableSlotsForBookRooms.fromDate;
+        roomDetails.toDate = state.availableSlotsForBookRooms.toDate;
+        roomDetails.nights = state.availableSlotsForBookRooms.nights;
+        roomDetails.arrivalTime = state.availableSlotsForBookRooms.arrivalTime;
+        roomDetails.departureTime = state.availableSlotsForBookRooms.departureTime;
+
         if (diaryMode === 'FULL') {
             bookType = 'BOOK';
         }
