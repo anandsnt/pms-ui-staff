@@ -82,7 +82,8 @@ module.exports = {
             'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less'],
             'asbury': [themeCSSRoot + 'asbury.less'],
             'manchebo': [themeCSSRoot + 'manchebo.less'],
-            'seacrest': [themeCSSRoot + 'seacrest.less']
+            'seacrest': [themeCSSRoot + 'seacrest.less'],
+            'cole': [themeCSSRoot + 'cole.less']
         };
     }
 };

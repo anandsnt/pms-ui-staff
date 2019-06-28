@@ -7,6 +7,7 @@ angular.module('sntRover')
         '$filter',
         'ngDialog',
         'rvUtilSrv',
+        'rvPermissionSrv',
         function(
             $scope,
             $rootScope,
@@ -14,12 +15,14 @@ angular.module('sntRover')
             $stateParams,
             $filter,
             ngDialog,
-            rvUtilSrv
+            rvUtilSrv,
+            rvPermissionSrv
         ) {
 
         BaseCtrl.call(this, $scope);
 
-        var isDateChangedFromInitialState = false;
+        var isDateChangedFromInitialState = false,
+            TIME_OFFSET = 15;
 
         /*
          * Utility method to shift date.
@@ -88,20 +91,21 @@ angular.module('sntRover')
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         },
         initBookFilterData = function() {
-            var businessDateMinusOne = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-                .format($rootScope.momentFormatForAPI);
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
 
-            if ($scope.diaryData.fromDate === businessDateMinusOne) {
-                $scope.diaryData.bookRoomViewFilter.fromDate = $rootScope.businessDate;
+            if ($rootScope.businessDate > $scope.diaryData.fromDate) {
+                bookRoomViewFilter.fromDate = $rootScope.businessDate;
             }
             else {
-                $scope.diaryData.bookRoomViewFilter.fromDate = $scope.diaryData.fromDate;
+                bookRoomViewFilter.fromDate = $scope.diaryData.fromDate;
             }
-            $scope.diaryData.bookRoomViewFilter.toDate = moment(tzIndependentDate($scope.diaryData.bookRoomViewFilter.fromDate)).add(1, 'days')
+            bookRoomViewFilter.toDate = moment(tzIndependentDate(bookRoomViewFilter.fromDate)).add(1, 'days')
                 .format($rootScope.momentFormatForAPI);
 
-            $scope.diaryData.bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
-            $scope.diaryData.bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
+            bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
 
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
@@ -151,6 +155,9 @@ angular.module('sntRover')
                 // Handle 0 night scenario. Reset the time selections to '09:00 AM' & '05:00 PM'.
                 bookRoomViewFilter.arrivalTime = '09:00';
                 bookRoomViewFilter.departureTime = '17:00';
+                
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null, TIME_OFFSET);
             }
             else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
                 if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime) {
@@ -159,6 +166,8 @@ angular.module('sntRover')
                 if (bookRoomViewFilter.departureTime !== bookRoomViewFilter.hotelCheckoutTime) {
                     bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
                 }
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
             }
         });
         // Catching event from main controller, when API is completed.
@@ -310,6 +319,11 @@ angular.module('sntRover')
             return hideToggleMenu;
         };
 
+        // Flag CreateReservation permission
+        var hasCreateReservationPermission = function() {
+            return rvPermissionSrv.getPermissionValue('CREATE_RESERVATION');
+        };
+
         // CICO-63546 : Disable RES/AVL toggle -
         // While RES mode is active & diff bw/n businessDate and FromDate > 6.
         $scope.disableAvlToggle = function() {
@@ -317,7 +331,7 @@ angular.module('sntRover')
                 dateDiff = moment($rootScope.businessDate)
                             .diff(moment($scope.diaryData.fromDate), 'days');
 
-            if (!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) {
+            if ((!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) || !hasCreateReservationPermission()) {
                 isHideAvlToggle = true;
             }
 
@@ -364,7 +378,7 @@ angular.module('sntRover')
 
             // Handle 0 night usecse
             if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
-                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null);
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null, TIME_OFFSET);
             }
         };
         // Handle departure time changes.
@@ -373,7 +387,7 @@ angular.module('sntRover')
 
             // Handle 0 night usecse
             if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
-                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime);
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
             }
         };
 

@@ -94,6 +94,10 @@
             #pixel-to-percent > .width(580, 1200);
             .pull-left;
 
+            > .holder {
+                padding-top: 40px;
+            }
+
             &.left { #pixel-to-percent > .right-margin(40, 1200); }
 
             &.full-width {
@@ -146,6 +150,25 @@
             margin-bottom: 20px;
             #pixel-to-percent > .width(280, 580);
             .pull-left;
+
+            &.has-datepicker {
+                position: relative;
+
+                .date-delete-wrapper {
+                    position: absolute;
+                    bottom: 1px;
+                    right: 1px;
+                    background-color: @grey1;
+                    cursor: pointer;
+                    .square(38px);
+                    .show();
+
+                    .date-delete {
+                        background-position: 16px -536px !important;
+                        .square(38px);
+                    }
+                }
+            }
 
             &.col1-3 {
                 width: 30%;
@@ -2156,6 +2179,10 @@
         &.activation {
             top: 5px;
             margin-left: 5px;
+        }
+
+        &.disabled {
+            opacity: .5;
         }
     }
 
