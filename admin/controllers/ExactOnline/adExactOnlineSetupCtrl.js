@@ -11,20 +11,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
 
         $scope.integration = "EXACTONLINE";
 
-        $scope.datePickerOptions = {
-            dateFormat: $rootScope.jqDateFormat,
-            numberOfMonths: 1,
-            maxDate: $scope.exportOptions.date,
-            changeYear: true,
-            changeMonth: true,
-            beforeShow: function() {
-                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-            },
-            onClose: function() {
-                $('#ui-datepicker-overlay').remove();
-            }
-        };
-
         /**
          * when clicked on check box to enable/diable pabx
          * @return {undefined}
@@ -75,10 +61,6 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
                 }
             });
         };
-
-        // TODO: delete this function. Handling sync thru adExactonlineSync.html
-        // TODO: make a refresh button that fetches the o_auth URL again after the endpoint has been changed
-        // set it to $scope.config.oauth_url so that the button links to the proper app
 
         /**
          * Initialization stuffs
