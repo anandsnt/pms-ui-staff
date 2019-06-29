@@ -1,13 +1,6 @@
 <div class="entry" ng-show="showSearch">
     <label for="search-codes">Custum Rate Name</label>
     <input ng-model="rateName" ng-keyup="rateKeyEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select Rates to add" value="" autocomplete="off" />
-    <div class="search">
-                            <button id="faux-select-clear-query" class="clear-query">
-                                <span class="icons icon-clear-search">Clear query</span>
-                            </button>
-                            <button type="submit" name="submit" class="icons icon-search">Search</button>
-                            <input name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
-                        </div>
     <div class="autocomplete-results" ng-show="showRates">
         <div class="scrollable" ng-iscroll="rateList" ng-iscroll-delay="100">
             <ul class="wrapper">

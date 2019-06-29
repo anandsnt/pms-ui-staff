@@ -2,9 +2,9 @@
     <header class="content-title float">
 
         <h2><span>Create</span> Rate Sequence</h2>
-        <a class="action back" href="{back}">Back</a>
+        <a class="action back" ng-click="backToRateSequence()">Back</a>
         <!-- On click, remove .hidden from the Add Sequence From below -->
-        <a href="#" class="action add">Add Sequence</a>
+        <a href="#" class="action add" ng-click="addNewSequence()">Add Sequence</a>
         <div class="actions float pull-right">
             <button type="button" class="button add-data-inline toggle-tab orange">MANAGE Sequence</button>
             <button type="button" class="button add-data-inline toggle-tab white">MANAGE Rates</button>
@@ -12,7 +12,7 @@
     </header>
     <section class="content-scroll">
         <!-- If data, show this -->
-        <table class="grid datatable draggable editable">
+        <table class="grid datatable draggable editable" ng-show="MODE ==='LIST'">
             <thead>
             <tr>
                 <th class="sequence break sort-asc sorting">Sort</th>
@@ -22,64 +22,61 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td class="sequence handle">
+            <tr ng-repeat="customSequence in customSequenceList track by $index"
+                ng-click="selectCustomSequence($index, customSequence)">
+                <td class="sequence handle" ng-show="selectedCustomSequenceIndex !== $index">
                     <span class="icons icon-handle centered grey"></span>
                 </td>
-                <td>
-                    <!-- When clicked, hide this row and show the row below (form-row) -->
-                    <strong>{Sequence Name}</strong>
+                <td ng-show="selectedCustomSequenceIndex !== $index">
+                    <strong>{{customSequence.name}}</strong>
                 </td>
-                <td class="sequence-rates">{rates}</td>
-                <td class="delete">
+                <td class="sequence-rates" ng-show="selectedCustomSequenceIndex !== $index">0</td>
+                <td class="delete" ng-show="selectedCustomSequenceIndex !== $index">
                     <a href="#" class="icons icon-delete large-icon">Delete</a>
                 </td>
-            </tr>
 
-            <tr class="hidden form-row">
-                <td colspan="4">
+                <td colspan="4" ng-show="selectedCustomSequenceIndex === $index">
                     <form class="form">
                         <div class="holder full-width holder_margin">
                             <div class="form-title">
                                 <h3>
-                                    <span>Add</span> Sequence
+                                    <span>Edit</span> Sequence
                                 </h3>
                             </div>
 
                             <div class="entry">
                                 <label>Sequence Name<strong>*</strong></label>
-                                <input type="text" value="{Sequence Name}" placeholder="Enter Sequence Name">
+                                <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name">
                             </div>
 
                             <div class="actions float">
                                 <!-- on cancel, hide this form-row and show the row above -->
-                                <button type="button" class="button blank">Cancel</button>
-                                <button type="button" class="button green">Edit Sequence</button>
+                                <button type="button" class="button blank" ng-click="cancel()">Cancel</button>
+                                <button type="button" class="button green" ng-click="editCustomSequence()">Edit Sequence</button>
                             </div>
                         </div>
                     </form>
                 </td>
             </tr>
-            ... for each sequence, repeat this two table rows
+
             </tbody>
         </table>
         <!-- If no data, show this immediatelly -->
-        <form  class="form hidden">
+        <form  class="form" ng-show="MODE ==='ADD'">
             <div class="holder full-width">
                 <div class="form-title">
                     <h3>
                         <span>Add</span> Sequence
                     </h3>
                 </div>
-
                 <div class="entry">
                     <label>Sequence Name<strong>*</strong></label>
-                    <input type="text" value="" placeholder="Enter Sequence Name">
+                    <input type="text" ng-model="selectedSequence.name" placeholder="Enter Sequence Name">
                 </div>
 
                 <div class="actions float">
-                    <button type="button" class="button blank">Cancel</button>
-                    <button type="button" class="button green">Add Sequence</button>
+                    <button type="button" class="button blank" ng-click="cancel()">Cancel</button>
+                    <button type="button" class="button green" ng-click="createCustomSequence()">Add Sequence</button>
                 </div>
             </div>
         </form>
