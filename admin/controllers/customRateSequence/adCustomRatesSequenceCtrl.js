@@ -20,7 +20,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
                 var successCallBackFetchCustomSequence = function (data) {
                         $scope.customSequenceList = data;
                         unSelectCustomSequence();
-                        setMode('LIST')
+                        setMode('LIST');
                     },
                     options = {
                         successCallBack: successCallBackFetchCustomSequence
@@ -29,8 +29,8 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
                 $scope.callAPI(ADRateSequenceSrv.listCustomSequence, options);
             };
 
-        $scope.addNewSequence = function(){
-            setMode('ADD')
+        $scope.addNewSequence = function() {
+            setMode('ADD');
         };
 
         $scope.selectCustomSequence = function(index, customSequence) {
@@ -39,7 +39,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
         };
 
         $scope.createCustomSequence = function() {
-            var successCallBackcreateCustomSequence = function (data) {
+            var successCallBackcreateCustomSequence = function () {
                     fetchCustomSequence();
                 },
                 postData = {
@@ -54,7 +54,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
         };
 
         $scope.editCustomSequence = function() {
-            var successCallBackEditCustomSequence = function (data) {
+            var successCallBackEditCustomSequence = function () {
                     fetchCustomSequence();
                 },
                 options = {
