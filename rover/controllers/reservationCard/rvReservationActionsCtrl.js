@@ -348,11 +348,46 @@ sntRover.controller('reservationActionsController', [
             });
         };
         $scope.validateEmailPhone = function() {
-            ngDialog.open({
-                    template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
-                    controller: 'RVValidateEmailPhoneCtrl',
-                    scope: $scope
-            });
+
+            $scope.showJobTitle = false;
+            $scope.showNameOfFather = false;
+            $scope.showNameOfMother = false;
+            $scope.showPlaceOfBirth = false;
+            $scope.showGender = false;
+            $scope.showVehicleRegistrationNumber = false;
+            $scope.showPersonalIdNumber = false;
+            $scope.showHomeTown = false;
+            $scope.showPlaceOfResidence = false;
+            $scope.showVehicleCountryMark = false;
+            $scope.showDateOfBirth = false;
+
+            $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo = data;
+                    $scope.showJobTitle = $scope.guestCardData.contactInfo.guestAdminSettings.job_title.is_mandatory_on_guest_card_creation;
+                    $scope.showNameOfFather = $scope.guestCardData.contactInfo.guestAdminSettings.father_name.is_mandatory_on_guest_card_creation;
+                    $scope.showNameOfMother = $scope.guestCardData.contactInfo.guestAdminSettings.mother_name.is_mandatory_on_guest_card_creation;
+                    $scope.showPlaceOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation;
+                    $scope.showGender = $scope.guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation;
+                    $scope.showVehicleRegistrationNumber = $scope.guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation;
+                    $scope.showPersonalIdNumber = $scope.guestCardData.contactInfo.guestAdminSettings.personal_id_no.is_mandatory_on_guest_card_creation;
+                    $scope.showHomeTown = $scope.guestCardData.contactInfo.guestAdminSettings.home_town.is_mandatory_on_guest_card_creation;
+                    $scope.showPlaceOfResidence   = $scope.guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_mandatory_on_guest_card_creation;
+                    $scope.showVehicleCountryMark = $scope.guestCardData.contactInfo.guestAdminSettings.vehicle_country_mark.is_mandatory_on_guest_card_creation 
+                                                    && ($scope.guestCardData.contactInfo.country_code === '' || $scope.guestCardData.contactInfo.country_code === null);
+                    $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation;               
+
+                    ngDialog.open({
+                        template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+                        controller: 'RVValidateEmailPhoneCtrl',
+                        scope: $scope
+                    });                  
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });         
         };
 
         $scope.promptCardAddition = function() {
