@@ -169,6 +169,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			var chargeGroupp = _.find($scope.prefetchData.charge_groups, {
 	            value: chargeGroupID
 	        });
+	        
 			if (chargeGroupp.name === "Allowance") {
 				if (_.isUndefined($scope.chargeCodes)) {
 					fetchChargeCodesForAllowance();

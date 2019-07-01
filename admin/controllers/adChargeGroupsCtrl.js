@@ -88,7 +88,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
     * To handle delete button in edit box and list view.
     */
 	$scope.clickedDelete = function(id) {
-		chargeGroupToDelete = _.find($scope.data.charge_groups, {
+		var chargeGroupToDelete = _.find($scope.data.charge_groups, {
 	        value: id
 	    });
 	    if (chargeGroupToDelete.name === "Allowance") {
