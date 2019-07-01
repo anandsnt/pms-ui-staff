@@ -70,8 +70,8 @@
     <div class="actions">
         <!-- need to check what is difference -->
         <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
-        <button type="button" class="button"   ng-disabled="shouldHidePaymentButton()"
-                ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}" 
+        <button type="button" class="button"   ng-disabled="shouldHidePaymentButton() || !workStationStatus"
+                ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton() || !workStationStatus}" 
                 ng-click="submitPayment()">Pay deposit now</button>
     </div>
 </div>

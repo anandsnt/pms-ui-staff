@@ -83,7 +83,8 @@
 
         <div class="actions" ng-show="!!selectedPaymentType">
             <button type="button" class="button blue" ng-click="payLater()">Pay deposit later</button>
-            <button type="button" class="button green" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">
+            <button type="button" class="button" ng-disabled="shouldHidePaymentButton() || !workStationStatus"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton() || !workStationStatus}" ng-click="submitPayment()" ng-hide="shouldHidePaymentButton()">
                 Pay
                 deposit now
             </button>

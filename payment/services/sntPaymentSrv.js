@@ -80,13 +80,13 @@ if (status === 406) { // 406- Network error
             return deferred.promise;
         };
         
-        service.checkWorkStationMandatoryFields = function(reservationId) {
+        service.checkWorkStationMandatoryFields = function(workstationId) {
 
             var deferred = $q.defer(),
-                url = '/api/workstation_mandatory';
+                url = '/api/workstations/workstation_status?workstation_id=' + workstationId;
 
             $http.get(url).then(function(response) {
-                deferred.resolve(response.data.data);
+                deferred.resolve(response.data);
             }, function(error) {
                 deferred.reject(error);
             });
