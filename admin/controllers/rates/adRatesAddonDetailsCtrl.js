@@ -13,7 +13,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
 
         // extend base controller
-       var init = function() {
+        BaseCtrl.call(this, $scope);
+        var init = function() {
 
             // various addon data holders
             $scope.data = [];

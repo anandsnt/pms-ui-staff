@@ -3,6 +3,11 @@
         <header class="content-title float">
             <h2 translate>RATE_SEQUENCE</h2>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+            <div class="actions float pull-right">
+                <button type="button" class="button add-data-inline toggle-tab green" ng-click="goToCustomRateSequence()">
+                    CREATE RATE SEQUENCE
+                </button>
+            </div>
         </header>
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
