@@ -91,6 +91,7 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
 		var chargeGroupToDelete = _.find($scope.data.charge_groups, {
 	        value: id
 	    });
+	    
 	    if (chargeGroupToDelete.name === "Allowance") {
 	    	return;
 	    }
