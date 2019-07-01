@@ -48,7 +48,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
                         successCallBack: successCallBackUpdateSortOrder
                     };
 
-                if( position !== undefined){
+                if ( position !== undefined ) {
                     $scope.callAPI(ADRateSequenceSrv.updateSortOrder, options);
                 }
             },
@@ -98,7 +98,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
             $scope.callAPI(ADRateSequenceSrv.createCustomSequence, options);
         };
 
-        $scope.editCustomSequence = function(e) {
+        $scope.editCustomSequence = function() {
             var successCallBackEditCustomSequence = function () {
                     fetchCustomSequence();
                 },
