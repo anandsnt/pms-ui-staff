@@ -12,7 +12,7 @@
     </header>
     <section class="content-scroll">
         <!-- If data, show this -->
-        <table class="grid datatable draggable editable" ng-show="MODE ==='LIST'">
+        <table class="grid" ng-show="MODE ==='LIST'" id="sort">
             <thead>
             <tr>
                 <th class="sequence break sort-asc sorting">Sort</th>
@@ -21,9 +21,10 @@
                 <th class="delete">Delete</th>
             </tr>
             </thead>
-            <tbody>
-            <tr ng-repeat="customSequence in customSequenceList track by $index"
-                ng-click="selectCustomSequence($index, customSequence)">
+            <tbody ui-sortable="sortableOptions" ng-model="customSequenceList">
+                <tr ng-repeat="customSequence in customSequenceList track by $index"
+                    ng-click="selectCustomSequence($index, customSequence)"
+                >
                 <td class="sequence handle" ng-show="selectedCustomSequenceIndex !== $index">
                     <span class="icons icon-handle centered grey"></span>
                 </td>
@@ -32,7 +33,7 @@
                 </td>
                 <td class="sequence-rates" ng-show="selectedCustomSequenceIndex !== $index">0</td>
                 <td class="delete" ng-show="selectedCustomSequenceIndex !== $index">
-                    <a href="#" class="icons icon-delete large-icon">Delete</a>
+                    <a href="#" class="icons icon-delete large-icon" ng-click="deleteSequence(customSequence)">Delete</a>
                 </td>
 
                 <td colspan="4" ng-show="selectedCustomSequenceIndex === $index">
@@ -50,7 +51,6 @@
                             </div>
 
                             <div class="actions float">
-                                <!-- on cancel, hide this form-row and show the row above -->
                                 <button type="button" class="button blank" ng-click="cancel()">Cancel</button>
                                 <button type="button" class="button green" ng-click="editCustomSequence()">Edit Sequence</button>
                             </div>
