@@ -243,8 +243,26 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         setDefaultCheckinCheckoutTime = function() {
             $scope.timeSlots = RVReservationBaseSearchSrv.timeSlots;
             if (isFromNightlyDiary) {
-                var arrivalTimeObj = rvUtilSrv.extractHhMmAmPm($stateParams.selectedArrivalTime),
-                    departureTimeObj = rvUtilSrv.extractHhMmAmPm($stateParams.selectedDepartureTime);
+
+                var selectedArrivalTime = '',
+                    selectedDepartureTime = '';
+
+                if (!!$stateParams.selectedArrivalTime) {
+                    selectedArrivalTime = $stateParams.selectedArrivalTime;
+                }
+                else if (!!$scope.reservationData.tabs[0].checkinTime) {
+                    selectedArrivalTime = $scope.reservationData.tabs[0].checkinTime;
+                }
+
+                if (!!$stateParams.selectedDepartureTime) {
+                    selectedDepartureTime = $stateParams.selectedDepartureTime;
+                }
+                else if (!!$scope.reservationData.tabs[0].checkoutTime) {
+                    selectedDepartureTime = $scope.reservationData.tabs[0].checkoutTime;
+                }
+
+                var arrivalTimeObj = rvUtilSrv.extractHhMmAmPm(selectedArrivalTime),
+                    departureTimeObj = rvUtilSrv.extractHhMmAmPm(selectedDepartureTime);
 
                 $scope.fullCheckinTime = arrivalTimeObj.hh + ':' + arrivalTimeObj.mm + ' ' + arrivalTimeObj.ampm;
                 $scope.fullCheckoutTime = departureTimeObj.hh + ':' + departureTimeObj.mm + ' ' + departureTimeObj.ampm;
