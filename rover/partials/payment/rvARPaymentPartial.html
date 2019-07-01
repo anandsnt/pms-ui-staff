@@ -70,8 +70,8 @@
       <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
           CANCEL
       </button>
-      <button type="button" class="button" ng-disabled="shouldHidePaymentButton() || !workStationStatus"
-            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton() || !workStationStatus}" click-touch="submitPayment()"
+      <button type="button" class="button" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="!isRefund()">
           MAKE PAYMENT
       </button>    
@@ -80,8 +80,8 @@
       <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
           CLOSE
       </button>
-      <button type="button" class="button" ng-disabled="shouldHidePaymentButton() || !workStationStatus"
-            ng-class="{'blue': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton() || !workStationStatus}" click-touch="submitPayment()"
+      <button type="button" class="button" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'blue': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="isRefund()">
           REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
       </button>

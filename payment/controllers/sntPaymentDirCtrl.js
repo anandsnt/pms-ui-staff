@@ -297,7 +297,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 return payableAmount < 0 || //  NOTE : We can't make a negative payment with a GIFT_CARD
                     $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
-            $scope.workStationStatus = false;
+            
             /*
              * Method to check the work station status is active/not
              * If not active disable the payment option and show message in the screen
@@ -322,9 +322,9 @@ angular.module('sntPay').controller('sntPaymentController',
              * Hide payment method if there is no permission or no payment type
              * @returns {boolean} boolean
              */
-            $scope.paymentAttempted = false;
+
             $scope.shouldHidePaymentButton = function () {
-                return !$scope.selectedPaymentType || !$scope.hasPermission ||
+                return !$scope.workStationStatus || !$scope.selectedPaymentType || !$scope.hasPermission ||
                     $scope.isGCBalanceShort() ||
                     (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
             };
@@ -1532,8 +1532,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
+                $scope.paymentAttempted = false;
+                $scope.workStationStatus = false;
                 $scope.showSelectedCard();
-                $scope.checkWorkStationMandatoryFields();
+                if ($rootScope.isWorkStationMandatory) {
+                    $scope.checkWorkStationMandatoryFields();
+                }
 
             })();
 
