@@ -11,7 +11,7 @@
 
 				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "{{'DESCRIPTION'| translate}} " placeholder = "{{'DESC_PLACEHOLDER' | translate }}" required="true"></ad-textarea>
 				
-				<div class="entry">
+					<div class="entry" ng-hide="isAllowanceType(prefetchData.selected_charge_code_type)">
 						<label translate>ALLOW_MANUAL_POSTINGS</label>
 
 						<div id="div-upsell-rooms" class="switch-button single"
@@ -22,11 +22,11 @@
 					</div>
                                 
                 <div class="entry" style="margin-bottom:15px;" ng-show='isStandAlone' ng-hide='!isStandAlone'>    
-                    <ad-dropdown  label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'"  required = "yes" div-class="full-width"></ad-dropdown>
+                    <ad-dropdown  label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'" on-change="onChangeChargeGroup"  required = "yes" div-class="full-width"></ad-dropdown>
                 </div>
                 
                 <div class="entry" style="margin-bottom:15px;" ng-show='!isStandAlone' ng-hide='isStandAlone'>
-                    <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'" required = "no" div-class="full-width"></ad-dropdown>
+                    <ad-dropdown label="{{'CHARGE_GROUP'| translate}}" label-in-drop-down="{{'CHARGE_GROUP'| translate}}" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' ng-disabled="prefetchData.selected_charge_code_type === '11'" on-change="onChangeChargeGroup" required = "no" div-class="full-width"></ad-dropdown>
                 </div>  
                                 
 				<ad-dropdown label="{{'CHARGE_CODE_TYPE'| translate}}" label-in-drop-down="{{'CHARGE_CODE_TYPE'| translate}}" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="entry full-width"  on-change="onChangeChargeCodeType"></ad-dropdown>
@@ -69,7 +69,7 @@
                         </select>
 					</div>
 				</div>
-				<div class="entry full-width" required="required">
+				<div class="entry full-width" required="required" ng-hide="isAllowanceType(prefetchData.selected_charge_code_type)">
 					<label class="ng-binding" ng-hide="label.length==0" for="" >
 						{{'FEES'| translate}}
 					</label>
@@ -84,12 +84,12 @@
 				</div>
 
 				<!-- show For charge codes of the code type TAX or FEES or TOURIST TAX , for standalone hotels-->
-				<div class="entry full-width">
+				<div class="entry full-width" >
 					
 					<ad-textbox value="prefetchData.minimum_amount_for_fees"
-						ng-show="(
+						hide="!((
 							isTaxSelected() || isTouristTaxSelected() || isFeesSelected()
-						) && !isPmsConfigured"
+						) && !isPmsConfigured)"
 
 						inputtype="text" value=""
 						label="{{'MINIMUM_AMOUNT_TO_CHARGE_FEE'| translate}}"
