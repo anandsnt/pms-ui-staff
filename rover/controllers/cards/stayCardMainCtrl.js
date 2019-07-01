@@ -162,7 +162,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             $scope.$broadcast('guestCardAvailable');
             $scope.$broadcast('resetGuestTab');
             $scope.$emit('hideLoader');
-        }
+        }       
 
         $scope.$on('UPDATE_GUEST_CARD_DETAILS', function(event, data) {
             fetchGuestCardDataSuccessCallback(data);
