@@ -298,7 +298,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
             $scope.workStationStatus = false;
-
+            /*
+             * Method to check the work station status is active/not
+             * If not active disable the payment option and show message in the screen
+             */
             $scope.checkWorkStationMandatoryFields = function () { 
                 sntPaymentSrv.checkWorkStationMandatoryFields($scope.hotelConfig.workstationId).then(
                     response =>  {

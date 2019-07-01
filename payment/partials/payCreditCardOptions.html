@@ -118,8 +118,10 @@
 
     <button type="button"
             ng-click="submitPayment()"
-            class="button green"
-            ng-hide="shouldHidePaymentButton() || testStatus">
-        Make Payment==========={{testStatus}}
+            class="button" 
+            ng-disabled="shouldHidePaymentButton() || !workStationStatus" 
+            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton() || !workStationStatus}"
+            ng-hide="shouldHidePaymentButton() || !workStationStatus">
+        Make Payment
     </button>
 </div>
