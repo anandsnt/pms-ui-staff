@@ -234,9 +234,17 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 completeCheckin();
             };
 
+            var shijiAuthActions = function() {
+                if ($scope.checkInState.hasCardOnFile) {
+                    $scope.onClickUseCardOnFile();
+                } else {
+                    completeCheckin();
+                }
+            };
+
             var proceedWithAuthorizations = function() {
                 if ($rootScope.paymentGateway === 'SHIJI') {
-                    $scope.onClickUseCardOnFile();
+                    shijiAuthActions();
                 } else {
                     $timeout(promptForSwipe, 700);
                 }
@@ -333,11 +341,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                             promptForAuthorizationAmount();
                         } else {
                             if ($rootScope.paymentGateway === 'SHIJI') {
-                                if ($scope.checkInState.hasCardOnFile) {
-                                    $scope.onClickUseCardOnFile();
-                                } else {
-                                    completeCheckin();
-                                }
+                                shijiAuthActions();
                             } else {
                                 promptForSwipe();
                             }

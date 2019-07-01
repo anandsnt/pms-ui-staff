@@ -1233,9 +1233,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                         $scope.selectedCC.value = response.id;
                         $scope.selectedCard = $scope.selectedCC.value;
-                        $scope.selectedCC.card_code = cardDetails.cardDisplayData.card_code ? cardDetails.cardDisplayData.card_code.toLowerCase() : 'credit-card';
-                        $scope.selectedCC.ending_with = cardDetails.cardDisplayData.ending_with;
-                        $scope.selectedCC.expiry_date = cardDetails.cardDisplayData.expiry_date;
+                        $scope.selectedCC.card_code = response.credit_card_type ? response.credit_card_type.toLowerCase() : 'credit-card';
+                        $scope.selectedCC.ending_with = response.ending_with;
+                        $scope.selectedCC.expiry_date = response.expiry_date;
                         $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
 
                         $scope.payment.screenMode = 'PAYMENT_MODE';

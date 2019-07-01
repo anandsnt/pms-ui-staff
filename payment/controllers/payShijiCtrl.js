@@ -133,7 +133,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			if (responseData.respCode === "00") {
 				self.tokenizeBySavingtheCard(responseData.tokenId);
-			} else {
+			} else if (responseData.respCode && responseData.respCode !== "00") {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
 				let errorMsg = responseData.respText ? [responseData.respText] : [''];
