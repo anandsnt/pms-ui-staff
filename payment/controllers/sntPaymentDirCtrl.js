@@ -999,7 +999,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
                 // If there are attached cards, show them first
                 if (!!selectedPaymentType && selectedPaymentType.name === 'CC') {
-                    if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl) {
+                    if (PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl && $scope.hotelConfig.paymentGateway !== 'SHIJI') {
                         // Add to guestcard feature for C&P
                         //  The payment info may change after adding a payment method; in such a case, should not reset back to C&P mode
                         $scope.selectedCC = $scope.selectedCC || {};
@@ -1381,7 +1381,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         // CICO-41498 in the middle of split bill payments
                         ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
-                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments' || $scope.hotelConfig.paymentGateway === 'SHIJI') &&
+                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
                     isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
