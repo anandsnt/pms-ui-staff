@@ -21,7 +21,7 @@
             <div class="entry">
                 <label for="hotel-country"> Country <strong>*</strong> </label>
                 <div class="select">
-                    <select ng-model="data.country" name="country" id="country" class="placeholder">
+                    <select convert-to-number ng-model="data.country" name="country" id="country" class="placeholder">
                         <option value=""> Country </option>
                         <option ng-model="country.id" ng-repeat="country in data.countries" value="{{country.id}}" ng-selected="country.id==data.country"> {{country.name}} </option>
 
