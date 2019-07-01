@@ -78,9 +78,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
             selectSequenceTimeout = $timeout(function() {
                 $scope.selectedCustomSequenceIndex = index;
                 $scope.selectedCustomSequence = customSequence;
-                $scope.$apply();
             }, 30);
-
         };
 
         $scope.createCustomSequence = function() {

@@ -47,12 +47,12 @@
 
                             <div class="entry">
                                 <label>Sequence Name<strong>*</strong></label>
-                                <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name">
+                                <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name" ng-change="$event.stopPropagation();">
                             </div>
 
                             <div class="actions float">
-                                <button type="button" class="button blank" ng-click="cancel()">Cancel</button>
-                                <button type="button" class="button green" ng-click="editCustomSequence()">Edit Sequence</button>
+                                <button type="button" class="button blank" ng-click="cancel();$event.stopPropagation();">Cancel</button>
+                                <button type="button" class="button green" ng-click="editCustomSequence();$event.stopPropagation();">Edit Sequence</button>
                             </div>
                         </div>
                     </form>
