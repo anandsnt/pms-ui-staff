@@ -556,22 +556,19 @@
 				var postData = {
 						"type": "cancellation",
 						"locale": locale
-					},
-					emails = [];
+					};
 
 				if ($scope.DailogeState.isGuestEmailSelected ) {
-					emails.push($scope.DailogeState.guestEmail);
+					postData.primary_email = $scope.DailogeState.guestEmail;
 				}
 	
 				if ($scope.DailogeState.isBookerEmailSelected) {
-					emails.push($scope.DailogeState.bookerEmail);
+					postData.booker_email = $scope.DailogeState.bookerEmail;
 				}
 	
 				if (!$scope.hasEmails() && $scope.DailogeState.sendConfirmatonMailTo) {
-					emails.push($scope.DailogeState.sendConfirmatonMailTo);
+					postData.primary_email = $scope.DailogeState.sendConfirmatonMailTo;
 				}
-	
-				postData.emails = emails;
 
 				var data = {
 					"postData": postData,

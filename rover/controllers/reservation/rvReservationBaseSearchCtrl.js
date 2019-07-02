@@ -15,7 +15,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     '$filter',
     'RVReservationTabService',
     'guestDetails',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails) {
+    'rvUtilSrv',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails, rvUtilSrv) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -96,7 +97,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var mm = time.length ? time.split(':')[1] : '';
 
             // map fullCheckinTime to $scope.reservationData.checkinTime
-            $scope.reservationData.checkinTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0' + hh : hh;
+            $scope.reservationData.checkinTime.hh = hh || '';
             $scope.reservationData.checkinTime.mm = mm || '';
             $scope.reservationData.checkinTime.ampm = ampm || '';
         };
@@ -109,7 +110,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var mm = time.length ? time.split(':')[1] : '';
 
             // map fullCheckinTime to $scope.reservationData.checkinTime
-            $scope.reservationData.checkoutTime.hh = isNaN(parseInt(hh)) ? '' : parseInt(hh) < 10 ? '0' + hh : hh;
+            $scope.reservationData.checkoutTime.hh = hh || '';
             $scope.reservationData.checkoutTime.mm = mm || '';
             $scope.reservationData.checkoutTime.ampm = ampm || '';
         };
@@ -239,10 +240,38 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var init,
             setDefaultCheckinCheckoutTime;
 
-            setDefaultCheckinCheckoutTime = function() {
+        setDefaultCheckinCheckoutTime = function() {
             $scope.timeSlots = RVReservationBaseSearchSrv.timeSlots;
-                $scope.fullCheckinTime = '9:00 AM';
-                $scope.fullCheckoutTime = '5:00 PM';
+            if (isFromNightlyDiary) {
+
+                var selectedArrivalTime = '',
+                    selectedDepartureTime = '';
+
+                if (!!$stateParams.selectedArrivalTime) {
+                    selectedArrivalTime = $stateParams.selectedArrivalTime;
+                }
+                else if (!!$scope.reservationData.tabs[0].checkinTime) {
+                    selectedArrivalTime = $scope.reservationData.tabs[0].checkinTime;
+                }
+
+                if (!!$stateParams.selectedDepartureTime) {
+                    selectedDepartureTime = $stateParams.selectedDepartureTime;
+                }
+                else if (!!$scope.reservationData.tabs[0].checkoutTime) {
+                    selectedDepartureTime = $scope.reservationData.tabs[0].checkoutTime;
+                }
+
+                var arrivalTimeObj = rvUtilSrv.extractHhMmAmPm(selectedArrivalTime),
+                    departureTimeObj = rvUtilSrv.extractHhMmAmPm(selectedDepartureTime);
+
+                $scope.fullCheckinTime = arrivalTimeObj.hh + ':' + arrivalTimeObj.mm + ' ' + arrivalTimeObj.ampm;
+                $scope.fullCheckoutTime = departureTimeObj.hh + ':' + departureTimeObj.mm + ' ' + departureTimeObj.ampm;
+                $scope.reservationData.checkinTime = arrivalTimeObj;
+                $scope.reservationData.checkoutTime = departureTimeObj;
+            }
+            else {
+                $scope.fullCheckinTime = '09:00 AM';
+                $scope.fullCheckoutTime = '05:00 PM';
                 $scope.reservationData.checkinTime = {
                     ampm: "AM",
                     hh: "09",
@@ -253,7 +282,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     hh: "05",
                     mm: "00"
                 };
-            };
+            }
+        };
 
         init = function () {
             $scope.viewState.identifier = "CREATION";

@@ -459,34 +459,45 @@ angular.module('sntRover')
                     });
                 },
                 handleCreateReservationFlow = function(roomDetails, reservationDetails, roomTypeData, bookType) {
-                    var diaryMode = getDiaryMode();
+                    
+                    // Navigation directly to Reservation Creation Screen if Nightly diary.
+                    // startDate (strat date of diary)- is passed for back navigation purpose.
+                    var callbackAction = function() {
+                        $state.go('rover.reservation.search', {
+                            selectedArrivalDate: reservationDetails.fromDate,
+                            selectedRoomTypeId: roomDetails.roomTypeId,
+                            selectedRoomId: roomDetails.room_id,
+                            selectedRoomNo: roomDetails.roomNo,
+                            startDate: $scope.diaryData.startDate,
+                            fromState: 'NIGHTLY_DIARY',
+                            selectedArrivalTime: $scope.diaryData.bookRoomViewFilter.arrivalTime,
+                            selectedDepartureTime: $scope.diaryData.bookRoomViewFilter.departureTime,
+                            numNights: $scope.diaryData.bookRoomViewFilter.nights
+                        });
+                        ngDialog.close();
+                    },
+                    diaryMode = getDiaryMode();
                    
-                    if (bookType === 'BOOK' && (diaryMode === 'FULL' || diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY')) {
+                    if (bookType === 'BOOK') {
 
-                        if (roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0) {
+                        if (diaryMode === 'FULL' && roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0) {
                             // There are reservations with unassigned Rooms.
+                            // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
                         }
-                        else {
-                            // Navigation directly to Reservation Creation Screen if Nightly diary.
-                            // startDate (strat date of diary)- is passed for back navigation purpose.
-                            var callbackAction = function() {
-                                $state.go('rover.reservation.search', {
-                                    selectedArrivalDate: reservationDetails.fromDate,
-                                    selectedRoomTypeId: roomDetails.roomTypeId,
-                                    selectedRoomId: roomDetails.room_id,
-                                    selectedRoomNo: roomDetails.roomNo,
-                                    startDate: $scope.diaryData.startDate,
-                                    fromState: 'NIGHTLY_DIARY',
-                                    selectedArrivalTime: $scope.diaryData.bookRoomViewFilter.arrivalTime,
-                                    selectedDepartureTime: $scope.diaryData.bookRoomViewFilter.departureTime,
-                                    numNights: $scope.diaryData.bookRoomViewFilter.nights
-                                });
-                                ngDialog.close();
-                            };
-
+                        else if (roomTypeData.unassigned_reservations_present) {
+                            // There are reservations with unassigned rooms.
+                            // You can still proceed, but it might be good to assign those reservations first.
                             showContinueWithBookPopup(callbackAction);
                         }
+                        else {
+                            // Directly go to reservation creation flow.
+                            callbackAction();
+                        }
+                    }
+                    else if (bookType === 'OVERBOOK') {
+                        // Directly go to reservation creation flow.
+                        callbackAction();
                     }
                 };
 
@@ -836,8 +847,10 @@ angular.module('sntRover')
                 });
 
                 // Handle validation popup close.
-                $scope.closeDialogAndRefresh = function() {
-                    resetFilterBarAndRefreshDiary();
+                $scope.closeDialogAndRefresh = function(isRefresh) {
+                    if (!!isRefresh) {
+                        resetFilterBarAndRefreshDiary();
+                    }
                     ngDialog.close();
                 };
 
@@ -859,7 +872,8 @@ angular.module('sntRover')
                         className: '',
                         scope: $scope,
                         data: {
-                            warningMessage: warningMessage
+                            warningMessage: warningMessage,
+                            isRefresh: false
                         }
                     });
                 };
@@ -872,6 +886,22 @@ angular.module('sntRover')
                 });
 
                 /**
+                 * if the user has enough permission to over book House
+                 * @return {Boolean}
+                 */
+                var hasPermissionToHouseOverBook = function () {
+                    return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+                };
+
+                /**
+                 * if the user has enough permission to over book room type
+                 * @return {Boolean}
+                 */
+                var hasPermissionToRoomTypeOverBook = function () {
+                    return rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+                };
+
+                /**
                  * utility method to call available slots API
                  */
                 var callbackForBookedOrAvailableListner = function () {
@@ -880,6 +910,8 @@ angular.module('sntRover')
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableSlotsForBookRooms = response;
+                            $scope.diaryData.availableSlotsForBookRooms.canOverbookHouse = hasPermissionToHouseOverBook();
+                            $scope.diaryData.availableSlotsForBookRooms.canOverbookRoomType = hasPermissionToRoomTypeOverBook();
                             $scope.diaryData.availableSlotsForBookRooms.fromDate = $scope.diaryData.bookRoomViewFilter.fromDate;
                             $scope.diaryData.availableSlotsForBookRooms.nights = $scope.diaryData.bookRoomViewFilter.nights;
                             if (response.rooms.length === 0 ) {
