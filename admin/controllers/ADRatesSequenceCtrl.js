@@ -1,5 +1,5 @@
-admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchorScroll', '$timeout', '$location',
-	function($scope, ADRateSequenceSrv, $anchorScroll, $timeout, $location) {
+admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchorScroll', '$timeout', '$location', '$state',
+	function($scope, ADRateSequenceSrv, $anchorScroll, $timeout, $location, $state) {
         var isCustomRateSelected = function( dashboard ) {
                 return dashboard.value === 'CUSTOM_RATE';
             },
@@ -54,7 +54,9 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                 'dashboard_rate_id': $scope.sequenceState.selectedOptions['dashboard_rate'].id
             }, onSaveSuccess);
         };
-
+        $scope.goToCustomRateSequence = function() {
+            $state.go('admin.customRatesSequence');
+        };
         initializeView();
     }
 ]);
