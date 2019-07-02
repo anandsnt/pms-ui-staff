@@ -304,7 +304,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             $scope.checkWorkStationMandatoryFields = function () { 
                 sntPaymentSrv.checkWorkStationMandatoryFields($scope.hotelConfig.workstationId).then(
-                    response =>  {
+                    response => {
                         $scope.workStationStatus = response.workstation_active;
                         if (!response.workstation_active) {
                             $scope.errorMessage = ["Workstation needs to be set up in order to proceed with payment"];
