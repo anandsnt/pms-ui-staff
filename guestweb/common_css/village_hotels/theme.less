@@ -1,19 +1,19 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
+
 html,
 body {
-  height: auto;
+  height    : auto;
   min-height: 100%;
 }
 
 body {
-  background-color: #fff;
-  color: #000;
+  background-color: #000000;
 }
 
 .back-text {
-  color: #000;
+  color  : #000;
   display: none !important;
 }
 
@@ -24,28 +24,35 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-  color: #363d40;
+  color: #fff;
 }
 
 input[type=text],
 input[type=tel],
 input[type=password],
 input[type=email] {
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
+  -webkit-appearance   : none;
+  -webkit-border-radius: 0;
+}
+
+input,
+textarea,
+.input-field,
+.content-desc p {
+  color: #333 !important;
 }
 
 .sub-main-text {
-  color: #363d40;
+  color: #fff;
 }
 
 .header-bar {
-  background:#FFFFFF;
+  background: #000000;
 }
 
 .logo-image {
   max-width: 100%;
-  margin: 4% auto 2%;
+  margin   : 4% auto 2%;
 }
 
 .template-text,
@@ -55,11 +62,11 @@ input[type=email] {
 .phone-text:hover,
 .request-text,
 .error-text {
-  color: #363d40;
+  color: #fff;
 }
 
 .view-bill {
-  color: #363d40;
+  color: #fff;
 }
 
 .sub-text,
@@ -67,56 +74,56 @@ input[type=email] {
 .query-text,
 .query-text:hover,
 .light-text {
-  color: #363d40;
+  color: #fff;
 }
 
 .btn,
 .btn:hover {
-  background:#4AD7BE;
-  color: #000;
+  background: #44C8AC;
+  color     : @white;
 }
 
 .dual-button {
-  font-size: 35px;
+  font-size  : 35px;
   font-weight: 300;
 }
 
 .btn-template {
-  font-size: 35px;
+  font-size  : 35px;
   font-weight: 300;
-  padding: 4%;
+  padding    : 4%;
 }
 
 .dark-button,
 .dark-button:hover {
-  background:#4AD7BE;
+  background: #44C8AC;
 }
 
 .light-button,
 .light-button:hover {
-  background: #60DBC5;
+  background: #4AD7BE;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-  background: #60DBC5;
+  background: #4AD7BE;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-  background:#4AD7BE;
+  background: #44C8AC;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-  background: #48D2B7;
+  background: #40BEA2;
 }
 
 .no-thanks,
 .no-thanks:hover {
-  color: #000;
+  color          : #fff;
   text-decoration: underline;
-  text-transform: none;
+  text-transform : none;
 }
 
 .strong-font {
@@ -125,42 +132,35 @@ input[type=email] {
 
 .amount,
 .time {
-  font-size: 30px;
+  font-size  : 30px;
   line-height: 1.2;
 }
 
 .down-arrow-button {
-  background-image: url('/assets/guestweb/common_images/black/down_arrow.png');
+  background-image: url('/assets/guestweb/common_images/white/down_arrow.png');
 }
 
 .right-arrow-button {
-  background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
+  background-image: url('/assets/guestweb/common_images/white/right_arrow.png');
 }
 
 .upgrade-details .upgrades-btn {
-  background:#4AD7BE;
-  p {
-    color: #000;
-  }
+  background: #44C8AC;
 }
 
 .proceed-to-checkin {
-  background: #4AD7BE;
-  color: #000;
+  background: #44C8AC;
 }
 
 .upgrades-label {
   color: #BA7A55;
 }
 
-.white-arrow {
-  background-image: url(/assets/guestweb/common_images/black/right_arrow.png);
-}
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  color:#4AD7BE;
+  color: #44C8AC;
   color: transparent;
 }
 
@@ -170,18 +170,16 @@ input[type=email] {
 }
 
 .pickadate-cell .pickadate-active {
-  background-color:#4AD7BE !important;
-  color: #fff;
+  background-color: #44C8AC !important;
+  color           : #fff;
 }
 
 .pickadate-head {
   color: #000000;
 }
 
-.departure-date,
-.date-text,
 .calendar-selection {
-  color: #000;
+  color: #fff;
 }
 
 .pickadate-cell li:nth-child(1),
@@ -214,22 +212,22 @@ input[type=email] {
 }
 
 .date-picker-header {
-  background-color:#4AD7BE;
+  background-color: #44C8AC;
 }
 
 .calendar-back {
-  background-image: url('/assets/guestweb/common_images/black/back_icon.png');
+  background-image: url('/assets/guestweb/common_images/back_icon.png');
 }
 
 .calendar-done {
-  background-image: url('/assets/guestweb/common_images/black/done_black.png');
+  background-image: url('/assets/guestweb/common_images/done_white.png');
 }
 
 .pickadate-prev,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-  color: #60DBC5;
+  color: #4AD7BE;
 }
 
 .date-picker-wrap {
@@ -244,49 +242,49 @@ input[type=email] {
   border-top: 1px solid #9b9b9b;
 }
 
+.departure-date {
+  color: #fff;
+}
+
+.date-text {
+  color: #fff;
+}
+
 .logo-image {
-  margin: 1% auto;
+  margin   : 1% auto;
   max-width: unset;
 }
 
 .res-details-heading,
 .res-details-heading:hover {
-  color: #48D2B7;
+  color: #40BEA2;
 }
 
 .back-to-checkout {
-  background: url('/assets/guestweb/common_images/black/left_arrow.png') center top no-repeat;
-  height: 40px;
-}
-
-.checkout-icon {
-  background-image: url('/assets/guestweb/common_images/checkout-now-black.png');
-}
-.late-checkout-icon {
-  background-image: url('/assets/guestweb/common_images/late-checkout-black.png');
-}
-.circle-bg {
-    background: url('/assets/guestweb/common_images/black/circle-bg.png') center top no-repeat;
-}
-.accept-charge-icon {
-    background-image: url('/assets/guestweb/common_images/black/creditcard_icon.png');
+  background: url(/assets/guestweb/common_images/left_arrow.png) center top no-repeat;
+  height    : 40px;
 }
 
 @media (max-width: 990px) {
   .logo-image {
-    margin: 9% auto 7%;
+    margin   : 9% auto 7%;
     max-width: unset;
   }
+
   .back-to-checkout {
     display: none;
   }
-  .checkout-icon,.late-checkout-icon {
+
+  .checkout-icon,
+  .late-checkout-icon {
     margin-top: 43px;
   }
+
   .accept-charges {
-    width: 300px;
+    width  : 300px;
     padding: 4% 0%;
   }
+
   .dual-button {
     font-size: 28px;
   }
@@ -296,21 +294,27 @@ input[type=email] {
   .main-text {
     font-size: 11vw;
   }
+
   .container {
     width: 100%;
   }
+
   .sub-main-text {
     font-size: 5.4vw;
   }
+
   .footer-text {
     font-size: 5.3vw;
   }
+
   .logo-image {
     max-width: 181px;
   }
+
   .dual-button {
     font-size: 32px;
   }
+
   .section-container {
     padding-bottom: 0px;
   }
@@ -319,9 +323,11 @@ input[type=email] {
 .btn-template {
   font-size: 30px;
 }
-input{
+
+input {
   background: #fff none repeat scroll 0 0;
 }
-.bill-hotel-logo{
-  background:#FFFFFF;
+
+.bill-hotel-logo {
+  background: #000000;
 }
