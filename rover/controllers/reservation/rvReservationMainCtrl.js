@@ -19,7 +19,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$q',
             'RVContactInfoSrv',
             'RVRoomRatesSrv',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv) {
+            'rvUtilSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv, rvUtilSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -30,9 +31,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.setTitle(title);
         var that = this;
 
-        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
-            isNightlyHotel = !$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled;
-
+        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
         // setting the main header of the screen
         $scope.heading = "Reservations";
@@ -996,7 +995,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.computeReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {},
                 isInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
-                shouldWeIncludeRoomTypeArray = !isInStayCard && !$scope.reservationData.isHourly && typeof roomIndex === 'undefined';
+                shouldWeIncludeRoomTypeArray = !isInStayCard && typeof roomIndex === 'undefined';
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -1109,6 +1108,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         var promptCancel = function(penalty, nights) {
             var openCancelPopup = function(data) {
                 $scope.languageData = data;
+                $scope.DailogeState = {};
+                $scope.DailogeState.isGuestEmailSelected = false;
+                $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+                $scope.DailogeState.sendConfirmatonMailTo = '';
+                
                 var passData = {
                     "reservationId": $scope.reservationData.reservationId,
                     "details": {
@@ -1226,6 +1230,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.DailogeState = {};
                     $scope.DailogeState.successMessage = '';
                     $scope.DailogeState.failureMessage = '';
+                    $scope.DailogeState.isGuestEmailSelected = false;
+                    $scope.DailogeState.guestEmail = $scope.guestCardData.contactInfo.email;
+                    $scope.DailogeState.sendConfirmatonMailTo = '';
                     ngDialog.open({
                         template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
                         controller: 'RVCancelReservationDepositController',
@@ -1519,15 +1526,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.$emit('hideLoader');
                 };
 
-                // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
-                var extractHhMmAmPm = function( time ) {
-                    return {
-                        'ampm': time.split(' ')[1],
-                        'hh': time.split(' ')[0].split(':')[0],
-                        'mm': time.split(' ')[0].split(':')[1]
-                    };
-                };
-
                 var updateSuccess = function(data) {
                     // CICO-47877 - When there are multiple reservations, we have an array of responses
                     var responseData = data;
@@ -1630,12 +1628,22 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 } else {
                     // CICO-63737 : Set Arrival, dep time while booking.
-                    if (!isNightlyHotel && $scope.reservationData.isFromNightlyDiary) {
-                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTimeObj['24'];
-                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTimeObj['24'];
+                    if ($scope.reservationData.isFromNightlyDiary) {
+                        postData.arrival_time = $scope.reservationData.tabs[0].checkinTime;
+                        postData.departure_time = $scope.reservationData.tabs[0].checkoutTime;
                         
-                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTimeObj['12']);
-                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTimeObj['12']);
+                        var checkinTimeObj = rvUtilSrv.extractHhMmAmPm($scope.reservationData.tabs[0].checkinTime),
+                            checkoutTimeObj = rvUtilSrv.extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTime);
+
+                        if (checkinTimeObj.hh === '00') {
+                            checkinTimeObj.hh = '12';
+                        }
+                        if (checkoutTimeObj.hh === '00') {
+                            checkoutTimeObj.hh = '12';
+                        }
+
+                        $scope.reservationData.checkinTime = checkinTimeObj;
+                        $scope.reservationData.checkoutTime = checkoutTimeObj;
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }
@@ -1914,6 +1922,23 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
                     $scope.observeForSwipe();
                 }
+
+        /**
+         * Checks whether there are any emails configured
+         */
+        $scope.hasEmails = function () {
+            return !!$scope.guestCardData.contactInfo.email;
+        };
+
+        /**
+         * Should disable the send email btn in the cancellation popup
+         * @param {String} locale - locale chosen from the popup
+         */
+        $scope.shouldDisableSendCancellationEmailBtn = function () {
+            return  !$scope.DailogeState.isGuestEmailSelected &&                
+                    !$scope.DailogeState.sendConfirmatonMailTo;
+            
+        };
 
     }
 

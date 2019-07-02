@@ -326,7 +326,7 @@ sntRover.controller('roverController', [
         $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
 
         $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
-
+        $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that
@@ -764,15 +764,20 @@ sntRover.controller('roverController', [
             $log.error('showErrorMessage', transition.error());
         });
 
+        // $scope.$on("OPEN_GUEST_CARD_ON_VALIDATION", function() {
+        //     $scope.openGuestCard();
+        // });
+
         // This variable is used to identify whether guest card is visible
         // Depends on $scope.guestCardVisible in rvguestcardcontroller.js
         $scope.isGuestCardVisible = false;
+        $scope.isFromMenuGuest = false;
         $scope.$on('GUESTCARDVISIBLE', function (event, data) {
-            $scope.isGuestCardVisible = false;
+            $scope.isGuestCardVisible = data;
             if (data) {
                 // inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
                 $scope.$broadcast('REFRESH_ALL_CARD_SCROLLERS');
-                $scope.isGuestCardVisible = true;
+                $scope.$broadcast('OPEN_GUEST_CARD');
             }
         });
 

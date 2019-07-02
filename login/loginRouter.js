@@ -47,7 +47,6 @@ login.config([
                     if (!location.href.match('select_property')) {
                         $window.localStorage.removeItem('jwt');
                     }
-                    
                     return loginSrv.getMarketingItems(); 
                 }
             }

@@ -218,10 +218,12 @@
 			$scope.screenData.facialRecognitionInProgress = false;
 
 			$scope.$on('FR_ANALYSIS_STARTED', function() {
+				$scope.resetTime();
 				$scope.screenData.facialRecognitionInProgress = true;
 				$scope.$emit('showLoader');
 			});
 			$scope.$on('FR_FAILED', function() {
+				$scope.resetTime();
 				$scope.$emit('hideLoader');
 				$scope.idScanData.selectedGuest.idScanStatus = FR_FAILED_STATUS;
 				$scope.screenData.facialRecognitionInProgress = false;
@@ -230,6 +232,7 @@
 			});
 
 			$scope.$on('FR_SUCCESS', function() {
+				$scope.resetTime();
 				$scope.$emit('hideLoader');
 				$scope.screenData.scanMode = 'FINAL_ID_RESULTS';
 				refreshIDdetailsScroller();
@@ -237,12 +240,14 @@
 			});
 
 			$scope.$on('IMAGE_ANALYSIS_FAILED', function(event, data) {
+				$scope.resetTime();
 				var errorMessage = data && Array.isArray(data) ? data[0] + ' for the guest' : 'Failed for the guest';
 
 				recordIDScanActions('ID_IMAGE_PROCESSING', errorMessage);
 			});
 
 			$scope.$on('FINAL_RESULTS', function(evt, data) {
+				$scope.resetTime();
 				// Commented below code to avoid failures w/o expiry date
 				// if (data.expiration_date === 'Invalid date' || _.isEmpty(data.expiration_date)) {
 				// 	recordIDScanActions('ID_ANALYZING', 'Failed (Invalid expiry date) for the guest');
@@ -279,6 +284,7 @@
 			};
 
 			$scope.$on('IMAGE_UPDATED', function(evt, data) {
+				$scope.resetTime();
 				if (data.isFrontSide) {
 					$scope.idScanData.selectedGuest.front_image_data = data.imageData;
 				} else {
@@ -436,16 +442,19 @@
 			/** *************** External camera actions ****** **/
 
 			$scope.$on('FRONT_SIDE_SCANNING_STARTED', function() {
+				$scope.resetTime();
 				$scope.$emit('showLoader');
 				$scope.startExtCameraCapture('front-image');
 			});
 			$scope.$on('FRONT_IMAGE_CONFIRMED', function() {
+				$scope.resetTime();
 				if ($scope.screenData.scanMode === 'UPLOAD_BACK_IMAGE' && $scope.deviceConfig.useExtCamera) {
 					$scope.$emit('showLoader');
 					$scope.startExtCameraCapture('back-image');
 				}
 			});
 			$scope.$on('IMAGE_ANALYSIS_STARTED', function() {
+				$scope.resetTime();
 				$scope.screenData.scanMode = 'ANALYSING_ID_DATA';
 			});
 
@@ -463,6 +472,7 @@
 			});
 
 			$scope.$on('FACE_IMAGE_RETRIEVED', function(event, response) {
+				$scope.resetTime();
 				$scope.idScanData.selectedGuest.faceImage = response;
 			});
 

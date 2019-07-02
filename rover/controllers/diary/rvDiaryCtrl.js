@@ -587,6 +587,8 @@ angular.module('sntRover')
                             success,
                             apiOptions;
 
+                        params.reservation_id = options.reservationId;
+
                         success = function(data, successParams) {
 					// CICO-24243: Set top filter values to selected reservation attributes
                             if (data.length) {

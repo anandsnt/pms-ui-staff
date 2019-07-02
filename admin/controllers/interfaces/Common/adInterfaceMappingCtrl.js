@@ -14,14 +14,16 @@ admin.controller('adInterfaceMappingCtrl', [
           'market_segment': 'Market Code - Market Segment',
           'market_code_department_code': 'Market Code - Department Code',
           'source_code': 'Source Code',
-          'tax_code': 'Tax Codes'
+          'tax_code': 'Tax Codes',
+          'payment_code_billing_account': 'Payment Code - Billing Account Number'
         };
 
         var mappingPartials = {
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
-            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
+            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html'
         };
 
         $scope.state = {
