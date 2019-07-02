@@ -192,7 +192,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
 
             RVBaseWebSrvV2.getJSON(url)
              .then( function (data) {
-                deffered.resolve( data.gender_type_list);
+                deffered.resolve( data.gender_list);
              }, function (error) {
                 deffered.resolve( error);
              });
