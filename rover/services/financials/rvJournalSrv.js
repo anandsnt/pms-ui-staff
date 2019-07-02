@@ -1,4 +1,6 @@
-angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', '$rootScope', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, $rootScope) {
+angular.module('sntRover').service('RVJournalSrv', 
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', '$rootScope', 'sntBaseWebSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, $rootScope, sntBaseWebSrv) {
 
    	this.filterData = {};
 	this.revenueData = {};
@@ -62,6 +64,23 @@ angular.module('sntRover').service('RVJournalSrv', ['$http', '$q', 'BaseWebSrvV2
         });
         return deferred.promise;
     };
+
+    /*
+     * Service function to fetch filters
+     * @return {object} departments
+     */
+	that.getFilterData = function () {
+		var deferred = $q.defer(),
+			url = "/admin/departments.json";
+
+		sntBaseWebSrv.getJSON(url).then(function (data) {
+
+			deferred.resolve(data);
+		}, function (data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
     /*
      * Service function to fetch journal summary

@@ -1,4 +1,8 @@
-sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
+sntRover.controller('RVJournalController', 
+    ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 
+    'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', 
+    function($scope, $filter, $stateParams, ngDialog, $rootScope, 
+        RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -348,5 +352,16 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         }
 
     };
+
+    var init = function() {
+        var options = {
+            params: params,
+            successCallBack: successCallBackOfGetFilterData
+        };
+
+        $scope.callAPI(RVJournalSrv.getFilterData, options); 
+    };
+
+    init();
 
 }]);
