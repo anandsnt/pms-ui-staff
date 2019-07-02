@@ -126,6 +126,13 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
         $scope.backToRateSequence = function() {
             $state.go("admin.ratesSequence");
         };
+        $scope.getTemplateUrl = function(index) {
+            if (index === $scope.selectedCustomSequenceIndex) {
+                return "/assets/partials/customRateSequence/adCustomRateSequenceEdit.html";
+            } else {
+                return "/assets/partials/customRateSequence/adCustomRateSequenceDetail.html";
+            }
+        };
 
         init();
     }

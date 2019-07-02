@@ -24,40 +24,8 @@
             <tbody ui-sortable="sortableOptions" ng-model="customSequenceList">
                 <tr ng-repeat="customSequence in customSequenceList track by $index"
                     ng-click="selectCustomSequence($index, customSequence)"
-                >
-                <td class="sequence handle" ng-show="selectedCustomSequenceIndex !== $index">
-                    <span class="icons icon-handle centered grey"></span>
-                </td>
-                <td ng-show="selectedCustomSequenceIndex !== $index">
-                    <strong>{{customSequence.name}}</strong>
-                </td>
-                <td class="sequence-rates" ng-show="selectedCustomSequenceIndex !== $index">0</td>
-                <td class="delete" ng-show="selectedCustomSequenceIndex !== $index">
-                    <a href="#" class="icons icon-delete large-icon" ng-click="deleteSequence(customSequence)">Delete</a>
-                </td>
-
-                <td colspan="4" ng-show="selectedCustomSequenceIndex === $index">
-                    <form class="form">
-                        <div class="holder full-width holder_margin">
-                            <div class="form-title">
-                                <h3>
-                                    <span>Edit</span> Sequence
-                                </h3>
-                            </div>
-
-                            <div class="entry">
-                                <label>Sequence Name<strong>*</strong></label>
-                                <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name" ng-change="$event.stopPropagation();">
-                            </div>
-
-                            <div class="actions float">
-                                <button type="button" class="button blank" ng-click="cancel();$event.stopPropagation();">Cancel</button>
-                                <button type="button" class="button green" ng-click="editCustomSequence();$event.stopPropagation();">Edit Sequence</button>
-                            </div>
-                        </div>
-                    </form>
-                </td>
-            </tr>
+                    ng-include="getTemplateUrl($index)">
+                </tr>
 
             </tbody>
         </table>
