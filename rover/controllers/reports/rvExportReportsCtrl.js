@@ -516,7 +516,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Austria Nationality Export': true
             };
 
             var forWeekly = {
@@ -536,7 +537,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Belgium Nationality Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Austria Nationality Export': true
             };
 
             var forHourly = {
