@@ -1,3 +1,49 @@
+ <div class="holder" ng-show="data.activeTab === 'SUMMARY'">
+            
+            <div class="entry search">
+                <div class="select">
+                    <label for="journal-search-for">Search For</label>
+                    <select id="journal-search-for">
+                        <option value="name" selected="">Reservation Name</option>
+                        <option value="room">Room No.</option>
+                        <option value="amount">Amount</option>
+                        <option value="reservation">Confirmation No.</option>
+                        <option value="invoice">Invoice/Folio No.</option>
+                        <option value="trx">Transaction ID</option>
+                    </select>
+                </div>
+                <button id="journal-clear-query" class="clear-query">
+                    <span class="icons icon-clear-search">Clear query</span>
+                </button>
+                <button type="submit" name="submit" class="icons icon-search">Search</button>
+                <input id="journal-query" class="query" placeholder="Search By Guest or Account Name" type="search" autocomplete="off">
+            </div>
+            
+            <div class="entry">
+                <div class="switch-button" ng-class="{'on': data.isExpandedView}"  ng-click="toggleCollapsedOrExpandedSummary()">
+                    <input name="journal-print-toggle" id="journal-print-toggle" value="" type="checkbox" >
+                    <label class="data-off">
+                        <span class="value">Collapsed</span>
+                        <span class="switch-icon">Expanded</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon">Collapsed</span>
+                        <span class="value">Expanded</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="entry actions">
+                <button id="print-journal" type="button" class="button blue with-icon only-icon" ng-click="printSummary()">
+                    <span class="icons icon-print"></span>
+                </button>
+            </div>        
+        </div>
+        <!-- This should be the handle, created by the resizable compoenent. Show it if it's not created dinamically --
+        <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>-->
+    </div>
+
+
 <!-- PRINT BOX FOR REVENUE -->
 <div ng-show="data.activeTab === 'REVENUE'" class="holder">
     <div class="entry">

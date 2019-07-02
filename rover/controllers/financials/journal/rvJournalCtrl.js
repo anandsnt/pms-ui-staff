@@ -18,6 +18,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
+    $scope.data.isExpandedView = false;
 
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
@@ -322,6 +323,12 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
         return returnData;
     };
+    /* 
+     * Toggle Action 
+     */
+    $scope.toggleCollapsedOrExpandedSummary = function() {
+        $scope.data.isExpandedView = !$scope.data.isExpandedView;
+    }; 
 
     /* get the time string from the date-time string */
 

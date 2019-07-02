@@ -71,7 +71,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
-	var initSummaryData = function() {
+	var initSummaryData = function() {        
 
 		var successCallBackFetchSummaryData = function(responce) {
 
@@ -149,6 +149,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             refreshSummaryScroller();
         }
     };
+   
 
     /*
      *   Handle Expand/Collapse on balance each type
