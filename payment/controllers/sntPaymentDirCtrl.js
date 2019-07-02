@@ -312,8 +312,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         return $scope.workStationStatus;
                     },
                     errorMessage => {
-                        $scope.testStatus = false;
-                        return $scope.testStatus;
+                        $scope.workStationStatus = true;
+                        return $scope.workStationStatus;
                     }
                 );
             };
@@ -1533,7 +1533,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.paymentAttempted = false;
-                $scope.workStationStatus = false;
+                $scope.workStationStatus = true;
                 $scope.showSelectedCard();
                 if ($rootScope.isWorkStationMandatory) {
                     $scope.checkWorkStationMandatoryFields();
