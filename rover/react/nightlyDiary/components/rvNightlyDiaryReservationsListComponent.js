@@ -8,16 +8,19 @@ const isRoomAvailable = (roomId, state, type) => {
     let bookType = 'BOOK';
     let diaryMode = state.diaryMode;
     let houseDetails = {};
-    let canOverbookHouse = false;
-    let canOverbookRoomType = false;
 
     let checkOverBooking = function() {
         var isHouseOverbookable     = houseDetails.house_availability <= 0 && houseDetails.unassigned_reseravtions_present,
             isRoomTypeOverbookable  = roomTypeDetails.availability <= 0 && roomTypeDetails.unassigned_reseravtions_present,
-            canOverbookHouse        = canOverbookHouse,
-            canOverbookRoomType     = canOverbookRoomType,
+            canOverbookHouse        = state.availableSlotsForBookRooms.canOverbookHouse,
+            canOverbookRoomType     = state.availableSlotsForBookRooms.canOverbookRoomType,
             canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
             overBookingStatusOutput = '';
+
+        console.log('isHouseOverbookable', isHouseOverbookable);
+        console.log('isRoomTypeOverbookable', isRoomTypeOverbookable);
+        console.log('canOverbookHouse', canOverbookHouse);
+        console.log('canOverbookRoomType', canOverbookRoomType);
 
         if (isHouseOverbookable && isRoomTypeOverbookable && canOverBookBoth) {
             overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
@@ -32,15 +35,15 @@ const isRoomAvailable = (roomId, state, type) => {
             overBookingStatusOutput = 'NO_PERMISSION_TO_OVERBOOK';
         }
 
-       return overBookingStatusOutput;
+        console.log('overBookingStatusOutput', overBookingStatusOutput);
+
+        return overBookingStatusOutput;
     };
 
     if (type === 'BOOK') {
         unAssignedRoomList = state.availableSlotsForBookRooms.rooms;
         roomTypeList = state.availableSlotsForBookRooms.room_types;
         houseDetails = state.availableSlotsForBookRooms.house;
-        canOverbookHouse = state.availableSlotsForBookRooms.canOverbookHouse;
-        canOverbookRoomType = state.availableSlotsForBookRooms.canOverbookRoomType;
     }
     else if (type === 'ASSIGN' || type === 'MOVE') {
         unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
