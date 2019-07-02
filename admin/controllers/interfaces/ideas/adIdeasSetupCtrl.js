@@ -168,10 +168,11 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
 
         $scope.runExport = function () {
             var types = [];
-            if ($scope.exportTypes.isColdStart === true){
+
+            if ($scope.exportTypes.isColdStart === true) {
                 types.push('cold_start');
             }
-            if ($scope.exportTypes.isSequential === true){
+            if ($scope.exportTypes.isSequential === true) {
                 types.push('sequential');
             }
             var payload = {
@@ -183,7 +184,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
                 payload.options.types = types;
             }
             payload.options.date = dateFilter($scope.exportDate, $rootScope.dateFormatForAPI);
-            synchronize = function(params) {
+            var synchronize = function(params) {
                 return adIFCSrv.post('property', 'synchronize_integration', params);
             };
             $scope.callAPI(synchronize, {
@@ -196,17 +197,19 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
         };
 
         (function () {
-            //init
+            // init
             $scope.config = config;
 
             // selected_charge_groups must be an array
             var selectedChargeGroups = (config.selected_charge_groups === undefined) ?
                 [] :
                 JSON.parse(config.selected_charge_groups);
+
             $scope.config.selected_charge_groups = selectedChargeGroups;
 
             //available_charge_groups are charge groups that available to select.
             var allChargeGroups = _.pluck(chargeGroups.charge_groups, 'name');
+
             $scope.config.available_charge_groups = _.difference(allChargeGroups, selectedChargeGroups);
 
             // days_past must be a number
