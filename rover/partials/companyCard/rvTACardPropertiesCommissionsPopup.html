@@ -1,0 +1,50 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak
+    ng-click="clearErrorMessage();">
+    <div class="modal-content form commissions-properties">
+        <button class="modal-close" id="modal-close" type="button" ng-click="clickedCancel()">
+            <span class="icons icon-close invert"></span>
+        </button>
+
+        <span class="h2 message">Commissions</span>
+        <span class="text">Edit commissions for the following properties</span>
+
+        <div class="grid">
+            <div class="grid-row with-cells header">
+                <div class="grid-cell">Property</div>
+                <div class="grid-cell">Commission</div>
+                <div class="grid-cell">$/%</div>
+                <div class="grid-cell">Prepaid</div>
+            </div>
+            <div class="grid-row scrollable" ng-iscroll="rvTACardPropertiesCommissionsScroll">
+                <!-- iScroll here -->
+                <div class="grid-row wrapper">
+                    <div class="grid-row with-cells">
+                        <div class="grid-cell"><strong>{Property Name}</strong></div>
+                        <div class="grid-cell">
+                            <input value="{Commission value}" type="text" />
+                        </div>
+                        <div class="grid-cell">
+                            <div class="select">
+                                <select id="{propertyId}-commission-type">
+                                    <option value="percentage">%</option>
+                                    <option value="value">$</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-cell">
+                            <label id="{propertyId}-commison-prepaid" class="checkbox inline">
+                                <input id="{propertyId}-commison-prepaid" type="checkbox" />
+                            </label>
+                        </div>
+                    </div>
+                    ... repeat L16-L34 for every property
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="button blank" ng-click="clickedCancel()">Cancel</button>
+            <button type="button" class="button green">Save changes</button>
+        </div>
+    </div>
+</div>

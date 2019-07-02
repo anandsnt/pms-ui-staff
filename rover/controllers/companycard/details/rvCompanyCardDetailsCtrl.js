@@ -522,6 +522,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.switchTabTo('', 'cc-commissions');
 			}
+
+			$scope.displayShowProperties = !$scope.contactInformation.commission_details.is_global_commission;
 		};
 		/**
 		 * successcall back of commssion detail
