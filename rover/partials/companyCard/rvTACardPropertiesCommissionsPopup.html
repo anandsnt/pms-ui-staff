@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clickedOnPopup($event)">
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak>
     <div class="modal-content form commissions-properties">
         <button class="modal-close" id="modal-close" type="button" ng-click="clickedCancel()">
             <span class="icons icon-close invert"></span>
@@ -20,7 +20,7 @@
                 <!-- iScroll here -->
                 <div class="grid-row wrapper">
                     <div class="grid-row with-cells"
-                        ng-repeat="property in contactInformation.commission_details.other_hotels_info">
+                        ng-repeat="property in hotelCommissionDetails">
                         <div class="grid-cell"><strong>{{ property.name }}</strong></div>
                         <div class="grid-cell">
                             <input ng-model="property.value" placeholder="Commission" name="Commission" class=""

@@ -610,7 +610,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/**
 		 * success callback of save contact data
 		 */
-		var successCallbackOfContactSaveData = function(data) {
+		var successCallbackOfContactSaveData = function(data, hotelInfoChanged) {
+
+			if (hotelInfoChanged) {
+				// Close the hotel info popup on saving
+				ngDialog.close();
+			}
+
 			if ($scope.shouldSaveArDataFromPopup) {	
 				$scope.shouldSaveArDataFromPopup = false;	
 				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
@@ -668,7 +674,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
 		 */
-		var saveContactInformation = function(data) {
+		var saveContactInformation = function(data, hotelInfoChanged) {
 			var dataUpdated = false;
 
 			if (!angular.equals(data, presentContactInfo)) {
@@ -699,7 +705,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				dataToSend.account_type = $stateParams.type;
 				var options = {
 					params: dataToSend,
-					successCallBack: successCallbackOfContactSaveData,
+					successCallBack: function(response) {
+						successCallbackOfContactSaveData(response, hotelInfoChanged);
+					},
 					failureCallBack: failureCallbackOfContactSaveData
 				};
 
@@ -722,7 +730,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/**
 		 * recieving function for save contact with data
 		 */
-		$scope.$on("saveContactInformation", function(event) {
+		$scope.$on("saveContactInformation", function(event, dataToUpdate) {
 			event.preventDefault();
 			event.stopPropagation();
 			if ($scope.isAddNewCard) {
@@ -730,7 +738,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if ($scope.isDiscard) {
 				// On discarded - prevent save call
 			} else {
-				saveContactInformation($scope.contactInformation);
+				// If property commission details are saved from the popup, copy back the deep copy objects back to the model and save
+				// TODO: what is be to done, when this API is failed ??? - like assign back old value
+				if (dataToUpdate && dataToUpdate.other_hotels_info) {
+					$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
+				}
+				saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed);
 			}
 		});
 
