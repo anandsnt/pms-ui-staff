@@ -478,9 +478,9 @@ angular.module('sntRover')
                     },
                     diaryMode = getDiaryMode();
                    
-                    if (bookType === 'BOOK' && (diaryMode === 'FULL' || diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY')) {
+                    if (bookType === 'BOOK') {
 
-                        if (roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0) {
+                        if (diaryMode === 'FULL' && roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0) {
                             // There are reservations with unassigned Rooms.
                             // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
@@ -494,6 +494,10 @@ angular.module('sntRover')
                             // Directly go to reservation creation flow.
                             callbackAction();
                         }
+                    }
+                    else if (bookType === 'OVERBOOK') {
+                        // Directly go to reservation creation flow.
+                        callbackAction();
                     }
                 };
 
@@ -882,6 +886,22 @@ angular.module('sntRover')
                 });
 
                 /**
+                 * if the user has enough permission to over book House
+                 * @return {Boolean}
+                 */
+                var hasPermissionToHouseOverBook = function () {
+                    return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+                };
+
+                /**
+                 * if the user has enough permission to over book room type
+                 * @return {Boolean}
+                 */
+                var hasPermissionToRoomTypeOverBook = function () {
+                    return rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+                };
+
+                /**
                  * utility method to call available slots API
                  */
                 var callbackForBookedOrAvailableListner = function () {
@@ -890,6 +910,8 @@ angular.module('sntRover')
                         var successCallBackFunction = function (response) {
                             $scope.errorMessage = '';
                             $scope.diaryData.availableSlotsForBookRooms = response;
+                            $scope.diaryData.availableSlotsForBookRooms.canOverbookHouse = hasPermissionToHouseOverBook();
+                            $scope.diaryData.availableSlotsForBookRooms.canOverbookRoomType = hasPermissionToRoomTypeOverBook();
                             $scope.diaryData.availableSlotsForBookRooms.fromDate = $scope.diaryData.bookRoomViewFilter.fromDate;
                             $scope.diaryData.availableSlotsForBookRooms.nights = $scope.diaryData.bookRoomViewFilter.nights;
                             if (response.rooms.length === 0 ) {
