@@ -560,6 +560,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
 			$scope.contactInformation.emailStyleClass = $scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_visible ? 'margin' : 'full-width';
 			$scope.contactInformation["commission_details"] = data.commission_details;
+			$scope.displayShowProperties = !$scope.contactInformation.commission_details.is_global_commission;
 		};
 
 		/**
@@ -742,8 +743,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				// TODO: what is be to done, when this API is failed ??? - like assign back old value
 				if (dataToUpdate && dataToUpdate.other_hotels_info) {
 					$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
+					saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed);
+				} else {
+					saveContactInformation($scope.contactInformation)
 				}
-				saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed);
 			}
 		});
 
