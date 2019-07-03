@@ -90,7 +90,7 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'sntBaseWeb
             var deferred = $q.defer(),
                 url = '/admin/rate_sequences/' + params.id ;
 
-            sntBaseWebSrv.deleteJSON(url, params).then(function(response) {
+            sntBaseWebSrv.deleteJSON(url).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);

@@ -4,7 +4,7 @@
         <h2><span>Create</span> Rate Sequence</h2>
         <a class="action back" ng-click="backToRateSequence()">Back</a>
         <!-- On click, remove .hidden from the Add Sequence From below -->
-        <a href="#" class="action add" ng-click="addNewSequence()">Add Sequence</a>
+        <a href="#" class="action add" ng-click="addNewSequence()">Add Custom Sequence</a>
         <div class="actions float pull-right">
             <button type="button" class="button add-data-inline toggle-tab orange">MANAGE Sequence</button>
             <button type="button" class="button add-data-inline toggle-tab white">MANAGE Rates</button>
@@ -12,7 +12,7 @@
     </header>
     <section class="content-scroll">
         <!-- If data, show this -->
-        <table class="grid" ng-show="MODE ==='LIST'" id="sort">
+        <table class="grid datatable draggable editable" ng-show="MODE ==='LIST'" id="sort">
             <thead>
             <tr>
                 <th class="sequence break sort-asc sorting">Sort</th>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="entry">
                     <label>Sequence Name<strong>*</strong></label>
-                    <input type="text" ng-model="selectedSequence.name" placeholder="Enter Sequence Name">
+                    <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name">
                 </div>
 
                 <div class="actions float">
