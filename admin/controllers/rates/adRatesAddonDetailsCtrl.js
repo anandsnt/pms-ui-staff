@@ -29,7 +29,6 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             $scope.initialImage = '';
             $scope.apiLoadCount = 0;
             $scope.chargeCodesForChargeGrp = [];
-            $scope.singleAddon.charge_group_id = "";
             $scope.currentClickedAddon = -1;
             $scope.errorMessage = "";
             $scope.successMessage = "";
