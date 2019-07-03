@@ -8,6 +8,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     function($scope, $state, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
+        var qbicPath = '/assets/zest_station/css/icons/qbic';
 
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
@@ -100,6 +101,11 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
+            }
+            if ($scope.zestStationData.theme === 'qbic') {
+                $scope.icons.url.key = qbicPath + '/key.svg';
+                $scope.icons.url.checkin = qbicPath + '/checkin.svg';
+                $scope.icons.url.checkout = qbicPath + '/checkout.svg';
             }
         };
 
