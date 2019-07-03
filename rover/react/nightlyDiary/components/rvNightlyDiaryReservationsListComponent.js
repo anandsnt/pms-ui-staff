@@ -10,13 +10,15 @@ const isRoomAvailable = (roomId, state, type) => {
     let houseDetails = {};
 
     let checkOverBooking = function() {
-        var isHouseOverbookable     = houseDetails.house_availability <= 0 && houseDetails.unassigned_reseravtions_present,
-            isRoomTypeOverbookable  = roomTypeDetails.availability <= 0 && roomTypeDetails.unassigned_reseravtions_present,
+        var isHouseOverbookable     = houseDetails.house_availability <= 0 && houseDetails.unassigned_reservations_present,
+            isRoomTypeOverbookable  = roomTypeDetails.availability <= 0 && roomTypeDetails.unassigned_reservations_present,
             canOverbookHouse        = state.availableSlotsForBookRooms.canOverbookHouse,
             canOverbookRoomType     = state.availableSlotsForBookRooms.canOverbookRoomType,
             canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
             overBookingStatusOutput = '';
-
+        
+        console.log('houseDetails', houseDetails);
+        console.log('roomTypeDetails', roomTypeDetails);
         console.log('isHouseOverbookable', isHouseOverbookable);
         console.log('isRoomTypeOverbookable', isRoomTypeOverbookable);
         console.log('canOverbookHouse', canOverbookHouse);
