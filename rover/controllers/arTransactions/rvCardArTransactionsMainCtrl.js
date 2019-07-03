@@ -37,6 +37,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'fromDate': '',
 			'toDate': '',
 			'includePayments': false,
+			'isSummary': false,
 			'statementEmailAddress': ''
 		};
 
@@ -720,7 +721,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
                 paramsToSend.room_search = true;
             }
-            paramsToSend.locale = $scope.filterData.locale;
+			paramsToSend.locale = $scope.filterData.locale;
+			paramsToSend.is_summary = $scope.filterData.isSummary;
             return paramsToSend;
         };
 
