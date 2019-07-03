@@ -187,6 +187,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
             var synchronize = function(params) {
                 return adIFCSrv.post('property', 'synchronize_integration', params);
             };
+
             $scope.callAPI(synchronize, {
                 params: payload,
                 onSuccess: function () {
@@ -207,7 +208,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
 
             $scope.config.selected_charge_groups = selectedChargeGroups;
 
-            //available_charge_groups are charge groups that available to select.
+            // available_charge_groups are charge groups that available to select.
             var allChargeGroups = _.pluck(chargeGroups.charge_groups, 'name');
 
             $scope.config.available_charge_groups = _.difference(allChargeGroups, selectedChargeGroups);
