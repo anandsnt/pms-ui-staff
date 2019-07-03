@@ -745,7 +745,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
 					saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed);
 				} else {
-					saveContactInformation($scope.contactInformation)
+					saveContactInformation($scope.contactInformation);
 				}
 			}
 		});
