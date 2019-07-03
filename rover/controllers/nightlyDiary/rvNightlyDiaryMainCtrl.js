@@ -13,7 +13,6 @@ angular.module('sntRover')
             'RVNightlyDiarySrv',
             'unassignedReservationList',
             'rvPermissionSrv',
-            '$log',
             function (
                 $scope,
                 $rootScope,
@@ -28,7 +27,6 @@ angular.module('sntRover')
                 RVNightlyDiarySrv,
                 unassignedReservationList,
                 rvPermissionSrv,
-                $log
             ) {
 
                 BaseCtrl.call(this, $scope);

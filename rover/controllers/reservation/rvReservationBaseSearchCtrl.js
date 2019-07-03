@@ -15,8 +15,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     '$filter',
     'RVReservationTabService',
     'guestDetails',
-    'rvUtilSrv',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails, rvUtilSrv) {
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
