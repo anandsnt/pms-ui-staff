@@ -732,6 +732,29 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.stationWalkInReservations', {
+        templateUrl: '/assets/partials/zestStation/adStationWalkInReservations.html',
+        controller: 'adStationWalkInReservationsCtrl',
+        url: '/zestWalkin',
+        resolve: {
+            kioskSettings: function(ADZestStationSrv) {
+                return ADZestStationSrv.fetch();
+            },
+            marketSegments: function(ADMarketsSrv) {
+                return ADMarketsSrv.fetch();
+            },
+            bookingSources: function(ADSourcesSrv) {
+                return ADSourcesSrv.fetch();
+            },
+            bookingOrigins: function(ADOriginsSrv) {
+                return ADOriginsSrv.fetch();
+            },
+            rateCodes: function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchRatesMinimal();
+            }
+        }
+    });
+    
     // =================================================================================================
 
     $stateProvider.state('admin.emailTemplatesSettingsGroup', {
@@ -919,6 +942,23 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         templateUrl: '/assets/partials/guestDataRemoval/adGuestDataRemoval.html',
         controller: 'ADGuestDataRemovalCtrl',
         url: '/hkSections'
+    });
+
+    $stateProvider.state('admin.featureToggles', {
+        templateUrl: '/assets/partials/featureToggles/adFeaturesList.html',
+        controller: 'ADFeatureToggleListCtrl',
+        url: '/features'
+    });
+
+    $stateProvider.state('admin.configFeature', {
+        templateUrl: '/assets/partials/featureToggles/adFeaturesConfig.html',
+        controller: 'ADFeatureToggleConfigCtrl',
+        url: '/features/:feature',
+        resolve: {
+            feature: ['ADFeatureToggleSrv', '$stateParams', function (ADFeatureToggleSrv, $stateParams) {
+                return ADFeatureToggleSrv.show($stateParams['feature']);
+            }]
+        }
     });
 
     $stateProvider.state('admin.idCollection', {

@@ -34,7 +34,15 @@ function(
                 isBackToStatistics: null,
                 selectedStatisticsYear: null,
                 selectedIds: [],
-                isMergeViewSelected: null
+                isMergeViewSelected: null,
+                isFromMenuGuest: false,
+                reservationId: null,
+                confirmationNo: null,
+                fromStaycard: null,
+                isPrimary: null,
+                firstName: '',
+                lastName: '',
+                guestType: null
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',

@@ -590,6 +590,14 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.$emit('CHECK_FOR_EXTERNAL_CAMERAS');
             }
 
+            $scope.idCaptureFeature = retrieveFeatureDetails($scope.zestStationData.featuresSupportedInIosApp, 'CAPTURE_ID');
+
+            if ($scope.idCaptureFeature) {
+                $scope.useIdAutoCapture = (localStorage.getItem('useAutoDetection') && localStorage.getItem('useAutoDetection') === "YES") ? "YES" : "NO";
+                $scope.autoIdDetectionChanged = function() {
+                    localStorage.setItem('useAutoDetection', $scope.useIdAutoCapture === "YES" ? "YES" : "NO");
+                };
+            }
         }());
     }
 ]);

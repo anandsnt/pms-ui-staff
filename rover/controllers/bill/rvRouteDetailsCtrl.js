@@ -549,6 +549,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                     $scope.isShownExistingCCPayment = true;
                 }
             }
+            $scope.selectedEntity.split_charge_by_guests = data.split_charge_by_guests;
             $scope.$parent.$emit('hideLoader');
         };
         var params = {};
@@ -1169,5 +1170,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     $scope.$on("PAYMENT_TYPE_CHANGED", function() {
         setTimeout(refreshScrollers, 300);
     });
+
+    $scope.shouldShowSplitChargeAccompanyGuests = function() {
+        return $scope.billingEntity === 'GROUP_DEFAULT_BILLING';
+    };
 
 }]);

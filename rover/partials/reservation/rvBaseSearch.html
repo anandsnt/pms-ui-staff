@@ -5,7 +5,7 @@
     <form method="get" name="create-reservation" id="create-reservation" class="wrapper" role="search">
         <!-- Date / Time -->
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div id="dates" class="row" ng-class="{'with-toggle': shouldShowToggle}">
+        <div id="dates" class="row" ng-class="{'with-toggle': shouldShowToggle, 'overlay': reservationData.isFromNightlyDiary }">
             <!-- Arrival date -->
             <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
@@ -44,7 +44,7 @@
             <!-- Departure date -->
             <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
             <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
-            <div id="departing" class="entry" ng-class="{ 'hidden': !isNightsActive }" style="float: right">
+            <div id="departing" class="entry" ng-class="{ 'hidden': reservationData.numNights == 0}" style="float: right">
                 <label id="check-out-day-label" for="check-out-date">Departing <span>{{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
                 <div class="entry-data">
                     <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()" />
@@ -56,107 +56,22 @@
             <!-- Arrival time -->
             <!-- WHY THE INLINE STYLE *&$%@#%(!#$%? -->
             <!-- TELL ME HOW THE #%^@ AM I SUPPOSE TO TO MAKE THIS FIT PROPERLY WHEN YOU GAVE IT A STYLE: width: 32.52032520325203%; -->
-            <div id="arriving-time" class="entry" ng-class="{ 'hidden': isNightsActive }" style="float: right">
-                <label for="arrival-time">Arrival Time</label>
-                <div class="select">
-                    <select id="arrival-time" name="arrival-time" iscroll-stop-propagation ng-model="fullCheckinTime" ng-change="mapToCheckinTime()">
-                        <option value="00:00 AM">12:00 AM</option>
-                        <option value="00:15 AM">12:15 AM</option>
-                        <option value="00:30 AM">12:30 AM</option>
-                        <option value="00:45 AM">12:45 AM</option>
-                        <option value="1:00 AM">1:00 AM</option>
-                        <option value="1:15 AM">1:15 AM</option>
-                        <option value="1:30 AM">1:30 AM</option>
-                        <option value="1:45 AM">1:45 AM</option>
-                        <option value="2:00 AM">2:00 AM</option>
-                        <option value="2:15 AM">2:15 AM</option>
-                        <option value="2:30 AM">2:30 AM</option>
-                        <option value="2:45 AM">2:45 AM</option>
-                        <option value="3:00 AM">3:00 AM</option>
-                        <option value="3:15 AM">3:15 AM</option>
-                        <option value="3:30 AM">3:30 AM</option>
-                        <option value="3:45 AM">3:45 AM</option>
-                        <option value="4:00 AM">4:00 AM</option>
-                        <option value="4:15 AM">4:15 AM</option>
-                        <option value="4:30 AM">4:30 AM</option>
-                        <option value="4:45 AM">4:45 AM</option>
-                        <option value="5:00 AM">5:00 AM</option>
-                        <option value="5:15 AM">5:15 AM</option>
-                        <option value="5:30 AM">5:30 AM</option>
-                        <option value="5:45 AM">5:45 AM</option>
-                        <option value="6:00 AM">6:00 AM</option>
-                        <option value="6:15 AM">6:15 AM</option>
-                        <option value="6:30 AM">6:30 AM</option>
-                        <option value="6:45 AM">6:45 AM</option>
-                        <option value="7:00 AM">7:00 AM</option>
-                        <option value="7:15 AM">7:15 AM</option>
-                        <option value="7:30 AM">7:30 AM</option>
-                        <option value="7:45 AM">7:45 AM</option>
-                        <option value="8:00 AM">8:00 AM</option>
-                        <option value="8:15 AM">8:15 AM</option>
-                        <option value="8:30 AM">8:30 AM</option>
-                        <option value="8:45 AM">8:45 AM</option>
-                        <option value="9:00 AM">9:00 AM</option>
-                        <option value="9:15 AM">9:15 AM</option>
-                        <option value="9:30 AM">9:30 AM</option>
-                        <option value="9:45 AM">9:45 AM</option>
-                        <option value="10:00 AM">10:00 AM</option>
-                        <option value="10:15 AM">10:15 AM</option>
-                        <option value="10:30 AM">10:30 AM</option>
-                        <option value="10:45 AM">10:45 AM</option>
-                        <option value="11:00 AM">11:00 AM</option>
-                        <option value="11:15 AM">11:15 AM</option>
-                        <option value="11:30 AM">11:30 AM</option>
-                        <option value="11:45 AM">11:45 AM</option>
-                        <option value="00:00 PM">12:00 PM</option>
-                        <option value="00:15 PM">12:15 PM</option>
-                        <option value="00:30 PM">12:30 PM</option>
-                        <option value="00:45 PM">12:45 PM</option>
-                        <option value="1:00 PM">1:00 PM</option>
-                        <option value="1:15 PM">1:15 PM</option>
-                        <option value="1:30 PM">1:30 PM</option>
-                        <option value="1:45 PM">1:45 PM</option>
-                        <option value="2:00 PM">2:00 PM</option>
-                        <option value="2:15 PM">2:15 PM</option>
-                        <option value="2:30 PM">2:30 PM</option>
-                        <option value="2:45 PM">2:45 PM</option>
-                        <option value="3:00 PM">3:00 PM</option>
-                        <option value="3:15 PM">3:15 PM</option>
-                        <option value="3:30 PM">3:30 PM</option>
-                        <option value="3:45 PM">3:45 PM</option>
-                        <option value="4:00 PM">4:00 PM</option>
-                        <option value="4:15 PM">4:15 PM</option>
-                        <option value="4:30 PM">4:30 PM</option>
-                        <option value="4:45 PM">4:45 PM</option>
-                        <option value="5:00 PM">5:00 PM</option>
-                        <option value="5:15 PM">5:15 PM</option>
-                        <option value="5:30 PM">5:30 PM</option>
-                        <option value="5:45 PM">5:45 PM</option>
-                        <option value="6:00 PM">6:00 PM</option>
-                        <option value="6:15 PM">6:15 PM</option>
-                        <option value="6:30 PM">6:30 PM</option>
-                        <option value="6:45 PM">6:45 PM</option>
-                        <option value="7:00 PM">7:00 PM</option>
-                        <option value="7:15 PM">7:15 PM</option>
-                        <option value="7:30 PM">7:30 PM</option>
-                        <option value="7:45 PM">7:45 PM</option>
-                        <option value="8:00 PM">8:00 PM</option>
-                        <option value="8:15 PM">8:15 PM</option>
-                        <option value="8:30 PM">8:30 PM</option>
-                        <option value="8:45 PM">8:45 PM</option>
-                        <option value="9:00 PM">9:00 PM</option>
-                        <option value="9:15 PM">9:15 PM</option>
-                        <option value="9:30 PM">9:30 PM</option>
-                        <option value="9:45 PM">9:45 PM</option>
-                        <option value="10:00 PM">10:00 PM</option>
-                        <option value="10:15 PM">10:15 PM</option>
-                        <option value="10:30 PM">10:30 PM</option>
-                        <option value="10:45 PM">10:45 PM</option>
-                        <option value="11:00 PM">11:00 PM</option>
-                        <option value="11:15 PM">11:15 PM</option>
-                        <option value="11:30 PM">11:30 PM</option>
-                        <option value="11:45 PM">11:45 PM</option>
-                    </select>
+            <div id="arriving-time" class="entry" ng-class="{ 'hidden': reservationData.numNights != 0 }" style="float: right">
+                <div class="arrival-time">
+                    <label for="arrival-time">Arrival Time</label>
+                    <div class="select">
+                        <select id="arrival-time" name="arrival-time" iscroll-stop-propagation ng-model="fullCheckinTime" ng-change="mapToCheckinTime()">
+                            <option ng-repeat="time in timeSlots" value="{{time.value}}" ng-show="showCheckinTimeslot(time)">{{time.label}} </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="departure-time">
+                    <label for="departure-time">Departure Time</label>
+                    <div class="select">
+                        <select id="departure-time" name="departure-time" ng-model="fullCheckoutTime" ng-change="mapToCheckoutTime()">
+                            <option ng-repeat="time in timeSlots" value="{{time.value}}" ng-show="showCheckoutTimeslot(time)">{{time.label}} </option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

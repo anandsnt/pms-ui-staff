@@ -40,9 +40,10 @@ angular.module('sntRover').controller('guestCardController', [
 
                 if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '' ||
                     searchData.company.id !== null || searchData.travelAgent.id !== null || !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
-                    // based on search values from base screen
-                    // init respective search
-                    if ($scope.reservationDetails.guestCard.id === '') {
+                    // CICO-64219 - If guest card is already saved, then it should be opened upon navigation
+                    if ($scope.reservationData.guest && $scope.reservationData.guest.id) {
+                        $scope.openGuestCard(); 
+                    } else if ($scope.reservationDetails.guestCard.id === '') {
                         if ($scope.searchData.guestCard.guestFirstName !== '' || $scope.searchData.guestCard.guestLastName !== '') {
                             $scope.openGuestCard();
                             $scope.searchGuest();
@@ -335,7 +336,9 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         $scope.$on('contactInfoError', function(event, value) {
-            $scope.contactInfoError = value;
+            if (value) {
+                $scope.current = 'guest-contact';
+            }
         });
 
         $scope.$on('likesInfoError', function(event, value) {
@@ -346,6 +349,10 @@ angular.module('sntRover').controller('guestCardController', [
             var that = this;
 
             that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+            var saveUserInfoFailureCallback = function () {
+                $scope.$emit('contactInfoError', true);
+            };
+            
             var saveUserInfoSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.reservationData.guest.email = that.newUpdatedData.email;
@@ -368,7 +375,7 @@ angular.module('sntRover').controller('guestCardController', [
 
                 if (typeof data.userId !== 'undefined') {
                     $scope.isGuestCardSaveInProgress = true;
-                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
+                    $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
                 }
             }
         };
@@ -444,6 +451,10 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
+        $scope.$on("OPEN_GUEST_CARD", function() {
+            $scope.openGuestCard();
+        });
+
 
         $scope.checkOutsideClick = function(targetElement) {
             if ($scope.cardVisible) {
@@ -502,7 +513,7 @@ angular.module('sntRover').controller('guestCardController', [
                 cls += " open";
             }
 
-            if ($rootScope.isHourlyRateOn) {
+            if ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') {
                 cls += " hourly";
             }
 
@@ -1892,6 +1903,17 @@ angular.module('sntRover').controller('guestCardController', [
         };
         // CREATES
         $scope.createNewGuest = function() {
+
+
+            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });
             // create an empty dataModel for the guest
             var contactInfoData = {
                 'contactInfo': $scope.guestCardData.contactInfo,
@@ -1956,8 +1978,7 @@ angular.module('sntRover').controller('guestCardController', [
             $scope.viewState.pendingRemoval.cardType = "";
             $scope.initGuestCard({
                 id: id
-            });
-            $scope.closeGuestCard();
+            });            
         };
 
         $scope.$on("updateGuestEmail", function(e) {

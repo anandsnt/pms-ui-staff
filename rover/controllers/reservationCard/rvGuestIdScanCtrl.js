@@ -8,7 +8,8 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 	'$controller',
 	'sntIDCollectionSrv',
 	'sntIDCollectionUtilsSrv',
-	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv, sntIDCollectionUtilsSrv) {
+	'rvUtilSrv',
+	function($scope, $rootScope, $filter, ngDialog, RVGuestCardsSrv, dateFilter, $timeout, $controller, sntIDCollectionSrv, sntIDCollectionUtilsSrv, rvUtilSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -277,12 +278,11 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 
 		$scope.scanFrontSide = function() {
 			$scope.screenData.imageSide = 0;
-			document.getElementById('front-image').click();
-			
+			$scope.captureFrontImage();
 		};
 		$scope.scanBackSide = function() {
 			$scope.screenData.imageSide = 1;
-			document.getElementById('back-image').click();
+			$scope.captureBackImage();
 		};
 
 		$scope.$on('IMAGE_UPDATED', function(evt, data) {
@@ -421,14 +421,28 @@ sntRover.controller('rvGuestIdScanCtrl', ['$scope',
 					}
 				});
 				var config = {
-					useExtCamera: $scope.connectedCameras.length > 0
+					useExtCamera: $scope.connectedCameras.length > 0,
+					useAutoDetection: false
 				};
 
 				$scope.showScanOption = $scope.hotelDetails.id_collection &&
-		 								$scope.hotelDetails.id_collection.rover.enabled &&
-		 								$scope.connectedCameras.length > 0;
+					$scope.hotelDetails.id_collection.rover.enabled &&
+					$scope.connectedCameras.length > 0;
 				$scope.setConfigurations(config);
 			});
+		} else  {
+			
+			var config = {
+				useAutoDetection: false
+			};
+			var idCaptureFeature = rvUtilSrv.retrieveFeatureDetails($rootScope.featuresSupportedInIosApp, 'CAPTURE_ID');
+
+			if (idCaptureFeature) {
+				config.useAutoDetection = true;
+				config.idCapturePluginName = idCaptureFeature.plugin_details ? idCaptureFeature.plugin_details.plugin_name : '';
+				config.idCaptureActionName = idCaptureFeature.plugin_details ? idCaptureFeature.plugin_details.action : '';
+			}
+			$scope.setConfigurations(config);
 		}
 		
 		$scope.$on('EXT_CAMERA_STARTING', function() {

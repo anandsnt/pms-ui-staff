@@ -1,34 +1,52 @@
-<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 	
-<div id="login" class="content">
-	<img src="/assets/images/logo.png" class="logo" alt="">
-	<span class='notice error' ng-show="errorMessage!=''" >
-		<ul>
-                    <li ng-repeat="message in errorMessage">
-                            {{message}}
-                    </li>
-		</ul>	
-	</span>
-	<form method="post" id="forget_pswd" ng-submit="submit()" class="form forget_pswd" accept-charset="UTF-8" novalidate>
-            <div class="entry float">	
-                <label>USERNAME: {{data.username}}</label>
+<div ng-show="hasLoader" id="loading">
+    <div id="loading-spinner"></div>
+</div>
+<div id="login" role="content" class="login--just-form">
+    <img src="/assets/images/logo-snt.png" alt="" class="login__logo" />
+    <span class='notice error' ng-show="errorMessage!=''">
+        <ul>
+            <li ng-repeat="message in errorMessage">
+                {{message}}
+            </li>
+        </ul>
+    </span>
+    <form method="post" id="login-form" ng-submit="submit()" class="login__content" accept-charset="UTF-8" novalidate>
+        <h1>Activate your Account.</h1>
+        <div class="notice error" ng-show="errorMessage!=''">
+            {{errorMessage[0]}}
+        </div>
+        <div class="entry">
+            <div class="entry__label">
+                <label for="email">E-mail</label>
             </div>
-            <div class="entry float">
-                    <label for="password">ENTER A NEW PASSWORD</label>
-                    <input type="password" ng-change="validatePassword()" ng-model="data.password" placeholder="Enter your password" name="password" id="password" class="r5 password">
+            <input type="email" id="email" ng-model="data.username" tabindex="-1" readonly>
+        </div>
+        <div class="entry">
+            <div class="entry__label">
+                <label for="new-password">New password</label>
             </div>
+            <input id="new-password" type="password" ng-change="validatePassword()" ng-model="data.password"
+                placeholder="Enter your new password">
+            <p class="entry__description">Password must be at least <strong>8 characters</strong> and
+                consist of at least 1 number and character.</p>
+        </div>
+        <div class="entry">
+            <div class="entry__label">
+                <label for="confirm-password">Confirm your new password</label>
+            </div>
+            <input id="confirm-password" type="password" ng-model="data.password_confirmation" placeholder="Retype your new password">
+        </div>
+        <div class="action">
+            <button type="submit" class="button green">Activate & Sign In to Rover</button>
+        </div>
 
-            <div class="entry float">
-                    <label for="password">CONFIRM YOUR NEW PASSWORD</label>
-                    <input type="password" ng-model="data.password_confirmation"  placeholder="Enter your password" name="password_confirmation" id="password" class="r5 password">
-            </div>
-
-            <div class="action">
-                <button type="submit" class="button green">SIGN IN</button>
-            </div>
-
-	</form>
-        <p class="support" ng-show="!validPassword" ng-hide="validPassword">
-                       Password must be at least <strong>8 characters</strong> and consist of at least 1 number and character
-        </p>
+    </form>
+    <div class="login__footer">
+        <p>For questions please contact your hotel administrator or visit the <a href="https://stayntouch.freshdesk.com/support/home"
+                target="_blank">StayNTouch Support Portal</a> for more information.</p>
+        <p>For system performance issues see <a href="https://status.stayntouch.com/" target="_blank">StayNTouch System
+                Status</a> page.</p>
+        <p class="muted">Rover Version {{data.roverVersion}}</p>
+    </div>
 
 </div>

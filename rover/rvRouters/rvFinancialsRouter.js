@@ -52,7 +52,10 @@ angular.module('FinancialsModule', [])
     $stateProvider.state('rover.financials.invoiceSearch', {
         url: '/invoiceSearch',
         templateUrl: '/assets/partials/financials/invoiceSearch/rvInvoiceSearch.html',
-        controller: 'RVInvoiceSearchController'
+        controller: 'RVInvoiceSearchController',
+        params: {
+            isFromStayCard: false
+        }
     });
     $stateProvider.state('rover.financials.autoCharge', {
         url: '/autoCharge',

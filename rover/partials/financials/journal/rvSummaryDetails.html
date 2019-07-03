@@ -232,6 +232,7 @@
     </li>
     <li>
         Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br />
-        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+        User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span><br />
+        Time printed: {{data.printDate}} {{data.printTime}}
     </li>
 </ul>

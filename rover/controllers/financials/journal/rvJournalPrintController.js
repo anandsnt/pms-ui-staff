@@ -257,28 +257,31 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	// print the journal page
 	var printJournal = function() {
-        $scope.$emit('hideLoader');
-        $timeout(function() {
+		var successCallBackFetchDateTimeDuringPrint = function(response) {
+			$scope.$emit('hideLoader');
+			$timeout(function() {
+				$scope.data.printDate = response.print_date;
+				$scope.data.printTime = response.print_time;
 
-			$scope.printFilterValues = {};
-			$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
-			$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
-			$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
+				$scope.printFilterValues = {};
+				$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
+				$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
+				$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
 
-			// add the orientation
-			addPrintOrientation();
+				// add the orientation
+				addPrintOrientation();
 
-			/*
-			 *	======[ READY TO PRINT ]======
-			 */
+				/*
+				*	======[ READY TO PRINT ]======
+				*/
 
-		    $timeout(function() {
+				$timeout(function() {
 
 				if (sntapp.cordovaLoaded) {
 					cordova.exec(journalPrintCompleted,
-						function(error) {
-							journalPrintCompleted();
-						}, 'RVCardPlugin', 'printWebView', []);
+					function(error) {
+						journalPrintCompleted();
+					}, 'RVCardPlugin', 'printWebView', []);
 				}
 				else
 				{
@@ -289,14 +292,22 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 				}
 			}, 100);
 
-		    /*
-		     *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-		     */
+			/*
+			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			*/
 
 			// remove the orientation after similar delay
-			
 
-    	}, 250);
+
+			}, 250);
+		};    	
+		var params = {},
+			options = {
+				params: params,
+				successCallBack: successCallBackFetchDateTimeDuringPrint
+			};
+
+		$scope.callAPI(RVJournalSrv.fetchPrintDateTime, options);
 	};
 
 }]);

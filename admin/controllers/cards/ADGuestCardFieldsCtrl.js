@@ -21,27 +21,128 @@ function($scope, $state, ADGuestCardSrv) {
 	$scope.clickedStatus = function(fieldName) {
 	
 			switch (fieldName) {
-				case "is_father_name_visible":
-					$scope.guestCardFields.is_father_name_visible = !$scope.guestCardFields.is_father_name_visible;
+				case "father_name":
+					$scope.guestCardFields.father_name.is_visible = !$scope.guestCardFields.father_name.is_visible;
+					if (!$scope.guestCardFields.father_name.is_visible) {
+						$scope.guestCardFields.father_name.is_mandatory_on_guest_card_creation = false;
+					}					
 					break;
-				case "is_mother_name_visible":
-					$scope.guestCardFields.is_mother_name_visible = !$scope.guestCardFields.is_mother_name_visible;
+				case "mother_name":
+					$scope.guestCardFields.mother_name.is_visible = !$scope.guestCardFields.mother_name.is_visible;
+					if (!$scope.guestCardFields.mother_name.is_visible) {
+						$scope.guestCardFields.mother_name.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
-				case "is_birth_place_visible":
-					$scope.guestCardFields.is_birth_place_visible = !$scope.guestCardFields.is_birth_place_visible;
+				case "birth_place":
+					$scope.guestCardFields.birth_place.is_visible = !$scope.guestCardFields.birth_place.is_visible;
+					if (!$scope.guestCardFields.birth_place.is_visible) {
+						$scope.guestCardFields.birth_place.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
-				case "is_gender_visible":
-					$scope.guestCardFields.is_gender_visible = !$scope.guestCardFields.is_gender_visible;					
+				case "gender":
+					$scope.guestCardFields.gender.is_visible = !$scope.guestCardFields.gender.is_visible;					
+					if (!$scope.guestCardFields.gender.is_visible) {
+						$scope.guestCardFields.gender.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
-				case "is_registration_number_visible":
-					$scope.guestCardFields.is_registration_number_visible = !$scope.guestCardFields.is_registration_number_visible;					
+				case "registration_number":
+					$scope.guestCardFields.registration_number.is_visible = !$scope.guestCardFields.registration_number.is_visible;
+					if (!$scope.guestCardFields.registration_number.is_visible) {
+						$scope.guestCardFields.registration_number.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
-				case "is_personal_id_no_visible":
-					$scope.guestCardFields.is_personal_id_no_visible = !$scope.guestCardFields.is_personal_id_no_visible;					
+				case "personal_id_no":
+					$scope.guestCardFields.personal_id_no.is_visible = !$scope.guestCardFields.personal_id_no.is_visible;
+					if (!$scope.guestCardFields.personal_id_no.is_visible) {
+						$scope.guestCardFields.personal_id_no.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "home_town":
+					$scope.guestCardFields.home_town.is_visible = !$scope.guestCardFields.home_town.is_visible;
+					if (!$scope.guestCardFields.home_town.is_visible) {
+						$scope.guestCardFields.home_town.is_mandatory_on_guest_card_creation = false;
+					}				
+					break;
+				case "place_of_residence":
+					$scope.guestCardFields.place_of_residence.is_visible = !$scope.guestCardFields.place_of_residence.is_visible;					
+					if (!$scope.guestCardFields.place_of_residence.is_visible) {
+						$scope.guestCardFields.place_of_residence.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "vehicle_country_mark":
+					$scope.guestCardFields.vehicle_country_mark.is_visible = !$scope.guestCardFields.vehicle_country_mark.is_visible;					
+					if (!$scope.guestCardFields.vehicle_country_mark.is_visible) {
+						$scope.guestCardFields.vehicle_country_mark.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "job_title":
+					$scope.guestCardFields.job_title.is_visible = !$scope.guestCardFields.job_title.is_visible;					
+					if (!$scope.guestCardFields.job_title.is_visible) {
+						$scope.guestCardFields.job_title.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "date_of_birth":
+					$scope.guestCardFields.date_of_birth.is_visible = !$scope.guestCardFields.date_of_birth.is_visible;					
+					if (!$scope.guestCardFields.date_of_birth.is_visible) {
+						$scope.guestCardFields.date_of_birth.is_mandatory_on_guest_card_creation = false;
+					}
+					break;
+				case "nationality":
+					$scope.guestCardFields.nationality.is_visible = !$scope.guestCardFields.nationality.is_visible;					
+					if (!$scope.guestCardFields.nationality.is_visible) {
+						$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation = false;
+					}
 					break;
 
 			}
 	
+	};
+	/*
+	 * Clicked mandatory 
+	 * @param fieldName field name
+	 */
+	$scope.clickedMandatory = function(isFieldVisible, fieldName) {
+		if (isFieldVisible)
+		{
+			switch (fieldName) {
+				case "father_name":
+					$scope.guestCardFields.father_name.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.father_name.is_mandatory_on_guest_card_creation;
+					break;
+				case "mother_name":
+					$scope.guestCardFields.mother_name.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.mother_name.is_mandatory_on_guest_card_creation;
+					break;
+				case "birth_place":
+					$scope.guestCardFields.birth_place.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.birth_place.is_mandatory_on_guest_card_creation;
+					break;
+				case "gender":
+					$scope.guestCardFields.gender.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.gender.is_mandatory_on_guest_card_creation;					
+					break;
+				case "registration_number":
+					$scope.guestCardFields.registration_number.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.registration_number.is_mandatory_on_guest_card_creation;					
+					break;
+				case "personal_id_no":
+					$scope.guestCardFields.personal_id_no.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.personal_id_no.is_mandatory_on_guest_card_creation;					
+					break;
+				case "home_town":
+					$scope.guestCardFields.home_town.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.home_town.is_mandatory_on_guest_card_creation;					
+					break;
+				case "place_of_residence":
+					$scope.guestCardFields.place_of_residence.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.place_of_residence.is_mandatory_on_guest_card_creation;					
+					break;
+				case "vehicle_country_mark":
+					$scope.guestCardFields.vehicle_country_mark.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.vehicle_country_mark.is_mandatory_on_guest_card_creation;					
+					break;
+				case "job_title":
+					$scope.guestCardFields.job_title.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.job_title.is_mandatory_on_guest_card_creation;					
+					break;
+				case "date_of_birth":
+					$scope.guestCardFields.date_of_birth.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.date_of_birth.is_mandatory_on_guest_card_creation;					
+					break;
+				case "nationality":
+					$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation = !$scope.guestCardFields.nationality.is_mandatory_on_guest_card_creation;					
+					break;
+			}
+		}
 	};
 	
 	/*

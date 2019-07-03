@@ -67,6 +67,9 @@ sntRover.controller('roverController', [
         });
         $scope.roverFlags = {};
         $scope.hotelDetails = hotelDetails;
+        if (hotelDetails.hide_analytics_menu) {
+            rvMenuSrv.showAnalyticsMenu = false;
+        }
         // set current hotel details
         $scope.currentHotelData = {
             'name': '',
@@ -126,12 +129,23 @@ sntRover.controller('roverController', [
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            eInvoiceVisible: hotelDetails.e_invoice_visible,
             noReprintReEmailInvoice: hotelDetails.no_reprint_reemail_invoice,
             noModifyInvoice: hotelDetails.no_modify_invoice,
             forceCountryAtCheckin: hotelDetails.force_country_at_checkin,
             forceNationalityAtCheckin: hotelDetails.force_nationality_at_checkin
         };
+        /*
+         *   A = settings.day_use_enabled (true / false)
+         *   B = settings.hourly_rates_for_day_use_enabled (true / false)
+         *   C = settings.hourly_availability_calculation ('FULL' / 'LIMITED')
+         */
+        $rootScope.hotelDiaryConfig = {
+            dayUseEnabled: hotelDetails.day_use_enabled,
+            hourlyRatesForDayUseEnabled: hotelDetails.hourly_rates_for_day_use_enabled,
+            mode: hotelDetails.hourly_availability_calculation
+        };
+
         /*
          * hotel Details
          */
@@ -311,6 +325,8 @@ sntRover.controller('roverController', [
         // Temporary hack to enable the merge options only for pilot properties
         $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
 
+        $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
+        $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
         /**
          * reciever function used to change the heading according to the current page
          * if there is any trnslation, please use that
@@ -527,6 +543,7 @@ sntRover.controller('roverController', [
                 isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
                 isEMVEnabled: $rootScope.isMLIEMVEnabled
             };
+            $rootScope.featuresSupportedInIosApp = []; // The feature list cordoav call will work only in new builds.
 
             $scope.menuOpen = false;
             $rootScope.showNotificationForCurrentUser = true;
@@ -553,6 +570,15 @@ sntRover.controller('roverController', [
                     }, function () {
 
                     }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    cordova.exec(function(response) {
+                        if (response && response.features) {
+                            $rootScope.featuresSupportedInIosApp = response.features;
+                        }
+                    },
+                    function(error) {
+                        // do nothing
+                    }, 'RVDevicePlugin', 'featureList', ['should_show_details']);
 
                 }, 500);
             }
@@ -738,15 +764,20 @@ sntRover.controller('roverController', [
             $log.error('showErrorMessage', transition.error());
         });
 
+        // $scope.$on("OPEN_GUEST_CARD_ON_VALIDATION", function() {
+        //     $scope.openGuestCard();
+        // });
+
         // This variable is used to identify whether guest card is visible
         // Depends on $scope.guestCardVisible in rvguestcardcontroller.js
         $scope.isGuestCardVisible = false;
+        $scope.isFromMenuGuest = false;
         $scope.$on('GUESTCARDVISIBLE', function (event, data) {
-            $scope.isGuestCardVisible = false;
+            $scope.isGuestCardVisible = data;
             if (data) {
                 // inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
                 $scope.$broadcast('REFRESH_ALL_CARD_SCROLLERS');
-                $scope.isGuestCardVisible = true;
+                $scope.$broadcast('OPEN_GUEST_CARD');
             }
         });
 
@@ -1160,6 +1191,12 @@ sntRover.controller('roverController', [
                 });
             }
         })();
+
+        // TODO: delete this code after 2-3 releases, this is mainly for analyzing the feature
+        // In browser console call document.dispatchEvent(new Event('SHOW_ANALYTICS_MENU')) 
+        document.addEventListener('SHOW_ANALYTICS_MENU', function() {
+            $state.go('rover.reportAnalytics');
+        });
 
     }
 ]);

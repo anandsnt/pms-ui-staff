@@ -72,7 +72,16 @@ module.exports = {
             'gallivant': [themeCSSRoot + 'gallivant.less'],
             'hotel-e': [themeCSSRoot + 'hotel-e.less'],
             'kelley': [themeCSSRoot + 'kelley.less'],
-            'stare-miastro': [themeCSSRoot + 'stare-miastro.less']
+            'stare-miastro': [themeCSSRoot + 'stare-miastro.less'],
+            'upstairs-by-mamas': [themeCSSRoot + 'upstairs-by-mamas.less'],
+            'juliani': [themeCSSRoot + 'juliani.less'],
+            'mooons': [themeCSSRoot + 'mooons.less'],
+            'marmalade': [themeCSSRoot + 'marmalade.less'],
+            'bosville': [themeCSSRoot + 'bosville.less'],
+            'kinsley': [themeCSSRoot + 'kinsley.less'],
+            'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less'],
+            'asbury': [themeCSSRoot + 'asbury.less'],
+            'manchebo': [themeCSSRoot + 'manchebo.less']
         };
     }
 };
