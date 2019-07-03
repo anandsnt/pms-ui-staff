@@ -106,6 +106,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.icons.url.key = qbicPath + '/key.svg';
                 $scope.icons.url.checkin = qbicPath + '/checkin.svg';
                 $scope.icons.url.checkout = qbicPath + '/checkout.svg';
+                $scope.icons.url.new_location = qbicPath + '/add-new.svg';
             }
         };
 
