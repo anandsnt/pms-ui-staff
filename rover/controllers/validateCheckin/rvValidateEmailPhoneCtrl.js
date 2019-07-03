@@ -7,7 +7,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     $scope.showPhone = ($scope.guestCardData.contactInfo.phone === undefined || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null) ? true : false;
     $scope.showMobile = ($scope.guestCardData.contactInfo.mobile === undefined || $scope.guestCardData.contactInfo.mobile === '' || $scope.guestCardData.contactInfo.mobile === null) ? true : false;
     $scope.showNationality = ($scope.guestCardData.contactInfo.nationality_id === undefined || $scope.guestCardData.contactInfo.nationality_id === "" || $scope.guestCardData.contactInfo.nationality_id === null) ? true : false;
-    $scope.showCountry = ($scope.guestCardData.contactInfo.address.country_id === undefined || $scope.guestCardData.contactInfo.address.country_id === "" || $scope.guestCardData.contactInfo.address.country_id === null) ? true : false;
+    $scope.showCountry = (!$scope.guestCardData.contactInfo.address || $scope.guestCardData.contactInfo.address.country_id === undefined || $scope.guestCardData.contactInfo.address.country_id === "" || $scope.guestCardData.contactInfo.address.country_id === null) ? true : false;
     
     var showNationality = $scope.showNationality,
         showCountry = $scope.showCountry;

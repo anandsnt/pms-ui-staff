@@ -297,13 +297,34 @@ angular.module('sntPay').controller('sntPaymentController',
                 return payableAmount < 0 || //  NOTE : We can't make a negative payment with a GIFT_CARD
                     $scope.giftCard.availableBalance && parseFloat($scope.giftCard.availableBalance) < payableAmount;
             };
+            
+            /*
+             * Method to check the work station status is active/not
+             * If not active disable the payment option and show message in the screen
+             */
+            $scope.checkWorkStationMandatoryFields = function () { 
+                sntPaymentSrv.checkWorkStationMandatoryFields($scope.hotelConfig.workstationId).then(
+                    response => {
+                        $scope.workStationStatus = response.workstation_active;
+                        if (!response.workstation_active) {
+                            $scope.errorMessage = ["Workstation needs to be set up in order to proceed with payment"];
+                        }
+                        return $scope.workStationStatus;
+                    },
+                    errorMessage => {
+                        $scope.workStationStatus = true;
+                        return $scope.workStationStatus;
+                    }
+                );
+            };
 
             /**
              * Hide payment method if there is no permission or no payment type
              * @returns {boolean} boolean
              */
+
             $scope.shouldHidePaymentButton = function () {
-                return !$scope.selectedPaymentType || !$scope.hasPermission ||
+                return !$scope.workStationStatus || !$scope.selectedPaymentType || !$scope.hasPermission ||
                     $scope.isGCBalanceShort() ||
                     (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
             };
@@ -1511,7 +1532,12 @@ angular.module('sntPay').controller('sntPaymentController',
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
                     ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
+                $scope.paymentAttempted = false;
+                $scope.workStationStatus = true;
                 $scope.showSelectedCard();
+                if ($rootScope.isWorkStationMandatory) {
+                    $scope.checkWorkStationMandatoryFields();
+                }
 
             })();
 
