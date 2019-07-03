@@ -26,7 +26,7 @@ angular.module('sntRover')
                 reservationsList,
                 RVNightlyDiarySrv,
                 unassignedReservationList,
-                rvPermissionSrv,
+                rvPermissionSrv
             ) {
 
                 BaseCtrl.call(this, $scope);
