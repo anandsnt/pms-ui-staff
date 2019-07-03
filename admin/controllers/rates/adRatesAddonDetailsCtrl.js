@@ -13,7 +13,8 @@ admin.controller('ADRatesAddonDetailsCtrl', [
     function($scope, $state, $stateParams, $rootScope, ADRatesAddonsSrv, $filter, ngDialog, $timeout, activeRates, availableLanguages, singleAddon) {
 
         // extend base controller
-       var init = function() {
+        BaseCtrl.call(this, $scope);
+        var init = function() {
 
             // various addon data holders
             $scope.data = [];
@@ -285,8 +286,30 @@ admin.controller('ADRatesAddonDetailsCtrl', [
             });
         };
 
+        var setErrorMessage = function(errorMessage) {
+            setTimeout(function() {
+                $scope.errorMessage = errorMessage;
+                $scope.$apply();
+            }, 500);
+        };
+
+        var validatePriceAndValueForAllowance = function() {
+            if (_.isEmpty($scope.singleAddon.addon_value) || isNaN($scope.singleAddon.addon_value)) {
+                setErrorMessage(["Value is invalid or null"]);
+                return false;
+            } else if (_.isEmpty($scope.singleAddon.amount) || isNaN($scope.singleAddon.amount)) {
+                setErrorMessage(["Price is invalid or null"]);
+                return false;
+            }
+            return true;
+        };
+
         // on save add/edit addon
         $scope.addUpdateAddon = function() {
+            if ($scope.singleAddon.is_allowance && !validatePriceAndValueForAllowance()) {
+                return;
+            }
+
             var singleAddonData = {
                 activated: $scope.singleAddon.activated,
                 amount: $scope.singleAddon.amount,

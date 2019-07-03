@@ -5,7 +5,8 @@
         <a ng-click="back()" class="action back" translate>BACK_TO_ADDONS_LABEL</a>
     </header>
     <section class="content-scroll">
-        <div style="display: block;" id="add-new" class="edit-data" ng-cloak>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div style="display: block;" id="add-new" class="edit-data">
             <div class="data-holder">
                 <form id="add-addon" name="add-addon" class="form inline-form float">
 
@@ -197,7 +198,6 @@
                             <div class="entry">
                                     <label for="charge-group-id">
                                         {{'SPILLAGE_REFUND_LABEL' | translate}}
-                                        <strong>*</strong>
                                     </label>
                                     <div class="select">
                                         <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.spillage_refund_percentage" ng-options="option for option in allowanceRefundOptions" ></select>
