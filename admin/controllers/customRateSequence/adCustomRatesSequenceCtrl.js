@@ -106,8 +106,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
         };
 
         $scope.cancel = function() {
-            setMode('LIST');
-            unSelectCustomSequence();
+            fetchCustomSequence();
         };
         $scope.deleteSequence = function( customSequence ) {
             var successCallBackDeleteCustomSequence = function () {
