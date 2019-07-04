@@ -22,6 +22,14 @@ const NightlyDiaryBookRoomComponent = createClass({
         }
         return className;
     },
+    getButtonName() {
+        let buttonName = 'OVERBOOK';
+
+        if (this.props.type === 'BOOK') {
+            buttonName = 'BOOK';
+        }
+        return buttonName;
+    },
     render() {
         return (
             <div style={this.getStyles()}
@@ -29,7 +37,7 @@ const NightlyDiaryBookRoomComponent = createClass({
                 onClick={() => this.props.bookRoom(this.props.roomDetails, this.props.roomTypeDetails, this.props.type)}
             >
                 <div className="reservation-data">
-                    <span className="name">{this.props.type} {this.props.roomDetails.room_no}</span>
+                    <span className="name">{this.getButtonName()} {this.props.roomDetails.room_no}</span>
                 </div>
             </div>
         );
