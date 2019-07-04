@@ -91,5 +91,19 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
+
+		// trigger the edit properties commissions popup
+	    $scope.openPropertiesPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvTACardPropertiesCommissionsPopup.html',
+				controller: 'rvTACardPropertiesCommissionsPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		$scope.toggleGlobalCommission = function() {
+			$scope.displayShowProperties = !$scope.contactInformation.commission_details.is_global_commission;
+		};
 	}
 ]);

@@ -94,6 +94,11 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'TODAY',
                 'DATE'
              ],
+             'Invoice / Folio Export': [
+                'YESTERDAY',
+                'TODAY',
+                'DATE'
+             ],
              'Clairvoyix Stays Export': [
              	'YESTERDAY',
              	'ALL'
