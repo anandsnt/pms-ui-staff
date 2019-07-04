@@ -484,6 +484,30 @@
                     .hide();
                 }
             }
+
+            &.unassigned {
+                .entry {
+                    &.edit {
+                        .calc-width(100, 355);
+                        .actions {
+                            .button {
+                                &:not(.show-unassigned) { .hide(); }
+                            }
+                        }
+                    }
+
+                    &.filters {
+                        width: 100px;
+                        #flexbox > .parent(row wrap, '', '', '');
+                        .button {
+                            margin-right: 0;
+                            margin-left: 10px;
+                            
+                            &:not(.show-unassigned) { .hide(); }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1265,6 +1289,9 @@
         height: 50px;
 
         .entry {
+            &:not(:last-child) {
+                margin-right: 0;
+            }
             &.date {
                 padding-top: 0;
                 width: 100%;

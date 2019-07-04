@@ -40,6 +40,7 @@
 }
 
 /* Reservation Search + Dates + Filters ***/
+.diary-header-nightly,
 .diary-nightly-search-form {
     position: relative;
     padding: 0 10px;
@@ -497,6 +498,123 @@
         }
     }
 
+    .show-editing {
+        .hide();
+    }
+
+    &.editing {
+        position: relative;
+        background: @gcard;
+        z-index: 9;
+        overflow: hidden; 
+        .box-shadow(0 2px 1px rgba(0,0,0,0.2));
+        #flexbox > .parent(row nowrap, space-between, center, '');
+    
+        .guest,
+        .actions {
+            padding: 10px 0;
+            overflow: hidden;
+            #flexbox > .parent(row nowrap, '', center, '' );
+        }
+    
+        .guest {
+            flex: 1 1 auto;
+            padding-right: 10px;
+    
+            .button {
+                width: 100px;
+            }
+        }
+    
+        .actions {
+            flex: 0 0 auto;
+            .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
+        }
+    
+        .button {
+            font-size: 14px;
+            margin-left: 10px;
+            padding: 0 10px;
+    
+            &.blank {
+                color: @white;
+            }
+        }
+    
+        .guest-image {
+            margin-right: 10px;
+            .hide();
+            .square(40px);
+        }
+    
+        .guest-info {
+            color: @white;
+            .calc-max-width(100, 110);
+    
+            .name,
+            .room {
+                font-weight: 600;
+                .show();
+                .nowrap();
+            }
+        
+            .name {
+                font-size: 20px;
+                line-height: 26px;
+            }
+    
+            .room {
+                font-size: 14px;
+                line-height: 1;
+                text-transform: uppercase;
+            }
+        }
+
+        .show-editing {
+            .show();
+        }
+
+        .entry {
+            &:not(.show-editing) {
+                .hide();
+            }
+
+            &.edit {
+                padding: 0;
+                width: 100%;
+                #flexbox > .parent(row nowrap, space-between, center, '');
+            }
+        }
+
+        &:not(.unassigned) {
+            .entry { 
+                &.edit {
+                    margin: 0;
+                }
+            }
+        }
+
+        &.unassigned {
+            .actions {
+                .button:not(.show-unassigned) { .hide(); }
+            }
+
+            .edit {
+                .calc-width( 100, 115 );
+            }
+
+            .filters {
+                width: auto;
+                margin: 0;
+                #flexbox > .parent(row wrap, '', '', '');
+                .button:not(.show-unassigned) { .hide(); }
+                .button {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
     /* Screen big enough to show two columns  ***/
     @media screen and (min-width: ~'@{breakpointDoubleSidebar}px') {
         .entry {
@@ -510,77 +628,11 @@
                 }
             }
         }
-    }
-}
 
-/* Reservation Edit */
-.diary-nightly-edit-form {
-    position: relative;
-    background: @gcard;
-    padding: 0 10px;
-    z-index: 9;
-    overflow: hidden;
-    .size(60px, 100%);
-    .box-shadow(0 2px 1px rgba(0,0,0,0.2));
-    #flexbox > .parent(row nowrap, space-between, center, '');
-
-    .guest,
-    .actions {
-        padding: 10px 0;
-        overflow: hidden;
-        #flexbox > .parent(row nowrap, '', center, '' );
-    }
-
-    .guest {
-        flex: 1 1 auto;
-        padding-right: 10px;
-
-        .button {
-            width: 100px;
-        }
-    }
-
-    .actions {
-        flex: 0 0 auto;
-        .box-shadow(inset 2px 0px 0px rgba(0,0,0,0.2));
-    }
-
-    .button {
-        font-size: 14px;
-        margin-left: 10px;
-        padding: 0 10px;
-
-        &.blank {
-            color: @white;
-        }
-    }
-
-    .guest-image {
-        margin-right: 10px;
-        .hide();
-        .square(40px);
-    }
-
-    .guest-info {
-        color: @white;
-        .calc-max-width(100, 110);
-
-        .name,
-        .room {
-            font-weight: 600;
-            .show();
-            .nowrap();
-        }
-    
-        .name {
-            font-size: 20px;
-            line-height: 26px;
-        }
-
-        .room {
-            font-size: 14px;
-            line-height: 1;
-            text-transform: uppercase;
+        &.editing {
+            &.unassigned {
+                .edit { width: 100%; }
+            }
         }
     }
 }
