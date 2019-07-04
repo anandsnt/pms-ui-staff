@@ -269,9 +269,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					per_page: $scope.stateCheck.pagination.roomType.perPage,
 					page: $scope.stateCheck.pagination.roomType.page,
 					is_member: !!$scope.reservationData.member.isSelected
-				};
-
-				var isRoomDetailsInvalidated = TABS[0].room_id === null;
+				},
+				isRoomDetailsInvalidated = TABS[0].room_id === null;
+				
 				if ($scope.stateCheck.isFromNightlyDiary && !isRoomDetailsInvalidated) {
 					payLoad.room_type_id = $stateParams.room_type_id;
 				}
