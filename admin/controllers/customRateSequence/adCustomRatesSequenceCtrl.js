@@ -3,7 +3,6 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
         BaseCtrl.call(this, $scope);
         var init = function() {
                 $scope.MODE = 'LIST';
-                $scope.selectedSequence = {};
                 $scope.customSequenceList = [];
                 $scope.selectedCustomSequence = {};
                 $scope.selectedCustomSequenceIndex = -1;
@@ -57,9 +56,6 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
                     helper: fixHelper,
                     start: function() {
                         selectSequenceTimeout = null;
-                        $timeout(function() {
-                            $scope.currentClickedElement = -1;
-                        }, 1000);
                     },
                     stop: function(e, ui) {
                         if (ui.item.sortable.dropindex !== ui.item.sortable.index && ui.item.sortable.dropindex !== null) {
@@ -71,6 +67,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
             selectSequenceTimeout = null;
 
         $scope.addNewSequence = function() {
+            unSelectCustomSequence();
             setMode('ADD');
         };
 
@@ -86,7 +83,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
                     fetchCustomSequence();
                 },
                 postData = {
-                    'name': $scope.selectedSequence.name
+                    'name': $scope.selectedCustomSequence.name
                 },
                 options = {
                     params: postData,
@@ -121,6 +118,7 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
                     successCallBack: successCallBackDeleteCustomSequence
                 };
 
+            unSelectCustomSequence();
             $scope.callAPI(ADRateSequenceSrv.deleteCustomSequence, options);
         };
         $scope.backToRateSequence = function() {
