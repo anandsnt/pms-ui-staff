@@ -516,7 +516,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Austria Nationality Export': true
             };
 
             var forWeekly = {
@@ -525,7 +526,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Clairvoyix Reservations Export': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Invoice / Folio Export': true
             };
             var forMonthly = {
                 'Future Reservations': true,
@@ -536,7 +538,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
                 'Belgium Nationality Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Austria Nationality Export': true,
+                'Invoice / Folio Export': true
             };
 
             var forHourly = {
@@ -1168,7 +1172,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
          * Show export calender only for joyrnal export
          */
         $scope.shouldShowExportCalenderDate = function () {
-            if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+            if ($scope.selectedEntityDetails.report.title === 'Journal Export' || $scope.selectedEntityDetails.report.title === 'Invoice / Folio Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods,
                     function(item) {
                         return item.value === 'DATE'; }

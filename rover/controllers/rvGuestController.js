@@ -336,8 +336,9 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         $scope.$on('contactInfoError', function(event, value) {
-            $scope.contactInfoError = value;
-            $scope.current = 'guest-contact';
+            if (value) {
+                $scope.current = 'guest-contact';
+            }
         });
 
         $scope.$on('likesInfoError', function(event, value) {
@@ -1977,8 +1978,7 @@ angular.module('sntRover').controller('guestCardController', [
             $scope.viewState.pendingRemoval.cardType = "";
             $scope.initGuestCard({
                 id: id
-            });
-            $scope.closeGuestCard();
+            });            
         };
 
         $scope.$on("updateGuestEmail", function(e) {

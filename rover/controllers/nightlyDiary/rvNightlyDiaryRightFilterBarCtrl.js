@@ -163,9 +163,12 @@ angular.module('sntRover')
                         ngDialog.open({
                             template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
                             className: '',
-                            scope: $scope
+                            scope: $scope,
+                            data: {
+                                warningMessage: 'No Available Rooms'
+                            }
                         });
-                        if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM') {
+                        if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM' && filterData.count > 0) {
 							$scope.$emit('TOGGLE_FILTER_TOP', 'RESERVATION_FILTER');
 						}
                     }
@@ -173,9 +176,9 @@ angular.module('sntRover')
                         var newData = {
                             availableRoomList: data.rooms,
                             fromDate: selectedItem.arrival_date,
-                            nights: selectedItem.no_of_nights,
+                            nights: (selectedItem.no_of_nights || selectedItem.number_of_nights),
                             reservationId: (selectedItem.reservation_id || selectedItem.id),
-                            roomTypeId: selectedItem.room_type_id,
+                            roomTypeId: filterData.roomTypeId,
                             type: filterData.type,
                             reservationOccupancy: data.reservation_occupancy
                         };
@@ -271,7 +274,6 @@ angular.module('sntRover')
 
 			// CICO-65277: Claer All Guest preferences corresponding to a seletced Reservation.
 			$scope.clearGuestPreferenceFilter = function() {
-				$scope.diaryData.roomAssignmentFilters.roomTypeId = $scope.diaryData.selectedUnassignedReservation.room_type_id.toString();
                 $scope.diaryData.roomAssignmentFilters.floorId = '';
                 clearRoomFeaturesList();
 			};

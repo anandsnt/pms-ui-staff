@@ -1,0 +1,54 @@
+<section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
+    <header class="content-title float">
+
+        <h2 translate>CUSTOM_RATE_SEQUENCE</h2>
+        <a class="action back" ng-click="backToRateSequence()">Back</a>
+        <!-- On click, remove .hidden from the Add Sequence From below -->
+        <a href="#" class="action add" ng-click="addNewSequence()" translate>ADD_CUSTOM_SEQUENCE</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab orange">MANAGE Sequence</button>
+            <button type="button" class="button add-data-inline toggle-tab white">MANAGE Rates</button>
+        </div>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <!-- If data, show this -->
+        <table class="grid datatable draggable editable" ng-show="MODE ==='LIST'" id="sort">
+            <thead>
+            <tr>
+                <th class="sequence break sort-asc sorting">Sort</th>
+                <th class="sorting">Sequence Name</th>
+                <th class="sorting sequence-rates">Rates</th>
+                <th class="delete">Delete</th>
+            </tr>
+            </thead>
+            <tbody ui-sortable="sortableOptions" ng-model="customSequenceList">
+                <tr ng-repeat="customSequence in customSequenceList track by $index"
+                    ng-click="selectCustomSequence($index, customSequence)"
+                    ng-include="getTemplateUrl($index)">
+                </tr>
+
+            </tbody>
+        </table>
+        <!-- If no data, show this immediatelly -->
+        <form  class="form" ng-show="MODE ==='ADD'">
+            <div class="holder full-width">
+                <div class="form-title">
+                    <h3>
+                        <span>Add</span> Sequence
+                    </h3>
+                </div>
+                <div class="entry">
+                    <label>Sequence Name<strong>*</strong></label>
+                    <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name">
+                </div>
+
+                <div class="actions float">
+                    <button type="button" class="button blank" ng-click="cancel()">Cancel</button>
+                    <button type="button" class="button green" ng-click="createCustomSequence()">Add Sequence</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</section>

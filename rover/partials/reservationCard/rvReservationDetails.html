@@ -238,7 +238,7 @@
                         <button class="button with-icon only-icon purple" click-touch="dowloadDocumnetDetails(guestData.primary_guest_details, true)" ng-class="{overlay:!hasGuestIDPermission}" ng-show="isGuestIdUploaded(guestData.primary_guest_details, true)">
                             <span class="icons icon-save"></span> Download
                         </button>
-                        <button type="button" class="button blue prevent-api-call" click-touch="navigateToGuestCard(guestData.primary_guest_details.id)" ng-if="isStandAlone">Show Guest Card</button>
+                        <button type="button" class="button blue prevent-api-call" click-touch="navigateToGuestCard(guestData.primary_guest_details.id)" ng-if="isStandAlone && guestData.primary_guest_details.id">Show Guest Card</button>
                     </div>
 
                     <label for="acc1-first-name" ng-show="showAccompanyingGuestLabel()">Accompanying Guests</label>
