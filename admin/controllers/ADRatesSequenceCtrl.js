@@ -51,6 +51,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                 'room_rates': $scope.sequenceState.selectedOptions['room_rates'].id,
                 'rate_manager': $scope.sequenceState.selectedOptions['rate_manager'].id,
                 'dashboard': $scope.sequenceState.selectedOptions['dashboard'].id,
+                'admin_dashboard': $scope.sequenceState.selectedOptions['admin_dashboard'].id,
                 'dashboard_rate_id': $scope.sequenceState.selectedOptions['dashboard_rate'].id
             }, onSaveSuccess);
         };
