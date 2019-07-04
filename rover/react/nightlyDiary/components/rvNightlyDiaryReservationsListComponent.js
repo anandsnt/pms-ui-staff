@@ -7,10 +7,45 @@ const isRoomAvailable = (roomId, state, type) => {
     let roomTypeDetails = {};
     let bookType = 'BOOK';
     let diaryMode = state.diaryMode;
+    let houseDetails = {};
+
+    let checkOverBooking = function() {
+        var isHouseOverbookable     = houseDetails.house_availability <= 0 && houseDetails.unassigned_reservations_present,
+            isRoomTypeOverbookable  = roomTypeDetails.availability <= 0 && roomTypeDetails.unassigned_reservations_present,
+            canOverbookHouse        = state.availableSlotsForBookRooms.canOverbookHouse,
+            canOverbookRoomType     = state.availableSlotsForBookRooms.canOverbookRoomType,
+            canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
+            overBookingStatusOutput = '';
+        
+        console.log('houseDetails', houseDetails);
+        console.log('roomTypeDetails', roomTypeDetails);
+        console.log('isHouseOverbookable', isHouseOverbookable);
+        console.log('isRoomTypeOverbookable', isRoomTypeOverbookable);
+        console.log('canOverbookHouse', canOverbookHouse);
+        console.log('canOverbookRoomType', canOverbookRoomType);
+
+        if (isHouseOverbookable && isRoomTypeOverbookable && canOverBookBoth) {
+            overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
+        }
+        else if (isRoomTypeOverbookable && canOverbookRoomType && (!isHouseOverbookable || (isHouseOverbookable && canOverbookHouse) )) {
+            overBookingStatusOutput = 'ROOMTYPE_OVERBOOK';
+        }
+        else if (isHouseOverbookable && canOverbookHouse && (!isRoomTypeOverbookable || (isRoomTypeOverbookable && canOverbookRoomType) )) {
+            overBookingStatusOutput = 'HOUSE_OVERBOOK';
+        }
+        else {
+            overBookingStatusOutput = 'NO_PERMISSION_TO_OVERBOOK';
+        }
+
+        console.log('overBookingStatusOutput', overBookingStatusOutput);
+
+        return overBookingStatusOutput;
+    };
 
     if (type === 'BOOK') {
         unAssignedRoomList = state.availableSlotsForBookRooms.rooms;
         roomTypeList = state.availableSlotsForBookRooms.room_types;
+        houseDetails = state.availableSlotsForBookRooms.house;
     }
     else if (type === 'ASSIGN' || type === 'MOVE') {
         unAssignedRoomList = state.availableSlotsForAssignRooms.availableRoomList;
@@ -41,17 +76,26 @@ const isRoomAvailable = (roomId, state, type) => {
             }
         });
 
+        roomDetails.fromDate = state.availableSlotsForBookRooms.fromDate;
+        roomDetails.toDate = state.availableSlotsForBookRooms.toDate;
+        roomDetails.nights = state.availableSlotsForBookRooms.nights;
+        roomDetails.arrivalTime = state.availableSlotsForBookRooms.arrivalTime;
+        roomDetails.departureTime = state.availableSlotsForBookRooms.departureTime;
+
         if (diaryMode === 'FULL') {
             bookType = 'BOOK';
         }
         else if (diaryMode === 'NIGHTLY' || diaryMode === 'DAYUSE') {
 
-            if (roomTypeDetails.availability > 0) {
+            if (roomTypeDetails.availability > 0 && houseDetails.house_availability > 0) {
                 bookType = 'BOOK';
             }
-            /* TODO CICO-65955 : Overbook logic will go here */
-            /* bookType = 'OVERBOOK'; */
-            /* bookType = 'OVERBOOK_DISABLED'; */
+            else if (checkOverBooking() === 'NO_PERMISSION_TO_OVERBOOK') {
+                bookType = 'OVERBOOK_DISABLED';
+            }
+            else {
+                bookType = 'OVERBOOK';
+            }
         }
         
         return (
