@@ -24,7 +24,7 @@
         <p>{{printData.custom_text_header}}</p>
     </div>
 
-    <div class="invoice-body">
+    <div class="invoice-body" ng-if="!printData.is_summary">
         <table class="invoice-details">
             <thead style="display:table-row-group;">
                 <tr>

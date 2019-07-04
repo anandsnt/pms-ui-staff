@@ -747,7 +747,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         // print AR Statement
         var printArStatement = function(params) {
             var printDataFetchSuccess = function(successData) {
-                $scope.printData = successData;
+				$scope.printData = successData;
+				$scope.printData.is_summary = $scope.filterData.isSummary;
                 $scope.errorMessage = "";
                 // hide hotel logo
                 $("header .logo").addClass('logo-hide');
