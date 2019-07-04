@@ -291,9 +291,10 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * Pouplate admin settings for guest fields
          */
         var populateContactInfo = function () {
-            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
                 successCallBack: function(data) {
-                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
+                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypes;
                 },
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -324,7 +325,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
             $scope.countries = countries;
             $scope.idTypeList = idTypesList;
-            $scope.genderTypeList = genderTypesList;
+            $scope.guestCardData.contactInfo.genderTypeList = genderTypesList;
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,

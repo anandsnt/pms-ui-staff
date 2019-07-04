@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
-    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
+    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
+    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -1869,7 +1869,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.viewState.isAddNewCard = false;
                 $scope.reservationDetails.guestCard.id = guest.id;
                 $scope.initGuestCard(guest);
-                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                $scope.callAPI(RVGuestCardsSrv.fetchGuests, {
                     successCallBack: function(data) {
                         data.stayCount = guest.stayCount;
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
@@ -1905,9 +1905,10 @@ angular.module('sntRover').controller('guestCardController', [
         $scope.createNewGuest = function() {
 
 
-            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
                 successCallBack: function(data) {
-                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
+                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypes;
                 },
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;

@@ -36,6 +36,30 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return deferred.promise;
         };
 
+        this.fetchGuestAdminSettingsAndGender = function (param) {
+
+            var deferred = $q.defer(),
+                data = {};
+
+            $q.when().then(function() {
+                return service.fetchGuestAdminSettings(param).then(function(response) {
+                    data.guestAdminSettings = response;
+                });
+            })
+            .then(function() {                 
+                return service.fetchGenderTypes().then(function(response) {
+                    data.genderTypes = response;
+                });
+            })            
+            .then(function() {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
         /**
          * Fetch guest details
          * @param {object} param request object
@@ -52,7 +76,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 });
             })
             .then(function() {                 
-                return service.fetchGuestAdminSettings().then(function(response) {
+                return service.fetchGuestAdminSettingsAndGender().then(function(response) {
                     data.guestAdminSettings = response;
                 });
             })            
