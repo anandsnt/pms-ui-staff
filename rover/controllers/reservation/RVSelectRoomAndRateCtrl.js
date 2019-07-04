@@ -53,15 +53,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			maxRoomsToShow: 0,
 			selectedRoomType: -1,
 			stayDates: {},
-			isFromNightlyDiary: $stateParams.isFromNightlyDiary,
-			roomTypeIdFromNightlyDiary: $stateParams.roomTypeIdFromNightlyDiary
+			isFromNightlyDiary: $stateParams.fromState === 'NIGHTLY_DIARY',
+			roomTypeIdFromNightlyDiary: $stateParams.fromState === 'NIGHTLY_DIARY' ? $stateParams.room_type_id : ''
 		};
 
 		$scope.display = {
 			roomFirstGrid: [],
 			rateFirstGrid: []
 		};
-
+		
 		// --
 		$scope.restrictionColorClass = RVSelectRoomRateSrv.restrictionColorClass;
 		$scope.restrictionsMapping = ratesMeta['restrictions'];
@@ -641,7 +641,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						title: 'Stay Dates',
 						name: 'rover.reservation.staycard.changestaydates'
 					};
-				} else if ($scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId) {
+				} 
+				else if ($scope.reservationData && $scope.reservationData.confirmNum && $scope.reservationData.reservationId) {
 					$rootScope.setPrevState = {
 						title: $filter('translate')('STAY_CARD'),
 						name: 'rover.reservation.staycard.reservationcard.reservationdetails',
@@ -651,7 +652,14 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isrefresh: true
 						}
 					};
-				} else {
+				} 
+				else if ($scope.stateCheck.isFromNightlyDiary) {
+					$rootScope.setPrevState = {
+						title: 'ROOM DIARY',
+						name: 'rover.nightlyDiary'
+					};
+				}
+				else {
 					$rootScope.setPrevState = {
 						title: $filter('translate')('CREATE_RESERVATION'),
 						callback: 'setSameCardNgo',
@@ -1798,6 +1806,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                 closeByEscape: false
             });
         },
+        setRoomDetailsForDiaryFlow = function() {
+            TABS[0].room_id = $stateParams.selectedRoomId;
+            ROOMS[0].room_id = $stateParams.selectedRoomId;
+
+            TABS[0].roomName = $stateParams.selectedRoomNo;
+            ROOMS[0].roomName = $stateParams.selectedRoomNo;
+
+            TABS[0].checkinTime = $stateParams.arrivalTime;
+            TABS[0].checkoutTime = $stateParams.departureTime;
+        },
         // CICO-61893 : Reset the room details if the user changes the room type.
         resetRoomDetailsIfInvalid = function () {
             TABS[0].room_id = null;
@@ -1806,6 +1824,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
             ROOMS[0].roomName = null;
         };
 
+        // Init data for chackin flow if coming via Nightly Diary
+        if ($scope.stateCheck.isFromNightlyDiary) {
+        	$scope.reservationData.isFromNightlyDiary = true;
+        	setRoomDetailsForDiaryFlow();
+        }
 		$scope.onRoomTypeChange = function($event) {
 			var tabIndex = $scope.viewState.currentTab,
 				roomType = parseInt($scope.stateCheck.preferredType, 10) || '',
@@ -2171,7 +2194,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// mark 'isSameCard' as true on '$scope.reservationData'
 		$scope.setSameCardNgo = function() {
 			$scope.reservationData.isSameCard = true;
-			$state.go('rover.reservation.search', { fromState: $scope.stateCheck.isFromNightlyDiary ? 'NIGHTLY_DIARY' : null });
+			$state.go('rover.reservation.search');
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- EVENT LISTENER
