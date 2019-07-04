@@ -116,7 +116,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.shouldShowPropertiesButton = function() {
 			return ($scope.displayShowPropertiesButton && $scope.account_type === 'TRAVELAGENT' && 
 				$scope.contactInformation.is_global_enabled && 
-				($rootScope.hotelDetails.userHotelsData.hotel_list.length > 0 && rvPermissionSrv.getPermissionValue('MULTI_PROPERTY_SWITCH')) && 
+				rvPermissionSrv.getPermissionValue('CHAIN_ADMIN') && 
 				!$scope.isUpdateEnabledForTravelAgent());
 		};
 	}
