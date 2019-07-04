@@ -523,7 +523,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.switchTabTo('', 'cc-commissions');
 			}
 
-			$scope.displayShowProperties = !$scope.contactInformation.commission_details.is_global_commission;
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
 		};
 		/**
 		 * successcall back of commssion detail
@@ -560,7 +560,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
 			$scope.contactInformation.emailStyleClass = $scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_visible ? 'margin' : 'full-width';
 			$scope.contactInformation["commission_details"] = data.commission_details;
-			$scope.displayShowProperties = !$scope.contactInformation.commission_details.is_global_commission;
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
 		};
 
 		/**
