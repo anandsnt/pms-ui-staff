@@ -202,9 +202,9 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
             $scope.config = config;
 
             // selected_charge_groups must be an array
-            var selectedChargeGroups = (config.selected_charge_groups === undefined || config.selected_charge_groups === null) ?
-                [] :
-                JSON.parse(config.selected_charge_groups);
+            var selectedChargeGroups = config.selected_charge_groups ?
+                JSON.parse(config.selected_charge_groups) :
+                [];
 
             $scope.config.selected_charge_groups = selectedChargeGroups;
 
