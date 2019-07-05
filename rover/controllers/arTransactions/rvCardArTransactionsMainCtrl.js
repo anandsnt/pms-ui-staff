@@ -690,7 +690,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         // Get parameters for fetch data
         var getParamsToSend = function() {
             var paramsToSend = {
-                "account_id": $scope.arDataObj.accountId,
+                "id": $scope.arDataObj.accountId,
                 "from_date": $scope.filterData.fromDate,
                 "to_date": $scope.filterData.toDate,
                 "query": $scope.filterData.query
