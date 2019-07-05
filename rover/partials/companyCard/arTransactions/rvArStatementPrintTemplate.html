@@ -24,7 +24,7 @@
         <p>{{printData.custom_text_header}}</p>
     </div>
 
-    <div class="invoice-body">
+    <div class="invoice-body" ng-if="!printData.is_summary">
         <table class="invoice-details">
             <thead style="display:table-row-group;">
                 <tr>
@@ -276,6 +276,7 @@
             </tfoot>
         </table>
     </div>
+    <div class="invoice-body" ng-if="printData.is_summary" ng-include="'/assets/partials/companyCard/arTransactions/rvArStatementIsSummaryPrintTemplate.html'"></div>
     <div class="currency" ng-if="printData.from_date && printData.to_date">
         <p>{{printData.from_date | date:dateFormat}} - {{printData.to_date | date:dateFormat}}</p>
     </div>
