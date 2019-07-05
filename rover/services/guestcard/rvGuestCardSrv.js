@@ -41,8 +41,6 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
 
             var deferred = $q.defer(),
                 data = {};
-            
-            var promises = [];
 
             $q.when().then(function() {
                 return service.fetchGuestAdminSettings(param).then(function(response) {

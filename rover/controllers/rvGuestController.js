@@ -1870,25 +1870,25 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.reservationDetails.guestCard.id = guest.id;
                 $scope.initGuestCard(guest);
 
-                var promises = [];
-                var successCallBackForguestAdminSettings = function(data) {
-                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
-                }
+                var promises = [],
+                    successCallBackForguestAdminSettings = function(data) {
+                        $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                    },
 
-                var successCallBackGenderTypes = function(data) {
-                    $scope.guestCardData.contactInfo.genderTypeList = data;
-                }
+                    successCallBackGenderTypes = function(data) {
+                        $scope.guestCardData.contactInfo.genderTypeList = data;
+                    },
 
-                var successCallBackFetchGuest = function(data) {
-                    data.stayCount = guest.stayCount;
-                    $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
-                    $scope.closeGuestCard();
+                    successCallBackFetchGuest = function(data) {
+                        data.stayCount = guest.stayCount;
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                        $scope.closeGuestCard();
                     },
                     failureCallBackFetchGuest = function(data) {
                         data.stayCount = guest.stayCount;
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         $scope.closeGuestCard();
-                    }
+                    };
 
 
                 promises.push(RVGuestCardsSrv
@@ -1908,7 +1908,7 @@ angular.module('sntRover').controller('guestCardController', [
                 );
                 // Lets start the processing
                 $q.all(promises)
-				    .then();
+                    .then();
 
             } else {
                 if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
@@ -1934,30 +1934,28 @@ angular.module('sntRover').controller('guestCardController', [
         // CREATES
         $scope.createNewGuest = function() {
 
-            var promises = [];            
-            var successCallBack1 = function(data) {
-                $scope.guestCardData.contactInfo.guestAdminSettings = data;
-            }
+            var promises = [],            
+                successCallBackForguestAdminSettings = function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                },
 
-            var successCallBack2 = function(data) {
-                $scope.guestCardData.contactInfo.genderTypeList = data;
-            }
+                successCallBackGenderTypes = function(data) {
+                    $scope.guestCardData.contactInfo.genderTypeList = data;
+                };
 
 			promises.push(RVGuestCardsSrv
 				.fetchGuestAdminSettings()
-				.then(successCallBack1)
+				.then(successCallBackForguestAdminSettings)
 			);
 
 			// charge code fetch
 			promises.push(RVGuestCardsSrv
 				.fetchGenderTypes()
-				.then(successCallBack2)
+				.then(successCallBackGenderTypes)
 			);
 			// Lets start the processing
 			$q.all(promises)
-				.then();
-
-
+                .then();
 
             // create an empty dataModel for the guest
             var contactInfoData = {
