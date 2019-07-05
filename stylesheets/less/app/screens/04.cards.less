@@ -902,8 +902,9 @@
                         &.commission {
                             width: 100%;
                             display: grid;
-                            grid-template-columns: 120px 80px 60px calc(~'100% - 290px');;
+                            grid-template-columns: calc(~'20% - 10px') calc(~'16% - 10px') calc(~'14% - 10px') 50%;
                             grid-column-gap: 10px;
+                            margin-right: 0;
 
                             label {
                                 grid-row: 1;
@@ -932,6 +933,10 @@
 
                             .select {
                                 height: 40px;
+
+                                &:not(:first-of-type) {
+                                    #pixel-to-percent > .left-margin(40, 904);
+                                }
                             }
 
                             .checkbox {
