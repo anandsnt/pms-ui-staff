@@ -38,7 +38,6 @@
                         <div class="grid-cell">
                             <div class="select" ng-show="property.type === 'amount'">
                                 <select id="{{property.id}}-commission-per"
-                                    ng-init="property.commission_type = property.commission_type || 'perStay'"
                                     ng-model="property.commission_type">
                                     <option value="perStay" translate>PER_STAY</option>
                                     <option value="perNight" translate>PER_NIGHT</option>

@@ -115,6 +115,7 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		 */
 		$scope.shouldShowPropertiesButton = function() {
 			return ($scope.displayShowPropertiesButton && $scope.account_type === 'TRAVELAGENT' && 
+				!$scope.isEmpty($scope.contactInformation.commission_details) & 
 				$scope.contactInformation.is_global_enabled && 
 				rvPermissionSrv.getPermissionValue('CHAIN_ADMIN') && 
 				!$scope.isUpdateEnabledForTravelAgent());
