@@ -39,7 +39,9 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 
         $scope.changePreference = function(type, option) {
             $scope.sequenceState.selectedOptions[type] = angular.copy(option);
-            $scope.showSearch = isCustomRateSelected( option );
+            if ( type === 'dashboard') {
+                $scope.showSearch = isCustomRateSelected( option );
+            }
         };
 
         $scope.saveRateSortPreferences = function() {
