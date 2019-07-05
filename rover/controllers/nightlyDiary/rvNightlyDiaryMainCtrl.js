@@ -13,6 +13,7 @@ angular.module('sntRover')
             'RVNightlyDiarySrv',
             'unassignedReservationList',
             'rvPermissionSrv',
+            'rvUtilSrv',
             function (
                 $scope,
                 $rootScope,
@@ -26,7 +27,8 @@ angular.module('sntRover')
                 reservationsList,
                 RVNightlyDiarySrv,
                 unassignedReservationList,
-                rvPermissionSrv
+                rvPermissionSrv,
+                rvUtilSrv
             ) {
 
                 BaseCtrl.call(this, $scope);
@@ -145,19 +147,6 @@ angular.module('sntRover')
                         page: offset ? $scope.diaryData.paginationData.page + offset : $scope.diaryData.paginationData.page,
                         total_count: $scope.diaryData.paginationData.totalCount
                     };
-                };
-
-                // Mapping of diary modes.
-                var getDiaryMode = function() {
-                    var diaryMode = 'FULL';
-
-                    if (!$rootScope.hotelDiaryConfig.hourlyRatesForDayUseEnabled) {
-                        diaryMode = 'NIGHTLY';
-                    }
-                    else if ($rootScope.hotelDiaryConfig.mode === 'LIMITED') {
-                        diaryMode = 'DAYUSE';
-                    }
-                    return diaryMode;
                 };
 
                 /**
@@ -475,7 +464,7 @@ angular.module('sntRover')
 
                         ngDialog.close();
                     },
-                    diaryMode = getDiaryMode();
+                    diaryMode = rvUtilSrv.getDiaryMode();
                    
                     if (bookType === 'BOOK') {
 
@@ -1003,7 +992,7 @@ angular.module('sntRover')
                     currentSelectedReservation: $scope.currentSelectedReservation,
                     dateFormat: $rootScope.dateFormat,
                     isPmsProductionEnvironment: $rootScope.isPmsProductionEnv,
-                    diaryMode: getDiaryMode()
+                    diaryMode: rvUtilSrv.getDiaryMode()
                 };
 
                 const store = configureStore(initialState);
@@ -1028,7 +1017,7 @@ angular.module('sntRover')
                         paginationData: $scope.diaryData.paginationData,
                         selectedReservationId: $scope.currentSelectedReservation.id,
                         selectedRoomId: $scope.diaryData.selectedRoomId,
-                        diaryMode: getDiaryMode()
+                        diaryMode: rvUtilSrv.getDiaryMode()
                     };
 
                     store.dispatch(dispatchData);
