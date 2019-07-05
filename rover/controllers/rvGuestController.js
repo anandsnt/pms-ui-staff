@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
-    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
+    '$scope', '$window', 'RVCompanyCardSrv', '$q', 'RVReservationAllCardsSrv', 'RVGuestCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
+    function($scope, $window, RVCompanyCardSrv, $q, RVReservationAllCardsSrv, RVGuestCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -1869,17 +1869,47 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.viewState.isAddNewCard = false;
                 $scope.reservationDetails.guestCard.id = guest.id;
                 $scope.initGuestCard(guest);
-                $scope.callAPI(RVGuestCardsSrv.fetchGuests, {
-                    successCallBack: function(data) {
+
+                var promises = [];
+                var successCallBackForguestAdminSettings = function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                }
+
+                var successCallBackGenderTypes = function(data) {
+                    $scope.guestCardData.contactInfo.genderTypeList = data;
+                }
+
+                var successCallBackFetchGuest = function(data) {
+                    data.stayCount = guest.stayCount;
+                    $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                    $scope.closeGuestCard();
+                    },
+                    failureCallBackFetchGuest = function(data) {
                         data.stayCount = guest.stayCount;
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         $scope.closeGuestCard();
-                    },
-                    failureCallBack: function(errorMessage) {
-                        $scope.errorMessage = errorMessage;
-                        $scope.$emit('hideLoader');
                     }
-                });
+
+
+                promises.push(RVGuestCardsSrv
+                    .fetchGuests()
+                    .then(successCallBackFetchGuest, failureCallBackFetchGuest)
+                );
+
+                promises.push(RVGuestCardsSrv
+                    .fetchGuestAdminSettings()
+                    .then(successCallBackForguestAdminSettings)
+                );
+
+                // charge code fetch
+                promises.push(RVGuestCardsSrv
+                    .fetchGenderTypes()
+                    .then(successCallBackGenderTypes)
+                );
+                // Lets start the processing
+                $q.all(promises)
+				    .then();
+
             } else {
                 if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
                     // CICO-41517
@@ -1904,17 +1934,31 @@ angular.module('sntRover').controller('guestCardController', [
         // CREATES
         $scope.createNewGuest = function() {
 
+            var promises = [];            
+            var successCallBack1 = function(data) {
+                $scope.guestCardData.contactInfo.guestAdminSettings = data;
+            }
 
-            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
-                successCallBack: function(data) {
-                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
-                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypes;
-                },
-                failureCallBack: function(errorMessage) {
-                    $scope.errorMessage = errorMessage;
-                    $scope.$emit('hideLoader');
-                }
-            });
+            var successCallBack2 = function(data) {
+                $scope.guestCardData.contactInfo.genderTypeList = data;
+            }
+
+			promises.push(RVGuestCardsSrv
+				.fetchGuestAdminSettings()
+				.then(successCallBack1)
+			);
+
+			// charge code fetch
+			promises.push(RVGuestCardsSrv
+				.fetchGenderTypes()
+				.then(successCallBack2)
+			);
+			// Lets start the processing
+			$q.all(promises)
+				.then();
+
+
+
             // create an empty dataModel for the guest
             var contactInfoData = {
                 'contactInfo': $scope.guestCardData.contactInfo,

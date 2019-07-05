@@ -1,7 +1,8 @@
 angular.module('sntRover').service('RVGuestCardsSrv', [
     '$q',
     'rvBaseWebSrvV2',
-    function ($q, RVBaseWebSrvV2) {
+    'sntBaseWebSrv',
+    function ($q, RVBaseWebSrvV2, sntBaseWebSrv) {
 
         var guestFieldData = {},
             service = this;
@@ -40,6 +41,8 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
 
             var deferred = $q.defer(),
                 data = {};
+            
+            var promises = [];
 
             $q.when().then(function() {
                 return service.fetchGuestAdminSettings(param).then(function(response) {
@@ -74,12 +77,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 return service.fetchGuestDetails(param).then(function(response) {
                     data = response;
                 });
-            })
-            .then(function() {                 
-                return service.fetchGuestAdminSettingsAndGender().then(function(response) {
-                    data.guestAdminSettings = response;
-                });
-            })            
+            })       
             .then(function() {
                 deferred.resolve(data);
             }, function(errorMessage) {
@@ -214,7 +212,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             var deffered = $q.defer(),
                url = 'api/guest_details/gender_types';
 
-            RVBaseWebSrvV2.getJSON(url)
+            sntBaseWebSrv.getJSON(url)
              .then( function (data) {
                 deffered.resolve( data.gender_list);
              }, function (error) {
