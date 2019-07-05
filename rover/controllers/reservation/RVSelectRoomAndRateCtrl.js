@@ -1,6 +1,6 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 
-	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv) {
+	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 'dateFilter',
+	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv, dateFilter) {
 
 		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
 
@@ -65,6 +65,54 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		// --
 		$scope.restrictionColorClass = RVSelectRoomRateSrv.restrictionColorClass;
 		$scope.restrictionsMapping = ratesMeta['restrictions'];
+
+        // mapping unhandled data set while coming directly from nightly diary
+		if ($scope.stateCheck.isFromNightlyDiary) {
+			$scope.reservationData.isFromNightlyDiary = true;
+			$scope.reservationData.arrivalDate = $stateParams.from_date;
+			$scope.reservationData.departureDate = $stateParams.to_date;
+			$scope.reservationData.tabs[0].checkinTime = $stateParams.arrivalTime;
+			$scope.reservationData.tabs[0].checkoutTime = $stateParams.departureTime;
+			$scope.reservationData.tabs[0].roomCount = 1;
+
+			/*  The following method helps to initiate the staydates object across the period of
+	         *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
+	         *  stay at this state.
+	         *  The rates for these days have to be popuplated in the subsequent states appropriately
+	         */
+            var initStayDates = function(roomNumber) {
+                if (roomNumber === 0) {
+                    $scope.reservationData.stayDays = [];
+                }
+
+                $scope.reservationData.rooms[roomNumber].stayDates = {};
+
+                for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
+                    if (roomNumber === 0) {
+                        $scope.reservationData.stayDays.push({
+                            date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
+                            dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
+                            day: dateFilter(new tzIndependentDate(ms), 'dd')
+                        });
+                    }
+                    $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+                        guests: {
+                            adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
+                            children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
+                            infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
+                        },
+                        rate: {
+                            id: "",
+                            name: ""
+                        }
+                    };
+                }
+            };
+
+            for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
+                initStayDates(roomNumber);
+            }
+		}
 
 		// -- REFERENCES
 		var TABS = $scope.reservationData.tabs,
@@ -184,8 +232,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					promotion_code: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.searchPromoCode : null,
 					promotion_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.promotionId : null,
 					override_restrictions: $scope.stateCheck.showClosedRates,
-					adults: occupancies[0].adults,
-					children: occupancies[0].children,
+					adults: occupancies[0] ? occupancies[0].adults : 1,
+					children: occupancies[0] ? occupancies[0].children: '',
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
@@ -257,13 +305,18 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					// CICO-28657 Removed all params - company id, grp id, tr ag id, etc
 					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					override_restrictions: $scope.stateCheck.showClosedRates,
-					adults: occupancies[0].adults,
-					children: occupancies[0].children,
+					adults: occupancies[0] ? occupancies[0].adults : 1,
+					children: occupancies[0] ? occupancies[0].children : '',
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.roomType.perPage,
 					page: $scope.stateCheck.pagination.roomType.page,
 					is_member: !!$scope.reservationData.member.isSelected
-				};
+				},
+				isRoomDetailsInvalidated = TABS[0].room_id === null;
+
+				if ($scope.stateCheck.isFromNightlyDiary && !isRoomDetailsInvalidated) {
+					payLoad.room_type_id = $stateParams.room_type_id;
+				}
 
 				if ($scope.stateCheck.stayDatesMode) {
 					var dayOccupancy = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[$scope.stateCheck.dateModeActiveDate].guests;
@@ -321,7 +374,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				var occupancies = _.pluck(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates, 'guests');
 
 				// CICO-59948 - For in-house reservation, we should the rates corresponding to the current room type
-				if ($scope.reservationData.inHouse) {
+				if ($scope.reservationData.inHouse || $scope.stateCheck.isFromNightlyDiary) {
 					roomTypeId = $stateParams.room_type_id;	
 				}
 
@@ -332,10 +385,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					room_type_id: roomTypeId,
 					rate_id: rateId,
 					override_restrictions: $scope.stateCheck.showClosedRates,
-					adults: occupancies[0].adults,
-					children: occupancies[0].children,
+					adults: occupancies[0] ? occupancies[0].adults : 1,
+					children: occupancies[0] ? occupancies[0].children : '',
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates
-
 				};
 
 				if ($scope.stateCheck.stayDatesMode) {
@@ -706,7 +758,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
 
-
 				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
 
 				// --
@@ -744,7 +795,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
 				}
 
-
 				// By default RoomType
 				$scope.stateCheck.activeView = 'ROOM_TYPE';
 				if ($scope.otherData.defaultRateDisplayName === 'Recommended') {
@@ -756,6 +806,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					 || $stateParams.group_id || $stateParams.allotment_id
 					 || $stateParams.is_member || $stateParams.promotion_id) {
 					$scope.stateCheck.activeView = 'RECOMMENDED';
+				}
+				if ($scope.stateCheck.isFromNightlyDiary) {
+					$scope.stateCheck.activeView = 'ROOM_TYPE';
+					$scope.setActiveView('ROOM_TYPE');
 				}
 
 				if (!!$scope.reservationData.code && !!$scope.reservationData.code.id) {
@@ -1244,8 +1298,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					group_id: $scope.reservationData.group.id || $scope.reservationData.allotment.id,
 					promotion_id: $scope.reservationData.promotionId,
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
-					adults: occupancies[0].adults,
-					children: occupancies[0].children
+					adults: occupancies[0] ? occupancies[0].adults : 1,
+					children: occupancies[0] ? occupancies[0].children : ''
 				};
 
 			if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
@@ -1314,12 +1368,19 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				_.each(datesArray, function(dayInfo, date) {
 					dayInfo.amount = rateDetails.amounts[date];
+					var adultsCount = 1,
+						childCount = 0;
+
+					if (!$scope.stateCheck.isFromNightlyDiary) {
+						adultsCount = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.adults;
+						childCount = ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.children;
+					}
 					var taxesArray = (payLoad.rate_id) ? $scope.reservationData.ratesMeta[payLoad.rate_id].taxes : [],
 					    taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
 							date,
 							payLoad.rate_id,
-							ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.adults,
-							ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.children,
+							adultsCount,
+							childCount,
 							ARRIVAL_DATE,
 							DEPARTURE_DATE,
 							$scope.activeRoom,
@@ -1810,11 +1871,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
             TABS[0].room_id = $stateParams.selectedRoomId;
             ROOMS[0].room_id = $stateParams.selectedRoomId;
 
+            TABS[0].roomTypeId = $stateParams.room_type_id;
+            ROOMS[0].roomTypeId = $stateParams.room_type_id;
+
             TABS[0].roomName = $stateParams.selectedRoomNo;
             ROOMS[0].roomName = $stateParams.selectedRoomNo;
-
-            TABS[0].checkinTime = $stateParams.arrivalTime;
-            TABS[0].checkoutTime = $stateParams.departureTime;
         },
         // CICO-61893 : Reset the room details if the user changes the room type.
         resetRoomDetailsIfInvalid = function () {
@@ -1822,11 +1883,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
             ROOMS[0].room_id = null;
             TABS[0].roomName = null;
             ROOMS[0].roomName = null;
+            TABS[0].roomTypeId = null;
+            ROOMS[0].roomTypeId = null;
         };
 
         // Init data for chackin flow if coming via Nightly Diary
         if ($scope.stateCheck.isFromNightlyDiary) {
-        	$scope.reservationData.isFromNightlyDiary = true;
         	setRoomDetailsForDiaryFlow();
         }
 		$scope.onRoomTypeChange = function($event) {
