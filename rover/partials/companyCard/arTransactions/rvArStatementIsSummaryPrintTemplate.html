@@ -1,23 +1,192 @@
-<table>
-    <thead style="display:table-row-group;">
-        <tr>
-            <th></th>
-            <th class="charge-date" ><strong>{{printData.translation.departure_date}}</strong></th>
-            <th class="charge-code" ><strong>Reservation Name</strong></th>
-            <th class="charge-description" ><strong>Invoice No/Folio No/AR No</strong></th>
-            <th class="align-right charge-amount" ><strong>{{printData.translation.debits}}</strong></th>
-            <th class="align-right charge-amount" ><strong>{{printData.translation.credits}}</strong></th>
-            <th class="align-right charge-amount-title" ><strong>{{printData.translation.amount_due}}</strong></th>
-        </tr>
-    </thead>
-	<tbody>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-	</tbody>
-</table>
+<div class="invoice-body" style="margin-top: 1cm;">
+        <table class="invoice-details" style="text-transform: none;margin: 4pt 0;page-break-after: auto;width: 100%;table-layout: auto;border-collapse: collapse;border-spacing: 0;clear: both;">
+          <thead>
+            <tr style="page-break-inside: avoid;page-break-after: auto;">
+              <th><strong>{{printData.translation.departure_date}}</strong></th>
+              <th><strong>Reservation Name</strong></th>
+              <th><strong>Invoice/Folio No./AR No.</strong></th>
+              <th><strong>{{printData.translation.debits}}</strong></th>
+              <th>{{printData.translation.credits}}</th>
+              <th>{{printData.translation.amount_due}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="printData.reservation_details.length > 0" class="person" ng-repeat="statement in printData.reservation_details">
+                <td>{{statement.departure_date}}</td>
+                <td>{{statement.name}}</td>
+                <td ng-if="statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="statement.ar_invoice_number && !statement.folio_number">{{statement.ar_invoice_number}}</td>
+                <td ng-if="statement.invoice_number && !statement.ar_invoice_number && !statement.folio_number">{{statement.invoice_number}}</td>
+                <td>
+                    {{statement.debits}}
+                    <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                        €184,000.00
+                    </div>
+                </td>
+                <td>
+                    {{statement.credits}}
+                    <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                        €184,000.00
+                    </div>
+                </td>
+                <td >
+                    {{statement.amount_due}}
+                    <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                        €111,900.00
+                    </div>
+                </td>
+            </tr>    
+    
+          </tbody>
+          <tfoot style="padding: 12pt 0 4pt;border-top: 1px solid #d8d8d8;">
+            <tr style="page-break-inside: avoid;page-break-after: auto;">
+              <!-- if TR is last child add 'margin-bottom: 12pt;padding-bottom: 12pt'-->
+              <!-- if TR is first child add padding-top: 12pt;-->
+              <td colspan="5" style="padding-top: 2pt;padding-right: 2pt;padding-bottom: 2pt;text-align: right;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+                <strong style="font-weight: 700;">Total Amount</strong>
+              </td>
+              <!-- if TR is last child add 'margin-bottom: 12pt;padding-bottom: 12pt'-->
+              <!-- if TR is first child add padding-top: 12pt;-->
+              <td style="padding-top: 2pt;padding-right: 2pt;padding-bottom: 2pt;text-align: right;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+                <strong style="font-weight: 700;">$203,476.00</strong>
+                <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                    €200,300.00
+                </div>
+              </td>
+            </tr>
+    
+            <!-- This taxes are displayed when there is no large tax breakdown-->
+            <tr style="page-break-inside: avoid;page-break-after: auto;">
+              <!-- if TR is last child add 'margin-bottom: 12pt;padding-bottom: 12pt'-->
+              <!-- if TR is first child add padding-top: 12pt;-->
+              <td colspan="5" style="padding-top: 2pt;padding-right: 2pt;padding-bottom: 2pt;text-align: right;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+               Tax 
+             </td>
+             <!-- if TR is last child add 'margin-bottom: 12pt;padding-bottom: 12pt'-->
+             <!-- if TR is first child add padding-top: 12pt;-->
+             <td style="padding-top: 2pt;padding-right: 2pt;padding-bottom: 2pt;text-align: right;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $203,476.00
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €200,300.00
+              </div>
+            </td>
+          </tr>
+          
+        </tfoot>
+      </table>
+      <!-- This taxes are displayed when there is a large tax breakdown-->
+      <table class="invoice-details tax-breakdown" style="text-transform: none;margin: 4pt 0;page-break-after: auto;width: 100%;table-layout: auto;border-collapse: collapse;border-spacing: 0;clear: both;">
+        <thead>
+          <tr style="page-break-inside: avoid;page-break-after: auto;">
+            <th class="tax-description" style="width: 50%;text-align: left;padding: 4pt; text-transform: uppercase;background-color: #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              Tax description
+            </th>
+            <th style="text-align: right;padding: 4pt; text-transform: uppercase;background-color: #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              Gross
+            </th>
+            <th style="text-align: right;padding: 4pt; text-transform: uppercase;background-color: #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              Net
+            </th>
+            <th style="text-align: right;padding: 4pt; text-transform: uppercase;background-color: #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              Tax
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="page-break-inside: avoid;page-break-after: auto;">
+            <td style="text-align: left;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              Whole Tax
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $4,409.52
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €4,300.00
+              </div>                    
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $340.00  
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €300.00
+              </div>                  
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $4,069.52 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €3,900.00
+              </div>                   
+            </td>
+          </tr>
+          <tr style="page-break-inside: avoid;page-break-after: auto;">
+            <td style="text-align: left;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              GST 10.125%
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $40,271.95 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €37,300.00
+              </div>                   
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $19,670.00
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €19,300.00
+              </div>                    
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $20,601.95 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €20,300.00
+              </div>                   
+            </td>
+          </tr>
+          <tr style="page-break-inside: avoid;page-break-after: auto;">
+            <td style="text-align: left;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              City Tax 5%
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $15,412.80 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €15,300.00
+              </div>                   
+            </td >
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $5,239.00 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €4,900.00
+              </div>                   
+            </td>
+            <td style="text-align: right;padding: 4pt;border-bottom: 1px solid #d8d8d8;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $10,173.80 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €9,800.00
+              </div>                  
+            </td>
+          </tr>
+          
+        </tbody>
+        <tfoot style="padding: 12pt 0 4pt;border-top: 1px solid #d8d8d8;">
+          <tr style="page-break-inside: avoid;page-break-after: auto;">
+    
+            <td style="margin-bottom: 12pt;text-align: left;background-color: #d8d8d8; font-weight: bold;padding: 4pt;border-botom: 0;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">Total</td>
+            <td style="margin-bottom: 12pt;text-align: right;background-color: #d8d8d8; font-weight: bold;padding: 4pt;border-botom: 0;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;">
+              $60,094.27 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €59,300.00
+              </div>                   
+            </td>
+            <td style="margin-bottom: 12pt;text-align: left;background-color: #d8d8d8; font-weight: bold;padding: 4pt;border-botom: 0;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;text-align: right;">
+              $25,249.00 
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €24,300.00
+              </div>                   
+            </td>
+            <td style="margin-bottom: 12pt;text-align: left;background-color: #d8d8d8; font-weight: bold;padding: 4pt;border-botom: 0;text-overflow: ellipsis;overflow: hidden;vertical-align: top;font-size: 8pt;line-height: 1;white-space: normal;page-break-after: auto;page-break-inside: avoid;text-align: right;">
+              $34,845.27  
+              <div class="converted-currency" style="display:block;color:#9d9d9d;margin-top:3px;margin-bottom:2px;">
+                  €34,300.00
+              </div>                  
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+     </div>

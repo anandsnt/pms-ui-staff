@@ -813,7 +813,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         // Send email AR statement
         $scope.emailArStatement = function() {
             var params = getParamsToSend();
-
+			$scope.printData.is_summary = $scope.filterData.isSummary;
             params.to_address = $scope.filterData.statementEmailAddress;
             $scope.closeDialog();
 

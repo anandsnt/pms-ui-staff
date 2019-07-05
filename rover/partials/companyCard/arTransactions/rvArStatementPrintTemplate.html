@@ -276,7 +276,7 @@
             </tfoot>
         </table>
     </div>
-    <div class="invoice-body" ng-if="printData.is_summary" ng-include="'/assets/partials/common/rvArStatementIsSummaryPrintTemplate.html'">Hi</div>
+    <div class="invoice-body" ng-if="printData.is_summary" ng-include="'/assets/partials/companyCard/arTransactions/rvArStatementIsSummaryPrintTemplate.html'"></div>
     <div class="currency" ng-if="printData.from_date && printData.to_date">
         <p>{{printData.from_date | date:dateFormat}} - {{printData.to_date | date:dateFormat}}</p>
     </div>
