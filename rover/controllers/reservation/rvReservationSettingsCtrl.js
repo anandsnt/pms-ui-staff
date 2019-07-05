@@ -262,7 +262,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         };
 
         $scope.restrictMultipleBookings = function() {
-            return $scope.reservationData.tabs.length === 4 || !!$scope.reservationData.group.id;
+            return (!!$scope.reservationData.reservationId || $scope.reservationData.tabs.length === 4 || !!$scope.reservationData.group.id);
         };
 
         $scope.removeTabFromSidebar = function(tabIndex) {

@@ -121,7 +121,9 @@ angular.module('sntRover').controller('guestCardSearchController',
 
         // Click on add new btn navigates to an empty guest card page
         $scope.addNewCard = function() {
-            $state.go('rover.guest.details');
+            $state.go('rover.guest.details', {
+                isFromMenuGuest: true
+            });
         }; 
 
         /**
@@ -284,7 +286,8 @@ angular.module('sntRover').controller('guestCardSearchController',
                 guestId: guestId,
                 query: $scope.textInQueryBox,
                 selectedIds: $scope.viewState.selectedCardsForMerge || [],
-                isMergeViewSelected: !$scope.viewState.isViewSelected				
+                isMergeViewSelected: !$scope.viewState.isViewSelected,
+                isFromMenuGuest: true			
             });
         };
 
