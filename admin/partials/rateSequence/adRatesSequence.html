@@ -59,7 +59,7 @@
                     </div>
                     <div class="entry full-width">
                         <div class="boxes">
-                            <label class="radio with-arrow" ng-repeat="option in sequenceState.availableOptions.rate_manager" ng-click="changePreference('room_rates',option)">
+                            <label class="radio with-arrow" ng-repeat="option in sequenceState.availableOptions.rate_manager" ng-click="changePreference('rate_manager',option)">
                                 <span class="icon-form icon-radio" ng-class="{'checked': sequenceState.selectedOptions.rate_manager.id == option.id}"></span>
                                 {{option.description}}
                             </label>
