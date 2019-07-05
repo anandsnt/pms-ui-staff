@@ -26,6 +26,7 @@ function($q, ADBaseWebSrvV2) {
 		}, function(errorMessage) {
 			deferred.reject(errorMessage);
 		});
+		
 		return deferred.promise;
 	};
 	/*
