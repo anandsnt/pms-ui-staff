@@ -11,12 +11,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVContactInfoSrv',
   'RVSearchSrv',
   'idTypesList',
+  'genderTypesList',
   'rvPermissionSrv',
   'RVGuestCardsSrv',
   '$timeout',
   '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList, genderTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -290,9 +291,10 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * Pouplate admin settings for guest fields
          */
         var populateContactInfo = function () {
-            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
                 successCallBack: function(data) {
-                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
+                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypes;
                 },
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -323,6 +325,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
             $scope.countries = countries;
             $scope.idTypeList = idTypesList;
+            $scope.guestCardData.contactInfo.genderTypeList = genderTypesList;
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,
