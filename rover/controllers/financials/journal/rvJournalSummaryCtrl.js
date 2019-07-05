@@ -91,11 +91,14 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 		};
 
         var params = {
-            "date": $scope.data.summaryDate
+            "date": $scope.data.summaryDate,
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query,
+            "is_summary": $scope.data.isExpandedView
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
-    };
+    };    
 
     // To handle date updation on summary tab
     $scope.addListener('summaryDateChanged', function() {
@@ -139,7 +142,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
                 "per_page": $scope.perPage,
-                "type": balance_type
+                "type": balance_type,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query,
+                "is_summary": $scope.data.isExpandedView
             };
 
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);

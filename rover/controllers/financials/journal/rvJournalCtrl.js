@@ -86,7 +86,6 @@ sntRover.controller('RVJournalController',
     $scope.clickedSummaryDate = function() {
         popupCalendar('SUMMARY');
     };
-
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
@@ -96,6 +95,10 @@ sntRover.controller('RVJournalController',
                 $scope.clickedSelectButton();
             }
         });
+    };
+
+    $scope.clickedJournalToggle = function () {
+        $scope.data.isExpandedView = !$scope.data.isExpandedView;
     };
 
     // To toggle revenue filter box.
@@ -354,10 +357,16 @@ sntRover.controller('RVJournalController',
     };
 
     var init = function() {
-        var options = {
-            params: params,
-            successCallBack: successCallBackOfGetFilterData
-        };
+        $scope.data.isExpandedView = false;
+        $scope.data.filterId = '';
+
+        var successCallBackOfGetFilterData = function(response) {
+                $scope.data.searchFilterOptions = response.filters;
+                $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+            },
+            options = {
+                successCallBack: successCallBackOfGetFilterData
+            };
 
         $scope.callAPI(RVJournalSrv.getFilterData, options); 
     };

@@ -71,7 +71,7 @@ angular.module('sntRover').service('RVJournalSrv',
      */
 	that.getFilterData = function () {
 		var deferred = $q.defer(),
-			url = "/admin/departments.json";
+			url = "/api/financial_transactions/journal_filter_options";
 
 		sntBaseWebSrv.getJSON(url).then(function (data) {
 
@@ -88,9 +88,9 @@ angular.module('sntRover').service('RVJournalSrv',
      */
     that.fetchSummaryData = function (params) {
     	var deferred = $q.defer(),
-        	url = "api/financial_transactions/daily_balance_details?date=" + params.date;
+        	url = "api/financial_transactions/daily_balance_details";
 
-        BaseWebSrvV2.getJSON(url).then(function (data) {
+        BaseWebSrvV2.getJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);
