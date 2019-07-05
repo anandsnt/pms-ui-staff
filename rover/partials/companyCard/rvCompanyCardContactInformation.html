@@ -101,7 +101,7 @@
                     <span translate>COMMISSION_IS_PREPAID</span>
                 </label>
             </div>
-            <div ng-if="displayShowProperties && account_type == 'TRAVELAGENT' && contactInformation.is_global_enabled && !isUpdateEnabledForTravelAgent()" class="entry only-button">
+            <div ng-if="shouldShowPropertiesButton()" class="entry only-button">
                 <button type="button" class="button brand-colors" ng-click="openPropertiesPopup()" translate>SHOW_PROPERTIES</button> <!-- Open {pms-html/rover/modals/commissions-properties.html} -->
             </div>
 
