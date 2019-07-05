@@ -233,7 +233,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					promotion_id: ($scope.stateCheck.activeView == 'RECOMMENDED') ? $scope.reservationData.promotionId : null,
 					override_restrictions: $scope.stateCheck.showClosedRates,
 					adults: occupancies[0] ? occupancies[0].adults : 1,
-					children: occupancies[0] ? occupancies[0].children: '',
+					children: occupancies[0] ? occupancies[0].children : '',
 					include_expired_promotions: !!$scope.reservationData.promotionId && $scope.stateCheck.showClosedRates,
 					per_page: $scope.stateCheck.pagination.rate.roomsList.perPage,
 					page: page,
@@ -688,7 +688,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 
 				// smart switch btw edit reservation flow and create reservation flow
-				if (!!$state.params && $state.params.isFromChangeStayDates) {
+                if ($scope.stateCheck.isFromNightlyDiary) {
+                    $rootScope.setPrevState = {
+                        title: 'ROOM DIARY',
+                        name: 'rover.nightlyDiary'
+                    };
+                }
+				else if (!!$state.params && $state.params.isFromChangeStayDates) {
 					$rootScope.setPrevState = {
 						title: 'Stay Dates',
 						name: 'rover.reservation.staycard.changestaydates'
@@ -703,12 +709,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							id: $scope.reservationData.reservationId,
 							isrefresh: true
 						}
-					};
-				} 
-				else if ($scope.stateCheck.isFromNightlyDiary) {
-					$rootScope.setPrevState = {
-						title: 'ROOM DIARY',
-						name: 'rover.nightlyDiary'
 					};
 				}
 				else {
