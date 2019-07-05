@@ -1,0 +1,12 @@
+
+<div class="select">
+    <label for="journal-search-for">Search For</label>
+    <select id="journal-search-for" ng-model="data.filterId">
+        <option value="{{filterData.id}}" ng-repeat="filterData in data.searchFilterOptions" ng-selected="{{data.filterId === filterData.id}}">{{filterData.name}}</option>
+    </select>
+</div>
+<button id="journal-clear-query" class="clear-query">
+    <span class="icons icon-clear-search">Clear query</span>
+</button>
+<button type="submit" name="submit" class="icons icon-search">Search</button>
+<input id="journal-query" ng-model="data.query" class="query" placeholder="Search By Guest or Account Name" type="search" autocomplete="off">

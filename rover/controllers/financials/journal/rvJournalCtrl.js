@@ -1,4 +1,8 @@
-sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
+sntRover.controller('RVJournalController', 
+    ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 
+    'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', 
+    function($scope, $filter, $stateParams, ngDialog, $rootScope, 
+        RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -18,6 +22,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
+    $scope.data.isExpandedView = false;
 
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
@@ -81,7 +86,6 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.clickedSummaryDate = function() {
         popupCalendar('SUMMARY');
     };
-
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
@@ -91,6 +95,10 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
                 $scope.clickedSelectButton();
             }
         });
+    };
+
+    $scope.clickedJournalToggle = function () {
+        $scope.data.isExpandedView = !$scope.data.isExpandedView;
     };
 
     // To toggle revenue filter box.
@@ -322,6 +330,12 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
 
         return returnData;
     };
+    /* 
+     * Toggle Action 
+     */
+    $scope.toggleCollapsedOrExpandedSummary = function() {
+        $scope.data.isExpandedView = !$scope.data.isExpandedView;
+    }; 
 
     /* get the time string from the date-time string */
 
@@ -341,5 +355,22 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         }
 
     };
+
+    var init = function() {
+        $scope.data.isExpandedView = false;
+        $scope.data.filterId = '';
+
+        var successCallBackOfGetFilterData = function(response) {
+                $scope.data.searchFilterOptions = response.filters;
+                $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+            },
+            options = {
+                successCallBack: successCallBackOfGetFilterData
+            };
+
+        $scope.callAPI(RVJournalSrv.getFilterData, options); 
+    };
+
+    init();
 
 }]);
