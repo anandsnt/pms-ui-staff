@@ -517,15 +517,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.axbase3000', {
-        templateUrl: '/assets/partials/interfaces/axbase3000/adAXbaseSetUp.html',
+        templateUrl: '/assets/partials/interfaces/axbase3000/adAxbase.html',
         controller: 'adAXbaseCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'axbase3000';
         }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('axbase3000');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('axbase3000');
             }]
         }
     });
