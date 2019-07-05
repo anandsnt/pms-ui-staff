@@ -120,7 +120,9 @@ angular.module('stayCardModule', [])
                 is_member: '',
                 guestId: '',
                 selectedRoomId: null,
-                selectedRoomNo: null
+                selectedRoomNo: null,
+                arrivalTime: null,
+                departureTime: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
