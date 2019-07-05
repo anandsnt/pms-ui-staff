@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         
-                        <div ng-if="singleAddon.is_common_area" class="entry">
+                        <div ng-if="singleAddon.is_common_area && !singleAddon.is_allowance" class="entry">
                             <ad-textbox inputtype="number" styleclass="full-width" value="singleAddon.pass_level_no" name="pass_level_no" id="pass_level_no" label="{{'PASS_LEVEL_NO' | translate}}" maxlength="2" required="no"></ad-textbox>
                         </div>
 
