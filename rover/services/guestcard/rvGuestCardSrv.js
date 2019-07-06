@@ -1,7 +1,8 @@
 angular.module('sntRover').service('RVGuestCardsSrv', [
     '$q',
     'rvBaseWebSrvV2',
-    function ($q, RVBaseWebSrvV2) {
+    'sntBaseWebSrv',
+    function ($q, RVBaseWebSrvV2, sntBaseWebSrv) {
 
         var guestFieldData = {},
             service = this;
@@ -36,6 +37,30 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             return deferred.promise;
         };
 
+        this.fetchGuestAdminSettingsAndGender = function (param) {
+
+            var deferred = $q.defer(),
+                data = {};
+
+            $q.when().then(function() {
+                return service.fetchGuestAdminSettings(param).then(function(response) {
+                    data.guestAdminSettings = response;
+                });
+            })
+            .then(function() {                 
+                return service.fetchGenderTypes().then(function(response) {
+                    data.genderTypes = response;
+                });
+            })            
+            .then(function() {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
         /**
          * Fetch guest details
          * @param {object} param request object
@@ -50,12 +75,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 return service.fetchGuestDetails(param).then(function(response) {
                     data = response;
                 });
-            })
-            .then(function() {                 
-                return service.fetchGuestAdminSettings().then(function(response) {
-                    data.guestAdminSettings = response;
-                });
-            })            
+            })       
             .then(function() {
                 deferred.resolve(data);
             }, function(errorMessage) {
@@ -184,6 +204,20 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 deferred.reject(data);
             });
             return deferred.promise; 
+        };
+        
+        this.fetchGenderTypes = function () {
+            var deffered = $q.defer(),
+               url = 'api/guest_details/gender_types';
+
+            sntBaseWebSrv.getJSON(url)
+             .then( function (data) {
+                deffered.resolve( data.gender_list);
+             }, function (error) {
+                deffered.resolve( error);
+             });
+
+             return deffered.promise;
         };
 
     }

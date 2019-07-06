@@ -106,6 +106,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 guestInfo;
 
             $scope.idTypeList = data.id_type_list;
+            $scope.guestCardData.contactInfo.genderTypeList = data.gender_list;
             // No more future reservations returned with this API call
             /**
              *    CICO-9169

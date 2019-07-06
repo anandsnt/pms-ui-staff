@@ -198,7 +198,6 @@
                             <div class="entry">
                                     <label for="charge-group-id">
                                         {{'SPILLAGE_REFUND_LABEL' | translate}}
-                                        <strong>*</strong>
                                     </label>
                                     <div class="select">
                                         <select name="charge-group-id" id="charge-group-id" ng-model="singleAddon.spillage_refund_percentage" ng-options="option for option in allowanceRefundOptions" ></select>
@@ -255,7 +254,7 @@
                             </div>
                         </div>
                         
-                        <div ng-if="singleAddon.is_common_area" class="entry">
+                        <div ng-if="singleAddon.is_common_area && !singleAddon.is_allowance" class="entry">
                             <ad-textbox inputtype="number" styleclass="full-width" value="singleAddon.pass_level_no" name="pass_level_no" id="pass_level_no" label="{{'PASS_LEVEL_NO' | translate}}" maxlength="2" required="no"></ad-textbox>
                         </div>
 

@@ -1,50 +1,90 @@
 <section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
     <div>
-        <header class="content-title float">
-            <h2 translate>RATE_SEQUENCE</h2>
-            <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <div class="actions float pull-right">
-                <button type="button" class="button add-data-inline toggle-tab green" ng-click="goToCustomRateSequence()">
-                    CREATE RATE SEQUENCE
-                </button>
-            </div>
-        </header>
+
+
+
+    <header class="content-title float">
+        <h2 translate>RATE_SEQUENCE</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab green" ng-click="goToCustomRateSequence()" translate>
+                CREATE_CUSTOM_SEQUENCE
+            </button>
+        </div>
+    </header>
+
+
+
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <form class="form float">
-                <fieldset class="holder left">
-                  <div class="form-title full-width">
-                      <h3><span translate>ROOM_AND_RATES_SCREEN</span></h3>
-                  </div>
-                    <div ng-repeat="option in sequenceState.availableOptions.room_rate" class="entry radio-check full-width" ng-click="changePreference('room_rates',option)">
-                        <label class="checkbox" ng-class="{'checked': isChecked}">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked': sequenceState.selectedOptions.room_rates.id == option.id}"></span> {{option.description}}
-                        </label>
+                <div class="holder left">
+                    <div class="form-title">
+                        <h3>
+                            <span>Rover</span>
+                            {{'ROOM_AND_RATES_SCREEN' | translate}}</span>
+                        </h3>
                     </div>
-                </fieldset>
+                    <div class="entry full-width">
+                        <div class="boxes">
+                            <label class="radio with-arrow" ng-repeat="option in sequenceState.availableOptions.room_rate" ng-click="changePreference('room_rates',option)">
+                                <span class="icon-form icon-radio" ng-class="{'checked': sequenceState.selectedOptions.room_rates.id == option.id}"></span>
+                                {{option.description}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder">
+                    <div class="form-title">
+                        <h3>
+                            <span>Admin</span>
+                            Rate Setup
+                        </h3>
+                    </div>
+                    <div class="entry full-width">
+                        <div class="boxes">
+                            <label class="radio with-arrow" ng-repeat="option in sequenceState.availableOptions.admin_dashboard" ng-click="changePreference('admin_dashboard',option)">
+                                <span class="icon-form icon-radio" ng-class="{'checked': sequenceState.selectedOptions.admin_dashboard.id == option.id}"></span>
+                                {{option.description}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="holder left">
+                    <div class="form-title">
+                        <h3>
+                            <span>Rover</span>
+                            {{'RATE_MANAGER' | translate}}
+                        </h3>
+                    </div>
+                    <div class="entry full-width">
+                        <div class="boxes">
+                            <label class="radio with-arrow" ng-repeat="option in sequenceState.availableOptions.rate_manager" ng-click="changePreference('rate_manager',option)">
+                                <span class="icon-form icon-radio" ng-class="{'checked': sequenceState.selectedOptions.rate_manager.id == option.id}"></span>
+                                {{option.description}}
+                            </label>
 
-                <fieldset class="holder right">
-                  <div class="form-title full-width">
-                      <h3><span translate>RATE_MANAGER</span></h3>
-                  </div>
-                    <div ng-repeat="option in sequenceState.availableOptions.rate_manager" class="entry radio-check full-width" ng-click="changePreference('rate_manager',option)">
-                        <label class="checkbox" ng-class="{'checked': isChecked}">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked': sequenceState.selectedOptions.rate_manager.id == option.id}"></span> {{option.description}}
-                        </label>
-                    </div>
-                </fieldset>
 
-                <fieldset class="holder left">
-                  <div class="form-title full-width">
-                      <h3><span translate>DASHBOARD</span></h3>
-                  </div>
-                    <div ng-repeat="option in sequenceState.availableOptions.dashboard" class="entry radio-check full-width" ng-click="changePreference('dashboard',option)">
-                        <label class="checkbox" ng-class="{'checked': isChecked}">
-                            <span class="icon-form icon-checkbox" ng-class="{'checked': sequenceState.selectedOptions.dashboard.id == option.id}"></span> {{option.description}}
-                        </label>
+                        </div>
                     </div>
-                    <custom-rate-search show-search="showSearch" rate-code="sequenceState.selectedOptions.dashboard_rate.id" rate-name="sequenceState.selectedOptions.dashboard_rate.description"></custom-rate-search>
-                </fieldset>
+                </div>
+                <div class="holder">
+                    <div class="form-title">
+                        <h3>
+                            <span>Rover</span>
+                            {{'DASHBOARD' | translate}}
+                        </h3>
+                    </div>
+                    <div class="entry full-width">
+                        <div class="boxes">
+                            <label ng-repeat="option in sequenceState.availableOptions.dashboard" class="radio bold" ng-click="changePreference('dashboard',option)">
+                                <span class="icon-form icon-radio" ng-class="{'checked': sequenceState.selectedOptions.dashboard.id == option.id}"></span>
+                                {{option.description}}
+                            </label>
+                            <custom-rate-search show-search="showSearch" rate-code="sequenceState.selectedOptions.dashboard_rate.id" rate-name="sequenceState.selectedOptions.dashboard_rate.description"></custom-rate-search>
+                        </div>
+                    </div>
+                </div>
                 <div class="actions float">
                     <button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()" translate>
                         CANCEL
