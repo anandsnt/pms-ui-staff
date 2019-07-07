@@ -456,7 +456,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     });
                 }
             });
-            console.log("$scope.rateData.tasks", $scope.rateData.tasks);
         };
 
         /*  
