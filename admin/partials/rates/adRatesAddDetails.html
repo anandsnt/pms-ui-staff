@@ -35,7 +35,7 @@
                         <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Nightly</span>
                     </div>
                 </div>
-                <ad-toggle-button is-checked="rateData.is_day_use" label="DAY USE"></ad-toggle-button>
+                <ad-toggle-button is-hide="rateData.is_hourly_rate" is-disabled="is_edit" is-checked="rateData.is_day_use" label="DAY USE"></ad-toggle-button>
             </div>
             <div class="entry margin">
                 <label>Charge code <strong>*</strong> </label>
@@ -75,7 +75,7 @@
                     <div class="full-width">
                         <div class="entry margin" ng-class="{'overlay': is_edit}">
                             <div class="select white">
-                                <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                                <select class="placeholder" ng-model="rateData.based_on.id" ng-change="basedOnRateChanged()" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
                                 </select>
                             </div>
