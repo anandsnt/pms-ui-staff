@@ -146,6 +146,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.allotment.id ||
 					$stateParams.promotion_id ||
 					$scope.reservationData.promotionId ||
+					$scope.reservationData.numNights === 0 ||
 					$stateParams.is_member;
 			},
 			isMembershipValid = function() {
@@ -416,6 +417,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.promotion_code = $stateParams.promotion_code;
 					payLoad.is_member = !!$scope.reservationData.member.isSelected || $stateParams.is_member;
 					payLoad.promotion_id = $scope.reservationData.promotionId;
+					payLoad.is_zero_night = $scope.reservationData.numNights === 0;
 				}
 				payLoad.is_promotion_selected = ($scope.reservationData.promotionId) ? true : false;
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
@@ -746,6 +748,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                     rateList.push(rate.rate_id ? rate.rate_id : rate.id);
                 });
                 params.rate_ids = rateList;
+                params.is_zero_night = $scope.reservationData.numNights === 0;
                 RVReservationBaseSearchSrv.fetchRatesDetails(params).then(function() {
                     $scope.reservationData.ratesMeta = {};
                     initialize();
@@ -807,7 +810,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					 || $stateParams.is_member || $stateParams.promotion_id) {
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
-				if ($scope.stateCheck.isFromNightlyDiary) {
+				if ($scope.reservationData.numNights === 0) {
+					$scope.stateCheck.activeView = 'RECOMMENDED';
+					$scope.setActiveView('RECOMMENDED');
+				}
+				else if ($scope.stateCheck.isFromNightlyDiary) {
 					$scope.stateCheck.activeView = 'ROOM_TYPE';
 					$scope.setActiveView('ROOM_TYPE');
 				}
