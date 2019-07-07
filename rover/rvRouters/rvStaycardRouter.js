@@ -122,7 +122,8 @@ angular.module('stayCardModule', [])
                 selectedRoomId: null,
                 selectedRoomNo: null,
                 arrivalTime: null,
-                departureTime: null
+                departureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',

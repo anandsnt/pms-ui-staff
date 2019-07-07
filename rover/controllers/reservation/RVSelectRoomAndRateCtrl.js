@@ -74,6 +74,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.reservationData.tabs[0].checkinTime = $stateParams.arrivalTime;
 			$scope.reservationData.tabs[0].checkoutTime = $stateParams.departureTime;
 			$scope.reservationData.tabs[0].roomCount = 1;
+			$scope.reservationData.numNights = $stateParams.numNights;
 
 			/*  The following method helps to initiate the staydates object across the period of
 	         *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
