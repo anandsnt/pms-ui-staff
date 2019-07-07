@@ -551,7 +551,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isSuppressed: isSuppressed,
 							isMember: isMember,
 							isPromotion: isPromotion,
-							isDefaultRoomTypeSuiteUnavailable: $scope.reservationData.roomsMeta[rate.room_type_id].is_suite && (rate.availability <= 0 || rate.availability <  $scope.reservationData.rooms.length)
+							isDefaultRoomTypeSuiteUnavailable: $scope.reservationData.roomsMeta[rate.room_type_id].is_suite && (rate.availability <= 0 || rate.availability <  $scope.reservationData.rooms.length),
+							isDayUse: rate.is_day_use && $scope.reservationData.numNights === 0
 						};
 
 					rateInfo.rooms.push({
