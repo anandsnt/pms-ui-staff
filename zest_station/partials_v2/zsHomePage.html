@@ -45,25 +45,28 @@
                 </ul> 
             </nav>
         </div>
-        <div id="actions" class="languages align-center" ng-if="zestStationData.zest_lang.enabled && shouldShowLanguageSelection()">
-            <button type="button" class="button language" ng-hide="!language.active" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
-                {{ language.foreign_label ? language.foreign_label : language.name }}
-            </button>
-            <!-- <p class="selected-language" ng-show="shouldShowLanguageSelection()">
-                    <img ng-src="{{ selectedLanguage.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
-                    {{selectedLanguage.foreign_label}}
-                </p>
+        <div id="actions" class="languages-list" ng-if="zestStationData.zest_lang.enabled && shouldShowLanguageSelection()">
+            <!-- Active Language -->
+            <p class="selected-language">
+                <img ng-if="selectedLanguage.icon" src="{{ selectedLanguage.icon }}" class="icons icon-flag" alt=""></img>
+                {{ selectedLanguage.foreign_label ? selectedLanguage.foreign_label : selectedLanguage.name }}
+            </p>
 
-                <div id="language-options" ng-show="shouldShowLanguageSelection()" class="scrollable" ng-iscroll="language-list" ng-iscroll-delay="100"> 
-                    <div class="wrapper" style="width: {{widthForLanguageList();}}">
-                        <button type="button" class="button with-icon" ng-hide="!language.active" touch-press="selectLanguage(language)" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
-                            <img ng-src="{{ language.icon }}" class="icons icon-flag flag-{Country Flag}"></img>
-                            <span class="label-main">{{language.label}}</span>
-                            <span class="label-secondary">{{language.foreign_label}}</span>
-                        </button>
-                    </div>
-                </div> -->
-        </div>
+            <!-- Other Languages -->
+            <div id="language-options" ng-iscroll="language-list" ng-iscroll-delay="100" class="scrollable" > <!-- Add HORIZONTAL ng-scroll here -->
+                <div class="wrapper" style="width: {{ languageListWidth }};">
+                    <button type="button" class="button with-icon"
+                     ng-repeat="language in languages"
+                     ng-hide="!language.active || language == selectedLanguage"
+                    ng-class="{'no-flag': !language.icon}" id="language-{{$index}}" touch-press="selectLanguage(language)">
+                        <img ng-if="language.icon" ng-src="{{ language.icon }}" class="icons icon-flag"></img>
+                        <span class="label-main">{{language.name}}</span>
+                        <span class="label-secondary">{{language.foreign_label}}</span>
+                    </button>
+                </div>
+            </div>
+
+            </div>
         <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
     </section>
     <!--PopUp For External webPage-->

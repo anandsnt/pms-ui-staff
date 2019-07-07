@@ -383,14 +383,30 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADRatesAddonsCtrl',
         url: '/rates_addons',
         resolve: {
+            addonUpsellSettings: function (ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.ratesAddonDetails', {
+        templateUrl: '/assets/partials/rates/adNewAddon.html',
+        controller: 'ADRatesAddonDetailsCtrl',
+        url: '/rates_addons/:addonId',
+        resolve: {
             activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             },
             availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             },
-            addonUpsellSettings: function (ADUpsellAddonSrv) {
-                return ADUpsellAddonSrv.getSettings();
+            singleAddon: function (ADRatesAddonsSrv, $stateParams) {
+                if ($stateParams.addonId === "") {
+                    return {};
+                }
+                var addon = ADRatesAddonsSrv.fetchSingle($stateParams.addonId);
+                addon.id = $stateParams.addonId;
+                return addon;
             }
         }
     });
@@ -399,6 +415,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         templateUrl: '/assets/partials/rateSequence/adRatesSequence.html',
         controller: 'ADRatesSequenceCtrl',
         url: '/rates_sequence'
+    });
+
+    $stateProvider.state('admin.customRatesSequence', {
+        templateUrl: '/assets/partials/customRateSequence/adCustomRatesSequence.html',
+        controller: 'ADCustomRatesSequenceCtrl',
+        url: '/custom_rates_sequence'
     });
 
     $stateProvider.state('admin.promotions', {
@@ -942,6 +964,23 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         templateUrl: '/assets/partials/guestDataRemoval/adGuestDataRemoval.html',
         controller: 'ADGuestDataRemovalCtrl',
         url: '/hkSections'
+    });
+
+    $stateProvider.state('admin.featureToggles', {
+        templateUrl: '/assets/partials/featureToggles/adFeaturesList.html',
+        controller: 'ADFeatureToggleListCtrl',
+        url: '/features'
+    });
+
+    $stateProvider.state('admin.configFeature', {
+        templateUrl: '/assets/partials/featureToggles/adFeaturesConfig.html',
+        controller: 'ADFeatureToggleConfigCtrl',
+        url: '/features/:feature',
+        resolve: {
+            feature: ['ADFeatureToggleSrv', '$stateParams', function (ADFeatureToggleSrv, $stateParams) {
+                return ADFeatureToggleSrv.show($stateParams['feature']);
+            }]
+        }
     });
 
     $stateProvider.state('admin.idCollection', {

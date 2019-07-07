@@ -289,15 +289,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 					postData.tax_details.push(taxDetail);
 				});
 				postData.tax_total = $scope.reservationData.totalTax;
-
-
-				postData.emails = [];
+				
 				if (!!$scope.reservationData.guest.email && $scope.otherData.isGuestPrimaryEmailChecked) {
-					postData.emails.push($scope.reservationData.guest.email);
+					postData.primary_email = $scope.reservationData.guest.email;
 				}
 
 				if (!!$scope.otherData.additionalEmail && $scope.otherData.isGuestAdditionalEmailChecked) {
-					postData.emails.push($scope.otherData.additionalEmail);
+					postData.booker_email = $scope.otherData.additionalEmail;
 				}
 				if ($scope.reservationData.isHourly) {
 					postData.reservation_ids = [];

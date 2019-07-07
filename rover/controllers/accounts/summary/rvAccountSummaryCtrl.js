@@ -274,7 +274,7 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		// CICO-24928
 		$scope.clickedOnNote = function(note) {
 	      $scope.accountSummaryData.editingNote  = note;
-	      $scope.accountSummaryData.newNote = note.description;
+	      $scope.accountSummaryData.newNote = note.description.replace(new RegExp('<br/>', 'g'), '\n');
     	};
     	// CICO-24928
 	    $scope.cancelEditModeAccountNote = function() {

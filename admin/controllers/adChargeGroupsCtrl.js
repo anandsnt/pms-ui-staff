@@ -21,6 +21,9 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
     * @paran {string} id - charge groups id
     */
 	$scope.editItem = function(index)	{
+		if ($scope.data.charge_groups[index].name === 'Allowance') {
+			return;
+		}
 		$scope.currentClickedElement = index;
 		$scope.preveousItem = $scope.data.charge_groups[index].name;
 	};
@@ -85,15 +88,18 @@ admin.controller('ADChargeGroupsCtrl', ['$scope', 'ADChargeGroupsSrv', '$anchorS
     * To handle delete button in edit box and list view.
     */
 	$scope.clickedDelete = function(id) {
+		var chargeGroupToDelete = _.find($scope.data.charge_groups, {
+	        value: id
+	    });
+	    
+	    if (chargeGroupToDelete.name === "Allowance") {
+	    	return;
+	    }
 		var successDeletionCallback = function() {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.charge_groups, function(item, index) {
-	 			if (item.value === id) {
-	 				$scope.data.charge_groups.splice(index, 1);
-	 			}
- 			});
+			$scope.data.charge_groups.splice($scope.data.charge_groups.indexOf(chargeGroupToDelete), 1);
 		};
 
 		$scope.invokeApi(ADChargeGroupsSrv.deleteItem, {'value': id }, successDeletionCallback);

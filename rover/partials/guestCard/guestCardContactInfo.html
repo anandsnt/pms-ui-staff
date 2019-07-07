@@ -8,14 +8,15 @@
 			<rv-textbox value="guestCardData.contactInfo.first_name" label = "First name" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.first_name, 'margin')}}" ></rv-textbox>
 			<rv-textbox value="guestCardData.contactInfo.last_name" label = "Last Name" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.last_name, '')}}"></rv-textbox>
 			<rv-textbox value="guestCardData.contactInfo.works_at" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.works_at, 'margin')}}"  label = "Works at" ></rv-textbox>
-			<rv-textbox value="guestCardData.contactInfo.job_title" label = "Job title" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.job_title, '')}}" ></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.job_title.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.job_title.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.job_title" label = "Job title" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.job_title, '')}}" ></rv-textbox>
 			<rv-textbox value="guestCardData.contactInfo.tax_number" label = "Tax Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.tax_number, 'margin')}}"></rv-textbox>
-			<div class="entry has-datepicker" ng-class="{'no-print': !birthdayText}">
-				<label for="birthday"> Birthday </label>
+			<div ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_visible" class="entry has-datepicker" ng-class="{'no-print': !birthdayText}">
+				<label for="birthday"> Birthday <strong ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation">*</strong></label>
 				<input type="text" ng-model="birthdayText" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
 			</div>
-			<div class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.nationality_id}">
-				<label for="country">Nationality</label>
+
+			<div ng-if="guestCardData.contactInfo.guestAdminSettings.nationality.is_visible" class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.nationality_id}">
+				<label for="country">Nationality<strong ng-if="guestCardData.contactInfo.guestAdminSettings.nationality.is_mandatory_on_guest_card_creation">*</strong></label>
 				<div form="contact-info" class="select">
 					<select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id">
 						<option style="display:none" value=""></option>
@@ -43,22 +44,29 @@
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_father_name_visible" value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.father_name.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.father_name.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_mother_name_visible" value="guestCardData.contactInfo.mother_name" label = "Name of Mother" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mother_name, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.mother_name.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.mother_name.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.mother_name" label = "Name of Mother" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.mother_name, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_birth_place_visible" value="guestCardData.contactInfo.birth_place" label = "Place of Birth" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.birth_place, guestCardData.contactInfo.is_father_name_visible && guestCardData.contactInfo.is_mother_name_visible ? 'margin' : '')}}"></rv-textbox>
+			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.birth_place.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.birth_place.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.birth_place" label = "Place of Birth" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.birth_place, guestCardData.contactInfo.is_father_name_visible && guestCardData.contactInfo.is_mother_name_visible ? 'margin' : '')}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_gender_visible" value="guestCardData.contactInfo.gender" label = "Gender" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.gender, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')}}"></rv-textbox>
+			<div class="entry" ng-if="guestCardData.contactInfo.guestAdminSettings.gender.is_visible" ng-class="getStyleClassForPrint(guestCardData.contactInfo.genderTypeList, guestCardData.contactInfo.is_father_name_visible ? '' : 'margin')">
+				<label for="country">Gender</label>
+				<div form="contact-info" class="select">
+					<select iscroll-stop-propagation ng-options="genderType.id as genderType.value for genderType in guestCardData.contactInfo.genderTypeList" ng-model="guestCardData.contactInfo.gender_id" required ="{{guestCardData.contactInfo.guestAdminSettings.gender.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}">
+						<option style="display:none" value="genderType.id"></option>
+					</select>
+				</div>
+			</div>
+			
+			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.home_town.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.home_town.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.home_town" label = "Home Town" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.home_town, getDefaultClass('home_town'))}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_home_town_visible" value="guestCardData.contactInfo.home_town" label = "Home Town" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.home_town, getDefaultClass('home_town'))}}"></rv-textbox>
+			<rv-textbox required ="{{guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" ng-if="guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_visible" value="guestCardData.contactInfo.place_of_residence" label = "Place Of Residence" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.place_of_residence, getDefaultClass('place_of_residence'))}}"></rv-textbox>		
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_place_of_residence_visible" value="guestCardData.contactInfo.place_of_residence" label = "Place Of Residence" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.place_of_residence, getDefaultClass('place_of_residence'))}}"></rv-textbox>		
+			<rv-textbox required ="{{guestCardData.contactInfo.guestAdminSettings.registration_number.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.vehicle_registration_number" ng-if="guestCardData.contactInfo.guestAdminSettings.registration_number.is_visible" value="guestCardData.contactInfo.vehicle_registration_number" label = "Vehicle Registration Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.vehicle_registration_number, getDefaultClass('vehicle_registration_number'))}}"></rv-textbox>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_registration_number_visible" value="guestCardData.contactInfo.vehicle_registration_number" label = "Vehicle Registration Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.vehicle_registration_number, getDefaultClass('vehicle_registration_number'))}}"></rv-textbox>
-
-			<div class="entry" ng-class="getDefaultClass('country_code')" ng-if="guestCardData.contactInfo.is_vehicle_country_mark_visible">
-				<label for="vehicle-country-mark">Vehicle Country Mark</label>
+			<div class="entry" ng-class="getDefaultClass('country_code')" ng-if="guestCardData.contactInfo.guestAdminSettings.vehicle_country_mark.is_visible">
+				<label for="vehicle-country-mark">Vehicle Country Mark<strong ng-if="guestCardData.contactInfo.guestAdminSettings.vehicle_country_mark.is_mandatory_on_guest_card_creation">*</strong></label>
 				<div class="select">
 					<select iscroll-stop-propagation ng-options="country.code as country.code for country  in countries" ng-model="guestCardData.contactInfo.country_code">
 						<option style="display:none" value=""></option>
@@ -66,7 +74,7 @@
 				</div>
 			</div>
 
-			<rv-textbox ng-if="guestCardData.contactInfo.is_personal_id_no_visible" value="guestCardData.contactInfo.personal_id_no" label = "Personal No." styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.personal_id_no, '')}}"></rv-textbox>		
+			<rv-textbox required ="{{guestCardData.contactInfo.guestAdminSettings.personal_id_no.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}"  ng-if="guestCardData.contactInfo.guestAdminSettings.personal_id_no.is_visible" value="guestCardData.contactInfo.personal_id_no" label = "Personal No." styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.personal_id_no, '')}}"></rv-textbox>		
 			
 		</div> 		
 		<div class="holder right">
