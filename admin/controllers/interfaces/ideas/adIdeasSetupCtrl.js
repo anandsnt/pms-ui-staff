@@ -214,14 +214,13 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
             $scope.config.available_charge_groups = _.difference(allChargeGroups, selectedChargeGroups);
 
             // days_past must be a number
-            // if (config.days_past !== undefined) {
-            //     $scope.config.days_past = parseInt(config.days_past);
-            // }
+            var days_past = config.days_past ? parseInt(config.days_past) : 45;
 
             // days_future must be a number
-            // if (config.days_future !== undefined) {
-            //     $scope.config.days_future = parseInt(config.days_future);
-            // }
+            var days_future = config.days_future ? parseInt(config.days_future) : 365;
+
+            $scope.config.days_past = days_past;
+            $scope.config.days_future = days_future;
 
             // enabled must be boolean.
             if (config.enabled === undefined) {
