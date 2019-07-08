@@ -162,7 +162,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			if (!isNew) {
 				callCompanyCardServices();
 			}
-			$scope.displayShowProperties = !$scope.contactInformation.commission_details.is_global_commission;
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
 		});
 
 		$scope.$on("travelAgentSearchInitiated", function() {

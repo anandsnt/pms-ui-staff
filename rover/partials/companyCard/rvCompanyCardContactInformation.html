@@ -79,7 +79,6 @@
                 </div>
                 <div class="select" ng-show="contactInformation.commission_details.is_on && contactInformation.commission_details.type === 'amount'">
                     <select class="styled"
-                            ng-init="contactInformation.commission_details.commission_type = contactInformation.commission_details.commission_type || 'perStay'"
                             ng-model="contactInformation.commission_details.commission_type" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
                         <option value="perStay" translate>PER_STAY</option>
                         <option value="perNight" translate>PER_NIGHT</option>
@@ -101,7 +100,7 @@
                     <span translate>COMMISSION_IS_PREPAID</span>
                 </label>
             </div>
-            <div ng-if="displayShowProperties && account_type == 'TRAVELAGENT' && contactInformation.is_global_enabled && !isUpdateEnabledForTravelAgent()" class="entry only-button">
+            <div ng-if="shouldShowPropertiesButton()" class="entry only-button">
                 <button type="button" class="button brand-colors" ng-click="openPropertiesPopup()" translate>SHOW_PROPERTIES</button> <!-- Open {pms-html/rover/modals/commissions-properties.html} -->
             </div>
 

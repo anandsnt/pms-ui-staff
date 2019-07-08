@@ -16,13 +16,6 @@ const isRoomAvailable = (roomId, state, type) => {
             canOverbookRoomType     = state.availableSlotsForBookRooms.canOverbookRoomType,
             canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
             overBookingStatusOutput = '';
-        
-        console.log('houseDetails', houseDetails);
-        console.log('roomTypeDetails', roomTypeDetails);
-        console.log('isHouseOverbookable', isHouseOverbookable);
-        console.log('isRoomTypeOverbookable', isRoomTypeOverbookable);
-        console.log('canOverbookHouse', canOverbookHouse);
-        console.log('canOverbookRoomType', canOverbookRoomType);
 
         if (isHouseOverbookable && isRoomTypeOverbookable && canOverBookBoth) {
             overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
@@ -36,9 +29,6 @@ const isRoomAvailable = (roomId, state, type) => {
         else {
             overBookingStatusOutput = 'NO_PERMISSION_TO_OVERBOOK';
         }
-
-        console.log('overBookingStatusOutput', overBookingStatusOutput);
-
         return overBookingStatusOutput;
     };
 
@@ -75,6 +65,12 @@ const isRoomAvailable = (roomId, state, type) => {
                 roomTypeDetails = item;
             }
         });
+
+        roomDetails.fromDate = state.availableSlotsForBookRooms.fromDate;
+        roomDetails.toDate = state.availableSlotsForBookRooms.toDate;
+        roomDetails.nights = state.availableSlotsForBookRooms.nights;
+        roomDetails.arrivalTime = state.availableSlotsForBookRooms.arrivalTime;
+        roomDetails.departureTime = state.availableSlotsForBookRooms.departureTime;
 
         if (diaryMode === 'FULL') {
             bookType = 'BOOK';

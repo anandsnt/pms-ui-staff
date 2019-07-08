@@ -124,15 +124,15 @@
     <span ng-if="data.isShowSummaryTab" ng-show="data.activeTab === 'SUMMARY'" ng-include="'/assets/partials/financials/journal/rvSummary.html'" ng-class="{'no-print' : isDetailsSelected && isPrintClicked}"></span>
 
     <!-- Content SUMMARY PrintView-->
-    <span ng-show="data.activeTab === 'SUMMARY' && isDetailsSelected && isPrintClicked" ng-include="'/assets/partials/financials/journal/rvSummaryDetails.html'"></span>
+    <span ng-if="data.activeTab === 'SUMMARY' && isDetailsSelected && isPrintClicked" ng-include="'/assets/partials/financials/journal/rvSummaryDetails.html'"></span>
 
     <!-- Content REVENUE-->
-    <span ng-show="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></span>
+    <span ng-if="data.activeTab === 'REVENUE'" ng-include="'/assets/partials/financials/journal/rvRevenue.html'"></span>
 
     <!-- Content PAYMENTS-->
-    <span ng-show="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></span>
+    <span ng-if="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></span>
 
     <!-- Content CASHIER-->
-    <span ng-show="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></span>
+    <span ng-if="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></span>
 
 </section>

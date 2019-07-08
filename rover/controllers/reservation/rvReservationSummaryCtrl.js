@@ -702,7 +702,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     $scope.depositData = $scope.reservationData.depositData;
                 }
                 $scope.fetchDemoGraphics();
-            } else {
+            }
+            else {
                 if (!$scope.reservationData.depositData) {
                     $scope.depositData = {};
                     var arrivalRate = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id;
