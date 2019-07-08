@@ -372,6 +372,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 */
 		var saveContactInformation = function(data, hotelInfoChanged) {
 			var dataUpdated = false;
+
 			updatedOtherHotelsInfo = [];
 
 			if (!angular.equals(data, presentContactInfo)) {
@@ -386,6 +387,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
 				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
 
 				if (typeof dataToSend.countries !== 'undefined') {
