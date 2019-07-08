@@ -482,30 +482,43 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 },
                 successCallBack: function(response) {
                     var isRoomTypeSelected = $scope.reservationData.tabs[0].roomTypeId !== '',
-                        avaialbilityData = {};
+                        houseData = response.house_availability,
+                        roomTypeData = response.room_type_availability;
 
                     if (isRoomTypeSelected) {
-                        // Go ahead with room type availablity check.
-                        avaialbilityData = response.room_type_availability;
+                        // Go ahead with house & room type availablity checks.
+                        if ((houseData.unassigned_reservations_present && houseData.house_availability <= 0 ) || 
+                            (roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0)) {
+                            // There are reservations with unassigned Rooms.
+                            // No additional availability exists for the selected dates / times.
+                            showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (roomTypeData.availability > 0 && roomTypeData.unassigned_reservations_present) {
+                            // There are reservations with unassigned rooms.
+                            // You can still proceed, but it might be good to assign those reservations first.
+                            showContinueWithBookPopup(callbackAction);
+                        }
+                        else {
+                            // Directly go to reservation creation flow.
+                            callbackAction();
+                        }
                     }
                     else {
-                        // Go with House level avaialbility checks
-                        avaialbilityData = response.house_availability;
-                    }
-
-                    if (avaialbilityData.unassigned_reservations_present && avaialbilityData.availability <= 0) {
-                        // There are reservations with unassigned Rooms.
-                        // No additional availability exists for the selected dates / times.
-                        showPopupForReservationWithUnassignedRoom();
-                    }
-                    else if (avaialbilityData.unassigned_reservations_present) {
-                        // There are reservations with unassigned rooms.
-                        // You can still proceed, but it might be good to assign those reservations first.
-                        showContinueWithBookPopup(callbackAction);
-                    }
-                    else {
-                        // Directly go to reservation creation flow.
-                        callbackAction();
+                        // Go with House level avaialbility checks only.
+                        if (houseData.unassigned_reservations_present && houseData.house_availability <= 0) {
+                            // There are reservations with unassigned Rooms.
+                            // No additional availability exists for the selected dates / times.
+                            showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (houseData.unassigned_reservations_present) {
+                            // There are reservations with unassigned rooms.
+                            // You can still proceed, but it might be good to assign those reservations first.
+                            showContinueWithBookPopup(callbackAction);
+                        }
+                        else {
+                            // Directly go to reservation creation flow.
+                            callbackAction();
+                        }
                     }
                 }
             }
