@@ -2,7 +2,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
-		$scope.isAddNewCard = ($stateParams.id === "add");	
+		$scope.isAddNewCard = ($stateParams.id === "add");
+
+		// To store changes in other hotels' commissions data
+		var updatedOtherHotelsInfo = [];
 
 		/* Checking permision to show Commission Tab */
 
@@ -618,6 +621,18 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				ngDialog.close();
 			}
 
+			/** Set the other hotels' commission details same as that of current hotel's,
+			 *  when contact information saved with global commission true.
+			 **/
+			if ($scope.contactInformation.commission_details.is_global_commission) {
+				angular.forEach($scope.contactInformation.commission_details.other_hotels_info, function (item) {
+					item.commission_type = $scope.contactInformation.commission_details.commission_type;
+					item.type = $scope.contactInformation.commission_details.type;
+					item.value = $scope.contactInformation.commission_details.value;
+					item.is_prepaid = $scope.contactInformation.commission_details.is_prepaid;
+				});
+			}
+
 			if ($scope.shouldSaveArDataFromPopup) {	
 				$scope.shouldSaveArDataFromPopup = false;	
 				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
@@ -677,13 +692,22 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var saveContactInformation = function(data, hotelInfoChanged) {
 			var dataUpdated = false;
+			updatedOtherHotelsInfo = [];
 
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
+				angular.forEach(data.commission_details.other_hotels_info, function (next) {
+					angular.forEach(presentContactInfo.commission_details.other_hotels_info, function (present) {
+						if ((next.id === present.id) && !_.isMatch(next, present)) {
+							updatedOtherHotelsInfo.push(next);
+						}
+					});
+				});
 			}
 
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
 
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
