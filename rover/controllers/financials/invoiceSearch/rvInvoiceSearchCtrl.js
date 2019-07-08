@@ -266,7 +266,15 @@ sntRover.controller('RVInvoiceSearchController',
 						return copyCount;
 					},
 					printDataFetchSuccess = function(successData) {
-						var copyCount = "";
+						var copyCount = "",
+							arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+							arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
+							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+
+						$scope.shouldShowArInvoiceNumber = true;
+						if (dateDifference < 0) {
+							$scope.shouldShowArInvoiceNumber = false;
+						}
 
 						if (!$scope.invoiceSearchFlags.isClickedReservation) {
 							successData = successData.data;

@@ -364,7 +364,7 @@ angular.module('sntRover')
                 $scope.$emit('TOGGLE_BOOK_AVAILABLE');
             }
         };
-        
+
         $scope.clickedFindRooms = function() {
             $scope.diaryData.isBookRoomViewActive = true;
             // Set nights count.

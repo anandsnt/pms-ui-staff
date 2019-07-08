@@ -1,21 +1,41 @@
-sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state', 'ngDialog', 'RVValidateCheckinSrv',  function($rootScope, $scope, $state, ngDialog, RVValidateCheckinSrv) {
-	BaseCtrl.call(this, $scope);
+sntRover.controller('RVValidateEmailPhoneCtrl', 
+    ['$rootScope', '$scope', '$state', '$timeout', 'ngDialog', 'RVValidateCheckinSrv',
+    function($rootScope, $scope, $state, $timeout, ngDialog, RVValidateCheckinSrv) {
+	BaseCtrl.call(this, $scope);    
 
-	$scope.showEmail = ($scope.guestCardData.contactInfo.email === undefined || $scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
-	$scope.showPhone = ($scope.guestCardData.contactInfo.phone === undefined || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null) ? true : false;
+    $scope.showEmail = ($scope.guestCardData.contactInfo.email === undefined || $scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
+    $scope.showPhone = ($scope.guestCardData.contactInfo.phone === undefined || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null) ? true : false;
     $scope.showMobile = ($scope.guestCardData.contactInfo.mobile === undefined || $scope.guestCardData.contactInfo.mobile === '' || $scope.guestCardData.contactInfo.mobile === null) ? true : false;
     $scope.showNationality = ($scope.guestCardData.contactInfo.nationality_id === undefined || $scope.guestCardData.contactInfo.nationality_id === "" || $scope.guestCardData.contactInfo.nationality_id === null) ? true : false;
-    $scope.showCountry = ($scope.guestCardData.contactInfo.address.country_id === undefined || $scope.guestCardData.contactInfo.address.country_id === "" || $scope.guestCardData.contactInfo.address.country_id === null) ? true : false;
+    $scope.showCountry = (!$scope.guestCardData.contactInfo.address || $scope.guestCardData.contactInfo.address.country_id === undefined || $scope.guestCardData.contactInfo.address.country_id === "" || $scope.guestCardData.contactInfo.address.country_id === null) ? true : false;
+    
     var showNationality = $scope.showNationality,
         showCountry = $scope.showCountry;
 
-	$scope.saveData = {};
-	$scope.saveData.email = "";
-	$scope.saveData.phone = "";
-	$scope.saveData.guest_id = "";
-	$scope.saveData.user_id = "";
-        $scope.putInQueue = false;
+    $scope.saveData = {};
+    $scope.saveData.email = "";
+    $scope.saveData.phone = "";
+    $scope.saveData.guest_id = "";
+    $scope.saveData.user_id = "";
 
+    $scope.putInQueue = false;
+
+    $scope.setScroller('guestCardFields');
+
+    var init = function() {
+            $timeout(function() {
+                $scope.refreshScroller('guestCardFields');
+            }, 1500);
+    };
+
+    $scope.popupCalendar = function() {
+        $scope.datePicker = ngDialog.open({
+            template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
+            controller: 'RVContactInfoDatePickerController',
+            className: 'single-date-picker',
+            scope: $scope
+        });
+    };
 
 	// CICO-13907
 	$scope.hasAnySharerCheckedin = function() {
@@ -78,6 +98,17 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
         if (showCountry) {
             $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
         }
+        $scope.guestCardData.contactInfo.job_title = $scope.saveData.job_title;
+        $scope.guestCardData.contactInfo.father_name = $scope.saveData.father_name;
+        $scope.guestCardData.contactInfo.mother_name = $scope.saveData.mother_name;
+        $scope.guestCardData.contactInfo.birth_place = $scope.saveData.birth_place;
+        $scope.guestCardData.contactInfo.gender = $scope.saveData.gender;
+        $scope.guestCardData.contactInfo.personal_id_no = $scope.saveData.personal_id_no;
+        $scope.guestCardData.contactInfo.vehicle_registration_number = $scope.saveData.vehicle_registration_number;
+        $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
+        $scope.guestCardData.contactInfo.place_of_residence = $scope.saveData.place_of_residence;
+        $scope.guestCardData.contactInfo.country_code = $scope.saveData.country_code;
+        $scope.guestCardData.contactInfo.birth_day = $scope.saveData.birth_day;
 		$scope.$emit('hideLoader');
 		ngDialog.close();
 		$scope.goToNextView();
@@ -181,6 +212,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
 
 	};
 	$scope.submitAndGoToCheckin = function() {
+
         if ($scope.shouldEnableSubmitButton()) {
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
 	        $scope.saveData.user_id = $scope.guestCardData.userId;
@@ -336,4 +368,5 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
         };
         $scope.initAdvQueCheck();
 	$scope.$emit('hideLoader');
+    init();
 }]);
