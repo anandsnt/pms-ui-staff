@@ -3,11 +3,11 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     function($rootScope, $scope, $state, $timeout, ngDialog, RVValidateCheckinSrv) {
 	BaseCtrl.call(this, $scope);    
 
-    $scope.showEmail = ($scope.guestCardData.contactInfo.email === undefined || $scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null) ? true : false;
-    $scope.showPhone = ($scope.guestCardData.contactInfo.phone === undefined || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null) ? true : false;
-    $scope.showMobile = ($scope.guestCardData.contactInfo.mobile === undefined || $scope.guestCardData.contactInfo.mobile === '' || $scope.guestCardData.contactInfo.mobile === null) ? true : false;
-    $scope.showNationality = (($scope.guestCardData.contactInfo.guestAdminSettings.nationality.is_mandatory_on_guest_card_creation || $scope.roverObj.forceNationalityAtCheckin) && ($scope.guestCardData.contactInfo.nationality_id === undefined || $scope.guestCardData.contactInfo.nationality_id === "" || $scope.guestCardData.contactInfo.nationality_id === null)) ? true : false;
-    $scope.showCountry = (!$scope.guestCardData.contactInfo.address || $scope.guestCardData.contactInfo.address.country_id === undefined || $scope.guestCardData.contactInfo.address.country_id === "" || $scope.guestCardData.contactInfo.address.country_id === null) ? true : false;
+    $scope.showEmail = ($scope.guestCardData.contactInfo.email === undefined || $scope.guestCardData.contactInfo.email === '' || $scope.guestCardData.contactInfo.email === null);
+    $scope.showPhone = ($scope.guestCardData.contactInfo.phone === undefined || $scope.guestCardData.contactInfo.phone === '' || $scope.guestCardData.contactInfo.phone === null);
+    $scope.showMobile = ($scope.guestCardData.contactInfo.mobile === undefined || $scope.guestCardData.contactInfo.mobile === '' || $scope.guestCardData.contactInfo.mobile === null);
+    $scope.showNationality = (($scope.guestCardData.contactInfo.guestAdminSettings.nationality.is_mandatory_on_guest_card_creation || $scope.roverObj.forceNationalityAtCheckin) && ($scope.guestCardData.contactInfo.nationality_id === undefined || $scope.guestCardData.contactInfo.nationality_id === "" || $scope.guestCardData.contactInfo.nationality_id === null));
+    $scope.showCountry = (!$scope.guestCardData.contactInfo.address || $scope.guestCardData.contactInfo.address.country_id === undefined || $scope.guestCardData.contactInfo.address.country_id === "" || $scope.guestCardData.contactInfo.address.country_id === null);
     
     var showNationality = $scope.showNationality,
         showCountry = $scope.showCountry;
