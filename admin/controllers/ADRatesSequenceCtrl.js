@@ -25,12 +25,14 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
             availableOptions: {
                 room_rate: [],
                 rate_manager: [],
-                dashboard: []
+                dashboard: [],
+                admin_dashboard: []
             },
             selectedOptions: {
                 room_rates: {},
                 rate_manager: {},
-                dashboard: {}
+                dashboard: {},
+                admin_dashboard: {}
             }
         };
 
@@ -46,15 +48,16 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 
         $scope.saveRateSortPreferences = function() {
             var onSaveSuccess = function(data) {
-                $scope.$emit('hideLoader');
-            };
+                    $scope.$emit('hideLoader');
+                },
+                selectedDashboardRate = $scope.sequenceState.selectedOptions['dashboard_rate'];
 
             $scope.invokeApi(ADRateSequenceSrv.save, {
                 'room_rates': $scope.sequenceState.selectedOptions['room_rates'].id,
                 'rate_manager': $scope.sequenceState.selectedOptions['rate_manager'].id,
                 'dashboard': $scope.sequenceState.selectedOptions['dashboard'].id,
                 'admin_dashboard': $scope.sequenceState.selectedOptions['admin_dashboard'].id,
-                'dashboard_rate_id': $scope.sequenceState.selectedOptions['dashboard_rate'].id
+                'dashboard_rate_id': !selectedDashboardRate ? null : selectedDashboardRate.id
             }, onSaveSuccess);
         };
         $scope.goToCustomRateSequence = function() {
