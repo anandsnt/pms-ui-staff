@@ -10,7 +10,7 @@
 			    <fieldset ng-if="shouldShowGuestInfoInValidationPopup">
 			        <legend>Guest Info</legend>
 			        <div class="fields">
-			            <div class="entry" ng-if="showNationality && roverObj.forceNationalityAtCheckin">
+			            <div class="entry" ng-if="showNationality || roverObj.forceNationalityAtCheckin">
 			                <label>Nationality <strong class="required">*</strong></label>
 			                <div class="select">
 			                    <select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id" class="placeholder">
@@ -80,7 +80,7 @@
 								<option style="display:none" value=""></option>
 							</select>
 						</div>
-						<div class="entry" ng-if="showDateOfBirth && (guestCardData.contactInfo.birth_day === '' || guestCardData.contactInfo.birth_day === null)">
+						<div class="entry" ng-if="showDateOfBirth && (guestCardData.contactInfo.birthday === '' || guestCardData.contactInfo.birthday === null)">
 							<label>Date Of Birth<strong>*</strong></label>
 							<input type="text" ng-model="saveData.birth_day" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
 						</div>
