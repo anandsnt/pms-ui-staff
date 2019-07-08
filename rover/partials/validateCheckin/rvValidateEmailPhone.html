@@ -10,7 +10,7 @@
 			    <fieldset ng-if="shouldShowGuestInfoInValidationPopup">
 			        <legend>Guest Info</legend>
 			        <div class="fields">
-			            <div class="entry" ng-if="showNationality || roverObj.forceNationalityAtCheckin">
+			            <div class="entry" ng-if="showNationality">
 			                <label>Nationality <strong class="required">*</strong></label>
 			                <div class="select">
 			                    <select iscroll-stop-propagation ng-options="country.id as country.value for country in countries" ng-model="guestCardData.contactInfo.nationality_id" class="placeholder">
