@@ -48,7 +48,7 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
         service.updateMappings = function(params) {
             // CICO-64120 call to axbase3000 library in IFC
             if (params.integration === 'axbase3000') {
-                return ADBaseWebSrvV2.postJSON('ifc/proxy/axbase3000/save_room_mapping', params.config)
+                return ADBaseWebSrvV2.postJSON('ifc/proxy/axbase3000/save_room_mapping', params.config);
             }
             return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/save_room_mapping', params.config);
         };
