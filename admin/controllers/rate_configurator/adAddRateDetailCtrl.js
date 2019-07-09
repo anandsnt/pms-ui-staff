@@ -9,6 +9,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             getTasksForDefaultWorkType();
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
+            $scope.disableDayUseToggle = false;
         };
         $scope.getSubtask = function(task) {
             var subtask = [];
@@ -482,10 +483,17 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
         };
         // Handle based on rate change
         $scope.basedOnRateChanged = function() {
-            var fullRateList = $scope.rateTypesDetails.based_on.results,
-                selectedRate = _.find(fullRateList, function(item){ return item.id === $scope.rateData.based_on.id; });
+            if ($scope.rateData.based_on.id) {
+                var fullRateList = $scope.rateTypesDetails.based_on.results,
+                    selectedRate = _.find(fullRateList, function(item) { return item.id === $scope.rateData.based_on.id; });
 
-            $scope.rateData.is_day_use = selectedRate.is_day_use;
+                $scope.rateData.is_day_use = selectedRate.is_day_use;
+                $scope.disableDayUseToggle = true;
+            }
+            else {
+                // not selecting any rate.
+                $scope.disableDayUseToggle = false;
+            }
         };
 
         // CICO-56662
