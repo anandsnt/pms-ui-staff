@@ -4,7 +4,7 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <button type="submit" name="submit" class="icons icon-search">Search</button>
-        <input ng-model="rateName" ng-keyup="rateKeyEntered()" name="search-codes" id="search-codes" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+        <input ng-model="rateName" ng-change="rateKeyEntered()" name="search-codes" id="search-codes" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
 
     </div>
     <div class="scrollable" ng-iscroll="rateList" ng-iscroll-delay="100">
