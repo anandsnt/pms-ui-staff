@@ -507,7 +507,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 */
 			var moveToBillFailureCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.errorMessage = data.errorMessage;
+				$scope.errorMessage = data;
 			};
 			
 			$scope.invokeApi(rvAccountTransactionsSrv.moveToAnotherBill, dataToMove, moveToBillSuccessCallback, moveToBillFailureCallback );

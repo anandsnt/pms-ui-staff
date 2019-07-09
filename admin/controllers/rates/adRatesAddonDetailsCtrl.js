@@ -551,13 +551,14 @@ admin.controller('ADRatesAddonDetailsCtrl', [
         };
 
         $scope.linkAllowedChargeCodesForAllowance = function() {
-            $scope.singleAddon.permissible_charge_code_ids = _.pluck(_.filter($scope.chargeCodes, function (chargeCode) {
+            $scope.singleAddon.permissible_charge_code_ids = _.pluck(_.filter($scope.permissibleChargeCodes, function (chargeCode) {
                 return chargeCode.ticked;
             }), "id");
         };
 
         $scope.setAllowedChargeCodesForAllowance = function() {
-            $scope.chargeCodes.map(function(chargeCode) {
+            $scope.permissibleChargeCodes = _.difference($scope.chargeCodes, $scope.chargeCodesForChargeGrp);
+            $scope.permissibleChargeCodes.map(function(chargeCode) {
               if ($scope.singleAddon.permissible_charge_code_ids.indexOf(parseInt(chargeCode.id)) > -1) {
                 chargeCode.ticked = true;
               } else {
