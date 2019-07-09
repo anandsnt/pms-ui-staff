@@ -19,7 +19,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             '$q',
             'RVContactInfoSrv',
             'RVRoomRatesSrv',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv) {
+            'rvUtilSrv',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q, RVContactInfoSrv, RVRoomRatesSrv, rvUtilSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1525,15 +1526,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.$emit('hideLoader');
                 };
 
-                // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
-                var extractHhMmAmPm = function( time ) {
-                    return {
-                        'ampm': parseInt(time.split(' ')[0]) > 12 ? 'PM' : 'AM',
-                        'hh': time.split(' ')[0].split(':')[0],
-                        'mm': time.split(' ')[0].split(':')[1]
-                    };
-                };
-
                 var updateSuccess = function(data) {
                     // CICO-47877 - When there are multiple reservations, we have an array of responses
                     var responseData = data;
@@ -1640,8 +1632,18 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         postData.arrival_time = $scope.reservationData.tabs[0].checkinTime;
                         postData.departure_time = $scope.reservationData.tabs[0].checkoutTime;
                         
-                        $scope.reservationData.checkinTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkinTime);
-                        $scope.reservationData.checkoutTime = extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTime);
+                        var checkinTimeObj = rvUtilSrv.extractHhMmAmPm($scope.reservationData.tabs[0].checkinTime),
+                            checkoutTimeObj = rvUtilSrv.extractHhMmAmPm($scope.reservationData.tabs[0].checkoutTime);
+
+                        if (checkinTimeObj.hh === '00') {
+                            checkinTimeObj.hh = '12';
+                        }
+                        if (checkoutTimeObj.hh === '00') {
+                            checkoutTimeObj.hh = '12';
+                        }
+
+                        $scope.reservationData.checkinTime = checkinTimeObj;
+                        $scope.reservationData.checkoutTime = checkoutTimeObj;
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }

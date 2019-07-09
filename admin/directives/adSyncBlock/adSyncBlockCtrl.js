@@ -162,8 +162,10 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                     $scope.endDatePickerOptions.maxDate = tzIndependentDate(dateObj.setDate(dateObj.getDate() - 1));
                 }
 
-                if ($scope.historicalDateRangeDays) {
-                    $scope.fromDate = new Date(fromDate.setDate(fromDate.getDate() - parseInt($scope.historicalDateRangeDays)));
+                if ($scope.historicalDateRangeDays || $scope.defaultDateRange) {
+                    var dateRange = $scope.historicalDateRangeDays ? $scope.historicalDateRangeDays : $scope.defaultDateRange;
+                    
+                    $scope.fromDate = new Date(fromDate.setDate(fromDate.getDate() - parseInt(dateRange)));
                 } else {
                     $scope.fromDate = maxDate;
                 }

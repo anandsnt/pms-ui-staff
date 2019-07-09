@@ -94,7 +94,25 @@
         top: 115px;
     }
 
-    .entry.input {
+    #actions.languages-list {
+        
+        .selected-language {
+            .button();
+            padding-left: 55px;
+
+            .icons {
+                left: 10px;
+                width: 32px;
+            }
+        }
+
+        .button.with-icon {
+            background: transparent;
+            color: @textColor;
+        }
+    }
+
+    .entry.input:not(.select) {
         .icons {
             fill: @brandColor;
         }
@@ -122,6 +140,7 @@
 
         li {
             text-transform: none;
+            line-height: 32px;
 
             .button {
                 background: transparent;
