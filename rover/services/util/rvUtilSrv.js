@@ -410,7 +410,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
          *  @return {String} [24 hr format data]
          *
          */
-        this.convertTimeHhMmAmPmTo24 = ( timeHhMmAmPm ) => {
+        this.convertTimeHhMmAmPmTo24 = function( timeHhMmAmPm ) {
             var hours = timeHhMmAmPm.hh,
                 minutes = timeHhMmAmPm.mm,
                 modifier = timeHhMmAmPm.ampm;
@@ -430,7 +430,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
          *  @param {Object} [hotelDiaryConfig]
          *  @return {String}
          */
-        this.getDiaryMode = () => {
+        this.getDiaryMode = function() {
             var diaryMode = 'FULL',
                 hotelDiaryConfig = $rootScope.hotelDiaryConfig;
 
