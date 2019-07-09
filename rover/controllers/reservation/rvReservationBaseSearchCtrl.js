@@ -476,8 +476,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 params: {
                     "start_date": $scope.reservationData.arrivalDate,
                     "end_date": $scope.reservationData.departureDate,
-                    "start_time": rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkinTime),
-                    "end_time": rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkoutTime),
                     "room_type_id": $scope.reservationData.tabs[0].roomTypeId
                 },
                 successCallBack: function(response) {
@@ -521,6 +519,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         }
                     }
                 }
+            }
+
+            // Pass time details if 0 nights.
+            if ($scope.reservationData.numNights === 0) {
+                dataToSend.params.start_time = rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkinTime);
+                dataToSend.params.end_time = rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkoutTime);
             }
             
             $scope.callAPI(RVReservationBaseSearchSrv.checkTimeBasedAvailability, dataToSend);
