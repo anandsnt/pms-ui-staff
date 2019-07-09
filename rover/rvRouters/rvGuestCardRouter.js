@@ -34,7 +34,15 @@ function(
                 isBackToStatistics: null,
                 selectedStatisticsYear: null,
                 selectedIds: [],
-                isMergeViewSelected: null
+                isMergeViewSelected: null,
+                isFromMenuGuest: false,
+                reservationId: null,
+                confirmationNo: null,
+                fromStaycard: null,
+                isPrimary: null,
+                firstName: '',
+                lastName: '',
+                guestType: null
             },
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',
@@ -57,6 +65,9 @@ function(
                 },
                 idTypesList: function (RVCompanyCardSrv, guestcardDetailsAssets) {
                     return RVCompanyCardSrv.fetchIdTypes();
+                },
+                genderTypesList: function (RVGuestCardsSrv, guestcardDetailsAssets) {
+                    return RVGuestCardsSrv.fetchGenderTypes();
                 }
             }
         });        

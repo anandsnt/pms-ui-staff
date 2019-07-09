@@ -13,6 +13,7 @@ admin.controller('adStationWalkInReservationsCtrl', ['$scope',
         BaseCtrl.call(this, $scope);
 
         $scope.kioskSettings = kioskSettings;
+        $scope.kioskSettings.kiosk_walkin_flow = kioskSettings.kiosk_walkin_flow ? kioskSettings.kiosk_walkin_flow : 'traditional';
 
         var retrieveActiveItems = function(list) {
             return _.filter(list, function(item) {

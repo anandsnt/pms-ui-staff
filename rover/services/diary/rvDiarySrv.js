@@ -389,6 +389,12 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         });
 
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
+                    // For Inspected Only Hotel, Adding class for clean not-inspected case
+                    room[meta.room.hk_status] += ( room.hk_status === 'CLEAN' && !room.is_inspected ) ? ' not-inspected' : '';
+                    // Add class when room is OOO/OOS
+                    if ( room.room_service_status === 'OUT_OF_ORDER' || room.room_service_status === 'OUT_OF_SERVICE') {
+                        room[meta.room.hk_status] = 'unavailable';
+                    }
                     return room;
                 }),
 
@@ -797,6 +803,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         room_type_id       = params.room_type_id,
                         rate_type          = params.rate_type,
                         account_id         = params.account_id,
+                        reservation_id     = params.reservation_id,
                         GUID               = params.GUID,
                         _data_Store        = this.data_Store,
                         q                  = $q.defer(),
@@ -811,6 +818,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         if (account_id) {
                             _.extend(params, { account_id: account_id });
                         }
+                    }
+                    if (reservation_id) {
+                        _.extend(params, { reservation_id: reservation_id });
                     }
 
                     // if from unassigned room

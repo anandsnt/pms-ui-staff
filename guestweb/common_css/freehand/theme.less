@@ -16,6 +16,14 @@ a,a:hover,.main-text,
 .footer-sub-text,.footer-sub-text:hover,.phone-label{
     color:#000;
 }
+
+.main-text-new {
+  font-size: 28px;
+  a {
+    text-decoration: underline;
+  }
+}
+
 .sub-main-text{
     color:#000;
 }
@@ -188,8 +196,15 @@ textarea.sub-text, textarea.sub-text:hover{
   color:#fff;
 }
 .logo-image {
-        margin: 3% 0px !important;
-    }
+    margin: 3% 0px !important;
+}
+
+@media (min-width: 990px) {
+  .main-text-new {
+    font-size: 36px;
+  }
+}
+
 @media (max-width: 990px) {
     .logo-image {
         margin: 9% auto 7%;
@@ -213,6 +228,9 @@ textarea.sub-text, textarea.sub-text:hover{
 @media (max-width: 480px){
   .main-text{
     font-size:11vw;
+  }
+  .main-text-new {
+    font-size: 7vw;
   }
   .container{
     width:100%;

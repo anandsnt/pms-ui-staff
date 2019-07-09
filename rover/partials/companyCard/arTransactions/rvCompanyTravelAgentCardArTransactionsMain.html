@@ -35,14 +35,7 @@
             </div>
         </div>
         <div class="actions">
-            <div class="entry" ng-show="showIncludePayments()">
-                <label class="checkbox inline">
-                    <span class="icon-form icon-checkbox" ng-class="{'checked': filterData.includePayments }"></span>
-                    <input type="checkbox" ng-model="filterData.includePayments"  value="{{filterData.includePayments}}">
-                    Include Payments
-                </label>
-            </div>
-            <button type="button" class="button orange with-icon" ng-click="clickedArStatementButton()">
+            <button type="button" class="button orange with-icon" ng-click="clickedArStatementButton()"> 
                 <span class="icons icon-invoice"></span>
                 Statement
             </button>
