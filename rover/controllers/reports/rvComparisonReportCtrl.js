@@ -103,6 +103,10 @@ angular.module('sntRover')
             
         };
 
+        $scope.printComparisonReport = function () {
+            $scope.$emit("YEARLY_TAX_REPORT_PRINT");
+        };
+
         $scope.fetchChargeCodes = function (index, pageNo) {
             $scope.cgEntries[index].isChargeGroupActive = !$scope.cgEntries[index].isChargeGroupActive;
             if ( $scope.cgEntries[index].isChargeGroupActive ) {

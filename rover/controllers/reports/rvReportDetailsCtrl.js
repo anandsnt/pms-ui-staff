@@ -652,6 +652,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.hasNoResults = _.isEmpty($scope.$parent.results);
             $scope.showPrintOption = true;
             $scope.showPrintOptionForYearlyTax = false; // CICO-51364 - Used only for yearly vat report
+            $scope.showPrintOptionForComparisonReport = false;
 
             // a very different parent template / row template / content template for certain reports
             // otherwise they all will share the same template
@@ -807,6 +808,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
                     break;
+
+                case reportNames['COMPARISION_BY_DATE']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = false;
+                    $scope.showPrintOptionForComparisonReport = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReportRow.html';
+                    break;                    
 
                 default:
                     $scope.hasReportTotals = true;
