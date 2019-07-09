@@ -519,7 +519,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         }
                     }
                 }
-            }
+            };
 
             // Pass time details if 0 nights.
             if ($scope.reservationData.numNights === 0) {
