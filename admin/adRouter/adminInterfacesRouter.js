@@ -34,15 +34,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.exactOnlineSetup', {
-        templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
+        templateUrl: '/assets/partials/interfaces/exactonline/adExactonline.html',
         controller: 'adExactOnlineSetupCtrl',
         url: '/exactonline/setup',
         resolve: {
-            exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
-            }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
+            }],
+            config: ['adExactOnlineSetupSrv', function (adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }]
         }
     });
