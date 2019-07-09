@@ -15,7 +15,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     '$filter',
     'RVReservationTabService',
     'guestDetails',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails) {
+    'rvUtilSrv',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails, rvUtilSrv) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -448,6 +449,87 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
         };
 
+        var showPopupForReservationWithUnassignedRoom = function() {
+            ngDialog.open({
+                template: '/assets/partials/nightlyDiary/rvNightlyDiaryReservationWithUnassignedRoom.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false
+            });
+        },
+        showContinueWithBookPopup = function( callbackAction ) {
+            ngDialog.open({
+                template: '/assets/partials/nightlyDiary/rvNightlyDiaryContinueWithBookPopup.html',
+                scope: $scope,
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false,
+                data: {
+                    callbackAction: callbackAction
+                }
+            });
+        },
+        checkTimeBasedAvailability = function( callbackAction ) {
+
+            var dataToSend = {
+                params: {
+                    "start_date": $scope.reservationData.arrivalDate,
+                    "end_date": $scope.reservationData.departureDate,
+                    "room_type_id": $scope.reservationData.tabs[0].roomTypeId
+                },
+                successCallBack: function(response) {
+                    var isRoomTypeSelected = $scope.reservationData.tabs[0].roomTypeId !== '',
+                        houseData = response.house_availability,
+                        roomTypeData = response.room_type_availability;
+
+                    if (isRoomTypeSelected) {
+                        // Go ahead with house & room type availablity checks.
+                        if ((houseData.unassigned_reservations_present && houseData.house_availability <= 0 ) || 
+                            (roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0)) {
+                            // There are reservations with unassigned Rooms.
+                            // No additional availability exists for the selected dates / times.
+                            showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (roomTypeData.availability > 0 && roomTypeData.unassigned_reservations_present) {
+                            // There are reservations with unassigned rooms.
+                            // You can still proceed, but it might be good to assign those reservations first.
+                            showContinueWithBookPopup(callbackAction);
+                        }
+                        else {
+                            // Directly go to reservation creation flow.
+                            callbackAction();
+                        }
+                    }
+                    else {
+                        // Go with House level avaialbility checks only.
+                        if (houseData.unassigned_reservations_present && houseData.house_availability <= 0) {
+                            // There are reservations with unassigned Rooms.
+                            // No additional availability exists for the selected dates / times.
+                            showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (houseData.unassigned_reservations_present) {
+                            // There are reservations with unassigned rooms.
+                            // You can still proceed, but it might be good to assign those reservations first.
+                            showContinueWithBookPopup(callbackAction);
+                        }
+                        else {
+                            // Directly go to reservation creation flow.
+                            callbackAction();
+                        }
+                    }
+                }
+            };
+
+            // Pass time details if 0 nights.
+            if ($scope.reservationData.numNights === 0) {
+                dataToSend.params.start_time = rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkinTime);
+                dataToSend.params.end_time = rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkoutTime);
+            }
+            
+            $scope.callAPI(RVReservationBaseSearchSrv.checkTimeBasedAvailability, dataToSend);
+        };
+
         $scope.navigate = function() {
 
             // CICO-19685: if user moves back and forth in create reservation, before saving
@@ -501,28 +583,38 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }
 
                 if ($scope.checkOccupancyLimit()) {
+                    var navigationAction = function() {
+                        var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-                    var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+                        $state.go(roomAndRatesState, {
+                            'from_date': $scope.reservationData.arrivalDate,
+                            'to_date': $scope.reservationData.departureDate,
+                            'arrivalTime': $scope.reservationData.checkinTime,
+                            'departureTime': $scope.reservationData.checkoutTime,
+                            'fromState': $state.current.name,
+                            'company_id': $scope.reservationData.company.id,
+                            'allotment_id': $scope.reservationData.allotment.id,
+                            'travel_agent_id': $scope.reservationData.travelAgent.id,
+                            'group_id': $scope.reservationData.group.id,
+                            'promotion_code': $scope.reservationData.searchPromoCode,
+                            'promotion_id': $scope.reservationData.promotionId,
+                            'adults': $scope.reservationData.tabs[0]['numAdults'],
+                            'children': $scope.reservationData.tabs[0]['numChildren'],
+                            'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
+                            'is_member': !!$scope.reservationData.member.isSelected,
+                            'guestId': $stateParams.guestId ? $stateParams.guestId : ''
+                        });
 
+                        ngDialog.close();
+                    },
+                    diaryMode = rvUtilSrv.getDiaryMode();
 
-                    $state.go(roomAndRatesState, {
-                        'from_date': $scope.reservationData.arrivalDate,
-                        'to_date': $scope.reservationData.departureDate,
-                        'arrivalTime': $scope.reservationData.checkinTime,
-                        'departureTime': $scope.reservationData.checkoutTime,
-                        'fromState': $state.current.name,
-                        'company_id': $scope.reservationData.company.id,
-                        'allotment_id': $scope.reservationData.allotment.id,
-                        'travel_agent_id': $scope.reservationData.travelAgent.id,
-                        'group_id': $scope.reservationData.group.id,
-                        'promotion_code': $scope.reservationData.searchPromoCode,
-                        'promotion_id': $scope.reservationData.promotionId,
-                        'adults': $scope.reservationData.tabs[0]['numAdults'],
-                        'children': $scope.reservationData.tabs[0]['numChildren'],
-                        'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
-                        'is_member': !!$scope.reservationData.member.isSelected,
-                        'guestId': $stateParams.guestId ? $stateParams.guestId : ''
-                    });
+                    if (diaryMode === 'FULL') {
+                        checkTimeBasedAvailability(navigationAction);
+                    }
+                    else {
+                        navigationAction();
+                    }
                 }
             }
 
