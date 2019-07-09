@@ -459,7 +459,8 @@ angular.module('sntRover')
                             'fromState': 'NIGHTLY_DIARY',
                             'room_type_id': roomData.room_type_id,
                             'selectedRoomId': roomData.room_id,
-                            'selectedRoomNo': roomData.room_no
+                            'selectedRoomNo': roomData.room_no,
+                            'numNights': roomData.nights
                         });
 
                         ngDialog.close();

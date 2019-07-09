@@ -1,23 +1,25 @@
 <section id="replacing-div-second" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-hide="isLoading" ng-cloak ng-click="clearErrorMessage()">
     <header class="content-title float">
 
-        <h2><span>Create</span> Rate Sequence</h2>
+        <h2 translate>CUSTOM_RATE_SEQUENCE</h2>
         <a class="action back" ng-click="backToRateSequence()">Back</a>
         <!-- On click, remove .hidden from the Add Sequence From below -->
-        <a href="#" class="action add" ng-click="addNewSequence()">Add Sequence</a>
+        <a href="#" class="action add" ng-click="addNewSequence()" translate>ADD_CUSTOM_SEQUENCE</a>
         <div class="actions float pull-right">
             <button type="button" class="button add-data-inline toggle-tab orange">MANAGE Sequence</button>
             <button type="button" class="button add-data-inline toggle-tab white">MANAGE Rates</button>
         </div>
     </header>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <!-- If data, show this -->
-        <table class="grid" ng-show="MODE ==='LIST'" id="sort">
+        <table class="grid datatable draggable editable" ng-show="MODE ==='LIST'" id="sort">
             <thead>
             <tr>
-                <th class="sequence break sort-asc sorting">Sort</th>
-                <th class="sorting">Sequence Name</th>
-                <th class="sorting sequence-rates">Rates</th>
+                <th class="sequence break">Sort</th>
+                <th >Sequence Name</th>
+                <th class="sequence-rates">Rates</th>
                 <th class="delete">Delete</th>
             </tr>
             </thead>
@@ -39,7 +41,7 @@
                 </div>
                 <div class="entry">
                     <label>Sequence Name<strong>*</strong></label>
-                    <input type="text" ng-model="selectedSequence.name" placeholder="Enter Sequence Name">
+                    <input type="text" ng-model="selectedCustomSequence.name" placeholder="Enter Sequence Name">
                 </div>
 
                 <div class="actions float">

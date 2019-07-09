@@ -205,12 +205,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.ideasSetup', {
-        templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
+        templateUrl: '/assets/partials/interfaces/ideas/adIdeas.html',
         controller: 'adIdeasSetupCtrl',
         url: '/ideas/setup',
         resolve: {
-            ideaSetup: ['adIdeasSetupSrv', function(adIdeasSetupSrv) {
-                return adIdeasSetupSrv.getIdeaSetup();
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('ideas');
+            }],
+            chargeGroups: ['ADChargeGroupsSrv', function(ADChargeGroupsSrv) {
+                return ADChargeGroupsSrv.fetch();
             }]
         }
     });
@@ -469,12 +472,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.keypr', {
-        templateUrl: '/assets/partials/interfaces/MobileKeys/Keypr/adKeyprSetup.html',
+        templateUrl: '/assets/partials/interfaces/keypr/adKeypr.html',
         controller: 'adKeyprSetupCtrl',
         url: '/keypr/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('keypr');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('keypr');
             }]
         }
     });

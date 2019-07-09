@@ -65,6 +65,9 @@ function(
                 },
                 idTypesList: function (RVCompanyCardSrv, guestcardDetailsAssets) {
                     return RVCompanyCardSrv.fetchIdTypes();
+                },
+                genderTypesList: function (RVGuestCardsSrv, guestcardDetailsAssets) {
+                    return RVGuestCardsSrv.fetchGenderTypes();
                 }
             }
         });        

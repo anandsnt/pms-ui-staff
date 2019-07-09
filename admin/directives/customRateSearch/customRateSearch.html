@@ -1,13 +1,21 @@
-<div class="entry" ng-show="showSearch">
-    <label for="search-codes">Custum Rate Name</label>
-    <input ng-model="rateName" ng-keyup="rateKeyEntered()" name="search-codes" id="search-codes" type="text" placeholder="Search or Select Rates to add" value="" autocomplete="off" />
-    <div class="autocomplete-results" ng-show="showRates">
-        <div class="scrollable" ng-iscroll="rateList" ng-iscroll-delay="100">
-            <ul class="wrapper">
-                <li ng-repeat="rate in rateSearchResults" ng-click="selectRate(rate.id, rate.name)" >
-                    <span ng-bind-html="rate.name"></span>
-                </li>
-            </ul>
+<div class="multi-select-options autocomplete-search" ng-class="{ 'searching': showRates}" ng-show="showSearch">
+    <div class="search">
+        <button id="faux-select-clear-query" class="clear-query">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button type="submit" name="submit" class="icons icon-search">Search</button>
+        <input ng-model="rateName" ng-keyup="rateKeyEntered()" name="search-codes" id="search-codes" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+
+    </div>
+    <div class="scrollable" ng-iscroll="rateList" ng-iscroll-delay="100">
+        <div class="wrapper">
+            <label class="radio" ng-repeat="rate in rateSearchResults" ng-click="selectRate(rate.id, rate.name)">
+                <span class="icon-form icon-radio"></span>
+                {{rate.name}}
+            </label>
         </div>
     </div>
 </div>
+
+
+
