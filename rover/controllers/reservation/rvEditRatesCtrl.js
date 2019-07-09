@@ -73,7 +73,7 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 				});
 
 				$scope.reservationData.rooms[index] = room;
-				$scope.reservationData.has_reason = $scope.adjustment_reason.trim() === "" ? false : true;
+				$scope.reservationData.has_reason = !!$scope.adjustment_reason.trim();
 
 				var reservationUpdateCallback = function() {
 					if ($scope.reservationData.isHourly && !$stateParams.id) {
