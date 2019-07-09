@@ -375,7 +375,11 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 
 			updatedOtherHotelsInfo = [];
 
-			if (!angular.equals(data, presentContactInfo)) {
+			var ifDataPresent = function(data, presentContactInfo) {
+				return (data && data.commission_details && presentContactInfo && presentContactInfo.commission_details);
+			};
+
+			if (ifDataPresent(data, presentContactInfo) && !angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 				angular.forEach(data.commission_details.other_hotels_info, function (next) {
 					angular.forEach(presentContactInfo.commission_details.other_hotels_info, function (present) {
