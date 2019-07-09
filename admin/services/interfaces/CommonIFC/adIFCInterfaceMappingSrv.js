@@ -7,10 +7,11 @@ admin.service('adIFCInterfaceMappingSrv', [
 
         var metaLists = {
             'DELPHI': ['CHARGE_CODES', 'GROUP_HOLD_STATUSES', 'MARKET_SEGMENTS', 'SOURCE_CODES'],
-            'HOGIA': ['CHARGE_CODES'],
-            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
+            'HOGIA': ['CHARGE_CODES'],
             'IGEL': ['CHARGE_CODES', 'PAYMENT_CODES']
+            'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
+            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS']
         };
 
         var metaPromises = {
