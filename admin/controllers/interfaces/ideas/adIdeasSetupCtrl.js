@@ -1,47 +1,23 @@
-angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv', 'chargeGroups', 'dateFilter', 'adIFCSrv',
-    function ($scope, $rootScope, config, adInterfacesSrv, chargeGroups, dateFilter, adIFCSrv) {
-        BaseCtrl.call(this, $scope);
+admin.controller('adIdeasSetupCtrl', ['$scope', 'ideaSetup', '$rootScope', 'adIdeasSetupSrv', 'dateFilter',
+    function($scope, ideaSetup, $rootScope, adIdeasSetupSrv, dateFilter) {
 
-        $scope.interface = 'ideas';
-        $scope.exportDate = $rootScope.businessDate;
-        $scope.isServiceProvider = !!$rootScope.isServiceProvider;
-        $scope.exportTypes = {
-            isColdStart: false,
-            isSequential: true
-        };
-
-        $scope.sync = {
-            start_date: null,
-            end_date: null
-        };
-
-        $scope.state = {
-            activeTab: 'SETTING'
-        };
-
-        var syncItems = ['reservation', 'rate', 'group'];
-
-        $scope.realTimeDataSyncItems = syncItems;
-        $scope.historicalDataSyncItems = syncItems;
-
-        $scope.toggleEnabled = function () {
-            config.enabled = !config.enabled;
-        };
-
-        var resetChosenChargeGroups = function () {
+        var resetChosenChargeGroups = function() {
             $scope.chosenSelectedChargeGroups = [];
             $scope.chosenAvailableChargeGroups = [];
         };
 
+        BaseCtrl.call(this, $scope);
+
         $scope.chosenSelectedChargeGroups = [];
         $scope.chosenAvailableChargeGroups = [];
+
 
         /**
          * Toggle chosen Charge Groups in selected column
          * @param {Integer} chargeGroupIndex chargeGroup selected
          * @returns {undefined}
          */
-        $scope.chooseSelectedChargeGroup = function (chargeGroupIndex) {
+        $scope.chooseSelectedChargeGroup = function(chargeGroupIndex) {
             if ($scope.chosenSelectedChargeGroups.indexOf(chargeGroupIndex) > -1) {
                 $scope.chosenSelectedChargeGroups = _.without($scope.chosenSelectedChargeGroups, chargeGroupIndex);
             } else {
@@ -54,7 +30,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * @param {Integer} chargeGroupIndex chargeGroup selected
          * @returns {undefined}
          */
-        $scope.chooseAvailableChargeGroup = function (chargeGroupIndex) {
+        $scope.chooseAvailableChargeGroup = function(chargeGroupIndex) {
             if ($scope.chosenAvailableChargeGroups.indexOf(chargeGroupIndex) > -1) {
                 $scope.chosenAvailableChargeGroups = _.without($scope.chosenAvailableChargeGroups, chargeGroupIndex);
             } else {
@@ -66,7 +42,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * Handle a selection event
          * @returns {undefined}
          */
-        $scope.onSelectChargeGroup = function () {
+        $scope.onSelectChargeGroup = function() {
             resetChosenChargeGroups();
         };
 
@@ -74,7 +50,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * * Handle a un-selection event
          * @returns {undefined}
          */
-        $scope.onUnSelectChargeGroup = function () {
+        $scope.onUnSelectChargeGroup = function() {
             resetChosenChargeGroups();
         };
 
@@ -82,14 +58,14 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * Method to move chosen Charge Groups from available column to the selected column
          * @returns {undefined}
          */
-        $scope.selectChosen = function () {
+        $scope.selectChosen = function() {
             var chosenAvailableChargeGroupValues = [];
 
-            _.each($scope.chosenAvailableChargeGroups, function (chargeGroupIndex) {
-                chosenAvailableChargeGroupValues.push($scope.config.available_charge_groups[chargeGroupIndex]);
+            _.each($scope.chosenAvailableChargeGroups, function(chargeGroupIndex) {
+                chosenAvailableChargeGroupValues.push($scope.ideaSetup.available_charge_groups[chargeGroupIndex]);
             });
-            $scope.config.selected_charge_groups = $scope.config.selected_charge_groups.concat(chosenAvailableChargeGroupValues);
-            $scope.config.available_charge_groups = _.difference($scope.config.available_charge_groups, chosenAvailableChargeGroupValues);
+            $scope.ideaSetup.selected_charge_groups = $scope.ideaSetup.selected_charge_groups.concat(chosenAvailableChargeGroupValues);
+            $scope.ideaSetup.available_charge_groups = _.difference($scope.ideaSetup.available_charge_groups, chosenAvailableChargeGroupValues);
 
             resetChosenChargeGroups();
         };
@@ -98,14 +74,14 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * Method to move chosen Charge Groups from selected column to the available column
          * @returns {undefined}
          */
-        $scope.unSelectChosen = function () {
+        $scope.unSelectChosen = function() {
             var chosenSelectedChargeGroupValues = [];
 
-            _.each($scope.chosenSelectedChargeGroups, function (chargeGroupIndex) {
-                chosenSelectedChargeGroupValues.push($scope.config.selected_charge_groups[chargeGroupIndex]);
+            _.each($scope.chosenSelectedChargeGroups, function(chargeGroupIndex) {
+                chosenSelectedChargeGroupValues.push($scope.ideaSetup.selected_charge_groups[chargeGroupIndex]);
             });
-            $scope.config.available_charge_groups = $scope.config.available_charge_groups.concat(chosenSelectedChargeGroupValues);
-            $scope.config.selected_charge_groups = _.difference($scope.config.selected_charge_groups, chosenSelectedChargeGroupValues);
+            $scope.ideaSetup.available_charge_groups = $scope.ideaSetup.available_charge_groups.concat(chosenSelectedChargeGroupValues);
+            $scope.ideaSetup.selected_charge_groups = _.difference($scope.ideaSetup.selected_charge_groups, chosenSelectedChargeGroupValues);
 
             resetChosenChargeGroups();
         };
@@ -114,9 +90,9 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * Move all Charge Groups to the selected column
          * @returns {undefined}
          */
-        $scope.selectAll = function () {
-            $scope.config.selected_charge_groups = $scope.config.selected_charge_groups.concat($scope.config.available_charge_groups);
-            $scope.config.available_charge_groups = [];
+        $scope.selectAll = function() {
+            $scope.ideaSetup.selected_charge_groups = $scope.ideaSetup.selected_charge_groups.concat($scope.ideaSetup.available_charge_groups);
+            $scope.ideaSetup.available_charge_groups = [];
             resetChosenChargeGroups();
         };
 
@@ -124,9 +100,9 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * Move all Charge Groups to the available column
          * @returns {undefined}
          */
-        $scope.unSelectAll = function () {
-            $scope.config.available_charge_groups = $scope.config.available_charge_groups.concat($scope.config.selected_charge_groups);
-            $scope.config.selected_charge_groups = [];
+        $scope.unSelectAll = function() {
+            $scope.ideaSetup.available_charge_groups = $scope.ideaSetup.available_charge_groups.concat($scope.ideaSetup.selected_charge_groups);
+            $scope.ideaSetup.selected_charge_groups = [];
             resetChosenChargeGroups();
         };
 
@@ -136,7 +112,7 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
          * @param {Integer} chargeGroupIndex chargeGroup selected
          * @returns {undefined}
          */
-        $scope.chooseAvailableChargeCode = function (chargeGroupIndex) {
+        $scope.chooseAvailableChargeCode = function(chargeGroupIndex) {
             if ($scope.chosenAvailableChargeCodes.indexOf(chargeGroupIndex) > -1) {
                 $scope.chosenAvailableChargeCodes = _.without($scope.chosenAvailableChargeCodes, chargeGroupIndex);
             } else {
@@ -144,95 +120,51 @@ angular.module('admin').controller('adIdeasSetupCtrl', ['$scope', '$rootScope', 
             }
         };
 
-        /**
-         * when button clicked to switch between mappings/settings
-         * @return {undefined}
-         * @param {name} name tab name to toggle.
-         */
-        $scope.changeTab = function (name) {
-            $scope.state.activeTab = name;
-        };
-
-        $scope.saveSetup = function () {
-            $scope.callAPI(adInterfacesSrv.updateSettings, {
-                params: {
-                    settings: $scope.config,
-                    integration: $scope.interface.toLowerCase()
+        // -------------------------------------------------------------------------------------------------------------- SCOPE VARIABLES
+        // Date Picker Settings
+        $scope.datepicker = {
+            options: {
+                dateFormat: getJqDateFormat(),
+                numberOfMonths: 1,
+                changeYear: true,
+                changeMonth: true,
+                beforeShow: function() {
+                    $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
                 },
-                onSuccess: function () {
-                    $scope.errorMessage = '';
-                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                onClose: function() {
+                    $('#ui-datepicker-overlay').remove();
+                },
+                yearRange: '-1:+5'
+            }
+        };
+
+        // -------------------------------------------------------------------------------------------------------------- SCOPE METHODS
+        /**
+         * Method to save setup
+         * @return {[type]} [description]
+         */
+        $scope.saveSetup = function() {
+            var params = angular.copy($scope.ideaSetup);
+
+            // Convert date object to API format
+            params.deliver_by_ftp = params.deliver_by_ftp === 'ftp';
+
+            params.start_date = dateFilter(params.start_date, $rootScope.dateFormatForAPI);
+            $scope.callAPI(adIdeasSetupSrv.postIdeasSetup, {
+                params: params,
+                onSuccess: function() {
+                    $scope.goBackToPreviousState();
                 }
             });
         };
 
-        $scope.runExport = function () {
-            var types = [];
-
-            if ($scope.exportTypes.isColdStart === true) {
-                types.push('cold_start');
-            }
-            if ($scope.exportTypes.isSequential === true) {
-                types.push('sequential');
-            }
-            var payload = {
-                integration_name: $scope.interface.toLowerCase(),
-                options: {}
-            };
-
-            if (types.length > 0 ) {
-                payload.options.types = types;
-            }
-            payload.options.date = dateFilter($scope.exportDate, $rootScope.dateFormatForAPI);
-            var synchronize = function(params) {
-                return adIFCSrv.post('property', 'synchronize_integration', params);
-            };
-
-            $scope.callAPI(synchronize, {
-                params: payload,
-                onSuccess: function () {
-                    $scope.errorMessage = '';
-                    $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
-                }
-            });
-        };
-
-        (function () {
-            // init
-            $scope.config = config;
-
-            // selected_charge_groups must be an array
-            var selectedChargeGroups = config.selected_charge_groups ?
-                JSON.parse(config.selected_charge_groups) :
-                [];
-
-            $scope.config.selected_charge_groups = selectedChargeGroups;
-
-            // available_charge_groups are charge groups that available to select.
-            var allChargeGroups = _.pluck(chargeGroups.charge_groups, 'name');
-
-            $scope.config.available_charge_groups = _.difference(allChargeGroups, selectedChargeGroups);
-
-            // days_past must be a number
-            // if (config.days_past !== undefined) {
-            //     $scope.config.days_past = parseInt(config.days_past);
-            // }
-
-            // days_future must be a number
-            // if (config.days_future !== undefined) {
-            //     $scope.config.days_future = parseInt(config.days_future);
-            // }
-
-            // enabled must be boolean.
-            if (config.enabled === undefined) {
-                $scope.config.enabled = false;
-            }
-
-            // g3_enabled must be boolean.
-            if (config.g3_enabled === undefined) {
-                $scope.config.g3_enabled = false;
-            }
-
+        (function init() {
+            $scope.ideaSetup = ideaSetup;
+            // handle null in selected_charge_groups and available_charge_groups
+            $scope.ideaSetup.selected_charge_groups = $scope.ideaSetup.selected_charge_groups || [];
+            $scope.ideaSetup.available_charge_groups = $scope.ideaSetup.available_charge_groups || [];
+            $scope.selectedMenu = '';
+            $scope.ideaSetup.deliver_by_ftp = $scope.ideaSetup.deliver_by_ftp ? 'ftp' : 'email';
         })();
     }
 ]);
