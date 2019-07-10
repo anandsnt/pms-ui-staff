@@ -144,6 +144,9 @@ angular.module('sntRover')
                     }, delay);
                 };
 
+                var failed = function () {
+                    $scope.$emit('hideLoader');
+                };
 
                 var params = {
                     date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
@@ -523,6 +526,7 @@ angular.module('sntRover')
          */
         function init () {
             var results = $scope.$parent.results;
+
             ledgerInit(results);
             totalRevenueInit(results);
             staticInit(results);
