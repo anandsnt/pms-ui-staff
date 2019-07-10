@@ -25,6 +25,8 @@
                     </button>
                     <button class="button with-icon only-icon blue" button="button" ng-if="showPrintOptionForYearlyTax" ng-click="fetchFullYearlyTaxReport()"><span class="icons icon-print"></span>
                     </button>
+                    <button class="button with-icon only-icon blue" button="button" ng-if="showPrintOptionForComparisonReport" ng-click="printComparisonReport()"><span class="icons icon-print"></span>
+                    </button>
                     <button ng-click="exportCSV()" class="button with-icon only-icon purple" button="button" ng-show="shouldShowExportButton(chosenReport) && !hideExportOption"><span class="icons icon-save"></span>
                     </button>
 
