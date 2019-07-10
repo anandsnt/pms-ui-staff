@@ -1939,6 +1939,10 @@ angular.module('sntRover').controller('guestCardController', [
 
                 successCallBackGenderTypes = function(data) {
                     $scope.guestCardData.contactInfo.genderTypeList = data;
+                },
+
+                successCallBackIdTypes = function (data) {
+                    $scope.idTypeList = data; 
                 };
 
 			promises.push(RVGuestCardsSrv
@@ -1950,7 +1954,14 @@ angular.module('sntRover').controller('guestCardController', [
 			promises.push(RVGuestCardsSrv
 				.fetchGenderTypes()
 				.then(successCallBackGenderTypes)
-			);
+            );
+            
+            // Get government id types
+            promises.push(RVGuestCardsSrv
+				.fetchIdTypes()
+				.then(successCallBackIdTypes)
+            );
+            
 			// Lets start the processing
 			$q.all(promises)
                 .then();
