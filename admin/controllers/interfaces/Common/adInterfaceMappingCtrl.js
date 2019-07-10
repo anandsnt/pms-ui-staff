@@ -23,7 +23,8 @@ admin.controller('adInterfaceMappingCtrl', [
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
             'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
-            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html'
+            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
+            'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',
         };
 
         $scope.state = {

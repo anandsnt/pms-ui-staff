@@ -1,8 +1,8 @@
-admin.controller('adFiskaltrustCtrl', ['$scope', 'config', 'paymentChargeCodes', 'adInterfacesSrv',
-    function($scope, config, paymentChargeCodes, adInterfacesSrv) {
+admin.controller('adFiskaltrustCtrl', ['$scope', 'config', 'paymentChargeCodes', 'adInterfacesSrv', 'mappingTypes',
+    function($scope, config, paymentChargeCodes, adInterfacesSrv, mappingTypes) {
         BaseCtrl.call(this, $scope);
 
-         $scope.interface = 'Fiskaltrust';
+         $scope.interface = 'FISKALTRUST';
 
          $scope.state = {
             activeTab: 'SETTING'
@@ -13,6 +13,8 @@ admin.controller('adFiskaltrustCtrl', ['$scope', 'config', 'paymentChargeCodes',
         };
 
          $scope.paymentTypeChargeCodes = paymentChargeCodes.data.charge_codes;
+
+         $scope.mappingTypes = ['payment_code_billing_account'];
 
          /**
          *

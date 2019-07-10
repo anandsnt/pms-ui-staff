@@ -870,9 +870,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 'adInterfacesSrv', function(adInterfacesSrv) {
                     return adInterfacesSrv.getSettings('fiskaltrust');
                 }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('fiskaltrust');
+                }],
             paymentChargeCodes: [
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                    return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('igel');
+                    return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('fiskaltrust');
                 }]
         }
     });
