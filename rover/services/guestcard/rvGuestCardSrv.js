@@ -234,7 +234,8 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             } else {
                 sntBaseWebSrv.getJSON(url)
                     .then(function (data) {
-                        deffered.resolve(data.id_type_list);
+                        governmentIdTypes = data.id_type_list;
+                        deffered.resolve(governmentIdTypes);
                     }, function (error) {
                         deffered.resolve(error);
                     });
