@@ -98,89 +98,92 @@ angular.module('sntRover')
             var state;
             var hasCC = ccStore.get(item.charge_group_id);
             var sourceIndex = index + 1;
-            var delay = 500;        
- 
-            if ( item.isChargeGroupActive ) {      
-                state = false;        
-                toggleChargeCodes($scope.cgEntries, sourceIndex, false)        
-                    .then(function () {        
-                        item.isChargeGroupActive = false;      
-                        $timeout(function () {     
-                            $scope.refreshScroll(true);        
-                        }, delay);     
-                    });        
-            } else {       
-                state = true;      
-                $scope.fetchChargeCodes(index, 1);     
-            }         
+            var delay = 500;
+
+            if ( item.isChargeGroupActive ) {
+                state = false;
+                toggleChargeCodes($scope.cgEntries, sourceIndex, false)
+                    .then(function () {
+                        item.isChargeGroupActive = false;
+                        $timeout(function () {
+                            $scope.refreshScroll(true);
+                        }, delay);
+                    });
+            } else {
+                state = true;
+                $scope.fetchChargeCodes(index, 1);
+            }
         };
 
         $scope.fetchChargeCodes = function (index, pageNo) {
 
-                var item = $scope.cgEntries[index];
-                var pageNo = pageNo || 1;
-                var delay = 100;        
-                var refreshDelay = 500;        
-                var success = function(data) {
-                    var sourceIndex = index + 1;        
+            var item = $scope.cgEntries[index];
+            var pageNo = pageNo || 1;
 
-                    item.pageNo = pageNo;     
+            var delay = 100;
+            var refreshDelay = 500;
+            var success = function(data) {
+                var sourceIndex = index + 1;
 
-                    ccStore.set(item.charge_group_id, data.charge_codes);     
-                    fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
-                    $timeout(function () {
-                        toggleChargeCodes($scope.cgEntries, sourceIndex, true)      
-                            .then(function () {        
-                                item.isChargeGroupActive = true;       
-                                $scope.$emit('hideLoader');
-                                $timeout(function () {      
-                                   var paginationID = item.charge_group_id.toString();        
+                item.pageNo = pageNo;
 
-                                   $scope.$broadcast('updatePagination', paginationID );     
-                                   $scope.refreshScroll(true);        
+                ccStore.set(item.charge_group_id, data.charge_codes);
+                fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
 
-                                }, refreshDelay);
-                            });
-                    }, delay);
-                };
+                $timeout(function () {
+                    toggleChargeCodes($scope.cgEntries, sourceIndex, true)
+                        .then(function () {
+                            item.isChargeGroupActive = true;
+                            $scope.$emit('hideLoader');
 
-                var failed = function () {
-                    $scope.$emit('hideLoader');
-                };
+                            $timeout(function () {
+                                var paginationID = item.charge_group_id.toString();
 
-                var params = {
-                    date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
-                    report_id: $scope.chosenReport.id,
-                    charge_group_id: item.charge_group_id,
-                    page: pageNo,
-                    per_page: 50
-                };
+                                $scope.$broadcast('updatePagination', paginationID );
+                                $scope.refreshScroll(true);
 
-                $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
+                            }, refreshDelay);
+                        });
+                }, delay);
+            };
+
+            var failed = function () {
+                $scope.$emit('hideLoader');
+            };
+
+            var params = {
+                date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
+                report_id: $scope.chosenReport.id,
+                charge_group_id: item.charge_group_id,
+                page: pageNo,
+                per_page: 50
+            };
+
+            $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
         };
 
         $scope.togglePaymentGroup = function(index, pageNo) {
-             $scope.pgEntries[index].isPaymentGroupActive = !$scope.pgEntries[index].isPaymentGroupActive;
+            $scope.pgEntries[index].isPaymentGroupActive = !$scope.pgEntries[index].isPaymentGroupActive;
 
-             if ($scope.pgEntries[index].isPaymentGroupActive) {
-                var refreshDelay = 1000;        
-
+            if ($scope.pgEntries[index].isPaymentGroupActive) {
+                var refreshDelay = 1000;
                 var success = function(data) {
                     ccStore.set($scope.pgEntries[index].charge_group_id, data);
                     $scope.$emit('hideLoader');
                     $scope.pgEntries[index].paymentGroupEntries = data;
                     $scope.pgEntries[index].insidePaginationData = {
-                        id: $scope.pgEntries[index].charge_group_id,       
-                        api: [$scope.togglePaymentGroup, index],       
-                        perPage: 50        
+                        id: $scope.pgEntries[index].charge_group_id,
+                        api: [$scope.togglePaymentGroup, index],
+                        perPage: 50
                     };
-                    $scope.pgEntries[index].totalInsidePagination = data.total_count;       
-                    $timeout(function () {     
-                        var paginationID = $scope.pgEntries[index].charge_group_id;       
+                    $scope.pgEntries[index].totalInsidePagination = data.total_count;
+                    $timeout(function () {
+                         var paginationID = $scope.pgEntries[index].charge_group_id;
 
-                        $scope.$broadcast('updatePagination', paginationID );        
+                         $scope.$broadcast('updatePagination', paginationID );
 
-                        $scope.refreshScroll(true);       
+                        $scope.refreshScroll(true);
+
                     }, refreshDelay);
                 };
                 var failed = function() {
@@ -327,36 +330,35 @@ angular.module('sntRover')
             }
         }
 
-        /**     
-          * toggleChargeCodes - toggle the visibility of a set of cc under a cg     
-          *     
-          * @param  {array} source      full array      
-          * @param  {type} sourceIndex the index from the full array we need to look from       
-          * @param  {type} active      show or hide     
-          * @returns {object}             undefined     
-          */        
-        function toggleChargeCodes (source, sourceIndex, active) {     
-            var deferred = $q.defer();     
+        /**
+         * toggleChargeCodes - toggle the visibility of a set of cc under a cg
+         *
+         * @param  {array} source      full array
+         * @param  {type} sourceIndex the index from the full array we need to look from
+         * @param  {type} active      show or hide
+         * @returns {object}             undefined
+         */
+        function toggleChargeCodes (source, sourceIndex, active) {
+            var deferred = $q.defer();
 
-            var process = function(source, index, active) {       
-                var nextIndex = index + 1;     
+            var process = function(source, index, active) {
+                var nextIndex = index + 1;
 
-                source[index].isChargeCodeActive = active;        
-                if ( source[index].isChargeCodePagination ) {      
-                    source[index].isEmpty = false;     
-                }      
+                source[index].isChargeCodeActive = active;
+                if ( source[index].isChargeCodePagination ) {
+                    source[index].isEmpty = false;
+                }
 
-                if ( source[nextIndex] && source[nextIndex].isChargeCode ) {      
-                    process(source, nextIndex, active);        
-                } else {       
-                    deferred.resolve();        
-                }      
-            };     
+                if ( source[nextIndex] && source[nextIndex].isChargeCode ) {
+                    process(source, nextIndex, active);
+                } else {
+                    deferred.resolve();
+                }
+            };
 
-            process(source, sourceIndex, active);     
-            return deferred.promise;       
-        }      
-
+            process(source, sourceIndex, active);
+            return deferred.promise;
+        }
 
         /**
          * toggleAllChargeCodes - toggle all the cc available on the ui
@@ -365,40 +367,50 @@ angular.module('sntRover')
          * @param  {type} active      show or hide
          * @returns {object}             undefined
          */
-        /**     
-          * ledgerInit - bootstrap initial execution        
-          *     
-          * @param {array} results fetched data from API        
-          * @returns {object} undefined     
-          */        
-        function ledgerInit (results) {        
-            var i, j;      
+        function toggleAllChargeCodes (source, active) {
+            var i, j;
 
-            $scope.ledgerEntries = [];        
-            for (i = 0, j = results.length; i < j; i++) {      
-                if ( results[i].is_ledger ) {      
-                    $scope.ledgerEntries.push( results[i] );       
-                }      
-            }      
-        }      
-
-        /**       
-          * totalRevenueInit - bootstrap initial execution      
-          *     
-          * @param {array} results fetched data from API        
-          * @returns {object} undefined     
-          */        
-        function totalRevenueInit (results) {      
-            var i, j;      
-
-            $scope.totalEntries = [];     
-            for (i = 0, j = results.length; i < j; i++) {      
-                if ( results[i].is_total_revenue ) {       
-                    $scope.totalEntries.push( results[i] );        
-                }      
-            }      
+            for (i = 0, j = source.length; i < j; i++) {
+                if ( source[i].isChargeCode && ! source[i].isEmpty ) {
+                    source[i].isChargeCodeActive = active;
+                }
+            }
         }
 
+
+        /**
+         * ledgerInit - bootstrap initial execution
+         *
+         * @param {array} results fetched data from API
+         * @returns {object} undefined
+         */
+        function ledgerInit (results) {
+            var i, j;
+
+            $scope.ledgerEntries = [];
+            for (i = 0, j = results.length; i < j; i++) {
+                if ( results[i].is_ledger ) {
+                    $scope.ledgerEntries.push( results[i] );
+                }
+            }
+        }
+
+        /**
+         * totalRevenueInit - bootstrap initial execution
+         *
+         * @param {array} results fetched data from API
+         * @returns {object} undefined
+         */
+        function totalRevenueInit (results) {
+            var i, j;
+
+            $scope.totalEntries = [];
+            for (i = 0, j = results.length; i < j; i++) {
+                if ( results[i].is_total_revenue ) {
+                    $scope.totalEntries.push( results[i] );
+                }
+            }
+        }
 
         /**
          * processStatic - a helper function that will suffix '%'
@@ -449,29 +461,29 @@ angular.module('sntRover')
             }
         }
 
-        /**     
-          * chargeGroupInit - bootstrap initial execution       
-          *     
-          * @param {array} results fetched data from API        
-          * @returns {object} undefined     
-          */        
-        function chargeGroupInit (results) {       
-            $scope.cgEntries = prepareChargeGroupsCodes(results);      
-            fillAllChargeCodes($scope.cgEntries);      
-        }      
-        /*     
-         * Seperating payment group values     
-         * @param {array} results fetched data from API        
-         */        
-        function paymentGroupInit (results) {      
-            $scope.pgEntries = [];     
-            $scope.pgEntries = _.where(results, { is_payment_group: true });       
-            _.each($scope.pgEntries, function(paymentGroupItem) {      
-                paymentGroupItem.isPaymentGroupActive = false;     
-                 paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);     
-            });        
+        /**
+         * chargeGroupInit - bootstrap initial execution
+         *
+         * @param {array} results fetched data from API
+         * @returns {object} undefined
+         */
+        function chargeGroupInit (results) {
+            $scope.cgEntries = prepareChargeGroupsCodes(results);
+            fillAllChargeCodes($scope.cgEntries);
         }
+        /*
+         * Seperating payment group values
+         * @param {array} results fetched data from API
+         */
+        function paymentGroupInit (results) {
+            $scope.pgEntries = [];
+            $scope.pgEntries = _.where(results, { is_payment_group: true });
+            _.each($scope.pgEntries, function(paymentGroupItem) {
+                paymentGroupItem.isPaymentGroupActive = false;
 
+                paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);
+            });
+        }
         /*
          * Seperating balance
          * @param {array} results fetched data from API
