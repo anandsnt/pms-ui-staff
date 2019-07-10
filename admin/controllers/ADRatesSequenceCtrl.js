@@ -10,7 +10,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                     $scope.$emit('hideLoader');
                 };
 
-                $scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess,onError);
+                $scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess, onError);
             },
             initializeView = function() {
                 var onFetchPrefereneOptions = function(data) {
