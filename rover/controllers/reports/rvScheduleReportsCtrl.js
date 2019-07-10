@@ -48,7 +48,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // helper function
         var findOccurance = function(item) {
             var occurance = 'Runs ',
-                frequency = _.find($scope.scheduleFrequency, { id: item.frequency_id }),
+                frequency = _.find($scope.originalScheduleFrequency, { id: item.frequency_id }),
                 description = '',
                 value = '';
 
@@ -584,7 +584,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 };
 
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
-                $scope.scheduleFrequency = payload.scheduleFrequency;
+                $scope.originalScheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
@@ -634,10 +634,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
                 );
 
-                $scope.scheduleFreqType = _.map($scope.scheduleFrequency, function(freq) {
+                $scope.originalScheduleFreqType = _.map($scope.originalScheduleFrequency, function(freq) {
                     return {
                         id: freq.id,
-                        value: getValue(freq.value)
+                        value: getValue(freq.value),
+                        originalValue: freq.value
                     };
                 });
 
@@ -737,6 +738,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.updateViewCol($scope.viewColsActions.FOUR);
 
                 processScheduleDetails(item);
+                filterScheduleFrequency($scope.selectedEntityDetails);
                 setupFilters();
                 applySavedFilters();
 
@@ -764,6 +766,86 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
         };
 
+        /**
+         * Set the required frequency optios for each of the reports
+         * @param {Object} item report object
+         * @return { void }
+         */
+        var filterScheduleFrequency = function (item) {
+            var dailyOnly = _.find($scope.originalScheduleFrequency, { value: 'DAILY' });
+
+            var dailyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'DAILY' }),
+                weeklyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'WEEKLY' }),
+                monthlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'MONTHLY' }),
+                hourlyTypeOnly = _.find($scope.originalScheduleFreqType, { originalValue: 'HOURLY' });
+
+            var weeklyOnly = _.find($scope.originalScheduleFrequency, { value: 'WEEKLY' }),
+                monthlyOnly = _.find($scope.originalScheduleFrequency, { value: 'MONTHLY' }),
+                hourlyOnly = _.find($scope.originalScheduleFrequency, { value: 'HOURLY' });
+
+            $scope.scheduleFrequency = [];
+            $scope.scheduleFreqType = [];
+
+            var forDaily = {
+                'Arrival': true,
+                'Departure': true,
+                'In-House Guests': true,
+                'Comparison': true,
+                'Guest Balance Report': true,
+                'Yearly Tax Report': true,
+                'Daily Production': true,
+                'Daily Production by Demographics': true,
+                'Daily Production by Rate': true
+            };
+
+            var forWeekly = {
+                'Arrival': true,
+                'Departure': true,
+                'In-House Guests': true,
+                'Comparison': true,
+                'Guest Balance Report': true,
+                'Yearly Tax Report': true
+            };
+            var forMonthly = {
+                'Arrival': true,
+                'Departure': true,
+                'In-House Guests': true,
+                'Comparison': true,
+                'Guest Balance Report': true,
+                'Yearly Tax Report': true
+            };
+
+            var forHourly = {
+                'Arrival': true,
+                'Departure': true,
+                'In-House Guests': true,
+                'Comparison': true,
+                'Guest Balance Report': true,
+                'Yearly Tax Report': true
+            };
+
+            if ( forHourly[item.report.title] ) {
+                $scope.scheduleFrequency.push(hourlyOnly);
+                $scope.scheduleFreqType.push(hourlyTypeOnly);
+            }
+
+            if ( forDaily[item.report.title] ) {
+                $scope.scheduleFrequency.push(dailyOnly);
+                $scope.scheduleFreqType.push(dailyTypeOnly);
+            }
+
+            if ( forWeekly[item.report.title] ) {
+                $scope.scheduleFrequency.push(weeklyOnly);
+                $scope.scheduleFreqType.push(weeklyTypeOnly);
+            }
+
+            if ( forMonthly[item.report.title] ) {
+                $scope.scheduleFrequency.push(monthlyOnly);
+                $scope.scheduleFreqType.push(monthlyTypeOnly);
+            }
+            
+        };
+
         $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
@@ -783,6 +865,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.updateViewCol($scope.viewColsActions.TWO);
 
             processScheduleDetails(item);
+            filterScheduleFrequency($scope.selectedEntityDetails);
             setupFilters();
             applySavedFilters();
 
@@ -944,10 +1027,20 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         // Checks whether file format dropdown should be shown or not
         $scope.shouldShowFileFormat = function (selectedEntity) {
-            if (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
+            if (selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE']) {
                 $scope.scheduleFormat = _.filter($scope.scheduleFormat, function(object) { return object.value !== "XML"; });
+            } else if (selectedEntity.report && ( selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE'] )) {
+                $scope.scheduleFormat = _.filter($scope.scheduleFormat, function (object) {
+                    return object.value === 'CSV';
+                });
             }
-            return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
+
+            return selectedEntity.report && (selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_DEMO'] ||
+                selectedEntity.report.title === reportNames['DAILY_PRODUCTION_RATE']);
         };
 
         // Listener for creating new report schedule
