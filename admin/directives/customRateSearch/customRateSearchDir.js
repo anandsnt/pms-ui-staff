@@ -34,7 +34,7 @@ admin.directive("customRateSearch", function() {
                         $scope.showRates = false;
                     }
                 },
-                onError = function () {
+                onError = function (err) {
                     $scope.errorMessage = err;
                     $scope.$emit('hideLoader');
                 };
