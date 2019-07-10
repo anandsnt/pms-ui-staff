@@ -23,6 +23,7 @@ admin.controller('adInterfaceMappingCtrl', [
         var mappingPartials = {
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
+            'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
             'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
