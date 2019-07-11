@@ -54,15 +54,23 @@
                             <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
                         </span>
-                        <span class="person-meta" ng-if="statement.folio_number">
-                            <strong >{{printData.translation.folio_number}}</strong> 
-                            {{statement.folio_number}}
-                        </span>
-                        <span class="person-meta" ng-if="statement.ar_invoice_number && !statement.folio_number">
+                        <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number">
                             <strong >{{printData.translation.ar_invoice_number}}</strong> 
                             {{statement.ar_invoice_number}}
                         </span>
-                        <span class="person-meta" ng-if="statement.invoice_number && !statement.ar_invoice_number && !statement.folio_number">
+                        <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && statement.folio_number">
+                            <strong >{{printData.translation.folio_number}}</strong> 
+                            {{statement.folio_number}}
+                        </span>
+                        <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && !statement.folio_number && statement.invoice_number">
+                            <strong >{{printData.translation.invoice_number}}</strong> 
+                            {{statement.invoice_number}}
+                        </span>
+                        <span class="person-meta" ng-if="!printData.is_print_ar_invoice_number_enabled && statement.folio_number">
+                            <strong >{{printData.translation.folio_number}}</strong> 
+                            {{statement.folio_number}}
+                        </span>
+                        <span class="person-meta" ng-if="!printData.is_print_ar_invoice_number_enabled && !statement.folio_number && statement.invoice_number">
                             <strong >{{printData.translation.invoice_number}}</strong> 
                             {{statement.invoice_number}}
                         </span>
