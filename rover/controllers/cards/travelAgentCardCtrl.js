@@ -6,6 +6,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		$scope.currentSelectedTab = 'cc-contact-info';
 		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 
+		// To store changes in other hotels' commissions data
+		var updatedOtherHotelsInfo = [];
+
 		$scope.hasPermissionToViewCommissionTab = function() {
 			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
 		};
@@ -284,6 +287,18 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				ngDialog.close();
 			}
 
+			/** Set the other hotels' commission details same as that of current hotel's,
+			 *  when contact information saved with global commission true.
+			 **/
+			if ($scope.contactInformation.commission_details.is_global_commission) {
+				angular.forEach($scope.contactInformation.commission_details.other_hotels_info, function (item) {
+					item.commission_type = $scope.contactInformation.commission_details.commission_type;
+					item.type = $scope.contactInformation.commission_details.type;
+					item.value = $scope.contactInformation.commission_details.value;
+					item.is_prepaid = $scope.contactInformation.commission_details.is_prepaid;
+				});
+			}
+
 			$scope.contactInformation.id = data.id;
 			$scope.reservationDetails.travelAgent.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
@@ -351,6 +366,10 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			saveContactInformation($scope.contactInformation);
 		};
 
+		var ifDataPresent = function(data, presentContactInfo) {
+			return (data && data.commission_details && presentContactInfo && presentContactInfo.commission_details);
+		};
+
 		/**
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
@@ -358,11 +377,22 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		var saveContactInformation = function(data, hotelInfoChanged) {
 			var dataUpdated = false;
 
-			if (!angular.equals(data, presentContactInfo)) {
+			updatedOtherHotelsInfo = [];
+
+			if (ifDataPresent(data, presentContactInfo) && !angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
+				angular.forEach(data.commission_details.other_hotels_info, function (next) {
+					angular.forEach(presentContactInfo.commission_details.other_hotels_info, function (present) {
+						if ((next.id === present.id) && !_.isMatch(next, present)) {
+							updatedOtherHotelsInfo.push(next);
+						}
+					});
+				});
 			}
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+
+				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
 
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];

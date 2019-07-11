@@ -63,8 +63,11 @@ function(
                 countries: function (RVCompanyCardSrv, guestcardDetailsAssets) {
                     return RVCompanyCardSrv.fetchCountryList();
                 },
-                idTypesList: function (RVCompanyCardSrv, guestcardDetailsAssets) {
-                    return RVCompanyCardSrv.fetchIdTypes();
+                idTypesList: function (RVGuestCardsSrv, guestcardDetailsAssets) {
+                    return RVGuestCardsSrv.fetchIdTypes();
+                },
+                genderTypesList: function (RVGuestCardsSrv, guestcardDetailsAssets) {
+                    return RVGuestCardsSrv.fetchGenderTypes();
                 }
             }
         });        
