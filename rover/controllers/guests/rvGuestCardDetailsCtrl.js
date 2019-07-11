@@ -10,8 +10,6 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVGuestCardSrv',
   'RVContactInfoSrv',
   'RVSearchSrv',
-  // 'idTypesList',
-  // 'genderTypesList',
   'rvPermissionSrv',
   'RVGuestCardsSrv',
   '$timeout',
@@ -296,10 +294,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
                 successCallBack: function(data) {
                     $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
-                    // $scope.guestCardData.contactInfo.genderTypeList = data.genderTypes;
                     $scope.idTypeList = data.idTypeList;
                     $scope.guestCardData.contactInfo.genderTypeList = data.genderTypeList;
-                    // guestCardData.contactInfo.genderTypeList = data.gender_list;
                 },
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;

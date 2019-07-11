@@ -42,11 +42,6 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 url += "?sync_with_external_pms=true";
             }
 
-            // RVBaseWebSrvV2.getJSON(url, param).then(function (data) {
-            //     deferred.resolve(data);
-            // }, function (data) {
-            //     deferred.reject(data);
-            // });
             if (!_guest.id) {
                 $log.debug('Guest not set!');
                 deferred.reject(['Guest not set']);
@@ -140,54 +135,17 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
          */
         this.fetchGuests = function (param) {
 
-             var deferred = $q.defer(),
+            var deferred = $q.defer(),
                 url = '/api/guest_details';
 
-            // if (!$rootScope.isStandAlone) {
-            //     url += "?sync_with_external_pms=true";
-            // }
-
-            // RVBaseWebSrvV2.getJSON(url, param).then(function (data) {
-            //     deferred.resolve(data);
-            // }, function (data) {
-            //     deferred.reject(data);
-            // });
-            // if (!_guest.id) {
-            //     $log.debug('Guest not set!');
-            //     deferred.reject(['Guest not set']);
-            // } else {
-                sntBaseWebSrv.getJSON(url, param).then(function(data) {
-                    // _guest.isFetched = true;
-                    deferred.resolve(data);
-                }, function(data) {
-                    deferred.reject(data);
-                });
-            // }
+            sntBaseWebSrv.getJSON(url, param).then(function(data) {
+                // _guest.isFetched = true;
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
             return deferred.promise;
 
-            // var deferred = $q.defer(),
-            //     data = {},
-            //     promises = [];
-
-            // promises.push($q.when().then(function() {
-            //     return service.fetchGuestDetails(param).then(function(response) {
-            //         data = response;
-            //     });
-            // }));
-            // promises.push($q.when().then(function() {                 
-            //     return service.fetchGuestAdminSettingsAndGender().then(function(response) {
-            //         data.guestAdminSettings = response.guestAdminSettings;
-            //         data.genderTypeList = response.genderTypes;
-            //     });
-            // }));
-
-            // $q.all(promises).then(function() {
-            //     deferred.resolve(data);
-            // }, function(errorMessage) {
-            //     deferred.reject(errorMessage);
-            // });
-
-            // return deferred.promise;
         };
         /*
          * CICO-63251
