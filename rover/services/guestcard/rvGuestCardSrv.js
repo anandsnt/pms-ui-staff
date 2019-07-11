@@ -5,7 +5,8 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
     function ($q, RVBaseWebSrvV2, sntBaseWebSrv) {
 
         var guestFieldData = {},
-            service = this;
+            service = this,
+            governmentIdTypes;
 
         this.PER_PAGE_COUNT = 50;
 
@@ -218,6 +219,29 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
              });
 
              return deffered.promise;
+        };
+
+        /**
+         * Service to get the government id types
+         * @return {Promise} promise
+         */
+        this.fetchIdTypes = function () {
+            var deffered = $q.defer(),
+                url = 'api/guest_details/government_id_types';
+
+            if (governmentIdTypes) {
+                deffered.resolve(governmentIdTypes);
+            } else {
+                sntBaseWebSrv.getJSON(url)
+                    .then(function (data) {
+                        governmentIdTypes = data.id_type_list;
+                        deffered.resolve(governmentIdTypes);
+                    }, function (error) {
+                        deffered.resolve(error);
+                    });
+            }
+
+            return deffered.promise;
         };
 
     }

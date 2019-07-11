@@ -12,7 +12,12 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', 'config', 'adInterfacesSrv'
         };
 
         $scope.changeTab = function(name) {
-            $scope.state.activeTab = name;
+            // CICO-64155 disable data sync tab when integration not enabled
+            if (name === "DATA" && !$scope.config.enabled) {
+                $scope.errorMessage = ["Please enable integration to perform Data Sync..."];
+            } else {
+                $scope.state.activeTab = name;
+            }
         };
 
         $scope.saveSetup = function() {

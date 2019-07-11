@@ -103,6 +103,12 @@ angular.module('sntRover')
             
         };
 
+        var printComparisonReportListener = $scope.$on("PRINT_COMPARISON_REPORT", function() {
+            $scope.$emit("PRINT_SELECTED_REPORT");
+        });
+
+        $scope.$on('$destroy', printComparisonReportListener);
+
         $scope.fetchChargeCodes = function (index, pageNo) {
             $scope.cgEntries[index].isChargeGroupActive = !$scope.cgEntries[index].isChargeGroupActive;
             if ( $scope.cgEntries[index].isChargeGroupActive ) {

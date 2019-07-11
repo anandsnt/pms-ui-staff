@@ -366,6 +366,10 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			saveContactInformation($scope.contactInformation);
 		};
 
+		var ifDataPresent = function(data, presentContactInfo) {
+			return (data && data.commission_details && presentContactInfo && presentContactInfo.commission_details);
+		};
+
 		/**
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
@@ -375,7 +379,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 
 			updatedOtherHotelsInfo = [];
 
-			if (!angular.equals(data, presentContactInfo)) {
+			if (ifDataPresent(data, presentContactInfo) && !angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
 				angular.forEach(data.commission_details.other_hotels_info, function (next) {
 					angular.forEach(presentContactInfo.commission_details.other_hotels_info, function (present) {
