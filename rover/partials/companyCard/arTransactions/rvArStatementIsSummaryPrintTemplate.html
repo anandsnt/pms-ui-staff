@@ -14,9 +14,11 @@
             <tr ng-if="printData.manual_balance_details.length > 0" class="person" ng-repeat="statement in printData.manual_balance_details">
                 <td>{{statement.departure_date}}</td>
                 <td>{{statement.name}}</td>
-                <td ng-if="statement.folio_number">{{statement.folio_number}}</td>
-                <td ng-if="statement.ar_invoice_number && !statement.folio_number">{{statement.ar_invoice_number}}</td>
-                <td ng-if="statement.invoice_number && !statement.ar_invoice_number && !statement.folio_number">{{statement.invoice_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number">{{statement.ar_invoice_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && !statement.folio_number && statement.invoice_number">{{statement.invoice_number}}</td>
+                <td ng-if="!printData.is_print_ar_invoice_number_enabled && statement.folio_number">{{statement.folio_number}}</td>
+                <td ng-if="!printData.is_print_ar_invoice_number_enabled && !statement.folio_number && statement.invoice_number">{{statement.invoice_number}}</td>
                 <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.debit}}</td>
                 <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credit}}</td>
                 <td class="align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due}}</td>
