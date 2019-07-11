@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'RVGuestCardsSrv', 'dateFilter', '$stateParams', 'RVContactInfoSrv',
-	function($scope, RVLikesSrv, RVGuestCardsSrv, dateFilter, $stateParams, RVContactInfoSrv) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'RVGuestCardsSrv', 'dateFilter', '$stateParams',
+	function($scope, RVLikesSrv, RVGuestCardsSrv, dateFilter, $stateParams) {
 
 
 		$scope.errorMessage = "";

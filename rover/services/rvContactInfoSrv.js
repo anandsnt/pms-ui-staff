@@ -1,6 +1,6 @@
 angular.module('sntRover').service('RVContactInfoSrv', [
-    '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$log', '$rootScope',
-    function($q, RVBaseWebSrv, rvBaseWebSrvV2, $log, $rootScope) {
+    '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$log',
+    function($q, RVBaseWebSrv, rvBaseWebSrvV2, $log) {
 
         var service = this;
 

@@ -8,8 +8,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
 
         var guestFieldData = {},
             service = this,
-            governmentIdTypes;
-        var service = this,
+            governmentIdTypes,
             _guest = {
                 id: null,
                 isFetched: false

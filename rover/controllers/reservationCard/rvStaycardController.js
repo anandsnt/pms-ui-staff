@@ -1,5 +1,5 @@
-sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
-	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout, RVContactInfoSrv) {
+sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardsSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
+	function($scope, $rootScope, RVGuestCardsSrv, ngDialog, $timeout, RVContactInfoSrv) {
 
 		// Browser chokes when he tries to do the following two thing at the same time:
 		// 		1. Slide in staycard
