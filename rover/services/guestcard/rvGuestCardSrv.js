@@ -63,7 +63,7 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
             var deferred = $q.defer();
             var url = '/admin/guest_card_settings/current_settings';
 
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
+            sntBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
