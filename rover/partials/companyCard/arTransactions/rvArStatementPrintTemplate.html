@@ -172,6 +172,10 @@
                             <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
                         </span>
+                        <span class="person-meta" ng-if="statement.invoice_number">
+                            <strong >{{printData.translation.invoice_number}}</strong> 
+                            {{statement.invoice_number}}
+                        </span>
                     </td>
 
                     <td class="charges-table-container" colspan="5">
