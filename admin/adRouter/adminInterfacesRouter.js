@@ -885,6 +885,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.fiskaltrustSetup', {
+        templateUrl: '/assets/partials/interfaces/fiskaltrust/adFiskaltrust.html',
+        controller: 'adFiskaltrustCtrl',
+        url: '/fiskaltrust',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('fiskaltrust');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('fiskaltrust');
+                }],
+            paymentChargeCodes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('fiskaltrust');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.global_feature_toggles', {
         templateUrl: '/assets/partials/interfaces/GlobalFeatureToggles/adGlobalFeatureToggles.html',
         controller: 'adGlobalFeatureTogglesCtrl',
