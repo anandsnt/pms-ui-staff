@@ -49,6 +49,9 @@ admin.directive("customRateSearch", function() {
                         $scope.rateCode = null;
                         $scope.rateName = null;
                         $scope.rateSearchResults = [];
+                        setTimeout(function() {
+                            $scope.$apply();
+                        }, 10);
                     } else {
                         initiateSearch();
                     }
