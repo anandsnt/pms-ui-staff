@@ -159,7 +159,7 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 			// 		Hence, in order to get the updated list of cards against a guest, make the guest details request before
 			// fetching the card details
             if (!$rootScope.isStandAlone &&
-                !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                !RVGuestCardsSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
                 $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
                     successCallBack: function(data) {
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);

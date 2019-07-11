@@ -2,24 +2,62 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
     '$q',
     'rvBaseWebSrvV2',
     'sntBaseWebSrv',
-    function ($q, RVBaseWebSrvV2, sntBaseWebSrv) {
+    '$rootScope',
+    '$log',
+    function ($q, RVBaseWebSrvV2, sntBaseWebSrv, $rootScope, $log) {
 
         var guestFieldData = {},
             service = this,
             governmentIdTypes;
+        var service = this,
+            _guest = {
+                id: null,
+                isFetched: false
+            };
+
+        service.setGuest = function(id) {
+            service.resetGuest();
+            _guest.id = parseInt(id, 10);
+
+        };
+
+        service.isGuestFetchComplete = function(id) {
+            id = parseInt(id, 10);
+            return _guest.id === id && _guest.isFetched;
+        };
+
+        service.resetGuest = function() {
+            _guest.id = null;
+            _guest.isFetched = false;
+        };
 
         this.PER_PAGE_COUNT = 50;
 
 
         service.fetchGuestDetails = function(param) {
             var deferred = $q.defer(),
-                url = '/api/guest_details';
+                url = '/api/guest_details/' + param;
 
-            RVBaseWebSrvV2.getJSON(url, param).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
+            if (!$rootScope.isStandAlone) {
+                url += "?sync_with_external_pms=true";
+            }
+
+            // RVBaseWebSrvV2.getJSON(url, param).then(function (data) {
+            //     deferred.resolve(data);
+            // }, function (data) {
+            //     deferred.reject(data);
+            // });
+            if (!_guest.id) {
+                $log.debug('Guest not set!');
+                deferred.reject(['Guest not set']);
+            } else {
+                sntBaseWebSrv.getJSON(url).then(function(data) {
+                    _guest.isFetched = true;
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
             return deferred.promise;
         };
         /*
@@ -41,19 +79,52 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
         this.fetchGuestAdminSettingsAndGender = function (param) {
 
             var deferred = $q.defer(),
-                data = {};
+                data = {},
+                promises = [];
 
-            $q.when().then(function() {
+            promises.push($q.when().then(function() {
                 return service.fetchGuestAdminSettings(param).then(function(response) {
                     data.guestAdminSettings = response;
                 });
-            })
-            .then(function() {                 
+            }));
+            promises.push($q.when().then(function() {                 
                 return service.fetchGenderTypes().then(function(response) {
-                    data.genderTypes = response;
+                    data.genderTypeList = response;
                 });
-            })            
-            .then(function() {
+            }));
+            promises.push($q.when().then(function() {                 
+                return service.fetchIdTypes().then(function(response) {
+                    data.idTypeList = response;
+                });
+            }));           
+            $q.all(promises).then(function() {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
+
+        this.fetchGuestDetailsInformation = function (param) {
+
+            var deferred = $q.defer(),
+                data = {},
+                promises = [];
+
+            promises.push($q.when().then(function() {
+                return service.fetchGuestDetails(param).then(function(response) {
+                    data = response;
+                });
+            }));
+            promises.push($q.when().then(function() {                 
+                return service.fetchGuestAdminSettingsAndGender().then(function(response) {
+                    data.guestAdminSettings = response.guestAdminSettings;
+                    data.genderTypeList = response.genderTypes;
+                });
+            }));
+
+            $q.all(promises).then(function() {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
@@ -69,21 +140,54 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
          */
         this.fetchGuests = function (param) {
 
-            var deferred = $q.defer(),
-                data = {};
+             var deferred = $q.defer(),
+                url = '/api/guest_details';
 
-            $q.when().then(function() {
-                return service.fetchGuestDetails(param).then(function(response) {
-                    data = response;
+            // if (!$rootScope.isStandAlone) {
+            //     url += "?sync_with_external_pms=true";
+            // }
+
+            // RVBaseWebSrvV2.getJSON(url, param).then(function (data) {
+            //     deferred.resolve(data);
+            // }, function (data) {
+            //     deferred.reject(data);
+            // });
+            // if (!_guest.id) {
+            //     $log.debug('Guest not set!');
+            //     deferred.reject(['Guest not set']);
+            // } else {
+                sntBaseWebSrv.getJSON(url, param).then(function(data) {
+                    // _guest.isFetched = true;
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
                 });
-            })       
-            .then(function() {
-                deferred.resolve(data);
-            }, function(errorMessage) {
-                deferred.reject(errorMessage);
-            });
-
+            // }
             return deferred.promise;
+
+            // var deferred = $q.defer(),
+            //     data = {},
+            //     promises = [];
+
+            // promises.push($q.when().then(function() {
+            //     return service.fetchGuestDetails(param).then(function(response) {
+            //         data = response;
+            //     });
+            // }));
+            // promises.push($q.when().then(function() {                 
+            //     return service.fetchGuestAdminSettingsAndGender().then(function(response) {
+            //         data.guestAdminSettings = response.guestAdminSettings;
+            //         data.genderTypeList = response.genderTypes;
+            //     });
+            // }));
+
+            // $q.all(promises).then(function() {
+            //     deferred.resolve(data);
+            // }, function(errorMessage) {
+            //     deferred.reject(errorMessage);
+            // });
+
+            // return deferred.promise;
         };
         /*
          * CICO-63251
