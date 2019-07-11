@@ -57,9 +57,9 @@ function(
                    if ($stateParams.guestId) {
                         RVGuestCardsSrv.setGuest($stateParams.guestId);
                         return RVGuestCardsSrv.fetchGuestDetailsInformation($stateParams.guestId);
-                   } else {
+                    } else {
                         return RVGuestCardsSrv.fetchGuestAdminSettingsAndGender();
-                   }                                 
+                    }                                 
                 },
                 countries: function (RVCompanyCardSrv, guestcardDetailsAssets) {
                     return RVCompanyCardSrv.fetchCountryList();
