@@ -1,4 +1,10 @@
-angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', 
+	'$q', 
+	'RVBaseWebSrv', 
+	'rvBaseWebSrvV2',
+	'$filter',
+	'$rootScope',
+	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $filter, $rootScope) {
 
 	var that = this;
 
@@ -30,7 +36,7 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			"home_town": data.home_town,
 			"place_of_residence": data.place_of_residence,
 			"country_code": data.country_code,
-			"birth_day": data.birth_day
+			"birthday": $filter('date')(tzIndependentDate(data.birth_day), "MM-dd-yyyy")
 		};
 		
 		dataToPost.address = {};
