@@ -53,21 +53,16 @@ function(
                 loadPaymentModule: function (jsMappings, loadPaymentMapping) {
                     return jsMappings.loadPaymentModule();
                 },
-                contactInfo: function (RVContactInfoSrv, guestcardDetailsAssets, $stateParams) {  
+                contactInfo: function (guestcardDetailsAssets, $stateParams, RVGuestCardsSrv) {  
                    if ($stateParams.guestId) {
-                     RVContactInfoSrv.setGuest($stateParams.guestId);
-                     return RVContactInfoSrv.getGuestDetails();
-                   }                 
-                   return {};                    
+                        RVGuestCardsSrv.setGuest($stateParams.guestId);
+                        return RVGuestCardsSrv.fetchGuestDetailsInformation($stateParams.guestId);
+                    } else {
+                        return RVGuestCardsSrv.fetchGuestAdminSettingsAndGender();
+                    }                                 
                 },
                 countries: function (RVCompanyCardSrv, guestcardDetailsAssets) {
                     return RVCompanyCardSrv.fetchCountryList();
-                },
-                idTypesList: function (RVCompanyCardSrv, guestcardDetailsAssets) {
-                    return RVCompanyCardSrv.fetchIdTypes();
-                },
-                genderTypesList: function (RVGuestCardsSrv, guestcardDetailsAssets) {
-                    return RVGuestCardsSrv.fetchGenderTypes();
                 }
             }
         });        

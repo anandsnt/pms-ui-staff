@@ -16,6 +16,7 @@ sntRover.controller('reservationActionsController', [
     'RVContactInfoSrv',
     'rvUtilSrv',
     'RVBillCardSrv',
+    'RVGuestCardsSrv',
     '$stateParams',
     function($rootScope,
         $scope,
@@ -34,6 +35,7 @@ sntRover.controller('reservationActionsController', [
         RVContactInfoSrv,
         rvUtilSrv,
         RVBillCardSrv,
+        RVGuestCardsSrv,
         $stateParams) {
 
 				BaseCtrl.call(this, $scope);
@@ -361,7 +363,7 @@ sntRover.controller('reservationActionsController', [
             $scope.showVehicleCountryMark = false;
             $scope.showDateOfBirth = false;
 
-            $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                 successCallBack: function(data) {
                     $scope.guestCardData.contactInfo = data;
                     $scope.showJobTitle = $scope.guestCardData.contactInfo.guestAdminSettings.job_title.is_mandatory_on_guest_card_creation;
@@ -386,7 +388,8 @@ sntRover.controller('reservationActionsController', [
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;
                     $scope.$emit('hideLoader');
-                }
+                },
+                params: $scope.guestCardData.userId
             });         
         };
 

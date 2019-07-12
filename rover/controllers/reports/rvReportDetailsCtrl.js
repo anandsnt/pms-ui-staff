@@ -652,6 +652,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.hasNoResults = _.isEmpty($scope.$parent.results);
             $scope.showPrintOption = true;
             $scope.showPrintOptionForYearlyTax = false; // CICO-51364 - Used only for yearly vat report
+            $scope.showPrintOptionForComparisonReport = false;
 
             // a very different parent template / row template / content template for certain reports
             // otherwise they all will share the same template
@@ -713,6 +714,8 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['COMPARISION_BY_DATE']:
                     $scope.hasReportTotals = false;
                     $scope.showReportHeader = true;
+                    $scope.showPrintOption = false;
+                    $scope.showPrintOptionForComparisonReport = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
                     break;
 
@@ -806,7 +809,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showReportHeader = true;
                     $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
-                    break;
+                    break;                  
 
                 default:
                     $scope.hasReportTotals = true;
@@ -1423,7 +1426,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.refreshScroll();
         });
 
-        var onPrintYearlyTax =  $scope.$on("YEARLY_TAX_REPORT_PRINT", function() {
+        var onPrintYearlyTax =  $scope.$on("PRINT_SELECTED_REPORT", function() {
             printReport();
         });
 
@@ -1487,6 +1490,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
         $scope.fetchFullYearlyTaxReport = function() {
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
+        };
+
+        $scope.printComparisonReport = function() {
+            $scope.$broadcast("PRINT_COMPARISON_REPORT");
         };
         /*
          * Method to get the reservations status

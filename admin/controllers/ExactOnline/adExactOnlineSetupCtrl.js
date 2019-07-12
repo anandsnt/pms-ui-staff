@@ -1,90 +1,65 @@
-admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnlineSetupValues', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints',
-    function($scope, $rootScope, exactOnlineSetupValues, adExactOnlineSetupSrv, dateFilter, endPoints) {
-
+admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnlineSetupSrv', 'dateFilter', 'endPoints', 'config', 'adInterfacesSrv',
+    function($scope, $rootScope, adExactOnlineSetupSrv, dateFilter, endPoints, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
-
         $scope.exportOptions = {
             date: new tzIndependentDate($rootScope.businessDate).addDays(-1)
         };
 
-        $scope.datePickerOptions = {
-            dateFormat: $rootScope.jqDateFormat,
-            numberOfMonths: 1,
-            maxDate: $scope.exportOptions.date,
-            changeYear: true,
-            changeMonth: true,
-            beforeShow: function() {
-                $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
-            },
-            onClose: function() {
-                $('#ui-datepicker-overlay').remove();
-            }
+        $scope.state = {
+            activeTab: 'SETTING'
         };
+
+        $scope.integration = "EXACTONLINE";
 
         /**
          * when clicked on check box to enable/diable pabx
          * @return {undefined}
          */
         $scope.toggleExactOnlineEnabled = function() {
-            $scope.exactOnlineSetup.enabled = !$scope.exactOnlineSetup.enabled;
+            $scope.config.enabled = !$scope.config.enabled;
         };
 
-        /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfExactOnlineSetup = function() {
-            $scope.goBackToPreviousState();
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
         };
 
+        $scope.onUrlChange = function() {
+            $scope.config.authorized = false;
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
+                params: {
+                    integration: $scope.integration.toLowerCase(),
+                    settings: {
+                        enabled: $scope.config.enabled,
+                        endpoint: $scope.config.endpoint,
+                        authorized: $scope.config.authorized,
+                        balancing_account_code: $scope.config.balancing_account_code,
+                        journal_code: $scope.config.journal_code
+                    }
+                },
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "Regional Endpoint changed, please re-authenticate!";
+                    adExactOnlineSetupSrv.fetchExactOnLineConfiguration().then(function(settings) {
+                        $scope.config = settings;
+                    });
+                }
+            });
+        };
         /**
          * when we clicked on save button
          * @return {undefined}
          */
         $scope.saveExactOnlineSetup = function() {
-            var options = {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    enabled: $scope.exactOnlineSetup.enabled,
-                    journal_code: $scope.exactOnlineSetup.journal_code,
-                    balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
-                    endpoint: $scope.exactOnlineSetup.endpoint
+                    integration: $scope.integration.toLowerCase(),
+                    settings: $scope.config
                 },
-                successCallBack: successCallBackOfExactOnlineSetup
-            };
-
-            $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
-        };
-
-        $scope.runExport = function() {
-            var options = {
-                params: {
-                    data: {
-                        "date": dateFilter($scope.exportOptions.date, $rootScope.dateFormatForAPI)
-                    }
-                },
-                successCallBack: function() {
-                    $scope.successMessage = 'Exact Online Export Started!';
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = "SUCCESS: Settings Updated!";
                 }
-            };
-
-            $scope.callAPI(adExactOnlineSetupSrv.runExactOnlineExport, options);
-        };
-
-        $scope.onURLChange = function() {
-            var options = {
-                params: {
-                    enabled: $scope.exactOnlineSetup.enabled,
-                    authorized: false,
-                    journal_code: $scope.exactOnlineSetup.journal_code,
-                    balancing_account_code: $scope.exactOnlineSetup.balancing_account_code,
-                    endpoint: $scope.exactOnlineSetup.endpoint
-                },
-                successCallBack: function(exactOnlineSetupValues) {
-                    $scope.exactOnlineSetup = exactOnlineSetupValues;
-                }
-            };
-
-            $scope.callAPI(adExactOnlineSetupSrv.saveExactOnLineConfiguration, options);
+            });
         };
 
         /**
@@ -108,7 +83,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'exactOnline
                 $scope.$emit("changedSelectedMenu", interfacesMenuIndex);
             }
 
-            $scope.exactOnlineSetup = exactOnlineSetupValues;
+            $scope.config = config;
 
             $scope.callAPI(adExactOnlineSetupSrv.fetchJournalsList, {
                 successCallBack: function(journalsList) {

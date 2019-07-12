@@ -10,7 +10,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                     $scope.$emit('hideLoader');
                 };
 
-                $scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess);
+                $scope.invokeApi(ADRateSequenceSrv.fetchSelections, {}, onFetchSelectionsSuccess, onError);
             },
             initializeView = function() {
                 var onFetchPrefereneOptions = function(data) {
@@ -18,9 +18,16 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                     fetchSelections();
                 };
 
-                $scope.invokeApi(ADRateSequenceSrv.fetchOptions, {}, onFetchPrefereneOptions);
+                $scope.invokeApi(ADRateSequenceSrv.fetchOptions, {}, onFetchPrefereneOptions, onError);
+            },
+            onError = function(err) {
+                $scope.errorMessage = err;
+                $scope.$emit('hideLoader');
             };
 
+        $scope.clearErrorMessage = function() {
+            $scope.errorMessage = [];
+        };
         $scope.sequenceState = {
             availableOptions: {
                 room_rate: [],
@@ -36,9 +43,6 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
             }
         };
 
-            // --------------------------------------------------------------------------- //
-
-
         $scope.changePreference = function(type, option) {
             $scope.sequenceState.selectedOptions[type] = angular.copy(option);
             if ( type === 'dashboard') {
@@ -48,7 +52,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 
         $scope.saveRateSortPreferences = function() {
             var onSaveSuccess = function(data) {
-                    $scope.$emit('hideLoader');
+                    initializeView();
                 },
                 selectedDashboardRate = $scope.sequenceState.selectedOptions['dashboard_rate'];
 
@@ -58,8 +62,9 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
                 'dashboard': $scope.sequenceState.selectedOptions['dashboard'].id,
                 'admin_dashboard': $scope.sequenceState.selectedOptions['admin_dashboard'].id,
                 'dashboard_rate_id': !selectedDashboardRate ? null : selectedDashboardRate.id
-            }, onSaveSuccess);
+            }, onSaveSuccess, onError);
         };
+
         $scope.goToCustomRateSequence = function() {
             $state.go('admin.customRatesSequence');
         };
