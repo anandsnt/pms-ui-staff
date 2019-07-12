@@ -20,14 +20,19 @@
                                     <li>Available Rooms</li>
                                     <li>Out of Order Rooms</li>
                                     <li>Occupied Rooms</li>
+                                    <li>Occupied Day Use Rooms</li>
                                     <li>Complimentary Rooms</li>
                                     <li>Occupied Rooms (Excl. Comp.)</li>
+                                    <li>Occupied Day Use Rooms (Excl. Comp.)</li>
                                     <li ng-show="marketExists"><strong>Occupied Rooms by Market</strong></li>
                                     <li ng-repeat="market in markets.data" ng-show="market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
 
                                     <li ng-class="{'double-row': !!results.nightly}"><strong>Total Occ.</strong>
+                                    </li>
+
+                                    <li ng-class="{'double-row': !!results.nightly}"><strong>Total Day Use Occ.</strong>
                                     </li>
                                     <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
                                     <li ng-class="{'double-row': !!results.nightly}"><strong>Total Occ. (Excl. Comp.)</strong>
@@ -37,7 +42,13 @@
                                     <li>RevPar</li>
                                     <li>ADR (Incl. Comp.)</li>
                                     <li>ADR (Excl. Comp.)</li>
+                                    <li>Day Use ADR (Incl. Comp.)</li>
+                                    <li>Day Use ADR (Excl. Comp.)</li>
                                     <li ng-show="marketExists"><strong>Room Revenue by Market</strong></li>
+                                    <li ng-repeat="market in markets.data" ng-show="market.selected">
+                                        <em>{{ market.name }}</em>
+                                    </li>
+                                    <li ng-show="marketExists"><strong>Day Use Room Revenue by Market</strong></li>
                                     <li ng-repeat="market in markets.data" ng-show="market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
@@ -45,9 +56,13 @@
                                     <li><strong>Charge Groups</strong></li>
                                     <li ng-repeat="chargeGroup in results.charge_groups"><em>{{chargeGroup.name}}</em>
                                     </li>
+                                    <li><strong>Day Use Charge Groups</strong></li>
+                                    <li ng-repeat="chargeGroup in results.charge_groups"><em>{{chargeGroup.name}}</em>
+                                    </li>
                                     <!-- ... repeat for all charge group titles -->
 
                                     <li><strong>Total Revenue</strong>
+                                    <li><strong>Total Day Use Revenue</strong>
                                     </li>
                             </ul>
                     </div>
@@ -108,6 +123,14 @@
                                             <tr ng-repeat="chargeGroup in results.charge_groups" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                             <span class="currency">{{getChargeCodeValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
+                                                    </td>
+                                            </tr>
+                                            <tr>
+                                                <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
+                                            </tr>
+                                            <tr ng-repeat="chargeGroup in results.day_use_charge_groups" ng-init="outerIndex = $index">
+                                                    <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                            <span class="currency">{{getChargeCodeDayUseValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
