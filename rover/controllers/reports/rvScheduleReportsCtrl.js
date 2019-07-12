@@ -443,7 +443,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // rvReportUtilsFac.js in future
         var setupFilters = function() {
             $scope.filters = {};
-            var codeSettings = $scope.$parent.codeSettings;
 
             $scope.filters.hasGeneralOptions = {
                 data: [],
@@ -509,10 +508,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
                 } else if (displayFilterNames[filter.value]) {
-                    if ((filter.value === 'INCLUDE_MARKET' && codeSettings['is_market_on']) ||
-                        (filter.value === 'INCLUDE_ORIGIN' && codeSettings['is_origin_on']) ||
-                        (filter.value === 'INCLUDE_SEGMENT' && codeSettings['is_segments_on']) ||
-                        (filter.value === 'INCLUDE_SOURCE' && codeSettings['is_source_on'])) {
+                    if (filter.value === 'INCLUDE_MARKET' ||
+                        filter.value === 'INCLUDE_ORIGIN' ||
+                        filter.value === 'INCLUDE_SEGMENT' ||
+                        filter.value === 'INCLUDE_SOURCE') {
                         processDisplayFilters(filter);
                     }
                 } else if (filter.value === 'RATE') {
