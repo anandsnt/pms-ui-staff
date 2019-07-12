@@ -4,7 +4,7 @@
             <h2>{{rate.name}}</h2>
 
             <span ng-show="rate.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction">{{eachRestriction.days}}</span>
-            <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk" >R</span>
+            <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk">R</span>
              <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
              <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
              <span class="corporate" ng-if="rate.isMember">MEMBER</span>
