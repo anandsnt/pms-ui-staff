@@ -106,10 +106,8 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 data = {},
                 promises = [];
 
-            promises.push(
-                service.fetchGuestDetails(param)
-            );
-            promises.push(service.fetchGuestAdminSettingsAndGender())
+            promises.push(service.fetchGuestDetails(param));
+            promises.push(service.fetchGuestAdminSettingsAndGender());
 
             $q.all(promises).then(function(response) {
                 data = response[0];
