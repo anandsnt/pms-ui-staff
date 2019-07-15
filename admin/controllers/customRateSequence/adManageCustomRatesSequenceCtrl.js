@@ -3,6 +3,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
         BaseCtrl.call(this, $scope);
         var init = function() {
                 $scope.sequenceList = [];
+                $scope.assignedRates = [];
                 $scope.selectedSequenceIndex = 0;
                 fetchSequences();
             },
@@ -21,7 +22,17 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
 
             },
             fetchAssignedRates = function() {
-
+                var successCallBackFetchAssignedRates = function (data) {
+                        $scope.assignedRates = data;
+                    },
+                    params = {
+                        id: 26
+                    },
+                    options = {
+                        successCallBack: successCallBackFetchAssignedRates
+                        params: params
+                    };
+                $scope.callAPI(ADRateSequenceSrv.fetchRatesInSequence, options);
             };
 
         $scope.selectSequence = function() {
