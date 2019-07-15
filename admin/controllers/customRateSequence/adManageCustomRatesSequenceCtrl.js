@@ -29,7 +29,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                         id: 26
                     },
                     options = {
-                        successCallBack: successCallBackFetchAssignedRates
+                        successCallBack: successCallBackFetchAssignedRates,
                         params: params
                     };
                 $scope.callAPI(ADRateSequenceSrv.fetchRatesInSequence, options);
