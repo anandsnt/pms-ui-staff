@@ -106,19 +106,13 @@ angular.module('sntRover').service('RVGuestCardsSrv', [
                 data = {},
                 promises = [];
 
-            promises.push($q.when().then(function() {
-                return service.fetchGuestDetails(param).then(function(response) {
-                    data = response;
-                });
-            }));
-            promises.push($q.when().then(function() {                 
-                return service.fetchGuestAdminSettingsAndGender().then(function(response) {
-                    data.guestAdminSettings = response.guestAdminSettings;
-                    data.genderTypeList = response.genderTypes;
-                });
-            }));
+            promises.push(service.fetchGuestDetails(param));
+            promises.push(service.fetchGuestAdminSettingsAndGender());
 
-            $q.all(promises).then(function() {
+            $q.all(promises).then(function(response) {
+                data = response[0];
+                data.guestAdminSettings = response[1].guestAdminSettings;
+                data.genderTypeList = response[1].genderTypes;
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);

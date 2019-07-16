@@ -46,6 +46,9 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             // lets fetch post_types too
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
+                data = _.reject(data, function(item) {
+                   return item.value === 'WEEKLY';
+                });
                 $scope.postTypes = data;
                 $scope.$emit('hideLoader');
             });
