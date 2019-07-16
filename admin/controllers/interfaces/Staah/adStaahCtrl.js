@@ -1,4 +1,4 @@
-admin.controller('adStaahCtrl', ['$scope', 'config', 'adInterfacesSrv',
+angular.module('admin').controller('adStaahController', ['$scope', 'config', 'adInterfacesSrv',
     function ($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
