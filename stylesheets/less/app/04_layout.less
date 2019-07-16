@@ -1285,13 +1285,117 @@ body { overflow: hidden; }
 	         
 	        /* Invoices ***/
 	        &.invoice-search {
+
+	            .invoice-search-type {
+	                width: 130px;
+	                background: rgba( 0, 0, 0, 0.1 );
+
+	                &:first-child {
+	                    margin: -10px -10px;
+	                    padding: 10px 10px;
+	                    height: 60px;
+	                }
+
+	                .select {
+	                    select {
+	                        text-transform: uppercase;
+	                    }
+	                }
+	            }
+
+	            .invoice-qr-code {
+	                .calc-width( 100, 130 );
+	                .box-shadow( none );
+
+	                .button {
+	                    padding: 0 15px;
+	                    font-size: 14px;
+
+	                    &:not(:last-child) {
+	                        margin-right: 15px;
+	                    }
+	                }
+	            }
+
+	            .select {
+	                &.with-label {
+
+	                    select {
+	                        padding: 15px 20px 0 10px;
+	                        font-size: 14px;
+	                    }
+
+	                    label {
+	                        position: absolute;
+	                        top: 0;
+	                        left: 10px;
+	                        font-size: 12px;
+	                        text-transform: uppercase;
+	                        color: @grey3;
+	                    }
+	                }
+	            }
+
 	            .search { 
-	                .calc-width(100, 200); 
+	                .calc-width(100, 655); 
+	            }
+
+	            .dates {
+	                width: 300px;
+	                .float;
+
+	                    .entry-data {
+	                        position: relative;
+	                        .calc-width( 50, 5 );
+	                        .faux-clickable;
+	                        .pull-left;
+
+	                        &:first-child { margin-right: 10px; }
+
+	                        label {
+	                            position: absolute;
+	                            top: 0;
+	                            left: 10px;
+	                            font-size: 12px;
+	                            text-transform: uppercase;
+	                            color: @grey3;
+	                        }
+
+	                        input {
+	                            font-size: 18px;
+	                            line-height: 25px;
+	                            font-weight: 600;
+	                            padding-top: 15px;
+	                            width: 100%;
+	                        }
+
+	                        .clear-query {
+	                            top: 2px;
+	                            background-color: @white;
+
+	                            .icons { 
+	                                top: 10.5px; 
+	                            }
+	                        }
+	                    }
 	            }
 
 	            .options {
-	                width: 180px;
+	                width: 215px;
 	                .pull-right;
+	            }
+
+	            .checkbox {
+	                font-size: 14px;
+	                text-transform: uppercase;
+	                text-align: left;
+	            }
+
+	            &.ar-invoice-search {
+	                .search { 
+	                    .calc-width(100, 430); 
+	                }
+	                .options { .hide(); }
 	            }
 	        }
 			
