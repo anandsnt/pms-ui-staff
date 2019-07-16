@@ -26,6 +26,7 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
                 jsLibRoot + 'fastclick/fastclick.min.js',
 				jsLibRoot + 'moment.min.js',
+                jsLibRoot + 'toastr/toastr.min.js',
 
                 // Eliminate all spec files
                 '!**/*.spec.js'
@@ -46,6 +47,7 @@ module.exports = {
                 sharedRoot + 'sntFeatureToggles/**/*.js',
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
                 sharedRoot + 'sntCanvasUtil/**/*.js',
+                sharedRoot + 'sntNotifications/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',

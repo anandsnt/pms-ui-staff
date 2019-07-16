@@ -17,8 +17,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     '$log',
     'ngDialog',
     'sntActivity',
+    'sntNotifySrv',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
-              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity) {
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity, sntNotifySrv) {
         var self = this,
             isNotTimeOut = false,
             timeOut,
@@ -2933,6 +2934,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.navigateToReportInbox = () => {
             $scope.closeDialog();
             $state.go('rover.reports.inbox');
+        };
+
+        $scope.later = () => {
+            $timeout(function () {
+                toastr.options.onclick = function () {
+                    $state.go('rover.reports.inbox');
+                };
+                toastr["info"]("Report Available in <a ui-sref='rover.reports.inbox'>Inbox</a>");
+
+            }, 2000);
+            $scope.closeDialog();
         };
 
         $scope.reload = function() {
