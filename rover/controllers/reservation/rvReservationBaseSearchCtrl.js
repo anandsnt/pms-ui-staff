@@ -449,6 +449,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
         };
 
+        // Handle validation popup close.
+        $scope.closeDialogAndRefresh = function(isRefresh) {
+            if (!!isRefresh) {
+                resetFilterBarAndRefreshDiary();
+            }
+            ngDialog.close();
+        };
+
         var showPopupForReservationWithUnassignedRoom = function() {
             ngDialog.open({
                 template: '/assets/partials/nightlyDiary/rvNightlyDiaryReservationWithUnassignedRoom.html',
@@ -467,6 +475,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 closeByEscape: false,
                 data: {
                     callbackAction: callbackAction
+                }
+            });
+        },
+        showWarningMessagePopup = function ( warningMessage ) {
+            ngDialog.open({
+                template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: {
+                    warningMessage: warningMessage,
+                    isRefresh: false
                 }
             });
         },
@@ -491,6 +512,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
                         }
+                        else if (houseData.house_availability <= 0 || roomTypeData.availability <= 0) {
+                            // No additional availability exists for the selected dates / times.
+                            showWarningMessagePopup('No additional availability exists for the selected Dates/Times');
+                        }
                         else if (roomTypeData.availability > 0 && roomTypeData.unassigned_reservations_present) {
                             // There are reservations with unassigned rooms.
                             // You can still proceed, but it might be good to assign those reservations first.
@@ -507,6 +532,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             // There are reservations with unassigned Rooms.
                             // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (houseData.house_availability <= 0) {
+                            // No additional availability exists for the selected dates / times.
+                            showWarningMessagePopup('No additional availability exists for the selected Dates/Times');
                         }
                         else if (houseData.unassigned_reservations_present) {
                             // There are reservations with unassigned rooms.
