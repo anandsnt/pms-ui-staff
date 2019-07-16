@@ -907,7 +907,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.staahSetup', {
         templateUrl: '/assets/partials/interfaces/staah/adStaah.html',
-        controller: 'adStaahCtrl',
+        controller: 'adStaahController',
+        controllerAs: 'vm',
         url: '/staah',
         resolve: {
             config: [
