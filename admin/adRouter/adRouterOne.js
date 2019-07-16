@@ -29,7 +29,10 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.users', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
-			url: '/users/:id'
+			url: '/users',
+            params: {
+			    id: null
+            }
 		});
 
 		$stateProvider.state('admin.adminUsers', {

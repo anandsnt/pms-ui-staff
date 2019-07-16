@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', '$transitions', 'sntActivity',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, $transitions, sntActivity) {
 
         // hide the loading text that is been shown when entering Admin
         $( ".loading-container" ).hide();
@@ -920,15 +920,6 @@ admin.controller('ADAppCtrl', [
             return $scope.menuOpen ? true : false;
         };
 
-
-        $scope.$on("showLoader", function() {
-            $scope.hasLoader = true;
-        });
-
-        $scope.$on("hideLoader", function() {
-            $scope.hasLoader = false;
-        });
-
         /*
         *  Handle inline styles inside ng-bind-html directive.
         *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
@@ -1020,14 +1011,30 @@ admin.controller('ADAppCtrl', [
          * @return {[integer]}              [description]
          */
         $scope.findMainMenuIndex = function(mainMenuName) {
-            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function(menu) {
+            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function (menu) {
                 return menu.menu_name === mainMenuName;
             }));
-            
+
             // if index is not defined, set it as current selected index
             index = _.isUndefined(index) ? $scope.selectedIndex : index;
             return index;
         };
+
+        $scope.startActivity = function (activity) {
+            sntActivity.start(activity);
+        };
+
+        $scope.stopActivity = function (activity) {
+            sntActivity.stop(activity);
+        };
+
+        $transitions.onCreate({}, function (transition) {
+            sntActivity.start('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
+        $transitions.onSuccess({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
 
         (function() {
             if (!adminMenuData.menus.length) {

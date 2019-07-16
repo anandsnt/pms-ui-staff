@@ -54,17 +54,28 @@ BaseCtrl = function($scope) {
 
     $scope.invokeApi = function (serviceApi, params, successCallback, failureCallback, loaderType) {
         // loaderType options are "BLOCKER", "NONE"
+        var identifier = _.uniqueId('API_REQ_');
 
         if (typeof loaderType === 'undefined') {
             loaderType = 'BLOCKER';
         }
         if (loaderType.toUpperCase() === 'BLOCKER') {
-            $scope.$emit('showLoader');
+            // This method has to be implemented in the root controllers
+            if ($scope.startActivity) {
+                $scope.startActivity(identifier);
+            }
         }
         successCallback = (typeof successCallback === 'undefined') ? $scope.fetchedCompleted : successCallback;
         failureCallback = (typeof failureCallback === 'undefined') ? $scope.fetchedFailed : failureCallback;
 
-        return serviceApi(params).then(successCallback, failureCallback);
+        return serviceApi(params)
+            .then(successCallback, failureCallback)
+            .finally(function () {
+                // This method has to be implemented in the root controllers
+                if ($scope.stopActivity) {
+                    $scope.stopActivity(identifier);
+                }
+            });
 
     };
 
