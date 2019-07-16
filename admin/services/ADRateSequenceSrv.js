@@ -26,6 +26,18 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'sntBaseWeb
             return deferred.promise;
         };
 
+        this.fetchUnAssignedRates = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/rate_sequences/unassigned_sequence_rates';
+
+            ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchRatesInSequence = function(params) {
             var deferred = $q.defer(),
                 url = '/api/rate_sequences/fetch_sequence_rates';
