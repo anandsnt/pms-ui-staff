@@ -210,7 +210,9 @@ module.exports = {
             'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css'],
             'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css'],
             'guestweb_ihg': [ themeCSSRoot + 'guestweb_ihg.css'],
-            'guestweb_manchebo_beach_resort': [ themeCSSRoot + 'guestweb_manchebo_beach_resort.css']
+            'guestweb_manchebo_beach_resort': [ themeCSSRoot + 'guestweb_manchebo_beach_resort.css'],
+            'guestweb_hotel_zurzacherhof': [ themeCSSRoot + 'guestweb_hotel_zurzacherhof.css'],
+            'guestweb_snt_v3': [ themeCSSRoot + 'guestweb_snt.css'],
         };
     }
 };

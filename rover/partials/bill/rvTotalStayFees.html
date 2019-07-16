@@ -278,7 +278,7 @@
 					</strong>
 				</td>
 				<td>
-					<strong >
+					<strong ng-show="feesData.credits!='' && isBalanceShown(feesData.is_rate_suppressed)">
 						<span class="currency">{{currencySymbol}}</span>{{feesData.credits}}
 					</strong>
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">

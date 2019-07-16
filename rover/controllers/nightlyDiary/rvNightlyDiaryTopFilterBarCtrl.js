@@ -6,18 +6,23 @@ angular.module('sntRover')
         '$stateParams',
         '$filter',
         'ngDialog',
+        'rvUtilSrv',
+        'rvPermissionSrv',
         function(
             $scope,
             $rootScope,
             $state,
             $stateParams,
             $filter,
-            ngDialog
+            ngDialog,
+            rvUtilSrv,
+            rvPermissionSrv
         ) {
 
         BaseCtrl.call(this, $scope);
 
-        var isDateChangedFromInitialState = false;
+        var isDateChangedFromInitialState = false,
+            TIME_OFFSET = 15;
 
         /*
          * Utility method to shift date.
@@ -84,10 +89,33 @@ angular.module('sntRover')
             $scope.diaryData.secondMonthDateList = [];
             $scope.diaryData.hasMultipleMonth = false;
             $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
+        },
+        initBookFilterData = function() {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
+
+            if ($rootScope.businessDate > $scope.diaryData.fromDate) {
+                bookRoomViewFilter.fromDate = $rootScope.businessDate;
+            }
+            else {
+                bookRoomViewFilter.fromDate = $scope.diaryData.fromDate;
+            }
+            bookRoomViewFilter.toDate = moment(tzIndependentDate(bookRoomViewFilter.fromDate)).add(1, 'days')
+                .format($rootScope.momentFormatForAPI);
+
+            bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
+            bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
+            bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
+
+            $scope.diaryData.rightFilter = 'RESERVATION_FILTER';
         };
 
-        // Show calendar popup.
-        $scope.clickedDatePicker = function() {
+        /* 
+         *  Show calendar popup.
+         *  @param {string} [clicked component name - 'MAIN_FILTER', 'BOOK_FILTER_ARRIVAL', 'BOOK_FILTER_DEPARTURE']
+         */
+        $scope.clickedDatePicker = function( clickedFrom ) {
+            $scope.clickedFrom = clickedFrom;
             ngDialog.open({
                 template: '/assets/partials/nightlyDiary/rvNightlyDiaryDatePicker.html',
                 controller: 'RVNightlyDiaryTopFilterDatePickerController',
@@ -97,26 +125,49 @@ angular.module('sntRover')
         };
 
         // Catching event from date picker controller while date is changed.
-        $scope.addListener('DATE_CHANGED', function () {
-            var isRightShift = true;
+        $scope.addListener('DATE_CHANGED', function ( event, clickedFrom ) {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
 
-            if ($scope.diaryData.numberOfDays === 7) {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift, true);
+            if ( clickedFrom === 'MAIN_FILTER') {
+                var isRightShift = true;
+
+                if ($scope.diaryData.numberOfDays === 7) {
+                    $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 7, isRightShift, true);
+                }
+                else {
+                    $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
+                }
+                $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
+                $scope.$emit('UPDATE_RESERVATIONLIST');
+                isDateChangedFromInitialState = true;
+
+                // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
+                // Toggle back to reservation mode.
+                var dateDiff = moment($rootScope.businessDate)
+                                .diff(moment($scope.diaryData.fromDate), 'days');
+
+                if ($scope.diaryData.isBookRoomViewActive && dateDiff > 6) {
+                    $scope.toggleBookedOrAvailable();
+                }
             }
-            else {
-                $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
+            else if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
+                // For BOOK filter date selection.
+                // Handle 0 night scenario. Reset the time selections to '09:00 AM' & '05:00 PM'.
+                bookRoomViewFilter.arrivalTime = '09:00';
+                bookRoomViewFilter.departureTime = '17:00';
+                
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null, TIME_OFFSET);
             }
-            $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST');
-            $scope.$emit('UPDATE_RESERVATIONLIST');
-            isDateChangedFromInitialState = true;
-
-            // CICO-63546 : if user already selects avl tab, and then navigating to past dates 
-            // Toggle back to reservation mode.
-            var dateDiff = moment($rootScope.businessDate)
-                            .diff(moment($scope.diaryData.fromDate), 'days');
-
-            if ($scope.diaryData.isBookRoomViewActive && dateDiff > 6) {
-                $scope.toggleBookedOrAvailable();
+            else if (clickedFrom === 'BOOK_FILTER_ARRIVAL' || clickedFrom === 'BOOK_FILTER_DEPARTURE') {
+                if (bookRoomViewFilter.arrivalTime !== bookRoomViewFilter.hotelCheckinTime) {
+                    bookRoomViewFilter.arrivalTime = bookRoomViewFilter.hotelCheckinTime;
+                }
+                if (bookRoomViewFilter.departureTime !== bookRoomViewFilter.hotelCheckoutTime) {
+                    bookRoomViewFilter.departureTime = bookRoomViewFilter.hotelCheckoutTime;
+                }
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration();
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration();
             }
         });
         // Catching event from main controller, when API is completed.
@@ -137,12 +188,6 @@ angular.module('sntRover')
                 $scope.diaryData.numberOfDays = 21;
             }
             $scope.$emit('UPDATE_RESERVATIONLIST');
-        };
-
-        // To toggle Booked/Available button.
-        $scope.toggleBookedOrAvailable = function() {
-            $scope.diaryData.isBookRoomViewActive = !($scope.diaryData.isBookRoomViewActive);
-            $scope.$emit('TOGGLE_BOOKED_AVAIALBLE');
         };
 
         /*
@@ -195,6 +240,11 @@ angular.module('sntRover')
             $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             $scope.$emit('UPDATE_UNASSIGNED_RESERVATIONLIST', 'RESET');
             $scope.$emit('HIDE_ASSIGN_ROOM_SLOTS');
+
+            // If book view is active, reset to reservation view
+            if ( $scope.diaryData.showBookFilterPanel && $scope.diaryData.isBookRoomViewActive) {
+                $scope.toggleBookedOrAvailable();
+            }
         };
 
         // To toggle filter and unassigned list.
@@ -202,10 +252,10 @@ angular.module('sntRover')
             var filterHasValue = ( $scope.diaryData.selectedRoomTypes.length > 0 || $scope.diaryData.selectedFloors.length > 0 );
 
             // While switch from Filter Bar to Unassigned List Bar, Clear filters and Refresh Diary.
-            if ( filterHasValue && $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION') {
+            if ( filterHasValue && $scope.diaryData.rightFilter !== activeTab && activeTab === 'UNASSIGNED_RESERVATION' && !$scope.diaryData.isReservationSelected) {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             }
-            else if (activeTab === 'RESERVATION_FILTER' && $scope.diaryData.isAssignRoomViewActive) {
+            else if (activeTab === 'RESERVATION_FILTER' && $scope.diaryData.isAssignRoomViewActive && !$scope.diaryData.isReservationSelected) {
                 $scope.$emit('RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY');
             }
 
@@ -218,6 +268,11 @@ angular.module('sntRover')
                 $scope.diaryData.rightFilter = activeTab;
             }
         };
+
+        // Catching event from main controller, when API is completed.
+        $scope.addListener('TOGGLE_FILTER', function(e, value) {
+            $scope.toggleFilter(value);
+        });
 
         // Handle Nigthtly/Hourly toggle
         $scope.toggleHourlyNightly = false;
@@ -264,6 +319,11 @@ angular.module('sntRover')
             return hideToggleMenu;
         };
 
+        // Flag CreateReservation permission
+        var hasCreateReservationPermission = function() {
+            return rvPermissionSrv.getPermissionValue('CREATE_RESERVATION');
+        };
+
         // CICO-63546 : Disable RES/AVL toggle -
         // While RES mode is active & diff bw/n businessDate and FromDate > 6.
         $scope.disableAvlToggle = function() {
@@ -271,7 +331,7 @@ angular.module('sntRover')
                 dateDiff = moment($rootScope.businessDate)
                             .diff(moment($scope.diaryData.fromDate), 'days');
 
-            if (!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) {
+            if ((!$scope.diaryData.isBookRoomViewActive && dateDiff > 6 ) || !hasCreateReservationPermission()) {
                 isHideAvlToggle = true;
             }
 
@@ -290,6 +350,45 @@ angular.module('sntRover')
             }
 
             return isHideAvlToggle;
+        };
+
+        // To toggle Booked/Available button.
+        $scope.toggleBookedOrAvailable = function() {
+            $scope.diaryData.showBookFilterPanel = !$scope.diaryData.showBookFilterPanel;
+            if ($scope.diaryData.showBookFilterPanel) {
+                initBookFilterData();
+            }
+            // Toggle back to VIEW mode from BOOK.
+            if ($scope.diaryData.isBookRoomViewActive) {
+                $scope.diaryData.isBookRoomViewActive = !$scope.diaryData.isBookRoomViewActive;
+                $scope.$emit('TOGGLE_BOOK_AVAILABLE');
+            }
+        };
+        
+        $scope.clickedFindRooms = function() {
+            $scope.diaryData.isBookRoomViewActive = true;
+            // Set nights count.
+            $scope.diaryData.bookRoomViewFilter.nights = moment($scope.diaryData.bookRoomViewFilter.toDate)
+                            .diff(moment($scope.diaryData.bookRoomViewFilter.fromDate), 'days');
+            $scope.$emit('TOGGLE_BOOK_AVAILABLE');
+        };
+        // Handle arrival time changes.
+        $scope.arrivalTimeChanged = function() {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
+
+            // Handle 0 night usecse
+            if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
+                bookRoomViewFilter.departureTimeList = rvUtilSrv.generateTimeDuration(bookRoomViewFilter.arrivalTime, null, TIME_OFFSET);
+            }
+        };
+        // Handle departure time changes.
+        $scope.departureTimeChanged = function() {
+            var bookRoomViewFilter = $scope.diaryData.bookRoomViewFilter;
+
+            // Handle 0 night usecse
+            if (bookRoomViewFilter.fromDate === bookRoomViewFilter.toDate) {
+                bookRoomViewFilter.arrivalTimeList = rvUtilSrv.generateTimeDuration(null, bookRoomViewFilter.departureTime, TIME_OFFSET * -1);
+            }
         };
 
         init();
