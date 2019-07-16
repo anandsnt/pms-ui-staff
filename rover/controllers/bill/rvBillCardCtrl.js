@@ -3307,6 +3307,15 @@ sntRover.controller('RVbillCardController',
 		});
 	};
 
+	$scope.openReceiptDialog = function() {
+		ngDialog.open({
+			template: '/assets/partials/popups/rvReceiptPopup.html',
+			controller: 'RVReceiptPopupController',
+			className: '',
+			scope: $scope
+		});
+	};
+
 	$scope.putInQueue = false;
 	$scope.init = function(reservationBillData) {
                 $scope.lastResBillData = reservationBillData;// used if refreshing screen manually
