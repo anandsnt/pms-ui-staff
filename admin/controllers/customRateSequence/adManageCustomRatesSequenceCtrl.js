@@ -49,7 +49,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             fetchRates = function() {
                 var successCallBackfetchUnAssignedRates = function (data) {
                         $scope.ratesList = data.results;
-                        updatePaginationState(data.total_count)
+                        updatePaginationState(data.total_count);
                     },
                     params = {
                         query: $scope.rateQuery,
@@ -61,6 +61,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                         successCallBack: successCallBackfetchUnAssignedRates,
                         params: params
                     };
+
                 $scope.callAPI(ADRateSequenceSrv.fetchUnAssignedRates, options);
             },
             fetchAssignedRates = function() {                
@@ -75,6 +76,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                         successCallBack: successCallBackFetchAssignedRates,
                         params: params
                     };
+                    
                 $scope.callAPI(ADRateSequenceSrv.fetchRatesInSequence, options);
             },
             ratesSearchCall = null,
