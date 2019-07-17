@@ -20,9 +20,10 @@ admin.controller('adTwinfieldSetupCtrl', [
         /**
          *
          * @return {undefined}
+         * @param {name} name of tab that was clicked
          */
-        $scope.toggleMappings = function() {
-            $scope.state.activeTab = $scope.state.activeTab === 'SETUP' ? 'MAPPING' : 'SETUP';
+        $scope.changeTab = function(name) {
+            $scope.state.activeTab = name;
         };
 
         /**
@@ -58,6 +59,7 @@ admin.controller('adTwinfieldSetupCtrl', [
         $scope.authorize = function() {
             $scope.callAPI(adTwinfieldSetupSrv.getAuthorizationURI, {
                 successCallBack: function(data) {
+                    // CICO-64149 Oauth redirect here. IFC will return this endpoint after successful authentication
                     $window.location.href = data.redirect_url;
                 }
             });
