@@ -55,6 +55,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.data.is_overlay_hotel = $scope.data.hotel_pms_type === 'OWS';
 				$scope.swedenCountryId = getCountryId($rootScope.infrasecSpecificCountry);								
 
 				$scope.data.brands = [];
@@ -78,6 +79,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.data.is_overlay_hotel = $scope.data.hotel_pms_type === 'OWS';
 				$scope.swedenCountryId = getCountryId($rootScope.infrasecSpecificCountry);				
 
 				$scope.languages = data.languages;
@@ -200,11 +202,13 @@ admin.controller('ADHotelDetailsCtrl', [
 
 		// SNT Admin - To save Add/Edit data
 		if ($scope.isAdminSnt) {
-			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
+			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list", "is_overlay_hotel"];
 
 			if ($scope.data.country !== $scope.swedenCountryId) {
 				unwantedKeys.push("max_control_unit");
 			}
+			$scope.data.hotel_pms_type = $scope.data.is_overlay_hotel ? 'OWS' : '';
+
 			var data = dclone($scope.data, unwantedKeys);
 
 			if ($scope.mli.certificate != "") {
