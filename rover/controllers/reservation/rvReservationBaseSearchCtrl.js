@@ -451,9 +451,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
         // Handle validation popup close.
         $scope.closeDialogAndRefresh = function(isRefresh) {
-            if (!!isRefresh) {
-                resetFilterBarAndRefreshDiary();
-            }
             ngDialog.close();
         };
 
