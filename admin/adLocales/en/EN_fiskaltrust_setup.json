@@ -4,4 +4,5 @@
 "ACCESS_TOKEN": "Access Token",
 "DEFAULT_PAYMENT_METHOD": "Default Payment Method",
 "DEFAULT_TRANSACTION_TYPE": "Default Transaction Type",
-"DOWN_PAYMENT": "Down Payment"
+"DOWN_PAYMENT": "Down Payment",
+"WORKSTATION_COUNT": "Workstation Count"
