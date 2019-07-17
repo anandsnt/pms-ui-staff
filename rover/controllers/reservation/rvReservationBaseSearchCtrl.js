@@ -450,7 +450,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         };
 
         // Handle validation popup close.
-        $scope.closeDialogAndRefresh = function(isRefresh) {
+        $scope.closeDialogAndRefresh = function() {
             ngDialog.close();
         };
 
