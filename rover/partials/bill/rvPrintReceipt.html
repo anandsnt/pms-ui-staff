@@ -52,16 +52,16 @@
         </tfoot>
         <tbody>
             <tr ng-repeat="paymentData in receiptPrintData.payments">
-                <td>{date}</td>
+                <td>{{paymentData.date_of_payment}}</td>
                 <td class="description">
-                    {description}
+                    {{paymentData.payment_type}}
                     <!-- if other data, use this. For example -->
-                    <span class="reference">Visa - Ending: 4455</span>
+                    <span class="reference" ng-if="paymentData.credit_card_details">{{paymentData.credit_card_details.description}} - Ending: {{paymentData.credit_card_details.card_number}}</span>
                 </td>
                 <td class="align-right receipt-amount">
-                    <span class="currency">{currency-symbol}</span>{amount}
+                    <span class="currency">{{receiptPrintData.currency_symbol}}</span>{{paymentData.amount}}
                     <div class="converted-currency">
-                        <span class="currency">{currency-symbol}</span>{amount}
+                        <span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{paymentData.converted_amount}}
                     </div>
                 </td>
 
