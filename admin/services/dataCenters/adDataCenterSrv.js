@@ -1,16 +1,33 @@
 admin.service('ADDataCenterSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
-	this.fetchDataCenters = function(params) {
+	this.fetchDataCenters = function() {
+		var url = '/api/oracle_data_centers';
 
-		var deferred = $q.defer();
-		var url = '/api/features?page=1&per_page=10&query=&sort_dir=true&sort_field=name';
+		return ADBaseWebSrvV2.getJSON(url);
+	};
 
-		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
-		    deferred.resolve(data);
-		}, function(data) {
-		    deferred.reject(data);
-		});
-		return deferred.promise;
+	this.saveNewDataCenter = function(params) {
+		var url = '/api/oracle_data_centers';
+
+		return ADBaseWebSrvV2.postJSON(url, params);
+	};
+
+	this.updateDataCenter = function(params) {
+		var url = '/api/oracle_data_centers/' + params.id;
+
+		return ADBaseWebSrvV2.putJSON(url, params);
+	};
+
+	this.deleteDataCenter = function(params) {
+		var url = '/api/oracle_data_centers/' + params.id;
+
+		return ADBaseWebSrvV2.deleteJSON(url);
+	};
+
+	this.checkIdDataCenterIsUsed = function(params) {
+		var url = '/api/oracle_data_centers';
+
+		return ADBaseWebSrvV2.getJSON(url);
 	};
 
 }]);

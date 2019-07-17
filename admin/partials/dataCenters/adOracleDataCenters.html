@@ -39,7 +39,7 @@
                         {{ dataCenter.name }}
                      </td>
                      <td ng-click="editCenter(dataCenter)">
-                        {{ dataCenter.expiry_date }}
+                        {{ dataCenter.expiration_date }}
                      </td>
                      <td>
                         <span class="icons delete_small cursor_pointer" ng-click="deleteCenter(dataCenter)">&nbsp;</span>
@@ -66,18 +66,16 @@
       <div class="form">
          <fieldset class="holder left">
             <ad-textbox value="selectedDataCenter.name" label="NAME" styleclass="full-width" required="yes"></ad-textbox>
-            <ad-textbox value="selectedDataCenter.url" label="HOST URL" styleclass="full-width" required="yes"></ad-textbox>
-            <ad-textbox value="selectedDataCenter.port" label="PORT" styleclass="full-width" required="yes"></ad-textbox>
+            <ad-textbox value="selectedDataCenter.username" label="USERNAME" maxlength="20" styleclass="full-width" required="yes"></ad-textbox>
          </fieldset>
-         <fieldset class="holder right">
-            <ad-textbox value="selectedDataCenter.user_name" label="USERNAME" maxlength="20" styleclass="full-width" required="yes"></ad-textbox>
-            <ad-textbox value="selectedDataCenter.password" label="PASSWORD" maxlength="30" styleclass="full-width" required="yes"></ad-textbox>
+         <fieldset class="holder right">   
+            <ad-textbox value="selectedDataCenter.password" label="PASSWORD" maxlength="30" styleclass="full-width" inputtype="password" required="yes"></ad-textbox>
             <div class="entry date has-datepicker">
                <label for="pms-start-date">
                Expiry Date
                <strong>*</strong>
                </label>
-               <input type="text" ng-model="selectedDataCenter.expiry_date" placeholder="" name="pms-start-date" readonly ng-click="showExpiryDate()">
+               <input type="text" ng-model="selectedDataCenter.expiration_date" placeholder="" name="pms-start-date" readonly ng-click="showExpiryDate()">
                <button ng-click="showExpiryDate()" class="ui-datepicker-trigger" type="button">
                ...
                </button>
@@ -87,7 +85,7 @@
             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
             CANCEL
             </button>
-            <button type="button" like-type="common" id="update" class="button green" ng-click="checkIfVersionIsValid()" translate>
+            <button type="button" like-type="common" id="update" class="button green" ng-click="saveChanges()" translate>
             {{ screenMode === 'ADD_CENTER' ? 'ADD' :  'SAVE CHANGES' }}
             </button>
          </div>

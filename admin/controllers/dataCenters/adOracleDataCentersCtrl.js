@@ -9,20 +9,18 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 			$scope.callAPI(ADDataCenterSrv.fetchDataCenters, {
 				params: {},
 				successCallBack: function(response) {
-					$scope.dataCentersList = response.results;
+					$scope.dataCentersList = response;
 					$scope.screenMode = 'DATA_CENTER_LIST';
 				}
 			});
 		};
 
-		var resetselectedDataCenter = function() {
+		var resetSelectedDataCenter = function() {
 			$scope.selectedDataCenter = {
 				"name": "",
-				"url": "",
-				"port": "",
-				"user_name": "",
+				"username": "",
 				"password": "",
-				"expiry_date": moment(new Date()).format('MM-DD-YYYY')
+				"expiration_date": moment(new Date()).format('YYYY-MM-DD')
 			};
 		};
 
@@ -37,10 +35,13 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 		};
 
 		var checkIfDataCenterIsUsedByProperties = function() {
-			$scope.callAPI(ADDataCenterSrv.fetchDataCenters, {
-				params: {},
+			// to do : chanege this API
+			$scope.callAPI(ADDataCenterSrv.checkIdDataCenterIsUsed, {
+				params: {
+					id: deletingDataCenterId
+				},
 				successCallBack: function() {
-					if (true) {
+					if (false) {
 						ngDialog.open({
 							template: '/assets/partials/dataCenters/adOracleDataCenterDeletionWarning.html',
 							className: 'ngdialog-theme-default',
@@ -69,13 +70,13 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 		};
 
 		$scope.addNewDataCenter = function() {
-			resetselectedDataCenter();
+			resetSelectedDataCenter();
 			$scope.screenMode = 'ADD_CENTER';
 		};
 
 		$scope.changeToListView = function() {
 			$scope.screenMode = 'DATA_CENTER_LIST';
-			resetselectedDataCenter();
+			resetSelectedDataCenter();
 		};
 
 		$scope.continueToVersionList = function() {
@@ -84,9 +85,17 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 		};
 
 		$scope.editCenter = function(dataCenter) {
-			dataCenter.expiry_date = "01-02-1977";
 			$scope.selectedDataCenter = dataCenter;
 			$scope.screenMode = 'EDIT_CENTER';
+		};
+
+		$scope.saveChanges = function() {
+			var serviceAction = $scope.screenMode === 'EDIT_CENTER' ? ADDataCenterSrv.updateDataCenter : ADDataCenterSrv.saveNewDataCenter;
+
+			$scope.callAPI(serviceAction, {
+				params: $scope.selectedDataCenter,
+				successCallBack: fetchDataCenters
+			});
 		};
 
 		(function() {
@@ -105,12 +114,13 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 			});
 
 			$scope.expiryDateOptions = {
+				dateFormat: 'YYYY-MM-DD',
 				changeYear: true,
 				changeMonth: true,
 				yearRange: "0:+10",
 				// minDate: 0, // TODO: Decide on prevention of past date selection
 				onSelect: function() {
-					console.log($scope.selectedDataCenter.expiry_date);
+					console.log($scope.selectedDataCenter.expiration_date);
 					ngDialog.close();
 				}
 			};

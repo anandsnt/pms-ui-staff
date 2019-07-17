@@ -124,7 +124,7 @@
 			<!--  -->
 			<div class="entry full-width">
 			    <label for="is-pms">Services Provided <strong>*</strong></label>
-			    <div class="boxes col3">
+			    <div class="boxes col3" ng-class="{'overlay' : isFieldsReadOnly === 'yes'}">
 			        <div class="switch-container">
 			            <div class="switch-button with-text" ng-class = "{'on': data.is_overlay_hotel }" style="width: 25%;">
 			                <!-- Add class 'on' when input below is checked -->
@@ -148,16 +148,15 @@
 							<ad-checkboxgrp toggle="toggleInterfaceType($index)" label="{{interfaceType.description}}" is-checked="interfaceType.is_checked" option-id="interfaceType.id" ng-hide="interfaceType.value == 'PMS_OVERLAY_HOUSEKEEPING' && data.hotel_pms_type != 'OWS' "></ad-checkboxgrp>
 						</label>
         			</div>
-			        <div class="inline" ng-show="data.is_overlay_hotel">
-			            <ad-toggle-button is-checked="data.is_in_oracle_data_center"
+			        <div class="inline" ng-if="data.is_overlay_hotel && isAdminSnt">
+			            <ad-toggle-button is-checked="data.enable_oracle_data_center"
                               label="In Oracle Datacenter?"></ad-toggle-button>
-			            <div class="entry full-width" ng-if="data.is_in_oracle_data_center">
+			            <div class="entry full-width" ng-if="data.enable_oracle_data_center">
 			                <!-- Remove class 'hidden' when Oracle Datacenter is checked -->
 			                <label for="datacenters">Select Datacenter</label>
 			                <div class="select white">
-			                    <select ng-model="data.oracle_data_center_id" id="datacenters">
-									<option value="" class="placeholder">Select Datacenter</option>
-									<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i = data.oracle_data_center_idr" >{{i}}</option>
+			                    <select ng-model="data.oracle_data_center_id" id="datacenters"  ng-options="datacenter.id as datacenter.name for datacenter in oracleDataCenters">
+									<option value="" class="placeholder" disabled="">Select Datacenter</option>
 								</select>
 			                </div>
 			            </div>
