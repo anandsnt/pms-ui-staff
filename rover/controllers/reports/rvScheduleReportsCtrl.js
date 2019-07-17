@@ -154,7 +154,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // Get rate types
         var getSelectedRateTypes = function (item) {
             return _.pluck(_.where(item.hasRateTypeFilter.data, {selected: true}), 'rate_type_id');
-        };  
+        };
+
+        // Set exclude_tax to true for Daily Production Reports
+        var isDailyProdReport = function() {
+            return ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']);
+        };
 
         var createSchedule = function() {
             var params = {
@@ -261,10 +268,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
             params.filter_values = filter_values;
 
-            // Set exclude_tax to true for Daily Production Reports
-            if ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
-                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] || 
-                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']) {
+            if (isDailyProdReport()) {
                 params.filter_values.exclude_tax = true;
             }
 
@@ -389,10 +393,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
             params.filter_values = filter_values;
 
-            // Set exclude_tax to true for Daily Production Reports
-            if ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
-                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] || 
-                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']) {
+            if (isDailyProdReport()) {
                 params.filter_values.exclude_tax = true;
             }
 
