@@ -1,4 +1,9 @@
-angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', 
+	'$q', 
+	'RVBaseWebSrv', 
+	'rvBaseWebSrvV2',
+	'$filter',
+	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $filter) {
 
 	var that = this;
 
@@ -19,7 +24,18 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http', '$q', 'RVBa
 			"source_id": data.source_id,
 			"market_segment_id": data.market_segment_id,
 			"booking_origin_id": data.booking_origin_id,
-			"segment_id": data.segment_id
+			"segment_id": data.segment_id,
+			"job_title": data.job_title,
+			"father_name": data.father_name,
+			"mother_name": data.mother_name,
+			"birth_place": data.birth_place,
+			"gender": data.gender,
+			"vehicle_registration_number": data.vehicle_registration_number,
+			"personal_id_no": data.personal_id_no,
+			"home_town": data.home_town,
+			"place_of_residence": data.place_of_residence,
+			"country_code": data.country_code,
+			"birthday": $filter('date')(tzIndependentDate(data.birth_day), "MM-dd-yyyy")
 		};
 		
 		dataToPost.address = {};

@@ -10,13 +10,12 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVGuestCardSrv',
   'RVContactInfoSrv',
   'RVSearchSrv',
-  'idTypesList',
   'rvPermissionSrv',
   'RVGuestCardsSrv',
   '$timeout',
   '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
+    RVContactInfoSrv, RVSearchSrv, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -78,6 +77,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             guestCardData.contactInfo.birthday = guestId ? data.birthday : null;
             guestCardData.contactInfo.user_id = guestId ? guestId : "";
             guestCardData.contactInfo.guest_id = guestId ? guestId : "";
+            guestCardData.contactInfo.genderTypeList = data.gender_list;
+            guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
 
             return guestCardData;
         };
@@ -212,7 +213,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             if (guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
                 $scope.guestCardData.guestId = guestData.id;
-                RVContactInfoSrv.setGuest(guestData.id);                
+                RVGuestCardsSrv.setGuest(guestData.id);                
             }
         };
 
@@ -290,9 +291,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * Pouplate admin settings for guest fields
          */
         var populateContactInfo = function () {
-            $scope.callAPI(RVContactInfoSrv.fetchGuestAdminSettings, {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
                 successCallBack: function(data) {
-                    $scope.guestCardData.contactInfo.guestAdminSettings = data;
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
+                    $scope.idTypeList = data.idTypeList;
+                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypeList;
                 },
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -321,8 +324,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             } else {
                 $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             }
-            $scope.countries = countries;
-            $scope.idTypeList = idTypesList;
+            $scope.idTypeList = contactInfo.id_type_list;
+            $scope.countries = countries;           
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,

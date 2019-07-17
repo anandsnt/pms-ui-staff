@@ -213,6 +213,9 @@ module.exports = {
             'guestweb_manchebo_beach_resort': [ themeCSSRoot + 'guestweb_manchebo_beach_resort.css'],
             'guestweb_hotel_zurzacherhof': [ themeCSSRoot + 'guestweb_hotel_zurzacherhof.css'],
             'guestweb_snt_v3': [ themeCSSRoot + 'guestweb_snt.css'],
+            'guestweb_seacrest_hotel_v2': [ themeCSSRoot + 'guestweb_seacrest_hotel_v2.css'],
+            'guestweb_the_cole_hotel': [ themeCSSRoot + 'guestweb_the_cole_hotel.css'],
+            'guestweb_heritage_hills_golf_resort': [ themeCSSRoot + 'guestweb_heritage_hills_golf_resort.css'],
         };
     }
 };

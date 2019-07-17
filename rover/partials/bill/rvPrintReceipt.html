@@ -1,0 +1,75 @@
+<div class="invoice-logo envelope">
+    <img src="{hotel-logo}" alt="" />
+    <h1>{{receiptPrintData.hotel_name}}</h1>
+    {{receiptPrintData.hotel_address}}<br/>
+    <span class="type">{{receiptPrintData.translations.hotel_address}}</span>
+    <!-- If showing QR code, place it here:
+    <img src="{src}" alt="" class="qr-code" /> -->
+</div>
+
+<div class="info-container account-info">
+    <div class="info-left">
+        {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
+        {{receiptPrintData.guest_details.address}}<br/>
+        {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
+        {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
+        {{receiptPrintData.guest_details.postal_code}}<br/>
+        {{receiptPrintData.guest_details.country_name}}
+
+        <div class="info-bottom">
+            <strong>Payment Receipt No.:</strong> {{receiptPrintData.receipt_no}}
+        </div>
+    </div>
+    <div class="info-right">
+        <strong>Arrival Date:</strong> {{receiptPrintData.arrival_date}}<br/>
+        <strong>Departure Date:</strong> {{receiptPrintData.departure_date}}<br/>
+        <strong>Room Number:</strong> {{receiptPrintData.room_no}}<br/> 
+        <strong>Confirmation Number:</strong> {{receiptPrintData.confirmation_number}}<br/>
+    </div>
+
+</div>
+
+<div class="invoice-header">
+</div>
+
+<div class="invoice-body">
+    <table class="invoice-details">
+        <thead>
+            <tr>
+                <th>Date of Payment</th>
+                <th>Payment Type</th>
+                <th class="align-right receipt-amount">Amount</th> 
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="2"><strong>Total Amount</strong></td>
+                <td>
+                    <strong><span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.total_amount}}</strong>
+                    <div class="converted-currency"><span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.converted_total_amount}}</div>            
+                </td>
+            </tr>           
+        </tfoot>
+        <tbody>
+            <tr ng-repeat="">
+                <td>{date}</td>
+                <td class="description">
+                    {description}
+                    <!-- if other data, use this. For example -->
+                    <span class="reference">Visa - Ending: 4455</span>
+                </td>
+                <td class="align-right receipt-amount">
+                    <span class="currency">{currency-symbol}</span>{amount}
+                    <div class="converted-currency">
+                        <span class="currency">{currency-symbol}</span>{amount}
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="invoice-footer text-center">
+    {footer}
+</div>

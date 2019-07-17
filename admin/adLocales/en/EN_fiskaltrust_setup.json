@@ -1,0 +1,8 @@
+"FISKALTRUST_HEADER": "FiskalTrust Setup",
+"ENDPOINT_URL": "Endpoint URL",
+"CASHBOX_ID": "Cashbox ID",
+"ACCESS_TOKEN": "Access Token",
+"DEFAULT_PAYMENT_METHOD": "Default Payment Method",
+"DEFAULT_TRANSACTION_TYPE": "Default Transaction Type",
+"DOWN_PAYMENT": "Down Payment",
+"WORKSTATION_COUNT": "Workstation Count"
