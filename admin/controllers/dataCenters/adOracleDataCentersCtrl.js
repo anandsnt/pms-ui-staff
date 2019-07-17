@@ -24,40 +24,13 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 			};
 		};
 
-		var deletingDataCenterId = '';
-		var deleteDataCenter = function() {
+		$scope.deleteDataCenter = function(dataCenter) {
 			$scope.callAPI(ADDataCenterSrv.deleteDataCenter, {
 				params: {
-					id: deletingDataCenterId
+					id: dataCenter.id
 				},
 				successCallBack: fetchDataCenters
 			});
-		};
-
-		var checkIfDataCenterIsUsedByProperties = function() {
-			// to do : chanege this API
-			$scope.callAPI(ADDataCenterSrv.checkIdDataCenterIsUsed, {
-				params: {
-					id: deletingDataCenterId
-				},
-				successCallBack: function() {
-					if (false) {
-						ngDialog.open({
-							template: '/assets/partials/dataCenters/adOracleDataCenterDeletionWarning.html',
-							className: 'ngdialog-theme-default',
-							scope: $scope,
-							closeByDocument: true
-						});
-					} else {
-						deleteDataCenter();
-					}
-				}
-			});
-		};
-
-		$scope.deleteCenter = function(dataCenter) {
-			deletingDataCenterId = dataCenter.id;
-			checkIfDataCenterIsUsedByProperties();
 		};
 
 		$scope.showExpiryDate = function() {
