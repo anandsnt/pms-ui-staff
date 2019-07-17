@@ -443,7 +443,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         // rvReportUtilsFac.js in future
         var setupFilters = function() {
             $scope.filters = {};
-            var codeSettings = $scope.$parent.codeSettings;
 
             $scope.filters.hasGeneralOptions = {
                 data: [],
@@ -509,10 +508,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         $scope.filters.hasGeneralOptions.options.noSelectAll = true;
                     }
                 } else if (displayFilterNames[filter.value]) {
-                    if ((filter.value === 'INCLUDE_MARKET' && codeSettings['is_market_on']) ||
-                        (filter.value === 'INCLUDE_ORIGIN' && codeSettings['is_origin_on']) ||
-                        (filter.value === 'INCLUDE_SEGMENT' && codeSettings['is_segments_on']) ||
-                        (filter.value === 'INCLUDE_SOURCE' && codeSettings['is_source_on'])) {
+                    if (filter.value === 'INCLUDE_MARKET' ||
+                        filter.value === 'INCLUDE_ORIGIN' ||
+                        filter.value === 'INCLUDE_SEGMENT' ||
+                        filter.value === 'INCLUDE_SOURCE') {
                         processDisplayFilters(filter);
                     }
                 } else if (filter.value === 'RATE') {
@@ -530,7 +529,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             runDigestCycle();
         };
 
-        var applySavedFilters = function() {
+        var applySavedFilters = function (isNewSchedule) {
+            if (!isNewSchedule) {
+                $scope.filters.hasDisplay.options.selectAll = false;
+                _.map($scope.filters.hasDisplay.data, function (displayOption) {
+                    displayOption.selected = false;
+                });
+            }
+
             _.each($scope.selectedEntityDetails.filter_values, function(value, key) {
                 var optionFilter, upperCaseKey;
 
@@ -544,6 +550,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                 if ( matchSortFields[value] ) {
                     $scope.scheduleParams.sort_field = value;
+                }
+
+                if (displayFilterNames[upperCaseKey] && !!value) {
+                    optionFilter = _.find($scope.filters.hasDisplay.data, { paramKey: key }); 
+                    if (angular.isDefined(optionFilter)) {
+                        optionFilter.selected = true;
+                    }
                 }
             });
 
@@ -846,7 +859,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 processScheduleDetails(item);
                 filterScheduleFrequency($scope.selectedEntityDetails);
                 setupFilters();
-                applySavedFilters();
+                applySavedFilters(false);
 
                 $scope.refreshAllOtherColumnScrolls();
 
@@ -973,7 +986,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             processScheduleDetails(item);
             filterScheduleFrequency($scope.selectedEntityDetails);
             setupFilters();
-            applySavedFilters();
+            applySavedFilters(true);
 
             $scope.refreshAllOtherColumnScrolls();
         };
