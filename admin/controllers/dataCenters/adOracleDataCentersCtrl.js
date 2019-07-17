@@ -93,7 +93,6 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 				yearRange: "0:+10",
 				// minDate: 0, // TODO: Decide on prevention of past date selection
 				onSelect: function() {
-					console.log($scope.selectedDataCenter.expiration_date);
 					ngDialog.close();
 				}
 			};
