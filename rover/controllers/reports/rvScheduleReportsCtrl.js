@@ -261,6 +261,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
             params.filter_values = filter_values;
 
+            // Set exclude_tax to true for Daily Production Reports
+            if ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']) {
+                params.filter_values.exclude_tax = true;
+            }
+
             $scope.invokeApi( reportsSrv.createSchedule, params, success, failed );
         };
 
@@ -380,7 +387,14 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 }
                 
             });
-            params.filter_values = filter_values;           
+            params.filter_values = filter_values;
+
+            // Set exclude_tax to true for Daily Production Reports
+            if ($scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_ROOM_TYPE'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_DEMO'] || 
+                $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']) {
+                params.filter_values.exclude_tax = true;
+            }
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
