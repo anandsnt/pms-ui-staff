@@ -52,7 +52,7 @@ admin.controller('ADRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$anchor
 
         $scope.saveRateSortPreferences = function() {
             var onSaveSuccess = function(data) {
-                    $scope.$emit('hideLoader');
+                    initializeView();
                 },
                 selectedDashboardRate = $scope.sequenceState.selectedOptions['dashboard_rate'];
 

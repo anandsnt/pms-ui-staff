@@ -92,23 +92,45 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
         if ($scope.showMobile) {
             $scope.guestCardData.contactInfo.mobile = $scope.saveData.mobile;
         }
-        if (showNationality) {
+        if ($scope.showNationality) {
             $scope.guestCardData.contactInfo.nationality_id = $scope.saveData.nationality_id;
         }
-        if (showCountry) {
+        if ($scope.showCountry) {
             $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
         }
-        $scope.guestCardData.contactInfo.job_title = $scope.saveData.job_title;
-        $scope.guestCardData.contactInfo.father_name = $scope.saveData.father_name;
-        $scope.guestCardData.contactInfo.mother_name = $scope.saveData.mother_name;
-        $scope.guestCardData.contactInfo.birth_place = $scope.saveData.birth_place;
-        $scope.guestCardData.contactInfo.gender = $scope.saveData.gender;
-        $scope.guestCardData.contactInfo.personal_id_no = $scope.saveData.personal_id_no;
-        $scope.guestCardData.contactInfo.vehicle_registration_number = $scope.saveData.vehicle_registration_number;
-        $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
-        $scope.guestCardData.contactInfo.place_of_residence = $scope.saveData.place_of_residence;
-        $scope.guestCardData.contactInfo.country_code = $scope.saveData.country_code;
-        $scope.guestCardData.contactInfo.birth_day = $scope.saveData.birth_day;
+        if ($scope.showJobTitle) {
+            $scope.guestCardData.contactInfo.job_title = $scope.saveData.job_title;
+        }
+        if ($scope.showNameOfFather) {
+            $scope.guestCardData.contactInfo.father_name = $scope.saveData.father_name;
+        }
+        if ($scope.showNameOfMother) {
+            $scope.guestCardData.contactInfo.mother_name = $scope.saveData.mother_name;
+        }
+        if ($scope.showPlaceOfBirth) {
+            $scope.guestCardData.contactInfo.birth_place = $scope.saveData.birth_place;
+        }
+        if ($scope.showGender) {
+            $scope.guestCardData.contactInfo.gender = $scope.saveData.gender;
+        }
+        if ($scope.showPersonalIdNumber) {
+            $scope.guestCardData.contactInfo.personal_id_no = $scope.saveData.personal_id_no;
+        }
+        if ($scope.showVehicleRegistrationNumber) {
+            $scope.guestCardData.contactInfo.vehicle_registration_number = $scope.saveData.vehicle_registration_number;
+        }
+        if ($scope.showHomeTown) {
+            $scope.guestCardData.contactInfo.home_town = $scope.saveData.home_town;
+        }
+        if ($scope.showPlaceOfResidence) {
+            $scope.guestCardData.contactInfo.place_of_residence = $scope.saveData.place_of_residence;
+        }
+        if ($scope.showVehicleCountryMark) {
+            $scope.guestCardData.contactInfo.country_code = $scope.saveData.country_code;
+        }
+        if ($scope.showDateOfBirth) {
+            $scope.guestCardData.contactInfo.birth_day = $scope.saveData.birth_day;
+        }
 		$scope.$emit('hideLoader');
 		ngDialog.close();
 		$scope.goToNextView();

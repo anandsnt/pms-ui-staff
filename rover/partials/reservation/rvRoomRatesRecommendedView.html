@@ -4,7 +4,7 @@
             <h2>{{rate.name}}</h2>
 
             <span ng-show="rate.restriction.length < 3" class="restriction-icon {{eachRestriction.restrictionIcon}} {{eachRestriction.restrictionBgClass}}"  ng-repeat="eachRestriction in rate.restriction">{{eachRestriction.days}}</span>
-            <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk" >R</span>
+            <span ng-show="rate.restriction.length >= 3" class="restriction-icon bg-drk">R</span>
              <span class="corporate" ng-if="rate.isCorporate" translate>CORPORATE_LABEL</span>
              <span class="corporate" ng-if="rate.isPromotion">PROMOTION</span>
              <span class="corporate" ng-if="rate.isMember">MEMBER</span>
@@ -12,6 +12,7 @@
              <span class="corporate" ng-if="rate.isAllotmentRate">ALLOTMENT</span>
         </div>
         <div class="book-rate" ng-if="rate.isCollapsed">
+            <div class="reservation-type red" ng-if="rate.isDayUse">D</div>
             <div class="price" ng-if="!rate.isSuppressed">
                 {{currencySymbol}}{{rate.defaultADR | number: 2}}
                 <span translate>RESV_AVG_NIGHT</span>
