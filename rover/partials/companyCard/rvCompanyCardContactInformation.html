@@ -70,7 +70,7 @@
                     </label>
                 </div>
 
-                <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="text" ng-if="contactInformation.commission_details.is_on" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"/>
+                <input id="travel-agent-commission-value" value="{{contactInformation.commission_value}}" ng-model="contactInformation.commission_details.value" type="number" ng-if="contactInformation.commission_details.is_on" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"/>
                 <div class="select" ng-if="contactInformation.commission_details.is_on">
                     <select name="travel-agent-commission-type" value="contactInformation.commission_details.type" ng-model="contactInformation.commission_details.type" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
                         <option value="percent">%</option>
