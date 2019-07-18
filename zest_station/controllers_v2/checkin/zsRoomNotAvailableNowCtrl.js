@@ -11,7 +11,7 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 
 		$scope.screenData = {
 			'email': $stateParams.guest_email || '',
-			'guest_name': $stateParams.last_name ? $stateParams.first_name + ' ' + $stateParams.last_name : $stateParams.first_name,
+			'guest_name': $stateParams.last_name ? ($stateParams.first_name + ' ' + $stateParams.last_name) : $stateParams.first_name,
 			'action_type': '',
 			'location': '',
 			'mode': 'CHOOSE_ACTION'
@@ -19,7 +19,7 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 
 		$scope.showNextButton = function() {
 			return ($scope.screenData.action_type === 'send_mail' && zsUtilitySrv.isValidEmail($scope.screenData.email)) ||
-				($scope.screenData.action_type === 'find_guest' && $scope.screenData.location) ||
+				($scope.screenData.action_type === 'find_guest' && !!$scope.screenData.location) ||
 				$scope.screenData.action_type === 'guest_will_come_back_later';
 		};
 
@@ -72,6 +72,7 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		$scope.nextButtonClicked = function() {
 			if ($scope.screenData.action_type === 'send_mail') {
 				// if mail id has changed, update email id, and then precheckin the reservation
+				console.log(!_.isEqual($stateParams.guest_email, $scope.screenData.email))
 				if (!_.isEqual($stateParams.guest_email, $scope.screenData.email)) {
 					updateEmailId();
 				} else {
@@ -86,9 +87,7 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		};
 
 		var initializeMe = (function() {
-			// hide back button
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
-			// show close button
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 		}());
 
