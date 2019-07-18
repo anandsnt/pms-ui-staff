@@ -4,7 +4,6 @@ angular.module('sntRover').service('RVValidateCheckinSrv', ['$http',
 	'rvBaseWebSrvV2',
 	'$filter',
 	function($http, $q, RVBaseWebSrv, rvBaseWebSrvV2, $filter) {
-
 	var that = this;
 
 	/*
