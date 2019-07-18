@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">   
 
-    <div class="modal-content form format-bill" ng-show="isInvoiceStepThreeActive"> 
+    <div class="modal-content form format-bill"> 
         <button id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
 
         <strong class="h2 message">Format Bill</strong>
@@ -28,7 +28,7 @@
                 <span class="icons icon-email"></span>
                  Email
             </button>
-            <button type="button" class="button with-icon" ng-class="getPrintButtonClass()" ng-click="clickedPrintBill()" ng-disabled="isPrintButtonDisabled()">
+            <button type="button" class="button with-icon blue" ng-click="printReceipt()" >
                 <span class="icons icon-print" ></span>
                 Print
             </button>

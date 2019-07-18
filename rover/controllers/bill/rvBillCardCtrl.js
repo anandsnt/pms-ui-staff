@@ -3314,7 +3314,12 @@ sntRover.controller('RVbillCardController',
 		});
 	};
 
-	$scope.openReceiptDialog = function() {
+	$scope.openReceiptDialog = function(feesIndex) {
+		var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
+
+		$scope.transactionId = feesDetails[feesIndex].transaction_id;
+		$scope.billId = $scope.reservationBillData.bills[billIndex].bill_id;
+
 		ngDialog.open({
 			template: '/assets/partials/popups/rvReceiptPopup.html',
 			controller: 'RVReceiptPopupController',

@@ -1,4 +1,6 @@
-angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVBillCardSrv', 
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
 
 	var that = this;
 
@@ -420,6 +422,20 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
 
 		BaseWebSrvV2.postJSON(url).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
+
+	this.fetchReceiptData = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
+
+		sntBaseWebSrv.postJSON(url).then(function(data) {
 
 			deferred.resolve(data);
 		}, function(data) {
