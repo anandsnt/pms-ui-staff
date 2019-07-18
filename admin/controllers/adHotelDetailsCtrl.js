@@ -27,6 +27,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.swedenCountryId = '';
 	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
 	var isMPFlagResetConfirmPopupNeeded = false;
+                                
 	$scope.oracleDataCenters = oracleDataCenters;
 	/*
 	 * Method to get country id 
