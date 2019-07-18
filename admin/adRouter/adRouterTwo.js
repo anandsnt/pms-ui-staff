@@ -1012,4 +1012,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       controller: 'ADGuestCardFieldsCtrl',
       url: '/adGuestCardFields'
     });
+
+    $stateProvider.state('admin.oracleDataCenters', {
+      templateUrl: '/assets/partials/dataCenters/adOracleDataCenters.html',
+      controller: 'ADOracleDataCentersCtrl',
+      url: '/oracleDataCenters'
+    });
+
 });
