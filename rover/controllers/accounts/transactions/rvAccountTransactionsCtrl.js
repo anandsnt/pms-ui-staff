@@ -140,7 +140,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
   		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
 				var billTabsData = $scope.transactionsDetails.bills,
-				    chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
+					chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
 				chargeCodesId = [];
 				_.each(chargeCodes, function(chargeCode) {
@@ -967,7 +967,15 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						sntActivity.stop("PRINT_STARTED");
 						var responseData = response.data,
 							copyCount = "",
-							timeDelay = 700;
+							timeDelay = 700,
+							arInvoiceNumberActivatedDate = moment(responseData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+							arTransactionDate = moment(responseData.ar_transaction_date, "YYYY-MM-DD"),
+							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+
+						$scope.shouldShowArInvoiceNumber = true;
+						if (dateDifference < 0) {
+							$scope.shouldShowArInvoiceNumber = false;
+						}
 
 						if ($scope.billFormat.isInformationalInvoice) {
 							responseData.invoiceLabel = responseData.translation.information_invoice;

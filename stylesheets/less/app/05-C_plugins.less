@@ -2118,6 +2118,7 @@
                     margin-bottom: 0;
                     
                     &.checkbox {
+                        display: table;
                         text-transform: uppercase;
                     } 
                 }
@@ -8384,6 +8385,106 @@
                 }
             }
 
+            &.commissions-properties {
+                width: 740px;
+                max-height: 80vh;
+                #flexbox > .parent(column wrap, '', '', '');
+
+                .message { 
+                    line-height: 25px;
+                    margin-bottom: 0;
+                }
+
+                .text {
+                    line-height: 20px;
+                }
+
+                .grid {
+                    line-height: 1;
+                    width: 100%;
+                    padding-bottom: 20px;
+                    max-height: calc(~'80vh - 185px');
+                }
+
+                .grid-row {
+                    &.with-cells {
+                        display: grid;
+                        grid-template-columns: calc(~'45% - 8px') calc(~'15% - 8px') calc(~'12% - 8px') calc(~'18% - 8px') calc(~'10% - 8px');
+                        grid-column-gap: 10px;
+                        grid-row-gap: 10px;
+                        align-items: center;
+                        padding: 8px 12px;
+                    }
+
+                    &.header {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        color: @grey3;
+                    }
+                }
+
+                .grid-cell {
+                    strong {
+                        font-weight: 600;
+                    }
+
+                    input,
+                    .select {
+                        width: 100%;
+                    }
+
+                    select {
+                        padding: 0 10px;
+                    }
+
+                    .checkbox {
+                        padding: 0;
+                        margin: 0 auto;
+                        .square(40px);
+
+                        .icon-form {
+                            top: 10px;
+                            left: 10px;
+                        }
+                    }
+
+                    &:not(:last-child) {
+                        padding-right: 12px;
+                    }
+                }
+
+                .scrollable {
+                    position: relative;
+                    max-height: calc(~'80vh - 245px');
+                }
+
+                .wrapper {
+                    padding: 0;
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 10px;
+                    right: 10px;
+                    bottom: 10px;
+                }
+
+                .actions {
+                    margin-top: auto;
+                    padding-top: 20px;
+                    .box-shadow(0 -1px 0 rgba(0,0,0,.1));
+                    #flexbox > .parent(row wrap, center, center, '');
+
+                    .button {
+                        width: auto;
+                        margin-top: 0;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+
             /* Overbooking ***/
             &.overbooking {
                 width: 260px;
@@ -8627,6 +8728,13 @@
             /* Check In Data ***/
             &.check-in-data {
                 width: 670px;
+                padding: 20px 0;
+
+                .modal-fields {
+                    position: relative;
+                    max-height: 380px;
+                    padding: 0 20px;
+                }
 
                 fieldset {
                     padding-left: 200px;
@@ -8667,16 +8775,28 @@
 
                 .message {
                     margin-bottom: 10px;
+                    padding: 0 20px;
+                }
+
+                .text {
+                    padding: 0 20px;
                 }
 
                 .required {
                     color: @red;
                 }
 
+                .iScrollVerticalScrollbar {
+                    .iScrollIndicator {
+                        background: @grey2;
+                    }
+                }
+
                 .actions {
                     padding-top: 10px;
                     text-align: right;
                     border-top: 1px solid rgba(0, 0, 0, 0.15);
+                    margin: 0 20px;
 
                     .button {
                         width: auto;
