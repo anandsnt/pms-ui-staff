@@ -142,7 +142,6 @@ describe('zsRoomNotAvailableNowCtrl', function() {
             $scope.nextButtonClicked();
             $scope.$digest();
             expect(zsCheckinSrv.preCheckinReservation).toHaveBeenCalled();
-            expect($scope.screenData.mode).toEqual('ACTION_COMPLETED');
         });
     });
 });
