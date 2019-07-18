@@ -3315,7 +3315,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.openReceiptDialog = function(feesIndex) {
-		var feesDetails = $scope.reservationBillData.bills[parseOldBillValue].total_fees[0].fees_details;
+		var feesDetails = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details;
 
 		$scope.transactionId = feesDetails[feesIndex].transaction_id;
 		$scope.billId = $scope.reservationBillData.bills[billIndex].bill_id;
