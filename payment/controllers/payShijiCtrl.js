@@ -60,18 +60,52 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 				cardDetails: {
 					'card_code': paymentResponse.credit_card_type ? paymentResponse.credit_card_type.toLowerCase() : 'credit-card',
 					'ending_with': paymentResponse.ending_with,
-					'expiry_date': paymentResponse.expiry_date || '12/20', // To delete the fallback expiry date once Shiji fixes
+					'expiry_date': paymentResponse.expiry_date,
 					'card_name': ''
 				}
 			});
+		};
+
+		let savePaymentDetails = (apiParams) => {
+			let onSaveFailure = (errorMessage) => {
+				$scope.$emit('PAYMENT_FAILED', errorMessage);
+			};
+
+			sntActivity.start('SAVE_CC_PAYMENT');
+			
+			sntPaymentSrv.savePaymentDetails(apiParams).then(
+				response => {
+					if (response.status === 'success') {
+						onAddCardSuccess(response);
+					} else {
+						onSaveFailure(response.errors);
+					}
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				},
+				errorMessage => {
+					onSaveFailure(errorMessage);
+					sntActivity.stop('SAVE_CC_PAYMENT');
+				});
+		};
+
+		let proceedWithPaymentData = (apiParams) => {
+			let params = {
+				'paymentData': {
+					'apiParams': apiParams,
+					'cardDisplayData': {
+						'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
+					}
+				}
+			};
+
+			$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
 		};
 
 		self.tokenizeBySavingtheCard = (tokenId) => {
 			let isAddCardAction = (/^ADD_PAYMENT_/.test($scope.actionType));
 			let apiParams = {
 				"token": tokenId,
-				"payment_type": "CC",
-				"card_expiry": "2020-12-31"
+				"payment_type": "CC"
 			};
 
 			if (isAddCardAction) {
@@ -86,36 +120,10 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			sntActivity.stop('FETCH_SHIJI_TOKEN');
 
-			let onSaveFailure = (errorMessage) => {
-				$scope.$emit('PAYMENT_FAILED', errorMessage);
-			};
-
-			sntActivity.start('SAVE_CC_PAYMENT');
 			if (isAddCardAction) {
-				sntPaymentSrv.savePaymentDetails(apiParams).then(
-					response => {
-						if (response.status === 'success') {
-							onAddCardSuccess(response);
-						} else {
-							onSaveFailure(response.errors);
-						}
-						sntActivity.stop('SAVE_CC_PAYMENT');
-					},
-					errorMessage => {
-						onSaveFailure(errorMessage);
-						sntActivity.stop('SAVE_CC_PAYMENT');
-					});
+				savePaymentDetails(apiParams);
 			} else {
-				let params = {
-					'paymentData': {
-						'apiParams': apiParams,
-						'cardDisplayData': {
-							'name_on_card': $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName
-						}
-					}
-				};
-
-				$scope.$emit(payEvntConst.CC_TOKEN_GENERATED, params);
+				proceedWithPaymentData(apiParams);
 			}
 		};
 
@@ -124,7 +132,7 @@ angular.module('sntPay').controller('payShijiCtrl', ['$scope',
 
 			if (responseData.respCode === "00") {
 				self.tokenizeBySavingtheCard(responseData.tokenId);
-			} else {
+			} else if (responseData.respCode && responseData.respCode !== "00") {
 				sntActivity.stop('FETCH_SHIJI_TOKEN');
 				$log.info('Tokenization Failed: response code =>' + responseData.respCode);
 				let errorMsg = responseData.respText ? [responseData.respText] : [''];

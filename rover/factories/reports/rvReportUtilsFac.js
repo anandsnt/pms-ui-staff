@@ -47,6 +47,31 @@ angular.module('reportsModule')
             'show_vat_with_rates'
         ];
 
+        // Extract rate types and rates list
+        var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
+                rateTypeListIds      = _.unique(rateTypeListIds),
+                rateTypeObject       = {},
+                rateTypeListToReturn = rateTypeListIds.map(function(id) {
+                    rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
+                    if (rateTypeObject) {
+                        rateTypeObject.name = rateTypeObject.rate_type_name;
+                        rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
+                    }
+                    return rateTypeObject;
+                });
+
+            return rateTypeListToReturn;
+        };
+
+        // Extract rates from rate types
+        var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            return rateTypesAndRateList.map(function(rate) {
+                rate.name = rate.rate_name;
+                return _.omit(rate, "rate_type_name");
+            });
+        };
+
         /**
          * This function canshowActionables return CG & CC with no payment entries or with only payment entries
          * @param  {Array} chargeGroyearupsAry Array of charge groups
@@ -1586,29 +1611,6 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
 
-            var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
-                    rateTypeListIds      = _.unique(rateTypeListIds),
-                    rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id) {
-                        rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
-                        if (rateTypeObject) {
-                            rateTypeObject.name = rateTypeObject.rate_type_name;
-                            rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
-                        }
-                        return rateTypeObject;
-                    });
-
-                return rateTypeListToReturn;
-            };
-
-            var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                return rateTypesAndRateList.map(function(rate) {
-                    rate.name = rate.rate_name;
-                    return _.omit(rate, "rate_type_name");
-                });
-            };
-
             //
             function fillRateTypesAndRateList(data) {
                 var foundFilter;
@@ -2450,6 +2452,51 @@ angular.module('reportsModule')
                 factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['ROOM_TYPE_IDS']], 'id');
             }
 
+        };
+
+        // Fill rate types and rates for scheduled reports
+        factory.fillRateTypesAndRatesForScheduledReports = function (filter, filterValues) {
+            var populateRateTypesAndRates = function (data) {
+                var rateTypes = extractRateTypesFromRateTypesAndRateList(data),
+                    rates = extractRatesFromRateTypesAndRateList(data),
+                    selectedRateType,
+                    selectedRate;
+
+                if (filterValues && filterValues.rate_type_ids) {
+                    _.each (filterValues.rate_type_ids, function (id) {
+                        selectedRateType = _.findWhere(rateTypes, {rate_type_id: id});
+                        selectedRateType.selected = true;
+                    });
+                }
+
+                if (filterValues && filterValues.rate_ids) {
+                    _.each (filterValues.rate_ids, function (id) {
+                        selectedRate = _.findWhere(rates, {id: id});
+                        selectedRate.selected = true;
+                    });
+                }
+
+                filter.hasRateTypeFilter = {
+                    data: rateTypes,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_type_ids && filterValues.rate_type_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+
+                filter.hasRateFilter = {
+                    data: rates,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_ids && filterValues.rate_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+            };
+
+            reportsSubSrv.fetchRateTypesAndRateList() // This would include custom rates
+                .then(populateRateTypesAndRates);
         };
 
         return factory;

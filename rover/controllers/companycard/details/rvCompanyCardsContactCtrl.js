@@ -91,5 +91,34 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
+
+		// trigger the edit properties commissions popup
+	    $scope.openPropertiesPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvTACardPropertiesCommissionsPopup.html',
+				controller: 'rvTACardPropertiesCommissionsPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		$scope.toggleGlobalCommission = function() {
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
+		};
+
+		/*
+		 * "Show Properties" Button should be displayed only when: 
+		 * the user is chain admin user and 
+		 * the account type is 'Travel agent card' and 
+		 * TA card is global and 
+		 * commission is not global
+		 */
+		$scope.shouldShowPropertiesButton = function() {
+			return ($scope.displayShowPropertiesButton && $scope.account_type === 'TRAVELAGENT' && 
+				!$scope.isEmpty($scope.contactInformation.commission_details) && 
+				$scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel &&
+				rvPermissionSrv.getPermissionValue('GLOBAL_CARD_UPDATE') && 
+				!$scope.isUpdateEnabledForTravelAgent());
+		};
 	}
 ]);
