@@ -9,6 +9,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             getTasksForDefaultWorkType();
             $scope.detailsMenu = '';
             $scope.isStandAlone = $rootScope.isStandAlone;
+            $scope.disableDayUseToggle = false;
         };
         $scope.getSubtask = function(task) {
             var subtask = [];
@@ -456,7 +457,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     });
                 }
             });
-            console.log("$scope.rateData.tasks", $scope.rateData.tasks);
         };
 
         /*  
@@ -481,6 +481,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.callAPI(ADReservationToolsSrv.reSyncRates, options);
         };
+        // Handle based on rate change
+        $scope.basedOnRateChanged = function() {
+            if ($scope.rateData.based_on.id) {
+                var fullRateList = $scope.rateTypesDetails.based_on.results,
+                    selectedRate = _.find(fullRateList, function(item) { return item.id === $scope.rateData.based_on.id; });
+
+                $scope.rateData.is_day_use = selectedRate.is_day_use;
+                $scope.disableDayUseToggle = true;
+            }
+            else {
+                // not selecting any rate.
+                $scope.disableDayUseToggle = false;
+            }
+        };
+
         // CICO-56662
         var listener = $scope.$on('INIT_RATE_DETAILS', function() {
             $scope.init();
