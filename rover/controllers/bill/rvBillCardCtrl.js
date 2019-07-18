@@ -3314,11 +3314,48 @@ sntRover.controller('RVbillCardController',
 		});
 	};
 
+	var listenerPrintReceipt = $rootScope.$on('PRINT_RECEIPT', function(event, receiptPrintData) {
+		$scope.printReceiptActive = true;
+		$scope.receiptPrintData = receiptPrintData;
+		$scope.errorMessage = "";
+
+		// CICO-9569 to solve the hotel logo issue
+		$("header .logo").addClass('logo-hide');
+		$("header .h2").addClass('text-hide');
+		$("body #loading").html("");// CICO-56119
+
+		// add the orientation
+		addPrintOrientation();
+
+		/*
+		*	======[ READY TO PRINT ]======
+		*/
+		// this will show the popup with full bill
+		$timeout(function() {
+
+			if (sntapp.cordovaLoaded) {
+				cordova.exec(billCardPrintCompleted,
+					function(error) {
+						billCardPrintCompleted();
+					}, 'RVCardPlugin', 'printWebView', []);
+			}
+			else
+			{
+				window.print();
+				// billCardPrintCompleted();
+			}
+		}, 700);
+	});
+
+	$scope.$on( '$destroy', listenerPrintReceipt );
+	/*
+	 * open receipt dialog box
+	 */
 	$scope.openReceiptDialog = function(feesIndex) {
 		var feesDetails = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details;
 
 		$scope.transactionId = feesDetails[feesIndex].transaction_id;
-		$scope.billId = $scope.reservationBillData.bills[billIndex].bill_id;
+		$scope.billId = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
 
 		ngDialog.open({
 			template: '/assets/partials/popups/rvReceiptPopup.html',

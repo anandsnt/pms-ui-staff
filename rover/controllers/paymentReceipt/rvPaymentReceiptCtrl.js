@@ -36,11 +36,14 @@ sntRover.controller('RVReceiptPopupController',
     };
 
     $scope.printReceipt = function() {
-        var dataToSend = {
-            params: {
-              bill_id: $scope.billId,
-              transaction_id: $scope.transactionId
+        var getBillDataSuccess = function (response) {
+                $scope.$emit("PRINT_RECEIPT", response);
             },
+            dataToSend = {
+                params: {
+                  bill_id: $scope.billId,
+                  transaction_id: $scope.transactionId
+                },
             successCallBack: getBillDataSuccess
         };
 
