@@ -13,7 +13,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url: '/hoteldetails/edit',
 			resolve: {
 				oracleDataCenters: function() {
-					return {}
+					return {};
 				}
 			}
 		});
