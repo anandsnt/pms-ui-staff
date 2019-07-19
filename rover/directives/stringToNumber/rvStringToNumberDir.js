@@ -1,5 +1,5 @@
 /**
- * When the model stores number as a string 'stringToNumber' directive converts it into number format 
+ * When the model stores number as a string, the directive converts it into number format 
  **/
 
 angular.module('sntRover').directive('stringToNumber', function () {
