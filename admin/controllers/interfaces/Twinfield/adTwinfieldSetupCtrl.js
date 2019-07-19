@@ -35,7 +35,7 @@ admin.controller('adTwinfieldSetupCtrl', [
                 join(',');
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    settingss: _.omit($scope.config, ['historical_data_sync_items', 'is_authorized']),
+                    settings: _.omit($scope.config, ['historical_data_sync_items', 'is_authorized']),
                     integration: $scope.interface.toLowerCase()
                 },
                 onSuccess: function() {
