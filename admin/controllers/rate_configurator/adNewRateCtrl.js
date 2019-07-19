@@ -94,7 +94,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!!$scope.rateData.based_on.id) {
                 fetchBasedOnRateDetails();
             }
-            sntActivity.stop('LOAD_RATE_DETAILS');
         };
 
         var fetchCommissionDetails = function() {

@@ -280,7 +280,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		// If standalone PMS, then the rate configurator wizard should be appeared.
 		} else {
-			sntActivity.start('LOAD_RATE_DETAILS');
 			$state.go('admin.rateDetails', {rateId: rateId});
 		}
 	};

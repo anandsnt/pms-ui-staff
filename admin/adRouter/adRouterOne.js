@@ -23,7 +23,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.snthoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url: '/hoteldetails/:action/:id'
+			url: '/hoteldetails',
+            params: {
+                action: undefined,
+                id: undefined
+            }
 		});
 
 		$stateProvider.state('admin.users', {
@@ -63,13 +67,28 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
+			url: '/user',
+            params: {
+                page: undefined,
+                id: undefined,
+                hotelId: undefined,
+                isUnlocking: false,
+                manual_id_scan_enabled: false
+            }
+
 		});
 		
 		$stateProvider.state('admin.adminuserdetails', {
 			templateUrl: '/assets/partials/adminUsers/adAdminUserDetails.html',
 			controller: 'ADAdminUserDetailsCtrl',
-			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
+			url: '/user',
+            params: {
+                page: undefined,
+                id: undefined,
+                hotelId: undefined,
+                isUnlocking: undefined,
+                manual_id_scan_enabled: undefined
+            }
 		});
 
 		$stateProvider.state('admin.linkexisting', {
@@ -92,7 +111,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addeditnotification', {
 			templateUrl: '/assets/partials/notifications/adNotifications.html',
 			controller: 'ADNotificationCtrl',
-			url: '/notification/:id/:action'
+			url: '/notification',
+            params: {
+                id: undefined,
+                action: undefined
+            }
 		});
 
 		$stateProvider.state('admin.brands', {
@@ -122,7 +145,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addCampaign', {
 			templateUrl: '/assets/partials/campaigns/adAddCampaign.html',
 			controller: 'ADAddCampaignCtrl',
-			url: '/campaigns/:id/:type'
+			url: '/campaigns',
+            params: {
+                id: undefined,
+                type: undefined
+            }
 		});
 
 		$stateProvider.state('admin.zest_shortcode', {

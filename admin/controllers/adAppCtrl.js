@@ -1036,6 +1036,10 @@ admin.controller('ADAppCtrl', [
             sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
         });
 
+        $transitions.onError({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
         (function() {
             if (!adminMenuData.menus.length) {
                 var staffURL = '/staff/h/';

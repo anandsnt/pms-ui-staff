@@ -1,6 +1,9 @@
 BaseCtrl = function($scope) {
 
-    var _listeners = [];
+    var _listeners = [],
+        root = $scope.$root || {};
+
+    root.__API_REQ_COUNT__ = root.__API_REQ_COUNT__ || 1;
 
     $scope.businessDate = '';
 
@@ -54,7 +57,7 @@ BaseCtrl = function($scope) {
 
     $scope.invokeApi = function (serviceApi, params, successCallback, failureCallback, loaderType) {
         // loaderType options are "BLOCKER", "NONE"
-        var identifier = _.uniqueId('API_REQ_');
+        var identifier = 'API_REQ_' + ++root.__API_REQ_COUNT__;
 
         if (typeof loaderType === 'undefined') {
             loaderType = 'BLOCKER';
@@ -82,7 +85,7 @@ BaseCtrl = function($scope) {
     $scope.callAPI = function (serviceApi, options) {
         options = options || {};
 
-        var identifier = _.uniqueId('API_REQ_'),
+        var identifier = 'API_REQ_' + ++root.__API_REQ_COUNT__,
             params = options['params'] ? options['params'] : null,
             loader = options['loader'] ? options['loader'] : 'BLOCKER',
             showLoader = loader.toUpperCase() === 'BLOCKER',
