@@ -2,6 +2,6 @@
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
-    <ad-sync-block interface="twinfield" is-export="true" config="config" proxy="true">
+    <ad-sync-block interface="twinfield" config="config" proxy="true" historical-date-range-days="30">
     </ad-sync-block>
 </div>
