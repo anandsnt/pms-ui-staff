@@ -32,7 +32,8 @@ describe('zsRoomNotAvailableNowCtrl', function() {
         });
         angular.extend($scope, {
             zestStationData: {
-                kiosk_scan_all_guests: false
+                kiosk_scan_all_guests: false,
+                precheckin_details: {}
             },
             inDemoMode: function() {
                 return;
