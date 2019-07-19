@@ -217,7 +217,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             setDefaultCheckinCheckoutTime;
 
         setDefaultCheckinCheckoutTime = function() {
-            $scope.timeSlots = RVReservationBaseSearchSrv.timeSlots;
             $scope.fullCheckinTime = '09:00 AM';
             $scope.fullCheckoutTime = '05:00 PM';
             $scope.reservationData.checkinTime = {
@@ -333,6 +332,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 $scope.shouldShowHours = false;
             }
             $scope.otherData.fromSearch = true;
+            $scope.timeSlots = RVReservationBaseSearchSrv.timeSlots;
             setDefaultCheckinCheckoutTime();
             $scope.$emit('hideLoader');
         };
@@ -397,7 +397,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
             $scope.reservationData.numNights = dayDiff;
-
         };
 
         $scope.arrivalDateChanged = function() {
@@ -449,6 +448,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             }
         };
 
+        // Handle validation popup close.
+        $scope.closeDialogAndRefresh = function() {
+            ngDialog.close();
+        };
+
         var showPopupForReservationWithUnassignedRoom = function() {
             ngDialog.open({
                 template: '/assets/partials/nightlyDiary/rvNightlyDiaryReservationWithUnassignedRoom.html',
@@ -470,6 +474,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 }
             });
         },
+        showWarningMessagePopup = function ( warningMessage ) {
+            ngDialog.open({
+                template: '/assets/partials/nightlyDiary/rvNightlyDiaryNoAvailableRooms.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false,
+                data: {
+                    warningMessage: warningMessage,
+                    isRefresh: false
+                }
+            });
+        },
         checkTimeBasedAvailability = function( callbackAction ) {
 
             var dataToSend = {
@@ -481,7 +498,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 successCallBack: function(response) {
                     var isRoomTypeSelected = $scope.reservationData.tabs[0].roomTypeId !== '',
                         houseData = response.house_availability,
-                        roomTypeData = response.room_type_availability;
+                        roomTypeData = response.room_type_availability,
+                        selectedRoomCount = $scope.reservationData.rooms.length;
 
                     if (isRoomTypeSelected) {
                         // Go ahead with house & room type availablity checks.
@@ -490,6 +508,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             // There are reservations with unassigned Rooms.
                             // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (houseData.house_availability <= 0 || roomTypeData.availability <= 0 || roomTypeData.availability < selectedRoomCount ) {
+                            // No additional availability exists for the selected dates / times.
+                            showWarningMessagePopup('No additional availability exists for the selected Dates/Times');
                         }
                         else if (roomTypeData.availability > 0 && roomTypeData.unassigned_reservations_present) {
                             // There are reservations with unassigned rooms.
@@ -507,6 +529,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                             // There are reservations with unassigned Rooms.
                             // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
+                        }
+                        else if (houseData.house_availability <= 0 || houseData.house_availability < selectedRoomCount) {
+                            // No additional availability exists for the selected dates / times.
+                            showWarningMessagePopup('No additional availability exists for the selected Dates/Times');
                         }
                         else if (houseData.unassigned_reservations_present) {
                             // There are reservations with unassigned rooms.
@@ -573,11 +599,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 /*  For every room initate the stayDates object
                  *   The total room count is taken from the roomCount value in the reservationData object
                  */
-
                 $scope.setNumberOfNights();
-                if ( $scope.reservationData.numNights !== 0 ) {
-                    $scope.clearArrivalAndDepartureTime();
-                }
+                
                 for (var roomNumber = 0; roomNumber < $scope.reservationData.rooms.length; roomNumber++) {
                     initStayDates(roomNumber);
                 }
@@ -585,6 +608,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 if ($scope.checkOccupancyLimit()) {
                     var navigationAction = function() {
                         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+
+                        if ( $scope.reservationData.numNights !== 0 ) {
+                            $scope.clearArrivalAndDepartureTime();
+                        }
 
                         $state.go(roomAndRatesState, {
                             'from_date': $scope.reservationData.arrivalDate,

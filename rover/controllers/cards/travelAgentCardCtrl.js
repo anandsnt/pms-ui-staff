@@ -213,7 +213,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			// TODO: what is be to done, when this API is failed ??? - like assign back old value
 			if (dataToUpdate && dataToUpdate.other_hotels_info) {
 				$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
-				saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed);
+				saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed_from_popup);
 			} else {
 				saveContactInformation($scope.contactInformation);
 			}
@@ -280,10 +280,10 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		/**
 		 * success callback of save contact data
 		 */
-		var successCallbackOfContactSaveData = function(data, hotelInfoChanged) {
+		var successCallbackOfContactSaveData = function(data, hotelInfoChangedFromPopup) {
 
-			if (hotelInfoChanged) {
-				// Close the hotel info popup on saving
+			// Close the hotel info popup on saving
+			if (hotelInfoChangedFromPopup) {
 				ngDialog.close();
 			}
 
@@ -340,7 +340,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.errorMessage = errorMessage;
+			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
@@ -374,7 +374,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
 		 */
-		var saveContactInformation = function(data, hotelInfoChanged) {
+		var saveContactInformation = function(data, hotelInfoChangedFromPopup) {
 			var dataUpdated = false;
 
 			updatedOtherHotelsInfo = [];
@@ -416,12 +416,17 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				var options = {
 					params: dataToSend,
 					successCallBack: function(response) {
-						successCallbackOfContactSaveData(response, hotelInfoChanged);
+						successCallbackOfContactSaveData(response, hotelInfoChangedFromPopup);
 					},
 					failureCallBack: failureCallbackOfContactSaveData
 				};
 
 				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
+			} else {
+				// Close the hotel info popup on saving
+				if (hotelInfoChangedFromPopup) {
+					ngDialog.close();
+				}
 			}
 		};
 
