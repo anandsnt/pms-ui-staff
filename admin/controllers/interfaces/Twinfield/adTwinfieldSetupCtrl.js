@@ -1,6 +1,6 @@
 admin.controller('adTwinfieldSetupCtrl', [
-    '$scope', 'twinfieldSetupValues', 'adInterfacesCommonConfigSrv', 'paymentChargeCodes', 'adTwinfieldSetupSrv', '$window',
-    function($scope, twinfieldSetupValues, adInterfacesCommonConfigSrv, paymentChargeCodes, adTwinfieldSetupSrv, $window) {
+    '$scope', 'twinfieldSetupValues', 'adInterfacesSrv', 'paymentChargeCodes', 'adTwinfieldSetupSrv', '$window',
+    function($scope, twinfieldSetupValues, adInterfacesSrv, paymentChargeCodes, adTwinfieldSetupSrv, $window) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'TWINFIELD';
@@ -27,27 +27,21 @@ admin.controller('adTwinfieldSetupCtrl', [
         };
 
         /**
-         * when the save is success
-         * @return {undefined}
-         */
-        var successCallBackOfSave = function() {
-            $scope.goBackToPreviousState();
-        };
-
-
-        /**
          * when we clicked on save button
          * @return {undefined}
          */
         $scope.saveSetup = function() {
             $scope.config.credit_card_payment_charge_codes = _.pluck($scope.meta.selected_charge_codes, 'charge_code').
                 join(',');
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: _.omit($scope.config, ['historical_data_sync_items', 'is_authorized']),
-                    interfaceIdentifier: $scope.interface
+                    settingss: _.omit($scope.config, ['historical_data_sync_items', 'is_authorized']),
+                    integration: $scope.interface.toLowerCase()
                 },
-                successCallBack: successCallBackOfSave
+                onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Settings updated!';
+                }
             });
         };
 
@@ -59,7 +53,6 @@ admin.controller('adTwinfieldSetupCtrl', [
         $scope.authorize = function() {
             $scope.callAPI(adTwinfieldSetupSrv.getAuthorizationURI, {
                 successCallBack: function(data) {
-                    // CICO-64149 Oauth redirect here. IFC will return this endpoint after successful authentication
                     $window.location.href = data.redirect_url;
                 }
             });

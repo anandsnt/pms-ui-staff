@@ -1,6 +1,6 @@
 admin.controller('adTwinfieldSetupMappingCtrl', [
-    '$scope', 'adTwinfieldSetupSrv', 'adInterfacesCommonConfigSrv', 'ngTableParams',
-    function($scope, adTwinfieldSetupSrv, adInterfacesCommonConfigSrv, ngTableParams) {
+    '$scope', 'adTwinfieldSetupSrv', 'ngTableParams',
+    function($scope, adTwinfieldSetupSrv, ngTableParams) {
         BaseCtrl.call(this, $scope);
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
