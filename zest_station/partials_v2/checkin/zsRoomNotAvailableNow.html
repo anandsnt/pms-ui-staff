@@ -1,4 +1,4 @@
-<section id="main" role="main" class="centered" click-touch='resetTime()'>
+<section id="main" role="main" ng-class="{'centered' : screenData.mode === 'ACTION_COMPLETED' }" click-touch='resetTime()'>
 
     <!-- ACTIONS -->
    <div id="content" ng-if="screenData.mode === 'CHOOSE_ACTION'">
@@ -12,7 +12,7 @@
             <div class="select entry" style="margin: 0 auto; width: 60%; box-shadow: none;">
                <select name="Country" ng-model="screenData.action_type">
                   <option value="" disabled translate="SELECT_AN_ACTION"></option>
-                  <option ng-if="isAutoCheckinOn" value="send_mail" translate="SEND_MAIL"></option>
+                  <option ng-if="isAutoCheckinOn" value="send_mail" translate="SEND_ME_MAIL"></option>
                   <option value="find_guest" translate="FIND_ME_IN_A_LOCATION"></option>
                   <option value="guest_will_come_back_later" translate="WILL_COME_BACK_LATER"></option>
                </select>

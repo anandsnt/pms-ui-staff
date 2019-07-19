@@ -11,11 +11,11 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.screenData = {
-			'email': $stateParams.guest_email || '',
-			'guest_name': $stateParams.last_name ? ($stateParams.first_name + ' ' + $stateParams.last_name) : $stateParams.first_name,
-			'action_type': '',
-			'location': '',
-			'mode': 'CHOOSE_ACTION'
+			email: $stateParams.guest_email || '',
+			guest_name: $stateParams.last_name ? ($stateParams.first_name + ' ' + $stateParams.last_name) : $stateParams.first_name,
+			action_type: '',
+			location: '',
+			mode: 'CHOOSE_ACTION'
 		};
 		// TODO: to expand  for sent_to_queue ?
 		$scope.isAutoCheckinOn = $scope.zestStationData.precheckin_details.precheckin_on === "true" &&
@@ -36,9 +36,9 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 
 		var notifyProperty = function() {
 			var params = {
-				'reservation_id': $stateParams.reservation_id,
-				'application': 'KIOSK',
-				'action_type': $scope.screenData.action_type
+				reservation_id: $stateParams.reservation_id,
+				application: 'KIOSK',
+				action_type: $scope.screenData.action_type
 			};
 
 			if ($scope.screenData.action_type === 'find_guest') {
@@ -55,8 +55,8 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		var precheckinReseravation = function() {
 			var options = {
 				params: {
-					'reservation_id': $stateParams.reservation_id,
-					'application': 'KIOSK'
+					reservation_id: $stateParams.reservation_id,
+					application: 'KIOSK'
 				},
 				successCallBack: showSuccessPage
 			};
@@ -67,8 +67,9 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		var updateEmailId = function() {
 			var options = {
 				params: {
-					'guest_id': $stateParams.guest_id,
-					'email': $scope.screenData.email
+					guest_id: $stateParams.guest_id,
+					email: $scope.screenData.email,
+					application: 'KIOSK'
 				},
 				successCallBack: precheckinReseravation
 			};
