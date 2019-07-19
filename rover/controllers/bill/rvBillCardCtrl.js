@@ -3313,7 +3313,10 @@ sntRover.controller('RVbillCardController',
 			scope: $scope
 		});
 	};
-
+	var receiptPrintCompleted = function() {
+		$scope.printReceiptActive = false;
+	};
+		
 	var listenerPrintReceipt = $rootScope.$on('PRINT_RECEIPT', function(event, receiptPrintData) {
 		$scope.printReceiptActive = true;
 		$scope.receiptPrintData = receiptPrintData;
@@ -3342,6 +3345,7 @@ sntRover.controller('RVbillCardController',
 			else
 			{
 				window.print();
+				// billCardPrintCompleted();
 			}
 		}, 700);
 	});
@@ -3355,6 +3359,7 @@ sntRover.controller('RVbillCardController',
 
 		$scope.transactionId = feesDetails[feesIndex].id;
 		$scope.billId = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
+		$scope.entityType = "Reservation";
 
 		ngDialog.open({
 			template: '/assets/partials/popups/rvReceiptPopup.html',
