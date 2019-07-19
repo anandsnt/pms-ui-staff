@@ -23,8 +23,8 @@
                         ng-repeat="property in hotelCommissionDetails track by property.id">
                         <div class="grid-cell"><strong>{{ property.name }}</strong></div>
                         <div class="grid-cell">
-                            <input ng-model="property.value" placeholder="Commission" name="Commission" class=""
-                                value="{{property.value}}" type="text" />
+                            <input ng-model="property.value" placeholder="Commission" name="Commission"
+                                value="{{property.value}}" type="number" />
                         </div>
                         <div class="grid-cell">
                             <div class="select">
@@ -37,8 +37,7 @@
                         </div>
                         <div class="grid-cell">
                             <div class="select" ng-show="property.type === 'amount'">
-                                <select id="{{property.id}}-commission-per"
-                                    ng-model="property.commission_type">
+                                <select id="{{property.id}}-commission-per" ng-model="property.commission_type">
                                     <option value="perStay" translate>PER_STAY</option>
                                     <option value="perNight" translate>PER_NIGHT</option>
                                 </select>
