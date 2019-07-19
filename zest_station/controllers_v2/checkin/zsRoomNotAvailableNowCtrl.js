@@ -5,7 +5,8 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 	'zsCheckinSrv',
 	'zsGeneralSrv',
 	'$stateParams',
-	function($scope, zsEventConstants, zsUtilitySrv, zsCheckinSrv, zsGeneralSrv, $stateParams) {
+	'$filter',
+	function($scope, zsEventConstants, zsUtilitySrv, zsCheckinSrv, zsGeneralSrv, $stateParams, $filter) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -16,6 +17,12 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			'location': '',
 			'mode': 'CHOOSE_ACTION'
 		};
+		// TODO: to expand  for sent_to_queue ?
+		$scope.isAutoCheckinOn = $scope.zestStationData.precheckin_details.precheckin_on === "true" &&
+								 $scope.zestStationData.precheckin_details.precheckin_action === "auto_checkin";
+		var guestWaitingLocations = $filter('translate')('GUEST_WAITING_LOCATIONS');
+		// The tag GUEST_WAITING_LOCATIONS has to be saved in admin with ';' separating location names
+		$scope.guestWaitingLocations = guestWaitingLocations === 'GUEST_WAITING_LOCATIONS' ? [] : guestWaitingLocations.split(";");
 
 		$scope.showNextButton = function() {
 			return ($scope.screenData.action_type === 'send_mail' && zsUtilitySrv.isValidEmail($scope.screenData.email)) ||
@@ -72,7 +79,6 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		$scope.nextButtonClicked = function() {
 			if ($scope.screenData.action_type === 'send_mail') {
 				// if mail id has changed, update email id, and then precheckin the reservation
-				console.log(!_.isEqual($stateParams.guest_email, $scope.screenData.email))
 				if (!_.isEqual($stateParams.guest_email, $scope.screenData.email)) {
 					updateEmailId();
 				} else {

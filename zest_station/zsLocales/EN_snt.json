@@ -834,12 +834,10 @@
     "FIND_ME_IN_A_LOCATION": "Find me in a location",
     "WILL_COME_BACK_LATER": "Will come back later",
     "SELECT_A_LOCATION": "Select a location",
-    "GUEST_LOCATION_1": "Lobby",
-    "GUEST_LOCATION_2": "Bar",
-    "GUEST_LOCATION_3": "Restaurant",
+    "GUEST_WAITING_LOCATIONS": "Lobby;Bar;Restaurant",
     "ROOM_UNAVAILABLE_FINAL_HEADER": "Thank you",
-    "ROOM_UNAVAILABLE_FINAL_EMAIL_MSG": "We will send an email with instructions as soon a room is available for you",
-    "ROOM_UNAVAILABLE_FINAL_LOCATION_MSG": "We will let you know as soon a room is available for you",
+    "ROOM_UNAVAILABLE_FINAL_EMAIL_MSG": "We will send an email with instructions as soon a room is available",
+    "ROOM_UNAVAILABLE_FINAL_LOCATION_MSG": "We will let you know as soon a room is available",
     "ROOM_UNAVAILABLE_FINAL_COME_BACK_LATER_MSG": "Please come back later and check with the front desk agent"
 
 }

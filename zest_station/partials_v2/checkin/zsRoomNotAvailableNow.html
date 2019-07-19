@@ -12,7 +12,7 @@
             <div class="select entry" style="margin: 0 auto; width: 60%; box-shadow: none;">
                <select name="Country" ng-model="screenData.action_type">
                   <option value="" disabled translate="SELECT_AN_ACTION"></option>
-                  <option value="send_mail" translate="SEND_MAIL"></option>
+                  <option ng-if="isAutoCheckinOn" value="send_mail" translate="SEND_MAIL"></option>
                   <option value="find_guest" translate="FIND_ME_IN_A_LOCATION"></option>
                   <option value="guest_will_come_back_later" translate="WILL_COME_BACK_LATER"></option>
                </select>
@@ -20,10 +20,8 @@
             <div class="select entry" ng-if="screenData.action_type === 'find_guest'" style="margin: 0 auto; width: 60%; box-shadow: none;">
                <select name="Country" ng-model="screenData.location">
                   <option value="" disabled translate="SELECT_A_LOCATION"></option>
-                  <option value="{{ 'GUEST_LOCATION_1' | translate }}" translate="GUEST_LOCATION_1"></option>
-                  <option value="{{ 'GUEST_LOCATION_2' | translate }}" translate="GUEST_LOCATION_2"></option>
-                  <option value="{{ 'GUEST_LOCATION_3' | translate }}" translate="GUEST_LOCATION_3"></option>
-               </select>
+                  <option ng-repeat="location in guestWaitingLocations" value="{{ location }}" ng-bind="location"></option>
+                </select>
             </div>
             <div class="entry" ng-if="screenData.action_type === 'send_mail'" style="margin: 0 auto; width: 60%;">
                <input type="text" placeholder="{{ 'TYPE_EMAIL_IN' | translate }}" ng-focus="showOnScreenKeyboard('guest-email', 'scroll-up')" click-touch="showOnScreenKeyboard('guest-email', 'scroll-up')" ng-model="screenData.email" id="guest-email"  touch-press/>
