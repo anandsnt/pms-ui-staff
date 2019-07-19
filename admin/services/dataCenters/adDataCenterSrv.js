@@ -27,7 +27,7 @@ admin.service('ADDataCenterSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.checkIdDataCenterIsUsed = function(params) {
 		var url = '/api/oracle_data_centers';
 
-		return ADBaseWebSrvV2.getJSON(url);
+		return ADBaseWebSrvV2.getJSON(url, params);
 	};
 
 }]);
