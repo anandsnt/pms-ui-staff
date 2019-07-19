@@ -90,7 +90,7 @@ admin.controller('ADOracleDataCentersCtrl', ['$scope',
 				dateFormat: 'YYYY-MM-DD',
 				changeYear: true,
 				changeMonth: true,
-				yearRange: "0:+10",
+				yearRange: "-10:+30",
 				// minDate: 0, // TODO: Decide on prevention of past date selection
 				onSelect: function() {
 					ngDialog.close();
