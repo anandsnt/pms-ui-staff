@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog', 'sntActivity',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog, sntActivity) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
