@@ -341,7 +341,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
 			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
-			// $scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
 
