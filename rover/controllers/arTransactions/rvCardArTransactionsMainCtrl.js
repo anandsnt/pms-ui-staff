@@ -133,7 +133,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Handling data based on tabs currently active.
 		 */
 		var successCallbackOfFetchAPI = function( data ) {
-
+			$scope.transactionsDetails = data;
 			if (data.ar_transactions.length === 0) {
 				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo !== 1) {
 					loadAPIData('BALANCE', 1);										
@@ -808,7 +808,42 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 className: '',
                 scope: $scope
             });
-        };
+		};
+
+		$scope.showFormatBillPopup = function(index, is_from_paid) {
+			$scope.is_from_ar = true;
+			// console.log($scope.arDataObj)
+			// console.log($scope.transactionsDetails)
+			// $scope.billNo = billNo;
+			// $scope.isSettledBill = isActiveBill;
+			$scope.billFormat = {};
+			$scope.billFormat.isInformationalInvoice = false;
+			// $scope.isFolioNumberExists = $scope.arDataObj.bills[$scope.currentActiveBill].is_folio_number_exists;
+			$scope.reservationBillData = $scope.arDataObj;
+			if (is_from_paid) {
+				$scope.item = $scope.arDataObj.paidList[index]
+			} else {
+				$scope.item = $scope.arDataObj.balanceList[index]
+			}
+			if ($scope.item.paid) {
+				$scope.isInvoiceStepOneActive = true;
+				$scope.isInvoiceStepThreeActive = false;
+				$scope.shouldGenerateFinalInvoice = true;
+			} else {
+				$scope.isInvoiceStepOneActive = false;
+				$scope.isInvoiceStepThreeActive = true;
+				$scope.shouldGenerateFinalInvoice = false;
+			}
+			$scope.isInvoiceStepTwoActive = false;
+			$scope.isInvoiceStepFourActive = false;
+			$scope.isInvoiceStepFiveActive = false;
+			ngDialog.open({
+					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
+					controller: 'rvArBillFormatPopupCtrl',
+					className: '',
+					scope: $scope
+			});
+		};	
 
         // Send email AR statement
         $scope.emailArStatement = function() {
@@ -837,6 +872,107 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
             $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
         };
+
+		$scope.clickedPrint = function(requestParams) {
+			sntActivity.start("PRINT_STARTED");
+			printBill(requestParams);
+		};
+
+		// print the page
+		var printBill = function(data) {
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+				finalInvoiceSettlement(data, true);
+			} else {
+				var getCopyCount = function(successData) {
+						var copyCount = "";
+
+						if (successData.is_copy_counter) {
+							copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+						}
+						return copyCount;
+					},
+					printDataFetchSuccess = function(successData) {
+						var copyCount = "",
+							arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+							arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
+							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+
+						$scope.shouldShowArInvoiceNumber = true;
+						if (dateDifference < 0) {
+							$scope.shouldShowArInvoiceNumber = false;
+						}
+
+						$scope.isPrintRegistrationCard = false;
+						$scope.printBillCardActive = true;
+						$scope.$emit('hideLoader');
+
+
+						if ($scope.billFormat.isInformationalInvoice) {
+							successData.invoiceLabel = successData.translation.information_invoice;
+						}
+						else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
+							successData.invoiceLabel = successData.translation.invoice;
+						} 
+						else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
+							if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) {
+								successData.invoiceLabel = successData.translation.void_invoice;
+							} 
+							else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) {
+								copyCount = getCopyCount(successData);
+								successData.invoiceLabel = successData.translation.copy_of_void_invoice.replace("#count", copyCount);
+							}
+						} 
+						else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
+						{
+							successData.invoiceLabel = successData.translation.invoice;
+						} 
+						else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+						{
+							copyCount = getCopyCount(successData);
+							successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+						}
+						
+						$scope.printData = successData;
+						$scope.errorMessage = "";
+
+						// CICO-9569 to solve the hotel logo issue
+						$("header .logo").addClass('logo-hide');
+						$("header .h2").addClass('text-hide');
+						$("body #loading").html("");// CICO-56119
+
+						// add the orientation
+						addPrintOrientation();
+
+						/*
+						*	======[ READY TO PRINT ]======
+						*/
+						// this will show the popup with full bill
+						$timeout(function() {
+
+							if (sntapp.cordovaLoaded) {
+								cordova.exec(billCardPrintCompleted,
+									function(error) {
+										billCardPrintCompleted();
+									}, 'RVCardPlugin', 'printWebView', []);
+							}
+							else
+							{
+								window.print();
+								billCardPrintCompleted();
+							}
+						}, 700);
+					
+				};
+
+				var printDataFailureCallback = function(errorData) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorData;
+				};
+						
+				$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+			}		
+		};
+
 
         /**
 		* function to check whether the user has permission
