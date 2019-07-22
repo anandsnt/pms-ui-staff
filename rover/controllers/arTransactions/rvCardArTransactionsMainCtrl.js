@@ -10,8 +10,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'$window',
     '$filter',
     'RVContactInfoSrv',
-    'rvPermissionSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, RVContactInfoSrv, rvPermissionSrv) {
+	'rvPermissionSrv',
+	'sntActivity',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, RVContactInfoSrv, rvPermissionSrv,sntActivity) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -812,10 +813,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$scope.showFormatBillPopup = function(index, is_from_paid) {
 			$scope.is_from_ar = true;
-			// console.log($scope.arDataObj)
-			// console.log($scope.transactionsDetails)
-			// $scope.billNo = billNo;
-			// $scope.isSettledBill = isActiveBill;
 			$scope.billFormat = {};
 			$scope.billFormat.isInformationalInvoice = false;
 			// $scope.isFolioNumberExists = $scope.arDataObj.bills[$scope.currentActiveBill].is_folio_number_exists;
@@ -873,11 +870,51 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
         };
 
+		$scope.clickedEmail = function(data) {
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+				finalInvoiceSettlement(data, false);
+			} else {
+				$scope.closeDialog();
+				var sendEmailSuccessCallback = function(successData) {
+					$scope.$emit('hideLoader');
+					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+					$scope.status = "success";
+					$scope.showEmailSentStatusPopup();
+					$scope.reloadCurrentActiveBill();
+				};
+				var sendEmailFailureCallback = function(errorData) {
+					$scope.$emit('hideLoader');
+					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+					$scope.status = "alert";
+					$scope.showEmailSentStatusPopup();
+				};		
+	
+				$scope.invokeApi(rvAccountsArTransactionsSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
+			}		
+		};
+
 		$scope.clickedPrint = function(requestParams) {
 			sntActivity.start("PRINT_STARTED");
 			printBill(requestParams);
 		};
 
+		var finalInvoiceSettlement = function(data, isPrint) {
+			var settleInvoiceSuccess = function() {
+					$scope.shouldGenerateFinalInvoice = false;
+					if (isPrint) {
+						printBill(data);
+					} else {
+						$scope.clickedEmail(data);
+					}				
+				},
+				options = {
+					params: {"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id},
+					successCallBack: settleInvoiceSuccess
+				};
+	
+			$scope.callAPI(rvAccountsArTransactionsSrv.settleFinalInvoice, options);
+		};
+	
 		// print the page
 		var printBill = function(data) {
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
@@ -969,7 +1006,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.errorMessage = errorData;
 				};
 						
-				$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+				$scope.invokeApi(rvAccountsArTransactionsSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
 			}		
 		};
 

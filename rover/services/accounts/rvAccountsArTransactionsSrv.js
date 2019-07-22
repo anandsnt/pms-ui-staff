@@ -16,6 +16,59 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
       return deferred.promise;
     };
 
+    this.fetchBillPrintData = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/accounts/' + params.account_id + '/ar_transactions/'+ params.id +'/print_ar_invoice';
+
+        rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                // Manually creating charge details list & credit deatils list.
+                data.charge_details_list = [];
+                data.credit_details_list = [];
+                angular.forEach(data.fee_details, function(fees, index1) {
+                    angular.forEach(fees.charge_details, function(charge, index2) {
+                        charge.date = fees.date;
+                        data.charge_details_list.push(charge);
+                    });
+                    angular.forEach(fees.credit_details, function(credit, index3) {
+                        credit.date = fees.date;
+                        data.credit_details_list.push(credit);
+                    });
+                });
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+        return deferred.promise;
+    };
+
+    this.settleFinalInvoice = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/accounts/' + params.bill_id + '/final_invoice_settlement';
+
+            rvBaseWebSrvV2.postJSON(url).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+    };
+
+    this.sendEmail = function(params) {
+		var deferred = $q.defer();
+		var url = '/api/accounts/' + params.account_id + '/ar_transactions/'+ params.id +'/email_ar_invoice';
+
+			rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
+			   	 deferred.resolve(data);
+			}, function(data) {
+			    deferred.reject(data);
+			});
+
+		return deferred.promise;
+	};
+
   // Save AR Balance details.
   this.saveArBalance = function(data) {
     var deferred = $q.defer(),
