@@ -14,40 +14,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     */
     var getBillSettingsInfoRequestParams = function() {
         var params = {};
-
-        // if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
-        //     params.id = $scope.reservationBillData.reservation_id;
-        //     params.is_type = "Reservation";
-        // } else {
-        //     $scope.hideCompanyCardInvoiceToggle = false;
-        //     if ($scope.isFromInvoiceSearchScreen) {
-        //         if ($scope.clickedInvoiceData.associated_item.company_card === null && $scope.clickedInvoiceData.associated_item.travel_agent_card === null) {
-        //             $scope.hideCompanyCardInvoiceToggle = true;
-        //         } else if ($scope.clickedInvoiceData.associated_item.company_card === null && $scope.clickedInvoiceData.associated_item.travel_agent_card !== null) {
-        //             // Only TA card is attached.
-        //             $scope.isCompanyCardInvoice = false;
-        //             $scope.disableCompanyCardInvoice = true;
-        //         } else if ($scope.clickedInvoiceData.associated_item.company_card !== null && $scope.clickedInvoiceData.associated_item.travel_agent_card === null) {
-        //             // Only Company card is attached.
-        //             $scope.disableCompanyCardInvoice = true;
-        //         }
-        //     } else if (!!$scope.groupConfigData) {
-        //         params.id = $scope.groupConfigData.summary.group_id;
-        //         params.is_group = true;
-        //         params.is_type = "Account";
-        //         handleGenerateToggleWidgetVisibility($scope.groupConfigData.summary);
-        //     } else {
-        //         params.id = $scope.accountConfigData.summary.posting_account_id;
-        //         params.is_group = false;
-        //         params.is_type = "Account";
-        //         handleGenerateToggleWidgetVisibility($scope.accountConfigData.summary);
-        //     }
-
-        // }
-        // params.bill_no = $scope.billNo;
+        params.is_type = "ArAccount";
         params.id = $scope.item.transaction_id
         return params;
-
     };
 
     /*
@@ -139,21 +108,8 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     */
     var getPrintEmailRequestParams = function() {
         var params = {};
-
-        if ($scope.reservationBillData && $scope.reservationBillData.reservation_id) {
-            params.reservation_id = $scope.reservationBillData.reservation_id;
-        } else {
-            if (!!$scope.groupConfigData) {
-                params.group_id = $scope.groupConfigData.summary.group_id;
-                params.is_group = true;
-            } else {
-                params.account_id = ($scope.isFromInvoiceSearchScreen) ? $scope.clickedInvoiceData.associated_item.item_id : $scope.accountConfigData.summary.posting_account_id;
-                params.is_group = false;
-            }
-            params.type = $scope.isCompanyCardInvoice ? 'COMPANY' : 'TRAVELAGENT';
-
-        }
-        // params.bill_number = $scope.billNo;
+        params.id = $scope.item.transaction_id;
+        params.account_id = $scope.reservationBillData.accountId;
         params.locale = $scope.data.locale;
         $scope.$emit('hideLoader');
         return params;
