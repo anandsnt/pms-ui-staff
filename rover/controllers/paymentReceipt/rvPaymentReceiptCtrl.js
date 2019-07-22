@@ -39,7 +39,7 @@ sntRover.controller('RVReceiptPopupController',
      */
     $scope.printReceipt = function() {
         var printReceiptSuccess = function (response) {
-                $scope.$emit("PRINT_RECEIPT", response);
+                $scope.$emit("PRINT_RECEIPT", response.data);
             },
             dataToSend = {
                 params: {
