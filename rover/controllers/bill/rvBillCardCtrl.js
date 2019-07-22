@@ -46,6 +46,7 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.encoderTypes = [];
 	$scope.isSRViewRateBtnClicked = RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
+	$scope.isFromBillCard = true;
 
 	// Flag for CC auth permission
     $scope.hasCCAuthPermission = function() {
@@ -3318,6 +3319,7 @@ sntRover.controller('RVbillCardController',
 	};
 		
 	var listenerPrintReceipt = $rootScope.$on('PRINT_RECEIPT', function(event, receiptPrintData) {
+
 		$scope.printReceiptActive = true;
 		$scope.receiptPrintData = receiptPrintData;
 		$scope.errorMessage = "";

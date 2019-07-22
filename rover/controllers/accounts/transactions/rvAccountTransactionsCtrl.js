@@ -39,7 +39,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
-
+		$scope.isFromBillCard = false;
 
 		// Success callback for transaction fetch API.
 		var onBillTransactionFetchSuccess = function(data) {

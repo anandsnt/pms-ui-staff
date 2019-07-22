@@ -268,7 +268,7 @@
 												<span class="currency">{{currencySymbol}}</span>{{feesData.credits| number: precisonTwo}}
 											</strong>
 											<!-- ng-if="feesData.is_print_receipt_available" -->
-											<button  type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)">
+											<button  type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)" ng-if="feesData.is_print_receipt_available">
 												<span class="icons icon-invoice"></span>
 											</button>
 										</td>

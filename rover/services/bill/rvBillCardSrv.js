@@ -431,7 +431,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 
 	this.printReceiptData = function(params) {
 		var deferred = $q.defer(),
-			url = '/api/bills/' + params.bill_id + '/payment_receipt.json';
+			url = '/api/bills/' + params.bill_id + '/print_payment_receipt';
 
 		sntBaseWebSrv.postJSON(url, params).then(function(data) {
 
