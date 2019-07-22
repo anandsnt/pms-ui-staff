@@ -828,7 +828,7 @@
     "WALKIN_UPGRADE_ROOM_SUB_MSG": "Select a card to see room details before you upgrade",
 
     "ROOM_UNAVAILABLE_NOW_HEADER": "Dear {{ guest_name }}, we are sorry",
-    "ROOM_UNAVAILABLE_NOW_SUB_HEADER": "There are no rooms at this time. We can alert you as soon as your room is ready.",
+    "ROOM_UNAVAILABLE_NOW_SUB_HEADER": "Your room is not ready. We can alert you as soon as it is ready.",
     "SELECT_AN_ACTION": "Select an action",
     "SEND_ME_MAIL": "Send me email",
     "FIND_ME_IN_A_LOCATION": "Find me in a location",
