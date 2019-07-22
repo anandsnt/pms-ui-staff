@@ -553,7 +553,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isMember: isMember,
 							isPromotion: isPromotion,
 							isDefaultRoomTypeSuiteUnavailable: $scope.reservationData.roomsMeta[rate.room_type_id].is_suite && (rate.availability <= 0 || rate.availability <  $scope.reservationData.rooms.length),
-							isDayUse: rate.is_day_use
+							isDayUse: $scope.reservationData.ratesMeta[rate.id].is_day_use
 						};
 
 					rateInfo.rooms.push({
@@ -2097,7 +2097,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isMember: isMember,
 							isPromotion: isPromotion,
 							isSuiteUnavailable: room.isSuiteUnavailable,
-							isDayUse: rate.is_day_use
+							isDayUse: $scope.reservationData.ratesMeta[rate.id].is_day_use
 						};
 
 						if (bestAvailableRateOfSelectedRoom === rate.id) {
