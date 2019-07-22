@@ -19,7 +19,7 @@ sntRover.controller('rvTACardPropertiesCommissionsPopupCtrl', [
 
         $scope.saveChanges = function() {
             $scope.$emit("saveContactInformation", {
-                'hotel_info_changed': true,
+                'hotel_info_changed_from_popup': true,
                 'other_hotels_info': $scope.hotelCommissionDetails
             });
         };

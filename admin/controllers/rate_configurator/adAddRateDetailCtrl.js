@@ -267,7 +267,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'task_id': $scope.rateData.task_id,
                 'is_copied': ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
                 'booking_origin_id': $scope.rateData.booking_origin_id,
-                'tasks': $scope.rateData.tasks
+                'tasks': $scope.rateData.tasks,
+                'is_day_use': $scope.rateData.is_day_use
             };
 
 
