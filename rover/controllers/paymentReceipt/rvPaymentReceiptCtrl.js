@@ -60,10 +60,11 @@ sntRover.controller('RVReceiptPopupController',
                 $scope.successMessage = ["Email send succesfully!"];
             },
             dataToSend = {
-                params: {
+                params: {printReceipt
                   bill_id: $scope.billId,
                   transaction_id: $scope.transactionId,
-                  entity_type: $scope.isFromBillCard ? "Reservation" : "PostingAccount"
+                  entity_type: $scope.isFromBillCard ? "Reservation" : "PostingAccount",
+                  to_address: $scope.data.mailto_address
                 },
                 successCallBack: emailReceiptSuccess
             };
