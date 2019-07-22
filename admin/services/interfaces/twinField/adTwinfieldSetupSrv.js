@@ -32,7 +32,7 @@ admin.service('adTwinfieldSetupSrv', [
         };
 
         service.saveMapping = function(params) {
-            return ADBaseWebSrvV2.postJSON('/ifc/proxy/twinfield/twinfield_save_mappings', params);
+            return ADBaseWebSrvV2.postJSON('/ifc/twinfield/mappings', params);
         };
 
         service.deleteMapping = function(id) {
@@ -40,7 +40,7 @@ admin.service('adTwinfieldSetupSrv', [
         };
 
         service.updateMapping = function(params) {
-            return ADBaseWebSrvV2.putJSON('/ifc/proxy/twinfield/twinfield_update_mappings', params);
+            return ADBaseWebSrvV2.putJSON('/ifc/twinfield/mappings/' + params.id, params);
         };
 
         service.fetchMeta = function() {
