@@ -62,7 +62,8 @@ sntRover.controller('RVReceiptPopupController',
             dataToSend = {
                 params: {
                   bill_id: $scope.billId,
-                  transaction_id: $scope.transactionId
+                  transaction_id: $scope.transactionId,
+                  entity_type: $scope.isFromBillCard ? "Reservation" : "PostingAccount"
                 },
                 successCallBack: emailReceiptSuccess
             };

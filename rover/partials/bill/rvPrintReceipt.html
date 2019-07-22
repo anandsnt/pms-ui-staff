@@ -1,36 +1,40 @@
 <div class="invoice-logo envelope">
-    <img src="{hotel-logo}" alt="" />
+    <img src="{{receiptPrintData.hotel_logo}}" alt="" />
     <h1>{{receiptPrintData.hotel_name}}</h1>
-    {{receiptPrintData.hotel_address}}<br/>
-    <span class="type" ng-bind-html="receiptPrintData.hotel_address"></span>
-    <!-- If showing QR code, place it here:
-    <img src="{src}" alt="" class="qr-code" /> -->
+    <span ng-bind-html="receiptPrintData.hotel_address"></span>
+    <span class="type">{{receiptPrintData.translations.payment_receipt}}</span>
+    <!-- If showing QR code, place it here:-->
+    <span class="type" in-show="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
+        <br/><img src="{{receiptPrintData.qr_code}}" alt="" class="qr-code" /> 
+    </span>
 </div>
 
 <div class="info-container account-info">
     <div class="info-left">
-        {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
-        <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
-        <br/>
-        {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
-        {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
-        {{receiptPrintData.guest_details.postal_code}}<br/>
-        {{receiptPrintData.guest_details.country_name}}
-
+        <span ng-if="isFromBillCard">
+            {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
+            <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
+            <br/>
+            {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
+            {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
+            {{receiptPrintData.guest_details.postal_code}}<br/>
+            {{receiptPrintData.guest_details.country_name}}
+        </span>
+        <span ng-if="!isFromBillCard">
+            <strong>Account Name:</strong> {{receiptPrintData.account_name}} <br />
+            <strong>Account Number:</strong> {{receiptPrintData.account_number}} <br />
+        </span>
         <div class="info-bottom">
-            <strong>Payment Receipt No.:</strong> {{receiptPrintData.receipt_no}}
+            <strong>Payment Receipt No:</strong> {{receiptPrintData.receipt_no}}
         </div>
     </div>
-    <div class="info-right">
+    <div class="info-right" ng-if="isFromBillCard">           
         <strong>Arrival Date:</strong> {{receiptPrintData.arrival_date}}<br/>
         <strong>Departure Date:</strong> {{receiptPrintData.departure_date}}<br/>
         <strong>Room Number:</strong> {{receiptPrintData.room_no}}<br/> 
         <strong>Confirmation Number:</strong> {{receiptPrintData.confirmation_number}}<br/>
     </div>
 
-</div>
-
-<div class="invoice-header">
 </div>
 
 <div class="invoice-body">
@@ -47,7 +51,7 @@
                 <td colspan="2"><strong>Total Amount</strong></td>
                 <td>
                     <strong><span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.total_amount}}</strong>
-                    <div class="converted-currency"><span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.converted_total_amount}}</div>            
+                    <div class="converted-currency"><span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.total_converted_amount}}</div>            
                 </td>
             </tr>           
         </tfoot>
@@ -57,7 +61,7 @@
                 <td class="description">
                     {{receiptPrintData.payments.payment_type}}
                     <!-- if other data, use this. For example -->
-                    <span class="reference" ng-if="receiptPrintData.payments.credit_card_details">{{receiptPrintData.payments.credit_card_details.description}} - Ending: {{receiptPrintData.payments.credit_card_details.card_number}}</span>
+                    <span class="reference" ng-if="receiptPrintData.payments.credit_card_details.card_number !== null && receiptPrintData.payments.credit_card_details.card_number !== ''">{{receiptPrintData.payments.credit_card_details.description}} - Ending: {{receiptPrintData.payments.credit_card_details.card_number}}</span>
                 </td>
                 <td class="align-right receipt-amount">
                     <span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.amount}}
@@ -71,6 +75,6 @@
     </table>
 </div>
 
-<div class="invoice-footer text-center">
-    {footer}
+<div class="invoice-footer text-center" >   
+    {{receiptPrintData.custom_text_footer}}
 </div>
