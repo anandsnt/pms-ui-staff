@@ -28,7 +28,7 @@ admin.service('adTwinfieldSetupSrv', [
         };
 
         service.fetchMappings = function(params) {
-            return ADBaseWebSrvV2.getJSON('/ifc/proxy/twinfield/twinfield_fetch_mappings', params);
+            return ADBaseWebSrvV2.getJSON('/ifc/twinfield/mappings', params);
         };
 
         service.saveMapping = function(params) {
