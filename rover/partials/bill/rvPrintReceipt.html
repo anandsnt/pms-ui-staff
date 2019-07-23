@@ -29,12 +29,11 @@
         </div>
     </div>
     <div class="info-right" ng-if="isFromBillCard">           
-        <strong>Arrival Date:</strong> {{receiptPrintData.arrival_date}}<br/>
-        <strong>Departure Date:</strong> {{receiptPrintData.departure_date}}<br/>
-        <strong>Room Number:</strong> {{receiptPrintData.room_no}}<br/> 
-        <strong>Confirmation Number:</strong> {{receiptPrintData.confirmation_number}}<br/>
+        <strong>{{receiptPrintData.translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
+        <strong>{{receiptPrintData.translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
+        <strong>{{receiptPrintData.translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
+        <strong>{{receiptPrintData.translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
     </div>
-
 </div>
 
 <div class="invoice-body">
@@ -75,5 +74,5 @@
 </div>
 
 <div class="invoice-footer text-center" >   
-    {{receiptPrintData.custom_text_footer}}
+    {{receiptPrintData.footer}}
 </div>
