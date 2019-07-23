@@ -102,8 +102,8 @@
 	                                </select>
 	                            </div>
 	                        </div>
-	                       	<ad-textbox ng-if="selectedSchedule.advance_days_selection === 'custom'" value="selectedSchedule.advance_days" name="name" id="name" label="{{ 'NO_OF_DAYS_IN_ADVACNE' | translate }}" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
-							<div ng-if="selectedSchedule.advance_days_selection === 0" class="entry radio-check actions_margin_top">
+	                       	<ad-textbox ng-if="selectedSchedule.advance_days_selection === 'custom'" value="selectedSchedule.advance_days" name="name" id="name" label="{{ 'NO_OF_DAYS_IN_ADVACNE' | translate }}" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}" inputtype="number"></ad-textbox>
+							<div ng-if="selectedSchedule.advance_days === 0" class="entry radio-check actions_margin_top">
 	                            <label class="checkbox">
 	                                <span class="icon-form icon-checkbox" ng-class="{ checked : selectedSchedule.exclude_from_auto_collection }"></span>
 	                                <label>Exclude from auto collection</label>
