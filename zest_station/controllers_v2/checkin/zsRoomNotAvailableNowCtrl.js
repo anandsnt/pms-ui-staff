@@ -35,21 +35,27 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		};
 
 		var notifyProperty = function() {
-			var params = {
-				reservation_id: $stateParams.reservation_id,
-				application: 'KIOSK',
-				action_type: $scope.screenData.action_type
-			};
+			var noteMsg;
 
 			if ($scope.screenData.action_type === 'find_guest') {
-				params.location = $scope.screenData.location;
+				noteMsg = "When room is ready please find the guest at " + $scope.screenData.location;
+			} else {
+				noteMsg = "The guest will back later to check if the room is ready by then"
 			}
+			var params = {
+				application: 'KIOSK',
+				action_type: $scope.screenData.action_type,
+				note_topic: 1,
+				reservation_id: $stateParams.reservation_id,
+				text: noteMsg
+			};
+
 			var options = {
 				params: params,
 				successCallBack: showSuccessPage
 			};
 
-			$scope.callAPI(zsCheckinSrv.preCheckinReservation, options);
+			$scope.callAPI(zsCheckinSrv.addNotes, options);
 		};
 
 		var precheckinReseravation = function() {
