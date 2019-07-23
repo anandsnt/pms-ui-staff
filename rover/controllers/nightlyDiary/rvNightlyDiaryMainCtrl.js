@@ -518,7 +518,8 @@ angular.module('sntRover')
                         $scope.popupData = {
                             data: response,
                             showOverBookingButton: false,
-                            message: ''
+                            message: '',
+                            diaryMode: rvUtilSrv.getDiaryMode()
                         };
                         let proceedSave = false;
                       
