@@ -9,7 +9,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     '$timeout',
     'zsPaymentSrv',
     'sntActivity',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity) {
+    'zsGeneralSrv',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity, zsGeneralSrv) {
 
 
         // This controller is used for viewing reservation details 
@@ -416,8 +417,22 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $state.go('zest_station.checkInTerms', stateParams);
         };
 
+        var goToRoomNotAvailableOptions = function() {
+            $state.go('zest_station.checkinRoomNotAvailableNow', {
+                'guest_email': $scope.selectedReservation.guest_details[0].email,
+                'first_name': $scope.selectedReservation.guest_details[0].first_name,
+                'last_name': $scope.selectedReservation.guest_details[0].last_name,
+                'guest_id': $scope.selectedReservation.guest_details[0].id,
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+            });
+        };
+
         var initRoomError = function() {
-            $state.go('zest_station.checkinRoomError');
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_room_ready_alert) {
+                goToRoomNotAvailableOptions();
+            } else {
+                $state.go('zest_station.checkinRoomError');   
+            }
         };
 
         var showTermsAndCondition = function() {
@@ -524,15 +539,20 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var initCheckinTimeError = function() {
-            /*
-             *  guest attempted to check in too early, 
-             *  - for hourly hotels such as Yotel, guest is not allowed to check-in
-             *  - unless they are within the hour of the arrival time
-             */
-            $state.go('zest_station.checkinRoomError', {
-                'early_checkin_unavailable': true,
-                'first_name': $scope.selectedReservation.guest_details[0].first_name
-            });
+
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_room_ready_alert) {
+               goToRoomNotAvailableOptions();
+            } else {
+                /*
+                 *  guest attempted to check in too early, 
+                 *  - for hourly hotels such as Yotel, guest is not allowed to check-in
+                 *  - unless they are within the hour of the arrival time
+                 */
+                $state.go('zest_station.checkinRoomError', {
+                    'early_checkin_unavailable': true,
+                    'first_name': $scope.selectedReservation.guest_details[0].first_name
+                });
+            }
         };
 
         var currentHotelTime = '',

@@ -617,6 +617,19 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsWalkInCtrl',
             templateUrl: '/assets/partials_v2/walkin/zsWakinReservationMain.html'
         });
-    
+
+        $stateProvider.state('zest_station.checkinRoomNotAvailableNow', {
+            url: '/roomNotAvailableNow',
+            controller: 'zsRoomNotAvailableNowCtrl',
+            params: {
+                guest_id: '',
+                reservation_id: '',
+                guest_email: '',
+                first_name: '',
+                last_name: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zsRoomNotAvailableNow.html'
+        });
+        
     }
 ]);
