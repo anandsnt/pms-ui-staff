@@ -31,6 +31,7 @@ sntRover.controller('RVWorkstationController', [
 
     $scope.saveWorkStation = function() {
       var onSaveWorkstationSuccess = function(data) {
+        $rootScope.workstation_id = data.id;
         $scope.errorMessage = "";
         var onSetWorkstationSuccess = function(response) {
           $scope.$emit('hideLoader');

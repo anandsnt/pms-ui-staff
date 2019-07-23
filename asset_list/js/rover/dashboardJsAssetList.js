@@ -43,6 +43,7 @@ module.exports = {
                 sharedRoot + 'cardReaderCtrl.js',
                 // sharedRoot + 'cordova.js',
                 sharedRoot + 'sntTransitionManager/**/*.js',
+                sharedRoot + 'sntFeatureToggles/**/*.js',
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
                 sharedRoot + 'sntCanvasUtil/**/*.js',
 

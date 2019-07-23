@@ -229,16 +229,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				// updateData.preference.push(preferenceUpdateData);
 			});
 
-			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
-		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false;
-
-			var saveData = {
-				userId: $scope.guestCardData.contactInfo.user_id,
-				data: updateData
-			};
-
-			var guestId = getGuestId(),
-			    isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVContactInfoSrv.isGuestFetchComplete(guestId);
+			var dataToUpdate = JSON.parse(JSON.stringify(updateData)),
+		    	dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false,			
+		    	guestId = getGuestId(),
+			    isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVContactInfoSrv.isGuestFetchComplete(guestId),
+			    saveData = {
+					userId: guestId,
+					data: updateData
+				};
 
             if (guestId &&
                 isGuestFetchComplete && !dataUpdated) {

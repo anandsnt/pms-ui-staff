@@ -9,7 +9,7 @@
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<form  class="form float" >
 					<fieldset class="holder left">
-						<ad-textbox div-class="full-width" text-area-class="full-width" value="invoiceSettings.first_invoice_no" label = "{{'FIRST_INVOICE_NO' | translate}}" placeholder = "{{'PLACEHOLDER_FIRST_INVOICE_NO' | translate }}" readonly="{{isFirstInvoiceNoReadOnly}}"></ad-textbox>
+						<ad-textbox div-class="full-width" text-area-class="full-width" value="invoiceSettings.first_invoice_no" label = "{{'FIRST_INVOICE_NO' | translate}}" placeholder = "{{'PLACEHOLDER_FIRST_INVOICE_NO' | translate }}"></ad-textbox>
 					</fieldset>
 					<fieldset class="holder right">
 						<ad-textbox div-class="full-width" text-area-class="full-width" value="invoiceSettings.invoice_no_prefix" label = "{{'INVOICE_NO_PREFIX' | translate}}" placeholder = "{{'PLACEHOLDER_INVOICE_NO_PREFIX' | translate }}"></ad-textbox>
@@ -22,6 +22,9 @@
 					</fieldset>
 					<fieldset class="holder right hidden">
 						<ad-toggle-button label="{{'ACTIVATE_FOLIO_NUMBER' | translate}}" is-checked="invoiceSettings.has_activate_folio_number"></ad-toggle-button>
+					</fieldset>
+					<fieldset class="holder right" ng-if="isStandAlone">
+						<ad-toggle-button label="{{'BULK_CHECKOUT_SEND_INVOICES' | translate}}" is-checked="invoiceSettings.bulk_checkout_send_invoice"></ad-toggle-button>
 					</fieldset>
 
 					<div class="actions float">

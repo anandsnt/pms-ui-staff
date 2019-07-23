@@ -79,6 +79,19 @@ if (status === 406) { // 406- Network error
             });
             return deferred.promise;
         };
+        
+        service.checkWorkStationMandatoryFields = function(workstationId) {
+
+            var deferred = $q.defer(),
+                url = '/api/workstations/workstation_status?workstation_id=' + workstationId;
+
+            $http.get(url).then(function(response) {
+                deferred.resolve(response.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
 
         /**
          *
@@ -371,15 +384,8 @@ if (status === 406) { // 406- Network error
         service.resolvePaths = function(gateWay, params) {
             var iFrameUrlWithParams = "",
                 paymentGatewayUIInterfaceUrl = PAYMENT_CONFIG[gateWay].partial;
-
-            switch (gateWay) {
-                case "MLI":
-                case "CBA":
-                case "SHIJI":
-                case "CBA_AND_MLI":
-                    break;
-                case "sixpayments":
-                    var time = new Date().getTime(),
+            var getiFrameUrlWithParams = function() {
+                var time = new Date().getTime(),
                         service_action = PAYMENT_CONFIG[gateWay].params.service_action,
                         jwt = localStorage.getItem('jwt') || '';
 
@@ -390,6 +396,19 @@ if (status === 406) { // 406- Network error
                         "&time=" + time +
                         "&auth_token=" + jwt +
                         "&hotel_uuid=" + sntAuthorizationSrv.getProperty() ;
+                    return iFrameUrlWithParams;
+            };
+
+            switch (gateWay) {
+                case "MLI":
+                case "CBA":
+                case "CBA_AND_MLI":
+                    break;
+                case "SHIJI":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
+                    break;
+                case "sixpayments":
+                    iFrameUrlWithParams = getiFrameUrlWithParams();
                     break;
                 default:
                     throw new Error("Payment Gateway not configured");
@@ -549,4 +568,16 @@ if (status === 406) { // 406- Network error
         };
 
         service.mockCba = false;
+
+        service.getShijiPayCreditCardType = function(cardCode) {
+            var shijiCreditCardTypes = {
+                "American Express": 'AX',
+                "Discover Card": 'DS',
+                "JCB": 'JCB',
+                "MasterCard": 'MC',
+                "Visa": 'VA'
+            };
+
+            return shijiCreditCardTypes[cardCode] || '';
+        };
 }]);

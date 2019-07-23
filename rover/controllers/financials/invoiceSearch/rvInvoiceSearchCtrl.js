@@ -256,19 +256,43 @@ sntRover.controller('RVInvoiceSearchController',
 		that.printBill = function(data) {
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				finalInvoiceSettlement(data, true);
-			} else { 
-				var printDataFetchSuccess = function(successData) {
+			} else {
+				var getCopyCount = function(successData) {
+						var copyCount = "";
+
+						if (successData.is_copy_counter) {
+							copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices, 10);					
+						}
+						return copyCount;
+					},
+					printDataFetchSuccess = function(successData) {
+						var copyCount = "",
+							arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+							arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
+							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+
+						$scope.shouldShowArInvoiceNumber = true;
+						if (dateDifference < 0) {
+							$scope.shouldShowArInvoiceNumber = false;
+						}
+
 						if (!$scope.invoiceSearchFlags.isClickedReservation) {
 							successData = successData.data;
 						}
 						if ($scope.billFormat.isInformationalInvoice) {
 							successData.invoiceLabel = successData.translation.information_invoice;
 						}
-						else if (successData.no_of_original_invoices === null) {
+						else if (successData.no_of_original_invoices === null && !successData.is_void_bill) {
 							successData.invoiceLabel = successData.translation.invoice;
 						} 
-						else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-							successData.invoiceLabel = successData.translation.void_invoice;
+						else if (successData.is_void_bill) {
+							if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10))) {
+								successData.invoiceLabel = successData.translation.void_invoice;
+							} 
+							else if (parseInt(successData.print_counter, 10) > parseInt(successData.no_of_original_invoices, 10)) {
+								copyCount = getCopyCount(successData);
+								successData.invoiceLabel = successData.translation.copy_of_void_invoice.replace("#count", copyCount);
+							}
 						} 
 						else if (($scope.reservationBillData.is_bill_lock_enabled 
 							&& parseInt(successData.print_counter, 10) <= parseInt(successData.no_of_original_invoices, 10)) 
@@ -285,7 +309,7 @@ sntRover.controller('RVInvoiceSearchController',
 							var copyCount = "";
 
 							if (successData.is_copy_counter) {
-								copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices);					
+								copyCount = parseInt(successData.print_counter, 10) - parseInt(successData.no_of_original_invoices, 10);					
 							}
 							successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 						}
@@ -293,7 +317,6 @@ sntRover.controller('RVInvoiceSearchController',
 						$scope.printData = successData;						
 						
 						$scope.errorMessage = "";
-
 						// CICO-9569 to solve the hotel logo issue
 						$("header .logo").addClass('logo-hide');
 						$("header .h2").addClass('text-hide');

@@ -14,6 +14,7 @@
 @actionBackground:      @brandColor;
 
 @inputBackground:       #707070;
+@inputColor:            @white;
 @transparentColor:      rgba(0,0,0,.5);
 
 /* 2. TYPOGRAPHY
@@ -93,19 +94,28 @@
         top: 115px;
     }
 
-    .entry.input {
-        .icons {
-            fill: @brandColor;
+    #actions.languages-list {
+        
+        .selected-language {
+            .button();
+            padding-left: 55px;
+
+            .icons {
+                left: 10px;
+                width: 32px;
+            }
+        }
+
+        .button.with-icon {
+            background: transparent;
+            color: @textColor;
         }
     }
 
-    input,
-    select,
-    /* Popup fixes start */
-    textarea
-    /* Popup fixes end */ {
-        background: @inputBackground;
-        color: @white;
+    .entry.input:not(.select) {
+        .icons {
+            fill: @brandColor;
+        }
     }
     
     #logo {
@@ -130,6 +140,7 @@
 
         li {
             text-transform: none;
+            line-height: 32px;
 
             .button {
                 background: transparent;

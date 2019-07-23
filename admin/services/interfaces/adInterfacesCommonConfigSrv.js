@@ -199,5 +199,17 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             });
             return deferred.promise;
         };
+
+        service.fetchPaymentChargeCodes = function() {
+            var deferred = $q.defer();
+            var url = '/admin/charge_codes/payment_charge_codes';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(paymentChargeCodes) {
+                deferred.resolve(paymentChargeCodes);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

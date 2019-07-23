@@ -133,6 +133,8 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 
 	var fetchSearchResults = function() {
 		var dataDict = {'query': $scope.textInQueryBox.trim()};
+		
+		dataDict.is_from_bill_routing = true;
 
 		if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length < 3) {
 			dataDict.room_search = true;

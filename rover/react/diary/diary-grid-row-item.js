@@ -1,5 +1,5 @@
 var GridRowItem = React.createClass({
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             editing: this.props.edit.active,
             resizing: this.props.resizing,
@@ -8,10 +8,9 @@ var GridRowItem = React.createClass({
             isDragOver: false
         };
     },
-    componentDidMount: function () {
-    },
+    componentDidMount: function() {},
 
-    componentWillReceiveProps: function (nextProps) {
+    componentWillReceiveProps: function(nextProps) {
         var meta_id = this.props.meta.occupancy.id,
             edit = nextProps.edit,
             editing = edit.active,
@@ -31,8 +30,8 @@ var GridRowItem = React.createClass({
                 currentResizeItem: nextProps.currentResizeItem,
                 currentResizeItemRow: nextProps.currentResizeItemRow
             });
-        } else if ((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem)
-            || (this.props.edit.active && !editing)) {
+        } else if ((!this.props.edit.active && this.props.currentResizeItem && !nextProps.currentResizeItem) ||
+            (this.props.edit.active && !editing)) {
             this.setState({
                 editing: false,
                 resizing: false,
@@ -42,10 +41,9 @@ var GridRowItem = React.createClass({
         }
     },
 
-    componentWillUnmount: function () {
-    },
+    componentWillUnmount: function() {},
 
-    __formInnerText: function (data, meta) {
+    __formInnerText: function(data, meta) {
         var caption,
             props = this.props,
             display = props.display,
@@ -55,8 +53,8 @@ var GridRowItem = React.createClass({
         try {
             var dragData = props.unassignedRoomList.dragData;
 
-            if (dragData && dragData.is_hourly) {
-                showRateAmount = dragData.is_hourly;
+            if (!_.isEmpty(dragData) && !dragData.is_hourly) {
+                showRateAmount = false;
             } else {
                 showRateAmount = true;
             }
@@ -66,10 +64,9 @@ var GridRowItem = React.createClass({
 
         switch (data[meta.status]) {
             case 'available':
-                if ( showRateAmount ) {
+                if (showRateAmount) {
                     caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
-                } 
-                else {
+                } else {
                     caption = data[meta.room_type];
                 }
                 break;
@@ -78,15 +75,15 @@ var GridRowItem = React.createClass({
                 break;
             default:
                 caption = data[meta.guest];
-				// in case of guest name is blank, we have to show account name againstg taht.
+                // in case of guest name is blank, we have to show account name againstg taht.
                 if (!caption) {
                     caption = data[meta.tr_ag_name] ? data[meta.tr_ag_name] : data[meta.cmp_name];
                 }
 
-				// if there is any accomoanying guests
+                // if there is any accomoanying guests
                 if (!_.isEmpty(data[meta.accompanying_guests])) {
                     caption = caption + '  |  ';
-                    _.each(data[meta.accompanying_guests], function (element, index, list) {
+                    _.each(data[meta.accompanying_guests], function(element, index, list) {
                         caption += element.guest_name;
                         if (index !== (list.length - 1)) {
                             caption += ', ';
@@ -100,20 +97,21 @@ var GridRowItem = React.createClass({
 
     },
 
-    __formHouseKeepingStyle: function (data, display, meta, end_time_ms) {
+    __formHouseKeepingStyle: function(data, display, meta, end_time_ms) {
 
-        var style = {}, ms_fifteen_min = 900000, end_of_reservation;
+        var style = {},
+            ms_fifteen_min = 900000,
+            end_of_reservation;
 
         style.width = data[meta.maintenance] * display.px_per_int + 'px';
         end_of_reservation = data[meta.maintenance] * ms_fifteen_min + end_time_ms;
 
-		// (CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
+        // (CICO-12358) when the reservation end is touching the end of the grid, we are hiding the house keeping task or showing the partial
         if (end_of_reservation > display.x_p) {
-			// reservation crossing the grid boundary we are hiding
+            // reservation crossing the grid boundary we are hiding
             if (end_time_ms > display.x_p || !data.is_hourly) {
                 style.display = 'none';
-            }
-            else {
+            } else {
                 style.width = ((display.x_p - end_time_ms) * display.px_per_ms) + 'px';
             }
         }
@@ -121,26 +119,26 @@ var GridRowItem = React.createClass({
 
     },
 
-    __get_class_for_reservation_span: function () {
+    __get_class_for_reservation_span: function() {
         var props = this.props,
             state = this.state,
             data = props.data,
             m = props.meta.occupancy,
             is_temp_reservation = data[m.status] === 'available';
 
-		//	console.log(props)
+        //	console.log(props)
 
-		// if not availability check, this reservation was already there
+        // if not availability check, this reservation was already there
         var className = !is_temp_reservation ? 'occupied ' : '';
 
-		// when we select a particular reservation
+        // when we select a particular reservation
         className += state.editing ? ' editing' : '';
 
-		// we have to show striped reservation when we select a availability check reservation
+        // we have to show striped reservation when we select a availability check reservation
         className += (is_temp_reservation && data.selected) || (is_temp_reservation && this.state.isDragOver) ? ' reserved' : '';
 
-		// guest status mapping
-		// console.log(data.cannot_move_room)
+        // guest status mapping
+        // console.log(data.cannot_move_room)
         switch (data[m.status]) {
 
             case 'reserved':
@@ -149,13 +147,13 @@ var GridRowItem = React.createClass({
 
             case 'checking_in':
                 className += ' check-in ';
-				// console.log(">++>"+data.cannot_move_room)
-				// className += (data[m.cannnot_move_room] ? 'locked' : '')
+                // console.log(">++>"+data.cannot_move_room)
+                // className += (data[m.cannnot_move_room] ? 'locked' : '')
                 break;
 
             case 'checkedin':
                 className += ' inhouse ';
-				// className += (data[m.cannnot_move_room] ? 'locked' : '')
+                // className += (data[m.cannnot_move_room] ? 'locked' : '')
                 break;
 
             case 'checkedout':
@@ -183,7 +181,7 @@ var GridRowItem = React.createClass({
 
     },
 
-    render: function () {
+    render: function() {
 
         var props = this.props,
             state = this.state,
@@ -205,14 +203,15 @@ var GridRowItem = React.createClass({
             left = (start_time_ms - x_origin) * px_per_ms + 'px',
             is_balance_present = data.is_balance_present,
             is_room_locked = data.cannot_move_room,
+            is_vip = data.is_vip,
             show_outstanding_indicator = (data.reservation_status === 'check-in' || data.reservation_status === 'reserved') && is_balance_present,
-            row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '')
-				+ (show_outstanding_indicator ? ' deposit-required' : '');
+            row_item_class = 'occupancy-block' + (state.editing ? ' editing' : '') +
+                (show_outstanding_indicator ? ' deposit-required' : '');
 
         if (typeof data.is_hourly !== 'undefined' && !data.is_hourly) {
             row_item_class += ' overlay';
         }
-					
+
         if (state.editing) {
             start_time_ms = state.currentResizeItem[m.start_date];
             end_time_ms = state.currentResizeItem[m.end_date];
@@ -227,15 +226,14 @@ var GridRowItem = React.createClass({
 
             dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
             left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
-        }
-        else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
+        } else if (display_start_time.isOnDST() && !start_date.isOnDST()) {
             var dateForCalculatingLeft = new Date(start_time_ms);
 
             dateForCalculatingLeft.setMinutes(dateForCalculatingLeft.getMinutes() + dateForCalculatingLeft.getDSTDifference());
 
             left = (dateForCalculatingLeft.getTime() - x_origin) * px_per_ms + 'px';
 
-			// The special case adjustment
+            // The special case adjustment
             if (dateForCalculatingLeft.isOnDST()) {
                 left = (dateForCalculatingLeft.getTime() + 3600000 - x_origin) * px_per_ms + 'px';
             }
@@ -249,54 +247,60 @@ var GridRowItem = React.createClass({
         }
 
         var styleForRoomLocked = {};
-		
+
         if (!this.props.data.is_hourly) {
             styleForRoomLocked.display = 'none';
             styleForRoomLocked.width = '0px';
         }
         return React.createElement(GridRowItemDrag, {
-            key: data.key,
-            className: row_item_class,
-            row_data: row_data,
-            meta: props.meta,
-            data: data,
-            display: display,
-            viewport: props.viewport,
-            edit: props.edit,
-            unassignedRoomList: props.unassignedRoomList,
-            iscroll: props.iscroll,
-            angular_evt: props.angular_evt,
-            __onDragStart: props.__onDragStart,
-            __onDragStop: props.__onDragStop,
-            __onResizeCommand: props.__onResizeCommand,
-            show_outstanding_indicator: show_outstanding_indicator,
-            is_room_locked: is_room_locked,
-            currentDragItem: props.currentResizeItem,
-            style: {
-                left: left,
-                opacity: '1'
+                key: data.key,
+                className: row_item_class,
+                row_data: row_data,
+                meta: props.meta,
+                data: data,
+                display: display,
+                viewport: props.viewport,
+                edit: props.edit,
+                unassignedRoomList: props.unassignedRoomList,
+                iscroll: props.iscroll,
+                angular_evt: props.angular_evt,
+                __onDragStart: props.__onDragStart,
+                __onDragStop: props.__onDragStop,
+                __onResizeCommand: props.__onResizeCommand,
+                show_outstanding_indicator: show_outstanding_indicator,
+                is_room_locked: is_room_locked,
+                currentDragItem: props.currentResizeItem,
+                style: {
+                    left: left,
+                    opacity: '1'
+                },
+                __setDragOver: function(bool) {
+                    this.__setDragOver(bool);
+                }.bind(this)
             },
-            __setDragOver: function (bool) { this.__setDragOver(bool); }.bind(this)
-        },
-			React.DOM.span({
-    className: this.__get_class_for_reservation_span(),
-    style: {
-        width: reservation_time_span + 'px'
-    }
-},
+            React.DOM.span({
+                    className: this.__get_class_for_reservation_span(),
+                    style: {
+                        width: reservation_time_span + 'px'
+                    }
+                },
 
-				React.DOM.span({
-    className: show_outstanding_indicator ? 'deposit-icon' : '',
-    style: styleForDepositIcon
-}, display.currency_symbol),
-				React.DOM.span({
-    className: is_room_locked ? 'icons icon-diary-lock' : '',
-    style: styleForRoomLocked
-}, ''),
-				innerText),
-			React.DOM.span({
-    className: 'maintenance',
-    style: houseKeepingTaskStyle
-}, ' '));
+                React.DOM.span({
+                    className: show_outstanding_indicator ? 'deposit-icon' : '',
+                    style: styleForDepositIcon
+                }, display.currency_symbol),
+                React.DOM.span({
+                    className: is_room_locked ? 'icons icon-diary-lock' : '',
+                    style: styleForRoomLocked
+                }, ''),
+                innerText,
+                React.DOM.span({
+                    className: is_vip ? 'vip' : '',
+                    style: styleForRoomLocked
+                }, is_vip ? 'VIP' : '')),
+            React.DOM.span({
+                className: 'maintenance',
+                style: houseKeepingTaskStyle
+            }, ' '));
     }
 });

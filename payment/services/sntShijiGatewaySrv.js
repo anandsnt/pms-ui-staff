@@ -80,6 +80,5 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
             poller();
             return deferred.promise;
         };
-
     }
 ]);
