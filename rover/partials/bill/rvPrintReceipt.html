@@ -2,7 +2,7 @@
     <img src="{{receiptPrintData.hotel_logo}}" alt="" />
     <h1>{{receiptPrintData.hotel_name}}</h1>
     <span ng-bind-html="receiptPrintData.hotel_address"></span>
-    <span class="type">{{receiptPrintData.translations.payment_receipt}}</span>
+    <span class="type">{{receiptPrintData.receipt_translations.payment_receipt}}</span>
     <!-- If showing QR code, place it here:-->
     <span class="type" in-show="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
         <br/><img src="{{receiptPrintData.qr_code}}" alt="" class="qr-code" /> 
@@ -29,10 +29,10 @@
         </div>
     </div>
     <div class="info-right" ng-if="isFromBillCard">           
-        <strong>{{receiptPrintData.translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
-        <strong>{{receiptPrintData.translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
-        <strong>{{receiptPrintData.translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
-        <strong>{{receiptPrintData.translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
+        <strong>{{receiptPrintData.invoice_translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
+        <strong>{{receiptPrintData.invoice_translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
+        <strong>{{receiptPrintData.invoice_translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
+        <strong>{{receiptPrintData.invoice_translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
     </div>
 </div>
 
