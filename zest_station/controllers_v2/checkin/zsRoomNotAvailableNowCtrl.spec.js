@@ -1,26 +1,22 @@
 describe('zsRoomNotAvailableNowCtrl', function() {
 
     var $controller,
-        $state,
         $stateParams,
         $scope = {},
         $rootScope,
         zsGeneralSrv,
         zsCheckinSrv,
-        zsUtilitySrv,
         $q;
 
     beforeEach(function() {
         module('sntZestStation');
-        inject(function(_$controller_, _$rootScope_, _$state_, _$stateParams_, _zsGeneralSrv_, _$q_, _zsCheckinSrv_, _zsUtilitySrv_) {
+        inject(function(_$controller_, _$rootScope_, _$stateParams_, _zsGeneralSrv_, _$q_, _zsCheckinSrv_) {
             $q = _$q_;
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
-            $state = _$state_;
             $scope = $rootScope.$new();
             zsGeneralSrv = _zsGeneralSrv_;
             $stateParams = _$stateParams_;
-            zsUtilitySrv = _zsUtilitySrv_;
             var params = {
                 'guest_email': 'r@s.com',
                 'reservation_id': '12234',

@@ -423,7 +423,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'first_name': $scope.selectedReservation.guest_details[0].first_name,
                 'last_name': $scope.selectedReservation.guest_details[0].last_name,
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
-                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id
             });
         };
 

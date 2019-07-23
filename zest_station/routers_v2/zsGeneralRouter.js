@@ -26,7 +26,7 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 
 					var sortedLanguages = _.sortBy(languages, 'position');
                     var defaultLanguage = _.find(sortedLanguages, function(language) {
-                            return language.is_default
+                            return language.is_default;
 	                    }),
 						defaultLangShortCode = defaultLanguage.code;
 

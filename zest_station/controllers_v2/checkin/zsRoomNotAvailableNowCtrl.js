@@ -19,9 +19,9 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		};
 		// TODO: to expand  for sent_to_queue ?
 		$scope.isAutoCheckinOn = $scope.zestStationData.precheckin_details.precheckin_on === "true" &&
-								 $scope.zestStationData.precheckin_details.precheckin_action === "auto_checkin";
+			$scope.zestStationData.precheckin_details.precheckin_action === "auto_checkin";
 		var guestWaitingLocations = $filter('translate')('GUEST_WAITING_LOCATIONS');
-		
+
 		// The tag GUEST_WAITING_LOCATIONS has to be saved in admin with ';' separating location names
 		$scope.guestWaitingLocations = guestWaitingLocations === 'GUEST_WAITING_LOCATIONS' ? [] : guestWaitingLocations.split(";");
 
@@ -49,15 +49,15 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 				comeBackLaterText = defaulTranslations['ROOM_UNAVAILABLE_NOTE'];
 			}
 
-			
+
 			if ($scope.screenData.action_type === 'find_guest') {
 				noteForStaff = locationNoteText ?
-						  locationNoteText.replace("{{ location }}", $scope.screenData.location) :
-						  'When the room is ready, please find the guest at'+ ' ' + $scope.screenData.location;
+					locationNoteText.replace("{{ location }}", $scope.screenData.location) :
+					'When the room is ready, please find the guest at' + ' ' + $scope.screenData.location;
 			} else {
 				noteForStaff = comeBackLaterText ?
-						  comeBackLaterText :
-						  'The guest will come back later to check if the room is ready by then.';
+					comeBackLaterText :
+					'The guest will come back later to check if the room is ready by then.';
 			}
 			var params = {
 				application: 'KIOSK',
@@ -116,10 +116,9 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			}
 		};
 
-		var initializeMe = (function() {
+		(function() {
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 		}());
-
 	}
 ]);
