@@ -503,8 +503,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
                     if (isRoomTypeSelected) {
                         // Go ahead with house & room type availablity checks.
-                        if ((houseData.unassigned_reservations_present && houseData.house_availability <= 0 ) || 
-                            (roomTypeData.unassigned_reservations_present && roomTypeData.availability <= 0)) {
+                        if ((houseData.unassigned_reservations_present && (houseData.house_availability <= 0 || houseData.house_availability < selectedRoomCount)) || 
+                            (roomTypeData.unassigned_reservations_present && (roomTypeData.availability <= 0 || roomTypeData.availability < selectedRoomCount))) {
                             // There are reservations with unassigned Rooms.
                             // No additional availability exists for the selected dates / times.
                             showPopupForReservationWithUnassignedRoom();
