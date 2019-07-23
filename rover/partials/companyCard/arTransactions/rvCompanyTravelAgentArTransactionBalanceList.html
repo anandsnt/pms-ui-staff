@@ -5,7 +5,6 @@
             <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
-
         <div class="faux-anchor has-arrow toggle" ng-class="{ 'active': balance.active}">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
@@ -101,6 +100,13 @@
                 Remaining Balance
                 <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter | number:2}}</strong>
             </div>
+            <div class="status">
+                <!-- If partially paid, output:
+                <span class="icons icon-wallet-green"></span> -->
+
+                <!-- If locked, meaning as well that it can't be partially paid, output: -->
+                <span ng-if = "is_locked" class="icons icon-room-lock"></span>
+            </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
                 <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
                 <span class="currency">{{currencySymbol}}</span>{{balance.amount | number:2}}
@@ -110,7 +116,6 @@
                 <input class="text-box" type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
             </div>
         </div>
-
         <div class="grid-items" ng-show="balance.active">
             <table>
                 <thead>
@@ -208,7 +213,6 @@
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
-
 	</li>
 	<li>
 		<!-- On click Show Manual Balance Billing Content -->
@@ -218,4 +222,5 @@
         <!-- To fix scroll -->
         <button>&nbsp;</button>
     </li>
+    
 </ul>
