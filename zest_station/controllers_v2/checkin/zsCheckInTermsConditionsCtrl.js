@@ -8,7 +8,9 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
     '$timeout',
     '$sce',
     'zsUtilitySrv',
-    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv) {
+    'zsPaymentSrv',
+    'zsGeneralSrv',
+    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv, zsPaymentSrv, zsGeneralSrv) {
 
 		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -26,28 +28,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
         // We will use the logic we added for bypass T&C to handle for now.
 
         BaseCtrl.call(this, $scope);
-
-   //      var init = function() {
-			// // hide back button
-   //          $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-			// // show close button
-   //          $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			// // back button action
-   //          $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function(event) {
-   //              if ($stateParams.is_from_addons === 'true') {
-   //                  $state.go('zest_station.addOnUpsell', {
-   //                      'is_from_room_upsell': $stateParams.is_from_room_upsell
-   //                  });
-   //              } else if ($stateParams.is_from_room_upsell === 'true') {
-   //                  $state.go('zest_station.roomUpsell');
-   //              } else {
-   //                  $state.go('zest_station.checkInReservationDetails', $stateParams);
-   //              }
-   //          });
-			// // starting mode
-   //          $scope.mode = 'TERMS_CONDITIONS';
-   //          $scope.setScreenIcon('bed');
-   //      };
+        var paymentParams = zsPaymentSrv.getPaymentData();
 
 		/**
 		 * [checkIfEmailIsBlackListedOrValid description]
@@ -248,9 +229,29 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             }
         };
 
-        var nextPageActions = function(byPassCC) {
+        var checkForAllowedAndGuarenteedPaymentTypes = function(byPassCC) {
+            var indexInAllowedPaymentTypes = _.findIndex(zsGeneralSrv.allowedPaymentTypeIds, function(paymentType) {
+                return paymentType.id === paymentParams.payment_method_used || paymentType.value === paymentParams.payment_method_used;
+            });
+            var indexInGuaranteedPaymentTypes = _.findIndex(zsGeneralSrv.guaranteedPaymentTypes, function(paymentType) {
+                return paymentType.value === paymentParams.payment_method_used;
+            });
+
+            if (indexInAllowedPaymentTypes === -1) {
+                $state.go('zest_station.paymentMethodNotAllowed');
+            } else if (indexInAllowedPaymentTypes !== -1 && indexInGuaranteedPaymentTypes !== -1) {
+                checkInGuest();
+            } else {
+                nextPageActions(byPassCC, true);
+            }
+        };
+
+        var nextPageActions = function(byPassCC, skipExcludePaymentType) {
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_exclude_payment_methods && !skipExcludePaymentType) {
+                checkForAllowedAndGuarenteedPaymentTypes(byPassCC);
+            }
 			// check if depsoit is to be paid
-            if (depositRequired() && !$scope.zestStationData.bypass_kiosk_cc_auth) {
+            else if (depositRequired() && !$scope.zestStationData.bypass_kiosk_cc_auth) {
                 goToDepositScreen();
             } else if (!byPassCC && !$scope.zestStationData.bypass_kiosk_cc_auth) {
                 goToCreditCardAuthScreen();

@@ -118,6 +118,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 that.fetchHotelTheme(data, deferred);
                 // fetch Feature toggles and save in Srv for using in future.
                 that.retrieveFeatureToggles();
+                that.retrievePaymentTypes();
             }, function(data) {
                 deferred.reject(data);
             });
@@ -795,6 +796,53 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             zsBaseWebSrv.getJSON(url).then(function(response) {
                 that.featuresToggleList = response;
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.allowedPaymentTypeIds = [{
+            id: "110"
+        }, {
+            id: "122"
+        }, {
+            id: "170"
+        },
+         {
+            id: "148"
+        }];
+
+        this.allowedPaymentTypeIds = [{
+            "id": "110",
+            "value": "BT",
+            "description": "Balance Transfer",
+        }, {
+            "id": "4",
+            "value": "CK",
+            "description": "Check Payment"
+        }];
+        this.guaranteedPaymentTypes = [];
+
+        var processPaymnetTypes = function (response) {
+
+            var paymentGuaranteedReservationType = _.find(response.reservation_types, function(reservationType){
+                return reservationType.name === 'Payment Guaranteed';
+            });
+            that.guaranteedPaymentTypes = _.filter(response.payments, function(paymentType) {
+                return paymentType.linked_reservation_type_id === paymentGuaranteedReservationType.value;
+            });
+
+        };
+
+        this.retrievePaymentTypes = function() {            
+             var deferred = $q.defer(),
+                url = '/admin/hotel_payment_types.json';
+
+            zsBaseWebSrv2.getJSON(url).then(function(response) {
+                processPaymnetTypes(response);
                 deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);
