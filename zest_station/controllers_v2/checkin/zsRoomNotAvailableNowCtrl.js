@@ -35,6 +35,18 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			$scope.screenData.mode = 'ACTION_COMPLETED';
 		};
 
+		var precheckinReseravation = function() {
+			var options = {
+				params: {
+					reservation_id: $stateParams.reservation_id,
+					application: 'KIOSK'
+				},
+				successCallBack: showSuccessPage
+			};
+
+			$scope.callAPI(zsCheckinSrv.preCheckinReservation, options);
+		};
+
 		var notifyProperty = function() {
 			var locationNoteText;
 			var comeBackLaterText;
@@ -69,22 +81,16 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 
 			var options = {
 				params: params,
-				successCallBack: showSuccessPage
+				successCallBack: function() {
+					if ($scope.isAutoCheckinOn) {
+						precheckinReseravation();
+					} else {
+						showSuccessPage();
+					}
+				}
 			};
 
 			$scope.callAPI(zsCheckinSrv.addNotes, options);
-		};
-
-		var precheckinReseravation = function() {
-			var options = {
-				params: {
-					reservation_id: $stateParams.reservation_id,
-					application: 'KIOSK'
-				},
-				successCallBack: showSuccessPage
-			};
-
-			$scope.callAPI(zsCheckinSrv.preCheckinReservation, options);
 		};
 
 		var updateEmailId = function() {
