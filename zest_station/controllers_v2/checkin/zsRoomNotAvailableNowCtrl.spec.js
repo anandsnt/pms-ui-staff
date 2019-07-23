@@ -29,6 +29,10 @@ describe('zsRoomNotAvailableNowCtrl', function() {
 
             $stateParams.params = JSON.stringify(params);
             zsCheckinSrv = _zsCheckinSrv_;
+            zsGeneralSrv.refToLatestPulledTranslations = {
+                en: {}
+            };
+            zsGeneralSrv.defaultLangShortCode = 'en';
         });
         angular.extend($scope, {
             zestStationData: {
@@ -119,7 +123,7 @@ describe('zsRoomNotAvailableNowCtrl', function() {
         });
 
         it('If action type is \'Guest will come back later\', notify the property', function() {
-            spyOn(zsCheckinSrv, 'preCheckinReservation').and.callFake(function() {
+            spyOn(zsCheckinSrv, 'addNotes').and.callFake(function() {
                 var deferred = $q.defer();
 
                 deferred.reject({});
@@ -128,11 +132,11 @@ describe('zsRoomNotAvailableNowCtrl', function() {
             $scope.screenData.action_type = 'guest_will_come_back_later';
             $scope.nextButtonClicked();
             $scope.$digest();
-            expect(zsCheckinSrv.preCheckinReservation).toHaveBeenCalled();
+            expect(zsCheckinSrv.addNotes).toHaveBeenCalled();
         });
 
         it('If action type is \'Find guest\', notify the property', function() {
-            spyOn(zsCheckinSrv, 'preCheckinReservation').and.callFake(function() {
+            spyOn(zsCheckinSrv, 'addNotes').and.callFake(function() {
                 var deferred = $q.defer();
 
                 deferred.reject({});
@@ -142,7 +146,7 @@ describe('zsRoomNotAvailableNowCtrl', function() {
             $scope.screenData.location = 'BAR';
             $scope.nextButtonClicked();
             $scope.$digest();
-            expect(zsCheckinSrv.preCheckinReservation).toHaveBeenCalled();
+            expect(zsCheckinSrv.addNotes).toHaveBeenCalled();
         });
     });
 });
