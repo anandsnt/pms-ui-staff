@@ -9,6 +9,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 $scope.sequenceRateQuery = '';
                 $scope.rateQuery = '';
                 $scope.selectedSequence = null;
+                $scope.selectedRate = null;
                 ratesSearchCall = null;
                 sequenceRateSearchCall = null;
                 configPagination();
@@ -116,6 +117,15 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             $scope.selectedSequenceIndex = index;
             fetchRates();
             fetchAssignedRates();
+        };
+        $scope.selectRate = function(rate) {
+            $scope.selectedRate = rate;
+        };
+        $scope.assignRate = function () {
+            console.log($scope.selectedRate);
+        };
+        $scope.unAssignRate = function () {
+
         };
         $scope.backToRateSequence = function() {
             $state.go("admin.ratesSequence");
