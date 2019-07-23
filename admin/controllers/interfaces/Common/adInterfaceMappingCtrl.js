@@ -8,6 +8,7 @@ admin.controller('adInterfaceMappingCtrl', [
         var mappingText = {
           'cancellation_code': 'Cancellation Codes',
           'charge_code': 'Charge Code - General Ledger',
+          'charge_code_cost_center': 'Charge Code - Cost Center',
           'charge_code_department_code': 'Charge Code - Department Code',
           'group_hold_status': 'Group Hold Status',
           'market_code': 'Market Code - Market Segment',
@@ -15,6 +16,7 @@ admin.controller('adInterfaceMappingCtrl', [
           'market_code_department_code': 'Market Code - Department Code',
           'source_code': 'Source Code',
           'tax_code': 'Tax Codes',
+          'tax_charge_code': 'Tax Codes',
           'payment_code_billing_account': 'Payment Code - Billing Account Number'
         };
 
@@ -22,8 +24,9 @@ admin.controller('adInterfaceMappingCtrl', [
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
-            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
-            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html'
+            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
+            'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
         };
 
         $scope.state = {

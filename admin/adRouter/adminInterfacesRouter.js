@@ -648,6 +648,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.safeaccounting', {
+        templateUrl: '/assets/partials/interfaces/safeaccounting/configuration.html',
+        controller: 'adSafeaccountingCtrl',
+        url: '/safeaccounting',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('safeaccounting');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.sieSetup', {
        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
        controller: 'adSieCtrl',
