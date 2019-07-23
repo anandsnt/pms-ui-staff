@@ -894,6 +894,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		$scope.clickedPrint = function(requestParams) {
+			$scope.is_locked = requestParams.is_locked;
 			sntActivity.start("PRINT_STARTED");
 			printBill(requestParams);
 		};
@@ -915,6 +916,26 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.callAPI(rvAccountsArTransactionsSrv.settleFinalInvoice, options);
 		};
 	
+		// add the print orientation before printing
+		var addPrintOrientation = function() {
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+		};
+
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+
+		var billCardPrintCompleted = function() {
+								// CICO-9569 to solve the hotel logo issue
+			$("header .logo").removeClass('logo-hide');
+			$("header .h2").addClass('text-hide');
+
+			// remove the orientation after similar delay
+			removePrintOrientation();
+			$scope.printBillCardActive = false;
+		};
+
 		// print the page
 		var printBill = function(data) {
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
@@ -929,6 +950,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 						return copyCount;
 					},
 					printDataFetchSuccess = function(successData) {
+						successData = successData.data;
 						var copyCount = "",
 							arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
 							arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
@@ -978,7 +1000,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 						$("body #loading").html("");// CICO-56119
 
 						// add the orientation
-						addPrintOrientation();
+						// addPrintOrientation();
 
 						/*
 						*	======[ READY TO PRINT ]======

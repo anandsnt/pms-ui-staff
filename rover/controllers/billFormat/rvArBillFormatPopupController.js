@@ -1,4 +1,4 @@
-sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog, $timeout) {
+sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv','rvAccountsArTransactionsSrv' , 'ngDialog', '$timeout', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, rvAccountsArTransactionsSrv, ngDialog, $timeout) {
 
     
     var delay = 200,
@@ -118,12 +118,13 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     /*
      *  Function which get invoked when the print btn from bill format popup is clicked
      */
-    $scope.printBill = function() {
+    $scope.printBill = function(is_locked) {
         var printRequest = getPrintEmailRequestParams();
         
         $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.billFormat.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
         printRequest.is_informational_invoice = $scope.billFormat.isInformationalInvoice;
+        printRequest.is_locked = is_locked;
         $scope.clickedPrint(printRequest);
     };
     
@@ -132,11 +133,24 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * 
      */
     $scope.clickedContinueButtonPrintOrEmail = function() {
-        if ($scope.isClickedPrint) {
-            $scope.printBill();
-        } else {
-            $scope.sendEmail();
-        }
+        var data = {};
+        var is_locked = false;
+        data.id = $scope.item.transaction_id;
+        data.account_id = $scope.reservationBillData.accountId;
+        var lockBillSuccess = function() {
+            if ($scope.isClickedPrint) {
+                is_locked = true;
+                $scope.printBill(is_locked);
+            } else {
+                $scope.sendEmail();
+            }
+        };
+
+        var lockBillFailureCallback = function(errorData) {
+            $scope.errorMessage = errorData;
+        };
+
+        $scope.invokeApi(rvAccountsArTransactionsSrv.lockBill, data, lockBillSuccess, lockBillFailureCallback);
     };
     /*
      * click action Print button
@@ -231,7 +245,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
 
         if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             printButtonClass = "grey";
@@ -248,7 +261,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
 
         if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].print_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_invoices, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {   
 
             isPrintButtonDisabled = true;
@@ -268,7 +280,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
 
         } else if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             emailButtonClass = "grey";
@@ -286,7 +297,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
             isEmailButtonDisabled = true;
         } else if (!$scope.billFormat.isInformationalInvoice 
             && (parseInt($scope.reservationBillData.bills[$scope.currentActiveBill].email_counter, 10) >= parseInt($scope.reservationBillData.no_of_original_emails, 10) 
-                && $scope.roverObj.noReprintReEmailInvoice 
                 && parseInt($scope.reservationBillData.no_of_original_invoices, 10) !== 0)) {
 
             isEmailButtonDisabled = true;
