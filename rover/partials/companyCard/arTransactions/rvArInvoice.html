@@ -1,13 +1,12 @@
 <div class="invoice-header top-header">
     <h1>{{printData.hotel_name}}</h1>
-    <span class="invoice-header-address">
-        {Hotel Address}
-    </span>
+    <span ng-bind-html="printData.hotel_address"></span>
+
     <img src="{{printData.hotel_logo}}" alt="" />
 </div>
 
 <div class="invoice-logo envelope">
-    <h1>AR Invoice</h1>
+    <h1>{{printData.invoiceLabel}}</h1>
     <!-- If showing QR code, place it here:
     <img src="{src}" alt="" class="qr-code" /> -->
 </div>
@@ -15,20 +14,19 @@
 <div class="info-container account-info">
     <div class="info-left">
         <strong>{{printData.card_details.name}}</strong><br>
-        <span ng-bind-html="printData.card_details.address"></span>
 
         <div class="info-bottom">
-            <strong>Invoice Date:</strong> {{printData.invoice_date}}<br/>
-            <strong>Invoice Number:</strong> {{printData.invoice_number}}<br/>
+            <span ng-if = "printData.invoice_date"><strong>Invoice Date:</strong> {{printData.invoice_date}}</span><br/>
+            <span ng-if = "!printData.is_informational_invoice"><strong>Invoice Number:</strong> {{printData.invoice_number}}</span><br/>
         </div>
     </div>
     <div class="info-right">
-        <strong>Arrival Date:</strong> {{printData.arrival_date}}<br/>
-        <strong>Departure Date:</strong> {{printData.departure_date}}<br/>
-        <strong>Room Number:</strong> {{printData.room_number}}<br/> 
-        <strong>Confirmation Number:</strong> {{printData.confirmation_number}}<br/>
-        <strong>Tax Number:</strong> {{printData.tax_number}}<br/>
-        <strong>AR Number:</strong> {{printData.ar_number}}
+        <span ng-if = "printData.arrival_date"><strong>Arrival Date:</strong> {{printData.arrival_date}}</span><br/>
+        <span ng-if = "printData.departure_date"><strong>Departure Date:</strong> {{printData.departure_date}}</span><br/>
+        <span ng-if = "printData.room_number"><strong>Room Number:</strong> {{printData.room_number}}</span><br/> 
+        <span ng-if = "printData.confirmation_number"><strong>Confirmation Number:</strong> {{printData.confirmation_number}}</span><br/>
+        <span ng-if = "printData.tax_number"><strong>Tax Number:</strong> {{printData.card_details.tax_number}}</span><br/>
+        <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>AR Number:</strong> {{printData.card_details.ar_number}}</span>
     </div>
 
 </div>
@@ -55,7 +53,7 @@
                     <strong>{{statement.item_description}}</strong>
                     <span>{{statement.description}}</span>
                     <span class="reference">{{statement.reference_text}}</span>
-                    <span class="adjusted"><em>Adjustment</em> - {Adjustment Reason}</span>
+                    <!-- <span class="adjusted"><em>Adjustment</em> - {Adjustment Reason}</span> -->
                 </td>
                 <td class="align-right">
                     {{statement.fees}}
@@ -70,8 +68,7 @@
                     </div>
                 </td>
             </tr>
-        </tbody>
-        <tfoot>
+            <br>
             <tr>
                 <td colspan="3"><strong>Total Charge</strong></td>
                 <td>
@@ -135,7 +132,7 @@
                     </div>
                 </td>
             </tr>            
-        </tfoot>
+        </tbody>
     </table>
 </div>
 

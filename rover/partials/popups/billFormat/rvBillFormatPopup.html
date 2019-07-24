@@ -118,7 +118,8 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
         <span class="icons icon-popup-success"></span>
-        <span class="h2 message">Guest Invoice is now closed</span>
+        <span ng-show="!is_from_ar" class="h2 message">Guest Invoice is now closed</span>
+        <span ng-show="is_from_ar" class="h2 message">AR Invoice is now locked</span>
 
         <button type="button" class="button blank" ng-click="closeDialog()">Close window</button> 
     </div>
