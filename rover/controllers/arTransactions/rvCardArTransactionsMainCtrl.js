@@ -887,9 +887,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
 					$scope.status = "alert";
 					$scope.showEmailSentStatusPopup();
-				};		
+				};
+				
+				var options = {
+					params: data,
+					successCallBack: sendEmailSuccessCallback,
+					failureCallBack: sendEmailFailureCallback
+				};
 	
-				$scope.invokeApi(rvAccountsArTransactionsSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
+				$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);
 			}		
 		};
 
@@ -935,13 +941,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		var billCardPrintCompleted = function() {
-								// CICO-9569 to solve the hotel logo issue
-			$("header .logo").removeClass('logo-hide');
-			$("header .h2").addClass('text-hide');
+			$('.nav-bar').removeClass('no-print');
+			$('.cards-header').removeClass('no-print');
+			$('.card-tabs-nav').removeClass('no-print');
+			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
+				$scope.$broadcast("UPDATE_WINDOW");
+			} else {
+				$scope.closeDialog();
+			}
+			$("body #loading").html('<div id="loading-spinner" ></div>');
+			$scope.switchTabTo('TRANSACTIONS');
 
-			// remove the orientation after similar delay
-			removePrintOrientation();
-			$scope.printBillCardActive = false;
 		};
 
 		// print the page
@@ -968,8 +978,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 					$scope.isPrintRegistrationCard = false;
 					$scope.printBillCardActive = true;
-					$scope.$emit('hideLoader');
-
 
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
@@ -1017,11 +1025,16 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			};
 
 			var printDataFailureCallback = function(errorData) {
-				$scope.$emit('hideLoader');
 				$scope.errorMessage = errorData;
 			};
+
+			var options = {
+				params: data,
+				successCallBack: printDataFetchSuccess,
+				failureCallBack: printDataFailureCallback
+			};
 					
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);	
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);	
 		};
 
 
