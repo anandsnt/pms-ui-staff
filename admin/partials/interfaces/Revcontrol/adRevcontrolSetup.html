@@ -23,7 +23,8 @@
                         inputtype="password"
                         value="config.password"
                         label="{{'PASSWORD'| translate}}"
-                        styleclass="full-width"></ad-textbox>
+                        styleclass="full-width"
+                        click-handler="onPasswordClick(config, 'password')"></ad-textbox>
         </fieldset>
         <fieldset class="holder right">
             <ad-textbox ng-if="availableSettings.indexOf('hotel_code') > -1"

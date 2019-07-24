@@ -137,6 +137,14 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
             }
             return false;
         };
+    // Update display passwords
+    var updateDisplayPasswords = function () {
+        $scope.setDefaultDisplayPassword($scope.data, 'key_password');
+        $scope.setDefaultDisplayPassword($scope.data, 'secondary_key_password');
+        $scope.setDefaultDisplayPassword($scope.data, 'wallet_auth_password');
+        $scope.setDefaultDisplayPassword($scope.data, 'pre_auth_user_password');
+    };
+
 	var fetchInterfaceDetails = function() {
 		var fetchSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
@@ -150,7 +158,8 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
                                // {value:'VingCard', name: 'VingCard'}
                             ];
                         }
-			setInitialExcludedList();
+            setInitialExcludedList();
+            updateDisplayPasswords();
 		};
 
 		$scope.invokeApi(ADDoorlockInterfaceSrv.fetch, {}, fetchSuccessCallback);
@@ -173,8 +182,12 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
                 }
 		var saveData = dclone($scope.data, unwantedKeys);
 
-		saveData.hotel_supported_card_types = hotelSupportedCardTypes;
-
+        saveData.hotel_supported_card_types = hotelSupportedCardTypes;
+        
+        $scope.deletePropertyIfRequired(saveData, 'key_password');
+        $scope.deletePropertyIfRequired(saveData, 'secondary_key_password');
+        $scope.deletePropertyIfRequired(saveData, 'wallet_auth_password');
+        $scope.deletePropertyIfRequired(saveData, 'pre_auth_user_password');
 
 		var saveSuccessCallback = function() {
 			$scope.$emit('hideLoader');
