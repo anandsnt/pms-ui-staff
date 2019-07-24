@@ -217,7 +217,7 @@ angular.module('sntRover')
                 sntActivity.stop("PROMISE_INITIATED");
                 if ($scope.isPrintClicked) {
                      $timeout(function() {
-                        $scope.$emit("YEARLY_TAX_REPORT_PRINT");
+                        $scope.$emit("PRINT_SELECTED_REPORT");
                     }, 700);
                 }
             };

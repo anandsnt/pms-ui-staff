@@ -14,6 +14,7 @@ admin.controller('adInterfaceMappingCtrl', [
           'market_code': 'Market Code - Market Segment',
           'market_segment': 'Market Code - Market Segment',
           'market_code_department_code': 'Market Code - Department Code',
+          'payment_code_billing_account': 'Payment Code - Billing Account Number',
           'source_code': 'Source Code',
           'tax_code': 'Tax Codes',
           'tax_charge_code': 'Tax Codes',
@@ -23,6 +24,7 @@ admin.controller('adInterfaceMappingCtrl', [
         var mappingPartials = {
             'DELPHI': '/assets/partials/interfaces/delphi/mapping.html',
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
+            'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
             'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',

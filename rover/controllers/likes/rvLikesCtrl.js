@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams', 'RVContactInfoSrv',
-	function($scope, RVLikesSrv, dateFilter, $stateParams, RVContactInfoSrv) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'RVGuestCardsSrv', 'dateFilter', '$stateParams',
+	function($scope, RVLikesSrv, RVGuestCardsSrv, dateFilter, $stateParams) {
 
 
 		$scope.errorMessage = "";
@@ -230,10 +230,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			});
 
 			var dataToUpdate = JSON.parse(JSON.stringify(updateData)),
-		    	dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false,			
-		    	guestId = getGuestId(),
-			    isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVContactInfoSrv.isGuestFetchComplete(guestId),
-			    saveData = {
+				dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false,
+				guestId = getGuestId(),
+				isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVGuestCardsSrv.isGuestFetchComplete(guestId),
+				saveData = {
 					userId: guestId,
 					data: updateData
 				};
