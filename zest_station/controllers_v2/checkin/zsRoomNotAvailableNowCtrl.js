@@ -61,7 +61,6 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 				comeBackLaterText = defaulTranslations['ROOM_UNAVAILABLE_NOTE'];
 			}
 
-
 			if ($scope.screenData.action_type === 'find_guest') {
 				noteForStaff = locationNoteText ?
 					locationNoteText.replace("{{ location }}", $scope.screenData.location) :
