@@ -23,15 +23,24 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				key: "occupied_rooms",
 				name: "Occupied Rooms"
 			}, {
+				key: "occupied_day_use_rooms",
+				name: "Occupied Day Use Rooms"
+			}, {
 				key: "complimentary_rooms",
 				name: "Complimentary Rooms"
 			}, {
 				key: "occupied_minus_comp",
 				name: "Occupied Rooms (Excl. Comp.)"
+			}, {
+				key: "occupied_day_use_minus_comp",
+				name: "Occupied Day Use Rooms (Excl. Comp.)"
 			}],
 			occupancyTotals: [{
 				key: "total_occupancy_in_percentage",
 				name: "Total Occ."
+			}, {
+				key: "total_day_use_occupancy_in_percentage",
+				name: "Total Day Use Occ."
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
 				name: "Total Occ. (Excl. Comp.)"
@@ -45,10 +54,19 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}, {
 				key: "adr_exclusive_complimentary_rooms",
 				name: "ADR (Excl. Comp.)"
+			}, {
+				key: "day_use_adr_inclusive_complimentary_rooms",
+				name: "ADR (Incl. Comp.)"
+			}, {
+				key: "day_use_adr_exclusive_complimentary_rooms",
+				name: "ADR (Excl. Comp.)"
 			}],
 			revenueTotals: [{
 				key: "total_revenue",
 				name: "Total Revenue"
+			}, {
+				key: "total_day_use_revenue",
+				name: "Total Day Use Revenue"
 			}]
 		};
 
@@ -159,6 +177,23 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				return '';
 			}
 		};
+
+		$scope.getChargeCodeDayUseValue = function(chargeGroupIndex, columnIndex) {
+			var candidate = $scope.results.day_use_charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
+			if (candidate) {
+				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
+			} else {
+				return '';
+			}
+		};
+
 
 		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
