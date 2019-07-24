@@ -69,6 +69,14 @@
             <div class="reservation-type red" ng-if="paidInvoice.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
             <div class="reservation-type" ng-if="!paidInvoice.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
 
+            <div class="status">
+                <!-- If partially paid, output:
+                <span class="icons icon-wallet-green"></span> -->
+
+                <!-- If locked, meaning as well that it can't be partially paid, output: -->
+                <span ng-if = "arDataObj.is_locked || paidInvoice.is_invoice_locked" class="icons icon-room-lock"></span>
+            </div>
+            
             <div class="amount paid">
                 <span class="currency">{{currencySymbol}}</span>{{ paidInvoice.amount | number:2 }}
             </div>

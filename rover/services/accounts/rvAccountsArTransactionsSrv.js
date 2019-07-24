@@ -42,20 +42,6 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
         return deferred.promise;
     };
 
-    this.settleFinalInvoice = function(params) {
-		var deferred = $q.defer(),
-			url = '/api/accounts/' + params.bill_id + '/final_invoice_settlement';
-
-            rvBaseWebSrvV2.postJSON(url).then(function(data) {
-
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
-
-		return deferred.promise;
-    };
-
     this.sendEmail = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/accounts/' + params.account_id + '/ar_transactions/'+ params.id +'/email_ar_invoice';

@@ -816,16 +816,22 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.billFormat = {};
 			$scope.billFormat.isInformationalInvoice = false;
 			// $scope.isFolioNumberExists = $scope.arDataObj.bills[$scope.currentActiveBill].is_folio_number_exists;
-			$scope.reservationBillData = $scope.arDataObj;
+			$scope.arTransactionsData = $scope.arDataObj;
 			if (is_from_paid) {
 				$scope.item = $scope.arDataObj.paidList[index]
 			} else {
 				$scope.item = $scope.arDataObj.balanceList[index]
 			}
 			if ($scope.item.paid) {
+				if($scope.item.is_invoice_locked) {
+					$scope.isInvoiceStepOneActive = false;
+					$scope.isInvoiceStepThreeActive = true;
+					$scope.shouldGenerateFinalInvoice = true;
+				} else {
 				$scope.isInvoiceStepOneActive = true;
 				$scope.isInvoiceStepThreeActive = false;
 				$scope.shouldGenerateFinalInvoice = true;
+				}
 			} else {
 				$scope.isInvoiceStepOneActive = false;
 				$scope.isInvoiceStepThreeActive = true;
@@ -871,55 +877,35 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         };
 
 		$scope.clickedEmail = function(data) {
-			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				finalInvoiceSettlement(data, false);
-			} else {
-				$scope.closeDialog();
-				var sendEmailSuccessCallback = function(successData) {
-					$scope.$emit('hideLoader');
-					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-					$scope.status = "success";
-					$scope.showEmailSentStatusPopup();
-					$scope.reloadCurrentActiveBill();
-				};
-				var sendEmailFailureCallback = function(errorData) {
-					$scope.$emit('hideLoader');
-					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-					$scope.status = "alert";
-					$scope.showEmailSentStatusPopup();
-				};
-				
-				var options = {
-					params: data,
-					successCallBack: sendEmailSuccessCallback,
-					failureCallBack: sendEmailFailureCallback
-				};
-	
-				$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);
-			}		
+			$scope.closeDialog();
+			$scope.arDataObj.is_locked = data.is_locked;
+			var sendEmailSuccessCallback = function(successData) {
+				$scope.$emit('hideLoader');
+				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+				$scope.status = "success";
+				$scope.showEmailSentStatusPopup();
+				$scope.reloadCurrentActiveBill();
+			};
+			var sendEmailFailureCallback = function(errorData) {
+				$scope.$emit('hideLoader');
+				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+				$scope.status = "alert";
+				$scope.showEmailSentStatusPopup();
+			};
+			
+			var options = {
+				params: data,
+				successCallBack: sendEmailSuccessCallback,
+				failureCallBack: sendEmailFailureCallback
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);	
 		};
 
 		$scope.clickedPrint = function(requestParams) {
-			$scope.is_locked = requestParams.is_locked;
 			sntActivity.start("PRINT_STARTED");
+			$scope.arDataObj.is_locked = requestParams.is_locked;
 			printBill(requestParams);
-		};
-
-		var finalInvoiceSettlement = function(data, isPrint) {
-			var settleInvoiceSuccess = function() {
-					$scope.shouldGenerateFinalInvoice = false;
-					if (isPrint) {
-						printBill(data);
-					} else {
-						$scope.clickedEmail(data);
-					}				
-				},
-				options = {
-					params: {"bill_id": $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id},
-					successCallBack: settleInvoiceSuccess
-				};
-	
-			$scope.callAPI(rvAccountsArTransactionsSrv.settleFinalInvoice, options);
 		};
 	
 		// add the print orientation before printing
@@ -943,6 +929,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}
 			$("body #loading").html('<div id="loading-spinner" ></div>');
 			$scope.switchTabTo('TRANSACTIONS');
+			sntActivity.stop("PRINT_STARTED");
 
 		};
 
@@ -957,6 +944,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					return copyCount;
 				},
 				printDataFetchSuccess = function(successData) {
+					sntActivity.stop("PRINT_STARTED");
 					successData = successData.data;
 					var copyCount = "",
 						arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
@@ -978,10 +966,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					} 
-					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices) && successData.is_copy_counter)
 					{
 						copyCount = getCopyCount(successData);
-						successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
+					}
+					else if (!$scope.billFormat.isInformationalInvoice) 
+					{
+						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
 					
 					$scope.printData = successData;
@@ -1018,6 +1010,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			var printDataFailureCallback = function(errorData) {
 				$scope.errorMessage = errorData;
+				sntActivity.stop("PRINT_STARTED");
 			};
 
 			var options = {
@@ -1028,7 +1021,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);	
 		};
-
 
         /**
 		* function to check whether the user has permission
