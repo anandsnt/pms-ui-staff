@@ -163,7 +163,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * show proceed popup - if infrasec enabled
      */
     $scope.clickedPrintBill = function() {
-        if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice && !$scope.item.is_invoice_locked) {
+        if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice && !$scope.item.is_locked) {
             $scope.isClickedPrint = true;
             $scope.isInvoiceStepThreeActive = false;
         
@@ -189,7 +189,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     */
     $scope.emailBill = function() {
 
-        if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice && !$scope.item.is_invoice_locked) {
+        if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice && !$scope.item.is_locked) {
             $scope.isClickedPrint = false;
             $scope.isInvoiceStepThreeActive = false;
         
@@ -238,7 +238,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         $scope.isInvoiceStepFourActive = false;
 
         $timeout(function() {
-            if (!$scope.item.is_invoice_locked) {
+            if (!$scope.item.is_locked) {
             $scope.isInvoiceStepFiveActive = true;
             }
         }, delayScreen);

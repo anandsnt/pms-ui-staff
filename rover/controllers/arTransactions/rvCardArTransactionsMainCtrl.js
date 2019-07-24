@@ -823,7 +823,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.item = $scope.arDataObj.balanceList[index]
 			}
 			if ($scope.item.paid) {
-				if($scope.item.is_invoice_locked) {
+				if($scope.item.is_locked) {
 					$scope.isInvoiceStepOneActive = false;
 					$scope.isInvoiceStepThreeActive = true;
 					$scope.shouldGenerateFinalInvoice = true;
