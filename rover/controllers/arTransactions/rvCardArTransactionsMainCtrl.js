@@ -913,6 +913,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$(".tab-header").addClass('no-print');
 
 			$scope.arDataObj.is_locked = requestParams.is_locked;
+			$("#add-balance").addClass('no-print');
+
 			printBill(requestParams);
 		};
 
