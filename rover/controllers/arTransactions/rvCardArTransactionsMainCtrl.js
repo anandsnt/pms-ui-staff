@@ -938,98 +938,82 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		// print the page
 		var printBill = function(data) {
-			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
-				finalInvoiceSettlement(data, true);
-			} else {
-				var getCopyCount = function(successData) {
-						var copyCount = "";
+			var getCopyCount = function(successData) {
+					var copyCount = "";
 
-						if (successData.is_copy_counter) {
-							copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
-						}
-						return copyCount;
-					},
-					printDataFetchSuccess = function(successData) {
-						successData = successData.data;
-						var copyCount = "",
-							arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
-							arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
-							dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+					if (successData.is_copy_counter) {
+						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+					}
+					return copyCount;
+				},
+				printDataFetchSuccess = function(successData) {
+					successData = successData.data;
+					var copyCount = "",
+						arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+						arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
+						dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
 
-						$scope.shouldShowArInvoiceNumber = true;
-						if (dateDifference < 0) {
-							$scope.shouldShowArInvoiceNumber = false;
-						}
+					$scope.shouldShowArInvoiceNumber = true;
+					if (dateDifference < 0) {
+						$scope.shouldShowArInvoiceNumber = false;
+					}
 
-						$scope.isPrintRegistrationCard = false;
-						$scope.printBillCardActive = true;
-						$scope.$emit('hideLoader');
-
-
-						if ($scope.billFormat.isInformationalInvoice) {
-							successData.invoiceLabel = successData.translation.information_invoice;
-						}
-						else if (successData.no_of_original_invoices === null && !$scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-							successData.invoiceLabel = successData.translation.invoice;
-						} 
-						else if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_void_bill) {
-							if ((successData.no_of_original_invoices === null || parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))) {
-								successData.invoiceLabel = successData.translation.void_invoice;
-							} 
-							else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices)) {
-								copyCount = getCopyCount(successData);
-								successData.invoiceLabel = successData.translation.copy_of_void_invoice.replace("#count", copyCount);
-							}
-						} 
-						else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
-						{
-							successData.invoiceLabel = successData.translation.invoice;
-						} 
-						else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
-						{
-							copyCount = getCopyCount(successData);
-							successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
-						}
-						
-						$scope.printData = successData;
-						$scope.errorMessage = "";
-
-						// CICO-9569 to solve the hotel logo issue
-						$("header .logo").addClass('logo-hide');
-						$("header .h2").addClass('text-hide');
-						$("body #loading").html("");// CICO-56119
-
-						// add the orientation
-						// addPrintOrientation();
-
-						/*
-						*	======[ READY TO PRINT ]======
-						*/
-						// this will show the popup with full bill
-						$timeout(function() {
-
-							if (sntapp.cordovaLoaded) {
-								cordova.exec(billCardPrintCompleted,
-									function(error) {
-										billCardPrintCompleted();
-									}, 'RVCardPlugin', 'printWebView', []);
-							}
-							else
-							{
-								window.print();
-								billCardPrintCompleted();
-							}
-						}, 700);
-					
-				};
-
-				var printDataFailureCallback = function(errorData) {
+					$scope.isPrintRegistrationCard = false;
+					$scope.printBillCardActive = true;
 					$scope.$emit('hideLoader');
-					$scope.errorMessage = errorData;
-				};
-						
-				$scope.invokeApi(rvAccountsArTransactionsSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
-			}		
+
+
+					if ($scope.billFormat.isInformationalInvoice) {
+						successData.invoiceLabel = successData.translation.information_invoice;
+					}
+					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
+					{
+						successData.invoiceLabel = successData.translation.ar_invoice;
+					} 
+					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices))
+					{
+						copyCount = getCopyCount(successData);
+						successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
+					}
+					
+					$scope.printData = successData;
+					$scope.errorMessage = "";
+
+					// CICO-9569 to solve the hotel logo issue
+					$("header .logo").addClass('logo-hide');
+					$("header .h2").addClass('text-hide');
+					$("body #loading").html("");// CICO-56119
+
+					// add the orientation
+					// addPrintOrientation();
+
+					/*
+					*	======[ READY TO PRINT ]======
+					*/
+					// this will show the popup with full bill
+					$timeout(function() {
+
+						if (sntapp.cordovaLoaded) {
+							cordova.exec(billCardPrintCompleted,
+								function(error) {
+									billCardPrintCompleted();
+								}, 'RVCardPlugin', 'printWebView', []);
+						}
+						else
+						{
+							window.print();
+							billCardPrintCompleted();
+						}
+					}, 700);
+				
+			};
+
+			var printDataFailureCallback = function(errorData) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+					
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);	
 		};
 
 
