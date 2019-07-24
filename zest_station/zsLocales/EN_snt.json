@@ -825,5 +825,22 @@
     "WALKIN_ROOM_SELECTED": "Room selected",
     "WALKIN_SELECTED_ROOM_MSG": "We have selected a room category for you, based on best fit and offer. {{ length > 0 ? 'You can modify your room type selection before confirming the reservation.' : ''}}",
     "WALKIN_UPGRADE_ROOM_MSG": "Upgrade your room?",
-    "WALKIN_UPGRADE_ROOM_SUB_MSG": "Select a card to see room details before you upgrade"
+    "WALKIN_UPGRADE_ROOM_SUB_MSG": "Select a card to see room details before you upgrade",
+
+    "ROOM_UNAVAILABLE_NOW_HEADER": "Dear {{ guest_name }}, we are sorry",
+    "ROOM_UNAVAILABLE_NOW_SUB_HEADER": "Your room is not ready. We can alert you as soon as it is ready.",
+    "SELECT_AN_ACTION": "Select an action",
+    "SEND_ME_MAIL": "Send me email",
+    "FIND_ME_IN_A_LOCATION": "Find me in a location",
+    "WILL_COME_BACK_LATER": "Will come back later",
+    "SELECT_A_LOCATION": "Select a location",
+    "GUEST_WAITING_LOCATIONS": "Lobby;Bar;Restaurant",
+    "ROOM_UNAVAILABLE_FINAL_HEADER": "Thank you",
+    "ROOM_UNAVAILABLE_FINAL_EMAIL_MSG": "We will send an email with instructions as soon a room is available",
+    "ROOM_UNAVAILABLE_FINAL_LOCATION_MSG": "We will let you know as soon a room is available",
+    "ROOM_UNAVAILABLE_FINAL_COME_BACK_LATER_MSG": "Please come back later and check with the front desk agent",
+
+    "PAYMENT_TYPE_NOT_ALLOWED_HEADER": "Sorry",
+    "PAYMENT_TYPE_NOT_ALLOWED_SUB_HEADER": "Sorry, your payment type is not allowed, Please see front desk"
+
 }

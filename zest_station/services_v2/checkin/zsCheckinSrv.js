@@ -625,5 +625,11 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             return zsBaseWebSrv2.getJSON(url);
         };
+
+        this.preCheckinReservation = function(params) {
+            var url = '/api/reservations/' + params.reservation_id + '/pre_checkin';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
     }
 ]);

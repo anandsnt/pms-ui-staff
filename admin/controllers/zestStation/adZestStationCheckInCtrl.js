@@ -1,7 +1,25 @@
-admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'paymentData',
+    function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, paymentData) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
+
+    // TODO: add from API
+
+    paymentData.payments = _.map(paymentData.payments, function(payment) {
+        return {
+            name: payment.description,
+            id: payment.id,
+            is_active: payment.is_active
+        };
+    });
+
+    $scope.allowedPaymentTypes =  _.filter(paymentData.payments, function(payment) {
+        return payment.is_active === "true";
+    });
+    $scope.excludedPaymentTypes = _.filter(paymentData.payments, function(payment) {
+        return payment.is_active === "false";
+    });
 
     $scope.fetchSettings = function() {
         var fetchSuccess = function(data) {
@@ -29,8 +47,9 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', 
         var params = {
             'kiosk': $scope.zestSettings
         };
-
-        $scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
+        console.log($scope.allowedPaymentTypes);
+        console.log($scope.excludedPaymentTypes);
+        //$scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
     };
 
     $scope.init = function() {

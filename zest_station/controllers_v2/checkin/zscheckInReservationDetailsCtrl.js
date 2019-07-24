@@ -9,7 +9,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     '$timeout',
     'zsPaymentSrv',
     'sntActivity',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity) {
+    'zsGeneralSrv',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv, sntActivity, zsGeneralSrv) {
 
 
         // This controller is used for viewing reservation details 
@@ -67,9 +68,16 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     $scope.isReservationDetailsFetched = true;
+
+                    var indexInAllowedPaymentTypes = _.findIndex(zsGeneralSrv.allowedPaymentTypeIds, function(paymentType) {
+                        return paymentType.value === $scope.selectedReservation.reservation_details.payment_method_used;
+                    });
+
                     if ($scope.zestStationData.kiosk_prevent_non_cc_guests && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
                         $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                         $state.go('zest_station.noCCPresentForCheckin');
+                    } else if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_exclude_payment_methods && indexInAllowedPaymentTypes === -1) {
+                        $state.go('zest_station.paymentMethodNotAllowed');
                     }
                     else {
                         if ($scope.isRateSuppressed()) {
@@ -416,8 +424,22 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $state.go('zest_station.checkInTerms', stateParams);
         };
 
+        var goToRoomNotAvailableOptions = function() {
+            $state.go('zest_station.checkinRoomNotAvailableNow', {
+                'guest_email': $scope.selectedReservation.guest_details[0].email,
+                'first_name': $scope.selectedReservation.guest_details[0].first_name,
+                'last_name': $scope.selectedReservation.guest_details[0].last_name,
+                'guest_id': $scope.selectedReservation.guest_details[0].id,
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+            });
+        };
+
         var initRoomError = function() {
-            $state.go('zest_station.checkinRoomError');
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_room_ready_alert) {
+                goToRoomNotAvailableOptions();
+            } else {
+                $state.go('zest_station.checkinRoomError');   
+            }
         };
 
         var showTermsAndCondition = function() {
@@ -524,15 +546,20 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var initCheckinTimeError = function() {
-            /*
-             *  guest attempted to check in too early, 
-             *  - for hourly hotels such as Yotel, guest is not allowed to check-in
-             *  - unless they are within the hour of the arrival time
-             */
-            $state.go('zest_station.checkinRoomError', {
-                'early_checkin_unavailable': true,
-                'first_name': $scope.selectedReservation.guest_details[0].first_name
-            });
+
+            if (zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_room_ready_alert) {
+               goToRoomNotAvailableOptions();
+            } else {
+                /*
+                 *  guest attempted to check in too early, 
+                 *  - for hourly hotels such as Yotel, guest is not allowed to check-in
+                 *  - unless they are within the hour of the arrival time
+                 */
+                $state.go('zest_station.checkinRoomError', {
+                    'early_checkin_unavailable': true,
+                    'first_name': $scope.selectedReservation.guest_details[0].first_name
+                });
+            }
         };
 
         var currentHotelTime = '',
