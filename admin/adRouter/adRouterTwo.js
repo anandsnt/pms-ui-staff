@@ -423,6 +423,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/custom_rates_sequence'
     });
 
+    $stateProvider.state('admin.manageCustomRatesSequence', {
+        templateUrl: '/assets/partials/customRateSequence/adManageCustomRatesSequence.html',
+        controller: 'ADManageCustomRatesSequenceCtrl',
+        url: '/custom_rates_sequence'
+    });
+
     $stateProvider.state('admin.promotions', {
         templateUrl: '/assets/partials/rates/adPromotions.html',
         controller: 'ADPromotionsCtrl',
@@ -1006,4 +1012,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       controller: 'ADGuestCardFieldsCtrl',
       url: '/adGuestCardFields'
     });
+
+    $stateProvider.state('admin.oracleDataCenters', {
+      templateUrl: '/assets/partials/dataCenters/adOracleDataCenters.html',
+      controller: 'ADOracleDataCentersCtrl',
+      url: '/oracleDataCenters'
+    });
+
 });

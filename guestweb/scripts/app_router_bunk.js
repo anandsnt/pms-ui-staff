@@ -132,7 +132,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
 	$stateProvider.state('earlyCheckinOptions', {
 		url: '/earlyCheckinOptions/:time/:charge/:id',
-		templateUrl: '/assets/common_templates/partials/checkin/gwEarlyCheckinOptions.html',
+		templateUrl: '/assets/common_templates/partials/bunk/gwEarlyCheckinOptions.html',
 		controller: 'earlyCheckinOptionsController',
 		title: 'Early Check-in'
 	})
@@ -144,7 +144,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 	})
 	.state('laterArrival', {
 		url: '/laterArrival/:time/:isearlycheckin',
-		templateUrl: '/assets/common_templates/partials/checkin/gwLateArrivalTime.html',
+		templateUrl: '/assets/common_templates/partials/bunk/gwLateArrivalTime.html',
 		controller: 'checkinArrivalDetailsController',
 		title: 'Early Check-in'
 	})
