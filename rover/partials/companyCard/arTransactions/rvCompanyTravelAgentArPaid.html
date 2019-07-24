@@ -1,6 +1,6 @@
 <ul class="search-results">
 
-    <li class="reservation transaction" ng-repeat="paidInvoice in arDataObj.paidList">
+    <li class="reservation transaction reservation-transaction" ng-repeat="paidInvoice in arDataObj.paidList">
 
         <!-- add .active when clicked -->
         <div class="faux-anchor has-arrow toggle" ng-click="clickedPaidListItem( $index )" ng-class="{'active': paidInvoice.active }">
@@ -159,7 +159,7 @@
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
-        <div id="invoiceDiv" ng-if="printBillCardActive" class="invoice" ng-include="''/assets/partials/companyCard/arTransactions/rvArInvoice.html''"></div>
+        <div id="invoiceDiv" ng-if="printBillCardActive" class="invoice ar-statement" ng-include="''/assets/partials/companyCard/arTransactions/rvArInvoice.html''"></div>
     </li>
     <li>
         <!-- To fix scroll: The footer for pagination and select payment is coming above the list so the last entry will 
