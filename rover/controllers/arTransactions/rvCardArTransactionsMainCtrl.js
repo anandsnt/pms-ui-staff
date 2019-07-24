@@ -912,6 +912,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$(".reservation-transaction").addClass('no-print');
 			$(".card-tabs-nav").addClass('no-print');
 			$(".tab-header").addClass('no-print');
+			$("#add-balance").addClass('no-print');
 			
 			printBill(requestParams);
 		};
