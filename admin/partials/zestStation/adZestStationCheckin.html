@@ -134,7 +134,7 @@
                         {{ 'PAYMENT_TYPES' |  translate }}
                     </h3>
                 </div>
-                <div class="entry has-sortable" style="width: 50%;">
+                <div class="entry has-sortable" style="width: 48%; margin-right: 2%;">
                     <label class="center_align">
                         <em class="rate_roomtype_text" translate="ALLOWED_PAYMENT_TYPES"></em>
                     </label>
@@ -142,11 +142,11 @@
                         <li ng-repeat="paymentType in allowedPaymentTypes" data-drag="true" ng-model="allowedPaymentTypes" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" class="allowed-payment-types li-draggable">
                             <span class="icons icon-handle"></span>
                             <span class="icons icon-handle"></span>
-                            {{ paymentType.name }}
+                            {{ paymentType.description }}
                         </li>
                     </ul>
                 </div>
-                <div class="entry has-sortable" style="width: 50%;">
+                <div class="entry has-sortable" style="width: 48%;">
                     <label class="center_align">
                         <em class="rate_roomtype_text" translate="EXCLUDED_PAYMENT_TYPES"></em>
                     </label>
@@ -154,7 +154,7 @@
                         <li ng-repeat="paymentType in excludedPaymentTypes" class="exclude-payment-types li-draggable" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" data-drag="true" ng-model="excludedPaymentTypes" jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
                             <span class="icons icon-handle"></span>
                             <span class="icons icon-handle"></span>
-                            {{ paymentType.name }}
+                            {{ paymentType.description }}
                         </li>
                     </ul>
                 </div>

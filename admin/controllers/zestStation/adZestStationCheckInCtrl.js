@@ -1,62 +1,72 @@
-admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'paymentData',
-    function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, paymentData) {
+admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter',
+    function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
 
-    // TODO: add from API
+    $scope.allowedPaymentTypes =  [];
+    $scope.excludedPaymentTypes = [];
 
-    paymentData.payments = _.map(paymentData.payments, function(payment) {
-        return {
-            name: payment.description,
-            id: payment.id,
-            is_active: payment.is_active
-        };
-    });
-
-    $scope.allowedPaymentTypes =  _.filter(paymentData.payments, function(payment) {
-        return payment.is_active === "true";
-    });
-    $scope.excludedPaymentTypes = _.filter(paymentData.payments, function(payment) {
-        return payment.is_active === "false";
-    });
-
-    $scope.fetchSettings = function() {
+    var fetchSettings = function() {
         var fetchSuccess = function(data) {
             $scope.zestSettings = data;
+            $scope.allowedPaymentTypes = _.filter(data.payment_types, function(paymentType) {
+                return paymentType.active && paymentType.enable_zs_checkin;
+            });
+            $scope.excludedPaymentTypes = _.filter(data.payment_types, function(paymentType) {
+                return paymentType.active && !paymentType.enable_zs_checkin;
+            });
             $scope.$emit('hideLoader');
         };
 
         $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
     };
 
-    $scope.saveSettings = function() {
+    var saveFailed = function(response) {
+        var message = response ? response : ['Save Failed'];
+
+        $scope.errorMessage = message;
+        $scope.$emit('hideLoader');
+    };
+
+    var savePaymentExclusionSettings = function() {
         var saveSuccess = function() {
             $scope.successMessage = 'Success';
             $scope.$emit('hideLoader');
         };
-        var saveFailed = function(response) {
-            var message = response ? response : ['Save Failed'];
-            
-            console.log(response);
-
-            $scope.errorMessage = message;
-            $scope.$emit('hideLoader');
-        };
 
         var params = {
-            'kiosk': $scope.zestSettings
+            application: 'KIOSK',
+            payment_types: []
         };
-        console.log($scope.allowedPaymentTypes);
-        console.log($scope.excludedPaymentTypes);
-        //$scope.invokeApi(ADZestStationSrv.save, params, saveSuccess, saveFailed);
+
+        _.each($scope.allowedPaymentTypes, function(paymentType){
+            params.payment_types.push({
+                id: paymentType.id,
+                exclusion_type: "checkin",
+                activate: true
+            })
+        });
+        _.each($scope.excludedPaymentTypes, function(paymentType){
+            params.payment_types.push({
+                id: paymentType.id,
+                exclusion_type: "checkin",
+                activate: false
+            })
+        });
+        $scope.invokeApi(ADZestStationSrv.excludePaymenTypes, params, saveSuccess, saveFailed);
     };
 
-    $scope.init = function() {
-        $scope.fetchSettings();
+    $scope.saveSettings = function() {
+        var zestSettings = angular.copy($scope.zestSettings);
+
+        delete zestSettings.payment_types;
+        var params = {
+            'kiosk': zestSettings
+        };
+
+        $scope.invokeApi(ADZestStationSrv.save, params, savePaymentExclusionSettings, saveFailed);
     };
 
-    $scope.init();
-
-
+    fetchSettings();
 }]);

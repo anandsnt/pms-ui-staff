@@ -18,12 +18,7 @@ angular.module('adminZestStationRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.ZestStationCheckin', {
         templateUrl: '/assets/partials/zestStation/adZestStationCheckin.html',
         controller: 'ADZestStationCheckInCtrl',
-        url: '/zestStationCheckin',
-        resolve: {
-            paymentData: function(ADPaymentMethodsSrv) {
-                return ADPaymentMethodsSrv.fetch();
-            }
-        }
+        url: '/zestStationCheckin'
     });
     $stateProvider.state('admin.ZestStationCheckout', {
         templateUrl: '/assets/partials/zestStation/adZestStationCheckout.html',
