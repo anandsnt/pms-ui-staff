@@ -905,6 +905,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.clickedPrint = function(requestParams) {
 			sntActivity.start("PRINT_STARTED");
 			$scope.arDataObj.is_locked = requestParams.is_locked;
+			$("header .nav-bar").addClass('no-print');
+			$(".cards-header").addClass('no-print');
+			$("#cards-header-id").addClass('no-print');
+			$(".billing-sidebar").addClass('no-print');
+			$(".reservation-transaction").addClass('no-print');
+			$(".card-tabs-nav").addClass('no-print');
+			$(".tab-header").addClass('no-print');
+			
 			printBill(requestParams);
 		};
 	
