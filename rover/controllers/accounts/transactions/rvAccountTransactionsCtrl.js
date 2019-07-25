@@ -1471,11 +1471,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
+		/*
+		 * Receipt print completed
+		 */
 		var receiptPrintCompleted = function() {
 			$scope.printReceiptActive = false;
 		};
-
-		var listenerPrintReceipt = $rootScope.$on('PRINT_RECEIPT', function(event, receiptPrintData) {
+		/*
+		 * Print Receipt from accounts
+		 */
+		$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
 			$scope.printReceiptActive = true;
 			$scope.receiptPrintData = receiptPrintData;
 			$scope.errorMessage = "";
@@ -1505,8 +1510,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}, 100);
 		});
 
-		$scope.$on( '$destroy', listenerPrintReceipt );
-
+		/*
+		 * Open receipt print dialog box
+		 * @param feesIndex transaction index id
+		 */
 		$scope.openReceiptDialog = function(feesIndex) {
 			var feesDetails = $scope.transactionsDetails.bills[$scope.currentActiveBill].transactions[feesIndex];
 
