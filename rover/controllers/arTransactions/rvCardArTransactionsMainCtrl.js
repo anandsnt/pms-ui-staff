@@ -916,16 +916,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			
 			printBill(requestParams);
 		};
-	
-		// add the print orientation before printing
-		var addPrintOrientation = function() {
-			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
-		};
-
-		// add the print orientation after printing
-		var removePrintOrientation = function() {
-			$( '#print-orientation' ).remove();
-		};
 
 		var billCardPrintCompleted = function() {
 			$('.nav-bar').removeClass('no-print');

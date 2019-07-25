@@ -33,29 +33,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * handles Generate toggle visibilty
      * @return none
      */
-    var handleGenerateToggleWidgetVisibility = function (card) {
-            if ( !isEmpty(card.company.name) && !isEmpty(card.travel_agent.name)) {
-                // Both cards are attached.
-            }
-            else if (isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
-                // Both cards are not attached.
-                $scope.hideCompanyCardInvoiceToggle = true;
-            }
-            else if (!isEmpty(card.company.name) && isEmpty(card.travel_agent.name)) {
-                // Only TA card is attached.
-                $scope.isCompanyCardInvoice = true;
-                $scope.disableCompanyCardInvoice = true;
-            }
-            else {
-                $scope.isCompanyCardInvoice = false;
-                // Only Company card is attached.
-                $scope.disableCompanyCardInvoice = true;
-            }
-
-        },
-        isEmpty = function( str ) {
-            return (!str || 0 === str.length);
-        };
 
     var successCallBackForLanguagesFetch = function(data) {
       $scope.$emit('hideLoader');
