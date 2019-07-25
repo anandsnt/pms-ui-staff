@@ -20,6 +20,7 @@
             <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.invoice_number"><strong>Invoice Number:</strong> {{printData.invoice_number}}</span><br/>
             <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number && printData.is_print_folio_enabled"><strong>Folio Number:</strong> {{printData.folio_number}}</span>
             <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>Folio Number:</strong> {{printData.ar_invoice_number}}</span>
+            <span ng-if = "!printData.is_informational_invoice && printData.is_print_folio_enabled && printData.ar_folio_number"><strong>AR Folio Number:</strong> {{printData.ar_folio_number}}</span>
 
         </div>
     </div>
