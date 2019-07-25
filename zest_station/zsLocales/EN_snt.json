@@ -840,6 +840,9 @@
     "ROOM_UNAVAILABLE_FINAL_HEADER": "Thank you",
     "ROOM_UNAVAILABLE_FINAL_EMAIL_MSG": "We will send an email with instructions as soon a room is available",
     "ROOM_UNAVAILABLE_FINAL_LOCATION_MSG": "We will let you know as soon a room is available",
-    "ROOM_UNAVAILABLE_FINAL_COME_BACK_LATER_MSG": "Please come back later and check with the front desk agent"
+    "ROOM_UNAVAILABLE_FINAL_COME_BACK_LATER_MSG": "Please come back later and check with the front desk agent",
+
+    "PAYMENT_TYPE_NOT_ALLOWED_HEADER": "Sorry",
+    "PAYMENT_TYPE_NOT_ALLOWED_SUB_HEADER": "Sorry, your payment type is not allowed, Please see front desk"
 
 }

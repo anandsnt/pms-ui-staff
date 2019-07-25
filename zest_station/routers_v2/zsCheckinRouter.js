@@ -630,6 +630,14 @@ sntZestStation.config(['$stateProvider',
             },
             templateUrl: '/assets/partials_v2/checkin/zsRoomNotAvailableNow.html'
         });
+
+        $stateProvider.state('zest_station.paymentMethodNotAllowed', {
+            url: '/',
+            params: {
+                params: ''
+            },
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinPaymentTypeNotAllowed.html'
+        });
         
     }
 ]);
