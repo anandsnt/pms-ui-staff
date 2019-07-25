@@ -1477,6 +1477,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var receiptPrintCompleted = function() {
 			$scope.printReceiptActive = false;
 		};
+		
 		/*
 		 * Print Receipt from accounts
 		 */
