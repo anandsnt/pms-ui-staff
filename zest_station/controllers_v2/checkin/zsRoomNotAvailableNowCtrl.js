@@ -19,8 +19,9 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		};
 		// TODO: to expand  for sent_to_queue ?
 		$scope.isAutoCheckinOn = $scope.zestStationData.precheckin_details.precheckin_on === "true" &&
-								 $scope.zestStationData.precheckin_details.precheckin_action === "auto_checkin";
+			$scope.zestStationData.precheckin_details.precheckin_action === "auto_checkin";
 		var guestWaitingLocations = $filter('translate')('GUEST_WAITING_LOCATIONS');
+
 		// The tag GUEST_WAITING_LOCATIONS has to be saved in admin with ';' separating location names
 		$scope.guestWaitingLocations = guestWaitingLocations === 'GUEST_WAITING_LOCATIONS' ? [] : guestWaitingLocations.split(";");
 
@@ -34,24 +35,6 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			$scope.screenData.mode = 'ACTION_COMPLETED';
 		};
 
-		var notifyProperty = function() {
-			var params = {
-				reservation_id: $stateParams.reservation_id,
-				application: 'KIOSK',
-				action_type: $scope.screenData.action_type
-			};
-
-			if ($scope.screenData.action_type === 'find_guest') {
-				params.location = $scope.screenData.location;
-			}
-			var options = {
-				params: params,
-				successCallBack: showSuccessPage
-			};
-
-			$scope.callAPI(zsCheckinSrv.preCheckinReservation, options);
-		};
-
 		var precheckinReseravation = function() {
 			var options = {
 				params: {
@@ -62,6 +45,51 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			};
 
 			$scope.callAPI(zsCheckinSrv.preCheckinReservation, options);
+		};
+
+		var notifyProperty = function() {
+			var locationNoteText;
+			var comeBackLaterText;
+			var noteForStaff;
+
+			// Assuming that the default language will be the language used by the staff, use those tags for notes.
+			// If no tag is provided in default language, for now hardcode some text
+			if (zsGeneralSrv.refToLatestPulledTranslations && zsGeneralSrv.defaultLangShortCode) {
+				var defaulTranslations = zsGeneralSrv.refToLatestPulledTranslations[zsGeneralSrv.defaultLangShortCode];
+
+				locationNoteText = defaulTranslations['ROOM_UNAVAILABLE_NOTE_WITH_LOCATION'];
+				comeBackLaterText = defaulTranslations['ROOM_UNAVAILABLE_NOTE'];
+			}
+
+			if ($scope.screenData.action_type === 'find_guest') {
+				noteForStaff = locationNoteText ?
+					locationNoteText.replace("{{ location }}", $scope.screenData.location) :
+					'When the room is ready, please find the guest at' + ' ' + $scope.screenData.location;
+			} else {
+				noteForStaff = comeBackLaterText ?
+					comeBackLaterText :
+					'The guest will come back later to check if the room is ready by then.';
+			}
+			var params = {
+				application: 'KIOSK',
+				action_type: $scope.screenData.action_type,
+				note_topic: 1,
+				reservation_id: $stateParams.reservation_id,
+				text: noteForStaff
+			};
+
+			var options = {
+				params: params,
+				successCallBack: function() {
+					if ($scope.isAutoCheckinOn) {
+						precheckinReseravation();
+					} else {
+						showSuccessPage();
+					}
+				}
+			};
+
+			$scope.callAPI(zsCheckinSrv.addNotes, options);
 		};
 
 		var updateEmailId = function() {
@@ -93,10 +121,9 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			}
 		};
 
-		var initializeMe = (function() {
+		(function() {
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 		}());
-
 	}
 ]);

@@ -1,0 +1,79 @@
+<div class="invoice-logo envelope">
+    <img src="{{receiptPrintData.hotel_logo}}" alt="" />
+    <h1>{{receiptPrintData.hotel_name}}</h1>
+    <span ng-bind-html="receiptPrintData.hotel_address"></span>
+    <span class="type">{{receiptPrintData.receipt_translations.payment_receipt}}</span>
+    <!-- If showing QR code, place it here:-->
+    <span class="type" in-show="receiptPrintData.qr_code !== '' && receiptPrintData.qr_code !== null">
+        <br/><img src="{{receiptPrintData.qr_code}}" alt="" class="qr-code" /> 
+    </span>
+</div>
+
+<div class="info-container account-info">
+    <div class="info-left">
+        <span ng-if="isFromBillCard">
+            {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
+            <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
+            <br/>
+            {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
+            {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
+            {{receiptPrintData.guest_details.postal_code}}<br/>
+            {{receiptPrintData.guest_details.country_name}}
+        </span>
+        <span ng-if="!isFromBillCard">
+            <strong>Account Name:</strong> {{receiptPrintData.account_name}} <br />
+            <strong>Account Number:</strong> {{receiptPrintData.account_number}} <br />
+        </span>
+        <div class="info-bottom">
+            <strong>Payment Receipt No:</strong> {{receiptPrintData.receipt_no}}
+        </div>
+    </div>
+    <div class="info-right" ng-if="isFromBillCard">           
+        <strong>{{receiptPrintData.invoice_translations.arrival_date}}:</strong> {{receiptPrintData.arrival_date}}<br/>
+        <strong>{{receiptPrintData.invoice_translations.departure_date}}:</strong> {{receiptPrintData.departure_date}}<br/>
+        <strong>{{receiptPrintData.invoice_translations.room_number}}:</strong> {{receiptPrintData.room_no}}<br/> 
+        <strong>{{receiptPrintData.invoice_translations.confirmation_number}}:</strong> {{receiptPrintData.confirmation_number}}<br/>
+    </div>
+</div>
+
+<div class="invoice-body">
+    <table class="invoice-details">
+        <thead>
+            <tr>
+                <th>Date of Payment</th>
+                <th>Payment Type</th>
+                <th class="align-right receipt-amount">Amount</th> 
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="2"><strong>Total Amount</strong></td>
+                <td>
+                    <strong><span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.total_amount}}</strong>
+                    <div class="converted-currency"><span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.payments.total_converted_amount}}</div>            
+                </td>
+            </tr>           
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>{{receiptPrintData.payments.date_of_payment}}</td>
+                <td class="description">
+                    {{receiptPrintData.payments.payment_type}}
+                    <!-- if other data, use this. For example -->
+                    <span class="reference" ng-if="receiptPrintData.payments.credit_card_details.card_number !== null && receiptPrintData.payments.credit_card_details.card_number !== ''">{{receiptPrintData.payments.credit_card_details.description}} - Ending: {{receiptPrintData.payments.credit_card_details.card_number}}</span>
+                </td>
+                <td class="align-right receipt-amount">
+                    <span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.amount}}
+                    <div class="converted-currency">
+                        <span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.payments.converted_amount}}
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="invoice-footer text-center" >   
+    {{receiptPrintData.footer}}
+</div>

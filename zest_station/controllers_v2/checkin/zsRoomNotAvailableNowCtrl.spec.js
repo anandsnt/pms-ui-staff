@@ -1,26 +1,22 @@
 describe('zsRoomNotAvailableNowCtrl', function() {
 
     var $controller,
-        $state,
         $stateParams,
         $scope = {},
         $rootScope,
         zsGeneralSrv,
         zsCheckinSrv,
-        zsUtilitySrv,
         $q;
 
     beforeEach(function() {
         module('sntZestStation');
-        inject(function(_$controller_, _$rootScope_, _$state_, _$stateParams_, _zsGeneralSrv_, _$q_, _zsCheckinSrv_, _zsUtilitySrv_) {
+        inject(function(_$controller_, _$rootScope_, _$stateParams_, _zsGeneralSrv_, _$q_, _zsCheckinSrv_) {
             $q = _$q_;
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
-            $state = _$state_;
             $scope = $rootScope.$new();
             zsGeneralSrv = _zsGeneralSrv_;
             $stateParams = _$stateParams_;
-            zsUtilitySrv = _zsUtilitySrv_;
             var params = {
                 'guest_email': 'r@s.com',
                 'reservation_id': '12234',
@@ -29,6 +25,10 @@ describe('zsRoomNotAvailableNowCtrl', function() {
 
             $stateParams.params = JSON.stringify(params);
             zsCheckinSrv = _zsCheckinSrv_;
+            zsGeneralSrv.refToLatestPulledTranslations = {
+                en: {}
+            };
+            zsGeneralSrv.defaultLangShortCode = 'en';
         });
         angular.extend($scope, {
             zestStationData: {
@@ -119,7 +119,7 @@ describe('zsRoomNotAvailableNowCtrl', function() {
         });
 
         it('If action type is \'Guest will come back later\', notify the property', function() {
-            spyOn(zsCheckinSrv, 'preCheckinReservation').and.callFake(function() {
+            spyOn(zsCheckinSrv, 'addNotes').and.callFake(function() {
                 var deferred = $q.defer();
 
                 deferred.reject({});
@@ -128,11 +128,11 @@ describe('zsRoomNotAvailableNowCtrl', function() {
             $scope.screenData.action_type = 'guest_will_come_back_later';
             $scope.nextButtonClicked();
             $scope.$digest();
-            expect(zsCheckinSrv.preCheckinReservation).toHaveBeenCalled();
+            expect(zsCheckinSrv.addNotes).toHaveBeenCalled();
         });
 
         it('If action type is \'Find guest\', notify the property', function() {
-            spyOn(zsCheckinSrv, 'preCheckinReservation').and.callFake(function() {
+            spyOn(zsCheckinSrv, 'addNotes').and.callFake(function() {
                 var deferred = $q.defer();
 
                 deferred.reject({});
@@ -142,7 +142,7 @@ describe('zsRoomNotAvailableNowCtrl', function() {
             $scope.screenData.location = 'BAR';
             $scope.nextButtonClicked();
             $scope.$digest();
-            expect(zsCheckinSrv.preCheckinReservation).toHaveBeenCalled();
+            expect(zsCheckinSrv.addNotes).toHaveBeenCalled();
         });
     });
 });
