@@ -77,7 +77,12 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
             $scope.setEmailAddress();
         };
 
-        $scope.invokeApi(RVBillCardSrv.getBillSettingsInfo, params, onBillSettingsInfoFetchSuccess);
+        var options = {
+            params: params,
+            successCallBack: onBillSettingsInfoFetchSuccess
+        };
+
+        $scope.callAPI(RVBillCardSrv.getBillSettingsInfo, options);
     };
 
     /*
@@ -88,7 +93,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         params.id = $scope.item.transaction_id;
         params.account_id = $scope.arTransactionsData.accountId;
         params.locale = $scope.data.locale;
-        $scope.$emit('hideLoader');
         return params;
     };
 

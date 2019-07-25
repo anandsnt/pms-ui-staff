@@ -6,7 +6,7 @@
     <div class="cards fullscreen" ng-class="{'company-card': account_type == 'COMPANY', 'travel-agent-card': account_type == 'TRAVELAGENT', 'new-card':isAddNewCard, 'print-statement' : isPrintArStatement }">
         <div class="cards-wrapper">
             <!-- Cards Header -->
-            <header id="cards-header-id" class="cards-header">
+            <header class="cards-header">
                 <div id="{{dataIdHeader}}" ng-id="{'company-card-header': account_type == 'COMPANY', 'travel-agent-card-header': account_type == 'TRAVELAGENT'}" class="card-header">
                     <!-- When company logo exists -->
                     <input class="hidden" type="file" name="company-logo" id="uplaodCompanyLogo"  ng-model="contactInformation.account_details.company_logo" accept="*" app-filereader />

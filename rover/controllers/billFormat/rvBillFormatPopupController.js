@@ -59,10 +59,10 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      */
     $scope.closeDialog = function() {                
 
-        // $rootScope.modalOpened = false;
+        $rootScope.modalOpened = false;
         $timeout(function() {
             ngDialog.close();
-        }, 300);
+        }, delay);
     };
     /**
      * handles Generate toggle visibilty
