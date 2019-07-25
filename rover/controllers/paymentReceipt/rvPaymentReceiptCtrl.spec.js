@@ -1,13 +1,7 @@
 describe('RVReceiptPopupController', function () {
 
-    // jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
-    // var fixtures = loadJSONFixtures('groupConfigSampleData.json'),
-    //     groupConfigSampleData = fixtures['groupConfigSampleData.json'];
-
     var $controller,
-        $timeout,
         $scope,
-        $rootScope,
         RVBillCardSrv,
         $q,
         RVReceiptPopupController;
@@ -17,11 +11,8 @@ describe('RVReceiptPopupController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _$rootScope_, _$timeout_, _RVBillCardSrv_, _$q_) {
+                inject(function (_$controller_, _RVBillCardSrv_, _$q_) {
                     $controller = _$controller_;                    
-                    $rootScope = _$rootScope_;
-                    $timeout = _$timeout_;
-
                     $scope = _$rootScope_.$new();
                     $q = _$q_;
                     RVBillCardSrv = _RVBillCardSrv_;
