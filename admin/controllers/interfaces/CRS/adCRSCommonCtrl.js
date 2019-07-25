@@ -18,7 +18,8 @@ angular.module('admin').controller('adCRSCommonCtrl',
             var params = dclone($scope.config);
 
             $scope.deletePropertyIfRequired(params, 'password');
-
+            $scope.deletePropertyIfRequired(params, 'api_key_password');
+            
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
                     config: params,
@@ -46,6 +47,7 @@ angular.module('admin').controller('adCRSCommonCtrl',
             $scope.availableSettings = _.keys(config);
             $scope.interface = interfaceIdentifier.toUpperCase();
             $scope.setDefaultDisplayPassword($scope.config, 'password');
+            $scope.setDefaultDisplayPassword($scope.config, 'api_key_password');
         })();
     }
 ]);

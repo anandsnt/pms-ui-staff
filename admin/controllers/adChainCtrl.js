@@ -43,6 +43,9 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 			$scope.isEditmode = true;
 			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' : 'Choose file ...';
 			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' : 'Choose file ...';
+
+			$scope.setDefaultDisplayPassword($scope.editData, 'sftp_password');
+			$scope.setDefaultDisplayPassword($scope.editData, 'smtp_password');
 		};
 
 		$scope.invokeApi(adChainsSrv.edit, editID, editChainSuccessCallback);
@@ -118,9 +121,15 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
  			if (item.value === "") {
  				 delete item.value;
  			}
- 		});
+		 });
+		 
+		 var params = dclone($scope.editData);
 
- 		var updateData = {'id': id, 'updateData': $scope.editData };
+
+		 $scope.deletePropertyIfRequired(params, 'sftp_password');
+		 $scope.deletePropertyIfRequired(params, 'smtp_password');
+
+ 		var updateData = {'id': id, 'updateData': params };
 
 
  		var updateChainFailureCallback = function(errorMessage) {
