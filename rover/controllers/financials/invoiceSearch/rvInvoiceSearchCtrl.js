@@ -26,10 +26,6 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.currentActivePage = 1;
 		$scope.filterOptions = filterOptions.filters;
 
-		$scope.invoiceSearchDateFromOptions = {
-            dateFormat: $rootScope.jqDateFormat,
-            maxDate: tzIndependentDate($rootScope.businessDate)
-        };
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
 		* function to set Headinng
@@ -105,7 +101,9 @@ sntRover.controller('RVInvoiceSearchController',
 						'filter_id': $scope.invoiceSearchData.filter_id,
 						'no_folio_number_only': $scope.invoiceSearchData.no_folio_number_only,
 						'page_no': page || 1,
-						'per_page': PER_PAGE
+						'per_page': PER_PAGE,
+						'from_date': $scope.invoiceSearchData.from_date,
+						'to_date': $scope.invoiceSearchData.to_date
 					},
 					options = {
 						params: params,
@@ -427,11 +425,22 @@ sntRover.controller('RVInvoiceSearchController',
 				api: $scope.searchInvoice,
 				perPage: PER_PAGE
 			};
+
+			$scope.invoiceSearchDateFromOptions = {
+	            dateFormat: $rootScope.jqDateFormat,
+	            maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.to_date < $scope.invoiceSearchData.from_date)) ? tzIndependentDate($scope.invoiceSearchData.to_date) : tzIndependentDate($rootScope.businessDate)
+	        };
+
+	        $scope.invoiceSearchDateToOptions = {
+	            dateFormat: $rootScope.jqDateFormat,
+	            maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
+	        };
 			$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);
 			$scope.searchInvoice(1);
+
 		};
 		
 		that.init();
