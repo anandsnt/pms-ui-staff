@@ -1648,6 +1648,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                         $scope.reservationData.checkinTime = checkinTimeObj;
                         $scope.reservationData.checkoutTime = checkoutTimeObj;
+                        postData.room_type_id = $scope.reservationData.rooms[0].roomTypeId;
+                        console.log(postData); // TODO - Remove after debug.
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }

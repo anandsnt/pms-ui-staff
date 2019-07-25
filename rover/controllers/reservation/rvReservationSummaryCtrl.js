@@ -847,6 +847,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     postData.add_to_guest_card = $scope.addToGuestCard;
                     $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, saveSuccess);
                 } else {
+                    console.log("line#850");
+                    console.log(postData);
                     // updating reservation
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
                 }
@@ -1025,6 +1027,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 postData.addons = $scope.existingAddons;
                 $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, saveFailure);
             } else {
+                console.log("line#1028");
+                console.log(postData);
                 // updating reservation
                 $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
             }
