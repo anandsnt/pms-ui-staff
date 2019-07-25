@@ -165,7 +165,7 @@
                                     </span> -->
                                  <!--    <span class="restriction-icon" ng-if="rate.numRestrictions > 1">R</span>
                                     <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span> -->
-                                <div class="reservation-type red" ng-if="rate.isDayUse">D</div>
+                                <span class="reservation-type red" ng-if="rate.isDayUse">D</span>
                                 <div class="price" ng-if="!rate.isSuppressed">
                                     {{currencySymbol}}{{rate.adr | number: 2}}
                                     <span translate>RESV_AVG_NIGHT</span>

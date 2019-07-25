@@ -1344,7 +1344,7 @@ sntRover.controller('reservationActionsController', [
             }
 
             return (resData.reservation_status === 'CANCELED' || resData.reservation_status === 'NOSHOW') && // ONLY cancelled and noshow reservations  can be reinstated
-                new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
+                new TZIDate(resData.departure_date) >= new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
                 rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); // also check for permissions
         };
 

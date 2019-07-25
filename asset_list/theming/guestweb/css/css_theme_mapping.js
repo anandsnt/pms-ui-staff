@@ -217,6 +217,7 @@ module.exports = {
             'guestweb_the_cole_hotel': [ themeCSSRoot + 'guestweb_the_cole_hotel.css'],
             'guestweb_heritage_hills_golf_resort': [ themeCSSRoot + 'guestweb_heritage_hills_golf_resort.css'],
             'guestweb_the_delaney_hotel': [ themeCSSRoot + 'guestweb_the_delaney_hotel.css'],
+            'guestweb_the_hotel_concord': [ themeCSSRoot + 'guestweb_the_hotel_concord.css'],
         };
     }
 };

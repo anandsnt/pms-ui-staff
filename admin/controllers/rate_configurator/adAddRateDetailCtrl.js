@@ -415,6 +415,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if ($scope.rateData.date_ranges.length < 1) {
                 $scope.rateData.is_hourly_rate = value;
             }
+            // While Switching to Hourly - Reset Day use flag to false.
+            if (value) {
+                $scope.rateData.is_day_use = false;
+            }
         };
 
         $scope.togglePMSOnly = function() {
