@@ -12,9 +12,10 @@ sntRover.controller('RVInvoiceSearchController',
 	'$vault',
 	'rvAccountTransactionsSrv',
 	'rvAccountsConfigurationSrv',
+	'filterOptions',
 	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, 
 		$filter, RVBillCardSrv, $window, $state, $stateParams, $vault, 
-		rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
+		rvAccountTransactionsSrv, rvAccountsConfigurationSrv, filterOptions) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -22,8 +23,13 @@ sntRover.controller('RVInvoiceSearchController',
 			that = this,
 			PER_PAGE = 10;
 			
-		$scope.currentActivePage = 1;	
+		$scope.currentActivePage = 1;
+		$scope.filterOptions = filterOptions.filters;
 
+		$scope.invoiceSearchDateFromOptions = {
+            dateFormat: $rootScope.jqDateFormat,
+            maxDate: tzIndependentDate($rootScope.businessDate)
+        };
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
 		* function to set Headinng
@@ -96,6 +102,7 @@ sntRover.controller('RVInvoiceSearchController',
 					},
 					params = {
 						'query': $scope.invoiceSearchData.query,
+						'filter_id': $scope.invoiceSearchData.filter_id,
 						'no_folio_number_only': $scope.invoiceSearchData.no_folio_number_only,
 						'page_no': page || 1,
 						'per_page': PER_PAGE
@@ -405,7 +412,8 @@ sntRover.controller('RVInvoiceSearchController',
 		 * Initialization
 		 */
 		that.init = () => {
-			$scope.invoiceSearchData = {};			
+			$scope.invoiceSearchData = {};
+			$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;		
 			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;

@@ -27,11 +27,7 @@
     <div class="entry invoice-search-type">
         <div class="select with-label">
             <label for="invoice-search-type">Show</label>
-            <select id="invoice-search-type">
-                <option value="invoices">Invoices</option>
-                <option value="ar-invoices">AR Invoices</option>
-                <option value="receipts">Receipts</option>
-            </select>
+            <select class="styled pickadate_select pickadate_select_year" ng-options="filter.id as filter.name for filter in filterOptions" ng-model="invoiceSearchData.filter_id" ng-change="searchInvoice()" ></select>
         </div>
     </div>
 
@@ -44,16 +40,18 @@
     </div>
 
     <div class="entry search">
-        <button class="clear-query"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
+        <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
-        <input name="commisions-query" class="query" placeholder="{Search by Invoice or Folio No., Account/Guest Name or Balance Amount} when L24 is checked or {Search by AR Invoice Number} when L24 not checked" type="search" autocomplete="off">
+        <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div>
 
     <div class="entry dates">
         <div class="entry-data has-datepicker">
             <label for="invoices-date-from">From</label>
             <button id="invoices-date-from-clear" class="clear-query visible"><span class="icons icon-clear-search">Clear query</span></button>
-            <input name="invoices-date-from" id="invoices-date-from" type="text" class="datepicker" value="07-16-2019" readonly="">
+            <input id="routing-range-from" ui-date="invoiceSearchDateFromOptions" class="range-datepicker" ng-model="invoiceSearchData.from_date" ng-change="onRouteDateChange()" readonly />
         </div>
         <div class="entry-data has-datepicker">
             <label for="invoices-date-to">To</label>
