@@ -3749,7 +3749,214 @@
 
                 &:not(:last-child) {
                     margin-bottom: 20px;
-                }               
+                }
+
+                &.ar-invoice-item {
+                    .bill {
+                        grid-template-columns: 30px calc(~'100% - 370px') 270px 40px;
+                    }
+                }
+
+                &.receipt-item {
+                    .bill {
+                        grid-template-columns: 40px 30px 30px calc(~'100% - 410px') 270px;
+                        padding-left: 0;
+
+                        &.open {
+                            border-bottom-left-radius: 0px;
+                            border-bottom-right-radius: 0px;
+                        }
+
+                        &.has-arrow {
+                            background-position: calc(~'100% - 15px') 50%;
+                        
+                            &:hover,
+                            &:active {
+                                .box-shadow();
+                            }
+                        }
+
+                        .expand {
+                            position: relative;
+                            background-color: rgba(0,0,0,0.1);
+                            z-index: 10;
+                        }
+
+                        .check {
+                            grid-column: 2;
+                            height: 100%;
+
+                            .icon-form {
+                                left: 5px;
+                                top: 15px;
+                            }
+                        }
+
+                        .guest-image,
+                        .group-info {
+                            grid-column: 3;
+                        }
+
+                        .data {
+                            grid-column: 4;
+                        }
+
+                        .invoice-info {
+                            grid-column: 5;
+                            box-shadow: none;
+                            width: 270px;
+                        }
+                    }
+
+                    .bill-receipt-details {
+                        .faux-anchor();
+                        .box-shadow();
+                        padding: 20px 40px 10px 40px;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+
+                        &:active,
+                        &:hover {
+                            .box-shadow();
+                        }
+
+                        /* Paid With ***/
+                        .payment-data {
+                            width: 100%;
+                            .show();
+
+                            .card-logo {
+                                display: inline-block;
+                                vertical-align: middle;
+                                .size(17px, 35px);
+
+                                img { .size(auto, 100%); }
+                            } 
+
+                            .number,
+                            .date,
+                            .reference,
+                            .type {
+                                font-size: 14px;
+                                font-style: normal;
+                                line-height: 14px;
+                                text-transform: uppercase;
+                                display: inline-block;
+                                vertical-align: middle;
+                            }
+
+                            .reference {
+                                font-style: italic;
+                            }
+
+                            .date,
+                            .reference {
+                                color: @grey3;
+                            }
+
+                            .value,
+                            .number,
+                            .type {
+                                font-size: 14px;
+                                color: @textColor; 
+                                font-weight: 600;
+                            }
+                        }
+                        
+                        table {
+                            table-layout: fixed;
+                            margin: 0;
+                            width: 100%;
+                        }
+    
+                        th,
+                        td {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            line-height: 1em; 
+                            white-space: normal;
+                            overflow: visible;
+                            padding: 5px;
+    
+                            &:first-child {
+                                width: 50px;
+                                padding: 0;
+    
+                                .checkbox {
+                                    margin: 0;
+                                    .size(30px, 50px);
+    
+                                    .icon-form {
+                                        top: 5px;
+                                        left: 15px;
+                                    }
+                                }
+                            }
+
+                            .button {
+                                width: 30px;
+                                height: 30px;
+                                margin: 0;
+                                margin-left: 10px;
+
+                                .icons {
+                                    background-size: 100px;
+                                    background-position: 3px -7632px;
+                                }
+                            }
+
+                            &.date {
+                                width: 100px;
+                            }
+
+                            &.charge-code {
+                                width: 150px;
+                            }
+
+                            &.amount {
+                                width: 130px;
+                                text-align: right;
+                            }
+                            
+                            &.credits {
+                                font-weight: 600;
+                            }
+                        }
+    
+                        th {
+                            font-weight: 600;
+                            padding-top: 0;
+                            font-size: 14px;
+                            color: @black;
+                        }
+    
+                        td {
+                            vertical-align: middle;
+                            word-wrap: break-word; 
+                            height: 30px;
+                        }
+    
+                        tr {
+                            &.odd {
+                                td { 
+                                    background: @grey1; 
+                                }
+                            }
+    
+                            &.even {
+                                td { 
+                                    .checkbox {
+                                         
+                                        .icon-form{
+                                            &:not(.checked) {
+                                                background: @grey1;
+                                            }
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                    }
+                }              
             }
         }
     }
