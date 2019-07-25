@@ -23,8 +23,6 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', 
     };
 
     var saveFailed = function(response) {
-        var message = response ? response : ['Save Failed'];
-
         $scope.errorMessage = message;
         $scope.$emit('hideLoader');
     };

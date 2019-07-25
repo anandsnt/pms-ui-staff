@@ -230,11 +230,16 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
         };
 
         var checkForAllowedAndGuarenteedPaymentTypes = function(byPassCC) {
-            var indexInAllowedPaymentTypes = _.findIndex(zsGeneralSrv.allowedPaymentTypeIds, function(paymentType) {
-                return paymentType.id === paymentParams.payment_method_used || paymentType.value === paymentParams.payment_method_used;
+            var isAllowedPaymentMethod = function(paymentType) {
+                return (paymentType.id === paymentParams.payment_method_used || paymentType.value === paymentParams.payment_method_used) &&
+                    paymentType.active &&
+                    paymentType.enable_zs_checkin;
+            }
+            var indexInAllowedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
+                return isAllowedPaymentMethod(paymentType);
             });
-            var indexInGuaranteedPaymentTypes = _.findIndex(zsGeneralSrv.guaranteedPaymentTypes, function(paymentType) {
-                return paymentType.value === paymentParams.payment_method_used;
+            var indexInGuaranteedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
+                return isAllowedPaymentMethod(paymentType) && paymentType.reservation_type === 'PAYMENT_GUARANTEED';
             });
 
             if (indexInAllowedPaymentTypes === -1) {

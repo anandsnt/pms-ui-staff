@@ -69,8 +69,16 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     $scope.isReservationDetailsFetched = true;
 
-                    var indexInAllowedPaymentTypes = _.findIndex(zsGeneralSrv.allowedPaymentTypeIds, function(paymentType) {
-                        return paymentType.value === $scope.selectedReservation.reservation_details.payment_method_used;
+                    var isAllowedPaymentMethod = function(paymentType) {
+                        var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used;
+
+                        return (paymentType.id === paymentMethodUsed || paymentType.value === paymentMethodUsed) &&
+                            paymentType.active &&
+                            paymentType.enable_zs_checkin;
+                    };
+
+                    var indexInAllowedPaymentTypes = _.findIndex($scope.zestStationData.payment_types, function(paymentType) {
+                        return isAllowedPaymentMethod(paymentType);
                     });
 
                     if ($scope.zestStationData.kiosk_prevent_non_cc_guests && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {

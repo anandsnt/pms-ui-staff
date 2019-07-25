@@ -127,7 +127,7 @@
                 <ad-toggle-button is-checked="zestSettings.scan_id_to_find_reservations" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
-            <fieldset class="holder full-width">
+            <fieldset class="holder full-width" ng-if="featureToggleData.kiosk_exclude_payment_methods">
                 <div class="form-title">
                     <h3>
                         <span translate>EXCLUDE</span>
