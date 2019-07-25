@@ -3317,6 +3317,7 @@ sntRover.controller('RVbillCardController',
 	var receiptPrintCompleted = function() {
 		$scope.printReceiptActive = false;
 	};
+	
 	/*
 	 * Print Receipt from bills
 	 */	
