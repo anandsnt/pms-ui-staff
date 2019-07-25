@@ -75,12 +75,13 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
     * @param {object} with room id
     * @return {object} room data
     */
-	this.roomDetails = function(data) {
-		var roomId = data.roomId;
+	this.roomDetails = function(params) {
+		var roomId = params.roomId;
+		delete params.roomId;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/' + roomId + '/edit.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 			that.saveRoomTypesArray(data);
 			deferred.resolve(data);
 		}, function(errorMessage) {
