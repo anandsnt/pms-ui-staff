@@ -3317,8 +3317,11 @@ sntRover.controller('RVbillCardController',
 	var receiptPrintCompleted = function() {
 		$scope.printReceiptActive = false;
 	};
-		
-	var listenerPrintReceipt = $rootScope.$on('PRINT_RECEIPT', function(event, receiptPrintData) {
+	
+	/*
+	 * Print Receipt from bills
+	 */	
+	$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
 
 		$scope.printReceiptActive = true;
 		$scope.receiptPrintData = receiptPrintData;
@@ -3352,7 +3355,6 @@ sntRover.controller('RVbillCardController',
 		}, 700);
 	});
 
-	$scope.$on( '$destroy', listenerPrintReceipt );
 	/*
 	 * open receipt dialog box
 	 */
