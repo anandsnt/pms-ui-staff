@@ -9,6 +9,8 @@ admin.controller('ADInvoiceSettingsCtrl', [
 
         $scope.isFirstInvoiceNoReadOnly = invoiceSettingsData.first_invoice_no ? "yes" : "no";
 
+        var invoiceSettingsDataCopy = angular.copy(invoiceSettingsData);
+
         $scope.invoiceSettings = invoiceSettingsData;
 
         $scope.errorMessage = [];
@@ -30,9 +32,13 @@ admin.controller('ADInvoiceSettingsCtrl', [
                     $scope.goBackToPreviousState();
                 }                
             };
+            var unwantedKeys = [];
+
+            if ($scope.invoiceSettings.first_invoice_no === invoiceSettingsDataCopy.first_invoice_no) {
+                unwantedKeys.push('first_invoice_no');
+            }
+            $scope.invoiceSettings = dclone($scope.invoiceSettings, unwantedKeys);
 
             $scope.invokeApi(ADInvoiceSettingsSrv.saveInvoiceSettings, $scope.invoiceSettings, saveInvoiceSettingsSuccessCallback);
         };
-
-
 }]);

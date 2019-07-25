@@ -35,7 +35,7 @@
                         <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Nightly</span>
                     </div>
                 </div>
-                <ad-toggle-button is-hide="rateData.is_hourly_rate" is-disabled="is_edit || disableDayUseToggle" is-checked="rateData.is_day_use" label="DAY USE"></ad-toggle-button>
+                <ad-toggle-button ng-class="{'full-width': !shouldShowPeriodicity()}" is-hide="rateData.is_hourly_rate" is-disabled="is_edit || disableDayUseToggle" is-checked="rateData.is_day_use" label="DAY USE"></ad-toggle-button>
             </div>
             <div class="entry margin">
                 <label>Charge code <strong>*</strong> </label>
