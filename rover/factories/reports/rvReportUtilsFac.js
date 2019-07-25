@@ -8,7 +8,8 @@ angular.module('reportsModule')
     'RVReportNamesConst',
     'RVReportFiltersConst',
     'RVreportsSubSrv',
-    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
+    'rvUtilSrv',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv) {
         var factory = {};
 
         var DATE_FILTERS = [
@@ -579,6 +580,10 @@ angular.module('reportsModule')
                     report['hasRateFilter'] = filter;
                 }
 
+                if (filter.value === 'RESERVATION_TYPE') {
+                    report['hasDayUseFilter'] = filter;
+                }
+
                 if (filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
                 }
@@ -966,6 +971,8 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchCountries()
                         .then( fillCountries );
+                } else if ('RESERVATION_TYPE' === filter.value && !filter.filled) {
+                    fillResTypeOptions();
                 } else {
                     // no op
                 }
@@ -1467,6 +1474,30 @@ angular.module('reportsModule')
                                 hasSearch: false,
                                 selectAll: true,
                                 key: 'name'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
+            function fillResTypeOptions() {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_TYPE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasDayUseFilter = {
+                            data: rvUtilSrv.getReservationTypeOptions(),
+                            options: {
+                                hasSearch: false,
+                                selectAll: false,
+                                key: 'description',
+                                defaultValue: 'Select Reservation Type(s)'
                             }
                         };
                     }

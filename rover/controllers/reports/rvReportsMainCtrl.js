@@ -1030,6 +1030,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'addonGroups': [],
                     'addons': [],
                     'reservationStatus': [],
+                    'reservation_type': [],
                     'guestOrAccount': [],
                     'chargeTypes': [],
                     'users': [],
@@ -1210,6 +1211,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // for restriction list
             if (!!report.hasRestrictionListFilter) {
                 params[reportParams['RESTRICTION_IDS']] = _.pluck(_.where(report.hasRestrictionListFilter.data, {selected: true}), 'id');
+            }
+
+            if (!!report.hasDayUseFilter) {
+                var selectedResType = _.pluck(_.where(report.hasDayUseFilter.data, {selected: true}), 'value');
+                $scope.appliedFilter.reservation_type = selectedResType;
             }
 
             // for rate code
