@@ -137,6 +137,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         ngDialog.close();
     };
     // Move Invoice button click..
+
     $scope.moveInvoiceButtonClick = function() {
 
         var dataToSend = {
