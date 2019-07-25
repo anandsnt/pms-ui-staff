@@ -44,7 +44,7 @@
                                 </div>
                             </div>
 
-                            <ul class="sortable" ng-hide ='assignedRates.length == 0'>
+                            <ul id="assigedrates" class="sortable" ng-hide ='assignedRates.length == 0' ui-sortable="sortableRateSequenceOptions" ng-model="assignedRates">
 
                                 <li ng-repeat="assignedRate in assignedRates" ng-click="selectRate( assignedRate )">
                                     <span class="icons icon-added"></span>{{assignedRate.name}}
@@ -81,7 +81,7 @@
                                 <button type="button" name="button" class="icons icon-search">Search</button>
                             </div>
                         
-                            <ul class="sortable">
+                            <ul id="unassigedrates" class="sortable" ui-sortable="sortableRateOptions" ng-model="ratesList">
 
                                 <li ng-repeat="rate in ratesList" ng-click="selectRate( rate )">
                                     <span class="icons icon-handle"></span>{{rate.name}}</li>
