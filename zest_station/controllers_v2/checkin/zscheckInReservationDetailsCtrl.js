@@ -70,7 +70,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.isReservationDetailsFetched = true;
 
                     var isAllowedPaymentMethod = function(paymentType) {
-                        var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used : '';
+                        var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used ? $scope.selectedReservation.reservation_details.payment_method_used : '';
                         var paymentMethodValue = paymentType.value ? paymentType.value : '';
 
                         return (paymentType.id === paymentMethodUsed || paymentMethodValue.toUpperCase() === paymentMethodUsed.toUpperCase()) &&
