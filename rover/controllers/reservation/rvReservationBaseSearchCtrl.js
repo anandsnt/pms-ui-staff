@@ -493,7 +493,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 params: {
                     "start_date": $scope.reservationData.arrivalDate,
                     "end_date": $scope.reservationData.departureDate,
-                    "room_type_id": $scope.reservationData.tabs[0].roomTypeId
+                    "room_type_ids": _.pluck($scope.reservationData.tabs, 'roomTypeId')
                 },
                 successCallBack: function(response) {
                     var isRoomTypeSelected = $scope.reservationData.tabs[0].roomTypeId !== '',
