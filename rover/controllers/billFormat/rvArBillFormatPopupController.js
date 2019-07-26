@@ -14,6 +14,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     */
     var getBillSettingsInfoRequestParams = function() {
         var params = {};
+
         params.is_type = "ArAccount";
         params.id = $scope.item.transaction_id
         return params;
@@ -23,7 +24,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * To close dialog box
      */
     $scope.closeDialog = function() {                
-
         $rootScope.modalOpened = false;
         $timeout(function() {
             ngDialog.close();
@@ -35,7 +35,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      */
 
     var successCallBackForLanguagesFetch = function(data) {
-      $scope.$emit('hideLoader');
       if (data.languages) {
         data.languages = _.filter(data.languages, {
             is_show_on_guest_card: true
@@ -50,9 +49,12 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * @return {undefined}
      */
     var fetchGuestLanguages = function() {
-      // call api
-      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
-        successCallBackForLanguagesFetch);
+      var options = {
+        params: {},
+        successCallBack: successCallBackForLanguagesFetch
+        };
+    
+      $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options);
     };
 
     /*
@@ -90,6 +92,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     */
     var getPrintEmailRequestParams = function() {
         var params = {};
+
         params.id = $scope.item.transaction_id;
         params.account_id = $scope.arTransactionsData.accountId;
         params.locale = $scope.data.locale;
@@ -101,6 +104,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      */
     $scope.printBill = function(is_locked) {
         var printRequest = getPrintEmailRequestParams();
+
         printRequest.is_locked = is_locked;
         $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.billFormat.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
@@ -113,8 +117,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * 
      */
     $scope.clickedContinueButtonPrintOrEmail = function() {
-        var data = {};
-        var is_locked = false
+        var data = {},
+            is_locked = false;
+
         data.id = $scope.item.transaction_id;
         data.account_id = $scope.arTransactionsData.accountId;
         var lockBillSuccess = function() {
@@ -124,18 +129,17 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
             } else {
                 $scope.sendEmail(is_locked);
             }
-        };
+        },
+            lockBillFailureCallback = function(errorData) {
+                is_locked = false;
+                $scope.errorMessage = errorData;
+            },
 
-        var lockBillFailureCallback = function(errorData) {
-            is_locked = false;
-            $scope.errorMessage = errorData;
-        };
-
-        var options = {
-            params: data,
-            successCallBack: lockBillSuccess,
-            failureCallBack: lockBillFailureCallback
-        };
+            options = {
+                params: data,
+                successCallBack: lockBillSuccess,
+                failureCallBack: lockBillFailureCallback
+            };
 
         $scope.callAPI(rvAccountsArTransactionsSrv.lockBill, options);
     };
@@ -158,6 +162,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
 
     $scope.sendEmail = function(is_locked) {
         var emailRequest = getPrintEmailRequestParams();
+
         emailRequest.is_locked = is_locked;
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.mailto_address;
@@ -169,7 +174,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     *  Function which get invoked when the email btn from bill format popup is clicked
     */
     $scope.emailBill = function() {
-
         if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice && !$scope.item.is_locked) {
             $scope.isClickedPrint = false;
             $scope.isInvoiceStepThreeActive = false;
@@ -186,6 +190,7 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      */
     $scope.clickedFinalInvoiceButton = function() {
         $scope.isInvoiceStepOneActive = false;
+
         $timeout(function() {
             $scope.isInvoiceStepTwoActive  = true;
         }, delayScreen);        
@@ -229,16 +234,16 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * Function to get print button class
      */
     $scope.getPrintButtonClass = function() {
-
         var printButtonClass = "blue";
+
         return printButtonClass;
     };
     /*
      * Function to get print button class
      */
     $scope.isPrintButtonDisabled = function() {
-
         var isPrintButtonDisabled = false;
+
         return isPrintButtonDisabled;
     };
 
@@ -246,7 +251,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * Function to get email button class
      */
     $scope.getEmailButtonClass = function() {
-
         var emailButtonClass = "blue";
 
         if (!$scope.data.mailto_address) {
@@ -258,7 +262,6 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      * Function to get email button disabled or not
      */
     $scope.isEmailButtonDisabled = function() {
-
         var isEmailButtonDisabled = false;
 
         if (!$scope.data.mailto_address) {
