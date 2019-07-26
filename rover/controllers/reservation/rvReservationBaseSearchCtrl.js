@@ -599,7 +599,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                 dataToSend.params.end_time = rvUtilSrv.convertTimeHhMmAmPmTo24($scope.reservationData.checkoutTime);
             }
             
-            $scope.callAPI(RVReservationBaseSearchSrv.checkTimeBasedAvailability, dataToSend);
+            $scope.callAPI(RVReservationBaseSearchSrv.checkTimeBasedAvailabilityAPI, dataToSend);
         };
 
         $scope.navigate = function() {
