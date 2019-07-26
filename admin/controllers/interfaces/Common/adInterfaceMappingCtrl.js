@@ -26,7 +26,7 @@ admin.controller('adInterfaceMappingCtrl', [
             'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
             'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
-            'EXACTONLINE': '/assets/partials/interfaces/exactonline/adExactonlineMapping.html'
+            'EXACTONLINE': '/assets/partials/interfaces/exactonline/adExactonlineMapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
             'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
         };
