@@ -74,10 +74,10 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 
 			};
+
 			var fetchFailedOfComponentRooms = function (data) {
 				$scope.$emit('hideLoader');
 				console.log(data);
-
 			};
 
 			if ($scope.isStandAlone && !$rootScope.isHourlyRatesEnabled) {
@@ -282,7 +282,8 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			else {
 				$scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);
 			}
-		}
+		};
+
 		getRoomDetails(params);
 
 		/*
@@ -328,7 +329,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 			postData.hk_section_id = $scope.data.hk_section_id;
 			postData.is_component_suite_door = $scope.data.is_component_suite_door;
 			postData.locale = $scope.locale;
-			postData.instructions =  $scope.data.instructions;
+			postData.instructions = $scope.data.instructions;
 			// to get selected features
 			for (var i = 0; i < $scope.data.room_features.length; i++) {
 				if ($scope.data.room_features[i].selected === true) {

@@ -801,5 +801,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+        this.getRoomInstructions = function(params) {
+            var url = '/api/reservations/' + params.id + '/room_instructions.json';
+            
+            return zsBaseWebSrv.getJSON(url, params);
+        };
     }
 ]);

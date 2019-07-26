@@ -77,6 +77,7 @@ admin.service('ADRoomSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
     */
 	this.roomDetails = function(params) {
 		var roomId = params.roomId;
+
 		delete params.roomId;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/' + roomId + '/edit.json';
