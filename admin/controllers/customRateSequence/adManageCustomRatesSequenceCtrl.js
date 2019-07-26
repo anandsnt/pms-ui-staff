@@ -95,9 +95,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 $scope.sortableRateSequenceOptions = {
                     connectWith: "#unassigedrates",
                     helper: fixHelper,
-                    start: function() {
-
-                    },
+                    disabled: false,
                     update: function(e, ui) {
                         var sortable = ui.item.sortable,
                             rate = sortable.model;
@@ -144,6 +142,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             }
             sequenceRateSearchCall = setTimeout(function() {
                 $scope.sequenceRateQuery.trim();
+                $scope.sortableRateSequenceOptions.disabled = $scope.sequenceRateQuery === '' ? false:true;
                 fetchAssignedRates();
             }, 800);
         };
@@ -162,6 +161,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             $scope.selectedSequence = sequence;
             $scope.selectedSequenceIndex = index;
             $scope.rateQuery = '';
+            $scope.sequenceRateQuery = '';
             updateRateList();
         };
         $scope.selectRate = function(rate) {
@@ -180,6 +180,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                     params: postData,
                     successCallBack: successCallBack
                 };
+
                 $scope.callAPI(ADRateSequenceSrv.assignSquenceAndSortOrder, options);
         };
         $scope.unAssignRate = function () {
@@ -195,6 +196,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                     params: postData,
                     successCallBack: successCallBack
                 };
+
             $scope.callAPI(ADRateSequenceSrv.unAssignSquenceAndSortOrder, options);
         };
         $scope.backToRateSequence = function() {
