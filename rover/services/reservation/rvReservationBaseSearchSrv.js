@@ -721,7 +721,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         /**
          * checkTimeBasedAvailability for FULL mode hotels.
          */
-        this.checkTimeBasedAvailability = function(params) {
+        this.checkTimeBasedAvailabilityAPI = function(params) {
             var deferred = $q.defer(),
                 url = "api/availability/time_based_room_type_and_house_avl";
 
