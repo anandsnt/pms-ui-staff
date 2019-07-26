@@ -38,18 +38,16 @@
                         
 
                             <!-- Remove when we have at least one rate added -->
-                            <div class="no-content" ng-show ='assignedRates.length == 0'>
+                            <div class="no-content" ng-if ='assignedRates.length == 0' ui-sortable="sortableRateSequenceOptions" ng-model="assignedRates">
                                 <div class="info">
                                     Add rate to sequence by dropping it here.
                                 </div>
                             </div>
 
-                            <ul id="assigedrates" class="sortable" ng-hide ='assignedRates.length == 0' ui-sortable="sortableRateSequenceOptions" ng-model="assignedRates">
-
+                            <ul id="assigedrates" class="sortable" ui-sortable="sortableRateSequenceOptions" ng-model="assignedRates">
                                 <li ng-repeat="assignedRate in assignedRates" ng-click="selectRate( assignedRate )">
                                     <span class="icons icon-added"></span>{{assignedRate.name}}
                                 </li>
-
                             </ul>
                             <!--
                             <div class="search-pagination">

@@ -95,12 +95,16 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 $scope.sortableRateSequenceOptions = {
                     connectWith: "#unassigedrates",
                     helper: fixHelper,
+                    start: function() {
+
+                    },
                     update: function(e, ui) {
                         var sortable = ui.item.sortable,
                             rate = sortable.model;
 
                         if (sortable.dropindex !== sortable.index && sortable.dropindex !== null && rate.sort_order !== null) {
-                            reOrderRate(rate);
+                            $scope.selectRate(rate);
+                            $scope.assignRate(sortable.dropindex + 1);
                         }
                     },
                     receive: function(e, ui) {
@@ -121,10 +125,6 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                         $scope.unAssignRate();
                     }
                 };
-            },
-            reOrderRate = function(rate) {
-                console.log("Reorder");
-                console.log(rate);
             },
             ratesSearchCall = null,
             sequenceRateSearchCall = null;
@@ -161,6 +161,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
         $scope.selectSequence = function(sequence, index) {
             $scope.selectedSequence = sequence;
             $scope.selectedSequenceIndex = index;
+            $scope.rateQuery = '';
             updateRateList();
         };
         $scope.selectRate = function(rate) {
@@ -173,7 +174,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 postData = {
                     'rate_sequence_id': $scope.selectedSequence.id,
                     'rate_id': $scope.selectedRate.id,
-                    'sort_order': $scope.selectedRate.sort_order === null ? dropIndex : $scope.selectedRate.sort_order
+                    'sort_order': dropIndex
                 },
                 options = {
                     params: postData,
