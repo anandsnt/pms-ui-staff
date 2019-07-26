@@ -8,8 +8,12 @@
              Informational Invoice
         </button>
 
-        <button type="button" id="final-invoice" class="button orange" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
+        <button type="button" id="final-invoice" class="button orange" ng-show="!is_from_ar" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
             Generate Invoice 
+        </button>
+
+        <button type="button" id="final-invoice" class="button orange" ng-show="is_from_ar" ng-click="clickedFinalInvoiceButton()"> <!-- Opens final-bill.html -->
+            Final Invoice 
         </button>
 
         <button type="button" class="button blank modal-close inline" ng-click="closeDialog()">Close Window</button> 
@@ -22,7 +26,8 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
         <span class="icons icon-popup-alert"></span>
-        <span class="h2 message">Guest Invoice will be closed</span>
+        <span ng-show="!is_from_ar" class="h2 message">Guest Invoice will be closed</span>
+        <span ng-show="is_from_ar" class="h2 message">Final Invoice will lock the AR Invoice</span>
 
         <button type="button" class="button green" ng-click="clickedProceedButton()">Proceed</button> <!-- When clicked proceed with emailing or printing the invoice, depending on what was selected in previous popup-->
         <button type="button" class="button blank" ng-click="clickedCancelButtonProceedScreen()">Cancel</button> <!-- When clicked return to previous popup, {format-bill.html} -->
@@ -102,7 +107,8 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
         <span class="icons icon-popup-alert"></span>
-        <span class="h2 message">Guest Invoice will be closed</span>
+        <span ng-show="!is_from_ar" class="h2 message">Guest Invoice will be closed</span>
+        <span ng-show="is_from_ar" class="h2 message">AR Invoice will be locked</span>
 
         <button type="button" class="button green" ng-click="clickedContinueButtonPrintOrEmail()">Continue</button> <!-- When clicked proceed with emailing or printing the invoice, depending on what was selected in previous popup-->
         <button type="button" class="button blank" ng-click="clickedProceedButton()">Cancel</button> <!-- When clicked return to previous popup, {format-bill.html} -->
@@ -112,7 +118,8 @@
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 
         <span class="icons icon-popup-success"></span>
-        <span class="h2 message">Guest Invoice is now closed</span>
+        <span ng-show="!is_from_ar" class="h2 message">Guest Invoice is now closed</span>
+        <span ng-show="is_from_ar" class="h2 message">AR Invoice is now locked</span>
 
         <button type="button" class="button blank" ng-click="closeDialog()">Close window</button> 
     </div>

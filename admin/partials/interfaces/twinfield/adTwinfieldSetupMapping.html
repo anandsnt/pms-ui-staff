@@ -13,7 +13,7 @@
 
         <form ng-show="state.mode=='ADD'"
               class="form float"
-              ng-include="'/assets/partials/interfaces/Twinfield/adTwinFieldMappingDetailView.html'">
+              ng-include="'/assets/partials/interfaces/twinfield/adTwinfieldMappingDetailView.html'">
         </form>
 
         <section ng-show="state.mode !=='ADD'">
@@ -43,7 +43,7 @@
                         <a class="icons icon-delete large-icon" ng-click="onClickDelete(mappingRow)"></a>
                     </td>
                     <td colspan="5" ng-show="mappingRow.editing"
-                        ng-include="'/assets/partials/interfaces/Twinfield/adTwinFieldMappingDetailView.html'"></td>
+                        ng-include="'/assets/partials/interfaces/twinfield/adTwinfieldMappingDetailView.html'"></td>
                 </tr>
                 </tbody>
             </table>
