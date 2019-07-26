@@ -26,7 +26,7 @@
 <form method="get" action="" class="search-form invoice-search" role="search"> 
     <div class="entry invoice-search-type">
         <div class="select with-label">
-            <label for="invoice-search-type">Show</label>
+            <label for="invoice-search-type">Show </label>
             <select class="styled pickadate_select pickadate_select_year" ng-options="filter.id as filter.name for filter in filterOptions" ng-model="invoiceSearchData.filter_id" ng-change="searchInvoice()" ></select>
         </div>
     </div>
@@ -82,8 +82,12 @@
         </label> -->
     </div>
 </form>
-<span >
+<span ng-if="shouldShowInvoices()">
     <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchInvoices.html'" ></div>
+</span>
+
+<span ng-if="shouldShowReceipts()">
+    <div ng-include="'/assets/partials/financials/invoiceSearch/rvInvoiceSearchReceipts.html'" ></div>
 </span>
 
 
