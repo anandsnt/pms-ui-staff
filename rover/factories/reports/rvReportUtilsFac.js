@@ -1495,7 +1495,7 @@ angular.module('reportsModule')
                             data: rvUtilSrv.getReservationTypeOptions(),
                             options: {
                                 hasSearch: false,
-                                selectAll: false,
+                                selectAll: true,
                                 key: 'description',
                                 defaultValue: 'Select Reservation Type(s)'
                             }

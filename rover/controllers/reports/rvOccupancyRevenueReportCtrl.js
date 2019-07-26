@@ -15,58 +15,51 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.stateStore = {
 			occupancy: [{
 				key: "available_rooms",
-				name: "Available Rooms"
+                name: "Available Rooms",
+                hasDayUseComponent: false
 			}, {
 				key: "out_of_order_rooms",
-				name: "Out of Order Rooms"
+                name: "Out of Order Rooms",
+                hasDayUseComponent: false
 			}, {
 				key: "occupied_rooms",
-				name: "Occupied Rooms"
-			}, {
-				key: "occupied_day_use_rooms",
-				name: "Occupied Day Use Rooms"
+                name: "Occupied Rooms",
+                hasDayUseComponent: true
 			}, {
 				key: "complimentary_rooms",
-				name: "Complimentary Rooms"
+                name: "Complimentary Rooms",
+                hasDayUseComponent: false
 			}, {
 				key: "occupied_minus_comp",
-				name: "Occupied Rooms (Excl. Comp.)"
-			}, {
-				key: "occupied_day_use_minus_comp",
-				name: "Occupied Day Use Rooms (Excl. Comp.)"
+                name: "Occupied Rooms (Excl. Comp.)",
+                hasDayUseComponent: true
 			}],
 			occupancyTotals: [{
 				key: "total_occupancy_in_percentage",
-				name: "Total Occ."
-			}, {
-				key: "total_day_use_occupancy_in_percentage",
-				name: "Total Day Use Occ."
+                name: "Total Occ.",
+                hasDayUseComponent: true
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
-				name: "Total Occ. (Excl. Comp.)"
+                name: "Total Occ. (Excl. Comp.)",
+                hasDayUseComponent: false
 			}],
 			revenues: [{
 				key: "rev_par",
-				name: "RevPar"
+                name: "RevPar",
+                hasDayUseComponent: false
 			}, {
 				key: "adr_inclusive_complimentary_rooms",
-				name: "ADR (Incl. Comp.)"
+                name: "ADR (Incl. Comp.)",
+                hasDayUseComponent: true
 			}, {
 				key: "adr_exclusive_complimentary_rooms",
-				name: "ADR (Excl. Comp.)"
-			}, {
-				key: "day_use_adr_inclusive_complimentary_rooms",
-				name: "ADR (Incl. Comp.)"
-			}, {
-				key: "day_use_adr_exclusive_complimentary_rooms",
-				name: "ADR (Excl. Comp.)"
+                name: "ADR (Excl. Comp.)",
+                hasDayUseComponent: true
 			}],
 			revenueTotals: [{
 				key: "total_revenue",
-				name: "Total Revenue"
-			}, {
-				key: "total_day_use_revenue",
-				name: "Total Day Use Revenue"
+                name: "Total Revenue",
+                hasDayUseComponent: true
 			}]
 		};
 
@@ -225,6 +218,21 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
+        };
+        $scope.getDayUseMarketRevenueValue = function(marketIndex, columnIndex) {
+			var candidate = $scope.results.day_use_market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+
+			if (candidate) {
+				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
+					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
+					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					return candidate.this_year;
+				}
+			} else {
+				return '';
+			}
 		};
 
 		function refreshScrollers() {
@@ -292,7 +300,11 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 			var hasIncludeVariance = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_variance' });
 
-			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
+            $scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
+            
+            var hasDayUseFilter = _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
+            $scope.showNightlyComponent = hasDayUseFilter.length === 1 && hasDayUseFilter[0] !== 'DAY_USE';
+            $scope.showDayUseComponent = hasDayUseFilter.includes('DAY_USE');
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {

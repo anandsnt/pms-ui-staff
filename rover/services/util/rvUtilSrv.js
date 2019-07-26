@@ -458,7 +458,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
                         value: 'DAY_USE'
                     }
                 ];
-            } else if (diaryMode === 'DAYUSE') {
+            } else if (diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY') {
                 resTypeOpts = [
                     {
                         description: 'Overnight',
