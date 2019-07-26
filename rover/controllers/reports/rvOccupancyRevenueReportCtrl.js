@@ -179,7 +179,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
         */
 		$scope.getChargeCodeDayUseValue = function(chargeGroupIndex, columnIndex) {
             var candidate = $scope.results.day_use_charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
-                returnVal;
+                returnVal = '';
 
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
@@ -189,9 +189,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				} else {
 					returnVal = candidate.this_year;
 				}
-			} else {
-				returnVal = '';
-            }
+			}
             return returnVal;
 		};
 
@@ -236,7 +234,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
         */
         $scope.getDayUseMarketRevenueValue = function(marketIndex, columnIndex) {
             var candidate = $scope.results.day_use_market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
-                returnVal;
+                returnVal = '';
 
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
@@ -246,9 +244,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				} else {
 					returnVal = candidate.this_year;
 				}
-			} else {
-				returnVal = '';
-            }
+			}
             return returnVal;
 		};
 

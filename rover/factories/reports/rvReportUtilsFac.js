@@ -1479,7 +1479,7 @@ angular.module('reportsModule')
                     }
                 });
 
-                completed++;
+                completed ++;
                 checkAllCompleted();
             }
 
@@ -1502,9 +1502,6 @@ angular.module('reportsModule')
                         };
                     }
                 });
-
-                completed++;
-                checkAllCompleted();
             }
 
             function getReservationTypeOptions() {
@@ -1538,7 +1535,7 @@ angular.module('reportsModule')
                 }
     
                 return resTypeOpts;
-            };
+            }
 
             function fillRestrictionList (data) {
                 var foundFilter;
