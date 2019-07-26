@@ -189,8 +189,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 },
                 postData = {
                     'rate_sequence_id': $scope.selectedSequence.id,
-                    'rate_id': $scope.selectedRate.id,
-                    'sort_order': $scope.selectedRate.sort_order
+                    'rate_id': $scope.selectedRate.id
                 },
                 options = {
                     params: postData,
