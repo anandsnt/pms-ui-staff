@@ -46,6 +46,7 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.encoderTypes = [];
 	$scope.isSRViewRateBtnClicked = RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
+	$scope.isFromBillCard = true;
 
 	// Flag for CC auth permission
     $scope.hasCCAuthPermission = function() {
@@ -2686,7 +2687,15 @@ sntRover.controller('RVbillCardController',
 					return copyCount;
 				},
 				printDataFetchSuccess = function(successData) {
-					var copyCount = "";
+					var copyCount = "",
+						arInvoiceNumberActivatedDate = moment(successData.print_ar_invoice_number_activated_at, "YYYY-MM-DD"),
+						arTransactionDate = moment(successData.ar_transaction_date, "YYYY-MM-DD"),
+						dateDifference = arTransactionDate.diff(arInvoiceNumberActivatedDate, 'days');
+
+					$scope.shouldShowArInvoiceNumber = true;
+					if (dateDifference < 0) {
+						$scope.shouldShowArInvoiceNumber = false;
+					}
 
 					$scope.isPrintRegistrationCard = false;
 					$scope.printBillCardActive = true;
@@ -2717,7 +2726,6 @@ sntRover.controller('RVbillCardController',
 						copyCount = getCopyCount(successData);
 						successData.invoiceLabel = successData.translation.copy_of_invoice.replace("#count", copyCount);
 					}
-
 					
 					$scope.printData = successData;
 					$scope.errorMessage = "";
@@ -3302,6 +3310,64 @@ sntRover.controller('RVbillCardController',
 		ngDialog.open({
 			template: '/assets/partials/bill/rvVoidBillPopup.html',
 			controller: 'RVVoidBillPopupCtrl',
+			className: '',
+			scope: $scope
+		});
+	};
+	var receiptPrintCompleted = function() {
+		$scope.printReceiptActive = false;
+	};
+	
+	/*
+	 * Print Receipt from bills
+	 */	
+	$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
+
+		$scope.printReceiptActive = true;
+		$scope.receiptPrintData = receiptPrintData;
+		$scope.errorMessage = "";
+
+		// CICO-9569 to solve the hotel logo issue
+		$("header .logo").addClass('logo-hide');
+		$("header .h2").addClass('text-hide');
+		$("body #loading").html("");// CICO-56119
+
+		// add the orientation
+		addPrintOrientation();
+
+		/*
+		*	======[ READY TO PRINT ]======
+		*/
+		// this will show the popup with full bill
+		$timeout(function() {
+
+			if (sntapp.cordovaLoaded) {
+				cordova.exec(billCardPrintCompleted,
+					function(error) {
+						billCardPrintCompleted();
+					}, 'RVCardPlugin', 'printWebView', []);
+			}
+			else
+			{
+				window.print();
+				// billCardPrintCompleted();
+			}
+		}, 700);
+	});
+
+	/*
+	 * open receipt dialog box
+	 */
+	$scope.openReceiptDialog = function(feesIndex) {
+		var feesDetails = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details;
+
+		$scope.transactionId = feesDetails[feesIndex].id;
+		$scope.billId = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
+		$scope.entityType = "Reservation";
+
+		ngDialog.open({
+			template: '/assets/partials/popups/rvReceiptPopup.html',
+			controller: 'RVReceiptPopupController',
 			className: '',
 			scope: $scope
 		});

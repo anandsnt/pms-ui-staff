@@ -15,7 +15,7 @@
             <p class="statement-meta"><strong >{{printData.translation.statement_date}}</strong>{{printData.statement_date}}</p>
             <p class="statement-meta" ng-if="printData.account_type === 'COMPANY'"><strong >{{printData.translation.corp_id}}</strong>{{printData.corporate_id}}</p>
             <p class="statement-meta" ng-if="printData.account_type === 'TRAVELAGENT'"><strong >{{printData.translation.iata_number}}</strong>{{printData.iata_no}}</p>
-            <p class="statement-meta"><strong >{{printData.translation.invoice_number}}</strong>{{printData.invoice_no}}</p>
+            <p class="statement-meta"><strong >{{printData.translation.ar_number}}</strong>{{printData.ar_number}}</p>
             <p class="statement-meta"><strong >{{printData.translation.payment_due_dates}}</strong>{{printData.payment_due_days}}</p>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <p>{{printData.custom_text_header}}</p>
     </div>
 
-    <div class="invoice-body">
+    <div class="invoice-body" ng-if="!printData.is_summary">
         <table class="invoice-details">
             <thead style="display:table-row-group;">
                 <tr>
@@ -53,6 +53,26 @@
                         <span class="person-meta">
                             <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
+                        </span>
+                        <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && statement.ar_invoice_number">
+                            <strong >{{printData.translation.ar_invoice_number}}</strong> 
+                            {{statement.ar_invoice_number}}
+                        </span>
+                        <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && statement.folio_number">
+                            <strong >{{printData.translation.folio_number}}</strong> 
+                            {{statement.folio_number}}
+                        </span>
+                        <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && !statement.folio_number && statement.invoice_number">
+                            <strong >{{printData.translation.invoice_number}}</strong> 
+                            {{statement.invoice_number}}
+                        </span>
+                        <span class="person-meta" ng-if="!printData.is_print_ar_invoice_number_enabled && statement.folio_number">
+                            <strong >{{printData.translation.folio_number}}</strong> 
+                            {{statement.folio_number}}
+                        </span>
+                        <span class="person-meta" ng-if="!printData.is_print_ar_invoice_number_enabled && !statement.folio_number && statement.invoice_number">
+                            <strong >{{printData.translation.invoice_number}}</strong> 
+                            {{statement.invoice_number}}
                         </span>
                     </td>
                     <td class="charges-table-container" colspan="5">
@@ -101,6 +121,18 @@
                             <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
                         </span>
+                        <span class="person-meta" ng-if="statement.folio_number">
+                            <strong >{{printData.translation.folio_number}}</strong> 
+                            {{statement.folio_number}}
+                        </span>
+                        <span class="person-meta" ng-if="statement.ar_invoice_number && !statement.folio_number">
+                            <strong >{{printData.translation.ar_invoice_number}}</strong> 
+                            {{statement.ar_invoice_number}}
+                        </span>
+                        <span class="person-meta" ng-if="statement.invoice_number && !statement.ar_invoice_number && !statement.folio_number">
+                            <strong >{{printData.translation.invoice_number}}</strong> 
+                            {{statement.invoice_number}}
+                        </span>
                     </td>
                     <td class="charges-table-container" colspan="5">
                         <table class="charges-table">
@@ -139,6 +171,10 @@
                         <span class="person-meta">
                             <strong >{{printData.translation.departure_date}}</strong> 
                             {{statement.departure_date | date:dateFormat }}
+                        </span>
+                        <span class="person-meta" ng-if="statement.invoice_number">
+                            <strong >{{printData.translation.invoice_number}}</strong> 
+                            {{statement.invoice_number}}
                         </span>
                     </td>
 
@@ -191,9 +227,14 @@
                     <td colspan="6"><strong >{{printData.translation.total_amount}}</strong></td>
                     <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount | number: precisonTwo}}</strong></td>
                 </tr>
+        
+                <tr>
+                    <td colspan="6"><strong >{{printData.translation.total_account_amount}}</strong></td>
+                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_account_amount | number: precisonTwo}}</strong></td>
+                </tr>
 
                 <tr>
-                    <td colspan="6"><strong >{{printData.translation.total_amount_due}}</strong></td>
+                    <td colspan="6"><strong >{{printData.translation.total_account_amount_due}}</strong></td>
                     <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount_due | number: precisonTwo}}</strong></td>
                 </tr>
 
@@ -247,7 +288,10 @@
             </tfoot>
         </table>
     </div>
-
+    <div class="invoice-body" ng-if="printData.is_summary" ng-include="'/assets/partials/companyCard/arTransactions/rvArStatementIsSummaryPrintTemplate.html'"></div>
+    <div class="currency" ng-if="printData.from_date && printData.to_date">
+        <p>{{printData.from_date | date:dateFormat}} - {{printData.to_date | date:dateFormat}}</p>
+    </div>
     <div class="invoice-footer" ng-if="printData.custom_text_footer">
         <p>{{printData.custom_text_footer}}</p>
     </div>

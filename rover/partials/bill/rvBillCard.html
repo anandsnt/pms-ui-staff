@@ -279,7 +279,7 @@
 												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span class="currency">{{currencySymbol}}</span>{{billGroupExpense.expense | number: precisonTwo}}
 											</td>
 											<td> {{billGroupExpense.location}} </td>
-											<td> {{billGroupExpense.date | date:'MM-dd-yyyy'}} </td>
+											<td> {{billGroupExpense.date | date:dateFormat}} </td>
 										</tr>
 									</tbody>
 								</table>
@@ -288,6 +288,9 @@
 
 						<!-- Invoice -->
 						<div id="invoiceDiv" ng-if="printBillCardActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
+
+						<!-- Invoice -->
+						<div id="invoiceDiv" ng-if="printReceiptActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>
 
 						<!-- Balance / Signature / Card -->
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>

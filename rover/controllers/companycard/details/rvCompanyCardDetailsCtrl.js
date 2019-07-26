@@ -2,7 +2,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
-		$scope.isAddNewCard = ($stateParams.id === "add");	
+		$scope.isAddNewCard = ($stateParams.id === "add");
+
+		// To store changes in other hotels' commissions data
+		var updatedOtherHotelsInfo = [];
 
 		/* Checking permision to show Commission Tab */
 
@@ -522,6 +525,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if ($stateParams.origin === 'COMMISION_SUMMARY') {
 				$scope.switchTabTo('', 'cc-commissions');
 			}
+
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
 		};
 		/**
 		 * successcall back of commssion detail
@@ -558,6 +563,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.contactInformation.mandatoryFields = data.mandatoryFields;
 			$scope.contactInformation.emailStyleClass = $scope.contactInformation.mandatoryFields.e_invoice_mandatory.is_visible ? 'margin' : 'full-width';
 			$scope.contactInformation["commission_details"] = data.commission_details;
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
 		};
 
 		/**
@@ -608,7 +614,25 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/**
 		 * success callback of save contact data
 		 */
-		var successCallbackOfContactSaveData = function(data) {
+		var successCallbackOfContactSaveData = function(data, hotelInfoChangedFromPopup) {
+
+			// Close the hotel info popup on saving
+			if (hotelInfoChangedFromPopup) {
+				ngDialog.close();
+			}
+
+			/** Set the other hotels' commission details same as that of current hotel's,
+			 *  when contact information saved with global commission true.
+			 **/
+			if ($scope.contactInformation.commission_details.is_global_commission) {
+				angular.forEach($scope.contactInformation.commission_details.other_hotels_info, function (item) {
+					item.commission_type = $scope.contactInformation.commission_details.commission_type;
+					item.type = $scope.contactInformation.commission_details.type;
+					item.value = $scope.contactInformation.commission_details.value;
+					item.is_prepaid = $scope.contactInformation.commission_details.is_prepaid;
+				});
+			}
+
 			if ($scope.shouldSaveArDataFromPopup) {	
 				$scope.shouldSaveArDataFromPopup = false;	
 				$scope.$broadcast("UPDATE_AR_ACCOUNT_DETAILS", $scope.arAccountDetails);			
@@ -666,15 +690,24 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
 		 */
-		var saveContactInformation = function(data) {
+		var saveContactInformation = function(data, hotelInfoChangedFromPopup) {
 			var dataUpdated = false;
+			updatedOtherHotelsInfo = [];
 
 			if (!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
+				angular.forEach(data.commission_details.other_hotels_info, function (next) {
+					angular.forEach(presentContactInfo.commission_details.other_hotels_info, function (present) {
+						if ((next.id === present.id) && !_.isMatch(next, present)) {
+							updatedOtherHotelsInfo.push(next);
+						}
+					});
+				});
 			}
 
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
+				dataToSend.commission_details.other_hotels_info = angular.copy(updatedOtherHotelsInfo);
 
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
@@ -697,7 +730,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				dataToSend.account_type = $stateParams.type;
 				var options = {
 					params: dataToSend,
-					successCallBack: successCallbackOfContactSaveData,
+					successCallBack: function(response) {
+						successCallbackOfContactSaveData(response, hotelInfoChangedFromPopup);
+					},
 					failureCallBack: failureCallbackOfContactSaveData
 				};
 
@@ -713,14 +748,19 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					$scope.$broadcast("saveArAccount");
 					$scope.isArTabAvailable = true;
 				}
-				createArAccountCheck = false;				
+				createArAccountCheck = false;
+
+				// Close the hotel info popup on saving
+				if (hotelInfoChangedFromPopup) {
+					ngDialog.close();
+				}
 			}
 		};
 
 		/**
 		 * recieving function for save contact with data
 		 */
-		$scope.$on("saveContactInformation", function(event) {
+		$scope.$on("saveContactInformation", function(event, dataToUpdate) {
 			event.preventDefault();
 			event.stopPropagation();
 			if ($scope.isAddNewCard) {
@@ -728,7 +768,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			} else if ($scope.isDiscard) {
 				// On discarded - prevent save call
 			} else {
-				saveContactInformation($scope.contactInformation);
+				// If property commission details are saved from the popup, copy back the deep copy objects back to the model and save
+				// TODO: what is be to done, when this API is failed ??? - like assign back old value
+				if (dataToUpdate && dataToUpdate.other_hotels_info) {
+					$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
+					saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed_from_popup);
+				} else {
+					saveContactInformation($scope.contactInformation);
+				}
 			}
 		});
 

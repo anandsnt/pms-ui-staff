@@ -80,7 +80,11 @@ module.exports = {
             'bosville': [themeCSSRoot + 'bosville.less'],
             'kinsley': [themeCSSRoot + 'kinsley.less'],
             'zurzacheroff': [themeCSSRoot + 'zurzacheroff.less'],
-            'asbury': [themeCSSRoot + 'asbury.less']
+            'asbury': [themeCSSRoot + 'asbury.less'],
+            'manchebo': [themeCSSRoot + 'manchebo.less'],
+            'seacrest': [themeCSSRoot + 'seacrest.less'],
+            'cole': [themeCSSRoot + 'cole.less'],
+            'heritage-hills': [themeCSSRoot + 'heritage-hills.less']
         };
     }
 };

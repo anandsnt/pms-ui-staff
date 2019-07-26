@@ -2118,6 +2118,7 @@
                     margin-bottom: 0;
                     
                     &.checkbox {
+                        display: table;
                         text-transform: uppercase;
                     } 
                 }
@@ -2393,24 +2394,13 @@
 
             /* Cancel reservation ***/
             &.cancel-reservation {
-                width: 360px;
+                width: 420px;
 
                 .notice { margin-bottom: 10px; }
 
                 .actions { 
                     .button { 
                         margin-bottom: 10px;
-
-                        &.with-icon {
-                            padding: 0;
-                            height: 50px;
-
-                            .icons {
-                                margin: 0;
-                                top: 15px;
-                                left: 10px;
-                            }
-                        }
 
                         &:last-child { margin-bottom: 0; }
                     }
@@ -2427,6 +2417,48 @@
                             &.blank { 
                                 padding: 0 20px 0 0; 
                                 text-align: right; 
+                            }
+                        }
+                    }
+                }
+
+                .confirmation-emails {
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+
+                    label.checkbox {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+
+                #reservation-canceled {
+                    .holder {
+                        .float;
+
+                        .entry {
+                            margin-bottom: 0;
+                            .calc-width(50, 10);
+                        }
+                    }
+                    
+                    .actions {
+                        margin-top: 20px;
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(0,0,0,.1);
+                        #flexbox > .parent( row wrap, space-around, '', '' );
+                        
+                        .button {
+                            
+                            &.blank {
+                                flex-shrink: 0;
+                            }
+    
+                            &:not(.blank) {
+                                .calc-width(50, 10);
+                                margin-bottom: 10px;
                             }
                         }
                     }
@@ -2456,58 +2488,85 @@
                     }
 
                     .margin { margin-right: 20px; }
+
+                    + .entry { margin-top: 10px; }
                 }
 
                 .switch-button {
-                    font-size: 14px;
-                    text-transform: uppercase;
-                    .size(40px, 120px);
-
+                    background: rgba(0,0,0,.1);
+                    #border-radius > .rounded();
+                    .size(40px, 100%);
+                    .show;
+    
                     .data-off,
-                    .data-on {
-                        left: auto;
+                    .data-on { 
+                        font-size: 14px;
                         line-height: 30px;
+                        text-transform: uppercase;
                         height: 30px;
-
-                        &.data-off { 
-                            right: -100%;
-
-                            .switch-icon { 
-                                margin: 0 5px 0 0; 
-                                .gradient(@greenStart, @greenEnd);                                    
-                            }
+                        overflow: hidden;
+    
+                        .value {
+                            color: @black;
+                            text-shadow: none;
+                            .clickable;
+                            background: @white;
                         }
-                        
-                        &.data-on { 
+    
+                        .switch-icon { 
+                            color: rgba(0,0,0,.3);
+                            font-weight: 600; 
+                            background: transparent;
+                            margin: 0;
+                        }
+    
+                        &.data-off { 
+                            left: auto;
                             right: 0;
-
-                            .switch-icon { 
-                                margin: 0 0 0 5px; 
-                                .gradient(@grey2, @grey3);
-                            }
+    
+                            .value { margin-left: 5px; }
+                        }
+    
+                        &.data-on { 
+                            left: auto;
+                            right: 100%;
+    
+                            .value { margin-right: 5px; }
                         }
                     }
-
+    
                     &.on {
-                        .data-off { right: 0; }
-                        .data-on { right: 100%; }
+                        .data-off { left: auto; right: -100%; }
+                        .data-on { left: auto; right: 0; }
                     }
                 }
-                
-                .actions {
+
+                .confirmation-emails {
                     margin-top: 20px;
                     padding-top: 20px;
                     border-top: 1px solid rgba(0,0,0,.1);
 
-                    .with-icon {
-                        height: 50px;
-                        margin-bottom: 10px;
-                        padding: 0 20px 0 40px;
+                    label.checkbox {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
 
-                        .icons {
-                            margin: 0;
-                            top: 15px;
-                            left: 20px;
+                .actions {
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                    #flexbox > .parent( row wrap, space-around, '', '' );
+                    
+                    .button {
+                        &.blank {
+                            flex-shrink: 0;
+                        }
+
+                        &:not(.blank) {
+                            .calc-width(50, 10);
+                            margin-bottom: 10px;
                         }
                     }
                 }
@@ -8326,6 +8385,106 @@
                 }
             }
 
+            &.commissions-properties {
+                width: 740px;
+                max-height: 80vh;
+                #flexbox > .parent(column wrap, '', '', '');
+
+                .message { 
+                    line-height: 25px;
+                    margin-bottom: 0;
+                }
+
+                .text {
+                    line-height: 20px;
+                }
+
+                .grid {
+                    line-height: 1;
+                    width: 100%;
+                    padding-bottom: 20px;
+                    max-height: calc(~'80vh - 185px');
+                }
+
+                .grid-row {
+                    &.with-cells {
+                        display: grid;
+                        grid-template-columns: calc(~'45% - 8px') calc(~'15% - 8px') calc(~'12% - 8px') calc(~'18% - 8px') calc(~'10% - 8px');
+                        grid-column-gap: 10px;
+                        grid-row-gap: 10px;
+                        align-items: center;
+                        padding: 8px 12px;
+                    }
+
+                    &.header {
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        color: @grey3;
+                    }
+                }
+
+                .grid-cell {
+                    strong {
+                        font-weight: 600;
+                    }
+
+                    input,
+                    .select {
+                        width: 100%;
+                    }
+
+                    select {
+                        padding: 0 10px;
+                    }
+
+                    .checkbox {
+                        padding: 0;
+                        margin: 0 auto;
+                        .square(40px);
+
+                        .icon-form {
+                            top: 10px;
+                            left: 10px;
+                        }
+                    }
+
+                    &:not(:last-child) {
+                        padding-right: 12px;
+                    }
+                }
+
+                .scrollable {
+                    position: relative;
+                    max-height: calc(~'80vh - 245px');
+                }
+
+                .wrapper {
+                    padding: 0;
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 10px;
+                    right: 10px;
+                    bottom: 10px;
+                }
+
+                .actions {
+                    margin-top: auto;
+                    padding-top: 20px;
+                    .box-shadow(0 -1px 0 rgba(0,0,0,.1));
+                    #flexbox > .parent(row wrap, center, center, '');
+
+                    .button {
+                        width: auto;
+                        margin-top: 0;
+
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+
             /* Overbooking ***/
             &.overbooking {
                 width: 260px;
@@ -8569,6 +8728,13 @@
             /* Check In Data ***/
             &.check-in-data {
                 width: 670px;
+                padding: 20px 0;
+
+                .modal-fields {
+                    position: relative;
+                    max-height: 380px;
+                    padding: 0 20px;
+                }
 
                 fieldset {
                     padding-left: 200px;
@@ -8609,16 +8775,28 @@
 
                 .message {
                     margin-bottom: 10px;
+                    padding: 0 20px;
+                }
+
+                .text {
+                    padding: 0 20px;
                 }
 
                 .required {
                     color: @red;
                 }
 
+                .iScrollVerticalScrollbar {
+                    .iScrollIndicator {
+                        background: @grey2;
+                    }
+                }
+
                 .actions {
                     padding-top: 10px;
                     text-align: right;
                     border-top: 1px solid rgba(0, 0, 0, 0.15);
+                    margin: 0 20px;
 
                     .button {
                         width: auto;

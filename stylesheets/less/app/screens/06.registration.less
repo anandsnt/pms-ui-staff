@@ -957,6 +957,13 @@
                 }
 
                 tr {
+                    th,
+                    td {
+                        &.align-right {
+                            text-align: right;
+                        }
+                    }
+
                     th {
                         padding: 0 10px;
                         font-weight: 600;
@@ -1007,6 +1014,12 @@
                         padding: 10px;
                         overflow: visible;
                         .select { width: 60px; }
+
+                        &.credits {
+                            .button {
+                                margin-left: 10px;
+                            }
+                        }
 
                         &.description {
                             font-style: normal;
@@ -1097,13 +1110,12 @@
                                     width: 100px;
                                     text-align: right;
                                     text-transform: none;
+                                    &.fee {     
+                                        color: @red;       
+                                    }      
 
-                                    &.fee {
-                                        color: @red;
-                                    }
-
-                                    &.credit {
-                                        color: @green;
+                                    &.credit {        
+                                        color: @green;     
                                     }
                                 }
                             }

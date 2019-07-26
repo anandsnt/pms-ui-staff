@@ -1,11 +1,13 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce', 'adMenuSrv', 'featureToggleData',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce, adMenuSrv, featureToggleData) {
 
         // hide the loading text that is been shown when entering Admin
         $( ".loading-container" ).hide();
+
+        $rootScope.featureToggleData = featureToggleData;
 
         // when there is an occured while trying to access any menu details, we need to show that errors
         $scope.errorMessage = '';
@@ -826,6 +828,8 @@ admin.controller('ADAppCtrl', [
                 mode: data.hourly_availability_calculation,
                 isDiaryMergeEnabled: data.is_diary_merge_enabled
             };
+
+            $rootScope.isAllowanceEnabled = data.is_allowance_enabled;
 
             setupLeftMenu();
         };
