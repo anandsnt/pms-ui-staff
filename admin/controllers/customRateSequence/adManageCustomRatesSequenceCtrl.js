@@ -142,7 +142,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             }
             sequenceRateSearchCall = setTimeout(function() {
                 $scope.sequenceRateQuery.trim();
-                $scope.sortableRateSequenceOptions.disabled = $scope.sequenceRateQuery === '' ? false:true;
+                $scope.sortableRateSequenceOptions.disabled = $scope.sequenceRateQuery;
                 fetchAssignedRates();
             }, 800);
         };
