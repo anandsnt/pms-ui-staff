@@ -7,10 +7,14 @@ admin.service('adIFCInterfaceMappingSrv', [
 
         var metaLists = {
             'DELPHI': ['CHARGE_CODES', 'GROUP_HOLD_STATUSES', 'MARKET_SEGMENTS', 'SOURCE_CODES'],
+            'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
+            'FISKALTRUST': ['PAYMENT_CODES'],
             'HOGIA': ['CHARGE_CODES'],
             'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
             'EXACTONLINE': ['CHARGE_CODES', 'TAX_CHARGE_CODES']
+            'IGEL': ['CHARGE_CODES', 'PAYMENT_CODES'],
+            'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
         };
 
         var metaPromises = {
@@ -37,6 +41,9 @@ admin.service('adIFCInterfaceMappingSrv', [
             },
             'TAX_CODES': function() {
                 return ADBaseWebSrvV2.getJSON('/api/hotel_settings/derbysoft/tax_codes.json?per_page=1000');
+            },
+            'PAYMENT_CODES': function() {
+                return ADBaseWebSrvV2.getJSON('/admin/charge_codes/payment_charge_codes.json?per_page=1000');
             }
         };
 

@@ -3,7 +3,7 @@ angular.module('admin').service('ADInterfaceMonitorSrv', ['$http', '$q', 'ADBase
         var service = this;
 
         service.fetch = function () {
-            return ADBaseWebSrvV2.getJSON('/admin/hotel_ext_interfaces');
+            return ADBaseWebSrvV2.getJSON('/ifc/proxy/interfaces/index');
         };
 
         service.fetchLlpts = function () {

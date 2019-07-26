@@ -165,6 +165,7 @@ sntRover.controller('roverController', [
         $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
         $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
+        $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -764,15 +765,20 @@ sntRover.controller('roverController', [
             $log.error('showErrorMessage', transition.error());
         });
 
+        // $scope.$on("OPEN_GUEST_CARD_ON_VALIDATION", function() {
+        //     $scope.openGuestCard();
+        // });
+
         // This variable is used to identify whether guest card is visible
         // Depends on $scope.guestCardVisible in rvguestcardcontroller.js
         $scope.isGuestCardVisible = false;
+        $scope.isFromMenuGuest = false;
         $scope.$on('GUESTCARDVISIBLE', function (event, data) {
-            $scope.isGuestCardVisible = false;
+            $scope.isGuestCardVisible = data;
             if (data) {
                 // inoder to refresh the scroller in tab's and I dont knw why 'GUESTCARDVISIBLE' listened here :(
                 $scope.$broadcast('REFRESH_ALL_CARD_SCROLLERS');
-                $scope.isGuestCardVisible = true;
+                $scope.$broadcast('OPEN_GUEST_CARD');
             }
         });
 

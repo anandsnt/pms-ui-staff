@@ -143,6 +143,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         var failureCallBackOfEarlierArrivalDateChange = function(error) {
             $scope.errorMessage = error;
+            $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
             $scope.emit('hideLoader');
         };
 
@@ -171,6 +172,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
         var failureCallBackOfLaterArrivalDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
+            $scope.groupConfigData.summary.block_from = summaryMemento.block_from;
             $scope.emit('hideLoader');
         };
 
@@ -211,6 +213,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         var failureCallBackOfEarlierDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
+            $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
             $scope.emit('hideLoader');
         };
 
@@ -248,6 +251,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         var failureCallBackOfLaterDepartureDateChange = function(errorMessage) {
             $scope.errorMessage = errorMessage;
+            $scope.groupConfigData.summary.block_to = summaryMemento.block_to;
             $scope.emit('hideLoader');
         };
 
