@@ -20,7 +20,12 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         };
 
         $scope.changeTab = function(name) {
-            $scope.state.activeTab = name;
+            // CICO-64131 disable data sync tab when integration not enabled
+            if (name === "DATA" && !$scope.config.authorized) {
+                $scope.errorMessage = ["Please authenticate with Exactonline to perform Data Sync..."];
+            } else {
+                $scope.state.activeTab = name;
+            }
         };
 
         $scope.onUrlChange = function() {

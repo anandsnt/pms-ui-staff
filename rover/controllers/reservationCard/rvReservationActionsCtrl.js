@@ -377,14 +377,14 @@ sntRover.controller('reservationActionsController', [
                     $scope.showPlaceOfResidence   = $scope.guestCardData.contactInfo.guestAdminSettings.place_of_residence.is_mandatory_on_guest_card_creation;
                     $scope.showVehicleCountryMark = $scope.guestCardData.contactInfo.guestAdminSettings.vehicle_country_mark.is_mandatory_on_guest_card_creation 
                                                     && ($scope.guestCardData.contactInfo.country_code === '' || $scope.guestCardData.contactInfo.country_code === null);
-                    $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation 
+                    $scope.showDateOfBirth = $scope.guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation
                                             && ($scope.guestCardData.contactInfo.birthday === '' || $scope.guestCardData.contactInfo.birthday === null);
 
                     ngDialog.open({
                         template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
                         controller: 'RVValidateEmailPhoneCtrl',
                         scope: $scope
-                    });                  
+                    });
                 },
                 failureCallBack: function(errorMessage) {
                     $scope.errorMessage = errorMessage;
@@ -1344,7 +1344,7 @@ sntRover.controller('reservationActionsController', [
             }
 
             return (resData.reservation_status === 'CANCELED' || resData.reservation_status === 'NOSHOW') && // ONLY cancelled and noshow reservations  can be reinstated
-                new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
+                new TZIDate(resData.departure_date) >= new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
                 rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); // also check for permissions
         };
 

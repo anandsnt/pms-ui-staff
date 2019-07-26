@@ -10,7 +10,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.hoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url: '/hoteldetails/edit'
+			url: '/hoteldetails/edit',
+			resolve: {
+				oracleDataCenters: function() {
+					return {};
+				}
+			}
 		});
 
 		$stateProvider.state('admin.permissions', {
@@ -23,7 +28,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.snthoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url: '/hoteldetails/:action/:id'
+			url: '/hoteldetails/:action/:id',
+			resolve: {
+				oracleDataCenters: function(ADDataCenterSrv) {
+					return ADDataCenterSrv.fetchDataCenters();
+				}
+			}
 		});
 
 		$stateProvider.state('admin.users', {

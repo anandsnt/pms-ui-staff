@@ -313,5 +313,18 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             });
             return deferred.promise;
         };
+        
+        // update billing info details
+        this.updateBillingInformation = function (params) {
+            var deferred = $q.defer(),
+                url = "api/bill_routings/update_dates";
+
+            sntBaseWebSrv.postJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);
