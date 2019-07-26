@@ -810,12 +810,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 scope: $scope
             });
 		};
-
+		// Popup for AR invoice print flow
 		$scope.showFormatBillPopup = function(index, is_from_paid) {
 			$scope.is_from_ar = true;
 			$scope.billFormat = {};
 			$scope.billFormat.isInformationalInvoice = false;
-			// $scope.isFolioNumberExists = $scope.arDataObj.bills[$scope.currentActiveBill].is_folio_number_exists;
 			$scope.arTransactionsData = $scope.arDataObj;
 			if (is_from_paid) {
 				$scope.item = $scope.arDataObj.paidList[index]
@@ -905,32 +904,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.clickedPrint = function(requestParams) {
 			sntActivity.start("PRINT_STARTED");
 			$scope.arDataObj.is_locked = requestParams.is_locked;
-			$("header .nav-bar").addClass('no-print');
-			$(".cards-header").addClass('no-print');
-			$("#cards-header-id").addClass('no-print');
-			$(".billing-sidebar").addClass('no-print');
-			$(".reservation-transaction").addClass('no-print');
-			$(".card-tabs-nav").addClass('no-print');
-			$(".tab-header").addClass('no-print');
-			$("#add-balance").addClass('no-print');
-			
 			printBill(requestParams);
-		};
-	
-		// add the print orientation before printing
-		var addPrintOrientation = function() {
-			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
-		};
-
-		// add the print orientation after printing
-		var removePrintOrientation = function() {
-			$( '#print-orientation' ).remove();
 		};
 
 		var billCardPrintCompleted = function() {
 			$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
+			$("header .nav-bar").removeClass('no-print');
+			$(".billing-sidebar").removeClass('no-print');
+			$(".reservation-transaction").removeClass('no-print');
+			$(".tab-header").removeClass('no-print');
+			$("#add-balance").removeClass('no-print');
 			if ($scope.shouldGenerateFinalInvoice && !$scope.billFormat.isInformationalInvoice) {
 				$scope.$broadcast("UPDATE_WINDOW");
 			} else {
@@ -992,6 +977,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$("header .logo").addClass('logo-hide');
 					$("header .h2").addClass('text-hide');
 					$("body #loading").html("");// CICO-56119
+					$("header .nav-bar").addClass('no-print');
+					$(".cards-header").addClass('no-print');
+					$("#cards-header-id").addClass('no-print');
+					$(".billing-sidebar").addClass('no-print');
+					$(".reservation-transaction").addClass('no-print');
+					$(".card-tabs-nav").addClass('no-print');
+					$(".tab-header").addClass('no-print');
+					$("#add-balance").addClass('no-print');
 
 					// add the orientation
 					// addPrintOrientation();
