@@ -6,19 +6,18 @@ admin.controller('adInterfaceMappingCtrl', [
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         var mappingText = {
-          'cancellation_code': 'Cancellation Codes',
-          'charge_code': 'Charge Code - General Ledger',
-          'charge_code_cost_center': 'Charge Code - Cost Center',
-          'charge_code_department_code': 'Charge Code - Department Code',
-          'group_hold_status': 'Group Hold Status',
-          'market_code': 'Market Code - Market Segment',
-          'market_segment': 'Market Code - Market Segment',
-          'market_code_department_code': 'Market Code - Department Code',
-          'payment_code_billing_account': 'Payment Code - Billing Account Number',
-          'source_code': 'Source Code',
-          'tax_code': 'Tax Codes',
-          'tax_charge_code': 'Tax Codes',
-          'payment_code_billing_account': 'Payment Code - Billing Account Number'
+            'cancellation_code': 'Cancellation Codes',
+            'charge_code': 'Charge Code - General Ledger',
+            'charge_code_cost_center': 'Charge Code - Cost Center',
+            'charge_code_department_code': 'Charge Code - Department Code',
+            'group_hold_status': 'Group Hold Status',
+            'market_code': 'Market Code - Market Segment',
+            'market_segment': 'Market Code - Market Segment',
+            'market_code_department_code': 'Market Code - Department Code',
+            'payment_code_billing_account': 'Payment Code - Billing Account Number',
+            'source_code': 'Source Code',
+            'tax_code': 'Tax Codes',
+            'tax_charge_code': 'Tax Codes'
         };
 
         var mappingPartials = {
