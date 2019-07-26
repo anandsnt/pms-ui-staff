@@ -725,7 +725,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             var deferred = $q.defer(),
                 url = "api/availability/time_based_room_type_and_house_avl";
 
-            sntBaseWebSrv.getJSON(url, params).then(function(data) {
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
