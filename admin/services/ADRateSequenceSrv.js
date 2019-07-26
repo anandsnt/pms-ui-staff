@@ -110,6 +110,30 @@ admin.service('ADRateSequenceSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'sntBaseWeb
             return deferred.promise;
         };
 
+        this.assignSquenceAndSortOrder = function( params ) {
+            var deferred = $q.defer(),
+                url = '/api/rate_sequences/assign_rate';
+
+            sntBaseWebSrv.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
+        this.unAssignSquenceAndSortOrder = function( params ) {
+            var deferred = $q.defer(),
+                url = '/api/rate_sequences/un_assign_rate';
+
+            sntBaseWebSrv.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        };
+
         this.deleteCustomSequence = function( params ) {
             var deferred = $q.defer(),
                 url = '/admin/rate_sequences/' + params.id ;
