@@ -849,7 +849,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
         // Send email AR statement
         $scope.emailArStatement = function() {
-            var params = getParamsToSend();
+			var params = getParamsToSend();
+			
             params.to_address = $scope.filterData.statementEmailAddress;
             $scope.closeDialog();
 
@@ -879,24 +880,21 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.closeDialog();
 			$scope.arDataObj.is_locked = data.is_locked;
 			var sendEmailSuccessCallback = function(successData) {
-				$scope.$emit('hideLoader');
 				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 				$scope.status = "success";
 				$scope.showEmailSentStatusPopup();
 				$scope.reloadCurrentActiveBill();
-			};
-			var sendEmailFailureCallback = function(errorData) {
-				$scope.$emit('hideLoader');
-				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-				$scope.status = "alert";
-				$scope.showEmailSentStatusPopup();
-			};
-			
-			var options = {
-				params: data,
-				successCallBack: sendEmailSuccessCallback,
-				failureCallBack: sendEmailFailureCallback
-			};
+			},
+				sendEmailFailureCallback = function(errorData) {
+					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+					$scope.status = "alert";
+					$scope.showEmailSentStatusPopup();
+				},
+				options = {
+					params: data,
+					successCallBack: sendEmailSuccessCallback,
+					failureCallBack: sendEmailFailureCallback
+				};
 
 			$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);	
 		};
@@ -1013,13 +1011,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var printDataFailureCallback = function(errorData) {
 				$scope.errorMessage = errorData;
 				sntActivity.stop("PRINT_STARTED");
-			};
-
-			var options = {
-				params: data,
-				successCallBack: printDataFetchSuccess,
-				failureCallBack: printDataFailureCallback
-			};
+			},
+				options = {
+					params: data,
+					successCallBack: printDataFetchSuccess,
+					failureCallBack: printDataFailureCallback
+				};
 					
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);	
 		};
