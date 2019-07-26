@@ -44,8 +44,8 @@ admin.controller('ADChainListCtrl', ['$scope', '$rootScope', 'adChainsSrv', func
 			$scope.fileName = ($scope.editData.ca_certificate_exists === "true")  ? 'Certificate Attached' : 'Choose file ...';
 			$scope.apns_file = ( $scope.editData.apns_certificate_exists === "true") ? 'Certificate Attached' : 'Choose file ...';
 
-			$scope.setDefaultDisplayPassword($scope.editData, 'sftp_password');
-			$scope.setDefaultDisplayPassword($scope.editData, 'smtp_password');
+			$scope.setDefaultDisplayPassword($scope.editData, 'sftp_password', 'sftp_password_present');
+			$scope.setDefaultDisplayPassword($scope.editData, 'smtp_password', 'smtp_password_present');
 		};
 
 		$scope.invokeApi(adChainsSrv.edit, editID, editChainSuccessCallback);
