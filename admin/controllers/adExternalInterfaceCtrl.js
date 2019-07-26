@@ -231,9 +231,7 @@ admin.controller('adExternalInterfaceCtrl',
 
     // Process the givex data to update the display password
     var processGivexData = function () {
-      if ($scope.givex.password) {
         $scope.setDefaultDisplayPassword($scope.givex, 'password');
-      }
     };
 
     $scope.fetchSetupSuccessCallback = function (data) {

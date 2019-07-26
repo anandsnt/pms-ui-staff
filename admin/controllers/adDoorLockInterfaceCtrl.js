@@ -139,10 +139,10 @@ admin.controller('ADDoorLockInterfaceCtrl', ['$scope', '$rootScope', 'ADDoorlock
         };
     // Update display passwords
     var updateDisplayPasswords = function () {
-        $scope.setDefaultDisplayPassword($scope.data, 'key_password');
-        $scope.setDefaultDisplayPassword($scope.data, 'secondary_key_password');
-        $scope.setDefaultDisplayPassword($scope.data, 'wallet_auth_password');
-        $scope.setDefaultDisplayPassword($scope.data, 'pre_auth_user_password');
+        $scope.setDefaultDisplayPassword($scope.data, 'key_password', 'key_password_present');
+        $scope.setDefaultDisplayPassword($scope.data, 'secondary_key_password', 'secondary_key_password_present');
+        $scope.setDefaultDisplayPassword($scope.data, 'pre_auth_user_password', 'pre_auth_user_password');
+        $scope.setDefaultDisplayPassword($scope.data, 'wallet_auth_password', 'wallet_auth_password_present');
     };
 
 	var fetchInterfaceDetails = function() {

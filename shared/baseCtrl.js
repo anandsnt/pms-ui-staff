@@ -348,9 +348,9 @@ BaseCtrl = function($scope) {
     };
 
     // Set default password when fetching the configuration details
-    $scope.setDefaultDisplayPassword = function (dataObject, property) {
-        delete dataObject[property];
-        if (!dataObject.hasOwnProperty(property)) {
+    $scope.setDefaultDisplayPassword = function (dataObject, property, passwordPresentKey) {
+        passwordPresentKey = passwordPresentKey || 'is_password_present';
+        if (dataObject[passwordPresentKey] && !dataObject.hasOwnProperty(property)) {
             dataObject[property] = getTemporaryDisplayPassword();
         }
     };
