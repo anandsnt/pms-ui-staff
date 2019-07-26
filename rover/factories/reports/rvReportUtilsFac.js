@@ -1492,7 +1492,7 @@ angular.module('reportsModule')
                         foundFilter['filled'] = true;
 
                         report.hasDayUseFilter = {
-                            data: rvUtilSrv.getReservationTypeOptions(),
+                            data: getReservationTypeOptions(),
                             options: {
                                 hasSearch: false,
                                 selectAll: true,
@@ -1506,6 +1506,39 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
+
+            function getReservationTypeOptions() {
+                var diaryMode = rvUtilSrv.getDiaryMode(),
+                    resTypeOpts;
+    
+                if (diaryMode === 'FULL') {
+                    resTypeOpts = [
+                        {
+                            description: 'Hourly',
+                            value: 'HOURLY'
+                        },
+                        {
+                            description: 'Day Use',
+                            value: 'DAY_USE'
+                        }
+                    ];
+                } else if (diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY') {
+                    resTypeOpts = [
+                        {
+                            description: 'Overnight',
+                            value: 'OVERNIGHT'
+                        },
+                        {
+                            description: 'Day Use',
+                            value: 'DAY_USE'
+                        }
+                    ];
+                } else {
+                    resTypeOpts = [];
+                }
+    
+                return resTypeOpts;
+            };
 
             function fillRestrictionList (data) {
                 var foundFilter;

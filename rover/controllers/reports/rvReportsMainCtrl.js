@@ -1215,6 +1215,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             if (!!report.hasDayUseFilter) {
                 var selectedResType = _.pluck(_.where(report.hasDayUseFilter.data, {selected: true}), 'value');
+
                 $scope.appliedFilter.reservation_type = selectedResType;
                 params[reportParams['RESERVATION_TYPES']] = selectedResType;
             }

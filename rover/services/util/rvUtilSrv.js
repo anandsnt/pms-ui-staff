@@ -442,38 +442,4 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
             }
             return diaryMode;
         };
-
-        this.getReservationTypeOptions = function() {
-            var diaryMode = this.getDiaryMode(),
-                resTypeOpts;
-
-            if (diaryMode === 'FULL') {
-                resTypeOpts = [
-                    {
-                        description: 'Hourly',
-                        value: 'HOURLY'
-                    },
-                    {
-                        description: 'Day Use',
-                        value: 'DAY_USE'
-                    }
-                ];
-            } else if (diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY') {
-                resTypeOpts = [
-                    {
-                        description: 'Overnight',
-                        value: 'OVERNIGHT'
-                    },
-                    {
-                        description: 'Day Use',
-                        value: 'DAY_USE'
-                    }
-                ];
-            } else {
-                resTypeOpts = [];
-            }
-
-            return resTypeOpts;
-        };
-
 }]);

@@ -169,22 +169,30 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
-		};
-
+        };
+        
+        /*
+        *  
+        *  @param {number}  [chargeGroupIndex - index of chargeGroup]
+        *  @param {number}  [columnIndex - index corresponding to date]
+        *  @return {number} [revenue for the chargeCode corresponding to the date]
+        */
 		$scope.getChargeCodeDayUseValue = function(chargeGroupIndex, columnIndex) {
-			var candidate = $scope.results.day_use_charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+            var candidate = $scope.results.day_use_charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
+                returnVal;
 
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					returnVal = (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					returnVal = (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
-					return candidate.this_year;
+					returnVal = candidate.this_year;
 				}
 			} else {
-				return '';
-			}
+				returnVal = '';
+            }
+            return returnVal;
 		};
 
 
@@ -219,20 +227,29 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 				return '';
 			}
         };
+
+        /*
+        *  
+        *  @param {number}  [marketIndex - index of market]
+        *  @param {number}  [columnIndex - index corresponding to date]
+        *  @return {number} [revenue for the market corresponding to the date]
+        */
         $scope.getDayUseMarketRevenueValue = function(marketIndex, columnIndex) {
-			var candidate = $scope.results.day_use_market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
+            var candidate = $scope.results.day_use_market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
+                returnVal;
 
 			if (candidate) {
 				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
-					return (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					returnVal = (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
-					return (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+					returnVal = (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
 				} else {
-					return candidate.this_year;
+					returnVal = candidate.this_year;
 				}
 			} else {
-				return '';
-			}
+				returnVal = '';
+            }
+            return returnVal;
 		};
 
 		function refreshScrollers() {
@@ -303,7 +320,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
             $scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
             
             var hasDayUseFilter = _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
-            $scope.showNightlyComponent = hasDayUseFilter.length === 1 && hasDayUseFilter[0] !== 'DAY_USE';
+
+            $scope.showNightlyComponent = hasDayUseFilter.includes('HOURLY') || hasDayUseFilter.includes('OVERNIGHT');
             $scope.showDayUseComponent = hasDayUseFilter.includes('DAY_USE');
 
 			$scope.selectedDays = [];
