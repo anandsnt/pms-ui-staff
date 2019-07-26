@@ -11,6 +11,7 @@ module.exports = {
 				roverRoot + "controllers/companycard/details/*.js",
 				roverRoot + "services/rvContactInfoSrv.js",
 				roverRoot + "controllers/billFormat/rvBillFormatPopupController.js",
+				roverRoot + "controllers/billFormat/rvArBillFormatPopupController.js",
 				roverRoot + "services/bill/**/*.js",
 				roverRoot + "services/rvCompanyCardSrv.js",
 
