@@ -11,10 +11,15 @@
                 ng-class="{'orange' : state.activeTab === 'DATA', 'white' : state.activeTab !== 'DATA'}">
                 DATA
             </button>
+            <button is-disabled="!config.authorized" type="button" class="button add-data-inline toggle-tab" ng-click="changeTab('MAPPING')"
+                ng-class="{'orange' : state.activeTab === 'MAPPING', 'white' : state.activeTab !== 'MAPPING'}">
+                MAPPINGS
+            </button>
         </div>
     </header>
     <section class="content-scroll">
         <ng-include src="'/assets/partials/interfaces/exactonline/adExactonlineSetting.html'"></ng-include>
         <ng-include src="'/assets/partials/interfaces/exactonline/adExactonlineSync.html'"></ng-include>
+        <ng-include src="'/assets/partials/interfaces/Common/mappingsList.html'"></ng-include>
     </section>
 </div>
