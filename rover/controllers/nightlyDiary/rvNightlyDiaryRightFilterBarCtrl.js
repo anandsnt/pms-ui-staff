@@ -178,6 +178,7 @@ angular.module('sntRover')
                             fromDate: selectedItem.arrival_date,
                             nights: (selectedItem.no_of_nights || selectedItem.number_of_nights),
                             reservationId: (selectedItem.reservation_id || selectedItem.id),
+                            reservationStatus: selectedItem.status,
                             roomTypeId: filterData.roomTypeId,
                             type: filterData.type,
                             reservationOccupancy: data.reservation_occupancy
