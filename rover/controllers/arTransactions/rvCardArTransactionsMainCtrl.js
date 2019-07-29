@@ -826,15 +826,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.isInvoiceStepOneActive = false;
 					$scope.isInvoiceStepThreeActive = true;
 					$scope.shouldGenerateFinalInvoice = false;
+					$scope.disableInformationCheckBox = true
 				} else {
 				$scope.isInvoiceStepOneActive = true;
 				$scope.isInvoiceStepThreeActive = false;
 				$scope.shouldGenerateFinalInvoice = true;
+				$scope.disableInformationCheckBox = true
 				}
 			} else {
 				$scope.isInvoiceStepOneActive = false;
 				$scope.isInvoiceStepThreeActive = true;
 				$scope.shouldGenerateFinalInvoice = false;
+				$scope.disableInformationCheckBox = false
 			}
 			$scope.isInvoiceStepTwoActive = false;
 			$scope.isInvoiceStepFourActive = false;
