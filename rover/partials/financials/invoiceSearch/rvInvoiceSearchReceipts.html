@@ -148,12 +148,12 @@
                                         -->
                                         <!-- if payment data -->
                                         <div class="payment-data">
-                                            <figure class="card-logo">
+                                            <figure class="card-logo" ng-if="transactions.card_number !== '' && transactions.card_number !== null">
                                                 <img src="{card-logo}" alt="">
                                             </figure>
-                                            <span class="number">{{transactions.description}}</span>
+                                            <span class="number">{{transactions.card_number}}</span>
                                             <span class="date">
-                                                <span class="value"></span>
+                                                <span class="value">{{transactions.description}}</span>
                                             </span>
                                             <!-- if reference -->
                                             <span class="reference"></span>
