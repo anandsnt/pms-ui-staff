@@ -315,10 +315,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
             $scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
             
-            var hasDayUseFilter = _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
+            var hasDayUseFilter = chosenReport.usedFilters ? chosenReport.usedFilters.reservation_type : _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
 
-            $scope.showNightlyComponent = hasDayUseFilter.includes('HOURLY') || hasDayUseFilter.includes('OVERNIGHT');
-            $scope.showDayUseComponent = hasDayUseFilter.includes('DAY_USE');
+            if (hasDayUseFilter) {
+                $scope.showNightlyComponent = hasDayUseFilter.includes('HOURLY') || hasDayUseFilter.includes('OVERNIGHT');
+                $scope.showDayUseComponent = hasDayUseFilter.includes('DAY_USE');
+            }
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {
