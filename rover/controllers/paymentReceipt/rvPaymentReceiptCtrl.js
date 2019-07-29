@@ -58,6 +58,7 @@ sntRover.controller('RVReceiptPopupController',
     $scope.emailReceipt = function() {
         var emailReceiptSuccess = function (response) {
                 $scope.successMessage = ["Email send succesfully!"];
+                $scope.closeDialog();
             },
             dataToSend = {
                 params: {
