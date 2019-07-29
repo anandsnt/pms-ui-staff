@@ -72,6 +72,27 @@
                         </div>
                     </td>
                 </tr>
+                <tr ng-if="printData.payments.length > 0" class="person" ng-repeat="statement in printData.payments">
+                    <td rowspan={rowspan}>{{statement.transaction_date}}</td>
+                    <td class="description">
+                        <strong>{{statement.payment_type}}</strong>
+                        <span>{{statement.description}}</span>
+                        <span class="reference">{{statement.reference_text}}</span>
+                        <!-- <span class="adjusted"><em>Adjustment</em> - {Adjustment Reason}</span> -->
+                    </td>
+                    <td class="align-right">
+                        <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees}}
+                        <div class="converted-currency">
+                            {{statement.invoice_currency_for_html}}{{statement.ar_fees_invoice_currency}}
+                        </div>
+                    </td>
+                    <td rowspan={rowspan} class="align-right">
+                        <span ng-if="statement.amount" class="currency">{{printData.currency_for_html}}</span>{{statement.amount}}
+                        <div class="converted-currency">
+                            {{statement.invoice_currency_for_html}}{{statement.ar_amount_invoice_currency}}
+                        </div>
+                    </td>
+                </tr>
                 <br>
                 <tr>
                     <td colspan="6"><strong>Total Charge</strong></td>
