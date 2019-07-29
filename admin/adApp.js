@@ -30,6 +30,7 @@ var admin = angular.module('admin',
     'ADChainRouter',
     'touchPress',
     'ivh.treeview',
+    'snt.transitionManager',
     'sntActivityIndicator']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed

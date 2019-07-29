@@ -39,7 +39,8 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			var options = {
 				params: {
 					reservation_id: $stateParams.reservation_id,
-					application: 'KIOSK'
+					application: 'KIOSK',
+					set_arrival_time_to_current_time: true
 				},
 				successCallBack: showSuccessPage
 			};
