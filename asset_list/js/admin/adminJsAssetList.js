@@ -66,6 +66,7 @@ module.exports = {
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js',
 				sharedRoot + 'integrations/*.js',
 				adminRoot + 'constants/**/*.js',
+				sharedRoot + 'sntFeatureToggles/**/*.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]

@@ -31,7 +31,8 @@ var admin = angular.module('admin',
     'touchPress',
     'ivh.treeview',
     'snt.transitionManager',
-    'sntActivityIndicator']);
+    'sntActivityIndicator',
+    'sntFeatureToggles']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config([
