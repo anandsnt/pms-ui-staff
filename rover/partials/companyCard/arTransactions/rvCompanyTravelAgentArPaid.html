@@ -69,12 +69,12 @@
             <div class="reservation-type red" ng-if="paidInvoice.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
             <div class="reservation-type" ng-if="!paidInvoice.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
 
-            <div class="status">
+            <div class="status" ng-show = "arDataObj.is_locked || paidInvoice.is_locked" >
                 <!-- If partially paid, output:
                 <span class="icons icon-wallet-green"></span> -->
 
                 <!-- If locked, meaning as well that it can't be partially paid, output: -->
-                <span ng-if = "arDataObj.is_locked || paidInvoice.is_locked" class="icons icon-room-lock"></span>
+                <span class="icons icon-room-lock"></span>
             </div>
             
             <div class="amount paid">
@@ -151,7 +151,7 @@
                             <span class="currency">{{ currencySymbol }}</span>{{ payment.amount | number:2 }}
                         </td>
                         <td class="action">
-                            <button class="button blank with-icon only-icon open-modal" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
+                            <button class="button blank with-icon only-icon open-modal" ng-disabled="arDataObj.is_locked || paidInvoice.is_locked" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
                                 <span class="icons icon-remove-40"></span>
                             </button>
                         </td>

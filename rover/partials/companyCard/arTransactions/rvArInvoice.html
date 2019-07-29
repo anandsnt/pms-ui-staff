@@ -1,5 +1,5 @@
 <div class="invoice-header top-header">
-    <h1>{{printData.hotel_name}}</h1>
+    <h1>{{printData.hotel_name}}gdgfcdgfh</h1>
     <span ng-bind-html="printData.hotel_address"></span>
 
     <img src="{{printData.hotel_logo}}" alt="" />
@@ -17,9 +17,9 @@
 
         <div class="info-bottom">
             <span ng-if = "printData.invoice_date"><strong>Invoice Date:</strong> {{printData.invoice_date}}</span><br/>
-            <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.invoice_number"><strong>Invoice Number:</strong> {{printData.invoice_number}}</span><br/>
-            <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number && printData.is_print_folio_enabled"><strong>Folio Number:</strong> {{printData.folio_number}}</span>
-            <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>Folio Number:</strong> {{printData.ar_invoice_number}}</span>
+            <span ng-if = "!printData.is_informational_invoice && (!printData.is_print_ar_invoice_number_enabled || printData.is_manual_balance) && printData.invoice_number"><strong>Invoice Number:</strong> {{printData.invoice_number}}</span><br/>
+            <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number && printData.is_print_folio_enabled"><strong>Folio Number:</strong> {{printData.folio_number}}</span><br/>
+            <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>AR Invoice Number:</strong> {{printData.ar_invoice_number}}</span><br/>
             <span ng-if = "!printData.is_informational_invoice && printData.is_print_folio_enabled && printData.ar_folio_number"><strong>AR Folio Number:</strong> {{printData.ar_folio_number}}</span>
 
         </div>
@@ -52,7 +52,6 @@
         <tbody>
             <tr ng-if="printData.debits.length > 0" class="person" ng-repeat="statement in printData.debits">
                 <td rowspan={rowspan}>{{statement.date}}</td>
-                <td>{{statement.charge_code}}</td>
                 <td class="description">
                     <strong>{{statement.item_description}}</strong>
                     <span>{{statement.description}}</span>
