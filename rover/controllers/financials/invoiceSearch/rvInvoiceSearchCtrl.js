@@ -13,9 +13,10 @@ sntRover.controller('RVInvoiceSearchController',
 	'rvAccountTransactionsSrv',
 	'rvAccountsConfigurationSrv',
 	'filterOptions',
+	'RVCompanyCardSrv',
 	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, 
 		$filter, RVBillCardSrv, $window, $state, $stateParams, $vault, 
-		rvAccountTransactionsSrv, rvAccountsConfigurationSrv, filterOptions) {
+		rvAccountTransactionsSrv, rvAccountsConfigurationSrv, filterOptions, RVCompanyCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -25,6 +26,18 @@ sntRover.controller('RVInvoiceSearchController',
 			
 		$scope.currentActivePage = 1;
 		$scope.filterOptions = filterOptions.filters;
+
+		$scope.invoiceSearchData = {};
+		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
+		$scope.transaction_ids = [];
+
+		$scope.shouldShowInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Invoices"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowReceipts =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		};
 
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -84,9 +97,12 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.currentActivePage = page || 1;
 			if ($scope.invoiceSearchData.query.length > 1) {
 				$scope.invoiceSearchFlags.isQueryEntered = true;
-				const successCallBackOfPayment = (data) => {						
+				const successCallBackOfSearchInvoice = (data) => {						
 						$scope.invoiceSearchFlags.showFindInvoice = false;
 						$scope.invoiceSearchData.reservationsList = data.data;
+						angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
+							item.isOpened = false;
+						});
 						$scope.totalResultCount = data.data.total_count;
 						if ($scope.totalResultCount === 0) {
 							$scope.invoiceSearchFlags.showFindInvoice = true;
@@ -107,7 +123,7 @@ sntRover.controller('RVInvoiceSearchController',
 					},
 					options = {
 						params: params,
-						successCallBack: successCallBackOfPayment
+						successCallBack: successCallBackOfSearchInvoice
 					};
 
 				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
@@ -117,6 +133,71 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.invoiceSearchFlags.isQueryEntered = false;
 				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
+		};
+
+		/*
+		 * Expand Bill
+		 * @param itemIndex index of selected account/reservation
+		 * @param billIndex index of transaction
+		 */
+		$scope.expandBill = function(itemIndex, billIndex) {
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened) {
+				var successCallBackOfExpandBill = function(response) {
+					angular.forEach(response.transactions, function(item, itemIndex) {
+						item.isChecked = false;
+					});					
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions = response.transactions;
+				},
+				options = {
+					params: {
+						"bill_id": $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id,
+						"payments_only": true
+					},
+					successCallBack: successCallBackOfExpandBill
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.fetchTransactionDetails, options);
+			}			
+		};
+
+		/*
+		 * Retrigger payment
+		 */
+		$scope.reTriggerPaymentReceipt = function() {
+			var successCallBackOfRetrigger = function() {
+				
+			},
+			options = {
+				params: {
+					"transaction_ids": $scope.transaction_ids
+				},
+				successCallBack: successCallBackOfRetrigger
+			};
+
+			$scope.callAPI(RVInvoiceSearchSrv.triggerPaymentReceipt, options);						
+		};
+
+		/*
+		 * Retrigger cancel 
+		 */
+		$scope.clickedCancelOfRetrigger = function() {
+			$scope.transaction_ids = [];
+		};
+
+		/*
+		 * clicked transaction checkboxes
+		 * @param transactionId transaction id
+		 * @param itemIdex index of selected account/reservation
+		 * @param billIndex index of transaction
+		 */
+		$scope.clickedTransactionCheckbox = function(transactionId, itemIndex, billIndex) {
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked) {
+				$scope.transaction_ids.push(transactionId);
+			} else {
+				$scope.transaction_ids.pop(transactionId);
+			}			
 		};
 		/*
 		 * Update informational invoice flag
@@ -406,12 +487,12 @@ sntRover.controller('RVInvoiceSearchController',
 				}
 			}
 		};
+
 		/*
 		 * Initialization
 		 */
 		that.init = () => {
-			$scope.invoiceSearchData = {};
-			$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;		
+	
 			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
