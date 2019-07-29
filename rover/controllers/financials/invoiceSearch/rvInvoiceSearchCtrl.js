@@ -181,6 +181,11 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.clickedCancelOfRetrigger = function() {
 			$scope.transaction_ids = [];
+			angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
+				angular.forEach(item.transactions, function(transactionItem, transactionItemIndex) {
+					transactionItem.isChecked = false;
+				});
+			});
 		};
 
 		/*
