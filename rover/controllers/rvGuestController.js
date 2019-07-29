@@ -268,12 +268,11 @@ angular.module('sntRover').controller('guestCardController', [
          */
         $scope.decloneUnwantedKeysFromContactInfo = function() {
 
-            var unwantedKeys = ["birthday", "country",
-                    "is_opted_promotion_email", "job_title",
-                    "mobile", "passport_expiry",
-                    "passport_number", "postal_code",
-                    "reservation_id", "title", "user_id",
-                    "works_at", "birthday", "avatar"
+            var unwantedKeys = ["birthday", "country", 
+                    "is_opted_promotion_email", "job_title", 
+                    "passport_expiry", "passport_number", 
+                    "postal_code", "reservation_id", 
+                    "title", "user_id", "works_at", "avatar"
                 ],
                 declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
