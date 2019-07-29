@@ -71,14 +71,14 @@
                     <div class="bill {has-arrow next-view}" ng-repeat="bill in invoiceReservationData.bills" ng-show="!$first">
                         <div class="expand toggle" ng-click="expandBill($parent.$index, $index)">
                             <!-- Add .active when bill is opened -->
-                            <span class="icons icon-double-arrow black expand-arrow"></span>
+                            <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': bill.isOpened}"></span>
                         </div>
 
                         <div class="check" ng-show="false">
                             <label class="checkbox inline" for="receipt-details-{id}">
                                 <!-- Add .checked when all are checked. Add .semi-checked when some of the receipts are checked. -->
                                 <span class="icon-form icon-checkbox"></span>
-                                <input id="receipt-details-{id}" value="{id}" type="checkbox">
+                                <input value="" type="checkbox">
                             </label>
                         </div>
 
@@ -135,9 +135,9 @@
                             <tbody>
                                 <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in invoiceReservationData.transactions">
                                     <td class="receipt-check">
-                                        <label class="checkbox inline" for="receipt-{id}">
-                                            <span class="icon-form icon-checkbox"></span>
-                                            <input id="receipt-{id}" value="{id}" type="checkbox">
+                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}">
+                                            <span class="icon-form icon-checkbox" ng-class="clickedTransactionCheckbox(transactions.id, $parent.$index, $index)" ng-class="{'checked': transactions.isChecked}"></span>
+                                            <input value="{{transactions.id}}" type="checkbox">
                                         </label>
                                     </td>
                                     <td class="date">{{transactions.date}}</td>
