@@ -1148,8 +1148,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['GROUP_BY_GROUP_NAME']:
                         self.fillGroupByInfo(value, key, processedFilter);
                         break;
-                }                
-
+                    case reportParamsConst['RESERVATION_TYPES']:
+                        self.fillReservationTypes(processedFilter, value);
+                }
             });
 
             if (processedFilter[reportInboxFilterLabelConst['OPTIONS']] && processedFilter[reportInboxFilterLabelConst['OPTIONS']].length > 0 ) {
@@ -1200,6 +1201,16 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             if (formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']]) {
                 formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']] = formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']].join(", ");
             }
+        };
+
+        /**
+         * Add the reservation_types selected filters to the object for displaying in the expanded view in inbox
+         * @param {Object} formatedFilter holding the collection of filters applied to the report
+         * @param {Array} values Array that holds the selected reservation types
+         * @return {void}
+         */
+        self.fillReservationTypes = (formatedFilter, values) => {
+            formatedFilter[reportInboxFilterLabelConst['reservation_types']] = values.join(', ');
         };
 
         /**
