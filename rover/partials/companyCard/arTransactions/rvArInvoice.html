@@ -74,7 +74,7 @@
                 </tr>
                 <br>
                 <tr>
-                    <td colspan="3"><strong>Total Charge</strong></td>
+                    <td colspan="6"><strong>Total Charge</strong></td>
                     <td>
                         <strong><span class="currency">{{printData.currency_for_html}}</span>{{printData.total_charge}}</strong>
                         <div class="converted-currency">
@@ -83,7 +83,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3"><strong>Total Credits</strong></td>
+                    <td colspan="6"><strong>Total Credits</strong></td>
                     <td>
                         <strong><span class="currency">{{printData.currency_for_html}}</span>{{printData.total_credits}}</strong>
                         <div class="converted-currency">
@@ -92,7 +92,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3"><strong>Balance</strong></td>
+                    <td colspan="6"><strong>Balance</strong></td>
                     <td>
                         <strong><span class="currency">{{printData.currency_for_html}}</span>{{printData.balance}}</strong>
                         <div class="converted-currency">
@@ -101,7 +101,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">Net Amount</td>
+                    <td colspan="6">Net Amount</td>
                     <td>
                         <span class="currency">{{printData.currency_for_html}}</span>{{printData.net_amount}}
                         <div class="converted-currency">
@@ -109,8 +109,17 @@
                         </div>
                     </td>
                 </tr>
+                <tr ng-if="!printData.ar_has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_info">
+                    <td colspan="6">{{tax.tax_charge_code_desc}}</td>
+                    <td>
+                        <span class="currency">{{printData.currency_for_html}}</span>{{tax.amount}}
+                        <div class="converted-currency">
+                            {{statement.invoice_currency_for_html}}{{tax.invoice_currency_amount}}
+                        </div>
+                    </td>
+                </tr>
                 <tr>
-                    <td colspan="3">Total Incl Tax</td>
+                    <td colspan="6">Total Incl Tax</td>
                     <td>
                         <span class="currency">{{printData.currency_for_html}}</span>{{printData.total_incl_tax}}
                         <div class="converted-currency">
