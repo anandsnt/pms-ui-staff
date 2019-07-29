@@ -181,7 +181,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             updateRateList();
         };
         $scope.selectRate = function(rate, index) {
-            if( rate.sort_order == null) {
+            if (rate.sort_order === null) {
                 $scope.selectedUnAssignedRateIndex = index;
                 $scope.selectedAssignedRateIndex = null;
             } else {
