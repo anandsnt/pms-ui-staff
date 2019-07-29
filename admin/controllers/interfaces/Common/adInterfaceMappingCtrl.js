@@ -28,7 +28,7 @@ admin.controller('adInterfaceMappingCtrl', [
             'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
             'EXACTONLINE': '/assets/partials/interfaces/exactonline/adExactonlineMapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
-            'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
+            'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html'
         };
 
         $scope.state = {
