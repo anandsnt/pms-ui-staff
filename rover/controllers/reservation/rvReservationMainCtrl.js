@@ -1084,6 +1084,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 data.room_types = [];
             }
 
+            if ($scope.reservationData.hasOwnProperty('has_reason')) {
+                data.has_reason = $scope.reservationData.has_reason;
+            }
+
             setRoomTypes(data, shouldWeIncludeRoomTypeArray); 
             setRoomInfo(data, roomIndex);  
 
@@ -1644,6 +1648,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                         $scope.reservationData.checkinTime = checkinTimeObj;
                         $scope.reservationData.checkoutTime = checkoutTimeObj;
+                        postData.room_type_id = $scope.reservationData.roomTypeIdFromNightlyDiary;
+                        $log.log(postData);
                     }
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
                 }

@@ -72,10 +72,10 @@
                     <input type="text" class="range-datepicker" ui-date="datepicker.options"
                            ng-model="config.start_date" readonly>
                 </div>
-<!--                <ad-textbox inputtype="number" required="yes" value="config.days_past" label="Past Days"-->
-<!--                            styleclass="full-width"></ad-textbox>-->
-<!--                <ad-textbox inputtype="number" required="yes" value="config.days_future" label="Future Days"-->
-<!--                            styleclass="full-width"></ad-textbox>-->
+                <ad-textbox inputtype="number" required="yes" value="config.days_past" label="Past Days"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="number" required="yes" value="config.days_future" label="Future Days"
+                            styleclass="full-width"></ad-textbox>
                 </fieldset>
                 <fieldset class="holder right" ng-show="config.import_enabled">
                     <section>
@@ -85,6 +85,9 @@
                         <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password"
                                     styleclass="full-width"></ad-textbox>
                         <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location"
+                                    styleclass="full-width"
+                                    readonly></ad-textbox>
+                        <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host"
                                     styleclass="full-width"
                                     readonly></ad-textbox>
                     </section>
