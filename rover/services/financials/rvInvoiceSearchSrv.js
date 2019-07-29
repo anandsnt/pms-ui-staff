@@ -31,24 +31,9 @@ angular.module('sntRover').service('RVInvoiceSearchSrv',
     that.getFilterOptions = function (params) {
 
         var deferred = $q.defer();
-        var url = "/api/bills/search_invoice";
+        var url = "/api/bills/invoice_filter_options";
 
         sntBaseWebSrv.getJSON(url, params).then(function (data) {
-            data = {
-    "filters": [{
-            "id": 1,
-            "name": "Invoices"
-        },
-        {
-            "id": 2,
-            "name": "AR Invoices 133"
-        },
-        {
-            "id": 3,
-            "name": "Receipts"
-        }
-    ]
-};
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);

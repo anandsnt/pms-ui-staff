@@ -120,7 +120,7 @@
                     </div>
                     </div>
                     <!-- when the above bill is clicked to be opened, remove .hidden -->
-                    <div class="bill-receipt-details hidden">
+                    <div class="bill-receipt-details" ng-show="invoiceReservationData.isOpened">
                         <table>
                             <thead>
                                 <tr>
@@ -133,15 +133,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="{ 'odd' || 'even' }">
+                                <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in invoiceReservationData.transactions">
                                     <td class="receipt-check">
                                         <label class="checkbox inline" for="receipt-{id}">
                                             <span class="icon-form icon-checkbox"></span>
                                             <input id="receipt-{id}" value="{id}" type="checkbox">
                                         </label>
                                     </td>
-                                    <td class="date">{date}</td>
-                                    <td class="charge-code">{code}</td>
+                                    <td class="date">{{transactions.date}}</td>
+                                    <td class="charge-code">{{transactions.charge_code}}</td>
                                     <td class="description">
                                         <!-- if description --
                                         {description}
@@ -151,23 +151,23 @@
                                             <figure class="card-logo">
                                                 <img src="{card-logo}" alt="">
                                             </figure>
-                                            <span class="number">{number}</span>
+                                            <span class="number">{{transactions.description}}</span>
                                             <span class="date">
-                                                <span class="value">12/14</span>
+                                                <span class="value"></span>
                                             </span>
                                             <!-- if reference -->
-                                            <span class="reference">{reference}</span>
+                                            <span class="reference"></span>
                                         </div>
                                     </td>
-                                    <td class="amount receipt-number">{number}</td>
+                                    <td class="amount receipt-number">{{transactions.receipt_no}}</td>
                                     <td class="amount credits">
-                                        <span class="currency">{symbol}</span>{credit}
+                                        <span class="currency">{{::currencySymbol}}</span>{{transactions.credits}}
                                         <button type="button" class="button with-icon only-icon blue open-modal">
                                             <span class="icons icon-invoice"></span>
                                         </button>
                                     </td>
                                 </tr>
-                                ... repeat for each receipt
+                                <!-- ... repeat for each receipt -->
                             </tbody>
                         </table>
                     </div>
