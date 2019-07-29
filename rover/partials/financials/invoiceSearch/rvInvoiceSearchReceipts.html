@@ -134,10 +134,10 @@
                             </thead>
                             <tbody>
                                 <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in invoiceReservationData.transactions">
-                                    <td class="receipt-check">
+                                    <td class="receipt-check" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index)">
                                         <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}">
-                                            <span class="icon-form icon-checkbox" ng-class="clickedTransactionCheckbox(transactions.id, $parent.$index, $index)" ng-class="{'checked': transactions.isChecked}"></span>
-                                            <input value="{{transactions.id}}" type="checkbox">
+                                            <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
+                                            <input value="{{transactions.id}}"  type="checkbox">
                                         </label>
                                     </td>
                                     <td class="date">{{transactions.date}}</td>
