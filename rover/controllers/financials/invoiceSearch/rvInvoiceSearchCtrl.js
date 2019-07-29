@@ -29,6 +29,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 		$scope.invoiceSearchData = {};
 		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
+		$scope.transaction_ids = [];
 
 		$scope.shouldShowInvoices =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "Invoices"})).id === $scope.invoiceSearchData.filter_id;
@@ -99,6 +100,9 @@ sntRover.controller('RVInvoiceSearchController',
 				const successCallBackOfSearchInvoice = (data) => {						
 						$scope.invoiceSearchFlags.showFindInvoice = false;
 						$scope.invoiceSearchData.reservationsList = data.data;
+						angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
+							item.isOpened = false;
+						});
 						$scope.totalResultCount = data.data.total_count;
 						if ($scope.totalResultCount === 0) {
 							$scope.invoiceSearchFlags.showFindInvoice = true;
@@ -132,8 +136,12 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 
 		$scope.expandBill = function(itemIndex, billIndex) {
-			var successCallBackOfExpandBill = function(response) {
-					$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = true;
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened) {
+				var successCallBackOfExpandBill = function(response) {
+					angular.forEach(response.transactions, function(item, itemIndex) {
+						item.isChecked = false;
+					});					
 					$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions = response.transactions;
 				},
 				options = {
@@ -144,7 +152,18 @@ sntRover.controller('RVInvoiceSearchController',
 					successCallBack: successCallBackOfExpandBill
 				};
 
-			$scope.callAPI(RVCompanyCardSrv.fetchTransactionDetails, options);
+				$scope.callAPI(RVCompanyCardSrv.fetchTransactionDetails, options);
+			}			
+		};
+
+		$scope.clickedTransactionCheckbox = function(transactionId, itemIndex, billIndex) {
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked) {
+				$scope.transaction_ids.push(transactionId);
+			} else {
+				$scope.transaction_ids.pop(transactionId);
+			}			
+			console.log($scope.transaction_ids)
 		};
 		/*
 		 * Update informational invoice flag
