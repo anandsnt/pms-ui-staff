@@ -48,12 +48,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.twinfieldSetup', {
-        templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
+        templateUrl: '/assets/partials/interfaces/twinfield/adTwinfieldSetup.html',
         controller: 'adTwinfieldSetupCtrl',
         url: '/twinfield/setup',
         resolve: {
-            twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+            twinfieldSetupValues: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('twinfield');
             }],
             paymentChargeCodes: ['adTwinfieldSetupSrv', function(adTwinfieldSetupSrv) {
                 return adTwinfieldSetupSrv.getPaymentChargeCodes();

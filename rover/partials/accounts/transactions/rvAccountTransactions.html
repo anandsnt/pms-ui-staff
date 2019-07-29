@@ -114,8 +114,12 @@
 
 					<!-- Invoice -->
 					<div class="invoice">
-						<ng-include src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
+						<ng-include ng-if="invoiceActive" src="'/assets/partials/accounts/transactions/rvAccountInvoice.html'"></ng-include>
 					</div>
+
+					<div class="invoice invoice-receipt">
+                        <div id="invoiceDiv" ng-if="printReceiptActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintReceipt.html'"></div>
+                    </div>
 
 					<!-- Balance / Signature / Card -->
 					<div class="total-stay-fees">
@@ -263,6 +267,10 @@
 											<strong ng-show="feesData.credits">
 												<span class="currency">{{currencySymbol}}</span>{{feesData.credits| number: precisonTwo}}
 											</strong>
+											<!-- ng-if="feesData.is_print_receipt_available" -->
+											<button  type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)" ng-if="feesData.is_print_receipt_available">
+												<span class="icons icon-invoice"></span>
+											</button>
 										</td>
 										<td ng-show="showMoveCharges">
 											<div class="select" ng-class="{'overlay': !billData.is_active }">

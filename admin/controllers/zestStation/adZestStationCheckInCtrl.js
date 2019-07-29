@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter) {
+admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'Toggles', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, Toggles) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
@@ -35,6 +35,7 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$rootScope', '$state', 
 
     $scope.init = function() {
         $scope.fetchSettings();
+        $scope.isKioskExcludePaymentMethods = Toggles.isEnabled('kiosk_exclude_payment_methods');
     };
 
     $scope.init();

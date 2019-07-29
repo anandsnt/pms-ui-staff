@@ -75,6 +75,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.reservationData.tabs[0].checkoutTime = $stateParams.departureTime;
 			$scope.reservationData.tabs[0].roomCount = 1;
 			$scope.reservationData.numNights = $stateParams.numNights;
+            $scope.reservationData.roomTypeIdFromNightlyDiary = $stateParams.room_type_id;
 
 			/*  The following method helps to initiate the staydates object across the period of
 	         *  stay. The occupany selected for each room is taken assumed to be for the entire period of the
@@ -553,7 +554,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isMember: isMember,
 							isPromotion: isPromotion,
 							isDefaultRoomTypeSuiteUnavailable: $scope.reservationData.roomsMeta[rate.room_type_id].is_suite && (rate.availability <= 0 || rate.availability <  $scope.reservationData.rooms.length),
-							isDayUse: rate.is_day_use
+							isDayUse: $scope.reservationData.ratesMeta[rate.id].is_day_use
 						};
 
 					rateInfo.rooms.push({
@@ -2097,7 +2098,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isMember: isMember,
 							isPromotion: isPromotion,
 							isSuiteUnavailable: room.isSuiteUnavailable,
-							isDayUse: rate.is_day_use
+							isDayUse: $scope.reservationData.ratesMeta[rate.id].is_day_use
 						};
 
 						if (bestAvailableRateOfSelectedRoom === rate.id) {
