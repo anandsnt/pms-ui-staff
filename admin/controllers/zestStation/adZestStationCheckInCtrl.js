@@ -22,7 +22,7 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
             $scope.invokeApi(ADZestStationSrv.fetch, {}, fetchSuccess);
         };
 
-        var saveFailed = function(response) {
+        var saveFailed = function(message) {
             $scope.errorMessage = message;
             $scope.$emit('hideLoader');
         };
@@ -43,14 +43,14 @@ admin.controller('ADZestStationCheckInCtrl', ['$scope', '$state', '$rootScope', 
                     id: paymentType.id,
                     exclusion_type: "checkin",
                     activate: true
-                })
+                });
             });
             _.each($scope.excludedPaymentTypes, function(paymentType) {
                 params.payment_types.push({
                     id: paymentType.id,
                     exclusion_type: "checkin",
                     activate: false
-                })
+                });
             });
             $scope.invokeApi(ADZestStationSrv.excludePaymenTypes, params, saveSuccess, saveFailed);
         };
