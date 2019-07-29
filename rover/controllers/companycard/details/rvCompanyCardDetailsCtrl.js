@@ -614,10 +614,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		/**
 		 * success callback of save contact data
 		 */
-		var successCallbackOfContactSaveData = function(data, hotelInfoChanged) {
+		var successCallbackOfContactSaveData = function(data, hotelInfoChangedFromPopup) {
 
-			if (hotelInfoChanged) {
-				// Close the hotel info popup on saving
+			// Close the hotel info popup on saving
+			if (hotelInfoChangedFromPopup) {
 				ngDialog.close();
 			}
 
@@ -690,7 +690,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * function used to save the contact data, it will save only if there is any
 		 * change found in the present contact info.
 		 */
-		var saveContactInformation = function(data, hotelInfoChanged) {
+		var saveContactInformation = function(data, hotelInfoChangedFromPopup) {
 			var dataUpdated = false;
 			updatedOtherHotelsInfo = [];
 
@@ -731,7 +731,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				var options = {
 					params: dataToSend,
 					successCallBack: function(response) {
-						successCallbackOfContactSaveData(response, hotelInfoChanged);
+						successCallbackOfContactSaveData(response, hotelInfoChangedFromPopup);
 					},
 					failureCallBack: failureCallbackOfContactSaveData
 				};
@@ -748,7 +748,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					$scope.$broadcast("saveArAccount");
 					$scope.isArTabAvailable = true;
 				}
-				createArAccountCheck = false;				
+				createArAccountCheck = false;
+
+				// Close the hotel info popup on saving
+				if (hotelInfoChangedFromPopup) {
+					ngDialog.close();
+				}
 			}
 		};
 
@@ -767,7 +772,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				// TODO: what is be to done, when this API is failed ??? - like assign back old value
 				if (dataToUpdate && dataToUpdate.other_hotels_info) {
 					$scope.contactInformation.commission_details.other_hotels_info = dataToUpdate.other_hotels_info;
-					saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed);
+					saveContactInformation($scope.contactInformation, dataToUpdate.hotel_info_changed_from_popup);
 				} else {
 					saveContactInformation($scope.contactInformation);
 				}

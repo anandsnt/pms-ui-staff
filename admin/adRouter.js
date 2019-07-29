@@ -60,6 +60,9 @@ admin.config([
                         return adPermissionSrv.fetchRoverPermissions();
                     }
                     return {};
+                },
+                featureToggleData: function(ADAppSrv) {
+                    return ADAppSrv.retrieveFeatureToggles();
                 }
             }
         });
