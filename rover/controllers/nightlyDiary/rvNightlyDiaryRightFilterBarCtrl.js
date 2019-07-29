@@ -183,7 +183,7 @@ angular.module('sntRover')
                             type: filterData.type,
                             reservationOccupancy: data.reservation_occupancy
                         };
-                        console.log(newData);
+
                         $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
 
 						if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM') {
