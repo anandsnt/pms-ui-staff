@@ -14,7 +14,7 @@ admin.service('adIFCInterfaceMappingSrv', [
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
             'EXACTONLINE': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
             'IGEL': ['CHARGE_CODES', 'PAYMENT_CODES'],
-            'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
+            'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES']
         };
 
         var metaPromises = {
