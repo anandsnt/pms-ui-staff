@@ -6,8 +6,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
     'zsGeneralSrv',
     '$filter',
     '$timeout',
-    '$rootScope',
-    function ($scope, $stateParams, $state, zsEventConstants, zsGeneralSrv, $filter, $timeout, $rootScope) {
+    function ($scope, $stateParams, $state, zsEventConstants, zsGeneralSrv, $filter, $timeout) {
 
         // pickup key and checkin share this . But HTML will be differnt.
         // and use two states and two controllers inheriting this controller.
