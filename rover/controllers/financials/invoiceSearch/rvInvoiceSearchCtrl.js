@@ -133,6 +133,11 @@ sntRover.controller('RVInvoiceSearchController',
 			}
 		};
 
+		/*
+		 * Expand Bill
+		 * @param itemIndex index of selected account/reservation
+		 * @param billIndex index of transaction
+		 */
 		$scope.expandBill = function(itemIndex, billIndex) {
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened) {
@@ -154,6 +159,36 @@ sntRover.controller('RVInvoiceSearchController',
 			}			
 		};
 
+		/*
+		 * Retrigger payment
+		 */
+		$scope.reTriggerPaymentReceipt = function() {
+			var successCallBackOfRetrigger = function() {
+				
+			},
+			options = {
+				params: {
+					"transaction_ids": $scope.transaction_ids
+				},
+				successCallBack: successCallBackOfRetrigger
+			};
+
+			$scope.callAPI(RVInvoiceSearchSrv.triggerPaymentReceipt, options);						
+		};
+
+		/*
+		 * Retrigger cancel 
+		 */
+		$scope.clickedCancelOfRetrigger = function() {
+			$scope.transaction_ids = [];
+		};
+
+		/*
+		 * clicked transaction checkboxes
+		 * @param transactionId transaction id
+		 * @param itemIdex index of selected account/reservation
+		 * @param billIndex index of transaction
+		 */
 		$scope.clickedTransactionCheckbox = function(transactionId, itemIndex, billIndex) {
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked) {
@@ -161,7 +196,6 @@ sntRover.controller('RVInvoiceSearchController',
 			} else {
 				$scope.transaction_ids.pop(transactionId);
 			}			
-			console.log($scope.transaction_ids)
 		};
 		/*
 		 * Update informational invoice flag

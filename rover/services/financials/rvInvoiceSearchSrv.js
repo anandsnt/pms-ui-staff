@@ -30,10 +30,22 @@ angular.module('sntRover').service('RVInvoiceSearchSrv',
 
     that.getFilterOptions = function (params) {
 
-        var deferred = $q.defer();
-        var url = "/api/bills/invoice_filter_options";
+        var deferred = $q.defer(),
+            url = "/api/bills/invoice_filter_options";
 
         sntBaseWebSrv.getJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    this.triggerPaymentReceipt = function(params) {
+        var deferred = $q.defer(),
+            url = "/api/bills/fiskalize_payment";
+
+        sntBaseWebSrv.postJSON(url, params).then(function (data) {
             deferred.resolve(data);
         }, function (data) {
             deferred.reject(data);

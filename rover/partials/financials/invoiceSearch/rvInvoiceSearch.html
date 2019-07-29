@@ -8,14 +8,14 @@
     </div>
 
     <!-- Remove .hidden when Receipts are checked to create QR code -->
-    <div class="entry invoice-qr-code hidden">
-        <button type="button" class="button green">Create QR Code for Selected</button>
+    <div class="entry invoice-qr-code" ng-show="shouldShowReceipts() && transaction_ids.length > 0">
+        <button type="button" class="button green" ng-click="reTriggerPaymentReceipt()">Create QR Code for Selected</button>
 
         <!-- On click uncheck all checked receipts -->
-        <button type="button" class="button blank">Cancel</button>
+        <button type="button" class="button blank" ng-click="clickedCancelOfRetrigger()">Cancel</button>
     </div>
 
-     <div class="entry search">
+     <div class="entry search" ng-show="!(shouldShowReceipts() && transaction_ids.length > 0)">
         <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
         <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
@@ -29,7 +29,7 @@
         <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div> -->
 
-    <div class="entry dates">
+    <div class="entry dates" ng-show="!(shouldShowReceipts() && transaction_ids.length > 0)">
         <div class="entry-data has-datepicker">
             <label for="invoices-date-from">From</label>
             <button id="invoices-date-from-clear" class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Add class 'hidden' when displaying AR Invoices -->
-    <div class="entry options"> 
+    <div class="entry options" ng-show="!(shouldShowReceipts() && transaction_ids.length > 0)"> 
         <!-- Add .hidden if displaying Receipts -->
         <label class="checkbox">
             <span class="icon-form icon-checkbox"></span>
