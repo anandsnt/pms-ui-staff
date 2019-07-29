@@ -20,7 +20,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             },
             configPagination = function() {
                 $scope.paginationState = {
-                    perPage: 5,
+                    perPage: 50,
                     page: 1,
                     firstIndex: 0,
                     lastIndex: 0,
