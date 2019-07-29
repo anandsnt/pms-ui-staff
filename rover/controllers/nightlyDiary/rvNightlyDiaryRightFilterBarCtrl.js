@@ -178,11 +178,12 @@ angular.module('sntRover')
                             fromDate: selectedItem.arrival_date,
                             nights: (selectedItem.no_of_nights || selectedItem.number_of_nights),
                             reservationId: (selectedItem.reservation_id || selectedItem.id),
+                            reservationStatus: selectedItem.status,
                             roomTypeId: filterData.roomTypeId,
                             type: filterData.type,
                             reservationOccupancy: data.reservation_occupancy
                         };
-
+                        console.log(newData);
                         $scope.$emit('SHOW_ASSIGN_ROOM_SLOTS', newData );
 
 						if (screen.width < 1600 && filterData.type === 'ASSIGN_ROOM') {

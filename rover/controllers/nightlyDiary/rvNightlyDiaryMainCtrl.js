@@ -356,7 +356,10 @@ angular.module('sntRover')
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
                         // Handle ASSIGN/MOVE button click handle.
-                        if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
+                        if (type === 'MOVE' && reservationDetails.reservationStatus === 'CHECKEDIN' && roomDetails.room_ready_status === 'DIRTY'){
+                            showWarningMessagePopup("Cannot move occupied guest to a dirty room");
+                        }
+                        else if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
                             triggerSetTimePopup();
                         }
                         else if ((type === 'ASSIGN' || type === 'MOVE') && !data.is_overlapping_reservations_exists) {
