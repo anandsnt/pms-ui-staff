@@ -29,7 +29,21 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 			$scope.noOfKeysCreated = 0;
 
+            var onGetRoomInstructionsSuccess = function(data) {
+                $scope.roomInstructions = data.instructions;
+            }
 
+            var onGetRoomInstructionsFailure = function () {
+				$scope.$emit('hideLoader');
+			};
+
+			$scope.callAPI(zsGeneralSrv.getRoomInstructions, {
+                params: {
+                    id: $stateParams.reservation_id
+                },
+                'successCallBack': onGetRoomInstructionsSuccess,
+                'failureCallBack': onGetRoomInstructionsFailure
+            });
 		}());
 		
 		/**

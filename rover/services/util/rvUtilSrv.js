@@ -442,5 +442,4 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', functi
             }
             return diaryMode;
         };
-
 }]);
