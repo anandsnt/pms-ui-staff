@@ -136,7 +136,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.windsurferCRSSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'windsurfer';
         }],
@@ -150,7 +153,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.travelClickSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'travelclick';
         }],
@@ -164,7 +170,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.cubilisSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'cubilis';
         }],
@@ -193,7 +202,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.verticalBookingSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'verticalbooking';
         }],
@@ -376,20 +388,32 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.mapping', {
         templateUrl: '/assets/partials/mapping/adExternalMapping.html',
         controller: 'ADMappingCtrl',
-        url: '/mapping/:hotelId'
+        url: '/mapping',
+        params: {
+            hotelId: undefined
+        }
     });
 
     // hotel_id will be removed from the following stateProvider URL's (external-mappings, add-external-mapping, edit-external-mapping)
     $stateProvider.state('admin.external-mappings', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsList.html',
         controller: 'ADExternalMappingsListCtrl',
-        url: '/mappings/show/:interface_id/:interface_name'
+        url: '/mappings/show',
+        params: {
+            interface_id: undefined,
+            interface_name: undefined
+        }
     });
 
     $stateProvider.state('admin.add-external-mapping', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsAdd.html',
-        url: '/mappings/add/:mapping_type/:interface_id/:interface_name',
+        url: '/mappings/add',
         controller: 'ADExternalMappingsAddCtrl',
+        params: {
+            mapping_type: undefined,
+            interface_id: undefined,
+            interface_name: undefined
+        },
         resolve: {
             mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
                 function(ADInterfaceMappingSrv, $stateParams) {
@@ -403,7 +427,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.edit-external-mapping', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsEdit.html',
-        url: '/mappings/add/:mapping_type/:interface_id/:interface_name/:mapping_id',
+        url: '/mappings/add',
+        params: {
+            mapping_type: undefined,
+            interface_id: undefined,
+            interface_name: undefined,
+            mapping_id: undefined
+        },
         controller: 'ADExternalMappingsEditCtrl',
         resolve: {
             mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
@@ -450,7 +480,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.emvTerminalDetails', {
         templateUrl: '/assets/partials/emvTerminals/emvTerminalDetails.html',
         controller: 'ADEmvTerminalDetailsCtrl',
-        url: '/terminaldetails/:itemid'
+        url: '/terminaldetails',
+        params: {
+            itemid: undefined
+        }
     });
 
     $stateProvider.state('admin.doorlockInterface', {
@@ -485,7 +518,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.sitemindersSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'siteminder';
         }],
@@ -508,7 +544,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.synxisSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'synxis';
         }],
@@ -522,7 +561,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.axbase3000', {
         templateUrl: '/assets/partials/interfaces/axbase3000/adAXbaseSetUp.html',
         controller: 'adAXbaseCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'axbase3000';
         }],
@@ -536,7 +578,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 	$stateProvider.state('admin.rainmakerSetup', {
         templateUrl: '/assets/partials/interfaces/Rainmaker/adRainmakerSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'rainmaker';
         }],
@@ -550,7 +595,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.juyoSetup', {
         templateUrl: '/assets/partials/interfaces/Juyo/adJuyoSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'juyo';
         }],
@@ -575,7 +623,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.infrasecSetup', {
         templateUrl: '/assets/partials/interfaces/Infrasec/adInfrasecSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'infrasec';
         }],
@@ -678,7 +729,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.sunaccountingSetup', {
         templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
         controller: 'adInterfaceConfigurationCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'sunaccounting';
         }],
@@ -697,7 +751,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.turkishinvoiceSetup', {
         templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
         controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'turkishinvoice';
         }],
@@ -711,7 +768,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.revControlSetup', {
         templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/',
+        params: {
+            id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'revcontrol';
         }],
@@ -725,7 +785,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.siteminderMessageExchangeSetup', {
         templateUrl: '/assets/partials/interfaces/Sitemindermx/adSitemindermxSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
+        url: '/interfaces/setup',
+        params: {
+          id: undefined
+        },
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'sitemindermx';
         }],
@@ -920,7 +983,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.hotel_feature_toggles_edit', {
         templateUrl: '/assets/partials/interfaces/HotelFeatureToggles/adEdit.html',
         controller: 'adHotelFeatureTogglesEditCtrl',
-        url: '/admin/hotel_feature_toggles/:id',
+        url: '/admin/hotel_feature_toggles',
+        params: {
+            id: undefined
+        },
         resolve: {
             settings: ['adFeaturesSrv', '$stateParams', function(adFeaturesSrv, $stateParams) {
                 return adFeaturesSrv.fetch($stateParams.id);
