@@ -461,8 +461,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     if (!occupancy[m.maintenance]) {
                     occupancy[m.maintenance]  = room_type[meta.maintenance.time_span];
                     }
-                    occupancy[m.room_type]      = angular.lowercase(room_type.name);
-                    occupancy[m.status]         = angular.lowercase(occupancy[m.status]);
+                    occupancy[m.room_type]      = room_type.name.toLowerCase();
+                    occupancy[m.status]         = occupancy[m.status].toLowerCase();
                     if (occupancy[m.status]          === 'reserved') {
                         occupancy[m.status]         = 'reserved';
                     } else if (occupancy[m.status]   === 'checkedin') {
@@ -533,7 +533,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         slot[m.start_date]          = start_date.getTime();
                         slot[m.end_date]            = end_date.getTime();
                         slot[m.maintenance]         = room_type[meta.maintenance.time_span];
-                        slot[m.room_type]           = angular.lowercase(room_type.name);
+                        slot[m.room_type]           = room_type.name.toLowerCase();
                     }
                     return slot;
                 },
