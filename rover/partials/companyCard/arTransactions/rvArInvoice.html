@@ -21,9 +21,9 @@
         <div class="info-right">
             <span ng-if = "printData.arrival_date"><strong>Arrival Date:</strong> {{printData.arrival_date}}</span><br/>
             <span ng-if = "printData.departure_date"><strong>Departure Date:</strong> {{printData.departure_date}}</span><br/>
-            <span ng-if = "printData.room_number"><strong>Room Number:</strong> {{printData.room_number}}</span><br/> 
+            <span ng-if = "printData.room_number"><strong>Room Number:</strong> {{printData.room_number}}</span><br/>
             <span ng-if = "printData.confirmation_number"><strong>Confirmation Number:</strong> {{printData.confirmation_number}}</span><br/>
-            <span ng-if = "printData.tax_number"><strong>Tax Number:</strong> {{printData.card_details.tax_number}}</span><br/><br/>
+            <span ng-if = "printData.tax_number"><strong>Tax Number:</strong> {{printData.tax_number}}</span><br/><br/>
             <span ng-bind-html="printData.card_details.address"></span>
         </div>
 
@@ -138,7 +138,7 @@
                             {{statement.invoice_currency_for_html}}{{printData.invoice_currency_total_incl_tax}}
                         </div>
                     </td>
-                </tr>            
+                </tr>
             </tbody>
         </table>
     </div>
