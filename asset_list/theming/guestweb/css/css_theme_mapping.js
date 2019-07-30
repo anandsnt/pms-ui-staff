@@ -215,6 +215,7 @@ module.exports = {
             'guestweb_snt_v3': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_seacrest_hotel_v2': [ themeCSSRoot + 'guestweb_seacrest_hotel_v2.css'],
             'guestweb_the_cole_hotel': [ themeCSSRoot + 'guestweb_the_cole_hotel.css'],
+            'guestweb_metropolis_resort': [ themeCSSRoot + 'guestweb_metropolis_resort.css'],
         };
     }
 };
