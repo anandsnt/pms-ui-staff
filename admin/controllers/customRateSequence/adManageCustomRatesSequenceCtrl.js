@@ -136,7 +136,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 $scope.errorMessage = e;
                 $timeout(function() {
                     updateRateList();
-                }, 3000);
+                }, 100);
             },
             clearSearchQuery = function() {
                 $scope.sequenceRateQuery = '';
