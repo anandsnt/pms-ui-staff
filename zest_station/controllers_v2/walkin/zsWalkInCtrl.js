@@ -113,6 +113,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             var reservationSearchSuccess = function(response) {
                 if (response.results && response.results.length === 1) {
                     response.results[0].skipRoomUpsell = true;
+                    response.results[0].isWalkinReservation = true;
                     zsCheckinSrv.setSelectedCheckInReservation(response.results);
 
                     if (response.results[0].guest_details) {

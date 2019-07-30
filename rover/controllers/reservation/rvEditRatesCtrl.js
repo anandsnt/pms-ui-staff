@@ -5,6 +5,8 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 		
 		BaseCtrl.call (this, $scope);
 
+		var stayDatesOriginal = dclone($scope.ngDialogData.room.stayDates);
+
 		$scope.refreshRateDetails = function() {
             $timeout(function() {
     			$scope.refreshScroller('rateDetails');
@@ -65,7 +67,12 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 			$scope.errorMessage = '';
 			if (!$scope.otherData.forceAdjustmentReason ||
 				($scope.otherData.forceAdjustmentReason && !!$scope.adjustment_reason && !!$scope.adjustment_reason.trim())) {
-				_.each(room.stayDates, function(stayDate) {
+				 var isRateModified = false;
+
+				_.each(room.stayDates, function(stayDate, idx) {
+					if (stayDatesOriginal[idx] && ( stayDatesOriginal[idx].rateDetails.modified_amount !== stayDate.rateDetails.modified_amount) ) {
+						isRateModified = true;
+					}
 					stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.modified_amount).toFixed(2);
 					if (isNaN(stayDate.rateDetails.modified_amount)) {
 						stayDate.rateDetails.modified_amount = parseFloat(stayDate.rateDetails.actual_amount).toFixed(2);
@@ -94,10 +101,14 @@ sntRover.controller('RVEditRatesCtrl', ['$scope', '$rootScope',
 					$scope.closeDialog();
 				};
 
-				if ($scope.adjustment_reason.trim() === "") {
-					reservationUpdateCallback();
+				if (isRateModified) {
+					if ($scope.adjustment_reason.trim() === "") {
+						reservationUpdateCallback();
+					} else {
+						$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+					}
 				} else {
-					$scope.saveCommentAgainstRateChange(reservationUpdateCallback);
+					$scope.closeDialog();
 				}
 				
 			} else {
