@@ -199,7 +199,16 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.roomdetails', {
         templateUrl: '/assets/partials/rooms/adRoomDetails.html',
         controller: 'adRoomDetailsCtrl',
-        url: '/roomdetails/:roomId'
+
+        url: '/roomdetails',
+        params: {
+            roomId: undefined
+        },
+        resolve: {
+            availableGuestLanguages: function (ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
+            }
+        }
     });
 
     $stateProvider.state('admin.hotellikes', {

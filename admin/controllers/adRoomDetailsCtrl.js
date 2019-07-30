@@ -1,5 +1,5 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRoomSrv', '$state', '$stateParams',
-				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams) {
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRoomSrv', '$state', '$stateParams', 'Toggles',
+				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams, Toggles) {
 	/*
 	* Controller class for Room Details
 	*/
@@ -370,5 +370,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 		};
 
-
+        (function () {
+            $scope.isRoomLocationInstructionsEnabled = Toggles.isEnabled('room_location_instructions');
+        })();
 }]);
