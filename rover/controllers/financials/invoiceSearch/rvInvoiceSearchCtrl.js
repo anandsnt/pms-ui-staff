@@ -142,10 +142,12 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened) {
 				var successCallBackOfExpandBill = function(response) {
-					angular.forEach(response.transactions, function(item, itemIndex) {
+					angular.forEach(response.transactions, function(item, transactionItemIndex) {
 						item.isChecked = false;
+						item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
 					});					
 					$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions = response.transactions;
+					refreshScroll();
 				},
 				options = {
 					params: {
