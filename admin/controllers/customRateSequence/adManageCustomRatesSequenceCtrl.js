@@ -99,7 +99,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                     connectWith: "#unassigedrates",
                     disabled: false,
                     revert: 'invalid',
-                    helper:'clone',
+                    helper: 'clone',
                     appendTo: 'body',
                     update: function(e, ui) {
                         var sortable = ui.item.sortable,
@@ -121,7 +121,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 $scope.sortableRateOptions = {
                     connectWith: "#assigedrates",
                     revert: 'invalid',
-                    helper:'clone',
+                    helper: 'clone',
                     appendTo: 'body',
                     receive: function(e, ui) {
                         var rate = ui.item.sortable.model;
