@@ -6,8 +6,8 @@
         <li class="check">
             <label class="checkbox inline">
                 <!-- add .checked when all checked. Add .semi-checked when some receipts are checked -->
-                <span class="icon-form icon-checkbox"></span>
-                <input id="select-all" type="checkbox" value="1">
+                <!-- <span class="icon-form icon-checkbox"></span>
+                <input id="select-all" type="checkbox" value="1"> -->
             </label>
         </li>
         <li class="guest-details">Details</li>
@@ -17,7 +17,7 @@
     <div class="invoice-list-content scrollable"> <!-- Hook iScroll here -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="invoice-item receipt-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results">
+                <li class="invoice-item receipt-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results track by $grandIndex">
                     <!-- Add classes 'has-arrow next-view' if this is not an additional bill on the same reservation + add click/tap action to go to Stay Card -->
                     <!-- Add .open when opened -->
                     <div class="bill {has-arrow next-view}">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="bill {has-arrow next-view}" ng-repeat="bill in invoiceReservationData.bills" ng-show="!$first">
+                    <div class="bill {has-arrow next-view}" ng-repeat-start="bill in invoiceReservationData.bills" ng-show="!$first">
                         <div class="expand toggle" ng-click="expandBill($parent.$index, $index)">
                             <!-- Add .active when bill is opened -->
                             <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': bill.isOpened}"></span>
@@ -120,7 +120,7 @@
                     </div>
                     </div>
                     <!-- when the above bill is clicked to be opened, remove .hidden -->
-                    <div class="bill-receipt-details" ng-show="invoiceReservationData.isOpened">
+                    <div ng-repeat-end class="bill-receipt-details" ng-show="invoiceReservationData.isOpened">
                         <table>
                             <thead>
                                 <tr>
@@ -133,7 +133,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in invoiceReservationData.transactions">
+                                <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in invoiceReservationData.transactions" ng-show="transactions.is_visible_in_invoice_search">
                                     <td class="receipt-check" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index)">
                                         <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}">
                                             <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
@@ -162,7 +162,7 @@
                                     <td class="amount receipt-number">{{transactions.receipt_no}}</td>
                                     <td class="amount credits">
                                         <span class="currency">{{::currencySymbol}}</span>{{transactions.credits}}
-                                        <button type="button" class="button with-icon only-icon blue open-modal">
+                                        <button type="button" class="button with-icon only-icon blue open-modal" ng-click="clickedReceiptIcon(invoiceReservationData.associated_item.type, transactions.id, bill.bill_id)">
                                             <span class="icons icon-invoice"></span>
                                         </button>
                                     </td>

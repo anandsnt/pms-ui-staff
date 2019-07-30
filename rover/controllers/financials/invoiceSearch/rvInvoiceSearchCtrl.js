@@ -493,6 +493,57 @@ sntRover.controller('RVInvoiceSearchController',
 			}
 		};
 
+		$scope.clickedReceiptIcon = function(type, transactionId, billId) {
+
+			$scope.entityType = type;
+			$scope.isFromBillCard = (type === 'RESERVATION');
+			$scope.transactionId = transactionId;
+			$scope.billId = billId;
+
+			ngDialog.open({
+				template: '/assets/partials/popups/rvReceiptPopup.html',
+				controller: 'RVReceiptPopupController',
+				className: '',
+				scope: $scope
+			});
+		};
+
+
+		$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
+
+			$scope.printReceiptActive = true;
+			$scope.receiptPrintData = receiptPrintData;
+			$scope.errorMessage = "";
+
+			// CICO-9569 to solve the hotel logo issue
+			$("header .logo").addClass('logo-hide');
+			$("header .h2").addClass('text-hide');
+			$("body #loading").html("");// CICO-56119
+			$scope.$parent.addNoPrintClass = true;
+
+			// add the orientation
+			addPrintOrientation();
+
+			/*
+			*	======[ READY TO PRINT ]======
+			*/
+			// this will show the popup with full bill
+			$timeout(function() {
+
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(billCardPrintCompleted,
+						function(error) {
+							receiptPrintCompleted();
+						}, 'RVCardPlugin', 'printWebView', []);
+				}
+				else
+				{
+					window.print();
+					receiptPrintCompleted();
+				}
+			}, 700);
+		});
+
 		/*
 		 * Initialization
 		 */

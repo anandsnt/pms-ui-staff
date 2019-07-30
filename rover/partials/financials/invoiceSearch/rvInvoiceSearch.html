@@ -91,9 +91,12 @@
 </span>
 
 <!-- When search results exist and print button is tapped, add invoice details here -->
-<div class="invoice" ng-if="invoiceSearchFlags.isClickedReservation">
+<div class="invoice" ng-if="invoiceSearchFlags.isClickedReservation && !printReceiptActive">
     <div ng-include="'/assets/partials/bill/rvPrintBillCard.html'" ></div>
 </div>
-<div class="invoice" ng-if="!invoiceSearchFlags.isClickedReservation">
+<div class="invoice" ng-if="!invoiceSearchFlags.isClickedReservation && !printReceiptActive">
     <div ng-include="'/assets/partials/accounts/transactions/rvAccountInvoice.html'" ></div>
+</div>
+<div class="invoice" ng-if="printReceiptActive">
+    <div ng-include="'/assets/partials/bill/rvPrintReceipt.html'" ></div>
 </div>
