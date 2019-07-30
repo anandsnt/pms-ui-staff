@@ -5,13 +5,6 @@
         <span ng-bind-html="printData.hotel_address"></span>
         <span class="type">{{printData.invoiceLabel}}</span>
     </div>
-
-    <!-- <div class="invoice-logo envelope"> -->
-        <!-- <h1>{{printData.invoiceLabel}}</h1> -->
-        <!-- If showing QR code, place it here:
-        <img src="{src}" alt="" class="qr-code" /> -->
-    <!-- </div> -->
-
     <div class="info-container account-info">
         <div class="info-left">
             <strong>{{printData.card_details.name}}</strong><br>
@@ -57,7 +50,6 @@
                         <strong>{{statement.item_description}}</strong>
                         <span>{{statement.description}}</span>
                         <span class="reference">{{statement.reference_text}}</span>
-                        <!-- <span class="adjusted"><em>Adjustment</em> - {Adjustment Reason}</span> -->
                     </td>
                     <td class="align-right">
                         {{statement.fees}}
@@ -78,7 +70,6 @@
                         <strong>{{statement.payment_type}}</strong>
                         <span>{{statement.description}}</span>
                         <span class="reference">{{statement.reference_text}}</span>
-                        <!-- <span class="adjusted"><em>Adjustment</em> - {Adjustment Reason}</span> -->
                     </td>
                     <td class="align-right">
                         <span ng-if="statement.fees" class="currency">{{printData.currency_for_html}}</span>{{statement.fees}}
