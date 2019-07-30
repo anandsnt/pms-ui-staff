@@ -140,7 +140,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                     updateRateList();
                 }, 3000);
             },
-            clearSearchQuery = function (){
+            clearSearchQuery = function() {
                 $scope.sequenceRateQuery = '';
                 $scope.rateQuery = '';
             },
