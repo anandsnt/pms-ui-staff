@@ -140,6 +140,10 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                     updateRateList();
                 }, 3000);
             },
+            clearSearchQuery = function (){
+                $scope.sequenceRateQuery = '';
+                $scope.rateQuery = '';
+            },
             ratesSearchCall = null,
             sequenceRateSearchCall = null;
 
@@ -192,6 +196,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
         };
         $scope.assignRate = function (dropIndex) {
             var successCallBack = function () {
+                    clearSearchQuery();
                     updateRateList();
                 },
                 postData = {
@@ -209,6 +214,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
         };
         $scope.unAssignRate = function () {
             var successCallBack = function () {
+                    clearSearchQuery();
                     updateRateList();
                 },
                 postData = {
