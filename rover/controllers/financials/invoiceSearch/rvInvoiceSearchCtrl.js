@@ -29,7 +29,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 		$scope.invoiceSearchData = {};
 		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
-		$scope.transaction_ids = [];
+		$scope.paymentDataArray = [];
 
 		$scope.shouldShowInvoices =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "Invoices"})).id === $scope.invoiceSearchData.filter_id;
@@ -170,7 +170,7 @@ sntRover.controller('RVInvoiceSearchController',
 			},
 			options = {
 				params: {
-					"transaction_ids": $scope.transaction_ids
+					"transactions": $scope.paymentDataArray
 				},
 				successCallBack: successCallBackOfRetrigger
 			};
@@ -182,7 +182,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 * Retrigger cancel 
 		 */
 		$scope.clickedCancelOfRetrigger = function() {
-			$scope.transaction_ids = [];
+			$scope.paymentDataArray = [];
 			angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
 				angular.forEach(item.transactions, function(transactionItem, transactionItemIndex) {
 					transactionItem.isChecked = false;
@@ -197,11 +197,17 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param billIndex index of transaction
 		 */
 		$scope.clickedTransactionCheckbox = function(transactionId, itemIndex, billIndex) {
+			var paymentData = {};
+
+			paymentData.transaction_id = transactionId;
+			paymentData.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].bill_id;
+
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked) {
-				$scope.transaction_ids.push(transactionId);
+
+				$scope.paymentDataArray.push(paymentData);
 			} else {
-				$scope.transaction_ids.pop(transactionId);
+				$scope.paymentDataArray.pop(paymentData);
 			}			
 		};
 		/*
