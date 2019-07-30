@@ -444,6 +444,12 @@
     data="uiChosenReport.hasMarketsList.data"
     options="uiChosenReport.hasMarketsList.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasDayUseFilter && uiChosenReport.hasDayUseFilter.data.length"
+    label="Reservation Type"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasDayUseFilter.data"
+    options="uiChosenReport.hasDayUseFilter.options"></multi-option-selection>
+
 <multi-option-selection ng-show="uiChosenReport.hasSourcesList && uiChosenReport.hasSourcesList.data.length"
     label="Source(s)"
     on-update="refreshFilterScroll"
