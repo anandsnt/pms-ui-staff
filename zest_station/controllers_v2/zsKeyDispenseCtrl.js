@@ -30,7 +30,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
         };
 
         (function () {
-            let usedLanguageCode = $translate.use();
+            var usedLanguageCode = $translate.use();
 
             BaseCtrl.call(this, $scope);
             // hide back button
