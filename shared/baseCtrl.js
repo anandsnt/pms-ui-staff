@@ -347,4 +347,26 @@ BaseCtrl = function($scope) {
 
     $scope.isEmpty = isEmpty;
 
+    // Clear the password when the user clicks the password field
+    $scope.onPasswordClick = function (dataObject, key) {
+        if (dataObject) {
+            dataObject[key] = '';
+        }
+    };
+
+    // Delete the property if required
+    $scope.deletePropertyIfRequired = function (dataObject, property) {
+        if (dataObject[property] === getTemporaryDisplayPassword() ) {
+            delete dataObject[property]; 
+        }
+    };
+
+    // Set default password when fetching the configuration details
+    $scope.setDefaultDisplayPassword = function (dataObject, property, passwordPresentKey) {
+        passwordPresentKey = passwordPresentKey || 'is_password_present';
+        if (dataObject[passwordPresentKey] && !dataObject.hasOwnProperty(property)) {
+            dataObject[property] = getTemporaryDisplayPassword();
+        }
+    };
+
 };

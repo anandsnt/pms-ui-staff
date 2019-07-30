@@ -26,7 +26,8 @@
                         inputtype="password"
                         value="config.password"
                         label="{{'PASSWORD'| translate}}"
-                        styleclass="full-width"></ad-textbox>
+                        styleclass="full-width"
+                        click-handler="onPasswordClick(config, 'password')"></ad-textbox>
             <ad-textbox ng-if="availableSettings.indexOf('requestor_id') > -1"
                         inputtype="text"
                         value="config.requestor_id"
