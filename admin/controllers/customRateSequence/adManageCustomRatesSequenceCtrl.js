@@ -76,6 +76,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             },
             fetchAssignedRates = function() {                
                 var successCallBackFetchAssignedRates = function (data) {
+                        $scope.errorMessage = '';
                         $scope.assignedRates = data.results;
                         removeRateSections();
                     },
