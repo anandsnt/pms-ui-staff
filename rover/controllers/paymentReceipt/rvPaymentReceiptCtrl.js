@@ -7,7 +7,48 @@ sntRover.controller('RVReceiptPopupController',
     function($scope, $rootScope, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
 
 
-    BaseCtrl.call(this, $scope); 
+    BaseCtrl.call(this, $scope);
+
+    /*
+     * Function to get email button class
+     */
+    $scope.getEmailButtonClass = function() {
+
+        var emailButtonClass = "blue";
+
+        if (!$scope.data.mailto_address) {
+            emailButtonClass = "grey";
+        }
+        return emailButtonClass;
+    };
+
+    /*
+     * Function to get email button disabled or not
+     */
+    $scope.isEmailButtonDisabled = function() {
+
+        var isEmailButtonDisabled = false;
+
+        if (!$scope.data.mailto_address) {
+            isEmailButtonDisabled = true;
+        }
+        return isEmailButtonDisabled;
+    };
+
+    $scope.printReceipt = function() {
+        var getBillDataSuccess = function (response) {
+                $scope.$emit("PRINT_RECEIPT", response);
+            },
+            dataToSend = {
+                params: {
+                  bill_id: $scope.billId,
+                  transaction_id: $scope.transactionId
+                },
+            successCallBack: getBillDataSuccess
+        };
+
+        $scope.callAPI(RVBillCardSrv.fetchReceiptData, dataToSend);
+    };
 
     var successCallBackForLanguagesFetch = function(data) {
         if (data.languages) {
