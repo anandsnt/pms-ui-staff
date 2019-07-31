@@ -20,7 +20,7 @@
                 <li class="invoice-item receipt-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results track by $grandIndex">
                     <!-- Add classes 'has-arrow next-view' if this is not an additional bill on the same reservation + add click/tap action to go to Stay Card -->
                     <!-- Add .open when opened -->
-                    <div class="bill {has-arrow next-view}">
+                    <div class="bill has-arrow next-view">
                         <div class="expand toggle" ng-click="expandBill($index, 0)">
                             <!-- Add .active when bill is opened -->
                             <span class="icons icon-double-arrow black expand-arrow"></span>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="bill {has-arrow next-view}" ng-repeat="bill in invoiceReservationData.bills" ng-show="!$first">
+                    <div class="bill" ng-repeat-start="bill in invoiceReservationData.bills" ng-show="!$first">
                         <div class="expand toggle" ng-click="expandBill($parent.$index, $index)">
                             <!-- Add .active when bill is opened -->
                             <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': bill.isOpened}"></span>
@@ -109,18 +109,18 @@
 
                             <!-- If showing address, output this:
                             <span class="icons icon-location">{Address}</span> -->
-                    </div>
+                        </div>
 
-                    <!-- Invoice Info -->
-                    <div class="invoice-info">
-                        <div class="number">{{bill.invoice_no}}</div> <!-- Wrap search match with <span class="highlight"></span> -->
-                        <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
-                            <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo }}
+                        <!-- Invoice Info -->
+                        <div class="invoice-info">
+                            <div class="number">{{bill.invoice_no}}</div> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
+                                <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo }}
+                            </div>
                         </div>
                     </div>
-                    </div>
                     <!-- when the above bill is clicked to be opened, remove .hidden -->
-                    <div class="bill-receipt-details" ng-show="invoiceReservationData.isOpened">
+                    <div ng-repeat-end class="bill-receipt-details" ng-show="invoiceReservationData.isOpened">
                         <table>
                             <thead>
                                 <tr>
