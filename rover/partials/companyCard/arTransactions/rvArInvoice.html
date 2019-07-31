@@ -15,7 +15,6 @@
                 <span ng-if = "!printData.is_informational_invoice && !printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number && printData.is_print_folio_enabled"><strong>Folio Number:</strong> {{printData.folio_number}}</span><br/>
                 <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled && printData.ar_invoice_number"><strong>AR Invoice Number:</strong> {{printData.ar_invoice_number}}</span><br/>
                 <span ng-if = "!printData.is_informational_invoice && printData.is_print_ar_folio_number_enabled && printData.ar_folio_number"><strong>AR Folio Number:</strong> {{printData.ar_folio_number}}</span>
-                <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>AR Number:</strong> {{printData.card_details.ar_number}}</span>
             </div>
         </div>
         <div class="info-right">
@@ -23,7 +22,8 @@
             <span ng-if = "printData.departure_date"><strong>Departure Date:</strong> {{printData.departure_date}}</span><br/>
             <span ng-if = "printData.room_number"><strong>Room Number:</strong> {{printData.room_number}}</span><br/> 
             <span ng-if = "printData.confirmation_number"><strong>Confirmation Number:</strong> {{printData.confirmation_number}}</span><br/>
-            <span ng-if = "printData.card_details.tax_number"><strong>Tax Number:</strong> {{printData.card_details.tax_number}}</span><br/><br/>
+            <span ng-if = "printData.tax_number"><strong>Tax Number:</strong> {{printData.tax_number}}</span><br/><br/>
+            <span ng-if = "!printData.is_informational_invoice && printData.card_details.ar_number"><strong>AR Number:</strong> {{printData.card_details.ar_number}}</span>
             <span ng-bind-html="printData.card_details.address"></span>
         </div>
 
