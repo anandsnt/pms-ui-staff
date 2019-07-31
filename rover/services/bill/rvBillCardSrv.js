@@ -429,4 +429,17 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		return deferred.promise;
 	};
 
+	this.fetchReceiptData = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/payment_receipt';
+
+		sntBaseWebSrv.postJSON(url, params).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
 }]);
