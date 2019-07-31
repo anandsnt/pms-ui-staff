@@ -78,6 +78,9 @@ describe('RVReceiptPopupController', function () {
                     return deferred.promise;
                 });
 
+                $scope.data = {};
+                $scope.data.mailto_address = "soumya@stayntouch.com";
+
                 $scope.emailReceipt();
 
                 expect(RVBillCardSrv.emailReceiptData).toHaveBeenCalled();              
