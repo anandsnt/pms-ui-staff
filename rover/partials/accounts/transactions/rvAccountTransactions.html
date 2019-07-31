@@ -263,6 +263,9 @@
 											<strong ng-show="feesData.credits">
 												<span class="currency">{{currencySymbol}}</span>{{feesData.credits| number: precisonTwo}}
 											</strong>
+											<button ng-if="feesData.is_print_receipt_available" type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)">
+												<span class="icons icon-invoice"></span>
+											</button>
 										</td>
 										<td ng-show="showMoveCharges">
 											<div class="select" ng-class="{'overlay': !billData.is_active }">

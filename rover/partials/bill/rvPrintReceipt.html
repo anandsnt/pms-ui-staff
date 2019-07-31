@@ -2,7 +2,7 @@
     <img src="{hotel-logo}" alt="" />
     <h1>{{receiptPrintData.hotel_name}}</h1>
     {{receiptPrintData.hotel_address}}<br/>
-    <span class="type">{{receiptPrintData.translations.hotel_address}}</span>
+    <span class="type" ng-bind-html="receiptPrintData.hotel_address"></span>
     <!-- If showing QR code, place it here:
     <img src="{src}" alt="" class="qr-code" /> -->
 </div>
@@ -10,7 +10,8 @@
 <div class="info-container account-info">
     <div class="info-left">
         {{receiptPrintData.guest_details.first_name}} {{receiptPrintData.guest_details.last_name}}<br/>
-        {{receiptPrintData.guest_details.address}}<br/>
+        <span class="type" ng-bind-html="receiptPrintData.guest_details.address"></span>
+        <br/>
         {{receiptPrintData.guest_details.city}}<span ng-if="receiptPrintData.guest_details.city !== '' && receiptPrintData.guest_details.city!== null">, </span>
         {{receiptPrintData.guest_details.state}}<span ng-if="receiptPrintData.guest_details.state !== '' && receiptPrintData.guest_details.state!== null">, </span>
         {{receiptPrintData.guest_details.postal_code}}<br/>
@@ -51,20 +52,19 @@
             </tr>           
         </tfoot>
         <tbody>
-            <tr ng-repeat="paymentData in receiptPrintData.payments">
-                <td>{date}</td>
+            <tr>
+                <td>{{receiptPrintData.payments.date_of_payment}}</td>
                 <td class="description">
-                    {description}
+                    {{receiptPrintData.payments.payment_type}}
                     <!-- if other data, use this. For example -->
-                    <span class="reference">Visa - Ending: 4455</span>
+                    <span class="reference" ng-if="receiptPrintData.payments.credit_card_details">{{receiptPrintData.payments.credit_card_details.description}} - Ending: {{receiptPrintData.payments.credit_card_details.card_number}}</span>
                 </td>
                 <td class="align-right receipt-amount">
-                    <span class="currency">{currency-symbol}</span>{amount}
+                    <span class="currency">{{receiptPrintData.currency_symbol}}</span>{{receiptPrintData.payments.amount}}
                     <div class="converted-currency">
-                        <span class="currency">{currency-symbol}</span>{amount}
+                        <span class="currency">{{receiptPrintData.converted_currency_symbol}}</span>{{receiptPrintData.payments.converted_amount}}
                     </div>
                 </td>
-
             </tr>
         </tbody>
     </table>

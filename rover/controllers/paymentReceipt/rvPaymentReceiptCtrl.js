@@ -34,9 +34,11 @@ sntRover.controller('RVReceiptPopupController',
         }
         return isEmailButtonDisabled;
     };
-
+    /*
+     * print receipt method
+     */
     $scope.printReceipt = function() {
-        var getBillDataSuccess = function (response) {
+        var printReceiptSuccess = function (response) {
                 $scope.$emit("PRINT_RECEIPT", response);
             },
             dataToSend = {
@@ -44,10 +46,28 @@ sntRover.controller('RVReceiptPopupController',
                   bill_id: $scope.billId,
                   transaction_id: $scope.transactionId
                 },
-            successCallBack: getBillDataSuccess
+            successCallBack: printReceiptSuccess
         };
 
-        $scope.callAPI(RVBillCardSrv.fetchReceiptData, dataToSend);
+        $scope.callAPI(RVBillCardSrv.printReceiptData, dataToSend);
+    };
+
+    /*
+     * email receipt method
+     */
+    $scope.emailReceipt = function() {
+        var emailReceiptSuccess = function (response) {
+                $scope.successMessage = ["Email send succesfully!"];
+            },
+            dataToSend = {
+                params: {
+                  bill_id: $scope.billId,
+                  transaction_id: $scope.transactionId
+                },
+                successCallBack: emailReceiptSuccess
+            };
+
+        $scope.callAPI(RVBillCardSrv.emailReceiptData, dataToSend);
     };
 
     var successCallBackForLanguagesFetch = function(data) {

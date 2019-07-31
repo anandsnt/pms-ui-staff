@@ -285,6 +285,9 @@
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}
 					</strong>
+					<button ng-if="feesData.is_print_receipt_available" type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)">
+	                    <span class="icons icon-invoice"></span>
+	                </button>
 				</td>
 				<td>
 					<div class="select" ng-if="!isStandAlone">
