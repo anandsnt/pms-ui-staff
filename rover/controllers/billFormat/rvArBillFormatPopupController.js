@@ -124,7 +124,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         data.id = $scope.item.transaction_id;
         data.account_id = $scope.arTransactionsData.accountId;
         var lockBillSuccess = function() {
-            is_locked = true;
+            if ($scope.is_bill_lock_enabled){
+                is_locked = true;
+            }
             if ($scope.isClickedPrint) {
                 $scope.printBill(is_locked);
             } else {
