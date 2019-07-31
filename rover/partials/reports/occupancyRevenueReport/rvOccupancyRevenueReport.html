@@ -89,10 +89,10 @@
                                                             {{getValue(occupancy.key,$index)}}
                                                     </td>
                                             </tr>
-                                            <tr ng-show="marketExists && showNightlyComponent">
+                                            <tr ng-show="marketExists">
                                                 <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                             </tr>
-                                            <tr ng-repeat="market in markets.data" ng-show="market.selected && showNightlyComponent" ng-init="outerIndex = $index">
+                                            <tr ng-repeat="market in markets.data" ng-show="market.selected" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
                                                             {{getMarketOccupancyValue(outerIndex,$index) | number:0}}
                                                     </td>
