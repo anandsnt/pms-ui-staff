@@ -124,7 +124,9 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
             $state.go("admin.ratesSequence");
         };
         $scope.gotoManageRates = function () {
-            $state.go("admin.manageCustomRatesSequence");
+            if ($scope.customSequenceList.length !== 0 ) {
+                $state.go("admin.manageCustomRatesSequence");
+            }
         };
         $scope.getTemplateUrl = function(index) {
             if (index === $scope.selectedCustomSequenceIndex) {
