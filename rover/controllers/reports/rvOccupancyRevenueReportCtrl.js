@@ -28,7 +28,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}, {
 				key: "complimentary_rooms",
                 name: "Complimentary Rooms",
-                hasDayUseComponent: false
+                hasDayUseComponent: true
 			}, {
 				key: "occupied_minus_comp",
                 name: "Occupied Rooms (Excl. Comp.)",
@@ -41,7 +41,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
                 name: "Total Occ. (Excl. Comp.)",
-                hasDayUseComponent: false
+                hasDayUseComponent: true
 			}],
 			revenues: [{
 				key: "rev_par",
