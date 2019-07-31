@@ -76,6 +76,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             },
             fetchAssignedRates = function() {                
                 var successCallBackFetchAssignedRates = function (data) {
+                        $scope.errorMessage = '';
                         $scope.assignedRates = data.results;
                         removeRateSections();
                     },
@@ -105,7 +106,8 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                         var sortable = ui.item.sortable,
                             rate = sortable.model;
 
-                        if (sortable.dropindex !== sortable.index && sortable.dropindex !== null && rate.sort_order !== null) {
+                        if (sortable.dropindex !== sortable.index && sortable.dropindex !== null
+                            && rate.sort_order !== null && sortable.droptarget[0].id !== 'unassigedrates') {
                             $scope.selectRate(rate);
                             $scope.assignRate(sortable.dropindex + 1);
                         }
@@ -183,7 +185,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             updateRateList();
         };
         $scope.selectRate = function(rate, index) {
-            if( rate.sort_order == null) {
+            if (rate.sort_order === null) {
                 $scope.selectedUnAssignedRateIndex = index;
                 $scope.selectedAssignedRateIndex = null;
             } else {
