@@ -6,7 +6,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
     'zsGeneralSrv',
     '$filter',
     '$timeout',
-    function ($scope, $stateParams, $state, zsEventConstants, zsGeneralSrv, $filter, $timeout) {
+    '$translate',
+    function ($scope, $stateParams, $state, zsEventConstants, zsGeneralSrv, $filter, $timeout, $translate) {
 
         // pickup key and checkin share this . But HTML will be differnt.
         // and use two states and two controllers inheriting this controller.
@@ -29,6 +30,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
         };
 
         (function () {
+            var usedLanguageCode = $translate.use();
 
             BaseCtrl.call(this, $scope);
             // hide back button
@@ -40,7 +42,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
             $scope.callAPI(zsGeneralSrv.getRoomInstructions, {
                 params: {
-                    id: $stateParams.reservation_id
+                    id: $stateParams.reservation_id,
+                    locale: usedLanguageCode
                 },
                 'successCallBack': onGetRoomInstructionsSuccess,
                 'failureCallBack': onGetRoomInstructionsFailure

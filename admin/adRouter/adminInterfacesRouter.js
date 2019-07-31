@@ -138,13 +138,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'windsurfer'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'windsurfer';
-        }],
         resolve: {
-           config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('windsurfer');
             }]
         }
@@ -155,13 +152,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'travelclick'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'travelclick';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('travelclick');
             }]
         }
@@ -172,13 +166,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'cubilis'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'cubilis';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('cubilis');
             }]
         }
@@ -189,13 +180,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADDerbySoftSetupCtrl',
         url: '/derbysoft/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
             }],
             mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                'adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('derbysoft');
-            }]
+                }]
         }
     });
 
@@ -204,13 +195,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'verticalbooking'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'verticalbooking';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('verticalbooking');
             }]
         }
@@ -221,10 +209,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adIdeasSetupCtrl',
         url: '/ideas/setup',
         resolve: {
-            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('ideas');
             }],
-            chargeGroups: ['ADChargeGroupsSrv', function(ADChargeGroupsSrv) {
+            chargeGroups: ['ADChargeGroupsSrv', function (ADChargeGroupsSrv) {
                 return ADChargeGroupsSrv.fetch();
             }]
         }
@@ -520,13 +508,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'siteminder'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'siteminder';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('siteminder');
             }]
         }
@@ -546,13 +531,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'synxis'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'synxis';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('synxis');
             }]
         }
@@ -563,30 +545,24 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adAXbaseCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'axbase3000'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'axbase3000';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('axbase3000');
             }]
         }
     });
 
-	$stateProvider.state('admin.rainmakerSetup', {
+    $stateProvider.state('admin.rainmakerSetup', {
         templateUrl: '/assets/partials/interfaces/Rainmaker/adRainmakerSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'rainmaker'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'rainmaker';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('rainmaker');
             }]
         }
@@ -597,13 +573,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'juyo'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'juyo';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('juyo');
             }]
         }
@@ -625,13 +598,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'infrasec'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'infrasec';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('infrasec');
             }]
         }
@@ -731,37 +701,29 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adInterfaceConfigurationCtrl',
         url: '/interfaces/setup',
         params: {
-            id: undefined
+            id: 'sunaccounting'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'sunaccounting';
-        }],
         resolve: {
             config: [
-              'adInterfacesSrv', function(adInterfacesSrv) {
-                  return adInterfacesSrv.getSettings('sunaccounting');
-              }],
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('sunaccounting');
+                }],
             mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                'adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
                 }]
         }
     });
 
     $stateProvider.state('admin.turkishinvoiceSetup', {
-        templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup',
-        params: {
-            id: undefined
-        },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'turkishinvoice';
-        }],
+        templateUrl: '/assets/partials/interfaces/turkishinvoice/adTurkishinvoice.html',
+        controller: 'adTurkishinvoiceCtrl',
+        url: '/turkishinvoice',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('turkishinvoice');
-            }]
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('turkishinvoice');
+                }]
         }
     });
 
@@ -770,13 +732,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/',
         params: {
-            id: undefined
+            id: 'revcontrol'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'revcontrol';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('revcontrol');
             }]
         }
@@ -787,13 +746,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup',
         params: {
-          id: undefined
+            id: 'sitemindermx'
         },
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'sitemindermx';
-        }],
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('sitemindermx');
             }]
         }

@@ -36,7 +36,7 @@
                 <br>
 
                 <ad-textbox value="givex.username" label="{{'GIVEX_USERNAME_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
-                <ad-textbox value="givex.password" inputtype="password" label="{{'GIVEX_PASSWORD_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="givex.password" inputtype="password" label="{{'GIVEX_PASSWORD_LABEL'| translate}}" styleclass="full-width" click-handler="onPasswordClick(givex, 'password')"></ad-textbox>
                 <ad-textbox value="givex.url" inputtype="access-url" name="access-url" id="access-url" label="{{'GIVEX_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="givex.secondary_url" inputtype="access-url-second" name="access-url-second" id="access-url-second" label="{{'GIVEX_SECONDARY_ACCESS_URL_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="givex.timeout" inputtype="number" name="timeout" id="timeout" label="{{'GIVEX_TIMEOUT_LABEL'| translate}}" styleclass="full-width"></ad-textbox>
