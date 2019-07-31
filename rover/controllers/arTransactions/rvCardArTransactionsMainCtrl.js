@@ -149,6 +149,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $scope.arDataObj.arBalance = data.ar_balance;
             $scope.arDataObj.isPrintArInvoiceNumberEnabled = data.is_print_ar_invoice_number_enabled;
             $scope.arDataObj.arInvoiceLabel = data.ar_invoice_label;
+            $scope.arDataObj.is_bill_lock_enabled = data.is_bill_lock_enabled;
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -813,6 +814,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// Popup for AR invoice print flow
 		$scope.showFormatBillPopup = function(index, is_from_paid) {
 			$scope.is_from_ar = true;
+			$scope.is_bill_lock_enabled = $scope.arDataObj.is_bill_lock_enabled;
 			$scope.billFormat = {};
 			$scope.billFormat.isInformationalInvoice = false;
 			$scope.arTransactionsData = $scope.arDataObj;
@@ -822,7 +824,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.item = $scope.arDataObj.balanceList[index]
 			}
 			if ($scope.item.paid) {
-				if($scope.item.is_locked) {
+				if($scope.item.is_locked || !$scope.is_bill_lock_enabled) {
 					$scope.isInvoiceStepOneActive = false;
 					$scope.isInvoiceStepThreeActive = true;
 					$scope.shouldGenerateFinalInvoice = false;
