@@ -804,7 +804,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.getRoomInstructions = function(params) {
             var url = '/api/reservations/' + params.id + '/room_instructions.json';
-            
+
+            delete params.id;
             return zsBaseWebSrv.getJSON(url, params);
         };
     }
