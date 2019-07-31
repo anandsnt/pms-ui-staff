@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
 
 	var that = this;
 
