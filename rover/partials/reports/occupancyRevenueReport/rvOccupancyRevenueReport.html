@@ -20,22 +20,24 @@
                                     <li>Available Rooms</li>
                                     <li>Out of Order Rooms</li>
                                     <li ng-show="showNightlyComponent">Occupied Rooms</li>
-                                    <li>Complimentary Rooms</li>
+                                    <li ng-show="showNightlyComponent">Complimentary Rooms</li>
                                     <li ng-show="showNightlyComponent">Occupied Rooms (Excl. Comp.)</li>
                                     <li ng-show="marketExists"><strong>Occupied Rooms by Market</strong></li>
                                     <li ng-repeat="market in markets.data" ng-show="market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
                                     <li ng-show="showDayUseComponent">Occupied Day Use Rooms</li>
+                                    <li ng-show="showDayUseComponent">Day Use Complimentary Rooms</li>
                                     <li ng-show="showDayUseComponent">Occupied Day Use Rooms (Excl. Comp.)</li>
 
                                     <li ng-show="showNightlyComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Occ.</strong>
                                     </li>
                                     </li>
                                     <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                    <li ng-class="{'double-row': !!results.nightly}"><strong>Total Occ. (Excl. Comp.)</strong>
+                                    <li ng-show="showNightlyComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Occ. (Excl. Comp.)</strong>
                                     </li>
                                     <li ng-show="showDayUseComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Day Use Occ.</strong>
+                                    <li ng-show="showDayUseComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Day Use Occ. (Excl. Comp.)</strong>
                                     <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
 
                                     <li>RevPar</li>
@@ -104,6 +106,11 @@
                                             </tr>
                                             <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        {{getValue("day_use_complimentary_rooms",$index)}}
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="showDayUseComponent">
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                         {{getValue("occupied_day_use_minus_comp",$index)}}
                                                 </td>
                                             </tr>
@@ -117,6 +124,11 @@
                                             <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                         <strong>{{getValue("total_day_use_occupancy_in_percentage",$index) | number:2}} %</strong>
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="showDayUseComponent">
+                                                <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
+                                                        <strong>{{getValue("total_day_use_occupancy_minus_comp_in_percentage",$index) | number:2}} %</strong>
                                                 </td>
                                             </tr>
                                             <tr ng-repeat="revenue in stateStore.revenues track by $index" ng-show="!revenue.hasDayUseComponent || (revenue.hasDayUseComponent && showNightlyComponent)">
