@@ -96,7 +96,12 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
             $scope.guestCardData.contactInfo.nationality_id = $scope.saveData.nationality_id;
         }
         if ($scope.showCountry) {
-            $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
+            try {
+                $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
+            } catch (err) {
+                $scope.guestCardData.contactInfo.address = {};
+                $scope.guestCardData.contactInfo.address.country_id = $scope.saveData.address.country_id;
+            }
         }
         if ($scope.showJobTitle) {
             $scope.guestCardData.contactInfo.job_title = $scope.saveData.job_title;
@@ -355,7 +360,12 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
         }
         if (showCountry) {
             $scope.saveData.country_id = "";
-            $scope.guestCardData.contactInfo.address.country_id = "";
+            try {
+                $scope.guestCardData.contactInfo.address.country_id = "";
+            } catch (err) {
+                $scope.guestCardData.contactInfo.address = {};
+                $scope.guestCardData.contactInfo.address.country_id = "";
+            }
         }
         ngDialog.close();
     };
