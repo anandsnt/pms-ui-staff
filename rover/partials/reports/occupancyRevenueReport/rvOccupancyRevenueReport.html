@@ -26,28 +26,28 @@
                                     <li ng-repeat="market in markets.data" ng-show="market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
-                                    <li ng-show="showDayUseComponent && results.occupied_day_use_rooms">Occupied Day Use Rooms</li>
-                                    <li ng-show="showDayUseComponent && results.occupied_day_use_minus_comp">Occupied Day Use Rooms (Excl. Comp.)</li>
+                                    <li ng-show="showDayUseComponent">Occupied Day Use Rooms</li>
+                                    <li ng-show="showDayUseComponent">Occupied Day Use Rooms (Excl. Comp.)</li>
 
                                     <li ng-show="showNightlyComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Occ.</strong>
                                     </li>
                                     </li>
                                     <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
-                                    <li ng-show="showNightlyComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Occ. (Excl. Comp.)</strong>
+                                    <li ng-class="{'double-row': !!results.nightly}"><strong>Total Occ. (Excl. Comp.)</strong>
                                     </li>
-                                    <li ng-show="showDayUseComponent && results.total_day_use_occupancy_in_percentage" ng-class="{'double-row': !!results.nightly}"><strong>Total Day Use Occ.</strong>
+                                    <li ng-show="showDayUseComponent" ng-class="{'double-row': !!results.nightly}"><strong>Total Day Use Occ.</strong>
                                     <!-- Add class "double-row" if showing all/nightly reservation breakdown -->
 
                                     <li>RevPar</li>
                                     <li ng-show="showNightlyComponent">ADR (Incl. Comp.)</li>
                                     <li ng-show="showNightlyComponent">ADR (Excl. Comp.)</li>
-                                    <li ng-show="showDayUseComponent && results.day_use_adr_inclusive_complimentary_rooms">Day Use ADR (Incl. Comp.)</li>
-                                    <li ng-show="showDayUseComponent && results.day_use_adr_exclusive_complimentary_rooms">Day Use ADR (Excl. Comp.)</li>
+                                    <li ng-show="showDayUseComponent">Day Use ADR (Incl. Comp.)</li>
+                                    <li ng-show="showDayUseComponent">Day Use ADR (Excl. Comp.)</li>
                                     <li ng-show="marketExists && showNightlyComponent"><strong>Room Revenue by Market</strong></li>
                                     <li ng-repeat="market in markets.data" ng-show="market.selected && showNightlyComponent">
                                         <em>{{ market.name }}</em>
                                     </li>
-                                    <li ng-show="showDayUseComponent && marketExists && results.day_use_market_revenue"><strong>Day Use Room Revenue by Market</strong></li>
+                                    <li ng-show="showDayUseComponent && marketExists"><strong>Day Use Room Revenue by Market</strong></li>
                                     <li ng-repeat="market in markets.data" ng-show="showDayUseComponent && market.selected">
                                         <em>{{ market.name }}</em>
                                     </li>
@@ -55,13 +55,13 @@
                                     <li ng-show="showNightlyComponent"><strong>Charge Groups</strong></li>
                                     <li ng-show="showNightlyComponent" ng-repeat="chargeGroup in results.charge_groups"><em>{{chargeGroup.name}}</em>
                                     </li>
-                                    <li ng-show="showDayUseComponent && results.day_use_charge_groups"><strong>Day Use Charge Groups</strong></li>
+                                    <li ng-show="showDayUseComponent"><strong>Day Use Charge Groups</strong></li>
                                     <li ng-repeat="chargeGroup in results.day_use_charge_groups" ng-show="showDayUseComponent"><em>{{chargeGroup.name}}</em>
                                     </li>
                                     <!-- ... repeat for all charge group titles -->
 
                                     <li ng-show="showNightlyComponent"><strong>Total Revenue</strong>
-                                    <li ng-show="showDayUseComponent && results.total_day_use_revenue"><strong>Total Day Use Revenue</strong>
+                                    <li ng-show="showDayUseComponent"><strong>Total Day Use Revenue</strong>
                                     </li>
                             </ul>
                     </div>
@@ -97,12 +97,12 @@
                                                             {{getMarketOccupancyValue(outerIndex,$index) | number:0}}
                                                     </td>
                                             </tr>
-                                            <tr ng-show="showDayUseComponent && results.occupied_day_use_rooms">
+                                            <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                         {{getValue("occupied_day_use_rooms",$index)}}
                                                 </td>
                                             </tr>
-                                            <tr ng-show="showDayUseComponent && results.occupied_day_use_minus_comp">
+                                            <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                         {{getValue("occupied_day_use_minus_comp",$index)}}
                                                 </td>
@@ -114,7 +114,7 @@
                                                             <span ng-if="!!results.nightly">({{getNigtlyValue(occupancyTotal.key,$index) | number:2}}% N.)</span>
                                                     </td>
                                             </tr>
-                                            <tr ng-show="showDayUseComponent && results.total_day_use_occupancy_in_percentage">
+                                            <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                         <strong>{{getValue("total_day_use_occupancy_in_percentage",$index) | number:2}} %</strong>
                                                 </td>
@@ -125,12 +125,12 @@
                                                     </td>
                                             </tr>
 
-                                            <tr ng-show="showDayUseComponent && results.day_use_adr_inclusive_complimentary_rooms">
+                                            <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
                                                         {{ getValue("day_use_adr_inclusive_complimentary_rooms",$index) | currency:currencySymbol:2 }}</span>
                                                 </td>
                                             </tr>
-                                            <tr ng-show="showDayUseComponent && results.day_use_adr_exclusive_complimentary_rooms">
+                                            <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
                                                         {{ getValue("day_use_adr_exclusive_complimentary_rooms",$index) | currency:currencySymbol:2 }}</span>
                                                 </td>
@@ -145,7 +145,7 @@
                                                     </td>
                                             </tr>
                                             <!-- <li ng-show="marketExists && results.day_use_market_revenue"><strong>Day Use Room Revenue by Market</strong></li> -->
-                                            <tr ng-show="showDayUseComponent && marketExists && results.day_use_market_revenue">
+                                            <tr ng-show="showDayUseComponent && marketExists">
                                                 <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                             </tr>
                                             <tr ng-repeat="market in markets.data" ng-show="showDayUseComponent && market.selected" ng-init="outerIndex = $index">
@@ -175,7 +175,7 @@
                                                             <strong><span class="currency">{{getValue(revenueTotal.key,$index) | currency:currencySymbol:2 }}</span></strong>
                                                     </td>
                                             </tr>
-                                            <tr ng-show="showDayUseComponent && results.total_day_use_revenue">
+                                            <tr ng-show="showDayUseComponent">
                                                 <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
                                                         <strong><span class="currency">{{getValue("total_day_use_revenue",$index) | currency:currencySymbol:2 }}</span></strong>
                                                 </td>
