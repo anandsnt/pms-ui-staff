@@ -498,7 +498,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Synxis - Reservations': true,
                 'Synxis - Upcoming Reservation Export (Future Reservation Export)': true,
                 'Police Report Export': true,
-                'Switzerland Zurich Police Export': true
+                'Switzerland Zurich Police Export': true,
+                'Invoice / Folio Export': true
             };
 
             var forRunOnceOnly = {

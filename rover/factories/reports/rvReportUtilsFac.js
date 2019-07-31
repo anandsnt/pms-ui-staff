@@ -8,7 +8,8 @@ angular.module('reportsModule')
     'RVReportNamesConst',
     'RVReportFiltersConst',
     'RVreportsSubSrv',
-    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
+    'rvUtilSrv',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv) {
         var factory = {};
 
         var DATE_FILTERS = [
@@ -46,6 +47,31 @@ angular.module('reportsModule')
             'showActionables',
             'show_vat_with_rates'
         ];
+
+        // Extract rate types and rates list
+        var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
+                rateTypeListIds      = _.unique(rateTypeListIds),
+                rateTypeObject       = {},
+                rateTypeListToReturn = rateTypeListIds.map(function(id) {
+                    rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
+                    if (rateTypeObject) {
+                        rateTypeObject.name = rateTypeObject.rate_type_name;
+                        rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
+                    }
+                    return rateTypeObject;
+                });
+
+            return rateTypeListToReturn;
+        };
+
+        // Extract rates from rate types
+        var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            return rateTypesAndRateList.map(function(rate) {
+                rate.name = rate.rate_name;
+                return _.omit(rate, "rate_type_name");
+            });
+        };
 
         /**
          * This function canshowActionables return CG & CC with no payment entries or with only payment entries
@@ -554,6 +580,10 @@ angular.module('reportsModule')
                     report['hasRateFilter'] = filter;
                 }
 
+                if (filter.value === 'RESERVATION_TYPE') {
+                    report['hasDayUseFilter'] = filter;
+                }
+
                 if (filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
                 }
@@ -941,6 +971,8 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchCountries()
                         .then( fillCountries );
+                } else if ('RESERVATION_TYPE' === filter.value && !filter.filled) {
+                    fillResTypeOptions();
                 } else {
                     // no op
                 }
@@ -1447,8 +1479,62 @@ angular.module('reportsModule')
                     }
                 });
 
-                completed++;
+                completed ++;
                 checkAllCompleted();
+            }
+
+            function fillResTypeOptions() {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_TYPE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasDayUseFilter = {
+                            data: getReservationTypeOptions(),
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'description',
+                                defaultValue: 'Select Reservation Type(s)'
+                            }
+                        };
+                    }
+                });
+            }
+
+            function getReservationTypeOptions() {
+                var diaryMode = rvUtilSrv.getDiaryMode(),
+                    resTypeOpts;
+    
+                if (diaryMode === 'FULL') {
+                    resTypeOpts = [
+                        {
+                            description: 'Hourly',
+                            value: 'HOURLY'
+                        },
+                        {
+                            description: 'Day Use',
+                            value: 'DAY_USE'
+                        }
+                    ];
+                } else if (diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY') {
+                    resTypeOpts = [
+                        {
+                            description: 'Overnight',
+                            value: 'OVERNIGHT'
+                        },
+                        {
+                            description: 'Day Use',
+                            value: 'DAY_USE'
+                        }
+                    ];
+                } else {
+                    resTypeOpts = [];
+                }
+    
+                return resTypeOpts;
             }
 
             function fillRestrictionList (data) {
@@ -1585,29 +1671,6 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
-
-            var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
-                    rateTypeListIds      = _.unique(rateTypeListIds),
-                    rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id) {
-                        rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
-                        if (rateTypeObject) {
-                            rateTypeObject.name = rateTypeObject.rate_type_name;
-                            rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
-                        }
-                        return rateTypeObject;
-                    });
-
-                return rateTypeListToReturn;
-            };
-
-            var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                return rateTypesAndRateList.map(function(rate) {
-                    rate.name = rate.rate_name;
-                    return _.omit(rate, "rate_type_name");
-                });
-            };
 
             //
             function fillRateTypesAndRateList(data) {
@@ -2450,6 +2513,51 @@ angular.module('reportsModule')
                 factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['ROOM_TYPE_IDS']], 'id');
             }
 
+        };
+
+        // Fill rate types and rates for scheduled reports
+        factory.fillRateTypesAndRatesForScheduledReports = function (filter, filterValues) {
+            var populateRateTypesAndRates = function (data) {
+                var rateTypes = extractRateTypesFromRateTypesAndRateList(data),
+                    rates = extractRatesFromRateTypesAndRateList(data),
+                    selectedRateType,
+                    selectedRate;
+
+                if (filterValues && filterValues.rate_type_ids) {
+                    _.each (filterValues.rate_type_ids, function (id) {
+                        selectedRateType = _.findWhere(rateTypes, {rate_type_id: id});
+                        selectedRateType.selected = true;
+                    });
+                }
+
+                if (filterValues && filterValues.rate_ids) {
+                    _.each (filterValues.rate_ids, function (id) {
+                        selectedRate = _.findWhere(rates, {id: id});
+                        selectedRate.selected = true;
+                    });
+                }
+
+                filter.hasRateTypeFilter = {
+                    data: rateTypes,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_type_ids && filterValues.rate_type_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+
+                filter.hasRateFilter = {
+                    data: rates,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_ids && filterValues.rate_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+            };
+
+            reportsSubSrv.fetchRateTypesAndRateList() // This would include custom rates
+                .then(populateRateTypesAndRates);
         };
 
         return factory;

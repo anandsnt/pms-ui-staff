@@ -1,5 +1,5 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv', 'sntActivity',
-    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv, sntActivity) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv',
+    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv) {
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -94,7 +94,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if (!!$scope.rateData.based_on.id) {
                 fetchBasedOnRateDetails();
             }
-            sntActivity.stop('LOAD_RATE_DETAILS');
         };
 
         var fetchCommissionDetails = function() {
@@ -234,6 +233,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // hourly rate?
             $scope.rateData.is_hourly_rate = data.is_hourly_rate;
             $scope.rateData.is_public_rate = data.is_public_rate;
+            $scope.rateData.is_day_use = data.is_day_use;
 
             // rules and restrictions
             $scope.rateData.min_advanced_booking = data.min_advanced_booking;

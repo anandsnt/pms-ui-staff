@@ -268,12 +268,11 @@ angular.module('sntRover').controller('guestCardController', [
          */
         $scope.decloneUnwantedKeysFromContactInfo = function() {
 
-            var unwantedKeys = ["birthday", "country",
-                    "is_opted_promotion_email", "job_title",
-                    "mobile", "passport_expiry",
-                    "passport_number", "postal_code",
-                    "reservation_id", "title", "user_id",
-                    "works_at", "birthday", "avatar"
+            var unwantedKeys = ["birthday", "country", 
+                    "is_opted_promotion_email", "job_title", 
+                    "passport_expiry", "passport_number", 
+                    "postal_code", "reservation_id", 
+                    "title", "user_id", "works_at", "avatar"
                 ],
                 declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
@@ -543,8 +542,8 @@ angular.module('sntRover').controller('guestCardController', [
          */
         function getGuestDetails() {
             if ($scope.reservationData.guest.id && $scope.UICards[0] === 'guest-card'
-                && !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
-                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                && !RVGuestCardsSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
                     successCallBack: function(data) {
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         // Used in statistics ctrl for updating the contact info
@@ -553,7 +552,8 @@ angular.module('sntRover').controller('guestCardController', [
                     failureCallBack: function(errorMessage) {
                         $scope.errorMessage = errorMessage;
                         $scope.$emit('hideLoader');
-                    }
+                    },
+                    params: $scope.reservationData.guest.id
                 });
             }
         }
@@ -1870,43 +1870,17 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.reservationDetails.guestCard.id = guest.id;
                 $scope.initGuestCard(guest);
 
-                var promises = [],
-                    successCallBackForguestAdminSettings = function(data) {
-                        $scope.guestCardData.contactInfo.guestAdminSettings = data;
-                    },
-
-                    successCallBackGenderTypes = function(data) {
-                        $scope.guestCardData.contactInfo.genderTypeList = data;
-                    },
-
-                    successCallBackFetchGuest = function(data) {
+                $scope.callAPI(RVGuestCardsSrv.fetchGuestDetailsInformation, {
+                    successCallBack: function(data) {
                         data.stayCount = guest.stayCount;
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         $scope.closeGuestCard();
                     },
-                    failureCallBackFetchGuest = function(errorMessage) {
-                        $scope.errorMessage = errorMessage;
-                    };
-
-
-                promises.push(RVGuestCardsSrv
-                    .fetchGuests()
-                    .then(successCallBackFetchGuest, failureCallBackFetchGuest)
-                );
-
-                promises.push(RVGuestCardsSrv
-                    .fetchGuestAdminSettings()
-                    .then(successCallBackForguestAdminSettings)
-                );
-
-                // charge code fetch
-                promises.push(RVGuestCardsSrv
-                    .fetchGenderTypes()
-                    .then(successCallBackGenderTypes)
-                );
-                // Lets start the processing
-                $q.all(promises)
-                    .then();
+                    failureCallBack: function(errorMessage) {
+                        $scope.$emit('hideLoader');
+                    },
+                    params: guest.id
+                });
 
             } else {
                 if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
@@ -1939,6 +1913,10 @@ angular.module('sntRover').controller('guestCardController', [
 
                 successCallBackGenderTypes = function(data) {
                     $scope.guestCardData.contactInfo.genderTypeList = data;
+                },
+
+                successCallBackIdTypes = function (data) {
+                    $scope.idTypeList = data; 
                 };
 
 			promises.push(RVGuestCardsSrv
@@ -1950,7 +1928,14 @@ angular.module('sntRover').controller('guestCardController', [
 			promises.push(RVGuestCardsSrv
 				.fetchGenderTypes()
 				.then(successCallBackGenderTypes)
-			);
+            );
+            
+            // Get government id types
+            promises.push(RVGuestCardsSrv
+				.fetchIdTypes()
+				.then(successCallBackIdTypes)
+            );
+            
 			// Lets start the processing
 			$q.all(promises)
                 .then();

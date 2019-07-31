@@ -345,7 +345,10 @@ angular.module('sntRover')
                     var successCallBackFetchAvailableTimeSlots = function (data) {
                         $scope.setTimePopupData.data = data;
                         // Handle ASSIGN/MOVE button click handle.
-                        if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
+                        if (type === 'MOVE' && reservationDetails.reservationStatus === 'CHECKEDIN' && roomDetails.room_ready_status === 'DIRTY') {
+                            showWarningMessagePopup("Cannot move occupied guest to a dirty room");
+                        }
+                        else if ((type === 'ASSIGN' || type === 'MOVE') && data.is_overlapping_reservations_exists) {
                             triggerSetTimePopup();
                         }
                         else if ((type === 'ASSIGN' || type === 'MOVE') && !data.is_overlapping_reservations_exists) {
@@ -518,7 +521,8 @@ angular.module('sntRover')
                         $scope.popupData = {
                             data: response,
                             showOverBookingButton: false,
-                            message: ''
+                            message: '',
+                            diaryMode: rvUtilSrv.getDiaryMode()
                         };
                         let proceedSave = false;
                       
@@ -554,6 +558,7 @@ angular.module('sntRover')
                             };
                         }
                         $scope.diaryData.requireAuthorization = response.require_cc_auth;
+                        $scope.diaryData.routingInfo = response.routing_info;
                         $scope.extendShortenReservationDetails.authorize_credit_card = response.require_cc_auth;
                     };
 
@@ -583,24 +588,58 @@ angular.module('sntRover')
                 // Flag for CC auth permission
                 var hasCCAuthPermission = function() {
                     return rvPermissionSrv.getPermissionValue('OVERRIDE_CC_AUTHORIZATION');
+                },
+                callbackAfterSave = function() {
+                    cancelReservationEditing();
+                    $timeout(function () {
+                        fetchRoomListDataAndReservationListData();
+                    }, 700);
+                    $scope.closeDialog();
                 };
 
                 // Handle continue without CC
                 $scope.continueWithoutCC = function() {
-                    cancelReservationEditing();
-                    $timeout(function () {
-                        fetchRoomListDataAndReservationListData();
-                    }, 700);
-                    $scope.closeDialog();
+                    callbackAfterSave();
                 };
 
                 // Handle continue after success auth
                 $scope.continueAfterSuccessAuth = function() {
-                    cancelReservationEditing();
-                    $timeout(function () {
-                        fetchRoomListDataAndReservationListData();
-                    }, 700);
-                    $scope.closeDialog();
+                    callbackAfterSave();
+                };
+
+                // Close billing info popup.
+                $scope.closeBillingInfoPopup = function() {
+                    callbackAfterSave();
+                };
+
+                // Update billing info details.
+                $scope.updateBillingInformation = function() {
+                    let successCallBack = function() {
+                        callbackAfterSave();
+                    };
+
+                    let options = {
+                        params: {
+                            'from_date': $scope.extendShortenReservationDetails.arrival_date,
+                            'to_date': $scope.extendShortenReservationDetails.dep_date,
+                            'reservation_id': $scope.extendShortenReservationDetails.reservation_id
+                        },
+                        successCallBack: successCallBack
+                    };
+                    
+                    $scope.callAPI(RVNightlyDiarySrv.updateBillingInformation, options);
+                };
+
+                /**
+                 * Shows pop up to remind update the billing info
+                 */
+                var showBillingInformationPrompt = function() {
+                    ngDialog.open({
+                        template: '/assets/partials/reservation/alerts/rvShowBillingInformationPopup.html',
+                        className: '',
+                        closeByDocument: false,
+                        scope: $scope
+                    });
                 };
 
                 /*
@@ -608,6 +647,7 @@ angular.module('sntRover')
                  */
                 var saveReservationEditing = function () {
                     let successCallBack = function (response) {
+                        var routingInfo = $scope.diaryData.routingInfo;
 
                         if ($scope.diaryData.requireAuthorization && $scope.isStandAlone) {
                             // CICO-7306 : With Authorization flow .: Auth Success
@@ -626,11 +666,11 @@ angular.module('sntRover')
                                 $scope.cc_auth_amount = response.data.cc_auth_amount;
                             }
                         }
+                        else if (routingInfo.incoming_from_room || routingInfo.out_going_to_room || routingInfo.out_going_to_comp_tra) {
+                            showBillingInformationPrompt();
+                        }
                         else {
-                            cancelReservationEditing();
-                            $timeout(function () {
-                                fetchRoomListDataAndReservationListData();
-                            }, 700);
+                            callbackAfterSave();
                         }
                     };
 

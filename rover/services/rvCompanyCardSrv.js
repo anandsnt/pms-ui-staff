@@ -699,24 +699,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
         };
 
         /**
-         * Service to get the government id types
-         * @return promise Promise
-         */
-        this.fetchIdTypes = function () {
-            var deffered = $q.defer(),
-               url = 'api/guest_details/government_id_types';
-
-            rvBaseWebSrvV2.getJSON(url)
-             .then( function (data) {
-                deffered.resolve( data.id_type_list);
-             }, function (error) {
-                deffered.resolve( error);
-             });
-
-             return deffered.promise;
-        };
-
-        /**
          * Fetch CC/TA card statistics summary
          * @param {Object} params request params
          * @return {Promise} promise

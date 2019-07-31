@@ -9,7 +9,9 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
             activeTab: 'SETTING'
         };
 
-        $scope.integration = "EXACTONLINE";
+        $scope.interface = "EXACTONLINE";
+
+        $scope.mappingTypes = ['charge_code', 'tax_code'];
 
         /**
          * when clicked on check box to enable/diable pabx
@@ -20,14 +22,19 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         };
 
         $scope.changeTab = function(name) {
-            $scope.state.activeTab = name;
+            // CICO-64131 disable data sync tab when integration not enabled
+            if (name === "DATA" && !$scope.config.authorized) {
+                $scope.errorMessage = ["Please authenticate with Exactonline to perform Data Sync..."];
+            } else {
+                $scope.state.activeTab = name;
+            }
         };
 
         $scope.onUrlChange = function() {
             $scope.config.authorized = false;
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    integration: $scope.integration.toLowerCase(),
+                    integration: $scope.interface.toLowerCase(),
                     settings: {
                         enabled: $scope.config.enabled,
                         endpoint: $scope.config.endpoint,
@@ -52,7 +59,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
         $scope.saveExactOnlineSetup = function() {
             $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    integration: $scope.integration.toLowerCase(),
+                    integration: $scope.interface.toLowerCase(),
                     settings: $scope.config
                 },
                 onSuccess: function() {
