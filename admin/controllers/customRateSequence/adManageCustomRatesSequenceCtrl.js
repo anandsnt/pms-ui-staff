@@ -107,7 +107,7 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                             rate = sortable.model;
 
                         if (sortable.dropindex !== sortable.index && sortable.dropindex !== null
-                            && rate.sort_order !== null && sortable.source[0].id === 'assigedrates') {
+                            && rate.sort_order !== null && sortable.droptarget[0].id !== 'unassigedrates') {
                             $scope.selectRate(rate);
                             $scope.assignRate(sortable.dropindex + 1);
                         }
