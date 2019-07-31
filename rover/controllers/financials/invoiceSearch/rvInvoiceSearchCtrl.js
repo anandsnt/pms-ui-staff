@@ -163,19 +163,35 @@ sntRover.controller('RVInvoiceSearchController',
 			}			
 		};
 
+		$scope.openRetriggerMessagePopup = function() {
+			ngDialog.open({
+					template: '/assets/partials/financials/invoiceSearch/rvRetriggerSuccessMessagePopup.html',
+					className: '',
+					scope: $scope
+			});
+		};
+
 		/*
 		 * Retrigger payment
 		 */
 		$scope.reTriggerPaymentReceipt = function() {
-			var successCallBackOfRetrigger = function() {
-				
-			},
-			options = {
-				params: {
-					"transactions": $scope.paymentDataArray
+			var successCallBackOfRetrigger = function(response) {
+					$scope.isSuccess = true;
+					$scope.retriggerMessage = response;
+					$scope.openRetriggerMessagePopup();
 				},
-				successCallBack: successCallBackOfRetrigger
-			};
+				failureCallBackOfRetrigger = function(errorResponse) {
+					$scope.isSuccess = false;
+					$scope.retriggerMessage = errorResponse.errors;
+					$scope.openRetriggerMessagePopup();
+				},
+				options = {
+					params: {
+						"transactions": $scope.paymentDataArray
+					},
+					successCallBack: successCallBackOfRetrigger,
+					failureCallBack: failureCallBackOfRetrigger
+				};
 
 			$scope.callAPI(RVInvoiceSearchSrv.triggerPaymentReceipt, options);						
 		};
