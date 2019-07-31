@@ -76,7 +76,6 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             },
             fetchAssignedRates = function() {                
                 var successCallBackFetchAssignedRates = function (data) {
-                        $scope.errorMessage = '';
                         $scope.assignedRates = data.results;
                         removeRateSections();
                     },
@@ -136,9 +135,10 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             errorCallBack = function(e) {
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = e;
+                updateRateList();
                 $timeout(function() {
-                    updateRateList();
-                }, 100);
+                    $scope.errorMessage = '';
+                }, 10000);
             },
             clearSearchQuery = function() {
                 $scope.sequenceRateQuery = '';
