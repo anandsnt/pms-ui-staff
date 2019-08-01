@@ -1692,7 +1692,9 @@
 
 /* Rate Sequence Assignment ==============================*/
     #assign-rate-sequence {
-        height: 100%;
+        //height: 100%;
+        margin: 0;
+
         &:after,
         &:before {
             content: '';
@@ -1701,7 +1703,7 @@
         }
 
         .entry {
-            height: 100%;
+            //height: 100%;
             &:after,
             &:before {
                 content: '';
@@ -1733,7 +1735,7 @@
 
         .boxes {
             height: 640px;
-            position: relative;
+            position: relative !important;
 
             ul {
                 position: absolute;
@@ -1782,8 +1784,8 @@
             }
 
             &.without-sequence {
+                color: @grey3;
                 li {
-                    color: @grey3;
                     font-style: italic;
                 }
             }
@@ -1822,6 +1824,7 @@
             .search-pagination {
                 padding: 10px;
                 background: #e9e9e9;
+                position: absolute;
 
                 p {
                     text-align: left;
@@ -1851,6 +1854,7 @@
             }
         }
     }
+
     
 // To align text to center with margin
 .align-text-center{

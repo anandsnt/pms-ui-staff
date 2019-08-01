@@ -10,6 +10,14 @@
 					</span>
 				</h2>
 				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">{{ 'BACK_TO_ROOMS' | translate }}</a>
+				<div class="filters language">
+					<label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+					<div class="select">
+						<select ng-model="locale" name="locale" ng-change="onLocaleChange()">
+							<option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+						</select>
+					</div>
+				</div>
 			</header>
 			<section class="content-scroll" id="room-detail-content">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -96,6 +104,7 @@
 						<img ng-src="{{data.room_image}}" id="file-preview" alt="">
 					</span>
 				</div>
+				<ad-textarea ng-if="featureToggleData.room_location_instructions" rows="4" div-class="full-width" text-area-class="full-width" value="data.instructions" label="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}" placeholder="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}"></ad-textarea>
 				<div ng-hide="isStandAlone">
 					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
