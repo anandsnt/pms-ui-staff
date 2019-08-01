@@ -27,8 +27,8 @@
                             - .with-search - when showing search form
                             - .with-pagination - when showing pagination
                         -->
-                        <div class="boxes with-sequence with-search">
-                        
+                        <div class="boxes with-sequence with-search" data-type="target">
+
                             <div class="search-form">
                                 <button id="rooms-clear-query" class="clear-query">
                                     <span class="icons icon-clear-search">Clear query</span>
@@ -36,7 +36,7 @@
                                 <input name="rooms-query" id="rooms-query" class="query" placeholder="Search by Number or Range" autocomplete="off" type="text" ng-model="sequenceRateQuery" ng-change="sequenceRateSearch()">
                                 <button type="button" name="button" class="icons icon-search">Search</button>
                             </div>
-                        
+
 
                             <!-- Remove when we have at least one rate added -->
                             <div class="no-content" ng-if ='assignedRates.length == 0' ui-sortable="sortableRateSequenceOptions" ng-model="assignedRates">
@@ -46,7 +46,7 @@
                             </div>
 
                             <ul id="assigedrates" class="sortable" ui-sortable="sortableRateSequenceOptions" ng-model="assignedRates">
-                                <li ng-repeat="assignedRate in assignedRates track by $index" ng-click="selectRate( assignedRate, $index )" ng-class="{selected: selectedAssignedRateIndex == $index}">
+                                <li ng-repeat="assignedRate in assignedRates track by $index" ng-click="selectRate( assignedRate, $index )" ng-class="{ 'selected': selectedAssignedRateIndex == $index}">
                                     <span class="icons icon-added"></span>{{assignedRate.name}}
                                 </li>
                             </ul>
@@ -54,15 +54,15 @@
                             <div class="search-pagination">
                                 <button type="button" class="button dark-grey next">Next</button>
                                 <button type="button" class="button dark-grey prev disabled">Prev</button>
-                                
+
                                 <p><strong>{from}-{to}</strong> of <strong>{total}</strong> rates</p>
                             </div>
                             -->
                         </div>
                     </div>
                     <div class="entry movers">
-                        <span class="icons icon-mover-left to-target" ng-click="selectedUnAssignedRateIndex == null || assignRate()" ng-class="{selected: selectedAssignedRateIndex == null}">Assign role(s)</span>
-                        <span class="icons icon-mover-right to-source" ng-click="selectedAssignedRateIndex == null ||unAssignRate()" ng-disabled="selectedAssignedRateIndex == null" ng-class="{selected: selectedUnAssignedRateIndex == null}">Unassign role(s)</span>
+                        <span class="icons icon-mover-left to-target" ng-click="selectedUnAssignedRateIndex == null || assignRate()" ng-class="{ 'active': selectedRate && selectedAssignedRateIndex == null}">Assign role(s)</span>
+                        <span class="icons icon-mover-right to-source" ng-click="selectedAssignedRateIndex == null ||unAssignRate()" ng-disabled="selectedAssignedRateIndex == null" ng-class="{ 'active': selectedRate && selectedUnAssignedRateIndex == null}">Unassign role(s)</span>
                     </div>
                     <div class="entry has-sortable">
                         <label>Rates without Sequence</label>
@@ -70,8 +70,8 @@
                             - .with-search - when showing search form
                             - .with-pagination - when showing pagination
                         -->
-                        <div class="boxes without-sequence with-search with-pagination">
-                        
+                        <div class="boxes without-sequence with-search with-pagination" data-type="source">
+
                             <div class="search-form">
                                 <button id="rooms-clear-query" class="clear-query">
                                     <span class="icons icon-clear-search">Clear query</span>
@@ -79,24 +79,24 @@
                                 <input name="rooms-query" id="rooms-query" class="query" placeholder="Search by Number or Range" autocomplete="off" type="text" ng-model="rateQuery" ng-change="rateSearch()">
                                 <button type="button" name="button" class="icons icon-search">Search</button>
                             </div>
-                        
+
                             <ul id="unassigedrates" class="sortable" ui-sortable="sortableRateOptions" ng-model="ratesList">
 
-                                <li ng-repeat="rate in ratesList track by $index" ng-click="!sequenceRateQuery && selectRate(rate, $index)" ng-class="{selected: selectedUnAssignedRateIndex == $index}">
+                                <li ng-repeat="rate in ratesList track by $index" ng-click="!sequenceRateQuery && selectRate(rate, $index)" ng-class="{ 'selected': selectedUnAssignedRateIndex == $index}">
                                     <span class="icons icon-handle"></span>{{rate.name}}</li>
 
                             </ul>
-                            
+
                             <div class="search-pagination">
                                 <button type="button" class="button dark-grey next" ng-disabled="paginationState.page == paginationState.maxPages" ng-class="{'disabled':paginationState.page == paginationState.maxPages}" ng-click="navigateFromPage(true)">Next</button>
                                 <button type="button" class="button dark-grey prev" ng-disabled="paginationState.page == 1" ng-class="{'disabled':paginationState.page == 1 }" ng-click="navigateFromPage(false)">Prev</button>
-                                
+
                                 <p><strong>{{paginationState.firstIndex}}-{{paginationState.lastIndex}}</strong> of <strong>{{paginationState.totalRecords}}</strong> rates</p>
                             </div>
-                            
+
                         </div>
                     </div>
-                </fieldset> 
+                </fieldset>
             </form>
         </div>
     </section>
