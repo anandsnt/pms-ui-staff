@@ -99,7 +99,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'asbury': 'The Asbury',
             'manchebo': 'Manchebo Beach Resort',
             'seacrest': 'Seacrest Hotel V2',
-            'cole': 'The Cole Hotel'
+            'cole': 'The Cole Hotel',
+            'heritage-hills': 'Heritage Hills Golf Resort'
         };
 
         this.isThemeConfigured = function(theme) {
