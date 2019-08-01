@@ -82,7 +82,7 @@
                         
                             <ul id="unassigedrates" class="sortable" ui-sortable="sortableRateOptions" ng-model="ratesList">
 
-                                <li ng-repeat="rate in ratesList track by $index" ng-click="selectRate(rate, $index)" ng-class="{selected: selectedUnAssignedRateIndex == $index}">
+                                <li ng-repeat="rate in ratesList track by $index" ng-click="!sequenceRateQuery && selectRate(rate, $index)" ng-class="{selected: selectedUnAssignedRateIndex == $index}">
                                     <span class="icons icon-handle"></span>{{rate.name}}</li>
 
                             </ul>
