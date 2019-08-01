@@ -100,7 +100,10 @@ sntRover.controller('RVInvoiceSearchController',
 						$scope.invoiceSearchFlags.showFindInvoice = false;
 						$scope.invoiceSearchData.reservationsList = data.data;
 						angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
-							item.isOpened = false;
+							angular.forEach(item.bills, function(billItem, billitemIndex) {
+								billItem.isOpened = false;
+							});
+							item.itemIndex = itemIndex;
 						});
 						$scope.totalResultCount = data.data.total_count;
 						if ($scope.totalResultCount === 0) {
@@ -139,14 +142,14 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param billIndex index of transaction
 		 */
 		$scope.expandBill = function(itemIndex, billIndex) {
-			$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened;
-			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened) {
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened) {
 				var successCallBackOfExpandBill = function(response) {
 					angular.forEach(response.transactions, function(item, transactionItemIndex) {
 						item.isChecked = false;
 						item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
 					});					
-					$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions = response.transactions;
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response.transactions;
 					refreshScroll();
 				},
 				options = {
@@ -200,9 +203,11 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.clickedCancelOfRetrigger = function() {
 			$scope.paymentDataArray = [];
 			angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
-				angular.forEach(item.transactions, function(transactionItem, transactionItemIndex) {
-					transactionItem.isChecked = false;
-				});
+				angular.forEach(item.bills, function(billItem, billItemIndex) {
+					angular.forEach(billItem.transactions, function(transactionItem, transactionItemIndex) {
+						transactionItem.isChecked = false;
+					});
+				});				
 			});
 		};
 
@@ -212,14 +217,14 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param itemIdex index of selected account/reservation
 		 * @param billIndex index of transaction
 		 */
-		$scope.clickedTransactionCheckbox = function(transactionId, itemIndex, billIndex) {
+		$scope.clickedTransactionCheckbox = function(transactionId, billIndex, transactionIndex, itemIndex) {
 			var paymentData = {};
 
 			paymentData.transaction_id = transactionId;
-			paymentData.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].bill_id;
+			paymentData.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].bill_id;
 
-			$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked;
-			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].transactions[billIndex].isChecked) {
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].isChecked;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].isChecked) {
 
 				$scope.paymentDataArray.push(paymentData);
 			} else {
