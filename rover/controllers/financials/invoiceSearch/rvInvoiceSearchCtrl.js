@@ -164,7 +164,8 @@ sntRover.controller('RVInvoiceSearchController',
 				options = {
 					params: {
 						"bill_id": $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id,
-						"payments_only": true
+						"payments_only": true,
+						"no_qr_code_only": $scope.invoiceSearchData.no_qr_code_only
 					},
 					successCallBack: successCallBackOfExpandBill
 				};
