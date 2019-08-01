@@ -133,5 +133,6 @@ angular.module('reportsModule')
         "DEPOSIT_DUE_FROM_DATE": "Deposit Due From Date",
         "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date",
         "group_code": "Group Code",
-        "country_ids": "Country"
+        "country_ids": "Country",
+        "reservation_types": "Reservation Types"
     });

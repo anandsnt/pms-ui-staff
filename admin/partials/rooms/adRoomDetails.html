@@ -104,7 +104,7 @@
 						<img ng-src="{{data.room_image}}" id="file-preview" alt="">
 					</span>
 				</div>
-				<ad-textarea ng-if="featureToggleData.room_location_instructions" rows="4" div-class="full-width" text-area-class="full-width" value="data.instructions" label="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}" placeholder="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}"></ad-textarea>
+				<ad-textarea ng-if="::isRoomLocationInstructionsEnabled" rows="4" div-class="full-width" text-area-class="full-width" value="data.instructions" label="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}" placeholder="{{ 'ROOM_LOCATION_INSTRUCTIONS' | translate}}"></ad-textarea>
 				<div ng-hide="isStandAlone">
 					<ad-checkbox is-checked="data.is_exclude_from_manual_room_assignment" label="{{ 'EXCLUDE_FROM_MANUAL_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
 					<ad-checkbox is-checked="data.is_exclude_from_auto_room_assignment" label="{{ 'EXCLUDE_FROM_AUTO_ROOM_ASSIGNMENT' | translate}}" div-class="full-width" ></ad-checkbox>
