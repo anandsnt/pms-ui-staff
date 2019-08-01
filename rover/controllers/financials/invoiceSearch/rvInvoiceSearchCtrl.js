@@ -102,6 +102,7 @@ sntRover.controller('RVInvoiceSearchController',
 						angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
 							angular.forEach(item.bills, function(billItem, billitemIndex) {
 								billItem.isOpened = false;
+								billItem.billIndex = billitemIndex;
 							});
 							item.itemIndex = itemIndex;
 						});
@@ -607,7 +608,12 @@ sntRover.controller('RVInvoiceSearchController',
 	            dateFormat: $rootScope.jqDateFormat,
 	            maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
 	        };
-			$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+			if ($scope.shouldShowInvoices) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+			}
+			if ($scope.shouldShowReceipts) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
+			}
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);
