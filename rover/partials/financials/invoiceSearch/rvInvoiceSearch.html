@@ -20,7 +20,7 @@
         <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div>
 
-    <div class="entry dates" ng-show="!(shouldShowReceipts() && paymentDataArray.length > 0)">
+    <div class="entry dates" ng-show="false">
         <div class="entry-data has-datepicker">
             <label for="invoices-date-from">From</label>
             <button id="invoices-date-from-clear" class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
@@ -36,17 +36,18 @@
     <!-- Add class 'hidden' when displaying AR Invoices -->
     <div class="entry options" ng-show="!(shouldShowReceipts() && paymentDataArray.length > 0)"> 
         <!-- Add .hidden if displaying Receipts -->
-        <label class="checkbox">
-            <span class="icon-form icon-checkbox"></span>
-            <input type="checkbox" />
+        <label class="checkbox" ng-show="shouldShowInvoices()">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_folio_number_only}"></span>
+            <input type="checkbox" ng-model="invoiceSearchData.no_folio_number_only" ng-click="searchInvoice()"/>
             No Folio Number
         </label>
-        <!-- Remove .hidden if displaying Receipts -->
-      <!--   <label class="checkbox hidden">
-            <span class="icon-form icon-checkbox"></span>
-            <input type="checkbox" />
-            No Folio Number
-        </label> -->
+
+        <label class="checkbox" ng-show="shouldShowReceipts()">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_qr_code_only}"></span>
+            <input type="checkbox"  ng-model="invoiceSearchData.no_qr_code_only" ng-click="searchInvoice()"/>
+            No QR code only
+        </label>
+
     </div>
 </form>
 <span ng-if="shouldShowInvoices()">

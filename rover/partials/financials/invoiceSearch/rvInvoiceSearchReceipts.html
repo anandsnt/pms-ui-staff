@@ -134,8 +134,8 @@
                             </thead>
                             <tbody>
                                 <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in bill.transactions" ng-show="transactions.is_visible_in_invoice_search">
-                                    <td class="receipt-check" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index, invoiceReservationData.itemIndex)">
-                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-show="transactions.should_retrigger">
+                                    <td class="receipt-check" >
+                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-if="transactions.should_retrigger" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index, invoiceReservationData.itemIndex)">
                                             <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
                                             <input value="{{transactions.id}}"  type="checkbox">
                                         </label>
