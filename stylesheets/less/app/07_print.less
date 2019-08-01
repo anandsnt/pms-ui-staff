@@ -451,6 +451,16 @@
                     .size(20px, auto);
                 }
 
+                .invoice-logo {
+                    img {
+                        .size(40px, auto);
+        
+                        &.qr-code {
+                            .size(140px, auto);
+                        }
+                    }
+                }
+
                 .data {
                     position: relative;
                     width: -webkit-calc(~"100% - 7cm");
@@ -4384,6 +4394,12 @@
                     &:last-child {
                         td {
                             padding-bottom: 12pt;
+                        }
+                    }
+
+                    &.invoice-sub-item + tr:not(.invoice-sub-item){
+                        td {
+                            padding-top: 8pt;
                         }
                     }
                 }
