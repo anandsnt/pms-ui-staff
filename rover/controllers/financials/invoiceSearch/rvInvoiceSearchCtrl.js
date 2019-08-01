@@ -95,7 +95,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.searchInvoice = (page) => {
 			$scope.currentActivePage = page || 1;
-			if ($scope.invoiceSearchData.query.length > 1) {
+			if ($scope.invoiceSearchData.query.length > 0) {
 				$scope.invoiceSearchFlags.isQueryEntered = true;
 				const successCallBackOfSearchInvoice = (data) => {						
 						$scope.invoiceSearchFlags.showFindInvoice = false;
