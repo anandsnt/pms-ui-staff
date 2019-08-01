@@ -21,7 +21,7 @@
                     <!-- Add classes 'has-arrow next-view' if this is not an additional bill on the same reservation + add click/tap action to go to Stay Card -->
                     <!-- Add .open when opened -->
                     <div class="bill has-arrow next-view">
-                        <div class="expand toggle" ng-click="expandBill($index, 0)">
+                        <div class="expand toggle" ng-click="expandBill(0, 0)">
                             <!-- Add .active when bill is opened -->
                             <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': invoiceReservationData.bills[0].isOpened}"></span>
                         </div>
@@ -135,7 +135,7 @@
                             <tbody>
                                 <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in bill.transactions" ng-show="transactions.is_visible_in_invoice_search">
                                     <td class="receipt-check" >
-                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-if="transactions.should_retrigger" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index, invoiceReservationData.itemIndex)">
+                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-if="transactions.should_retrigger" ng-click="clickedTransactionCheckbox(transactions.id, bill.billIndex, $index, invoiceReservationData.itemIndex)">
                                             <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
                                             <input value="{{transactions.id}}"  type="checkbox">
                                         </label>
