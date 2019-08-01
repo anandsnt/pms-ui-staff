@@ -17,7 +17,7 @@
     <div class="invoice-list-content scrollable" ng-iscroll="invoice-list"> <!-- Hook iScroll here -->
         <div class="wrapper">
             <ul class="search-results">
-                <li class="invoice-item receipt-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results track by $grandIndex">
+                <li class="invoice-item receipt-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results">
                     <!-- Add classes 'has-arrow next-view' if this is not an additional bill on the same reservation + add click/tap action to go to Stay Card -->
                     <!-- Add .open when opened -->
                     <div class="bill has-arrow next-view">
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                     <!-- when the above bill is clicked to be opened, remove .hidden -->
-                    <div ng-repeat-end class="bill-receipt-details" ng-show="invoiceReservationData.isOpened">
+                    <div ng-repeat-end class="bill-receipt-details" ng-show="bill.isOpened">
                         <table>
                             <thead>
                                 <tr>
@@ -133,8 +133,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in invoiceReservationData.transactions" ng-show="transactions.is_visible_in_invoice_search">
-                                    <td class="receipt-check" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index)">
+                                <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in bill.transactions" ng-show="transactions.is_visible_in_invoice_search">
+                                    <td class="receipt-check" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index, invoiceReservationData.itemIndex)">
                                         <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}">
                                             <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
                                             <input value="{{transactions.id}}"  type="checkbox">
