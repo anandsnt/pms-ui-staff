@@ -23,7 +23,7 @@
                     <div class="bill has-arrow next-view">
                         <div class="expand toggle" ng-click="expandBill($index, 0)">
                             <!-- Add .active when bill is opened -->
-                            <span class="icons icon-double-arrow black expand-arrow"></span>
+                            <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': invoiceReservationData.bills[0].isOpened}"></span>
                         </div>
 
                         <div class="check" ng-show="false">
@@ -135,7 +135,7 @@
                             <tbody>
                                 <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in bill.transactions" ng-show="transactions.is_visible_in_invoice_search">
                                     <td class="receipt-check" ng-click="clickedTransactionCheckbox(transactions.id, $parent.$index, $index, invoiceReservationData.itemIndex)">
-                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}">
+                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-show="transactions.should_retrigger">
                                             <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
                                             <input value="{{transactions.id}}"  type="checkbox">
                                         </label>
