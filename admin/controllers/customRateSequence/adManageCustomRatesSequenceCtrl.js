@@ -138,11 +138,12 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 updateRateList();
                 $timeout(function() {
                     $scope.errorMessage = '';
-                }, 10000);
+                }, 6000);
             },
             clearSearchQuery = function() {
                 $scope.sequenceRateQuery = '';
                 $scope.rateQuery = '';
+                $scope.sortableRateSequenceOptions.disabled = false;
             },
             ratesSearchCall = null,
             sequenceRateSearchCall = null;
