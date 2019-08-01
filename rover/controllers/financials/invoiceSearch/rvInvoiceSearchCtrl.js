@@ -118,14 +118,20 @@ sntRover.controller('RVInvoiceSearchController',
 					params = {
 						'query': $scope.invoiceSearchData.query,
 						'filter_id': $scope.invoiceSearchData.filter_id,
-						'no_folio_number_only': $scope.invoiceSearchData.no_folio_number_only,
-						'no_qr_code_only': $scope.invoiceSearchData.no_qr_code_only,
 						'page_no': page || 1,
 						'per_page': PER_PAGE,
 						'from_date': $scope.invoiceSearchData.from_date,
 						'to_date': $scope.invoiceSearchData.to_date
-					},
-					options = {
+					};
+
+					if ($scope.shouldShowInvoices) {
+						params.no_folio_number_only = $scope.invoiceSearchData.no_folio_number_only;
+					}
+					if ($scope.shouldShowReceipts) {
+						params.no_qr_code_only = $scope.invoiceSearchData.no_qr_code_only;
+					}
+
+					var options = {
 						params: params,
 						successCallBack: successCallBackOfSearchInvoice
 					};
