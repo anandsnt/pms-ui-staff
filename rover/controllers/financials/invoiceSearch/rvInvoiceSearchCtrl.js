@@ -180,7 +180,7 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.reTriggerPaymentReceipt = function() {
 			var successCallBackOfRetrigger = function(response) {
 					$scope.isSuccess = true;
-					$scope.retriggerMessage = response;
+					$scope.retriggerMessage = response.message;
 					$scope.openRetriggerMessagePopup();
 				},
 				failureCallBackOfRetrigger = function(errorResponse) {
