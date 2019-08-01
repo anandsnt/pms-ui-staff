@@ -43,7 +43,7 @@
 				    		
 				    		<ad-textbox value="data.key_username" id="dont-autofill-username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
-				    		<ad-textbox value="data.key_password" id="dont-autofill-password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+				    		<ad-textbox value="data.key_password" id="dont-autofill-password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'key_password')"></ad-textbox>
 
 		                    <ad-textbox value="data.max_primary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>				
 
@@ -62,7 +62,7 @@
 				    		
 				    		<ad-textbox value="data.secondary_key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
-				    		<ad-textbox value="data.secondary_key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+				    		<ad-textbox value="data.secondary_key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'secondary_key_password')"></ad-textbox>
 		                    
 		                    <ad-textbox value="data.max_secondary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
@@ -115,8 +115,8 @@
 						
 						<div class = "holder right" ng-show="data.selected_key_system == 2">
 							<ad-textbox value="data.wallet_id" inputtype="text" label = "{{'WALLET_ID_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_ID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-							<ad-textbox value="data.wallet_auth_password" inputtype="text" label = "{{'WALLET_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-							<ad-textbox value="data.pre_auth_user_password" inputtype="text" label = "{{'AUTH_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'AUTH_PASSWORD_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+							<ad-textbox value="data.wallet_auth_password" inputtype="password" label = "{{'WALLET_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'wallet_auth_password')"></ad-textbox>
+							<ad-textbox value="data.pre_auth_user_password" inputtype="password" label = "{{'AUTH_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'AUTH_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'pre_auth_user_password')"></ad-textbox>
 						</div>
 
 						<div class = "holder left">
