@@ -67,6 +67,13 @@ admin.controller('adHotelLegalSettingsController',
 								'first_folio_number', 'is_copy_counter', 'is_print_invoice_enabled', 'is_void_bill_enabled', 'no_of_original_emails', 
 								'no_of_original_invoices', 'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled',
 								'next_ar_invoice_number', 'advance_payment_enabled', 'print_ar_invoice_number_activated_at'];
+			} else if (screen === 'tax_calculation') {
+				unwantedKeys = ['is_print_ar_invoice_number_enabled', 'ar_invoice_number_prefix', 'first_ar_invoice_number',
+								'is_bill_lock_enabled', 'is_print_folio_enabled', 'no_modify_invoice', 'no_reprint_reemail_invoice', 'folio_no_prefix', 
+								'first_folio_number', 'is_copy_counter', 'is_print_invoice_enabled', 'is_void_bill_enabled', 'no_of_original_emails', 
+								'no_of_original_invoices', 'is_swiss_police_report_enabled', 'is_police_report_enabled', 'is_belgium_export_enabled',
+								'next_ar_invoice_number', 'advance_payment_enabled', 'print_ar_invoice_number_activated_at', 'austrian_reg_card_enabled',
+								'reg_card_number_sequence_enabled','first_reg_card_number'];
 			}
 
 			$scope.legalSettings = dclone($scope.legalSettings, unwantedKeys);
