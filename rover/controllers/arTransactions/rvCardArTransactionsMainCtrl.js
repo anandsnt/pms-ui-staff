@@ -1021,17 +1021,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var printDataFailureCallback = function(errorData) {
 				$scope.errorMessage = errorData;
 				sntActivity.stop("PRINT_STARTED");
-<<<<<<< HEAD
-			};
-
-			var options = {
-				params: data,
-				successCallBack: printDataFetchSuccess,
-				failureCallBack: printDataFailureCallback
-			};
-
-			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);
-=======
 			},
 				options = {
 					params: data,
@@ -1040,7 +1029,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				};
 
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);
->>>>>>> 39c311c... CICO-67292-master Addressed PR comments
 		};
 
         /**
