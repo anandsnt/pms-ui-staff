@@ -10,6 +10,14 @@ admin.controller('adStaahController', ['$scope', 'config', 'adInterfacesSrv', 'n
             return adIFCSrv.get('authentication', 'token', {integration: 'staah'});
         };
 
+        var loadToken = function () {
+            $scope.callAPI(fetchToken, {
+                successCallBack: function (response) {
+                    $scope.authentication_token = response.authentication_token;
+                }
+            });
+        };
+
         $scope.interface = 'STAAH';
 
         $scope.state = {
@@ -60,7 +68,9 @@ admin.controller('adStaahController', ['$scope', 'config', 'adInterfacesSrv', 'n
         };
 
         /**
-         * Dialog methods
+         * Dialog methods for generate IFC user auth token.
+         * Button to open popup
+         * Buttons in popup close and generate
          */
         $scope.onClickRegenerate = function () {
             ngDialog.open({
@@ -79,14 +89,6 @@ admin.controller('adStaahController', ['$scope', 'config', 'adInterfacesSrv', 'n
                 successCallBack: function (response) {
                     $scope.authentication_token = response.authentication_token;
                     $scope.closeDialog();
-                }
-            });
-        };
-
-        var loadToken = function () {
-            $scope.callAPI(fetchToken, {
-                successCallBack: function (response) {
-                    $scope.authentication_token = response.authentication_token;
                 }
             });
         };
