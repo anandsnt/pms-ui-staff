@@ -469,12 +469,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.keypr', {
-        templateUrl: '/assets/partials/interfaces/MobileKeys/Keypr/adKeyprSetup.html',
+        templateUrl: '/assets/partials/interfaces/keypr/adKeypr.html',
         controller: 'adKeyprSetupCtrl',
         url: '/keypr/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('keypr');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('keypr');
             }]
         }
     });
@@ -879,6 +879,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('igel');
                 }],
+        }
+    });
+
+    $stateProvider.state('admin.fiskaltrustSetup', {
+        templateUrl: '/assets/partials/interfaces/fiskaltrust/adFiskaltrust.html',
+        controller: 'adFiskaltrustCtrl',
+        url: '/fiskaltrust',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('fiskaltrust');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('fiskaltrust');
+                }],
+            paymentChargeCodes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('fiskaltrust');
+                }]
         }
     });
 
