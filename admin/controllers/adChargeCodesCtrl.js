@@ -452,6 +452,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.addData = {
 				"id": taxCount + 1,
 				"is_inclusive": false,
+				"is_vienna_tax": false,
 				"calculation_rule_list": $scope.generateCalculationRule(taxCount)
 			};
 		};
@@ -469,6 +470,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.editSelectedTax = function(index) {
 			$scope.isEditTax = true;
 			$scope.isAddTax = false;
+
 			$scope.currentClickedTaxElement = index;
 			// Taking a deep copy edit data , need when we cancel out edit screen.
 			tempEditData = dclone($scope.prefetchData.linked_charge_codes[index], []);
@@ -503,6 +505,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.addData.is_inclusive = value;
 			} else if ($scope.isEditTax) {
 				$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
+			}
+		};
+		/*
+		 * To handle inclusive/exclusive radio button click.
+		 */
+		$scope.toggleViennaTax = function(index) {
+			if ($scope.isAddTax) {
+				$scope.addData.is_inclusive = true;
+			} else if ($scope.isEditTax) {
+				$scope.prefetchData.linked_charge_codes[index].is_inclusive = true;
+				$scope.prefetchData.linked_charge_codes[index].is_vienna_tax = $scope.addData.is_vienna_tax;
 			}
 		};
 
