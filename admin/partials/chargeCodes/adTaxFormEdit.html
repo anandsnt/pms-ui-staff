@@ -19,7 +19,7 @@
 					<input type="radio" ng-click="toggleExclusive($index,false)" ng-disabled="row.is_vienna_tax">
 					{{'EXCLUSIVE' |translate}} </label>
 			</div>
-			<div class="entry radio-check" ng-if="!prefetchData.is_vienna_tax_enabled">
+			<div class="entry radio-check" ng-if="prefetchData.is_vienna_tax_enabled">
 				<label class="checkbox inline" ng-class="{checked: row.is_vienna_tax}">
 					<span class="icon-form icon-checkbox" ng-class="{checked: row.is_vienna_tax}">
 					</span>
