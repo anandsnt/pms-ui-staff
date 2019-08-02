@@ -155,7 +155,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened;
 			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened) {
 				var successCallBackOfExpandBill = function(response) {
-					angular.forEach(response.transactions, function(item, transactionItemIndex) {
+					angular.forEach(response.transactions, function(item) {
 						item.isChecked = false;
 						item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
 					});					
@@ -213,9 +213,9 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.clickedCancelOfRetrigger = function() {
 			$scope.paymentDataArray = [];
-			angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
-				angular.forEach(item.bills, function(billItem, billItemIndex) {
-					angular.forEach(billItem.transactions, function(transactionItem, transactionItemIndex) {
+			angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item) {
+				angular.forEach(item.bills, function(billItem) {
+					angular.forEach(billItem.transactions, function(transactionItem) {
 						transactionItem.isChecked = false;
 					});
 				});				
@@ -465,7 +465,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 							if (sntapp.cordovaLoaded) {
 								cordova.exec(invoiceSearchPrintCompleted,
-									function(error) {
+									function() {
 										invoiceSearchPrintCompleted();
 									}, 'RVCardPlugin', 'printWebView', []);
 							}
@@ -546,7 +546,18 @@ sntRover.controller('RVInvoiceSearchController',
 			});
 		};
 
+		/*
+		 * Receipt print completed
+		 */
+		var receiptPrintCompleted = function() {
+			$("header .logo").removeClass('logo-hide');
+			$("header .h2").removeClass('text-hide');
+			$("body #loading").html('<div id="loading-spinner" ></div>');
+		};
 
+		/*
+		 * Print receipt
+         */
 		$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
 
 			$scope.printReceiptActive = true;
@@ -569,7 +580,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$timeout(function() {
 
 				if (sntapp.cordovaLoaded) {
-					cordova.exec(billCardPrintCompleted,
+					cordova.exec(receiptPrintCompleted,
 						function(error) {
 							receiptPrintCompleted();
 						}, 'RVCardPlugin', 'printWebView', []);
@@ -602,14 +613,14 @@ sntRover.controller('RVInvoiceSearchController',
 			};
 
 			$scope.invoiceSearchDateFromOptions = {
-	            dateFormat: $rootScope.jqDateFormat,
-	            maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.to_date < $scope.invoiceSearchData.from_date)) ? tzIndependentDate($scope.invoiceSearchData.to_date) : tzIndependentDate($rootScope.businessDate)
-	        };
+				dateFormat: $rootScope.jqDateFormat,
+				maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.to_date < $scope.invoiceSearchData.from_date)) ? tzIndependentDate($scope.invoiceSearchData.to_date) : tzIndependentDate($rootScope.businessDate)
+			};
 
-	        $scope.invoiceSearchDateToOptions = {
-	            dateFormat: $rootScope.jqDateFormat,
-	            maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
-	        };
+			$scope.invoiceSearchDateToOptions = {
+				dateFormat: $rootScope.jqDateFormat,
+				maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
+			};
 			if ($scope.shouldShowInvoices) {
 				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
 			}
