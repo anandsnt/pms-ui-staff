@@ -11,7 +11,7 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 		BaseCtrl.call(this, $scope);
 
 		$scope.screenData = {
-			email: $stateParams.guest_email || '',
+			email: !$stateParams.guest_email_blacklisted ? ($stateParams.guest_email || '') : '',
 			guest_name: $stateParams.last_name ? ($stateParams.first_name + ' ' + $stateParams.last_name) : $stateParams.first_name,
 			action_type: '',
 			location: '',
@@ -39,7 +39,8 @@ sntZestStation.controller('zsRoomNotAvailableNowCtrl', [
 			var options = {
 				params: {
 					reservation_id: $stateParams.reservation_id,
-					application: 'KIOSK'
+					application: 'KIOSK',
+					set_arrival_time_to_current_time: true
 				},
 				successCallBack: showSuccessPage
 			};

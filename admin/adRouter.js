@@ -61,8 +61,8 @@ admin.config([
                     }
                     return {};
                 },
-                featureToggleData: function(ADAppSrv) {
-                    return ADAppSrv.retrieveFeatureToggles();
+                features: function (Toggles) {
+                    return Toggles.initialize();
                 }
             }
         });
