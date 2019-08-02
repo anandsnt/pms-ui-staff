@@ -465,7 +465,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 							if (sntapp.cordovaLoaded) {
 								cordova.exec(invoiceSearchPrintCompleted,
-									function(error) {
+									function() {
 										invoiceSearchPrintCompleted();
 									}, 'RVCardPlugin', 'printWebView', []);
 							}
@@ -545,7 +545,7 @@ sntRover.controller('RVInvoiceSearchController',
 				scope: $scope
 			});
 		};
-		
+
 		/*
 		 * Receipt print completed
 		 */
