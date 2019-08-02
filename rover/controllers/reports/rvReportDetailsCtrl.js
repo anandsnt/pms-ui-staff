@@ -652,7 +652,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.hasNoResults = _.isEmpty($scope.$parent.results);
             $scope.showPrintOption = true;
             $scope.showPrintOptionForYearlyTax = false; // CICO-51364 - Used only for yearly vat report
-            $scope.showPrintOptionForComparisonReport = false;
+            // $scope.showPrintOptionForComparisonReport = false;
 
             // a very different parent template / row template / content template for certain reports
             // otherwise they all will share the same template
@@ -714,8 +714,8 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['COMPARISION_BY_DATE']:
                     $scope.hasReportTotals = false;
                     $scope.showReportHeader = true;
-                    $scope.showPrintOption = false;
-                    $scope.showPrintOptionForComparisonReport = true;
+                    $scope.showPrintOption = true;
+                    // $scope.showPrintOptionForComparisonReport = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
                     break;
 
@@ -1492,9 +1492,9 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
-        $scope.printComparisonReport = function() {
-            $scope.$broadcast("PRINT_COMPARISON_REPORT");
-        };
+        // $scope.printComparisonReport = function() {
+        //     $scope.$broadcast("PRINT_COMPARISON_REPORT");
+        // };
         /*
          * Method to get the reservations status
          */
