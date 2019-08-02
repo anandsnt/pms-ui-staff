@@ -1036,7 +1036,7 @@ angular.module('sntRover')
                     diaryMode: rvUtilSrv.getDiaryMode()
                 };
 
-                const store = configureStore(initialState);
+                const store = configureDiaryStore(initialState);
                 const { render } = ReactDOM;
                 const { Provider } = ReactRedux;
 
