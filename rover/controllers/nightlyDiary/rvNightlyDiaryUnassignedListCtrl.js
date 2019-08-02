@@ -58,14 +58,6 @@ angular.module('sntRover')
             }
         };
 
-        /**
-         * Return the arrival date to display on top of the unassigned list filter
-         * @returns {string}
-         */
-        $scope.getArrivalDate = function() {
-            return $scope.diaryData.fromDate <= $scope.businessDate ? $scope.businessDate : $scope.diaryData.fromDate;
-        };
-
         $scope.addListener('SUCCESS_ROOM_ASSIGNMENT', function() {
             var unassignedReservationList = $scope.diaryData.unassignedReservationList.reservations;
 
