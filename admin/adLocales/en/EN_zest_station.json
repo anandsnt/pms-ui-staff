@@ -182,10 +182,9 @@
 "WALK_IN_SOURCE": "Walk-in Source",
 "WALKIN_FLOW": "Walk-in flow",
 "TRADITIONAL": "Traditional",
-"UPSELL_ORIENTED": "Upsell oriented"
+"UPSELL_ORIENTED": "Upsell oriented",
 
-
-
-
-        
-        
+"EXCLUDE": "EXCLUDE",
+"PAYMENT_TYPES": "PAYMENT TYPES",
+"ALLOWED_PAYMENT_TYPES": "ALLOWED PAYMENT TYPES",
+"EXCLUDED_PAYMENT_TYPES": "EXCLUDED PAYMENT TYPES"

@@ -46,6 +46,9 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             // lets fetch post_types too
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
+                data = _.reject(data, function(item) {
+                   return item.value === 'WEEKLY';
+                });
                 $scope.postTypes = data;
                 $scope.$emit('hideLoader');
             });
@@ -295,6 +298,9 @@ admin.controller('ADRulesRestrictionCtrl', [
             var apiParams =  angular.copy($scope.singleRule);
 
             _.each(apiParams.schedules, function(schedule) {
+                if (schedule.advance_days !== 0) {
+                    schedule.exclude_from_auto_collection = false;
+                }
                 delete schedule.advance_days_selection;
             });
 
