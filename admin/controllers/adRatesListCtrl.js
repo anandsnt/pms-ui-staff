@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog', 'sntActivity',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog, sntActivity) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -280,7 +280,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		// If standalone PMS, then the rate configurator wizard should be appeared.
 		} else {
-			sntActivity.start('LOAD_RATE_DETAILS');
 			$state.go('admin.rateDetails', {rateId: rateId});
 		}
 	};

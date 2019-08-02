@@ -21,7 +21,7 @@
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
-        <div class="room-instructions" ng-show="zestStationData.show_room_number">
+        <div class="room-instructions" ng-show="enabledInFeatureToggle() && zestStationData.show_room_number">
             <h2>{{roomInstructions}}</h2>
         </div>
         <div id="keys">

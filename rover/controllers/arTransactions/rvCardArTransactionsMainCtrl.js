@@ -149,6 +149,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $scope.arDataObj.arBalance = data.ar_balance;
             $scope.arDataObj.isPrintArInvoiceNumberEnabled = data.is_print_ar_invoice_number_enabled;
             $scope.arDataObj.arInvoiceLabel = data.ar_invoice_label;
+            $scope.arDataObj.is_bill_lock_enabled = data.is_bill_lock_enabled;
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -813,6 +814,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// Popup for AR invoice print flow
 		$scope.showFormatBillPopup = function(index, is_from_paid) {
 			$scope.is_from_ar = true;
+			$scope.is_bill_lock_enabled = $scope.arDataObj.is_bill_lock_enabled;
 			$scope.billFormat = {};
 			$scope.billFormat.isInformationalInvoice = false;
 			$scope.arTransactionsData = $scope.arDataObj;
@@ -822,19 +824,22 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.item = $scope.arDataObj.balanceList[index]
 			}
 			if ($scope.item.paid) {
-				if($scope.item.is_locked || $scope.arDataObj.is_locked) {
+				if($scope.item.is_locked || !$scope.is_bill_lock_enabled) {
 					$scope.isInvoiceStepOneActive = false;
 					$scope.isInvoiceStepThreeActive = true;
 					$scope.shouldGenerateFinalInvoice = false;
+					$scope.disableInformationCheckBox = true;
 				} else {
 				$scope.isInvoiceStepOneActive = true;
 				$scope.isInvoiceStepThreeActive = false;
 				$scope.shouldGenerateFinalInvoice = true;
+				$scope.disableInformationCheckBox = true;
 				}
 			} else {
 				$scope.isInvoiceStepOneActive = false;
 				$scope.isInvoiceStepThreeActive = true;
 				$scope.shouldGenerateFinalInvoice = false;
+				$scope.disableInformationCheckBox = false;
 			}
 			$scope.isInvoiceStepTwoActive = false;
 			$scope.isInvoiceStepFourActive = false;
@@ -849,7 +854,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
         // Send email AR statement
         $scope.emailArStatement = function() {
-            var params = getParamsToSend();
+			var params = getParamsToSend();
+			
             params.to_address = $scope.filterData.statementEmailAddress;
             $scope.closeDialog();
 
@@ -877,33 +883,34 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$scope.clickedEmail = function(data) {
 			$scope.closeDialog();
-			$scope.arDataObj.is_locked = data.is_locked;
+			if ($scope.arDataObj.paidList.length > 0 && data.is_locked) {
+				$scope.item.is_locked = data.is_locked;
+			}
 			var sendEmailSuccessCallback = function(successData) {
-				$scope.$emit('hideLoader');
 				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 				$scope.status = "success";
 				$scope.showEmailSentStatusPopup();
 				$scope.reloadCurrentActiveBill();
-			};
-			var sendEmailFailureCallback = function(errorData) {
-				$scope.$emit('hideLoader');
-				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-				$scope.status = "alert";
-				$scope.showEmailSentStatusPopup();
-			};
-			
-			var options = {
-				params: data,
-				successCallBack: sendEmailSuccessCallback,
-				failureCallBack: sendEmailFailureCallback
-			};
+			},
+				sendEmailFailureCallback = function(errorData) {
+					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+					$scope.status = "alert";
+					$scope.showEmailSentStatusPopup();
+				},
+				options = {
+					params: data,
+					successCallBack: sendEmailSuccessCallback,
+					failureCallBack: sendEmailFailureCallback
+				};
 
 			$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);	
 		};
 
 		$scope.clickedPrint = function(requestParams) {
 			sntActivity.start("PRINT_STARTED");
-			$scope.arDataObj.is_locked = requestParams.is_locked;
+			if ($scope.arDataObj.paidList.length > 0 && requestParams.is_locked) {
+				$scope.item.is_locked  = requestParams.is_locked;
+			}
 			printBill(requestParams);
 		};
 
@@ -1013,13 +1020,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var printDataFailureCallback = function(errorData) {
 				$scope.errorMessage = errorData;
 				sntActivity.stop("PRINT_STARTED");
-			};
-
-			var options = {
-				params: data,
-				successCallBack: printDataFetchSuccess,
-				failureCallBack: printDataFailureCallback
-			};
+			},
+				options = {
+					params: data,
+					successCallBack: printDataFetchSuccess,
+					failureCallBack: printDataFailureCallback
+				};
 					
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);	
 		};

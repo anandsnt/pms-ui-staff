@@ -25,7 +25,7 @@
             </ad-textbox>
             <ad-textbox inputtype="text" value="config.sftp_username" label="SFTP user name" styleclass="full-width">
             </ad-textbox>
-            <ad-textbox inputtype="password" value="config.sftp_password" label="SFTP password" styleclass="full-width">
+            <ad-textbox inputtype="password" value="config.sftp_password" label="SFTP password" styleclass="full-width" click-handler="onPasswordClick(config, 'sftp_password')">
             </ad-textbox>
         </section>
     </fieldset>
@@ -42,11 +42,11 @@
             </select>
         </div>
     </fieldset>
-    
+
     <!-- charge code settings -->
     <fieldset class="holder right" ng-if="config.enabled">
       <div class="form-title">
-        <h3>Charge Code Settings </h3>       
+        <h3>Charge Code Settings </h3>
       </div>
       <div class="entry">
         <label translate>TAX_CHARGE_CODE_6</label>

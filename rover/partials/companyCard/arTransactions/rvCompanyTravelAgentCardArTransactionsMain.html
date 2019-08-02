@@ -50,7 +50,7 @@
         <!-- {tabs/ar-transactions.html} -->
 
         <div include-replace ng-include="'/assets/partials/companyCard/arTransactions/rvArStatementPrintTemplate.html'"></div>
-        <div class="invoice" ng-if="printBillCardActive" include-replace ng-include="'/assets/partials/companyCard/arTransactions/rvArInvoice.html'"></div>
+        <div class="invoice" include-replace ng-if="printBillCardActive" ng-include="'/assets/partials/companyCard/arTransactions/rvArInvoice.html'"></div>
 
         <!-- {tabs/ar-statement.html} -->
 

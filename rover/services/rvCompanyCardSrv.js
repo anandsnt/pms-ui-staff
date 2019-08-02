@@ -619,7 +619,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 url = ' /api/bills/' + param.bill_id + '/transactions';
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
