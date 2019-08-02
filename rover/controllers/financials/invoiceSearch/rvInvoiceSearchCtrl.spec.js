@@ -3,7 +3,7 @@ describe('RVInvoiceSearchController', function () {
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('invoiceSearchSampleData.json'),
         jsonResult = fixtures['invoiceSearchSampleData.json'],
-        filterOptions = {"filters":[{"id":1,"name":"Invoices","value":"INVOICES"},{"id":2,"name":"AR Invoices","value":"AR_INVOICES"},{"id":3,"name":"Receipts","value":"RECEIPTS"}]}; 
+        filterOptions = {"filters": [{"id": 1,"name": "Invoices", "value": "INVOICES"}, {"id": 2, "name": "AR Invoices", "value": "AR_INVOICES"}, {"id": 3,"name": "Receipts", "value": "RECEIPTS"}]}; 
 
     var $controller,
         $scope,
@@ -14,6 +14,7 @@ describe('RVInvoiceSearchController', function () {
         rvAccountTransactionsSrv,
         rvInvoiceSearchController,
         rvAccountsConfigurationSrv,
+        RVCompanyCardSrv,
         results = jsonResult;    
 
         describe('variable initalizations', function () {
@@ -21,7 +22,7 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_, _RVCompanyCardSrv_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
                     RVBillCardSrv = _RVBillCardSrv_;
@@ -29,6 +30,7 @@ describe('RVInvoiceSearchController', function () {
                     $rootScope = _$rootScope_;
                     rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
                     rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
+                    RVCompanyCardSrv = _RVCompanyCardSrv_;
                     $scope = _$rootScope_.$new();
                 });
 
@@ -194,6 +196,7 @@ describe('RVInvoiceSearchController', function () {
                     expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
 
                 });
+
             });
         });    
 });
