@@ -12,9 +12,11 @@ sntRover.controller('RVInvoiceSearchController',
 	'$vault',
 	'rvAccountTransactionsSrv',
 	'rvAccountsConfigurationSrv',
+	'filterOptions',
+	'RVCompanyCardSrv',
 	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, 
 		$filter, RVBillCardSrv, $window, $state, $stateParams, $vault, 
-		rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
+		rvAccountTransactionsSrv, rvAccountsConfigurationSrv, filterOptions, RVCompanyCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -22,7 +24,20 @@ sntRover.controller('RVInvoiceSearchController',
 			that = this,
 			PER_PAGE = 10;
 			
-		$scope.currentActivePage = 1;	
+		$scope.currentActivePage = 1;
+		$scope.filterOptions = filterOptions.filters;
+
+		$scope.invoiceSearchData = {};
+		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
+		$scope.paymentDataArray = [];
+
+		$scope.shouldShowInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Invoices"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowReceipts =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		};
 
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -80,11 +95,18 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.searchInvoice = (page) => {
 			$scope.currentActivePage = page || 1;
-			if ($scope.invoiceSearchData.query.length > 1) {
+			if ($scope.invoiceSearchData.query.length > 0) {
 				$scope.invoiceSearchFlags.isQueryEntered = true;
-				const successCallBackOfPayment = (data) => {						
+				const successCallBackOfSearchInvoice = (data) => {						
 						$scope.invoiceSearchFlags.showFindInvoice = false;
 						$scope.invoiceSearchData.reservationsList = data.data;
+						angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item, itemIndex) {
+							angular.forEach(item.bills, function(billItem, billitemIndex) {
+								billItem.isOpened = false;
+								billItem.billIndex = billitemIndex;
+							});
+							item.itemIndex = itemIndex;
+						});
 						$scope.totalResultCount = data.data.total_count;
 						if ($scope.totalResultCount === 0) {
 							$scope.invoiceSearchFlags.showFindInvoice = true;
@@ -96,13 +118,23 @@ sntRover.controller('RVInvoiceSearchController',
 					},
 					params = {
 						'query': $scope.invoiceSearchData.query,
-						'no_folio_number_only': $scope.invoiceSearchData.no_folio_number_only,
+						'filter_id': $scope.invoiceSearchData.filter_id,
 						'page_no': page || 1,
-						'per_page': PER_PAGE
-					},
-					options = {
+						'per_page': PER_PAGE,
+						'from_date': $scope.invoiceSearchData.from_date,
+						'to_date': $scope.invoiceSearchData.to_date
+					};
+
+					if ($scope.shouldShowInvoices) {
+						params.no_folio_number_only = $scope.invoiceSearchData.no_folio_number_only;
+					}
+					if ($scope.shouldShowReceipts) {
+						params.no_qr_code_only = $scope.invoiceSearchData.no_qr_code_only;
+					}
+
+					var options = {
 						params: params,
-						successCallBack: successCallBackOfPayment
+						successCallBack: successCallBackOfSearchInvoice
 					};
 
 				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
@@ -112,6 +144,103 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.invoiceSearchFlags.isQueryEntered = false;
 				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
+		};
+
+		/*
+		 * Expand Bill
+		 * @param itemIndex index of selected account/reservation
+		 * @param billIndex index of transaction
+		 */
+		$scope.expandBill = function(itemIndex, billIndex) {
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].isOpened) {
+				var successCallBackOfExpandBill = function(response) {
+					angular.forEach(response.transactions, function(item) {
+						item.isChecked = false;
+						item.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id;
+					});					
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response.transactions;
+					refreshScroll();
+				},
+				options = {
+					params: {
+						"bill_id": $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id,
+						"payments_only": true,
+						"no_qr_code_only": $scope.invoiceSearchData.no_qr_code_only
+					},
+					successCallBack: successCallBackOfExpandBill
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.fetchTransactionDetails, options);
+			}			
+		};
+
+		$scope.openRetriggerMessagePopup = function() {
+			ngDialog.open({
+					template: '/assets/partials/financials/invoiceSearch/rvRetriggerSuccessMessagePopup.html',
+					className: '',
+					scope: $scope
+			});
+		};
+
+		/*
+		 * Retrigger payment
+		 */
+		$scope.reTriggerPaymentReceipt = function() {
+			var successCallBackOfRetrigger = function(response) {
+					$scope.isSuccess = true;
+					$scope.retriggerMessage = response.message;
+					$scope.openRetriggerMessagePopup();
+				},
+				failureCallBackOfRetrigger = function(errorResponse) {
+					$scope.isSuccess = false;
+					$scope.retriggerMessage = errorResponse.errors;
+					$scope.openRetriggerMessagePopup();
+				},
+				options = {
+					params: {
+						"transactions": $scope.paymentDataArray
+					},
+					successCallBack: successCallBackOfRetrigger,
+					failureCallBack: failureCallBackOfRetrigger
+				};
+
+			$scope.callAPI(RVInvoiceSearchSrv.triggerPaymentReceipt, options);						
+		};
+
+		/*
+		 * Retrigger cancel 
+		 */
+		$scope.clickedCancelOfRetrigger = function() {
+			$scope.paymentDataArray = [];
+			angular.forEach($scope.invoiceSearchData.reservationsList.results, function(item) {
+				angular.forEach(item.bills, function(billItem) {
+					angular.forEach(billItem.transactions, function(transactionItem) {
+						transactionItem.isChecked = false;
+					});
+				});				
+			});
+		};
+
+		/*
+		 * clicked transaction checkboxes
+		 * @param transactionId transaction id
+		 * @param itemIdex index of selected account/reservation
+		 * @param billIndex index of transaction
+		 */
+		$scope.clickedTransactionCheckbox = function(transactionId, billIndex, transactionIndex, itemIndex) {
+			var paymentData = {};
+
+			paymentData.transaction_id = transactionId;
+			paymentData.bill_id = $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].bill_id;
+
+			$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].isChecked = !$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].isChecked;
+			if ($scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions[transactionIndex].isChecked) {
+
+				$scope.paymentDataArray.push(paymentData);
+			} else {
+				$scope.paymentDataArray.pop(paymentData);
+			}			
 		};
 		/*
 		 * Update informational invoice flag
@@ -336,7 +465,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 							if (sntapp.cordovaLoaded) {
 								cordova.exec(invoiceSearchPrintCompleted,
-									function(error) {
+									function() {
 										invoiceSearchPrintCompleted();
 									}, 'RVCardPlugin', 'printWebView', []);
 							}
@@ -401,11 +530,74 @@ sntRover.controller('RVInvoiceSearchController',
 				}
 			}
 		};
+
+		$scope.clickedReceiptIcon = function(type, transactionId, billId) {
+
+			$scope.entityType = type;
+			$scope.isFromBillCard = (type === 'RESERVATION');
+			$scope.transactionId = transactionId;
+			$scope.billId = billId;
+
+			ngDialog.open({
+				template: '/assets/partials/popups/rvReceiptPopup.html',
+				controller: 'RVReceiptPopupController',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		/*
+		 * Receipt print completed
+		 */
+		var receiptPrintCompleted = function() {
+			$("header .logo").removeClass('logo-hide');
+			$("header .h2").removeClass('text-hide');
+			$("body #loading").html('<div id="loading-spinner" ></div>');
+		};
+
+		/*
+		 * Print receipt
+         */
+		$scope.addListener('PRINT_RECEIPT', function(event, receiptPrintData) {
+
+			$scope.printReceiptActive = true;
+			$scope.receiptPrintData = receiptPrintData;
+			$scope.errorMessage = "";
+
+			// CICO-9569 to solve the hotel logo issue
+			$("header .logo").addClass('logo-hide');
+			$("header .h2").addClass('text-hide');
+			$("body #loading").html("");// CICO-56119
+			$scope.$parent.addNoPrintClass = true;
+
+			// add the orientation
+			addPrintOrientation();
+
+			/*
+			*	======[ READY TO PRINT ]======
+			*/
+			// this will show the popup with full bill
+			$timeout(function() {
+
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(receiptPrintCompleted,
+						function(error) {
+							receiptPrintCompleted();
+						}, 'RVCardPlugin', 'printWebView', []);
+				}
+				else
+				{
+					window.print();
+					receiptPrintCompleted();
+				}
+			}, 700);
+		});
+
 		/*
 		 * Initialization
 		 */
 		that.init = () => {
-			$scope.invoiceSearchData = {};			
+	
 			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
@@ -419,11 +611,27 @@ sntRover.controller('RVInvoiceSearchController',
 				api: $scope.searchInvoice,
 				perPage: PER_PAGE
 			};
-			$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+
+			$scope.invoiceSearchDateFromOptions = {
+				dateFormat: $rootScope.jqDateFormat,
+				maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.to_date < $scope.invoiceSearchData.from_date)) ? tzIndependentDate($scope.invoiceSearchData.to_date) : tzIndependentDate($rootScope.businessDate)
+			};
+
+			$scope.invoiceSearchDateToOptions = {
+				dateFormat: $rootScope.jqDateFormat,
+				maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
+			};
+			if ($scope.shouldShowInvoices) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+			}
+			if ($scope.shouldShowReceipts) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
+			}
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);
 			$scope.searchInvoice(1);
+
 		};
 		
 		that.init();

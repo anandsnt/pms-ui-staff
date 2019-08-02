@@ -9,6 +9,7 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
     var fetchSuccessOfServerDetails = function(data) {
         $scope.$emit('hideLoader');
         $scope.serverDetails = data;
+        $scope.setDefaultDisplayPassword($scope.serverDetails, 'password');
     };
 
     var fetchFailedOfServerDetails = function(errorMessage) {
@@ -47,6 +48,8 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
         var postData = {};
 
         postData = $scope.serverDetails;
+
+        $scope.deletePropertyIfRequired(postData, 'password');
 
         var fetchSuccessOfSaveServerDetails = function() {
             $scope.goBack();

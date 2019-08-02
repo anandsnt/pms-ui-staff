@@ -7,6 +7,8 @@ angular.module('admin').controller('adEasiCtrl',
         'chargeGroups',
         'taxChargeCodes',
         function($scope, $rootScope, config, adInterfacesSrv, adInterfacesCommonConfigSrv, chargeGroups, taxChargeCodes) {
+            BaseCtrl.call(this, $scope);
+
             $scope.interface = 'EASI';
 
             $scope.toggleEnabled = function() {
@@ -22,9 +24,13 @@ angular.module('admin').controller('adEasiCtrl',
             };
 
             $scope.saveSetup = function () {
+                var params = dclone($scope.config);
+
+                $scope.deletePropertyIfRequired(params, 'sftp_password');
+
                 $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        settings: $scope.config,
+                        settings: params,
                         integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function () {
@@ -56,6 +62,8 @@ angular.module('admin').controller('adEasiCtrl',
                 $scope.config.tax1_charge_code_id = parseInt(config.tax1_charge_code_id, 10);
                 $scope.config.tax2_charge_code_id = parseInt(config.tax2_charge_code_id, 10);
                 $scope.config.tax3_charge_code_id = parseInt(config.tax3_charge_code_id, 10);
+
+                $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
             })();
             /*
              * Changed tax exempt

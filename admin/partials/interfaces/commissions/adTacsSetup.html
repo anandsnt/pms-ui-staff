@@ -35,11 +35,12 @@
             label="{{'USERNAME'| translate}}"
             styleclass="full-width">
         </ad-textbox>
-        <ad-textbox inputtype="text"
+        <ad-textbox inputtype="password"
             value="config.sftp_password"
             required="yes"
             label="{{'PASSWORD'| translate}}"
-            styleclass="full-width">
+            styleclass="full-width"
+            click-handler="onPasswordClick(config, 'sftp_password')">
         </ad-textbox>
         <ad-dropdown label-in-drop-down="Select" list="countryList" selected-id='config.taxation_country_id' selbox-class="placeholder" div-class="full-width" label="{{'COUNTRY_OF_TAXING_AUTHORITY'| translate}}">
         </ad-dropdown>
