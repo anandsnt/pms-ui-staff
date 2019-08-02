@@ -11,7 +11,7 @@ admin.controller('adExactOnlineSetupCtrl', ['$scope', '$rootScope', 'adExactOnli
 
         $scope.interface = "EXACTONLINE";
 
-        $scope.mappingTypes = ['charge_code', 'tax_code'];
+        $scope.mappingTypes = ['charge_code', 'tax_charge_code'];
 
         /**
          * when clicked on check box to enable/diable pabx
