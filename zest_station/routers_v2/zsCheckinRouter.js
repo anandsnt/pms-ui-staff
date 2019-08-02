@@ -626,7 +626,8 @@ sntZestStation.config(['$stateProvider',
                 reservation_id: '',
                 guest_email: '',
                 first_name: '',
-                last_name: ''
+                last_name: '',
+                guest_email_blacklisted: ''
             },
             templateUrl: '/assets/partials_v2/checkin/zsRoomNotAvailableNow.html'
         });
