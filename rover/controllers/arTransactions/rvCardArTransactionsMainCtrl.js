@@ -76,7 +76,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 		// List of listner values as object hash.
 		var listeners = {};
-		
+
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
@@ -137,10 +137,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.transactionsDetails = data;
 			if (data.ar_transactions.length === 0) {
 				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo !== 1) {
-					loadAPIData('BALANCE', 1);										
+					loadAPIData('BALANCE', 1);
 				}
 			}
-			
+
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
@@ -211,7 +211,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				// CICO-53406 : Workaround to focus textbox
 				var input = document.getElementById('arTransactionQuery');
-            
+
 				input.focus();
 		};
 
@@ -232,7 +232,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Params will be different on each tab
 		 */
 		that.filterChanged = function() {
-			
+
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
 					$scope.arDataObj.balancePageNo = 1;
@@ -252,7 +252,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			// CICO-53406 : Workaround to blur textbox
 			var input = document.getElementById('arTransactionQuery');
-            
+
 			input.blur();
 		};
 
@@ -268,7 +268,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
-			$scope.arDataObj.balancePageNo = $scope.arDataObj.paidPageNo 
+			$scope.arDataObj.balancePageNo = $scope.arDataObj.paidPageNo
 			= $scope.arDataObj.unallocatePageNo = $scope.arDataObj.allocatePageNo = 1;
 
 			that.fetchTransactions();
@@ -358,7 +358,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isPaymentSelected = false;
 			$scope.arFlags.shouldShowPayAllButton = false;
 			$scope.arFlags.shouldShowFooter = false;
-			$scope.arDataObj.availableAmount = 0;			
+			$scope.arDataObj.availableAmount = 0;
 
 			that.fetchTransactions();
 		};
@@ -397,7 +397,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				failureCallBack: failureCallBackOfPayment
 			};
 
-			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);			
+			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);
 		};
 		/*
 		 * Pay All Button click
@@ -413,7 +413,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				selectedInvoiceObj.invoice_id = eachItem.transaction_id;
 				selectedInvoiceObj.amount = eachItem.amount;
-				$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);	   			
+				$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);
 				totalAllocatedAmount = totalAllocatedAmount + eachItem.amount;
 			});
 			$scope.arDataObj.totalAllocatedAmount  = totalAllocatedAmount;
@@ -450,10 +450,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 		/*
 		 * Should show footer instead of pagination
-		 * 2 cases - one if invoice selected 
+		 * 2 cases - one if invoice selected
 		 *         - if selected payment from add payment or from unallocate tab
 		 */
-		$scope.shouldShowFooter = function() {			
+		$scope.shouldShowFooter = function() {
 			var flag = true;
 
 			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPaymentOrAllocateButton) {
@@ -526,10 +526,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		listeners['REFRESH_BALANCE_LIST'] = $scope.$on('REFRESH_BALANCE_LIST', function() { 
+		listeners['REFRESH_BALANCE_LIST'] = $scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.arDataObj.balancePageNo = 1;
-			that.fetchTransactions();			
+			that.fetchTransactions();
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
@@ -558,15 +558,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.shouldShowPayAllButton = true;
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;
-			$scope.arFlags.isPaymentSelected = true;	
+			$scope.arFlags.isPaymentSelected = true;
 			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
-			$scope.arFlags.isFromAddPaymentOrAllocateButton = true;	
+			$scope.arFlags.isFromAddPaymentOrAllocateButton = true;
 			var totalAllocatedAmount = 0;
 
             _.each($scope.arDataObj.balanceList, function (eachItem) {
                 totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
             });
-            $scope.arDataObj.totalOfAllInvoicesInBalanceTab = totalAllocatedAmount;	
+            $scope.arDataObj.totalOfAllInvoicesInBalanceTab = totalAllocatedAmount;
             $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
 		});
 
@@ -599,7 +599,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.arDataObj.unallocatePageNo = pageNo;
 					break;
 			}
-			
+
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
 				successCallBack: successCallbackOfFetchAPI,
 				params: that.createParametersFetchTheData()
@@ -850,12 +850,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					className: '',
 					scope: $scope
 			});
-		};	
+		};
 
         // Send email AR statement
         $scope.emailArStatement = function() {
-			var params = getParamsToSend();
-			
+			      var params = getParamsToSend();
             params.to_address = $scope.filterData.statementEmailAddress;
             $scope.closeDialog();
 
@@ -892,18 +891,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.showEmailSentStatusPopup();
 				$scope.reloadCurrentActiveBill();
 			},
-				sendEmailFailureCallback = function(errorData) {
-					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-					$scope.status = "alert";
-					$scope.showEmailSentStatusPopup();
-				},
-				options = {
-					params: data,
-					successCallBack: sendEmailSuccessCallback,
-					failureCallBack: sendEmailFailureCallback
-				};
-
-			$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);	
+			sendEmailFailureCallback = function(errorData) {
+				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+				$scope.status = "alert";
+				$scope.showEmailSentStatusPopup();
+			},
+			options = {
+				params: data,
+				successCallBack: sendEmailSuccessCallback,
+				failureCallBack: sendEmailFailureCallback
+			};
+			$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);
 		};
 
 		$scope.clickedPrint = function(requestParams) {
@@ -940,7 +938,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					var copyCount = "";
 
 					if (successData.is_copy_counter) {
-						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);					
+						copyCount = parseInt(successData.print_counter) - parseInt(successData.no_of_original_invoices);
 					}
 					return copyCount;
 				},
@@ -966,7 +964,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
-					} 
+					}
 					else if (parseInt(successData.print_counter) > parseInt(successData.no_of_original_invoices) && successData.is_copy_counter)
 					{
 						copyCount = getCopyCount(successData);
@@ -976,7 +974,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-					
 					$scope.printData = successData;
 					$scope.errorMessage = "";
 
@@ -1014,20 +1011,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 							billCardPrintCompleted();
 						}
 					}, 700);
-				
 			};
 
 			var printDataFailureCallback = function(errorData) {
-				$scope.errorMessage = errorData;
-				sntActivity.stop("PRINT_STARTED");
-			},
+					$scope.errorMessage = errorData;
+					sntActivity.stop("PRINT_STARTED");
+			  },
 				options = {
 					params: data,
 					successCallBack: printDataFetchSuccess,
 					failureCallBack: printDataFailureCallback
 				};
-					
-			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);	
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);
 		};
 
         /**
@@ -1064,7 +1059,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 payment.card_details.ending_with = payment.card_details.last_digits;
                 payment.card_details.expiry_date = payment.card_details.expire_date;
             }
-            
+
 			var passData = {
 				"account_id": $scope.arDataObj.accountId,
 				"isRefundClick": true,
@@ -1099,7 +1094,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				}, 2000);
 			}
 		});
-		/* 
+		/*
 		 * CICO-50427 : AR: Move zero invoices to the Paid tab even if no allocations exist.
 		 * Handle the Move Zero Invoice As Paid button click.
 		 */
