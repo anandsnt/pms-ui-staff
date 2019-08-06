@@ -68,6 +68,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     var bill_details = {
                         'date': billData.date,
                         'description': chargeDetail.description,
+                        'reference_text': chargeDetail.reference_text || '',
                         'amount': chargeDetail.amount
                     };
 
