@@ -369,4 +369,6 @@ BaseCtrl = function($scope) {
         }
     };
 
+    $scope.isEmptyArray = isEmptyArray;
+
 };
