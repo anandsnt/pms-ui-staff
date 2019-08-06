@@ -77,7 +77,7 @@ angular.module('sntRover')
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
                         fromDate: srvParams.start_date,
-                        arrivalDate: $rootScope.businessDate,
+                        arrivalDate: srvParams.start_date <= $rootScope.businessDate ? $rootScope.businessDate : srvParams.start_date,
                         toDate: '',
                         paginationData: {
                             perPage: 50,

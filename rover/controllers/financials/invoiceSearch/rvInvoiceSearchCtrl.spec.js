@@ -3,7 +3,7 @@ describe('RVInvoiceSearchController', function () {
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('invoiceSearchSampleData.json'),
         jsonResult = fixtures['invoiceSearchSampleData.json'],
-        filterOptions = {"filters": [{"id": 1,"name": "Invoices", "value": "INVOICES"}, {"id": 2, "name": "AR Invoices", "value": "AR_INVOICES"}, {"id": 3,"name": "Receipts", "value": "RECEIPTS"}]}; 
+        filterOptions = {"filters": [{"id": 1, "name": "Invoices", "value": "INVOICES"}, {"id": 2, "name": "AR Invoices", "value": "AR_INVOICES"}, {"id": 3, "name": "Receipts", "value": "RECEIPTS"}]}; 
 
     var $controller,
         $scope,
@@ -194,6 +194,37 @@ describe('RVInvoiceSearchController', function () {
                     rvInvoiceSearchController.printBill();
 
                     expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
+
+                });
+
+                it('expandBill should invoke expand service', function() {
+                    $scope.invoiceSearchData = {};
+                    $scope.invoiceSearchData.reservationsList = jsonResult.data;
+                    spyOn(RVCompanyCardSrv, "fetchTransactionDetails").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.expandBill(0, 1);
+
+                    expect(RVCompanyCardSrv.fetchTransactionDetails).toHaveBeenCalled();
+
+                });
+
+                it('expandBill should invoke expand service', function() {
+  
+                    spyOn(RVInvoiceSearchSrv, "triggerPaymentReceipt").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.reTriggerPaymentReceipt();
+
+                    expect(RVInvoiceSearchSrv.triggerPaymentReceipt).toHaveBeenCalled();
 
                 });
 

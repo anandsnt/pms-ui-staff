@@ -366,6 +366,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;                
+
+                if ($scope.touchedReport.untilDate < selectedDate) {
+                    $scope.touchedReport.untilDate = selectedDate;
+                }
+                if ($scope.touchedReport.untilDate > $scope.toDateOptionsOneMonthLimit.maxDate) {
+                    $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
+                }
             }
         }, datePickerCommon);
 
