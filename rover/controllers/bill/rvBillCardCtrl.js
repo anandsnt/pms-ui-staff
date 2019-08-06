@@ -3364,7 +3364,6 @@ sntRover.controller('RVbillCardController',
 		$scope.transactionId = feesDetails[feesIndex].id;
 		$scope.billId = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
 		$scope.entityType = "Reservation";
-
 		ngDialog.open({
 			template: '/assets/partials/popups/rvReceiptPopup.html',
 			controller: 'RVReceiptPopupController',
