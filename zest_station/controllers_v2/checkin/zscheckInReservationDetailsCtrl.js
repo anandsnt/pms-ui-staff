@@ -69,8 +69,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     $scope.isReservationDetailsFetched = true;
 
+                    var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used ? $scope.selectedReservation.reservation_details.payment_method_used : '';
                     var isAllowedPaymentMethod = function(paymentType) {
-                        var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used ? $scope.selectedReservation.reservation_details.payment_method_used : '';
                         var paymentMethodValue = paymentType.value ? paymentType.value : '';
 
                         return (paymentType.id === paymentMethodUsed || paymentMethodValue.toUpperCase() === paymentMethodUsed.toUpperCase()) &&
@@ -86,7 +86,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
                         $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                         $state.go('zest_station.noCCPresentForCheckin');
-                    } else if ($stateParams.previousState !== 'WALKIN' &&
+                    } else if (paymentMethodUsed && $stateParams.previousState !== 'WALKIN' &&
                                zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_exclude_payment_methods &&
                                indexInAllowedPaymentTypes === -1) {
                         $state.go('zest_station.paymentMethodNotAllowed');
