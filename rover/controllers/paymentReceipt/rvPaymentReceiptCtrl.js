@@ -6,8 +6,7 @@ sntRover.controller('RVReceiptPopupController',
     'ngDialog',     
     function($scope, $rootScope, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
 
-
-    BaseCtrl.call(this, $scope); 
+    BaseCtrl.call(this, $scope);
 
     /*
      * Function to get email button class
@@ -52,6 +51,10 @@ sntRover.controller('RVReceiptPopupController',
         $scope.callAPI(RVBillCardSrv.printReceiptData, dataToSend);
     };
 
+    $scope.closeDialog = function() {
+      ngDialog.close();
+    };
+
     /*
      * email receipt method
      */
@@ -87,7 +90,10 @@ sntRover.controller('RVReceiptPopupController',
      * @return {undefined}
      */
     var init = function() {
+
         $scope.data = {};
+        $scope.data.mailto_address = "";
+
         var dataToSend = {
             successCallBack: successCallBackForLanguagesFetch
         };
