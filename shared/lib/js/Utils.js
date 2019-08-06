@@ -726,3 +726,13 @@ var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
 var isValidEmail = function(email) {
     return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
 }
+
+/**
+ * Checks whether the given array is empty or not
+ * @param {Array} arr 
+ * @return {Boolean}
+ */
+var isEmptyArray = function (arr) {
+    return arr.length === 0;
+};
+

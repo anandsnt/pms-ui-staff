@@ -333,4 +333,6 @@ BaseCtrl = function($scope) {
 
     $scope.isEmpty = isEmpty;
 
+    $scope.isEmptyArray = isEmptyArray;
+
 };
