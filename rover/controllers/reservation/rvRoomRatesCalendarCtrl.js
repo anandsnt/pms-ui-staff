@@ -21,9 +21,9 @@ sntRover.controller('RVRoomRatesCalendarCtrl', ['$state',
 				m = date.getMonth(),
 				businessDate = tzIndependentDate($rootScope.businessDate),
 				businessM = businessDate.getMonth(),
-				businessY = businessDate.getFullYear();
+				businessY = businessDate.getFullYear(),
+                day = (m + (y * 100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 
-            day = (m + (y * 100)) > ( businessM + (businessY * 100)) ? 1 : parseInt(tzIndependentDate($rootScope.businessDate).getDate());
 			return $filter('date')(new Date(y, m, day), $rootScope.dateFormatForAPI);
 		};
 
