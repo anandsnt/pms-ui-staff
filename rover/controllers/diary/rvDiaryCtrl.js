@@ -725,7 +725,7 @@ angular.module('sntRover')
                     $scope.renderGrid();
                 } 
                 else {
-                    $scope.gridProps.unassignedRoomList.fetchList();
+                    $scope.gridProps.unassignedRoomList.open = true;
                 }
             };
 
