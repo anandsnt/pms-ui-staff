@@ -657,11 +657,11 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.filterViennaTaxCodes = function (editData) {
             return function (item) {
                 if ($scope.isEditTax && editData.is_vienna_tax) {
-                    return !item.vienna_applicable;
+                    return item.vienna_applicable;
                 }
 
                 if ($scope.isAddTax && $scope.addData.is_vienna_tax) {
-                    return !item.vienna_applicable;
+                    return item.vienna_applicable;
 				}
 
                 return true;
