@@ -187,7 +187,11 @@ angular.module('sntRover')
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
-                        postData.page = 1;
+
+                        // CICO-68767 : Handle pagination(offset) while ASSIGN or MOVE actions
+                        if (!(($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) && !!offset)) {
+                            postData.page = 1;
+                        }
                     }
 
                     if (roomId) {
