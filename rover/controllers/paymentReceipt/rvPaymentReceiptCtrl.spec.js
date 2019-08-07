@@ -80,7 +80,6 @@ describe('RVReceiptPopupController', function () {
 
                 $scope.data = {};
                 $scope.data.mailto_address = "soumya@stayntouch.com";
-
                 $scope.emailReceipt();
 
                 expect(RVBillCardSrv.emailReceiptData).toHaveBeenCalled();              

@@ -6,18 +6,18 @@ admin.controller('adInterfaceMappingCtrl', [
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         var mappingText = {
-          'cancellation_code': 'Cancellation Codes',
-          'charge_code': 'Charge Code - General Ledger',
-          'charge_code_cost_center': 'Charge Code - Cost Center',
-          'charge_code_department_code': 'Charge Code - Department Code',
-          'group_hold_status': 'Group Hold Status',
-          'market_code': 'Market Code - Market Segment',
-          'market_segment': 'Market Code - Market Segment',
-          'market_code_department_code': 'Market Code - Department Code',
-          'source_code': 'Source Code',
-          'tax_code': 'Tax Codes',
-          'tax_charge_code': 'Tax Codes',
-          'payment_code_billing_account': 'Payment Code - Billing Account Number'
+            'cancellation_code': 'Cancellation Codes',
+            'charge_code': 'Charge Code - General Ledger',
+            'charge_code_cost_center': 'Charge Code - Cost Center',
+            'charge_code_department_code': 'Charge Code - Department Code',
+            'group_hold_status': 'Group Hold Status',
+            'market_code': 'Market Code - Market Segment',
+            'market_segment': 'Market Code - Market Segment',
+            'market_code_department_code': 'Market Code - Department Code',
+            'payment_code_billing_account': 'Payment Code - Billing Account Number',
+            'source_code': 'Source Code',
+            'tax_code': 'Tax Codes',
+            'tax_charge_code': 'Tax Codes'
         };
 
         var mappingPartials = {
@@ -25,9 +25,10 @@ admin.controller('adInterfaceMappingCtrl', [
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'FISKALTRUST': '/assets/partials/interfaces/fiskaltrust/adFiskaltrustMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
+            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
+            'EXACTONLINE': '/assets/partials/interfaces/exactonline/adExactonlineMapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
-            'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
-            'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html'
+            'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html'
         };
 
         $scope.state = {

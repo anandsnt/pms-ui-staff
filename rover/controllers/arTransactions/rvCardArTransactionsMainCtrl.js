@@ -854,8 +854,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
         // Send email AR statement
         $scope.emailArStatement = function() {
-			var params = getParamsToSend();
-
+			      var params = getParamsToSend();
             params.to_address = $scope.filterData.statementEmailAddress;
             $scope.closeDialog();
 
@@ -892,18 +891,16 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.showEmailSentStatusPopup();
 				$scope.reloadCurrentActiveBill();
 			},
-
-				sendEmailFailureCallback = function(errorData) {
-					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-					$scope.status = "alert";
-					$scope.showEmailSentStatusPopup();
-				},
-				options = {
-					params: data,
-					successCallBack: sendEmailSuccessCallback,
-					failureCallBack: sendEmailFailureCallback
-				};
-
+			sendEmailFailureCallback = function(errorData) {
+				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+				$scope.status = "alert";
+				$scope.showEmailSentStatusPopup();
+			},
+			options = {
+				params: data,
+				successCallBack: sendEmailSuccessCallback,
+				failureCallBack: sendEmailFailureCallback
+			};
 			$scope.callAPI(rvAccountsArTransactionsSrv.sendEmail, options);
 		};
 
@@ -964,7 +961,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
-					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))
+					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
@@ -973,11 +970,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 						copyCount = getCopyCount(successData);
 						successData.invoiceLabel = successData.translation.copy_of_ar_invoice.replace("#count", copyCount);
 					}
-					else if (!$scope.billFormat.isInformationalInvoice)
+					else if (!$scope.billFormat.isInformationalInvoice) 
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
-
 					$scope.printData = successData;
 					$scope.errorMessage = "";
 
@@ -1015,19 +1011,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 							billCardPrintCompleted();
 						}
 					}, 700);
-
 			};
 
 			var printDataFailureCallback = function(errorData) {
-				$scope.errorMessage = errorData;
-				sntActivity.stop("PRINT_STARTED");
-			},
+					$scope.errorMessage = errorData;
+					sntActivity.stop("PRINT_STARTED");
+			  },
 				options = {
 					params: data,
 					successCallBack: printDataFetchSuccess,
 					failureCallBack: printDataFailureCallback
 				};
-
 			$scope.callAPI(rvAccountsArTransactionsSrv.fetchBillPrintData, options);
 		};
 

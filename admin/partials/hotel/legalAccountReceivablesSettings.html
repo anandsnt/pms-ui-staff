@@ -15,6 +15,29 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>Print AR Folio number</td>
+                <td>
+                    <!-- remove .on when not active -->
+                    <div class="switch-button" ng-class="{'on' : legalSettings.is_print_ar_folio_number_enabled}">
+                        <!-- remove checked when not active-->
+                        <input name="no-modify" id="no-modify" value="no-modify" ng-model="legalSettings.is_print_ar_folio_number_enabled" type="checkbox" checked="">
+                        <span class="switch-icon"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="legalSettings.is_print_ar_folio_number_enabled">
+                <td>First AR Folio number</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.ar_first_folio_number" placeholder="Enter First Folio Number"> 
+                </td>
+            </tr>
+            <tr ng-show="legalSettings.is_print_ar_folio_number_enabled">
+                <td>AR Prefix</td>
+                <td>
+                    <input type="text" ng-model="legalSettings.ar_folio_number_prefix" placeholder="Enter AR Prefix"> 
+                </td>
+            </tr>
 
             <tr>
                 <td>Print AR Folio number</td>

@@ -17,20 +17,25 @@
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
                 <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE"  placeholder="Enter Rate code" maxlength="20"></ad-textbox>
             </div>
-            <div class="entry margin">
-                <label>Type <strong>*</strong> </label>
-                <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
-                    </select>
+            <div class="entry full-width">
+                <div class="entry margin">
+                    <label>Type <strong>*</strong> </label>
+                    <div class="select">
+                        <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                            <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="entry" ng-show="shouldShowPeriodicity();">
-                <label>Periodicity</label>
-                <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
-                    <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
-                    <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Daily</span>
+            <div class="entry full-width">
+                <div class="entry" ng-show="shouldShowPeriodicity();">
+                    <label>Periodicity</label>
+                    <div class="switch" ng-class="{'disabled' : rateData.date_ranges.length > 1}">
+                        <span ng-click="toggleHourlyRate(true)" ng-class="{'active' : rateData.is_hourly_rate}">Hourly</span>
+                        <span ng-click="toggleHourlyRate(false)" ng-class="{'active' : !rateData.is_hourly_rate}">Nightly</span>
+                    </div>
                 </div>
+                <ad-toggle-button ng-class="{'full-width': !shouldShowPeriodicity()}" is-hide="rateData.is_hourly_rate" is-disabled="is_edit || disableDayUseToggle" is-checked="rateData.is_day_use" label="DAY USE"></ad-toggle-button>
             </div>
             <div class="entry margin">
                 <label>Charge code <strong>*</strong> </label>
@@ -70,7 +75,7 @@
                     <div class="full-width">
                         <div class="entry margin" ng-class="{'overlay': is_edit}">
                             <div class="select white">
-                                <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                                <select class="placeholder" ng-model="rateData.based_on.id" ng-change="basedOnRateChanged()" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
                                 </select>
                             </div>
