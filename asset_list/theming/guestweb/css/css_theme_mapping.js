@@ -219,6 +219,7 @@ module.exports = {
             'guestweb_the_delaney_hotel': [ themeCSSRoot + 'guestweb_the_delaney_hotel.css'],
             'guestweb_the_hotel_concord': [ themeCSSRoot + 'guestweb_the_hotel_concord.css'],
             'guestweb_metropolis_resort': [ themeCSSRoot + 'guestweb_metropolis_resort.css'],
+            'guestweb_harlow_hotel': [ themeCSSRoot + 'guestweb_harlow_hotel.css'],
         };
     }
 };

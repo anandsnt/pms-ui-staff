@@ -7,7 +7,7 @@
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div name="icare-services" method="post" class="form float" action="">
-					
+
 					<fieldset class="holder full-width" ng-show='!inProd'>
 						<div class="form-title">
 							<h3 translate>Developer Quick-Sets</h3>
@@ -35,17 +35,17 @@
 							<h3><span translate>PRIMARY_KEY_DETAILS_TITLE</span></h3>
 						</div>
 						<div class="entry full-width">
-						    
-							
+
+
 							<ad-textbox value="data.key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
 
 							<ad-textbox value="data.key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-				    		
+
 				    		<ad-textbox value="data.key_username" id="dont-autofill-username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
 				    		<ad-textbox value="data.key_password" id="dont-autofill-password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'key_password')"></ad-textbox>
 
-		                    <ad-textbox value="data.max_primary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>				
+		                    <ad-textbox value="data.max_primary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
 						</div>
 					</fieldset>
@@ -54,21 +54,21 @@
 		                <div class="form-title key-server-details-title" >
 							<h3><span translate>SECONDARY_KEY_DETAILS_TITLE</span></h3>
 						</div>
-						<div class="entry full-width">	    
+						<div class="entry full-width">
 
 				    		<ad-textbox value="data.secondary_key_access_url" label = "{{'KEY_SYSTEM_ACCESS_URL' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_URL_PLACEHOLDER' | translate }}" required = "yes" ></ad-textbox>
 
 							<ad-textbox value="data.secondary_key_access_port" label = "{{'KEY_SYSTEM_ACCESS_PORT' | translate }}" placeholder = "{{'KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-				    		
+
 				    		<ad-textbox value="data.secondary_key_username" label = "{{'KEY_SYSTEM_USENAME' | translate }}" placeholder = "{{'KEY_SYSTEM_USENAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
 				    		<ad-textbox value="data.secondary_key_password" inputtype="password" label = "{{'KEY_SYSTEM_PASSWORD' | translate }}" placeholder = "{{'KEY_SYSTEM_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'secondary_key_password')"></ad-textbox>
-		                    
+
 		                    <ad-textbox value="data.max_secondary_retries" inputtype="text" label = "{{'NUMBER_OF_RETRIES' | translate }}" placeholder = "{{'NUMBER_OF_RETRIES_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
-		                    <ad-textbox value="data.secondary_revert_time" inputtype="text" label = "{{'REVERT_TIME' | translate }}" placeholder = "{{'REVERT_TIME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>                    
+		                    <ad-textbox value="data.secondary_revert_time" inputtype="text" label = "{{'REVERT_TIME' | translate }}" placeholder = "{{'REVERT_TIME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
-						</div>	
+						</div>
 					</fieldset>
 					<fieldset>
 		                <div class="form-title key-server-details-title" >
@@ -88,14 +88,14 @@
 						</div>
 						<div class="entry full-width">
 							<ad-textbox value="data.mi_fare_authentication_key_a" label = "{{'KEY_A' | translate }}" placeholder = "{{'KEY_A_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-
-				    		<ad-textbox value="data.mi_fare_authentication_key_b" inputtype="text" label = "{{'KEY_B' | translate }}" placeholder = "{{'KEY_B_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
-		                    <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+            	<ad-textbox value="data.mi_fare_authentication_key_b" inputtype="text" label = "{{'KEY_B' | translate }}" placeholder = "{{'KEY_B_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+		          <ad-textbox value="data.mi_fare_authentication_aid" inputtype="text" label = "{{'SECTOR_AID' | translate }}" placeholder = "{{'SECTOR_AID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
+              <ad-textbox value="data.mi_fare_access_bits" inputtype="text" label = "{{'ACCESS_BITS' | translate }}" placeholder = "{{'ACCESS_BITS_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 						</div>
 					</fieldset>
 
                     <fieldset class="full-width">
-                    
+
 						<div class="form-title key-server-details-title">
 							<h3><span translate>MOBILE_KEY_SETTINGS_TITLE</span></h3>
 							<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
@@ -105,14 +105,14 @@
 							<ad-textbox value="data.wallet_auth_user_name" inputtype="text" label = "{{'WALLET_USERNAME_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_USERNAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 							<ad-textbox value="data.pre_auth_user_name" inputtype="text" label = "{{'AUTH_USERNAME_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'AUTH_USERNAME_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 
-						    <ad-dropdown label="{{'SAFLOK_ENCODER' | translate }}" 
-					    				 list="encoders" 
+						    <ad-dropdown label="{{'SAFLOK_ENCODER' | translate }}"
+					    				 list="encoders"
 					    				 ng-model='data.selected_encoder'
-						    			 selected-Id='data.selected_encoder' 
-						    			 label-in-drop-down="{{'SAFLOK_ENCODER' | translate }}" 
+						    			 selected-Id='data.selected_encoder'
+						    			 label-in-drop-down="{{'SAFLOK_ENCODER' | translate }}"
 						    			 required = "yes"></ad-dropdown>
 						</div>
-						
+
 						<div class = "holder right" ng-show="data.selected_key_system == 2">
 							<ad-textbox value="data.wallet_id" inputtype="text" label = "{{'WALLET_ID_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_ID_PLACEHOLDER' | translate }}" required = "" ></ad-textbox>
 							<ad-textbox value="data.wallet_auth_password" inputtype="password" label = "{{'WALLET_PASSWORD_LABEL' | translate }}" styleclass="full-width" placeholder = "{{'WALLET_PASSWORD_PLACEHOLDER' | translate }}" required = "" click-handler="onPasswordClick(data,'wallet_auth_password')"></ad-textbox>
@@ -122,14 +122,14 @@
 						<div class = "holder left">
 						     <div class="form-title">
 							<h3><span translate>IOS_LABEL</span></h3>
-							
+
 						    </div>
 
 						    <ad-toggle-button is-checked="data.is_mobile_key_supporting_ios" label="{{ 'ENABLE_MOBILE_KEY_LABEL' | translate}}" ></ad-toggle-button>
 
 						    <ad-dropdown label="{{'MIN_IOS_VERSION_LABEL' | translate }}" list="data.ios_versions" selected-Id='data.min_ios_version_supported' label-in-drop-down="{{'MIN_VERSION_LABEL' | translate }}" required = "yes"></ad-dropdown>
 						     <!-- <ad-multiselectbox label="{{'EXCLUDED_VERSION_LABEL' | translate }}" list="data.ios_versions" selected-Ids='data.excluded_ios_versions' required = "yes" div-class = "full-width"></ad-multiselectbox> -->
-						
+
                              <div class='entry'>
 						          <label >
                                       {{'EXCLUDED_VERSION_LABEL' | translate }}<strong > * </strong></label>
@@ -145,11 +145,11 @@
 						<div class = "holder right">
                             <div class="form-title">
 							<h3><span translate>ANDROID_LABEL</span></h3>
-							
+
 						    </div>
 						    <ad-toggle-button is-checked="data.is_mobile_key_supporting_android" label="{{ 'ENABLE_MOBILE_KEY_LABEL' | translate}}" ></ad-toggle-button>
 						    <ad-dropdown label="{{'MIN_ANDROID_VERSION_LABEL' | translate }}" list="data.android_versions" selected-Id='data.min_android_version_supported'  label-in-drop-down="{{'MIN_VERSION_LABEL' | translate }}" required = "yes"></ad-dropdown>
-						     
+
 						    <div class='entry'>
 						          <label >
                                       {{'EXCLUDED_VERSION_LABEL' | translate }}<strong > * </strong></label>
