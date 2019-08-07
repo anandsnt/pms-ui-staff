@@ -170,7 +170,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
       /**
        * change date format for API call
        */
-            presentContactInfo = RVContactInfoSrv.completeContactInfoClone;
+            presentContactInfo = JSON.parse(JSON.stringify(RVContactInfoSrv.completeContactInfoClone));
 
             var dataToUpdate = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
             var dataUpdated = false;
