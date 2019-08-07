@@ -23,7 +23,7 @@
 				<label class="checkbox inline" ng-class="{checked: row.is_vienna_tax}">
 					<span class="icon-form icon-checkbox" ng-class="{checked: row.is_vienna_tax}">
 					</span>
-					<input id="enable-split" ng-model="row.is_vienna_tax" type="checkbox" ng-click="toggleViennaTax($index)"/>
+					<input id="enable-split" ng-model="row.is_vienna_tax" type="checkbox" ng-disabled="disableViennaTax" ng-click="toggleViennaTax($index)"/>
 					{{ 'VIENNA_TAX' | translate }}
 				</label>
 			</div>
@@ -37,7 +37,7 @@
 	      <option value="">
 	        {{'CHARGE_CODE_PLACEHOLDER'| translate}}
 	      </option>
-	      <option ng-repeat='code in prefetchData.tax_codes | filter:filterTaxCodes(row)' value='{{code.value}}'  ng-selected="code.value==row.charge_code_id" >
+	      <option ng-repeat='code in prefetchData.tax_codes | filter:filterTaxCodes(row) | filter:filterViennaTaxCodes(row)' value='{{code.value}}'  ng-selected="code.value==row.charge_code_id" >
 	        {{code.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{code.description}}
 	      </option>
 	    </select>
