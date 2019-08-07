@@ -458,5 +458,4 @@ angular.module('sntRover').service('RVBillCardSrv',
 
 		return deferred.promise;
 	};
-
 }]);

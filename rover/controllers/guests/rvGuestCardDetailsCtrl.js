@@ -357,7 +357,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.printState = {
                 clicked: false
-            };          
+            };
+
+            $scope.$on('$destroy', $scope.guestCardTabSwitch);
         };
 
         // Listener for setting the guestData information

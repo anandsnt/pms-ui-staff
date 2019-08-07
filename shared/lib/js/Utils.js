@@ -732,3 +732,12 @@ var getTemporaryDisplayPassword = function() {
     // Strong password generated randomly for display purpose only
     return '-R#h!bVsADLAJm--';
 };
+
+/**
+ * Checks whether the given array is empty or not
+ * @param {Array} arr 
+ * @return {Boolean}
+ */
+var isEmptyArray = function (arr) {
+    return arr.length === 0;
+};
