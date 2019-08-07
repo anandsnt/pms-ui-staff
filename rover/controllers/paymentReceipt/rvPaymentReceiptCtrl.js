@@ -7,7 +7,6 @@ sntRover.controller('RVReceiptPopupController',
     function($scope, $rootScope, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
 
     BaseCtrl.call(this, $scope);
-
     /*
      * Function to get email button class
      */
@@ -54,7 +53,6 @@ sntRover.controller('RVReceiptPopupController',
     $scope.closeDialog = function() {
       ngDialog.close();
     };
-
     /*
      * email receipt method
      */
@@ -90,7 +88,6 @@ sntRover.controller('RVReceiptPopupController',
      * @return {undefined}
      */
     var init = function() {
-
         $scope.data = {};
 
         var dataToSend = {
