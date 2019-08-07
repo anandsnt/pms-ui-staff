@@ -436,7 +436,7 @@ sntRover.controller('RVbillCardController',
 	*/
 	$scope.showEditChargeButton = function(feesType) {
 		return ($rootScope.isStandAlone &&
-				feesType !== 'TAX' &&
+				feesType !== 'TAX' && feesType !== 'ALLOWANCE' &&
 				hasPermissionToChangeCharges(feesType));
 	};
 
