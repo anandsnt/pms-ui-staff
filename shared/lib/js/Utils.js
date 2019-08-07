@@ -730,7 +730,7 @@ var isValidEmail = function(email) {
 // Get display password to show in the password form fields
 var getTemporaryDisplayPassword = function() {
     // Strong password generated randomly for display purpose only
-    return '-R#h!bVsADLAJm--';
+    return '-R#h!bVsALm-';
 };
 
 /**
