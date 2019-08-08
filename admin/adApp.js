@@ -59,18 +59,15 @@ admin.config([
     }
 ]);
 
-admin.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams) {
+admin.run(['$rootScope', '$state', '$stateParams', '$transitions', function($rootScope, $state, $stateParams, $transitions) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-        $rootScope.previousState = from.name;
-        $rootScope.previousStateParam = fromParams.menu;
-
-        // spiting state names
+    $transitions.onStart({}, function(transition) {
+        $rootScope.previousState = transition.$from() ? transition.$from().name : '';
+        $rootScope.previousStateParam = transition.params('from') ? transition.params('from').menu : '';
     });
 }]);
-
 
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number) {
