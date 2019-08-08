@@ -37,7 +37,7 @@ angular.module('snt.utils').directive('sntPlaceholder', function () {
                 scope.model = scope.model || null;
             });
 
-            element.append(`<option value="" disabled translate>${scope.text}</option>`);
+            element.append('<option value="" disabled translate>' + scope.text + '</option>');
         }
     };
 });
