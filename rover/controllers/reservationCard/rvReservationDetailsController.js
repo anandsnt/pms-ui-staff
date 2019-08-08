@@ -580,7 +580,7 @@ sntRover.controller('reservationDetailsController',
 
 
 		$scope.$on('$viewContentLoaded', function() {
-			$scope.refreshReservationDetailsScroller(3000);
+			$scope.refreshReservationDetailsScroller(500);
 		});
 
 		/**
