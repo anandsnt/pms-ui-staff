@@ -565,6 +565,7 @@ angular.module('sntRover').controller('guestCardController', [
             $scope.cardVisible = true;
             $scope.guestCardVisible = true;
             $scope.guestCardHeight = resizableMaxHeight;
+            $scope.isGuestCardVisible = true;
             // //refresh scroll in the contact tab of the card-content view. Handled in rover/controllers/rvCompanyCardsContactCtrl.js
             $scope.$broadcast("contactTabActive");
             // //refreshing the scroller in guestcard's tab

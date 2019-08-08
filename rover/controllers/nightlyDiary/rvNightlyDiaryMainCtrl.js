@@ -190,7 +190,10 @@ angular.module('sntRover')
 
                         postData.selected_room_type_ids = [roomTypeId];
                         paginationDataBeforeMoveOrAssign = angular.copy(postData);
-                        postData.page = 1;
+                        // CICO-68767 : Handle pagination(offset) while ASSIGN or MOVE actions
+                        if (!(($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) && !!offset)) {
+                            postData.page = 1;
+                        }
                     }
                     else if ($scope.diaryData.isCancelledMoveOrAssign) {
                         postData.page = paginationDataBeforeMoveOrAssign.page ? paginationDataBeforeMoveOrAssign.page : 1;
