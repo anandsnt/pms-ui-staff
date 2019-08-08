@@ -37,7 +37,7 @@ sntRover.controller('RVInvoiceSearchController',
 
 		$scope.shouldShowReceipts =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
-		};
+		};		
 
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -94,6 +94,9 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
+			if($scope.shouldShowInvoices()) {
+				$scope.paymentDataArray = [];
+			}
 			$scope.currentActivePage = page || 1;
 			if ($scope.invoiceSearchData.query.length > 0) {
 				$scope.invoiceSearchFlags.isQueryEntered = true;
@@ -188,6 +191,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.reTriggerPaymentReceipt = function() {
 			var successCallBackOfRetrigger = function(response) {
+					$scope.searchInvoice($scope.currentActivePage);
 					$scope.isSuccess = true;
 					$scope.retriggerMessage = response.message;
 					$scope.openRetriggerMessagePopup();
