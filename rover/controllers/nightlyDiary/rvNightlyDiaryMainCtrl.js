@@ -77,7 +77,7 @@ angular.module('sntRover')
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
                         fromDate: srvParams.start_date,
-                        arrivalDate: $rootScope.businessDate,
+                        arrivalDate: srvParams.start_date <= $rootScope.businessDate ? $rootScope.businessDate : srvParams.start_date,
                         toDate: '',
                         paginationData: {
                             perPage: 50,
@@ -187,7 +187,11 @@ angular.module('sntRover')
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
-                        postData.page = 1;
+
+                        // CICO-68767 : Handle pagination(offset) while ASSIGN or MOVE actions
+                        if (!(($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) && !!offset)) {
+                            postData.page = 1;
+                        }
                     }
 
                     if (roomId) {
