@@ -93,7 +93,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
-			if($scope.shouldShowInvoices()) {
+			if ($scope.shouldShowInvoices()) {
 				$scope.paymentDataArray = [];
 			}
 			$scope.currentActivePage = page || 1;
