@@ -16,7 +16,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     $scope.minutes = ['00', '15', '30', '45'];
 
-
+    $scope.selectedCurrencies = [];
     $scope.data = settingsAndParamsData.business_date;
     $scope.currency_list = settingsAndParamsData.currency_list;
     $scope.chargeCodes = chargeCodes;
@@ -26,8 +26,11 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.check_guest_auth_for_interface_postings = settingsAndParamsData.check_guest_auth_for_interface_postings;
     $scope.auto_charge_deposit = settingsAndParamsData.auto_charge_deposit;
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
-    $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;
+    $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;    
     $scope.currency_list = settingsAndParamsData.currency_list;
+    angular.forEach($scope.currency_list, function(item, index) {
+        item.is_selected = false;
+    });
     $scope.selected_invoice_currency = settingsAndParamsData.selected_invoice_currency; 
     $scope.invoice_currency = angular.isDefined($scope.selected_invoice_currency) ? $scope.selected_invoice_currency.id : '';
 
@@ -55,10 +58,21 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             'check_guest_auth_for_interface_postings': $scope.check_guest_auth_for_interface_postings,
             'auto_charge_deposit': $scope.auto_charge_deposit,
             'is_multi_currency_enabled': $scope.is_multi_currency_enabled,
-            'invoice_currency': parseInt($scope.invoice_currency, 10)
-
+            'invoice_currency': parseInt($scope.invoice_currency, 10),
+            'selected_currencies': $scope.selectedCurrencies
         };
 
         $scope.invokeApi(settingsAndParamsSrv.saveSettingsAndParamsSrv, dataToSend, saveDetailsSuccessCallback);
     };
+
+    $scope.selectedCurrency = function(currencyCode) {
+        if ((_.findWhere($scope.currency_list, {"code": currencyCode})).is_selected) {
+            $scope.selectedCurrencies.push(currencyCode);
+            (_.findWhere($scope.currency_list, {"code": currencyCode})).is_selected = true;
+        } else {
+            $scope.selectedCurrencies.splice(_.indexOf($scope.selectedCurrencies, currencyCode), 1);
+            (_.findWhere($scope.currency_list, {"code": currencyCode})).is_selected = false;
+        }
+        
+    }
 }]);
