@@ -236,9 +236,11 @@ angular.module('sntRover').service('RVReservationStateService', [
 					// Vienna Tax calculations are different, It is handled here	
 					if (tax.is_vienna_tax) {
 						var taxOnVienna = taxableAmount;
+
 						if (!!tax.calculation_rules.length) {
 							var grossAmount = taxableAmount - previousTaxCalculated;
-							taxOnVienna = parseFloat((grossAmount * 100)/(100 + (parseFloat(taxValue) * multiplier)));
+
+							taxOnVienna = parseFloat((grossAmount * 100) / (100 + (parseFloat(taxValue) * multiplier)));
 							taxCalculated = multiplier * (grossAmount - taxOnVienna);
 						} else if (taxData.amount_symbol === '%') {
 							taxCalculated = parseFloat(multiplier * (parseFloat(taxValue / 100) * taxOnVienna));
