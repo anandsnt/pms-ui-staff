@@ -322,10 +322,7 @@ sntRover.controller('roverController', [
             $scope.isStayCardDepositScreenOpened = value;
         });
         $scope.searchBackButtonCaption = '';
-
-        // Temporary hack to enable the merge options only for pilot properties
-        $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
-
+        
         $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
         $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
         /**

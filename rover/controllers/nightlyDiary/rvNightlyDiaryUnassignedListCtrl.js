@@ -40,6 +40,7 @@ angular.module('sntRover')
         unSelectUnassignedListItem = function() {
             $scope.diaryData.selectedUnassignedReservation = {};
             $scope.diaryData.isReservationSelected = false;
+            $scope.diaryData.isCancelledMoveOrAssign = true;
             $scope.$emit("RESET_RIGHT_FILTER_BAR_AND_REFRESH_DIARY");
         };
 

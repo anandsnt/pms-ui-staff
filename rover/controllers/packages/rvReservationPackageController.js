@@ -66,7 +66,6 @@ sntRover.controller('RVReservationPackageController',
 			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count) - parseInt(1);
 			if ($scope.reservationData.reservation_card.package_count === 0) {
 				$scope.reservationData.reservation_card.is_package_exist = false;
-				$scope.closeAddOnPopup();
 			}
 			shouldReloadState = true;
 		};

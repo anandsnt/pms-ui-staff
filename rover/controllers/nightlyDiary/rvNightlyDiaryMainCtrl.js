@@ -40,7 +40,8 @@ angular.module('sntRover')
                     document.addEventListener('touchmove', window.touchmovestoppropogate, false);
                 });
                 var isFromStayCard = $stateParams.origin === 'STAYCARD',
-                    MAX_NO_OF_DAYS = 21;
+                    MAX_NO_OF_DAYS = 21,
+                    paginationDataBeforeMoveOrAssign = {};
 
                 /*
                  * utility method Initiate controller
@@ -77,7 +78,7 @@ angular.module('sntRover')
                         diaryRoomsList: roomsList.rooms,
                         numberOfDays: srvParams.no_of_days,
                         fromDate: srvParams.start_date,
-                        arrivalDate: $rootScope.businessDate,
+                        arrivalDate: srvParams.start_date <= $rootScope.businessDate ? $rootScope.businessDate : srvParams.start_date,
                         toDate: '',
                         paginationData: {
                             perPage: 50,
@@ -130,7 +131,8 @@ angular.module('sntRover')
                         requireAuthorization: false,
                         isReservationSelected: false,
                         selectedUnassignedReservation: {},
-                        roomAssignmentFilters: {}
+                        roomAssignmentFilters: {},
+                        isCancelledMoveOrAssign: false
                     };
                     $scope.currentSelectedReservation = {};
                     $scope.currentSelectedRoom = {};
@@ -187,7 +189,15 @@ angular.module('sntRover')
                         var roomTypeId = $scope.diaryData.availableSlotsForAssignRooms.roomTypeId;
 
                         postData.selected_room_type_ids = [roomTypeId];
-                        postData.page = 1;
+                        paginationDataBeforeMoveOrAssign = angular.copy(postData);
+                        // CICO-68767 : Handle pagination(offset) while ASSIGN or MOVE actions
+                        if (!(($scope.diaryData.isAssignRoomViewActive || $scope.diaryData.isMoveRoomViewActive) && !!offset)) {
+                            postData.page = 1;
+                        }
+                    }
+                    else if ($scope.diaryData.isCancelledMoveOrAssign) {
+                        postData.page = paginationDataBeforeMoveOrAssign.page ? paginationDataBeforeMoveOrAssign.page : 1;
+                        $scope.diaryData.isCancelledMoveOrAssign = false;
                     }
 
                     if (roomId) {

@@ -69,8 +69,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     $scope.isReservationDetailsFetched = true;
 
+                    var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used ? $scope.selectedReservation.reservation_details.payment_method_used : '';
                     var isAllowedPaymentMethod = function(paymentType) {
-                        var paymentMethodUsed = $scope.selectedReservation.reservation_details.payment_method_used ? $scope.selectedReservation.reservation_details.payment_method_used : '';
                         var paymentMethodValue = paymentType.value ? paymentType.value : '';
 
                         return (paymentType.id === paymentMethodUsed || paymentMethodValue.toUpperCase() === paymentMethodUsed.toUpperCase()) &&
@@ -86,7 +86,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
                         $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                         $state.go('zest_station.noCCPresentForCheckin');
-                    } else if ($stateParams.previousState !== 'WALKIN' &&
+                    } else if (paymentMethodUsed && $stateParams.previousState !== 'WALKIN' &&
                                zsGeneralSrv.featuresToggleList && zsGeneralSrv.featuresToggleList.kiosk_exclude_payment_methods &&
                                indexInAllowedPaymentTypes === -1) {
                         $state.go('zest_station.paymentMethodNotAllowed');
@@ -442,7 +442,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'first_name': $scope.selectedReservation.guest_details[0].first_name,
                 'last_name': $scope.selectedReservation.guest_details[0].last_name,
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
-                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id
+                'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
+                'guest_email_blacklisted': $scope.selectedReservation.guest_details[0].is_email_blacklisted
             });
         };
 

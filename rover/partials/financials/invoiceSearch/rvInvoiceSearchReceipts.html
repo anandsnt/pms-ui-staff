@@ -1,0 +1,188 @@
+<section id="find-invoices" class="content" role="main" ng-hide="invoiceSearchFlags.showFindInvoice">
+    <ul class="invoice-list-header receipts-list-header">
+        <li class="expand">
+            <span class="icons icon-double-arrow black expand-arrow"></span>
+        </li>
+        <li class="check">
+            <label class="checkbox inline">
+                <!-- add .checked when all checked. Add .semi-checked when some receipts are checked -->
+                <!-- <span class="icon-form icon-checkbox"></span>
+                <input id="select-all" type="checkbox" value="1"> -->
+            </label>
+        </li>
+        <li class="guest-details">Details</li>
+        <li class="number">Invoice No.</li> 
+        <li class="balance">Balance</li>
+    </ul>
+    <div class="invoice-list-content scrollable" ng-iscroll="invoice-list"> <!-- Hook iScroll here -->
+        <div class="wrapper">
+            <ul class="search-results">
+                <li class="invoice-item receipt-item" ng-repeat="invoiceReservationData in invoiceSearchData.reservationsList.results">
+                    <!-- Add classes 'has-arrow next-view' if this is not an additional bill on the same reservation + add click/tap action to go to Stay Card -->
+                    <!-- Add .open when opened -->
+                    <div class="bill has-arrow next-view">
+                        <div class="expand toggle" ng-click="expandBill(0, 0)">
+                            <!-- Add .active when bill is opened -->
+                            <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': invoiceReservationData.bills[0].isOpened}"></span>
+                        </div>
+
+                        <div class="check" ng-show="false">
+                            <label class="checkbox inline" for="receipt-details-{id}">
+                                <!-- Add .checked when all are checked. Add .semi-checked when some of the receipts are checked. -->
+                                <span class="icon-form icon-checkbox"></span>
+                                <input id="receipt-details-{id}" value="{id}" type="checkbox">
+                            </label>
+                        </div>
+
+                        <!-- Image - Leave blank if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
+                        <figure class="guest-image" ng-show="invoiceReservationData.associated_item.type === 'RESERVATION'"><img src="{{::invoiceReservationData.associated_item.image_url}}" alt="" /></figure>
+                        <div class="group-info" ng-show="invoiceReservationData.associated_item.type === 'POSTING_ACCOUNT'">A</div>
+                        <!-- Guest / Account Info - Dont output if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
+                        <div class="data">
+                            <h2 ng-bind-html="escapeNull(invoiceReservationData.associated_item.name)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <span class="confirmation">
+                                <span class="confirmation-text" ng-show="invoiceReservationData.associated_item.type === 'RESERVATION'">CONF. NO.
+                                    <span ng-bind-html="escapeNull(invoiceReservationData.associated_item.number)|highlight:invoiceSearchData.query:false" class="confirmation-text">{{::invoiceReservationData.associated_item.number}}</span>
+                                </span>
+                                <span class="confirmation-text" ng-show="invoiceReservationData.associated_item.type === 'POSTING_ACCOUNT'">ACCOUNT. NO.
+                                    <span ng-bind-html="escapeNull(invoiceReservationData.associated_item.number)|highlight:invoiceSearchData.query:false" class="confirmation-text">{{::invoiceReservationData.associated_item.number}}</span>
+                                </span>
+                            </span>
+
+                            <!-- If company is attached to reservation (doesn't have to have routed bill), show:
+                            <span class="icons icon-guest-company">{Company Name}</span> -->
+                            <span class="icons icon-guest-company" ng-bind-html="escapeNull(invoiceReservationData.associated_item.company_card)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.company_card}}</span>
+
+                            <!-- If TA is attached to reservation (doesn't have to have routed bill), show:
+                            <span class="icons icon-guest-travelagent">{Travel Agent Name}</span> -->
+                            <span class="icons icon-guest-travelagent" ng-bind-html="escapeNull(invoiceReservationData.associated_item.travel_agent_card)|highlight:invoiceSearchData.query:false" >{{::invoiceReservationData.associated_item.travel_agent_card}}</span>
+
+                            <!-- If showing address, output this:
+                            <span class="icons icon-location">{Address}</span> -->
+                        </div>
+                        <div class="invoice-info">
+                            <div class="number">{{::invoiceReservationData.bills[0].invoice_no}}</div> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
+                                <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bill" ng-repeat-start="bill in invoiceReservationData.bills" ng-show="!$first">
+                        <div class="expand toggle" ng-click="expandBill($parent.$index, $index)">
+                            <!-- Add .active when bill is opened -->
+                            <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': bill.isOpened}"></span>
+                        </div>
+
+                        <div class="check" ng-show="false">
+                            <label class="checkbox inline" for="receipt-details-{id}">
+                                <!-- Add .checked when all are checked. Add .semi-checked when some of the receipts are checked. -->
+                                <span class="icon-form icon-checkbox"></span>
+                                <input value="" type="checkbox">
+                            </label>
+                        </div>
+
+                        <!-- Image - Leave blank if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
+                        <!-- <figure class="guest-image" ng-show="invoiceReservationData.associated_item.type === 'RESERVATION'"><img src="{{::invoiceReservationData.associated_item.image_url}}" alt="" /></figure>
+                        <div class="group-info" ng-show="invoiceReservationData.associated_item.type === 'POSTING_ACCOUNT'">A</div> -->
+                        <!-- Guest / Account Info - Dont output if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
+                        <div class="data">
+                            <h2 ng-bind-html="escapeNull(invoiceReservationData.associated_item.name)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.name}}</h2>
+
+                             <!-- Wrap search match with <span class="highlight"></span> -->
+                            <span class="confirmation">
+                                <span class="confirmation-text" ng-show="invoiceReservationData.associated_item.type === 'RESERVATION'">CONF. NO.
+                                    <span ng-bind-html="escapeNull(invoiceReservationData.associated_item.number)|highlight:invoiceSearchData.query:false" class="confirmation-text">{{::invoiceReservationData.associated_item.number}}</span>
+                                </span>
+                                <span class="confirmation-text" ng-show="invoiceReservationData.associated_item.type === 'POSTING_ACCOUNT'">ACCOUNT. NO.
+                                    <span ng-bind-html="escapeNull(invoiceReservationData.associated_item.number)|highlight:invoiceSearchData.query:false" class="confirmation-text">{{::invoiceReservationData.associated_item.number}}</span>
+                                </span>
+                            </span>
+
+                            <!-- If company is attached to reservation (doesn't have to have routed bill), show:
+                            <span class="icons icon-guest-company">{Company Name}</span> -->
+                            <span class="icons icon-guest-company" ng-bind-html="escapeNull(invoiceReservationData.associated_item.company_card)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.company_card}}</span>
+
+                            <!-- If TA is attached to reservation (doesn't have to have routed bill), show:
+                            <span class="icons icon-guest-travelagent">{Travel Agent Name}</span> -->
+                            <span class="icons icon-guest-travelagent" ng-bind-html="escapeNull(invoiceReservationData.associated_item.travel_agent_card)|highlight:invoiceSearchData.query:false" >{{::invoiceReservationData.associated_item.travel_agent_card}}</span>
+
+                            <!-- If showing address, output this:
+                            <span class="icons icon-location">{Address}</span> -->
+                        </div>
+
+                        <!-- Invoice Info -->
+                        <div class="invoice-info">
+                            <div class="number">{{bill.invoice_no}}</div> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
+                                <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo }}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- when the above bill is clicked to be opened, remove .hidden -->
+                    <div ng-repeat-end class="bill-receipt-details" ng-show="bill.isOpened">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="receipt-check"></th>
+                                    <th class="date">Date</th>
+                                    <th class="charge-code">Charge Code</th>
+                                    <th class="description">Description</th>
+                                    <th class="amount">Receipt No.</th>
+                                    <th class="amount">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="{ 'odd' || 'even' }" ng-repeat="transactions in bill.transactions" ng-show="transactions.is_visible_in_invoice_search">
+                                    <td class="receipt-check" >
+                                        <label class="checkbox inline" ng-class="{'checked': transactions.isChecked}" ng-if="transactions.should_retrigger" ng-click="clickedTransactionCheckbox(transactions.id, bill.billIndex, $index, invoiceReservationData.itemIndex)">
+                                            <span class="icon-form icon-checkbox"  ng-class="{'checked': transactions.isChecked}"></span>
+                                            <input value="{{transactions.id}}"  type="checkbox">
+                                        </label>
+                                    </td>
+                                    <td class="date">{{transactions.date}}</td>
+                                    <td class="charge-code">{{transactions.charge_code}}</td>
+                                    <td class="description">
+                                        <!-- if description --
+                                        {description}
+                                        -->
+                                        <!-- if payment data -->
+                                        <div class="payment-data">
+                                            <figure class="card-logo" ng-if="transactions.card_number !== '' && transactions.card_number !== null">
+                                                <img src="{card-logo}" alt="">
+                                            </figure>
+                                            <span class="number">{{transactions.card_number}}</span>
+                                            <span class="date">
+                                                <span class="value">{{transactions.description}}</span>
+                                            </span>
+                                            <!-- if reference -->
+                                            <span class="reference"></span>
+                                        </div>
+                                    </td>
+                                    <td class="amount receipt-number">{{transactions.receipt_no}}</td>
+                                    <td class="amount credits">
+                                        <span class="currency">{{::currencySymbol}}</span>{{transactions.credits}}
+                                        <button type="button" class="button with-icon only-icon blue open-modal" ng-click="clickedReceiptIcon(invoiceReservationData.associated_item.type, transactions.id, transactions.bill_id)">
+                                            <span class="icons icon-invoice"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- ... repeat for each receipt -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- ... repeat L63-L95 for every bill in the reservation/account -->
+                </li>
+                <!-- ... repeat L61-L97 for every reservation/account -->
+            </ul>
+        </div>
+    </div>
+</section>
+
+<div id="search-cards-no-results" class="no-content" ng-show="invoiceSearchFlags.showFindInvoice">
+    <div class="info">
+        <span class="icon-no-content icon-cards"></span>
+        <strong class="h1">Find Receipt</strong>
+    <span class="h2">Search by <strong >Receipt/Invoice or Folio No</strong>, <strong>Account / Guestname</strong> or <strong>Balance Amount</strong></span>
+    </div>
+</div>

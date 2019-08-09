@@ -436,7 +436,7 @@ sntRover.controller('RVbillCardController',
 	*/
 	$scope.showEditChargeButton = function(feesType) {
 		return ($rootScope.isStandAlone &&
-				feesType !== 'TAX' &&
+				feesType !== 'TAX' && feesType !== 'ALLOWANCE' &&
 				hasPermissionToChangeCharges(feesType));
 	};
 
@@ -2905,7 +2905,7 @@ sntRover.controller('RVbillCardController',
 		}
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if (!$scope.reservationBillData.is_bill_lock_enabled) {
+ 		if (!$scope.reservationBillData.is_bill_lock_enabled || data.selectedPaymentType === 'DB') {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
@@ -3140,7 +3140,9 @@ sntRover.controller('RVbillCardController',
 			&& $scope.reservationBillData.is_bill_lock_enabled 
 			&& $scope.reservationBillData.bills[$scope.currentActiveBill].is_active 
 			&& ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
-                || $scope.reservationBillData.reservation_status === 'CHECKEDIN')) {
+                || $scope.reservationBillData.reservation_status === 'CHECKEDIN' 
+                || $scope.reservationBillData.reservation_status === 'CHECKEDOUT' 
+                || $scope.reservationBillData.reservation_status === 'NOSHOW')) {
 			$scope.isInvoiceStepOneActive = true;
 			$scope.isInvoiceStepThreeActive = false;
 			$scope.shouldGenerateFinalInvoice = true;
@@ -3364,7 +3366,6 @@ sntRover.controller('RVbillCardController',
 		$scope.transactionId = feesDetails[feesIndex].id;
 		$scope.billId = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
 		$scope.entityType = "Reservation";
-
 		ngDialog.open({
 			template: '/assets/partials/popups/rvReceiptPopup.html',
 			controller: 'RVReceiptPopupController',
