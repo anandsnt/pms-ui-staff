@@ -7,9 +7,13 @@
         <h2 translate>RATE_SEQUENCE</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
         <div class="actions float pull-right">
-            <button type="button" class="button add-data-inline toggle-tab green" ng-click="goToCustomRateSequence()" translate>
+            <button type="button" ng-hide="sequenceState.availableOptions.is_sequence_present" class="button add-data-inline toggle-tab green" ng-click="goToCustomRateSequence()" translate>
                 CREATE_CUSTOM_SEQUENCE
             </button>
+            <button type="button" ng-show="sequenceState.availableOptions.is_sequence_present" class="button add-data-inline toggle-tab blue" ng-click="goToCustomRateSequence()" translate>
+                EDIT_CUSTOM_SEQUENCE
+            </button>
+
         </div>
     </header>
 

@@ -1,0 +1,38 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">   
+
+    <div class="modal-content form format-bill"> 
+        <button id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
+        <strong class="h2 message">Payment Receipt</strong>
+         <!-- Show this part when languages are available  -->
+        <div class="entry full-width" >
+            <label for="languages">Language</label>
+            <div  class="select">
+                <select convert-to-number iscroll-stop-propagation ng-model="data.locale">
+                    <option style="display:none" value=""></option>
+                    <option value="{{item.code}}" ng-repeat="item in languageData.languages"
+                        ng-selected="item.code === data.locale"
+                        >{{item.language}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="entry full-width">
+            <label for="account-email">Email</label>
+            <input type="email" id="account-email" name="email" placeholder="Enter an Email"  ng-model="data.mailto_address"/>
+        </div>
+
+        <div class="actions">
+            <!-- Remove class .blue and add class .grey if there is no email, also add attribute 'disabled' if there is no email -->
+            <button type="button" class="button with-icon" ng-click="emailReceipt()" ng-class="getEmailButtonClass()" ng-disabled="isEmailButtonDisabled()">
+                <span class="icons icon-email"></span>
+                 Email
+            </button>
+            <button type="button" class="button with-icon blue" ng-click="printReceipt()" >
+                <span class="icons icon-print" ></span>
+                Print
+            </button>
+            <button type="button" class="button blank inline" ng-click="closeDialog()">Cancel</button>
+        </div>
+    </div>    
+    
+</div>

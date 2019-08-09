@@ -123,6 +123,11 @@ admin.controller('ADCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSrv', '$
         $scope.backToRateSequence = function() {
             $state.go("admin.ratesSequence");
         };
+        $scope.gotoManageRates = function () {
+            if ($scope.customSequenceList.length !== 0 ) {
+                $state.go("admin.manageCustomRatesSequence");
+            }
+        };
         $scope.getTemplateUrl = function(index) {
             if (index === $scope.selectedCustomSequenceIndex) {
                 return "/assets/partials/customRateSequence/adCustomRateSequenceEdit.html";

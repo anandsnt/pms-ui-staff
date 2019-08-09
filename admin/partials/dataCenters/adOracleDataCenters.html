@@ -1,0 +1,94 @@
+<!-- LIST VIEW -->
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="screenMode === 'DATA_CENTER_LIST'">
+   <div>
+      <header class="content-title float">
+         <h2>ORACLE Data Centers</h2>
+         <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Configuration</a>
+         <a class="action add" ng-click="addNewDataCenter()">Add new center</a>
+      </header>
+      <section class="content-scroll">
+         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+         <!--ng-table component -->
+         <div class="wrapper">
+            <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
+               <thead>
+                  <tr>
+                     <th width="50%" rowspan="2">
+                        <div>
+                           <i class="glyphicon glyphicon-user"></i> 
+                           <span>NAME</span>
+                        </div>
+                     </th>
+                     <th width="30%" rowspan="2">
+                        <div>
+                           <i class="glyphicon glyphicon-user"></i> 
+                           <span>Expiry Date</span>
+                        </div>
+                     </th>
+                     <th width="20%" rowspan="2">
+                        <div>
+                           <span>Delete</span>
+                        </div>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="dataCenter in dataCentersList"  style="cursor: pointer;">
+                     <td ng-click="editCenter(dataCenter)">
+                        {{ dataCenter.name }}
+                     </td>
+                     <td ng-click="editCenter(dataCenter)">
+                        {{ dataCenter.expiration_date }}
+                     </td>
+                     <td>
+                        <span class="icons delete_small cursor_pointer" ng-click="deleteDataCenter(dataCenter)">&nbsp;</span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </section>
+      <!--end -->
+   </div>
+</section>
+
+<!-- DETAILED VIEW -->
+<section class="content current" ng-show="screenMode === 'ADD_CENTER' || screenMode === 'EDIT_CENTER'" ng-click='clearErrorMessage()'>
+   <header class="content-title float">
+      <h2 ng-show="screenMode === 'ADD_CENTER'">Add New Data center</h2>
+      <h2 ng-hide="screenMode === 'ADD_CENTER'">Edit Data center</h2>
+      <a ng-click="changeToListView()" class="action back ng-scope" translate="">ORACLE Data Centers</a>
+   </header>
+   <section class="content-scroll">
+      <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+      <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+      <div class="form">
+         <fieldset class="holder left">
+            <ad-textbox value="selectedDataCenter.name" label="NAME" styleclass="full-width" required="yes"></ad-textbox>
+            <ad-textbox value="selectedDataCenter.username" label="USERNAME" maxlength="20" styleclass="full-width" required="yes"></ad-textbox>
+         </fieldset>
+         <fieldset class="holder right">   
+            <ad-textbox value="selectedDataCenter.password" label="PASSWORD" maxlength="30" styleclass="full-width" inputtype="password" required="yes"></ad-textbox>
+            <div class="entry date has-datepicker">
+               <label for="pms-start-date">
+               Expiry Date
+               <strong>*</strong>
+               </label>
+               <input type="text" ng-model="selectedDataCenter.expiration_date" placeholder="" name="pms-start-date" readonly ng-click="showExpiryDate()">
+               <button ng-click="showExpiryDate()" class="ui-datepicker-trigger" type="button">
+               ...
+               </button>
+            </div>
+         </fieldset>
+         <div class="actions float">
+            <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
+            CANCEL
+            </button>
+            <button type="button" like-type="common" id="update" class="button green" ng-click="saveChanges()" translate>
+            {{ screenMode === 'ADD_CENTER' ? 'ADD' :  'SAVE CHANGES' }}
+            </button>
+         </div>
+      </div>
+   </section>
+</section>
