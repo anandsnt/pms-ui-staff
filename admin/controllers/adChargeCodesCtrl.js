@@ -337,9 +337,11 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				if (item.calculation_rule_list.length !== 0 && item.selected_calculation_rule) {
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule, 10)].charge_code_id_list;
 				} // Tax 2 of Vienna Tax needs Charge code id of Tax 1 in Calculation rule array
-				else if ($scope.prefetchData.linked_charge_codes[0].is_vienna_tax && $scope.prefetchData.linked_charge_codes[1]) {
-					$scope.prefetchData.linked_charge_codes[1].calculation_rules = $scope.prefetchData.linked_charge_codes[1].calculation_rule_list[1].charge_code_id_list;
+				else if ($scope.prefetchData.linked_charge_codes[0].is_vienna_tax) {
 					$scope.prefetchData.is_vienna_tax = true;
+					if ($scope.prefetchData.linked_charge_codes[1]) {
+						$scope.prefetchData.linked_charge_codes[1].calculation_rules = $scope.prefetchData.linked_charge_codes[1].calculation_rule_list[1].charge_code_id_list;
+					}
 				}
 			});
 
