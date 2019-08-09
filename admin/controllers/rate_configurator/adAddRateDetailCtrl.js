@@ -175,6 +175,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.rateData.last_sync_status = null;
             $scope.rateData.last_sync_at = null;
+            $scope.showRoundingOptions();
         };
         /*
          * Set commission data
@@ -268,7 +269,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_copied': ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
                 'booking_origin_id': $scope.rateData.booking_origin_id,
                 'tasks': $scope.rateData.tasks,
-                'is_day_use': $scope.rateData.is_day_use
+                'is_day_use': $scope.rateData.is_day_use,
+                'round_type_id': $scope.rateData.round_type_id
             };
 
 
@@ -499,6 +501,18 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
             }
+            $scope.showRoundingOptions();
+        };
+
+        /**
+         * check to see if round_types drop-down should be shown
+         */
+        $scope.showRoundingOptions = function() {
+            $scope.enableRoundingOptions =
+                $scope.rateData.based_on.id &&
+                $scope.rateData.based_on.value_sign &&
+                $scope.rateData.based_on.value_abs &&
+                $scope.rateData.based_on.type;
         };
 
         // CICO-56662

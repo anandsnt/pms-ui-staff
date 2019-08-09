@@ -82,19 +82,28 @@
                         </div>
                         <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn}">
                             <div class="select white select-col col1-3">
-                                <select class="placeholder" ng-model="rateData.based_on.value_sign">
+                                <select class="placeholder" ng-model="rateData.based_on.value_sign" ng-change="showRoundingOptions()">
                                                 <option value="+">+</option>
                                                 <option value="-">-</option>
                                             </select>
                             </div>
                             <div class="entry col1-3">
-                                 <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs">
+                                 <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs" ng-change="showRoundingOptions()">
 
                             </div>
                             <div class="select white select-col col1-3">
-                                <select class="placeholder" ng-model="rateData.based_on.type">
+                                <select class="placeholder" ng-model="rateData.based_on.type" ng-change="showRoundingOptions()">
                                     <option value="amount">{{currencySymbol}}</option>
                                     <option value="percent">%</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="full-width" ng-show="enableRoundingOptions">
+                        <div class="entry margin" ng-class="{'overlay': is_edit}">
+                            <div class="select white">
+                                <select class="placeholder" ng-model="rateData.round_type_id" ng-options="option.id as option.description for option in rateTypesDetails.roundingOptions">
+                                    <option value="">Select</option>
                                 </select>
                             </div>
                         </div>
