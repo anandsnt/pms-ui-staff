@@ -15,7 +15,9 @@ angular.module('sntRover').controller('RVHkRoomDetailsCtrl', [
 		$rootScope.setPrevState = {
 			title: $filter('translate')('ROOM_STATUS'),
 			name: 'rover.housekeeping.roomStatus',
-			param: {}
+			param: {
+				page: $stateParams.page
+			}
 		};
 
 		$scope.setTitle($filter('translate')('ROOM_DETAILS'));

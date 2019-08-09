@@ -131,6 +131,11 @@
                     </select>
                 </div>
             </div>
+            <div class="entry entry-color-picker">
+                <label style="width: 300px; margin-bottom: 10px;" translate="">LOGO_BG</label>
+                <ui-colorpicker ng-model="data.logo_bg_color"></ui-colorpicker>
+                <input ng-model="data.logo_bg_color">
+            </div>
             <h4>Settings - Letter</h4>
             <div class="entry" ng-if="data.print_confirmation_letter">
                 <label for="print-guest-confirmation" class="switch-label">Print Confirmation Letter</label>
