@@ -336,7 +336,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				item.calculation_rules = [];
 				if (item.calculation_rule_list.length !== 0 && item.selected_calculation_rule) {
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule, 10)].charge_code_id_list;
-				} else if ($scope.prefetchData.linked_charge_codes[0].is_vienna_tax) {
+				} else if ($scope.prefetchData.linked_charge_codes[0].is_vienna_tax && $scope.prefetchData.linked_charge_codes[1]) {
 					$scope.prefetchData.linked_charge_codes[1].calculation_rules = $scope.prefetchData.linked_charge_codes[1].calculation_rule_list[1].charge_code_id_list;
 					$scope.prefetchData.is_vienna_tax = true;
 				}
@@ -503,7 +503,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 					isNotVienna = true;
 				}
 			}
-			if (isNotVienna) {
+			if (isNotVienna || !$scope.prefetchData.is_vienna_tax_enabled) {
 				$scope.disableViennaTax = true;
 			}
 			$scope.currentClickedTaxElement = index;
