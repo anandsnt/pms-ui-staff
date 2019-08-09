@@ -123,9 +123,9 @@
 
         <li class="room" ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
             <div ng-if="::isStandAlone" class="check">
-                <label class="checkbox inline" ng-click="roomSelectChange(room, $index)">
+                <label class="checkbox inline">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
-                    <input type="checkbox" ng-model="room.selected" />
+                    <input type="checkbox" ng-model="room.selected" ng-change="roomSelectChange(room, $index)"/>
                 </label>
             </div>
 
