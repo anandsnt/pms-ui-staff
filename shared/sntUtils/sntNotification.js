@@ -1,7 +1,7 @@
 angular.module('snt.utils').service('sntNotifySrv', [function () {
     var service = this;
 
-    service.setConfiguration = function(type){
+    service.setConfiguration = function (type) {
         switch (type) {
             default:
                 toastr.options.preventDuplicates = true;

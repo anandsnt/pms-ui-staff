@@ -17,9 +17,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     '$log',
     'ngDialog',
     'sntActivity',
-    'sntNotifySrv',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
-              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity, sntNotifySrv) {
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity) {
         var self = this,
             isNotTimeOut = false,
             timeOut,
