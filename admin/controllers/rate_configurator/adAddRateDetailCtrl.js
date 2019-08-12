@@ -78,7 +78,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
         };
 
         $scope.shouldDisableBasedOnAndCopy = function() {
-            return $scope.rateData.based_on.id === '' && $scope.is_edit;
+            var basedOnData = $scope.rateData.based_on;
+
+            return $scope.is_edit && (basedOnData.id === '' || basedOnData.is_copied);
         };
 
         $scope.isHourlyRatesEnabled = function () {
