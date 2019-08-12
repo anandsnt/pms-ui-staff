@@ -78,7 +78,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
         };
 
         $scope.shouldDisableBasedOnAndCopy = function() {
-            return $scope.rateData.based_on.id === '';
+            return $scope.rateData.based_on.id === '' && $scope.is_edit;
         };
 
         $scope.isHourlyRatesEnabled = function () {
@@ -291,24 +291,23 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
 
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
+                // CICO-55171: If Based on rate is changed while editing, go and refresh page..
+                if ($scope.is_edit && checkBasedOnRateChanged()) {
+                    $scope.$emit('hideLoader');
+                    $state.go('admin.rates');
+                }
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
-
-                // CICO-55171: If Based on rate is changed while editing, go and refresh page..
-                if ($scope.is_edit && checkBasedOnRateChanged()) {
-                    $state.go('admin.rates');
-                }
+                
+                if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
+                    $scope.$emit("activateSetTab");
+                } 
                 else {
-                    if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
-                        $scope.$emit("activateSetTab");
-                    } 
-                    else {
-                        $scope.$emit("changeMenu", 'Room types');
-                    }
-                    $scope.$emit("rateChangedFromDetails");
+                    $scope.$emit("changeMenu", 'Room types');
                 }
+                $scope.$emit("rateChangedFromDetails");
             };
 
             var saveFailureCallback = function(data) {
@@ -425,7 +424,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
             $scope.rateData.end_date = "";
             $scope.rateData.end_date_for_display = "";
         };
-
 
         $scope.popupCalendar = function() {
             ngDialog.open({
