@@ -38,6 +38,7 @@ module.exports = function(config) {
             '../shared/sntFeatureToggles/**/*.js',
             '../shared/lib/js/Utils.js',
             '../shared/sntCanvasUtil/**/*.js',
+            '../shared/sntUtils/**/*.js',
             './rvApp.js',
             './rvSntApp.js',
             './rvCacheVaultModule.js',

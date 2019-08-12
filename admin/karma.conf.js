@@ -49,6 +49,7 @@ module.exports = function(config) {
             '../shared/directives/touchPress/touchPress.js',
             '../shared/directives/activityIndicator/sntActivityIndicator.js',
             '../shared/sntFeatureToggles/**/*.js',
+            '../shared/sntUtils/**/*.js',
 
             '../shared/baseCtrl.js',
             '../shared/iBeaconOperations.js',

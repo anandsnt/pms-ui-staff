@@ -254,7 +254,8 @@
 					</ul>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						<span ng-if="description.card_number">{{description.fees_desc}} - {{description.card_number}}</span>
-						<span ng-if="!description.card_number">{{description.fees_desc}}</span>					
+						<span ng-if="!description.card_number">{{description.fees_desc}}</span>
+						<span class="icons icon-invoice" ng-click="openReceiptDialog()"></span>
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">

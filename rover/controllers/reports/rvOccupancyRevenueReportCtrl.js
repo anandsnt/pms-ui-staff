@@ -28,7 +28,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}, {
 				key: "complimentary_rooms",
                 name: "Complimentary Rooms",
-                hasDayUseComponent: false
+                hasDayUseComponent: true
 			}, {
 				key: "occupied_minus_comp",
                 name: "Occupied Rooms (Excl. Comp.)",
@@ -41,7 +41,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
                 name: "Total Occ. (Excl. Comp.)",
-                hasDayUseComponent: false
+                hasDayUseComponent: true
 			}],
 			revenues: [{
 				key: "rev_par",
@@ -76,8 +76,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 
 		// keep a quick ref to flags way up in the sky
-		$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year;
-		$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance;
+		$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_last_year);
+		$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
 
 
 		$scope.selectedDays = [];
@@ -310,10 +310,12 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
 
 			$scope.chosenLastYear = !! hasIncludeLastYear ? hasIncludeLastYear.selected : false;
+			$scope.chosenLastYear = $scope.chosenLastYear || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_last_year);
 
 			var hasIncludeVariance = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_variance' });
 
-            $scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
+			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
+			$scope.chosenVariance = $scope.chosenVariance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
             
             var hasDayUseFilter = chosenReport.usedFilters ? chosenReport.usedFilters.reservation_type : _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
 

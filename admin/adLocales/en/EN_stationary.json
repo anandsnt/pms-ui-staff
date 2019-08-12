@@ -135,5 +135,6 @@
 	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown",
 	"COPY_HOTEL_ON_CONFIRMATION": "Copy hotel on confirmation",
 	"HOTEL_EMAIL": "Hotel Email",
-	"BULK_CHECKOUT_SEND_INVOICES": "Bulk check out - send invoices"
+	"BULK_CHECKOUT_SEND_INVOICES": "Bulk check out - send invoices",
+	"LOGO_BG": "Logo background"
 

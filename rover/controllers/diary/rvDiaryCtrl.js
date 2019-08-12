@@ -1689,7 +1689,7 @@ angular.module('sntRover')
 						   start.getHours() + time_span.hours + dstChange,
 						   start.getMinutes() + time_span.minutes,
 						   0, 0),
-                    rt_filter = _.isEmpty(filter.room_type) || (filter.room_type && filter.room_type.id.toLowerCase() === 'all') ? undefined : filter.room_type.id,
+                    rt_filter = _.isEmpty(filter.room_type) || (filter.room_type && filter.room_type.id === 'All') ? undefined : filter.room_type.id,
                     rate_type = filter.rate_type,
                     account_id = filter.rate_type === 'Corporate' && filter.rate && filter.rate !== '' ? filter.rate.id : undefined,
                     GUID = 'avl-101';// No need to manipulate this thing from service part, we are deciding

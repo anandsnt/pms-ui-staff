@@ -729,5 +729,15 @@ var isValidEmail = function(email) {
 
 // Get display password to show in the password form fields
 var getTemporaryDisplayPassword = function() {
-    return 'default';
+    // Strong password generated randomly for display purpose only
+    return '-R#h!bVsALm-';
+};
+
+/**
+ * Checks whether the given array is empty or not
+ * @param {Array} arr 
+ * @return {Boolean}
+ */
+var isEmptyArray = function (arr) {
+    return arr.length === 0;
 };

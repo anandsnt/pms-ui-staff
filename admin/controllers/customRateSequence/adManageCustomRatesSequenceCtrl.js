@@ -90,12 +90,6 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                     
                 $scope.callAPI(ADRateSequenceSrv.fetchRatesInSequence, options);
             },
-            fixHelper = function(e, ui) {
-                ui.children().each(function() {
-                    $(this).width($(this).width());
-                });
-                return ui;
-            },
             updateRateList = function() {
                 fetchRates();
                 fetchAssignedRates();
@@ -103,13 +97,16 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             setSortableOptions = function() {
                 $scope.sortableRateSequenceOptions = {
                     connectWith: "#unassigedrates",
-                    helper: fixHelper,
                     disabled: false,
+                    revert: 'invalid',
+                    helper: 'clone',
+                    appendTo: 'body',
                     update: function(e, ui) {
                         var sortable = ui.item.sortable,
                             rate = sortable.model;
 
-                        if (sortable.dropindex !== sortable.index && sortable.dropindex !== null && rate.sort_order !== null) {
+                        if (sortable.dropindex !== sortable.index && sortable.dropindex !== null
+                            && rate.sort_order !== null && sortable.droptarget[0].id !== 'unassigedrates') {
                             $scope.selectRate(rate);
                             $scope.assignRate(sortable.dropindex + 1);
                         }
@@ -124,7 +121,9 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
                 };
                 $scope.sortableRateOptions = {
                     connectWith: "#assigedrates",
-                    helper: fixHelper,
+                    revert: 'invalid',
+                    helper: 'clone',
+                    appendTo: 'body',
                     receive: function(e, ui) {
                         var rate = ui.item.sortable.model;
 
@@ -136,13 +135,15 @@ admin.controller('ADManageCustomRatesSequenceCtrl', ['$scope', 'ADRateSequenceSr
             errorCallBack = function(e) {
                 $scope.$emit('hideLoader');
                 $scope.errorMessage = e;
+                updateRateList();
                 $timeout(function() {
-                    updateRateList();
-                }, 3000);
+                    $scope.errorMessage = '';
+                }, 6000);
             },
             clearSearchQuery = function() {
                 $scope.sequenceRateQuery = '';
                 $scope.rateQuery = '';
+                $scope.sortableRateSequenceOptions.disabled = false;
             },
             ratesSearchCall = null,
             sequenceRateSearchCall = null;

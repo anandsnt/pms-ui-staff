@@ -42,7 +42,8 @@ var sntRover = angular.module('sntRover', [
         'sntCurrencyFilter',
         'sntCanvasUtil',
         'sntFeatureToggles',
-        'sntNotification'
+        'sntNotification',
+        'snt.utils'
 	]);
 
 sntRover.config([

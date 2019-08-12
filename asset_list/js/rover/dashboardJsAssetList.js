@@ -48,6 +48,7 @@ module.exports = {
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
                 sharedRoot + 'sntCanvasUtil/**/*.js',
                 sharedRoot + 'sntNotifications/**/*.js',
+                sharedRoot + 'sntUtils/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',

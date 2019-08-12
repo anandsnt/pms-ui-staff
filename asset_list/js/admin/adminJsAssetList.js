@@ -52,6 +52,7 @@ module.exports = {
                 sharedRoot + 'sntTransitionManager/**/*.js',
 				sharedRoot + 'baseCtrl.js',
 				sharedRoot + 'iBeaconOperations.js',
+                sharedRoot + 'sntUtils/**/*.js',
 				jsLibRoot + 'date.js',
 				adminRoot + 'adRouter/**/*.js',
 				adminRoot + 'adApp.js',

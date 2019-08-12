@@ -1,17 +1,22 @@
 <div class="form float" ng-if="state.activeTab === 'MAPPING'">
-    <div class="entry full-width" ng-controller="adInterfaceMappingsCtrl">
+   <section ng-controller="adInterfaceMappingsCtrl">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-
-        <div class="form-title full-width">
-            <h3>Mappings</h3>
-        </div>
 
         <div class="entry full-width" ng-show="state.mode=='LIST'">
             <div class="content-title" style="position: relative;">
                 <span class="count">MAPPINGS({{totalCount}})</span>
                 <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
             </div>
+        </div>
+
+        <div class="controls-holder filters">
+          <div class="table-search three-column">
+            <span class="search-text">Search</span>
+            <span class="icons icon-search" name="submit" type="submit"></span>
+            <input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm"
+            delay="1000" function-to-fire="searchEntered"/>
+          </div>
         </div>
 
         <form ng-show="state.mode=='ADD'"
@@ -47,8 +52,8 @@
                 </tbody>
             </table>
             <!--Custom pagination footer goes here-->
-            <script type="text/ng-template" id="custom/pager" ng-show="totalCount > 0">
-                <div class="search-pagination">
+            <script type="text/ng-template" id="custom/pager">
+                <div class="search-pagination" ng-show="totalCount > 0">
                     <div class="entry">
                         Show
                         <div class="select">
@@ -70,5 +75,5 @@
             </script>
             <!--end-->
         </section>
-    </div>
+    </section>
 </div>
