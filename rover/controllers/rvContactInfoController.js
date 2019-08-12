@@ -195,7 +195,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 dataToUpdate.address = {};
             }
 
-            var userId = $scope.guestCardData.userId || $scope.guestCardData.contactInfo.user_id
+            var userId = $scope.guestCardData.userId || $scope.guestCardData.contactInfo.user_id;
             var data = {
                 'data': dataToUpdate,
                 'userId': userId
