@@ -60,8 +60,8 @@
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">
-                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit}">
-                            <input  id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
+                        <div class="switch-button with-text" ng-class="{'on' : !rateData.based_on.is_copied, 'overlay': is_edit }">
+                            <input id="basedon" name="basedon" type="checkbox" ng-model="rateData.based_on.is_copied" />
                             <label class="data-off">
                                 <span class="value">Based</span>
                                 <span class="button orange">Copy From</span>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="full-width">
-                        <div class="entry margin" ng-class="{'overlay': is_edit}">
+                        <div class="entry margin" ng-class="{'overlay': shouldDisableBasedOnAndCopy()}">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.based_on.id" ng-change="basedOnRateChanged()" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                                     <option value="">Select Rate</option>
@@ -83,13 +83,12 @@
                         <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn}">
                             <div class="select white select-col col1-3">
                                 <select class="placeholder" ng-model="rateData.based_on.value_sign">
-                                                <option value="+">+</option>
-                                                <option value="-">-</option>
-                                            </select>
+                                    <option value="+">+</option>
+                                    <option value="-">-</option>
+                                </select>
                             </div>
                             <div class="entry col1-3">
                                  <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs">
-
                             </div>
                             <div class="select white select-col col1-3">
                                 <select class="placeholder" ng-model="rateData.based_on.type">
