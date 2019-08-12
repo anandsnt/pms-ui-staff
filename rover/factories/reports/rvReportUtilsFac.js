@@ -9,7 +9,8 @@ angular.module('reportsModule')
     'RVReportFiltersConst',
     'RVreportsSubSrv',
     'rvUtilSrv',
-    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv) {
+    'RVReportParamsConst',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv, reportParams) {
         var factory = {};
 
         var DATE_FILTERS = [
@@ -972,7 +973,7 @@ angular.module('reportsModule')
                     reportsSubSrv.fetchCountries()
                         .then( fillCountries );
                 } else if ('RESERVATION_TYPE' === filter.value && !filter.filled) {
-                    fillResTypeOptions();
+                    setIncludeDayuseFlag();
                 } else {
                     // no op
                 }
@@ -1483,23 +1484,14 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
 
-            function fillResTypeOptions() {
+            function setIncludeDayuseFlag() {
                 var foundFilter;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESERVATION_TYPE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-
-                        report.hasDayUseFilter = {
-                            data: getReservationTypeOptions(),
-                            options: {
-                                hasSearch: false,
-                                selectAll: true,
-                                key: 'description',
-                                defaultValue: 'Select Reservation Type(s)'
-                            }
-                        };
+                        report[reportParams['INCLUDE_DAYUSE']] = true;
                     }
                 });
             }
