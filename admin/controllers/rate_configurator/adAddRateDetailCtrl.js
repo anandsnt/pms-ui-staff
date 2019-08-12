@@ -498,6 +498,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 $scope.disableDayUseToggle = true;
             }
             else {
+                $scope.rateData.round_type_id = null;
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
             }

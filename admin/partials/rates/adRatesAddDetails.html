@@ -99,8 +99,9 @@
                             </div>
                         </div>
                     </div>
+                    <label ng-show="enableRoundingOptions">Rounding</label>
                     <div class="full-width" ng-show="enableRoundingOptions">
-                        <div class="entry margin" ng-class="{'overlay': is_edit}">
+                        <div class="entry margin">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.round_type_id" ng-options="option.id as option.description for option in rateTypesDetails.roundingOptions">
                                     <option value="">Select</option>
