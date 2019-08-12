@@ -12,3 +12,4 @@
  @import (inline) '../shared/lib/css/SyntaxHighlighter/shThemeDefault.css';
  @import (inline) '../shared/lib/css/treeview/ivh-treeview.min.css';
  @import (inline) '../shared/lib/css/treeview/ivh-treeview-theme-basic.css';
+ @import (inline) '../shared/lib/css/toastr/toastr.min.css';

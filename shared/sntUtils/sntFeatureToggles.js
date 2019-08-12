@@ -1,5 +1,4 @@
-angular.module('sntFeatureToggles',
-    [])
+angular.module('snt.utils')
     .service('Toggles', ['$q', 'sntBaseWebSrv',
         function ($q, sntBaseWebSrv) {
             var service = this,
