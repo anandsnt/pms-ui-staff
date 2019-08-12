@@ -2958,17 +2958,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $state.go('rover.reports.inbox');
         };
 
-        $scope.later = () => {
-            $timeout(function () {
-                toastr.options.onclick = function () {
-                    $state.go('rover.reports.inbox');
-                };
-                toastr["info"]("Report Available in <a ui-sref='rover.reports.inbox'>Inbox</a>");
-
-            }, 2000);
-            $scope.closeDialog();
-        };
-
         $scope.reload = function() {
             $state.reload();
         };
