@@ -94,7 +94,7 @@
                             <h3><span translate>MULTI_CURRENCY</span></h3>
                         </div>
                         <ad-toggle-button div-class="full-width" is-checked="is_multi_currency_enabled" label="{{'ENABLE_MULTIPLE_CURRENCIES' | translate }}"></ad-toggle-button>
-
+<!-- 
                         <div class="entry" ng-show="is_multi_currency_enabled">
 							<label> Hotel Invoice Currency <strong>*</strong> </label>
 							<div class="select">
@@ -102,6 +102,16 @@
 								        ng-model="invoice_currency"
 										ng-options="currency.id as currency.code for currency in currency_list">
 								</select>
+							</div>
+						</div> -->
+						<div class="entry full-width actions_margin_top">
+							<label> Hotel Invoice Currency <strong>*</strong> </label>
+							<div id="available-charge-codes" class="boxes col2">
+								<ad-checkbox ng-repeat="currency in currency_list"
+								is-checked="currency.is_selected"
+								label="{{currency.code +' - ' + currency.symbol}}"
+								parent-label-class="room-likes" span-class="checkbox-background"
+								on-click="selectedCurrency(currency.id)"></ad-checkbox>
 							</div>
 						</div>
                     </fieldset>
