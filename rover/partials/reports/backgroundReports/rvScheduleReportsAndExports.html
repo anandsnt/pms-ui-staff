@@ -1,5 +1,5 @@
 <!-- Search -->
-<form class="search-form reports" ng-class="{'enable-adding': reportViewStore.showingScheduledReports || reportViewStore.showingExportReports}">
+<form class="search-form reports" ng-class="{'enable-adding': reportViewStore.showingScheduledReports || reportViewStore.showingExportReports || reportViewStore.showingCustomExports}">
     <div class="entry search">
         <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()"> <!-- Add class "visible" to show -->
             <span class="icons icon-clear-search">Clear query</span>
@@ -12,6 +12,7 @@
         <a  class="add-new-button" ng-show="reportViewStore.showingScheduledReports" ng-click="createNewReportSchedule()">+ New Report Schedule</a>
         <!-- Exported screen : -->
         <a  class="add-new-button" ng-show="reportViewStore.showingExportReports" ng-click="createNewExportSchedule()">+ New Export Schedule</a>
+        <a class="add-new-button" ng-show="reportViewStore.showingCustomExports" ng-click="createNewCustomExport()">+ New Export</a>
     </div>
 </form>
 
@@ -31,6 +32,10 @@
                 <span ng-include="'/assets/partials/reports/scheduleReport/rvExportReport.html'"
                 ng-controller="RVExportReportsCtrl"
                 ng-if="reportViewStore.showingExportReports || reportViewStore.showingExportAReport"></span>
+
+                <span ng-include="'/assets/partials/reports/customExports/rvCustomExport.html'"
+                ng-controller="RVCustomExportCtrl"
+                ng-if="reportViewStore.showingCustomExports || reportViewStore.showingCustomNewExport"></span>
             </div>
         </div>
     </div>

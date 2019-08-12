@@ -18,7 +18,9 @@ angular.module('sntRover')
                 showingScheduledReports: false,
                 showingScheduleAReport: false,
                 showingExportReports: false,
-                showingExportAReport: false
+                showingExportAReport: false,
+                showingCustomExports: false,
+                showingCustomNewExport: false
             };
 
             /**
@@ -104,7 +106,9 @@ angular.module('sntRover')
                 SHOW_SCHEDULED_REPORTS: 'SHOW_SCHEDULED_REPORTS',
                 SHOW_SCHEDULE_A_REPORT: 'SHOW_SCHEDULE_A_REPORT',
                 SHOW_EXPORT_REPORTS: 'SHOW_EXPORT_REPORTS',
-                SHOW_EXPORT_A_REPORT: 'SHOW_EXPORT_A_REPORT'
+                SHOW_EXPORT_A_REPORT: 'SHOW_EXPORT_A_REPORT',
+                SHOW_CUSTOM_EXPORTS: 'SHOW_CUSTOM_EXPORTS',
+                SHOW_CUSTOM_NEW_EXPORT: 'SHOW_CUSTOM_NEW_EXPORT'
             };
 
             /**
@@ -129,6 +133,12 @@ angular.module('sntRover')
 
                     case $scope.reportViewActions.SHOW_EXPORT_A_REPORT:
                         return angular.extend({}, intialReportViewStore, {showingExportAReport: true});
+
+                    case $scope.reportViewActions.SHOW_CUSTOM_EXPORTS:
+                        return angular.extend({}, intialReportViewStore, {showingCustomExports: true});
+
+                    case $scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT:
+                        return angular.extend({}, intialReportViewStore, {showingCustomNewExport: true});
 
                     default:
                         return angular.extend({}, intialReportViewStore, {showingAllReport: true});
@@ -276,6 +286,10 @@ angular.module('sntRover')
                 setTitleAndHeading();
             });
 
+            $scope.createNewCustomExport = () => {
+                $scope.$emit('CREATE_NEW_CUSTOM_EXPORT_LISTENER');
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 if ($stateParams.showScheduledReports) {
@@ -289,6 +303,9 @@ angular.module('sntRover')
                 setupScroll();
                 
                 setTitleAndHeading();
+
+                $scope.customExportDataSpaces = [];
+                $scope.scheduledCustomExports = [];
 
             })();
 

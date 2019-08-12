@@ -1,0 +1,130 @@
+<!-- First column - Scheduled reports -->
+<div class="report-col main-col scrollable" > <!-- Add vertical scroller here -->
+    <ul class="wrapper" ng-if="!isAddingNew">
+        <li class="report-item" ng-repeat="scheduledExport in scheduledCustomExports"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            <span class="icon-report {report icon class}"></span>
+            <div class="data">
+                <h2>{{scheduledExport.name}}</h2><!-- Add .single-line if there is no info -->
+                <em>{{scheduledExport.desc}}</em>
+            </div>
+        </li>
+    </ul>
+    <ul class="wrapper" ng-if="isAddingNew">
+        <li class="report-item"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            <span class="icon-report {report icon class}"></span>
+            <div class="data">
+                <h2>{Export Data Set}</h2><!-- Add .single-line if there is no info -->
+                <em>{Info on when and how often is sent}</em>
+            </div>
+        </li>
+        ... repeat for every scheduled report
+    </ul>
+</div>
+
+<!-- Second column - paremeters -->
+<div class="report-col" ng-if="!shouldShowExportListOnly()">
+    <div class="scrollable no-buttons"> <!-- Add vertical scroller here + add class "buttons-4" if it's an existing export -->
+        <div class="wrapper">
+            <h3>Select Fields<span>To include in Export</span></h3>
+            <div class="entry export-fields">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox"></span>
+                    <input id="export-{field-name}" value="{Field Name}" type="checkbox">
+                    {Field Name}
+                </label>
+                ... repeat for each field
+            </div>         
+        </div>
+    </div>
+</div>
+
+<!-- Third column - details -->
+<div class="report-col" ng-if="!shouldShowExportListOnly()">
+    <div class="scrollable no-buttons"> <!-- Add vertical scroller here. Add .no-fields if there are no fields -->
+        <div class="wrapper">
+            <h3>Set Order & Labels<span>Of Selected Fields</span></h3>
+            <div class="entry export-fields-order">
+                
+                <div class="export-field">
+                    <span class="handle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <input type="text" value="{new field name, if available}" placeholder="{Initial Field Name}">
+                </div>
+                ... repeat for each selected field
+            </div>
+
+            <!-- Show this instead of .entry if there are no fields --
+            <div class="no-content">
+                <div class="info">
+                    <strong>No Fields selected</strong>
+                    <span>Select some fields first</span>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+</div>
+
+<!-- Fourth column - distribution list -->
+<div class="report-col" ng-if="!shouldShowExportListOnly()">
+    <div class="scrollable no-buttons"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
+        <div class="wrapper">
+            <h3>Set Filters<span>Select Field and Apply Filters</span></h3>
+
+            <!-- Show this instead of below HTML if there are no fields --
+            <div class="no-content">
+                <div class="info">
+                    <strong>No Fields selected</strong>
+                    <span>Select some fields first</span>
+                </div>
+            </div>
+            -->
+
+            <div class="entry">
+                <strong>{Field Name}</strong>
+
+
+                { filters-reports-list.html } 
+                <!-- + add .with-delete-button to .entry
+                + append this button to .entry 
+                <button class="button blank with-icon only-icon button-delete">
+                    <span class="icons icon-remove-40"></span>
+                </button> -->
+                ... repeat for each selected filter with appropriate filter HTML
+
+
+                <label for="{filter-select-id-unique}" class="add-new-button">
+                    + Add Filter
+                    <select id="{filter-select-id-unique}">
+                        <option value=''>Select a Filter</option>
+                        <option value='{filter}'>{Filter}</option>
+                    </select>
+                </label>
+                <button type="button" class="button white red-text remove-field-filters">Remove Field & Filters</button>
+            </div>
+            ... repeat for each selected field
+            
+
+            <div class="entry">
+                <label>Field Name</label>
+                <div class="select">
+                    <select class="placeholder">
+                        <option value=''>Select a field</option>
+                        <option value='{field}'>{Field Name}</option>
+                        ... repeat for each field (exclude already selected fields)
+                    </select>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
