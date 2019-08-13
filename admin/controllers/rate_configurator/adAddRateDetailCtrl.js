@@ -1,5 +1,7 @@
-admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDetailsSrv', 'ngDialog', 'ADReservationToolsSrv',
-    function($scope, $rootScope, ADRatesAddDetailsSrv, ngDialog, ADReservationToolsSrv) {
+admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADRatesAddDetailsSrv', 'ngDialog', 'ADReservationToolsSrv',
+    function($scope, $state, $rootScope, ADRatesAddDetailsSrv, ngDialog, ADReservationToolsSrv) {
+
+        var initialRateData = {};
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -75,6 +77,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return !$scope.rateData.is_hourly_rate;
         };
 
+        $scope.shouldDisableBasedOnAndCopy = function() {
+            var basedOnData = $scope.rateData.based_on;
+
+            return $scope.is_edit && (basedOnData.id === '' || basedOnData.is_copied);
+        };
+
         $scope.isHourlyRatesEnabled = function () {
             return !!$rootScope.isHourlyRatesEnabled;
         };
@@ -130,6 +138,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if (!$scope.rateData.id) {
                 $scope.rateData.is_hourly_rate = $rootScope.isHourlyRatesEnabled;
             }
+            initialRateData = angular.copy($scope.rateData);
 
             $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
             $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
@@ -222,6 +231,17 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             return addOnsArray;
         };
 
+        // Method to check whether based on rate is changed before saving.
+        var checkBasedOnRateChanged = function() {
+            var isBasedOnRateChanged = false;
+
+            if (initialRateData.based_on.id !== $scope.rateData.based_on.id) {
+                isBasedOnRateChanged = true;
+            }
+
+            return isBasedOnRateChanged;
+        };
+
         $scope.startSave = function() {
             var amount = parseFloat($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
@@ -240,8 +260,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'description': $scope.rateData.description,
                 'rate_type_id': $scope.rateData.rate_type.id,
                 'based_on_rate_id': $scope.rateData.based_on.id,
-                'based_on_type': $scope.rateData.based_on.type,
-                'based_on_value': amount,
+                'based_on_type': $scope.rateData.based_on.id === null ? null : $scope.rateData.based_on.type,
+                'based_on_value': $scope.rateData.based_on.id === null ? null : amount,
                 'promotion_code': $scope.rateData.promotion_code,
                 'charge_code_id': $scope.rateData.charge_code_id,
                 'currency_code_id': $scope.rateData.currency_code_id,
@@ -271,21 +291,27 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'is_day_use': $scope.rateData.is_day_use
             };
 
-
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
+                // CICO-55171: If Based on rate is changed while editing, go and refresh page..
+                if ($scope.is_edit && checkBasedOnRateChanged()) {
+                    $scope.$emit('hideLoader');
+                    $state.go('admin.rates');
+                }
                 $scope.manipulateData(data);
                 $scope.detailsMenu = "";
                 $('#activityLogArea').scope().detailsMenu = '';
                 $scope.$emit('hideLoader');
+                
                 if ($scope.rateData.based_on && $scope.rateData.based_on.is_copied == true) {
                     $scope.$emit("activateSetTab");
-                } else {
+                } 
+                else {
                     $scope.$emit("changeMenu", 'Room types');
                 }
                 $scope.$emit("rateChangedFromDetails");
-
             };
+
             var saveFailureCallback = function(data) {
                 $scope.$emit('hideLoader');
                 $scope.$emit("errorReceived", data);
@@ -294,7 +320,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             if (!$scope.rateData.id) {
                 data.addons = addOns;
                 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate, data, saveSuccessCallback, saveFailureCallback);
-            } else {
+            } 
+            else {
                 // CICO-49136. We need to compare existing addons and 
                 // selected addons on update. If both are same no need to pass that param to API
                 var addonsDifferenceCount = 0;
@@ -399,7 +426,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateData.end_date = "";
             $scope.rateData.end_date_for_display = "";
         };
-
 
         $scope.popupCalendar = function() {
             ngDialog.open({
