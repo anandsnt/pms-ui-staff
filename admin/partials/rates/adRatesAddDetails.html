@@ -58,7 +58,7 @@
                         <option selected>{{currencySymbol}}</option>
                     </select>
                 </div> -->
-                <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value for currency in rateTypesDetails.hotel_settings.rate_currency_list" ng-change="onChangeChargeCode()">
+                <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateTypesDetails.hotel_settings.rate_currency_list" ng-change="onChangeChargeCode()">
                    <option value="">Select Rate Currency</option>
                 </select>
             </div>
