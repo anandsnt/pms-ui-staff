@@ -305,7 +305,9 @@ sntZestStation.controller('zsHomeCtrl', [
                 $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.check_out,
                 $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.booking_pop_up.enable_pop_up,
                 $scope.zestStationData.showWalkinReservationOption
-            ].filter(item => item).length;
+            ].filter(function (item) {
+                return item;
+            }).length;
 
 			// list of languages configured for this hotel
             var combinedList = _.partition(languages.languages, {
