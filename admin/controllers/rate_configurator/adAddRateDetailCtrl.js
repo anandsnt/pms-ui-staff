@@ -171,7 +171,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
 
             $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-            $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
 
             $scope.rateData.last_sync_status = null;
             $scope.rateData.last_sync_at = null;

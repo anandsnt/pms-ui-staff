@@ -49,13 +49,16 @@
                 <div class=" select-col col1-2 disabled-bg">
                     <ad-textbox label="Tax" inputtype="text" value="rateData.tax_inclusive_or_exclusive" readonly='yes' styleclass="col1-2" label="" placeholder="" style=" width: 100px;"></ad-textbox>
                 </div>
-                <label style=" padding-left: 113px;">currency</label>
+                
+            </div>
+            <div class="entry margin">
+                <label>currency</label>
                <!--  <div class="select select-col col1-2 " style="float: right;">
                     <select class="placeholder" disabled="disabled" class="styled">
                         <option selected>{{currencySymbol}}</option>
                     </select>
                 </div> -->
-                <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="currency.id as currency.code ' + - + ' currency.symbol for currency in rateTypesDetails.currency_list" ng-change="onChangeChargeCode()">
+                <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value for currency in rateTypesDetails.hotel_settings.rate_currency_list" ng-change="onChangeChargeCode()">
                    <option value="">Select Rate Currency</option>
                 </select>
             </div>
