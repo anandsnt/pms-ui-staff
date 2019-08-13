@@ -528,18 +528,19 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
             }
-            $scope.showRoundingOptions();
         };
 
         /**
          * check to see if round_types drop-down should be shown
          */
         $scope.showRoundingOptions = function() {
-            $scope.enableRoundingOptions =
+            var enableRoundingOptions =
                 $scope.rateData.based_on.id &&
                 $scope.rateData.based_on.value_sign &&
                 $scope.rateData.based_on.value_abs &&
                 $scope.rateData.based_on.type;
+
+            return enableRoundingOptions;
         };
 
         // CICO-56662

@@ -82,24 +82,24 @@
                         </div>
                         <div class="entry" ng-class="{'overlay': !otherData.notIsBasedOn}">
                             <div class="select white select-col col1-3">
-                                <select class="placeholder" ng-model="rateData.based_on.value_sign" ng-change="showRoundingOptions()">
+                                <select class="placeholder" ng-model="rateData.based_on.value_sign">
                                     <option value="+">+</option>
                                     <option value="-">-</option>
                                 </select>
                             </div>
                             <div class="entry col1-3">
-                                 <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs" ng-change="showRoundingOptions()">
+                                 <input type="text" value="" placeholder="" class="white" ng-model="rateData.based_on.value_abs">
                             </div>
                             <div class="select white select-col col1-3">
-                                <select class="placeholder" ng-model="rateData.based_on.type" ng-change="showRoundingOptions()">
+                                <select class="placeholder" ng-model="rateData.based_on.type">
                                     <option value="amount">{{currencySymbol}}</option>
                                     <option value="percent">%</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <label ng-show="enableRoundingOptions">Rounding</label>
-                    <div class="full-width" ng-show="enableRoundingOptions">
+                    <label ng-show="showRoundingOptions()">Rounding</label>
+                    <div class="full-width" ng-show="showRoundingOptions()">
                         <div class="entry margin">
                             <div class="select white">
                                 <select class="placeholder" ng-model="rateData.round_type_id" ng-options="option.id as option.description for option in rateTypesDetails.roundingOptions">
