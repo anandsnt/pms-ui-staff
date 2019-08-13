@@ -2905,7 +2905,7 @@ sntRover.controller('RVbillCardController',
 		}
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
- 		if (!$scope.reservationBillData.is_bill_lock_enabled) {
+ 		if (!$scope.reservationBillData.is_bill_lock_enabled || data.selectedPaymentType === 'DB') {
 			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
