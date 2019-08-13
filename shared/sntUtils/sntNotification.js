@@ -8,20 +8,19 @@ angular.module('snt.utils').service('sntNotifySrv', [function () {
         }
     };
 
-    service.warn = function (message, type) {
+    service.show = function (message, type) {
         if (angular.isArray(message)) {
             message = message.join(', ');
         }
 
         service.setConfiguration(type || null);
-        toastr.warning(message);
+        toastr[type || 'warning'](message);
     };
 }]);
 
 angular.module('snt.utils').component('sntNotify', {
     template: '<div ng-if="!$ctrl.showToasts" ng-show="$ctrl.message"' +
-        '           ng-class="{notice: $ctrl.message}"' +
-        '           class="error error_message"' +
+        '           ng-class="$ctrl.style"' +
         '           ng-switch on="$ctrl.message.length"' +
         '           ng-click="$ctrl.clearErrorMessage()">' +
         '               <span class="close-btn" ng-click="$ctrl.clearErrorMessage()"></span>' +
@@ -35,7 +34,8 @@ angular.module('snt.utils').component('sntNotify', {
         '       </div>',
     transclude: true,
     bindings: {
-        message: '<'
+        message: '<',
+        type: '@'
     },
     controller: ['sntNotifySrv', 'Toggles', function (sntNotifySrv, Toggles) {
         var ctrl = this;
@@ -44,19 +44,24 @@ angular.module('snt.utils').component('sntNotify', {
             this.message = '';
         };
 
-        // Initialize
-        (function () {
+
+        ctrl.$onInit = function () {
+            ctrl.style = 'notice';
+            ctrl.style += (ctrl.type === 'success') ? ' success success-message' : ' error error-message';
+
             ctrl.showToasts = Toggles.isEnabled('show_toast_notifications');
 
-            // Initialize the listener only if the feature is enabled for this property
-            if (ctrl.showToasts) {
-                ctrl.$onChanges = function (changes) {
-                    changes['message'] = changes['message'] || {};
+            ctrl.$onChanges = function (changes) {
+                changes['message'] = changes['message'] || {};
+                // Initialize the toast only if the feature is enabled for this property
+
+                if (ctrl.showToasts) {
                     if (changes['message'].currentValue) {
-                        sntNotifySrv.warn(changes['message'].currentValue);
+                        sntNotifySrv.show(changes['message'].currentValue, ctrl.type);
                     }
-                };
-            }
-        })();
+                }
+            };
+
+        };
     }]
 });
