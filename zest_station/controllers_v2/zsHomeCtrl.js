@@ -295,6 +295,18 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.waitingForSwipe = false;
 
+            /**
+             * Calculates the number of icons displaying in home page
+             * Used with condition to set class 'large-icons'
+             */
+            $scope.zestStationData.iconCount = [
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.pickup_keys,
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.check_in,
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.check_out,
+                $scope.zestStationData.home_screen && $scope.zestStationData.home_screen.booking_pop_up.enable_pop_up,
+                $scope.zestStationData.showWalkinReservationOption
+            ].filter(item => item).length;
+
 			// list of languages configured for this hotel
             var combinedList = _.partition(languages.languages, {
                     position: null
