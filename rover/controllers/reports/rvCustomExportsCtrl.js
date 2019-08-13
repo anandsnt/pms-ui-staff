@@ -5,7 +5,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         BaseCtrl.call(this, $scope);
 
         const STAGES = {
-            SHOW_CUSTOM_EXPORT_LIST: 'SHOW_CUSTOM_EXPORT_LIST'
+            SHOW_CUSTOM_EXPORT_LIST: 'SHOW_CUSTOM_EXPORT_LIST',
+            SHOW_PARAMETERS: 'SHOW_PARAMETERS'
         };
 
         $scope.shouldShowExportListOnly = () => {
@@ -17,9 +18,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
         };
 
-        $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_LISTENER', () => {
+        $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_LISTENER', function () {
             configureNewExport();
             $scope.isAddingNew = true;
+            $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
+            $scope.updateViewCol($scope.viewColsActions.ONE);
         });
 
         /**
@@ -28,6 +31,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         var fetchDataSpaces = () => {
             var onDataSpaceFetchSuccess = (data) => {
                     $scope.$parent.customExportDataSpaces = data;
+                    $scope.$parent.customExportDataSpaces = $scope.$parent.customExportDataSpaces.map(dataSpace => {
+                                                                dataSpace.active = false;
+                                                                return dataSpace;
+                                                            });
                 },
                 onDataSpaceFetchFailure = (error) => {
                     $scope.$parent.customExportDataSpaces = [];
@@ -54,10 +61,30 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
+        $scope.clickDataSpace = (dataSpace) => {
+            $scope.selectedEntityDetails = dataSpace;
+            $scope.selectedEntityDetails.active = true;
+            $scope.currentStage = STAGES.SHOW_PARAMETERS;
+            $scope.updateViewCol($scope.viewColsActions.FOUR);
+        };
+
+        $scope.selectColumn = (column) => {
+            if (column.selected) {
+                $scope.selectedColumns.push(column) ;
+            } else {
+                $scope.selectedColumns = _.reject($scope.selectedColumns, (col) => {
+                                            return col.name === column.name;
+
+                                        });
+            }
+
+        };
+
         var init = () => {
             $scope.isAddingNew = false;
             
             fetchScheduledCustomExports();
+            $scope.selectedColumns = [];
         };
 
         init();

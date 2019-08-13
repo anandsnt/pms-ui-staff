@@ -35,7 +35,8 @@ module.exports = {
 				jsLibRoot + 'ng-iscroll.js',
 				jsLibRoot + 'Utils.js',
 				jsLibRoot + 'date.js',
-                jsLibRoot + 'fastclick/snt-fastclick-override.js',
+				jsLibRoot + 'fastclick/snt-fastclick-override.js',
+				jsLibRoot + 'sortable.js',
 
 				sharedRoot + 'interceptors/**/*.js',
 				sharedRoot + 'directives/**/*.js',

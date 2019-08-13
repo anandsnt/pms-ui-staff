@@ -25,7 +25,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 url = 'api/generic_export_data_spaces/list.json';
 
             sntBaseWebSrv.getJSON(url).then(function (response) {
-                deferred.resolve(response);
+                deferred.resolve(response.results);
             }, function (error) {
                 deferred.reject(error);
             });

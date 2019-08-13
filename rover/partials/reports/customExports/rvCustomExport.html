@@ -1,5 +1,17 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrollable" > <!-- Add vertical scroller here -->
+    <ul class="wrapper" ng-if="isAddingNew">
+        <li class="report-item" 
+            ng-repeat="dataSpace in customExportDataSpaces" 
+            ng-click="clickDataSpace(dataSpace)"
+            ng-class="{'active': dataSpace.active}"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            <span class="icon-report {report icon class}"></span>
+            <div class="data">
+                <h2>{{dataSpace.title}}</h2><!-- Add .single-line if there is no info -->
+                <em>{{dataSpace.description}}</em>
+            </div>
+        </li>
+    </ul>
     <ul class="wrapper" ng-if="!isAddingNew">
         <li class="report-item" ng-repeat="scheduledExport in scheduledCustomExports"> <!-- Add class "active" when selected + load filters in 2nd column -->
             <span class="icon-report {report icon class}"></span>
@@ -9,16 +21,7 @@
             </div>
         </li>
     </ul>
-    <ul class="wrapper" ng-if="isAddingNew">
-        <li class="report-item"> <!-- Add class "active" when selected + load filters in 2nd column -->
-            <span class="icon-report {report icon class}"></span>
-            <div class="data">
-                <h2>{Export Data Set}</h2><!-- Add .single-line if there is no info -->
-                <em>{Info on when and how often is sent}</em>
-            </div>
-        </li>
-        ... repeat for every scheduled report
-    </ul>
+    
 </div>
 
 <!-- Second column - paremeters -->
@@ -27,12 +30,12 @@
         <div class="wrapper">
             <h3>Select Fields<span>To include in Export</span></h3>
             <div class="entry export-fields">
-                <label class="checkbox">
-                    <span class="icon-form icon-checkbox"></span>
-                    <input id="export-{field-name}" value="{Field Name}" type="checkbox">
-                    {Field Name}
-                </label>
-                ... repeat for each field
+                <label class="checkbox" ng-repeat="column in selectedEntityDetails.columns track by $index">
+                    <span class="icon-form icon-checkbox"
+                        ng-class="{'checked': column.selected}"></span>
+                    <input id="export-{{column.name}}" type="checkbox" ng-model="column.selected" ng-change="selectColumn(column)">
+                    {{column.name}}
+                </label>                
             </div>         
         </div>
     </div>
@@ -40,12 +43,15 @@
 
 <!-- Third column - details -->
 <div class="report-col" ng-if="!shouldShowExportListOnly()">
-    <div class="scrollable no-buttons"> <!-- Add vertical scroller here. Add .no-fields if there are no fields -->
+    <div class="scrollable no-buttons" 
+        ng-class="{'no-fields': selectedColumns.length === 0 }"> <!-- Add vertical scroller here. Add .no-fields if there are no fields -->
         <div class="wrapper">
             <h3>Set Order & Labels<span>Of Selected Fields</span></h3>
-            <div class="entry export-fields-order">
+            <div class="entry export-fields-order"
+                ng-if="selectedColumns.length > 0"
+                ui-sortable ng-model="selectedColumns">
                 
-                <div class="export-field">
+                <div class="export-field" ng-repeat="col in selectedColumns">
                     <span class="handle">
                         <span></span>
                         <span></span>
@@ -57,19 +63,17 @@
                         <span></span>
                         <span></span>
                     </span>
-                    <input type="text" value="{new field name, if available}" placeholder="{Initial Field Name}">
+                    <input type="text" value="{{col.name}}" placeholder="{{col.name}}" ng-model="col.customColLabel">
                 </div>
-                ... repeat for each selected field
             </div>
 
-            <!-- Show this instead of .entry if there are no fields --
-            <div class="no-content">
+            <!-- Show this instead of .entry if there are no fields -->
+            <div class="no-content" ng-if="selectedColumns.length === 0">
                 <div class="info">
                     <strong>No Fields selected</strong>
                     <span>Select some fields first</span>
                 </div>
             </div>
-            -->
         </div>
     </div>
 </div>

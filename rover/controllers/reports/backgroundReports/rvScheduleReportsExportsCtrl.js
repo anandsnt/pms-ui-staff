@@ -238,17 +238,21 @@ angular.module('sntRover')
              * Set the navigation to previous screen
              * @param {Boolean} showScheduledReports should show scheduled reports
              * @param {Boolean} showScheduledExports should show scheduled exports
+             * @param {Boolean} showCustomExports should show custom exports
              * return {void} set the previous state object
              */
-            let setPrevState = (showScheduledReports, showScheduledExports) => {
+            let setPrevState = (showScheduledReports, showScheduledExports, showCustomExports) => {
                 var backNaviagtionLabel = $filter('translate')('SCHEDULED_REPORTS');
 
                 if (showScheduledExports) {
                     backNaviagtionLabel = $filter('translate')('SCHEDULED_EXPORTS');
+                } else if (showCustomExports) {
+                    backNaviagtionLabel = $filter('translate')('CUSTOM_EXPORTS'); 
                 }
                 // Reload the current state when there is no change in the state params
                 if ($stateParams && $stateParams.showScheduledReports === showScheduledReports && 
-                    $stateParams.showScheduledExports === showScheduledExports) {
+                    $stateParams.showScheduledExports === showScheduledExports && 
+                    $stateParams.shouldShowCustomExports === showCustomExports) {
                         $rootScope.setPrevState = {
                             title: backNaviagtionLabel,
                             callback: 'reloadState',
@@ -261,7 +265,8 @@ angular.module('sntRover')
                         name: 'rover.reports.scheduleReportsAndExports',
                         param: {
                             showScheduledReports: showScheduledReports,
-                            showScheduledExports: showScheduledExports                        
+                            showScheduledExports: showScheduledExports,
+                            showCustomExports: showCustomExports                        
                         }                    
                     }; 
                 }
@@ -272,13 +277,13 @@ angular.module('sntRover')
             // Navigate to new report schedule creation screen
             $scope.createNewReportSchedule = () => {
                 $scope.$broadcast('CREATE_NEW_REPORT_SCHEDULE'); 
-                setPrevState(true, false);              
+                setPrevState(true, false, false);              
             };
 
             // Navigate to new export schedule creation screen
             $scope.createNewExportSchedule = () => {
                 $scope.$broadcast('CREATE_NEW_EXPORT_SCHEDULE');
-                setPrevState(false, true);
+                setPrevState(false, true, false);
             };
 
             // Update title and heading
@@ -287,7 +292,8 @@ angular.module('sntRover')
             });
 
             $scope.createNewCustomExport = () => {
-                $scope.$emit('CREATE_NEW_CUSTOM_EXPORT_LISTENER');
+                $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT_LISTENER');
+                setPrevState(false, false, true);
             };
 
             (function () {
@@ -296,6 +302,8 @@ angular.module('sntRover')
                     $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
                 } else if ($stateParams.showScheduledExports) {
                     $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
+                } else if ($stateParams.showCustomExports) {
+                    $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_EXPORTS);
                 } else {
                     $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
                 }
