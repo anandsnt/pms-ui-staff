@@ -22,7 +22,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
         this.getAvailableDataSpaces = function () {
             var deferred = $q.defer(),
-                url = 'api/generic_export_data_spaces/list.json';
+                url = 'api/reports?show_only_redshift_reports=true';
 
             sntBaseWebSrv.getJSON(url).then(function (response) {
                 deferred.resolve(response.results);
@@ -43,6 +43,24 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             // }, function (error) {
             //     deferred.reject(error);
             // });
+
+            return deferred.promise;
+        };
+
+        this.getDataSpaceColumns = function (params) {
+            var deferred = $q.defer(),
+                url = 'api/reports/' + params.reportId + '/list_data_space_columns';
+
+            sntBaseWebSrv.getJSON(url).then(function (columnData) {
+                columnData = columnData.map(( column) => ({
+                                name: column,
+                                selected: false
+                            }));
+                            
+                deferred.resolve(columnData);
+            }, function (error) {
+                deferred.reject(error);
+            });
 
             return deferred.promise;
         };

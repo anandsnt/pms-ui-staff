@@ -49,6 +49,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         var fetchScheduledCustomExports = () => {
             var onScheduledExportsFetchSuccess = (data) => {
                 $scope.$parent.scheduledCustomExports = data;
+                $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
             },
             onScheduledExportsFetchFailure = (error) => {
                 $scope.$parent.scheduledCustomExports = [];
@@ -61,11 +62,29 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
-        $scope.clickDataSpace = (dataSpace) => {
-            $scope.selectedEntityDetails = dataSpace;
-            $scope.selectedEntityDetails.active = true;
-            $scope.currentStage = STAGES.SHOW_PARAMETERS;
-            $scope.updateViewCol($scope.viewColsActions.FOUR);
+        
+
+        $scope.clickDataSpace = ( selectedDataSpace ) => {
+            var onDataSpaceColumnFetchSuccess = ( columnData ) => {
+                    $scope.selectedEntityDetails = selectedDataSpace;
+                    $scope.selectedEntityDetails.columns = columnData;
+                    $scope.selectedEntityDetails.active = true;
+                    $scope.currentStage = STAGES.SHOW_PARAMETERS;
+                    $scope.updateViewCol($scope.viewColsActions.FOUR);
+
+                },
+                onDataSpaceColumFetchFailure = ( error ) => {
+
+                };
+                
+            $scope.callAPI(RVCustomExportSrv.getDataSpaceColumns, {
+                onSuccess: onDataSpaceColumnFetchSuccess,
+                onFailure: onDataSpaceColumFetchFailure,
+                params: {
+                    reportId: selectedDataSpace.id
+                }
+            });
+            
         };
 
         $scope.selectColumn = (column) => {

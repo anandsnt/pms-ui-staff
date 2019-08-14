@@ -1,0 +1,34 @@
+<div id="reports-footer-form" ng-show="shouldShowReportFooterForm()">
+    <div class="entry">
+        <input type="text" placeholder="Enter Export Name">
+    </div>
+    <div class="entry">
+        <div class="select">
+            <select class="placeholder">
+                <option value="">Select output format</option>
+                ... repeat for each format
+            </select>
+        </div>
+    </div>
+    <div class="entry">
+        <div class="select">
+            <select class="placeholder">
+                <option value="">Set export frequency</option>
+                ... repeat for each frequency
+            </select>
+        </div>
+    </div>
+    <div class="entry">
+        <div class="select">
+            <select class="placeholder">
+                <option value="">Select Delivery Method</option>
+                ... repeat for each method
+            </select>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="button blank">Cancel</button>
+        <!-- Remove .grey and add .green when available to save Export -->
+        <button type="button" class="button grey">Save Export</button>
+    </div>
+</div>

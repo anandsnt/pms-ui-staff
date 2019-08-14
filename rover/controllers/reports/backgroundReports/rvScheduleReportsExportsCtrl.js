@@ -86,7 +86,16 @@ angular.module('sntRover')
              * @returns {string}
              */
             var viewColsReducer = function (action) {
-                return angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE;
+                var styles = [];
+
+                styles.push (angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE);
+
+                if ($scope.reportViewStore && $scope.reportViewStore.showingCustomNewExport && action === $scope.viewColsActions.FOUR) {
+                    styles.push('with-bottom-form');
+                }
+
+                return styles;
+                //return angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE;
             };
 
 
@@ -294,6 +303,13 @@ angular.module('sntRover')
             $scope.createNewCustomExport = () => {
                 $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT_LISTENER');
                 setPrevState(false, false, true);
+            };
+
+            $scope.shouldShowReportFooterForm = () => {
+                return $scope.reportViewStore && 
+                        $scope.reportViewStore.showingCustomNewExport &&
+                        $scope.viewColClassName &&
+                        $scope.viewColClassName.indexOf('with-bottom-form') > -1;
             };
 
             (function () {
