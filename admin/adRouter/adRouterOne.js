@@ -208,7 +208,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.sntserviceproviderdetails', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderDetails.html',
 			controller: 'ADServiceProviderDetailsCtrl',
-			url: '/serviceproviderdetails/:action/:id'
+			url: '/serviceproviderdetails',
+			params: {
+                id: undefined,
+                action: undefined
+            }
 		});
 
 		$stateProvider.state('admin.autoSyncInventory', {
