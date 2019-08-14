@@ -66,7 +66,7 @@ angular.module('sntRover')
         $scope.addListener('UNASSIGNED_RESERVATION_SELECTED', function(event, options) {
             var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
                 keepOpen = true,
-                self = this.gridProps.unassignedRoomList,
+                self = $scope.gridProps.unassignedRoomList,
                 success,
                 apiOptions;
 
@@ -1512,29 +1512,29 @@ angular.module('sntRover')
                     filter = $scope.gridProps.filter;
 
                 if (filter.rate_type === 'Corporate' && !filter.rate) {
-			// if Rate type select box is not open, we have to
+			        // if Rate type select box is not open, we have to
                     openRateTypeSelectBox();
 
-			// opening the popup with messages
+			        // opening the popup with messages
                     $scope.callBackAfterClosingMessagePopUp = setFocusOnCorporateSearchText;
                     $scope.message	= ['Please choose a Company Card or Travel Agent to proceed'];
                     openMessageShowingPopup();
 
-			// we are not calling the API
+			        // we are not calling the API
                     return;
                 }
                 var options = {
-    		params: params,
-    		successCallBack: successCallBackOfAvailabilityAPI,
-    		failureCallBack: failureCallBackOfAvailabilityFetching,
-    		successCallBackParameters: params
-    	};
+                    params: params,
+                    successCallBack: successCallBackOfAvailabilityAPI,
+                    failureCallBack: failureCallBackOfAvailabilityFetching,
+                    successCallBackParameters: params
+                };
 
-    	$scope.callAPI(rvDiarySrv.Availability, options);
+                $scope.callAPI(rvDiarySrv.Availability, options);
             };
 
             $scope.Availability = function() {
-    	$scope.errorMessage = '';
+    	        $scope.errorMessage = '';
                 $scope.clearAvailability();
                 $scope.resetEdit();
                 $scope.renderGrid();

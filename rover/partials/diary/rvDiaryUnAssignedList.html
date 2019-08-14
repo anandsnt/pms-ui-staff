@@ -28,7 +28,7 @@
             <div ng-repeat="reservation in udReservationsData"
                 class="{{reservation.statusClass}}"
                 ng-click="clickedUnassignedReservation(reservation)"
-                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': !reservation.is_hourly || reservation.arrival_date !== businessDate}">
+                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== businessDate}">
                 <div class="data">
                     <strong class="name">{{reservation.primary_guest}}</strong>
                     <!-- If VIP, show: <span class="vip">VIP</span> -->
