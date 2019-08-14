@@ -56,6 +56,15 @@
                     </select>
                 </div>
             </div>
+
+            <div class="entry full-width">
+                <label>Extra Adult/Child Min. Amount Threshold</label>
+                <div class="input-group">
+                    <input type="number" class="small-input" ng-model="rateData.min_threshold_percent"/>
+                    <span class="symbol">%</span>
+                </div>
+            </div>
+
             <div class="entry full-width" ng-show="shouldShowBasedOnAndCopy()">
                 <label>Based On / Copy From</label>
                 <div class="boxes">

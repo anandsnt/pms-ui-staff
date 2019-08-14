@@ -290,7 +290,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 'booking_origin_id': $scope.rateData.booking_origin_id,
                 'tasks': $scope.rateData.tasks,
                 'is_day_use': $scope.rateData.is_day_use,
-                'round_type_id': $scope.rateData.round_type_id
+                'round_type_id': $scope.rateData.round_type_id,
+                'min_threshold_percent': $scope.rateData.min_threshold_percent
             };
 
             // Save Rate Success Callback
