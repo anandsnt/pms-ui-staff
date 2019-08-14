@@ -184,6 +184,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
 
             $scope.rateData.last_sync_status = null;
             $scope.rateData.last_sync_at = null;
+            $scope.showRoundingOptions();
         };
         /*
          * Set commission data
@@ -288,7 +289,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 'is_copied': ($scope.rateData.based_on.is_copied == undefined) ? false : $scope.rateData.based_on.is_copied,
                 'booking_origin_id': $scope.rateData.booking_origin_id,
                 'tasks': $scope.rateData.tasks,
-                'is_day_use': $scope.rateData.is_day_use
+                'is_day_use': $scope.rateData.is_day_use,
+                'round_type_id': $scope.rateData.round_type_id
             };
 
             // Save Rate Success Callback
@@ -522,9 +524,23 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 $scope.disableDayUseToggle = true;
             }
             else {
+                $scope.rateData.round_type_id = null;
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
             }
+        };
+
+        /**
+         * check to see if round_types drop-down should be shown
+         */
+        $scope.showRoundingOptions = function() {
+            var enableRoundingOptions =
+                $scope.rateData.based_on.id &&
+                $scope.rateData.based_on.value_sign &&
+                $scope.rateData.based_on.value_abs &&
+                $scope.rateData.based_on.type;
+
+            return enableRoundingOptions;
         };
 
         // CICO-56662

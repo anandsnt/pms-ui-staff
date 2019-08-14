@@ -38,6 +38,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 },
                 "status": true,
                 "room_type_ids": [],
+                "round_type_id": '',
                 "promotion_code": "",
                 "date_ranges": [],
                 "addOns": [],
@@ -329,6 +330,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.currency_code_id = data.currency_code_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
             $scope.rateData.is_global_contract = data.is_global_contract;
+            $scope.rateData.round_type_id = data.round_type_id;
 
             manipulateAdditionalDetails(data);
 

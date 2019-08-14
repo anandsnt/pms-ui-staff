@@ -5,8 +5,12 @@
             <span class="count" ng-show="!!segmentData.baseData.segments.length"> ({{segmentData.baseData.segments.length}}) </span>
             <a id="add-new-button" class="action add" ng-click="addNewSegment()" translate>ADD_NEW</a>
             <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-            <ad-toggle-button is-checked="segmentData.baseData.is_use_segments" ng-click="toggleSegmentsUse()" div-class="header-title" label="{{'USE_SEGMENTS'| translate}}">
-            </ad-toggle-button>
+            <div class="entry header-title">
+                <label translate>USE_SEGMENTS</label>
+                <ad-switch is-checked="data.is_use_segments">
+                    <input type="checkbox" ng-model="data.is_use_segments" ng-change="toggleSegmentsUse()">
+                </ad-switch>
+            </div>
         </header>
         <section class="content-scroll">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -23,10 +27,9 @@
                         </td>
                         <td data-item="3" data-title="'Status'" class="" header-class="width-10" ng-hide="segmentData.currentSegment === $index">
                             <div class="entry">
-                                <div class="switch-button single" ng-class="{ on: segment.is_active }">
-                                    <input type="checkbox" id="rates-addons" name="rates-addons" ng-click="onToggleActivation(segment)">
-                                    <span class="switch-icon"></span>
-                                </div>
+                                <ad-switch is-checked="segment.is_active">
+                                    <input type="checkbox" ng-model="segment.is_active" ng-change="onToggleActivation(segment)"/>
+                                </ad-switch>
                             </div>
                         </td>
                         <td header-class="width-10" data-title="'Delete'" class="delete" ng-hide="segmentData.currentSegment === $index">
