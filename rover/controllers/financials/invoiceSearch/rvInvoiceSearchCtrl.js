@@ -25,7 +25,7 @@ sntRover.controller('RVInvoiceSearchController',
 			PER_PAGE = 10;
 			
 		$scope.currentActivePage = 1;	
-
+		$scope.filterOptions = filterOptions.filters;
 		$scope.invoiceSearchData = {};
 		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
 		$scope.paymentDataArray = [];

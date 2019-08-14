@@ -55,6 +55,11 @@ angular.module('FinancialsModule', [])
         controller: 'RVInvoiceSearchController',
         params: {
             isFromStayCard: false
+        },
+        resolve: {
+            filterOptions: function(RVInvoiceSearchSrv, jsAssets) {
+                    return RVInvoiceSearchSrv.getFilterOptions();
+            }
         }
     });
     $stateProvider.state('rover.financials.autoCharge', {
