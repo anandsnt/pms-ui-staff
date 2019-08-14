@@ -1,16 +1,61 @@
 <!-- Search form -->
-<form method="get" class="search-form invoice-search" role="search">
-    <div class="entry search">
+<form method="get" action="" class="search-form invoice-search" role="search"> 
+    <div class="entry invoice-search-type">
+        <div class="select with-label">
+            <label for="invoice-search-type">Show</label>
+            <select class="styled pickadate_select pickadate_select_year" ng-options="filter.id as filter.name for filter in filterOptions" ng-model="invoiceSearchData.filter_id" ng-change="searchInvoice()" ></select>
+        </div>
+    </div>
+
+    <!-- Remove .hidden when Receipts are checked to create QR code -->
+    <div class="entry invoice-qr-code hidden">
+        <button type="button" class="button green">Create QR Code for Selected</button>
+
+        <!-- On click uncheck all checked receipts -->
+        <button type="button" class="button blank">Cancel</button>
+    </div>
+
+     <div class="entry search">
         <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
-        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="{{searchPlaceHolder}}" type="search" autocomplete="off" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
+        <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div>
-    <div class="entry options">
-        <label class="checkbox inline">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': invoiceSearchData.no_folio_number_only}"></span>
-            <input type="checkbox" ng-model="invoiceSearchData.no_folio_number_only" ng-click="searchInvoice()"/>
+
+    <!-- <div class="entry search">
+        <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()">
+            <span class="icons icon-clear-search">Clear query</span>
+        </button> --><!-- add class .visible when keywords are entered -->
+       <!--  <button class="icons icon-search">Search</button>
+        <input name="commisions-query" class="query" placeholder="{{searchPlaceHolder}}" type="search" ng-model="invoiceSearchData.query" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
+    </div> -->
+
+    <div class="entry dates">
+        <div class="entry-data has-datepicker">
+            <label for="invoices-date-from">From</label>
+            <button id="invoices-date-from-clear" class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+            <input id="routing-range-from" ui-date="invoiceSearchDateFromOptions" class="range-datepicker" ng-model="invoiceSearchData.from_date" ng-change="searchInvoice()" readonly />
+        </div>
+        <div class="entry-data has-datepicker">
+            <label for="invoices-date-to">To</label>
+            <button id="invoices-date-to-clear" class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+            <input id="routing-range-to" ui-date="invoiceSearchDateToOptions" class="range-datepicker" ng-model="invoiceSearchData.to_date" ng-change="searchInvoice()" readonly />
+        </div>
+    </div>
+
+    <!-- Add class 'hidden' when displaying AR Invoices -->
+    <div class="entry options"> 
+        <!-- Add .hidden if displaying Receipts -->
+        <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input type="checkbox" />
             No Folio Number
         </label>
+        <!-- Remove .hidden if displaying Receipts -->
+      <!--   <label class="checkbox hidden">
+            <span class="icon-form icon-checkbox"></span>
+            <input type="checkbox" />
+            No Folio Number
+        </label> -->
     </div>
 </form>
 
