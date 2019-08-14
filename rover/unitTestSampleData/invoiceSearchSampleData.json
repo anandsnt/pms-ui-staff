@@ -12,10 +12,12 @@
             },
             "bills": [{
                 "invoice_no": "GHL2740",
-                "balance": 0.0
+                "balance": 0.0,
+                "isOpened": false
             }, {
                 "invoice_no": "GHL3165",
-                "balance": 0.0
+                "balance": 0.0,
+                "isOpened": true
             }, {
                 "invoice_no": "GHL3166",
                 "balance": 0.0,
