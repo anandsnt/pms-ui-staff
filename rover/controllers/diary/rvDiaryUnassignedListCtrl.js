@@ -6,11 +6,9 @@ angular.module('sntRover')
         'rvDiarySrv',
         function($scope, $rootScope, rvDiarySrv) {
 
-            BaseCtrl.call(this, $scope);
-
             /**
              * Function to fetch the unassigned reservations on loading the controller
-             * @return {Array}
+             * 
              */
             var fetchUdReservationList = function () {
                 var successCallBackFetchList = function(data) {
@@ -28,6 +26,8 @@ angular.module('sntRover')
                 $scope.callAPI(rvDiarySrv.fetchUnassignedRoomList, options);
             };
 
+            BaseCtrl.call(this, $scope);
+
             $scope.businessDate = $rootScope.businessDate;
 
             /**
@@ -36,7 +36,7 @@ angular.module('sntRover')
              */
             $scope.showUnassignedListPanel = function() {
                 // === true ? 'visible' : ''; - toggle visibility with style instead of angular directive
-                return $scope.gridProps.unassignedRoomList.open || false;
+                return $scope.gridProps.unassignedRoomList.open ? 'visible' : '';
             };
 
             /**
