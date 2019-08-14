@@ -94,7 +94,7 @@
 			</div>
 			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{isFieldsReadOnly}}"></ad-textbox>
 
-			<div class="entry full-width actions_margin_top">
+	<!-- 		<div class="entry full-width actions_margin_top">
 					<label for="hotel-service-provider"> Services Provided <strong>*</strong> </label>
 					<div ng-class="{'overlay' : isFieldsReadOnly === 'yes'}"  id="services-provided" class="boxes col2">
 						<fieldset class="holder left">
@@ -120,7 +120,50 @@
                     	</fieldset>
 
 					</div>
+			</div> -->
+			<!--  -->
+			<div class="entry full-width">
+			    <label for="is-pms">Services Provided <strong>*</strong></label>
+			    <div class="boxes col3" ng-class="{'overlay' : isFieldsReadOnly === 'yes'}">
+			        <div class="switch-container">
+			            <div class="switch-button with-text" ng-class = "{'on': data.is_overlay_hotel }" style="width: 250px;">
+			                <!-- Add class 'on' when input below is checked -->
+			                <input id="is-pms" type="checkbox" ng-model="data.is_overlay_hotel"> <!-- PMS when this is checked. If not checked then it's Overlay -->
+			                <label class="data-on">
+			                    <span class="value">PMS</span>
+			                    <span class="button orange">Overlay</span>
+			                </label>
+			                <label class="data-off">
+			                    <span class="button orange">PMS</span>
+			                    <span class="value">Overlay</span>
+			                </label>
+			            </div>
+			        </div>
+			        <div class="inline" ng-if="data.hotel_pms_type !== 'OWS' || (isAdminSnt && data.country === swedenCountryId)">
+			        	 <ad-textbox styleclass="full-width" label="Max. Control Unit (SE) workstations" value="data.max_control_unit"  placeholder="Enter Max. Control Unit (SE) workstations" name="max control unit" id="max control unit" ng-if="isAdminSnt && data.country === swedenCountryId"></ad-textbox>	                        
+	                     <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" label="Multi Property" div-class="full-width" is-hide="data.hotel_pms_type=='OWS'"></ad-checkbox>
+	                </div>
+	                <div class="inline">
+	                     <label class="checkbox" ng-repeat="interfaceType in data.interface_types">
+							<ad-checkboxgrp toggle="toggleInterfaceType($index)" label="{{interfaceType.description}}" is-checked="interfaceType.is_checked" option-id="interfaceType.id" ng-hide="interfaceType.value == 'PMS_OVERLAY_HOUSEKEEPING' && data.hotel_pms_type != 'OWS' "></ad-checkboxgrp>
+						</label>
+        			</div>
+			        <div class="inline" ng-if="data.is_overlay_hotel && isAdminSnt">
+			            <ad-toggle-button is-checked="data.enable_oracle_data_center"
+                              label="In Oracle Datacenter?"></ad-toggle-button>
+			            <div class="entry full-width" ng-if="data.enable_oracle_data_center">
+			                <!-- Remove class 'hidden' when Oracle Datacenter is checked -->
+			                <label for="datacenters">Select Datacenter</label>
+			                <div class="select white">
+			                    <select ng-model="data.oracle_data_center_id" id="datacenters"  ng-options="datacenter.id as datacenter.name for datacenter in oracleDataCenters">
+									<option value="" class="placeholder" disabled="">Select Datacenter</option>
+								</select>
+			                </div>
+			            </div>
+			        </div>
+    			</div>
 			</div>
+
 
 		</fieldset>
 		<fieldset ng-show="isEdit">
@@ -313,6 +356,14 @@
 				<div class="entry">
 					<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 					<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
+				</div>
+				
+				<div class="entry is-pms-tokenized" ng-if="!isAdminSnt">
+					<label >Mandatory workstation</label>
+					<div class="switch-button single" ng-class="{ on : data.is_workstation_mandatory}" >
+						<input type="checkbox" ng-model="data.is_workstation_mandatory" value="{{data.is_workstation_mandatory}}" name="is-mod-enabled" id="is-mod-enabled">
+						<span class="switch-icon"></span>
+					</div>
 				</div>
 				<div class="entry" ng-if="!isAdminSnt">
 					<label for="password_expiry"> Password Expiry [Days] <strong>*</strong> </label>

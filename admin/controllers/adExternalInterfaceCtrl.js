@@ -228,6 +228,12 @@ admin.controller('adExternalInterfaceCtrl',
       url: '',
       secondary_url: ''
     };
+
+    // Process the givex data to update the display password
+    var processGivexData = function () {
+        $scope.setDefaultDisplayPassword($scope.givex, 'password');
+    };
+
     $scope.fetchSetupSuccessCallback = function (data) {
         if (data.data && data.data.product_cross_customer) {
             $scope.interface = data.data.product_cross_customer.interface_id;
@@ -236,6 +242,7 @@ admin.controller('adExternalInterfaceCtrl',
         
       if ($scope.interfaceName === 'Givex') {
         $scope.givex = data;
+        processGivexData();
         $scope.$emit('hideLoader');
       } else if ($scope.interfaceName === 'ZDirect') {
         $scope.data = data;
@@ -377,7 +384,11 @@ admin.controller('adExternalInterfaceCtrl',
         var saveData = $scope.lastSaved;
 
         if ($scope.interfaceName === 'Givex') {
-        $scope.invokeApi($scope.serviceController.saveSetup, $scope.givex, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
+          var params = dclone($scope.givex);
+
+          $scope.deletePropertyIfRequired(params, 'password');
+          
+        $scope.invokeApi($scope.serviceController.saveSetup, params, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else if ($scope.interfaceName === 'ZDirect') {
         $scope.invokeApi($scope.serviceController.saveSetup, saveData, $scope.saveSetupSuccessCallback, $scope.saveSetupFailureCallback);
       } else {

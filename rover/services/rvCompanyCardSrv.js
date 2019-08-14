@@ -619,7 +619,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var deferred = $q.defer(),
                 url = ' /api/bills/' + param.bill_id + '/transactions';
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -696,24 +696,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
                 deferred.reject(data);
             });
             return deferred.promise;
-        };
-
-        /**
-         * Service to get the government id types
-         * @return promise Promise
-         */
-        this.fetchIdTypes = function () {
-            var deffered = $q.defer(),
-               url = 'api/guest_details/government_id_types';
-
-            rvBaseWebSrvV2.getJSON(url)
-             .then( function (data) {
-                deffered.resolve( data.id_type_list);
-             }, function (error) {
-                deffered.resolve( error);
-             });
-
-             return deffered.promise;
         };
 
         /**

@@ -4,7 +4,7 @@
 <td>
     <strong>{{customSequence.name}}</strong>
 </td>
-<td class="sequence-rates">0</td>
+<td class="sequence-rates">{{customSequence.no_of_rates_present}}</td>
 <td class="delete">
-    <a href="#" class="icons icon-delete large-icon" ng-click="deleteSequence(customSequence)">Delete</a>
+    <a class="icons icon-delete large-icon" ng-click="deleteSequence(customSequence);$event.stopPropagation();">Delete</a>
 </td>

@@ -46,13 +46,13 @@
 	            - green
 	        -->
 	        <h3 class="red">{{popupData.message}}</h3>
-	        <p ng-if="popupData.showOverBookingButton">Overbook or Try different dates</p>
+	        <p ng-if="popupData.showOverBookingButton && popupData.diaryMode !== 'FULL'">Overbook or Try different dates</p>
 	        <!-- Button color classes:
 	            - blue (Overbook button)
 	            - brand-colors (Go to buttons)
 	            Remove .hidden to show the button
 	        -->
-	        <button ng-if="popupData.showOverBookingButton" ng-class="{'grey overlay': popupData.disableOverBookingButton, 'blue': !popupData.disableOverBookingButton }" type="button" class="button" ng-click="clickedOverBookButton()">Overbook</button>
+	        <button ng-if="popupData.showOverBookingButton && popupData.diaryMode !== 'FULL'" ng-class="{'grey overlay': popupData.disableOverBookingButton, 'blue': !popupData.disableOverBookingButton }" type="button" class="button" ng-click="clickedOverBookButton()">Overbook</button>
 	    </div>
 
 	    <!-- Remove .hidden after "Checking.." is done -->

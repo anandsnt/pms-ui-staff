@@ -192,7 +192,7 @@
                         <div class="entry float full-width" ng-if="singleAddon.is_allowance">
                             <div class="entry" >
                                 <label translate>ALLOWED_CHARGE_CODES_LABEL</label>
-                                <div multi-select on-open="setAllowedChargeCodesForAllowance()" on-close="linkAllowedChargeCodesForAllowance()" input-model="chargeCodes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
+                                <div multi-select on-open="setAllowedChargeCodesForAllowance()" on-close="linkAllowedChargeCodesForAllowance()" input-model="permissibleChargeCodes" button-label="name" item-label="name" tick-property="ticked" max-labels="0" default-label="None selected" max-height="300px">
                                     </div>
                             </div>
                             <div class="entry">
@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         
-                        <div ng-if="singleAddon.is_common_area" class="entry">
+                        <div ng-if="singleAddon.is_common_area && !singleAddon.is_allowance" class="entry">
                             <ad-textbox inputtype="number" styleclass="full-width" value="singleAddon.pass_level_no" name="pass_level_no" id="pass_level_no" label="{{'PASS_LEVEL_NO' | translate}}" maxlength="2" required="no"></ad-textbox>
                         </div>
 

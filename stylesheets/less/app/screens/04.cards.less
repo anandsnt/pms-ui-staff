@@ -902,8 +902,9 @@
                         &.commission {
                             width: 100%;
                             display: grid;
-                            grid-template-columns: 120px 80px 60px calc(~'100% - 290px');;
+                            grid-template-columns: calc(~'20% - 10px') calc(~'16% - 10px') calc(~'14% - 10px') 50%;
                             grid-column-gap: 10px;
+                            margin-right: 0;
 
                             label {
                                 grid-row: 1;
@@ -932,6 +933,10 @@
 
                             .select {
                                 height: 40px;
+
+                                &:not(:first-of-type) {
+                                    #pixel-to-percent > .left-margin(40, 904);
+                                }
                             }
 
                             .checkbox {
@@ -2420,7 +2425,7 @@
                             padding: 10px;
                             height: 60px;
                             background: none;
-                            .calc-width(100, 430);
+                            .calc-width(100, 275);
                             .pull-left;
                             .box-shadow(none);
 
@@ -2455,28 +2460,20 @@
                         }
 
                         .actions {
-                            width: 290px;
-                            height: 60px;
                             padding: 10px;
-                            box-shadow: inset 2px 00 rgba(0,0,0,.1);
+                            box-shadow: inset 2px 0 0 rgba(0,0,0,.1);
+                            .size(60px, 135px);
                             .pull-left;
                             
-                            .checkbox {
-                                text-transform: uppercase;
-                                font-size: 14px;
-                            }
-
                             .button {
-                                &.with-icon {
-                                    padding-left: 30px;
-                                    width: auto;
+                                padding-left: 30px;
+                                width: 100%;
 
-                                    .icons {
-                                        top: 10px;
-                                        left: 16px;
-                                    }
+                                .icons {
+                                    top: 10px;
+                                    left: 16px;
                                 }
-                            }                            
+                            }                             
                         }
 
                         @media @highdpi {

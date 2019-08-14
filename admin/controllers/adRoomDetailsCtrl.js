@@ -1,5 +1,5 @@
-admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRoomSrv', '$state', '$stateParams',
-				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams) {
+admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRoomSrv', '$state', '$stateParams', 'Toggles', 'availableGuestLanguages', 
+				function($timeout, $scope, $rootScope, ADRoomSrv, $state, $stateParams, Toggles, availableGuestLanguages) {
 	/*
 	* Controller class for Room Details
 	*/
@@ -10,11 +10,35 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 	// inheriting from base controller
 	BaseCtrl.call(this, $scope);
 
-	var roomId = $stateParams.roomId;
+	var roomId = $stateParams.roomId,
+		locales = [],
+		params = {};
 
 	$scope.isSuite = false;
 	$scope.availableComponentRooms = [];
 	$scope.availableComponentRoomsArray = [];
+
+	/**
+	 * @description Sets guest languages
+	 */
+	var initLocale = function () {
+		angular.forEach(availableGuestLanguages.languages, function (availableLanguage) {
+			availableLanguage.value = availableLanguage.code;
+			delete availableLanguage.code;
+			availableLanguage.description = availableLanguage.language;
+			delete availableLanguage.language;
+			if (availableLanguage.is_show_on_guest_card) {
+				locales.push(availableLanguage);
+			}
+		});
+		availableGuestLanguages.locales = locales;
+		delete availableGuestLanguages.languages;
+
+		$scope.languages = availableGuestLanguages;
+		$scope.locale = $scope.languages.selected_language_code;
+	};
+
+	initLocale();
 
 	if (roomId) {
 		// if roomnumber is null returning to room list
@@ -249,14 +273,18 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		$scope.errorMessage = errorMessage ;
 	};
 
-    if ($scope.editMode) {
-    // getting the room details
-	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);
-    }
-    else
-    {
-     $scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);
-    }
+    var getRoomDetails = function (params) {
+		if ($scope.editMode) {
+			// getting the room details
+			params.roomId = roomId;
+			$scope.invokeApi(ADRoomSrv.roomDetails, params, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);
+		}
+		else {
+			$scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);
+		}
+	};
+
+	getRoomDetails(params);
 
 
     /*
@@ -300,7 +328,9 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms, "room_number");
 		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types, {"value": postData.room_type_id}).is_pseudo;
         postData.hk_section_id = $scope.data.hk_section_id;
-        postData.is_component_suite_door = $scope.data.is_component_suite_door;
+		postData.is_component_suite_door = $scope.data.is_component_suite_door;
+		postData.locale = $scope.locale;
+		postData.instructions =  $scope.data.instructions;
 		// to get selected features
 		for (var i = 0; i < $scope.data.room_features.length; i++) {
 			if ($scope.data.room_features[i].selected === true ) {
@@ -370,5 +400,16 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 
 		};
 
-
+        (function () {
+            $scope.isRoomLocationInstructionsEnabled = Toggles.isEnabled('room_location_instructions');
+		})();
+		
+	/**
+	 * @description Gets invoked when the locale is changed
+	 */
+	$scope.onLocaleChange = function () {
+		params = {};
+		params.locale = $scope.locale;
+		getRoomDetails(params);
+	};
 }]);

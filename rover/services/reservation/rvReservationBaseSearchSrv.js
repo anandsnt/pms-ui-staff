@@ -1,5 +1,5 @@
-angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'dateFilter',
-    function($q, RVBaseWebSrvV2, dateFilter) {
+angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2', 'sntBaseWebSrv', 'dateFilter',
+    function($q, RVBaseWebSrvV2, sntBaseWebSrv, dateFilter) {
 
         var that = this;
 
@@ -714,6 +714,22 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                     deferred.reject(data);
                 });
             }
+
+            return deferred.promise;
+        };
+
+        /**
+         * checkTimeBasedAvailability for FULL mode hotels.
+         */
+        this.checkTimeBasedAvailabilityAPI = function(params) {
+            var deferred = $q.defer(),
+                url = "api/availability/time_based_room_type_and_house_avl";
+
+            sntBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
 
             return deferred.promise;
         };

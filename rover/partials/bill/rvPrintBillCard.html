@@ -12,23 +12,24 @@
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
-            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
                 <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && printData.is_print_folio_enabled && (printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber))">
+
+            <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
-            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
                 <strong >{{printData.mod_label}}: </strong>{{printData.mod_invoice_number}}<br/>
             </span>
-            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_code !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
                 <br/>
             </span>
-            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_unit !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
                 <br/>
             </span>
@@ -68,23 +69,23 @@
     <div class="info-bottom float">
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <span ng-show="!isInformationalInvoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_invoice_enabled && (printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists ? false : true)">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
-            <span ng-show="!isInformationalInvoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
+            <span ng-show="!printData.is_informational_invoice && printData.is_print_ar_invoice_number_enabled  && printData.is_db_payment_exists && shouldShowArInvoiceNumber">
                 <strong >{{printData.translation.ar_invoice_number}}:</strong>{{printData.ar_invoice_number}}<br/>
             </span>
-            <span ng-if="printData.folio_number && printData.is_print_folio_enabled && (printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber))">
+            <span ng-if="!printData.is_informational_invoice && printData.folio_number && printData.is_print_folio_enabled && ((printData.is_print_ar_invoice_number_enabled  && (!printData.is_db_payment_exists || !shouldShowArInvoiceNumber)) || !printData.is_print_ar_invoice_number_enabled)">
                 <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
             </span>
-            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !printData.is_informational_invoice">
                 <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
             </span>
-            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_code !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
                 <br/>
             </span>
-            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+            <span ng-show="printData.control_unit !== '' && !printData.is_informational_invoice">
                 <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
                 <br/>
             </span>
@@ -236,32 +237,30 @@
                 </div>
             </td>
         </tr>
-    </tbody>
-    <tfoot>
         <tr>
-            <td class="text-align-left" >{{printData.translation.total}}</td>
-            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}
+            <td class="text-align-left" ><strong>{{printData.translation.total}}</strong></td>
+            <td><strong>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo }}</strong>
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_gross_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_gross_amount}}
+                    <strong>{{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_gross_amount}}</strong>
                 </div>
             </td>
-            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}
+            <td><strong>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_net_amount | number: precisonTwo }}</strong>
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_net_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_net_amount}}
+                    <strong>{{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_net_amount}}</strong>
                 </div>
             </td>
-            <td>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}
+            <td><strong>{{currencySymbol}}{{ printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo }}</strong>
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.extended_tax_breakdown.inv_total_tax_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_tax_amount}}
+                    <strong>{{invoiceCurrencySymbol}}{{printData.extended_tax_breakdown.inv_total_tax_amount}}</strong>
                 </div>
             </td>
         </tr>
-    </tfoot>           
+    </tbody>           
 </table>
 <br><br>
 <strong ng-if="printData.tax_breakdown_for_deposit.details.length>0">Deposit VAT Breakdown</strong>
 <br>
-<span ng-if="printData.advance_payment_number">
+<span ng-if="printData.tax_breakdown_for_deposit.details.length>0 && printData.advance_payment_number">
     <strong >Deposit Number: </strong>{{printData.advance_payment_number}}<br/>
 </span>
 <table class="invoice-details extended-tax-table" ng-if="printData.tax_breakdown_for_deposit.details.length>0">
@@ -292,27 +291,25 @@
                 </div>
             </td>
         </tr>
-    </tbody>
-    <tfoot>
         <tr>
-            <td class="text-align-left" >{{printData.translation.total}}</td>
-            <td>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_gross_amount | number: precisonTwo }}
+            <td class="text-align-left" ><strong>{{printData.translation.total}}</strong></td>
+            <td><strong>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_gross_amount | number: precisonTwo }}</strong>
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.tax_breakdown_for_deposit.inv_total_gross_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_gross_amount}}
+                    <strong>{{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_gross_amount}}</strong>
                 </div>
             </td>
-            <td>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_net_amount | number: precisonTwo }}
+            <td><strong>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_net_amount | number: precisonTwo }}</strong>
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.tax_breakdown_for_deposit.inv_total_net_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_net_amount}}
+                    <strong>{{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_net_amount}}</strong>
                 </div>
             </td>
-            <td>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_tax_amount | number: precisonTwo }}
+            <td><strong>{{currencySymbol}}{{ printData.tax_breakdown_for_deposit.total_tax_amount | number: precisonTwo }}</strong>
                 <div class="converted-currency" ng-if="isMultiCurrencyEnabled && printData.tax_breakdown_for_deposit.inv_total_tax_amount !== null">
-                    {{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_tax_amount}}
+                    <strong>{{invoiceCurrencySymbol}}{{printData.tax_breakdown_for_deposit.inv_total_tax_amount}}</strong>
                 </div>
             </td>
         </tr>
-    </tfoot>           
+    </tbody>           
 </table>
 
 <div ng-if="printData.is_from_cards" class="invoice-footer text-center">
