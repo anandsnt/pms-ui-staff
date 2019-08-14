@@ -12,7 +12,7 @@
 			<rv-textbox value="guestCardData.contactInfo.tax_number" label = "Tax Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.tax_number, 'margin')}}"></rv-textbox>
 			<div ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_visible" class="entry has-datepicker" ng-class="{'no-print': !birthdayText}">
 				<label for="birthday"> Birthday <strong ng-if="guestCardData.contactInfo.guestAdminSettings.date_of_birth.is_mandatory_on_guest_card_creation">*</strong></label>
-				<input type="text" ng-model="birthdayText" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendar()" readonly />
+				<input type="text" ng-model="guestCardData.contactInfo.birthday | date:dateFormat" name="guest-birthday" maxlength="8" id="guest-birthday" class="datepicker" ng-click="popupCalendarForGuestContactInfoDate('birthday')" readonly />
 			</div>
 
 			<div ng-if="guestCardData.contactInfo.guestAdminSettings.nationality.is_visible" class="entry margin" ng-class="{'no-print': !guestCardData.contactInfo.nationality_id}">
@@ -43,6 +43,16 @@
 				</div>
 			</div>
 			<rv-textbox value="guestCardData.contactInfo.id_number" label = "Id Number" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.id_number, '')}}"></rv-textbox>
+
+			<div class="entry margin has-datepicker">
+				<label for="id date issue"> ID Date of issue </label>
+				<input type="text" ng-model="guestCardData.contactInfo.id_date_of_issue" class="datepicker" value="{{guestCardData.contactInfo.id_date_of_issue | date:dateFormat}}" ng-click="popupCalendarForGuestContactInfoDate('idDate')" readonly />
+			</div>
+
+			<div class="entry has-datepicker" >
+				<label for="entry date"> Entry Date </label>
+				<input type="text" ng-model="guestCardData.contactInfo.entry_date" class="datepicker" value="{{guestCardData.contactInfo.entry_date | date:dateFormat}}" ng-click="popupCalendarForGuestContactInfoDate('entryDate')" readonly />
+			</div>
 
 			<rv-textbox ng-if="guestCardData.contactInfo.guestAdminSettings.father_name.is_visible" required ="{{guestCardData.contactInfo.guestAdminSettings.father_name.is_mandatory_on_guest_card_creation ? 'yes' : 'no'}}" value="guestCardData.contactInfo.father_name" label = "Name of Father" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.father_name, 'margin')}}"></rv-textbox>
 

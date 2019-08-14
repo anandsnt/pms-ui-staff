@@ -29,9 +29,10 @@ sntRover.controller('RVValidateEmailPhoneCtrl',
     };
 
     $scope.popupCalendar = function() {
+        $scope.calenderFor = 'validate';
         $scope.datePicker = ngDialog.open({
             template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
-            controller: 'RVContactInfoDatePickerController',
+            controller: 'RVAllContactInfoDatePickerController',
             className: 'single-date-picker',
             scope: $scope
         });
