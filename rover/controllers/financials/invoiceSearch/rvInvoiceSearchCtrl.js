@@ -12,9 +12,11 @@ sntRover.controller('RVInvoiceSearchController',
 	'$vault',
 	'rvAccountTransactionsSrv',
 	'rvAccountsConfigurationSrv',
+	'filterOptions',
+	'RVCompanyCardSrv',
 	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, 
 		$filter, RVBillCardSrv, $window, $state, $stateParams, $vault, 
-		rvAccountTransactionsSrv, rvAccountsConfigurationSrv) {
+		rvAccountTransactionsSrv, rvAccountsConfigurationSrv, filterOptions, RVCompanyCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -23,6 +25,17 @@ sntRover.controller('RVInvoiceSearchController',
 			PER_PAGE = 10;
 			
 		$scope.currentActivePage = 1;	
+
+		$scope.invoiceSearchData = {};
+		$scope.invoiceSearchData.filter_id = (_.first($scope.filterOptions)).id;
+
+		$scope.shouldShowInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Invoices"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowReceipts =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		};
 
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
@@ -82,7 +95,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.currentActivePage = page || 1;
 			if ($scope.invoiceSearchData.query.length > 1) {
 				$scope.invoiceSearchFlags.isQueryEntered = true;
-				const successCallBackOfPayment = (data) => {						
+				const successCallBackOfSearchInvoice = (data) => {						
 						$scope.invoiceSearchFlags.showFindInvoice = false;
 						$scope.invoiceSearchData.reservationsList = data.data;
 						$scope.totalResultCount = data.data.total_count;
@@ -104,7 +117,7 @@ sntRover.controller('RVInvoiceSearchController',
 					},
 					options = {
 						params: params,
-						successCallBack: successCallBackOfPayment
+						successCallBack: successCallBackOfSearchInvoice
 					};
 
 				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
@@ -114,6 +127,20 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.invoiceSearchFlags.isQueryEntered = false;
 				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
+		};
+
+		$scope.expandBill = function(itemIndex, billIndex) {
+			var successCallBackOfExpandBill = function(response) {
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response;
+				},
+				options = {
+					params: {
+						"bill_id": $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id
+					},
+					successCallBack: successCallBackOfExpandBill
+				};
+
+			$scope.callAPI(RVCompanyCardSrv.fetchTransactionDetails, options);
 		};
 		/*
 		 * Update informational invoice flag
@@ -403,11 +430,11 @@ sntRover.controller('RVInvoiceSearchController',
 				}
 			}
 		};
+
 		/*
 		 * Initialization
 		 */
 		that.init = () => {
-			$scope.invoiceSearchData = {};			
 			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
