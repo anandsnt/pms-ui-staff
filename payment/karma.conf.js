@@ -22,6 +22,7 @@ module.exports = function(config) {
             '../shared/directives/activityIndicator/sntActivityIndicator.js',
             './constants/payConfig.js',
             '../shared/interceptors/**/*.js',
+            '../shared/sntUtils/**/*.js',
             './constants/*.js',
             './services/*.js',
             './controllers/*.js',

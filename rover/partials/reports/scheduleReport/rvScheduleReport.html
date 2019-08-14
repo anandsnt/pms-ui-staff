@@ -73,6 +73,22 @@
                 data="filters.hasGeneralOptions.data"
                 on-update="refreshSecondColumnScroll"
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasDisplay && filters.hasDisplay.data.length"
+                label="Display(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasDisplay.data"
+                options="filters.hasDisplay.options"></multi-option-selection>
+            <multi-option-selection ng-show="filters.hasRateTypeFilter && filters.hasRateTypeFilter.data.length"
+                label="Rate Type"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasRateTypeFilter.data"
+                options="filters.hasRateTypeFilter.options"></multi-option-selection>
+            
+            <multi-option-selection ng-show="filters.hasRateFilter && filters.hasRateFilter.data.length"
+                label="Display(s)"
+                on-update="refreshSecondColumnScroll"
+                data="filters.hasRateFilter.data"
+                options="filters.hasRateFilter.options"></multi-option-selection>
 
             <div class="entry" ng-show="isYearlyTaxReport">
                 <label>Year</label>

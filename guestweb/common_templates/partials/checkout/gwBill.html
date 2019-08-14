@@ -81,7 +81,8 @@
                                     </tr>
                                     <tr ng-repeat="amountDetails in bill.charge_details">
                                         <td>
-                                            <span>{{ amountDetails.description }}
+                                            <span>{{ amountDetails.description }}</span></br>
+                                            <small class="text-muted" ng-show="amountDetails.reference_text !== ''">{{ amountDetails.reference_text }}</small>
                                         </td>
                                         <td class="right-text">
                                             <span>{{ amountDetails.amount }}</span>

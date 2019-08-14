@@ -6,6 +6,7 @@ angular.module('admin').controller('adCRSCommonCtrl',
     'dateFilter', 
     '$stateParams',
     function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams) {
+        BaseCtrl.call(this, $scope);
 
         var interfaceIdentifier = $stateParams.id;
 
@@ -14,9 +15,14 @@ angular.module('admin').controller('adCRSCommonCtrl',
         };
 
         $scope.saveInterfaceConfig = function() {
+            var params = dclone($scope.config);
+
+            $scope.deletePropertyIfRequired(params, 'password');
+            $scope.deletePropertyIfRequired(params, 'api_key_password');
+            
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
-                    config: $scope.config,
+                    config: params,
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
@@ -40,6 +46,8 @@ angular.module('admin').controller('adCRSCommonCtrl',
             $scope.config = config;
             $scope.availableSettings = _.keys(config);
             $scope.interface = interfaceIdentifier.toUpperCase();
+            $scope.setDefaultDisplayPassword($scope.config, 'password');
+            $scope.setDefaultDisplayPassword($scope.config, 'api_key_password');
         })();
     }
 ]);

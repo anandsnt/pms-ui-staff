@@ -60,6 +60,9 @@ admin.config([
                         return adPermissionSrv.fetchRoverPermissions();
                     }
                     return {};
+                },
+                features: function (Toggles) {
+                    return Toggles.initialize();
                 }
             }
         });

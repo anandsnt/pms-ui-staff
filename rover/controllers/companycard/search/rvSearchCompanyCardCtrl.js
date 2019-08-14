@@ -360,7 +360,10 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
                id: 'COMPANYCARD_SEARCH',
                api: $scope.search,
                perPage: $scope.perPage
-            };
+			};
+
+			$scope.hasCompanyCardCreatePermission = rvPermissionSrv.getPermissionValue('CREATE_COMPANY_CARD');
+			$scope.hasTravelAgentCreatePermission = rvPermissionSrv.getPermissionValue('CREATE_TRAVEL_AGENT_CARD');
 		};
 
 		init();

@@ -99,7 +99,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'asbury': 'The Asbury',
             'manchebo': 'Manchebo Beach Resort',
             'seacrest': 'Seacrest Hotel V2',
-            'cole': 'The Cole Hotel'
+            'cole': 'The Cole Hotel',
+            'heritage-hills': 'Heritage Hills Golf Resort',
+            'metropolis-resort': 'Metropolis Resort'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -115,6 +117,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 // fetch hotel theme and set variable to this controller,
                 // then resolve the fetch settings
                 that.fetchHotelTheme(data, deferred);
+                // fetch Feature toggles and save in Srv for using in future.
+                that.retrieveFeatureToggles();
             }, function(data) {
                 deferred.reject(data);
             });
@@ -783,6 +787,27 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/reservations';
             
             return zsBaseWebSrv.postJSON(url, params);
+        };
+
+        this.featuresToggleList = {};
+        this.retrieveFeatureToggles = function() {            
+             var deferred = $q.defer(),
+                url = '/api/features/list';
+
+            zsBaseWebSrv.getJSON(url).then(function(response) {
+                that.featuresToggleList = response;
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.getRoomInstructions = function(params) {
+            var url = '/api/reservations/' + params.id + '/room_instructions.json';
+
+            delete params.id;
+            return zsBaseWebSrv.getJSON(url, params);
         };
     }
 ]);

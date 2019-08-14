@@ -1,4 +1,4 @@
-angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
+angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', function($filter, $rootScope) {
 
 		var self = this;
 		/**
@@ -405,4 +405,41 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
             };
         };
 
+        /*
+         *  @param {Object} [time in hh, mm, ampm as an object ]
+         *  @return {String} [24 hr format data]
+         *
+         */
+        this.convertTimeHhMmAmPmTo24 = function( timeHhMmAmPm ) {
+            var hours = timeHhMmAmPm.hh,
+                minutes = timeHhMmAmPm.mm,
+                modifier = timeHhMmAmPm.ampm;
+
+            if (hours === '12') {
+                hours = '00';
+            }
+
+            if (modifier === 'PM') {
+                hours = parseInt(hours, 10) + 12;
+            }
+            return hours + ':' + minutes;
+        };
+
+        /*
+         *  Get diary modes from config.
+         *  @param {Object} [hotelDiaryConfig]
+         *  @return {String}
+         */
+        this.getDiaryMode = function() {
+            var diaryMode = 'FULL',
+                hotelDiaryConfig = $rootScope.hotelDiaryConfig;
+
+            if (!hotelDiaryConfig.hourlyRatesForDayUseEnabled) {
+                diaryMode = 'NIGHTLY';
+            }
+            else if (hotelDiaryConfig.mode === 'LIMITED') {
+                diaryMode = 'DAYUSE';
+            }
+            return diaryMode;
+        };
 }]);
