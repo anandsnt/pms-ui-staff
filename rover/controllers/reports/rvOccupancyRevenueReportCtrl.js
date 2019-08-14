@@ -15,40 +15,51 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.stateStore = {
 			occupancy: [{
 				key: "available_rooms",
-				name: "Available Rooms"
+                name: "Available Rooms",
+                hasDayUseComponent: false
 			}, {
 				key: "out_of_order_rooms",
-				name: "Out of Order Rooms"
+                name: "Out of Order Rooms",
+                hasDayUseComponent: false
 			}, {
 				key: "occupied_rooms",
-				name: "Occupied Rooms"
+                name: "Occupied Rooms",
+                hasDayUseComponent: true
 			}, {
 				key: "complimentary_rooms",
-				name: "Complimentary Rooms"
+                name: "Complimentary Rooms",
+                hasDayUseComponent: true
 			}, {
 				key: "occupied_minus_comp",
-				name: "Occupied Rooms (Excl. Comp.)"
+                name: "Occupied Rooms (Excl. Comp.)",
+                hasDayUseComponent: true
 			}],
 			occupancyTotals: [{
 				key: "total_occupancy_in_percentage",
-				name: "Total Occ."
+                name: "Total Occ.",
+                hasDayUseComponent: true
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
-				name: "Total Occ. (Excl. Comp.)"
+                name: "Total Occ. (Excl. Comp.)",
+                hasDayUseComponent: true
 			}],
 			revenues: [{
 				key: "rev_par",
-				name: "RevPar"
+                name: "RevPar",
+                hasDayUseComponent: false
 			}, {
 				key: "adr_inclusive_complimentary_rooms",
-				name: "ADR (Incl. Comp.)"
+                name: "ADR (Incl. Comp.)",
+                hasDayUseComponent: true
 			}, {
 				key: "adr_exclusive_complimentary_rooms",
-				name: "ADR (Excl. Comp.)"
+                name: "ADR (Excl. Comp.)",
+                hasDayUseComponent: true
 			}],
 			revenueTotals: [{
 				key: "total_revenue",
-				name: "Total Revenue"
+                name: "Total Revenue",
+                hasDayUseComponent: true
 			}]
 		};
 
@@ -65,8 +76,8 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 
 
 		// keep a quick ref to flags way up in the sky
-		$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year;
-		$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance;
+		$scope.chosenLastYear = $scope.$parent.chosenReport.chosenOptions.include_last_year || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_last_year);
+		$scope.chosenVariance = $scope.$parent.chosenReport.chosenOptions.include_variance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
 
 
 		$scope.selectedDays = [];
@@ -158,7 +169,30 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
+        };
+        
+        /*
+        *  
+        *  @param {number}  [chargeGroupIndex - index of chargeGroup]
+        *  @param {number}  [columnIndex - index corresponding to date]
+        *  @return {number} [revenue for the chargeCode corresponding to the date]
+        */
+		$scope.getChargeCodeDayUseValue = function(chargeGroupIndex, columnIndex) {
+            var candidate = $scope.results.day_use_charge_groups[chargeGroupIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
+                returnVal = '';
+
+			if (candidate) {
+				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					returnVal = candidate.this_year;
+				}
+			}
+            return returnVal;
 		};
+
 
 		$scope.getMarketOccupancyValue = function(marketIndex, columnIndex) {
 			var candidate = $scope.results.market_room_number[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]];
@@ -190,6 +224,28 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			} else {
 				return '';
 			}
+        };
+
+        /*
+        *  
+        *  @param {number}  [marketIndex - index of market]
+        *  @param {number}  [columnIndex - index corresponding to date]
+        *  @return {number} [revenue for the market corresponding to the date]
+        */
+        $scope.getDayUseMarketRevenueValue = function(marketIndex, columnIndex) {
+            var candidate = $scope.results.day_use_market_revenue[marketIndex][$scope.selectedDays[parseInt(columnIndex / (1 + !!$scope.chosenLastYear + !!$scope.chosenVariance))]],
+                returnVal = '';
+
+			if (candidate) {
+				if (!!$scope.chosenLastYear && !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 3 === 0) ? candidate.this_year : (columnIndex % 3 === 2) ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else if (!!$scope.chosenLastYear || !!$scope.chosenVariance) {
+					returnVal = (columnIndex % 2 === 0) ? candidate.this_year : !!$scope.chosenVariance ? (candidate.this_year - candidate.last_year) : candidate.last_year;
+				} else {
+					returnVal = candidate.this_year;
+				}
+			}
+            return returnVal;
 		};
 
 		function refreshScrollers() {
@@ -254,10 +310,19 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
 
 			$scope.chosenLastYear = !! hasIncludeLastYear ? hasIncludeLastYear.selected : false;
+			$scope.chosenLastYear = $scope.chosenLastYear || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_last_year);
 
 			var hasIncludeVariance = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_variance' });
 
 			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
+			$scope.chosenVariance = $scope.chosenVariance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
+            
+            var hasDayUseFilter = chosenReport.usedFilters ? chosenReport.usedFilters.reservation_type : _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
+
+            if (hasDayUseFilter) {
+                $scope.showNightlyComponent = hasDayUseFilter.includes('HOURLY') || hasDayUseFilter.includes('OVERNIGHT');
+                $scope.showDayUseComponent = hasDayUseFilter.includes('DAY_USE');
+            }
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {

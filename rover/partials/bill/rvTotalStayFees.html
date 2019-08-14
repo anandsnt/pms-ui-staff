@@ -255,6 +255,7 @@
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						<span ng-if="description.card_number">{{description.fees_desc}} - {{description.card_number}}</span>
 						<span ng-if="!description.card_number">{{description.fees_desc}}</span>
+						<span class="icons icon-invoice" ng-click="openReceiptDialog()"></span>
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">
@@ -284,6 +285,9 @@
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}
 					</strong>
+					<button ng-if="feesData.is_print_receipt_available" type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)">
+	                    <span class="icons icon-invoice"></span>
+	                </button>
 				</td>
 				<td>
 					<div class="select" ng-if="!isStandAlone">

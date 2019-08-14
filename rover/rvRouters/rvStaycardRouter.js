@@ -117,10 +117,13 @@ angular.module('stayCardModule', [])
                 children: '',
                 promotion_id: '',
                 room_type_id: null,
-                roomTypeIdFromNightlyDiary: null,
-                isFromNightlyDiary: false,
                 is_member: '',
-                guestId: ''
+                guestId: '',
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                arrivalTime: null,
+                departureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',

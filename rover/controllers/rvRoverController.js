@@ -165,6 +165,7 @@ sntRover.controller('roverController', [
         $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
         $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
         $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
+        $rootScope.isWorkStationMandatory = hotelDetails.is_workstation_mandatory;
         // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
@@ -321,10 +322,7 @@ sntRover.controller('roverController', [
             $scope.isStayCardDepositScreenOpened = value;
         });
         $scope.searchBackButtonCaption = '';
-
-        // Temporary hack to enable the merge options only for pilot properties
-        $rootScope.isCardMergeEnabled = hotelDetails.is_card_merge_enabled;
-
+        
         $rootScope.isInfrasecEnabled = hotelDetails.is_infrasec_enabled;
         $rootScope.allowCheckInToNotReadyRooms = hotelDetails.allow_checkin_to_not_ready_rooms;
         /**

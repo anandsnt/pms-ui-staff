@@ -21,7 +21,8 @@
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='useNewAddress()'>
-                        <ng-include src="icons.url.location"></ng-include src>
+                        <ng-include ng-if="zestStationData.theme !== 'qbic'" src="icons.url.location"></ng-include src>
+                        <ng-include ng-if="zestStationData.theme === 'qbic'" src="icons.url.new_location"></ng-include src>
                     </button>
                     <text data-ng-bind-html="getTagValue('ADD_NEW_ADDRESS')" editable-text="ADD_NEW_ADDRESS"></text>
                 </li>

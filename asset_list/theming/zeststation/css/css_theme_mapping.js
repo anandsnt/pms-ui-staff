@@ -83,7 +83,9 @@ module.exports = {
             'asbury': [themeCSSRoot + 'asbury.less'],
             'manchebo': [themeCSSRoot + 'manchebo.less'],
             'seacrest': [themeCSSRoot + 'seacrest.less'],
-            'cole': [themeCSSRoot + 'cole.less']
+            'cole': [themeCSSRoot + 'cole.less'],
+            'heritage-hills': [themeCSSRoot + 'heritage-hills.less'],
+            'metropolis-resort': [themeCSSRoot + 'metropolis-resort.less']
         };
     }
 };

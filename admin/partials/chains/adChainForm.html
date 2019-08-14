@@ -59,7 +59,12 @@
 			<fieldset class="holder right float">
 
 				<!--  sftp password-->
-				<ad-textbox inputtype="password" value="editData.sftp_password"   label = "SFTP Password" placeholder = "Enter SFTP Password"  styleclass="full-width"></ad-textbox>
+				<ad-textbox inputtype="password" 
+							value="editData.sftp_password"
+							label = "SFTP Password"
+							placeholder = "Enter SFTP Password"
+							styleclass="full-width"
+							click-handler="onPasswordClick(editData, 'sftp_password')"></ad-textbox>
 
 				<!--  sftp respath-->
 				<ad-textbox value="editData.sftp_respath"   label = "SFTP Respath" placeholder = "Enter SFTP Respath"  styleclass="full-width"></ad-textbox>
@@ -101,7 +106,12 @@
 			</fieldset>
 			<fieldset class="holder right float">
                                 <ad-textbox value="editData.smtp_username"   label = "Username" placeholder = "Enter Username"  styleclass="full-width"></ad-textbox>
-				<ad-textbox value="editData.smtp_password"   label = "Password" placeholder = "Enter Password"  styleclass="full-width" inputtype="password"></ad-textbox>
+				<ad-textbox value="editData.smtp_password"
+							label = "Password"
+							placeholder = "Enter Password"
+							styleclass="full-width"
+							inputtype="password"
+							click-handler="onPasswordClick(editData, 'smtp_password')"></ad-textbox>
 			</fieldset>
 
 

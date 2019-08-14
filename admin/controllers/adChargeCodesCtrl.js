@@ -9,6 +9,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.isAddTax = false;
 		$scope.isEditTax = false;
 		$scope.isEdit = false;
+		$scope.disableViennaTax = false;
 		$scope.successMessage = "";
 
 		$scope.selected_payment_type = {};
@@ -87,7 +88,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 */
 		$scope.addNewClicked = function() {
 
-
+			$scope.disableAddTax = false;
+			$scope.viennaTaxCounter = 0;
 			$scope.currentClickedElement = -1;
 			$scope.isAddTax = false;
 			$timeout(function() {
@@ -187,6 +189,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		$scope.editSelected = function(index, value) {
 			$scope.isAddTax = false;
 			$scope.isAdd = false;
+			$scope.disableAddTax = false;
 			$scope.editId = value;
 			var data = {
 				'editId': value
@@ -333,6 +336,12 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				item.calculation_rules = [];
 				if (item.calculation_rule_list.length !== 0 && item.selected_calculation_rule) {
 					item.calculation_rules = item.calculation_rule_list[parseInt(item.selected_calculation_rule, 10)].charge_code_id_list;
+				} // Tax 2 of Vienna Tax needs Charge code id of Tax 1 in Calculation rule array
+				else if ($scope.prefetchData.linked_charge_codes[0].is_vienna_tax) {
+					$scope.prefetchData.is_vienna_tax = true;
+					if ($scope.prefetchData.linked_charge_codes[1]) {
+						$scope.prefetchData.linked_charge_codes[1].calculation_rules = $scope.prefetchData.linked_charge_codes[1].calculation_rule_list[1].charge_code_id_list;
+					}
 				}
 			});
 
@@ -444,16 +453,35 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the tax details for add screen.
 		 */
 		$scope.addTaxClicked = function() {
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount,
+				isNotVienna = false;
+
 			$scope.isAddTax = true;
 			$scope.isEditTax = false;
+			$scope.viennaTaxCounter = 0;
+			$scope.disableViennaTax = false;
 			// To find the count of prefetched tax details already there in UI.
-			var taxCount = $scope.prefetchData.linked_charge_codes.length;
-
 			$scope.addData = {
 				"id": taxCount + 1,
 				"is_inclusive": false,
+				"is_vienna_tax": false,
 				"calculation_rule_list": $scope.generateCalculationRule(taxCount)
 			};
+			if (taxCount === 1 && $scope.prefetchData.linked_charge_codes[0].is_vienna_tax) {
+				$scope.addData.is_inclusive = true;
+				$scope.addData.is_vienna_tax = true;
+				$scope.disableViennaTax = true;
+			}
+			while (i--) {
+				if (!$scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					isNotVienna = true;
+				}
+			}
+			if (isNotVienna) {
+				$scope.disableViennaTax = true;
+			}
+			
 		};
 		/*
 		 * To handle cancel button click on tax creation.
@@ -467,8 +495,20 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		var tempEditData = [];
 
 		$scope.editSelectedTax = function(index) {
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount,
+				isNotVienna = false;
+
 			$scope.isEditTax = true;
 			$scope.isAddTax = false;
+			while (i--) {
+				if (!$scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					isNotVienna = true;
+				}
+			}
+			if (isNotVienna || !$scope.prefetchData.is_vienna_tax_enabled) {
+				$scope.disableViennaTax = true;
+			}
 			$scope.currentClickedTaxElement = index;
 			// Taking a deep copy edit data , need when we cancel out edit screen.
 			tempEditData = dclone($scope.prefetchData.linked_charge_codes[index], []);
@@ -494,6 +534,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.prefetchData.linked_charge_codes.push($scope.addData);
 			$scope.addData = {};
 			$scope.isAddTax = false;
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount;
+
+			while (i--) {
+				if ($scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					$scope.viennaTaxCounter += 1;
+					if ($scope.viennaTaxCounter === 2) {
+						$scope.disableAddTax = true;
+					}
+				}
+			}
 		};
 		/*
 		 * To handle inclusive/exclusive radio button click.
@@ -503,6 +554,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				$scope.addData.is_inclusive = value;
 			} else if ($scope.isEditTax) {
 				$scope.prefetchData.linked_charge_codes[index].is_inclusive = value;
+			}
+		};
+		/*
+		 * To handle inclusive/exclusive radio button click.
+		 */
+		$scope.toggleViennaTax = function(index) {
+			if ($scope.isAddTax) {
+				$scope.addData.is_inclusive = true;
+			} else if ($scope.isEditTax) {
+				$scope.prefetchData.linked_charge_codes[index].is_inclusive = true;
+				$scope.prefetchData.linked_charge_codes[index].is_vienna_tax = $scope.addData.is_vienna_tax;
 			}
 		};
 
@@ -529,7 +591,19 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 			// 1.
 			$scope.prefetchData.linked_charge_codes.splice(index, 1);
+			$scope.disableAddTax = false;
+			$scope.viennaTaxCounter = 0;
+			var taxCount = $scope.prefetchData.linked_charge_codes.length,
+				i = taxCount;
 
+			while (i--) {
+				if ($scope.prefetchData.linked_charge_codes[i].is_vienna_tax) {
+					$scope.viennaTaxCounter += 1;
+					if ($scope.viennaTaxCounter === 2) {
+						$scope.disableAddTax = true;
+					}
+				}
+			}
 			// 2.
 			// https://stayntouch.atlassian.net/browse/CICO-9576?focusedCommentId=52342&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52342
 			_.each($scope.prefetchData.linked_charge_codes, function(tax) {
@@ -579,11 +653,25 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
                 if ($scope.isAddTax && $scope.addData.is_inclusive) {
                     return !item.exclusive_only;
-                }
+				}
 
                 return true;
             };
-        };
+		};
+		
+		$scope.filterViennaTaxCodes = function (editData) {
+            return function (item) {
+                if ($scope.isEditTax && editData.is_vienna_tax) {
+                    return item.vienna_applicable;
+                }
+
+                if ($scope.isAddTax && $scope.addData.is_vienna_tax) {
+                    return item.vienna_applicable;
+				}
+
+                return true;
+            };
+		};
 
 	$scope.openCsvUploadPopup = function() {
 		$scope.csvData = {

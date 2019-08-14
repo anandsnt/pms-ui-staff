@@ -34,26 +34,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.exactOnlineSetup', {
-        templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
+        templateUrl: '/assets/partials/interfaces/exactonline/adExactonline.html',
         controller: 'adExactOnlineSetupCtrl',
         url: '/exactonline/setup',
         resolve: {
-            exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
-            }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
+            }],
+            config: ['adExactOnlineSetupSrv', function (adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }]
         }
     });
 
     $stateProvider.state('admin.twinfieldSetup', {
-        templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
+        templateUrl: '/assets/partials/interfaces/twinfield/adTwinfieldSetup.html',
         controller: 'adTwinfieldSetupCtrl',
         url: '/twinfield/setup',
         resolve: {
-            twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+            twinfieldSetupValues: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('twinfield');
             }],
             paymentChargeCodes: ['adTwinfieldSetupSrv', function(adTwinfieldSetupSrv) {
                 return adTwinfieldSetupSrv.getPaymentChargeCodes();
@@ -136,12 +136,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.windsurferCRSSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'windsurfer';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'windsurfer'
+        },
         resolve: {
-           config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('windsurfer');
             }]
         }
@@ -150,12 +150,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.travelClickSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'travelclick';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'travelclick'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('travelclick');
             }]
         }
@@ -164,12 +164,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.cubilisSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'cubilis';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'cubilis'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('cubilis');
             }]
         }
@@ -180,37 +180,40 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADDerbySoftSetupCtrl',
         url: '/derbysoft/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('derbysoft');
             }],
             mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                'adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('derbysoft');
-            }]
+                }]
         }
     });
 
     $stateProvider.state('admin.verticalBookingSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'verticalbooking';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'verticalbooking'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('verticalbooking');
             }]
         }
     });
 
     $stateProvider.state('admin.ideasSetup', {
-        templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
+        templateUrl: '/assets/partials/interfaces/ideas/adIdeas.html',
         controller: 'adIdeasSetupCtrl',
         url: '/ideas/setup',
         resolve: {
-            ideaSetup: ['adIdeasSetupSrv', function(adIdeasSetupSrv) {
-                return adIdeasSetupSrv.getIdeaSetup();
+            config: ['adInterfacesSrv', function (adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('ideas');
+            }],
+            chargeGroups: ['ADChargeGroupsSrv', function (ADChargeGroupsSrv) {
+                return ADChargeGroupsSrv.fetch();
             }]
         }
     });
@@ -373,20 +376,32 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.mapping', {
         templateUrl: '/assets/partials/mapping/adExternalMapping.html',
         controller: 'ADMappingCtrl',
-        url: '/mapping/:hotelId'
+        url: '/mapping',
+        params: {
+            hotelId: undefined
+        }
     });
 
     // hotel_id will be removed from the following stateProvider URL's (external-mappings, add-external-mapping, edit-external-mapping)
     $stateProvider.state('admin.external-mappings', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsList.html',
         controller: 'ADExternalMappingsListCtrl',
-        url: '/mappings/show/:interface_id/:interface_name'
+        url: '/mappings/show',
+        params: {
+            interface_id: undefined,
+            interface_name: undefined
+        }
     });
 
     $stateProvider.state('admin.add-external-mapping', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsAdd.html',
-        url: '/mappings/add/:mapping_type/:interface_id/:interface_name',
+        url: '/mappings/add',
         controller: 'ADExternalMappingsAddCtrl',
+        params: {
+            mapping_type: undefined,
+            interface_id: undefined,
+            interface_name: undefined
+        },
         resolve: {
             mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
                 function(ADInterfaceMappingSrv, $stateParams) {
@@ -400,7 +415,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.edit-external-mapping', {
         templateUrl: '/assets/partials/interfaces/ExternalMappings/adExternalMappingsEdit.html',
-        url: '/mappings/add/:mapping_type/:interface_id/:interface_name/:mapping_id',
+        url: '/mappings/add',
+        params: {
+            mapping_type: undefined,
+            interface_id: undefined,
+            interface_name: undefined,
+            mapping_id: undefined
+        },
         controller: 'ADExternalMappingsEditCtrl',
         resolve: {
             mappingTypes: ['ADInterfaceMappingSrv', '$stateParams',
@@ -447,7 +468,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.emvTerminalDetails', {
         templateUrl: '/assets/partials/emvTerminals/emvTerminalDetails.html',
         controller: 'ADEmvTerminalDetailsCtrl',
-        url: '/terminaldetails/:itemid'
+        url: '/terminaldetails',
+        params: {
+            itemid: undefined
+        }
     });
 
     $stateProvider.state('admin.doorlockInterface', {
@@ -469,12 +493,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.keypr', {
-        templateUrl: '/assets/partials/interfaces/MobileKeys/Keypr/adKeyprSetup.html',
+        templateUrl: '/assets/partials/interfaces/keypr/adKeypr.html',
         controller: 'adKeyprSetupCtrl',
         url: '/keypr/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('keypr');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('keypr');
             }]
         }
     });
@@ -482,12 +506,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.sitemindersSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'siteminder';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'siteminder'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('siteminder');
             }]
         }
@@ -505,12 +529,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.synxisSetup', {
         templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'synxis';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'synxis'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('synxis');
             }]
         }
@@ -519,10 +543,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.axbase3000', {
         templateUrl: '/assets/partials/interfaces/axbase3000/adAxbase.html',
         controller: 'adAXbaseCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'axbase3000';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'axbase3000'
+        },
         resolve: {
             config: ['adInterfacesSrv', function(adInterfacesSrv) {
                 return adInterfacesSrv.getSettings('axbase3000');
@@ -530,15 +554,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
-	$stateProvider.state('admin.rainmakerSetup', {
+    $stateProvider.state('admin.rainmakerSetup', {
         templateUrl: '/assets/partials/interfaces/Rainmaker/adRainmakerSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'rainmaker';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'rainmaker'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('rainmaker');
             }]
         }
@@ -547,12 +571,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.juyoSetup', {
         templateUrl: '/assets/partials/interfaces/Juyo/adJuyoSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'juyo';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'juyo'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('juyo');
             }]
         }
@@ -572,12 +596,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.infrasecSetup', {
         templateUrl: '/assets/partials/interfaces/Infrasec/adInfrasecSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'infrasec';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'infrasec'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('infrasec');
             }]
         }
@@ -648,6 +672,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.safeaccounting', {
+        templateUrl: '/assets/partials/interfaces/safeaccounting/configuration.html',
+        controller: 'adSafeaccountingCtrl',
+        url: '/safeaccounting',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('safeaccounting');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.sieSetup', {
        templateUrl: '/assets/partials/interfaces/sie/adSie.html',
        controller: 'adSieCtrl',
@@ -663,45 +699,43 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.sunaccountingSetup', {
         templateUrl: '/assets/partials/interfaces/SunAccounting/adSunAccountingConfiguration.html',
         controller: 'adInterfaceConfigurationCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'sunaccounting';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'sunaccounting'
+        },
         resolve: {
             config: [
-              'adInterfacesSrv', function(adInterfacesSrv) {
-                  return adInterfacesSrv.getSettings('sunaccounting');
-              }],
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('sunaccounting');
+                }],
             mappingTypes: [
-                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                'adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                     return adInterfacesCommonConfigSrv.fetchMappingTypes('sunaccounting');
                 }]
         }
     });
 
     $stateProvider.state('admin.turkishinvoiceSetup', {
-        templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'turkishinvoice';
-        }],
+        templateUrl: '/assets/partials/interfaces/turkishinvoice/adTurkishinvoice.html',
+        controller: 'adTurkishinvoiceCtrl',
+        url: '/turkishinvoice',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('turkishinvoice');
-            }]
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('turkishinvoice');
+                }]
         }
     });
 
     $stateProvider.state('admin.revControlSetup', {
         templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'revcontrol';
-        }],
+        url: '/interfaces/',
+        params: {
+            id: 'revcontrol'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('revcontrol');
             }]
         }
@@ -710,12 +744,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.siteminderMessageExchangeSetup', {
         templateUrl: '/assets/partials/interfaces/Sitemindermx/adSitemindermxSetup.html',
         controller: 'adCRSCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'sitemindermx';
-        }],
+        url: '/interfaces/setup',
+        params: {
+            id: 'sitemindermx'
+        },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('sitemindermx');
             }]
         }
@@ -870,6 +904,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.fiskaltrustSetup', {
+        templateUrl: '/assets/partials/interfaces/fiskaltrust/adFiskaltrust.html',
+        controller: 'adFiskaltrustCtrl',
+        url: '/fiskaltrust',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('fiskaltrust');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('fiskaltrust');
+                }],
+            paymentChargeCodes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('fiskaltrust');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.global_feature_toggles', {
         templateUrl: '/assets/partials/interfaces/GlobalFeatureToggles/adGlobalFeatureToggles.html',
         controller: 'adGlobalFeatureTogglesCtrl',
@@ -885,11 +939,28 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.hotel_feature_toggles_edit', {
         templateUrl: '/assets/partials/interfaces/HotelFeatureToggles/adEdit.html',
         controller: 'adHotelFeatureTogglesEditCtrl',
-        url: '/admin/hotel_feature_toggles/:id',
+        url: '/admin/hotel_feature_toggles',
+        params: {
+            id: undefined
+        },
         resolve: {
             settings: ['adFeaturesSrv', '$stateParams', function(adFeaturesSrv, $stateParams) {
                 return adFeaturesSrv.fetch($stateParams.id);
             }]
         }
     });
+
+    $stateProvider.state('admin.staahSetup', {
+        templateUrl: '/assets/partials/interfaces/staah/adStaah.html',
+        controller: 'adStaahController',
+        controllerAs: 'vm',
+        url: '/staah',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('staah');
+                }]
+        }
+    });
+
 });

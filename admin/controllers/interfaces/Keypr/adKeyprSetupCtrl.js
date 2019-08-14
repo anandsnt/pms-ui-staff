@@ -1,25 +1,23 @@
-angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv) {
+angular.module('admin').controller('adKeyprSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesSrv',
+    function($scope, $rootScope, config, adInterfacesSrv) {
+        BaseCtrl.call(this, $scope);
 
-        var interfaceIdentifier = 'keypr';
+        $scope.integration = 'KEYPR';
 
-        $scope.sync = {
-            start_date: null,
-            end_date: null
-        };
 
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
 
-        $scope.saveInterfaceConfig = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+        $scope.saveSetup = function() {
+            $scope.callAPI(adInterfacesSrv.updateSettings, {
                 params: {
-                    config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
+                    settings: $scope.config,
+                    integration: $scope.integration.toLowerCase()
                 },
                 onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS! Settings updated!';
                 }
             });
         };

@@ -6,12 +6,15 @@ admin.service('adIFCInterfaceMappingSrv', [
         var interfaceswithNumericExternalValues = ['HOGIA'];
 
         var metaLists = {
+            'AXBASE3000': ['ROOM_NUMBERS', 'ROOM_TYPES'],
             'DELPHI': ['CHARGE_CODES', 'GROUP_HOLD_STATUSES', 'MARKET_SEGMENTS', 'SOURCE_CODES'],
-            'HOGIA': ['CHARGE_CODES'],
-            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
             'DERBYSOFT': ['CANCELLATION_POLICIES', 'CANCELLATION_CODES', 'TAX_CHARGE_CODES', 'TAX_CODES'],
+            'EXACTONLINE': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
+            'FISKALTRUST': ['PAYMENT_CODES'],
+            'HOGIA': ['CHARGE_CODES'],
             'IGEL': ['CHARGE_CODES', 'PAYMENT_CODES'],
-            'AXBASE3000': ['ROOM_NUMBERS', 'ROOM_TYPES']
+            'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
+            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS']
         };
 
         var metaPromises = {
