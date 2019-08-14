@@ -131,11 +131,13 @@ sntRover.controller('RVInvoiceSearchController',
 
 		$scope.expandBill = function(itemIndex, billIndex) {
 			var successCallBackOfExpandBill = function(response) {
-					$scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].transactions = response;
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].isOpened = true;
+					$scope.invoiceSearchData.reservationsList.results[itemIndex].transactions = response.transactions;
 				},
 				options = {
 					params: {
-						"bill_id": $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id
+						"bill_id": $scope.invoiceSearchData.reservationsList.results[itemIndex].bills[billIndex].bill_id,
+						"payments_only": true
 					},
 					successCallBack: successCallBackOfExpandBill
 				};
