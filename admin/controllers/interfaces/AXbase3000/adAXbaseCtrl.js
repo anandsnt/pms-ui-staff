@@ -5,17 +5,16 @@ angular.module('admin').
 
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-            $scope.integration = 'AXBASE3000';
+            $scope.interface = 'AXBASE3000';
 
             $scope.state = {
                 activeTab: 'SETTING'
             };
 
+            $scope.mappingTypes = ['room_number'];
+
             $scope.changeTab = function(name) {
                 $scope.state.activeTab = name;
-                if (name === 'MAPPING') {
-                    $scope.loadTable();
-                }
             };
 
             var interfaceIdentifier = $stateParams.id,
@@ -48,7 +47,7 @@ angular.module('admin').
                 $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
                         settings: $scope.config,
-                        integration: $scope.integration.toLowerCase()
+                        integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
                         $scope.errorMessage = '';
@@ -106,7 +105,7 @@ angular.module('admin').
                 $scope.callAPI(adInterfacesCommonConfigSrv.updateMappings, {
                     params: {
                         config: room,
-                        integration: $scope.integration.toLowerCase()
+                        integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
                         $scope.errorMessage = '';

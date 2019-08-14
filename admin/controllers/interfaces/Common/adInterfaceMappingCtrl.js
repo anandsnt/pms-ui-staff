@@ -15,7 +15,8 @@ admin.controller('adInterfaceMappingCtrl', [
           'market_code_department_code': 'Market Code - Department Code',
           'source_code': 'Source Code',
           'tax_code': 'Tax Codes',
-          'payment_code_billing_account': 'Payment Code - Billing Account Number'
+          'payment_code_billing_account': 'Payment Code - Billing Account Number',
+          'room_number': 'Room Numbers'
         };
 
         var mappingPartials = {
@@ -23,7 +24,8 @@ admin.controller('adInterfaceMappingCtrl', [
             'DERBYSOFT': '/assets/partials/interfaces/DerbySoft/adDerbySoftMappingDetailView.html',
             'HOGIA': '/assets/partials/interfaces/Common/mapping.html',
             'SUNACCOUNTING': '/assets/partials/interfaces/SunAccounting/adSunAccountingMappingDetailView.html',
-            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html'
+            'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
+            'AXBASE3000': '/assets/partials/interfaces/axbase3000/adAxbaseMapping.html'
         };
 
         $scope.state = {

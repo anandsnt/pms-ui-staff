@@ -1,47 +1,56 @@
-<section class="content-scroll" ng-if="state.activeTab === 'MAPPING' && selectedTab !== 'isActivateTabSelected'">
-    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-    <table id="rooms" class="grid datatable" ng-table="tableParams" template-pagination="custom/pager">
-        <tbody>
-            <tr ng-repeat="room in $data" room-id="{{room.room_id}}">
-                <td data-title="'Room Number'" sortable="'room_number'" header-class="width-50">
-                    <a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
-                        {{room.room_number}}
-                    </a>
-                </td>
-                <td data-title="'Room Type'" sortable="'room_type_name'" header-class="width-50">
-                    <div class="entry">
-                        <div class="select">
-                            <select class="placeholder" ng-model="room.external_value"
-                                ng-options="roomMapping.external_value as roomMapping.meta_data.description for roomMapping in roomMappings"
-                                ng-change="updateMappings(room)">
-                                <option value="" disabled>Select Mapping</option>
-                            </select>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<fieldset class="holder full-width">
+    <div class="form-title">
+        <h3 translate><span>{{state.mode}}&nbsp;</span>Mapping</h3>
+    </div>
+</fieldset>
+<fieldset class="holder left">
+    <ad-dropdown-name savemodel="mapping.typeof"
+                      valueproperty="name"
+                      property="text"
+                      required="yes"
+                      is-disabled="state.mode==='EDIT'"
+                      label-in-drop-down="Select Mapping Type"
+                      list="state.mappingTypes"
+                      label="{{'MAPPING_TYPE'| translate}}"
+                      div-class="full-width">
+    </ad-dropdown-name>
+</fieldset>
 
-    <!--Custom pagination footer goes here-->
-    <script type="text/ng-template" id="custom/pager">
-            <div class="pager">
-                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
-                <span ng-show="totalCount==0">Showing 0 items</span>
-                <ul class="ng-cloak">
-                    <li ng-repeat="page in pages" ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+<fieldset class="holder left">
+    <ad-dropdown-name savemodel="mapping.value"
+                      ng-show="mapping.typeof==='room_number'"
+                      valueproperty="room_number"
+                      required="yes"
+                      label-properties="['room_number', 'room_type']"
+                      label-in-drop-down="Select Room Number"
+                      list="state.meta.ROOM_NUMBERS.rooms"
+                      label="{{'SNT_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
+</fieldset>
+<fieldset class="holder right">
+    <ad-dropdown-name savemodel="mapping.external_value"
+                      ng-show="mapping.typeof==='room_number'"
+                      valueproperty="external_value"
+                      required="yes"
+                      label-properties="['external_value']"
+                      label-in-drop-down="Select Room Type"
+                      list="state.meta.ROOM_TYPES"
+                      label="{{'EXTERNAL_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
+</fieldset>
 
-                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
-                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
-                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
-
-                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
-                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
-                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
-                    </li>
-                </ul>
-            </div>
-        </script>
-    <!--end-->
-</section>
+<div class="actions float">
+    <button type="button" class="button blank add-data-inline" ng-click="onCancelDetailedView()" translate>
+        CANCEL
+    </button>
+    <button type="button" class="button green" ng-click="onClickSaveNew()" translate ng-show="state.mode=='ADD'">
+        {{'SAVE' | translate}}
+    </button>
+    <button type="button" class="button green" ng-click="onClickUpdate()" translate ng-show="state.mode=='EDIT'">
+        {{'UPDATE' | translate}}
+    </button>
+</div>
