@@ -21,7 +21,7 @@
                     <!-- Add classes 'has-arrow next-view' if this is not an additional bill on the same reservation + add click/tap action to go to Stay Card -->
                     <!-- Add .open when opened -->
                     <div class="bill has-arrow next-view">
-                        <div class="expand toggle" ng-click="expandBill(0, 0)">
+                        <div class="expand toggle" ng-click="expandBill($index, 0)">
                             <!-- Add .active when bill is opened -->
                             <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': invoiceReservationData.bills[0].isOpened}"></span>
                         </div>
