@@ -64,7 +64,13 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.serviceprovideruserdetails', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderUserDetails.html',
 			controller: 'ADServiceProviderUserDetailsCtrl',
-			url: '/serviceprovideruserdetails/:serviceProviderId/:name/:userId/:isUnlocking'
+			url: '/serviceprovideruserdetails/',
+			params: {
+				serviceProviderId: undefined,
+				name: undefined,
+				userId: undefined,
+				isUnlocking: undefined
+			}
 		});
 
 		$stateProvider.state('admin.chains', {
