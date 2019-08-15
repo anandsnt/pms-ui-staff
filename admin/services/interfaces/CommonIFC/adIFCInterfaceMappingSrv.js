@@ -49,7 +49,7 @@ admin.service('adIFCInterfaceMappingSrv', [
                 return ADBaseWebSrvV2.getJSON('/admin/hotel_rooms.json?page=1&per_page=100&query=&sort_dir=true&sort_field=name');
             },
             'ROOM_TYPES': function() {
-                return ADBaseWebSrvV2.getJSON('/ifc/axbase3000/mappings')
+                return ADBaseWebSrvV2.getJSON('/ifc/axbase3000/mappings');
             }
         };
 
