@@ -214,6 +214,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
                 action: undefined
             }
 		});
+    
 
 		$stateProvider.state('admin.autoSyncInventory', {
 			templateUrl: '/assets/partials/tools/adTools.html',
