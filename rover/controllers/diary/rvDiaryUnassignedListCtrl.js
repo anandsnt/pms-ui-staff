@@ -5,6 +5,7 @@ angular.module('sntRover')
         '$rootScope',
         'rvDiarySrv',
         function($scope, $rootScope, rvDiarySrv) {
+            var displayPanel = false;
 
             /**
              * Function to fetch the unassigned reservations on loading the controller
@@ -22,6 +23,7 @@ angular.module('sntRover')
                         params: postData,
                         successCallBack: successCallBackFetchList
                     };
+                    displayPanel = true;
     
                     $scope.callAPI(rvDiarySrv.fetchUnassignedRoomList, options);
                 }, __getTimeDiff = function(arrivalDate, arrivalTime, departureDate, departureTime) {
@@ -85,12 +87,24 @@ angular.module('sntRover')
             $scope.businessDate = $rootScope.businessDate;
 
             /**
+             * Listener for Initializing the unassigned reservations list
+             */
+            $scope.addListener('INITIALIZE_UNASSIGNED_LIST', fetchUdReservationList);
+
+            /**
+             * Listener for closing the unassigned reservations panel
+             */
+            $scope.addListener('CLOSE_UD_RESERVATION_PANEL', function() {
+                displayPanel = false;
+                $scope.udReservationsData = [];
+            });
+
+            /**
              * Function to toggle the visibility of the unassigned panel
              * @return {boolean}
              */
             $scope.showUnassignedListPanel = function() {
-                // === true ? 'visible' : ''; - toggle visibility with style instead of angular directive
-                return $scope.gridProps.unassignedRoomList.open ? 'visible' : '';
+                return displayPanel ? 'visible' : '';
             };
 
             /**
@@ -117,8 +131,6 @@ angular.module('sntRover')
                 $scope.selectedIndex = reservation.reservation_id;
                 $scope.$emit('UNASSIGNED_RESERVATION_SELECTED', params);
             };
-
-            fetchUdReservationList();
         }
     ]
 );

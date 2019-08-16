@@ -671,6 +671,7 @@ angular.module('sntRover')
 
             $scope.onUnassignedRoomToggle = function() {
                 if ($scope.gridProps.unassignedRoomList.open) {
+                    $scope.$broadcast('CLOSE_UD_RESERVATION_PANEL');
                     $scope.gridProps.unassignedRoomList.open = false;
                     $scope.resetEdit();
                     $scope.clearAvailability();
@@ -678,6 +679,7 @@ angular.module('sntRover')
                 } 
                 else {
                     $scope.gridProps.unassignedRoomList.open = true;
+                    $scope.$broadcast('INITIALIZE_UNASSIGNED_LIST');
                 }
             };
 
