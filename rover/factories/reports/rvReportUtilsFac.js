@@ -1496,39 +1496,6 @@ angular.module('reportsModule')
                 });
             }
 
-            function getReservationTypeOptions() {
-                var diaryMode = rvUtilSrv.getDiaryMode(),
-                    resTypeOpts;
-    
-                if (diaryMode === 'FULL') {
-                    resTypeOpts = [
-                        {
-                            description: 'Hourly',
-                            value: 'HOURLY'
-                        },
-                        {
-                            description: 'Day Use',
-                            value: 'DAY_USE'
-                        }
-                    ];
-                } else if (diaryMode === 'DAYUSE' || diaryMode === 'NIGHTLY') {
-                    resTypeOpts = [
-                        {
-                            description: 'Overnight',
-                            value: 'OVERNIGHT'
-                        },
-                        {
-                            description: 'Day Use',
-                            value: 'DAY_USE'
-                        }
-                    ];
-                } else {
-                    resTypeOpts = [];
-                }
-    
-                return resTypeOpts;
-            }
-
             function fillRestrictionList (data) {
                 var foundFilter;
 
