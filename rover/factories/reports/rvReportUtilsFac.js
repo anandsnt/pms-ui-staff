@@ -9,7 +9,8 @@ angular.module('reportsModule')
     'RVReportFiltersConst',
     'RVreportsSubSrv',
     'rvUtilSrv',
-    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv) {
+    'RVReportParamsConst',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv, reportParams) {
         var factory = {};
 
         var DATE_FILTERS = [
@@ -580,7 +581,7 @@ angular.module('reportsModule')
                     report['hasRateFilter'] = filter;
                 }
 
-                if (filter.value === 'RESERVATION_TYPE') {
+                if (filter.value === 'INCLUDE_DAY_USE') {
                     report['hasDayUseFilter'] = filter;
                 }
 
@@ -971,8 +972,8 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchCountries()
                         .then( fillCountries );
-                } else if ('RESERVATION_TYPE' === filter.value && !filter.filled) {
-                    fillResTypeOptions();
+                } else if ('INCLUDE_DAY_USE' === filter.value && !filter.filled) {
+                    setIncludeDayuseFlag();
                 } else {
                     // no op
                 }
@@ -1483,23 +1484,14 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
 
-            function fillResTypeOptions() {
+            function setIncludeDayuseFlag() {
                 var foundFilter;
 
                 _.each(reportList, function(report) {
-                    foundFilter = _.find(report['filters'], { value: 'RESERVATION_TYPE' });
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_DAY_USE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
-
-                        report.hasDayUseFilter = {
-                            data: getReservationTypeOptions(),
-                            options: {
-                                hasSearch: false,
-                                selectAll: true,
-                                key: 'description',
-                                defaultValue: 'Select Reservation Type(s)'
-                            }
-                        };
+                        report[reportParams['INCLUDE_DAYUSE']] = true;
                     }
                 });
             }
