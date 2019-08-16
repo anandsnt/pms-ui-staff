@@ -14,7 +14,8 @@ sntZestStation.controller('zsWalkInCtrl', [
         BaseCtrl.call(this, $scope);
 
         var reservationId,
-            arrivalDate;
+            arrivalDate,
+            depDate;
         $scope.availabileRoomList = [];
 
         $scope.newReservation = {};
@@ -296,13 +297,61 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.getRoomTypes, options);
         };
 
+        var fetchAvailableRooms = function (argument) {
+            var availableRoomTypeIds;
+
+            if ($scope.availabileRoomList.length) {
+                availableRoomTypeIds = _.map($scope.availabileRoomList, function(roomType) {
+                    return roomType.id;
+                });
+            } else {
+                availableRoomTypeIds = []
+            }
+            var params = {
+                "room_type_ids": availableRoomTypeIds,
+                "begin_date": arrivalDate,
+                "end_date": depDate
+            };
+            var fetchAvailableRoomsSuccess = function (response) {
+
+                // Calculate the number of INSPECTED rooms for each room type
+                _.each($scope.availabileRoomList, function(roomType) {
+                    _.each(response.rooms, function(room) {
+                        if (room.room_type_id === roomType.id && room.room_ready_status === 'INSPECTED') {
+                            roomType.roomsAvailable = roomType.roomsAvailable ? roomType.roomsAvailable++ : 1;
+                        }
+                    });
+                });
+
+                // Filter room types with atleast 1 INSPECTED room 
+                $scope.availabileRoomList = _.filter($scope.availabileRoomList, function(roomType){
+                    return roomType.roomsAvailable && roomType.roomsAvailable > 0
+                });
+
+                if ($scope.availabileRoomList.length === 0) {
+                    roomTypeNotAvailableActions();
+                    return;
+                }
+
+                fetchRoomTypes();
+            };
+
+            var options = {
+                params: params,
+                successCallBack: fetchAvailableRoomsSuccess,
+                failureCallBack: createReservationFailed
+            };
+
+            $scope.callAPI(zsGeneralSrv.fetchAvailableRooms, options);
+        }
+
         $scope.checkRoomAvailability = function() {
-            var departureDate = moment(arrivalDate, "YYYY-MM-DD").
+            depDate = moment(arrivalDate, "YYYY-MM-DD").
             add($scope.idScanData.noOfDays, 'd').
             format("YYYY-MM-DD");
             var params = {
                 "from_date": arrivalDate,
-                "to_date": departureDate,
+                "to_date": depDate,
                 "rate_id": $scope.zestStationData.kiosk_walk_in_rate_id,
                 "adults": $scope.idScanData.noOfAdults,
                 "children": $scope.idScanData.noOfChildren,
@@ -327,7 +376,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                     $scope.availabileRoomList = _.sortBy(availabileRoomTypes, function(roomType) {
                         return parseFloat(roomType.adr);
                     });
-                    fetchRoomTypes();
+                    fetchAvailableRooms();
                 }
             };
             var options = {
