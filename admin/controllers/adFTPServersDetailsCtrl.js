@@ -41,7 +41,11 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
     * Function to test connectivity details
     */
     $scope.testConnectivity = function(ftpServerConnectivityData) {
-        $scope.invokeApi(ADFTPServersSrv.testConnectivity, ftpServerConnectivityData, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
+        var params = dclone(ftpServerConnectivityData);
+
+        $scope.deletePropertyIfRequired(params, 'password');
+
+        $scope.invokeApi(ADFTPServersSrv.testConnectivity, params, $scope.successCallbackConnectionTest, $scope.failureCallbackConnectionTest);
     };
 
     $scope.saveServerDetails = function() {
