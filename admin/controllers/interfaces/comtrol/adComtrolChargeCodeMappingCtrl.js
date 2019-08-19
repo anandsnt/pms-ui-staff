@@ -57,7 +57,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
         category_name = $scope.state.new.category_name,
         is_default = $scope.state.new.is_default,
         charge_code_name = $scope.state.new.charge_code_name,
-        meal_time_period = $scope.state.new.meal_time_period
+        meal_time_period = $scope.state.new.meal_time_period;
 
       $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
         params: {
