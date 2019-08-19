@@ -331,9 +331,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
             $scope.rateData.is_global_contract = data.is_global_contract;
             $scope.rateData.round_type_id = data.round_type_id;
-
+            $scope.rateData.min_threshold_percent = data.min_threshold_percent;
+            
             manipulateAdditionalDetails(data);
-
 
             if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;
