@@ -541,6 +541,7 @@ angular.module('sntRover')
 
                     reset: function() {
                         if ( this.open ) {
+                            $scope.$broadcast('CLOSE_UD_RESERVATION_PANEL');
                             this.data = [];
                             this.open = false;
                             this.dragData = {};
@@ -1477,7 +1478,7 @@ angular.module('sntRover')
                     showPopupWithMessage('Sorry, No Availability found. Please change the parameter and continue');
                     return;
                 }
-
+                // I think the below code is redundent, keepOpen is always true
                 if ( ! keepOpen ) {
                     $scope.gridProps.unassignedRoomList.reset();
                 }
