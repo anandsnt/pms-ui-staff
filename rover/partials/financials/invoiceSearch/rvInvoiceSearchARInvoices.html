@@ -58,8 +58,7 @@
 
                         <!-- Invoice Info -->
                         <div class="invoice-info" ng-click="clickedItem($index, 0)">
-                            <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].invoice_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].invoice_no}}</div>
-                            <!-- <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].folio_number)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].folio_number}}</div> -->
+                            <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].invoice_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].ar_invoice_no}}</div>
                             <div class="balance" ng-class="{'text-red': invoiceReservationData.bills[0].balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
                             </div>
@@ -107,9 +106,7 @@
 
                         <!-- Invoice Info -->
                         <div class="invoice-info" >
-                            <div class="number" ng-bind-html="escapeNull(bill.invoice_no)|highlight:invoiceSearchData.query:false">{{::bill.invoice_no}}</div>
-                            <div class="number" ng-bind-html="escapeNull(bill.folio_number)|highlight:invoiceSearchData.query:false">{{::bill.folio_number}}</div>
-                            
+                            <div class="number" ng-bind-html="escapeNull(bill.invoice_no)|highlight:invoiceSearchData.query:false">{{::bill.ar_invoice_no}}</div>                            
                             <div class="balance" ng-class="{'text-red': bill.balance === 0}"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo}}
                             </div>
