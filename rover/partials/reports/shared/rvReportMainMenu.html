@@ -11,8 +11,10 @@
         <i class="icon-report icon-schedule"></i>
         <span class="title">Scheduled Exports</span>
     </li>
-    <li class="has-arrow next-view" ng-class="{ 'active': reportViewStore.showingCustomExports || reportViewStore.showingCustomNewExport }"
-        ng-click="reportMainMenuChange(reportViewActions.SHOW_CUSTOM_EXPORTS)"> 
+    <li class="has-arrow next-view" 
+        ng-class="{ 'active': reportViewStore.showingCustomExports || reportViewStore.showingCustomNewExport }"
+        ng-click="reportMainMenuChange(reportViewActions.SHOW_CUSTOM_EXPORTS)"
+        ng-show="isCustomExportsEnabled"> 
         <i class="icon-report icon-schedule"></i>
         <span class="title">Custom Exports</span>
     </li>

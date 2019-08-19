@@ -6,12 +6,14 @@ angular.module('sntRover')
             '$filter',
             '$stateParams',
             '$rootScope',
+            'Toggles',
             function ($scope,
                       $timeout,
                       $state,
                       $filter,
                       $stateParams,
-                      $rootScope) {
+                      $rootScope,
+                      Toggles) {
 
             var intialReportViewStore = {
                 showingAllReport: false,
@@ -333,6 +335,8 @@ angular.module('sntRover')
                 setupScroll();
                 
                 setTitleAndHeading();
+
+                $scope.isCustomExportsEnabled = Toggles.isEnabled('custom_exports');
 
             })();
 
