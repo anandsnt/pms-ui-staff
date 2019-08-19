@@ -4,9 +4,9 @@
     </div>
     <div class="entry">
         <div class="select">
-            <select class="placeholder">
+            <select class="placeholder" ng-model="deliveryType">
                 <option value="">Select output format</option>
-                ... repeat for each format
+                <option ng-repeat="format in exportFormats" value="{{format.id}}">{{format.value}}</option>
             </select>
         </div>
     </div>
@@ -14,7 +14,7 @@
         <div class="select">
             <select class="placeholder">
                 <option value="">Set export frequency</option>
-                ... repeat for each frequency
+                
             </select>
         </div>
     </div>
@@ -22,7 +22,8 @@
         <div class="select">
             <select class="placeholder">
                 <option value="">Select Delivery Method</option>
-                ... repeat for each method
+                <option ng-repeat="deliveryType in deliveryTypes" value="{{deliveryType.id}}">{{deliveryType.value}}</option>
+                
             </select>
         </div>
     </div>

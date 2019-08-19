@@ -4,23 +4,29 @@ angular.module('sntRover').service('RVCustomExportSrv', [
     function ($q, sntBaseWebSrv) {
         var scheduledExports = [
             {
-                id: 1,
-                export_name: 'My exports1',
-                desc: 'Created for Revenue'
+                report: {
+                    id: 1,
+                    title: "My exports1",
+                    description: "My Custom Exports"
+                }
             },
             {
-                id: 2,
-                export_name: 'My exports2',
-                desc: 'Created for Revenue'
+                report: {
+                    id: 2,
+                    title: "Stay dates export",
+                    description: "My stay dates exports"
+                }
             },
             {
-                id: 3,
-                export_name: 'My exports3',
-                desc: 'Created for Revenue'
+                report: {
+                    id: 3,
+                    title: "Reservation data space",
+                    description: "My reservation data space exports"
+                }
             }
         ];
 
-        this.getAvailableDataSpaces = function () {
+        this.getAvailableDataSpaces = () => {
             var deferred = $q.defer(),
                 url = 'api/reports?show_only_redshift_reports=true';
 
@@ -33,7 +39,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getScheduledCustomExports = function () {
+        this.getScheduledCustomExports = () => {
             var deferred = $q.defer(),
                 url = 'api/custom_exports_schedules.json';
 
@@ -47,7 +53,51 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getDataSpaceColumns = function (params) {
+        this.getRequestData = ( params ) => {
+            var promises = {},
+                deferred = $q.defer();
+
+            promises['columns'] = this.getDataSpaceColumns(params);
+            promises['exportFormats'] = this.getExportFormats(params);
+            promises['deliveryTypes'] = this.getExportDeliveryTypes(params);
+
+            $q.all(promises).then(function (data) {
+                deferred.resolve(data);
+            }, function () {
+                deferred.resolve([]);
+            });
+
+            return deferred.promise;
+
+        };
+
+        this.getExportFormats =  (params) => {
+            var deferred = $q.defer(),
+                url = 'admin/export_formats.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response.results);
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getExportDeliveryTypes = (params)  => {
+            var deferred = $q.defer(),
+                url = 'admin/export_delivery_types.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response.results);
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getDataSpaceColumns = (params) => {
             var deferred = $q.defer(),
                 url = 'api/reports/' + params.reportId + '/list_data_space_columns';
 

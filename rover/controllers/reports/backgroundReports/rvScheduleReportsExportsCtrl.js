@@ -37,6 +37,10 @@ angular.module('sntRover')
                 } else if ($scope.reportViewStore.showingScheduleAReport ||
                     $scope.reportViewStore.showingExportAReport) {
                     source = $scope.schedulableReports;
+                } else if ($scope.reportViewStore.showingCustomExports) {
+                    source = $scope.scheduledCustomExports;
+                } else if ($scope.reportViewStore.showingCustomNewExport) {
+                    source = $scope.customExportDataSpaces;
                 }
 
                 return source;
@@ -72,8 +76,10 @@ angular.module('sntRover')
             var refreshScroller = function () {
                 $timeout(function () {
                     $scope.refreshScroller('report-list-scroll');
-                    $scope.myScroll['report-list-scroll'].refresh();
-
+                    if ($scope.myScroll && $scope.myScroll['report-list-scroll']) {
+                        $scope.myScroll['report-list-scroll'].refresh();
+                    }
+                    
                     if ($scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll']) {
                         $scope.myScroll['report-filter-sidebar-scroll'].refresh();
                     }
@@ -327,9 +333,6 @@ angular.module('sntRover')
                 setupScroll();
                 
                 setTitleAndHeading();
-
-                $scope.customExportDataSpaces = [];
-                $scope.scheduledCustomExports = [];
 
             })();
 
