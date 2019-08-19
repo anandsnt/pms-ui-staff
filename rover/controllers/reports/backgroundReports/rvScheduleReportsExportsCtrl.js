@@ -336,6 +336,7 @@ angular.module('sntRover')
                 
                 setTitleAndHeading();
 
+                // Feature toggle decides whether the custom export menu should be shown or not
                 $scope.isCustomExportsEnabled = Toggles.isEnabled('custom_exports');
 
             })();

@@ -14,6 +14,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         const REPORT_SELECTED_COLS_SCROLLER = 'report-selected-cols-scroller';
         const SCROLL_REFRESH_DELAY = 100;
 
+        // Initialize the scrollers
         var initializeScrollers = () => {
             var scrollerOptions = {
                 tap: true,
@@ -24,27 +25,28 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.setScroller(REPORT_SELECTED_COLS_SCROLLER, scrollerOptions);
         };
 
+        // Refresh the given scroller
         var refreshScroll = function(name, reset) {
 
-            //$timeout(function () {
-                $scope.refreshScroller(name);
-            //}, SCROLL_REFRESH_DELAY);
-            
+            $scope.refreshScroller(name);
 
             if ( !! reset && $scope.myScroll.hasOwnProperty(name) ) {
                 $scope.myScroll[name].scrollTo(0, 0, SCROLL_REFRESH_DELAY);
             }
         };
 
+        // Should show the export list
         $scope.shouldShowExportListOnly = () => {
             return $scope.currentStage === STAGES.SHOW_CUSTOM_EXPORT_LIST;
         };
 
+        // Create new export
         var configureNewExport = () => {
             fetchDataSpaces();
             $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
         };
 
+        // Listener for creating new custom export
         $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_LISTENER', function () {
             configureNewExport();
             $scope.isAddingNew = true;
@@ -71,27 +73,28 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                         });
                     });                                       
                 },
-                onDataSpaceFetchFailure = (error) => {
+                onDataSpaceFetchFailure = () => {
                     $scope.$parent.$parent.customExportDataSpaces = [];
                 };
 
             $scope.callAPI(RVCustomExportSrv.getAvailableDataSpaces, {
                 onSuccess: onDataSpaceFetchSuccess,
-                onFailure: onDataSpaceFetchSuccess
+                onFailure: onDataSpaceFetchFailure
             });
         };
 
+        // Fetch scheduled custom exports
         var fetchScheduledCustomExports = () => {
             var onScheduledExportsFetchSuccess = (data) => {
                 $scope.$parent.$parent.scheduledCustomExports = data;
 
-                _.each ($scope.$parent.$parent.scheduledCustomExports, function (schedule) {
+                _.each($scope.$parent.$parent.scheduledCustomExports, function (schedule) {
                     schedule.filteredOut = false;
                 });
 
                 $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
             },
-            onScheduledExportsFetchFailure = (error) => {
+            onScheduledExportsFetchFailure = () => {
                 $scope.$parent.$parent.scheduledCustomExports = [];
             };
 
@@ -102,6 +105,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
+        // Click handler for the given data space
         $scope.clickDataSpace = ( selectedDataSpace ) => {
             var onSuccess = ( payload ) => {
 
@@ -116,7 +120,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     refreshScroll(REPORT_COLS_SCROLLER);
 
                 },
-                onFailure = (  ) => {
+                onFailure = () => {
 
                 };
                 
@@ -130,6 +134,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             
         };
 
+        // Handle the selection of fields belonging to the data space
         $scope.selectColumn = (column) => {
             if (column.selected) {
                 $scope.selectedColumns.push(column);
@@ -146,6 +151,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
+        // Initialize the controller
         var init = () => {
             $scope.isAddingNew = false;
             
