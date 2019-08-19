@@ -23,6 +23,7 @@ angular.module('sntRover')
                         params: postData,
                         successCallBack: successCallBackFetchList
                     };
+
                     displayPanel = true;
     
                     $scope.callAPI(rvDiarySrv.fetchUnassignedRoomList, options);
@@ -72,9 +73,6 @@ angular.module('sntRover')
                     hour_difference = Math.floor(difference / 36e5);
                     min_difference = Math.floor((difference % 36e5) / 6e4);
             
-                    // fraction = Math.ceil( ((difference < 1.0) ? difference : (difference % Math.floor(difference))) * 10 );
-                    // difference = Math.floor(difference);
-            
                     return {
                         hh: hour_difference,
                         mm: min_difference,
@@ -109,7 +107,7 @@ angular.module('sntRover')
             };
 
             /**
-             * 
+             * Function to handle the unassigned reservation selection
              */
             $scope.clickedUnassignedReservation = function(reservation) {
                 var params = {

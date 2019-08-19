@@ -63,6 +63,13 @@ angular.module('sntRover')
                 }
             };
 
+        /**
+         * Handler for unassigned reservation selection event
+         * callback function params
+         * @param {Object} event - event object
+         * @param {Object} options - callback function params
+         * @return {void}
+         */
         $scope.addListener('UNASSIGNED_RESERVATION_SELECTED', function(event, options) {
             var params = getCustomAvailabilityCallingParams(options.arrival_time, options.arrival_date, options.stay_span, options.room_type_id),
                 keepOpen = true,
