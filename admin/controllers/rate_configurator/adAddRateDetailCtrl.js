@@ -297,7 +297,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 'tasks': $scope.rateData.tasks,
                 'is_day_use': $scope.rateData.is_day_use,
                 'round_type_id': $scope.rateData.round_type_id,
-                'min_threshold_percent': $scope.rateData.based_on.id === null ? $scope.rateData.min_threshold_percent : null
+                'min_threshold_percent': ($scope.rateData.based_on.id === null || $scope.rateData.based_on.id === "") ? $scope.rateData.min_threshold_percent : null
             };
 
             // Save Rate Success Callback
