@@ -43,6 +43,12 @@
                                               label="{{'CHARGE_CODE' | translate}}"
                                               class="full-width">
                             </ad-dropdown-name>
+                            <ad-textbox inputtype="text"
+                                        value="state.new.meal_time_period"
+                                        label="{{'MEAL_PERIOD' | translate}}"
+                                        required="no"
+                                        class="full-width">
+                            </ad-textbox>
                         </fieldset>
                         <fieldset class="holder right float">
                             <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"
@@ -89,15 +95,22 @@
                         </a>
                     </td>
                     <td data-item="2" data-title="'Category Name'" ng-click="onSelect($index, mapping)"
-                        header-class="width-30" ng-hide="state.selected === $index">
+                        header-class="width-20" ng-hide="state.selected === $index">
                         <a class="edit-data-inline">{{getCategoryName(mapping.category_name) || mapping.category_name}}</a>
                     </td>
 
                     <td data-item="2" data-title="'Charge Code'" ng-click="onSelect($index, mapping)"
-                        header-class="width-30" ng-hide="state.selected === $index">
+                        header-class="width-20" ng-hide="state.selected === $index">
                         <a class="edit-data-inline">
                             {{mapping.charge_code_name}}
                             <em>{{getChargeCodeDescription(mapping.charge_code_name)}}</em>
+                        </a>
+                    </td>
+
+                    <td data-item="2" data-title="'Meal Period'" ng-click="onSelect($index, mapping)"
+                        header-class="width-20" ng-hide="state.selected === $index">
+                        <a class="edit-data-inline">
+                            {{mapping.meal_time_period}}
                         </a>
                     </td>
 
@@ -145,6 +158,12 @@
                                                           label="{{'CHARGE_CODE' | translate}}"
                                                           class="full-width">
                                         </ad-dropdown-name>
+                                        <ad-textbox inputtype="text"
+                                                    value="mapping.meal_time_period"
+                                                    label="{{'MEAL_PERIOD' | translate}}"
+                                                    required="no"
+                                                    class="full-width">
+                                        </ad-textbox>
                                     </fieldset>
                                     <fieldset class="holder right float">
                                         <ad-dropdown-name label-in-drop-down="{{'CATEGORY_NAME_PLACEHOLDER' | translate}}"

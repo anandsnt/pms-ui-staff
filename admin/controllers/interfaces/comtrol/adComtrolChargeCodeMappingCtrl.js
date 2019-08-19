@@ -1,12 +1,12 @@
 admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCodeMappingSrv', 'COMTROL_REF',
   function ($scope, adComtrolChargeCodeMappingSrv, COMTROL_REF) {
-
     // private methods and variables
     var resetNew = function () {
       $scope.state.new = {
         revenue_center_code: "",
         category_name: "",
         charge_code_name: "",
+        meal_time_period: "",
         is_default: false
       };
     },
@@ -56,14 +56,16 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       var revenue_center_code = $scope.state.new.revenue_center_code,
         category_name = $scope.state.new.category_name,
         is_default = $scope.state.new.is_default,
-        charge_code_name = $scope.state.new.charge_code_name;
+        charge_code_name = $scope.state.new.charge_code_name,
+        meal_time_period = $scope.state.new.meal_time_period
 
       $scope.callAPI(adComtrolChargeCodeMappingSrv.create, {
         params: {
           revenue_center_code: revenue_center_code,
           category_name: category_name,
           charge_code_name: charge_code_name,
-          is_default: is_default
+          is_default: is_default,
+          meal_time_period: meal_time_period
         },
         successCallBack: function (response) {
           if (is_default) {
@@ -77,7 +79,8 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
             revenue_center_code: revenue_center_code,
             category_name: category_name,
             charge_code_name: charge_code_name,
-            is_default: is_default
+            is_default: is_default,
+            meal_time_period: meal_time_period
           });
           $scope.state.mode = "";
         }
@@ -206,7 +209,8 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           revenue_center_code: "",
           category_name: "",
           charge_code_name: "",
-          is_default: false
+          is_default: false,
+          meal_time_period: ""
         }
       };
 
