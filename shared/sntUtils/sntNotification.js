@@ -21,16 +21,21 @@ angular.module('snt.utils').service('sntNotifySrv', [function () {
 angular.module('snt.utils').component('sntNotify', {
     template: '<div ng-if="!$ctrl.showToasts" ng-show="$ctrl.message"' +
         '           ng-class="$ctrl.style"' +
-        '           ng-switch on="$ctrl.message.length"' +
         '           ng-click="$ctrl.clearErrorMessage()">' +
-        '               <span class="close-btn" ng-click="$ctrl.clearErrorMessage()"></span>' +
-        '               <span ng-switch-when="1">{{$ctrl.message[0]}}</span>' +
-        '               <span ng-switch-default>' +
-        '                  <span ng-repeat="item in $ctrl.message track by $index" >' +
-        '                     <span ng-if=!$last>{{item}},</span>' +
-        '                     <span ng-if=$last> {{item}}</span>' +
+        '               <section ng-if="$ctrl.type === \'success\'">' +
+        '                   <span>{{$ctrl.message}}</span>' +
+        '               </section>' +
+        '               <section ng-if="$ctrl.type !== \'success\'"' +
+        '                  ng-switch on="$ctrl.message.length">' +
+        '                  <span class="close-btn" ng-click="$ctrl.clearErrorMessage()"></span>' +
+        '                  <span ng-switch-when="1">{{$ctrl.message[0]}}</span>' +
+        '                  <span ng-switch-default>' +
+        '                     <span ng-repeat="item in $ctrl.message track by $index" >' +
+        '                        <span ng-if=!$last>{{item}},</span>' +
+        '                        <span ng-if=$last> {{item}}</span>' +
+        '                     </span>' +
         '                  </span>' +
-        '               </span>' +
+        '               </section>' +
         '       </div>',
     transclude: true,
     bindings: {
