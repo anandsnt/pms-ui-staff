@@ -100,13 +100,6 @@
                 Remaining Balance
                 <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter | number:2}}</strong>
             </div>
-            <div class="status">
-                <!-- If partially paid, output:
-                <span class="icons icon-wallet-green"></span> -->
-
-                <!-- If locked, meaning as well that it can't be partially paid, output: -->
-                <!-- <span ng-if = "arDataObj.is_locked" class="icons icon-room-lock"></span> -->
-            </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
                 <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
                 <span class="currency">{{currencySymbol}}</span>{{balance.amount | number:2}}

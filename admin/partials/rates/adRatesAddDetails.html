@@ -56,7 +56,16 @@
                     </select>
                 </div>
             </div>
-            <div class="entry entry-no-bottom full-width" ng-show="shouldShowBasedOnAndCopy()">
+
+            <div class="entry full-width" ng-show="shouldShowMinThreshold()">
+                <label>Extra Adult/Child Min. Amount Threshold</label>
+                <div class="input-group">
+                    <input type="number" class="small-input" ng-model="rateData.min_threshold_percent"/>
+                    <span class="symbol">%</span>
+                </div>
+            </div>
+
+            <div class="entry full-width" ng-show="shouldShowBasedOnAndCopy()">
                 <label>Based On / Copy From</label>
                 <div class="boxes">
                     <div class="switch-container">
@@ -94,6 +103,16 @@
                                 <select class="placeholder" ng-model="rateData.based_on.type">
                                     <option value="amount">{{currencySymbol}}</option>
                                     <option value="percent">%</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <label ng-show="showRoundingOptions()">Rounding</label>
+                    <div class="full-width" ng-show="showRoundingOptions()">
+                        <div class="entry margin">
+                            <div class="select white">
+                                <select class="placeholder" ng-model="rateData.round_type_id" ng-options="option.id as option.description for option in rateTypesDetails.roundingOptions">
+                                    <option value="">Select</option>
                                 </select>
                             </div>
                         </div>

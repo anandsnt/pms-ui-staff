@@ -15,52 +15,75 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 		$scope.stateStore = {
 			occupancy: [{
 				key: "available_rooms",
-                name: "Available Rooms",
-                hasDayUseComponent: false
+                name: "Available Rooms"
 			}, {
 				key: "out_of_order_rooms",
-                name: "Out of Order Rooms",
-                hasDayUseComponent: false
+                name: "Out of Order Rooms"
 			}, {
 				key: "occupied_rooms",
-                name: "Occupied Rooms",
-                hasDayUseComponent: true
+                name: "Occupied Rooms"
 			}, {
 				key: "complimentary_rooms",
-                name: "Complimentary Rooms",
-                hasDayUseComponent: true
+                name: "Complimentary Rooms"
 			}, {
 				key: "occupied_minus_comp",
-                name: "Occupied Rooms (Excl. Comp.)",
-                hasDayUseComponent: true
-			}],
+                name: "Occupied Rooms (Excl. Comp.)"
+            }],
+            dayUseOccupancy: [
+                {
+                    key: 'occupied_day_use_rooms',
+                    name: 'Occupied Day Use Reservations'
+                },
+                {
+                    key: 'complimentary_day_use_rooms',
+                    name: 'Day Use Complimentary Rooms'
+                },
+                {
+                    key: 'occupied_day_use_minus_comp',
+                    name: 'Occupied Day Use Rooms (Excl. Comp.)'
+                }
+            ],
 			occupancyTotals: [{
 				key: "total_occupancy_in_percentage",
-                name: "Total Occ.",
-                hasDayUseComponent: true
+                name: "Total Occ."
 			}, {
 				key: "total_occupancy_minus_comp_in_percentage",
-                name: "Total Occ. (Excl. Comp.)",
-                hasDayUseComponent: true
-			}],
+                name: "Total Occ. (Excl. Comp.)"
+            }],
+            dayUseOccTotals: [
+                {
+                    key: 'total_day_use_occupancy_in_percentage',
+                    name: 'Total Day Use Occ.'
+                },
+                {
+                    key: 'total_day_use_occupancy_minus_comp_in_percentage',
+                    name: 'Total Day Use Occ. (Excl. Comp.)'
+                }
+            ],
 			revenues: [{
 				key: "rev_par",
-                name: "RevPar",
-                hasDayUseComponent: false
+                name: "RevPar"
 			}, {
 				key: "adr_inclusive_complimentary_rooms",
-                name: "ADR (Incl. Comp.)",
-                hasDayUseComponent: true
+                name: "ADR (Incl. Comp.)"
 			}, {
 				key: "adr_exclusive_complimentary_rooms",
-                name: "ADR (Excl. Comp.)",
-                hasDayUseComponent: true
-			}],
+                name: "ADR (Excl. Comp.)"
+            }],
+            dayUseRevenue: [
+                {
+                    key: 'day_use_adr_inclusive_complimentary_rooms',
+                    name: 'Day Use ADR (Incl. Comp.)'
+                },
+                {
+                    key: 'day_use_adr_exclusive_complimentary_rooms',
+                    name: 'Day Use ADR (Excl. Comp.)'
+                }
+            ],
 			revenueTotals: [{
 				key: "total_revenue",
-                name: "Total Revenue",
-                hasDayUseComponent: true
-			}]
+                name: "Total Revenue"
+            }]
 		};
 
 		$scope.setScroller('leftPanelScroll', {
@@ -317,12 +340,7 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			$scope.chosenVariance = !! hasIncludeVariance ? hasIncludeVariance.selected : false;
 			$scope.chosenVariance = $scope.chosenVariance || ($scope.$parent.chosenReport.usedFilters && $scope.$parent.chosenReport.usedFilters.include_variance);
             
-            var hasDayUseFilter = chosenReport.usedFilters ? chosenReport.usedFilters.reservation_type : _.pluck(_.where(chosenReport.hasDayUseFilter.data, {selected: true}), 'value');
-
-            if (hasDayUseFilter) {
-                $scope.showNightlyComponent = hasDayUseFilter.includes('HOURLY') || hasDayUseFilter.includes('OVERNIGHT');
-                $scope.showDayUseComponent = hasDayUseFilter.includes('DAY_USE');
-            }
+            $scope.showDayUseComponent = chosenReport.usedFilters ? chosenReport.usedFilters.include_day_use : chosenReport.include_day_use;
 
 			$scope.selectedDays = [];
 			for (; ms <= last; ms += step) {

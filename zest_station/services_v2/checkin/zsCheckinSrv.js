@@ -291,7 +291,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {'locale': params.locale}).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
