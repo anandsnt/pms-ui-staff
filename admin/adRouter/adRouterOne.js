@@ -64,7 +64,13 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.serviceprovideruserdetails', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderUserDetails.html',
 			controller: 'ADServiceProviderUserDetailsCtrl',
-			url: '/serviceprovideruserdetails/:serviceProviderId/:name/:userId/:isUnlocking'
+			url: '/serviceprovideruserdetails/',
+			params: {
+				serviceProviderId: undefined,
+				name: undefined,
+				userId: undefined,
+				isUnlocking: undefined
+			}
 		});
 
 		$stateProvider.state('admin.chains', {
@@ -208,8 +214,13 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.sntserviceproviderdetails', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderDetails.html',
 			controller: 'ADServiceProviderDetailsCtrl',
-			url: '/serviceproviderdetails/:action/:id'
+			url: '/serviceproviderdetails',
+			params: {
+                id: undefined,
+                action: undefined
+            }
 		});
+    
 
 		$stateProvider.state('admin.autoSyncInventory', {
 			templateUrl: '/assets/partials/tools/adTools.html',
