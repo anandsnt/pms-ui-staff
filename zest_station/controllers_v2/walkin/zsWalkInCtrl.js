@@ -16,7 +16,7 @@ sntZestStation.controller('zsWalkInCtrl', [
         var reservationId,
             arrivalDate,
             depDate;
-        $scope.availabileRoomList = [];
+        $scope.availabileRoomTypeList = [];
 
         $scope.newReservation = {};
 
@@ -212,7 +212,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.$emit('hideLoader');
             var itemsPerPage = 3;
 
-            $scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.availabileRoomList, itemsPerPage, $scope.pageData.pageNumber);
+            $scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.availabileRoomTypeList, itemsPerPage, $scope.pageData.pageNumber);
             // once the addons list is set, reset height of the container
             $('#upgrades').css({
                 "height": "calc(100% - 230px)"
@@ -230,7 +230,7 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         var fetchRoomUpsellSuccess = function(response) {
 
-            _.each($scope.availabileRoomList, function(roomType) {
+            _.each($scope.availabileRoomTypeList, function(roomType) {
                 _.each(response.upsell_amounts, function(upsellData) {
                     if (
                         (($scope.idScanData.selectedRoomType.roomLevel === 1 && parseInt(upsellData.level_from) === 1) ||
@@ -252,7 +252,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                     roomTypeNotAvailableActions();
                 } else {
                     _.each(roomTypeList, function(roomType) {
-                        _.each($scope.availabileRoomList, function(availableRoomType) {
+                        _.each($scope.availabileRoomTypeList, function(availableRoomType) {
                             if (roomType.id === availableRoomType.id) {
                                 availableRoomType.desc = roomType.name + ' :   ' + availableRoomType.description;
                                 availableRoomType.roomTypeName = roomType.name;
@@ -263,12 +263,12 @@ sntZestStation.controller('zsWalkInCtrl', [
                         });
                     });
                     if ($scope.zestStationData.kiosk_walkin_flow === 'upsell_oriented') {
-                        var minimumAdrRoomType = _.min($scope.availabileRoomList, function(roomType) {
+                        var minimumAdrRoomType = _.min($scope.availabileRoomTypeList, function(roomType) {
                             return parseFloat(roomType.adr);
                         });
 
                         $scope.idScanData.selectedRoomType = angular.copy(minimumAdrRoomType);
-                        $scope.availabileRoomList = _.filter($scope.availabileRoomList, function(roomType) {
+                        $scope.availabileRoomTypeList = _.filter($scope.availabileRoomTypeList, function(roomType) {
                             return $scope.idScanData.selectedRoomType.id !== roomType.id &&
                                 roomType.roomLevel &&
                                 roomType.roomLevel > $scope.idScanData.selectedRoomType.roomLevel;
@@ -297,15 +297,15 @@ sntZestStation.controller('zsWalkInCtrl', [
             $scope.callAPI(zsGeneralSrv.getRoomTypes, options);
         };
 
-        var fetchAvailableRooms = function (argument) {
+        var fetchAvailableRooms = function () {
             var availableRoomTypeIds;
 
-            if ($scope.availabileRoomList.length) {
-                availableRoomTypeIds = _.map($scope.availabileRoomList, function(roomType) {
+            if ($scope.availabileRoomTypeList.length) {
+                availableRoomTypeIds = _.map($scope.availabileRoomTypeList, function(roomType) {
                     return roomType.id;
                 });
             } else {
-                availableRoomTypeIds = []
+                availableRoomTypeIds = [];
             }
             var params = {
                 "room_type_ids": availableRoomTypeIds,
@@ -313,22 +313,22 @@ sntZestStation.controller('zsWalkInCtrl', [
                 "end_date": depDate
             };
             var fetchAvailableRoomsSuccess = function (response) {
-
-                // Calculate the number of INSPECTED rooms for each room type
-                _.each($scope.availabileRoomList, function(roomType) {
-                    _.each(response.rooms, function(room) {
-                        if (room.room_type_id === roomType.id && room.room_ready_status === 'INSPECTED') {
-                            roomType.roomsAvailable = roomType.roomsAvailable ? roomType.roomsAvailable++ : 1;
-                        }
-                    });
+                // Check if INSPECTED rooms are available
+                var inspectedRooms = _.filter(response.rooms, function(room) {
+                    return room.room_ready_status === 'INSPECTED';
                 });
 
-                // Filter room types with atleast 1 INSPECTED room 
-                $scope.availabileRoomList = _.filter($scope.availabileRoomList, function(roomType){
-                    return roomType.roomsAvailable && roomType.roomsAvailable > 0
+                // get count of INSPECTED rooms in each room type
+                var availableRoomsInRoomType = _.countBy(inspectedRooms, function(room) {
+                    return room.room_type_id;
                 });
 
-                if ($scope.availabileRoomList.length === 0) {
+                // filter out room types without any INSPECTED rooms
+                $scope.availabileRoomTypeList = _.filter($scope.availabileRoomTypeList, function(roomType) {
+                    return availableRoomsInRoomType[roomType.id] > 0;
+                });
+
+                if ($scope.availabileRoomTypeList.length === 0) {
                     roomTypeNotAvailableActions();
                     return;
                 }
@@ -343,7 +343,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             };
 
             $scope.callAPI(zsGeneralSrv.fetchAvailableRooms, options);
-        }
+        };
 
         $scope.checkRoomAvailability = function() {
             depDate = moment(arrivalDate, "YYYY-MM-DD").
@@ -373,7 +373,7 @@ sntZestStation.controller('zsWalkInCtrl', [
                     _.each(availabileRoomTypes, function(roomType) {
                         roomType.adr_details = roomType.adr ? $scope.zestStationData.currencySymbol + $filter('number')(roomType.adr, 2) : '';
                     });
-                    $scope.availabileRoomList = _.sortBy(availabileRoomTypes, function(roomType) {
+                    $scope.availabileRoomTypeList = _.sortBy(availabileRoomTypes, function(roomType) {
                         return parseFloat(roomType.adr);
                     });
                     fetchAvailableRooms();
@@ -390,7 +390,7 @@ sntZestStation.controller('zsWalkInCtrl', [
 
         var startCreatingReservation = function() {
             // if there are available rooms in next level proceed to room upsell
-            if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' && $scope.availabileRoomList.length > 0) {
+            if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' && $scope.availabileRoomTypeList.length > 0) {
                 $scope.screenData.scanMode = 'RESERVATION_CONFIRMATION';
                 $scope.screenData.roomSelectionMode = 'ROOM_UPSELL';
                 setPageNumberDetails();
@@ -465,7 +465,7 @@ sntZestStation.controller('zsWalkInCtrl', [
             if ($scope.screenData.scanMode === 'SELECT_STAY_DETAILS') {
                 $scope.navToHome();
             } else if ($scope.screenData.scanMode === 'RESERVATION_CONFIRMATION') {
-                if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' || $scope.availabileRoomList.length === 1) {
+                if ($scope.zestStationData.kiosk_walkin_flow !== 'traditional' || $scope.availabileRoomTypeList.length === 1) {
                     if ($scope.screenData.roomSelectionMode === 'MINIMUM_ADR') {
                         $scope.screenData.scanMode = 'SELECT_STAY_DETAILS';
                     } else if ($scope.screenData.roomSelectionMode === 'ROOM_UPSELL') {
