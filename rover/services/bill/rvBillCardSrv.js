@@ -1,4 +1,6 @@
-angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVBillCardSrv', 
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
 
 	var that = this;
 
@@ -429,4 +431,31 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		return deferred.promise;
 	};
 
+	this.printReceiptData = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/print_payment_receipt';
+
+		sntBaseWebSrv.postJSON(url, params).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
+
+	this.emailReceiptData = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/email_payment_receipt';
+
+		sntBaseWebSrv.postJSON(url, params).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
 }]);

@@ -34,26 +34,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.exactOnlineSetup', {
-        templateUrl: '/assets/partials/ExactOnline/setup/adExactOnlineSetup.html',
+        templateUrl: '/assets/partials/interfaces/exactonline/adExactonline.html',
         controller: 'adExactOnlineSetupCtrl',
         url: '/exactonline/setup',
         resolve: {
-            exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
-            }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
+            }],
+            config: ['adExactOnlineSetupSrv', function (adExactOnlineSetupSrv) {
+                return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }]
         }
     });
 
     $stateProvider.state('admin.twinfieldSetup', {
-        templateUrl: '/assets/partials/interfaces/Twinfield/adTwinfieldSetup.html',
+        templateUrl: '/assets/partials/interfaces/twinfield/adTwinfieldSetup.html',
         controller: 'adTwinfieldSetupCtrl',
         url: '/twinfield/setup',
         resolve: {
-            twinfieldSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('twinfield');
+            twinfieldSetupValues: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('twinfield');
             }],
             paymentChargeCodes: ['adTwinfieldSetupSrv', function(adTwinfieldSetupSrv) {
                 return adTwinfieldSetupSrv.getPaymentChargeCodes();
@@ -205,12 +205,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.ideasSetup', {
-        templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
+        templateUrl: '/assets/partials/interfaces/ideas/adIdeas.html',
         controller: 'adIdeasSetupCtrl',
         url: '/ideas/setup',
         resolve: {
-            ideaSetup: ['adIdeasSetupSrv', function(adIdeasSetupSrv) {
-                return adIdeasSetupSrv.getIdeaSetup();
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('ideas');
+            }],
+            chargeGroups: ['ADChargeGroupsSrv', function(ADChargeGroupsSrv) {
+                return ADChargeGroupsSrv.fetch();
             }]
         }
     });
@@ -469,12 +472,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.keypr', {
-        templateUrl: '/assets/partials/interfaces/MobileKeys/Keypr/adKeyprSetup.html',
+        templateUrl: '/assets/partials/interfaces/keypr/adKeypr.html',
         controller: 'adKeyprSetupCtrl',
         url: '/keypr/setup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('keypr');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('keypr');
             }]
         }
     });
@@ -692,18 +695,16 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.turkishinvoiceSetup', {
-        templateUrl: '/assets/partials/interfaces/Turkishinvoice/adTurkishInvoiceSetup.html',
-        controller: 'adInterfaceCommonCtrl',
-        url: '/interfaces/setup/:id',
-        onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'turkishinvoice';
-        }],
-        resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('turkishinvoice');
-            }]
-        }
-    });
+       templateUrl: '/assets/partials/interfaces/turkishinvoice/adTurkishinvoice.html',
+       controller: 'adTurkishinvoiceCtrl',
+       url: '/turkishinvoice',
+       resolve: {
+           config: [
+               'adInterfacesSrv', function(adInterfacesSrv) {
+                   return adInterfacesSrv.getSettings('turkishinvoice');
+               }]
+       }
+   });
 
     $stateProvider.state('admin.revControlSetup', {
         templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
@@ -882,6 +883,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.fiskaltrustSetup', {
+        templateUrl: '/assets/partials/interfaces/fiskaltrust/adFiskaltrust.html',
+        controller: 'adFiskaltrustCtrl',
+        url: '/fiskaltrust',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function(adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('fiskaltrust');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('fiskaltrust');
+                }],
+            paymentChargeCodes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchPaymentChargeCodes('fiskaltrust');
+                }]
+        }
+    });
+
     $stateProvider.state('admin.global_feature_toggles', {
         templateUrl: '/assets/partials/interfaces/GlobalFeatureToggles/adGlobalFeatureToggles.html',
         controller: 'adGlobalFeatureTogglesCtrl',
@@ -904,4 +925,18 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
+
+    $stateProvider.state('admin.staahSetup', {
+        templateUrl: '/assets/partials/interfaces/staah/adStaah.html',
+        controller: 'adStaahController',
+        controllerAs: 'vm',
+        url: '/staah',
+        resolve: {
+            config: [
+                'adInterfacesSrv', function (adInterfacesSrv) {
+                    return adInterfacesSrv.getSettings('staah');
+                }]
+        }
+    });
+
 });
