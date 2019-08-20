@@ -46,6 +46,10 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to save the room mapping
          */
         service.updateMappings = function(params) {
+            // CICO-64120 call to axbase3000 library in IFC
+            if (params.integration === 'axbase3000') {
+                return ADBaseWebSrvV2.postJSON('ifc/proxy/axbase3000/save_room_mapping', params.config);
+            }
             return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/save_room_mapping', params.config);
         };
         /**
@@ -53,7 +57,8 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to import Rooms
          */
         service.startImportRooms = function(params) {
-            return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/import_rooms');
+            // CICO-64120 updated POST endpoint to ifc/proxy
+            return ADBaseWebSrvV2.postJSON('ifc/proxy/' + params.interfaceIdentifier + '/import_access_zones');
         };
 
 

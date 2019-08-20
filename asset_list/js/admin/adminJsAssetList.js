@@ -28,6 +28,7 @@ module.exports = {
 				jsLibRoot + 'treeview/ivh-treeview.min.js',
 				jsLibRoot + 'moment.min.js',
 				jsLibRoot + 'gapi.min.js',
+                jsLibRoot + 'toastr/toastr.min.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			],
@@ -52,7 +53,9 @@ module.exports = {
                 sharedRoot + 'sntTransitionManager/**/*.js',
 				sharedRoot + 'baseCtrl.js',
 				sharedRoot + 'iBeaconOperations.js',
+                sharedRoot + 'sntUtils/app.js',
                 sharedRoot + 'sntUtils/**/*.js',
+
 				jsLibRoot + 'date.js',
 				adminRoot + 'adRouter/**/*.js',
 				adminRoot + 'adApp.js',
@@ -67,7 +70,6 @@ module.exports = {
 				sharedRoot + 'directives/limitInputRange/limitInputRange.js',
 				sharedRoot + 'integrations/*.js',
 				adminRoot + 'constants/**/*.js',
-				sharedRoot + 'sntFeatureToggles/**/*.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]
