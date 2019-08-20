@@ -45,6 +45,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date": "",
                 "end_date_for_display": "",
                 "commission_details": {},
+                "basedOnRateUnselected": false,
                 "is_discount_allowed_on": true // CICO-25305 - For new rates we are enabling default,
 
             };
