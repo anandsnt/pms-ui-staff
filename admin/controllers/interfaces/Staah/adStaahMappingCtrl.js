@@ -67,6 +67,16 @@ admin.controller('adStaahMappingCtrl', [
                     return obj.id.toString() === mappingValue;
                 });
                 text = item.name;
+            } else if (mappingType === 'addon') {
+                item = _.find($scope.state.addons, function(obj) {
+                    return obj.id.toString() === mappingValue;
+                });
+                text = item.name;
+            } else if (mappingType === 'payment_charge_code') {
+                item = _.find($scope.staahPaymentCodes, function(obj) {
+                    return obj.code.toString() === mappingValue;
+                })
+                text = item.code + '-' + item.name;
             }
             return text;
         };
@@ -85,11 +95,30 @@ admin.controller('adStaahMappingCtrl', [
                     return obj.id === mappingValue;
                 });
                 text = item.name;
+            } else if (mappingType === 'addon') {
+                item = _.find($scope.data, function(obj) {
+                    return obj.external_value === mappingValue;
+                });
+                text = item.external_value;
+            } else if (mappingType === 'payment_charge_code') {
+                item = _.find($scope.state.payment_codes, function(obj) {
+                    return obj.charge_code === mappingValue;
+                });
+                text = item.charge_code + '-' + item.description;
             }
             return text;
         };
 
         $scope.onClickSaveNew = function () {
+            if($scope.mapping.typeof === 'payment_charge_code') {
+                dup = _.select($scope.data, function (obj) {
+                    return obj.external_value === $scope.mapping.external_value
+                })
+                if (dup.length > 0) {
+                    $scope.errorMessage = ['Mapping value already in use - please select a different value'];
+                    return;
+                }
+            }
             $scope.callAPI(adStaahSetupSrv.saveMapping, {
                 params: $scope.mapping,
                 successCallBack: function () {
@@ -175,12 +204,31 @@ admin.controller('adStaahMappingCtrl', [
         };
 
         (function () {
+            $scope.staahPaymentCodes = [
+                { code: "VI", name: "Visa" },
+                { code: "AX", name: "American Express" },
+                { code: "BC", name: "BankCard" },
+                { code: "MC", name: "MasterCard" },
+                { code: "DN", name: "Diners Club" },
+                { code: "CB", name: "Carte Blanche" },
+                { code: "CU", name: "China Union Pay" },
+                { code: "DS", name: "Disccover" },
+                { code: "E", name: "Electron" },
+                { code: "JC", name: "Japan Credit Bureau" },
+                { code: "MA", name: "Maestro" },
+                { code: "T", name: "Carat Si" },
+                { code: "R", name: "Carte Bleue" },
+                { code: "N", name: "Dnakort" },
+                { code: "L", name: "Delta" }
+            ];
             $scope.totalCount = 0;
             $scope.mapping = fetchEmptyMapping();
             $scope.callAPI(adStaahSetupSrv.fetchMeta, {
                 successCallBack: function (meta) {
                     $scope.state.rates = meta.rates;
                     $scope.state.roomTypes = meta.room_types;
+                    $scope.state.addons = meta.addons;
+                    $scope.state.payment_codes = meta.payment_codes;
                     $scope.state.staahMappings = meta.staah_mappings;
                     var dict = [];
 
