@@ -37,8 +37,13 @@ sntRover.controller('RVInvoiceSearchController',
 
 		$scope.shouldShowReceipts =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowARInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "AR Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};		
 
+		
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
 		* function to set Headinng
@@ -94,6 +99,17 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
+			
+			if ($scope.shouldShowInvoices()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+			}
+			if ($scope.shouldShowReceipts()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
+			}
+			if ($scope.shouldShowARInvoices()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_AR_INVOICE');
+			}
+
 			if ($scope.shouldShowInvoices()) {
 				$scope.paymentDataArray = [];
 			}
@@ -625,12 +641,7 @@ sntRover.controller('RVInvoiceSearchController',
 				dateFormat: $rootScope.jqDateFormat,
 				maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
 			};
-			if ($scope.shouldShowInvoices) {
-				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
-			}
-			if ($scope.shouldShowReceipts) {
-				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
-			}
+			
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);
