@@ -520,10 +520,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
 
                 $scope.rateData.is_day_use = selectedRate.is_day_use;
                 $scope.disableDayUseToggle = true;
+                $scope.rateData.basedOnRateUnselected = false;
             }
             else {
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
+                $scope.rateData.basedOnRateUnselected = true;
             }
         };
 
