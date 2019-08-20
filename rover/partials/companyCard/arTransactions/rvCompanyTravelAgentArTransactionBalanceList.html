@@ -1,11 +1,10 @@
 <ul class="search-results">
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
+    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
         <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
             <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
-
         <div class="faux-anchor has-arrow toggle" ng-class="{ 'active': balance.active}">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
@@ -90,8 +89,8 @@
             </div>
             
             <!-- if daily reservation add .red -->
-            <div class="reservation-type red" ng-if="balance.is_day_use && hotelDiaryConfig.dayUseEnabled">D</div>
-            <div class="reservation-type" ng-if="!balance.is_day_use && hotelDiaryConfig.dayUseEnabled && hotelDiaryConfig.mode === 'FULL'">N</div>
+            <div class="reservation-type red" ng-if="balance.is_day_use">D</div>
+            <div class="reservation-type" ng-if="!balance.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
 
             <div class="balance balance-now">
                 Invoiced Amount 
@@ -110,7 +109,6 @@
                 <input class="text-box" type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
             </div>
         </div>
-
         <div class="grid-items" ng-show="balance.active">
             <table>
                 <thead>
@@ -203,14 +201,13 @@
                 <button type="button" ng-show="balance.amount < 0" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
                 <button type="button" ng-show="arFlags.viewFromOutside && !balance.is_manual_balance" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" ng-click="moveInvoiceButtonClick(balance)" ng-show="!balance.is_partially_paid" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue hidden">Print Invoice</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, false)">Print Invoice</button>
                 <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance && !roverObj.noModifyInvoice">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
-
 	</li>
-	<li>
+	<li id="add-balance">
 		<!-- On click Show Manual Balance Billing Content -->
 		<button class="add-new-button" ng-show="!roverObj.noModifyInvoice" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
 	</li>
@@ -218,4 +215,5 @@
         <!-- To fix scroll -->
         <button>&nbsp;</button>
     </li>
+    
 </ul>

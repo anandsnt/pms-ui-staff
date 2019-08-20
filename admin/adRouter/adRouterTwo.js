@@ -199,7 +199,16 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.roomdetails', {
         templateUrl: '/assets/partials/rooms/adRoomDetails.html',
         controller: 'adRoomDetailsCtrl',
-        url: '/roomdetails/:roomId'
+
+        url: '/roomdetails',
+        params: {
+            roomId: undefined
+        },
+        resolve: {
+            availableGuestLanguages: function (ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
+            }
+        }
     });
 
     $stateProvider.state('admin.hotellikes', {
@@ -420,6 +429,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.customRatesSequence', {
         templateUrl: '/assets/partials/customRateSequence/adCustomRatesSequence.html',
         controller: 'ADCustomRatesSequenceCtrl',
+        url: '/custom_rates_sequence'
+    });
+
+    $stateProvider.state('admin.manageCustomRatesSequence', {
+        templateUrl: '/assets/partials/customRateSequence/adManageCustomRatesSequence.html',
+        controller: 'ADManageCustomRatesSequenceCtrl',
         url: '/custom_rates_sequence'
     });
 
@@ -1006,4 +1021,11 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       controller: 'ADGuestCardFieldsCtrl',
       url: '/adGuestCardFields'
     });
+
+    $stateProvider.state('admin.oracleDataCenters', {
+      templateUrl: '/assets/partials/dataCenters/adOracleDataCenters.html',
+      controller: 'ADOracleDataCentersCtrl',
+      url: '/oracleDataCenters'
+    });
+
 });
