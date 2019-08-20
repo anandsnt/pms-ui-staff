@@ -189,7 +189,7 @@
                                 <ad-textbox ng-if="singleAddon.is_allowance"  value="singleAddon.amount" name="name" id="name" label="{{'ALLOWANCE_PRICE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_PRICE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
                                 <div class="entry">
                                     <label>Addon Currency</label>
-                                    <select class="placeholder" ng-model="singleAddon.currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateCurrencyList" ng-change="onChangeChargeCode()">
+                                    <select class="placeholder" ng-model="singleAddon.ref_currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateCurrencyList" ng-change="onChangeChargeCode()">
                                        <option value="">Select Rate Currency</option>
                                     </select>
                                 </div>

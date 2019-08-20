@@ -344,7 +344,7 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 is_allowance: $scope.singleAddon.is_allowance,
                 addon_value: $scope.singleAddon.addon_value,
                 spillage_refund_percentage: $scope.singleAddon.spillage_refund_percentage,
-                currency_code_id: $scope.singleAddon.currency_code_id
+                ref_currency_code_id: $scope.singleAddon.ref_currency_code_id
             };
 
             if ($scope.isDefaulLanguageSelected()) {
