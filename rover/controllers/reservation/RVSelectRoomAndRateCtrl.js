@@ -480,6 +480,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						rateInfo = {
 							id: roomType.rate_id,
 							name: $scope.reservationData.ratesMeta[roomType.rate_id].name,
+							rateCurrency: roomType.rate_currency,
 							adr: roomType.adr,
 							dates: angular.copy(datesInitial),
 							bestAvailableRateRestrictions: roomType.restrictions,
@@ -540,6 +541,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isCollapsed: true,
 							name: (rate.id) ? $scope.reservationData.ratesMeta[rate.id].name : "Custom Rate for " + $scope.reservationData.group.name,
 							id: rate.id,
+							rateCurrency: rate.rate_currency,
 							defaultRoomTypeId: rate.room_type_id,
 							defaultRoomTypeAvailability: rate.availability,
 							defaultADR: rate.adr,
@@ -1378,6 +1380,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				_.each(datesArray, function(dayInfo, date) {
 					dayInfo.amount = rateDetails.amounts[date];
+					dayInfo.rateCurrency = secondary.rateCurrency;
 					var adultsCount = 1,
 						childCount = 0;
 
@@ -2009,6 +2012,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								availability: room.availability,
 								showDays: false,
 								adr: room.adr,
+								rateCurrency: room.rate_currency,
 								forRate: rate.id,
 								numRestrictions: proccesedRestrictions.restrictionCount || 0,
 								restriction: room.restrictions,
@@ -2084,6 +2088,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							id: rate.id,
 							name: $scope.reservationData.ratesMeta[rate.id].name,
 							adr: rate.adr,
+							rateCurrency: rate.rate_currency,
 							dates: angular.copy(datesInitial),
 							totalAmount: 0.0,
 							restriction: rate.restrictions,

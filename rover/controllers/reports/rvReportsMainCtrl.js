@@ -1045,7 +1045,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'addonGroups': [],
                     'addons': [],
                     'reservationStatus': [],
-                    'reservation_type': [],
                     'guestOrAccount': [],
                     'chargeTypes': [],
                     'users': [],
@@ -1229,10 +1228,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             if (!!report.hasDayUseFilter) {
-                var selectedResType = _.pluck(_.where(report.hasDayUseFilter.data, {selected: true}), 'value');
+                var inclDayUse = report[reportParams['INCLUDE_DAYUSE']];
 
-                $scope.appliedFilter.reservation_type = selectedResType;
-                params[reportParams['RESERVATION_TYPES']] = selectedResType;
+                $scope.appliedFilter[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
+                params[reportParams['INCLUDE_DAYUSE']] = inclDayUse;
             }
 
             // for rate code

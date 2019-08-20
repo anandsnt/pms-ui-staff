@@ -114,7 +114,11 @@
 								on-click="selectedCurrency(currency.id)"></ad-checkbox>
 							</div>
 						</div> -->
-						<div class="entry" ng-show="is_multi_currency_enabled">
+						<!--  <multi-option-selection label="dfgdffffffff"
+                on-update="refreshSidebarScroll"
+                data="currency_list"
+                options="chosenReport.empList.options"></multi-option-selection> -->
+                <div class="entry">
                 <label>Rate / Add On Currencies</label>
                 
                 <span class="multiSelect inlineBlock">
@@ -136,7 +140,7 @@
                             </div>
                             <div class="checkBoxContainer">
                                <!-- Add .selected if selected -->
-                               <div class="multiSelectItem vertical" ng-repeat="currency in currency_list">
+                               <div class="multiSelectItem vertical">
                                     <div class="acol">
                                         <label>
                                             <input class="checkbox focusable" type="checkbox" checked="checked">
@@ -147,11 +151,13 @@
                                     <!-- show mark if selected -->
                                     <span class="tickMark">✔</span>
                                 </div>
-                                <!-- ... repeat for each -->
+                                ... repeat for each
                                
                             </div>
                         </form>
                     </div>
+                </span>
+            </div>
                 </span>
             </div>
                     </fieldset>

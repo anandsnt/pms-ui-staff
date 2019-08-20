@@ -79,7 +79,7 @@
                 <li ng-repeat="room in display.roomFirstGrid track by $index">
                     <a class="has-arrow toggle" ng-class="{active: !room.isCollapsed, disabled: borrowForGroups}" ng-click="showRatesList(room)">
                         <div class="data">
-                            <h2>{{room.name}}</h2>
+                            <h2>{{room.name}}@@@@</h2>
                             <!-- <span class="recommended" ng-show="!borrowForGroups && display.roomFirstGrid.length > 0 && $index > 0 && (room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) > 0">
                                 {{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{(room.defaultRate.adr - display.roomFirstGrid[0].defaultRate.adr) | number}}&nbsp;{{'RESV_MORE'|translate}}
                             </span> -->
@@ -137,7 +137,7 @@
                         </div>
                     </a>
                     <!-- Rates list -->
-
+======================{{room.ratesArray}}
                     <ul class="rates" ng-class="{active: !room.isCollapsed}" ng-if="!room.isCollapsed">
                         <li ng-repeat="rate in room.ratesArray" ng-class="{'closed': rate.numRestrictions > 0}">
                             <a class="has-arrow toggle" ng-class="{active: rate.showDays}" ng-click="viewRateBreakUp(rate);">
@@ -167,7 +167,7 @@
                                     <span class="restriction-icon {restriction-icon-class} {restriction-bg-class} {restriction-bgcolor}">{Restriction}</span> -->
                                 <span class="reservation-type red" ng-if="rate.isDayUse">D</span>
                                 <div class="price" ng-if="!rate.isSuppressed">
-                                    {{currencySymbol}}{{rate.adr | number: 2}}
+                                    {{rate.rateCurrency}}{{rate.adr | number: 2}}
                                     <span translate>RESV_AVG_NIGHT</span>
                                 </div>
                                 <div class="price" ng-if="rate.isSuppressed">
@@ -201,17 +201,17 @@
                                     <tfoot>
                                         <tr>
                                             <td colspan="5" class="total-label" translate>RESV_TOTAL_ROOM</td>
-                                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}{{rate.total | number:2}}</td>
+                                            <td class="total-value" ng-if="!rate.isSuppressed">{{currencySymbol}}---{{rate.total | number:2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         <tr ng-repeat="day in rate.dates">
                                             <td>
-                                                {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
+                                               assss {{day.obj | date: fulldayInWeek }}, {{day.obj | date: dateFormat }}
                                             </td>
                                             <!-- Room charge -->
-                                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}{{day.amount | number: 2}}</td>
+                                            <td ng-if="!rate.isSuppressed">{{currencySymbol}}**{{day.amount | number: 2}}</td>
                                             <td ng-if="rate.isSuppressed">SR</td>
                                             <!-- Add on -->
                                             <td ng-if="!rate.isSuppressed && !day.inclusiveAddonsExist">{{currencySymbol}}{{day.addon | number: 2}}</td>
