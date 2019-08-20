@@ -1,5 +1,5 @@
-admin.controller('adHogiaCtrl', ['$scope', 'config', 'adInterfacesSrv',
-    function($scope, config, adInterfacesSrv) {
+admin.controller('adHogiaCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingTypes',
+    function($scope, config, adInterfacesSrv, mappingTypes) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'HOGIA';
@@ -11,6 +11,8 @@ admin.controller('adHogiaCtrl', ['$scope', 'config', 'adInterfacesSrv',
         $scope.toggleEnabled = function() {
             $scope.config.enabled = !$scope.config.enabled;
         };
+
+        $scope.mappingTypes = ['charge_code', 'charge_code_cost_center'];
 
         /**
          *
