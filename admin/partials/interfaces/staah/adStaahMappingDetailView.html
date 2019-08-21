@@ -40,6 +40,30 @@
                       skip-number-conversion="true"
                       div-class="full-width">
     </ad-dropdown-name>
+    <ad-dropdown-name savemodel="mapping.value"
+                      ng-show="mapping.typeof == 'payment_charge_code'"
+                      valueproperty="code"
+                      required="yes"
+                      property="text"
+                      label-properties="['code', 'name']"
+                      label-in-drop-down="Select Value"
+                      list="staahPaymentCodes"
+                      label="{{'SNT_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
+    <ad-dropdown-name savemodel="mapping.value"
+                      ng-show="mapping.typeof == 'addon'"
+                      valueproperty="id"
+                      required="yes"
+                      property="text"
+                      label-properties="['id', 'name']"
+                      label-in-drop-down="Select Value"
+                      list="state.addons"
+                      label="{{'SNT_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
 </fieldset>
 <fieldset class="holder right">
     <ad-dropdown-name savemodel="mapping.external_value"
@@ -66,6 +90,24 @@
                       skip-number-conversion="true"
                       div-class="full-width">
     </ad-dropdown-name>
+    <ad-dropdown-name savemodel="mapping.external_value"
+                      ng-show="mapping.typeof == 'payment_charge_code'"
+                      valueproperty="charge_code"
+                      required="yes"
+                      property="text"
+                      label-properties="['charge_code', 'description']"
+                      label-in-drop-down="Select Value"
+                      list="state.payment_codes"
+                      label="{{'EXTERNAL_VALUE'| translate}}"
+                      skip-number-conversion="true"
+                      div-class="full-width">
+    </ad-dropdown-name>
+    <ad-textbox inputtype="text"
+                ng-if="mapping.typeof === 'addon'"
+                value="mapping.external_value"
+                label="{{'EXTERNAL_VALUE' | translate}}"
+                styleclass="full-width">
+    </ad-textbox>
 </fieldset>
 
 <div class="actions float">
