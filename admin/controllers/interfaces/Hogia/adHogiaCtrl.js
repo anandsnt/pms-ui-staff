@@ -1,5 +1,5 @@
-admin.controller('adHogiaCtrl', ['$scope', 'config', 'adInterfacesSrv', 'mappingTypes',
-    function($scope, config, adInterfacesSrv, mappingTypes) {
+admin.controller('adHogiaCtrl', ['$scope', 'config', 'adInterfacesSrv',
+    function($scope, config, adInterfacesSrv) {
         BaseCtrl.call(this, $scope);
 
         $scope.interface = 'HOGIA';
