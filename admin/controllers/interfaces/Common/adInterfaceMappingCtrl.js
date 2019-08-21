@@ -30,7 +30,8 @@ admin.controller('adInterfaceMappingCtrl', [
             'EXACTONLINE': '/assets/partials/interfaces/exactonline/adExactonlineMapping.html',
             'IGEL': '/assets/partials/interfaces/igel/adIgelMappingDetailView.html',
             'SAFEACCOUNTING': '/assets/partials/interfaces/safeaccounting/mapping.html',
-            'AXBASE3000': '/assets/partials/interfaces/axbase3000/adAxbaseMapping.html'
+            'AXBASE3000': '/assets/partials/interfaces/axbase3000/adAxbaseMapping.html',
+            'SIE': '/assets/partials/interfaces/sie/adSieMappingDetailView.html'
         };
 
         $scope.state = {
