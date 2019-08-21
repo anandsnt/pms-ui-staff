@@ -137,4 +137,6 @@
 "market_code_department_code": "Market Code - Department Code",
 "market_segment": "Market Segment",
 "source_code": "Source Code",
-"SAFEACCOUNTING_HEADER": "Integrations > Back Office > Safe Accounting"
+"SAFEACCOUNTING_HEADER": "Integrations > Back Office > Safe Accounting",
+"STAAH_HEADER": "Integrations > Central Reservation System > STAAH",
+"AUTHENTICATION_TOKEN": "Authentication Token",
