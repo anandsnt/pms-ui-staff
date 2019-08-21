@@ -61,7 +61,8 @@ angular.module('snt.utils').component('sntNotify', {
                 // Initialize the toast only if the feature is enabled for this property
 
                 if (ctrl.showToasts) {
-                    if (changes['message'].currentValue) {
+                    if (changes['message'].currentValue &&
+                        changes['message'].currentValue.length) { // Check for empty Array
                         sntNotifySrv.show(changes['message'].currentValue, ctrl.type);
                     }
                 }
