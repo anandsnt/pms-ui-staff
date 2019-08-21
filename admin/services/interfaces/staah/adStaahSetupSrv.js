@@ -21,6 +21,14 @@ admin.service('adStaahSetupSrv', [
                 meta.mapping_types = response.data;
             }));
 
+            promises.push(service.getAllPaymentCodes().then(function(response) {
+                meta.payment_codes = response.data.charge_codes;
+            }))
+
+            promises.push(service.getAllAddons().then(function(response) {
+                meta.addons = response.results;
+            }));
+
             promises.push(service.getStaahMappings().then(function (response) {
                 meta.staah_mappings = response;
             }));
@@ -57,6 +65,20 @@ admin.service('adStaahSetupSrv', [
             return cache.room_types;
         };
 
+        service.getAllPaymentCodes = function() {
+            if(_.isEmpty(cache.paymentCodes)) {
+                cache.payment_codes = ADBaseWebSrvV2.getJSON('/admin/charge_codes/payment_charge_codes');
+            }
+            return cache.payment_codes;
+        };
+
+        service.getAllAddons = function() {
+            if(_.isEmpty(cache.addons)) {
+                cache.addons = ADBaseWebSrvV2.getJSON('/api/addons');
+            }
+            return cache.addons;
+        };
+
         service.getAllMappingTypes = function () {
             if (_.isEmpty(cache.mapping_types)) {
                 cache.mapping_types = ADBaseWebSrvV2.getJSON('/ifc/proxy/mappings/types?integration=staah');
@@ -82,7 +104,6 @@ admin.service('adStaahSetupSrv', [
 
         service.resetAuthToken = function () {
             return ADBaseWebSrvV2.postJSON('/api/integrations/staah/reset_auth_token');
-
         };
 
         service.saveMapping = function (params) {
