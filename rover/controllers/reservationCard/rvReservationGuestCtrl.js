@@ -184,13 +184,13 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 							// Keeping modified amount (Custom rate) as it is , calculating the Actual Amount.
 							var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
 							var extraAdults = adults >= 2 ? adults - 2 : 0;
-							var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+							var roomAmount = parseFloat(baseRoomRate) + (extraAdults * parseFloat(rateToday.extra_adult)) + (children * parseFloat(rateToday.child));
 
 							$scope.reservationParentData.rooms[0].stayDates[dateFilter(new tzIndependentDate(item.date), 'yyyy-MM-dd')].rateDetails.actual_amount = roomAmount;
 						} else {
 							var baseRoomRate = adults >= 2 ? rateToday.double : rateToday.single;
 							var extraAdults = adults >= 2 ? adults - 2 : 0;
-							var roomAmount = baseRoomRate + (extraAdults * rateToday.extra_adult) + (children * rateToday.child);
+							var roomAmount = parseFloat(baseRoomRate) + (extraAdults * parseFloat(rateToday.extra_adult)) + (children * parseFloat(rateToday.child));
 
 							$scope.rateForCurrentGuest = roomAmount;
 
