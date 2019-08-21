@@ -16,6 +16,9 @@ angular.module('sntRover')
         $scope.businessDate = $rootScope.businessDate;
 
         var selectUnassignedListItem = function(item) {
+            if ($scope.diaryData.isEditReservationMode) {
+                $scope.$emit('CANCEL_RESERVATION_EDITING');
+            }
             $scope.diaryData.isReservationSelected = true;
             $scope.diaryData.selectedUnassignedReservation = item;
             $scope.diaryData.roomAssignmentFilters = {};
