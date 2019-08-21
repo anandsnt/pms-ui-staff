@@ -470,6 +470,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isCollapsed: $scope.stateCheck.selectedRoomType != roomType.id,
 							name: $scope.reservationData.roomsMeta[roomType.id].name,
 							id: roomType.id,
+							rateCurrency: roomType.rate_currency,
 							ratesArray: [],
 							availability: roomType.availability,
 							isSuiteUnavailable: $scope.reservationData.roomsMeta[roomType.id].is_suite && (roomType.availability <= 0 || roomType.availability < $scope.reservationData.rooms.length)
