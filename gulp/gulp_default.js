@@ -170,10 +170,6 @@ module.exports = function(gulp, $, options) {
         return runSequence(copyBaseHtmlToPublicAssets, callback)
     });
 
-    gulp.task('gw-asset-precompile', function(callback) {
-        return runSequence('guestweb-asset-prod-precompile', 'guestweb-inject-assets-to-templates', 'copy-guestweb-base-html', callback);
-    });
-
     gulp.task('asset-precompile', function(callback) {
         processArgs();
         setEnvironment();
