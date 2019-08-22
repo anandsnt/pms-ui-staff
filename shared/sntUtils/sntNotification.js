@@ -22,7 +22,7 @@ angular.module('snt.utils').service('sntNotifySrv', [function () {
 }]);
 
 angular.module('snt.utils').component('sntNotify', {
-    template: '<div ng-if="!$ctrl.showToasts" ng-show="$ctrl.message"' +
+    template: '<div ng-if="!$ctrl.showToasts" ng-show="$ctrl.message && $ctrl.message.length"' +
         '           ng-class="$ctrl.style"' +
         '           ng-click="$ctrl.clearErrorMessage()">' +
         '               <section ng-if="$ctrl.type === \'success\'">' +
