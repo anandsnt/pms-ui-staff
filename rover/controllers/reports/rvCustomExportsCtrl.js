@@ -51,7 +51,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         // Listener for creating new custom export
         $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_LISTENER', function () {
             configureNewExport();
-            $scope.isAddingNew = true;
+            $scope.$parent.isNewExport = true;
             $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
             $scope.updateViewCol($scope.viewColsActions.ONE);
         });
@@ -107,33 +107,61 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
+        var applySelectedFormatAndDeliveryTypes = () => {
+                $scope.$parent.customExportsScheduleParams.format = $scope.selectedEntityDetails.format && $scope.selectedEntityDetails.format.id;
+                $scope.$parent.customExportsScheduleParams.deliveryType = $scope.selectedEntityDetails.delivery_type && $scope.selectedEntityDetails.delivery_type.id;
+            },
+            updateSelectedColumns = () => {
+                
+                _.each ($scope.selectedEntityDetails.mapped_name, (value, key) => {
+                    var selectedColumn = _.find($scope.selectedEntityDetails.columns, {
+                                            name: value.field_name 
+                                        }),
+                        columnPos = parseInt(value.sequence_order) - 1;
+                    
+                        selectedColumn.selected = true;
+                        selectedColumn.customColLabel = value.mapped_name;
+
+                    $scope.selectedColumns[columnPos] = selectedColumn;
+
+                });
+            };
+            
+
+        var loadReqData = (reportId) => {
+            var onSuccess = ( payload ) => {
+                $scope.selectedEntityDetails.columns = payload.columns;
+                $scope.selectedEntityDetails.active = true;
+                $scope.currentStage = STAGES.SHOW_PARAMETERS;
+                $scope.$parent.$parent.exportFormats = payload.exportFormats;
+                $scope.$parent.$parent.deliveryTypes = payload.deliveryTypes;
+
+                if (!$scope.$parent.isNewExport) {
+                    applySelectedFormatAndDeliveryTypes(); 
+                    updateSelectedColumns();
+                    $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
+                }
+                $scope.updateViewCol($scope.viewColsActions.FOUR);
+                refreshScroll(REPORT_COLS_SCROLLER);
+
+            },
+            onFailure = () => {
+
+            };
+            
+        $scope.callAPI(RVCustomExportSrv.getRequestData, {
+            onSuccess: onSuccess,
+            onFailure: onFailure,
+            params: {
+                reportId: reportId
+            }
+        });
+        };
+
         // Click handler for the given data space
         $scope.clickDataSpace = ( selectedDataSpace ) => {
-            var onSuccess = ( payload ) => {
-
-                    $scope.selectedEntityDetails = selectedDataSpace;
-                    $scope.selectedEntityDetails.columns = payload.columns;
-                    $scope.selectedEntityDetails.active = true;
-                    $scope.currentStage = STAGES.SHOW_PARAMETERS;
-                    $scope.updateViewCol($scope.viewColsActions.FOUR);
-                    $scope.$parent.$parent.exportFormats = payload.exportFormats;
-                    $scope.$parent.$parent.deliveryTypes = payload.deliveryTypes;
-
-                    refreshScroll(REPORT_COLS_SCROLLER);
-
-                },
-                onFailure = () => {
-
-                };
-                
-            $scope.callAPI(RVCustomExportSrv.getRequestData, {
-                onSuccess: onSuccess,
-                onFailure: onFailure,
-                params: {
-                    reportId: selectedDataSpace.id
-                }
-            });
-            
+            $scope.selectedEntityDetails = selectedDataSpace;
+            loadReqData(selectedDataSpace.id);
         };
 
         // Handle the selection of fields belonging to the data space
@@ -159,6 +187,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 format_id: $scope.customExportsScheduleParams.format,
                 delivery_type_id: $scope.customExportsScheduleParams.deliveryType,
+                name: $scope.customExportsScheduleParams.exportName,
                 time_period_id: 4,
                 emails: 'ragesh@stayntouch.com',
                 frequency_id: 3,
@@ -191,7 +220,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
                     $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
-                    $scope.isAddingNew = false;
+                    $scope.$parent.isNewExport = false;
                     fetchScheduledCustomExports();
                 },
                 onScheduleCreateFailure = (error) => {
@@ -209,10 +238,44 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
             createSchedule();
         });
+
+        $scope.pickSchedule = (selectedSchedule) => {
+            $scope.selectedEntityDetails = selectedSchedule;
+            $scope.$parent.isNewExport = false;
+            $scope.selectedColumns = [];
+            loadReqData(selectedSchedule.report.id);
+        };
+
+        var saveSchedule = () => {
+            var requestParams = getScheduleParams(),
+                onScheduleSaveSuccess = () => {
+                    $scope.errorMessage = '';
+                    $scope.updateViewCol($scope.viewColsActions.ONE);
+                    $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    $scope.$parent.isNewExport = false;
+                    fetchScheduledCustomExports();
+                },
+                onScheduleSaveFailure = (error) => {
+
+                };
+
+            requestParams.id = requestParams.report_id;
+
+            $scope.callAPI(reportsSrv.updateSchedule, {
+                params: requestParams,
+                onSuccess: onScheduleSaveSuccess,
+                onFailure: onScheduleSaveFailure
+            });
+        };
+        
+        $scope.addListener('UPDATE_CUSTOM_EXPORT_SCHEDULE', () => {
+            saveSchedule();
+        });
+
         
         // Initialize the controller
         var init = () => {
-            $scope.isAddingNew = false;
+            $scope.$parent.isNewExport = false;
             
             fetchScheduledCustomExports();
             $scope.selectedColumns = [];

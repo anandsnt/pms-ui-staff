@@ -1,6 +1,6 @@
 <!-- First column - Scheduled reports -->
 <div class="report-col main-col scrollable" > <!-- Add vertical scroller here -->
-    <ul class="wrapper" ng-if="isAddingNew">
+    <ul class="wrapper" ng-if="isNewExport">
         <li class="report-item" 
             ng-repeat="dataSpace in customExportDataSpaces" 
             ng-hide="dataSpace.filteredOut"
@@ -13,14 +13,15 @@
             </div>
         </li>
     </ul>
-    <ul class="wrapper" ng-if="!isAddingNew">
+    <ul class="wrapper" ng-if="!isNewExport">
         <li class="report-item" 
             ng-repeat="scheduledExport in scheduledCustomExports"
-            ng-hide="scheduledExport.filteredOut"> <!-- Add class "active" when selected + load filters in 2nd column -->
+            ng-hide="scheduledExport.filteredOut"
+            ng-click="pickSchedule(scheduledExport)"> <!-- Add class "active" when selected + load filters in 2nd column -->
             <span class="icon-report {report icon class}"></span>
             <div class="data">
-                <h2>{{scheduledExport.report.title}}</h2><!-- Add .single-line if there is no info -->
-                <em>{{scheduledExport.report.description}}</em>
+                <h2>{{scheduledExport.name}}</h2><!-- Add .single-line if there is no info -->
+                <em>{{scheduledExport.report.title}}</em>
             </div>
         </li>
     </ul>

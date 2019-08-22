@@ -45,7 +45,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
             //deferred.resolve(scheduledExports);
             sntBaseWebSrv.getJSON(url).then(function (response) {
-                deferred.resolve(scheduledExports);
+                deferred.resolve(response.results);
             }, function (error) {
                 deferred.reject(error);
             });
