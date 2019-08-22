@@ -523,7 +523,6 @@ sntRover.controller('RVReservationAddonsCtrl', [
             $scope.addonCategories = addonData.addonCategories;
             $scope.bestSellerEnabled = addonData.bestSellerEnabled;
 
-
             setBackButton();
 
             if ($stateParams.reservation === "HOURLY") {
