@@ -53,12 +53,12 @@
             </div>
             <div class="entry margin">
                 <label>currency</label>
-                <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateTypesDetails.hotel_settings.rate_currency_list" ng-change="onChangeChargeCode()">
+                <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="currency.id as currency.value + ' - '  + currency.symbol for currency in rateTypesDetails.hotel_settings.rate_currency_list" >
                    <option value="">Select Rate Currency</option>
                 </select>
             </div>
 
-            <div class="entry margin">
+            <div class="entry" ng-if="currencyId !== rateData.currency_code_id">
                 <label>Fixed It</label>
                 <select class="placeholder" ng-model="rateData.fixed_it_id" ng-options="fixedit.id as fixedit.name for fixedit in rateTypesDetails.hotel_settings.rate_fixed_it_options">
                    <option value="">Select Fixed It</option>

@@ -76,7 +76,7 @@ sntRover.controller('rvAllotmentAddRoomsAndRatesPopupCtrl', [
 
 			// adding currency symbol to best available rate
 			$scope.selectedRoomTypeAndRates = _.map($scope.selectedRoomTypeAndRates, function(row) {
-				row.best_available_rate_amount = ($rootScope.currencySymbol +
+				row.best_available_rate_amount = (row.rate_currency +
 					row.best_available_rate_amount);
 				return row;
 			});
