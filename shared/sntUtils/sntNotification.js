@@ -5,6 +5,9 @@ angular.module('snt.utils').service('sntNotifySrv', [function () {
         switch (type) {
             default:
                 toastr.options.preventDuplicates = true;
+                toastr.options.showDuration = 1000;
+                toastr.options.hideDuration = 1000;
+                toastr.options.timeOut = 8000;
         }
     };
 
