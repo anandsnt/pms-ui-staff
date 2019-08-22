@@ -2,7 +2,9 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
     '$scope',
     'RVCustomExportSrv',
     '$timeout',
-    function($scope, RVCustomExportSrv, $timeout) {
+    '$rootScope',
+    'RVreportsSrv',
+    function($scope, RVCustomExportSrv, $timeout, $rootScope, reportsSrv) {
         BaseCtrl.call(this, $scope);
 
         const STAGES = {
@@ -151,6 +153,63 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
+        var getScheduleParams = () => {
+            var params = {
+                report_id: $scope.selectedEntityDetails.id,
+                hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
+                format_id: $scope.customExportsScheduleParams.format,
+                delivery_type_id: $scope.customExportsScheduleParams.deliveryType,
+                time_period_id: 4,
+                emails: 'ragesh@stayntouch.com',
+                frequency_id: 3,
+                export_date: "2019-03-17T18:30:00.000Z",
+                repeats_every: 0,
+                starts_on: "2019/03/18"
+
+            };
+
+            var fieldMappings = [],
+                selectedField;
+
+            _.each ($scope.selectedColumns, (column, index) => {
+                selectedField = {
+                    field_name: column.name,
+                    mapped_name: column.customColLabel,
+                    sequence_order: index + 1
+                };
+                fieldMappings.push(selectedField);
+            });
+
+            params.mapped_names = fieldMappings;
+
+            return params;
+        };
+
+        var createSchedule = () => {
+            var requestParams = getScheduleParams(),
+                onScheduleCreateSuccess = () => {
+                    $scope.errorMessage = '';
+                    $scope.updateViewCol($scope.viewColsActions.ONE);
+                    $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
+                    $scope.isAddingNew = false;
+                    fetchScheduledCustomExports();
+                },
+                onScheduleCreateFailure = (error) => {
+
+                };
+
+            $scope.callAPI(reportsSrv.createSchedule, {
+                params: requestParams,
+                onSuccess: onScheduleCreateSuccess,
+                onFailure: onScheduleCreateFailure
+            });
+            
+        };
+
+        $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE', () => {
+            createSchedule();
+        });
+        
         // Initialize the controller
         var init = () => {
             $scope.isAddingNew = false;
@@ -162,6 +221,8 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.$parent.$parent.exportFormats = [];
             $scope.$parent.$parent.deliveryTypes = [];
             initializeScrollers();
+
+            
         };
 
         init();

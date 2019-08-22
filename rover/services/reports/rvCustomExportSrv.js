@@ -41,14 +41,14 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
         this.getScheduledCustomExports = () => {
             var deferred = $q.defer(),
-                url = 'api/custom_exports_schedules.json';
+                url = 'admin/export_schedules.json?show_only_redshift_reports=true';
 
-            deferred.resolve(scheduledExports);
-            // sntBaseWebSrv.getJSON(url).then(function (response) {
-            //     deferred.resolve(scheduledExports);
-            // }, function (error) {
-            //     deferred.reject(error);
-            // });
+            //deferred.resolve(scheduledExports);
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(scheduledExports);
+            }, function (error) {
+                deferred.reject(error);
+            });
 
             return deferred.promise;
         };

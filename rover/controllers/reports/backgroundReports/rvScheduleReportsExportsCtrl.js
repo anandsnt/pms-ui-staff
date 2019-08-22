@@ -320,6 +320,10 @@ angular.module('sntRover')
                         $scope.viewColClassName.indexOf('with-bottom-form') > -1;
             };
 
+            $scope.validateAndCreateSchedule = () => {
+                $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE');
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 if ($stateParams.showScheduledReports) {
@@ -338,6 +342,7 @@ angular.module('sntRover')
 
                 // Feature toggle decides whether the custom export menu should be shown or not
                 $scope.isCustomExportsEnabled = Toggles.isEnabled('custom_exports');
+                $scope.customExportsScheduleParams = {};
 
             })();
 
