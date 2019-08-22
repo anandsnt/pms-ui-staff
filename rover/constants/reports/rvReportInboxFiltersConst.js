@@ -134,5 +134,5 @@ angular.module('reportsModule')
         "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date",
         "group_code": "Group Code",
         "country_ids": "Country",
-        "reservation_types": "Reservation Types"
+        "include_day_use": "Include Day Use"
     });

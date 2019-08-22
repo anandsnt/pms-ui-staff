@@ -1,9 +1,21 @@
 angular.module('admin').
     controller('adAXbaseCtrl', [
-        '$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', '$stateParams', 'ngTableParams',
-        function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, ngTableParams) {
+        '$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', '$stateParams', 'ngTableParams', 'adInterfacesSrv',
+        function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, ngTableParams, adInterfacesSrv) {
 
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
+
+            $scope.interface = 'AXBASE3000';
+
+            $scope.state = {
+                activeTab: 'SETTING'
+            };
+
+            $scope.mappingTypes = ['room_number'];
+
+            $scope.changeTab = function(name) {
+                $scope.state.activeTab = name;
+            };
 
             var interfaceIdentifier = $stateParams.id,
                 isTableLoaded;
@@ -32,13 +44,14 @@ angular.module('admin').
             };
 
             $scope.saveInterfaceConfig = function() {
-                $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+                $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        config: $scope.config,
-                        interfaceIdentifier: interfaceIdentifier
+                        settings: $scope.config,
+                        integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
-                        $scope.goBackToPreviousState();
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS! Settings updated';
                     }
                 });
             };
@@ -51,13 +64,10 @@ angular.module('admin').
             };
 
             $scope.fetchTableData = function($defer, params) {
-
                 $scope.callAPI(adInterfacesCommonConfigSrv.fetchRoomMappings, {
                     params: $scope.calculateGetParams(params),
                     onSuccess: function(data) {
                         $scope.roomMappings = data.room_mappings;
-
-
                         $scope.$emit('hideLoader');
                         // No expanded rate view
                         $scope.currentClickedElement = -1;
@@ -95,7 +105,7 @@ angular.module('admin').
                 $scope.callAPI(adInterfacesCommonConfigSrv.updateMappings, {
                     params: {
                         config: room,
-                        interfaceIdentifier: interfaceIdentifier
+                        integration: $scope.interface.toLowerCase()
                     },
                     onSuccess: function() {
                         $scope.errorMessage = '';

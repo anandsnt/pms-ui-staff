@@ -541,15 +541,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.axbase3000', {
-        templateUrl: '/assets/partials/interfaces/axbase3000/adAXbaseSetUp.html',
+        templateUrl: '/assets/partials/interfaces/axbase3000/adAxbase.html',
         controller: 'adAXbaseCtrl',
         url: '/interfaces/setup',
         params: {
             id: 'axbase3000'
         },
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('axbase3000');
+            config: ['adInterfacesSrv', function(adInterfacesSrv) {
+                return adInterfacesSrv.getSettings('axbase3000');
             }]
         }
     });
@@ -668,6 +668,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             config: [
                 'adInterfacesSrv', function(adInterfacesSrv) {
                     return adInterfacesSrv.getSettings('hogia');
+                }],
+            mappingTypes: [
+                'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchMappingTypes('hogia');
                 }]
         }
     });
@@ -692,6 +696,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
            config: [
                'adInterfacesSrv', function(adInterfacesSrv) {
                    return adInterfacesSrv.getSettings('sie');
+               }],
+           mappingTypes: [
+               'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                   return adInterfacesCommonConfigSrv.fetchMappingTypes('sie');
                }]
        }
     });
