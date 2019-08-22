@@ -330,6 +330,10 @@ sntRover.controller('RVJournalController',
 
         return returnData;
     };
+
+    $scope.searchJournal = () => {
+        $rootScope.$broadcast('SEARCHQUERYENTERED');
+    };
     /* 
      * Toggle Action 
      */
