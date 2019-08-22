@@ -41,13 +41,13 @@
                       div-class="full-width">
     </ad-dropdown-name>
     <ad-dropdown-name savemodel="mapping.value"
-                      ng-show="mapping.typeof == 'payment_charge_code'"
-                      valueproperty="code"
+                      ng-show="mapping.typeof == 'payment_type'"
+                      valueproperty="value"
                       required="yes"
                       property="text"
-                      label-properties="['code', 'name']"
+                      label-properties="['value', 'description']"
                       label-in-drop-down="Select Value"
-                      list="staahPaymentCodes"
+                      list="state.payment_types"
                       label="{{'SNT_VALUE'| translate}}"
                       skip-number-conversion="true"
                       div-class="full-width">
@@ -91,13 +91,13 @@
                       div-class="full-width">
     </ad-dropdown-name>
     <ad-dropdown-name savemodel="mapping.external_value"
-                      ng-show="mapping.typeof == 'payment_charge_code'"
-                      valueproperty="charge_code"
+                      ng-show="mapping.typeof == 'payment_type'"
+                      valueproperty="value"
                       required="yes"
                       property="text"
-                      label-properties="['charge_code', 'description']"
+                      label-properties="['value', 'name']"
                       label-in-drop-down="Select Value"
-                      list="state.payment_codes"
+                      list="state.staahPaymentTypes"
                       label="{{'EXTERNAL_VALUE'| translate}}"
                       skip-number-conversion="true"
                       div-class="full-width">

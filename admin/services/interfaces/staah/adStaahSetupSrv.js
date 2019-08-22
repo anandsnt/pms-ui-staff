@@ -21,8 +21,12 @@ admin.service('adStaahSetupSrv', [
                 meta.mapping_types = response.data;
             }));
 
-            promises.push(service.getAllPaymentCodes().then(function(response) {
-                meta.payment_codes = response.data.charge_codes;
+            promises.push(service.getSNTPaymentTypes().then(function(response) {
+                meta.payment_types = response.data.credit_card_types;
+            }));
+
+            promises.push(service.getStaahPaymentTypes().then(function(response) {
+                meta.staah_payment_types = response;
             }))
 
             promises.push(service.getAllAddons().then(function(response) {
@@ -65,11 +69,11 @@ admin.service('adStaahSetupSrv', [
             return cache.room_types;
         };
 
-        service.getAllPaymentCodes = function() {
-            if(_.isEmpty(cache.paymentCodes)) {
-                cache.payment_codes = ADBaseWebSrvV2.getJSON('/admin/charge_codes/payment_charge_codes');
+        service.getSNTPaymentTypes = function() {
+            if(_.isEmpty(cache.paymentTypes)) {
+                cache.payment_types = ADBaseWebSrvV2.getJSON('/admin/hotel_payment_types');
             }
-            return cache.payment_codes;
+            return cache.payment_types;
         };
 
         service.getAllAddons = function() {
@@ -78,6 +82,13 @@ admin.service('adStaahSetupSrv', [
             }
             return cache.addons;
         };
+
+        service.getStaahPaymentTypes = function() {
+            if(_.isEmpty(cache.staah_payment_types)) {
+                cache.staah_payment_types = ADBaseWebSrvV2.getJSON('/ifc/proxy/staah/staah_payment_types');
+            }
+            return cache.staah_payment_types;
+        }
 
         service.getAllMappingTypes = function () {
             if (_.isEmpty(cache.mapping_types)) {
