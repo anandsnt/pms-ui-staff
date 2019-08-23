@@ -31,7 +31,8 @@ sntRover.controller('RVJournalController',
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
     $scope.data.isDrawerOpened = false;
-	$scope.data.reportType  = "";
+    $scope.data.reportType  = "";
+    $scope.data.query = "";
     $scope.data.isShowSummaryTab  = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
