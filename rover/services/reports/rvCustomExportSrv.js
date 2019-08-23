@@ -2,29 +2,6 @@ angular.module('sntRover').service('RVCustomExportSrv', [
     '$q',
     'sntBaseWebSrv',
     function ($q, sntBaseWebSrv) {
-        var scheduledExports = [
-            {
-                report: {
-                    id: 1,
-                    title: "My exports1",
-                    description: "My Custom Exports"
-                }
-            },
-            {
-                report: {
-                    id: 2,
-                    title: "Stay dates export",
-                    description: "My stay dates exports"
-                }
-            },
-            {
-                report: {
-                    id: 3,
-                    title: "Reservation data space",
-                    description: "My reservation data space exports"
-                }
-            }
-        ];
 
         this.getAvailableDataSpaces = () => {
             var deferred = $q.defer(),
@@ -43,7 +20,6 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             var deferred = $q.defer(),
                 url = 'admin/export_schedules.json?show_only_redshift_reports=true';
 
-            //deferred.resolve(scheduledExports);
             sntBaseWebSrv.getJSON(url).then(function (response) {
                 deferred.resolve(response.results);
             }, function (error) {
@@ -71,7 +47,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
 
         };
 
-        this.getExportFormats =  (params) => {
+        this.getExportFormats =  () => {
             var deferred = $q.defer(),
                 url = 'admin/export_formats.json';
 
@@ -84,7 +60,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getExportDeliveryTypes = (params)  => {
+        this.getExportDeliveryTypes = ()  => {
             var deferred = $q.defer(),
                 url = 'admin/export_delivery_types.json';
 
@@ -102,11 +78,11 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 url = 'api/reports/' + params.reportId + '/list_data_space_columns';
 
             sntBaseWebSrv.getJSON(url).then(function (columnData) {
-                columnData = columnData.map(( column) => ({
-                                name: column,
-                                selected: false
-                            }));
-                            
+                columnData = columnData.map((column) => ({
+                    name: column,
+                    selected: false
+                }));
+
                 deferred.resolve(columnData);
             }, function (error) {
                 deferred.reject(error);
