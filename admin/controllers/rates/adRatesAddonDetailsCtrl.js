@@ -309,6 +309,12 @@ admin.controller('ADRatesAddonDetailsCtrl', [
                 return;
             }
 
+            // Staff notification is only needed for reservation only addons in Standalone
+            // or for sell separate addons in overlay
+            if (!$scope.singleAddon.is_reservation_only && !$scope.singleAddon.is_sell_separate) {
+                $scope.singleAddon.notify_staff_on_purchase = false;
+            }
+
             var singleAddonData = {
                 activated: $scope.singleAddon.activated,
                 amount: $scope.singleAddon.amount,

@@ -37,8 +37,13 @@ sntRover.controller('RVInvoiceSearchController',
 
 		$scope.shouldShowReceipts =  function() {
 			return (_.findWhere($scope.filterOptions, {"name": "Receipts"})).id === $scope.invoiceSearchData.filter_id;
+		};
+
+		$scope.shouldShowARInvoices =  function() {
+			return (_.findWhere($scope.filterOptions, {"name": "AR Invoices"})).id === $scope.invoiceSearchData.filter_id;
 		};		
 
+		
 		$scope.setScroller('invoice-list', scrollOptions);
 		/**
 		* function to set Headinng
@@ -56,6 +61,7 @@ sntRover.controller('RVInvoiceSearchController',
 		*/
 		$scope.clickedItem = function(parentIndex) {
 			$vault.set('searchQuery', $scope.invoiceSearchData.query);
+			$vault.set('filterOption', $scope.invoiceSearchData.filter_id);
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id,
@@ -94,6 +100,17 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param page is page number of pagination
 		 */
 		$scope.searchInvoice = (page) => {
+			
+			if ($scope.shouldShowInvoices()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
+			}
+			if ($scope.shouldShowReceipts()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
+			}
+			if ($scope.shouldShowARInvoices()) {
+				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_AR_INVOICE');
+			}
+
 			if ($scope.shouldShowInvoices()) {
 				$scope.paymentDataArray = [];
 			}
@@ -603,6 +620,7 @@ sntRover.controller('RVInvoiceSearchController',
 		that.init = () => {
 	
 			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
+			$scope.invoiceSearchData.filter_id = $stateParams.isFromStayCard ? $vault.get('filterOption') : 1;
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
 			$scope.invoiceSearchFlags.isQueryEntered = false;
@@ -625,12 +643,7 @@ sntRover.controller('RVInvoiceSearchController',
 				dateFormat: $rootScope.jqDateFormat,
 				maxDate: ($scope.invoiceSearchData.to_date && $scope.invoiceSearchData.to_date && ($scope.invoiceSearchData.from_date > $scope.invoiceSearchData.to_date)) ? tzIndependentDate($scope.invoiceSearchData.from_date) : tzIndependentDate($rootScope.businessDate)
 			};
-			if ($scope.shouldShowInvoices) {
-				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_FOLIO_NUMBER');
-			}
-			if ($scope.shouldShowReceipts) {
-				$scope.searchPlaceHolder = $filter('translate')('SEARCH_PLACE_HOLDER_WITH_RECEIPTS');
-			}
+			
 			var title = $filter('translate')('FIND_INVOICE');
 
 			$scope.setTitleAndHeading(title);

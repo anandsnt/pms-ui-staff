@@ -1,0 +1,73 @@
+
+<div ng-controller="rvDiaryUnassignedListController" id="room-diary-rooms" class="diary-sidebar diary-unassigned diary-hourly-unassigned" ng-class="showUnassignedListPanel()">
+    
+    <!-- Title -->
+    <div class="sidebar-header">
+        <h2>Unassigned Reservations</h2>
+        <p>Select reservation to assign a room</p>
+    </div>
+
+    <!-- List -->
+    <div class="unassigned-list no-actions scrollable"> <!-- Remove class '.no-actions' when L75 is checked -->
+
+        <!-- CASE 1: List is empty for both days (no results or no unassigned reservations at all) -->
+        <div class="no-content" ng-if="udReservationsData.length === 0">
+            <div class="info">
+                <span class="icon-no-content icon-search"></span>
+                <strong class="h1">No reservations found</strong>
+            </div>
+        </div> 
+
+        <!-- CASE 2: Unassigned reservations found / exist in any of days (replace L24-L29 with this) -->
+        <div class="wrapper" ng-if="udReservationsData.length !== 0">
+            <!-- <strong class="unassigned-day">
+                Today <span class="date">{Date, format '14 May 2019'}</span>
+                <span class="count">{No. of unassigned reservations}</span>
+            </strong> -->
+            <!-- Add class '.blocked' for Night Use reservations -->
+            <div ng-repeat="reservation in udReservationsData"
+                class="{{reservation.statusClass}}"
+                ng-click="clickedUnassignedReservation(reservation)"
+                ng-class="{'selected': selectedIndex === reservation.reservation_id, 'blocked disable-element': reservation.arrival_date !== businessDate}">
+                <div class="data">
+                    <strong class="name">{{reservation.primary_guest}}</strong>
+                    <!-- If VIP, show: <span class="vip">VIP</span> -->
+                    <span class="vip" ng-if="reservation.is_vip">VIP</span>
+                    <!-- Uncomment the below line when the story to show Conf. No. comes -->
+                    <!-- <span class="guest-room">Conf. <strong>{{reservation.confirmation_number}}</strong></span> -->
+                    <span class="guest-room">{{reservation.room_type_name}}</span>
+                </div>
+                <div class="type">{{reservation.is_hourly ? 'D' : 'N'}}</div>
+                <div class="nights" ng-if="reservation.is_hourly">
+                    {{reservation.total_hours}} HOURS
+                    <span>{{reservation.arrival_time}}</span>
+                </div>
+                <div class="nights" ng-if="!reservation.is_hourly">
+                    {{reservation.no_of_nights}} NIGHTS
+                </div>
+            </div>
+            <!-- ... repeat L38-L53 for every unassigned reservation arriving today. If there are no reservations arrivin today, but are for tomorrw, replace L38-L53 with 24-29 -->
+            <!-- When L38-L53 is clicked:
+                - if rooms not available show: {../../modals/alerts/diary-not-available.html}
+                - if available, add class '.selected' and remove '.hide-unnasigned' from '#diary-nightly' in {../grid.html} 
+            -->
+
+            <!-- <strong class="unassigned-day">
+                Tomorrow <span class="date">{Date, format '14 May 2019'}</span>
+                <span class="count">{No. of unassigned reservations}</span>
+            </strong> -->
+            
+            <!-- {repeat L38-L58 for tomorrow} -->
+        </div>
+
+    </div>
+
+    <!-- Available Rooms across all room types -->
+    <!-- show only when unassigned reservation is selected -->
+    <!-- <div class="unassigned-actions hidden">
+        <label class="checkbox inline">
+            <input id="show-all-rooms" type="checkbox">
+            Show all available rooms
+        </label>
+    </div> -->
+</div>

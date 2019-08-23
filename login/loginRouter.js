@@ -48,7 +48,13 @@ login.config([
                         $window.localStorage.removeItem('jwt');
                     }
                     return loginSrv.getMarketingItems(); 
-                }
+                },
+                errors: [
+                    'resetSrv', function (resetSrv) {
+                        if (location.href.match('activation_period_expired=true')) {
+                            return resetSrv.handleRedirectErrors('activation_period_expired');
+                        }
+                    }]
             }
         });
 

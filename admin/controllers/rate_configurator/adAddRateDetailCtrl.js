@@ -83,6 +83,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
             return $scope.is_edit && (basedOnData.id === '' || basedOnData.is_copied);
         };
 
+        $scope.shouldShowMinThreshold = function() {
+            var basedOnData = $scope.rateData.based_on;
+
+            return basedOnData.id === '' || basedOnData.id === null;
+        };
+
         $scope.isHourlyRatesEnabled = function () {
             return !!$rootScope.isHourlyRatesEnabled;
         };
@@ -290,7 +296,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 'booking_origin_id': $scope.rateData.booking_origin_id,
                 'tasks': $scope.rateData.tasks,
                 'is_day_use': $scope.rateData.is_day_use,
-                'round_type_id': $scope.rateData.round_type_id
+                'round_type_id': $scope.rateData.round_type_id,
+                'min_threshold_percent': ($scope.rateData.based_on.id === null || $scope.rateData.based_on.id === "") ? $scope.rateData.min_threshold_percent : null
             };
 
             // Save Rate Success Callback
@@ -522,11 +529,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
 
                 $scope.rateData.is_day_use = selectedRate.is_day_use;
                 $scope.disableDayUseToggle = true;
+                $scope.rateData.basedOnRateUnselected = false;
             }
             else {
                 $scope.rateData.round_type_id = null;
                 // not selecting any rate.
                 $scope.disableDayUseToggle = false;
+                $scope.rateData.basedOnRateUnselected = true;
             }
         };
 
