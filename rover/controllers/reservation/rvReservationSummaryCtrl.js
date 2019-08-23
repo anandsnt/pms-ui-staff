@@ -877,7 +877,12 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.errorMessage = data;
             };
 
+            var arrivalTime = $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm,
+                departureTime = $scope.reservationData.checkoutTime.hh + ':' + $scope.reservationData.checkoutTime.mm + ' ' + $scope.reservationData.checkoutTime.ampm;
+
             var postData = {
+                arrival_time: moment(arrivalTime, 'hh:mm A').format('HH:mm'),
+                departure_time: moment(departureTime, 'hh:mm A').format('HH:mm'),
                 payment_type: {},
                 guest_detail_id: $scope.reservationData.guest.id // CICO-42714
             };
