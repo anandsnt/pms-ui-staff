@@ -303,7 +303,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         var isUpgradeAvaiable = $scope.reservationData.reservation_card.is_upsell_available === "true" && (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN'),
             cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
 
-		if ($rootScope.hotelDiaryConfig.mode === 'FULL' || $scope.reservationData.reservation_card.is_hourly_reservation) {
+		if ($rootScope.hotelDiaryConfig.mode === 'FULL' && $scope.reservationData.reservation_card.is_hourly_reservation) {
 			gotToDiaryInEditMode();
 		} else if ($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
 
