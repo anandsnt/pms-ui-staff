@@ -21,8 +21,10 @@
                 <div class="entry margin">
                     <label>Type <strong>*</strong> </label>
                     <div class="select">
-                        <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                            <option value="" ng-selected="rateData.rate_type.id==''">Select Rate Type</option>
+                        <select ng-class="{'placeholder': !rateData.rate_type.id}"
+                                snt-placeholder="SELECT_RATE_TYPE"
+                                ng-model="rateData.rate_type.id"
+                                ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
                         </select>
                     </div>
                 </div>
@@ -56,6 +58,15 @@
                     </select>
                 </div>
             </div>
+
+            <div class="entry full-width" ng-show="shouldShowMinThreshold()">
+                <label>Extra Adult/Child Min. Amount Threshold</label>
+                <div class="input-group">
+                    <input type="number" class="small-input" ng-model="rateData.min_threshold_percent"/>
+                    <span class="symbol">%</span>
+                </div>
+            </div>
+
             <div class="entry full-width" ng-show="shouldShowBasedOnAndCopy()">
                 <label>Based On / Copy From</label>
                 <div class="boxes">

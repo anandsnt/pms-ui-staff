@@ -115,10 +115,4 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
 		return userDetails;
 	};
 
-	this.retrieveFeatureToggles = function() {
-		var url = '/api/features/list';
-
-		return ADBaseWebSrvV2.getJSON(url);
-	};
-
 }]);

@@ -1,5 +1,7 @@
 "IGEL_HEADER": "IGEL Setup",
 "OFFICE": "Office #",
 "JOURNAL_EXPORT": "Journal Export",
+"ACCUMULATIVE_ACCOUNT_NUMBER": "Accumulative Account No.",
+"BALANCE_TRANSACTION_ACCOUNT": "Balance Transaction Account",
 "payment_code_billing_account": "Payment Code - Billing Account Number",
 "charge_code": "Charge Code - General Ledger"
