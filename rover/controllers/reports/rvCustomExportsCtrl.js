@@ -49,7 +49,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         // Listener for creating new custom export
-        $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_LISTENER', function () {
+        $scope.addListener('CREATE_NEW_CUSTOM_EXPORT', function () {
             configureNewExport();
             $scope.customExportsData.isNewExport = true;
             $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
@@ -140,7 +140,6 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 if (!$scope.customExportsData.isNewExport) {
                     applySelectedFormatAndDeliveryTypes(); 
                     updateSelectedColumns();
-                    $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
                 }
                 $scope.updateViewCol($scope.viewColsActions.FOUR);
                 refreshScroll(REPORT_COLS_SCROLLER);
@@ -279,11 +278,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.customExportsData.isNewExport = false;
             
             fetchScheduledCustomExports();
-            // $scope.selectedColumns = [];
-            // $scope.customExportsData.scheduledCustomExports = [];
-            // $scope.customExportsData.customExportDataSpaces = [];
-            // $scope.customExportsData.exportFormats = [];
-            // $scope.$parent.$parent.deliveryTypes = [];
+            $scope.selectedColumns = [];
+            $scope.customExportsData.scheduledCustomExports = [];
+            $scope.customExportsData.customExportDataSpaces = [];
+            $scope.customExportsData.exportFormats = [];
+            $scope.customExportsData.deliveryTypes = [];
             initializeScrollers();
 
             

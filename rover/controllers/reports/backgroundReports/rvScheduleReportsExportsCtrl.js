@@ -98,7 +98,9 @@ angular.module('sntRover')
 
                 styles.push (angular.isDefined(action) ? 'cols-' + action : 'cols-' + $scope.reportViewActions.ONE);
 
-                if ($scope.reportViewStore && $scope.reportViewStore.showingCustomNewExport && action === $scope.viewColsActions.FOUR) {
+                if ($scope.reportViewStore && 
+                    ($scope.reportViewStore.showingCustomNewExport || $scope.reportViewStore.showingCustomExports) && 
+                    action === $scope.viewColsActions.FOUR) {
                     styles.push('with-bottom-form');
                 }
 
@@ -269,7 +271,7 @@ angular.module('sntRover')
                 // Reload the current state when there is no change in the state params
                 if ($stateParams && $stateParams.showScheduledReports === showScheduledReports && 
                     $stateParams.showScheduledExports === showScheduledExports && 
-                    $stateParams.shouldShowCustomExports === showCustomExports) {
+                    $stateParams.showCustomExports === showCustomExports) {
                         $rootScope.setPrevState = {
                             title: backNaviagtionLabel,
                             callback: 'reloadState',
@@ -309,13 +311,13 @@ angular.module('sntRover')
             });
 
             $scope.createNewCustomExport = () => {
-                $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT_LISTENER');
+                $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT');
                 setPrevState(false, false, true);
             };
 
             $scope.shouldShowReportFooterForm = () => {
                 return $scope.reportViewStore && 
-                        $scope.reportViewStore.showingCustomNewExport &&
+                        ($scope.reportViewStore.showingCustomNewExport || $scope.reportViewStore.showingCustomExports) &&
                         $scope.viewColClassName &&
                         $scope.viewColClassName.indexOf('with-bottom-form') > -1;
             };
