@@ -51,7 +51,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         // Listener for creating new custom export
         $scope.addListener('CREATE_NEW_CUSTOM_EXPORT_LISTENER', function () {
             configureNewExport();
-            $scope.$parent.isNewExport = true;
+            $scope.customExportsData.isNewExport = true;
             $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
             $scope.updateViewCol($scope.viewColsActions.ONE);
         });
@@ -63,7 +63,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             var onDataSpaceFetchSuccess = (data) => {
                     
                     _.each(data, function (dataSpace) {
-                        $scope.$parent.$parent.customExportDataSpaces.push({
+                        $scope.customExportsData.customExportDataSpaces.push({
                             id: dataSpace.id,
                             report: {
                                 id: dataSpace.id,
@@ -76,7 +76,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     });                                       
                 },
                 onDataSpaceFetchFailure = () => {
-                    $scope.$parent.$parent.customExportDataSpaces = [];
+                    $scope.customExportsData.customExportDataSpaces = [];
                 };
 
             $scope.callAPI(RVCustomExportSrv.getAvailableDataSpaces, {
@@ -88,16 +88,17 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         // Fetch scheduled custom exports
         var fetchScheduledCustomExports = () => {
             var onScheduledExportsFetchSuccess = (data) => {
-                $scope.$parent.$parent.scheduledCustomExports = data;
+                $scope.customExportsData.scheduledCustomExports = data;
 
-                _.each($scope.$parent.$parent.scheduledCustomExports, function (schedule) {
+                _.each($scope.customExportsData.scheduledCustomExports, function (schedule) {
                     schedule.filteredOut = false;
+                    schedule.report.description = schedule.name;
                 });
 
                 $scope.currentStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
             },
             onScheduledExportsFetchFailure = () => {
-                $scope.$parent.$parent.scheduledCustomExports = [];
+                $scope.customExportsData.scheduledCustomExports = [];
             };
 
             $scope.callAPI(RVCustomExportSrv.getScheduledCustomExports, {
@@ -133,10 +134,10 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 $scope.selectedEntityDetails.columns = payload.columns;
                 $scope.selectedEntityDetails.active = true;
                 $scope.currentStage = STAGES.SHOW_PARAMETERS;
-                $scope.$parent.$parent.exportFormats = payload.exportFormats;
-                $scope.$parent.$parent.deliveryTypes = payload.deliveryTypes;
+                $scope.customExportsData.exportFormats = payload.exportFormats;
+                $scope.customExportsData.deliveryTypes = payload.deliveryTypes;
 
-                if (!$scope.$parent.isNewExport) {
+                if (!$scope.customExportsData.isNewExport) {
                     applySelectedFormatAndDeliveryTypes(); 
                     updateSelectedColumns();
                     $scope.updateView($scope.reportViewActions.SHOW_CUSTOM_NEW_EXPORT);
@@ -181,9 +182,9 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         };
 
-        var getScheduleParams = () => {
+        var getScheduleParams = (reportId) => {
             var params = {
-                report_id: $scope.selectedEntityDetails.id,
+                report_id: reportId,
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 format_id: $scope.customExportsScheduleParams.format,
                 delivery_type_id: $scope.customExportsScheduleParams.deliveryType,
@@ -215,12 +216,12 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         };
 
         var createSchedule = () => {
-            var requestParams = getScheduleParams(),
+            var requestParams = getScheduleParams($scope.selectedEntityDetails.id),
                 onScheduleCreateSuccess = () => {
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
                     $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
-                    $scope.$parent.isNewExport = false;
+                    $scope.customExportsData.isNewExport = false;
                     fetchScheduledCustomExports();
                 },
                 onScheduleCreateFailure = (error) => {
@@ -241,25 +242,25 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
 
         $scope.pickSchedule = (selectedSchedule) => {
             $scope.selectedEntityDetails = selectedSchedule;
-            $scope.$parent.isNewExport = false;
+            $scope.customExportsData.isNewExport = false;
             $scope.selectedColumns = [];
             loadReqData(selectedSchedule.report.id);
         };
 
         var saveSchedule = () => {
-            var requestParams = getScheduleParams(),
+            var requestParams = getScheduleParams($scope.selectedEntityDetails.report.id),
                 onScheduleSaveSuccess = () => {
                     $scope.errorMessage = '';
                     $scope.updateViewCol($scope.viewColsActions.ONE);
                     $scope.addingStage = STAGES.SHOW_CUSTOM_EXPORT_LIST;
-                    $scope.$parent.isNewExport = false;
+                    $scope.customExportsData.isNewExport = false;
                     fetchScheduledCustomExports();
                 },
                 onScheduleSaveFailure = (error) => {
 
                 };
 
-            requestParams.id = requestParams.report_id;
+            requestParams.id = $scope.selectedEntityDetails.id;
 
             $scope.callAPI(reportsSrv.updateSchedule, {
                 params: requestParams,
@@ -275,14 +276,14 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
         
         // Initialize the controller
         var init = () => {
-            $scope.$parent.isNewExport = false;
+            $scope.customExportsData.isNewExport = false;
             
             fetchScheduledCustomExports();
-            $scope.selectedColumns = [];
-            $scope.$parent.$parent.scheduledCustomExports = [];
-            $scope.$parent.$parent.customExportDataSpaces = [];
-            $scope.$parent.$parent.exportFormats = [];
-            $scope.$parent.$parent.deliveryTypes = [];
+            // $scope.selectedColumns = [];
+            // $scope.customExportsData.scheduledCustomExports = [];
+            // $scope.customExportsData.customExportDataSpaces = [];
+            // $scope.customExportsData.exportFormats = [];
+            // $scope.$parent.$parent.deliveryTypes = [];
             initializeScrollers();
 
             

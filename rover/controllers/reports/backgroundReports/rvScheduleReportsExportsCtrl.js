@@ -40,9 +40,9 @@ angular.module('sntRover')
                     $scope.reportViewStore.showingExportAReport) {
                     source = $scope.schedulableReports;
                 } else if ($scope.reportViewStore.showingCustomExports) {
-                    source = $scope.scheduledCustomExports;
+                    source = $scope.customExportsData.scheduledCustomExports;
                 } else if ($scope.reportViewStore.showingCustomNewExport) {
-                    source = $scope.customExportDataSpaces;
+                    source = $scope.customExportsData.customExportDataSpaces;
                 }
 
                 return source;
@@ -347,7 +347,15 @@ angular.module('sntRover')
                 // Feature toggle decides whether the custom export menu should be shown or not
                 $scope.isCustomExportsEnabled = Toggles.isEnabled('custom_exports');
                 $scope.customExportsScheduleParams = {};
-                $scope.isNewExport = false;
+                
+                // Holds the data for custom exports
+                $scope.customExportsData = {
+                    isNewExport: false,
+                    scheduledCustomExports: [],
+                    customExportDataSpaces: [],
+                    exportFormats: [],
+                    deliveryTypes: []
+                };
 
             })();
 

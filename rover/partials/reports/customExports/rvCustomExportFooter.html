@@ -6,7 +6,7 @@
         <div class="select">
             <select class="placeholder" ng-model="customExportsScheduleParams.format" convert-to-number>
                 <option value="">Select output format</option>
-                <option ng-repeat="format in exportFormats" value="{{format.id}}">{{format.value}}</option>
+                <option ng-repeat="format in customExportsData.exportFormats" value="{{format.id}}">{{format.value}}</option>
             </select>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <div class="select">
             <select class="placeholder" ng-model="customExportsScheduleParams.deliveryType" convert-to-number>
                 <option value="">Select Delivery Method</option>
-                <option ng-repeat="deliveryType in deliveryTypes" value="{{deliveryType.id}}">{{deliveryType.value}}</option>
+                <option ng-repeat="deliveryType in customExportsData.deliveryTypes" value="{{deliveryType.id}}">{{deliveryType.value}}</option>
                 
             </select>
         </div>
@@ -33,10 +33,10 @@
         <button type="button"
                 class="button green"
                 ng-click="createCustomExport()"
-                ng-show="isNewExport">Save Export</button>
+                ng-show="customExportsData.isNewExport">Save Export</button>
         <button type="button"
                 class="button green"
                 ng-click="saveCustomExport()"
-                ng-show="!isNewExport">Save Export</button>
+                ng-show="!customExportsData.isNewExport">Save Export</button>
     </div>
 </div>

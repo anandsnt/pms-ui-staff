@@ -37,8 +37,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.activeUserList = angular.copy(payload.activeUserList);
         $scope.schedulesList = [];
         $scope.schedulableReports = [];
-        $scope.scheduledCustomExports = [];
-        $scope.customExportDataSpaces = [];
 
         $scope.refreshReportList = function() {
             $scope.reportList = angular.copy(payload.reportsResponse.results);
