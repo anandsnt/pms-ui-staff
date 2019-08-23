@@ -1,8 +1,7 @@
 
 <div class="select">
     <label for="journal-search-for">Search For</label>
-    <select id="journal-search-for" ng-model="data.filterId">
-        <option value="{{filterData.id}}" ng-repeat="filterData in data.searchFilterOptions" ng-selected="{{data.filterId === filterData.id}}">{{filterData.name}}</option>
+    <select id="journal-search-for" ng-options="filter.id as filter.name for filter in data.searchFilterOptions" ng-model="data.filterId" ng-change="searchJournal()">
     </select>
 </div>
 <button id="journal-clear-query" class="clear-query">

@@ -332,7 +332,15 @@ sntRover.controller('RVJournalController',
     };
 
     $scope.searchJournal = () => {
-        $rootScope.$broadcast('SEARCHQUERYENTERED');
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $rootScope.$broadcast('SUMMARYSEARCH');
+        } else if (tabName === 'PAYMENTS') {
+            $rootScope.$broadcast('PAYMENTSSEARCH');
+        } else if (tabName === 'REVENUE') {
+            $rootScope.$broadcast('REVENUESEARCH');
+        }
     };
     /* 
      * Toggle Action 
