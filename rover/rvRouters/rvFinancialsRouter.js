@@ -24,6 +24,9 @@ angular.module('FinancialsModule', [])
                 } else {
                     return {};
                 }
+            },
+            journalFilters: function(RVJournalSrv) {
+                return RVJournalSrv.getFilterData();
             }
         }
     });
