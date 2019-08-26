@@ -1017,7 +1017,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 dates.map((date) => {
                     dateRateSet = _.findWhere(rateRestrictionWithDateAsKey[date].rates, { id: rate.id });
                     rate.restrictionList.push(dateRateSet.restrictions);
-                    rate.amountList.push(dateRateSet.amount);
+                    rate.amountList.push(dateRateSet.rate_currency+""+dateRateSet.amount);
                 }
                 );
                 return _.omit(rate, 'restrictions');

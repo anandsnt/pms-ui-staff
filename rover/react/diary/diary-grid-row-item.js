@@ -65,7 +65,7 @@ var GridRowItem = React.createClass({
         switch (data[meta.status]) {
             case 'available':
                 if (showRateAmount) {
-                    caption = display.currency_symbol + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+                    caption = date.rate_currency + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
                 } else {
                     caption = data[meta.room_type];
                 }
@@ -288,7 +288,7 @@ var GridRowItem = React.createClass({
                 React.DOM.span({
                     className: show_outstanding_indicator ? 'deposit-icon' : '',
                     style: styleForDepositIcon
-                }, display.currency_symbol),
+                }, meta.rate_currency),
                 React.DOM.span({
                     className: is_room_locked ? 'icons icon-diary-lock' : '',
                     style: styleForRoomLocked

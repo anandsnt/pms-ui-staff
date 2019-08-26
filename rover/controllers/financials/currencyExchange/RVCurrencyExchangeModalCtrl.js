@@ -113,6 +113,8 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 });
 
                 var params = {
+                    is_invoice_currency: $scope.selected_rate_currency === (_.find($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id,
+                    selected_currency: $scope.selected_rate_currency,
                     exchange_rates: $scope.exchangeRates
                 };
 
@@ -149,6 +151,10 @@ sntRover.controller('RVCurrencyExchangeModalController',
              * Initialization method
              */
             var init = function() {
+                $scope.exchangeCurrencyList = $rootScope.rateCurrencyList;
+                if (_.findIndex($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id}) === -1) {
+                    $scope.exchangeCurrencyList.push($rootScope.invoiceCurrencyObject);
+                }                
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormatForAPI);
 
                 endDate = moment(tzIndependentDate($rootScope.businessDate)).add(noOfDays, 'days');                                                          
