@@ -31,7 +31,8 @@ sntRover.controller('RVJournalController',
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
     $scope.data.isDrawerOpened = false;
-	$scope.data.reportType  = "";
+    $scope.data.reportType  = "";
+    $scope.data.query = "";
     $scope.data.isShowSummaryTab  = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
@@ -329,6 +330,18 @@ sntRover.controller('RVJournalController',
         }
 
         return returnData;
+    };
+
+    $scope.searchJournal = () => {
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $rootScope.$broadcast('SUMMARYSEARCH');
+        } else if (tabName === 'PAYMENTS') {
+            $rootScope.$broadcast('PAYMENTSSEARCH');
+        } else if (tabName === 'REVENUE') {
+            $rootScope.$broadcast('REVENUESEARCH');
+        }
     };
     /* 
      * Toggle Action 
