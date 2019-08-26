@@ -1,0 +1,26 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+        <div class="inline-edit">
+            <header class="content-title float">
+                <h2 translate>Dropbox Accounts</h2>
+                <span class="count"> ({{dropboxAccountList.length}})</span>
+                <a id="add-new-button" ng-click="navigateToDetails()" class="action add" translate>ADD_NEW</a>
+            </header>
+            <section class="content-scroll">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <table id="items" class="grid datatable dataTable" ng-table="storageAccountList" template-pagination="nil">
+                    <tr role="row" ng-repeat="account in dropboxAccountList">
+                        <td width="40%" class="sorting" data-title="'Description'" sortable="'account.description'">
+                            <a ng-click="navigateToDetails(account)">{{account.description}}</a>
+                        </td>
+                        <td width="40%" class="sorting" data-title="'Access Token'">
+                            {{account.access_token}}
+                        </td>
+                        <td width="20%" class="delete" data-title="'Delete'">
+                            <a class="icons icon-delete large-icon" ng-click="deleteAccount(account.id)" style="margin-left: px;"></a>
+                        </td>
+                    </tr>
+            </table>
+            </section>
+        </div>
+    </section>
+    

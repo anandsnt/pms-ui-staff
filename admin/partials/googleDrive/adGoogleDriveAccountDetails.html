@@ -1,0 +1,30 @@
+<section class="content current admin-scrollfix"
+         div-touch-move-stop-propogate 
+         ng-click="clearErrorMessage()"
+         >
+    <div id="add-new-item">
+        <header class="content-title float">
+            <h2 ng-show="isEdit">Edit <span>{{serverDetails.description}} </span></h2>
+            <h2 ng-show="!isEdit" translate>Add New Account</h2>
+            </em>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <form name="item-details" method="post" class="form float">
+                <fieldset class="holder left float">
+                    <ad-textbox value="accountDetails.description" name = "description" id = "description" label = "Description" placeholder = "Enter Description" required = "yes" styleclass="full-width" ></ad-textbox>
+                    <ad-textbox value="accountDetails.access_token" name = "accessToken" id = "accessToken" label = "Access Token" placeholder = "Enter access token" required = "yes" styleclass="full-width" ></ad-textbox>
+                </fieldset>
+                
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+
+                <button type="button" id="save" class="button green add-data-inline"  ng-click="saveAccountDetails()" translate>SAVE_CHANGES</button>
+
+                
+            </div>
+        </form>
+    </section>
+</div>
+</section>
