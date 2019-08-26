@@ -12,6 +12,14 @@ sntRover.controller('RVCurrencyExchangeModalController',
             BaseCtrl.call(this, $scope);
 
             $scope.exchangeRatesData = [];
+            $scope.exchangeCurrencyList = $rootScope.rateCurrencyList;
+            if (_.findIndex($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id}) === -1) {
+                $scope.exchangeCurrencyList.push($rootScope.invoiceCurrencyObject);
+            } 
+            $scope.selected_rate_currency  = (_.first($scope.exchangeCurrencyList)).id;
+            $scope.selected_rate_currency_symbol  = (_.first($scope.exchangeCurrencyList)).symbol;
+            $scope.isInvoiceCurrency = $scope.selected_rate_currency === (_.find($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id;
+            
             var delay = 200,
                 noOfDays = 7,
                 endDate,
@@ -70,7 +78,9 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
                     var params = {
                         'start_date': $filter('date')($scope.start_date, $rootScope.dateFormatForAPI),
-                        'end_date': $filter('date')($scope.end_date, $rootScope.dateFormatForAPI)
+                        'end_date': $filter('date')($scope.end_date, $rootScope.dateFormatForAPI),
+                        'is_invoice_currency': $scope.isInvoiceCurrency,
+                        'selected_currency': $scope.selected_rate_currency
                     };
 
                     $scope.invokeApi(RVMultiCurrencyExchangeSrv.fetchExchangeRates, params, successCallBackFetchAccountsReceivables );
@@ -99,7 +109,11 @@ sntRover.controller('RVCurrencyExchangeModalController',
 
                     return ExchangeRateArray;
                 };
-    
+            
+            $scope.changeCurrency = function() {
+                $scope.selected_rate_currency_symbol  = (_.find($rootScope.rateCurrencyList, {"id": $scope.selected_rate_currency})).symbol;
+                fetchExhangeRates();
+            }
             /*
              * Save Exchange Rates
              */
@@ -113,7 +127,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                 });
 
                 var params = {
-                    is_invoice_currency: $scope.selected_rate_currency === (_.find($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id})).id,
+                    is_invoice_currency: $scope.isInvoiceCurrency,
                     selected_currency: $scope.selected_rate_currency,
                     exchange_rates: $scope.exchangeRates
                 };
@@ -151,10 +165,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
              * Initialization method
              */
             var init = function() {
-                $scope.exchangeCurrencyList = $rootScope.rateCurrencyList;
-                if (_.findIndex($rootScope.rateCurrencyList, {"id": $rootScope.invoiceCurrencyObject.id}) === -1) {
-                    $scope.exchangeCurrencyList.push($rootScope.invoiceCurrencyObject);
-                }                
+
                 $scope.start_date = $filter('date')(tzIndependentDate($rootScope.businessDate), $rootScope.dateFormatForAPI);
 
                 endDate = moment(tzIndependentDate($rootScope.businessDate)).add(noOfDays, 'days');                                                          
