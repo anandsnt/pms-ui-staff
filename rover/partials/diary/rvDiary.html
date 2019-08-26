@@ -65,18 +65,20 @@
             <div id="diary-rates" class="faux-select-options"  ng-class="{'showing-search': gridProps.filter.rate_type === 'Corporate', 'hidden': !openRateTypeChoosingBox}">
                 <div class="header">
 
-                    <label class="radio inline" ng-click="clickedOnRateType()">
+                    <label class="radio inline">
                         <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Standard'}"></span>
                         <input name="rate-type"
+                               ng-change="clickedOnRateType()"
                                id="standard-rate"
                                value="Standard"
                                ng-model="gridProps.filter.rate_type"
                                type="radio"/>
                         Standard
                     </label>
-                    <label class="radio inline" ng-click="clickedOnRateType()">
+                    <label class="radio inline">
                         <span class="icon-form icon-radio" ng-class="{checked: gridProps.filter.rate_type === 'Corporate'}"></span>
                         <input name="rate-type"
+                               ng-change="clickedOnRateType()"
                                id="corporate-rate"
                                value="Corporate"
                                ng-model="gridProps.filter.rate_type"
