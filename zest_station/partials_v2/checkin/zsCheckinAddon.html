@@ -103,7 +103,7 @@
          <text data-ng-bind-html="getTagValue('ADD_ON_HEADING')" editable-text="ADD_ON_HEADING"></text>
       </h1>
       <div id="upgrades">
-         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
+         <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1 || (addonsList.length && addonsList[0].isLco)" ng-class="{'add-on-list-rows':pageData.viewableItems.length >= 4}">
             <li class="add-on" ng-repeat="addon in pageData.viewableItems" click-touch="addonSelected(addon)" ng-class="{'selected':addon.is_selected || addon.quantity >0}">
                <div class="add-on-picture">
                   <img ng-src="{{addon.image}}" onError="this.onerror=null;this.src='/assets/images/room_type_image_not_available.png';">
@@ -120,7 +120,7 @@
                </div>
             </li>
          </ul>
-         <ul class="add-on-list" ng-if="addonsList.length === 1">
+         <ul class="add-on-list" ng-if="addonsList.length === 1 && !addonsList[0].isLco">
             <li class="add-on">
                <div class="add-on-picture single-addon-image">
                   <img src="{{selectedAddon.image}}">
