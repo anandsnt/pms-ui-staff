@@ -883,6 +883,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             var postData = {
                 arrival_time: moment(arrivalTime, 'hh:mm A').format('HH:mm'),
                 departure_time: moment(departureTime, 'hh:mm A').format('HH:mm'),
+                arrival_date: $scope.reservationData.arrivalDate,
+                departure_date: $scope.reservationData.departureDate,
                 payment_type: {},
                 guest_detail_id: $scope.reservationData.guest.id // CICO-42714
             };
