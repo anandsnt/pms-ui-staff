@@ -322,12 +322,19 @@ angular.module('sntRover')
                         $scope.viewColClassName.indexOf('with-bottom-form') > -1;
             };
 
+            // Create new custom export
             $scope.createCustomExport = () => {
                 $scope.$broadcast('CREATE_NEW_CUSTOM_EXPORT_SCHEDULE');
             };
 
+            // Save the given export
             $scope.saveCustomExport = () => {
                 $scope.$broadcast('UPDATE_CUSTOM_EXPORT_SCHEDULE');
+            };
+
+            // Navigate to the export listing page
+            $scope.navigateToExportListing = () => {
+                $scope.$broadcast('SHOW_EXPORT_LISTING');
             };
 
             (function () {
