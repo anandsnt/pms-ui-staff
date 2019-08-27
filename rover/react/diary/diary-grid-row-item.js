@@ -65,7 +65,7 @@ var GridRowItem = React.createClass({
         switch (data[meta.status]) {
             case 'available':
                 if (showRateAmount) {
-                    caption = date.rate_currency + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
+                    caption = data.rate_currency + ' ' + parseFloat(data[meta.rate]).toFixed(2) + ' | ' + data[meta.room_type];
                 } else {
                     caption = data[meta.room_type];
                 }
