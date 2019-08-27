@@ -9,14 +9,14 @@
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <table id="items" class="grid datatable dataTable" ng-table="storageAccountList" template-pagination="nil">
                     <tr role="row" ng-repeat="account in dropboxAccountList">
-                        <td width="40%" class="sorting" data-title="'Description'" sortable="'account.description'">
+                        <td width="40%" class="sorting" data-title="'Description'">
                             <a ng-click="navigateToDetails(account)">{{account.description}}</a>
                         </td>
                         <td width="40%" class="sorting" data-title="'Access Token'">
                             {{account.access_token}}
                         </td>
                         <td width="20%" class="delete" data-title="'Delete'">
-                            <a class="icons icon-delete large-icon" ng-click="deleteAccount(account.id)" style="margin-left: px;"></a>
+                            <a class="icons icon-delete large-icon" ng-click="deleteAccount(account.id)" style="margin-left: 0px;"></a>
                         </td>
                     </tr>
             </table>

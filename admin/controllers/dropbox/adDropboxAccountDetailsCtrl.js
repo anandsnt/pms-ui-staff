@@ -7,18 +7,23 @@ admin.controller('ADDropboxAccountDetailsCtrl', [
     
     BaseCtrl.call(this, $scope);
 
+    /**
+     * Navigate back to the previous state
+     */
     $scope.goBack = function() {
         $state.go('admin.dropboxAccounts');
     };
 
+    /**
+     * Save the dropbox account details
+     */
     $scope.saveAccountDetails = function() {
-        var postData = $scope.accountDetails;
+        var postData = $scope.accountDetails,
+            onSaveAccountSuccess = function() {
+                $scope.goBack();
+            };
         
         postData.cloud_drive_type = 'DROP_BOX';
-
-        var onSaveAccountSuccess = function() {
-            $scope.goBack();
-        };
 
         if ($scope.isEdit) {
             $scope.callAPI(ADThirdPartyStorageSrv.updateStorageAccount, {
@@ -33,6 +38,7 @@ admin.controller('ADDropboxAccountDetailsCtrl', [
         }
     };
 
+    // Initializes the controller
     var init = function() {
         $scope.errorMessage = '';
         $scope.isEdit = $stateParams.id;

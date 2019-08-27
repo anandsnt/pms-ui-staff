@@ -10,7 +10,10 @@ admin.controller('ADDropboxAccountListCtrl', [
    
     BaseCtrl.call(this, $scope);
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
-
+    
+    /**
+     * Fetch account list by type
+     */
     var fetchData = function() {
         var onFetchSuccess = function (data) {
             $scope.dropboxAccountList = data;
@@ -28,19 +31,24 @@ admin.controller('ADDropboxAccountListCtrl', [
         });
     };
 
+    /**
+     * Delete the given account
+     * @param {Number} accountId - id of the given account
+     * @return {void}
+     */
     $scope.deleteAccount = function (accountId) {
         var onDeleteAccountSuccess = function () {
-            angular.forEach($scope.dropboxAccountList, function (item, index) {
-                if (item.id === accountId) {
-                    $scope.dropboxAccountList.splice(index, 1);
-                }
-            });
+                angular.forEach($scope.dropboxAccountList, function (item, index) {
+                    if (item.id === accountId) {
+                        $scope.dropboxAccountList.splice(index, 1);
+                    }
+                });
 
-            $scope.storageAccountList.reload();
-        },
-        onDeleteAccountFailure = function (error) {
-            $scope.errorMessage = error;
-        };
+                $scope.storageAccountList.reload();
+            },
+            onDeleteAccountFailure = function (error) {
+                $scope.errorMessage = error;
+            };
 
         $scope.callAPI(ADThirdPartyStorageSrv.deleteStorageAccount, {
             params: {
@@ -51,6 +59,11 @@ admin.controller('ADDropboxAccountListCtrl', [
         });
     };
 
+    /**
+     * Navigate to the details screen for the given account
+     * @param {Object} account - holds the account info
+     * @return {void}
+     */
     $scope.navigateToDetails = function (account) {
         var params = {};
 
@@ -63,6 +76,7 @@ admin.controller('ADDropboxAccountListCtrl', [
         $state.go('admin.dropboxAccountDetails', params);
     };
 
+    // Initialize the controller
     var init = function() {
         $scope.errorMessage = '';
         $scope.dropboxAccountList = {};
@@ -72,7 +86,7 @@ admin.controller('ADDropboxAccountListCtrl', [
                 page: 1, // show first page
                 count: $scope.dropboxAccountList.length,
                 sorting: {
-                    name: 'asc' // initial sorting
+                    description : 'asc' // initial sorting
                 }
             }, {
                 total: 0, // length of data

@@ -1047,13 +1047,25 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.googledriveAccounts', {
         templateUrl: '/assets/partials/googleDrive/adGoogleDriveAccountList.html',
         controller: 'ADGoogleDriveAccountListCtrl',
-        url: '/googledriveaccounts'
+        url: '/googledriveaccounts',
+        params: {
+            updated: null
+        },
+        resolve: {
+            storageConfig: function (ACGIIntegrationSrv) {
+                return ACGIIntegrationSrv.fetchConfiguration();
+            }
+        }
     });
 
-    $stateProvider.state('admin.googleDriveAccountDetails', {
+    $stateProvider.state('admin.googledriveAccounts.details', {
         templateUrl: '/assets/partials/googleDrive/adGoogleDriveAccountDetails.html',
         controller: 'ADGoogleDriveAccountDetailsCtrl',
-        url: '/googleaccountdetails/:id'
+        url: '/googleaccountdetails/:id',
+        params: {
+            id: '',
+            data: null
+        }
     });
 
 });
