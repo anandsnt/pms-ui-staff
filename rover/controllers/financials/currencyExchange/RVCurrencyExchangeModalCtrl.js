@@ -71,6 +71,7 @@ sntRover.controller('RVCurrencyExchangeModalController',
                             $scope.exchangeRatesData = data;
                             $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                         } else {
+                            $scope.exchangeRatesData = [];
                             $scope.exchangeRates = constructExchangeRateArray($scope.start_date);
                         }
                         $scope.refreshScroller("CURRENCY_SCROLLER");
