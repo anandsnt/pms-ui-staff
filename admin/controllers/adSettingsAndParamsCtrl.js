@@ -16,7 +16,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     $scope.minutes = ['00', '15', '30', '45'];
 
-    $scope.selectedCurrencies = [];
+    $scope.selectedCurrencies = settingsAndParamsData.rate_currencies.length > 0 ? settingsAndParamsData.rate_currencies : [];
     $scope.data = settingsAndParamsData.business_date;
     $scope.currency_list = settingsAndParamsData.currency_list;
     $scope.chargeCodes = chargeCodes;
