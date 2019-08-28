@@ -966,6 +966,27 @@ body { overflow: hidden; }
                         padding: 0;
                         font-weight: 600;
                     }
+                    .button {
+                        &.small {
+                            font-size: 14px;
+                            line-height: 28px;
+                            padding: 0 10px;
+                        }
+                    }
+
+                    &.hidden-button {
+                        .button {
+                            opacity: 0;
+                            margin-left: 5px;
+                            .transition();
+                        }
+
+                        &:hover {
+                            .button {
+                                opacity: 1;
+                            }
+                        }
+                    }
                 }
 
                 &.inactive {
