@@ -21,7 +21,7 @@
                             <strong>{{language.language}}</strong>
                             <!-- If default language, show: -->
                             <span class="tag" ng-if="language.is_default" translate="DEFAULT"></span>
-                            <button type="button" class="button small blue" ng-if="!language.is_default && language.is_show_on_guest_card" ng-click="makeLanguageDefault(language,$index)" translate="MAKE_DEFAULT"></button>
+                            <button type="button" class="button small blue" ng-if="!language.is_default && language.is_show_on_guest_card" ng-click="makeLanguageDefault(language)" translate="MAKE_DEFAULT"></button>
                         </td>
                         <td data-item="2" data-title="'Status'" class="" header-class="width-10">
                             <div class="entry">
