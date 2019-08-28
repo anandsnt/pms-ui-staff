@@ -1,4 +1,8 @@
-sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', function($scope, $filter, $stateParams, ngDialog, $rootScope, RVJournalSrv, journalResponse, $timeout, rvPermissionSrv) {
+sntRover.controller('RVJournalController', 
+    ['$scope', '$filter', '$stateParams', 'ngDialog', '$rootScope', 
+    'RVJournalSrv', 'journalResponse', '$timeout', 'rvPermissionSrv', 'journalFilters',
+    function($scope, $filter, $stateParams, ngDialog, $rootScope, 
+        RVJournalSrv, journalResponse, $timeout, rvPermissionSrv, journalFilters) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -18,6 +22,7 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
+    $scope.data.isExpandedView = false;
 
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
@@ -26,7 +31,8 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.data.selectedDepartmentList = [];
     $scope.data.selectedEmployeeList = [];
     $scope.data.isDrawerOpened = false;
-	$scope.data.reportType  = "";
+    $scope.data.reportType  = "";
+    $scope.data.query = "";
     $scope.data.isShowSummaryTab  = true;
 
     $scope.data.isRevenueToggleSummaryActive = true;
@@ -81,7 +87,6 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
     $scope.clickedSummaryDate = function() {
         popupCalendar('SUMMARY');
     };
-
     // Filter by Logged in user id.
     var filterByLoggedInUser = function() {
         angular.forEach($scope.data.filterData.employees, function(item, index) {
@@ -91,6 +96,10 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
                 $scope.clickedSelectButton();
             }
         });
+    };
+
+    $scope.clickedJournalToggle = function () {
+        $scope.data.isExpandedView = !$scope.data.isExpandedView;
     };
 
     // To toggle revenue filter box.
@@ -323,6 +332,24 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         return returnData;
     };
 
+    $scope.searchJournal = () => {
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $rootScope.$broadcast('SUMMARYSEARCH');
+        } else if (tabName === 'PAYMENTS') {
+            $rootScope.$broadcast('PAYMENTSSEARCH');
+        } else if (tabName === 'REVENUE') {
+            $rootScope.$broadcast('REVENUESEARCH');
+        }
+    };
+    /* 
+     * Toggle Action 
+     */
+    $scope.toggleCollapsedOrExpandedSummary = function() {
+        $scope.data.isExpandedView = !$scope.data.isExpandedView;
+    }; 
+
     /* get the time string from the date-time string */
 
     $scope.getTimeString = function(date, time) {
@@ -341,5 +368,13 @@ sntRover.controller('RVJournalController', ['$scope', '$filter', '$stateParams',
         }
 
     };
+
+    var init = function() {
+        $scope.data.isExpandedView = false;
+        $scope.data.searchFilterOptions = journalFilters.filters;        
+        $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
+    };
+
+    init();
 
 }]);

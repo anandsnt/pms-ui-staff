@@ -1013,8 +1013,10 @@
                         .box-shadow(none);
                     }
 
-                    &.ooo,
-                    &.oos {
+                    &.no-show,
+                    &.cancel,
+                    &.oos,
+                    &.ooo {
                         z-index: 1;
                     }
 
@@ -1081,6 +1083,7 @@
 
                 .available {
                     cursor: pointer;
+                    z-index: 2;
                     .gradient(@logoGradientStart, @logoGradientEnd);
                     
                     &.reserved { 
@@ -1118,8 +1121,16 @@
                     }
                 }
 
-                .occupied + .maintenance {
+                .occupied + .maintenance,
+                .available + .maintenance {
                     z-index: 2;
+                }
+
+                .occupied.no-show + .maintenance,
+                .occupied.cancel + .maintenance,
+                .occupied.oos + .maintenance,
+                .occupied.ooo + .maintenance {
+                    z-index: 1;
                 }
 
                 &.editing {
