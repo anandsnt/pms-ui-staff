@@ -13,7 +13,8 @@ admin.service('adIFCInterfaceMappingSrv', [
             'HOGIA': ['CHARGE_CODES'],
             'IGEL': ['CHARGE_CODES', 'PAYMENT_CODES'],
             'SAFEACCOUNTING': ['CHARGE_CODES', 'TAX_CHARGE_CODES'],
-            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS']
+            'SUNACCOUNTING': ['CHARGE_CODES', 'MARKET_SEGMENTS'],
+            'SIE': ['CHARGE_CODES']
         };
 
         var metaPromises = {

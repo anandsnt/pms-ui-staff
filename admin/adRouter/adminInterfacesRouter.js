@@ -696,6 +696,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
            config: [
                'adInterfacesSrv', function(adInterfacesSrv) {
                    return adInterfacesSrv.getSettings('sie');
+               }],
+           mappingTypes: [
+               'adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                   return adInterfacesCommonConfigSrv.fetchMappingTypes('sie');
                }]
        }
     });
