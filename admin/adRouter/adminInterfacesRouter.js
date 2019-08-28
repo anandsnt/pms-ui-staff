@@ -297,36 +297,21 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.ifc_revenue_centers', {
-        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenterConfig.html',
+        templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRevenueCenter.html',
         controller: 'adComtrolRevenueCenterCtrl',
-        url: '/ifc_comtrol/revenueCenter',
-        resolve: {
-            revCenters: ['adComtrolRevenueCenterSrv', function(adComtrolRevenueCenterSrv) {
-                return adComtrolRevenueCenterSrv.fetch();
-            }]
-        }
+        url: '/ifc_comtrol/revenueCenter'
     });
 
     $stateProvider.state('admin.ifc_charge_codes', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolChargeCodes.html',
         controller: 'adComtrolChargeCodeMappingCtrl',
-        url: '/ifc_comtrol/chargeCodeMappings',
-        resolve: {
-            mappedChargeCodes: ['adComtrolChargeCodeMappingSrv', function(adComtrolChargeCodeMappingSrv) {
-                return adComtrolChargeCodeMappingSrv.fetch();
-            }]
-        }
+        url: '/ifc_comtrol/chargeCodeMappings'
     });
 
     $stateProvider.state('admin.ifc_generic_mappings', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolGenericMappings.html',
         controller: 'adComtrolGenericMappingCtrl',
-        url: '/ifc_comtrol/genericMappings',
-        resolve: {
-            genericMappings: ['adComtrolGenericMappingSrv', function(adComtrolGenericMappingSrv) {
-                return adComtrolGenericMappingSrv.fetch();
-            }]
-        }
+        url: '/ifc_comtrol/genericMappings'
     });
 
     $stateProvider.state('admin.gustoPosSetup', {
