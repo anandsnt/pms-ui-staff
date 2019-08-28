@@ -135,7 +135,7 @@
                             <a ng-click="editReservationRates(room, $index)">
                                 <em>{{room.rateName}}</em>
                                 <span class="price">
-                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{currencySymbol}}{{room.rateAvg | number : 2}}</label>
+                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{room.rate_currency}}{{room.rateAvg | number : 2}}</label>
                                     <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
                                     <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
@@ -146,9 +146,9 @@
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                {{currencySymbol}}{{ addon.price | number : 2}}
+                                {{addon.rate_currency}}{{ addon.price | number : 2}}
                                 <span translate>EACH</span>
-                            <span class="total">{{currencySymbol}}{{ addon.effectivePrice | number : 2}}</span>
+                            <span class="total">{{addon.rate_currency}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
