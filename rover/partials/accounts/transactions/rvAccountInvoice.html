@@ -226,7 +226,7 @@
     </tfoot>           
 </table>
 
-<div class="invoice-footer text-center">
+<div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.ar_invoice_billing_text)">
     {{printData.ar_invoice_billing_text}}
 </div>
 
