@@ -33,9 +33,8 @@
                 <td data-title="''" header-class="width-20"
                     ng-hide="currentClickedElement == $index" ng-click="selectFeature(feature.name)">
                     <div class="entry full-width">
-                        <div class="switch-button single" ng-class="{ on : hotel.featureStatus.enabled_hotel }"
-                             ng-click="toggleFeatureHotel(hotel)">
-                            <input type="checkbox" ng-model="hotel.featureStatus.enabled_hotel">
+                        <div class="switch-button single" ng-class="{ on : hotel.featureStatus.enabled_hotel }">
+                            <input type="checkbox" ng-model="hotel.featureStatus.enabled_hotel" ng-change="toggleFeatureHotel(hotel)">
                             <span class="switch-icon"></span>
                         </div>
                     </div>

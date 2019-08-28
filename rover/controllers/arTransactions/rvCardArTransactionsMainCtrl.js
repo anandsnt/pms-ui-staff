@@ -854,30 +854,31 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
         // Send email AR statement
         $scope.emailArStatement = function() {
-			      var params = getParamsToSend();
-            params.to_address = $scope.filterData.statementEmailAddress;
-            $scope.closeDialog();
+          var params = getParamsToSend();
 
-            var emailSuccess = function() {
-                $scope.errorMessage = "";
-                $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
-                $scope.status = "success";
-                $scope.showEmailSentStatusPopup();
-            },
-            emailFailureCallback = function(errorData) {
-                $scope.errorMessage = errorData;
-                $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
-                $scope.status = "alert";
-                $scope.showEmailSentStatusPopup();
-            };
+          params.to_address = $scope.filterData.statementEmailAddress;
+          $scope.closeDialog();
 
-            var options = {
-                params: params,
-                successCallBack: emailSuccess,
-                failureCallBack: emailFailureCallback
-            };
+          var emailSuccess = function() {
+              $scope.errorMessage = "";
+              $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+              $scope.status = "success";
+              $scope.showEmailSentStatusPopup();
+          },
+          emailFailureCallback = function(errorData) {
+              $scope.errorMessage = errorData;
+              $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+              $scope.status = "alert";
+              $scope.showEmailSentStatusPopup();
+          };
 
-            $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
+          var options = {
+              params: params,
+              successCallBack: emailSuccess,
+              failureCallBack: emailFailureCallback
+          };
+
+          $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
         };
 
 		$scope.clickedEmail = function(data) {
@@ -961,7 +962,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					if ($scope.billFormat.isInformationalInvoice) {
 						successData.invoiceLabel = successData.translation.information_invoice;
 					}
-					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices)) 
+					else if (parseInt(successData.print_counter) <= parseInt(successData.no_of_original_invoices))
 					{
 						successData.invoiceLabel = successData.translation.ar_invoice;
 					}
