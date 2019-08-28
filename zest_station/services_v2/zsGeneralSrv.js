@@ -809,5 +809,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             delete params.id;
             return zsBaseWebSrv.getJSON(url, params);
         };
+
+        this.fetchAvailableRooms = function(params) {
+            var url = '/api/rooms/retrieve_available_rooms';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
     }
 ]);

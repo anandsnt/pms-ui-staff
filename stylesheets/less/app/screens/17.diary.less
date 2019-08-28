@@ -1013,8 +1013,10 @@
                         .box-shadow(none);
                     }
 
-                    &.ooo,
-                    &.oos {
+                    &.no-show,
+                    &.cancel,
+                    &.oos,
+                    &.ooo {
                         z-index: 1;
                     }
 
@@ -1081,6 +1083,7 @@
 
                 .available {
                     cursor: pointer;
+                    z-index: 2;
                     .gradient(@logoGradientStart, @logoGradientEnd);
                     
                     &.reserved { 
@@ -1118,8 +1121,16 @@
                     }
                 }
 
-                .occupied + .maintenance {
+                .occupied + .maintenance,
+                .available + .maintenance {
                     z-index: 2;
+                }
+
+                .occupied.no-show + .maintenance,
+                .occupied.cancel + .maintenance,
+                .occupied.oos + .maintenance,
+                .occupied.ooo + .maintenance {
+                    z-index: 1;
                 }
 
                 &.editing {
@@ -1168,63 +1179,6 @@
             }
         }
 
-        /* Sidebar ***/
-        .diary-sidebar {
-            position: absolute;
-            top: 0;
-            right: -320px;
-            text-transform: uppercase;
-            padding: 0 10px;
-            z-index: 90;
-            .size(100%, 320px);
-            .background(@white);
-            .transition();
-
-            /* Title ***/
-            .sidebar-header {
-                text-align: center;
-                line-height: 1;
-                padding: 20px 10px 0 10px;
-                height: 60px;
-
-                h2 {
-                    font-size: 18px;
-                    font-weight: 600;
-                }
-
-                p {
-                    color: @grey3;
-                    font-size: 13px;
-                    margin: 0;
-                }
-            } 
-
-            /* Content ***/
-            .scrollable {
-                position: relative;
-
-                .iScrollVerticalScrollbar {
-                    top: 0;
-                    bottom: 0;
-                    right: 0;
-
-                    .iScrollIndicator {
-                        background-color:rgba(0,0,0,0.15);
-                    }
-                }
-            }
-
-            &.visible {
-                .translate3d(-320px, 0, 0);
-                .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
-            }
-        }
-
-        /* Sidebar - Unassigned ***/
-        .diary-unassigned {
-            padding: 0;
-        }
-
         /* Room Assignment ***/
         &.assigning-rooms {
             
@@ -1254,6 +1208,64 @@
                 }
             }
         }
+    }
+
+    /* Sidebar ***/
+    .diary-sidebar {
+        position: absolute;
+        top: 60px;
+        right: -320px;
+        text-transform: uppercase;
+        padding: 0 10px;
+        z-index: 90;
+        width: 320px;
+        .calc-height( 100, 60 );
+        .background(@white);
+        .transition();
+
+        /* Title ***/
+        .sidebar-header {
+            text-align: center;
+            line-height: 1;
+            padding: 20px 10px 0 10px;
+            height: 60px;
+
+            h2 {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            p {
+                color: @grey3;
+                font-size: 13px;
+                margin: 0;
+            }
+        } 
+
+        /* Content ***/
+        .scrollable {
+            position: relative;
+
+            .iScrollVerticalScrollbar {
+                top: 0;
+                bottom: 8px;
+                right: 2px;
+
+                .iScrollIndicator {
+                    background-color:rgba(0,0,0,0.15);
+                }
+            }
+        }
+
+        &.visible {
+            .translate3d(-320px, 0, 0);
+            .box-shadow(-1px 3px 2px 1px rgba(0, 0, 0, .2));
+        }
+    }
+
+    /* Sidebar - Unassigned ***/
+    .diary-unassigned {
+        padding: 0;
     }
 }
 
@@ -1452,5 +1464,13 @@
         &:not(:last-child) {
             margin-bottom: 10px;
         } 
+    }
+}
+
+.diary-hourly-unassigned {
+    .unassigned-list {
+        &.no-actions {
+            .calc-height(100, 120);
+        }
     }
 }

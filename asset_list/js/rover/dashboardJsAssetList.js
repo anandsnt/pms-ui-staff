@@ -26,6 +26,7 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
                 jsLibRoot + 'fastclick/fastclick.min.js',
 				jsLibRoot + 'moment.min.js',
+                jsLibRoot + 'toastr/toastr.min.js',
 
                 // Eliminate all spec files
                 '!**/*.spec.js'
@@ -43,9 +44,9 @@ module.exports = {
                 sharedRoot + 'cardReaderCtrl.js',
                 // sharedRoot + 'cordova.js',
                 sharedRoot + 'sntTransitionManager/**/*.js',
-                sharedRoot + 'sntFeatureToggles/**/*.js',
                 sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
                 sharedRoot + 'sntCanvasUtil/**/*.js',
+                sharedRoot + 'sntUtils/app.js',
                 sharedRoot + 'sntUtils/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
