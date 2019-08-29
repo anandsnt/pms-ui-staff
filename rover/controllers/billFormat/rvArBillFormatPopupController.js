@@ -240,9 +240,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         var printButtonClass = "blue";
 
         if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.arTransactionsData.no_of_original_invoices, 10) 
+            && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_invoices, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
-                && parseInt($scope.arTransactionsData.no_of_original_invoices, 10) !== 0)) {
+                && parseInt($scope.transactionsDetails.no_of_original_invoices, 10) !== 0)) {
 
             printButtonClass = "grey";
         }
@@ -256,9 +256,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         var isPrintButtonDisabled = false;
 
         if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.arTransactionsData.no_of_original_invoices, 10) 
+            && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_invoices, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
-                && parseInt($scope.arTransactionsData.no_of_original_invoices, 10) !== 0)) {   
+                && parseInt($scope.transactionsDetails.no_of_original_invoices, 10) !== 0)) {   
 
             isPrintButtonDisabled = true;
         }
@@ -275,9 +275,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         if (!$scope.data.mailto_address) {
             emailButtonClass = "grey";
         } else if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.item.email_counter, 10) >= parseInt($scope.arTransactionsData.no_of_original_emails, 10) 
+            && (parseInt($scope.item.email_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_emails, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
-                && parseInt($scope.arTransactionsData.no_of_original_emails, 10) !== 0)) {   
+                && parseInt($scope.transactionsDetails.no_of_original_emails, 10) !== 0)) {   
 
             emailButtonClass = "grey";
         }
@@ -292,9 +292,9 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         if (!$scope.data.mailto_address) {
             isEmailButtonDisabled = true;
         } else if (!$scope.billFormat.isInformationalInvoice 
-            && (parseInt($scope.item.email_counter, 10) >= parseInt($scope.arTransactionsData.no_of_original_emails, 10) 
+            && (parseInt($scope.item.email_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_emails, 10) 
                 && $scope.roverObj.noReprintReEmailInvoice 
-                && parseInt($scope.arTransactionsData.no_of_original_emails, 10) !== 0)) {   
+                && parseInt($scope.transactionsDetails.no_of_original_emails, 10) !== 0)) {   
 
             isEmailButtonDisabled = true;
         }

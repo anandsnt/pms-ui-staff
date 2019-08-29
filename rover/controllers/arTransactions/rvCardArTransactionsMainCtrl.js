@@ -891,6 +891,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.status = "success";
 				$scope.showEmailSentStatusPopup();
 				$scope.reloadCurrentActiveBill();
+				$scope.switchTabTo('TRANSACTIONS');
 			},
 			sendEmailFailureCallback = function(errorData) {
 				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
