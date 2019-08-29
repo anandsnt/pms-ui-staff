@@ -5,6 +5,9 @@ angular.module('snt.utils').service('sntNotifySrv', [function () {
         switch (type) {
             default:
                 toastr.options.preventDuplicates = true;
+                toastr.options.showDuration = 1000;
+                toastr.options.hideDuration = 1000;
+                toastr.options.timeOut = 8000;
         }
     };
 
@@ -19,7 +22,7 @@ angular.module('snt.utils').service('sntNotifySrv', [function () {
 }]);
 
 angular.module('snt.utils').component('sntNotify', {
-    template: '<div ng-if="!$ctrl.showToasts" ng-show="$ctrl.message"' +
+    template: '<div ng-if="!$ctrl.showToasts" ng-show="$ctrl.message && $ctrl.message.length"' +
         '           ng-class="$ctrl.style"' +
         '           ng-click="$ctrl.clearErrorMessage()">' +
         '               <section ng-if="$ctrl.type === \'success\'">' +
@@ -61,7 +64,8 @@ angular.module('snt.utils').component('sntNotify', {
                 // Initialize the toast only if the feature is enabled for this property
 
                 if (ctrl.showToasts) {
-                    if (changes['message'].currentValue) {
+                    if (changes['message'].currentValue &&
+                        changes['message'].currentValue.length) { // Check for empty Array
                         sntNotifySrv.show(changes['message'].currentValue, ctrl.type);
                     }
                 }

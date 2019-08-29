@@ -61,6 +61,7 @@ sntRover.controller('RVInvoiceSearchController',
 		*/
 		$scope.clickedItem = function(parentIndex) {
 			$vault.set('searchQuery', $scope.invoiceSearchData.query);
+			$vault.set('filterOption', $scope.invoiceSearchData.filter_id);
 			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
 				$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
 					id: $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id,
@@ -565,7 +566,6 @@ sntRover.controller('RVInvoiceSearchController',
 				scope: $scope
 			});
 		};
-
 		/*
 		 * Receipt print completed
 		 */
@@ -619,6 +619,7 @@ sntRover.controller('RVInvoiceSearchController',
 		that.init = () => {
 	
 			$scope.invoiceSearchData.query = $stateParams.isFromStayCard ? $vault.get('searchQuery') : '';
+			$scope.invoiceSearchData.filter_id = $stateParams.isFromStayCard ? $vault.get('filterOption') : 1;
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
 			$scope.invoiceSearchFlags.isQueryEntered = false;
