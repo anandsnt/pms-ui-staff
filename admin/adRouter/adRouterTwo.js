@@ -265,7 +265,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.chargeCodes', {
         templateUrl: '/assets/partials/chargeCodes/adChargeCodes.html',
         controller: 'ADChargeCodesCtrl',
-        url: '/chargeCodes'
+        url: '/chargeCodes',
+        resolve: {
+            availableLanguages: function (ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
+            }
+        }
     });
 
     $stateProvider.state('admin.externalPmsConnectivity', {

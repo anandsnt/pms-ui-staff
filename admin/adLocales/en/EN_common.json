@@ -186,4 +186,6 @@
 "PASS_LEVEL_NUMBERS": "Pass Level Numbers Seperated By (;)",
 "HOTEL_LANGUAGES": "Languages",
 "USE_LANGUAGES": "USE LANGUAGES",
-"MAKE_DEFAULT": "MAKE DEFAULT"
+"MAKE_DEFAULT": "MAKE DEFAULT",
+"DESCRIPTION_TRANSLATED": "Description (Translation)",
+"ENTER_TRANSLATIONS_FOR_DESCRIPTION": "Enter translation for Description"

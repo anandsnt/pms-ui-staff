@@ -1,5 +1,5 @@
-admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog', 'ADRatesAddonsSrv',
-    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog, ADRatesAddonsSrv) {
+admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll', 'ngDialog', 'ADRatesAddonsSrv', 'availableLanguages',
+    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll, ngDialog, ADRatesAddonsSrv, availableLanguages) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
@@ -19,6 +19,17 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
         $scope.stateAttributes = {
             selectedPaymentType: ''
         };
+
+        $scope.availableLanguagesSet = availableLanguages;
+	    var defaultLanguage = _.filter(availableLanguages.languages, function(language){
+	        return language.is_default;
+	    });
+		var setDefaultLanguage = function () {
+	        $scope.selectedLanguage ={
+	            code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+	        }
+	    };
+	    setDefaultLanguage();
 
         /**
          * Method to generate a unique key from value and is_cc_type for the paymentType
@@ -87,7 +98,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To fetch the charge code details for add screen.
 		 */
 		$scope.addNewClicked = function() {
-
+			$scope.editId = "";
+			setDefaultLanguage();
 			$scope.disableAddTax = false;
 			$scope.viennaTaxCounter = 0;
 			$scope.currentClickedElement = -1;
@@ -191,13 +203,14 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			$scope.isAdd = false;
 			$scope.disableAddTax = false;
 			$scope.editId = value;
+			$scope.currentClickedElement = index;
 			var data = {
-				'editId': value
+				'editId': value,
+				'locale': $scope.selectedLanguage.code
 			};
 
 			var editSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.currentClickedElement = index;
 				$scope.prefetchData = {};
 				$scope.selected_payment_type.id = -1;
 				$scope.prefetchData = data;
@@ -251,6 +264,15 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchEditData, data, editSuccessCallback);
 		};
+
+		$scope.onLanguageChange = function() {
+			if ($scope.editId) {
+				$scope.editSelected($scope.currentClickedElement, $scope.editId);
+			} else {
+				return;
+			}
+		};
+
 		/*
 		 * To add unique ids to the payment type list
 		 * NOTE: The payment types obtained in the response DO NOT have a unique identifier
@@ -293,6 +315,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 */
 		$scope.clickedSave = function() {
 			var saveSuccessCallback = function(data) {
+				setDefaultLanguage();
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
                                     var p = parseInt($scope.currentClickedElement);
@@ -366,7 +389,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
                             $scope.validForm = false;
                             return;
                         }
-
+            postData.locale = $scope.selectedLanguage.code;
 
 			$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
 		};
@@ -374,6 +397,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		 * To handle cancel button click.
 		 */
 		$scope.clickedCancel = function() {
+			setDefaultLanguage();
 			if ($scope.isAdd) {
 				$scope.isAdd = false;
 			}
