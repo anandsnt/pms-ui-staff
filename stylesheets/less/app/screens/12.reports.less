@@ -509,8 +509,7 @@
     .size(100%, 250px);
     .box-shadow(1px 1px 0 rgba(0,0,0,.15));
     #border-radius > .rounded();
-    .show();
-    .pull-left;
+    #flexbox > .parent(column nowrap, '', '', '' );
 
     h3 {
         font-size: 18px;
@@ -549,13 +548,34 @@
         .size(40px, 100%);
     }
 
-    label {
-        &.add-new-button {
-            box-shadow: none;
-            text-shadow: none;
+    .select {
+        &:after { background-color: @grey1; }
+
+        .text-bold {
+            font-weight: 600;
+        }
+    }
+
+    .entry { 
+        padding: 0 20px;
+        .float();
+
+        .button {
+            font-size: 14px;
+            width: 100%;
+
+            &.white {
+                background-color: @grey1;
+            }
+        }
+
+        .add-new-button {
+            position: relative;
             height: 40px;
             line-height: 40px;
-            position: relative;
+            box-shadow: none;
+            text-shadow: none;
+            margin-bottom: 10px;
 
             select {
                 opacity: 0;
@@ -566,20 +586,67 @@
                 height: 100%;
             }
         }
-    }
-
-    .select {
-        &:after { background-color: @grey1; }
-    }
-
-    .entry { 
-        padding: 0 20px;
-        .float();
 
         &:not(:last-child) {
-            padding-bottom: 20px;
-            margin-bottom: 15px; 
-            .box-shadow(0 1px 0 rgba(0,0,0,.1));
+            &.join {
+                padding-bottom: 10px;
+            }
+             
+            &:not(.join) {
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+                .box-shadow(0 1px 0 rgba(0,0,0,.1));
+            }
+        }  
+
+        &.radio-check {
+            .checkbox {
+
+                .icon-form {
+                    background-color: @white;
+                }
+
+                &.checked {
+                    font-weight: 600;
+                }
+
+                &:hover,
+                &:active { 
+                    background-color: darken(@grey1, 5);
+                    .box-shadow(~'1px 1px 0 rgba(0,0,0,.15)');
+                }
+
+                &:not(:first-child) {
+                    #border-radius > .top(0); 
+                }
+
+                &:not(:last-child) {
+                    .box-shadow(~'inset 0 -1px 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
+                    #border-radius > .bottom(0); 
+
+                    &:hover,
+                    &:active { 
+                        .box-shadow(~'inset 0 -1px 0 rgba(0,0,0,.1), 1px 1px 0 rgba(0,0,0,.15)');
+                    }
+                }
+            }
+        }
+
+        &.dual {
+            #flexbox > .parent(row wrap, '', '', '' );
+
+            label {
+                width: 100%;
+            }
+
+            .select {
+                width: 60%;
+                margin-right: 10px;
+            }
+
+            input {
+                .calc-width(40, 10);
+            }
         }
 
         &.export-fields {
@@ -618,21 +685,23 @@
 
                 .handle {
                     position: absolute;
-                    top: 1px;
-                    left: 1px;
-                    background-color: @grey2;
-                    display: grid;
-                    grid-template-columns: 3px 3px 3px;
-                    grid-template-rows: 3px 3px 3px;
-                    grid-column-gap: 3px;
-                    grid-row-gap: 3px;
-                    padding: 11px;
+                    top: 0;
+                    left: 0;
                     cursor: move;
-                    .square(38px);
+                    background-image: @calendar2x;
+                    background-size: 16px;
+                    background-repeat: no-repeat;
+                    background-position: 12px 12px;
+                    .square(40px);
 
-                    span {
-                        display: block;
-                        background: rgba( 0, 0, 0, 0.35 );
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        background-color: rgba(0,0,0,.1);
+                        z-index: 1;
+                        .square(40px);
                     }
                 }
             }
@@ -667,15 +736,7 @@
                     right: 50px;
                 }
             }
-        }
-
-        .remove-field-filters {
-            font-size: 14px;
-            background: @grey1;
-            margin-top: 10px;
-            text-shadow: none;
-            width: 100%;
-        }              
+        }             
     }
 
     /* Date / Time ***/
@@ -1040,7 +1101,6 @@
     /* Scrollable Container ***/
     .scrollable {
         position: relative;
-        .calc-height(100, 60);
 
         .wrapper { 
             padding: 20px 0; 
@@ -1054,44 +1114,25 @@
             }
         }
 
-        &.no-buttons {
-            height: 100%;
-        }
-
-        &.buttons-2 {
-            .calc-height(100, 110);
-        }
-
-        &.buttons-3 {
-            .calc-height(100, 160);
-        }
-
-        &.buttons-4 {
-            .calc-height(100, 210);
-        }
-    }
-
-    /* No Fields Selected for Custom Export ***/
-    .no-fields {
-        .wrapper {
+        &.no-fields {
             height: 100%;
 
-            .no-content {
-                .calc-height( 100, 60 );
+            .wrapper {
+                height: 100%;
+
+                .no-content {
+                    .calc-height( 100, 60 );
+                }
             }
         }
     }
 
     /* Bottom Actions ***/
     .column-actions {
-        position: absolute;
-        bottom: 0;
-        left: 0;
         text-align: center;
         padding: 10px;
         background: rgba(0,0,0,.1);
-        min-height: 60px;
-        max-height: 210px;
+        margin-top: auto;
         width: 100%;
         .show();
 
@@ -1183,10 +1224,9 @@
     }
 
     &.edit-col {
-        //Remove 20px (right) to match the left padding of 20px
-        .calc-width(100, 20);
         padding: 20px;
         background: rgba(0, 0, 0, 0.1);
+        .calc-width(100, 20); /* Remove 20px (right) to match the left padding of 20px */
         .box-shadow(1px 0 1px rgba(0,0,0,.2));
 
         .edit-actions {
@@ -1344,7 +1384,7 @@
         padding: 20px 0 20px 20px;
         overflow: hidden;
         .square(100%);
-        .float;
+        #flexbox > .parent(row nowrap, '', '', '' );
     }
 
     .no-content { padding: 0 40px; }
@@ -1356,26 +1396,64 @@
         right: 20px;
     }
 
+    &.with-bottom-form {
+        .calc-height( 100, 70 );
+    }
+
+    &[class*='cols-'] {
+        .cols-wrapper {
+            padding-right: 20px;
+        }
+    }
+
     &.cols-2 {
-        .report-col.main-col { .calc-width(100, 260); }
-        .cols-wrapper { padding-right: 20px; }
-        > .wrapper { width: 100%; }
+        .main-col {
+            .calc-width(100, 250);
+        }
+
+        > .wrapper { 
+            width: 100%; 
+        }
     }
 
     &.cols-3 {
-        .report-col.main-col { .calc-width(100, 530); }
-        .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1080px; }
+        .main-col {
+            .calc-width(100, 520);
+        }
+
+        > .wrapper { 
+            min-width: 1080px;
+        }
     }
 
     &.cols-4 {
-        .report-col.main-col { .calc-width(100, 800); }
-        .cols-wrapper { padding-right: 20px; }
-        > .wrapper { min-width: 1350px; }
+        .main-col {
+            .calc-width(100, 790);
+        }
+
+        > .wrapper { 
+            min-width: 1350px;
+        }
     }
 
-    &.with-bottom-form {
-        .calc-height( 100, 70 );
+    &.cols-5 {
+        .main-col {
+            .calc-width(100, 1060);
+        }
+
+        > .wrapper { 
+            min-width: 1620px;
+        }
+    }
+
+    &.cols-6 {
+        .main-col {
+            .calc-width(100, 1330);
+        }
+
+        > .wrapper { 
+            min-width: 1890px;
+        }
     }
 }
 
@@ -1386,32 +1464,42 @@
     width: 100%;
     height: 70px;
     background: @grey2;
-    padding: 15px 10px;
-    #flexbox > .parent( row, '', center, '' );
+    padding: 10px;
+    #flexbox > .parent('', '', center, '' );
 
     .entry {
+        position: relative;
         margin-right: 10px;
 
-        select,
+        label {
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            font-size: 12px;
+            line-height: 1;
+            color: @grey3;
+            text-transform: uppercase;
+        }
+
+        input, 
+        select {
+            padding: 12px 10px 0 10px;
+            height: 40px;
+        }
+
         input {
-            font-size: 14px;
-            width: 100%;
+            font-weight: 600;
+            width: 240px;
         }
 
-        select { padding-right: 25px; }
-
-        &:first-child {
-            width: 260px;
-        }
-
-        &:not(:first-child) {
-            width: 200px;
+        select {
+            padding-right: 30px;
+            width: 180px;
         }
     }
 
     .actions {
         margin-left: auto;
-        flex-shrink: 0;
     }
 }
 
