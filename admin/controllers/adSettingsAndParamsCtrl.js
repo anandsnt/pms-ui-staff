@@ -28,7 +28,7 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
     $scope.is_multi_currency = settingsAndParamsData.is_multi_currency;
     $scope.is_multi_currency_enabled = settingsAndParamsData.is_multi_currency_enabled;    
     $scope.currency_list = settingsAndParamsData.currency_list;
-    angular.forEach($scope.currency_list, function(item, index) {
+    angular.forEach($scope.currency_list, function(item) {
         if (_.indexOf(settingsAndParamsData.rate_currencies, item.id) !== -1) {
             item.is_selected = true;
         } else {
@@ -82,5 +82,5 @@ admin.controller('settingsAndParamsCtrl', ['$scope', 'settingsAndParamsSrv', 'se
             $scope.selectedCurrencies.push(id);
             (_.findWhere($scope.currency_list, {"id": id})).is_selected = true;            
         }       
-    }
+    };
 }]);
