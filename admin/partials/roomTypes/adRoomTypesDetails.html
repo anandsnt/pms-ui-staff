@@ -6,13 +6,22 @@
 				<span ng-show="isAddMode">{{ 'ADD' | translate }}</span>
 				 {{roomTypeData.room_type_name}} </h3>
 			<em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }}</em>
+			<div class="select select-col addon-lang-dropdown">
+                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+                    <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="selectedLanguage.code == roomTypeData.locale"> {{locale.language}} </option>
+                </select>
+            </div>
 		</div>
 
 		<fieldset class="holder left float">
 
 			<ad-textbox styleclass="full-width" value="roomTypeData.room_type_name" name = "room-type-name" id = "room-type-name" label = "{{ 'ROOM_TYPE_NAME' | translate }}" placeholder = "{{ 'ROOM_TYPE_PLACE_HOLDER' | translate }}" required = "yes" ></ad-textbox>
 
+			<ad-textbox styleclass="full-width" value="roomTypeData.room_type_name_trl" name = "room-type-name" id = "room-type-name" label = "{{ 'ROOM_TYPE_NAME_TRANSLATED' | translate }}" placeholder = "{{ 'ROOM_TYPE_PLACE_HOLDER' | translate }}"></ad-textbox>
+
 			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="roomTypeData.snt_description" name = "snt-desc" id = "snt-desc" label = "{{ 'SNT_DESCRIPTION' | translate }}" placeholder = "{{ 'SNT_DESCRIPTION_PLACE_HOLDER' | translate }}"></ad-textarea>
+
+			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="roomTypeData.description_trl" name = "snt-desc" id = "snt-desc" label = "{{ 'DESCRIPTION_TRANSLATED' | translate }}" placeholder = "{{ 'ENTER_TRANSLATIONS_FOR_DESCRIPTION' | translate }}"></ad-textarea>
 
 			<div class="entry full-width" ng-style="" ng-if ="isEnabledRoomTypeByRoomClass">
 				<label for="room-type-picture"> {{ 'ROOM CLASS' | translate }} </label>

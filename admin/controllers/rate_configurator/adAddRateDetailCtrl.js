@@ -300,7 +300,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 'min_threshold_percent': ($scope.rateData.based_on.id === null || $scope.rateData.based_on.id === "") ? $scope.rateData.min_threshold_percent : null,
                 'rate_name_trl': $scope.rateData.rate_name_trl,
                 'rate_desc_trl': $scope.rateData.rate_desc_trl,
-                'locale': $scope.rateData.selectedLanguage
+                'locale': $scope.rateData.selectedLanguage.code
             };
 
             // Save Rate Success Callback

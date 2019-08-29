@@ -4,9 +4,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
 
-            // filter out disabled languages
-            availableLanguages.languages = _.reject(availableLanguages.languages, function(language) {
-                return !language.is_show_on_guest_card;
+            var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
+                return language.is_default;
             });
             $scope.availableLanguagesSet = availableLanguages;
 
@@ -53,7 +52,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "commission_details": {},
                 "basedOnRateUnselected": false,
                 "is_discount_allowed_on": true, // CICO-25305 - For new rates we are enabling default,
-                "selectedLanguage": 'en'
+                "selectedLanguage": {
+                    "code": defaultLanguage.length ? defaultLanguage[0].code : 'en'
+                }
             };
             // intialize rateData dictionary - END
             $scope.originOfBookings = [];
@@ -474,7 +475,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 var options = {
                     params: {
                         rateId: $scope.rateData.id,
-                        locale: $scope.rateData.selectedLanguage
+                        locale: $scope.rateData.selectedLanguage.code
                     },
                     successCallBack: $scope.manipulateData
                 };

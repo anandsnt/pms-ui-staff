@@ -70,7 +70,14 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.roomtypes', {
         templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
         controller: 'ADRoomTypesCtrl',
-        url: '/roomtypes'
+        url: '/roomtypes',
+        resolve: {
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active: true
+                });
+            }
+        }
     });
 
     $stateProvider.state('admin.roomclasses', {
