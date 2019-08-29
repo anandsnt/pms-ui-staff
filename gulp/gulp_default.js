@@ -57,9 +57,8 @@ module.exports = function(gulp, $, options) {
                     'build-login-dev', 
                     'build-station-login-dev', 
                     'build-admin-dev', 
-                    'build-zest-dev',
-                    'build-guestweb-dev',
-                    'build-guestweb-v2-dev',
+                    'build-zest-dev', 
+                    // 'build-guestweb-v2-dev',
                     'build-payment-dev',
                     'copy-cordova-assets'
                 ],
@@ -69,9 +68,8 @@ module.exports = function(gulp, $, options) {
                     'watch-login-files',
                     'watch-station-login-files', 
                     'watch-admin-files', 
-                    'watch-zest-files',
-                    'watch-guestweb-files',
-                    'watch-guestweb-v2-files',
+                    'watch-zest-files', 
+                    // 'watch-guestweb-v2-files',
                     'watch-payment-files'
                 ];
 
