@@ -1,8 +1,14 @@
-admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv',
-    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv) {
+admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$state', '$stateParams', 'rateInitialData', 'rateDetails', '$filter', '$rootScope', 'ADOriginsSrv', 'ADRatesAddDetailsSrv', 'availableLanguages',
+    function($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams, rateInitialData, rateDetails, $filter, $rootScope, ADOriginsSrv, ADRatesAddDetailsSrv, availableLanguages) {
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
+
+            // filter out disabled languages
+            availableLanguages.languages = _.reject(availableLanguages.languages, function(language) {
+                return !language.is_show_on_guest_card;
+            });
+            $scope.availableLanguagesSet = availableLanguages;
 
             $scope.otherData = {
                 'setChanged': false,
@@ -46,8 +52,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "end_date_for_display": "",
                 "commission_details": {},
                 "basedOnRateUnselected": false,
-                "is_discount_allowed_on": true // CICO-25305 - For new rates we are enabling default,
-
+                "is_discount_allowed_on": true, // CICO-25305 - For new rates we are enabling default,
+                "selectedLanguage": 'en'
             };
             // intialize rateData dictionary - END
             $scope.originOfBookings = [];
@@ -333,6 +339,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.is_global_contract = data.is_global_contract;
             $scope.rateData.round_type_id = data.round_type_id;
             $scope.rateData.min_threshold_percent = data.min_threshold_percent;
+            $scope.rateData.rate_name_trl = data.rate_name_trl;
+            $scope.rateData.rate_desc_trl = data.rate_desc_trl;
             
             manipulateAdditionalDetails(data);
 
@@ -460,6 +468,22 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
         });
 
+
+        $scope.onLanguageChange = function() {
+            if ($scope.rateData.id) {
+                var options = {
+                    params: {
+                        rateId: $scope.rateData.id,
+                        locale: $scope.rateData.selectedLanguage
+                    },
+                    successCallBack: $scope.manipulateData
+                };
+
+                $scope.callAPI(ADRatesSrv.fetchDetails, options);
+            } else {
+                return;
+            }
+        };
         /*
         * Fetches the list of origin of bookings available, sets only the active ones
         */

@@ -178,7 +178,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/api/rates/" + params.rateId;
 
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+            ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
                 that.rateDetails = data;
                 that.setUpCommissionData(data);
 

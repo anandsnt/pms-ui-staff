@@ -277,6 +277,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             },
             rateDetails: function () {
                 return {};
+            },
+            availableLanguages: function (ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
     });
@@ -295,6 +298,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
                 };
 
                 return ADRatesSrv.fetchDetails(params);
+            },
+            availableLanguages: function (ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
     });
