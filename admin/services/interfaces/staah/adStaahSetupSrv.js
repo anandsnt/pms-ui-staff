@@ -27,7 +27,7 @@ admin.service('adStaahSetupSrv', [
 
             promises.push(service.getStaahPaymentTypes().then(function(response) {
                 meta.staah_payment_types = response;
-            }))
+            }));
 
             promises.push(service.getAllAddons().then(function(response) {
                 meta.addons = response.results;
@@ -70,25 +70,25 @@ admin.service('adStaahSetupSrv', [
         };
 
         service.getSNTPaymentTypes = function() {
-            if(_.isEmpty(cache.paymentTypes)) {
+            if (_.isEmpty(cache.paymentTypes)) {
                 cache.payment_types = ADBaseWebSrvV2.getJSON('/admin/hotel_payment_types');
             }
             return cache.payment_types;
         };
 
         service.getAllAddons = function() {
-            if(_.isEmpty(cache.addons)) {
+            if (_.isEmpty(cache.addons)) {
                 cache.addons = ADBaseWebSrvV2.getJSON('/api/addons');
             }
             return cache.addons;
         };
 
         service.getStaahPaymentTypes = function() {
-            if(_.isEmpty(cache.staah_payment_types)) {
+            if (_.isEmpty(cache.staah_payment_types)) {
                 cache.staah_payment_types = ADBaseWebSrvV2.getJSON('/ifc/proxy/staah/staah_payment_types');
             }
             return cache.staah_payment_types;
-        }
+        };
 
         service.getAllMappingTypes = function () {
             if (_.isEmpty(cache.mapping_types)) {
