@@ -239,6 +239,14 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
     $scope.getPrintButtonClass = function() {
         var printButtonClass = "blue";
 
+        if (!$scope.billFormat.isInformationalInvoice 
+            && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_invoices, 10) 
+                && $scope.roverObj.noReprintReEmailInvoice 
+                && parseInt($scope.transactionsDetails.no_of_original_invoices, 10) !== 0)) {
+
+            printButtonClass = "grey";
+        }
+
         return printButtonClass;
     };
     /*
@@ -246,6 +254,14 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
      */
     $scope.isPrintButtonDisabled = function() {
         var isPrintButtonDisabled = false;
+
+        if (!$scope.billFormat.isInformationalInvoice 
+            && (parseInt($scope.item.print_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_invoices, 10) 
+                && $scope.roverObj.noReprintReEmailInvoice 
+                && parseInt($scope.transactionsDetails.no_of_original_invoices, 10) !== 0)) {   
+
+            isPrintButtonDisabled = true;
+        }
 
         return isPrintButtonDisabled;
     };
@@ -258,7 +274,13 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
 
         if (!$scope.data.mailto_address) {
             emailButtonClass = "grey";
-        } 
+        } else if (!$scope.billFormat.isInformationalInvoice 
+            && (parseInt($scope.item.email_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_emails, 10) 
+                && $scope.roverObj.noReprintReEmailInvoice 
+                && parseInt($scope.transactionsDetails.no_of_original_emails, 10) !== 0)) {   
+
+            emailButtonClass = "grey";
+        }
         return emailButtonClass;
     };
     /*
@@ -268,6 +290,12 @@ sntRover.controller('rvArBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter
         var isEmailButtonDisabled = false;
 
         if (!$scope.data.mailto_address) {
+            isEmailButtonDisabled = true;
+        } else if (!$scope.billFormat.isInformationalInvoice 
+            && (parseInt($scope.item.email_counter, 10) >= parseInt($scope.transactionsDetails.no_of_original_emails, 10) 
+                && $scope.roverObj.noReprintReEmailInvoice 
+                && parseInt($scope.transactionsDetails.no_of_original_emails, 10) !== 0)) {   
+
             isEmailButtonDisabled = true;
         }
         return isEmailButtonDisabled;
