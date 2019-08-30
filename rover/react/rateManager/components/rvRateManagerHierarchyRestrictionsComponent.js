@@ -1,8 +1,18 @@
-const RateManagerHierarchyRestrictionsComponent = () => (		
-	<div className='select'>
-       <select>
-           <option value='1' selected>House Restrictions</option>
-           <option value='2'>Common Restrictions</option>
-       </select>
-   	</div>
-);
+const { createClass } = React;
+
+const RateManagerHierarchyRestrictionsComponent = createClass({
+
+    render() {
+        return (
+            <div className='select'>
+            	<select>
+                    {this.props.listValues.map(item => (
+                        <option key={item.value} value={item.value}>
+                            {item.name}
+                        </option>
+                    ))}
+                </select>
+			</div>
+        );
+    }
+});

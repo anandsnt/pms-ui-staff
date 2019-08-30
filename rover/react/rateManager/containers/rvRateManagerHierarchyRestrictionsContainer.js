@@ -1,8 +1,23 @@
 const {connect} = ReactRedux;
 
+let getListValues = () => {
+	let list = [
+		{
+			name: 'House Restrictions',
+			value: 'HOUSE'
+		},
+		{
+			name: 'Common Restrictions',
+			value: 'COMMON'
+		}
+	];
+
+	return list;
+};
+
 const mapStateToRateManagerHierarchyRestrictionsComponentProps = (state) => {
   return {
-    isAddHierarchyRestrictions: state.isAddHierarchyRestrictions
+    listValues: getListValues()
   }
 };
 
