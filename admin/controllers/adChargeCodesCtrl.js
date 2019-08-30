@@ -27,7 +27,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		var setDefaultLanguage = function () {
 	        $scope.selectedLanguage ={
 	            code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
-	        }
+	        };
 	    };
 	    setDefaultLanguage();
 

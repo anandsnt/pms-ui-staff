@@ -73,9 +73,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/roomtypes',
         resolve: {
             availableLanguages: function(ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages({
-                    show_only_active: true
-                });
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
     });
