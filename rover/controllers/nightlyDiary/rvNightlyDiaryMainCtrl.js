@@ -43,6 +43,18 @@ angular.module('sntRover')
                     MAX_NO_OF_DAYS = 21,
                     paginationDataBeforeMoveOrAssign = {};
 
+                // CICO-68837 : Handle back navigation from Staycard Nights button.
+                if ($stateParams.origin === 'STAYCARD_NIGHTS') {
+                    $rootScope.setPrevState = {
+                        title: $filter('translate')('STAY_CARD'),
+                        name: 'rover.reservation.staycard.reservationcard.reservationdetails',
+                        param: {
+                            confirmationId: $stateParams.confirm_id,
+                            id: $stateParams.reservation_id,
+                            isrefresh: false
+                        }
+                    };
+                }
                 /*
                  * utility method Initiate controller
                  * @return {}

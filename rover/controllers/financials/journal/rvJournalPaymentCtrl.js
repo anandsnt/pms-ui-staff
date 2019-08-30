@@ -32,7 +32,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             "to_date": $scope.data.toDate,
             "employee_ids": $scope.data.selectedEmployeeList,
             "department_ids": $scope.data.selectedDepartmentList,
-            "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
+            "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase()),
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchPaymentDataByPaymentTypes, postData, successCallBackFetchPaymentData);
@@ -46,6 +48,10 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 
     $scope.addListener('toDateChanged', function() {
         initPaymentData("");
+    });
+
+    $scope.addListener('PAYMENTSSEARCH', function() {
+        initPaymentData();
     });
 
     // CICO-28060 : Update dates for Revenue & Payments upon changing summary dates

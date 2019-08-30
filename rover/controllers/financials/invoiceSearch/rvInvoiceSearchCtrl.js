@@ -566,7 +566,6 @@ sntRover.controller('RVInvoiceSearchController',
 				scope: $scope
 			});
 		};
-
 		/*
 		 * Receipt print completed
 		 */
