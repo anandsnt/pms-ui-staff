@@ -148,6 +148,20 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
         };
 
+        /**
+         * Navigate to the schedulable report list
+         */
+        $scope.navigateToScheduleList = function () {
+            ngDialog.close();
+            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+                $scope.selectedReport.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+
+            fetchReqDatas();
+        };
+
         var createSchedule = function() {
             var params = {
                 report_id: $scope.selectedEntityDetails.id,
@@ -157,16 +171,18 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 delivery_type_id: $scope.scheduleParams.delivery_id
             };
 
-            var success = function() {
+            var success = function( data ) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
-                    $scope.selectedReport.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false
+                    }); 
+                } else {
+                    $scope.navigateToScheduleList();
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
-
-                fetchReqDatas();
             };
 
             var failed = function(errors) {
