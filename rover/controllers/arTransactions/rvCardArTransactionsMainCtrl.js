@@ -890,8 +890,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 				$scope.status = "success";
 				$scope.showEmailSentStatusPopup();
-				$scope.reloadCurrentActiveBill();
-				$scope.switchTabTo('TRANSACTIONS');
+				$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab);
 			},
 			sendEmailFailureCallback = function(errorData) {
 				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
@@ -929,7 +928,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.closeDialog();
 			}
 			$("body #loading").html('<div id="loading-spinner" ></div>');
-			$scope.switchTabTo('TRANSACTIONS');
+			$scope.switchArTransactionTab($scope.arFlags.currentSelectedArTab)
 			sntActivity.stop("PRINT_STARTED");
 
 		};
