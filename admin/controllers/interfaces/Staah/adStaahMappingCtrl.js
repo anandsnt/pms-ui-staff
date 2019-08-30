@@ -45,7 +45,7 @@ admin.controller('adStaahMappingCtrl', [
             return s.charAt(0).toUpperCase() + s.slice(1).replace(/(_\w)/g, function (m) {
                 return ' ' + m[1].toUpperCase();
             });
-        }
+        };
 
         $scope.mappingTypeText = function (name) {
             return _.find($scope.state.mappingTypes, function (obj) {
@@ -111,10 +111,11 @@ admin.controller('adStaahMappingCtrl', [
 
         $scope.onClickSaveNew = function () {
             // prevent duplicate mappings of payment types
-            if($scope.mapping.typeof === 'payment_type') {
+            if ($scope.mapping.typeof === 'payment_type') {
                 var dup = _.select($scope.data, function (obj) {
                     return obj.external_value === $scope.mapping.external_value;
                 });
+
                 if (dup.length > 0) {
                     $scope.errorMessage = ['Mapping value already in use - please select a different value'];
                     return;
