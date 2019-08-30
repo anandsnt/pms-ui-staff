@@ -1,4 +1,6 @@
-<div class="scrollable no-buttons" ng-controller="RVCustomExportFilterCtrl"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
+<div class="scrollable no-buttons" 
+     ng-controller="RVCustomExportFilterCtrl"
+     ng-iscroll="custom-export-filters-scroller"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
     <div class="wrapper">
         <h3>Set Filters<span>Select Field and Apply Filters</span></h3>
 
@@ -18,10 +20,20 @@
                 selected-first-level = "appliedFilter.selectedFirstLevel"
                 selected-second-level = "appliedFilter.selectedSecondLevel"
                 filter-pos = "$index"
-                on-remove = "removeFilter(filterPos)"
-                >
+                on-remove = "removeFilter(filterPos)">
 
             </duration-filter>
+            <range-filter
+                ng-if="appliedFilter.isRange" 
+                first-level-data = "appliedFilter.firstLevelData"
+                second-level-data = "appliedFilter.secondLevelData"
+                selected-first-level = "appliedFilter.selectedFirstLevel"
+                selected-second-level = "appliedFilter.selectedSecondLevel"
+                filter-pos = "$index"
+                on-remove = "removeFilter(filterPos)"
+                range-value = "appliedFilter.rangeValue">
+
+            </range-filter>
             
         </div>
         <div class="entry">

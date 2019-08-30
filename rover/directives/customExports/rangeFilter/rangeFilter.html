@@ -1,0 +1,24 @@
+<div class="entry-wrapper">
+    <div class="entry">
+        <label for="options-field">Field Name</label>
+        <div class="select">
+            <select id="duration-field" class="text-bold" ng-model="selectedFirstLevel">
+                <option value="">Select a field</option>
+                <option ng-repeat="filter in firstLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry dual">
+        <label for="range-options">Range Options</label>
+        <div class="select" ng-model="selectedSecondLevel">
+            <select id="range-options" ng-model="selectedSecondLevel">
+                <option value="">Select</option>
+                <option ng-repeat="filter in secondLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+            </select>
+        </div>
+        <input type="text" placeholder="Enter value" ng-model="rangeValue">
+    </div>
+    <div class="entry">
+        <button class="button white red-text" ng-click="removeFilter()">Remove Range</button>
+    </div>
+</div>
