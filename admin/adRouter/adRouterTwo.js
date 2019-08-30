@@ -318,7 +318,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.rulesRestrictions', {
         templateUrl: '/assets/partials/rulesRestriction/adRulesRestriction.html',
         controller: 'ADRulesRestrictionCtrl',
-        url: '/restriction_types'
+        url: '/restriction_types',
+        resolve: {
+            availableLanguages: function (ADTranslationSrv) {
+                    return ADTranslationSrv.getActiveGuestLanguages();
+            }
+        }
     });
 
     $stateProvider.state('admin.sociallobbysettings', {
