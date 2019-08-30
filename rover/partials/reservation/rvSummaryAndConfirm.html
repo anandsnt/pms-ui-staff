@@ -28,7 +28,8 @@
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.hh">
+                                        ng-model="reservationData.checkinTime.hh"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -46,7 +47,8 @@
                             </div>
                             <div class="select minutes">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.mm">
+                                        ng-model="reservationData.checkinTime.mm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -55,7 +57,8 @@
                             </div>
                             <div class="select ampm">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.ampm">
+                                        ng-model="reservationData.checkinTime.ampm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -69,7 +72,8 @@
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.hh">
+                                        ng-model="reservationData.checkoutTime.hh"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -87,7 +91,8 @@
                             </div>
                             <div class="select minutes">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.mm">
+                                        ng-model="reservationData.checkoutTime.mm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -96,7 +101,8 @@
                             </div>
                             <div class="select ampm">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.ampm">
+                                        ng-model="reservationData.checkoutTime.ampm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>

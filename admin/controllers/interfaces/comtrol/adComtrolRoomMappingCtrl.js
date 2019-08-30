@@ -14,7 +14,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
-                    $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
+                    $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
                     $scope.state.editRef = null;
                 }
             },
