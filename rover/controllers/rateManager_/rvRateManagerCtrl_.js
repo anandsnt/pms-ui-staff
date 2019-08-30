@@ -2392,7 +2392,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         };
 
         var initialState = {
-            mode: RM_RX_CONST.NOT_CONFIGURED_MODE
+            mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
+            isAddHierarchyRestrictions: Toggles.isEnabled('add_hierarchy_restrictions')
         };
 
         const store = configureStore(initialState);
