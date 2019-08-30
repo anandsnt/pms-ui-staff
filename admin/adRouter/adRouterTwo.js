@@ -73,7 +73,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/roomtypes',
         resolve: {
             availableLanguages: function(ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -210,8 +212,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             roomId: undefined
         },
         resolve: {
-            availableGuestLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -265,8 +269,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADChargeCodesCtrl',
         url: '/chargeCodes',
         resolve: {
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -288,8 +294,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             rateDetails: function () {
                 return {};
             },
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -309,8 +317,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
 
                 return ADRatesSrv.fetchDetails(params);
             },
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -320,8 +330,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADRulesRestrictionCtrl',
         url: '/restriction_types',
         resolve: {
-            availableLanguages: function (ADTranslationSrv) {
-                    return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
         }
     });
@@ -427,8 +439,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             },
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             },
             singleAddon: function (ADRatesAddonsSrv, $stateParams) {
                 if ($stateParams.addonId === "") {
@@ -651,8 +665,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADStationaryCtrl',
         url: '/stationary',
         resolve: {
-            availableGuestLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             },
             availableHoldStatus: function (ADHoldStatusSrv) {
                 return ADHoldStatusSrv.fetch();
@@ -749,8 +765,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             upsellData: function (ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
             },
-            availableLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages();
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages({
+                    show_only_active_languages: true
+                });
             }
 
         }
