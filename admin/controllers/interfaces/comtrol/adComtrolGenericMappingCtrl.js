@@ -1,5 +1,7 @@
-admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMappingSrv', 'COMTROL_REF',
-    function($scope, adComtrolGenericMappingSrv, COMTROL_REF) {
+admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMappingSrv','ngTableParams', 'COMTROL_REF',
+    function($scope, adComtrolGenericMappingSrv, ngTableParams, COMTROL_REF) {
+
+        ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         // CICO-42895 This value doesn't change
         var _TIP_CHARGE_CODE_EXT_VALUE = 295;
@@ -15,7 +17,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
-                    $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
+                    $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
                     $scope.state.editRef = null;
                 }
             },
@@ -67,23 +69,9 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
                     is_default: is_default,
                     charge_code_name: charge_code_name
                 },
-                successCallBack: function(response) {
-                    if (is_default) {
-                        var similar_types = _.where($scope.mappings, {external_type: external_type});
-
-                        _.each(similar_types, function(obj) {
-                            obj.is_default = false;
-                        });
-                    }
-
-                    $scope.mappings.push({
-                        id: response.id,
-                        external_type: external_type,
-                        external_code: external_code,
-                        is_default: is_default,
-                        charge_code_name: charge_code_name
-                    });
-                    $scope.state.mode = "";
+                successCallBack: function() {
+                    $scope.tableParams.reload();
+                    $scope.state.mode = '';
                 }
             });
         };
@@ -178,8 +166,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
             $scope.callAPI(adComtrolGenericMappingSrv.delete, {
                 params: mapping.id,
                 successCallBack: function() {
-                    mapping.isDeleted = true;
-                    $scope.state.deletedCount++;
+                  $scope.tableParams.reload();
                 }
             });
         };
@@ -209,36 +196,63 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
             }
         };
 
+        $scope.fetchTableData = function($defer, params) {
+            var getParams = $scope.calculateGetParams(params),
+                fetchSuccessOfItemList = function(data) {
+                    $scope.$emit('hideLoader');
+                    $scope.currentClickedElement = -1;
+                    $scope.totalCount = data.total_records;
+                    $scope.totalPage = Math.ceil(data.total_records / $scope.displyCount);
+                    $scope.data = data.generic_mappings;
+                    $scope.currentPage = params.page();
+                    params.total(data.total_records);
+                    $defer.resolve($scope.data);
+                };
+            $scope.invokeApi(adComtrolGenericMappingSrv.fetch, getParams, fetchSuccessOfItemList);
+        };
+
+        $scope.loadTable = function() {
+            $scope.tableParams = new ngTableParams({
+                page: 1, // show first page
+                count: $scope.displyCount // count per page
+            }, {
+                total: 0, // length of data
+                getData: $scope.fetchTableData
+            });
+        };
+
         // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
          */
         (function() {
-            $scope.state = {
-                extTypes: COMTROL_REF.FOLIO_POSTING_TRANSACTION_CODE,
-                extCodes: COMTROL_REF.PHONE_CALL_TYPES,
-                chargeCodes: null,
-                deletedCount: 0,
-                selected: null,
-                mode: "",
-                editRef: null,
-                new: {
-                    external_type: "",
-                    charge_code_name: "",
-                    external_code: "",
-                    is_default: false
-                }
-            };
-
-          $scope.callAPI(adComtrolGenericMappingSrv.fetch, {
-            onSuccess: function (response) {
-              $scope.mappings = response;
-
-              if ($scope.mappings.length) {
-                loadMetaList();
+          $scope.state = {
+              extTypes: COMTROL_REF.FOLIO_POSTING_TRANSACTION_CODE,
+              extCodes: COMTROL_REF.PHONE_CALL_TYPES,
+              chargeCodes: null,
+              deletedCount: 0,
+              selected: null,
+              mode: "",
+              editRef: null,
+              new: {
+                  external_type: "",
+                  charge_code_name: "",
+                  external_code: "",
+                  is_default: false
               }
-            }
-          });
+          };
+
+          $scope.loadTable();
+
+          // $scope.callAPI(adComtrolGenericMappingSrv.fetch, {
+          //   onSuccess: function (response) {
+          //     $scope.mappings = response;
+          //
+          //     if ($scope.mappings.length) {
+          //       loadMetaList();
+          //     }
+          //   }
+          // });
         })();
     }
 ]);

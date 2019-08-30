@@ -435,7 +435,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
 				
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
-			if ($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) {
+			if (($scope.isFromPaymentScreen && !$scope.transactionsDetails.is_bill_lock_enabled) || data.selectedPaymentType === 'DB') {
 				$scope.shouldGenerateFolioNumber = true;
 			}
 			getTransactionDetails();

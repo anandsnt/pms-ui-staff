@@ -20,6 +20,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         initSummaryData();
     });
 
+    $scope.addListener('SUMMARYSEARCH', function() {
+        initSummaryData();
+    });
+
     // CICO-28060 : Update dates for summary upon changing from-date from Revenue or Payments
     $scope.addListener('fromDateChanged', function( event, date ) {
         $scope.data.summaryDate = date;
@@ -71,7 +75,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
-	var initSummaryData = function() {
+	var initSummaryData = function() {        
 
 		var successCallBackFetchSummaryData = function(responce) {
 
@@ -91,11 +95,14 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
 		};
 
         var params = {
-            "date": $scope.data.summaryDate
+            "date": $scope.data.summaryDate,
+            "filter_id": $scope.data.filterId,
+            "query": $scope.data.query,
+            "is_summary": $scope.data.isExpandedView
         };
 
 		$scope.invokeApi(RVJournalSrv.fetchSummaryData, params, successCallBackFetchSummaryData);
-    };
+    };    
 
     // To handle date updation on summary tab
     $scope.addListener('summaryDateChanged', function() {
@@ -139,7 +146,10 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
                 "date": $scope.data.summaryDate,
                 "page_no": summaryItem.page_no,
                 "per_page": $scope.perPage,
-                "type": balance_type
+                "type": balance_type,
+                "filter_id": $scope.data.filterId,
+                "query": $scope.data.query,
+                "is_summary": $scope.data.isExpandedView
             };
 
             $scope.invokeApi(RVJournalSrv.fetchBalanceDetails, params, successCallBackFetchBalanceDetails);
@@ -149,6 +159,7 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
             refreshSummaryScroller();
         }
     };
+   
 
     /*
      *   Handle Expand/Collapse on balance each type
