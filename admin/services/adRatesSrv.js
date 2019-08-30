@@ -110,7 +110,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
             var url = "/admin/rates/" + params.id + "/edit.json";
 
-            ADBaseWebSrv.getJSON(url).then(function (data) {
+            ADBaseWebSrv.getJSON(url, params).then(function (data) {
                 deferred.resolve(data);
             }, function (data) {
                 deferred.reject(data);
