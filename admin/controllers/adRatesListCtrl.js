@@ -263,10 +263,6 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 
 	};
 
-	$scope.showLoader = function() {
-		$scope.$emit('showLoader');
-	};
-
 	$scope.editRatesClicked = function(rateId, index) {
 		// If PMS connected, we show an inline edit screen for rates.
 		// Only rate name and description should be editable.
@@ -284,10 +280,8 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 	 		$scope.invokeApi(ADRatesSrv.getRateDetailsForNonstandalone, data, successCallbackRender);
 		// If standalone PMS, then the rate configurator wizard should be appeared.
 		} else {
-			$scope.showLoader();
 			$state.go('admin.rateDetails', {rateId: rateId});
 		}
-
 	};
 
 	$scope.openCsvUploadPopup = function() {

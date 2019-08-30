@@ -6,7 +6,7 @@
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
            type="number" value="{{payment.amount}}" 
-           class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
+           class="amount" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
 
@@ -70,7 +70,8 @@
       <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
           CANCEL
       </button>
-      <button type="button" class="button green" click-touch="submitPayment()"
+      <button type="button" class="button green" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="!isRefund()">
           MAKE PAYMENT
       </button>    
@@ -79,7 +80,8 @@
       <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
           CLOSE
       </button>
-      <button type="button" class="button blue" click-touch="submitPayment()"
+      <button type="button" class="button blue" ng-disabled="shouldHidePaymentButton()"
+            ng-class="{'grey':shouldHidePaymentButton()}" click-touch="submitPayment()"
               ng-show="isRefund()">
           REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
       </button>

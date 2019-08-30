@@ -14,7 +14,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
     'ngDialog',
     'hotelSettings',
     'taxExempts',
-    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings, taxExempts) {
+    'countries',
+    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings, taxExempts, countries) {
 
         BaseCtrl.call(this, $scope);
 
@@ -71,9 +72,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * @return boolean [true if all the mandatory values are present]
          */
         var ifMandatoryValuesEntered = function() {
-            var summary = $scope.groupConfigData.summary;
+            var summary = $scope.groupConfigData.summary,
+                isValid = !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
 
-            return !!summary.group_name && !!summary.hold_status && !!summary.block_from && !!summary.block_to && !!summary.release_date;
+            return isValid;
         };
 
         /**
@@ -1173,7 +1175,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "") {
                     $scope.groupConfigData.summary.is_tax_exempt = false;
                 }
-                if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress) {
+                if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress ) {
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
@@ -1325,9 +1327,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 },
                 change: function() {
                     if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.company || !$scope.groupConfigData.summary.company.name)) {
-                        $scope.groupConfigData.summary.company = {
-                            id: ""
-                        };
+                        $scope.groupConfigData.summary.company = $scope.groupSummaryMemento.company;
                         $scope.detachCardFromGroup('company');
                     }
                     $scope.$broadcast("COMPANY_CARD_CHANGED");
@@ -1368,9 +1368,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 },
                 change: function() {
                     if (!$scope.isInAddMode() && (!$scope.groupConfigData.summary.travel_agent || !$scope.groupConfigData.summary.travel_agent.name)) {
-                        $scope.groupConfigData.summary.travel_agent = {
-                            id: ""
-                        };
+                        $scope.groupConfigData.summary.travel_agent = $scope.groupSummaryMemento.travel_agent;
                         $scope.detachCardFromGroup('travel_agent');
                     }
                     $scope.$broadcast("TA_CARD_CHANGED");
@@ -1519,6 +1517,34 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
 
+        // Detaches the cards(TA/CC) from group
+        $scope.detachCard = function(cardType) {
+            if (cardType === 'company')  {
+                $scope.groupConfigData.summary.company = {
+                    id: ""
+                };  
+                $scope.$broadcast("COMPANY_CARD_CHANGED");
+
+            } else {
+                $scope.groupConfigData.summary.travel_agent = {
+                    id: ""
+                }; 
+                $scope.$broadcast("TA_CARD_CHANGED");
+            }
+            $scope.updateGroupSummary();
+
+        };
+
+        // Cancel the detachment of CC/TA from group
+        $scope.cancelDetachment = function(cardType) {
+            if (cardType === 'company') {
+                $scope.groupConfigData.summary.company = $scope.groupSummaryMemento.company;
+            } else {
+                $scope.groupConfigData.summary.travel_agent = $scope.groupSummaryMemento.travel_agent;
+            }
+
+        }
+
         /**
          * function to initialize things for group config.
          * @return - None
@@ -1546,6 +1572,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             // updating the left side menu
             setActiveLeftSideMenu();
+
+            $scope.countries = countries;
+            
         };
 
         initGroupConfig();

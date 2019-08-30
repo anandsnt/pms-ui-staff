@@ -6,7 +6,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
     'zsCheckinSrv',
     'zsGeneralSrv',
     '$timeout',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, zsGeneralSrv, $timeout) {
+    '$stateParams',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, zsGeneralSrv, $timeout, $stateParams) {
 
 		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -317,10 +318,10 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
             $scope.callAPI(zsGeneralSrv.fetchHotelBusinessDate, options);
         };
-        var setReservationParams = function() {
+        var setReservationParams = function(last_name) {
             $scope.reservationParams = {
                 'due_in': true,
-                'last_name': '',
+                'last_name': last_name ? last_name : '',
                 'no_of_nights': '',
                 'alt_confirmation_number': '',
                 'email': '',
@@ -335,7 +336,11 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 $scope.reservationParams.no_of_nights = '';
                 $scope.mode = 'CHOOSE_OPTIONS';
             } else if ($scope.mode === 'LAST_NAME_ENTRY') {
-                $state.go('zest_station.home');
+                if ($scope.zestStationData.id_scan_enabled && $scope.zestStationData.scan_id_to_find_reservations) {
+                    $state.go('zest_station.findReservationFromId');
+                } else {
+                    $state.go('zest_station.home');
+                }
             } else if ($scope.mode === 'FIND_BY_DATE') {
                 $scope.showDatePick = false;
                 $timeout(function() {
@@ -359,9 +364,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 			// starting mode
             $scope.showDatePick = false;
             setDateOptions();
-            setReservationParams();
-            $scope.mode = 'LAST_NAME_ENTRY';
-            $scope.focusInputField('last-name');
+            if ($stateParams.last_name) {
+                setReservationParams($stateParams.last_name);
+                $scope.lastNameEntered();
+            } else {
+                setReservationParams();
+                $scope.mode = 'LAST_NAME_ENTRY';
+                $scope.focusInputField('last-name');
+            }
+            
             $scope.setScreenIcon('checkin');
         };
 

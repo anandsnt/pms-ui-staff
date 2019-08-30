@@ -169,27 +169,31 @@ angular.module('sntRover').controller('rvActivityCtrl', [
                     $(this).off('load');
                     $(this).remove();
 
-                    // yes we have everything we wanted
-                    window.print();
+					var onPrintCompletion = function() {
+						$timeout(function() {
+							$("header h1").removeClass('text-hide');
+							$(".cards-header").css({marginBottom: '0'});
+							removePrintOrientation();
+						}, 1200);
+					};
 
                     // if we are in the app
                     $timeout(function() {
                         if (sntapp.cordovaLoaded) {
                             cordova.exec(
-                                function(success) {},
-                                function(error) {},
+                                onPrintCompletion,
+                                function() {
+									onPrintCompletion();
+								},
                                 'RVCardPlugin',
-                                'printWebView', []
+                                'printWebView', ['', '0', '', 'L']
                             );
-                        }
+                        } else {
+							window.print();
+							onPrintCompletion();
+						}
                     }, 300);
 
-
-                    $timeout(function() {
-                    	$("header h1").removeClass('text-hide');
-                    	$(".cards-header").css({marginBottom: '0'});
-                        removePrintOrientation();
-                    }, 1200);
                 });
     	};
 

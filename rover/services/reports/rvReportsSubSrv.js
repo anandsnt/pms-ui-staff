@@ -568,6 +568,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchTaxExemptTypes = function() {
+            return callApi({
+                name: 'taxExempts',
+                method: 'getJSON',
+                url: 'api/tax_exempt_types',
+                resKey: 'results'
+            });
+        };
+
         service.getChargeCodes = function(params) {
             return callApi({
                 method: 'getJSON',
@@ -605,6 +614,18 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 params: params
             });
         };
+
+        service.fetchCountries = function(params) {
+            params = params || {};
+
+            return callApi({
+                name: 'accounts',
+                method: 'getJSON',
+                url: ' /ui/country_list',
+                resKey: '',
+                params: params
+            });
+        };        
 
         // Search groups based on query string
         service.fetchGroups = function(params) {
@@ -659,7 +680,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var deferred = $q.defer(),
                 url = '/api/accounts/revenue_and_tax';
 
-            rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
+            rvBaseWebSrvV2.postJSON(url, data.postParamsToApi).then(function(revenueData) {
                 revenueData.accountVatType = data.accountVatType;
                 revenueData.isPrint = data.isPrint;
                 revenueData.accountTypeId = data.accountTypeId;

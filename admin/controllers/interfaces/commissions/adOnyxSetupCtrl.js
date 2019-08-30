@@ -1,5 +1,6 @@
 admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currencyList', 'adCommissionsConfigSrv',
     function($scope, config, countryList, currencyList, adCommissionsConfigSrv) {
+        BaseCtrl.call(this, $scope);
 
         $scope.clearErrorMessage = function() {
             $scope.errorMessage = '';
@@ -7,6 +8,8 @@ admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
         
         $scope.saveInterfaceConfig = function() {
             var params = $scope.config;
+
+            $scope.deletePropertyIfRequired(params, 'sftp_password');
             
             params.commission_interface_type = 'ONYX';
             $scope.callAPI(adCommissionsConfigSrv.saveConfiguration, {
@@ -30,6 +33,13 @@ admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
             $scope.config.currency_id = config.currency_id ? config.currency_id.toString() : '';
             $scope.countryList = countryList;
             $scope.currencyList = currencyList;
+
+            // TODO - Should remove once APIs done
+            if ($scope.config.sftp_password) {
+                delete $scope.config.sftp_password;
+            }
+            
+            $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
         })();
     }
 ]);

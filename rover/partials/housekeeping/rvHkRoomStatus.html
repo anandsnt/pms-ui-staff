@@ -76,10 +76,10 @@
                 <span class="icons icon-pencil"></span>
                 Update
         </button>
-        <label class="checkbox inline" for="select-all-rooms" ng-click="toggleRoomSelection($event)">
-            <span class="icon-form icon-checkbox" ng-class="{ 'semi-checked': (multiRoomAction.anyChosen && !multiRoomAction.allChosen), 'checked': multiRoomAction.allChosen }"></span>
-            <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allChosen"/>
-        </label>
+        <label class="checkbox inline" for="select-all-rooms">
+           <span class="icon-form icon-checkbox" ng-class="{ 'semi-checked': (multiRoomAction.anyChosen && !multiRoomAction.allChosen), 'checked': multiRoomAction.allChosen }"></span>
+           <input id="select-all-rooms" type="checkbox" ng-model="multiRoomAction.allChosen" ng-change="toggleRoomSelection($event)"/>
+       </label>
     </div>
 
     <!-- Add class "rooms-checked" when some/all rooms are checked -->
@@ -123,9 +123,9 @@
 
         <li class="room" ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
             <div ng-if="::isStandAlone" class="check">
-                <label class="checkbox inline" ng-click="roomSelectChange(room, $index)">
+                <label class="checkbox inline">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
-                    <input type="checkbox" ng-model="room.selected" />
+                    <input type="checkbox" ng-model="room.selected" ng-change="roomSelectChange(room, $index)"/>
                 </label>
             </div>
 
@@ -162,10 +162,10 @@
                 <div class="last-column">
                     <!-- Show only if room is not in service -->
                     <span ng-if="::isStandAlone && room.ooOsTitle">
-                        <span class="service-status" ng-if="::!isHourlyRateOn">
+                        <span class="service-status" ng-if="::!isHourlyRateOn || hotelDiaryConfig.mode !== 'FULL'">
                             {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}}</strong>
                         </span>
-                        <span class="service-status" ng-if="::isHourlyRateOn">
+                        <span class="service-status" ng-if="::isHourlyRateOn || hotelDiaryConfig.mode === 'FULL'">
                             {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}} {{::room.service_status.end_time}}</strong>
                         </span>
                     </span>

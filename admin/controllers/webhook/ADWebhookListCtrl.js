@@ -13,6 +13,38 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
                     }
                 });
             },
+            buildWebhookData = function () {
+              _.each($scope.meta.deliveryTypes, function (type) {
+                buildWebHookSupportingEvents(type.delivery_type);
+              });
+            },
+            buildWebHookSupportingEvents = function (deliveryType) {
+              var supportedEvents = webHookSupportingEvents(deliveryType, $scope.meta.deliveryTypes);
+
+              $scope.meta[deliveryType] = {events: supportedEvents};
+              return $scope.meta[deliveryType].events;
+            },
+            webHookSupportingEvents = function (deliveryType, deliveryTypes) {
+              var supportedEvents = [],
+                  eventsTable = {},
+                  deliveryTypeEvents;
+
+              deliveryTypeEvents = _.find(deliveryTypes, {
+                                      delivery_type: deliveryType
+                                    }).supporting_events;
+
+              _.each(deliveryTypeEvents, function (event) {
+                eventsTable[event] = true;
+              });
+
+              _.each($scope.meta.events, function(event) {
+                if (eventsTable[event.value]) {
+                  supportedEvents.push(event);
+                }
+              });
+
+              return supportedEvents;
+            },
             resetNewWebhook = function () {
                 $scope.state.new = {
                     'url': '',
@@ -74,6 +106,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             } else {
                 loadMeta(function () {
                     resetNewWebhook();
+                    buildWebhookData();
                     $scope.state.mode = 'ADD';
                 });
             }
@@ -108,6 +141,8 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onWebHookTypeChange = function (value, webHook) {
             webHook.canEditEvents = canEditEvents($scope.meta.deliveryTypes, webHook.delivery_type);
+            $scope.state.new.availableEvents = $scope.meta[webHook.delivery_type].events;
+            webHook.availableEvents = getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions);
         };
 
         $scope.onToggleActive = function (webHook) {
@@ -157,14 +192,23 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
 
         $scope.onSelect = function (idx, webHook) {
             var showEdit = function () {
+                if (!$scope.meta[webHook.delivery_type]) {
+                  buildWebhookData();
+                  $scope.state.new = {
+                    'availableEvents': getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions)
+                  };
+                }
+                
                 $scope.state.editRef = angular.copy(webHook);
-                webHook.availableEvents = getTreeSelectorData($scope.meta.events, webHook.subscriptions);
+                webHook.availableEvents = $scope.meta[webHook.delivery_type] ?
+                                          getTreeSelectorData($scope.meta[webHook.delivery_type].events, webHook.subscriptions) :
+                                          getTreeSelectorData($scope.meta.events, webHook.subscriptions);
                 webHook.selectedEvents = webHook.subscriptions.join(', ');
                 webHook.canEditEvents = canEditEvents($scope.meta.deliveryTypes, webHook.delivery_type);
                 $scope.state.selected = idx;
             };
 
-            if ($scope.state.meta) {
+            if ($scope.meta) {
                 showEdit();
             } else {
                 loadMeta(showEdit);

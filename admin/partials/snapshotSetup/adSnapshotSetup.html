@@ -14,7 +14,7 @@
                                       label="{{'ACTIVE'| translate}}"></ad-toggle-button>
                     <ad-form-title full-width="true" form-title="Access Details"></ad-form-title>
                     <ad-textbox value="snapshotData.user" label="User name" required="yes"></ad-textbox>
-                    <ad-textbox value="snapshotData.password" label="Password" required="yes"></ad-textbox>
+                    <ad-textbox value="snapshotData.password" label="Password" required="yes" inputtype="password" click-handler="onPasswordClick(snapshotData, 'password')"></ad-textbox>
                     <ad-textbox value="snapshotData.api_key" label="API key" required="yes"></ad-textbox>
                     <ad-textbox value="snapshotData.url" label="URL" required="yes"></ad-textbox>
                     <ad-textbox value="snapshotData.system_name" label="{{ 'SYS_NAME' | translate}}"></ad-textbox>

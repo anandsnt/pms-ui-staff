@@ -37,6 +37,7 @@
         Cards Without Tax ID
     </label>
 </div>
+
 <!-- YEARLY VAT END-->
 <div class="entry date-range" ng-show="uiChosenReport.hasDepositDateFilter">
     <label>{{ uiChosenReport.hasDepositDateFilter.description }} <span>(From)</span></label>
@@ -258,6 +259,24 @@
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeGroup">
 </div>
 
+<div class="entry date-range" ng-show="uiChosenReport.hasShowVatWithRates">
+    <label>VAT</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.show_vat_with_rates}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.show_vat_with_rates}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.show_vat_with_rates">
+        SHOW VAT WITH RATES
+    </label>
+</div>
+
+<div class="entry date-range" ng-show="uiChosenReport.hasShowIncludeLongStays">
+    <label>INCLUDE LONG STAYS</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.include_long_stays}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.include_long_stays}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.include_long_stays">
+        INCLUDE LONG STAYS
+    </label>
+</div>
+
 <multi-option-selection ng-show="uiChosenReport.hasByChargeGroup && uiChosenReport.hasByChargeGroup.data.length"
     label="Charge Group(s)"
     on-update="refreshFilterScroll"
@@ -367,6 +386,11 @@
     data="uiChosenReport.hasTravelAgentsSearch.data"
     options="uiChosenReport.hasTravelAgentsSearch.options"></multi-option-selection>
 
+<multi-option-selection ng-show="uiChosenReport.hasIncludeCountry && uiChosenReport.hasIncludeCountry.data.length"
+    label="Country"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasIncludeCountry.data"
+    options="uiChosenReport.hasIncludeCountry.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasReservationStatus && uiChosenReport.hasReservationStatus.data.length"
     label="Reservation Status"
@@ -419,6 +443,15 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasMarketsList.data"
     options="uiChosenReport.hasMarketsList.options"></multi-option-selection>
+
+<div class="entry date-range" ng-show="uiChosenReport.hasDayUseFilter">
+    <label>DAY USE</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.include_day_use}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.include_day_use}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.include_day_use">
+        INCLUDE DAY USE
+    </label>
+</div>
 
 <multi-option-selection ng-show="uiChosenReport.hasSourcesList && uiChosenReport.hasSourcesList.data.length"
     label="Source(s)"

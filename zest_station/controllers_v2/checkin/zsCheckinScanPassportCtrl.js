@@ -35,6 +35,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         $scope.scannedPassportImage = [];
         $scope.scanning = {}; // hold settings for this view
+        var verfiedStaffId;
 
         // disable scroll on signature canvas mousehover 
         // (jSignature will not work when scroll is active)
@@ -396,6 +397,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     // Turn Light OFF after admin login is successful
                     // 
                     $scope.turnOffLight();
+                    verfiedStaffId = response.data && response.data.user_id ? response.data.user_id : '';
                 } else {
                     $scope.adminLoginError = true;
                     $log.warn('invalid admin login');
@@ -442,6 +444,41 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             return hasRejected;
         };
 
+        var recordIDApproval = function() {
+            // application name is set to ROVER to log staff name
+            var params = {
+                "id": $stateParams.reservation_id,
+                "user_id": verfiedStaffId,
+                "application": 'ROVER',
+                "action_type": "ID_REVIEWED",
+                "details": []
+            };
+
+            var newData = {
+                'key': 'Guests Verified With ID',
+                'new_value': ''
+            };
+            var guestNames = _.map($scope.selectedReservation.guest_details, function(guest) {
+                return guest.first_name + ' ' + guest.last_name;
+            });
+
+            newData.new_value = guestNames.join(', ');
+            params.details.push(newData);
+
+            var options = {
+                params: params,
+                successCallBack: function() {},
+                failureCallback: function() {},
+                'loader': 'none'
+            };
+
+            if ($scope.inDemoMode()) {
+                //  do nothing
+            } else {
+                $scope.callAPI(zsGeneralSrv.recordReservationActions, options);
+            }
+        };
+
 
         $scope.goToNext = function() {
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -468,7 +505,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.viewResults();
 
                 } else {
-                    if ($scope.fromPickupKeyPassportScan) {
+                    recordIDApproval();
+
+                    if ($stateParams.from_pickup_key) {
                         $scope.zestStationData.continuePickupFlow();
                     } else {
                         $scope.mode = 'RESERVATION_DETAILS';
@@ -527,15 +566,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.showRemoveButton = false;
 
         var validatePassportsView = function() {
-            var hasIDNeedingReview = false;
+            var iDPendingForReview = false;
 
-            for (var gid in $scope.selectedReservation.guest_details) {
-                if (gid.passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED')) {
-                    hasIDNeedingReview = true;
+            _.each($scope.selectedReservation.guest_details, function(guest) {
+                if (guest.passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED')) {
+                    iDPendingForReview = true;
                 }
-            }
+            });
 
-            $scope.allPassportReviewed = !hasIDNeedingReview;
+            $scope.allPassportReviewed = !iDPendingForReview;
         };
 
         $scope.staffUserToken = '';
@@ -575,7 +614,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
                     'date_of_birth': selectedPassportInfo.dob,
-                    'signature': $("#signature").jSignature("getData")
+                    'signature': $("#signature").jSignature("getData"),
+                    'application': 'KIOSK'
                 },
                 successCallBack: function() {
                     validatePassportsView();
@@ -795,8 +835,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 $scope.mode = 'SCAN_RESULTS';
             }
-
-            $scope.fromPickupKeyPassportScan = $stateParams.from_pickup_key === 'true';
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 
@@ -1087,7 +1125,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name,
-                    'email': $stateParams.email
+                    'email': $stateParams.email || $stateParams.guest_email || ""
                 };
 
                 if ($scope.zestStationData.is_kiosk_ows_messages_active) {

@@ -1,4 +1,4 @@
-angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
+angular.module('sntRover').service('rvUtilSrv', ['$filter', '$rootScope', function($filter, $rootScope) {
 
 		var self = this;
 		/**
@@ -319,4 +319,127 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
 			return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
 		};
 
+		this.retrieveFeatureDetails = function(feature_list, feature_name) {
+			var feature = _.find(feature_list, function(feature) {
+				return feature.feature_name === feature_name;
+			});
+
+			return feature;
+		};
+
+		/*
+         *  Utility method to Generate Time Duration List.
+         *  @param {string | null} [optional] - [minArrivalTime] 
+         *  @param {string | null} [optional] - [maxDepartureTime]
+         *  @param {Number | null} [optional] - [offset value - 15m]
+         *  @return {Array} - [List of time objects having 12hr and 24hr formats]
+		 *
+         *  generateTimeDuration(null, '1:00')  => 
+         *	[{"12":"12:00 AM","24":"00:00"},{"12":"12:15 AM","24":"00:15"},{"12":"12:30 AM","24":"00:30"},{"12":"12:45 AM","24":"00:45"},{"12":"01:00 AM","24":"01:00"}]
+         *	
+         *  generateTimeDuration('1:00','2:00') =>
+         *	[{"12":"01:00 AM","24":"01:00"},{"12":"01:15 AM","24":"01:15"},{"12":"01:30 AM","24":"01:30"},{"12":"01:45 AM","24":"01:45"},{"12":"02:00 AM","24":"02:00"}]
+         *
+         *	generateTimeDuration('23:00', null) =>
+         *	[{"12":"11:00 PM","24":"23:00"},{"12":"11:15 PM","24":"23:15"},{"12":"11:30 PM","24":"23:30"},{"12":"11:45 PM","24":"23:45"}]
+         *	
+         *	generateTimeDuration() => Full list will return.
+         */
+        this.generateTimeDuration = function( minArrivalTime, maxDepartureTime, offset ) {
+            var timeInterval = 15, // minutes interval
+                startTime = 0, // start time
+                endTime = (24 * 60) - timeInterval, // end time
+                ap = ['AM', 'PM'], // AM-PM
+
+                times = [], // time array - output array
+                twelveHrFormat = '',
+                twentyFourHrFormat = '',
+                hh = '',
+                mm = '',
+                obj = {},
+                offset = offset || 0;
+
+            if (minArrivalTime) {
+                startTime = minArrivalTime.split(':')[0] * 60 + minArrivalTime.split(':')[1] * 1 + offset * 1;
+            }
+            if (maxDepartureTime) {
+                endTime = maxDepartureTime.split(':')[0] * 60 + maxDepartureTime.split(':')[1] * 1 + offset * 1;
+            }
+
+            // loop to increment the time and push results in times array
+            for (var i = 0; startTime <= endTime; i++) {
+				hh = Math.floor(startTime / 60); // getting hours of day in 0-24 format
+				mm = (startTime % 60); // getting minutes of the hour in 0-55 format
+				twelveHrFormat = (("0" + hh % 12).slice(-2) === '00' ? '12' : ("0" + hh % 12).slice(-2)) + ':' + ("0" + mm).slice(-2) + " " + ap[Math.floor(hh / 12)]; // data in [12:00 AM- 12:00 PM format]
+				twentyFourHrFormat = ("0" + hh).slice(-2) + ':' + ("0" + mm).slice(-2); // data in [00:00 - 24:00 format]
+				obj = {
+					"12": twelveHrFormat,
+					"24": twentyFourHrFormat
+				};
+				times.push(obj);
+				startTime = startTime + timeInterval;
+            }
+
+            return times;
+        };
+
+        // Utility method to extract hh, mm, ampm details from a time in 12hr (hh:mm ampm) format
+        /*
+		 *	extractHhMmAmPm('11:00') => {ampm: "AM", hh: "11", mm: "00"}
+		 *	
+		 *	extractHhMmAmPm('15:30') => {ampm: "PM", hh: "03", mm: "30"}
+		 *	
+		 *	extractHhMmAmPm('20:15') => {ampm: "PM", hh: "08", mm: "15"}
+		 *	
+		 *	extractHhMmAmPm('01:45') => {ampm: "AM", hh: "01", mm: "45"}
+		 *	
+        */
+        this.extractHhMmAmPm = function( time ) {
+        	var hh = parseInt(time.split(' ')[0].split(':')[0]),
+        		ampm = hh >= 12 ? 'PM' : 'AM';
+
+        	return {
+                'ampm': ampm,
+                'hh': (("0" + hh % 12).slice(-2) === '00' ? '12' : ("0" + hh % 12).slice(-2)),
+                'mm': time.split(' ')[0].split(':')[1]
+            };
+        };
+
+        /*
+         *  @param {Object} [time in hh, mm, ampm as an object ]
+         *  @return {String} [24 hr format data]
+         *
+         */
+        this.convertTimeHhMmAmPmTo24 = function( timeHhMmAmPm ) {
+            var hours = timeHhMmAmPm.hh,
+                minutes = timeHhMmAmPm.mm,
+                modifier = timeHhMmAmPm.ampm;
+
+            if (hours === '12') {
+                hours = '00';
+            }
+
+            if (modifier === 'PM') {
+                hours = parseInt(hours, 10) + 12;
+            }
+            return hours + ':' + minutes;
+        };
+
+        /*
+         *  Get diary modes from config.
+         *  @param {Object} [hotelDiaryConfig]
+         *  @return {String}
+         */
+        this.getDiaryMode = function() {
+            var diaryMode = 'FULL',
+                hotelDiaryConfig = $rootScope.hotelDiaryConfig;
+
+            if (!hotelDiaryConfig.hourlyRatesForDayUseEnabled) {
+                diaryMode = 'NIGHTLY';
+            }
+            else if (hotelDiaryConfig.mode === 'LIMITED') {
+                diaryMode = 'DAYUSE';
+            }
+            return diaryMode;
+        };
 }]);

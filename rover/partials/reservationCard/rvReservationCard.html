@@ -1,5 +1,5 @@
 <!-- <div ng-include="'/assets/partials/guestCard/guestCard.html'"></div> -->
-<section id="reservation-card" class="content stay-card-inner reservation-tabs-timeline ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix" onetimemousemove ng-click="reservationCardClick()">
+<section id="reservation-card" class="content stay-card-inner reservation-tabs-timeline ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix" ng-class="{'missing-guest-id': shouldShowGuestDetails}" onetimemousemove ng-click="reservationCardClick()">
 	<!-- Reservations navigation -->
 	
 	<ul id="reservation-timeline" class="reservation-tabs-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">

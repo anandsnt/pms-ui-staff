@@ -17,6 +17,7 @@ sntRover.directive('rvPagination', function() {
         }
         // To add missing params
         $scope.pageOptions = angular.extend(pageOptions, $scope.pageOptions);
+        $scope.divClass = $scope.divClass || '';
     };
 
     return {
@@ -24,7 +25,8 @@ sntRover.directive('rvPagination', function() {
         templateUrl: '/assets/directives/pagination/rvPaginationDir.html',
         scope: {
             pageOptions: '=pageOptions',
-            pageData: '=pageData'
+            pageData: '=pageData',
+            divClass: '@divClass'
         },
         controller: 'rvPaginationCtrl',
         link: linkFn

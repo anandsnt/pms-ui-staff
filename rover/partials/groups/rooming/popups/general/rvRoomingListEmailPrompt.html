@@ -7,7 +7,7 @@
             </div>
         <button type="button" class="button blue modal-close" ng-click="sendEmail(mailInvoiceTo)" translate>SEND</a>
     </div> -->
-    <div class="modal-content form format-bill rooming-list" ng-init="mailInvoiceTo = ''">
+    <div class="modal-content form format-bill" ng-init="mailInvoiceTo = ''">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <button id="modal-close" type="button" class="modal-close" ng-click="closeDialogBox()"><span class="icons icon-close invert"></button>
 
@@ -18,12 +18,30 @@
             <input type="email" name="email" ng-model="mailInvoiceTo"  placeholder="Enter an Email" value=""/>
         </div>
 
-        <div class="entry full-width" ng-class="{ 'checked': groupConfigData.summary.hide_rates }">
-            <label class="checkbox inline" ng-class="{ 'checked': groupConfigData.summary.hide_rates }"><!-- Add class "checked" if checked -->
-                <span class="icon-form icon-checkbox"  ng-class="{ 'checked': groupConfigData.summary.hide_rates }"></span>
-                <input type="checkbox" name="dont-print-rate" value="1" ng-click="clickedShowRate()"/>
-                Don't Show Rate
-            </label>
+        <div class="entry full-width">
+            <label>Exclude</label>
+            <div class="setings-group">
+                <label class="checkbox inline" ng-class="{ 'checked': groupConfigData.summary.hide_rates }"> <!-- Add class "checked" if checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked': groupConfigData.summary.hide_rates }"></span> <!-- Add class "checked" if checked -->
+                    <input type="checkbox" name="dont-print-rate" value="1" ng-click="clickedShowRate()">
+                    Rate
+                </label>
+                <label class="checkbox inline" ng-class="{ 'checked': emailPrintFilters.excludeRoomNumber }"> <!-- Add class "checked" if checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked': emailPrintFilters.excludeRoomNumber }"></span> <!-- Add class "checked" if checked -->
+                    <input type="checkbox" ng-model="emailPrintFilters.excludeRoomNumber">
+                    Room Number
+                </label>
+                <label class="checkbox inline" ng-class="{ 'checked': emailPrintFilters.excludeAccompanyingGuests }"> <!-- Add class "checked" if checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked': emailPrintFilters.excludeAccompanyingGuests }"></span> <!-- Add class "checked" if checked -->
+                    <input type="checkbox" ng-model="emailPrintFilters.excludeAccompanyingGuests">
+                    Accompanying Guests
+                </label>
+                <label class="checkbox inline" ng-class="{ 'checked': emailPrintFilters.excludeRoomType }"> <!-- Add class "checked" if checked -->
+                    <span class="icon-form icon-checkbox" ng-class="{ 'checked': emailPrintFilters.excludeRoomType }"></span> <!-- Add class "checked" if checked -->
+                    <input type="checkbox" ng-model="emailPrintFilters.excludeRoomType">
+                    Room Type
+                </label>
+            </div>
         </div>
 
         <div class="actions">

@@ -10,8 +10,10 @@ sntRover
 			inactive_slots: 'room_inactive_slots',
 			hk_status: 'room_status',
 			hk_status_map: {
-				'CLEAN': '',
-				'DIRTY': 'dirty'
+				'CLEAN': 'clean',
+				'DIRTY': 'dirty',
+                'INSPECTED': 'inspected',
+                'PICKUP': 'pickup'
 			}
 		},
 		room_type: {

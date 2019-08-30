@@ -240,14 +240,20 @@ angular.module('sntRover')
 
                     $( '#loading' ).addClass( 'ng-hide' );
 
+                    var onPrintCompletion = function() {
+                        $timeout(closeAllSections, closeDelay);
+                    };
+
                     $timeout(function () {
-                        $window.print();
                         if ( sntapp.cordovaLoaded ) {
-                            cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                            cordova.exec(onPrintCompletion, function() {
+                                onPrintCompletion();
+                            }, 'RVCardPlugin', 'printWebView', []);
+                        } else {
+                            $window.print(); 
+                            onPrintCompletion(); 
                         }
                     }, delay);
-
-                    $timeout(closeAllSections, closeDelay);
                 });
             });
             // --------------------------------------------------------------------------------------------------------------

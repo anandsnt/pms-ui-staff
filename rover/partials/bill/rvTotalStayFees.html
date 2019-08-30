@@ -2,11 +2,17 @@
 <div class="overview" ng-repeat="totalFees in billData.total_fees" >
 	<button class="toggle with-rate" type="button" ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 		<span class="title" translate>GUEST_BALANCE</span>		
-		<span class="value" ng-show="isBalanceShown(totalFees.is_rate_suppressed)" ng-class="getBalanceClass(totalFees.balance_amount)">
+		<span class="value" ng-show="isBalanceShown(totalFees.is_rate_suppressed, billData) && !billData.is_void_bill && !billData.is_voided" ng-class="getBalanceClass(totalFees.balance_amount)">
 			<span class="currency">{{currencySymbol}}</span>{{totalFees.balance_amount | number: precisonTwo}}
 		</span>
-		<span class="value" ng-show="!isBalanceShown(totalFees.is_rate_suppressed)" ng-class="getBalanceClass(totalFees.balance_amount)">
+		<span class="value" ng-show="!isBalanceShown(totalFees.is_rate_suppressed, billData) && !billData.is_void_bill && !billData.is_voided" ng-class="getBalanceClass(totalFees.balance_amount)">
 			{{'SUPPRESSED_RATES_TEXT' | translate}}
+		</span>
+		<span class="value" ng-show="billData.is_void_bill" ng-class="getBalanceClass(totalFees.balance_amount)">
+			VOID
+		</span>
+		<span class="value" ng-show="billData.is_voided" ng-class="getBalanceClass(totalFees.balance_amount)">
+			VOIDED
 		</span>
 	</button>
 	<button type="button" class="button with-icon green" click-touch='showAdvancedBillDialog()' ng-show="( showPayButton ) || allowPmtWithGiftCard === true" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }">
@@ -152,7 +158,8 @@
                                     {{'INVOICE' |translate}}
                     </button>
 					<span translate>STAY_FEES_AS_OF</span>
-				 	{{totalFeesArray.fees_date | date:dateFormat}}	):
+				 	{{totalFeesArray.fees_date | date:dateFormat}}	
+				 	<span ng-if="totalFeesArray.spillage_included" translate> ALLOWANCE_SPILLAGE_INCLUDE_HINT</span>):
 				</td>
 				<td colspan="3" class="total-value" >
 					<strong ng-show="isBalanceShown(totalFeesArray.is_rate_suppressed)">
@@ -243,12 +250,13 @@
 					<ul class = 'charge-items' ng-if = "isStandAlone && feesData.is_group_by_ref" ng-class = "{'hidden': !feesData.isExpanded}">
 						<li ng-repeat = "item in feesData.light_speed_data">
 							<strong>{{item.description}}</strong>
-							<span class = "cost">{{ item.amount | number:precisonTwo }}</span>
+							<span class = "cost" ng-class="{'fee': !item.is_payment, 'credit': item.is_payment }">{{ item.amount | number:precisonTwo }}</span>
 						</li>
 					</ul>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
 						<span ng-if="description.card_number">{{description.fees_desc}} - {{description.card_number}}</span>
 						<span ng-if="!description.card_number">{{description.fees_desc}}</span>
+						<span class="icons icon-invoice" ng-click="openReceiptDialog()"></span>
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">
@@ -278,6 +286,9 @@
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}
 					</strong>
+					<button ng-if="feesData.is_print_receipt_available" type="button" class="button with-icon only-icon blue open-modal inline" ng-click="openReceiptDialog($index)">
+	                    <span class="icons icon-invoice"></span>
+	                </button>
 				</td>
 				<td>
 					<div class="select" ng-if="!isStandAlone">
@@ -291,7 +302,7 @@
 						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-disabled="!billData.is_active">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
-							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
+							<option value="{{reservationBillData.bills.length+1}}">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
 						</select>
 					</div>
 				</td>

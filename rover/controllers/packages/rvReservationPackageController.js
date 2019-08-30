@@ -11,7 +11,9 @@ sntRover.controller('RVReservationPackageController',
 					RVReservationPackageSrv,
 					$state, $timeout, ngDialog, RVReservationStateService) {
 
-	var reservationId = $scope.reservationData.reservation_card.reservation_id;
+	var reservationId = $scope.reservationData.reservation_card.reservation_id,
+		shouldReloadState = false;
+		
 	var successCallBack = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.packageData = data;
@@ -29,16 +31,20 @@ sntRover.controller('RVReservationPackageController',
 
 				},
 				2000);
+				
 	$scope.closeAddOnPopup = function() {
 		// to add stjepan's popup showing animation
 		$rootScope.modalOpened = false;
 		$timeout(function() {
+			if (shouldReloadState) {
+				$state.reload($state.current.name);
+			}
 			ngDialog.close();
 		}, 300);
 	};
 
 	$scope.goToAddons = function() {
-		$scope.closeAddOnPopup();
+		ngDialog.close();
 		$state.go('rover.reservation.staycard.mainCard.addons',
 		 	{
 		 		'from_date': $scope.reservation.reservation_card.arrival_date,
@@ -60,8 +66,8 @@ sntRover.controller('RVReservationPackageController',
 			$scope.reservationData.reservation_card.package_count = parseInt($scope.reservationData.reservation_card.package_count) - parseInt(1);
 			if ($scope.reservationData.reservation_card.package_count === 0) {
 				$scope.reservationData.reservation_card.is_package_exist = false;
-				$scope.closeAddOnPopup();
 			}
+			shouldReloadState = true;
 		};
 		var addonArray = [];
 

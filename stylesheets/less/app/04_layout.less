@@ -219,7 +219,6 @@ body { overflow: hidden; }
 
 			/* With search bar ***/
 			&#dashboard,
-            &#find-cards,
             &#reports {
 				top: 120px;
 				.calc-height(100, 120);
@@ -233,6 +232,7 @@ body { overflow: hidden; }
 			/* With pagination **/
 			&#dashboard-search,
 			&#search,
+			&#find-cards,
 			&#find-group,
 			&#find-account,
 			&#find-allotment,
@@ -663,6 +663,14 @@ body { overflow: hidden; }
 	                .hide();
 	            }
 
+	            .fullscreen-header {
+	                color: @white;
+
+	                .info-subheading {
+	                    color: @white;
+	                }  
+	            }
+
 	            .cards-content {
 	                height: 100%;
 	            }
@@ -682,6 +690,13 @@ body { overflow: hidden; }
 	                    &.transactions {
 	                        .tab-details {
 	                            .calc-height(100,120);
+	                        }
+	                    }
+
+	                    &.card-statistics {
+	                        .statistics-summary,
+	                        .statistics-details {
+	                            .calc-height(100,60);
 	                        }
 	                    }
 	                }
@@ -933,6 +948,18 @@ body { overflow: hidden; }
 
 						&:nth-child(2) { .hide; }
 					}
+
+					&.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width(100, 300 );
+	                        }
+	                        &.options {
+	                            width: 180px;
+	                        }
+	                    }
+	                }
 				}
 
 				&.three-options {
@@ -1258,13 +1285,117 @@ body { overflow: hidden; }
 	         
 	        /* Invoices ***/
 	        &.invoice-search {
+
+	            .invoice-search-type {
+	                width: 130px;
+	                background: rgba( 0, 0, 0, 0.1 );
+
+	                &:first-child {
+	                    margin: -10px -10px;
+	                    padding: 10px 10px;
+	                    height: 60px;
+	                }
+
+	                .select {
+	                    select {
+	                        text-transform: uppercase;
+	                    }
+	                }
+	            }
+
+	            .invoice-qr-code {
+	                .calc-width( 100, 130 );
+	                .box-shadow( none );
+
+	                .button {
+	                    padding: 0 15px;
+	                    font-size: 14px;
+
+	                    &:not(:last-child) {
+	                        margin-right: 15px;
+	                    }
+	                }
+	            }
+
+	            .select {
+	                &.with-label {
+
+	                    select {
+	                        padding: 15px 20px 0 10px;
+	                        font-size: 14px;
+	                    }
+
+	                    label {
+	                        position: absolute;
+	                        top: 0;
+	                        left: 10px;
+	                        font-size: 12px;
+	                        text-transform: uppercase;
+	                        color: @grey3;
+	                    }
+	                }
+	            }
+
 	            .search { 
-	                .calc-width(100, 200); 
+	                .calc-width(100, 655); 
+	            }
+
+	            .dates {
+	                width: 300px;
+	                .float;
+
+	                    .entry-data {
+	                        position: relative;
+	                        .calc-width( 50, 5 );
+	                        .faux-clickable;
+	                        .pull-left;
+
+	                        &:first-child { margin-right: 10px; }
+
+	                        label {
+	                            position: absolute;
+	                            top: 0;
+	                            left: 10px;
+	                            font-size: 12px;
+	                            text-transform: uppercase;
+	                            color: @grey3;
+	                        }
+
+	                        input {
+	                            font-size: 18px;
+	                            line-height: 25px;
+	                            font-weight: 600;
+	                            padding-top: 15px;
+	                            width: 100%;
+	                        }
+
+	                        .clear-query {
+	                            top: 2px;
+	                            background-color: @white;
+
+	                            .icons { 
+	                                top: 10.5px; 
+	                            }
+	                        }
+	                    }
 	            }
 
 	            .options {
-	                width: 180px;
+	                width: 215px;
 	                .pull-right;
+	            }
+
+	            .checkbox {
+	                font-size: 14px;
+	                text-transform: uppercase;
+	                text-align: left;
+	            }
+
+	            &.ar-invoice-search {
+	                .search { 
+	                    .calc-width(100, 430); 
+	                }
+	                .options { .hide(); }
 	            }
 	        }
 			
@@ -1562,6 +1693,130 @@ body { overflow: hidden; }
 		                }
 		            }
 		        }
+
+		        &.has-bulk-checkout {
+	                .entry {
+	                    &.switch {
+	                        width: 190px;
+	                    }
+
+	                    &.search { 
+	                        .calc-width(100, 590); 
+	                    }
+
+	                    &.open-balance {
+	                        width: 270px;
+	                        font-size: 14px;
+	                        text-align: left;
+	                    }
+
+	                    &.notice-checkout {
+	                        .calc-width(100, 480);
+	                        .float;
+
+	                        .notice {
+	                            margin-right: 10px;
+	                            text-transform: uppercase;
+	                            color: @black;
+	                            .calc-width( 100, 140);
+	                            .pull-left;
+
+	                            .count {
+	                                display: inline-block;
+	                                padding: 0 2px;
+	                                font-weight: 600;
+	                                background-color: @red;
+	                                color: white;
+	                            }
+	                        }
+	                        .button {
+	                            width: 130px;
+	                        }
+	                    }
+
+	                    &.room-types {
+	                        width: 140px;
+	                        padding: 0;
+	                        .box-shadow(none);
+	                    }
+
+	                    &.dates {
+	                        width: 230px;
+	                        padding: 0;
+	                        .box-shadow(none);
+
+	                        .entry-data {
+	                            width: 110px;
+	                        }
+	                    }
+
+	                    .switch-button {
+	                        background: rgba(0,0,0,.1);
+	                        #border-radius > .rounded();
+	                        .size(40px, 100%);
+	                        .show;
+	        
+	                        .data-off,
+	                        .data-on { 
+	                            font-size: 14px;
+	                            line-height: 30px;
+	                            text-transform: uppercase;
+	                            height: 30px;
+	                            overflow: hidden;
+	        
+	                            .switch-icon {
+	                                color: @grey3;
+	                                text-shadow: none;
+	                                .clickable;
+	                                background: @white;
+	                            }
+	        
+	                            .value { 
+	                                color: rgba(0,0,0,.3);
+	                                font-weight: 600; 
+	                            }
+	        
+	                            &.data-off { 
+	                                left: auto;
+	                                right: 0;
+	        
+	                                .switch-icon { 
+	                                    margin: 0 5px 0 0; 
+	                                    .calc-width( 100, 45 );
+	                                }
+	                                .value { width: 40px; }
+	                            }
+	        
+	                            &.data-on { 
+	                                left: auto;
+	                                right: 100%;
+	        
+	                                .switch-icon { 
+	                                    width: 40px;
+	                                    margin: 0 0 0 5px; 
+	                                }
+
+	                                .value {
+	                                    .calc-width( 100, 45 );
+	                                }
+	                            }
+	                        }
+	        
+	                        &.on {
+	                            .data-off { left: auto; right: -100%; }
+	                            .data-on { left: auto; right: 0; }
+	                        }
+	                    }
+	                }
+
+	                &.enable-adding {
+	                    .entry {
+	                        &.search { 
+	                            .calc-width(100, 700); 
+	                        }
+	                    }
+	                }
+	            }
 		    }
 
 			/* Room search ***/
@@ -1646,6 +1901,350 @@ body { overflow: hidden; }
 	                }
 	            }
 	        }
+
+	        /* Automatic Payments ***/
+	        &.automatic-payments {
+	            position: relative;
+	            overflow: visible;
+	            #flexbox > .parent(row wrap, '', center, '');
+
+	            .entry {
+	                position: relative;
+	                padding: 0;
+	                margin: 0 10px 0 0;
+
+	                label {
+	                    position: absolute;
+	                    top: 0;
+	                    left: 10px;
+	                    font-size: 12px;
+	                    text-transform: uppercase;
+	                    color: @grey3;
+	                }
+
+	                input {
+	                    padding: 12px 10px 0 10px;
+	                    font-weight: 600;
+	                    height: 40px;
+	                }
+
+	                select {
+	                    text-transform: uppercase;
+	                    padding: 15px 30px 0 10px;
+	                    font-size: 14px;
+	                }
+
+	                .clear-query {
+	                    top: 2px;
+	                    height: 38px;
+	                    background-color: @white;
+	                }
+
+	                &.date {
+	                    width: 160px;
+	                    .box-shadow(none);
+	                }
+
+	                &.status {
+	                    width: 220px;
+	                    padding-right: 10px;
+	                    .box-shadow(inset -1px 0 0 rgba(0,0,0,.1));
+	                }
+
+	                &.process {
+	                    width: 160px;
+	                    padding-right: 10px;
+	                    .box-shadow(inset -1px 0 0 rgba(0,0,0,.1));
+
+	                    .button {
+	                        font-size: 14px;
+	                        width: 100%;
+	                    }
+	                }
+	            }
+
+	            .filters {
+	                position: absolute;
+	                top: 0;
+	                right: 0;
+	                margin-left: auto;
+	                #flexbox > .parent(row wrap, '', '', '');
+
+	                li {
+	                    position: relative;
+	                    cursor: pointer;
+	                    font-size: 14px;
+	                    line-height: 1;
+	                    text-align: center;
+	                    text-transform: uppercase;
+	                    padding: 15px 20px;
+	                    color: @white;
+	                    background: rgba(0,0,0,.1);
+	                    white-space: nowrap;
+	                    text-overflow: ellipsis;
+	                    margin: 0;
+	                    height: 60px;
+
+	                    strong {
+	                        font-size: 16px;
+	                        font-weight: 600;
+	                        .show();
+	                    }
+
+	                    &:not(:last-child) {
+	                        .box-shadow(1px 0 0 rgba(0,0,0,.2));
+	                    }
+
+	                    &.active {
+	                        cursor: default;
+	                        .box-shadow(0 1px 1px rgba(0,0,0,.1));
+	                        .gradient(@logoGradientStart, @logoGradientEnd);
+
+	                        &:after {
+	                            content: "";
+	                            position: absolute;
+	                            left: 50%;
+	                            bottom: -10px;
+	                            width: 0; 
+	                            height: 0; 
+	                            margin-left: -10px;
+	                            border-top: 10px solid @logoGradientEnd;
+	                            border-left: 10px solid transparent;
+	                            border-right: 10px solid transparent;
+	                            z-index: 1000;
+	                        }
+	                    }
+	                }
+	            }       
+	        }
+
+	        /* CO/TA Card Search ***/
+	        &.card-search {
+	            
+	            .entry {
+	                &.switch {
+	                    width: 140px;
+
+	                    &.switch-merge {
+	                        width: 70px;
+	                        padding-left: 0;
+	                        .box-shadow(none);
+	                        
+	                        .switch-button {
+
+	                            .value {
+	                                .icons {
+	                                    &.icon-company {
+	                                        background-position: 11px -751px;
+	                                    }
+
+	                                    &.icon-travel-agent {
+	                                        background-position: 11px -811px;
+	                                    }
+	                                }
+	                            }
+
+	                            .switch-icon {
+	                                .icons {
+	                                    background-size: 90px;
+	                                    &.icon-company {
+	                                        background-position: 9px -2632px;
+	                                    }
+
+	                                    &.icon-travel-agent {
+	                                        background-position: 8px -2721px;
+	                                    }
+	                                }
+	                            }
+
+	                            .icons {
+	                                width: 100%;
+	                                height: 100%;
+	                            }
+
+	                            .data-on {
+	                                .switch-icon {
+	                                    background-color: @ccard;
+	                                }
+	                            }
+
+	                            .data-off {
+	                                .switch-icon {
+	                                    background-color: @tacard;
+	                                }
+	                            }
+	                        }
+	                    }
+
+	                    .switch-button {
+	                        width: 100%;
+	                        background: rgba(0,0,0,.1);
+	                        #border-radius > .rounded();
+	                        .show;
+	                        .size( 40px, 100% );
+
+	                        input {
+	                            .square(100%);
+	                        }
+
+	                        &:not(.disabled) {
+	                            .data-off,
+	                            .data-on {
+	                                .switch-icon {
+	                                    color: @black;
+	                                }
+	                            }
+	                        }
+	                        
+	                        .data-off,
+	                        .data-on { 
+	                            font-size: 14px;
+	                            line-height: 30px;
+	                            height: 30px;
+	                            text-transform: uppercase;
+
+	                            .switch-icon {
+	                                text-shadow: none;
+	                                .clickable;
+	                                background: @white;
+	                            }
+
+	                            .value { 
+	                                color: @grey3;
+	                                font-weight: 600; 
+	                            }
+
+	                            &.data-off { 
+	                                left: auto;
+	                                right: 0;
+
+	                                .switch-icon { margin: 0 5px 0 0; }
+	                            }
+	                            
+	                            &.data-on { 
+	                                left: auto;
+	                                right: 100%;
+
+	                                .switch-icon { margin: 0 0 0 5px; }
+	                            }
+	                        }
+
+	                        &.on {
+	                            .data-off { left: auto; right: -100%; }
+	                            .data-on { left: auto; right: 0; }
+	                        }
+	                    }
+	                }
+
+	                &.search {
+	                    .calc-width( 100, 340 );
+	                }
+
+	                &.options {
+	                    width: 180px;
+	                    
+	                    .select,
+	                    .input {
+	                        &.with-label {
+
+	                            select {
+	                                padding: 15px 30px 0 10px;
+	                                font-size: 14px;
+	                            }
+
+	                            input {
+	                                padding: 10px 10px 0 10px;
+	                            }
+
+	                            label {
+	                                position: absolute;
+	                                top: 0;
+	                                left: 10px;
+	                                font-size: 12px;
+	                                text-transform: uppercase;
+	                                color: @grey3;
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+
+	            .add-new-button {
+	                position: relative;
+	                &:before {
+	                content: '';
+	                    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1);
+	                    height: 100%;
+	                    width: 1px;
+	                    left: -12px;
+	                    top: 0;
+	                    position: absolute;
+	                }
+	            }
+
+	            &.enable-adding {
+
+	                .entry {
+	                    &.search {
+	                        .calc-width( 100, 450 );
+	                    }
+	                }
+	            }
+
+	            &.show-merge {
+	                .entry {
+	                    &.search {
+	                        .calc-width( 100, 440 );
+	                    }
+	                }
+
+	                &.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 530 );
+	                        }
+	                    }
+	                }
+	            }
+
+	            /* Guest Search (used with card-search) **/
+	            &.guest-search {
+	                
+	                .entry {
+	                    
+	                    &.search {
+	                        .calc-width( 100, 150 );
+	                    }
+	                }
+
+	                &.enable-adding {
+
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 260 );
+	                        }
+	                    }
+	                }
+
+	                &.show-merge {
+	                    .entry {
+	                        &.search {
+	                            .calc-width( 100, 150 );
+	                        }
+	                    }
+
+	                    &.enable-adding {
+
+	                        .entry {
+	                            &.search {
+	                                .calc-width( 100, 260 );
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 
@@ -1663,6 +2262,10 @@ body { overflow: hidden; }
 	        .hide();
 	        .box-shadow(0 -1px 1px rgba(0,0,0,.2));
 	        .size(60px, 100%);
+
+	        &.show-merge {
+	            .calc-width(100, 340);
+	        }
 	    }
 
 	    .numbers-pagination {
@@ -1827,6 +2430,7 @@ body { overflow: hidden; }
 /* Guest image 				==============================*/
 	.guest-image {
 		position: relative;
+		text-align: center;
 		#border-radius > .rounded();
 		.square(40px);
 		.pull-left;
@@ -1839,21 +2443,22 @@ body { overflow: hidden; }
 		}
 
 		.global-card {
-        position: absolute;
-        top: -5px;
-        left: -5px;
-    }
+	        position: absolute;
+	        top: -5px;
+	        left: -5px;
+	    }
 
-    .stay-count {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-    }
+	    .stay-count {
+	        position: absolute;
+	        top: -5px;
+	        right: -5px;
+	    }
 
 		img {
-			width: 100%;
-			height: auto;
-			#border-radius > .rounded();
+			max-width: 100%;
+	        max-height: 100%;
+	        .square(auto);
+	        #border-radius > .rounded();
 		}
 
 		&.accompany {
@@ -2517,6 +3122,7 @@ body { overflow: hidden; }
 
 				.guest-status {
 					margin: 5px 5px 5px 0;
+					overflow: hidden;
 					.square(20px);
 				}
 			}
@@ -2586,12 +3192,13 @@ body { overflow: hidden; }
 
 /* Left sidebar			 	==============================*/
 	@media not print {
-		.sidebar-left,
-    	.sidebar-right  {
+		.sidebar-left {
 			position: absolute;
 			top: 150px;
-			z-index: 1040;
+			left: 0;
+			padding-right: 25px;
 			width: 30px;
+			z-index: 1040;
 			.calc-height(100, 150);
 			.transition(width, .2s, cubic-bezier(.10, .10, .25, .90));
 			.show;
@@ -2685,159 +3292,6 @@ body { overflow: hidden; }
 				}
 			}
 		}
-
-		.sidebar-left {
-	        left: 0;
-	        padding-right: 25px;
-	    }
-
-	    .sidebar-right {
-	        right: 0;
-	        padding-left: 25px;
-
-	        .sidebar-header {
-	            background-color: @grey1;
-	            text-align: center;
-	            padding: 20px 15px 15px 15px;
-	            height: 80px;
-	        }
-
-	        .sidebar-content {
-	        	&.dragging {
-	        		overflow: visible !important;
-	        	}
-	        }
-
-	        .rightMenuHandle {
-	            position: absolute;
-	            top: 20px;
-	            left: 0;
-	            cursor: e-resize !important;
-	            z-index: 90;
-	            background-color: @grey1;
-	            background-image: @icons;
-	            background-repeat: no-repeat, repeat;
-	            background-position: 5px -3807px, 0 0;
-	            .size(50px, 25px);
-	            #border-radius > .left(5px);
-
-	            @media @highdpi {
-	                background-image: @icons2x;
-	                background-size: 120px, 40px;
-	            }
-
-				&.not-empty {
-					background-color: @red;
-				}
-	        }
-
-	        &#room-diary-rooms {
-	            top: 0px;
-	            width: 295px;
-	            height: 100%;
-	            z-index: 99999;
-	            right: -270px;
-
-	            .transition(right, .2s, cubic-bezier(.10, .10, .25, .90));
-	            .scrollable {
-	               background-color: @grey1;
-	               background-image: none;
-	               padding: 10px 5px 10px 5px;   
-	               .calc-height(100, 80);
-
-	               .wrapper {
-	                padding-bottom: 20px;
-	               }
-
-	               .iScrollVerticalScrollbar {
-	                    right: 8px;
-	                    .iScrollIndicator {
-	                        background: rgba(0,0,0,0.1);
-	                    }
-	               }
-	           }
-
-
-	           .occupancy-block {
-
-	               .diary-content > .diary-container > .diary-grid > .occupancy-block;
-
-	               span { float: none;}
-	               position: relative;
-	               margin-bottom: 5px;
-	               height: 60px;
-
-	               .occupancy-status,
-	               .occupancy-time {
-	                    height: 100%;
-	                } 
-	                .occupancy-status{
-	                    .box-shadow(inset 0px 1px 1px 1px rgba(0,0,0,.2));
-	                    width: 100%;
-	                    line-height: 1;
-	                    padding: 15px 60px 15px 10px;
-	                    .guest-name {
-	                        .nowrap();
-	                    }
-	                    .room-type {
-	                        .nowrap();
-	                        font-weight: normal;
-	                    }
-	                    &:before {
-	                        background-size: 40px 40px !important;
-	                    }
-	                }
-	                .occupancy-time {
-	                    width: 55px;
-	                    position: absolute;
-	                    top: 0;
-	                    right: 0;
-	                    background-color: rgba(0,0,0,0.1);
-	                    text-align: center;
-	                    padding: 15px 10px;
-	                    font-size: 18px;
-	                    text-transform: none;
-	                    line-height: 1;
-	                    color: white;
-	                    font-weight: 600;
-	                    z-index: 99;
-	                    .eta {
-	                        font-size: 14px;
-	                        font-weight: normal;
-	                    }
-	                }
-
-	                &.deposit-required {
-	                    .occupancy-time {
-	                        .box-shadow(inset -1px 2px 1px 0px rgba(0, 0, 0, 0.2));
-	                        background: @yellow;
-	                        color: @red;
-	                    }
-	                }
-	            }
-	            p,h2 {
-	                text-transform: uppercase;
-	            }
-
-	            h2 {
-	                color: @black;
-	                font-size: 21px;
-	                font-weight: 600;
-	            }
-
-	            p {
-	                line-height: 14px;
-	                color: @grey3;
-	                font-size: 14px;    
-	            }
-	         }
-
-	        &.open {
-	            &#room-diary-rooms { 
-	                right: 0;
-	            }
-	        }
-	    }
 	}
 
 /* Notes					==============================*/
@@ -2857,6 +3311,10 @@ body { overflow: hidden; }
 				#border-radius > .rounded();
 				.box-shadow();
 				.show;
+
+				p {
+					white-space: pre-wrap;
+				}
 
 				&:hover,
 				&:active { 

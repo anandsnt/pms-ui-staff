@@ -1,8 +1,8 @@
 <!-- Guest Card Tab - Notes -->
 <form method="post" id="gc-notes" name="gc-notes" ng-click="clearErrorMessage()" ng-controller="rvGuestCardNotesCtrl" class="form card-tab notes-tab no-print">
-	<strong class="h3 margin">Notes</strong>
+	<strong class="h3 margin no-print">Notes</strong>
 	<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div class="entry">
+	<div class="entry no-print">
 	    <textarea ng-model="noteText" placeholder="Write a note" rows="4"></textarea>
 	    <label class="checkbox inline" ng-hide="true">
 	        <span class="icon-form icon-checkbox"></span>
@@ -13,7 +13,7 @@
         <button type="button" class="button brand-colors" ng-class="{'brand-colors': noteText.trim()!=='', 'grey': noteText.trim()===''}" ng-show="editingNote!==null" ng-disabled="noteText.trim()===''"  ng-click="updateActiveNote()">Save</button>
         <button type="button" class="button blank" ng-show="editingNote!==null" ng-click="cancelEditMode()">Cancel</button>	    
 	</div>
-	<div class="holder scrollable" ng-show="notes.length" ng-iscroll="guestcard_notes_scroller">
+	<div class="holder scrollable no-print" ng-show="notes.length" ng-iscroll="guestcard_notes_scroller">
 	    <ul class="notes wrapper">
 	        <li ng-repeat="note in notes" ng-class="{'editing': (editingNote && note.id === editingNote.id)}"
 	        	ng-click="clickedOnNote(note)">
@@ -33,7 +33,7 @@
 	        </li>
 	    </ul>
 	</div>
-	<div class="holder scrollable" ng-show="!notes.length">
+	<div class="holder scrollable no-print" ng-show="!notes.length">
 		<div class="no-content">
 	        <div class="info">
 	            <span class="icon-no-content icon-notes"></span>

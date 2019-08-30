@@ -22,6 +22,7 @@
 "TAX":"TAX",
 "INCLUSIVE":"Inclusive",
 "EXCLUSIVE":"Exclusive",
+"VIENNA_TAX":"Vienna Tax",
 "CALCULATION_RULE":"Calculation Rule",
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",

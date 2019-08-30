@@ -3,7 +3,7 @@ angular.module('snt.transitionManager',
     .run(['$rootScope', '$transitions', 'transitions', '$log', '$window',
         function ($rootScope, $transitions, transitionsSrv, $log, $window) {
 
-            $transitions.onSuccess({}, function (transition) {
+            $transitions.onFinish({}, function (transition) {
                 var deepIndex;
 
                 if (transition.from().name === transition.to().name) {
@@ -34,6 +34,10 @@ angular.module('snt.transitionManager',
                 if (!transitionsSrv.isInitial() &&
                     transitionsSrv.isBackNavigation(transition)) {
                     transition.options().custom['isBack'] = true;
+                }
+
+                if (transition.options().custom && transition.options().custom['fromMenuBar']) {
+                    transitionsSrv.reset();
                 }
             });
 
@@ -80,6 +84,14 @@ angular.module('snt.transitionManager',
                 idx = idx || transitions.length - 1;
 
                 return transitions[idx];
+            };
+
+            /**
+             * Resets the transitions array when the user jumps to a module from the menu
+             * @returns {undefined} void
+             */
+            service.reset = function () {
+                transitions = transitions.splice(0, 1);
             };
 
             /**

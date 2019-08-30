@@ -9,6 +9,16 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.checkInReservations = [];
+        this.currentReservationIdDetails = {};
+
+        this.setCurrentReservationIdDetails = function(data) {
+            that.currentReservationIdDetails = data;
+        };
+
+        this.getCurrentReservationIdDetails = function() {
+            return that.currentReservationIdDetails;
+        };
+
         this.setCheckInReservations = function(data) {
             that.checkInReservations = [];
             that.checkInReservations = data;
@@ -70,7 +80,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
          * @return {*|promise|{then, catch, finally}|e}
          */
         this.fetchReservationDetails = function(param) {
-            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id,
+            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id + '&log_action=' + param.log_action,
                 deferred = $q.defer();
 
             // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
@@ -281,7 +291,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/' + params.id + '/print_registration_card';
 
-            zsBaseWebSrv.getJSON(url).then(function(data) {
+            zsBaseWebSrv.getJSON(url, {'locale': params.locale}).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -589,6 +599,44 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.getSampleAcuantIdScanDetails = function() {
+            var deferred = $q.defer();
+            var url = '/sample_json/zest_station/acuant_sample_response.json';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+
+        };
+        
+        this.saveFaceImage = function(params) {
+            var url = '/staff/guest_cards/' + params.guest_id + '.json';
+            
+            return zsBaseWebSrv.putJSON(url, params);
+        };
+
+        this.getRoomUpsellSettings = function() {
+            var url = '/admin/room_upsells/room_upsell_options.json';
+
+            return zsBaseWebSrv2.getJSON(url);
+        };
+
+        this.preCheckinReservation = function(params) {
+            var url = '/api/reservations/' + params.reservation_id + '/pre_checkin';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
+        this.addNotes = function (params) {
+            
+            var url = '/reservation_notes';
+
+            return zsBaseWebSrv2.postJSON(url, params);
         };
     }
 ]);

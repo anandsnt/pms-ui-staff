@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv',  '$state', '$stateParams', 'ngDialog', '$rootScope',
-	function($scope, $q, jsMappings, RVCompanyCardSrv, $state, $stateParams, ngDialog, $rootScope) {
+angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope', '$q', 'jsMappings', 'RVCompanyCardSrv', 'rvPermissionSrv', '$state', '$stateParams', 'ngDialog', '$rootScope',
+	function($scope, $q, jsMappings, RVCompanyCardSrv, rvPermissionSrv, $state, $stateParams, ngDialog, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('companyCardDetailsContactCtrl');
@@ -92,5 +92,40 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
 
+		// trigger the edit properties commissions popup
+	    $scope.openPropertiesPopup = function() {
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvTACardPropertiesCommissionsPopup.html',
+				controller: 'rvTACardPropertiesCommissionsPopupCtrl',
+				className: '',
+				scope: $scope
+			});
+		};
+
+		$scope.toggleGlobalCommission = function() {
+			$scope.displayShowPropertiesButton = !$scope.contactInformation.commission_details.is_global_commission;
+		};
+
+		/*
+		 * "Show Properties" Button should be displayed only when: 
+		 * the user is chain admin user and 
+		 * the account type is 'Travel agent card' and 
+		 * TA card is global and 
+		 * commission is not global
+		 */
+		$scope.displayShowPropertiesButtonFn = function() {
+			return ($scope.displayShowPropertiesButton && $scope.account_type === 'TRAVELAGENT' && 
+				!$scope.isEmpty($scope.contactInformation.commission_details) && 
+				$scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && 
+				$rootScope.hotelDetails.userHotelsData.hotel_list.length > 0 && rvPermissionSrv.getPermissionValue('MULTI_PROPERTY_SWITCH') && 
+				rvPermissionSrv.getPermissionValue('GLOBAL_CARD_UPDATE') && 
+				!$scope.isUpdateEnabledForTravelAgent());
+		};
+
+		$scope.showGlobalCommissionCheckbox = function() {
+			return ($scope.contactInformation.is_global_enabled && 
+				$rootScope.hotelDetails.userHotelsData.hotel_list.length > 0 && 
+				rvPermissionSrv.getPermissionValue('MULTI_PROPERTY_SWITCH'));
+		};
 	}
 ]);

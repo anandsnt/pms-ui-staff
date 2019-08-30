@@ -35,7 +35,10 @@
                             <div id="grid-body">
                                 <div class="row" ng-repeat="bill in billData">
                                     <span class="cell date">{{ bill.date}}</span>
-                                    <span class="cell desc">{{bill.description}}</span>
+                                    <div class="cell desc">
+                                        <span>{{bill.description}}</span></br>
+                                        <span style="color: grey;" class="reference" ng-show="bill.reference_text != ''">{{bill.reference_text}}</span>
+                                    </div>
                                     <span class="cell amount">{{currency}}{{bill.amount}}</span>
                                 </div>
                             </div>
@@ -116,5 +119,6 @@
     <div ng-include="'/assets/partials_v2/checkout/zsGenericBillPrint.html'" ng-if="zestStationData.theme !== 'yotel'">
     </div>
     <div ng-include="'/assets/partials_v2/checkout/zsYotelBillPrint.html'" ng-if="zestStationData.theme === 'yotel'">
+    </div>
     </div>
 </div>

@@ -8,7 +8,9 @@ angular.module('reportsModule')
     'RVReportNamesConst',
     'RVReportFiltersConst',
     'RVreportsSubSrv',
-    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
+    'rvUtilSrv',
+    'RVReportParamsConst',
+    function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv, rvUtilSrv, reportParams) {
         var factory = {};
 
         var DATE_FILTERS = [
@@ -43,8 +45,34 @@ angular.module('reportsModule')
             'chosenIncludeGroup',
             'hasMinRoomNights',
             'hasMinRevenue',
-            'showActionables'
+            'showActionables',
+            'show_vat_with_rates'
         ];
+
+        // Extract rate types and rates list
+        var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
+                rateTypeListIds      = _.unique(rateTypeListIds),
+                rateTypeObject       = {},
+                rateTypeListToReturn = rateTypeListIds.map(function(id) {
+                    rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
+                    if (rateTypeObject) {
+                        rateTypeObject.name = rateTypeObject.rate_type_name;
+                        rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
+                    }
+                    return rateTypeObject;
+                });
+
+            return rateTypeListToReturn;
+        };
+
+        // Extract rates from rate types
+        var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
+            return rateTypesAndRateList.map(function(rate) {
+                rate.name = rate.rate_name;
+                return _.omit(rate, "rate_type_name");
+            });
+        };
 
         /**
          * This function canshowActionables return CG & CC with no payment entries or with only payment entries
@@ -409,12 +437,8 @@ angular.module('reportsModule')
 
                 case reportNames['TAX_EXEMPT']:
                     report['filters'].push({
-                        'value': "GROUP_CODE",
-                        'description': "Group Code"
-                    }
-                    , {
-                        'value': "TAX_EXEMPT_TYPE",
-                        'description': "Include Tax Exempt"
+                        'value': "SHOW_VAT_WITH_RATES",
+                        'description': "VAT"
                     }
                     );
                     break;
@@ -441,6 +465,13 @@ angular.module('reportsModule')
                     {
                         'value': "CO_TA_WITH_OR_WITHOUT_VAT",
                         'description': "company_travelagent_with_without_vat"
+                    });
+                    break;
+
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "INCLUDE_LONG_STAYS",
+                        'description': "include_long_stays"
                     });
                     break;
 
@@ -550,6 +581,10 @@ angular.module('reportsModule')
                     report['hasRateFilter'] = filter;
                 }
 
+                if (filter.value === 'INCLUDE_DAY_USE') {
+                    report['hasDayUseFilter'] = filter;
+                }
+
                 if (filter.value === 'RATE_CODE') {
                     report['hasRateCodeFilter'] = filter;
                 }
@@ -643,8 +678,20 @@ angular.module('reportsModule')
                     report['hasIncludeAccountName'] = filter;
                 }
 
+                if ( filter.value === 'COUNTRY' ) {
+                    report['hasIncludeCountry'] = filter;
+                }
+
                 if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
                     report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
+                }
+
+                if (filter.value === 'SHOW_VAT_WITH_RATES') {
+                    report['hasShowVatWithRates'] = filter;
+                }
+
+                if (filter.value === 'INCLUDE_LONG_STAYS') {
+                    report['hasShowIncludeLongStays'] = filter;
                 }
 
                 if (filter.value === 'VAT_YEAR') {
@@ -910,7 +957,9 @@ angular.module('reportsModule')
                     // requested++;
                     fillAgingBalance();
                 } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
-                    fillTaxExemptTypes();
+                    requested++;
+                    reportsSubSrv.fetchTaxExemptTypes()
+                        .then( fillTaxExemptTypes );
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchAccounts()
@@ -919,6 +968,12 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchTravelAgents()
                         .then( fillTravelAgents );
+                } else if ( 'COUNTRY' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchCountries()
+                        .then( fillCountries );
+                } else if ('INCLUDE_DAY_USE' === filter.value && !filter.filled) {
+                    setIncludeDayuseFlag();
                 } else {
                     // no op
                 }
@@ -1007,6 +1062,31 @@ angular.module('reportsModule')
                                 hasSearch: true,
                                 key: 'account_name',
                                 defaultValue: 'Select TA'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
+
+            function fillCountries (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'COUNTRY' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasIncludeCountry = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'value',
+                                defaultValue: 'Select Country'
                             }
                         };
                     }
@@ -1249,25 +1329,27 @@ angular.module('reportsModule')
                 });
             }
 
-            function fillTaxExemptTypes() {
+            function fillTaxExemptTypes(data) {
+                
               var foundFilter;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'TAX_EXEMPT_TYPE' });
-                    if ( !! foundFilter ) {
+                    if ( !! foundFilter ) { 
                         foundFilter['filled'] = true;
                         report.hasIncludeTaxExempts = {
-                            data: $rootScope.taxExemptTypes,
+                            data: data,
                             options: {
-                                hasSearch: false,
+                                hasSearch: true,
                                 selectAll: true,
-                                key: 'name',
-                                defaultValue: 'Select Tax Exempt Types'
+                                key: 'name'
                             }
                         };
                     }
                 });
-            }            
+                completed++;
+                checkAllCompleted();
+            }    
 
             function fillAgingBalance() {
                 var  customData = [
@@ -1398,8 +1480,20 @@ angular.module('reportsModule')
                     }
                 });
 
-                completed++;
+                completed ++;
                 checkAllCompleted();
+            }
+
+            function setIncludeDayuseFlag() {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'INCLUDE_DAY_USE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report[reportParams['INCLUDE_DAYUSE']] = true;
+                    }
+                });
             }
 
             function fillRestrictionList (data) {
@@ -1443,9 +1537,13 @@ angular.module('reportsModule')
                             affectsFilter: {
                                 name: 'hasURLsList',
                                 process: function(filter, selectedItems) {
-                                    var hasUrl = _.find(selectedItems, { value: 'URL' });
-
-                                    filter.updateData(!hasUrl);
+                                    var hasUrl = _.find(selectedItems, { value: 'URL' }),
+                                        hasUrlFilter = _.find(report['filters'], { value: 'URLS'});
+                                        
+                                    //CICO-59057
+                                    if (hasUrlFilter) {
+                                        filter.updateData(!hasUrl);
+                                    }                                    
                                 }
                             }
                         };
@@ -1532,29 +1630,6 @@ angular.module('reportsModule')
                 completed++;
                 checkAllCompleted();
             }
-
-            var extractRateTypesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                var rateTypeListIds      = _.pluck(rateTypesAndRateList, "rate_type_id"),
-                    rateTypeListIds      = _.unique(rateTypeListIds),
-                    rateTypeObject       = {},
-                    rateTypeListToReturn = rateTypeListIds.map(function(id) {
-                        rateTypeObject   =  _.findWhere(rateTypesAndRateList, {rate_type_id: id});
-                        if (rateTypeObject) {
-                            rateTypeObject.name = rateTypeObject.rate_type_name;
-                            rateTypeObject = _.pick(rateTypeObject, "name", "rate_type_id", "selected");
-                        }
-                        return rateTypeObject;
-                    });
-
-                return rateTypeListToReturn;
-            };
-
-            var extractRatesFromRateTypesAndRateList = function(rateTypesAndRateList) {
-                return rateTypesAndRateList.map(function(rate) {
-                    rate.name = rate.rate_name;
-                    return _.omit(rate, "rate_type_name");
-                });
-            };
 
             //
             function fillRateTypesAndRateList(data) {
@@ -1791,14 +1866,26 @@ angular.module('reportsModule')
             // [date - name - room] > TO > [room - name - date]
             if ( report['title'] === reportNames['ARRIVAL'] ||
                  report['title'] === reportNames['DEPARTURE'] ) {
-                var dateSortBy = angular.copy( report['sort_fields'][0] ),
-                    roomSortBy = angular.copy( report['sort_fields'][2] );
+                var arrivalDateSortBy = angular.copy( report['sort_fields'][1] ),
+                    roomSortBy = angular.copy( report['sort_fields'][4] ),
+                    nameSortBy = angular.copy( report['sort_fields'][2] ),
+                    departureDateSortBy = angular.copy( report['sort_fields'][0] ),
+                    rateSortBy = angular.copy( report['sort_fields'][3] ),
+                    balanceSortBy = angular.copy( report['sort_fields'][5] );
 
-                dateSortBy['colspan'] = 2;
+                // CICO-57477 - This is done to disable sorts in column header for some fields
+                departureDateSortBy.disableSort = true;
+                balanceSortBy.disableSort = true;
+
+                arrivalDateSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
                 report['sort_fields'][0] = roomSortBy;
-                report['sort_fields'][2] = dateSortBy;
+                report['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][2] = arrivalDateSortBy;
+                report['sort_fields'][3] = departureDateSortBy;
+                report['sort_fields'][4] = rateSortBy;
+                report['sort_fields'][5] = balanceSortBy;
             }
 
             // for AR Summary report the sort by items must be
@@ -1822,14 +1909,26 @@ angular.module('reportsModule')
             // ordered in a specific way as per the design
             // [name - room] > TO > [room - name]
             if ( report['title'] === reportNames['IN_HOUSE_GUEST'] ) {
-                var nameSortBy = angular.copy( report['sort_fields'][0] ),
-                    roomSortBy = angular.copy( report['sort_fields'][1] );
+                var nameSortBy = angular.copy( report['sort_fields'][1] ),
+                    roomSortBy = angular.copy( report['sort_fields'][3] ),
+                    rateSortBy = angular.copy( report['sort_fields'][2] ),  
+                    arrivalDateSortBy = angular.copy( report['sort_fields'][0] ),
+                    departureDateSortBy = angular.copy( report['sort_fields'][4] );                   
+
+                // CICO-57477 - This is done to disable sorts in column header for some fields
+                arrivalDateSortBy.disableSort = true;
+                departureDateSortBy.disableSort = true;
+                balanceSortBy = {disableSort: true};
 
                 nameSortBy['colspan'] = 2;
                 roomSortBy['colspan'] = 0;
 
                 report['sort_fields'][0] = roomSortBy;
                 report['sort_fields'][1] = nameSortBy;
+                report['sort_fields'][2] = arrivalDateSortBy;
+                report['sort_fields'][3] = departureDateSortBy;
+                report['sort_fields'][4] = rateSortBy;
+                report['sort_fields'][5] = balanceSortBy;
             }
 
             // for Login and out Activity report
@@ -2373,6 +2472,51 @@ angular.module('reportsModule')
                 factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['ROOM_TYPE_IDS']], 'id');
             }
 
+        };
+
+        // Fill rate types and rates for scheduled reports
+        factory.fillRateTypesAndRatesForScheduledReports = function (filter, filterValues) {
+            var populateRateTypesAndRates = function (data) {
+                var rateTypes = extractRateTypesFromRateTypesAndRateList(data),
+                    rates = extractRatesFromRateTypesAndRateList(data),
+                    selectedRateType,
+                    selectedRate;
+
+                if (filterValues && filterValues.rate_type_ids) {
+                    _.each (filterValues.rate_type_ids, function (id) {
+                        selectedRateType = _.findWhere(rateTypes, {rate_type_id: id});
+                        selectedRateType.selected = true;
+                    });
+                }
+
+                if (filterValues && filterValues.rate_ids) {
+                    _.each (filterValues.rate_ids, function (id) {
+                        selectedRate = _.findWhere(rates, {id: id});
+                        selectedRate.selected = true;
+                    });
+                }
+
+                filter.hasRateTypeFilter = {
+                    data: rateTypes,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_type_ids && filterValues.rate_type_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+
+                filter.hasRateFilter = {
+                    data: rates,
+                    options: {
+                        selectAll: filterValues && filterValues.rate_ids && filterValues.rate_ids.length === 0,
+                        hasSearch: true,
+                        key: 'name'
+                    }
+                };
+            };
+
+            reportsSubSrv.fetchRateTypesAndRateList() // This would include custom rates
+                .then(populateRateTypesAndRates);
         };
 
         return factory;

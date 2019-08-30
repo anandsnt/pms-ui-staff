@@ -43,7 +43,14 @@ angular.module('stayCardModule', [])
             params: {
                 guestId: null,
                 selectedArrivalDate: null,
-                selectedRoomTypeId: null
+                selectedRoomTypeId: null,
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                startDate: null,
+                fromState: null,
+                selectedArrivalTime: null,
+                selectedDepartureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
@@ -111,7 +118,12 @@ angular.module('stayCardModule', [])
                 promotion_id: '',
                 room_type_id: null,
                 is_member: '',
-                guestId: ''
+                guestId: '',
+                selectedRoomId: null,
+                selectedRoomNo: null,
+                arrivalTime: null,
+                departureTime: null,
+                numNights: null
             },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
@@ -229,7 +241,11 @@ angular.module('stayCardModule', [])
                 isFromCards: null,
                 isOnlineRoomMove: null,
                 isKeySystemAvailable: null,
-                isFromTACommission: null
+                isFromTACommission: null,
+                isFromGuestStatistics: null,
+                isFromCardStatistics: null,
+                isBulkCheckoutSelected: false,
+                isAllowOpenBalanceCheckoutSelected: false
             },
             resolve: {
                 reservationListData: function (RVReservationCardSrv, $stateParams) {

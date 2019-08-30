@@ -7,11 +7,14 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 		var srv = this;
 
-		this.fetchMaids = function() {
-			var deferred = $q.defer();
-			var url = 'api/work_statistics/employees_list';
+		this.fetchMaids = function(params) {
 
-			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+			var deferred = $q.defer(),
+				url = 'api/work_statistics/employees_list';
+
+			params = params || {};
+
+			RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				_.each(data.results, function(d) {
 					d.ticked = false;
 					d.checkboxDisabled = false;
@@ -228,9 +231,11 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 		};
 
 
-		this.fetchHKStaffs = function() {
-			var deferred = $q.defer();
-			var url = 'api/work_statistics/employees_list';
+		this.fetchHKStaffs = function(params) {
+			var deferred = $q.defer(),
+				url = 'api/work_statistics/employees_list';
+				
+			params = params || {};
 
 			var processData = function(data) {
 				var results = [],
@@ -256,7 +261,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 				};
 			};
 
-			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+			RVBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				deferred.resolve( processData(data) );
 			}, function(data) {
 				deferred.reject(data);

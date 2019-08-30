@@ -29,7 +29,10 @@ var admin = angular.module('admin',
     'convertToNumber',
     'ADChainRouter',
     'touchPress',
-    'ivh.treeview']);
+    'ivh.treeview',
+    'snt.transitionManager',
+    'sntActivityIndicator',
+    'snt.utils']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config([
@@ -38,7 +41,10 @@ admin.config([
     'ivhTreeviewOptionsProvider',
     '$qProvider',
     function($httpProvider, $locationProvider, ivhTreeviewOptionsProvider, $qProvider) {
+
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         $httpProvider.interceptors.push('sharedHttpInterceptor');
+
         $locationProvider.html5Mode(true);
         $qProvider.errorOnUnhandledRejections(false);
         ivhTreeviewOptionsProvider.set({
@@ -52,18 +58,15 @@ admin.config([
     }
 ]);
 
-admin.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams) {
+admin.run(['$rootScope', '$state', '$stateParams', '$transitions', function($rootScope, $state, $stateParams, $transitions) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
-        $rootScope.previousState = from.name;
-        $rootScope.previousStateParam = fromParams.menu;
-
-        // spiting state names
+    $transitions.onStart({}, function(transition) {
+        $rootScope.previousState = transition.$from() ? transition.$from().name : '';
+        $rootScope.previousStateParam = transition.params('from') ? transition.params('from').menu : '';
     });
 }]);
-
 
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number) {

@@ -324,7 +324,8 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			$scope.callAPI(rvAccountsArTransactionsSrv.moveToCreditInvoice, {
 				params: {
 					'invoice_id': item.transaction_id,
-					'account_id': $scope.arDataObj.accountId
+					'account_id': $scope.arDataObj.accountId,
+					'amount': item.amount
 				},
 				successCallBack: function() {
 					$scope.$emit('REFRESH_BALANCE_LIST');
