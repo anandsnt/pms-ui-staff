@@ -889,6 +889,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchSingleRoomTypeRestrictionAndAmountDetailsForPopup(rateID, roomTypeIDs[0], date);
     };
 
+    const changedHeirarchyRestriction = ( type ) => {
+        console.log('changedHeirarchyRestriction', type);
+    };
+
     /**
      * utility method to pass callbacks from
      * @return {Object} with callbacks
@@ -908,7 +912,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 clickedOnRoomTypeAndAmountCell,
                 clickedOnRateTypeViewCell,
                 goToPrevPage,
-                goToNextPage
+                goToNextPage,
+                changedHeirarchyRestriction
             };
         };
 
