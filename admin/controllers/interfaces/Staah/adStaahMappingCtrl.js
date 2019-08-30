@@ -45,7 +45,7 @@ admin.controller('adStaahMappingCtrl', [
             return s.charAt(0).toUpperCase() + s.slice(1).replace(/(_\w)/g, function (m) {
                 return ' ' + m[1].toUpperCase();
             });
-        };
+        }
 
         $scope.mappingTypeText = function (name) {
             return _.find($scope.state.mappingTypes, function (obj) {
