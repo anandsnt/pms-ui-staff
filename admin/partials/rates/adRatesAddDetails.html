@@ -10,11 +10,6 @@
         <div class="form-title">
             <h3><span>Rate</span> Details </h3>
             <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-            <div class="select select-col addon-lang-dropdown">
-                <select ng-model="rateData.selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
-                    <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="rateData.selectedLanguage.code == rateData.selectedLanguage"> {{locale.language}} </option>
-                </select>
-            </div>
         </div>
         <fieldset class="holder left" ng-class="{'overlay' : rateData.is_global_contract}">
             <div></div>
