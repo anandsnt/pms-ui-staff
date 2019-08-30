@@ -1,14 +1,14 @@
 const RateManagerGridLeftSideComponent = ({expandedClass, isAddHierarchyRestrictions}) => ( 
 	<div className={'pinnedLeft '+ expandedClass}>
 		<RateManagerGridLeftSideHeadButtonContainer/>
-		 <table className='rate-calendar'>
-		 	{ isAddHierarchyRestrictions &&
-		 	   <h2>isAddHierarchyRestrictions</h2>
+		 <div className='pinnedLeft-select'>
+		 	{ 	isAddHierarchyRestrictions &&
+		 	   	<RateManagerHierarchyRestrictionsContainer/>
 		 	}
-		 	{!isAddHierarchyRestrictions &&
+		 	{ 	!isAddHierarchyRestrictions &&
 	        	<RateManagerGridLeftFirstRowContainer/>
 	    	}
-	    </table>
+	    </div>
 		<div className='pinnedLeft-list'>
 			<div className='wrapper'>
 				<table className='rate-calendar'>
