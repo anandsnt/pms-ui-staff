@@ -466,6 +466,9 @@ admin.controller('ADRoomTypesCtrl', ['$scope',
             $scope.isAscendingByCode = !$scope.isAscendingByCode;
         }
     };
+    $scope.showListPageItems = function() {
+        return $scope.currentClickedElement === -1 && !$scope.isAddMode;
+    };
     // Sort by Name for standalone property
     $scope.sortByNameStandAlone = function() {
         if ($scope.currentClickedElement === -1) {

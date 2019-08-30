@@ -6,11 +6,6 @@
 				<span ng-show="isAddMode">{{ 'ADD' | translate }}</span>
 				 {{roomTypeData.room_type_name}} </h3>
 			<em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }}</em>
-			<div class="select select-col addon-lang-dropdown">
-                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
-                    <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="selectedLanguage.code == roomTypeData.locale"> {{locale.language}} </option>
-                </select>
-            </div>
 		</div>
 
 		<fieldset class="holder left float">
