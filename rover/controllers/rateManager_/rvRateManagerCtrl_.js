@@ -9,6 +9,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     'ngDialog',
     '$timeout',
     'rvRateManagerPaginationConstants',
+    'Toggles',
     function($scope,
              $filter,
              $rootScope,
@@ -18,7 +19,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
              rvRateManagerPopUpConstants,
              ngDialog,
              $timeout,
-             rvRateManagerPaginationConstants) {
+             rvRateManagerPaginationConstants,
+             Toggles) {
 
         BaseCtrl.call(this, $scope);
 
@@ -2383,6 +2385,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = [];
             $scope.fromDate = null;
             $scope.toDate = null;
+            $scope.isAddHierarchyRestrictions = Toggles.isEnabled('add_hierarchy_restrictions');
 
             // mode
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;
