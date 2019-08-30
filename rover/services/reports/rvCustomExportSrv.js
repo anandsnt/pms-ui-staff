@@ -36,6 +36,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             promises['columns'] = this.getDataSpaceColumns(params);
             promises['exportFormats'] = this.getExportFormats(params);
             promises['deliveryTypes'] = this.getExportDeliveryTypes(params);
+            promises['durations'] = this.getExportDurations(params);
 
             $q.all(promises).then(function (data) {
                 deferred.resolve(data);
@@ -60,7 +61,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getExportDeliveryTypes = ()  => {
+        this.getExportDeliveryTypes = ( params )  => {
             var deferred = $q.defer(),
                 url = 'admin/export_delivery_types.json';
 
@@ -73,7 +74,7 @@ angular.module('sntRover').service('RVCustomExportSrv', [
             return deferred.promise;
         };
 
-        this.getDataSpaceColumns = (params) => {
+        this.getDataSpaceColumns = ( params ) => {
             var deferred = $q.defer(),
                 url = 'api/reports/' + params.reportId + '/list_data_space_columns';
 
@@ -84,6 +85,19 @@ angular.module('sntRover').service('RVCustomExportSrv', [
                 }));
 
                 deferred.resolve(columnData);
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };
+
+        this.getExportDurations = ( params )  => {
+            var deferred = $q.defer(),
+                url = 'admin/export_time_periods.json';
+
+            sntBaseWebSrv.getJSON(url).then(function (response) {
+                deferred.resolve(response.results);
             }, function (error) {
                 deferred.reject(error);
             });

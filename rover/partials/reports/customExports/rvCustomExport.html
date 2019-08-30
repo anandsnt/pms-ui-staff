@@ -84,56 +84,5 @@
 </div>
 
 <!-- Fourth column - distribution list -->
-<div class="report-col ng-hide" ng-if="!shouldShowExportListOnly()">
-    <div class="scrollable no-buttons"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
-        <div class="wrapper">
-            <h3>Set Filters<span>Select Field and Apply Filters</span></h3>
-
-            <!-- Show this instead of below HTML if there are no fields --
-            <div class="no-content">
-                <div class="info">
-                    <strong>No Fields selected</strong>
-                    <span>Select some fields first</span>
-                </div>
-            </div>
-            -->
-
-            <div class="entry">
-                <strong>{Field Name}</strong>
-
-
-                { filters-reports-list.html } 
-                <!-- + add .with-delete-button to .entry
-                + append this button to .entry 
-                <button class="button blank with-icon only-icon button-delete">
-                    <span class="icons icon-remove-40"></span>
-                </button> -->
-                ... repeat for each selected filter with appropriate filter HTML
-
-
-                <label for="{filter-select-id-unique}" class="add-new-button">
-                    + Add Filter
-                    <select id="{filter-select-id-unique}">
-                        <option value=''>Select a Filter</option>
-                        <option value='{filter}'>{Filter}</option>
-                    </select>
-                </label>
-                <button type="button" class="button white red-text remove-field-filters">Remove Field & Filters</button>
-            </div>
-            ... repeat for each selected field
-            
-
-            <div class="entry">
-                <label>Field Name</label>
-                <div class="select">
-                    <select class="placeholder">
-                        <option value=''>Select a field</option>
-                        <option value='{field}'>{Field Name}</option>
-                        ... repeat for each field (exclude already selected fields)
-                    </select>
-                </div>
-            </div>
-            
-        </div>
-    </div>
+<div class="report-col" ng-if="!shouldShowExportListOnly()" ng-include="'/assets/partials/reports/customExports/rvCutomExportFilters.html'">
 </div>

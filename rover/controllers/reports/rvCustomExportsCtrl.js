@@ -4,7 +4,14 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
     '$timeout',
     '$rootScope',
     'RVreportsSrv',
-    function($scope, RVCustomExportSrv, $timeout, $rootScope, reportsSrv) {
+    'RVCustomExportsUtilFac',
+    function($scope, 
+        RVCustomExportSrv,
+        $timeout,
+        $rootScope,
+        reportsSrv,
+        RVCustomExportsUtilFac) {
+
         BaseCtrl.call(this, $scope);
 
         const STAGES = {
@@ -142,6 +149,7 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     $scope.currentStage = STAGES.SHOW_PARAMETERS;
                     $scope.customExportsData.exportFormats = payload.exportFormats;
                     $scope.customExportsData.deliveryTypes = payload.deliveryTypes;
+                    $scope.customExportsData.durations = payload.durations;
 
                     if (!$scope.customExportsData.isNewExport) {
                         applySelectedFormatAndDeliveryTypes(); 
@@ -149,6 +157,11 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                     }
                     $scope.updateViewCol($scope.viewColsActions.FOUR);
                     refreshScroll(REPORT_COLS_SCROLLER);
+
+                    var reportFilters = $scope.selectedEntityDetails.filters;
+
+                    $scope.selectedEntityDetails.filters = RVCustomExportsUtilFac.processFilters(reportFilters);
+
 
                 },
                 onFailure = (error) => {
@@ -299,6 +312,22 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
                 createSchedule();
             });
         };
+
+        $scope.changeFirstLevelFilter = (isFirst) => {
+            $scope.filterData.appliedFilters.push({
+                firstLevelFilter: isFirst ? $scope.filterData.firstLevelFilter : '',
+                secondLevelFilter: '',
+                key: '',
+                value: ''
+            });
+        };
+
+        $scope.getSecondLevelFilterValues = () => {
+            if ($scope.selectedEntityDetails.filters[$scope.filterData.firstLevelFilter]) {
+                return $scope.selectedEntityDetails.filters[$scope.filterData.firstLevelFilter];
+            }
+            return [];
+        };
         
         // Initialize the controller
         var init = () => {
@@ -310,6 +339,14 @@ angular.module('sntRover').controller('RVCustomExportCtrl', [
             $scope.customExportsData.customExportDataSpaces = [];
             $scope.customExportsData.exportFormats = [];
             $scope.customExportsData.deliveryTypes = [];
+            $scope.customExportsData.durations = [];
+            
+            $scope.filterData = {
+                appliedFilters: [],
+                primaryFilter: '',
+                secondLevelFilter: '' 
+            };
+            
             initializeScrollers();
             setUpListeners();
             

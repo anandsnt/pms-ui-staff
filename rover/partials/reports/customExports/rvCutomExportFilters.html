@@ -1,0 +1,43 @@
+<div class="scrollable no-buttons" ng-controller="RVCustomExportFilterCtrl"> <!-- Add vertical scroller here. Add .no-fields if there are no fields. -->
+    <div class="wrapper">
+        <h3>Set Filters<span>Select Field and Apply Filters</span></h3>
+
+        <!-- Show this instead of below HTML if there are no fields -->
+        <div class="no-content" ng-if="selectedColumns.length === 0">
+            <div class="info">
+                <strong>No Fields selected</strong>
+                <span>Select some fields first</span>
+            </div>
+        </div>
+        
+        <div class="entry-wrapper" ng-repeat="appliedFilter in filterData.appliedFilters track by $index">
+            <duration-filter
+                ng-if="appliedFilter.isDuration" 
+                first-level-data = "appliedFilter.firstLevelData"
+                second-level-data = "appliedFilter.secondLevelData"
+                selected-first-level = "appliedFilter.selectedFirstLevel"
+                selected-second-level = "appliedFilter.selectedSecondLevel"
+                filter-pos = "$index"
+                on-remove = "removeFilter(filterPos)"
+                >
+
+            </duration-filter>
+            
+        </div>
+        <div class="entry">
+            <label for="add-filter" class="add-new-button">
+                + Add Filter
+                <select id="add-filter" ng-model="filterData.primaryFilter" ng-change="changePrimaryFilter()">
+                    <option value="">Select a filter</option>
+                    <option class="capitalize" ng-repeat="(name, value) in selectedEntityDetails.filters" value='{{name}}' >{{name}}</option>
+                    <!-- <option value="duration">Duration</option>
+                    <option value="range">Range</option>
+                    <option value="options">Options</option> -->
+                </select>
+            </label>
+            <button type="button" class="button red hidden">Remove All Filters</button> <!-- Remove class 'hidden as soon as users start adding filters. Clicking this removes all.' -->
+        </div>
+        
+        
+    </div>
+</div>

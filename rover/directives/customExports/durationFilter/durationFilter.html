@@ -1,0 +1,24 @@
+<div class="entry-wrapper">
+    <div class="entry">
+        <label for="duration-field">Field Name</label>
+        <div class="select">
+            <select id="duration-field" class="text-bold" ng-model="selectedFirstLevel">
+                <option value="">Select a field</option>
+                <option ng-repeat="filter in firstLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="duration">Duration</label>
+        <div class="select" ng-model="selectedSecondLevel">
+            <select id="duration" ng-model="selectedSecondLevel">
+                <option value="">Select duration</option>
+                <option ng-repeat="filter in secondLevelData" value='{{filter.id}}'>{{filter.description}}</option> 
+            </select>
+        </div>
+    </div>
+    
+    <div class="entry">
+        <button class="button white red-text" ng-click="removeFilter()">Remove Duration</button> 
+    </div>
+</div>

@@ -16,6 +16,7 @@ module.exports = {
 				'shared/directives/numbersOnly/numbersOnly.js',
 				roverRoot + 'services/reservation/rvReservationBaseSearchSrv.js',
 				'shared/sntUtils/sntFeatureToggles.js',
+				roverRoot + 'directives/customExports/durationFilter/durationFilter.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]
