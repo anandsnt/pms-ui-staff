@@ -404,6 +404,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 			if ($scope.isEdit) {
 				$scope.isEdit = false;
 			}
+			$scope.currentClickedElement = -1;
 		};
 		/*
 		 * To handle import from PMS button click.
@@ -727,6 +728,10 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 		};
 
 		$scope.callAPI(ADChargeCodesSrv.uploadCSVFile, options);
+	};
+
+	$scope.showListPageItems = function() {
+		return $scope.currentClickedElement === -1 && (!$scope.isEdit || !$scope.isAdd);
 	};
 
 	}
