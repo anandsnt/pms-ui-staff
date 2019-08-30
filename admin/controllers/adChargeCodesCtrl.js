@@ -21,14 +21,15 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
         };
 
         $scope.availableLanguagesSet = availableLanguages;
-	    var defaultLanguage = _.filter(availableLanguages.languages, function(language){
-	        return language.is_default;
-	    });
-		var setDefaultLanguage = function () {
-	        $scope.selectedLanguage ={
-	            code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
-	        };
-	    };
+		var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
+			return language.is_default;
+		});
+		var setDefaultLanguage = function() {
+			$scope.selectedLanguage = {
+				code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
+			};
+		};
+	    
 	    setDefaultLanguage();
 
         /**

@@ -11,13 +11,13 @@ admin.controller('ADRoomTypesCtrl', ['$scope',
     function($scope, $rootScope, $state, ADRoomTypesSrv, ngTableParams, $filter, $anchorScroll, $timeout, $location, availableLanguages) {
 
     $scope.availableLanguagesSet = availableLanguages;
-    var defaultLanguage = _.filter(availableLanguages.languages, function(language){
+    var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
         return language.is_default;
     });
-    var setDefaultLanguage = function () {
-        $scope.selectedLanguage ={
+    var setDefaultLanguage = function() {
+        $scope.selectedLanguage = {
             code: defaultLanguage.length ? defaultLanguage[0].code : 'en'
-        }
+        };
     };
     var init = function() {
         $scope.errorMessage = '';

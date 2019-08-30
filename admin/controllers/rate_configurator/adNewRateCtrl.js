@@ -7,6 +7,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             var defaultLanguage = _.filter(availableLanguages.languages, function(language) {
                 return language.is_default;
             });
+            
             $scope.availableLanguagesSet = availableLanguages;
 
             $scope.otherData = {
