@@ -2420,7 +2420,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.fromDate = null;
             $scope.toDate = null;
             $scope.isAddHierarchyRestrictions = Toggles.isEnabled('add_hierarchy_restrictions');
-            $scope.hierarchyRestrictionType = 'COMMON';
+            $scope.hierarchyRestrictionType = 'HOUSE';
 
             // mode
             $scope.viewingScreen = RM_RX_CONST.GRID_VIEW;

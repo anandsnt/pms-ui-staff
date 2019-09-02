@@ -504,18 +504,21 @@ angular.module('sntRover')
                 dialogData = $scope.ngDialogData,
                 mode = dialogData.mode;
 
-            if(mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE) {
                 params.rate_id = dialogData.rate.id;
             }
-            else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
+            else if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
                 let rate_ids = _.pluck(dialogData.rates, 'id');
 
                 // if there is no rate_ids passed, checking for rate_type is being passed
-                if(!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
+                if (!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
                     params.rate_type_ids = _.pluck(dialogData.rateTypes, 'id');
                 }
                 else {
                     params.rate_ids = rate_ids;
+                }
+                if ($scope.hierarchyRestrictionType === 'HOUSE') {
+                    params.restriction_level = 'Hotel';
                 }
             }
 
@@ -548,6 +551,11 @@ angular.module('sntRover')
                 params.rate_type_ids = _.pluck(dialogData.rateType, 'id');
             }
 
+            if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE &&
+                $scope.hierarchyRestrictionType === 'HOUSE') {
+                params.restriction_level = "Hotel";
+            }
+
             params.details = [];
 
             formDayRestrictionParamsForAPI(params);
@@ -571,8 +579,12 @@ angular.module('sntRover')
                 dialogData = $scope.ngDialogData,
                 mode = dialogData.mode;
 
-            if(mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
                 params.room_type_id = dialogData.roomType.id;
+            }
+            else if (mode === $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE &&
+                $scope.hierarchyRestrictionType === 'HOUSE') {
+                params.restriction_level = "Hotel";
             }
 
             params.details = [];
@@ -599,8 +611,12 @@ angular.module('sntRover')
                 mode = dialogData.mode;
 
             params.rate_id = dialogData.rate.id;
-            if(mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
+            if (mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
                 params.room_type_id = dialogData.roomType.id;
+            }
+            else if (mode === $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE &&
+                $scope.hierarchyRestrictionType === 'HOUSE') {
+                params.restriction_level = "Hotel";
             }
 
             params.details = [];
