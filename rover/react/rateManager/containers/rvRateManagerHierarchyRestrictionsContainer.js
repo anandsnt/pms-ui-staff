@@ -5,10 +5,6 @@ let getListValues = () => {
 		{
 			name: 'House Restrictions',
 			value: 'HOUSE'
-		},
-		{
-			name: 'Common Restrictions',
-			value: 'COMMON'
 		}
 	];
 

@@ -917,7 +917,6 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     const changedHeirarchyRestriction = ( type ) => {
         $scope.hierarchyRestrictionType = type;
-        console.log('changedHeirarchyRestriction', type);
         $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
     };
 
