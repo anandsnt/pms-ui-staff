@@ -571,8 +571,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.refreshScroll();
 			},
 			goToAddonsView = function() {
-				console.log("heeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrr");
-				$scope.stateCheck.selectedStayDate.rate.id
+
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					'from_date': ARRIVAL_DATE,
 					'to_date': DEPARTURE_DATE,
@@ -1583,6 +1582,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				roomInfo = secondary;
 				rateInfo = rate;
 			}
+
+			console.log("=====================")
+			console.log(rateInfo)
+			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
 
 			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
 			$scope.checkOccupancyLimit(null, null, null, roomId);

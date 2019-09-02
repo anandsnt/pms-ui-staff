@@ -141,20 +141,20 @@
                             <a ng-click="editReservationRates(room, $index)">
                                 <em>{{room.rateName}}</em>
                                 <span class="price">
-                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{room.rate_currency}}{{room.rateAvg | number : 2}}</label>
+                                    <label ng-if="!room.isSuppressed && !reservationData.isHourly">{{reservationData.rateCurrency}}{{room.rateAvg | number : 2}}</label>
                                     <label ng-if="room.isSuppressed && !reservationData.isHourly">SR</label>
                                     <span ng-if="!reservationData.isHourly" translate>AVG_NIGHT</span>
                                 <span class="total" ng-if="room.isSuppressed">SR</span>
-                                <span class="total" ng-if="!room.isSuppressed">{{currencySymbol}}{{room.rateTotal | number : 2}}</span>
+                                <span class="total" ng-if="!room.isSuppressed">{{reservationData.rateCurrency}}{{room.rateTotal | number : 2}}</span>
                                 </span>
                             </a>
                         </li>
                         <li ng-repeat='addon in room.addons'>
                             <em>{{addon.title}}</em>
                             <span class="price" ng-hide="addon.is_inclusive">
-                                {{addon.rate_currency}}{{ addon.price | number : 2}}
+                                {{reservationData.rateCurrency}}{{ addon.price | number : 2}}
                                 <span translate>EACH</span>
-                            <span class="total">{{addon.rate_currency}}{{ addon.effectivePrice | number : 2}}</span>
+                            <span class="total">{{reservationData.rateCurrency}}{{ addon.effectivePrice | number : 2}}</span>
                             </span>
                             <!-- CICO-18833 Hide all rate refreneces for inclusive addons (Kees Lek) -->
                             <span class="price" ng-show="addon.is_inclusive">
@@ -248,6 +248,7 @@
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
                             reservation-id="{{reservationData.reservationId}}"
+                            rate_currency="reservationData.rateCurrency"
                             deposit-policy-name="{{depositData.description}}"
                             bill-number="billNumber"
                             payment-types="reservationData.paymentMethods"
