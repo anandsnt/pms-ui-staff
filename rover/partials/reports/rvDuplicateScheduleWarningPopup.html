@@ -3,7 +3,16 @@
             <button id="modal-close" type="button" class="modal-close" ng-click="navigateToScheduleList()"><span class="icons icon-close invert"></button>
             <span class="text in-progress">A Schedule with the same configuration already exists </span>
             <div id="actions" class="actions">
-                <button type="button" class="button blue" ng-click="navigateToScheduleList()">OK</button>
+                <button 
+                    type="button"
+                    class="button blue"
+                    ng-if="!ngDialogData.isUpdate"
+                    ng-click="navigateToSchedulableReportList()">OK</button>
+                <button 
+                    type="button"
+                    class="button blue"
+                    ng-if="ngDialogData.isUpdate"
+                    ng-click="navigateToSchedulesList(ngDialogData.params)">OK</button>
             </div>
         </div>
     </div>
