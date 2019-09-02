@@ -497,6 +497,28 @@ angular.module('sntRover')
         };
 
         /**
+         * Function to set the restriction level if the heirarchy restriction feature is turned on
+         * @return {String}
+         */
+        const getHierarchyRestrictionLevel = () => {
+            let restriction = '';
+
+            // ROOMTYPE and RATETYPE restriction levels to be accommodated in coming stories
+            if ($scope.hierarchyRestrictionType === 'HOUSE') {
+                restriction = 'Hotel';
+            }
+            return restriction;
+        }
+
+        /**
+         * Function to check if hierarchy restriction param is needed
+         * @return {boolean}
+         */
+        const isHierarchyRestrictionNeeded = () => {
+            return $scope.isAddHierarchyRestrictions === true && $scope.hierarchyRestrictionType !== 'COMMON'
+        }
+
+        /**
          * to update restriction rate
          */
         const callRateRestrictionUpdateAPI = () => {
@@ -517,8 +539,8 @@ angular.module('sntRover')
                 else {
                     params.rate_ids = rate_ids;
                 }
-                if ($scope.hierarchyRestrictionType === 'HOUSE') {
-                    params.restriction_level = 'Hotel';
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restriction_level = getHierarchyRestrictionLevel();
                 }
             }
 
@@ -551,10 +573,12 @@ angular.module('sntRover')
                 params.rate_type_ids = _.pluck(dialogData.rateType, 'id');
             }
 
-            if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE &&
-                $scope.hierarchyRestrictionType === 'HOUSE') {
-                params.restriction_level = "Hotel";
+            if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE) {
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restriction_level = getHierarchyRestrictionLevel();
+                };
             }
+            
 
             params.details = [];
 
@@ -582,9 +606,10 @@ angular.module('sntRover')
             if (mode === $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
-            else if (mode === $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE &&
-                $scope.hierarchyRestrictionType === 'HOUSE') {
-                params.restriction_level = "Hotel";
+            else if (mode === $scope.modeConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE) {
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restriction_level = getHierarchyRestrictionLevel();
+                }
             }
 
             params.details = [];
@@ -614,9 +639,10 @@ angular.module('sntRover')
             if (mode === $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
                 params.room_type_id = dialogData.roomType.id;
             }
-            else if (mode === $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE &&
-                $scope.hierarchyRestrictionType === 'HOUSE') {
-                params.restriction_level = "Hotel";
+            else if (mode === $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE) {
+                if (isHierarchyRestrictionNeeded()) {
+                    params.restriction_level = getHierarchyRestrictionLevel();
+                }
             }
 
             params.details = [];
