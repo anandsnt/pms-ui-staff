@@ -31,18 +31,21 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         this.activeRates = null;
 
         service.fetchMultipleRateInfo = function(params) {
+            params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates';
 
             return this.getJSON(url, params);
         };
 
         service.fetchAllRoomTypesInfo = function(params) {
+            params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates/room_restrictions';
 
             return this.getJSON(url, params);
         };
 
         service.fetchAllRateTypesInfo = function(params) {
+            params = _.omit(params, 'restriction_level');
             var deferred = $q.defer(),
                 url = '/api/daily_rates/rate_types';
 
