@@ -170,6 +170,12 @@ sntRover.controller('RVJournalSummaryController', ['$scope', '$rootScope', 'RVJo
         fetchBalanceDetails( balance_type, false );
     };
 
+    $scope.addListener("EXPAND_SUMMARY_SCREEN", function() {
+        $scope.toggleJournalSummaryItem('DEPOSIT_BALANCE');
+        $scope.toggleJournalSummaryItem('GUEST_BALANCE');
+        $scope.toggleJournalSummaryItem('AR_BALANCE');
+    });
+
 	initSummaryData();
 
     // To load API data for pagination
