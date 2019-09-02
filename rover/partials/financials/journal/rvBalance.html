@@ -1,0 +1,86 @@
+<span ng-controller="RVJournalBalanceController" ng-click="clickedOnPayment($event)">
+    <div id="journal-content" class="journal-content balance">
+
+        <div class="journal-summary balance-summary first">
+            <h3>Deposit Ledger</h3>
+            <ul>
+                <li>
+                    Closing Balance
+                    <span>{currency}{value}</span>
+                </li>
+                <li>
+                    EOD Report Balance
+                    <span class="has-arrow next-view">{currency}{value}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
+                </li>
+                <li>
+                    Balance Check
+                    <i class="icons icon-action icon-completed"></i>
+                    <!-- If there's difference, show this instead of L53: 
+                    <span class="color-red">{difference}</span> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="journal-summary balance-summary">
+            <h3>Guest Ledger</h3>
+            <ul>
+                <li>
+                    <span>{currency}{value}</span>
+                </li>
+                <li>
+                    <span class="has-arrow next-view">{currency}{value}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
+                </li>
+                <li>
+                    <i class="icons icon-action icon-completed"></i>
+                    <!-- If there's difference, show this instead of L70: 
+                    <span class="color-red">{difference}</span> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="journal-summary balance-summary">
+            <h3>A/R Ledger</h3>
+            <ul>
+                <li>
+                    <span>{currency}{value}</span>
+                </li>
+                <li>
+                    <span class="has-arrow next-view">{currency}{value}</span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
+                </li>
+                <li>
+                    <i class="icons icon-action icon-completed"></i>
+                    <!-- If there's difference, show this instead of L70: 
+                    <span class="color-red">{difference}</span> -->
+                </li>
+            </ul>
+        </div>
+
+        <div class="journal-summary balance-summary totals">
+            <h3>Reservations with Open Balance</h3>
+            <ul>
+                <li>
+                    <button type="button" class="button white has-arrow next-view">
+                        <i class="guest-status departed"></i>
+                        <span class="label">Checked out</span>
+                        kr. 1,212.43
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="button white has-arrow next-view">
+                        <i class="guest-status no-show"></i>
+                        <span class="label">No Show</span>
+                        kr. 543.00
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="button white has-arrow next-view">
+                        <i class="guest-status cancel"></i>
+                        <span class="label">Cancellations</span>
+                        kr. 125.00
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+</span>
