@@ -163,6 +163,20 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.selectedEntityDetails.report.title === reportNames['DAILY_PRODUCTION_RATE']);
         };
 
+        /**
+         * Navigate to the schedulable report list
+         */
+        $scope.navigateToScheduleList = function () {
+            ngDialog.close();
+            if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
+                $scope.selectedReport.active = false;
+            }
+            $scope.updateViewCol($scope.viewColsActions.ONE);
+            $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
+
+            fetch_reportSchedules_frequency_timePeriod_scheduableReports();
+        };
+
         var createSchedule = function() {
             var params = {
                 report_id: $scope.selectedEntityDetails.report.id,
@@ -178,16 +192,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             var key;
 
-            var success = function() {
+            var success = function(data) {
                 $scope.errorMessage = '';
                 $scope.$emit( 'hideLoader' );
-                if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
-                    $scope.selectedReport.active = false;
+                if (data.is_export_already_exist) {
+                    ngDialog.open({
+                        template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
+                        scope: $scope,
+                        closeByEscape: false
+                    }); 
+                } else {
+                    $scope.navigateToScheduleList();
                 }
-                $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.addingStage = STAGES.SHOW_SCHEDULE_LIST;
-
-                fetch_reportSchedules_frequency_timePeriod_scheduableReports();
             };
 
             var failed = function(errors) {
