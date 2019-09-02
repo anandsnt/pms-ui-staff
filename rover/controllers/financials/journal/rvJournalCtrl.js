@@ -100,6 +100,7 @@ sntRover.controller('RVJournalController',
 
     $scope.clickedJournalToggle = function () {
         $scope.data.isExpandedView = !$scope.data.isExpandedView;
+        $scope.$broadcast("EXPAND_SUMMARY_SCREEN");        
     };
 
     // To toggle revenue filter box.
