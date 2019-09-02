@@ -571,9 +571,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.refreshScroll();
 			},
 			goToAddonsView = function() {
+				console.log("heeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrr");
+				$scope.stateCheck.selectedStayDate.rate.id
 				$state.go('rover.reservation.staycard.mainCard.addons', {
 					'from_date': ARRIVAL_DATE,
-					'to_date': DEPARTURE_DATE
+					'to_date': DEPARTURE_DATE,
+					'rate_id': $scope.stateCheck.selectedStayDate.rate.id
 				});
 			},
 			enhanceStay = function() {

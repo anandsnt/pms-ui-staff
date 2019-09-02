@@ -41,8 +41,19 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     var startDate = tzIndependentDate(util.get_date_from_date_picker(datePicker));
 
                     $scope.start_date = $filter('date')(startDate, $rootScope.dateFormatForAPI);
-                    $scope.end_date = $filter('date')(tzIndependentDate(moment(startDate).add(noOfDays, 'days')
-                    .calendar()), $rootScope.dateFormatForAPI);
+
+
+                    var selectedEndDateAfterAddingDays =  moment(moment(startDate).add(noOfDays, 'days'), "YYYY-MM-DD"),
+                        currentDate = moment(moment().format("YYYY-MM-DD")),
+                        dateDifference = currentDate.diff(selectedEndDateAfterAddingDays, 'days');
+
+                    if (dateDifference > 5) {
+                        $scope.end_date = $filter('date')(tzIndependentDate(moment(startDate).add(noOfDays, 'days')
+                            .calendar()), $rootScope.dateFormatForAPI);
+                    } else {
+                        $scope.end_date = $filter('date')(tzIndependentDate(moment(startDate).add(noOfDays, 'days')), 
+                            $rootScope.dateFormatForAPI);
+                    }
                     fetchExhangeRates();
                     $timeout(function() {
                         $rootScope.apply();
@@ -57,8 +68,19 @@ sntRover.controller('RVCurrencyExchangeModalController',
                     var endDate = tzIndependentDate(util.get_date_from_date_picker(datePicker));
 
                     $scope.end_date = $filter('date')(endDate, $rootScope.dateFormatForAPI);
-                    $scope.start_date = $filter('date')(tzIndependentDate(moment(endDate).subtract(noOfDays, 'days')
-                    .calendar()), $rootScope.dateFormatForAPI);       
+
+                    var selectedStartDateAfterSubtractingDays =  moment(moment(endDate).subtract(noOfDays, 'days'), "YYYY-MM-DD"),
+                        currentDate = moment(moment().format("YYYY-MM-DD")),
+                        dateDifference = currentDate.diff(selectedStartDateAfterSubtractingDays, 'days');
+
+                    if (dateDifference > 5) {
+                        $scope.start_date = $filter('date')(tzIndependentDate(moment(endDate).subtract(noOfDays, 'days')
+                            .calendar()), $rootScope.dateFormatForAPI);
+                    } else {
+                        $scope.start_date = $filter('date')(tzIndependentDate(moment(endDate).subtract(noOfDays, 'days')), 
+                            $rootScope.dateFormatForAPI);
+                    }
+                           
                     fetchExhangeRates();
                     $timeout(function() {
                         $rootScope.apply();
