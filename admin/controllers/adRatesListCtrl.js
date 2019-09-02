@@ -309,6 +309,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 			var data = {
 				"id": rateId
 			};
+			
 			if (locale) {
 				data.locale = locale;
 			}

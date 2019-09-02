@@ -234,6 +234,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         };
 
         var selectedDepositRule;
+
         // open the form to edit a rule
         $scope.editSingleDepositeRule = function(rule) {
             selectedDepositRule = rule;
@@ -271,6 +272,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         };
 
         var selectedCancelationRule;
+        
         $scope.editSingleCancellationRule = function(rule) {
             selectedCancelationRule = rule;
             var callback = function(data) {
@@ -298,10 +300,9 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.onLanguageChange = function() {
             if ($scope.showDepositForm && selectedDepositRule) {
                 $scope.editSingleDepositeRule(selectedDepositRule);
-            } else if($scope.showCancelForm && selectedCancelationRule){
+            } else if ($scope.showCancelForm && selectedCancelationRule) {
                 $scope.editSingleCancellationRule(selectedCancelationRule);
-            }
-            else {
+            } else {
                 return;
             }
         };
