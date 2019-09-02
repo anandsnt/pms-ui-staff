@@ -534,7 +534,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
     };
 
     // Util method to get restriction value
-    var getRestrictionLevelParam = function() {
+    var isHierarchyRestrictionNeeded = function() {
+        return $scope.hierarchyRestrictionType !== 'COMMON' && $scope.isAddHierarchyRestrictions;
+    },
+    getRestrictionLevelParam = function() {
         var value = null;
 
         if ($scope.hierarchyRestrictionType === 'HOUSE') {
@@ -564,7 +567,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params['rate_type_ids[]'] = rateTypeIDs;
         }
 
-        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+        if (isHierarchyRestrictionNeeded()) {
             params.restriction_level = getRestrictionLevelParam();
         }
 
@@ -595,7 +598,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             'rate_type_ids[]': [rateTypeID]
         };
 
-        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+        if (isHierarchyRestrictionNeeded()) {
             params.restriction_level = getRestrictionLevelParam();
         }
 
@@ -634,7 +637,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (rateTypeIDs.length) {
             params['rate_type_ids[]'] = rateTypeIDs;
         }
-        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+        if (isHierarchyRestrictionNeeded()) {
             params.restriction_level = getRestrictionLevelParam();
         }
 
@@ -778,7 +781,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchCommonRestrictions: true
         };
 
-        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+        if (isHierarchyRestrictionNeeded()) {
             params.restriction_level = getRestrictionLevelParam();
         }
 
@@ -1494,7 +1497,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params['page'] = filterValues.allRate.currentPage;
             params['per_page'] = paginationRatePerPage;
 
-            if ($scope.hierarchyRestrictionType !== 'COMMON') {
+            if (isHierarchyRestrictionNeeded()) {
                 params.restriction_level = getRestrictionLevelParam();
             }
 
@@ -2248,7 +2251,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchCommonRestrictions: true
             };
 
-            if ($scope.hierarchyRestrictionType !== 'COMMON') {
+            if (isHierarchyRestrictionNeeded()) {
                 params.restriction_level = getRestrictionLevelParam();
             }
 
