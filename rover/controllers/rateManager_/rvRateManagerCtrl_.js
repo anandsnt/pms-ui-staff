@@ -634,6 +634,9 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         if (rateTypeIDs.length) {
             params['rate_type_ids[]'] = rateTypeIDs;
         }
+        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+            params.restriction_level = getRestrictionLevelParam();
+        }
 
         var options = {
             params: params,
@@ -1490,6 +1493,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             params['page'] = filterValues.allRate.currentPage;
             params['per_page'] = paginationRatePerPage;
+
+            if ($scope.hierarchyRestrictionType !== 'COMMON') {
+                params.restriction_level = getRestrictionLevelParam();
+            }
 
             var options = {
                 params: params,

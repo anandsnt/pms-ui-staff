@@ -137,7 +137,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
 
             if (params.fetchCommonRestrictions) {
                 let commonRestrictionsParams = {
-                    ..._.pick(params, 'from_date', 'to_date', 'varied_inclusive'),
+                    ..._.pick(params, 'from_date', 'to_date', 'varied_inclusive', 'restriction_level'),
                     'rate_ids[]': [params.rate_id]
                 };
 
@@ -179,7 +179,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }));
 
             if (params.fetchCommonRestrictions) {
-                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive', 'restriction_level');
 
                 if (params.room_type_id) {
                     paramsForCommonRestrictions['room_type_ids[]'] = [params.room_type_id];
@@ -218,7 +218,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             }));
 
             if (params.fetchCommonRestrictions) {
-                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive');
+                let paramsForCommonRestrictions = _.pick(params, 'from_date', 'to_date', 'varied_inclusive', 'restriction_level');
 
                 promises.push(service.fetchCommonRestrictions(paramsForCommonRestrictions)
                     .then((data) => {
@@ -589,7 +589,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
             if (params.fetchCommonRestrictions) {
 
                 let paramsForCommonRestrictions = {
-                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive')
+                    ..._.pick(params, 'from_date', 'to_date', 'name_card_ids[]', 'varied_inclusive', 'restriction_level')
                 };
 
                 if (params["rate_type_ids[]"]) {
