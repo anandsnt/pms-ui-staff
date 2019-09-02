@@ -4,6 +4,7 @@
     <div id="details-and-payment-content" class="reservations-content-wrapper">
         <div id="reservation-summary" class="reservation-summary scrollable" ng-iscroll='reservationSummary'>
             <div class="wrapper">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <h2 translate>RESERVATION_SUMMARY</h2>
                 <ul class="data" ng-if="!reservationData.isHourly">
                     <li>
@@ -27,7 +28,8 @@
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.hh">
+                                        ng-model="reservationData.checkinTime.hh"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -45,7 +47,8 @@
                             </div>
                             <div class="select minutes">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.mm">
+                                        ng-model="reservationData.checkinTime.mm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -54,7 +57,8 @@
                             </div>
                             <div class="select ampm">
                                 <select iscroll-stop-propagation name="check-in" class="placeholder"
-                                        ng-model="reservationData.checkinTime.ampm">
+                                        ng-model="reservationData.checkinTime.ampm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
@@ -68,7 +72,8 @@
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.hh">
+                                        ng-model="reservationData.checkoutTime.hh"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="" selected>HH</option>
                                     <option value="01">01</option>
                                     <option value="02">02</option>
@@ -86,7 +91,8 @@
                             </div>
                             <div class="select minutes">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.mm">
+                                        ng-model="reservationData.checkoutTime.mm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="00">00</option>
                                     <option value="15">15</option>
                                     <option value="30">30</option>
@@ -95,13 +101,17 @@
                             </div>
                             <div class="select ampm">
                                 <select iscroll-stop-propagation name="check-out" class="placeholder"
-                                        ng-model="reservationData.checkoutTime.ampm">
+                                        ng-model="reservationData.checkoutTime.ampm"
+                                        ng-disabled="reservationData.isHourly">
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="actions">
+                    <button type="button" class="button white brand-text" ng-click="setDemographics(false)">Demographics</button>
                 </div>
                 <!-- This here is dynamic content, depending on actual room booked -->
                 <div class="rooms" ng-repeat="room in reservationData.rooms track by $index"
@@ -115,7 +125,8 @@
                         </div>
                     </div>
                     <div class="room-type">
-                        <h4>{{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="room.roomName">{{room.roomName}} - {{room.roomTypeName}}<span></span></h4>
+                        <h4 ng-if="!room.roomName">{{room.roomTypeName}}<span></span></h4>
                         <div class="confirmation" ng-hide="room.confirm_no">
                             <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
@@ -166,11 +177,6 @@
                                 ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}"
                                 ng-disabled="!room.confirm_no && !reservationData.confirmNum"
                                 ng-click="openBillingInformation(room.confirm_no)">{{getBillingInfoTitle()}}
-                        </button>
-                        <button type="button" class="button white brand-text"
-                                ng-class="{'grey-text': !room.confirm_no && !reservationData.confirmNum}"
-                                ng-disabled="!room.confirm_no && !reservationData.confirmNum"
-                                ng-click="setDemographics(false, $index)">Demographics
                         </button>
                     </div>
 
@@ -235,10 +241,9 @@
                 </ul>
             </div>
         </div>
-        <form class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
-            <div class="wrapper">
-                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-                <div id="set-payment" class="payment-form for-reservation" ng-if="!!reservationData.reservationId">
+        <div class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
+            <div class="wrapper" ng-class="{'reservation-summary-scroll-fix': shouldIncludeScrollFixClass}">                
+                <div id="set-payment" class="payment-form" ng-if="!!reservationData.reservationId">
                     <snt-payment
                             hotel-config="hotelPaymentConfig"
                             workstation-id="{{workstation_id}}"
@@ -272,8 +277,10 @@
                                 ng-disabled="isContinueDisabled()" ng-click="clickedContinueButton()">Continue
                         </button>
                     </div>
+                    
+
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </section>

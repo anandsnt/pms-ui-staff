@@ -1,6 +1,6 @@
 
-sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', '$stateParams', 'RVContactInfoSrv',
-	function($scope, RVLikesSrv, dateFilter, $stateParams, RVContactInfoSrv) {
+sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'RVGuestCardsSrv', 'dateFilter', '$stateParams',
+	function($scope, RVLikesSrv, RVGuestCardsSrv, dateFilter, $stateParams) {
 
 
 		$scope.errorMessage = "";
@@ -229,16 +229,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				// updateData.preference.push(preferenceUpdateData);
 			});
 
-			var dataToUpdate = JSON.parse(JSON.stringify(updateData));
-		    var dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false;
-
-			var saveData = {
-				userId: $scope.guestCardData.contactInfo.user_id,
-				data: updateData
-			};
-
-			var guestId = getGuestId(),
-			    isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVContactInfoSrv.isGuestFetchComplete(guestId);
+			var dataToUpdate = JSON.parse(JSON.stringify(updateData)),
+				dataUpdated = (angular.equals(dataToUpdate, presentLikeInfo)) ? true : false,
+				guestId = getGuestId(),
+				isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVGuestCardsSrv.isGuestFetchComplete(guestId),
+				saveData = {
+					userId: guestId,
+					data: updateData
+				};
 
             if (guestId &&
                 isGuestFetchComplete && !dataUpdated) {
@@ -266,10 +264,14 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 		$scope.changedRadioComboPreference = function(index) {
 			_.each($scope.guestLikesData.preferences[index]['values'], function(item) {
-				item.isChecked = false;
 
 				if ( item.id === $scope.guestLikesData.preferences[index]['isChecked'] ) {
-					item.isChecked = true;
+					item.isChecked = !item.isChecked;
+					if (!item.isChecked) {
+						$scope.guestCardData.likes.preferences[index].isChecked = "";
+					}
+				} else {
+					item.isChecked = false;	
 				}
 			});
 		};

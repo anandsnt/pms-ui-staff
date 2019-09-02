@@ -1,5 +1,5 @@
-login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams', 'ngDialog',
-    function($scope, selectPropertySrv, $window, $state, $stateParams, ngDialog) {
+angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', 'loginSrv', '$window', '$state', '$stateParams', 'ngDialog', '$timeout',
+    function($scope, selectPropertySrv, loginSrv, $window, $state, $stateParams, ngDialog, $timeout) {
         
         BaseCtrl.call(this, $scope);
         var init = function() {
@@ -7,9 +7,16 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             $scope.propertyResults = [];
             $scope.searchData = "";
             $scope.selectedProperty = null;
+            $scope.data = {};
             $scope.$emit('hideloader');
             $scope.setScroller('property-results', {click: true});
             $scope.modalClosing = false;
+            $scope.successCallbackGetVersion = function(response) {
+                var versionNumber = response.data.data;
+
+                $scope.data.roverVersion = versionNumber;
+            };
+            loginSrv.getApplicationVersion({}, $scope.successCallbackGetVersion);
         };
 
         /*
@@ -123,6 +130,17 @@ login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window'
             } else {
                 $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
             }
+        };
+
+        /**
+         * Perform logout
+         */
+        $scope.logout = function() {
+            loginSrv.signOut().finally(function() {
+                $timeout(function () {
+                    $window.location.href = '/logout';
+                });
+            });
         };
 
         init();

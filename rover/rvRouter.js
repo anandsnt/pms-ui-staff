@@ -37,8 +37,8 @@ angular.module('sntRover').config([
                 permissions: function(rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
                 },
-                taxExempts: function(RVHotelDetailsSrv) {
-                    return RVHotelDetailsSrv.fetchTaxExempts();
+                features: function (Toggles) {
+                    return Toggles.initialize();
                 }
             },
             lazyLoad: function ($transition$) {

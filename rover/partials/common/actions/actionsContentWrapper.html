@@ -1,0 +1,30 @@
+
+<div ng-hide='refreshingList()' ng-show="showErrMsg()" ng-class="{notice: errorMessage != ''}" class='error error_message' ng-switch on="errorMessage.length" ng-click="clearErrorMessage()">
+    <span class="close-btn" ng-click="clearErrorMessage()"></span>
+    <span class="actions-small-font">
+        {{errorMessage}}
+    </span>
+</div>
+<section class="actions-content" role="main" ng-show='showActionsList() || refreshingToNonEmpty()'>
+    <!-- Actions list -->
+    <div class="content-left" ng-show='showActionsList() || refreshingToNonEmpty()'>
+        <div ng-include="'/assets/partials/common/actions/actionsList.html'" class="scrollable" ng-iscroll="rvActionListScroller" ng-iscroll-delay="500"></div>
+    </div>
+
+    <!-- Action summary -->
+    <div class="content-right" ng-show="showActionSummary()" ng-click="stopEditClick()">
+        <div class="summary" ng-include="'/assets/partials/common/actions/actionSummary.html'"></div>
+    </div>    
+
+    <div class="content-right"  ng-class="{'full-width': actions.totalCount === 0}" ng-show="(showNewAction() || actionSelected === 'edit') && !refreshingToNonEmpty()">
+        <div  id="summary" class="summary" ng-include="'/assets/partials/common/actions/createAction.html'" ng-show="showNewAction() && !refreshingToNonEmpty()"></div>
+        <div  id="summary" class="summary" ng-include="'/assets/partials/common/actions/editAction.html'" ng-show="actionSelected === 'edit' && !refreshingToNonEmpty()"></div>
+        </div>        
+    </div>
+
+</section>
+<section class="actions-content" role="main" ng-show='showNewActionOnly()'>
+    <div class="content-right" ng-class="{'full-width': actions.totalCount === 0}">
+        <div id="summary" class="summary" ng-include=" '/assets/partials/common/actions/createAction.html'"></div>
+    </div>
+</section>

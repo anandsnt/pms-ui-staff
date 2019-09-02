@@ -47,7 +47,7 @@
         </span>
 </div>
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
-<div class="entry full-width reference" >
+<div class="entry full-width reference" ng-hide="paymentAttempted && !isPaymentFailure">
     <label>Reference</label>
     <input ng-model="payment.referenceText" type="text" />
 </div>
@@ -68,7 +68,7 @@
         <li ng-if="!feeData.showFee">
             Amount paid:
             <span class="value">
-                <span class="currency">{{currencySymbol}}</span>{{payment.amount}}
+                <i class="currency">{{currencySymbol}}</i>{{payment.amount}}
             </span>
         </li>
     </ul>
@@ -81,13 +81,13 @@
     </button>
     <button type="button" class="button green" click-touch="submitAccountPayment()"
             ng-disabled="shouldHidePaymentButton()"
-            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-class="{'grey':shouldHidePaymentButton()}"
             ng-show="!isRefund()">
         MAKE PAYMENT
     </button>
     <button type="button" class="button blue" click-touch="submitAccountPayment()"
             ng-disabled="shouldHidePaymentButton()"
-            ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
+            ng-class="{'grey':shouldHidePaymentButton()}"
             ng-show="isRefund()">
         REFUND <span class="currency">{{currencySymbol}}</span>{{ -1 * payment.amount | number:2 }}
     </button>

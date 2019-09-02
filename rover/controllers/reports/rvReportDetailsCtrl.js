@@ -390,6 +390,11 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.rightColSpan = 3;
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
                 default:
                     $scope.leftColSpan = 2;
                     $scope.rightColSpan = 2;
@@ -539,19 +544,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 
             if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
                 _.each(results, function (result) {
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "0to30"})) {
+                    if ( result.age_0to30 ) {
                         result.age_0to30 = buildResult(result.age_0to30);
                     }
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "31to60"})) {
+                    if ( result.age_31to60 ) {
                         result.age_31to60 = buildResult(result.age_31to60);
                     } 
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "61to90"})) {
+                    if ( result.age_61to90 ) {
                         result.age_61to90 = buildResult(result.age_61to90);
                     }  
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "91to120"})) {
+                    if ( result.age_91to120 ) {
                         result.age_91to120 = buildResult(result.age_91to120);
                     } 
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "120plus"})) {
+                    if ( result.age_120plus ) {
                         result.age_120plus = buildResult(result.age_120plus);
                     }                   
                     result.balance = buildResult(result.balance);
@@ -590,25 +595,40 @@ sntRover.controller('RVReportDetailsCtrl', [
                     show_rate_adjustments_only: false
                 };
 
+                var isBackgroundReportsEnabled = $rootScope.isBackgroundReportsEnabled,
+                    appliedFilters = $scope.chosenReport.usedFilters;
+
                 if ($scope.chosenReport.hasGeneralOptions) {
                     _.each($scope.chosenReport.hasGeneralOptions.data, function (each) {
-                        if (each.paramKey === 'include_actions' && each.selected) {
-                            retObj.include_actions = true;
+                        if ( each.paramKey === 'include_actions' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_actions) ||  each.selected) {
+                                retObj.include_actions = true;
+                            }                            
                         }
-                        if (each.paramKey === 'include_guest_notes' && each.selected) {
-                            retObj.include_guest_notes = true;
+                        if ( each.paramKey === 'include_guest_notes' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_guest_notes) ||  each.selected ) {
+                                retObj.include_guest_notes = true;
+                            }                            
                         }
-                        if (each.paramKey === 'include_reservation_notes' && each.selected) {
-                            retObj.include_reservation_notes = true;
+                        if (each.paramKey === 'include_reservation_notes') {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_reservation_notes) ||  each.selected ) {
+                                retObj.include_reservation_notes = true;
+                            }                            
                         }
-                        if (each.paramKey === 'show_guests' && each.selected) {
-                            retObj.show_guests = true;
+                        if (each.paramKey === 'show_guests' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.show_guests) ||  each.selected ) {
+                                retObj.show_guests = true;
+                            }
                         }
-                        if (each.paramKey === 'include_cancelled' && each.selected) {
-                            retObj.include_cancelled = true;
+                        if (each.paramKey === 'include_cancelled' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_cancelled) ||  each.selected ) {
+                                retObj.include_cancelled = true;
+                            }
                         }
-                        if (each.paramKey === 'show_rate_adjustments_only' && each.selected) {
-                            retObj.show_rate_adjustments_only = true;
+                        if (each.paramKey === 'show_rate_adjustments_only' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.show_rate_adjustments_only) ||  each.selected ) {
+                                retObj.show_rate_adjustments_only = true;
+                            }                            
                         }
                     });
                 }
@@ -693,6 +713,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['COMPARISION_BY_DATE']:
                     $scope.hasReportTotals = false;
                     $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
                     break;
 
@@ -780,6 +801,13 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showPrintOptionForYearlyTax = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
                     break;
+
+                case reportNames['TAX_EXEMPT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
+                    break;                  
 
                 default:
                     $scope.hasReportTotals = true;
@@ -892,6 +920,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                     template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+                    break;
+
+                case reportNames['TAX_EXEMPT']:
+                    template = '/assets/partials/reports/taxExempt/rvComplimentaryRoomReport.html';
                     break;
 
                 // Default report row
@@ -1104,9 +1136,8 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.genReport(false, 1, perPageCount);
         }
 
-        // add the print orientation before printing
-        // TODO: 49259 Move Print Orientation to a constant ---
-        var addPrintOrientation = function () {
+        // Get print orientation for each report
+        var getPrintOrientation = function() {
             var orientation = 'portrait';
 
             switch ($scope.chosenReport.title) {
@@ -1147,6 +1178,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                 // no op
             }
 
+            return orientation;
+        };
+
+        // add the print orientation before printing
+        // TODO: 49259 Move Print Orientation to a constant ---
+        var addPrintOrientation = function () {
+            var orientation = getPrintOrientation();            
+
             $('head').append('<style id=\'print-orientation\'>@page { size: ' + orientation + '; }</style>');
 
             // hide #loader by adding '.ng-hide' class
@@ -1183,54 +1222,62 @@ sntRover.controller('RVReportDetailsCtrl', [
                 $(this).off('load');
                 $(this).remove();
 
+                var onPrintCompletion = function() {
+                    // in background we need to keep the report with its original state
+                    $timeout(function () {
+                        // remove the orientation
+                        removePrintOrientation();
+
+                        // CICO-39558
+                        if ($scope.chosenReport.title ===
+                            reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+                            $scope.printTACommissionFlag.summary = false;
+                        }
+
+                        if ($scope.chosenReport.title ===
+                            reportNames['YEARLY_TAX']) {
+                            $scope.$broadcast('YEARLY_TAX_PRINT_COMPLETED');
+                        }
+
+                        // If a specific report ctrl has created a pre-print 'afterPrint' method
+                        // to get clear/remove anything after print
+                        // READ MORE: rvReportsMainCtrl:L#:61-75
+                        if ('function' == typeof $scope.printOptions.afterPrint) {
+                            $scope.printOptions.afterPrint();
+                        }
+                        
+                        if (reportsSrv.getPrintClickedState()) {
+                            $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
+                            reportsSrv.setPrintClicked(false);
+                            $scope.viewStatus.showDetails = false;
+                            if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
+                            reportsSrv.setChoosenReport({});  
+                            }
+                            sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
+                            
+                        } else {
+                            // load the report with the original page
+                            $scope.fetchNextPage($scope.returnToPage);
+                        }
+                        
+                    }, 2000);
+                };
+
                 // this will show the popup with full report
                 $timeout(function() {
-                    $window.print();
                     if (sntapp.cordovaLoaded) {
-                        cordova.exec(function() {
-                        }, function() {
-                        }, 'RVCardPlugin', 'printWebView', []);
+                        var mode = getPrintOrientation() === 'landscape' ? 'L' : 'P';
+
+                        cordova.exec(onPrintCompletion, function() {
+                            onPrintCompletion();
+                        }, 'RVCardPlugin', 'printWebView', ['', '0', '', mode]);
+                    } else {
+                        $window.print();
+                        onPrintCompletion();
+
                     }
                 }, 1000);
-
-                // in background we need to keep the report with its original state
-                $timeout(function () {
-                    // remove the orientation
-                    removePrintOrientation();
-
-                    // CICO-39558
-                    if ($scope.chosenReport.title ===
-                        reportNames['TRAVEL_AGENT_COMMISSIONS']) {
-                        $scope.printTACommissionFlag.summary = false;
-                    }
-
-                    if ($scope.chosenReport.title ===
-                        reportNames['YEARLY_TAX']) {
-                        $scope.$broadcast('YEARLY_TAX_PRINT_COMPLETED');
-                    }
-
-                    // If a specific report ctrl has created a pre-print 'afterPrint' method
-                    // to get clear/remove anything after print
-                    // READ MORE: rvReportsMainCtrl:L#:61-75
-                    if ('function' == typeof $scope.printOptions.afterPrint) {
-                        $scope.printOptions.afterPrint();
-                    }
-                    
-                    if (reportsSrv.getPrintClickedState()) {
-                        $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
-                        reportsSrv.setPrintClicked(false);
-                        $scope.viewStatus.showDetails = false;
-                        if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
-                          reportsSrv.setChoosenReport({});  
-                        }
-                        sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
-                        
-                    } else {
-                        // load the report with the original page
-                        $scope.fetchNextPage($scope.returnToPage);
-                    }
-                    
-                }, 2000);
+                
             });
         };
 
@@ -1326,7 +1373,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
                 'id': reservation.reservation_id,
                 'confirmationId': reservation.confirm_no,
-                'isrefresh': false
+                'isrefresh': true
             });
         };
 
@@ -1377,7 +1424,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.refreshScroll();
         });
 
-        var onPrintYearlyTax =  $scope.$on("YEARLY_TAX_REPORT_PRINT", function() {
+        var onPrintYearlyTax =  $scope.$on("PRINT_SELECTED_REPORT", function() {
             printReport();
         });
 
@@ -1443,6 +1490,12 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
+        /*
+         * Method to get the reservations status
+         */
+        $scope.getReservationStatus = function(reservationStatus) {
+            return getReservationStatusClass(reservationStatus);
+        };
         
         // Invokes actual print 
         var invokePrint = () => {

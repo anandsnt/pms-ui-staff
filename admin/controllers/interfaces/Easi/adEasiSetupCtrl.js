@@ -2,28 +2,40 @@ angular.module('admin').controller('adEasiCtrl',
     ['$scope',
         '$rootScope',
         'config',
+        'adInterfacesSrv',
         'adInterfacesCommonConfigSrv',
-        'dateFilter',
-        '$stateParams',
         'chargeGroups',
         'taxChargeCodes',
-        function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, chargeGroups, taxChargeCodes) {
+        function($scope, $rootScope, config, adInterfacesSrv, adInterfacesCommonConfigSrv, chargeGroups, taxChargeCodes) {
+            BaseCtrl.call(this, $scope);
 
-            var interfaceIdentifier = $stateParams.id;
+            $scope.interface = 'EASI';
 
             $scope.toggleEnabled = function() {
                 config.enabled = !config.enabled;
             };
 
-            $scope.saveInterfaceConfig = function() {
+            $scope.changeTab = function (name) {
+                $scope.state.activeTab = name;
+            };
 
-                $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.state = {
+                activeTab: "SETTING"
+            };
+
+            $scope.saveSetup = function () {
+                var params = dclone($scope.config);
+
+                $scope.deletePropertyIfRequired(params, 'sftp_password');
+
+                $scope.callAPI(adInterfacesSrv.updateSettings, {
                     params: {
-                        config: $scope.config,
-                        interfaceIdentifier: interfaceIdentifier
+                        settings: params,
+                        integration: $scope.interface.toLowerCase()
                     },
-                    onSuccess: function() {
-                        $scope.goBackToPreviousState();
+                    onSuccess: function () {
+                        $scope.errorMessage = '';
+                        $scope.successMessage = 'SUCCESS: Settings Updated!';
                     }
                 });
             };
@@ -43,9 +55,15 @@ angular.module('admin').controller('adEasiCtrl',
                 config.enabled = (config.enabled !== null) ? config.enabled : false;
                 $scope.config = config;
                 $scope.availableSettings = _.keys(config);
-                $scope.interface = interfaceIdentifier.toUpperCase();
                 $scope.chargeGroups = chargeGroups.data.charge_groups;
                 $scope.availableTaxChargeCodesForTaxExemptOne = $scope.availableTaxChargeCodesForTaxExemptTwo = $scope.availableTaxChargeCodesForTaxExemptThree = taxChargeCodes.data.charge_codes;
+
+                // ensure tax charge code id's are integers
+                $scope.config.tax1_charge_code_id = parseInt(config.tax1_charge_code_id, 10);
+                $scope.config.tax2_charge_code_id = parseInt(config.tax2_charge_code_id, 10);
+                $scope.config.tax3_charge_code_id = parseInt(config.tax3_charge_code_id, 10);
+
+                $scope.setDefaultDisplayPassword($scope.config, 'sftp_password');
             })();
             /*
              * Changed tax exempt
@@ -69,6 +87,5 @@ angular.module('admin').controller('adEasiCtrl',
                 $scope.availableTaxChargeCodesForTaxExemptTwo = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForTwo);
                 $scope.availableTaxChargeCodesForTaxExemptThree = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForThree);
             };
-
         }
     ]);

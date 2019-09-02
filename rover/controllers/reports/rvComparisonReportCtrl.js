@@ -115,6 +115,12 @@ angular.module('sntRover')
             }
         };
 
+        var printComparisonReportListener = $scope.$on("PRINT_COMPARISON_REPORT", function() {
+            $scope.$emit("PRINT_SELECTED_REPORT");
+        });
+
+        $scope.$on('$destroy', printComparisonReportListener);
+
         $scope.fetchChargeCodes = function (index, pageNo) {
 
             var item = $scope.cgEntries[index];

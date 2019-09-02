@@ -51,6 +51,7 @@ angular.module('reportsModule')
     'COMPLIMENTARY_ROOM_REPORT': 'Complimentary Room Report',
     'GROUP_ROOMS_REPORT': 'Group Rooms Report',
     'ADDON_UPSELLS': 'Add On Upsell',
-    'YEARLY_TAX': 'Yearly Tax Report'
+    'YEARLY_TAX': 'Yearly Tax Report',
+    'TAX_EXEMPT': 'Tax Exempt'
 });
 

@@ -30,7 +30,7 @@ var CardOperation = function() {
 		} else if (action === null) {
 			return false;
 		} else {
-			if (cordova) {
+			if (typeof cordova !== typeof undefined) {
 				// calling cordova service
 				cordova.exec(
 					// if success call back require any parameters

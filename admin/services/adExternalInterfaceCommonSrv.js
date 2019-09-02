@@ -125,6 +125,16 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
         return ADBaseWebSrv.getJSON('/admin/room_types.json');
     };
 
+    /**
+     * Fetch the hotels source codes
+     */
+    this.fetchSourceCodes = function() {
+        var params = {
+            is_active: true
+        };
+
+        return ADBaseWebSrvV2.getJSON('/api/sources.json', params);
+    };
 	this.testSetup = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection/' + data.interface;

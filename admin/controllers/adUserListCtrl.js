@@ -22,25 +22,25 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
         }
     };
 
+    $scope.flagObject = {};
+    $scope.flagObject.showIncludeInactiveCheckbox = true;
     /*
     * If logged in as chain-admin user, the corresponding additional data should be loaded.
     * CICO-41385
     */
     if ($rootScope.isChainAdmin) {
-        $scope.flagObject = {
-            // Scope local flag to indicate that the user is a Chain Admin.
-            isChainAdmin: true,
-            // Default value for hotel-user/all-user toggle as hotel-user.
-            showAllUsers: false,
-            // Default state of the hotels filter: Closed.
-            showHotelFilters: false,
-            // Default value for the hotels filter multi-select : All hotels.
-            selectedAllHotels: true,
-            // Default value for the 'show chain admins only' checkbox.
-            showChainAdminsOnly: false,
-            // Default value for the departments filter select: All departments
-            departmentSelected: '-1'
-        };
+        // Scope local flag to indicate that the user is a Chain Admin.
+        $scope.flagObject.isChainAdmin = true;
+        // Default value for hotel-user/all-user toggle as hotel-user.
+        $scope.flagObject.showAllUsers = false;
+        // Default state of the hotels filter: Closed.
+        $scope.flagObject.showHotelFilters = false;
+        // Default value for the hotels filter multi-select : All hotels.
+        $scope.flagObject.selectedAllHotels = true;
+        // Default value for the 'show chain admins only' checkbox.
+        $scope.flagObject.showChainAdminsOnly = false;
+        // Default value for the departments filter select: All departments
+        $scope.flagObject.departmentSelected = '-1';
         // Array which will contain hotel id's of selected hotels from Hotel multi-select filter.
         $scope.selectedMPHotelIdsInFilter = [];
 
@@ -79,6 +79,10 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 
         if ($scope.isAdminSnt) {
             getParams.hotel_uuid = ADHotelListSrv.getSelectedProperty();
+        }
+
+        if ($scope.showInactiveUser) {
+            getParams.include_inactive = $scope.showInactiveUser;
         }
 
         /*
@@ -123,6 +127,27 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     };
 
     $scope.loadTable();
+    /*
+     * Show inactive users along with active users
+     */
+    $scope.clickedShowInactiveUsers = function() {
+        $scope.reloadTable();
+    };
+    /*
+     * Changed search text
+     */
+    $scope.changedSearchText = function() {
+        if ($scope.searchTerm !== '') {
+            $scope.flagObject.showIncludeInactiveCheckbox = false;
+        } else {
+            $scope.flagObject.showIncludeInactiveCheckbox = true;
+        }              
+    };
+
+    $scope.reloadTable = function() {
+        $scope.tableParams.page(1);
+        $scope.tableParams.reload();
+    };
     /*
     * To Activate/Inactivate user
     * @param {string} user id

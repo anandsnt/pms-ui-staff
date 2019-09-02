@@ -4,7 +4,8 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 	'$state',
 	'zsEventConstants',
 	'zsCheckinSrv',
-	function($scope, $stateParams, $state, zsEventConstants, zsCheckinSrv) {
+	'zsGeneralSrv',
+	function($scope, $stateParams, $state, zsEventConstants, zsCheckinSrv, zsGeneralSrv) {
 
 
 		var onBackButtonClicked = function() {
@@ -104,51 +105,16 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 		};
 
 		var setPageNumberDetails = function() {
+			var itemsPerPage = 3;
 
-			if ($scope.upsellRooms.length <= 3) {
-				// if 3 or less upgrades are available
-				$scope.pageStartingIndex = 1;
-				$scope.pageEndingIndex = $scope.upsellRooms.length;
-			} else {
-				// if multiple pages (each containing 3 items) are present and user navigates
-				// using next and previous buttons
-				$scope.pageStartingIndex = 1 + 3 * ($scope.pageNumber - 1);
-				// ending index can depend upon the no of items
-				if ($scope.pageNumber * 3 < $scope.upsellRooms.length) {
-					$scope.pageEndingIndex = $scope.pageNumber * 3;
-				} else {
-					$scope.pageEndingIndex = $scope.upsellRooms.length;
-				}
-			}
-			// set viewable room list - 3 items at a time
-			$scope.viewableRoomUpgrades = [];
-			// set 3 or less items based on availablity
-			var startingUpsell = $scope.upsellRooms[$scope.pageStartingIndex - 1];
-			
-			$scope.viewableRoomUpgrades.push(startingUpsell);
-			// check if second room for the page is available
-			if (!_.isUndefined($scope.upsellRooms[$scope.pageStartingIndex])) {
-				$scope.viewableRoomUpgrades.push($scope.upsellRooms[$scope.pageStartingIndex]);
-			}
-			// check if third room for the page is available
-			if (!_.isUndefined($scope.upsellRooms[$scope.pageStartingIndex + 1])) {
-				$scope.viewableRoomUpgrades.push($scope.upsellRooms[$scope.pageStartingIndex + 1]);
-			}
-			// hide/show next previous
-			$scope.hideNextButton = ($scope.pageEndingIndex === $scope.upsellRooms.length);
-			$scope.hidePreviousButton = $scope.pageStartingIndex === 1;
-
+			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.upsellRooms, itemsPerPage, $scope.pageData.pageNumber);
 		};
 
-		$scope.viewNextPage = function() {
-			$scope.pageNumber++;
+		$scope.paginationAction = function(isNextPage) {
+			$scope.pageData.pageNumber = isNextPage ? ++$scope.pageData.pageNumber : --$scope.pageData.pageNumber;
 			setPageNumberDetails();
 		};
 
-		$scope.viewPreviousPage = function() {
-			$scope.pageNumber--;
-			setPageNumberDetails();
-		};
 		/**
 		 * [fetchHotelRooms fectch the rooms in hotel and find which all rooms are available for
 		 * the upgradable room type]
@@ -177,7 +143,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				$scope.upsellRooms = roomUpgradesList;
 
 				// set page number details
-				$scope.pageNumber = 1;
+				$scope.pageData.pageNumber = 1;
 				if ($scope.upsellRooms.length > 0) {
 					setPageNumberDetails();
 				} else {
@@ -240,6 +206,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+			$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 			$scope.selectedRoom = {};
 			fetchUpsellRoomTypes();
 		}());

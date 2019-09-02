@@ -45,23 +45,23 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
                 if ($scope.clickedOn === 'FROM') {
                   $scope.data.fromDate = $scope.date;
                   $scope.data.toDate = $scope.date;
-                  $rootScope.$emit('fromDateChanged');
+                   $scope.broadcastFromRoot('fromDateChanged', $scope.data.fromDate);
                 }
                 else if ($scope.clickedOn === 'TO') {
                   $scope.data.toDate = $scope.date;
-                  $rootScope.$emit('toDateChanged');
+                   $scope.broadcastFromRoot('toDateChanged');
                 }
                 else if ($scope.clickedOn === 'CASHIER') {
                   $scope.data.cashierDate = $scope.date;
-                  $scope.$emit('cashierDateChanged');
+                   $scope.broadcastFromRoot('cashierDateChanged');
                 }
                 else if ($scope.clickedOn === 'TRANSACTIONS') {
                   $scope.data.transactionDate = $scope.date;
-                  $rootScope.$emit('transactionDateChanged');
+                   $scope.broadcastFromRoot('transactionDateChanged');
                 }
                 else if ($scope.clickedOn === 'SUMMARY') {
                   $scope.data.summaryDate = $scope.date;
-                  $rootScope.$emit('summaryDateChanged');
+                 $scope.broadcastFromRoot('summaryDateChanged');
                 }
                 ngDialog.close();
             }

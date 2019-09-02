@@ -20,6 +20,8 @@ sntRover
 				$scope.toggleView = function(bool) {
 					$scope.closed = typeof bool === typeof true ? bool : ! $scope.closed;
 					$timeout($scope.onUpdate, 150);
+					// Refresh the details filter while expanding
+					$scope.$emit('report.details.filter.scroll.refresh');
 				};
 
 				$scope.clearSearch = function() {

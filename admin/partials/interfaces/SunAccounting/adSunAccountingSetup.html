@@ -1,0 +1,94 @@
+<div class="form float" ng-if="state.activeTab === 'SETUP'">
+
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+    <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+
+    <fieldset class="holder full-width">
+        <fieldset class="holder left">
+          <ad-toggle-button is-checked="config.enabled"
+          label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <div class="form-title">
+            <h3>Account <span>Configuration</span></h3>
+            <em class="status"> {{'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{'MANDATORY_FIELDS_MESSAGE2' | translate}}</em>
+        </div>
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text" value="config.guest_ledger_code"
+                        required="yes"
+                        label="{{'Guest Ledger GL Code'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.deposit_ledger_code"
+                        required="yes"
+                        label="{{'Advance Deposit Ledger GL Code'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.ar_ledger_code"
+                        required="yes"
+                        label="{{'Accounts Receivable Ledger GL Code'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text" value="config.market_segment_revenue_ledger_code"
+                        required="yes"
+                        label="{{'Market Segment Revenue Ledger Code'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.market_segment_room_count_ledger_code"
+                        required="yes"
+                        label="{{'Market Segment Room Count Ledger Code'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.business_unit"
+                        required="yes"
+                        label="{{'Business Unit Code'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>EMAIL <span>Delivery Configuration</span></h3>
+        </div>
+        <div id="options" class="entry">
+            <ad-textbox inputtype="text" value="config.emails" label="Email Address(es)"
+                        styleclass="full-width">
+            </ad-textbox>
+        </div>
+    </fieldset>
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>STFP <span>Delivery Configuration</span></h3>
+        </div>
+
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text"
+                        value="config.sftp_host"
+                        label="{{'HOST'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="password"
+                        value="config.sftp_password"
+                        label="{{'PASSWORD'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+
+        <fieldset class="holder right">
+            <ad-textbox inputtype="text"
+                        value="config.sftp_path"
+                        label="{{'PATH'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text"
+                        value="config.sftp_username"
+                        label="{{'USERNAME'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+    </fieldset>
+
+    <div class="actions float">
+        <button type="button" id="cancel" class="button blank add-data-inline"
+                ng-click="goBackToPreviousState()" translate>
+            CANCEL
+        </button>
+        <button type="button" like-type="common" id="update" class="button ng-binding green"
+                ng-click="saveInterfaceConfig()" translate>
+            SAVE_CHANGES
+        </button>
+    </div>
+</div>

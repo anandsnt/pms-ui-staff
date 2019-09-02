@@ -10,12 +10,12 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVGuestCardSrv',
   'RVContactInfoSrv',
   'RVSearchSrv',
-  'idTypesList',
   'rvPermissionSrv',
+  'RVGuestCardsSrv',
   '$timeout',
   '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, $timeout, $window) {        
+    RVContactInfoSrv, RVSearchSrv, rvPermissionSrv, RVGuestCardsSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -31,6 +31,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
               $scope.loyaltyTabEnabled = false;
            }
         });
+
+        $scope.isFromMenuGuest = $stateParams.isFromMenuGuest;
 
         $scope.$on('$destroy', listener);
 
@@ -75,6 +77,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             guestCardData.contactInfo.birthday = guestId ? data.birthday : null;
             guestCardData.contactInfo.user_id = guestId ? guestId : "";
             guestCardData.contactInfo.guest_id = guestId ? guestId : "";
+            guestCardData.contactInfo.genderTypeList = data.gender_list;
+            guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
 
             return guestCardData;
         };
@@ -105,21 +109,40 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             } else if (tab === 'guest-contact') {
                 $scope.$broadcast('CONTACTINFOLOADED');
             }
+            else if (tab === 'activity-log') {
+                $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            } else if (tab === 'guest-statistics') {
+               $scope.$broadcast('LOAD_GUEST_STATISTICS'); 
+            }
             
             if (!$scope.viewState.isAddNewCard) {
                 $scope.current = tab;
             }
         };
 
+        $scope.$on('contactInfoError', function(event, value) {
+            if (value) {
+                $scope.current = 'guest-contact';
+            }
+        });
+
         /**
          * Set navigation back to guest card search         
          */
         var setBackNavigation = function() {
-                $rootScope.setPrevState = {
-                    title: $filter('translate')('FIND GUESTS'),
-                    callback: 'navigateBack',
-                    scope: $scope
-                };
+            var backBtnLabel = $filter('translate')('FIND GUESTS');
+
+            if ($stateParams.isMergeViewSelected) {
+                backBtnLabel = $filter('translate')('MERGE_CARDS');
+            } 
+            if ($stateParams.fromStaycard) {
+                backBtnLabel = $filter('translate')('STAY_CARD');
+            }
+            $rootScope.setPrevState = {
+                title: backBtnLabel,
+                callback: 'navigateBack',
+                scope: $scope
+            };
             },
             setTitleAndHeading = function () {
                 var title = $filter('translate')('GUEST_CARD');
@@ -136,9 +159,19 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Back navigation handler
         $scope.navigateBack = function () {
-          $state.go('rover.guest.search', {
-            textInQueryBox: $stateParams.query
-          });
+          if ($stateParams.fromStaycard) {
+              $state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+                  id: $stateParams.reservationId,
+                  confirmationId: $stateParams.confirmationNo
+              });
+          } else {
+              $state.go('rover.guest.search', {
+                  textInQueryBox: $stateParams.query,
+                  selectedIds: $stateParams.selectedIds,
+                  isMergeViewSelected: $stateParams.isMergeViewSelected
+              });
+          }
+          
         };
 
         /**
@@ -176,10 +209,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
          * @return {undefined} 
          */
         var initGuestCard = function(guestData) {
+
             if (guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
                 $scope.guestCardData.guestId = guestData.id;
-                RVContactInfoSrv.setGuest(guestData.id);                
+                RVGuestCardsSrv.setGuest(guestData.id);                
             }
         };
 
@@ -251,18 +285,47 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.currentGuestCardHeaderData.last_name = data.last_name;
         }); 
 
-        $scope.$on('$destroy', resetHeaderDataListener);        
+        $scope.$on('$destroy', resetHeaderDataListener);
+        
+        /**
+         * Pouplate admin settings for guest fields
+         */
+        var populateContactInfo = function () {
+            $scope.callAPI(RVGuestCardsSrv.fetchGuestAdminSettingsAndGender, {
+                successCallBack: function(data) {
+                    $scope.guestCardData.contactInfo.guestAdminSettings = data.guestAdminSettings;
+                    $scope.idTypeList = data.idTypeList;
+                    $scope.guestCardData.contactInfo.genderTypeList = data.genderTypeList;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                    $scope.$emit('hideLoader');
+                }
+            });
+        };
 
         var init = function () {
+
             $scope.viewState = {
                 isAddNewCard: !$stateParams.guestId
             };
 
             $scope.isGuestCardFromMenu = true;
+            $scope.shouldShowStatisticsTab = !!$stateParams.guestId;
 
-            $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
-            $scope.countries = countries;
-            $scope.idTypeList = idTypesList;
+            if (!$stateParams.guestId) {
+                $scope.guestCardData = {};                
+                $scope.guestCardData.contactInfo = {};
+                $scope.guestCardData.contactInfo.user_id = '';
+                $scope.guestCardData.contactInfo.first_name = $stateParams.firstName;
+                $scope.guestCardData.contactInfo.last_name = $stateParams.lastName;
+                populateContactInfo();
+               
+            } else {
+                $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
+            }
+            $scope.idTypeList = contactInfo.id_type_list;
+            $scope.countries = countries;           
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,
@@ -280,8 +343,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.loyaltyTabEnabled = false;
             $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
 
-            // Set contact tab as active by default
-            $scope.current = 'guest-contact';
+            // This is set when navigated to staycard from statistics details page
+            if ($stateParams.isBackToStatistics) {
+                $scope.current = 'guest-statistics';
+            } else {
+                // Set contact tab as active by default
+                $scope.current = 'guest-contact';
+            }
 
             $scope.paymentData = {};
             setTitleAndHeading();
@@ -289,7 +357,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.printState = {
                 clicked: false
-            };          
+            };
+
+            $scope.$on('$destroy', $scope.guestCardTabSwitch);
         };
 
         // Listener for setting the guestData information
@@ -333,37 +403,34 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             // add the orientation
             addPrintOrientation();
 
+            var onPrintCompletion = function() {
+                $timeout(function() {
+                    $scope.printState.clicked = false;
+                    // CICO-9569 to solve the hotel logo issue
+                    $("header .logo").removeClass('logo-hide');
+                    $("header .h2").addClass('text-hide');
+    
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 200);
+            };
+
             /*
             *   ======[ READY TO PRINT ]======
             */
             // this will show the popup with full bill
             $timeout(function() {
-                /*
-                *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                */
-
-                $window.print();
                 if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    cordova.exec(onPrintCompletion, function() {
+                        onPrintCompletion();
+                    }, 'RVCardPlugin', 'printWebView', []);
+                } else {
+                    $window.print();
+                    onPrintCompletion();
                 }
             }, 200);
 
-            /*
-            *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-            */
-
-            $timeout(function() {
-                $scope.printState.clicked = false;
-                // CICO-9569 to solve the hotel logo issue
-                $("header .logo").removeClass('logo-hide');
-                $("header .h2").addClass('text-hide');
-
-                // remove the orientation after similar delay
-                removePrintOrientation();
-            }, 200);
-
         };
-       
 
         init();        
 }]);

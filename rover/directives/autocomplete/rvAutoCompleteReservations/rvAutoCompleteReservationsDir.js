@@ -59,8 +59,9 @@ angular.module('sntRover').directive('autoCompleteReservations', ['RVSearchSrv',
                     select: reservationsACSelectHandler
                 }).data('ui-autocomplete')._renderItem = function (ul, item) {
                     var reservation = angular.element('<a></a>'),
+                        guestImageClass = item.images && item.images.length > 1 ? 'guest-image accompany' : 'guest-image',
                         avatar = angular.element('<figure></figure>', {
-                            class: "guest-image"
+                            class: guestImageClass
                         }),
                         guestName = angular.element('<span></span>', {
                             class: "name",

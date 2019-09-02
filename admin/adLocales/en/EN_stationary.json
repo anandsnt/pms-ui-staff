@@ -27,6 +27,7 @@
 	"REGISTRATION_TEMPLATE":"Registration Template",
 	"SELECT_REGISTRATION_TEMPLATE":" Select Registration Template",
 	"SHOW_VEHICLE_INFORMATION":"Show Vehicle Information",
+	"SHOW_CONTACT_INFO": "Show Contact Information",
 	"SHOW_HOTEL_LOGO": "Show Hotel Logo",
 	"HOTEL_PICTURE": "Hotel Picture",
 	"SHOW_HOTEL_PICTURE" : "Show Hotel Picture",
@@ -86,6 +87,8 @@
 	"SELECT_ACCOUNT_BILL" : "Select Account Bill",
 	"SHOW_REGISTRATION_CARD_PRINT" : "Show Registration Card Print",
 	"EXT_TAX_BREAKDOWN" : "Extended Tax breakdown",
+	"PAYMENT_RECEIPTS" : "Payment receipts",
+	"PRINT_INVOICE_NUMBER": "Print Invoice Number",
 	"ACTIVATE_FOLIO_NUMBER": "Activate Folio Number",
 	"SHOW_PERFORMA_INVOICE":"Pro Forma Invoice",
 
@@ -128,5 +131,10 @@
 	"TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER": "Title for Terms & Conditions",
 	"TERMS_AND_CONDITIONS_PLACEHOLDER": "Enter Terms & Conditions",
 	"NONE": "None",
-	"ADD_NEW": "Add New"
+	"ADD_NEW": "Add New",
+	"SHOW_TAX_BREAKDWON": "Show Tax Breakdown",
+	"COPY_HOTEL_ON_CONFIRMATION": "Copy hotel on confirmation",
+	"HOTEL_EMAIL": "Hotel Email",
+	"BULK_CHECKOUT_SEND_INVOICES": "Bulk check out - send invoices",
+	"LOGO_BG": "Logo background"
 

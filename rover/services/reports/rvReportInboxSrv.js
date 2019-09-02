@@ -414,6 +414,25 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         }; 
 
         /**
+         * Fill group codes
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillGroupCodes = (value, key, promises, formatedFilter) => {
+            var groupNameArray = [];
+
+             _.each(value, (id) => {
+                promises.push(RVreportsSubSrv.fetchGroupById(parseInt(id)).then(function(response) {
+                    groupNameArray.push(response.group_name);
+                    formatedFilter[reportInboxFilterLabelConst[key]] = groupNameArray.join(', ');
+                }));
+            });
+        }; 
+
+        /**
          * Fill company/ta details
          * @param {String} value of the option
          * @param {String} key the key to be used in the formatted filter
@@ -931,202 +950,206 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
             _.each(report.filters, function(value, key) {
                 switch (key) {
-                   case reportParamsConst['FROM_DATE']:
-                   case reportParamsConst['TO_DATE']:
-                   case reportParamsConst['DEPOSIT_FROM_DATE']:
-                   case reportParamsConst['DEPOSIT_TO_DATE']:
+                    case reportParamsConst['FROM_DATE']:
+                    case reportParamsConst['TO_DATE']:
+                    case reportParamsConst['DEPOSIT_FROM_DATE']:
+                    case reportParamsConst['DEPOSIT_TO_DATE']:
                         processedFilter[self.getDateRangeLabelName(key, report.name)] = value ? $filter('date')(tzIndependentDate(value), $rootScope.dateFormat) : value;
                         break;
-                   case reportParamsConst['CANCEL_FROM_DATE']:
-                   case reportParamsConst['CANCEL_TO_DATE']:
-                   case reportParamsConst['ARRIVAL_FROM_DATE']:
-                   case reportParamsConst['ARRIVAL_TO_DATE']:
-                   case reportParamsConst['GROUP_START_DATE']:
-                   case reportParamsConst['GROUP_END_DATE']:                   
-                   case reportParamsConst['PAID_FROM_DATE']:
-                   case reportParamsConst['PAID_TO_DATE']:
-                   case reportParamsConst['CREATE_FROM_DATE']:
-                   case reportParamsConst['CREATE_TO_DATE']:
-                   case reportParamsConst['ADJUSTMENT_FROM_DATE']:
-                   case reportParamsConst['ADJUSTMENT_TO_DATE']:
-                   case reportParamsConst['SINGLE_DATE']:                   
+                    case reportParamsConst['CANCEL_FROM_DATE']:
+                    case reportParamsConst['CANCEL_TO_DATE']:
+                    case reportParamsConst['ARRIVAL_FROM_DATE']:
+                    case reportParamsConst['ARRIVAL_TO_DATE']:
+                    case reportParamsConst['GROUP_START_DATE']:
+                    case reportParamsConst['GROUP_END_DATE']:                   
+                    case reportParamsConst['PAID_FROM_DATE']:
+                    case reportParamsConst['PAID_TO_DATE']:
+                    case reportParamsConst['CREATE_FROM_DATE']:
+                    case reportParamsConst['CREATE_TO_DATE']:
+                    case reportParamsConst['ADJUSTMENT_FROM_DATE']:
+                    case reportParamsConst['ADJUSTMENT_TO_DATE']:
+                    case reportParamsConst['SINGLE_DATE']:                   
                         processedFilter[reportInboxFilterLabelConst[key]] = value ? $filter('date')(tzIndependentDate(value), $rootScope.dateFormat) : value;
                         break;
-                   case reportParamsConst['FROM_TIME']:
-                   case reportParamsConst['TO_TIME']:
+                    case reportParamsConst['FROM_TIME']:
+                    case reportParamsConst['TO_TIME']:
+                    case reportParamsConst['INCLUDE_DAYUSE']:
                         processedFilter[reportInboxFilterLabelConst[key]] = value;
                         break;
-                   case reportParamsConst['RATE_IDS']:
-                   case reportParamsConst['RATE_ID']:
+                    case reportParamsConst['RATE_IDS']:
+                    case reportParamsConst['RATE_ID']:
                         self.processRateIds(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['ASSIGNED_DEPARTMENTS']:
+                    case reportParamsConst['ASSIGNED_DEPARTMENTS']:
                         self.fillDepartmentNames(value, key, promises, processedFilter);
                         break;                   
-                   case reportParamsConst['CHOOSE_MARKET']:
+                    case reportParamsConst['CHOOSE_MARKET']:
                         self.processMarkets(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['DEPOSIT_DUE']:
-                   case reportParamsConst['DEPOSIT_PAID']:
-                   case reportParamsConst['DEPOSIT_PAST']:
-                   case reportParamsConst['INCLUDE_CANCELLED']:
-                   case reportParamsConst['INCLUDE_CANCELED']:                   
-                   case reportParamsConst['INCLUDE_NO_SHOW']:
-                   case reportParamsConst['INCLUDE_TAX']:
-                   case reportParamsConst['DUE_IN_ARRIVALS']:  
-                   case reportParamsConst['INCLUDE_ACTIONS']:  
-                   case reportParamsConst['INCLUDE_LEDGER_DATA']:  
-                   case reportParamsConst['INCLUDE_GUEST_NOTES']: 
-                   case reportParamsConst['INCLUDE_RESERVATION_NOTES']:
-                   case reportParamsConst['SHOW_GUESTS']: 
-                   case reportParamsConst['VIP_ONLY']: 
-                   case reportParamsConst['EXCLUDE_NON_GTD']: 
-                   case reportParamsConst['RESTRICTED_POST_ONLY']:  
-                   case reportParamsConst['ROVER']:  
-                   case reportParamsConst['ZEST']:  
-                   case reportParamsConst['ZEST_WEB']: 
-                   case reportParamsConst['INCLUDE_LAST_YEAR']:  
-                   case reportParamsConst['INCLUDE_VARIANCE']: 
-                   case reportParamsConst['INCLUDE_BOTH']: 
-                   case reportParamsConst['INCLUDE_NEW']:  
-                   case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']: 
-                   case reportParamsConst['NO_NATIONALITY']:       
-                   //case reportParamsConst['EXCLUDE_TAX']:   
-                   case reportParamsConst['DUE_OUT_DEPARTURES']: 
+                    case reportParamsConst['DEPOSIT_DUE']:
+                    case reportParamsConst['DEPOSIT_PAID']:
+                    case reportParamsConst['DEPOSIT_PAST']:
+                    case reportParamsConst['INCLUDE_CANCELLED']:
+                    case reportParamsConst['INCLUDE_CANCELED']:                   
+                    case reportParamsConst['INCLUDE_NO_SHOW']:
+                    case reportParamsConst['INCLUDE_TAX']:
+                    case reportParamsConst['DUE_IN_ARRIVALS']:  
+                    case reportParamsConst['INCLUDE_ACTIONS']:  
+                    case reportParamsConst['INCLUDE_LEDGER_DATA']:  
+                    case reportParamsConst['INCLUDE_GUEST_NOTES']: 
+                    case reportParamsConst['INCLUDE_RESERVATION_NOTES']:
+                    case reportParamsConst['SHOW_GUESTS']: 
+                    case reportParamsConst['VIP_ONLY']: 
+                    case reportParamsConst['EXCLUDE_NON_GTD']: 
+                    case reportParamsConst['RESTRICTED_POST_ONLY']:  
+                    case reportParamsConst['ROVER']:  
+                    case reportParamsConst['ZEST']:  
+                    case reportParamsConst['ZEST_WEB']: 
+                    case reportParamsConst['INCLUDE_LAST_YEAR']:  
+                    case reportParamsConst['INCLUDE_VARIANCE']: 
+                    case reportParamsConst['INCLUDE_BOTH']: 
+                    case reportParamsConst['INCLUDE_NEW']:  
+                    case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']: 
+                    case reportParamsConst['NO_NATIONALITY']:       
+                   //   case reportParamsConst['EXCLUDE_TAX']:   
+                    case reportParamsConst['DUE_OUT_DEPARTURES']: 
                         self.processOptions(value, key, processedFilter);
                         break;
-                   case reportParamsConst['SHOW_DELETED_CHARGES']:
-                   case reportParamsConst['SHOW_ADJUSTMENTS']:
-                   case reportParamsConst['INCLUDE_MARKET']:
-                   case reportParamsConst['INCLUDE_ORIGIN']:
-                   case reportParamsConst['INCLUDE_SEGMENT']:
-                   case reportParamsConst['INCLUDE_SOURCE']:
-                   //case reportParamsConst['SHOW_ROOM_REVENUE']:
+                    case reportParamsConst['SHOW_DELETED_CHARGES']:
+                    case reportParamsConst['SHOW_ADJUSTMENTS']:
+                    case reportParamsConst['INCLUDE_MARKET']:
+                    case reportParamsConst['INCLUDE_ORIGIN']:
+                    case reportParamsConst['INCLUDE_SEGMENT']:
+                    case reportParamsConst['INCLUDE_SOURCE']:
+                   //   case reportParamsConst['SHOW_ROOM_REVENUE']:
                         self.processDisplayFilter(value, key, processedFilter);
                         break;
-                   case reportParamsConst['ACCOUNT_SEARCH']:
+                    case reportParamsConst['ACCOUNT_SEARCH']:
                         self.fillAccountInfo(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['AGING_BALANCE']:
+                    case reportParamsConst['AGING_BALANCE']:
                         self.processAgingBalance(value, key, processedFilter);
                         break;
-                   case reportParamsConst['COMPLETION_STATUS']:
-                   case reportParamsConst['SHOW_ACTIONABLES']:
-                   case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
+                    case reportParamsConst['COMPLETION_STATUS']:
+                    case reportParamsConst['SHOW_ACTIONABLES']:
+                    case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
                         self.processArrayValuesWithNoFormating(value, key, processedFilter);
                         break;
-                   case reportParamsConst['ORIGIN_VALUES']:
+                    case reportParamsConst['ORIGIN_VALUES']:
                         self.fillOriginInfo(value, key, promises, processedFilter);
                         break;                   
-                   case reportParamsConst['ORIGIN_URLS']:
+                    case reportParamsConst['ORIGIN_URLS']:
                         self.processOriginUrls(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['ADDONS_GROUPS_IDS']:
+                    case reportParamsConst['ADDONS_GROUPS_IDS']:
                         self.fillAddonGroups(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['ADDONS_IDS']:
+                    case reportParamsConst['ADDONS_IDS']:
                         self.fillAddons(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['RESERVATION_STATUS']:
+                    case reportParamsConst['RESERVATION_STATUS']:
                         self.fillReservationStatus(value, key, promises, processedFilter, report);
                         break;
-                   case reportParamsConst['ADDON_GROUP_BY']:
+                    case reportParamsConst['ADDON_GROUP_BY']:
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
                         break; 
-                   case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
-                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:
+                    case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
+                    case reportParamsConst['GROUP_COMPANY_TA_CARD']:                        
                         self.fillCompanyTaGroupDetails(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
+                    case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
+                    case reportParamsConst['TA_CC_CARD']:
                         self.fillCompanyTaDetails(value, key, promises, processedFilter, report);
                         break;
-                   case reportParamsConst['CHECKED_IN']:
-                   case reportParamsConst['CHECKED_OUT']:
+                    case reportParamsConst['GROUP_CODE']:
+                        self.fillGroupCodes(value, key, promises, processedFilter, report);
+                        break; 
+                    case reportParamsConst['CHECKED_IN']:
+                    case reportParamsConst['CHECKED_OUT']:
                         self.fillCheckedInCheckedOut(value, key, processedFilter);
                         break;
-                   case reportParamsConst['SHOW_TRAVEL_AGENT']:
-                   case reportParamsConst['SHOW_COMPANY']:                   
-                   case reportParamsConst['INCLUDE_INHOUSE']:
-                   case reportParamsConst['OOO']:
-                   case reportParamsConst['OOS']:
-                   case reportParamsConst['EXCEEDED_ONLY']:
+                    case reportParamsConst['SHOW_TRAVEL_AGENT']:
+                    case reportParamsConst['SHOW_COMPANY']:                   
+                    case reportParamsConst['INCLUDE_INHOUSE']:
+                    case reportParamsConst['OOO']:
+                    case reportParamsConst['OOS']:
+                    case reportParamsConst['EXCEEDED_ONLY']:
                         self.fillShowFields(value, key, processedFilter);
                         break; 
-                   case reportParamsConst['MIN_REVENUE']:
-                   case reportParamsConst['MIN_NIGHTS']:
-                   case reportParamsConst['MIN_NO_OF_DAYS_NOT_OCCUPIED']:
-                   case reportParamsConst['VAT_YEAR']:                   
+                    case reportParamsConst['MIN_REVENUE']:
+                    case reportParamsConst['MIN_NIGHTS']:
+                    case reportParamsConst['MIN_NO_OF_DAYS_NOT_OCCUPIED']:
+                    case reportParamsConst['VAT_YEAR']:                   
                         self.fillValueWithoutFormating(value, key, processedFilter);
                         break;
-                   case reportParamsConst['RATE_TYPE_IDS']:
+                    case reportParamsConst['RATE_TYPE_IDS']:
                         self.fillRateTypes(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['CHARGE_CODE_IDS']:
+                    case reportParamsConst['CHARGE_CODE_IDS']:
                         self.fillChargeCodes(value, key, promises, processedFilter);
                         break;  
-                   case reportParamsConst['CHARGE_GROUP_IDS']:
+                    case reportParamsConst['CHARGE_GROUP_IDS']:
                         self.fillChargeGroups(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['ACCOUNT']:
-                   case reportParamsConst['GUEST']:
+                    case reportParamsConst['ACCOUNT']:
+                    case reportParamsConst['GUEST']:
                         self.fillGuestAccount(value, key, processedFilter);
                         break; 
-                   case reportParamsConst['USER_IDS']:
+                    case reportParamsConst['USER_IDS']:
                         self.fillUserInfo(value, key, promises, processedFilter);
                         break;  
-                   case reportParamsConst['BOOKING_ORIGIN_IDS']:
+                    case reportParamsConst['BOOKING_ORIGIN_IDS']:
                         self.fillBookingOrigins(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['MARKET_IDS']:
+                    case reportParamsConst['MARKET_IDS']:
                         self.fillMarkets(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['SOURCE_IDS']:
+                    case reportParamsConst['SOURCE_IDS']:
                         self.fillSources(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['HOLD_STATUS_IDS']:
+                    case reportParamsConst['HOLD_STATUS_IDS']:
                         self.fillHoldStatuses(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['INCLUDE_GROUP']:
+                    case reportParamsConst['INCLUDE_GROUP']:
                         self.fillGroupInfo(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['ROOM_TYPE_IDS']:
+                    case reportParamsConst['ROOM_TYPE_IDS']:
                         self.fillRoomTypes(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['FLOOR']:
+                    case reportParamsConst['FLOOR']:
                         self.fillFloors(value, key, promises, processedFilter);
                         break; 
-                   case reportParamsConst['TRAVEL_AGENTS']:
+                    case reportParamsConst['TRAVEL_AGENTS']:
                         self.fillTravelAgentInfo(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['WITH_VAT_NUMBER']:
-                   case reportParamsConst['WITHOUT_VAT_NUMBER']:
+                    case reportParamsConst['WITH_VAT_NUMBER']:
+                    case reportParamsConst['WITHOUT_VAT_NUMBER']:
                         self.fillVatInfo(value, key, processedFilter);
                         break;
-                   case reportParamsConst['CAMPAIGN_TYPES']:
+                    case reportParamsConst['CAMPAIGN_TYPES']:
                         self.fillCampaignTypesInfo(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['SORT_DIR']:
+                    case reportParamsConst['SORT_DIR']:
                         self.fillSortDir(value, key, processedFilter);
                         break;
-                   case reportParamsConst['SORT_FIELD']:
+                    case reportParamsConst['SORT_FIELD']:
                         self.fillSortField(value, key, processedFilter, report);
                         break;
-                   case reportParamsConst['INCLUDE_DUE_OUT']: 
+                    case reportParamsConst['INCLUDE_DUE_OUT']: 
                         self.processDueOut(value, key, processedFilter, report);
                         break;
-                   case reportParamsConst['SEGMENT_IDS']:
+                    case reportParamsConst['SEGMENT_IDS']:
                         self.fillSegments(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['RESTRICTION_IDS']:
+                    case reportParamsConst['RESTRICTION_IDS']:
                         self.fillRestrictions(value, key, promises, processedFilter);
                         break;
-                   case reportParamsConst['GROUP_BY_DATE']:
-                   case reportParamsConst['GROUP_BY_USER']:
-                   case reportParamsConst['GROUP_BY_GROUP_NAME']:
+                    case reportParamsConst['GROUP_BY_DATE']:
+                    case reportParamsConst['GROUP_BY_USER']:
+                    case reportParamsConst['GROUP_BY_GROUP_NAME']:
                         self.fillGroupByInfo(value, key, processedFilter);
                         break;
-                }                
-
+                }
             });
 
             if (processedFilter[reportInboxFilterLabelConst['OPTIONS']] && processedFilter[reportInboxFilterLabelConst['OPTIONS']].length > 0 ) {

@@ -95,7 +95,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		var $_lastQuery = '';
 
-		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters );
+		var $_oldFilterValues = angular.copy( RVHkRoomStatusSrv.currentFilters ),
 
 			$_oldRoomTypes    = angular.copy( roomTypes );
 
@@ -144,6 +144,24 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.currentView = view;
 			RVHkRoomStatusSrv.defaultViewState = view;
 		};
+		var scrollCount = 0;
+
+		var delayedExec = function(after, fn) {
+
+			var timer;
+			
+			return function() {
+				scrollCount += 1;
+				timer && clearTimeout(timer);
+				timer = setTimeout(fn, after);
+			};
+		};
+
+		var scrollStopper = delayedExec(500, function() {
+		    scrollCount = 0;
+		});
+
+		angular.element(document.querySelector('#rooms')).bind('scroll', scrollStopper);
 
 		$scope.toggleView = function() {
 			if ($scope.currentView === 'ROOMS') {
@@ -210,7 +228,15 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		// store the current room list scroll position
 		$scope.roomListItemClicked = function(room) {
-			localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+			$timeout(function() {
+				if (scrollCount === 0) {
+					localStorage.setItem( 'roomListScrollTopPos', $_roomsEl.scrollTop );
+					$state.go("rover.housekeeping.roomDetails", {
+						id: room.id,
+						page: $_page
+					});
+				}
+			}, 400);
 		};
 
 		$scope.showFilters = function() {
@@ -399,8 +425,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 		});
 
-		$scope.$on( '$destroy', allRendered );
-
+		$scope.$on( '$destroy', allRendered );		 
 
 		$scope.roomSelectChange = function(item, i) {
 			var _value = item.selected,
@@ -425,6 +450,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					// remove keyMirror
 					$scope.multiRoomAction.indexes[_key] = undefined;
 					delete $scope.multiRoomAction.indexes[_key];
+					$scope.multiRoomAction.allChosen = false;
 				}
 
 				if ( !$scope.multiRoomAction.rooms.length ) {
@@ -550,7 +576,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.shouldShowTimeSelector = function() {
             var isInService = $scope.updateServiceData.room_service_status_id === 1;
 
-            return $rootScope.isHourlyRateOn && !isInService;
+            return ($rootScope.isHourlyRateOn || $rootScope.hotelDiaryConfig.mode === 'FULL') && !isInService;
 		};
 
 		$scope.closeDialog = function() {
@@ -629,7 +655,20 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
   					item.isMultipleReservation = true;
   				} else if ((item.reservations.length === 1)) {
   					item.reservationData = "#" + item.reservations[0].confirm_no;
-  					item.GuestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;
+					  item.GuestName = (function() {
+										 var guestName = "";
+
+										 if (item.reservations[0].last_name && item.reservations[0].first_name) {
+											guestName = item.reservations[0].last_name + ", " + item.reservations[0].first_name;  
+										 } else if (item.reservations[0].last_name && !item.reservations[0].first_name) {
+											guestName = item.reservations[0].last_name + ", ";
+										 } else if (!item.reservations[0].last_name && item.reservations[0].first_name) {
+											guestName = ', ' +  item.reservations[0].first_name;
+										 }
+
+										 return guestName;
+					  				  })();
+					  
   					item.isMultipleReservation = false;
   				}
 			});
@@ -902,39 +941,43 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		function $_startPrinting() {
+			$scope.$emit('hideLoader');
 			/*
 			*	======[ READY TO PRINT ]======
 			*/
 
 			// add the orientation
 			$( 'head' ).append( "<style id='print-orientation'>@page { size: landscape; }</style>" );
-			$scope.$emit('hideLoader');
+			
+			var onPrintCompletion = function() {
+				// remove the orientation after similar delay
+				$timeout(function() {
+					// remove the orientation
+					$( '#print-orientation' ).remove();
+
+					// reset params to what it was before printing
+					$_page = $scope.returnToPage;
+					$_updateFilters('page', $_page);
+					$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
+
+					$_callRoomsApi();
+				}, 150);
+			};
 
 			/*
 			*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
 			*/
 			$timeout(function() {
-				$window.print();
 				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					cordova.exec(onPrintCompletion, function() {
+						onPrintCompletion();
+					}, 'RVCardPlugin', 'printWebView', ['hkstatus', '0', '', 'L']);
+				} else {
+					$window.print();
+					onPrintCompletion();
 				}
 			}, 100);
-			/*
-			*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			*/
-
-			// remove the orientation after similar delay
-			$timeout(function() {
-				// remove the orientation
-				$( '#print-orientation' ).remove();
-
-				// reset params to what it was before printing
-				$_page = $scope.returnToPage;
-				$_updateFilters('page', $_page);
-				$_updateFilters('perPage', $window.innerWidth < 599 ? 25 : 50);
-
-				$_callRoomsApi();
-			}, 150);
+			
 		}
 
 
@@ -1024,7 +1067,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_updateFilters('page', $_page);
 			$timeout(function() {
 				$scope.$broadcast('updatePagination', 'HK_SEARCH');
+				$scope.$broadcast('updatePageNo', $_page);
 			}, 700);
+			
 		}
 
 
@@ -1116,6 +1161,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		function $_callRoomsApi(page) {
 			var clickedPage = page || 1;
+
+			$_page = clickedPage;
 
 			$_updateFilters('page', clickedPage);
 
@@ -1287,7 +1334,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$refresh.style.webkitTransform  = translateDiff;
 
 					notifyPullDownAction(diff);
-				} else if ( !ngScope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+				} else if ( !ngScope.disableNextBtn && nowY < startY && parseInt(this.scrollTop + .5) === parseInt(scrollBarOnBot)) {
 					commonEx();
 					$load.classList.add('show');
 
@@ -1363,7 +1410,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 					notifyPullDownAction();
 					resetIndicators();
-				} else if ( !ngScope.disableNextBtn && nowY < startY && this.scrollTop === scrollBarOnBot ) {
+				} else if ( !ngScope.disableNextBtn && nowY < startY && parseInt(this.scrollTop + .5) === parseInt(scrollBarOnBot)) {
 					commonEx();
 
 					if ( abs(diff) > trigger ) {
@@ -1486,7 +1533,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
               break;
           }
           return (returnString);
-        };
-
+		};
+		
 	}
 	]);

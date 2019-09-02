@@ -265,6 +265,10 @@
                               </p>
                               <p style="color:{{generalSettings.text_color}}">    {{hotelDetails.location_adress}}
                               </p>
+                              <p style="color:{{generalSettings.text_color}}" ng-if="generalSettings.hotel_phone_number.length >0"> {{generalSettings.phone_number_prefix_text}}&nbsp;<a style="color: {{generalSettings.text_color}};" href="tel:{{generalSettings.hotel_phone_number}}" target="_blank">
+                                 {{generalSettings.hotel_phone_number}}
+                                 </a>
+                              </p>
                               <p>
                                  <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.privacy_policy_link}}" target="_blank">
                                  {{generalSettings.privacy_policy_text}}

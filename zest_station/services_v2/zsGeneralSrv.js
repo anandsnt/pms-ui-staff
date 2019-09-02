@@ -12,12 +12,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         * all other hotels should default to the SNT theme until which time we add the styling into our product or until a CMS is integrated
         *
         * themeMappings:: when mapping, on Left (key) is used for the PATH zest_station/css/themes/{theme},
-        *                  --on the right, (value) is what is coming from the hotel config in SNT Admin > Templates Config, ie. in dropdown (Public ny), 
+        *                  --on the right, (value) is what is coming from the hotel config in SNT Admin > Templates Config, ie. in dropdown (Public ny),
         *                  but we want to map to a path of just css/theme/public
         *
         *WHEN ADDING or Changing a Theme Name and path - will also need to update the Gulp Asset-list
         * at >> asset_list > theming > zeststation > css > css_theme_mapping.js
-        * 
+        *
         */
 
         var themeMappings = {
@@ -62,7 +62,47 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'freehand-la': 'Freehand Los Angels',
             'east-london': 'The East London Hotel',
             'farmers-daughter': 'Farmers Daughter',
-            'park-james': 'Park James Hotel'
+            'park-james': 'Park James Hotel',
+            'annapolis': 'Hotel Annapolis',
+            'origin': 'Origins Red Rocks',
+            'kinney': 'The Kinney Slo',
+            'hubert': 'Hotel Hubert',
+            'de-blend': '2L De Blend',
+            'anthony': 'The Anthony',
+            'stewart': 'Stewart Aparthotel',
+            'university-inn': 'University Inn',
+            'cedar-court': 'Cedar Court Hotels',
+            'sister-city': 'Sister City Hotel NY',
+            'twa': 'TWA Hotel',
+            'carrollton-inn': 'Carrollton Inn',
+            'match': 'Hotel the Match',
+            'liason': 'Liason DC',
+            'clarion-collection': 'Clarion Collection',
+            'la-copa': 'La Copa Inn',
+            'ruby': 'Ruby Hospitality',
+            'qbic': 'Qbic Hotels',
+            'merrion-row': 'Merrion Row Hotel And Public House',
+            'freehand-chicago': 'Freehand Chicago',
+            'why': 'Why Hotel',
+            'village': 'Village Hotels',
+            'gallivant': 'Gallivant NY',
+            'hotel-e': 'Hotel E',
+            'kelley': 'Kelley House',
+            'stare-miastro': 'Aparthotel Stare Miasto',
+            'upstairs-by-mamas': 'Upstairs by Mamas',
+            'juliani': 'Hotel Juliani',
+            'mooons': 'Mooons',
+            'marmalade': 'Marmalade Hotel',
+            'bosville': 'Bosville Hotel',
+            'kinsley': 'Hotel Kinsley',
+            'zurzacheroff': 'Hotel Zurzacherhof',
+            'asbury': 'The Asbury',
+            'manchebo': 'Manchebo Beach Resort',
+            'seacrest': 'Seacrest Hotel V2',
+            'cole': 'The Cole Hotel',
+            'heritage-hills': 'Heritage Hills Golf Resort',
+            'metropolis-resort': 'Metropolis Resort',
+            'why-seattle': 'Why Hotel Seattle'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -78,6 +118,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 // fetch hotel theme and set variable to this controller,
                 // then resolve the fetch settings
                 that.fetchHotelTheme(data, deferred);
+                // fetch Feature toggles and save in Srv for using in future.
+                that.retrieveFeatureToggles();
             }, function(data) {
                 deferred.reject(data);
             });
@@ -94,8 +136,15 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                         id: response.existing_email_template_theme
                     });
 
+                    // if theme isn't set, choose Stayntouch theme and proceed
+                    if (!hotelTheme) {
+                        hotelTheme = _.findWhere(response.themes, {
+                            name: 'Stayntouch'
+                        });
+                    }
+
                     if (hotelTheme && hotelTheme.name) {
-                        theme = hotelTheme.name.toLowerCase();    
+                        theme = hotelTheme.name.toLowerCase();
                     } else {
                         deferred.reject();
                     }
@@ -106,13 +155,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 if (theme === 'fontainebleau v2') {
                     theme = 'fontainebleau';
                 } else {
-                    // the hotel theme name has to be mapped to the zeststation resource files 
+                    // the hotel theme name has to be mapped to the zeststation resource files
                     // corresponding to those themes.
                     theme = _.findKey(themeMappings, function(themeMapping) {
                         return themeMapping.toLowerCase() === theme;
                     });
                 }
-                
+
 
                 if (!that.isThemeConfigured(theme)) {
                     theme = 'snt';
@@ -143,13 +192,12 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchTranslations = function(languages) {
             var deferred = $q.defer();
 
-            var languageConfig, langShortCode, url, promises = [], results = {};
+            var langShortCode, url, promises = [], results = {};
 
             languages.map(function(language) {
-                languageConfig = that.languageValueMappingsForUI[language.name];
-                langShortCode = languageConfig.code;
+                langShortCode = language.code;
 
-                that.langName[langShortCode] = language.name;
+                that.langName[langShortCode] = language.code;
 
                 url = '/api/locales/' + langShortCode + '.json';
                 promises.push(
@@ -190,7 +238,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.updateLanguageTranslationText = function(params) {
             var deferred = $q.defer(),
                 url = '/api/hotel_settings/change_settings';
-            var langCode = params.langCode, 
+            var langCode = params.langCode,
                 newValueForText = params.newValueForText,
                 tag = params.tag,
                 keepShowingTag = params.keepShowingTag;
@@ -200,9 +248,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 if (keepShowingTag) {
                     that.syncTranslationText(langCode, tag, tag);
                 } else {
-                    that.syncTranslationText(langCode, newValueForText, tag);    
+                    that.syncTranslationText(langCode, newValueForText, tag);
                 }
-                
+
 
             }, function(data) {
                 deferred.reject(data);
@@ -272,7 +320,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.ValidateEmail = function(email) {
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 return false;
-            } 
+            }
             return true;
         };
 
@@ -283,7 +331,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }
             email = email.replace(/\s+/g, '');
             if (that.ValidateEmail(email)) {
-                return false; 
+                return false;
             }
             return true;
 
@@ -350,7 +398,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             zsBaseWebSrv.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
-                deferred.reject(data);    
+                deferred.reject(data);
             });
             return deferred.promise;
         };
@@ -573,11 +621,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-      
+
         this.fetchHotelLanguageList = function() {
             var deferred = $q.defer();
             var url = '/api/guest_languages';
-            
+
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -585,7 +633,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-            
+
         this.getKeyEncoderInfo = function() {
             var deferred = $q.defer();
             var url = '/api/key_encoders';
@@ -600,7 +648,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchHotelTranslations = function() {
             var deferred = $q.defer(),
-                url = 'zest_station/translations';
+                url = 'zest_station/translations.json';
 
             zsBaseWebSrv2.getJSON(url).then(function(data) {
                 deferred.resolve(data.hotel_translations);
@@ -610,7 +658,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-         this.fetchDefaultTranslations = function() {
+        this.fetchDefaultTranslations = function() {
             var deferred = $q.defer(),
                 url = 'zest_station/fetch_default_translations';
 
@@ -633,7 +681,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        this.recordIdVerification = function(params) {
+        this.recordReservationActions = function(params) {
 
             var deferred = $q.defer(),
                 url = '/api/reservation_actions';
@@ -646,5 +694,127 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.proceesPaginationDetails = function(array, itemsPerPage, pageNumber) {
+            var pageStartingIndex,
+                pageEndingIndex,
+                viewableItems = [];
+
+            if (array.length <= itemsPerPage) {
+                // if 4 or less upgrades are available
+                pageStartingIndex = 1;
+                pageEndingIndex = array.length;
+                viewableItems = angular.copy(array);
+            } else {
+                // if multiple pages (each containing itemsPerPage items) are present and user navigates
+                // using next and previous buttons
+                pageStartingIndex = 1 + itemsPerPage * (pageNumber - 1);
+                // ending index can depend upon the no of items
+                if (pageNumber * itemsPerPage < array.length) {
+                    pageEndingIndex = pageNumber * itemsPerPage;
+                } else {
+                    pageEndingIndex = array.length;
+                }
+                // set viewable pgm list - itemsPerPage items at a time
+                viewableItems = [];
+
+                for (var index = -1; index < itemsPerPage - 1; index++) {
+                    if (!_.isUndefined(array[pageStartingIndex + index])) {
+                        viewableItems.push(array[pageStartingIndex + index]);
+                    }
+                }
+            }
+
+            var pageData = {
+                disableNextButton: pageEndingIndex === array.length,
+                disablePreviousButton: pageStartingIndex === 1,
+                pageStartingIndex: pageStartingIndex,
+                pageEndingIndex: pageEndingIndex,
+                viewableItems: viewableItems,
+                pageNumber: pageNumber,
+                total: array.length
+            };
+
+            return pageData;
+        };
+
+        this.retrievePaginationStartingData = function() {
+            return {
+                disableNextButton: false,
+                disablePreviousButton: false,
+                pageStartingIndex: 1,
+                pageEndingIndex: '',
+                viewableItems: [],
+                pageNumber: 1
+            };
+        };
+
+        this.getImages = function() {
+            var url = '/api/hotel_settings/configurable_images';
+
+            return zsBaseWebSrv.getJSON(url);
+        };
+
+
+        this.getDeviceDetails = function(params) {
+
+            var url = '/api/notifications/device_details';
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.signOut = function() {
+            return zsBaseWebSrv.getJSON('/logout');
+        };
+
+        this.detachGuest = function(params) {
+            var url = '/zest_station/reservations/' + params.id + '/detach_accompanying_guest';
+
+            return zsBaseWebSrv.postJSON(url, params);
+        };
+
+        this.getRoomTypes = function(params) {
+            var url = '/api/room_types.json';
+            
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.getAvailableRatesForTheDay = function(params) {
+            var url = '/api/availability/room_type_adrs';
+
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.createReservation = function(params) {
+            var url = '/api/reservations';
+            
+            return zsBaseWebSrv.postJSON(url, params);
+        };
+
+        this.featuresToggleList = {};
+        this.retrieveFeatureToggles = function() {            
+             var deferred = $q.defer(),
+                url = '/api/features/list';
+
+            zsBaseWebSrv.getJSON(url).then(function(response) {
+                that.featuresToggleList = response;
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.getRoomInstructions = function(params) {
+            var url = '/api/reservations/' + params.id + '/room_instructions.json';
+
+            delete params.id;
+            return zsBaseWebSrv.getJSON(url, params);
+        };
+
+        this.fetchAvailableRooms = function(params) {
+            var url = '/api/rooms/retrieve_available_rooms';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
     }
 ]);

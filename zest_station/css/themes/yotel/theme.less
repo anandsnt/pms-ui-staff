@@ -11,6 +11,7 @@
 	@actionBackground: 		@white;
 
 	@inputBackground: 		rgba(0,0,0,.3);
+    @inputColor:            @white;
 	@transparentColor: 		rgba(255,255,255,.5);
 
 	@grey1:					#dededc;
@@ -73,6 +74,7 @@
 		}
 
 		#header {
+            .transition();
 			#flexbox > .parent('', '', flex-end, '');
 
 			.button {
@@ -116,8 +118,9 @@
 		#main {
 			top: 140px;
 			left: 20px;
-			background: @backgroundColor url("../css/themes/yotel/background.png") no-repeat;
+			background: @backgroundColor url("../css/themes/yotel/background.png") 50% 100% no-repeat;
 			background-size: cover;
+            .transition();
 			#rounded > .round();
 			#calc > #height > .remove(100%, 160px);
 			#calc > #width > .remove(100%, 40px);
@@ -351,7 +354,7 @@
             overflow-x:visible !important;
         }
         .ui-keyboard-has-focus{
-            z-index:7999;
+            z-index:100000;
             width: 56% !important;
             bottom: 10px;
         }
@@ -495,24 +498,28 @@
 
 @media (min-height: 800px) {
     #options li .option {
-        width: 100% !important;
-        height: 35% !important;
+        width: 300px !important;
+        height: auto !important;
+        max-height: 300px !important;
     }
     #options.large-icons li .option {
-        width: 90% !important;
-        height: 40% !important;
+        width: 300px !important;
+        height: auto !important;
+        max-height: 300px !important;
     }
 }
 
 
 @media (min-height: 1240px) {
     #options li .option {
-        width: 100% !important;
-        height: 35% !important;
+        width: 300px !important;
+        height: auto !important;
+        max-height: 300px !important;
     }
     #options.large-icons li .option {
-        width: 90% !important;
-        height: 25% !important;
+        width: 300px !important;
+        height: auto !important;
+        max-height: 300px !important;
     }
 }
 
@@ -632,3 +639,28 @@
         }
     }
 }
+
+
+/* Onscreen keyboard ***/
+@keyboardShift:         120px;
+
+&.showing-keyboard#yotel {
+
+    #header {
+        margin-top: -@keyboardShift;
+    }
+
+    #screen-icon {
+        top: 90px - @keyboardShift;
+    }
+
+    #main {
+        top: 140px - @keyboardShift;
+        #calc > #height > .remove(100%, 160px - @keyboardShift);
+    }          
+}
+
+.lift-popup {
+    top: 20% !important;
+}
+

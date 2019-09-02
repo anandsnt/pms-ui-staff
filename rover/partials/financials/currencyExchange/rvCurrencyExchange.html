@@ -1,0 +1,53 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
+    <div class="modal-content form exchange-rate">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"> <span class="icons icon-close invert" ></button>
+        
+        <div class="title">
+            <span class="h2 message">Currency Exchange Rates</span>
+            <span class="text">View & Update Rates for selected Date Range</span>
+        </div>
+
+        <div class="filters">
+            <input id="start-date" class="datepicker" readonly type="text" ui-date="startDateOptions" value="{{start_date | date: dateFormat }}" />
+            <input id="end-date" class="datepicker" readonly type="text" ui-date="endDateOptions" value="{{end_date | date: dateFormat}}" />
+        </div>
+
+        <div id="exchange-grid" class="scrollable" ng-iscroll="CURRENCY_SCROLLER"> <!-- iScroll here -->
+            <div class="wrapper">
+                <table class="rate-grid">
+                    <thead>
+                        <tr>
+                            <th class="date">Date</th>
+                            <th class="input"><strong>Rate for <span class="currency">{{currencySymbol}}</span>1.00</strong></th>
+                            <th class="copy">Copy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="exchangeRate in exchangeRates">
+                            <td>
+                                <strong>{{exchangeRate.day}}, {{exchangeRate.date | date: dateFormat}}</strong>
+                            </td>
+                            <td>
+                                <span class="currency">{{invoiceCurrencySymbol}}</span>
+                                <input type="text" ng-model="exchangeRate.conversion_rate" ng-disabled="{{exchangeRate.isDisabled}}"><!-- Add attr 'disabled' if it's for past date -->
+                            </td>
+                            <td>
+                                <span class="admin-icons icon-mover-right" ng-hide="exchangeRate.isDisabled" ng-click="copyToNext($index)">Copy</span> <!-- Add class 'hidden' if Exchange Rate for this day is not defined or if it's a past date -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>   
+
+        <div class="actions">
+            <button type="button" class="button blank modal-close" ng-click="closeDialog()">Close </button>
+            <button type="button" class="button green" ng-click="saveExchangeRate()">Save changes</button>
+            <!-- When users modify exchange rates, hide L44 and show this instead:
+                <button type="button" class="button blank">Cancel</button> // Click on this reverts changes but does not close the popup
+                <button type="button" class="button white green-text">Save changes</button> // Click on this saves changes but does not close the popup
+                <button type="button" class="button green">Save and Close</button> // Click on this saves changes and closes the popup
+            -->
+        </div>
+    </div>
+</div>

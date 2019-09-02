@@ -61,6 +61,14 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send(jsonstring);
     };
 
+    this.fetchDeviceId = function() {
+        that.ws.send('{"Command" : "cmd_device_uid"}');
+    };
+
+    this.enableDeviceLogging = function() {
+        that.ws.send('{"Command" : "cmd_enable_debug_log"}');
+    };
+
     this.connect = function() {
         try {
             var port = (_.isUndefined(wsSwipePort) || wsSwipePort === '' || wsSwipePort === null) ? 4649 : wsSwipePort;

@@ -702,7 +702,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                     $scope.depositData = $scope.reservationData.depositData;
                 }
                 $scope.fetchDemoGraphics();
-            } else {
+            }
+            else {
                 if (!$scope.reservationData.depositData) {
                     $scope.depositData = {};
                     var arrivalRate = $scope.reservationData.rooms[0].stayDates[$scope.reservationData.arrivalDate].rate.id;
@@ -876,7 +877,14 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.errorMessage = data;
             };
 
+            var arrivalTime = ($scope.reservationData.checkinTime && $scope.reservationData.checkinTime.hh) ? $scope.reservationData.checkinTime.hh + ':' + $scope.reservationData.checkinTime.mm + ' ' + $scope.reservationData.checkinTime.ampm : null,
+                departureTime = ($scope.reservationData.checkoutTime && $scope.reservationData.checkoutTime.hh) ? $scope.reservationData.checkoutTime.hh + ':' + $scope.reservationData.checkoutTime.mm + ' ' + $scope.reservationData.checkoutTime.ampm : null;
+
             var postData = {
+                arrival_time: moment(arrivalTime, 'hh:mm A').format('HH:mm'),
+                departure_time: moment(departureTime, 'hh:mm A').format('HH:mm'),
+                arrival_date: $scope.reservationData.arrivalDate,
+                departure_date: $scope.reservationData.departureDate,
                 payment_type: {},
                 guest_detail_id: $scope.reservationData.guest.id // CICO-42714
             };
@@ -1424,7 +1432,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
 
             if ($scope.otherData.reservationTypeIsForced && $scope.otherData.reservationTypes.length > 0) {
-                isValid = demographicsData.reservationType !== "";
+                isValid = demographicsData.reservationType !== "" && demographicsData.reservationType !== null;
             }
             if ($scope.otherData.marketsEnabled && $scope.otherData.marketIsForced && $scope.otherData.markets.length > 0 && isValid) {
                 isValid = demographicsData.market !== "";
@@ -1640,6 +1648,17 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }, 300);
 
         });
+        $scope.shouldIncludeScrollFixClass = false; 
+        $scope.$on('PAYMENT_TYPE_CHANGED', function(e, paymentType) {
+            if (paymentType === "CC") {
+                $scope.shouldIncludeScrollFixClass = true; 
+            } else {
+                $scope.shouldIncludeScrollFixClass = false; 
+            }
+            $timeout(function() {
+                $scope.refreshScroller('paymentInfo');
+            }, 700);
+        }); 
 
         // Find guest type id by name
         var findGuestTypeId = function (type) {

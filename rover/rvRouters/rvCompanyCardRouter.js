@@ -6,7 +6,11 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
             templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
             controller: 'searchCompanyCardController',
             params: {
-                textInQueryBox: ''
+                textInQueryBox: '',
+                selectedIds: [],
+                isMergeViewSelected: null,
+                activeSubView: '',
+                cardType: null
             },
             resolve: {
                 comapanycardSearchAssets: function(jsMappings) {
@@ -27,7 +31,13 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
                 origin: '',
                 isBackToTACommission: '',
                 fromDate: '',
-                toDate: ''
+                toDate: '',
+                isBackToStatistics: null,
+                selectedStatisticsYear: null,
+                selectedIds: [],
+                isMergeViewSelected: null,
+                activeSubView: '',
+                cardType: null
             },
             templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
             controller: 'companyCardDetailsController',

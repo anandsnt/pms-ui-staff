@@ -8,7 +8,9 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     '$timeout',
     '$window',
     '$translate',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate) {
+    'zsReceiptPrintHelperSrv',
+    '$log',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate, zsReceiptPrintHelperSrv, $log) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id
@@ -16,7 +18,6 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
          ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
-
 
         /**
          * [clickedPrint description]
@@ -54,18 +55,22 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 $scope.showDoneButton = true;
                 setMessage(printSuccess);
                 errorMessage = _.isUndefined(errorMessage) ? 'DISPENSE_KEY_PRINT_FAIL' : errorMessage;
-                $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
-                $scope.addReasonToOOSLog('DISPENSE_KEY_PRINT_FAIL');
-                $scope.zestStationData.workstationStatus = 'out-of-order';
-                $scope.runDigestCycle();
+                $scope.zestStationData.consecutivePrintFailure++;
 
+                if ($scope.zestStationData.consecutivePrintFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
+                    $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                    $scope.addReasonToOOSLog('DISPENSE_KEY_PRINT_FAIL');
+                    $scope.zestStationData.workstationStatus = 'out-of-order';
+                }
+
+                $scope.runDigestCycle();
                 $scope.trackEvent('PUK - Error', 'Print-Status');
                 $scope.trackEvent('PUK', 'Flow-End-Success');
                 $scope.trackSessionActivity('PUK', 'Print-Error', 'R' + $stateParams.reservation_id, 'FLOW_END_SUCCESS', true);
 
             };
             var printSuccessActions = function() {
-
+                $scope.zestStationData.consecutivePrintFailure = 0;
                 $scope.$emit('hideLoader');
                 $scope.showDoneButton = true;
                 var printSuccess = true;
@@ -133,18 +138,36 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 try {
                     // this will show the popup with full bill
                     $timeout(function() {
+                        var receiptPrinterParams;
+
+                        if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                            // Adding this condition here for easy debug from browser in iPad mode
+                            receiptPrinterParams = zsReceiptPrintHelperSrv.setUpStringForReceiptRegCard($scope.printRegCardData, $scope.zestStationData);
+                            $log.info(receiptPrinterParams);
+                        }
                         /*
                          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */
 
-                        if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
-                            var printer = sntZestStation.selectedPrinter;
-
-                            cordova.exec(function() {
-                                printSuccessActions();
-                            }, function() {
-                                printFailedActions();
-                            }, 'RVCardPlugin', 'printWebView', ['filep', '1', printer]);
+                        if ($scope.isIpad && typeof cordova !== typeof undefined) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
+                            if ($scope.zestStationData.zest_printer_option === 'RECEIPT') {
+                                cordova.exec(
+                                    printSuccessActions,
+                                    function() {
+                                        // To ensure the error message from receipt printer is not recorded,
+                                        //  we will show our generic print error message
+                                        printFailedActions();
+                                    },
+                                    'RVCardPlugin',
+                                    'printReceipt',
+                                    [ receiptPrinterParams ]);
+                            } else {
+                                cordova.exec(
+                                    printSuccessActions,
+                                    printFailedActions,
+                                    'RVCardPlugin',
+                                    'printWebView', ['filep', '1', $scope.zestStationData.defaultPrinter]);
+                            }
                         } else {
                             if ($scope.zestStationData.zest_printer_option === 'STAR_TAC' && $scope.zestStationData.kiosk_use_socket_print) {
                                 // we will call websocket services to print
@@ -194,7 +217,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var options = {
                 params: {
                     'id': $stateParams.reservation_id,
-                    'application': 'KIOSK'
+                    'application': 'KIOSK',
+                    'locale': $translate.use()
                 },
                 successCallBack: fetchPrintViewCompleted,
                 failureCallBack: printFailedActions

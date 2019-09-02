@@ -285,6 +285,9 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
                 // workaround to fix css updating for nationality in yotel..need to fire the scope.showingAutoComplete
                 angular.element(elementObj).scope().showingAutoComplete();
             }
+            if (id === 'country-id') {
+                $(elementObj[0]).scope().selectedCountry.searchInput = $(elementObj[0]).val();
+            }
 
         },
         beforeClose: function(e, keyboard, el, accepted) {
@@ -379,6 +382,8 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
                 elementObj.getkeyboard().close();
             }
         }
+        scrollContentsDown();
+
     };
     elementObj.focus(this.focusHandler).blur(this.blurHandler).keydown(function(e) {
         if (e.keyCode === 13) { // enter

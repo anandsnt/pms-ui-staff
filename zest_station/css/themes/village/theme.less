@@ -1,0 +1,203 @@
+/* StayNTouch Zest Station Styles | Village Theme */
+
+/* 1. COLORS
+==========================================================*/
+@brandColor:            #4ad8bf;
+ 
+    
+@textColor:              @white;
+@backgroundColor:       #000;
+
+@actionColor:           @white;
+@actionBackground:      @brandColor;
+
+@inputBackground:       #707070;
+@inputColor:            @white;
+@transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+@font-face {
+    font-family:'VillageFlex';
+        src: url('../../type/village/VillageFlex.eot');
+        src: url('../../type/village/VillageFlex.eot?#iefix') format('embedded-opentype'),
+            url('../../type/village/VillageFlex.woff') format('woff'),
+            url('../../type/village/VillageFlex.ttf') format('truetype'),
+            url('../../type/village/VillageFlex.svg#VillageFlex') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+@fontFamily: 'VillageFlex', sans-serif;
+ 
+
+/* 3. IMAGES
+==========================================================*/
+@background:            @backgroundColor;
+@backgroundSize:        contain;
+
+@headerIconsColor:      @white;
+@headerIconsActive:     @brandColor;
+
+.icons { 
+    fill: @white;
+    &.icon-create-key {
+        fill: @brandColor;
+        stroke: @brandColor;
+    }
+
+    &.icon-no-print { stroke: @brandColor; }
+
+    &.icon-oos {
+        fill: @brandColor;
+    }
+
+    &.icon-arrow-left,
+    &.icon-arrow-right {
+        fill: none;
+        stroke: @white;
+    }
+}
+
+/* 4. LAYOUT
+==========================================================*/
+
+#village {
+
+    
+    /* Popup fixes end */
+
+    .logo-svg{
+        background-image: url("../css/themes/village/logo.svg");
+        background-repeat: no-repeat;
+        background-size: 240px 69px;
+        background-position: center;
+        height: 69px;
+        width: 240px;
+        margin-top: 40px;
+    }
+
+    #header {
+        height: 150px;
+    }
+
+    #main {
+        #calc > #height > .remove(100%, 150px);
+        top: 150px;
+
+        &.centered {
+            padding-top: 100px;
+            #content {
+                height: 100%;
+            }
+        }
+    }
+
+    #actions {
+        &.pull-right {
+            p {
+                strong {
+                    font-size: 18px;
+                    font-weight: 400; 
+                }
+                color: @textColor;
+            }
+        }
+    }
+     
+    #logo {
+        margin-top: 40px;
+        padding-top: 0px;
+        background-color: #000;
+        .size(69px, 240px);
+        .logo {
+            .size(69px, 240px);
+        }
+    }
+
+    #options,
+    .popup #message-content .button {
+        .icons {
+            //fill: #000;
+        }
+    }
+
+    #textual {
+       background: #f5f5f5;
+
+       &:before,
+       &:after {
+        background: #f5f5f5;
+       }
+
+        #rate {
+            li {
+                &.total {
+                    color: @black;
+                }
+            }
+        }
+    }
+
+    #selection {
+        .details {
+            background: #f5f5f5;
+            color: @black;
+        }
+    }
+
+    /* Popup fixes start */
+    .popup {
+        .button {
+            &.transparent {
+                background: rgba(0,0,0,.1);
+            }
+        }
+    }
+    /* Popup fixes end */
+
+    #guests {
+        .button {
+            background-color: @black;
+            color: white;
+        }
+    }
+
+    #upgrade {
+        .upgrade-price {
+            background-color: @brandColor;
+        }
+    }
+
+    .upgrade-list:not(.upgrade-list-v2) .upgrade-content { background: @black;}
+
+    .add-on-list,
+    .add-on { 
+        .input-group {
+            input {
+                color: @black;
+            }
+        }
+        .button {
+            &.transparent {
+                background-color: fade(@black, 10);
+            }
+        }
+    }
+
+    .add-on {
+        &:not(.selected) {
+            background-color: #f5f5f5;
+            border-color: #f5f5f5;
+        }
+
+        #options {
+            li {
+                .option {
+                    &.not-selected {
+                        color: @black;
+                    }
+                }
+            }
+        }
+    }
+}

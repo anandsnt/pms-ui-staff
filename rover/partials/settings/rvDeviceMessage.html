@@ -1,4 +1,4 @@
-<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-show="screenMode ==='DISPLAY_MESSAGE'" ng-cloak>
     <div class="modal-content">
 
         <div class="modal-header">
@@ -15,6 +15,12 @@
         </div>
 
         <div class="entry button-grp">
+            <button type="button" class="button blank" ng-click="emailReceipt()" ng-if="actionDisplayName ==='Email Last Receipt'" style="background-image: -webkit-gradient(linear,0 0,0 100%,from(#90d92b),to(#54d115));color: white;" translate>
+                E-MAIL
+            </button>
+            <button type="button" class="button blank" ng-click="printReceipt()" ng-if="actionDisplayName ==='Print Last Receipt'" style="background-image: -webkit-gradient(linear,0 0,0 100%,from(#90d92b),to(#54d115));color: white;" translate>
+                PRINT
+            </button>
             <button type="button" class="button blank" ng-click="closeThisDialog()" translate>
                 CANCEL
             </button>
@@ -24,3 +30,16 @@
 
 </div>
 
+<div id="modal" class="modal-show"  ng-show="screenMode ==='EMAIL_ENTRY'">
+    <form id="confirm-reservation" class="modal-content form confirm-reservation ng-pristine ng-valid"> <span class="h2 message ng-scope" translate="">ENTER E-MAIL</span>
+        <!-- ngIf: !isEmailAttached() -->
+        <div class="entry full-width ng-scope" style="">
+            <label for="guest-email" translate="" class="ng-scope">E-mail</label>
+            <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="screenData.emailId" class="ng-pristine ng-untouched ng-valid ng-empty">
+        </div>
+        <div class="actions">
+            <button type="button" class="button with-icon" ng-class="{'green': isEmailValid() }" ng-click="sendEmail()" ng-disabled="!isEmailValid()"><span class="icons icon-email"></span> EMAIL</button>
+            <button type="button" class="button blank ng-scope" ng-click="closeThisDialog()" translate="">Close</button>
+        </div>
+    </form>
+</div>

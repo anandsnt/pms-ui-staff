@@ -80,10 +80,10 @@
 	</fieldset>
 	<div class="actions float">
 		<button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelMenu()">Cancel</button>
-		<button type="button" id="send-email" ng-hide="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'brand-colors' : anyRoomSelected(), 'overlay' : rateData.is_global_contract }" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
+		<button type="button" id="send-email" ng-hide="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'brand-colors' : anyRoomSelected(), 'overlay' : rateData.is_global_contract}" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
 			Step 3 - Set date range
 		</button>
-		<button type="button" id="send-email" ng-show="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'green' : (rateData.id > 0 && anyRoomSelected()), 'overlay' : rateData.is_global_contract }" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
+		<button type="button" id="send-email" ng-show="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'green' : (rateData.id > 0 && anyRoomSelected()), 'overlay' : rateData.is_global_contract}" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
 			Save
 		</button>
 	</div>

@@ -1,28 +1,8 @@
 angular.module('sntRover').service('RVContactInfoSrv', [
-    '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', '$log', '$rootScope',
-    function($q, RVBaseWebSrv, rvBaseWebSrvV2, $log, $rootScope) {
+    '$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2',
+    function($q, RVBaseWebSrv, rvBaseWebSrvV2) {
 
-        var service = this,
-            _guest = {
-                id: null,
-                isFetched: false
-            };
-
-        service.setGuest = function(id) {
-            service.resetGuest();
-            _guest.id = parseInt(id, 10);
-
-        };
-
-        service.isGuestFetchComplete = function(id) {
-            id = parseInt(id, 10);
-            return _guest.id === id && _guest.isFetched;
-        };
-
-        service.resetGuest = function() {
-            _guest.id = null;
-            _guest.isFetched = false;
-        };
+        var service = this;
 
         service.saveContactInfo = function(param) {
             var deferred = $q.defer(),
@@ -74,29 +54,7 @@ angular.module('sntRover').service('RVContactInfoSrv', [
                 deferred.reject(data);
             });
             return deferred.promise;
-        };
-
-        service.getGuestDetails = function() {
-            var deferred = $q.defer();
-            var url = '/api/guest_details/' + _guest.id;
-
-            if (!$rootScope.isStandAlone) {
-                url += "?sync_with_external_pms=true";
-            }
-
-            if (!_guest.id) {
-                $log.debug('Guest not set!');
-                deferred.reject(['Guest not set']);
-            } else {
-                rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                    _guest.isFetched = true;
-                    deferred.resolve(data);
-                }, function(data) {
-                    deferred.reject(data);
-                });
-            }
-            return deferred.promise;
-        };
+        };        
 
         /**
          * Remove guest details except first name and last name

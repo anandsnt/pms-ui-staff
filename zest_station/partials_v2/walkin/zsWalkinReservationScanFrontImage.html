@@ -1,0 +1,21 @@
+<section id="main" ng-class="{ 'centered': !screenData.extCamForFrontIDActivated }" role="main">
+   <div id="content">
+      <h1 translate>
+         WALKIN_IN_RESERVATION_SCAN_ID_HEADER
+      </h1>
+      <h2 translate>
+         WALKIN_IN_RESERVATION_SCAN_ID_INSTRUCTIONS
+      </h2>
+      <video id="id-video" style="height:50%; width:auto; margin:0 auto; display: block; margin-top: 5%;" ng-show="screenData.extCamForFrontIDActivated" autoplay></video>
+   </div>
+   <div>
+      <div id="actions" class="footer-centered">
+         <button type="button" class="button next" touch-press="captureFrontImage()" ng-hide="screenData.extCamForFrontIDActivated" translate>
+         GID_SCAN_BUTTON
+         </button>
+         <button type="button" class="button next" touch-press="captureFrontImageUsingExtCamera()" ng-show="screenData.extCamForFrontIDActivated" translate>
+         GID_SCAN_BUTTON
+         </button>
+      </div>
+   </div>
+</section>

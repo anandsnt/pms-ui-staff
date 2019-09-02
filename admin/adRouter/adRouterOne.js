@@ -10,7 +10,12 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.hoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url: '/hoteldetails/edit'
+			url: '/hoteldetails/edit',
+			resolve: {
+				oracleDataCenters: function() {
+					return {};
+				}
+			}
 		});
 
 		$stateProvider.state('admin.permissions', {
@@ -20,16 +25,34 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		});
 
 
-		$stateProvider.state('admin.snthoteldetails', {
-			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
-			controller: 'ADHotelDetailsCtrl',
-			url: '/hoteldetails/:action/:id'
-		});
+    $stateProvider.state('admin.snthoteldetails', {
+        templateUrl: '/assets/partials/hotel/adHotelDetails.html',
+        controller: 'ADHotelDetailsCtrl',
+        url: '/hoteldetails',
+        params: {
+            action: undefined,
+            id: undefined
+        },
+        resolve: {
+            oracleDataCenters: function (ADDataCenterSrv) {
+                return ADDataCenterSrv.fetchDataCenters();
+            }
+        }
+    });
 
 		$stateProvider.state('admin.users', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
-			url: '/users/:id'
+			url: '/users',
+            params: {
+			    id: null
+            }
+		});
+
+		$stateProvider.state('admin.adminUsers', {
+			templateUrl: '/assets/partials/adminUsers/adAdminUsersList.html',
+			controller: 'ADAdminUserListCtrl',
+			url: '/adminusers'
 		});
 
 		$stateProvider.state('admin.serviceproviderusers', {
@@ -41,7 +64,13 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.serviceprovideruserdetails', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderUserDetails.html',
 			controller: 'ADServiceProviderUserDetailsCtrl',
-			url: '/serviceprovideruserdetails/:serviceProviderId/:name/:userId/:isUnlocking'
+			url: '/serviceprovideruserdetails/',
+			params: {
+				serviceProviderId: undefined,
+				name: undefined,
+				userId: undefined,
+				isUnlocking: undefined
+			}
 		});
 
 		$stateProvider.state('admin.chains', {
@@ -54,7 +83,28 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
+			url: '/user',
+            params: {
+                page: undefined,
+                id: undefined,
+                hotelId: undefined,
+                isUnlocking: false,
+                manual_id_scan_enabled: false
+            }
+
+		});
+		
+		$stateProvider.state('admin.adminuserdetails', {
+			templateUrl: '/assets/partials/adminUsers/adAdminUserDetails.html',
+			controller: 'ADAdminUserDetailsCtrl',
+			url: '/user',
+            params: {
+                page: undefined,
+                id: undefined,
+                hotelId: undefined,
+                isUnlocking: undefined,
+                manual_id_scan_enabled: undefined
+            }
 		});
 
 		$stateProvider.state('admin.linkexisting', {
@@ -77,7 +127,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addeditnotification', {
 			templateUrl: '/assets/partials/notifications/adNotifications.html',
 			controller: 'ADNotificationCtrl',
-			url: '/notification/:id/:action'
+			url: '/notification',
+            params: {
+                id: undefined,
+                action: undefined
+            }
 		});
 
 		$stateProvider.state('admin.brands', {
@@ -107,7 +161,11 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addCampaign', {
 			templateUrl: '/assets/partials/campaigns/adAddCampaign.html',
 			controller: 'ADAddCampaignCtrl',
-			url: '/campaigns/:id/:type'
+			url: '/campaigns',
+            params: {
+                id: undefined,
+                type: undefined
+            }
 		});
 
 		$stateProvider.state('admin.zest_shortcode', {
@@ -156,8 +214,13 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.sntserviceproviderdetails', {
 			templateUrl: '/assets/partials/serviceProviders/adServiceProviderDetails.html',
 			controller: 'ADServiceProviderDetailsCtrl',
-			url: '/serviceproviderdetails/:action/:id'
+			url: '/serviceproviderdetails',
+			params: {
+                id: undefined,
+                action: undefined
+            }
 		});
+    
 
 		$stateProvider.state('admin.autoSyncInventory', {
 			templateUrl: '/assets/partials/tools/adTools.html',
@@ -167,7 +230,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 
 		$stateProvider.state('admin.zestSortedCountryList', {
 			templateUrl: '/assets/partials/zestSetup/adCountrySorting.html',
-			controller: 'ADCountrySortCtrl',
+			controller: 'ADCountrySortAndRestrictionCtrl',
 			url: '/countrySort'
 		});
 
@@ -192,6 +255,50 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             templateUrl: '/assets/partials/clientSuccessManagers/adClientSuccessManagerAdd.html',
             controller: 'ADClientSuccessManagerDetailsCtrl',
             url: '/clientSuccessManager/:action/:id'
+        });
+
+        $stateProvider.state('admin.zestStationIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adStationIdCollectionSetup.html',
+            controller: 'adStationIdCollectionSetupCtrl',
+            url: '/zestStationIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestStationIdCollection');
+                }]
+            }
+        });
+
+        $stateProvider.state('admin.archivalTransferSetup', {
+            templateUrl: '/assets/partials/archivalSetup/adArchivalTransferSetup.html',
+            controller: 'adArchivalTransferSetupCtrl',
+            url: '/archivalTransferSetup',
+            resolve: {
+                config: ['ACGIIntegrationSrv', function (ACGIIntegrationSrv) {
+                    return ACGIIntegrationSrv.fetchConfiguration();
+                }]
+            }
+        });
+
+        $stateProvider.state('admin.roverIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adRoverIdCollectionSetup.html',
+            controller: 'adRoverIdCollectionSetupCtrl',
+            url: '/roverIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('roverIdCollection');
+                }]
+            }
+        });
+
+        $stateProvider.state('admin.zestWebIDCollection', {
+            templateUrl: '/assets/partials/idCollection/adZestWebIdCollectionSetup.html',
+            controller: 'adZestWebIdCollectionSetupCtrl',
+            url: '/zestWebIDCollection',
+            resolve: {
+                config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                    return adInterfacesCommonConfigSrv.fetchConfiguration('zestWebIDCollection');
+                }]
+            }
         });
 
 });

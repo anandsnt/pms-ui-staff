@@ -1,4 +1,6 @@
-angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2) {
+angular.module('sntRover').service('RVBillCardSrv', 
+	['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', 'sntBaseWebSrv',
+	function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2, sntBaseWebSrv) {
 
 	var that = this;
 
@@ -262,11 +264,11 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		return deferred.promise;
 	};
 
-	this.createAnotherBill = function(data) {
+	this.createAnotherBill = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/bills/create_bill';
 
-			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+			BaseWebSrvV2.postJSON(url, params).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
 			    deferred.reject(data);
@@ -402,4 +404,58 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         return deferred.promise;
     };
 
+    // Generate void bill
+    this.generateVoidBill = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/bills/' + params.bill_id + '/void_bill';
+
+        BaseWebSrvV2.postJSON(url, params.data).then(function(response) {        	
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };  
+    // Final invoice
+	this.settleFinalInvoice = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/final_invoice_settlement';
+
+		BaseWebSrvV2.postJSON(url).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
+
+	this.printReceiptData = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/print_payment_receipt';
+
+		sntBaseWebSrv.postJSON(url, params).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
+
+	this.emailReceiptData = function(params) {
+		var deferred = $q.defer(),
+			url = '/api/bills/' + params.bill_id + '/email_payment_receipt';
+
+		sntBaseWebSrv.postJSON(url, params).then(function(data) {
+
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+
+		return deferred.promise;
+	};
 }]);

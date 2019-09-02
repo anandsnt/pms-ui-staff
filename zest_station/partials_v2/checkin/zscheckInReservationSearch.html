@@ -41,7 +41,8 @@
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.departure_date">
                     <button type="button" class="button option" touch-press='findByDate()'>
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
-                        <div ng-include="icons.url.moon"></div>
+                        <div ng-if="zestStationData.theme !== 'qbic'" ng-include="icons.url.moon"></div>
+                        <div ng-if="zestStationData.theme === 'qbic'" ng-include="icons.url.date"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_DATE')" editable-text="CHECK_IN_SELECT_DATE"></text>
                 </li>

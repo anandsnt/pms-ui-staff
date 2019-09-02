@@ -8,6 +8,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     function($scope, $state, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
+        var qbicPath = '/assets/zest_station/css/icons/qbic';
 
         var setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
             var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
@@ -20,9 +21,12 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 $scope.zestStationData.scan_passport_file_uploaded = '';
             }
 
+            // TODO: delete $scope.zestStationData.key_create_file_uploaded after the migration in in place
+            $scope.zestImages.key_create_file_uploaded = $scope.zestImages.key_create_file_uploaded ? $scope.zestImages.key_create_file_uploaded : $scope.zestStationData.key_create_file_uploaded;
+
             $scope.icons = {
                 url: {
-                    active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
+                    active_screen_icon: $scope.zestStationData.theme === 'yotel' ? iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg' : '',
                     booknow: iconBasePath + '/calendar.svg', // TODO, need generic icon for default (css update needed)
 
                     checkin: iconBasePath + '/checkin.svg',
@@ -47,7 +51,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     moon: iconBasePath + '/moon.svg',
                     qr: iconBasePath + '/qr-scan.svg',
                     qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
-                    createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
+                    createkey: iconBasePath + $scope.zestImages.key_create_file_uploaded,
                     logo: iconBasePath + '/print_logo.svg',
                     watch: iconBasePath + '/watch.svg',
                     qr_arrow: iconBasePath + '/qr-arrow.svg',
@@ -58,7 +62,13 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
                     success: iconBasePath + '/success.svg',
                     user_with_id: iconBasePath + '/user-id.svg',
-                    user_without_id: iconBasePath + '/user.svg'
+                    user_without_id: iconBasePath + '/user.svg',
+                    location: iconBasePath + '/location.svg',
+                    loyalty: iconBasePath + '/loyalty.svg',
+                    clear_text: commonIconsPath + '/clear-text.svg',
+                    no_of_nights: commonIconsPath + '/nights.svg',
+                    adults: commonIconsPath + '/adults.svg',
+                    children: commonIconsPath + '/children.svg'
                 }
             };
 
@@ -86,10 +96,17 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
             if ($scope.zestStationData.theme === 'yotel') {
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
+                $scope.icons.url.location = iconsPath + '/location.svg';
             }
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
+            }
+            if ($scope.zestStationData.theme === 'qbic') {
+                $scope.icons.url.key = qbicPath + '/key.svg';
+                $scope.icons.url.checkin = qbicPath + '/checkin.svg';
+                $scope.icons.url.checkout = qbicPath + '/checkout.svg';
+                $scope.icons.url.new_location = qbicPath + '/add-new.svg';
             }
         };
 

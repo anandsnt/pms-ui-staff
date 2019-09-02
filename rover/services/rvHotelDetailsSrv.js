@@ -2,7 +2,10 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
     function ($q, RVBaseWebSrvV2, $log) {
         var service = this,
             business_date = null,
-            workstationInfo = null;
+            workstationInfo = null,
+            cache = {
+                'TAX_EXEMPTS': ''
+            };
 
         service.hotelDetails = {};
 
@@ -120,15 +123,22 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
         /*
          * To fetch tax exempts
          */
-        service.fetchTaxExempts = function () {
+        service.fetchTaxExempts = function() {
             var deferred = $q.defer(),
                 url = 'api/tax_exempt_types?page=1&per_page=1000';
 
-            RVBaseWebSrvV2.getJSON(url).then(function (data) {
-                    deferred.resolve(data);
-            }, function (errorMessage) {
-                deferred.reject(errorMessage);
-            });
+            if (cache['TAX_EXEMPTS']) {
+                deferred.resolve(cache['TAX_EXEMPTS']);
+            } else {
+                RVBaseWebSrvV2.getJSON(url).
+                    then(function(data) {
+                        cache['TAX_EXEMPTS'] = data;
+                        deferred.resolve(data);
+                    }, function(errorMessage) {
+                        deferred.reject(errorMessage);
+                    });
+            }
+
 
             return deferred.promise;
         };

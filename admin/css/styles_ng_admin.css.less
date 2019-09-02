@@ -146,10 +146,14 @@
 .phone-preview,.ipad-preview{
    margin:0 auto;
    padding-top: 61px !important;
-   .ngdialog-content{
+   .ngdialog-content {
      background: rgba(0, 0, 0, 0) none repeat scroll 0 0 !important;
    }
 }
+
+.ngdialog-content {
+   background: rgba(0,0,0,0) !important;
+ }
 
 .phone-preview{
    .ngdialog-content{
@@ -542,4 +546,26 @@
 .disabled-delete {
   background-position: 13px -496px!important;
   cursor: no-drop;
+}
+.float-right {
+  float: right !important;
+}
+.float-center {
+  text-align: center !important;
+}
+
+.multiSelect {
+  .helperButton {
+    padding: 0px 8px;
+  }
+  .checkBoxContainer {
+    width: 100%;
+  }
+  .helperContainer .line {
+    max-height: 100%;
+    .clearButton {
+      top: 9px;
+      right: 5px;
+    }
+  }
 }

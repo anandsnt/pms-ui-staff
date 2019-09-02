@@ -10,7 +10,9 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 type: null,
                 from_page: null,
                 useCache: null,
-                isMobileCheckin: null
+                isMobileCheckin: null,
+                isBulkCheckoutSelected: null,
+                isAllowOpenBalanceCheckoutSelected: null
             },
             resolve: {
                 searchResultdata: function(RVSearchSrv, $stateParams) {
@@ -35,8 +37,18 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         if ($stateParams.from_page === "DASHBOARD") {
                             RVSearchSrv.page = 1;
                         }
-                        // calling the webservice
-                        return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
+
+                        if ($stateParams.isBulkCheckoutSelected) {
+                            var params = {
+                                allow_open_balance_checkout: !!$stateParams.isAllowOpenBalanceCheckoutSelected
+                            };
+
+                            return RVSearchSrv.fetchReservationsForBulkCheckout(params); 
+                        } else {
+                            // calling the webservice
+                            return RVSearchSrv.fetch(dataDict, $stateParams.useCache);
+                        }
+                        
                     } else if ( !!$stateParams.useCache && oldType !== "RESET") {
                         return RVSearchSrv.fetch({}, $stateParams.useCache);
                     } else {
@@ -122,6 +134,14 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                         ngDialog.open({
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController'
+                        });
+                    });
+               }
+               else if ($stateParams.type === 'currencyExchange') {
+                    jsMappings.fetchAssets(['rover.financials']).then(function() {
+                        ngDialog.open({
+                            template: '/assets/partials/financials/currencyExchange/rvCurrencyExchange.html',
+                            controller: 'RVCurrencyExchangeModalController'
                         });
                     });
                }

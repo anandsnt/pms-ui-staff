@@ -1,5 +1,10 @@
 BaseCtrl = function($scope) {
 
+    var _listeners = [],
+        root = $scope.$root || {};
+
+    root.__API_REQ_COUNT__ = root.__API_REQ_COUNT__ || 1;
+
     $scope.businessDate = '';
 
     $scope.fetchedCompleted = function () {
@@ -52,24 +57,35 @@ BaseCtrl = function($scope) {
 
     $scope.invokeApi = function (serviceApi, params, successCallback, failureCallback, loaderType) {
         // loaderType options are "BLOCKER", "NONE"
+        var identifier = 'API_REQ_' + ++root.__API_REQ_COUNT__;
 
         if (typeof loaderType === 'undefined') {
             loaderType = 'BLOCKER';
         }
         if (loaderType.toUpperCase() === 'BLOCKER') {
-            $scope.$emit('showLoader');
+            // This method has to be implemented in the root controllers
+            if ($scope.startActivity) {
+                $scope.startActivity(identifier);
+            }
         }
         successCallback = (typeof successCallback === 'undefined') ? $scope.fetchedCompleted : successCallback;
         failureCallback = (typeof failureCallback === 'undefined') ? $scope.fetchedFailed : failureCallback;
 
-        return serviceApi(params).then(successCallback, failureCallback);
+        return serviceApi(params)
+            .then(successCallback, failureCallback)
+            .finally(function () {
+                // This method has to be implemented in the root controllers
+                if ($scope.stopActivity) {
+                    $scope.stopActivity(identifier);
+                }
+            });
 
     };
 
     $scope.callAPI = function (serviceApi, options) {
         options = options || {};
 
-        var identifier = _.uniqueId('API_REQ_'),
+        var identifier = 'API_REQ_' + ++root.__API_REQ_COUNT__,
             params = options['params'] ? options['params'] : null,
             loader = options['loader'] ? options['loader'] : 'BLOCKER',
             showLoader = loader.toUpperCase() === 'BLOCKER',
@@ -314,5 +330,45 @@ BaseCtrl = function($scope) {
             $scope.$broadcast('updatePagination', paginationId);
         }, 100);        
     };
+
+    // Absolute value of a number
+    $scope.absVal = Math.abs;
+
+    $scope.addListener = function(name, callback) {
+        _listeners.push($scope.$on(name, callback));
+    };
+
+    $scope.$on('$destroy', function() {
+        _listeners.forEach(function(handle) {
+            // invoke listener's deregistration function
+            handle();
+        });
+    });
+
+    $scope.isEmpty = isEmpty;
+
+    // Clear the password when the user clicks the password field
+    $scope.onPasswordClick = function (dataObject, key) {
+        if (dataObject) {
+            dataObject[key] = '';
+        }
+    };
+
+    // Delete the property if required
+    $scope.deletePropertyIfRequired = function (dataObject, property) {
+        if (dataObject[property] === getTemporaryDisplayPassword() ) {
+            delete dataObject[property]; 
+        }
+    };
+
+    // Set default password when fetching the configuration details
+    $scope.setDefaultDisplayPassword = function (dataObject, property, passwordPresentKey) {
+        passwordPresentKey = passwordPresentKey || 'is_password_present';
+        if (dataObject[passwordPresentKey] && !dataObject.hasOwnProperty(property)) {
+            dataObject[property] = getTemporaryDisplayPassword();
+        }
+    };
+
+    $scope.isEmptyArray = isEmptyArray;
 
 };

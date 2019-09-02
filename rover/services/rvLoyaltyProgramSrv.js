@@ -1,10 +1,15 @@
 angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv', 'BaseWebSrvV2', function($q, RVBaseWebSrv, BaseWebSrvV2) {
 
+    var cache = {
+        'ZDIRECT_SETTINGS': null
+    };
+
+
     this.addLoyaltyProgram = function(param) {
         var deferred = $q.defer(),
             url = '/staff/user_memberships';
 
-        BaseWebSrvV2.postJSON(url, param).then(function(data) {
+        RVBaseWebSrv.postJSON(url, param).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -15,13 +20,20 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
 
     this.getGMSSettings = function() {
         var deferred = $q.defer(),
-            url = '/api/integrations/zdirect/settings';
+            url = '/api/integrations/gms_settings';
 
-        BaseWebSrvV2.getJSON(url).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
+        if (cache['ZDIRECT_SETTINGS']) {
+            deferred.resolve(cache['ZDIRECT_SETTINGS']);
+        } else {
+            BaseWebSrvV2.getJSON(url).
+                then(function(data) {
+                    cache['ZDIRECT_SETTINGS'] = data;
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+        }
+
         return deferred.promise;
 
     };

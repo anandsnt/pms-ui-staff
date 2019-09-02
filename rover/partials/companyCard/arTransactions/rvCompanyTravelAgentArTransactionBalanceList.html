@@ -1,11 +1,10 @@
 <ul class="search-results">
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
+    <li class="reservation transaction with-checkbox reservation-transaction" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList track by $index" ng-click="clickedOnParentList( $event, $index )">
         <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
             <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
-
         <div class="faux-anchor has-arrow toggle" ng-class="{ 'active': balance.active}">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
@@ -19,9 +18,13 @@
                 <h2 ng-if="balance.guest_first_name==='' && balance.guest_last_name!==''">
                     {{balance.guest_last_name}}
                 </h2>
+                <span class="invoice" ng-if="arDataObj.isPrintArInvoiceNumberEnabled && balance.ar_invoice_number!==null">
+                    {{arDataObj.arInvoiceLabel}} #<span class="value">{{balance.ar_invoice_number}}</span>
+                </span>
 				<span class="invoice">
 					Invoice #<span class="value">{{balance.invoice_number}}</span>
 				</span>
+                
 				<span class="confirmation" ng-if="balance.external_reference_number!==null">
 					Ext #<span class="value">{{balance.external_reference_number}}</span>
 				</span>
@@ -42,29 +45,53 @@
 				<!-- add class .group/.allotment if group or allotment -->
 				<h2>
 					{{balance.account_name}}
-				</h2>                
+				</h2> 
+                <span class="invoice" ng-if="arDataObj.isPrintArInvoiceNumberEnabled && balance.ar_invoice_number!==null">
+                    {{arDataObj.arInvoiceLabel}} #<span class="value">{{balance.ar_invoice_number}}</span>
+                </span>               
 
 				<span class="invoice">
 					Account #<span class="value">{{balance.account_number}}</span>
 				</span>
 			   
 			</div>
-			<!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
-			<div class="guest-date arrival" ng-if="!balance.isSelected">
-				<span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance || balance.associated_type === 'PostingAccount'">check-in</span>
-				<time>
-					<span class="date">{{balance.reservation_arrival_date  | date : dateFormat}}</span>
-					<span class="time">{{balance.reservation_arrival_time}}</span>
-				</time>
-			</div>
-
-            <div class="guest-date departure" ng-if="!balance.isSelected">
-                <span class="guest-status small-icon check-out" ng-hide="balance.associated_type === 'PostingAccount'">check-out</span>
-                <time ng-hide="balance.associated_type === 'PostingAccount'">
-                    <span class="date">{{balance.reservation_dep_date | date : dateFormat}}</span>
-                    <span class="time">{{balance.reservation_dep_time}}</span>
-                </time>
+			
+            <!-- Case 1: Nightly -->
+            <div class="reservation-time" ng-if="balance.reservation_arrival_date !== balance.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">arrival</span>
+                    <span class="guest-status check-out" ng-hide="balance.associated_type === 'PostingAccount'">arrival</span>
+                </div>
+                <div class="check-times">
+                    <time class="guest-time" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">
+                        <span>{{balance.reservation_arrival_date | date : dateFormat}}</span>
+                        <span class="hours">{{balance.reservation_arrival_time}}</span>
+                    </time>
+                    <time class="guest-time">
+                        <span>{{balance.reservation_dep_date | date : dateFormat}}</span>
+                        <span class="hours">{{balance.reservation_dep_time}}</span>
+                    </time>
+                </div>
             </div>
+
+            <!-- Case 2: Daily Reservation -->
+            <div class="reservation-time daily" ng-if="balance.reservation_arrival_date === balance.reservation_dep_date">
+                <div class="check-icons">
+                    <span class="guest-status check-in">arrival</span>
+                    <span class="guest-status check-out">arrival</span>
+                </div>
+                <div class="check-times">
+                    <div class="guest-hours">
+                        <time class="guest-time">{{balance.reservation_arrival_time}}</time> - <time class="guest-time">{{balance.reservation_dep_time}}</time>
+                    </div>
+                    <span class="date">{{balance.reservation_arrival_date | date : dateFormat}}</span>
+                </div>
+            </div>
+            
+            <!-- if daily reservation add .red -->
+            <div class="reservation-type red" ng-if="balance.is_day_use">D</div>
+            <div class="reservation-type" ng-if="!balance.is_day_use && hotelDiaryConfig.mode === 'FULL'">N</div>
+
             <div class="balance balance-now">
                 Invoiced Amount 
                 <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow | number:2}}</strong>
@@ -82,7 +109,6 @@
                 <input class="text-box" type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
             </div>
         </div>
-
         <div class="grid-items" ng-show="balance.active">
             <table>
                 <thead>
@@ -133,7 +159,7 @@
                             <!-- Show this if possible to edit charge
                                  opens /modals/ar-edit-charge.html
                              -->
-                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="!balance.is_partially_paid && !balance.is_manual_balance && debit.credits === null" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="(!balance.is_partially_paid && !balance.is_manual_balance && debit.credits === null) && (!roverObj.noModifyInvoice)" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
                                 <span class="icons icon-edit-40"></span>
                             </button>
                         </td>
@@ -175,19 +201,19 @@
                 <button type="button" ng-show="balance.amount < 0" class="button red" ng-click="moveToCreditButtonClicked(balance)">MOVE TO CREDIT</button>
                 <button type="button" ng-show="arFlags.viewFromOutside && !balance.is_manual_balance" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
                 <button type="button" ng-click="moveInvoiceButtonClick(balance)" ng-show="!balance.is_partially_paid" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue hidden">Print Invoice</button>
-                <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance">Post Charge</button>
+                <button type="button" class="button blue" ng-click="showFormatBillPopup($index, false)">Print Invoice</button>
+                <button type="button" class="button green white-text" ng-click="clickedPostCharge($index)" ng-show="!balance.is_manual_balance && !roverObj.noModifyInvoice">Post Charge</button>
                 <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
-
 	</li>
-	<li>
+	<li id="add-balance">
 		<!-- On click Show Manual Balance Billing Content -->
-		<button class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
+		<button class="add-new-button" ng-show="!roverObj.noModifyInvoice" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
 	</li>
     <li>
         <!-- To fix scroll -->
         <button>&nbsp;</button>
     </li>
+    
 </ul>

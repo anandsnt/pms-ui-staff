@@ -83,7 +83,14 @@ angular.module('groupModule', [])
                 },
                 hotelSettings: function (RVReservationBaseSearchSrv, groupAssets) {
                     return RVReservationBaseSearchSrv.fetchHotelReservationSettings();
+                },
+                taxExempts: function(RVHotelDetailsSrv) {
+                    return RVHotelDetailsSrv.fetchTaxExempts();
+                },
+                countries: function (RVDropdownDataSrv) {
+                    return RVDropdownDataSrv.fetchCountryList();
                 }
+
             }
 
         });

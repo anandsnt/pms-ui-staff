@@ -43,6 +43,7 @@ angular.module('reportsModule')
                         'BUSINESS_ON_BOOKS': 'icon-report icon-forecast',
                         'GROUP_ROOMS_REPORT': 'icon-report icon-room',
                         'YEARLY_TAX': 'icon-report icon-forecast',
+                        'TAX_EXEMPT': 'icon-report icon-forecast',
                         /* default class name */
                         'DEFAULT': 'icon-report'
                     };

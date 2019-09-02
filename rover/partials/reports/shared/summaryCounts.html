@@ -79,6 +79,11 @@
 </ul>
 
 <!-- Arrival -->
+<ul ng-if="isThisReport( 'TAX_EXEMPT' )" class="totals">
+    <li>Total Tax Exempt Reservations<span>{{ summaryCounts.total_count }}</span></li>    
+</ul
+
+<!-- Arrival -->
 <ul ng-if="isThisReport( 'ARRIVAL' )" class="totals">
     <li>Total Arrival Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
     <li>ADR<span><span class="currency">{{ summaryCounts.adr | currency:currencySymbol:2 }}</span></span></li>

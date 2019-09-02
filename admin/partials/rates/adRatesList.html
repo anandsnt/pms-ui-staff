@@ -25,33 +25,38 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			
-			
 			<span class="count-show">Show</span>
 			<div class="select table-count rates-table-count">
 				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 			</div>
 			<span class="count-entries">entries</span>
-				
-			<div class="entry table-search">
-				<span class="search-text">Search</span>
-				<span class="icons icon-search" name="submit" type="submit"></span>
-				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
-		    </div>
-			
+
+			<div class="table-filters">
+				<div class="entry pull-left" ng-hide="searchTerm !== ''">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{'checked': showInactiveRates}"></span>
+						<input type="checkbox" name="inactive" ng-click="toggleInactiveRates()"/>
+						Show inactive rates
+					</label>
+				</div>
+				<div class="entry table-search">
+					<span class="search-text">Search</span>
+					<span class="icons icon-search" name="submit" type="submit"></span>
+					<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+				</div>
+			</div>
 
 			<div id="new-form-holder"></div>
 			<!--ng-table component -->
 			<table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
 				<tbody>
 					<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
-						<td data-title="'Name'" sortable="'rate'" header-class="width-25" ng-hide="currentClickedElement == $index">
+						<td data-title="'Name'" sortable="'rate'" header-class="width-20" ng-hide="currentClickedElement == $index">
 							<a class="edit-data" ng-click="editRatesClicked(rate.id, $index)" >
 								<strong> {{rate.name}}</strong>
 							</a>
 						</td>
-
-						<td data-title="'Based on'"  sortable="'based_on'" header-class="width-20" ng-hide="currentClickedElement == $index">
+						<td data-title="'Based on'"  sortable="'based_on'" header-class="width-15" ng-hide="currentClickedElement == $index">
 							<span qtip category='rateType' url='/api/rates.json?based_on_rate_id={{rate.based_on.id}}' title="Rate based on {{rate.based_on.name}}">
 								{{rate.based_on.name}}
 							</span>
@@ -61,7 +66,12 @@
 								<strong>{{rate.rate_type.name}}</strong>
 							</span>
 						</td>
-						<td data-title="'Date Ranges'" header-class="width-15" class = "center_align" ng-hide="currentClickedElement == $index">
+						<td data-title="'Sequence'" header-class="width-15" ng-hide="currentClickedElement == $index">
+							<span qtip category='rateType'>
+								{{rate.rate_sequence}}
+							</span>
+						</td>
+						<td data-title="'Date Ranges'" header-class="width-10" class = "center_align" ng-hide="currentClickedElement == $index">
 							<span ng-show="rate.date_range_count > 0" qtip title="{{rate.name}} - RATE DATE RANGES" category='dateRange' url='/api/rates/{{rate.id}}/rate_date_ranges'>
 								{{rate.date_range_count}}
 							</span>

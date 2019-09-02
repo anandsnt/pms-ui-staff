@@ -4,11 +4,10 @@ sntRover.controller('rvBillCardPopupCtrl',
 	BaseCtrl.call(this, $scope);
 	$scope.newAmount = '';
 
-	var refreshListWithData = function(data) {
-		$scope.init(data);
-		// expand list
-		$scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails = true;
-		$scope.calculateHeightAndRefreshScroll();
+	var refreshListWithData = function() {
+		$timeout(function() {
+			$scope.reloadCurrentActiveBill();
+		}, 700);
 	};
 
 	var hideLoaderAndClosePopup = function() {			
@@ -40,7 +39,6 @@ sntRover.controller('rvBillCardPopupCtrl',
 			"id": $scope.selectedTransaction.id
 		};
 		var transactionDeleteSuccessCallback = function(data) {
-			$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 			hideLoaderAndClosePopup();
 			refreshListWithData(data);
 
@@ -81,7 +79,6 @@ sntRover.controller('rvBillCardPopupCtrl',
 	};
 
 	var transactionEditSuccessCallback = function(data) {
-		$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 		hideLoaderAndClosePopup();
 		refreshListWithData(data);
 	};

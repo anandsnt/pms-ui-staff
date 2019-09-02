@@ -56,5 +56,11 @@ sntRover.service('RVWorkstationSrv', ['$q', 'rvBaseWebSrvV2', 'RVHotelDetailsSrv
             return deferred.promise;
         };
 
+        this.cancelEMVActions = function(params) {
+            var url = '/api/cc/emv_cancel';
+
+            return RVBaseWebSrvV2.postJSON(url, params);
+        };
+
 
     }]);

@@ -2,7 +2,8 @@ describe('RVInvoiceSearchController', function () {
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('invoiceSearchSampleData.json'),
-        jsonResult = fixtures['invoiceSearchSampleData.json']; 
+        jsonResult = fixtures['invoiceSearchSampleData.json'],
+        filterOptions = {"filters": [{"id": 1, "name": "Invoices", "value": "INVOICES"}, {"id": 2, "name": "AR Invoices", "value": "AR_INVOICES"}, {"id": 3, "name": "Receipts", "value": "RECEIPTS"}]}; 
 
     var $controller,
         $scope,
@@ -13,6 +14,7 @@ describe('RVInvoiceSearchController', function () {
         rvAccountTransactionsSrv,
         rvInvoiceSearchController,
         rvAccountsConfigurationSrv,
+        RVCompanyCardSrv,
         results = jsonResult;    
 
         describe('variable initalizations', function () {
@@ -20,7 +22,7 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_, _RVCompanyCardSrv_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
                     RVBillCardSrv = _RVBillCardSrv_;
@@ -28,11 +30,15 @@ describe('RVInvoiceSearchController', function () {
                     $rootScope = _$rootScope_;
                     rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
                     rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
+                    RVCompanyCardSrv = _RVCompanyCardSrv_;
                     $scope = _$rootScope_.$new();
                 });
 
+                $rootScope.roverObj = {};                
+
                 rvInvoiceSearchController = $controller('RVInvoiceSearchController', {
-                    $scope: $scope
+                    $scope: $scope,
+                    filterOptions: filterOptions
                 });
 
                 angular.extend($scope, {
@@ -174,7 +180,7 @@ describe('RVInvoiceSearchController', function () {
 
                 });
 
-                it('printBill method should ptint the correct data when clicked accounts', function() {
+                it('printBill method should print the correct data when clicked accounts', function() {
 
                     spyOn(rvAccountTransactionsSrv, "fetchAccountBillsForPrint").and.callFake(function() {
                         var deferred = $q.defer();
@@ -190,6 +196,38 @@ describe('RVInvoiceSearchController', function () {
                     expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
 
                 });
+
+                it('expandBill should invoke expand service', function() {
+                    $scope.invoiceSearchData = {};
+                    $scope.invoiceSearchData.reservationsList = jsonResult.data;
+                    spyOn(RVCompanyCardSrv, "fetchTransactionDetails").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.expandBill(0, 1);
+
+                    expect(RVCompanyCardSrv.fetchTransactionDetails).toHaveBeenCalled();
+
+                });
+
+                it('expandBill should invoke expand service', function() {
+  
+                    spyOn(RVInvoiceSearchSrv, "triggerPaymentReceipt").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.reTriggerPaymentReceipt();
+
+                    expect(RVInvoiceSearchSrv.triggerPaymentReceipt).toHaveBeenCalled();
+
+                });
+
             });
         });    
 });

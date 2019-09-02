@@ -46,6 +46,10 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to save the room mapping
          */
         service.updateMappings = function(params) {
+            // CICO-64120 call to axbase3000 library in IFC
+            if (params.integration === 'axbase3000') {
+                return ADBaseWebSrvV2.postJSON('ifc/proxy/axbase3000/save_room_mapping', params.config);
+            }
             return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/save_room_mapping', params.config);
         };
         /**
@@ -53,8 +57,15 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
          * @return {deferred.promise|{then, catch, finally}} Promise for a request to import Rooms
          */
         service.startImportRooms = function(params) {
-            return ADBaseWebSrvV2.postJSON('api/hotel_settings/' + params.interfaceIdentifier + '/import_rooms');
+            // CICO-64120 updated POST endpoint to ifc/proxy
+            return ADBaseWebSrvV2.postJSON('ifc/proxy/' + params.interfaceIdentifier + '/import_access_zones');
         };
+
+
+        service.fetchMappingTypes = function(integration) {
+            return ADBaseWebSrvV2.getJSON('/ifc/proxy/mappings/types?integration=' + integration);
+        };
+
 
         /**
          *
@@ -151,7 +162,7 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
         service.fetchCurrencyList = function() {
             var deferred = $q.defer();
             var url = '/ui/currency_list';
-            
+
             if (service.countryList.length) {
                 deferred.resolve(service.currencyList);
             } else {
@@ -188,6 +199,18 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
 
             ADBaseWebSrvV2.getJSON(url).then(function(taxChargeCodes) {
                 deferred.resolve(taxChargeCodes);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchPaymentChargeCodes = function() {
+            var deferred = $q.defer();
+            var url = '/admin/charge_codes/payment_charge_codes';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(paymentChargeCodes) {
+                deferred.resolve(paymentChargeCodes);
             }, function(data) {
                 deferred.reject(data);
             });
