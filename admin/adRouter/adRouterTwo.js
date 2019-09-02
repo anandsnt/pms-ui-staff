@@ -1028,4 +1028,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
       url: '/oracleDataCenters'
     });
 
+    $stateProvider.state('admin.policeExportDefaults', {
+        templateUrl: '/assets/partials/policeExportDefaults/adPoliceExportDefaults.html',
+        controller: 'ADPoliceExportDefaults',
+        url: '/policeExportDefaults'
+    });
+
 });
