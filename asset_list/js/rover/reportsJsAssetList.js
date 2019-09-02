@@ -18,6 +18,7 @@ module.exports = {
 				'shared/sntUtils/sntFeatureToggles.js',
 				roverRoot + 'directives/customExports/durationFilter/durationFilterDir.js',
 				roverRoot + 'directives/customExports/rangeFilter/rangeFilterDir.js',
+				roverRoot + 'directives/customExports/optionFilter/optionFilterDir.js',
                 // Eliminate all spec files
                 '!**/*.spec.js'
 			]

@@ -34,6 +34,21 @@
                 range-value = "appliedFilter.rangeValue">
 
             </range-filter>
+            <option-filter
+                ng-if="appliedFilter.isOption"
+                first-level-data = "appliedFilter.firstLevelData"
+                second-level-data = "appliedFilter.secondLevelData"
+                selected-first-level = "appliedFilter.selectedFirstLevel",
+                filter-pos = "$index"
+                on-remove = "removeFilter(filterPos)"
+                is-multi-select = "appliedFilter.isMultiSelect"
+                options = "appliedFilter.options"
+                on-first-level-field-change = "onOptionFieldChange(fieldName, filterPos)",
+                on-selectbox-expand ="refreshFilterScroller"
+                >
+
+            </option-filter>
+
             
         </div>
         <div class="entry">
