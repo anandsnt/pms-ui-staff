@@ -533,6 +533,16 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         $timeout(() => $scope.$emit(rvRateManagerEventConstants.UPDATE_RESULTS, lastSelectedFilterValues[activeFilterIndex]), 0);
     };
 
+    // Util method to get restriction value
+    var getRestrictionLevelParam = function() {
+        var value = null;
+
+        if ($scope.hierarchyRestrictionType === 'HOUSE') {
+            value = "Hotel";
+        }
+        return value;
+    };
+
     var getSingleRateRowDetailsAndUpdateCachedDataModel = (rateID) => {
         var fromDates = _.pluck(cachedRateAndRestrictionResponseData, 'fromDate').map(fromDate => tzIndependentDate(fromDate)),
             toDates = _.pluck(cachedRateAndRestrictionResponseData, 'toDate').map(toDate => tzIndependentDate(toDate)),
@@ -552,6 +562,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         if (rateTypeIDs.length) {
             params['rate_type_ids[]'] = rateTypeIDs;
+        }
+
+        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+            params.restriction_level = getRestrictionLevelParam();
         }
 
         var options = {
@@ -580,6 +594,10 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchCommonRestrictions: true,
             'rate_type_ids[]': [rateTypeID]
         };
+
+        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+            params.restriction_level = getRestrictionLevelParam();
+        }
 
         var options = {
             params: params,
@@ -756,6 +774,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             fetchRoomTypes: !cachedRoomTypeList.length,
             fetchCommonRestrictions: true
         };
+
+        if ($scope.hierarchyRestrictionType !== 'COMMON') {
+            params.restriction_level = getRestrictionLevelParam();
+        }
+
         var options = {
             params: params,
             onSuccess: onFetchRoomTypeAndRestrictionsSuccess
@@ -2217,6 +2240,11 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 fetchRates: !cachedRateList.length,
                 fetchCommonRestrictions: true
             };
+
+            if ($scope.hierarchyRestrictionType !== 'COMMON') {
+                params.restriction_level = getRestrictionLevelParam();
+            }
+
             var options = {
                 params: params,
                 onSuccess: onFetchSingleRateDetailsAndRestrictions
