@@ -1,5 +1,5 @@
-<div class="switch-button" ng-class="{'on': data.isExpandedView}"  ng-click="clickedJournalToggle()">
-    <input name="journal-print-toggle" ng-click="clickedJournalToggle()" id="journal-print-toggle" value="" type="checkbox" >
+<div class="switch-button" ng-class="{'on': !data.isExpandedView}"  ng-click="clickedJournalToggle()">
+    <input name="journal-print-toggle" id="journal-print-toggle" value="" type="checkbox" >
     <label class="data-off">
         <span class="value">Collapsed</span>
         <span class="switch-icon">Expanded</span>
