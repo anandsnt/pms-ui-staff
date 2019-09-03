@@ -1,4 +1,28 @@
-<div class="switch-button" ng-class="{'on': !data.isExpandedView}"  ng-click="clickedJournalToggle()">
+<div class="switch-button" ng-show="data.activeTab === 'SUMMARY'" ng-class="{'on': !data.isExpandedViewSummary}"  ng-click="clickedJournalToggle()">
+    <input name="journal-print-toggle" id="journal-print-toggle" value="" type="checkbox" >
+    <label class="data-off">
+        <span class="value">Collapsed</span>
+        <span class="switch-icon">Expanded</span>
+    </label>
+    <label class="data-on">
+        <span class="switch-icon">Collapsed</span>
+        <span class="value">Expanded</span>
+    </label>
+</div>
+
+<div class="switch-button" ng-show="data.activeTab === 'REVENUE'" ng-class="{'on': !data.isExpandedViewRevenue}"  ng-click="clickedJournalToggle()">
+    <input name="journal-print-toggle" id="journal-print-toggle" value="" type="checkbox" >
+    <label class="data-off">
+        <span class="value">Collapsed</span>
+        <span class="switch-icon">Expanded</span>
+    </label>
+    <label class="data-on">
+        <span class="switch-icon">Collapsed</span>
+        <span class="value">Expanded</span>
+    </label>
+</div>
+
+<div class="switch-button"  ng-show="data.activeTab === 'PAYMENTS'" ng-class="{'on': !data.isExpandedViewPayment}"  ng-click="clickedJournalToggle()">
     <input name="journal-print-toggle" id="journal-print-toggle" value="" type="checkbox" >
     <label class="data-off">
         <span class="value">Collapsed</span>
