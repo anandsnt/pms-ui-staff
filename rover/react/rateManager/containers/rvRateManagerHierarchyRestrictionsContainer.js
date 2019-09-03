@@ -15,7 +15,7 @@ const mapStateToRateManagerHierarchyRestrictionsComponentProps = (state) => {
   return {
     listValues: getListValues(),
     changedHeirarchyRestriction: state.callBacksFromAngular.changedHeirarchyRestriction
-  }
+  };
 };
 
 const RateManagerHierarchyRestrictionsContainer = connect(
