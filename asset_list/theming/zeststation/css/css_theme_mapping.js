@@ -86,7 +86,8 @@ module.exports = {
             'cole': [themeCSSRoot + 'cole.less'],
             'heritage-hills': [themeCSSRoot + 'heritage-hills.less'],
             'metropolis-resort': [themeCSSRoot + 'metropolis-resort.less'],
-            'why-seattle': [themeCSSRoot + 'why-seattle.less']
+            'why-seattle': [themeCSSRoot + 'why-seattle.less'],
+            'pod-philly': [themeCSSRoot + 'pod-philly.less']
         };
     }
 };
