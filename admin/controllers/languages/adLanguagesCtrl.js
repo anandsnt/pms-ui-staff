@@ -43,6 +43,13 @@ admin.controller('ADLanguagesCtrl', ['$scope', 'ADLanguagesSrv', '$state', 'ngTa
         }, onToggleSuccess);
     };
 
+    $scope.makeLanguageDefault = function(language) {
+        var params = angular.copy(language);
+
+        params.is_default = true;
+        $scope.invokeApi(ADLanguagesSrv.toggleLanguagesUse, params, fetchData);
+    };
+
     var init = function() {
         $scope.errorMessage = '';
         $scope.successMessage = '';
