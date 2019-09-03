@@ -182,7 +182,7 @@
                             </div>
 
                             <div class="entry float full-width">
-                                <ad-textbox ng-if="!singleAddon.is_allowance"  value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}}" placeholder="Enter the amount" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
+                                <ad-textbox ng-if="!singleAddon.is_allowance"  value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}}" placeholder="Enter the amount" required="yes"></ad-textbox>
 
                                 <ad-textbox ng-if="singleAddon.is_allowance"  value="singleAddon.addon_value" name="value" id="value" label="{{'ALLOWANCE_VALUE_LABEL' | translate}}" placeholder="{{'ALLOWANCE_VALUE_PLACEHOLDER' | translate}}" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
 
