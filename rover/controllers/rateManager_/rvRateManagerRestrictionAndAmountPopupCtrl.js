@@ -577,7 +577,7 @@ angular.module('sntRover')
             if (mode === $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE) {
                 if (isHierarchyRestrictionNeeded()) {
                     params.restriction_level = getHierarchyRestrictionLevel();
-                };
+                }
             }
 
             params.details = [];
