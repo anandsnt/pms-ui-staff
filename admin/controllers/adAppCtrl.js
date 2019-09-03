@@ -768,8 +768,9 @@ admin.controller('ADAppCtrl', [
             if (data.pms_type === null) {
                 $scope.isStandAlone = true;
             }
-                        $rootScope.isStandAlone = $scope.isStandAlone;
+            $rootScope.isStandAlone = $scope.isStandAlone;
             $rootScope.currencySymbol = getCurrencySign(data.currency.value);
+            $rootScope.currencyId = data.currency.id;
             $rootScope.dateFormat = getDateFormat(data.date_format.value);
             $rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
             $rootScope.hotelDateFormat = data.date_format.value;

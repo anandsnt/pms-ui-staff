@@ -1265,6 +1265,78 @@
                         }
                     }
                 }
+
+                /* Item Exchange Rate ***/
+                &.item-exchange-rate {
+                    margin-right: 0;
+                    width: 100%;
+
+                    table {
+                        width: 100%;
+                        font-size: 14px;
+                        line-height: 1.2;
+                        text-transform: uppercase;
+                        table-layout: auto;
+                        border-collapse: unset;
+                        margin: 0;
+
+                        strong { font-weight: 600; }
+
+                        tr {
+                            th {
+                                font-weight: 600;
+                                white-space: normal;
+                                overflow: visible;
+                                vertical-align: top;
+                            }
+
+                            td {
+                                background: @white;
+                                padding: 10px;
+                                white-space: normal;
+                                overflow: visible;
+                                vertical-align: top;
+                            }
+                        }
+
+                        th {
+                            line-height: 35px;
+                            height: 35px;
+                            padding: 0;
+                            vertical-align: top;
+                            background-color: @grey1;
+                            border-bottom: 10px solid transparent;
+
+                            span {
+                                color: @white;
+                                padding: 0 10px;
+                                margin-right: 5px;
+                                background-color: @grey2;
+                                height: 35px;
+                                .calc-width(100, 5);
+                                .show;
+                                .nowrap();
+                                .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                &.sort {
+                                    cursor: pointer;
+                                    background: darken(@grey2, 10) @arrowSort no-repeat;
+                                    background-position: -webkit-calc(~"100% - 10px") 50%;
+                                    background-position: -moz-calc(~"100% - 10px") 50%;
+                                    background-position: calc(~"100% - 10px") 50%;
+                                    padding-right: 40px;
+
+                                    &.sorting-asc { background-image: @arrowSortAsc; }
+                                    &.sorting-desc { background-image: @arrowSortDesc; }
+                                }
+                            }
+
+                            &:last-child {
+                                span { width: 100%; }
+                            }
+                        }
+                    }
+                }
             }
 
             .block-grid {
@@ -1280,7 +1352,8 @@
                     }
 
                     &.item-commission,
-                    &.item-tax-exempt {
+                    &.item-tax-exempt,
+                    &.item-exchange-rate {
                         grid-column: span 2;
                     }
                 }

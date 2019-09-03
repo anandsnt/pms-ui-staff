@@ -7,6 +7,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             paymentTypes: '=', // the payment types present
             selectedPaymentType: '=?', // selected initial payment type
             reservationId: '@',
+            rateCurrency: '@',
             postingAccountId: '=?',
             billId: '=?',
             arTransactionId: '=?', // param used for ar payment refund
