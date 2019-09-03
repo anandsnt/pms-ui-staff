@@ -13,7 +13,7 @@ const rateManagerRootReducer = (state, action) => (
 		callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action),
 		scrollTo: rateManagerScrollToReducer(state.scrollTo, action),
 		paginationState: rateManagerPaginationStateDataReducer(state.paginationState, action),
-		isAddHierarchyRestrictions: state.isAddHierarchyRestrictions
+		isHierarchyRestrictionEnabled: state.isHierarchyRestrictionEnabled
 	}
 );
 

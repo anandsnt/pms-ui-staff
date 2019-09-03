@@ -39,7 +39,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         cachedRoomTypeList = [],
         cachedRateTypeList = [],
         cachedRateAndRestrictionResponseData = [],
-        chosenTab = '';
+        chosenTab = '',
+        isHierarchyRestrictionEnabled = Toggles.isEnabled('hierarchical_restrictions');
 
     /**
      * for pagination purpose
@@ -82,6 +83,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      * @param  {Oject} data
      */
     var showRateRestrictionPopup = (data) => {
+        data.isHierarchyRestrictionEnabled = isHierarchyRestrictionEnabled;
+        data.hierarchyRestrictionType = $scope.hierarchyRestrictionType;
         ngDialog.open({
             template: '/assets/partials/rateManager_/popup/rvRateManagerRateRestrictionPopup.html',
             scope: $scope,
@@ -535,7 +538,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
     // Util method to get restriction value
     var isHierarchyRestrictionNeeded = function() {
-        return $scope.hierarchyRestrictionType !== 'COMMON' && $scope.isAddHierarchyRestrictions;
+        return $scope.isHierarchyRestrictionEnabled && $scope.hierarchyRestrictionType !== 'COMMON';
     },
     getRestrictionLevelParam = function() {
         var value = null;
@@ -2459,7 +2462,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = [];
             $scope.fromDate = null;
             $scope.toDate = null;
-            $scope.isAddHierarchyRestrictions = Toggles.isEnabled('hierarchical_restrictions');
+            $scope.isHierarchyRestrictionEnabled = isHierarchyRestrictionEnabled;
             $scope.hierarchyRestrictionType = 'HOUSE';
 
             // mode
@@ -2468,7 +2471,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
-            isAddHierarchyRestrictions: Toggles.isEnabled('hierarchical_restrictions')
+            isHierarchyRestrictionEnabled: isHierarchyRestrictionEnabled
         };
 
         const store = configureStore(initialState);

@@ -515,7 +515,7 @@ angular.module('sntRover')
          * @return {boolean}
          */
         const isHierarchyRestrictionNeeded = () => {
-            return $scope.isAddHierarchyRestrictions === true && $scope.hierarchyRestrictionType !== 'COMMON'
+            return $scope.isHierarchyRestrictionEnabled && $scope.hierarchyRestrictionType !== 'COMMON';
         }
 
         /**
@@ -1167,7 +1167,12 @@ angular.module('sntRover')
                     break;
 
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
-                    initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode();
+                    if ($scope.ngDialogData.isHierarchyRestrictionEnabled && $scope.ngDialogData.hierarchyRestrictionType === 'HOUSE') {
+                        initializeMultipleRateRestrictionMode();
+                    }
+                    else {
+                        initializeSingleRateMultipleRoomTypeRestrictionAndAmountMode();
+                    }
                     break;
 
                 dafault:
