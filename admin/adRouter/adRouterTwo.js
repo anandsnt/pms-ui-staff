@@ -436,6 +436,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADRatesAddonDetailsCtrl',
         url: '/rates_addons/:addonId',
         resolve: {
+            hotelSettings: function(ADRulesRestrictionSrv) {
+                return ADRulesRestrictionSrv.fetchHotelCurrency();
+            },
             activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             },
