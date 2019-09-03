@@ -166,7 +166,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         /**
          * Navigate to the schedulable report list
          */
-        $scope.naviagetToSchedulableReportList = function () {
+        $scope.navigateToSchedulableReportList = function () {
             ngDialog.close();
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 $scope.selectedReport.active = false;
@@ -199,7 +199,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     ngDialog.open({
                         template: '/assets/partials/reports/rvDuplicateScheduleWarningPopup.html',
                         scope: $scope,
-                        closeByEscape: false
+                        closeByEscape: false,
+                        data: {
+                            isUpdate: false
+                        }
                     }); 
                 } else {
                     $scope.naviagetToSchedulableReportList();
