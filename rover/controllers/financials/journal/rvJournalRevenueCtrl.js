@@ -73,7 +73,7 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         initRevenueData(data.origin);
     });
 
-    $scope.addListener('EXPAND_REVENUE_SCREEN', function( event, data ) {
+    $scope.addListener('EXPAND_REVENUE_SCREEN', function( event ) {
         
         angular.forEach($scope.data.revenueData.charge_groups, function(item, key) {
             if ($scope.checkHasArrowFirstLevel(key)) {

@@ -108,7 +108,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
-    $scope.addListener('EXPAND_PAYMENT_SCREEN', function( event, data ) {
+    $scope.addListener('EXPAND_PAYMENT_SCREEN', function( event ) {
         
         angular.forEach($scope.data.paymentData.payment_types, function(item, key) {
             if ($scope.checkHasArrowFirstLevel(key)) {
