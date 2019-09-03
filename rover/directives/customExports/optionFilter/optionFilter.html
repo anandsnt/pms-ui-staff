@@ -15,6 +15,15 @@
         options="options"
         on-update="onSelectboxExpand"
     ></multi-option-selection>
+    <div class="entry" ng-if="hasDualState">
+        <label for="duration-field">Options</label>
+        <div class="select">
+            <select id="duration-field" class="text-bold" ng-model="selectedSecondLevel">
+                <option value="">Select Options</option>
+                <option ng-repeat="filter in secondLevelData" value='{{filter.value}}'>{{filter.label}}</option>
+            </select>
+        </div>
+    </div>
     
     <div class="entry">
         <button class="button white red-text" ng-click="removeFilter()">Remove Options</button> <!-- Removes just this filter -->

@@ -38,13 +38,14 @@
                 ng-if="appliedFilter.isOption"
                 first-level-data = "appliedFilter.firstLevelData"
                 second-level-data = "appliedFilter.secondLevelData"
-                selected-first-level = "appliedFilter.selectedFirstLevel",
+                selected-first-level = "appliedFilter.selectedFirstLevel"
                 filter-pos = "$index"
                 on-remove = "removeFilter(filterPos)"
                 is-multi-select = "appliedFilter.isMultiSelect"
                 options = "appliedFilter.options"
-                on-first-level-field-change = "onOptionFieldChange(fieldName, filterPos)",
+                on-first-level-field-change = "onOptionFieldChange(fieldName, filterPos)"
                 on-selectbox-expand ="refreshFilterScroller"
+                has-dual-state = "appliedFilter.hasDualState"
                 >
 
             </option-filter>
@@ -54,7 +55,7 @@
         <div class="entry">
             <label for="add-filter" class="add-new-button">
                 + Add Filter
-                <select id="add-filter" ng-model="filterData.primaryFilter" ng-change="changePrimaryFilter()">
+                <select id="add-filter" class="capitalize" ng-model="filterData.primaryFilter" ng-change="changePrimaryFilter()">
                     <option value="">Select a filter</option>
                     <option class="capitalize" ng-repeat="(name, value) in selectedEntityDetails.filters" value='{{name}}' >{{name}}</option>
                     <!-- <option value="duration">Duration</option>

@@ -25,6 +25,7 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
         };
 
         const CUSTOM_EXPORT_FILTERS_SCROLLER = 'custom-export-filters-scroller';
+        const RANGE_FILTER_OPERATORS = 3;
 
         const rangeOperators = [
             { label: 'Greater than', value: 'greater_than'},
@@ -56,7 +57,8 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 return filterConfig;
             },
             createRangeEntry = ( filterType, selectedFirstLevel, selectedSecondLevel, rangeValue ) => {
-                var filterFields = $scope.selectedEntityDetails.filters[filterType],
+                var fieldsCopy = angular.copy($scope.selectedEntityDetails.filters[filterType]),
+                    filterFields = removeAlreadyExistsRangeFieldNames(fieldsCopy),
                     filterConfig = {
                         firstLevelData: filterFields,
                         secondLevelData: rangeOperators,
@@ -69,7 +71,8 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                 return filterConfig;
             },
             createOptionEntry = ( filterType, selectedFirstLevel, selectedSecondLevel) => {
-                var filterFields = $scope.selectedEntityDetails.filters[filterType],
+                var fieldsCopy = angular.copy($scope.selectedEntityDetails.filters[filterType]),
+                    filterFields = removeAlreadyExistsOptionFieldNames(fieldsCopy),
                     filterConfig = {
                         firstLevelData: filterFields,
                         secondLevelData: [],
@@ -80,6 +83,34 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
                     };
 
                 return filterConfig;
+            },
+            removeAlreadyExistsOptionFieldNames = ( fields ) => {
+                var selectedOptionsFilter = _.filter($scope.filterData.appliedFilters, { isOption : true }),
+                    selectedOptionsName = _.pluck(selectedOptionsFilter, 'selectedFirstLevel'),
+                    availableFields = [];
+
+                availableFields = _.filter(fields, function (each) {
+                    return selectedOptionsName.indexOf(each.value) === -1;
+                });
+
+                return availableFields;
+            },
+            removeAlreadyExistsRangeFieldNames = ( fields ) => {
+                var availableRangeFieldNames = [];
+
+                _.each (fields, function (each) {
+                    var selectedRangeFieldNames = _.filter($scope.filterData.appliedFilters, { 
+                                                    isRange: true, 
+                                                    selectedFirstLevel: each.value 
+                                                });
+
+                    if (selectedRangeFieldNames.length !== RANGE_FILTER_OPERATORS) {
+                        availableRangeFieldNames.push(each);
+                    }
+
+                });
+
+                return availableRangeFieldNames;
             };
 
 
@@ -111,7 +142,30 @@ angular.module('sntRover').controller('RVCustomExportFilterCtrl', [
             var selectedFilter = $scope.filterData.appliedFilters[filterPos];
 
             if (selectedFilter.isOption) {
-                RVCustomExportsUtilFac.populateOptions(selectedFieldName, selectedFilter);
+                removeKeysFromObj(selectedFilter, [
+                    'isRange',
+                    'isDuration',
+                    'secondLevelData',
+                    'selectedSecondLevel',
+                    'options',
+                    'rangeValue',
+                    'isMultiSelect',
+                    'hasDualState'
+                ]);
+                RVCustomExportsUtilFac.populateOptions(selectedFieldName, selectedFilter).then(function (filter) {
+                    selectedFilter = filter;
+                });
+            } else if (selectedFilter.isRange) {
+                removeKeysFromObj(selectedFilter, [
+                    'isOption',
+                    'isDuration',
+                    'secondLevelData',
+                    'selectedSecondLevel',
+                    'options',
+                    'rangeValue',
+                    'isMultiSelect',
+                    'hasDualState'
+                ]);
             }
 
         };

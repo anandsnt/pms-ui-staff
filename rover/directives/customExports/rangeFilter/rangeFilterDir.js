@@ -6,6 +6,13 @@ sntRover.directive('rangeFilter', [
             $scope.removeFilter = function () {
                 $scope.onRemove({filterPos: $scope.filterPos});
             };
+
+            $scope.onFieldNameChange = function () {
+                $scope.onFirstLevelFieldChange( {
+                    fieldName: $scope.selectedFirstLevel, 
+                    filterPos: $scope.filterPos
+                } );
+            };
         };
 
         return {
