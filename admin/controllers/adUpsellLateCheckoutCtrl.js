@@ -71,7 +71,12 @@ $scope.fetchAddons();
 *
 */
 $scope.switchClicked = function() {
-    $scope.upsellData.is_late_checkout_set =  ($scope.upsellData.is_late_checkout_set === 'true') ? 'false' : 'true';
+    if ( $scope.upsellData.is_late_checkout_set === 'true' ) {
+        $scope.upsellData.is_late_checkout_set = 'false';
+        $scope.upsellData.is_sell_late_checkout_as_addon = false;
+    } else {
+        $scope.upsellData.is_late_checkout_set = 'true';
+    }
 };
 
 /**
