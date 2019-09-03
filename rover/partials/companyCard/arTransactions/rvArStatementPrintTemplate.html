@@ -59,7 +59,7 @@
                             {{statement.ar_invoice_number}}
                         </span>
                         <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && statement.folio_number">
-                            <strong >{{printData.translation.folio_number}}</strong> 
+                                <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong> 
                             {{statement.folio_number}}
                         </span>
                         <span class="person-meta" ng-if="printData.is_print_ar_invoice_number_enabled && !statement.ar_invoice_number && !statement.folio_number && statement.invoice_number">
@@ -67,7 +67,7 @@
                             {{statement.invoice_number}}
                         </span>
                         <span class="person-meta" ng-if="!printData.is_print_ar_invoice_number_enabled && statement.folio_number">
-                            <strong >{{printData.translation.folio_number}}</strong> 
+                                <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong> 
                             {{statement.folio_number}}
                         </span>
                         <span class="person-meta" ng-if="!printData.is_print_ar_invoice_number_enabled && !statement.folio_number && statement.invoice_number">
@@ -122,7 +122,7 @@
                             {{statement.departure_date | date:dateFormat }}
                         </span>
                         <span class="person-meta" ng-if="statement.folio_number">
-                            <strong >{{printData.translation.folio_number}}</strong> 
+                                <strong><span ng-if = "printData.folio_label">{{printData.folio_label}}:</span><span ng-if = "!printData.folio_label">{{printData.translation.folio_number}}:</span></strong> 
                             {{statement.folio_number}}
                         </span>
                         <span class="person-meta" ng-if="statement.ar_invoice_number && !statement.folio_number">
