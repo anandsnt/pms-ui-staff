@@ -231,7 +231,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           is_default: false
         }
       };
-
+      loadMetaList();
       $scope.loadTable();
     })();
   }
