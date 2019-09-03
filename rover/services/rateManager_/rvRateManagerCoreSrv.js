@@ -70,7 +70,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
         };
 
         service.fetchSingleRateTypeInfo = function(params) {
-            // var url = '/api/daily_rates/rate_type_restrictions';
+            params = _.omit(params, 'restriction_level');
             var url = '/api/daily_rates/rate_restrictions';
 
             return this.getJSON(url, params);
