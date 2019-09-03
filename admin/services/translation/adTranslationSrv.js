@@ -24,7 +24,9 @@ admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
         var url = '/api/guest_languages';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
-            if (data && data.languages && data.languages.length && params.show_only_active_languages) {
+            if (data && data.languages &&
+                data.languages.length &&
+                params && params.show_only_active_languages) {
                 data.languages = _.filter(data.languages, function(language) {
                     return language.is_show_on_guest_card;
                 });

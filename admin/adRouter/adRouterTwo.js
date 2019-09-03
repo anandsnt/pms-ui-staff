@@ -665,10 +665,8 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADStationaryCtrl',
         url: '/stationary',
         resolve: {
-            availableLanguages: function(ADTranslationSrv) {
-                return ADTranslationSrv.getActiveGuestLanguages({
-                    show_only_active_languages: true
-                });
+            availableGuestLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             },
             availableHoldStatus: function (ADHoldStatusSrv) {
                 return ADHoldStatusSrv.fetch();
