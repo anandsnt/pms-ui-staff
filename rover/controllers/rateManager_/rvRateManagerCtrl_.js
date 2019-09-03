@@ -2459,7 +2459,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             $scope.selectedAddress = [];
             $scope.fromDate = null;
             $scope.toDate = null;
-            $scope.isAddHierarchyRestrictions = Toggles.isEnabled('add_hierarchy_restrictions');
+            $scope.isAddHierarchyRestrictions = Toggles.isEnabled('hierarchical_restrictions');
             $scope.hierarchyRestrictionType = 'HOUSE';
 
             // mode
@@ -2468,7 +2468,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
         var initialState = {
             mode: RM_RX_CONST.NOT_CONFIGURED_MODE,
-            isAddHierarchyRestrictions: Toggles.isEnabled('add_hierarchy_restrictions')
+            isAddHierarchyRestrictions: Toggles.isEnabled('hierarchical_restrictions')
         };
 
         const store = configureStore(initialState);
