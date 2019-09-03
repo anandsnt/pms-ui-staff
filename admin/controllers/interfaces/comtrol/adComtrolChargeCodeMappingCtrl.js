@@ -235,7 +235,7 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
           meal_time_period: ""
         }
       };
-
+      loadMetaList();
       $scope.loadTable();
     })();
   }

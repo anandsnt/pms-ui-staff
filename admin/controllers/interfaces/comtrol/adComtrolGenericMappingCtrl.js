@@ -249,7 +249,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'adComtrolGenericMapp
                   is_default: false
               }
           };
-
+          loadMetaList();
           $scope.loadTable();
         })();
     }
