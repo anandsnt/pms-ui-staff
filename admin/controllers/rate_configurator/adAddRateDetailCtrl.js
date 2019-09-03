@@ -186,7 +186,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
 
             $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
-            $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
 
             $scope.rateData.last_sync_status = null;
             $scope.rateData.last_sync_at = null;
@@ -271,6 +270,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$state', '$rootScope', 'ADR
                 'based_on_value': $scope.rateData.based_on.id === null ? null : amount,
                 'promotion_code': $scope.rateData.promotion_code,
                 'charge_code_id': $scope.rateData.charge_code_id,
+                'fixed_it_id': $scope.rateData.fixed_it_id,
                 'currency_code_id': $scope.rateData.currency_code_id,
                 'min_advanced_booking': $scope.rateData.min_advanced_booking,
                 'max_advanced_booking': $scope.rateData.max_advanced_booking,
