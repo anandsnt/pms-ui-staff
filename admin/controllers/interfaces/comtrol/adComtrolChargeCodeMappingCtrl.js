@@ -3,6 +3,14 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
 
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+    /*
+     * This methode is to set page count.
+     * @param {number} page count
+     */
+    $scope.displayCountChanged = function(count) {
+        $scope.displyCount = count;
+    };
+
     // private methods and variables
     var resetNew = function () {
       $scope.state.new = {
@@ -225,16 +233,6 @@ admin.controller('adComtrolChargeCodeMappingCtrl', ['$scope', 'adComtrolChargeCo
       };
 
       $scope.loadTable();
-
-      // $scope.callAPI(adComtrolChargeCodeMappingSrv.fetch, {
-      //   onSuccess: function (response) {
-      //     $scope.mappings = response;
-      //
-      //     if ($scope.mappings.length) {
-      //       loadMetaList();
-      //     }
-      //   }
-      // });
     })();
   }
 ]);

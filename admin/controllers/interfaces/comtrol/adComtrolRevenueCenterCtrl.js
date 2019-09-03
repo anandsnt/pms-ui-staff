@@ -3,6 +3,14 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'adComtrolRevenueCente
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+        /*
+         * This methode is to set page count.
+         * @param {number} page count
+         */
+        $scope.displayCountChanged = function(count) {
+            $scope.displyCount = count;
+        };
+
         // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
@@ -143,11 +151,6 @@ admin.controller('adComtrolRevenueCenterCtrl', ['$scope', 'adComtrolRevenueCente
                 }
             };
           $scope.loadTable();
-          // $scope.callAPI(adComtrolRevenueCenterSrv.fetch, {
-          //   onSuccess: function (response) {
-          //     $scope.revCenters = response;
-          //   }
-          // });
         })();
     }
 ]);
