@@ -1583,8 +1583,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				rateInfo = rate;
 			}
 
-			console.log("=====================")
-			console.log(rateInfo)
 			$scope.reservationData.rateCurrency = rateInfo.rateCurrency;
 
 			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
