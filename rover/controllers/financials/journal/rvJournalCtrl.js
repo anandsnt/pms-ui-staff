@@ -22,7 +22,9 @@ sntRover.controller('RVJournalController',
     $scope.data.selectedChargeCode  = '';
     $scope.data.selectedPaymentType = '';
     $scope.data.filterTitle = "All Departments";
-    $scope.data.isExpandedView = false;
+    $scope.data.isExpandedViewSummary = false;
+    $scope.data.isExpandedViewRevenue = false;
+    $scope.data.isExpandedViewPayment = false;
 
     $scope.data.isActiveRevenueFilter = false;
     $scope.data.activeChargeGroups = [];
@@ -98,9 +100,25 @@ sntRover.controller('RVJournalController',
         });
     };
 
+
     $scope.clickedJournalToggle = function () {
-        $scope.data.isExpandedView = !$scope.data.isExpandedView;
-        $scope.$broadcast("EXPAND_SUMMARY_SCREEN");        
+        var tabName = $scope.data.activeTab;
+
+        if (tabName === 'SUMMARY') {
+            $scope.data.isExpandedViewSummary = !$scope.data.isExpandedViewSummary;
+            $scope.$broadcast("EXPAND_SUMMARY_SCREEN");
+        } else if (tabName === 'PAYMENTS') {
+            $scope.data.isExpandedViewPayment = !$scope.data.isExpandedViewPayment;
+            $scope.$broadcast("EXPAND_PAYMENT_SCREEN");
+        } else if (tabName === 'REVENUE') {
+            $scope.data.isExpandedViewRevenue = !$scope.data.isExpandedViewRevenue;
+
+            if(!$scope.data.isExpandedViewRevenue) {
+                $scope.searchJournal();
+            } else {
+                $scope.$broadcast("EXPAND_REVENUE_SCREEN");
+            }           
+        } 
     };
 
     // To toggle revenue filter box.
@@ -337,19 +355,22 @@ sntRover.controller('RVJournalController',
         var tabName = $scope.data.activeTab;
 
         if (tabName === 'SUMMARY') {
+            $scope.data.isExpandedViewSummary = false;
             $rootScope.$broadcast('SUMMARYSEARCH');
         } else if (tabName === 'PAYMENTS') {
+            $scope.data.isExpandedViewPayment = false;
             $rootScope.$broadcast('PAYMENTSSEARCH');
         } else if (tabName === 'REVENUE') {
+            $scope.data.isExpandedViewRevenue = false;
             $rootScope.$broadcast('REVENUESEARCH');
         }
     };
     /* 
      * Toggle Action 
      */
-    $scope.toggleCollapsedOrExpandedSummary = function() {
-        $scope.data.isExpandedView = !$scope.data.isExpandedView;
-    }; 
+    // $scope.toggleCollapsedOrExpandedSummary = function() {
+    //     $scope.data.isExpandedView = !$scope.data.isExpandedView;
+    // }; 
 
     /* get the time string from the date-time string */
 
@@ -371,7 +392,7 @@ sntRover.controller('RVJournalController',
     };
 
     var init = function() {
-        $scope.data.isExpandedView = false;
+        // $scope.data.isExpandedViewSummary = false;
         $scope.data.searchFilterOptions = journalFilters.filters;        
         $scope.data.filterId = (_.first($scope.data.searchFilterOptions)).id;
     };

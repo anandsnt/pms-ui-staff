@@ -108,8 +108,17 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }
     };
 
+    $scope.addListener('EXPAND_PAYMENT_SCREEN', function( event, data ) {
+        
+        angular.forEach($scope.data.paymentData.payment_types, function(item, key) {
+            if ($scope.checkHasArrowFirstLevel(key)) {
+                $scope.clickedFirstLevel(key, true);
+            }
+        });
+    }); 
+
     /** Handle Expand/Collapse of Level1 **/
-    $scope.clickedFirstLevel = function(index1) {
+    $scope.clickedFirstLevel = function(index1, shouldExpandSecondLevel) {
 
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
@@ -128,6 +137,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             // For Credit cards , level-2 data already exist , so just do expand/collapse only ..
             toggleItem.active = !toggleItem.active;
             refreshPaymentScroll();
+            if (shouldExpandSecondLevel) {
+                angular.forEach($scope.data.paymentData.payment_types[index1].credit_cards, function(item, key) {
+                    if ($scope.checkHasArrowSecondLevel(index1, key)) {
+                        $scope.clickedSecondLevel(index1, key);
+                    }
+                });
+                
+            }
         }
     };
 
