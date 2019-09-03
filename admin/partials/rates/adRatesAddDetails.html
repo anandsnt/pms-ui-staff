@@ -15,6 +15,7 @@
             <div></div>
             <div class="entry full-width">
                 <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate Name" required="yes"></ad-textbox>
+                <ad-textbox inputtype="text" value="rateData.rate_name_trl" label = "Name (Translation)" placeholder = "Enter Translation for Rate Name"></ad-textbox>
                 <ad-textbox inputtype="text" value="rateData.code" label="RATE CODE"  placeholder="Enter Rate code" maxlength="20"></ad-textbox>
             </div>
             <div class="entry full-width">
@@ -139,6 +140,7 @@
         </fieldset>
         <fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
+            <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.rate_desc_trl" label="Description (Translation)" placeholder="Enter Translation for Rate Description"></ad-textarea>
             <div class="entry" ng-show="!isHourlyRatesEnabled() && isStandAlone" ng-hide="!isStandAlone || isHourlyRatesEnabled()">
                 <ad-toggle-button is-checked="rateData.is_pms_only" ng-click="togglePMSOnly()" label="PMS ONLY"></ad-toggle-button>
                 <ad-toggle-button is-checked="rateData.is_channel_only" ng-click="toggleChannelOnly()" label="CHANNEL ONLY"></ad-toggle-button>

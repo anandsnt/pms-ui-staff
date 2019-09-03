@@ -3,9 +3,18 @@
 	<div data-view="HotelRoomTypesView">
 		<header class="content-title float">
 			<h2> {{ 'ROOM_TYPES' | translate }} </h2>
-			<span class="count"> ({{data.room_types.length}}) </span>
+			<span class="count" ng-if="showListPageItems()"> ({{data.room_types.length}}) </span>
 			<a id="import-rooms" class="action import" ng-click="importFromPms($event)" ng-hide="!data.is_import_available ||(data.room_types.length == 0 && isEnabledRoomTypeByRoomClass) || isStandAlone">{{ 'IMPORT_FROM_PMS' | translate }}</a>
-			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" >{{ 'ADD_NEW' | translate }}</a>
+			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" ng-if="!isAddMode">{{ 'ADD_NEW' | translate }}</a>
+			<div class="filters language" ng-if="currentClickedElement !== -1 || isAddMode">
+	            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+	            <div class="select">
+	                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+	                    <option ng-repeat="locale in availableLanguagesSet.languages" value="{{locale.code}}" ng-selected="selectedLanguage.code == roomTypeData.locale"> {{locale.language}}
+	                    </option>
+	                </select>
+            	</div>
+        	</div>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -13,7 +22,7 @@
 			<div id="new-form-holder"></div>
 			<span id="new-form-holder" class="grid" ng-if="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>
 			<table id="brands" class="grid" ng-table="tableParams" template-pagination="">
-				<thead>
+				<thead ng-if="showListPageItems()">
 					<tr ng-if="!isStandAlone">
 		           		<th width="50%" ng-class="{
 		           			'sortable': currentClickedElement == -1,
