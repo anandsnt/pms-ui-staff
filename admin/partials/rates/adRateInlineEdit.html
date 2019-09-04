@@ -12,8 +12,12 @@
 	      </em>
 	   </div>
 	   <fieldset class="holder left float">
-	   		<ad-textbox value="rateDetailsForNonStandalone.name" name = "rate-name" id = "rate-name" label = "Name" placeholder = "Enter rate name" required = "yes" ></ad-textbox>
+	   		<ad-textbox styleclass="full-width" value="rateDetailsForNonStandalone.name" name = "rate-name" id = "rate-name" label = "Name" placeholder = "Enter rate name" required = "yes" ></ad-textbox>
 	   		<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="rateDetailsForNonStandalone.description" label = "Description" placeholder = "Enter Rate Description"></ad-textarea>
+	   </fieldset>
+	   <fieldset class="holder right float">
+	   		<ad-textbox styleclass="full-width" inputtype="text" value="rateDetailsForNonStandalone.rate_name_trl" label = "Name (Translation)" placeholder = "Enter Translation for Rate Name"></ad-textbox> 
+	   		 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="rateDetailsForNonStandalone.rate_desc_trl" label="Description (Translation)" placeholder="Enter Translation for Rate Description"></ad-textarea>
 	   </fieldset>
 	   <div class="actions float">
 	      <button class="button blank add-data-inline" id="cancel" type="button" ng-click="clickCancelForInlineEdit()">Cancel</button>
