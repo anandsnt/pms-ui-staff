@@ -6,7 +6,7 @@
 			<h2 translate>
 				RULES_AND_RESTRICTIONS
 			</h2>
-			<div class="filters language" ng-if="(showCancelList && showCancelForm) || (showDepositList && showDepositForm)">
+			<div class="filters language" ng-if="(showCancelForm || showDepositForm)  && availableLanguagesSet.show_language_field">
 	            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
 	            <div class="select">
 	                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
