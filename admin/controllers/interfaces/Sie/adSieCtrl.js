@@ -12,6 +12,8 @@ admin.controller('adSieCtrl', ['$scope', 'config', 'adInterfacesSrv',
             $scope.config.enabled = !$scope.config.enabled;
         };
 
+        $scope.mappingTypes = ['charge_code', 'charge_code_cost_center'];
+
         /**
          *
          * @return {undefined}

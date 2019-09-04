@@ -20,7 +20,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
         var itemId = $stateParams.itemid;
         // if itemid is null, means it is for add item form
 
-        if (typeof itemId === 'undefined' || itemId.trim() === '') {
+        if (!itemId) {
             $scope.mod = 'add';
         }
 
