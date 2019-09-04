@@ -6,11 +6,11 @@
             <ul>
                 <li>
                     Closing Balance
-                    <span>{currency}{value}</span>
+                    <span><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_closing_balance}}</span>
                 </li>
                 <li>
                     EOD Report Balance
-                    <span class="has-arrow next-view">{currency}{value}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
+                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.deposit_opening_balance}}</span> <!-- Clicking this should open Deposit Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     Balance Check
@@ -25,10 +25,10 @@
             <h3>Guest Ledger</h3>
             <ul>
                 <li>
-                    <span>{currency}{value}</span>
+                    <span><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_closing_balance}}</span>
                 </li>
                 <li>
-                    <span class="has-arrow next-view">{currency}{value}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
+                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.guest_opening_balance}}</span> <!-- Clicking this should open Guest Balance Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed"></i>
@@ -42,10 +42,10 @@
             <h3>A/R Ledger</h3>
             <ul>
                 <li>
-                    <span>{currency}{value}</span>
+                    <span><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_closing_balance}}</span>
                 </li>
                 <li>
-                    <span class="has-arrow next-view">{currency}{value}</span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
+                    <span class="has-arrow next-view"><span class="currency">{{currencySymbol}}</span>{{balanceData.ar_opening_balance}}</span> <!-- Clicking this should open A/R Summary Report, with the back button text "Journal" -->
                 </li>
                 <li>
                     <i class="icons icon-action icon-completed"></i>
@@ -59,21 +59,21 @@
             <h3>Reservations with Open Balance</h3>
             <ul>
                 <li>
-                    <button type="button" class="button white has-arrow next-view">
+                    <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('CHECKEDOUT')">
                         <i class="guest-status departed"></i>
                         <span class="label">Checked out</span>
                         kr. 1,212.43
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="button white has-arrow next-view">
+                    <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('NOSHOW')">
                         <i class="guest-status no-show"></i>
                         <span class="label">No Show</span>
                         kr. 543.00
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="button white has-arrow next-view">
+                    <button type="button" class="button white has-arrow next-view" ng-click="clickedNavigationToSearch('CANCELED')">
                         <i class="guest-status cancel"></i>
                         <span class="label">Cancellations</span>
                         kr. 125.00

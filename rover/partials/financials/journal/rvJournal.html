@@ -110,6 +110,10 @@
                 <span class="icons icon-navbar icon-revenue" translate>REVENUE</span><span class="currency">{{currencySymbol}}</span> {{data.revenueData.total_revenue | number: precisonTwo}}</li>
             <li id="show-payments" ng-class="{'active':data.activeTab === 'PAYMENTS'}" ng-click="activatedTab('PAYMENTS')">
                 <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span><span class="currency">{{currencySymbol}} </span>{{data.paymentData.total_payment | number: precisonTwo}}</li>
+            <li ng-class="{'active':data.activeTab === 'BALANCE'}" ng-click="activatedTab('BALANCE')">
+                <span class="icons icon-navbar icon-balance">Balance</span>
+                <span class="value">End of Day</span>
+            </li>
             <li id="show-cashier" ng-class="{'active':data.activeTab === 'CASHIER'}" ng-click="activatedTab('CASHIER')">
                 <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.filterData.cashierStatus}}</li>
         </ul>
@@ -131,6 +135,8 @@
 
     <!-- Content PAYMENTS-->
     <span ng-if="data.activeTab === 'PAYMENTS'" ng-include="'/assets/partials/financials/journal/rvPayments.html'"></span>
+
+     <span ng-if="data.activeTab === 'BALANCE'" ng-include="'/assets/partials/financials/journal/rvBalance.html'"></span>
 
     <!-- Content CASHIER-->
     <span ng-if="data.activeTab === 'CASHIER'" ng-include="'/assets/partials/financials/journal/rvCashier.html'"></span>
