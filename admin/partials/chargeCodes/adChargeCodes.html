@@ -4,7 +4,7 @@
 			<h2 translate>
 				CHARGE_CODE
 			</h2>
-			<span class="count" ngid="add-addon">
+			<span class="count" ng-if="showListPageItems()">
 				({{totalCount}})
 			</span>
 			<a ng-click="addNewClicked()" class="action add" ng-if="showListPageItems() && !isAdd" translate>ADD_NEW</a>
