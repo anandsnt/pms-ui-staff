@@ -6,7 +6,7 @@
 			<span class="count" ng-if="showListPageItems()"> ({{data.room_types.length}}) </span>
 			<a id="import-rooms" class="action import" ng-click="importFromPms($event)" ng-hide="!data.is_import_available ||(data.room_types.length == 0 && isEnabledRoomTypeByRoomClass) || isStandAlone">{{ 'IMPORT_FROM_PMS' | translate }}</a>
 			<a id="add-rooms" class="action add" ng-click="addNewRoomType()" ng-if="!isAddMode">{{ 'ADD_NEW' | translate }}</a>
-			<div class="filters language" ng-if="currentClickedElement !== -1 || isAddMode">
+			<div class="filters language" ng-if="(currentClickedElement !== -1 || isAddMode) && availableLanguagesSet.show_language_field">
 	            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
 	            <div class="select">
 	                <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">

@@ -22,6 +22,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'totalFees': 0
         };
 
+        // fetch payment methods and corresponding fees configurations
         $scope.$on("FETCH_PAYMENT_TYPES", function(event, data) {
             $scope.callAPI(zsPaymentSrv.fetchAvailablePaymentTyes, {
                 params: {},
@@ -77,6 +78,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  ***************************** CBA **************************************/
 
+        // inject CBS ctrl inside the payment app for CBA actions
         if ($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) {
             $controller('payCBACtrl', {
                 $scope: $scope
@@ -289,6 +291,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         /**  *************************** EMV **********************************/
 
         var saveCardByEmv = function (params) {
+            // Work around fix for six payments
             if (params.amount === 0 && $scope.zestStationData.paymentGateway === 'sixpayments') {
                 delete params.amount;
             }
